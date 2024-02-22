@@ -23,7 +23,6 @@ import { getCurrentBalanceReport } from './reducers/utils'
 
 import * as mojom from '../shared/lib/mojom'
 
-import { App } from './components/app'
 import * as Rewards from './lib/types'
 
 const store = createStore(createReducer())
@@ -52,8 +51,8 @@ function initialize () {
         <LocaleContext.Provider value={createLocaleContextForWebUI()}>
           <PlatformContext.Provider value={platformInfo}>
             <WithThemeVariables>
-              <App />
-              {/* <></> */}
+              {/* <App /> */}
+              <></>
             </WithThemeVariables>
           </PlatformContext.Provider>
         </LocaleContext.Provider>

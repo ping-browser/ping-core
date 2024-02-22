@@ -4,28 +4,28 @@
     Unstoppable Domains
   </message>
   <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING" desc="Heading of unstoppable domains opt-in interstitial opt-in page.">
-    Enable support of Unstoppable Domains in Brave?
+    Enable support of Unstoppable Domains in Ping?
   </message>
   <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of unstoppable domains opt-in interstitial page.">
-    Brave will be using Infura to resolve .crypto (and also .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
+    Ping will be using Infura to resolve .crypto (and also .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) domain names that are on Unstoppable Domains. Ping hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_ENS_OPT_IN_TITLE" desc="Title of interstitial opt-in page for ENS.">
     Ethereum Name Service
   </message>
   <message name="IDS_ENS_OPT_IN_HEADING" desc="Heading of ENS opt-in interstitial opt-in page.">
-    Enable support of Ethereum Name Service (ENS) in Brave?
+    Enable support of Ethereum Name Service (ENS) in Ping?
   </message>
   <message name="IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of ENS opt-in interstitial page.">
-    Brave will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these .eth domains but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
+    Ping will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). Ping hides your IP address. If you enable this, Infura will see that someone is trying to visit these .eth domains but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
   </message>
     <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_TITLE" desc="Title of interstitial opt-in page for ENS offchain lookup.">
     Ethereum Name Service Offchain Lookup
   </message>
   <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_HEADING" desc="Heading of ENS offchain lookup opt-in interstitial opt-in page.">
-    Enable support of Ethereum Name Service (ENS) offchain lookup in Brave?
+    Enable support of Ethereum Name Service (ENS) offchain lookup in Ping?
   </message>
   <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of ENS offchain lookup opt-in interstitial page.">
-    This .eth domain name is stored offchain and will be resolved by a third party gateway. If you enable ENS offchain lookup, the third party gateway will see that you're trying to visit the .eth domain. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_BRAVE_LEARN_MORE_LINK">&lt;/a&gt;</ph>.
+    This .eth domain name is stored offchain and will be resolved by a third party gateway. If you enable ENS offchain lookup, the third party gateway will see that you're trying to visit the .eth domain. <ph name="BEGIN_Ping_LEARN_MORE_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_Ping_LEARN_MORE_LINK">&lt;/a&gt;</ph>.
   </message>
     <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PROCEED" desc="The text for the ENS offchain lookup opt-in interstitial proceed button.">
     Proceed with offchain lookup
@@ -37,10 +37,10 @@
     Solana Name Service
   </message>
   <message name="IDS_SNS_OPT_IN_HEADING" desc="Heading of SNS opt-in interstitial opt-in page.">
-    Enable support of Solana Name Service (SNS) in Brave?
+    Enable support of Solana Name Service (SNS) in Ping?
   </message>
   <message name="IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of SNS opt-in interstitial page.">
-    Brave will be using a third-party to resolve .sol domain names. Brave hides your IP address. If you enable this, the third-party will see that someone is trying to visit these .sol domains but nothing else. For more information about which third-parties we use and their privacy policies, please see our <ph name="BEGIN_SNS_WIKI_LINK">&lt;a target="_blank" href="$1"&gt;</ph>help page<ph name="END_SNS_WIKI_LINK">&lt;/a&gt;</ph>.
+    Ping will be using a third-party to resolve .sol domain names. Ping hides your IP address. If you enable this, the third-party will see that someone is trying to visit these .sol domains but nothing else. For more information about which third-parties we use and their privacy policies, please see our <ph name="BEGIN_SNS_WIKI_LINK">&lt;a target="_blank" href="$1"&gt;</ph>help page<ph name="END_SNS_WIKI_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_BUTTON" desc="The text for the decentralized DNS opt-in interstitial primary button.">
     Proceed using Infura server
