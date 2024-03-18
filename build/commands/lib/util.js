@@ -848,6 +848,7 @@ const util = {
 
     let ninjaOpts = [
       '-C', options.outputDir || config.outputDir, target,
+      '-j8',
       '-k', num_compile_failure,
       ...config.extraNinjaOpts
     ]
