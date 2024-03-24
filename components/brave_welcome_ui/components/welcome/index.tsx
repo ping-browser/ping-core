@@ -78,7 +78,8 @@ function Welcome () {
         <div className="view-header-box">
           <div className="view-details">
             <h1 className="view-title">{getLocale('braveWelcomeTitle')}</h1>
-            <p className="view-desc">{getLocale('braveWelcomeDesc')}</p>
+            {/* removing the dynamic fetching of {getLocale('braveWelcomeDesc')} as the source of this file is hidden */}
+            <p className="view-desc">Get Ping protection on every link you click. Just set Ping as default and browse. Privately.</p>
           </div>
         </div>
         <S.ActionBox>
@@ -87,7 +88,8 @@ function Welcome () {
             onClick={handleSetAsDefaultBrowser}
             scale="jumbo"
           >
-            {getLocale('braveWelcomeSetDefaultButtonLabel')}
+            {/* removed the {getLocale('braveWelcomeSetDefaultButtonLabel')} dynamic text as the source was unknown */}
+            Set Ping as default browser
           </Button>
           <Button
             isTertiary={true}
