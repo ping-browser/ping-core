@@ -1106,5 +1106,4 @@ const util = {
     fs.appendFileSync(excludeFileName, '\n' + exclusion)
   },
 }
-
 module.exports = util
