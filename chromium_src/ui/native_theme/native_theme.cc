@@ -19,4 +19,5 @@ SkColor NativeTheme::GetSystemButtonPressedColor(SkColor base_color) const {
   return color_utils::GetResultingPaintColor(
       SkColorSetA(kBraveColorBrand, is_dark ? 0x2b : 0x23), base_color);
 }
+
 }  // namespace ui
