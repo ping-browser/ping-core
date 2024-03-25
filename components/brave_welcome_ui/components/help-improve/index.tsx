@@ -65,8 +65,7 @@ function HelpImprove () {
       <div className="view-header-box">
         <div className="view-details">
           <h1 className="view-title">
-            {/*removed {getLocale('braveWelcomeHelpImproveBraveTitle')}, as the source of this is unknown*/}
-            Help make Ping better.
+          {getLocale('braveWelcomeHelpImproveBraveTitle')}
           </h1>
         </div>
       </div>
@@ -77,24 +76,22 @@ function HelpImprove () {
             onChange={handleMetricsReportingChange}
             isChecked={isMetricsReportingEnabled}
           >
-            {/* {diagnosticReportsLabel.beforeTag} */}
-            Send diagnostic reports if you experience a crash or freeze
+            {diagnosticReportsLabel.beforeTag}
             <a href="https://support.brave.com/hc/en-us/articles/360017905872-How-do-I-enable-or-disable-automatic-crash-reporting" target="_blank">
               {diagnosticReportsLabel.duringTag}
             </a>
-            {/* {diagnosticReportsLabel.afterTag} */}
+            {diagnosticReportsLabel.afterTag}
           </InputCheckbox>
           <InputCheckbox
             id="p3a"
             onChange={handleP3AChange}
             isChecked={isP3AEnabled}
           >
-            {/* {braveProductUsageDataLabel.beforeTag} */}
-            Share completely private and anonymous product insights about what features are being used by Ping's users.
+            {braveProductUsageDataLabel.beforeTag}
             <a href="https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-" target="_blank">
               {braveProductUsageDataLabel.duringTag}
             </a>
-            {/* {braveProductUsageDataLabel.afterTag} */}
+            {braveProductUsageDataLabel.afterTag}
           </InputCheckbox>
         </div>
       </S.Grid>
@@ -108,11 +105,9 @@ function HelpImprove () {
             {getLocale('braveWelcomeFinishButtonLabel')}
           </Button>
           <S.FootNote>
-            {/* {changeSettingsNote.beforeTag} */}
-            Change these choices at any time in Ping at &nbsp;&nbsp;
+            {changeSettingsNote.beforeTag}
             <a href="ping://settings/privacy" onClick={handleOpenSettingsPage}>
-              {/* {changeSettingsNote.duringTag} */}
-              ping://settings/privacy
+              {changeSettingsNote.duringTag}
             </a>
             {changeSettingsNote.afterTag}
             <span>
