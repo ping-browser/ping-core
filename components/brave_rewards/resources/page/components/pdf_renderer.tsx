@@ -1,12 +1,11 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
-//@ts-nocheck
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+// @ts-nocheck
+import * as React from 'react'
+import * as urls from '../../lib/rewards_urls'
+import { useState, useRef, useEffect } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
-import forge from 'node-forge';
-import {plainAddPlaceholder, removeTrailingNewLine} from 'node-signpdf/dist/helpers/index';
-import  { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -20,7 +19,6 @@ interface Props {
 
 export function PdfRenderer(props: Props) {
   const [pdfFile, setPdfFile] = useState(null);
-  // const [certFile, setCertFile] = useState(null);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [isSelecting, setIsSelecting] = useState(false);
@@ -54,9 +52,6 @@ export function PdfRenderer(props: Props) {
 
   const handleFileInput = (event) => {
     const file = event.target.files[0];
-    const pdfBuff = await file.arrayBuffer();
-    console.log("buff: ", pdfBuff);
-    setPdfBuff(pdfBuff);
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -65,6 +60,10 @@ export function PdfRenderer(props: Props) {
       reader.readAsArrayBuffer(file);
     }
   };
+
+  const uint8ArrayToArrayBuffer = (uint8Array) => {
+    return uint8Array.buffer.slice(uint8Array.byteOffset, uint8Array.byteOffset + uint8Array.byteLength);
+  }
 
   // const handleCertChange = (e) => setCertFile(e.target.files[0]);
 
@@ -140,15 +139,22 @@ export function PdfRenderer(props: Props) {
   const signpdf = (pdfBuffer, certificate, signatureHash) => {
     // Extract signer's name from the certificate
     const signerName = certificate.subject.getField('CN').value;
+    console.log(signerName);
   
     // Adding placeholder
+
+    const pdfH = uint8ArrayToArrayBuffer(pdfBuffer);
+
+    // TODO: implementing plainaddplaceholder that takes arraybuffer as input.
     pdfBuffer = plainAddPlaceholder({
-      pdfBuffer,
+      pdfH,
       reason: `Signed by ${signerName} using Ping`,
     });
+
+    console.log("pdf: ", pdfBuffer);
     console.log('Added placeholder:', pdfBuffer.toString('utf8', 0, 200)); // Log first 200 bytes
   
-    let pdf = removeTrailingNewLine(pdfBuffer);
+    let pdf = removeTrailingNewLine(pdfH);
     console.log(
       'PDF after removing trailing new lines:',
       pdf.toString('utf8', 0, 200),
@@ -295,20 +301,23 @@ export function PdfRenderer(props: Props) {
 
   const signingPdf = () => {
     const cert = forge.pki.certificateFromPem(certificateHardcode);
-    const signerName = cert.subject.getField('CN').value;
-    const pdfBuffer = addPlaceholder(pdfBuff, signerName);
     const sigHash ='6129f7c2d451c87d0693deb397d2d06a714ba954bcc866e69d642779b4b0a06e0744c36d67b71c861c8d8255590dad87db5ac0d7fa983164374f57bb758f823249264acd9f9b044df7d8ab8a08e1b6cf0a868fea3a021b9ba899a720402a9beeab377a3d2a9e98a26ee4666fbde0fbe91678fae2b63add600dbeb94af126a494b5d26722409c46f18d64d7d68db027d88637d1cfd986341d2e0dd2844265b9e1754506c299d610946d2156395d2d673bdebbc778fde4457f3d133bcd7e03e057f23808523e6c144ccd649d1ce9da1c647145a9517753e2a4fea1909b6544c398485a099f08c8c0828ea31afc0c2be3e55f920a9ff5bbdec4596ae300e2622255';
-    const signedPdf = signpdf(pdfBuffer, cert, sigHash);
-    const signedBlob = new Blob([signedPdf], { type: 'application/pdf' });
-
-    const downloadUrl = URL.createObjectURL(signedBlob);
-    const a = document.createElement('a');
-    a.href = downloadUrl;
-    a.download = 'signed_document.pdf';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(downloadUrl);
+    const signerName = cert.subject.getField('CN').value;
+    addPlaceholder(pdfBuff, signerName).then(pdfBuffer => {
+      const signedPdf = signpdf(pdfBuffer, cert, sigHash);
+      console.log("signedPdf: ", signedPdf);
+      const signedBlob = new Blob([signedPdf], { type: 'application/pdf' });
+      const downloadUrl = URL.createObjectURL(signedBlob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = 'signed_document.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(downloadUrl);
+    }).catch(error => {
+      console.error("Error:", error);
+    });
   }
 
   const embedSignature = () => {
@@ -332,7 +341,7 @@ export function PdfRenderer(props: Props) {
 
     setIsSelectionEnabled(false);
     setIsSigned(true);
-    console.log(`Page number: ${pageIndex + 1}, Selected area coordinates: Start(${startX}, ${startY}) - End(${endX}, ${endY})`);
+    console.log(`Selected area coordinates: Start(${startX}, ${startY}) - End(${endX}, ${endY})`);
     document.getElementById('signButton').disabled = true;
   };
 
@@ -403,108 +412,54 @@ export function PdfRenderer(props: Props) {
 
   return (
     <>
-      <div className="App" style={{ background: "gray", padding: '20px' }}>
-        <div id="controls" style={{ 
-            display: 'flex', 
-            justifyContent: "center", 
-            marginBottom: '20px',
-            position: 'fixed',
+      <div className="App">
+      <div id="controls">
+        <input type="file" id="pdfInput" accept="application/pdf" onChange={handleFileInput} />
+        {/* <input type="file" id="certInput" accept=".pem" onChange={handleCertChange} /> */}
+        <button id="signButton" onClick={handleSignButtonClick} disabled={isSigned}>Sign</button>
+        <button onClick={handleVerifyPdf}>Verify PDF</button>
+        <button onClick={handlePreviousPage} disabled={pageNumber === 1}>Previous Page</button>
+        <button onClick={handleNextPage} disabled={pageNumber === numPages}>Next Page</button>
+        <input
+          type="number"
+          value={pageNumber}
+          onChange={handlePageInputChange}
+          min={1}
+          max={numPages}
+          style={{ width: '60px' }}
+        />
+      </div>
+      <div id="canvasContainer" style={{ position: 'relative' }}>
+        <Document
+          file={pdfFile}
+          onLoadSuccess={onDocumentLoadSuccess}
+          loading={<div>Loading PDF...</div>}
+        >
+          <Page
+            pageNumber={pageNumber}
+            renderTextLayer={false}
+            width={600}
+            renderMode="canvas"
+            onLoadSuccess={onPageLoadSuccess}
+            canvasRef={pdfCanvasRef}
+            loading={<div>Loading page...</div>}
+          />
+        </Document>
+        <canvas
+          id="overlayCanvas"
+          ref={overlayCanvasRef}
+          style={{
+            position: 'absolute',
             top: 0,
             left: 0,
-            right: 0,
-            background: 'white',
-            zIndex: 1000,
-            padding: '10px 0',
-            boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)'
-          }}>
-          <input 
-            type="file" 
-            id="pdfInput" 
-            accept="application/pdf" 
-            onChange={handleFileInput} 
-            style={{ padding: '10px', marginRight: '10px' }} 
-          />
-          <button 
-            id="signButton" 
-            onClick={handleSignButtonClick} 
-            disabled={isSigned} 
-            style={{ padding: '10px', marginRight: '10px', borderRadius: '5px' }}
-          >
-            Sign
-          </button>
-          <button 
-            onClick={handlePreviousPage} 
-            disabled={pageNumber === 1} 
-            style={{ padding: '10px', marginRight: '10px', borderRadius: '10px' }}
-          >
-            Previous Page
-          </button>
-          <button 
-            onClick={handleNextPage} 
-            disabled={pageNumber === numPages} 
-            style={{ padding: '10px', marginRight: '10px', borderRadius: '10px' }}
-          >
-            Next Page
-          </button>
-          <input
-            type="number"
-            value={pageNumber}
-            onChange={handlePageInputChange}
-            min={1}
-            max={numPages}
-            style={{ width: '60px', padding: '10px', textAlign: 'center' }}
-          />
-        </div>
-        <div
-          id="pdfContainer"
-          ref={pdfContainerRef}
-          style={{
-            overflowX: 'hidden',
-            overflowY: 'auto',
-            height: '100vh',
-            backgroundColor: 'white',
-            margin: '55px auto',
-            width: '65vw',
-            display: 'flex',
-            justifyContent: 'center',
-            padding: '20px',
-            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)'
+            pointerEvents: isSelectionEnabled ? 'auto' : 'none',
           }}
-        >
-          <Document
-            file={pdfFile}
-            onLoadSuccess={onDocumentLoadSuccess}
-            loading={<div>Loading PDF...</div>}
-          >
-            {numPages &&
-              Array.from({ length: numPages }, (_, index) => (
-                <div key={`page_${index + 1}`} style={{ position: 'relative', marginBottom: '20px' }} ref={(el) => (pageRefs.current[index] = el)}>
-                  <Page
-                    pageNumber={index + 1}
-                    renderTextLayer={false}
-                    renderMode="canvas"
-                    onLoadSuccess={() => onPageLoadSuccess(index)}
-                    canvasRef={(el) => (pdfCanvasRefs.current[index] = el)}
-                    loading={<div>Loading page...</div>}
-                  />
-                  <canvas
-                    id={`overlayCanvas_${index}`}
-                    ref={(el) => (overlayCanvasRefs.current[index] = el)}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      pointerEvents: isSelectionEnabled ? 'auto' : 'none',
-                    }}
-                    onMouseDown={(e) => handleMouseDown(e, index)}
-                    onMouseMove={(e) => handleMouseMove(e, index)}
-                    onMouseUp={() => handleMouseUp(index)}
-                  />
-                </div>
-              ))}
-          </Document>
-        </div>
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+        />
       </div>
+    </div>
     </>
   );
 }
