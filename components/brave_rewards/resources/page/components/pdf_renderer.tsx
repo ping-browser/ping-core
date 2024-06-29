@@ -24,7 +24,7 @@ export function PdfRenderer(props: Props) {
   const [isSelectionEnabled, setIsSelectionEnabled] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
   const [selectionCoords, setSelectionCoords] = useState({ startX: 0, startY: 0, endX: 0, endY: 0 });
-
+  const [pdfBuff, setPdfBuff] = useState(0);
   const overlayCanvasRefs = useRef([]);
   const pdfCanvasRefs = useRef([]);
   const pdfContainerRef = useRef(null);
@@ -49,8 +49,10 @@ export function PdfRenderer(props: Props) {
     }
   }, []);
 
-  const handleFileInput = (event) => {
+  const handleFileInput = async(event) => {
     const file = event.target.files[0];
+    const pdfBuff = await file.arrayBuffer();
+    setPdfBuff(pdfBuff);
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -117,7 +119,7 @@ export function PdfRenderer(props: Props) {
     // Example: Replace with your actual signing API endpoint
     try {
       const formData = new FormData();
-      formData.append('pdf', pdfFile as Blob);
+      formData.append('pdf', pdfBuff as Blob);
       formData.append('pageIndex', String(pageIndex));
       formData.append('selectionCoords', JSON.stringify({ startX, startY, endX, endY }));
 
@@ -146,15 +148,19 @@ export function PdfRenderer(props: Props) {
   const verifyDocument = async () => {
     try {
       const formData = new FormData();
-      formData.append('pdf', pdfFile as Blob);
+      formData.append('pdf', pdfBuff);
       const response = await fetch('http://localhost:5000/v1/api/verify', {
         method: 'POST',
-        body: formData, // Adjust this to send necessary verification data
+        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer your-token-here',
+        },
       });
   
       if (response.ok) {
         const verificationResult = await response.json();
-        if (verificationResult.isValid) {
+        if (verificationResult.verified) {
           alert('Document verification successful!');
         } else {
           alert('Document verification failed.');
@@ -172,7 +178,12 @@ export function PdfRenderer(props: Props) {
   // Example integration within PdfRenderer component
   const handleVerifyButtonClick = async () => {
     try {
-      await verifyDocument();
+      if(pdfBuff){
+        await verifyDocument(pdfBuff);
+      }
+      else{
+        alert('UPLOAD PDF FIRST');
+      }
     } catch (error) {
       console.error('Error initiating document verification:', error);
       // Handle error condition here
