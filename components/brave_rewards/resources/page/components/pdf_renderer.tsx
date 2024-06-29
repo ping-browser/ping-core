@@ -24,7 +24,7 @@ export function PdfRenderer(props: Props) {
   const [isSelectionEnabled, setIsSelectionEnabled] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
   const [selectionCoords, setSelectionCoords] = useState({ startX: 0, startY: 0, endX: 0, endY: 0 });
-  const [pdfBuff, setPdfBuff] = useState(0);
+  const [pdfBuff, setPdfBuff] = useState(null);
   const overlayCanvasRefs = useRef([]);
   const pdfCanvasRefs = useRef([]);
   const pdfContainerRef = useRef(null);
@@ -49,7 +49,7 @@ export function PdfRenderer(props: Props) {
     }
   }, []);
 
-  const handleFileInput = async(event) => {
+  const handleFileInput = async (event) => {
     const file = event.target.files[0];
     const pdfBuff = await file.arrayBuffer();
     setPdfBuff(pdfBuff);
@@ -116,77 +116,54 @@ export function PdfRenderer(props: Props) {
   const embedSignature = async (pageIndex) => {
     const { startX, startY, endX, endY } = selectionCoords;
 
-    // Example: Replace with your actual signing API endpoint
     try {
-      const formData = new FormData();
-      formData.append('pdf', pdfBuff as Blob);
-      formData.append('pageIndex', String(pageIndex));
-      formData.append('selectionCoords', JSON.stringify({ startX, startY, endX, endY }));
-
-      const response = await fetch('http://localhost:5000/v1/api/sign', {
-        method: 'POST',
-        body: formData,
+      chrome.runtime.sendMessage({
+        action: 'sign',
+        pdfFile: pdfBuff,
+        pageIndex,
+        selectionCoords: { startX, startY, endX, endY }
+      }, (response) => {
+        if (response.status) {
+          setPdfFile(response.data.signedPdf);
+          setIsSigned(true);
+          setIsSelectionEnabled(false);
+          console.log(`Page number: ${pageIndex + 1}, Selected area coordinates: Start(${startX}, ${startY}) - End(${endX}, ${endY})`);
+          document.getElementById('signButton').disabled = true;
+        } else {
+          console.error('Failed to sign PDF:', response.error);
+        }
       });
-
-      if (response.ok) {
-        const signedPdfBuffer = await response.arrayBuffer();
-        setPdfFile(new File([signedPdfBuffer], `${pdfFile?.name}_signed.pdf`, { type: 'application/pdf' }));
-        setIsSigned(true);
-        setIsSelectionEnabled(false);
-        console.log(`Page number: ${pageIndex + 1}, Selected area coordinates: Start(${startX}, ${startY}) - End(${endX}, ${endY})`);
-        document.getElementById('signButton').disabled = true;
-      } else {
-        console.error('Failed to sign PDF:', response.statusText);
-        // Handle error condition here
-      }
     } catch (error) {
       console.error('Error signing PDF:', error);
-      // Handle error condition here
     }
   };
 
-  const verifyDocument = async () => {
+  const verifyDocument = async (pdfBuff: ArrayBuffer) => {
     try {
-      const formData = new FormData();
-      formData.append('pdf', pdfBuff);
-      const response = await fetch('http://localhost:5000/v1/api/verify', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer your-token-here',
-        },
-      });
-  
-      if (response.ok) {
-        const verificationResult = await response.json();
-        if (verificationResult.verified) {
-          alert('Document verification successful!');
+      chrome.runtime.sendMessage({
+        action: 'verify',
+        pdfFile: pdfBuff
+      }, (response) => {
+        if (response.status) {
+          if (response.data.verified) {
+            alert('Document verification successful!');
+          } else {
+            alert('Document verification failed.');
+          }
         } else {
-          alert('Document verification failed.');
+          console.error('Failed to verify document:', response.error);
         }
-      } else {
-        console.error('Failed to verify document:', response.statusText);
-        // Handle error condition here
-      }
+      });
     } catch (error) {
       console.error('Error verifying document:', error);
-      // Handle error condition here
     }
   };
-  
-  // Example integration within PdfRenderer component
-  const handleVerifyButtonClick = async () => {
-    try {
-      if(pdfBuff){
-        await verifyDocument(pdfBuff);
-      }
-      else{
-        alert('UPLOAD PDF FIRST');
-      }
-    } catch (error) {
-      console.error('Error initiating document verification:', error);
-      // Handle error condition here
+
+  const handleVerifyButtonClick = () => {
+    if (pdfBuff) {
+      verifyDocument(pdfBuff);
+    } else {
+      alert('UPLOAD PDF FIRST');
     }
   };
 
