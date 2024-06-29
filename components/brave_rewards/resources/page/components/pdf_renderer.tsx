@@ -25,7 +25,7 @@ export function PdfRenderer(props: Props) {
   const [isSelectionEnabled, setIsSelectionEnabled] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
   const [selectionCoords, setSelectionCoords] = useState({ startX: 0, startY: 0, endX: 0, endY: 0 });
-
+  const [pdfBuff, setPdfBuff] = useState(0);
   const overlayCanvasRefs = useRef([]);
   const pdfCanvasRefs = useRef([]);
   const pdfContainerRef = useRef(null);
@@ -50,8 +50,10 @@ export function PdfRenderer(props: Props) {
     }
   }, []);
 
-  const handleFileInput = (event) => {
+  const handleFileInput = async(event) => {
     const file = event.target.files[0];
+    const pdfBuff = await file.arrayBuffer();
+    setPdfBuff(pdfBuff);
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -299,50 +301,72 @@ export function PdfRenderer(props: Props) {
     }
   };
 
-  const signingPdf = () => {
-    const cert = forge.pki.certificateFromPem(certificateHardcode);
-    const sigHash ='6129f7c2d451c87d0693deb397d2d06a714ba954bcc866e69d642779b4b0a06e0744c36d67b71c861c8d8255590dad87db5ac0d7fa983164374f57bb758f823249264acd9f9b044df7d8ab8a08e1b6cf0a868fea3a021b9ba899a720402a9beeab377a3d2a9e98a26ee4666fbde0fbe91678fae2b63add600dbeb94af126a494b5d26722409c46f18d64d7d68db027d88637d1cfd986341d2e0dd2844265b9e1754506c299d610946d2156395d2d673bdebbc778fde4457f3d133bcd7e03e057f23808523e6c144ccd649d1ce9da1c647145a9517753e2a4fea1909b6544c398485a099f08c8c0828ea31afc0c2be3e55f920a9ff5bbdec4596ae300e2622255';
-    const signerName = cert.subject.getField('CN').value;
-    addPlaceholder(pdfBuff, signerName).then(pdfBuffer => {
-      const signedPdf = signpdf(pdfBuffer, cert, sigHash);
-      console.log("signedPdf: ", signedPdf);
-      const signedBlob = new Blob([signedPdf], { type: 'application/pdf' });
-      const downloadUrl = URL.createObjectURL(signedBlob);
-      const a = document.createElement('a');
-      a.href = downloadUrl;
-      a.download = 'signed_document.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(downloadUrl);
-    }).catch(error => {
-      console.error("Error:", error);
-    });
-  }
+  const embedSignature = async (pageIndex) => {
+    const { startX, startY, endX, endY } = selectionCoords;
 
-  const embedSignature = () => {
-    try{
-      signingPdf();
+    // Example: Replace with your actual signing API endpoint
+    try {
+      const formData = new FormData();
+      formData.append('pdf', pdfFile as Blob);
+      formData.append('pageIndex', String(pageIndex));
+      formData.append('selectionCoords', JSON.stringify({ startX, startY, endX, endY }));
+
+      const response = await fetch('http://localhost:5000/v1/api/sign', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const signedPdfBuffer = await response.arrayBuffer();
+        setPdfFile(new File([signedPdfBuffer], `${pdfFile?.name}_signed.pdf`, { type: 'application/pdf' }));
+        setIsSigned(true);
+        setIsSelectionEnabled(false);
+        console.log(`Page number: ${pageIndex + 1}, Selected area coordinates: Start(${startX}, ${startY}) - End(${endX}, ${endY})`);
+        document.getElementById('signButton').disabled = true;
+      } else {
+        console.error('Failed to sign PDF:', response.statusText);
+        // Handle error condition here
+      }
+    } catch (error) {
+      console.error('Error signing PDF:', error);
+      // Handle error condition here
     }
-    catch (err) {
-      console.log(err);
-      alert("unable to sign pdf");
-      return;
+  };
+
+  const verifyDocument = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('pdf', pdfFile as Blob);
+      const response = await fetch('http://localhost:5000/v1/api/verify', {
+        method: 'POST',
+        body: formData, // Adjust this to send necessary verification data
+      });
+  
+      if (response.ok) {
+        const verificationResult = await response.json();
+        if (verificationResult.isValid) {
+          alert('Document verification successful!');
+        } else {
+          alert('Document verification failed.');
+        }
+      } else {
+        console.error('Failed to verify document:', response.statusText);
+        // Handle error condition here
+      }
+    } catch (error) {
+      console.error('Error verifying document:', error);
+      // Handle error condition here
     }
-    const overlayCtx = overlayCanvasRef.current.getContext('2d');
-    overlayCtx.fillStyle = 'rgba(255, 255, 0, 0.5)';
-    overlayCtx.fillRect(startX, startY, endX - startX, endY - startY);
-
-    overlayCtx.font = '14px Arial';
-    overlayCtx.fillStyle = 'black';
-    overlayCtx.textAlign = 'left';
-    overlayCtx.textBaseline = 'top';
-    overlayCtx.fillText(fixedText, startX + 5, startY + 5);
-
-    setIsSelectionEnabled(false);
-    setIsSigned(true);
-    console.log(`Selected area coordinates: Start(${startX}, ${startY}) - End(${endX}, ${endY})`);
-    document.getElementById('signButton').disabled = true;
+  };
+  
+  // Example integration within PdfRenderer component
+  const handleVerifyButtonClick = async () => {
+    try {
+      await verifyDocument();
+    } catch (error) {
+      console.error('Error initiating document verification:', error);
+      // Handle error condition here
+    }
   };
 
   const clearSelection = (pageIndex) => {
