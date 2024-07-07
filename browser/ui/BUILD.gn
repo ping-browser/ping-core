@@ -847,6 +847,8 @@ source_set("ui") {
       "//brave/components/brave_webtorrent:static_resources",
       "//brave/components/parental_control:static_resources",
       "//brave/components/parental_control:generated_resources",
+      "//brave/components/ping_ai_copilot:static_resources",
+      "//brave/components/ping_ai_copilot:generated_resources",
       "//brave/components/webcompat_reporter/browser",
       "//brave/components/webcompat_reporter/ui:generated_resources",
     ]
