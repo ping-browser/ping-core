@@ -22,7 +22,7 @@
 
 #summarizer-icon {
   position: fixed;
-  z-index: 9999;
+  z-index: 1e5;
   background-color: #007bff;
   color: white;
   padding: 5px;
@@ -31,6 +31,7 @@
 }
 
 #summary-box {
+  z-index: 1e5;
   position: fixed;
   bottom: 20px;
   right: 20px;

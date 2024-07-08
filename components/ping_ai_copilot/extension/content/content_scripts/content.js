@@ -1,3 +1,5 @@
+import "../ui/style.css"
+
 let summarizer = null;
 let summaryBox = null;
 

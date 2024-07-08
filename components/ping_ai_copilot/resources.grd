@@ -11,10 +11,10 @@
   <release seq="1">
     <includes>
       <include name="IDR_PING_AI_COPILOT" file="extension/manifest.json" resource_path="ping_ai_copilot/extension/manifest.json" type="BINDATA" />
-      <include name="IDR_BRAVE_PING_AI_COPILOT_CSS" file="extension/content/ui/style.css" resource_path="ping_ai_copilot/extension/content/ui/popup.css" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_CSS" file="extension/content/ui/style.css" resource_path="ping_ai_copilot/extension/content/ui/style.css" type="BINDATA" />
       <include name="IDR_BRAVE_PING_AI_COPILOT_LOGO_ACTIVE" file="extension/assets/Logo_active.png" resource_path="ping_ai_copilot/extension/assets/Logo_active.png" type="BINDATA" />
       <include name="IDR_BRAVE_PING_AI_COPILOT_LOGO_INACTIVE" file="extension/assets/Logo_inactive.png" resource_path="ping_ai_copilot/extension/assets/Logo_inactive.png" type="BINDATA" />
-      <include name="IDR_BRAVE_PING_AI_COPILOT_POPUP_CONTENT_COPY" file="extension/assets/content_copy.svg" resource_path="ping_ai_copilot/extension/assets/background.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_POPUP_CONTENT_COPY" file="extension/assets/content_copy.svg" resource_path="ping_ai_copilot/extension/assets/content_copy.svg" type="BINDATA" />
     </includes>
   </release>
 </grit>
