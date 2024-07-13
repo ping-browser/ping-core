@@ -831,4 +831,5 @@ export function PdfRenderer() {
       )}
     </div>
   );
+  );
 }
