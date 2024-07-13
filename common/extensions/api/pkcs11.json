@@ -29,20 +29,42 @@
               "name": "mdHash",
               "type": "string",
               "description": "mdHash to be signed"
-            },
-            {
-              "name": "callback",
-              "type": "function",
-              "description": "Function called when signature for document is fetched",
-              "parameters": [
-                {
-                  "name": "signature",
-                  "type": "string",
-                  "description": "signed signature"
-                }
-              ]
             }
-          ]
+          ],
+          "returns_async": {
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "signature",
+                "type": "string",
+                "description": "Signed signature"
+              }
+            ],
+            "does_not_support_promises": "Requires refactoring"
+          }
+        },
+        {
+          "name": "getCertificate",
+          "type": "function",
+          "description": "Export certificate in pem format",
+          "parameters": [
+            {
+              "name": "modulePath",
+              "type": "string",
+              "description": "Path of HSM library"
+            }
+          ],
+          "returns_async": {
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "certificate",
+                "type": "string",
+                "description": "Certificate in pem format"
+              }
+            ],
+            "does_not_support_promises": "Requires refactoring"
+          }
         }
       ]
     }

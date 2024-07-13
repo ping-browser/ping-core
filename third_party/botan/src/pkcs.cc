@@ -15,6 +15,9 @@
 #include <botan/pubkey.h>
 #include <botan/rsa.h>
 #include <botan/secmem.h>
+#include <botan/p11_x509.h>
+#include <botan/x509cert.h>
+#include <botan/pem.h>
 
 std::vector<uint8_t> hexStringToBytes(char* charArray)
 {
@@ -91,6 +94,50 @@ std::string botan_high_level::pkcs11::sign_data(char* module_path, char* pin, ch
             return vectorToHex(signature);
         } catch (const std::exception& e) {
             return "ERROR_SIGNING_FAILURE";
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error initializing module: " << e.what() << std::endl;
+        return "ERROR_MODULE_NOT_FOUND";
+    }
+}
+
+std::string botan_high_level::pkcs11::get_cert(char* module_path) {
+    try {
+        Botan::PKCS11::Module module(module_path);
+
+        std::vector<Botan::PKCS11::SlotId> slots;
+        try {
+            slots = Botan::PKCS11::Slot::get_available_slots(module, true);
+            std::cout << "Number of slots: " << slots.size() << std::endl;
+
+            if (slots.empty()) {
+                return "ERROR_SLOT_NOT_FOUND";
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Error getting available slots: " << e.what() << std::endl;
+            return "ERROR_SLOT_NOT_FOUND";
+        }
+
+        try {
+            Botan::PKCS11::Slot slot(module, slots.at(0));
+            Botan::PKCS11::Session session(slot, false);
+
+            // Set up the search template to look for X.509 certificates
+            Botan::PKCS11::AttributeContainer certificate_search_template;
+            certificate_search_template.add_class(Botan::PKCS11::ObjectClass::Certificate);
+            auto cert_objs = Botan::PKCS11::Object::search<Botan::PKCS11::Object>(session, certificate_search_template.attributes());
+
+            Botan::PKCS11::ObjectHandle cert_handle = cert_objs.at(0).handle();
+
+            // Load the private key from the HSM
+            Botan::PKCS11::PKCS11_X509_Certificate cert(session, cert_handle);
+
+            // Export the certificate to PEM format
+            std::string pem_cert = Botan::PEM_Code::encode(cert.BER_encode(), "CERTIFICATE");
+
+            return pem_cert;
+        } catch (const std::exception& e) {
+            return "ERROR_GETTING_CERT";
         }
     } catch (const std::exception& e) {
         std::cerr << "Error initializing module: " << e.what() << std::endl;

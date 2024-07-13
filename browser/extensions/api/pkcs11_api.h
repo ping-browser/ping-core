@@ -21,6 +21,16 @@ class Pkcs11GetSignatureFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class Pkcs11GetCertificateFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("pkcs11.getCertificate", UNKNOWN)
+
+ protected:
+  ~Pkcs11GetCertificateFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
