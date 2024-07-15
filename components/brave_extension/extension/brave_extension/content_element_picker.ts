@@ -9,7 +9,7 @@
 // See: https://bugs.chromium.org/p/chromium/issues/detail?id=331654#c15
 // The RenderView should always be ready when the content script begins, so
 // this message is used to trigger CSS insertion instead.
-
+//@ts-nocheck
 let pickerFrame: HTMLIFrameElement | null
 
 // When the picker is activated, it eats all pointer events and takes up the
@@ -52,14 +52,14 @@ class ElementSelectorBuilder {
   private readonly rules: Rule[]
   private tag: string
 
-  constructor (elem: Element) {
+  constructor(elem: Element) {
     this.rules = []
     this.tag = ''
     this.elem = elem
     this.hasId = false
   }
 
-  addRule (rule: Rule): void {
+  addRule(rule: Rule): void {
     if (rule.type < Selector.Id || rule.type > Selector.NthOfType) {
       console.log(`Unexpected selector: ${rule.type}`)
       return
@@ -71,15 +71,15 @@ class ElementSelectorBuilder {
     this.rules.push(rule)
   }
 
-  addTag (tag: string): void {
+  addTag(tag: string): void {
     this.tag = tag
   }
 
-  size (): number {
+  size(): number {
     return this.rules.length
   }
 
-  toString (mask: number = mostSpecificMask): string {
+  toString(mask: number = mostSpecificMask): string {
     let selector = this.tag + ''
     for (const rule of this.rules) {
       if (!(mask & SpecificityFlags.Id) && rule.type === Selector.Id) {
@@ -361,15 +361,15 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
   for (; i < selectorBuilders.length; i++) {
     const b = selectorBuilders[i]
     if ((mask & SpecificityFlags.Id) && b.hasId ||
-        document.querySelectorAll(b.toString(mask)).length === 1) {
+      document.querySelectorAll(b.toString(mask)).length === 1) {
       break
     }
   }
   const selector = selectorBuilders
-      .slice(0, i + 1)
-      .reverse()
-      .map((b) => b.toString(mask))
-      .join(' > ')
+    .slice(0, i + 1)
+    .reverse()
+    .map((b) => b.toString(mask))
+    .join(' > ')
   return selector
 }
 
@@ -421,3 +421,253 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
   }
 })
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  highContrast();
+  // screenReader();
+});
+
+const highContrast = () => {
+  const styleElement = document.createElement('style');
+  // console.log('DOM fully loaded and parsed');
+  // console.log(document.head, document);
+  document.head.appendChild(styleElement);
+
+  const isGoogleSearchPage = () => {
+    return window.location.hostname === 'www.google.com' && window.location.pathname === '/search';
+  };
+
+  let contrastEnabled = false;
+
+  // Function to apply contrast mode
+  const applyContrast = () => {
+    let css = '';
+    // console.log("applyContrast called, contrastEnabled:", contrastEnabled);
+    if (contrastEnabled) {
+      css = `
+        html {
+          filter: contrast(150%) brightness(120%) !important;
+          background: #12182B !important;
+          color: #fff
+        }
+        input, textarea, select, button, main, nav, ul {
+          color: #BFBFBF !important;
+          background: #12182B !important;
+          border: 1px solid #BFBFBF !important;
+        }
+        span, li, a, h2, p {
+          color: #fff !important;
+          background: #12182B !important;
+        }
+        ${isGoogleSearchPage() ? '' : `
+        div {
+          color: #fff !important;
+          background: #12182B !important;
+        }`}
+        input[type="submit"], input[type="button"], button {
+          background: #4a4a4a !important;
+          color: #BFBFBF !important;
+          border: 1px solid #BFBFBF !important;
+        }
+        a {
+          color: #8ab4f8 !important;
+        }
+        img, img:not([src=""]), img:not([src="data:,"]) {
+          background: none !important;
+          filter: contrast(150%) brightness(120%) !important;
+        }
+        img[src=""], img[src="data:,"]) {
+          opacity: 0 !important;
+        }
+        /* Target common image container elements */
+        div:has(> img), figure, picture {
+          background: none !important;
+        }
+      `;
+    }
+    // Apply the CSS
+    styleElement.textContent = css;
+  };
+
+  const toggleContrast = () => {
+    // console.log("toggleContrast called, contrastEnabled (before toggle):", contrastEnabled);
+    contrastEnabled = !contrastEnabled;
+    // console.log("contrastEnabled (after toggle):", contrastEnabled);
+    applyContrast();
+    chrome.storage.sync.set({ contrastEnabled: contrastEnabled });
+  };
+  //@ts-ignore
+  const toggleContrastListener = (request, sender, sendResponse) => {
+    // console.log("Message received:", request);
+    if (request.action === "toggleContrast") {
+      // console.log("toggleContrast action received");
+      toggleContrast();
+    }
+  };
+
+  // Ensure any existing listener is removed
+  chrome.runtime.onMessage.removeListener(toggleContrastListener);
+
+  // Add the new listener
+  chrome.runtime.onMessage.addListener(toggleContrastListener);
+
+  chrome.storage.sync.get('contrastEnabled', (data) => {
+    // console.log("Initial storage fetch, data:", data);
+    if (data.contrastEnabled) {
+      contrastEnabled = true;
+      applyContrast();
+    }
+  });
+}
+
+const screenReader = () => {
+  let isActive = false;
+  let selector = null;
+  let hoverTimer = null;
+  let currentElement = null;
+  const hoverDelay = 2000; // 2 seconds
+
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "toggle") {
+      isActive = request.state;
+      if (isActive) {
+        startScreenReader();
+      } else {
+        stopScreenReader();
+      }
+    }
+    else if (request.action === "ttsStatus") {
+      console.log("TTS status:", request.status);
+    }
+  });
+
+  const startScreenReader = () => {
+    createSelector();
+    document.addEventListener('mousemove', moveSelector);
+    document.addEventListener('mouseover', startHoverTimer);
+    document.addEventListener('mouseout', clearHoverTimer);
+
+    speakText("Screen reader activated. Hover over an element for 2 seconds to read it.");
+  }
+
+  const stopScreenReader = () => {
+    if (selector) {
+      selector.remove();
+      selector = null;
+    }
+    document.removeEventListener('mousemove', moveSelector);
+    document.removeEventListener('mouseover', startHoverTimer);
+    document.removeEventListener('mouseout', clearHoverTimer);
+    stopSpeaking();
+
+    speakText("Screen reader deactivated.");
+  }
+
+  const createSelector = () => {
+    selector = document.createElement('div');
+    selector.style.position = 'fixed';
+    selector.style.border = '2px solid green';
+    selector.style.backgroundColor = 'rgba(144, 238, 144, 0.2)'; // Soothing green
+    selector.style.pointerEvents = 'none';
+    selector.style.zIndex = '999999';
+    document.body.appendChild(selector);
+  }
+
+  const moveSelector = (event) => {
+    if (!isActive || !selector) return;
+
+    const element = document.elementFromPoint(event.clientX, event.clientY);
+    if (element) {
+      const rect = element.getBoundingClientRect();
+      selector.style.left = rect.left + 'px';
+      selector.style.top = rect.top + 'px';
+      selector.style.width = rect.width + 'px';
+      selector.style.height = rect.height + 'px';
+    }
+  }
+
+  const startHoverTimer = (event) => {
+    if (!isActive || event.target === selector) return;
+
+    clearHoverTimer();
+
+    currentElement = event.target;
+    hoverTimer = setTimeout(() => {
+      readElement(currentElement);
+    }, hoverDelay);
+  }
+
+  const clearHoverTimer = (event) => {
+    if (hoverTimer) {
+      clearTimeout(hoverTimer);
+      hoverTimer = null;
+      stopSpeaking();
+    }
+  }
+
+  const readElement = (element) => {
+    if (!element) return;
+
+    let textToRead = getElementText(element);
+    let elementType = getElementType(element);
+    let speakTxt = ''
+    elementType == 'Image' ? speakTxt = elementType + ': ' + textToRead : speakTxt = textToRead;
+    speakText(speakTxt);
+  }
+
+  const getElementText = (element) => {
+    if (element.alt) return element.alt;
+    if (element.value) return element.value;
+    if (element.textContent) return element.textContent.trim();
+    return '';
+  }
+
+  const getElementType = (element) => {
+    switch (element.tagName.toLowerCase()) {
+      case 'h1':
+      case 'h2':
+      case 'h3':
+      case 'h4':
+      case 'h5':
+      case 'h6':
+        return 'Heading ' + element.tagName.charAt(1);
+      case 'p':
+        return 'Paragraph';
+      case 'a':
+        return 'Link';
+      case 'button':
+        return 'Button';
+      case 'input':
+        return 'Input ' + (element.type || 'text');
+      case 'img':
+        return 'Image';
+      default:
+        return element.tagName.toLowerCase();
+    }
+  }
+
+  const speakText = (text) => {
+    chrome.runtime.sendMessage({
+      action: "speak",
+      text: text,
+    }, (response) => {
+      if (response && response.status) {
+        console.log(text)
+        console.log("Speech status:", response.status);
+      }
+    });
+  }
+
+  const stopSpeaking = () => {
+    chrome.runtime.sendMessage({ action: "stop" });
+  }
+
+  chrome.storage.sync.get('isActive', (data) => {
+    isActive = data.isActive || false;
+    if (isActive) {
+      startScreenReader();
+    }
+  });
+
+}

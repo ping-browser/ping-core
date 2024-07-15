@@ -12,6 +12,10 @@ transpile_web_ui("generate_parental_control") {
       rebase_path("content/ui/popup.js")
     ],
     [
+      "parental_control_content",
+      rebase_path("content/ui/content.js")
+    ],
+    [
       "parental_control_background",
       rebase_path("service_worker/background.js"),
     ],

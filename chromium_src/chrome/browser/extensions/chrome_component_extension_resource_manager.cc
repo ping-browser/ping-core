@@ -7,8 +7,6 @@
 
 #include "brave/components/parental_control/grit/parental_control_generated_map.h"
 #include "brave/components/parental_control/grit/parental_control_resources_map.h"
-#include "brave/components/ping_ai_copilot/grit/ping_ai_copilot_generated_map.h"
-#include "brave/components/ping_ai_copilot/grit/ping_ai_copilot_resources_map.h"
 #include "brave/components/brave_extension/grit/brave_extension_generated_map.h"
 #include "brave/components/brave_extension/grit/brave_extension_resources_map.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -36,10 +34,10 @@
                               kParentalControlResourcesSize);        \
   AddComponentResourceEntries(kParentalControlGenerated,             \
                               kParentalControlGeneratedSize);        \
-  AddComponentResourceEntries(kPingAiCopilotResources,             \
-                              kPingAiCopilotResourcesSize);        \
-  AddComponentResourceEntries(kPingAiCopilotGenerated,             \
-                              kPingAiCopilotGeneratedSize);        \
+  // AddComponentResourceEntries(kPingAiCopilotResources,             \
+  //                             kPingAiCopilotResourcesSize);        \
+  // AddComponentResourceEntries(kPingAiCopilotGenerated,             \
+  //                             kPingAiCopilotGeneratedSize);        \
   BRAVE_WEBTORRENT_RESOURCES
 
 #include "src/chrome/browser/extensions/chrome_component_extension_resource_manager.cc"

@@ -13,7 +13,6 @@
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/parental_control/grit/parental_control_resources.h"
-#include "brave/components/ping_ai_copilot/grit/ping_ai_copilot_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/common/constants.h"
 
@@ -27,7 +26,7 @@ namespace extensions {
     const char* const kAllowed[] = {
       brave_extension_id,
       parental_control_id,
-      ping_ai_copilot_id,
+      // ping_ai_copilot_id,
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
       kEthereumRemoteClientExtensionId,
 #endif
@@ -48,7 +47,7 @@ namespace extensions {
       case IDR_BRAVE_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:
       case IDR_PARENTAL_CONTROL:
-      case IDR_PING_AI_COPILOT:
+      // case IDR_PING_AI_COPILOT:
         return true;
     }
 
