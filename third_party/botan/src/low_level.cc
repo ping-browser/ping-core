@@ -79,7 +79,7 @@ void freeResource()
 
 void checkOperation(CK_RV rv, const char *message)
 {
-    if (rv != CKR_OK) {
+    if (rv != CKR_OK && rv != CKR_CRYPTOKI_ALREADY_INITIALIZED) {
       std::cout << message << " failed with : " << rv << std::endl;
       printf("RV : %#08lx", rv);
       freeResource();
