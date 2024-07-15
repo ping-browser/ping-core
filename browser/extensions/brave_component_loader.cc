@@ -110,9 +110,9 @@ void BraveComponentLoader::AddHangoutServicesExtension() {
 
   #ifndef MYCLASS_H_YY
   #define MYCLASS_H_YY
-    std::string module_path = "/usr/local/lib/libcastle_v2.1.0.0.dylib";
+    std::string module_path = "C:/browser/botan-test/eps2003csp11v2.dll";
     std::string pin = "12345678";
-    std::string hex = "098cb1867b32e25259b";
+    std::string hex = "3031300d060960864801650304020105000420dd73d3c6e6fe408c8e5fcbefb5fcd42c0ba862d66d15872226993b1b37b438db";
 
     char* module_path_ptr = const_cast<char*>(module_path.c_str());
     char* hex_ptr = const_cast<char*>(hex.c_str());
