@@ -14,14 +14,14 @@ import { PageModal } from './page_modal'
 
 import * as style from './reset_modal.style'
 
-const supportURL = 'https://support.brave.com/hc/en-us/articles/10007969237901'
+const supportURL = 'https://ping-browser.com/faqs-and-help'
 
 interface Props {
   onReset: () => void
   onClose: () => void
 }
 
-export function ResetModal (props: Props) {
+export function ResetModal(props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const [consented, setConsented] = React.useState(false)
 
@@ -45,7 +45,7 @@ export function ResetModal (props: Props) {
           }
         </style.text>
         <style.consent>
-          <Checkbox checked={consented} onChange={({checked}) => setConsented(checked)}>
+          <Checkbox checked={consented} onChange={({ checked }) => setConsented(checked)}>
             <style.consentLabel>
               {
                 formatMessage(getString('rewardsResetConsent'), {
