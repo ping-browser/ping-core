@@ -26,7 +26,6 @@ namespace extensions {
     const char* const kAllowed[] = {
       brave_extension_id,
       parental_control_id,
-      // ping_ai_copilot_id,
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
       kEthereumRemoteClientExtensionId,
 #endif
