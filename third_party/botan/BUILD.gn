@@ -36,7 +36,7 @@ copy("copy_policy") {
 
 config("my_class_import") {
   include_dirs = [
-    "//brave/third_party/botan/src", 
+    "//brave/third_party/botan/src",
     "src",
     "//brave/third_party/botan/botan-3"
   ]
@@ -46,8 +46,30 @@ config("my_class_import") {
   lib_dirs = [ botan_lib_dir ]
 }
 
+source_set("low-level") {
+  sources = [
+    "src/low_level.cc",
+    "src/cryptoki.h",
+    "src/pkcs11.h",
+    "src/pkcs.h"
+  ]
+
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [ "//build/config/compiler:no_chromium_code" ]
+    configs -= [ "//build/config/compiler:no_rtti" ]
+    configs += [ "//build/config/compiler:rtti" ]
+    configs -= [ "//build/config/compiler:no_exceptions" ]
+    configs += [ "//build/config/compiler:exceptions" ]
+
+  include_dirs = ["//brave/third_party/botan/src"]
+}
+
 group("botan") {
-  deps = [ ":build_botan" ]
-  deps += [ ":copy_policy" ]
-  public_configs = [ ":my_class_import" ]
+  if(!is_win) {
+    deps = [ ":build_botan" ]
+    deps += [ ":copy_policy" ]
+    public_configs = [ ":my_class_import" ]
+  } else {
+    deps = [":low-level"]
+  }
 }
