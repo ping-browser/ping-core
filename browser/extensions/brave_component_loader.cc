@@ -127,10 +127,6 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     parental_control_path =
         parental_control_path.Append(FILE_PATH_LITERAL("parental_control"));
     Add(IDR_PARENTAL_CONTROL, parental_control_path);
-  // base::FilePath ping_ai_copilot_path(FILE_PATH_LITERAL(""));
-  //   ping_ai_copilot_path =
-  //       ping_ai_copilot_path.Append(FILE_PATH_LITERAL("ping_ai_copilot"));
-  //   Add(IDR_PING_AI_COPILOT, ping_ai_copilot_path);
 }
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

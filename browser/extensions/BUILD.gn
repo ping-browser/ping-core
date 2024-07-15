@@ -153,7 +153,7 @@ group("resources") {
     "//brave/components/brave_extension:generated_resources",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/parental_control:generated_resources",
-    "//brave/components/parental_control:static_resources",
+    "//brave/components/parental_control:static_resources"
   ]
   if (enable_brave_webtorrent) {
     deps += [

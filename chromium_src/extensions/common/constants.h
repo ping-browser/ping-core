@@ -44,5 +44,4 @@ inline constexpr char google_translate_extension_id[] =
 
 inline constexpr char parental_control_id[] = "lgjmpdmojkpocjcopdikifhejkkjglho";
 
-
 #endif  // BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_

@@ -228,5 +228,5 @@
   },
   "brave/components/parental_control/resources.grd": {
     "includes": [62100],
-  },
+  }
 }

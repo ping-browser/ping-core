@@ -47,7 +47,6 @@ namespace extensions {
       case IDR_BRAVE_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:
       case IDR_PARENTAL_CONTROL:
-      // case IDR_PING_AI_COPILOT:
         return true;
     }
 

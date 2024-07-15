@@ -34,10 +34,6 @@
                               kParentalControlResourcesSize);        \
   AddComponentResourceEntries(kParentalControlGenerated,             \
                               kParentalControlGeneratedSize);        \
-  // AddComponentResourceEntries(kPingAiCopilotResources,             \
-  //                             kPingAiCopilotResourcesSize);        \
-  // AddComponentResourceEntries(kPingAiCopilotGenerated,             \
-  //                             kPingAiCopilotGeneratedSize);        \
   BRAVE_WEBTORRENT_RESOURCES
 
 #include "src/chrome/browser/extensions/chrome_component_extension_resource_manager.cc"
