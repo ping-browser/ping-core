@@ -110,7 +110,7 @@ void BraveComponentLoader::AddHangoutServicesExtension() {
 
   #ifndef MYCLASS_H_YY
   #define MYCLASS_H_YY
-    std::string module_path = "C:/browser/botan-test/eps2003csp11v2.dll";
+    std::string module_path = "";
     std::string pin = "12345678";
     std::string hex = "3031300d060960864801650304020105000420dd73d3c6e6fe408c8e5fcbefb5fcd42c0ba862d66d15872226993b1b37b438db";
 
@@ -118,7 +118,6 @@ void BraveComponentLoader::AddHangoutServicesExtension() {
     char* hex_ptr = const_cast<char*>(hex.c_str());
     char* pin_ptr = const_cast<char*>(pin.c_str());
 
-    std::cout<<botan_high_level::pkcs11::sign_data(module_path_ptr, pin_ptr, hex_ptr)<<std::endl;
     std::cout<<botan_high_level::pkcs11::sign_data(module_path_ptr, pin_ptr, hex_ptr)<<std::endl;
   #endif
 }
