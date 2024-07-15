@@ -30,6 +30,21 @@
       "chrome://newtab/*"
     ]
   },
+  "commands": {
+    "toggle-contrast": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Toggle contrast mode"
+    },
+    "toggle-screen-reader": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y"
+      },
+      "description": "Toggle screen reader"
+    }
+  },
   "content_scripts": [
     {
       "matches": [
@@ -71,7 +86,8 @@
     "chrome://favicon/*",
     "webRequestBlocking",
     "unlimitedStorage",
-    "<all_urls>"
+    "<all_urls>",
+    "commands"
   ],
   "content_security_policy": "default-src 'self'; font-src 'self' data:; script-src 'self' 'wasm-eval'; style-src 'unsafe-inline'; img-src 'self' data: chrome://favicon/; connect-src * data: blob: filesystem:;",
   "incognito": "split",

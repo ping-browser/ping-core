@@ -225,3 +225,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return true;
     }
 });
+
+chrome.commands.onCommand.addListener((command) => {
+    console.log("bggg")
+    if (command === "toggle-contrast") {
+        console.log(" from bg")
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, {action: "toggleContrast"});
+        });
+    }
+});

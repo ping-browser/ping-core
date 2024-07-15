@@ -320,7 +320,7 @@ export function createHost (): Host {
     },
 
     openAdaptiveCaptchaSupport () {
-      openTab('https://support.brave.com/')
+      openTab('https://ping-browser.com/faqs-and-help')
     },
 
     openRewardsSettings () {
