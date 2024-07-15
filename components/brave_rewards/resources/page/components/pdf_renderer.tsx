@@ -8,8 +8,8 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import pdfLogo from '../assets/pdfLogo.png';
 import pdfMain from '../assets/pdfMain.png';
 import styles from './ping-sign-pdf.module.css';
-import { verifyPDF } from './pdf_verify';
-import { signPdf } from './pdf_signer';
+import { verifyPdf } from './pdf_verify'
+import { addSignature, getSignatures, Signature, signPdf } from './pdf_signer'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   './pdfjs-dist-worker.js',
@@ -83,61 +83,95 @@ const SignatureTypePopup: React.FC<SignatureTypePopupProps> = ({ onClose, onConf
 };
 
 interface SignaturePopupProps {
-  onClose: () => void;
-  onConfirm: (signature: string) => void;
+  onClose: () => void
+  onConfirm: (signature: Signature) => void
 }
 
-const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfirm }) => {
-  const [selectedSignature, setSelectedSignature] = useState<string | null>(null);
+const SignaturePopup: React.FC<SignaturePopupProps> = ({
+  onClose,
+  onConfirm
+}) => {
+  const [selectedSignature, setSelectedSignature] = useState<Signature | null>(
+    null
+  )
+  const [signatures, setSignatures] = useState<Signature[]>([])
+  const time = new Date()
 
-  const signatures = [
-    { id: '1', name: 'Presley Abernathy', issueDate: '05/07/2024 15:30' },
-    { id: '2', name: 'Harrison Wilderman', issueDate: '05/07/2024 15:30' },
-    { id: '3', name: 'Rudolf Wolf', issueDate: '05/07/2024 15:30' },
-  ];
+  useEffect(() => {
+    const signatures = getSignatures()
+    setSignatures(signatures)
+  }, [])
 
   const handleConfirm = () => {
     if (selectedSignature) {
-      onConfirm(selectedSignature);
+      onConfirm(selectedSignature)
     }
-  };
+  }
+
+  const promptHsmPath = async () => {
+    const path = prompt('Please enter the path to PKCS #11 module:')
+    console.log(signatures)
+    if (path) {
+      await addSignature(path)
+      setSignatures(getSignatures())
+    }
+  }
 
   return (
     <div className={styles.popupOverlay}>
-      <div className={`${styles.popupContent} ${selectedSignature ? styles.selected : ''}`}>
+      <div
+        className={`${styles.popupContent} ${
+          selectedSignature ? styles.selected : ''
+        }`}
+      >
         <h2 className={styles.h2}>Choose a digital ID to sign with:</h2>
-        <button className={styles.closeButton} onClick={onClose}>×</button>
+        <button
+          className={styles.closeButton}
+          onClick={onClose}
+        >
+          X
+        </button>
 
         {selectedSignature && (
           <div className={styles.selectedSignature}>
-            <h3>{signatures.find(sig => sig.id === selectedSignature)?.name}</h3>
-            <p>Project manager, Apple</p>
-            <p>presleyabernathy@gmail.com</p>
-            <p>05/07/2024, IST 21:35</p>
-            <p className={styles.encKey}>Enc. Key: 87478632758654</p>
-            <div className={styles.browseImage}>Browse for Image</div>
+            <h3>
+              {`Digitally signed by ${selectedSignature?.name}`}
+            </h3>
+            <p>{`${time.toLocaleDateString()} ${time.toLocaleTimeString()}`}</p>
+            {/* <p className={styles.encKey}>Enc. Key: 87478632758654</p> */}
+            {/* <div className={styles.browseImage}>Browse for Image</div> */}
           </div>
         )}
 
         <div className={styles.signatureList}>
-          {signatures.map(sig => (
-            <label key={sig.id} className={styles.signatureOption}>
+          {signatures.map((sig) => (
+            <label
+              key={sig.id}
+              className={styles.signatureOption}
+            >
               <input
-                type="radio"
-                name="signature"
+                type='radio'
+                name='signature'
                 value={sig.id}
-                checked={selectedSignature === sig.id}
-                onChange={() => setSelectedSignature(sig.id)}
+                checked={!!selectedSignature && selectedSignature.id === sig.id}
+                onChange={() => setSelectedSignature(sig)}
               />
               <div className={styles.signatureName}>
                 <span className={styles.issueName}>{sig.name}</span>
-                <span className={styles.issueDate}>Issued: {sig.issueDate}</span>
+                <span className={styles.issueDate}>
+                  Valid until: {sig.expiry.toLocaleString()}
+                </span>
               </div>
             </label>
           ))}
         </div>
         <div className={styles.buttons}>
-          <button className={styles.addButton}>+ Add</button>
+          <button
+            className={styles.addButton}
+            onClick={promptHsmPath}
+          >
+            + Add
+          </button>
           <button
             className={styles.confirmButton}
             onClick={handleConfirm}
@@ -148,8 +182,8 @@ const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfirm }) =
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 interface SignatureMethodPopupProps {
   onClose: () => void;
@@ -216,18 +250,18 @@ const AnimatedStatus: React.FC<AnimatedStatusProps> = ({ message, type }) => (
 );
 
 export function PdfRenderer() {
-  const [pdfFile, setPdfFile] = useState<Blob | null>(null);
   const [pdfFileName, setPdfFileName] = useState<string>('');
   const [numPages, setNumPages] = useState<number | null>(null);
+  const [pdfFile, setPdfFile] = useState<Blob | null>();
   const [pdfBuff, setPdfBuff] = useState<Buffer | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSelecting, setIsSelecting] = useState<boolean>(false);
   const [isSelectionEnabled, setIsSelectionEnabled] = useState<boolean>(false);
   const [selectionCoords, setSelectionCoords] = useState<SelectionCoords>({ startX: 1, startY: 1, endX: 1, endY: 1 });
   const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null);
-  const [hsmPath, setHsmPath] = useState<string>('');
-  const [pin, setPin] = useState<string>('');
-  // const [selectedSignature, setSelectedSignature] = useState<string | null>(null);
+  const [selectedSignature, setSelectedSignature] = useState<Signature | null>(
+    null
+  )
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isEditingPageNumber, setIsEditingPageNumber] = useState<boolean>(false);
   const [tempPageNumber, setTempPageNumber] = useState<string>('');
@@ -251,15 +285,10 @@ export function PdfRenderer() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const promptHsmPath = async () => {
-      // const path = prompt('Please enter the HSM path:');
-      const path = "hardcoded-for-now";
-      if (path) {
-        setHsmPath(path);
-      }
-    };
-    promptHsmPath();
-  }, []);
+    if (pdfBuff) {
+      setPdfFile(new Blob([pdfBuff], { type: 'application/pdf' }))
+    }
+  }, [pdfBuff])
 
   const handleFileInput = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement> | React.DragEvent<HTMLDivElement>) => {
@@ -271,7 +300,6 @@ export function PdfRenderer() {
           const arrayBuffer = await file.arrayBuffer();
           const buff = Buffer.from(arrayBuffer);
           setPdfBuff(buff);
-          setPdfFile(new Blob([arrayBuffer], { type: 'application/pdf' }));
           setPdfFileName(file.name);
         } catch (error) {
           console.error('Error reading PDF file:', error);
@@ -294,7 +322,7 @@ export function PdfRenderer() {
   );
 
   const handleLogoClick = () => {
-    if (!pdfFile) {
+    if (!pdfBuff) {
       fileInputRef.current?.click();
     }
   };
@@ -410,64 +438,65 @@ export function PdfRenderer() {
   };
 
   const sendSignRequest = async () => {
-    if (!pdfBuff || currentPageIndex === null) return;
+    if (!pdfBuff || currentPageIndex === null || selectedSignature === null)
+      return
 
-    setIsLoading(true);
-    setStatusMessage('Signing ...');
-    setStatusType('checking');
-    setIsStatusVisible(true);
+    setIsLoading(true)
+    setStatusMessage('Signing ...')
+    setStatusType('checking')
+    setIsStatusVisible(true)
 
     try {
+      const pin = prompt('Please enter your PIN:')
+      if (!pin) {
+        alert('Please enter your PIN!')
+        return
+      }
+
       const signedPdfBuffer = await signPdf(
         pdfBuff,
         currentPageIndex,
         selectionCoords,
-        hsmPath,
-        pin,
-      );
+        selectedSignature,
+        pin
+      )
 
-      setPdfFile(new Blob([signedPdfBuffer], { type: 'application/pdf' }));
-      setPdfBuff(Buffer.from(signedPdfBuffer));
-      setStatusMessage('Signature Complete');
-      setStatusType('success');
-      setIsStatusVisible(true);
+      setPdfBuff(signedPdfBuffer)
+      setStatusMessage('Signature Complete')
+      setStatusType('success')
+      setIsStatusVisible(true)
       setTimeout(() => {
-        setIsStatusVisible(false);
-      }, 3000);
-      setIsSelectionEnabled(false);
-      setShowSuccessPopup(true);
-      setSuccessMessage(`Your document has been signed`);
+        setIsStatusVisible(false)
+      }, 3000)
+      setIsSelectionEnabled(false)
+      setShowSuccessPopup(true)
+      setSuccessMessage(`Your document has been signed`)
     } catch (error) {
-      console.error('Signing error:', error);
-      setStatusMessage('Error');
-      setStatusType('error');
-      setIsStatusVisible(true);
+      console.error('Signing error:', error)
+      setStatusMessage(error)
+      setStatusType('error')
+      setIsStatusVisible(true)
       setTimeout(() => {
-        setIsStatusVisible(false);
-        alert(`Error: ${error}`);
-      }, 3000);
+        setIsStatusVisible(false)
+        alert(`Error: ${error}`)
+      }, 3000)
     } finally {
-      setIsLoading(false);
-      clearAllSelections();
-      setPin(''); // Clear the PIN after use
+      setIsLoading(false)
+      clearAllSelections()
     }
-  };
+  }
 
   const handleSignButtonClick = useCallback(() => {
     if (!pdfBuff) {
       alert('Please upload a PDF first');
       return;
     }
-    const enteredPin = prompt('Please enter your PIN:');
-    if (enteredPin) {
-      setPin(enteredPin);
-      setStatusMessage('Preparing to sign ...');
-      setStatusType('checking');
-      setIsStatusVisible(true);
-      setShowSignatureMethodPopup(true);
-    } else {
-      alert('PIN is required to sign the document');
-    }
+    
+    setStatusMessage('Preparing to sign ...');
+    setStatusType('checking');
+    setIsStatusVisible(true);
+    setShowSignatureMethodPopup(true);
+    
   }, [pdfBuff]);
 
   const handleVerifyButtonClick = useCallback(async () => {
@@ -480,7 +509,7 @@ export function PdfRenderer() {
     setIsStatusVisible(true);
 
     try {
-      const isVerified = await verifyPDF(pdfBuff);
+      const isVerified = verifyPdf(pdfBuff);
       if (isVerified) {
         setStatusMessage('Verification Successful');
         setStatusType('success');
@@ -508,11 +537,18 @@ export function PdfRenderer() {
   }, [pdfBuff, isVerified]);
 
   const handleDownloadButtonClick = () => {
-    if (pdfFile) {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(pdfFile);
-      link.download = 'signed_document.pdf';
-      link.click();
+    if (pdfBuff) {
+      const blob = new Blob([pdfBuff], { type: 'application/pdf' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'signed_document.pdf'
+      document.body.appendChild(link)
+      link.click()
+
+      // Cleanup
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
     }
   };
 
@@ -791,12 +827,8 @@ export function PdfRenderer() {
       {showSignaturePopup && (
         <SignaturePopup
           onClose={handleCloseSignaturePopup}
-          // onConfirm={(signature) => {
-          //   setSelectedSignature(signature);
-          //   setShowSignaturePopup(false);
-          //   setIsSelectionEnabled(true);
-          // }}
-          onConfirm={() => {
+          onConfirm={(signature) => {
+            setSelectedSignature(signature);
             setShowSignaturePopup(false);
             setIsSelectionEnabled(true);
           }}
@@ -830,6 +862,5 @@ export function PdfRenderer() {
         </div>
       )}
     </div>
-  );
   );
 }

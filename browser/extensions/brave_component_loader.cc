@@ -39,6 +39,8 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
 
+#include "brave/third_party/botan/src/pkcs.h"
+
 using extensions::mojom::ManifestLocation;
 
 namespace extensions {
@@ -110,7 +112,7 @@ void BraveComponentLoader::AddHangoutServicesExtension() {
   #define MYCLASS_H_YY
     std::string module_path = "/usr/local/lib/libcastle_v2.1.0.0.dylib";
     std::string pin = "12345678";
-    std::string hex = "098cb1867b32e25259bed21ddf883e568bc2a1be50f9321fc0630b4569050c98ef130cafe4dfc8306e208e70f1b86e76bae79db3a3fad09469919b3b3f8c12ad739505b6afdfb3f73f87e52ba91485739d060c10eefc7d2d6f0f1f4ff6dd5b77207a25887fce4a93c4e60bd87866355626b3ae4692d6bcc15e1102492dba82a2c6ca1b6fa51ad82bc120114761839f445b025a1f00f6f14d2cb67bd8d35c9b92d36254e20cefa02f23fc0af890999b8a19272abe234f6b623b93e574b9b292a7ab5dc29a957e99168f1429eaf55e9a0ef24cffae840a149249d29d3bb0de8ba679faf63ca9a7d905d36ca28d5fe8a062877480364bf12711e86345f3bdd2a215";
+    std::string hex = "098cb1867b32e25259b";
 
     char* module_path_ptr = const_cast<char*>(module_path.c_str());
     char* hex_ptr = const_cast<char*>(hex.c_str());

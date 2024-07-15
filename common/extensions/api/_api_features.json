@@ -103,7 +103,7 @@
     "channel": "stable",
     "contexts": ["webui"],
     "matches": [
-      "chrome://rewards/*"
+      "chrome://sign-pdf/*"
     ]
   }] 
 }
