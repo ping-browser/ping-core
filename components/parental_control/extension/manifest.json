@@ -11,21 +11,6 @@
     "declarativeNetRequest",
     "declarativeNetRequestFeedback"
   ],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["extension/out/parental_control_content.bundle.js"]
-    }
-  ],
-  "commands": {
-    "toggle-contrast": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+F",
-        "mac": "Command+Shift+F"
-      },
-      "description": "Toggle contrast mode"
-    }
-  },
   "background": {
     "service_worker": "extension/out/parental_control_background.bundle.js",
     "type": "module"
