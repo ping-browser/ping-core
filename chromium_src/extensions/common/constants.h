@@ -42,8 +42,9 @@ inline constexpr char ipfs_companion_beta_extension_id[] =
 inline constexpr char google_translate_extension_id[] =
     "aapbdbdomjkkjkaonfhkkikfgjllcleb";
 
-inline constexpr char parental_control_id[] = "lgjmpdmojkpocjcopdikifhejkkjglho";
+// Manifest key is directly associated with the extension ID.
+inline constexpr char parental_control_id[] = "jicaebjlfacemiclbddplcegecbafjlj";
 
-inline constexpr char ping_ai_copilot_id[] = "hmlolnldoodenkikkbfngkdjedejkmim";
+inline constexpr char ping_ai_copilot_id[] = "kicpihfjpbnpfhenmocijleimfcamjed";
 
 #endif  // BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_

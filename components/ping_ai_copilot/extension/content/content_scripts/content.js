@@ -1,15 +1,15 @@
-import "../ui/style.css"
+import "../ui/style.css";
 
 let summarizer = null;
 let summaryBox = null;
 
-function initializeExtension() {
+const initializeExtension = () => {
   document.removeEventListener('mouseup', handleTextSelection);
   document.addEventListener('mouseup', handleTextSelection);
   document.addEventListener('click', handleDocumentClick);
 }
 
-function handleTextSelection(event) {
+const handleTextSelection = (event) => {
   const selection = window.getSelection();
   const selectedText = selection.toString().trim();
   if (selectedText.length > 0 && !(summaryBox && summaryBox.contains(selection.anchorNode))) {
@@ -19,36 +19,47 @@ function handleTextSelection(event) {
   }
 }
 
-function handleDocumentClick(event) {
-  if (summaryBox && !summaryBox.contains(event.target) && (!summarizer || !summarizer.contains(event.target))) {
+const handleDocumentClick = (event) => {
+  if (
+    summaryBox &&
+    !summaryBox.contains(event.target) &&
+    (!summarizer || !summarizer.contains(event.target))
+  ) {
     hideSummaryBox();
   }
 }
 
-function showSummarizeIcon(selectedText, event) {
+const showSummarizeIcon = (selectedText, event) => {
   if (!summarizer) {
     summarizer = document.createElement('div');
     summarizer.id = 'summarizer-icon';
-    summarizer.innerHTML = '📝';
+    
+    const iconImage = document.createElement('img');
+    iconImage.src = chrome.runtime.getURL('./aiSummarizerIcon.svg');
+    iconImage.alt = 'Summarize Icon';
+    iconImage.id = 'iconImage'
+    
+    summarizer.appendChild(iconImage);
+
     summarizer.addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       sendTextToSummarize(selectedText);
     });
     document.body.appendChild(summarizer);
   }
-  
-  summarizer.style.top = `${event.pageY + 10}px`;
-  summarizer.style.left = `${event.pageX + 10}px`;
-  summarizer.style.display = 'block';
+  summarizer.style.top = `${event.clientY}px`;
+  summarizer.style.left = `${event.clientX}px`;
+  summarizer.style.display = 'inline-block';
 }
 
-function hideSummarizeIcon() {
+const hideSummarizeIcon = () => {
   if (summarizer) {
     summarizer.style.display = 'none';
   }
 }
 
-function sendTextToSummarize(text) {
+const sendTextToSummarize = (text) => {
   showSummaryBox(true);
   try {
     chrome.runtime.sendMessage({ action: 'summarize', text: text }, response => {
@@ -65,17 +76,16 @@ function sendTextToSummarize(text) {
   }
 }
 
-function showSummaryBox(isLoading, summary = '') {
+const showSummaryBox = (isLoading, summary = '', headerText = '') => {
   if (!summaryBox) {
     summaryBox = document.createElement('div');
     summaryBox.id = 'summary-box';
     document.body.appendChild(summaryBox);
   }
-
   summaryBox.innerHTML = `
     <div class="summary-header">
-      <h2 id="headingText">Text Summary</h2>
-      ${isLoading ? '' : `<button id="copy-button"><img id="copy-image" src="${chrome.runtime.getURL('content_copy.svg')}" alt="Copy"/></button>`}
+      ${isLoading ? '' : `<h2 id="headingText">${headerText}</h2>`}
+      ${isLoading ? '' : `<button id="copy-button"><img id="copy-image" src="${chrome.runtime.getURL('./content_copy.svg')}" alt="Copy"/></button>`}
     </div>
     ${isLoading ? `
       <div class="loading-placeholder">
@@ -86,7 +96,7 @@ function showSummaryBox(isLoading, summary = '') {
     ` : `
       <ul class="summary-list">
         ${summary.split('\n').map((point, index) => `
-          <li><span class="emoji">${getEmojiForIndex(index)}</span>${point}</li>
+          <li>${point}</li>
         `).join('')}
       </ul>
     `}
@@ -99,42 +109,51 @@ function showSummaryBox(isLoading, summary = '') {
     });
   }
 
-  // Reset animation
   summaryBox.style.animation = 'slideUp 0.3s ease-out';
-
   summaryBox.style.display = 'block';
 }
 
-function hideSummaryBox() {
+const hideSummaryBox = () => {
   if (summaryBox) {
     summaryBox.style.animation = 'slideDown 0.3s ease-out';
     setTimeout(() => {
       summaryBox.style.display = 'none';
-    }, 300); // Wait for animation to complete
+    }, 300);
   }
 }
 
-function getEmojiForIndex(index) {
-  const emojis = ['😊', '🤔', '🎤', '💃', '🍎'];
-  return emojis[index % emojis.length];
+const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text).then(() => {
+    showCopiedMessage();
+  }).catch(err => {
+    console.error('Failed to copy:', err);
+  });
 }
 
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    const copyMessage = document.createElement('div');
-    copyMessage.id = 'copy-message';
-    copyMessage.textContent = 'Copied!';
-    document.body.appendChild(copyMessage);
-    setTimeout(() => copyMessage.remove(), 2000);
-  });
+const showCopiedMessage = () => {
+  const copyButton = document.getElementById('copy-button');
+  if (!copyButton) return; 
+
+  copyButton.style.display = 'none';
+
+  const copiedMessage = document.createElement('div');
+  copiedMessage.id = 'copiedMessage';
+  copiedMessage.textContent = 'Copied!';
+
+  // Append the copied message above the copy button
+  copyButton.parentNode.insertBefore(copiedMessage, copyButton);
+
+  setTimeout(() => {
+    copiedMessage.remove();
+    copyButton.style.display = 'block';
+  }, 2000);
 }
 
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'displaySummary') {
-    showSummaryBox(false, request.summary);
+    showSummaryBox(false, request.summary, request.headerText);
   }
 });
 
-// Initialize the extension
 initializeExtension();
