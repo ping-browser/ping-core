@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 #include "base/apple/bundle_locations.h"
+#include "base/apple/foundation_util.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/i18n/icu_util.h"
 #include "base/logging.h"
-#include "base/mac/foundation_util.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
@@ -26,11 +26,15 @@
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/ios/app/brave_main_delegate.h"
+#include "brave/ios/browser/api/ai_chat/ai_chat+private.h"
+#include "brave/ios/browser/api/ai_chat/ai_chat_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
+#include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
+#include "brave/ios/browser/api/https_upgrade_exceptions/https_upgrade_exceptions_service+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
@@ -43,20 +47,22 @@
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
+#include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
-#include "components/password_manager/core/browser/password_store.h"
+#include "components/password_manager/core/browser/password_store/password_store.h"
 #include "components/prefs/pref_service.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
 #include "ios/chrome/app/startup/provider_registration.h"
-#include "ios/chrome/browser/bookmarks/bookmark_undo_service_factory.h"
-#include "ios/chrome/browser/bookmarks/local_or_syncable_bookmark_model_factory.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_removal_controller.h"
-#include "ios/chrome/browser/history/history_service_factory.h"
-#include "ios/chrome/browser/history/web_history_service_factory.h"
-#include "ios/chrome/browser/passwords/ios_chrome_password_store_factory.h"
+#include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
+#include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
+#include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
+#include "ios/chrome/browser/history/model/history_service_factory.h"
+#include "ios/chrome/browser/history/model/web_history_service_factory.h"
+#include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list.h"
@@ -66,14 +72,20 @@
 #include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/public/commands/command_dispatcher.h"
-#include "ios/chrome/browser/sync/send_tab_to_self_sync_service_factory.h"
-#include "ios/chrome/browser/sync/session_sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_service_factory.h"
-#include "ios/chrome/browser/ui/webui/chrome_web_ui_ios_controller_factory.h"
+#include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/session_sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/sync_service_factory.h"
+#include "ios/chrome/browser/webui/ui_bundled/chrome_web_ui_ios_controller_factory.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+#include "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
+#include "ios/chrome/browser/credential_provider/model/credential_provider_support.h"
+#include "ios/chrome/browser/credential_provider/model/credential_provider_util.h"
+#endif
 
 // Chromium logging is global, therefore we cannot link this to the instance in
 // question
@@ -113,7 +125,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
+@property(nonatomic) DeAmpPrefs* deAmpPrefs;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
+@property(nonatomic)
+    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
 @end
 
 @implementation BraveCoreMain
@@ -152,7 +167,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     }
 
     NSBundle* baseBundle = base::apple::OuterBundle();
-    base::mac::SetBaseBundleID(
+    base::apple::SetBaseBundleID(
         base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
 
     // Register all providers before calling any Chromium code.
@@ -196,10 +211,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     // Setup WebMain
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
-    // Remove the extra browser states as Chrome iOS is single profile in M48+.
-    ChromeBrowserStateRemovalController::GetInstance()
-        ->RemoveBrowserStatesIfNecessary();
-
     // Initialize and set the main browser state.
     ios::ChromeBrowserStateManager* browserStateManager =
         GetApplicationContext()->GetChromeBrowserStateManager();
@@ -207,9 +218,13 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
         browserStateManager->GetLastUsedBrowserState();
     _mainBrowserState = chromeBrowserState;
 
+    // Disable Safe-Browsing via Prefs
+    chromeBrowserState->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled,
+                                               false);
+
     // Setup main browser
     _browserList = BrowserListFactory::GetForBrowserState(_mainBrowserState);
-    _browser = Browser::Create(_mainBrowserState);
+    _browser = Browser::Create(_mainBrowserState, {});
     _browserList->AddBrowser(_browser.get());
 
     // Setup otr browser
@@ -217,7 +232,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
         chromeBrowserState->GetOffTheRecordChromeBrowserState();
     _otr_browserList =
         BrowserListFactory::GetForBrowserState(otrChromeBrowserState);
-    _otr_browser = Browser::Create(otrChromeBrowserState);
+    _otr_browser = Browser::Create(otrChromeBrowserState, {});
     _otr_browserList->AddIncognitoBrowser(_otr_browser.get());
 
     // Initialize the provider UI global state.
@@ -225,20 +240,28 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Setup WebUI (Sync Internals and other WebViews)
     web::WebUIIOSControllerFactory::RegisterFactory(
-        ChromeWebUIIOSControllerFactory::GetInstance());
+        BraveWebUIControllerFactory::GetInstance());
 
     // Setup Component Updater
     component_updater::ComponentUpdateService* cus =
         GetApplicationContext()->GetComponentUpdateService();
     DCHECK(cus);
+    brave_component_updater::BraveOnDemandUpdater::GetInstance()
+        ->RegisterOnDemandUpdater(&cus->GetOnDemandUpdater());
+    [self registerComponentsForUpdate:cus];
 
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
-    [self registerComponentsForUpdate:cus];
 
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
         initWithBackgroundImagesService:
             std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
                 cus, GetApplicationContext()->GetLocalState())];
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+    if (IsCredentialProviderExtensionSupported()) {
+      CredentialProviderServiceFactory::GetForBrowserState(_mainBrowserState);
+    }
+#endif
   }
   return self;
 }
@@ -258,15 +281,15 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
       BrowserListFactory::GetForBrowserState(_otr_browser->GetBrowserState());
   [_otr_browser->GetCommandDispatcher() prepareForShutdown];
   _otr_browserList->RemoveBrowser(_otr_browser.get());
-  _otr_browser->GetWebStateList()->CloseAllWebStates(
-      WebStateList::CLOSE_NO_FLAGS);
+  CloseAllWebStates(*_otr_browser->GetWebStateList(),
+                    WebStateList::CLOSE_NO_FLAGS);
   _otr_browser.reset();
 
   _browserList =
       BrowserListFactory::GetForBrowserState(_browser->GetBrowserState());
   [_browser->GetCommandDispatcher() prepareForShutdown];
   _browserList->RemoveBrowser(_browser.get());
-  _browser->GetWebStateList()->CloseAllWebStates(WebStateList::CLOSE_NO_FLAGS);
+  CloseAllWebStates(*_browser->GetWebStateList(), WebStateList::CLOSE_NO_FLAGS);
   _browser.reset();
 
   _mainBrowserState = nullptr;
@@ -309,18 +332,18 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   // Make sure the system url request getter is called at least once during
   // startup in case cleanup is done early before first network request
   GetApplicationContext()->GetSystemURLRequestContext();
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+  [self performFaviconsCleanup];
+#endif
 }
 
 - (void)registerComponentsForUpdate:
     (component_updater::ComponentUpdateService*)cus {
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()
-      ->RegisterOnDemandUpdateCallback(
-          base::BindRepeating(&component_updater::BraveOnDemandUpdate));
-
   RegisterSafetyTipsComponent(cus);
-  brave_wallet::RegisterWalletDataFilesComponent(cus);
-
-  [self.adblockService registerDefaultShieldsComponent];
+  brave_wallet::WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponent(
+          cus, GetApplicationContext()->GetLocalState());
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {
@@ -349,8 +372,9 @@ static bool CustomLogHandler(int severity,
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {
     bookmarks::BookmarkModel* bookmark_model_ =
-        ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-            _mainBrowserState);
+        ios::LocalOrSyncableBookmarkModelFactory::
+            GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
+                _mainBrowserState);
     BookmarkUndoService* bookmark_undo_service_ =
         ios::BookmarkUndoServiceFactory::GetForBrowserState(_mainBrowserState);
 
@@ -363,15 +387,8 @@ static bool CustomLogHandler(int severity,
 
 - (BraveHistoryAPI*)historyAPI {
   if (!_historyAPI) {
-    history::HistoryService* history_service_ =
-        ios::HistoryServiceFactory::GetForBrowserState(
-            _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS);
-    history::WebHistoryService* web_history_service_ =
-        ios::WebHistoryServiceFactory::GetForBrowserState(_mainBrowserState);
-
     _historyAPI =
-        [[BraveHistoryAPI alloc] initWithHistoryService:history_service_
-                                      webHistoryService:web_history_service_];
+        [[BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
   }
   return _historyAPI;
 }
@@ -394,7 +411,7 @@ static bool CustomLogHandler(int severity,
 - (BravePasswordAPI*)passwordAPI {
   if (!_passwordAPI) {
     scoped_refptr<password_manager::PasswordStoreInterface> password_store_ =
-        IOSChromePasswordStoreFactory::GetForBrowserState(
+        IOSChromeProfilePasswordStoreFactory::GetForBrowserState(
             _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS)
             .get();
 
@@ -455,6 +472,14 @@ static bool CustomLogHandler(int severity,
   return _braveWalletAPI;
 }
 
+- (HTTPSUpgradeExceptionsService*)httpsUpgradeExceptionsService {
+  if (!_httpsUpgradeExceptionsService) {
+    _httpsUpgradeExceptionsService =
+        [[HTTPSUpgradeExceptionsService alloc] init];
+  }
+  return _httpsUpgradeExceptionsService;
+}
+
 - (BraveStats*)braveStats {
   return [[BraveStats alloc] initWithBrowserState:_mainBrowserState];
 }
@@ -482,16 +507,43 @@ static bool CustomLogHandler(int severity,
 - (BraveP3AUtils*)p3aUtils {
   if (!_p3aUtils) {
     _p3aUtils = [[BraveP3AUtils alloc]
-        initWithBrowserState:_mainBrowserState
-                  localState:GetApplicationContext()->GetLocalState()
-                  p3aService:_p3a_service];
+        initWithLocalState:GetApplicationContext()->GetLocalState()
+                p3aService:_p3a_service];
   }
   return _p3aUtils;
 }
 
+- (DeAmpPrefs*)deAmpPrefs {
+  if (!_deAmpPrefs) {
+    _deAmpPrefs =
+        [[DeAmpPrefs alloc] initWithProfileState:_mainBrowserState->GetPrefs()];
+  }
+  return _deAmpPrefs;
+}
+
+- (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate {
+  return [[AIChat alloc] initWithChromeBrowserState:_mainBrowserState
+                                           delegate:delegate];
+}
+
 + (bool)initializeICUForTesting {
-  base::apple::SetOverrideFrameworkBundle([NSBundle bundleForClass:self]);
+  NSBundle* bundle = [NSBundle bundleForClass:self];
+  base::apple::SetOverrideOuterBundle(bundle);
+  base::apple::SetOverrideFrameworkBundle(bundle);
   return base::i18n::InitializeICU();
 }
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+- (void)performFaviconsCleanup {
+  ChromeBrowserState* browserState = _mainBrowserState;
+  if (!browserState) {
+    return;
+  }
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&UpdateFaviconsStorageForBrowserState,
+                                browserState->AsWeakPtr(),
+                                /*fallback_to_google_server=*/false));
+}
+#endif
 
 @end

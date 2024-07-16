@@ -9,11 +9,8 @@
 namespace brave_news {
 namespace switches {
 
-// Allow providing an alternate host for Brave News feeds (e.g. staging or dev)
-extern const char kBraveNewsHost[];
-
 // Allow overriding the region for Brave News feeds (e.g. ja, en_US ect.)
-extern const char kBraveNewsRegion[];
+inline constexpr char kBraveNewsRegion[] = "brave-news-region";
 
 }  // namespace switches
 }  // namespace brave_news

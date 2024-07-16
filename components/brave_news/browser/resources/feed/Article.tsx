@@ -2,39 +2,57 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import Flex from '$web-common/Flex';
+import { spacing } from '@brave/leo/tokens/css/variables';
+import { Article as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
-import Card from './Card';
-import { HeroArticle, Article as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
-import { color, font } from '@brave/leo/tokens/css';
+import { useBraveNews } from '../shared/Context';
+import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
+import ArticleMetaRow from './ArticleMetaRow';
+import Card, { BraveNewsLink, SmallImage, Title, braveNewsCardClickHandler } from './Card';
 
 interface Props {
-  info: Info | HeroArticle
-  isHero?: boolean
+  info: Info
+  hideChannel?: boolean
+  feedDepth?: number
 }
 
 const Container = styled(Card)`
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing.s};
+  padding-top: ${spacing.l};
 `
 
-const Header = styled.h2<{ isHero?: boolean }>`
-  all: unset;
-  font: ${s => s.isHero ? font.primary.heading.h2 : font.primary.heading.h4};
-`
+export default function Article({ info, hideChannel, feedDepth }: Props) {
+  const { reportVisit } = useBraveNews()
+  const { url: imageUrl, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, {
+    useCache: true,
+    rootMargin: '500px 0px'
+  })
+  const url = info.data.url.url;
 
-const Publisher = styled.div`
-  color: ${color.text.secondary};
-`
-
-const Description = styled.div`
-  max-height: 100px;
-  overflow: hidden;
-`
-
-export default function Article({ info, isHero }: Props) {
-  return <Container onClick={() => window.open(info.data.url.url, '_blank', 'noopener noreferrer')}>
-    <Header isHero={isHero}>{isHero && 'Hero: '}{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</Header>
-    <Publisher>{info.data.publisherName} - {info.data.relativeTimeDescription}</Publisher>
-    <Description>{info.data.description}</Description>
+  return <Container
+      ref={setElementRef}
+      onClick={e => {
+        braveNewsCardClickHandler(url)(e)
+        if (feedDepth !== undefined) {
+          reportVisit(feedDepth)
+        }
+      }}
+    >
+    <ArticleMetaRow article={info.data} hideChannel={hideChannel} />
+    <Flex direction='row' gap={spacing.xl} justify='space-between' align='start'>
+      <Title>
+        <BraveNewsLink
+          href={url}
+          feedDepth={feedDepth}
+        >
+          {info.data.title}
+        </BraveNewsLink>
+      </Title>
+      <SmallImage src={imageUrl} />
+    </Flex>
   </Container>
 }

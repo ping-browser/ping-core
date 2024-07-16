@@ -5,15 +5,22 @@
 
 #include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
 
+#include <algorithm>
+#include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/components/ai_chat/common/pref_names.h"
-#include "brave/components/sidebar/sidebar_item.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 
 namespace {
 
@@ -54,7 +61,11 @@ bool HideLeoAssistantIconIfNot(sidebar::SidebarService* sidebar_service) {
 
 namespace settings {
 
-BraveLeoAssistantHandler::BraveLeoAssistantHandler() = default;
+BraveLeoAssistantHandler::BraveLeoAssistantHandler(
+    std::unique_ptr<ai_chat::AIChatSettingsHelper> settings_helper) {
+  settings_helper_ = std::move(settings_helper);
+}
+
 BraveLeoAssistantHandler::~BraveLeoAssistantHandler() = default;
 
 void BraveLeoAssistantHandler::RegisterMessages() {
@@ -133,12 +144,19 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
   auto* service = sidebar::SidebarServiceFactory::GetForProfile(profile_);
 
   ShowLeoAssistantIconVisibleIfNot(service);
-  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
-                                   false);
-  profile_->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveChatAutoGenerateQuestions, false);
+  profile_->GetPrefs()->ClearPref(ai_chat::prefs::kLastAcceptedDisclaimer);
+  g_brave_browser_process->process_misc_metrics()
+      ->ai_chat_metrics()
+      ->RecordReset();
 
   AllowJavascript();
+}
+
+void BraveLeoAssistantHandler::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
+        pending_receiver) {
+  DCHECK(settings_helper_);
+  settings_helper_->BindInterface(std::move(pending_receiver));
 }
 
 }  // namespace settings

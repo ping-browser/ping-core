@@ -7,6 +7,8 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
+#include <string_view>
 #include <utility>
 
 #include "base/stl_util.h"
@@ -27,9 +29,14 @@ namespace permissions {
 namespace {
 
 // Pref data keys.
-constexpr base::StringPiece kRequestingOriginKey = "ro";
-constexpr base::StringPiece kEmbeddingOriginKey = "eo";
-constexpr base::StringPiece kContentSettingKey = "cs";
+constexpr std::string_view kRequestingOriginKey = "ro";
+constexpr std::string_view kEmbeddingOriginKey = "eo";
+constexpr std::string_view kContentSettingKey = "cs";
+
+template <typename Container, typename ConstIterator>
+typename Container::iterator ConstCastIterator(Container& c, ConstIterator it) {
+  return c.erase(it, it);
+}
 
 }  // namespace
 
@@ -163,9 +170,9 @@ PermissionExpirations::RemoveExpiredPermissionsImpl(
     std::vector<PermissionExpirationKey> expiration_keys_to_clear_prefs;
     auto iterator_pair = predicate.Run(key_expirations_map);
     auto key_expirations_begin_it =
-        base::ConstCastIterator(key_expirations_map, iterator_pair.first);
+        ConstCastIterator(key_expirations_map, iterator_pair.first);
     auto key_expirations_end_it =
-        base::ConstCastIterator(key_expirations_map, iterator_pair.second);
+        ConstCastIterator(key_expirations_map, iterator_pair.second);
     for (auto key_expirations_it = key_expirations_begin_it;
          key_expirations_it != key_expirations_end_it; ++key_expirations_it) {
       const auto& expiration_key = key_expirations_it->first;
@@ -297,7 +304,7 @@ PermissionExpirations::ParseExpiringPermissions(
     if (!requesting_origin) {
       continue;
     }
-    absl::optional<int> content_setting = item->FindInt(kContentSettingKey);
+    std::optional<int> content_setting = item->FindInt(kContentSettingKey);
     expiring_permissions.push_back(PermissionOrigins(
         requesting_origin, embedding_origin,
         content_setting.value_or(ContentSetting::CONTENT_SETTING_ALLOW)));

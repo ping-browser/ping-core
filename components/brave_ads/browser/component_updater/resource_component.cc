@@ -11,9 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_ads/browser/component_updater/component_util.h"
 
 namespace brave_ads {
 
@@ -29,8 +27,6 @@ constexpr char kResourceIdKey[] = "id";
 constexpr char kResourceFilenameKey[] = "filename";
 constexpr char kResourceVersionKey[] = "version";
 
-constexpr char kComponentName[] = "Brave Ads Resources (%s)";
-
 constexpr base::FilePath::CharType kManifestFile[] =
     FILE_PATH_LITERAL("manifest.json");
 
@@ -43,10 +39,12 @@ std::string GetResourceKey(const std::string& id, int version) {
 
 }  // namespace
 
-ResourceComponent::ResourceComponent(Delegate* delegate)
-    : brave_component_updater::BraveComponent(delegate) {
-  CHECK(delegate);
-}
+ResourceComponent::ResourceComponent(
+    brave_component_updater::BraveComponent::Delegate*
+        component_updater_delegate)
+    : country_resource_component_registrar_(component_updater_delegate, *this),
+      language_resource_component_registrar_(component_updater_delegate,
+                                             *this) {}
 
 ResourceComponent::~ResourceComponent() = default;
 
@@ -64,54 +62,21 @@ void ResourceComponent::RemoveObserver(ResourceComponentObserver* observer) {
 
 void ResourceComponent::RegisterComponentForCountryCode(
     const std::string& country_code) {
-  CHECK(!country_code.empty());
-
-  const absl::optional<ComponentInfo> component =
-      GetComponentInfo(country_code);
-  if (!component) {
-    return VLOG(1) << "Ads resource not supported for " << country_code;
-  }
-
-  const std::string component_name =
-      base::StringPrintf(kComponentName, country_code.c_str());
-
-  VLOG(1) << "Registering " << component_name << " with id " << component->id;
-
-  Register(component_name, component->id.data(), component->public_key.data());
+  country_resource_component_registrar_.RegisterResourceComponent(country_code);
 }
 
 void ResourceComponent::RegisterComponentForLanguageCode(
     const std::string& language_code) {
-  CHECK(!language_code.empty());
-
-  const absl::optional<ComponentInfo> component =
-      GetComponentInfo(language_code);
-  if (!component) {
-    return VLOG(1) << "Ads resource not supported for " << language_code;
-  }
-
-  const std::string component_name =
-      base::StringPrintf(kComponentName, language_code.c_str());
-
-  VLOG(1) << "Registering " << component_name << " with id " << component->id;
-
-  Register(component_name, component->id.data(), component->public_key.data());
+  language_resource_component_registrar_.RegisterResourceComponent(
+      language_code);
 }
 
-void ResourceComponent::NotifyDidUpdateResourceComponent(
-    const std::string& manifest_version,
-    const std::string& id) {
-  for (auto& observer : observers_) {
-    observer.OnDidUpdateResourceComponent(manifest_version, id);
-  }
-}
-
-absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
-                                                          const int version) {
+std::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
+                                                         const int version) {
   const std::string index = GetResourceKey(id, version);
   const auto iter = resources_.find(index);
   if (iter == resources_.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const auto& [_, resource] = *iter;
@@ -132,9 +97,9 @@ std::string LoadFile(const base::FilePath& path) {
   return json;
 }
 
-void ResourceComponent::OnComponentReady(const std::string& component_id,
-                                         const base::FilePath& install_dir,
-                                         const std::string& /*resource*/) {
+void ResourceComponent::OnResourceComponentRegistered(
+    const std::string& component_id,
+    const base::FilePath& install_dir) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&LoadFile, install_dir.Append(kManifestFile)),
@@ -142,12 +107,17 @@ void ResourceComponent::OnComponentReady(const std::string& component_id,
                      weak_factory_.GetWeakPtr(), component_id, install_dir));
 }
 
+void ResourceComponent::OnResourceComponentUnregistered(
+    const std::string& component_id) {
+  NotifyDidUnregisterResourceComponent(component_id);
+}
+
 void ResourceComponent::LoadManifestCallback(const std::string& component_id,
                                              const base::FilePath& install_dir,
                                              const std::string& json) {
   VLOG(8) << "Manifest JSON: " << json;
 
-  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  const std::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root || !root->is_dict()) {
     return VLOG(1) << "Failed to parse manifest";
   }
@@ -174,13 +144,13 @@ void ResourceComponent::LoadResourceCallback(
     const std::string& json) {
   VLOG(8) << "Resource JSON: " << json;
 
-  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  const std::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root || !root->is_dict()) {
     return VLOG(1) << "Failed to parse resource";
   }
   const base::Value::Dict& dict = root->GetDict();
 
-  const absl::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
+  const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (!schema_version) {
     return VLOG(1) << "Resource schema version is missing";
   }
@@ -207,7 +177,7 @@ void ResourceComponent::LoadResourceCallback(
       continue;
     }
 
-    const absl::optional<int> version = item_dict->FindInt(kResourceVersionKey);
+    const std::optional<int> version = item_dict->FindInt(kResourceVersionKey);
     if (!version) {
       VLOG(1) << *resource_id << " resource version is missing";
       continue;
@@ -241,6 +211,21 @@ void ResourceComponent::LoadResourceCallback(
 
   VLOG(1) << "Notifying resource component observers";
   NotifyDidUpdateResourceComponent(manifest_version, component_id);
+}
+
+void ResourceComponent::NotifyDidUpdateResourceComponent(
+    const std::string& manifest_version,
+    const std::string& id) {
+  for (auto& observer : observers_) {
+    observer.OnDidUpdateResourceComponent(manifest_version, id);
+  }
+}
+
+void ResourceComponent::NotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  for (auto& observer : observers_) {
+    observer.OnDidUnregisterResourceComponent(id);
+  }
 }
 
 }  // namespace brave_ads

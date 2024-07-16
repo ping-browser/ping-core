@@ -6,17 +6,17 @@
 import collections.abc
 import copy
 import os
+import sys
 
+import brave_chromium_utils
 import brave_node
 import chromium_presubmit_overrides
-import git_cl
-import import_inline
 import override_utils
 
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
 
-# pylint: disable=line-too-long,protected-access
+# pylint: disable=line-too-long
 
 
 # Adds support for chromium_presubmit_config.json5 and some helpers.
@@ -61,9 +61,13 @@ def CheckPatchFormatted(input_api, output_api):
         'cl',
         'format',
         '--presubmit',
+    ]
+
+    # Keep in sync with `npm run format` command.
+    git_cl_format_cmd.extend([
         '--python',
         '--no-rust-fmt',
-    ]
+    ])
 
     # Make sure the passed --upstream branch is applied to git cl format.
     if input_api.change.UpstreamBranch():
@@ -77,8 +81,18 @@ def CheckPatchFormatted(input_api, output_api):
     # Pass a path where the current PRESUBMIT.py file is located.
     git_cl_format_cmd.append(input_api.PresubmitLocalPath())
 
+    with brave_chromium_utils.sys_path("//brave/vendor/depot_tools"):
+        # pylint: disable=import-outside-toplevel
+        import git_cl
+
     # Run git cl format and get return code.
     git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd)
+    if git_cl_format_code not in (0, 2):
+        return [
+            output_api.PresubmitError(
+                f'Presubmit format check has failed, return code: {git_cl_format_code}'
+            )
+        ]
 
     is_format_required = git_cl_format_code == 2
 
@@ -119,10 +133,13 @@ def CheckPatchFormatted(input_api, output_api):
         if input_api.PRESUBMIT_FIX:
             raise RuntimeError('--fix was passed, but format has failed')
         short_path = input_api.basename(input_api.change.RepositoryRoot())
+        git_cl_format_cmd.remove('--dry-run')
+        git_cl_format_cmd.append('--diff')
+        _, diff_output = git_cl.RunGitWithCode(git_cl_format_cmd)
         return [
             output_api.PresubmitError(
                 f'The {short_path} directory requires source formatting. '
-                'Please run: npm run presubmit -- --fix')
+                f'Please run: npm run presubmit -- --fix.\n\n{diff_output}')
         ]
     return []
 
@@ -141,20 +158,16 @@ def CheckESLint(input_api, output_api):
     files_to_check = input_api.AffectedFiles(file_filter=file_filter,
                                              include_deletes=False)
 
-    with import_inline.sys_path(
-            input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
-                                   'tools')):
-        # pylint: disable=import-error,import-outside-toplevel
+    with brave_chromium_utils.sys_path('//tools'):
+        # pylint: disable=import-outside-toplevel
         from web_dev_style import js_checker
         return js_checker.JSChecker(input_api,
                                     output_api).RunEsLintChecks(files_to_check)
 
 
 def CheckWebDevStyle(input_api, output_api):
-    with import_inline.sys_path(
-            input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
-                                   'tools')):
-        # pylint: disable=import-error,import-outside-toplevel
+    with brave_chromium_utils.sys_path('//tools'):
+        # pylint: disable=import-outside-toplevel
         from web_dev_style import presubmit_support, js_checker
         # Disable RunEsLintChecks, it's run separately in CheckESLint.
         with override_utils.override_scope_function(
@@ -174,9 +187,6 @@ def CheckPylint(input_api, output_api):
     extra_paths_list = os.environ['PYTHONPATH'].split(os.pathsep)
     return input_api.canned_checks.RunPylint(input_api,
                                              output_api,
-                                             pylintrc=input_api.os_path.join(
-                                                 input_api.PresubmitLocalPath(),
-                                                 '.pylintrc'),
                                              extra_paths_list=extra_paths_list)
 
 
@@ -276,13 +286,72 @@ def CheckLicense(input_api, output_api):
     return result
 
 
+def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
+    """Checks newly added source files have corresponding GN changes."""
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*", )
+
+    source_file_filter = lambda f: input_api.FilterSourceFile(
+        f,
+        files_to_check=(r'.+\.cc$', r'.+\.c$', r'.+\.mm$', r'.+\.m$'),
+        files_to_skip=files_to_skip)
+
+    new_sources = []
+    for f in input_api.AffectedSourceFiles(source_file_filter):
+        if f.Action() != 'A':
+            continue
+        new_sources.append(f.LocalPath())
+
+    gn_file_filter = lambda f: input_api.FilterSourceFile(
+        f,
+        files_to_check=(r'.+\.gn$', r'.+\.gni$'),
+        files_to_skip=files_to_skip)
+
+    all_gn_changed_contents = ''
+    for f in input_api.AffectedSourceFiles(gn_file_filter):
+        for _, line in f.ChangedContents():
+            all_gn_changed_contents += line
+
+    problems = []
+    for source in new_sources:
+        basename = input_api.os_path.basename(source)
+        if basename not in all_gn_changed_contents:
+            problems.append(source)
+
+    if problems:
+        return [
+            output_api.PresubmitError(
+                'Missing GN changes for new .cc/.c/.mm/.m source files',
+                items=sorted(problems),
+                long_text=
+                'Please double check whether newly added source files need '
+                'corresponding changes in gn or gni files.')
+        ]
+    return []
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We
 # do this to have the right order of checks, so all `--fix`-aware checks are
 # executed first.
-chromium_presubmit_overrides.inline_presubmit_from_src('PRESUBMIT.py',
-                                                       globals(), locals())
+chromium_presubmit_overrides.inline_presubmit('//PRESUBMIT.py', globals(),
+                                              locals())
+
+# pyright: reportUnboundVariable=false, reportUndefinedVariable=false
+
+_BANNED_CPP_FUNCTIONS += (
+    BanRule(
+        r'/\b(Basic|W)?StringPiece(16)?\b',
+        ('Use std::string_view instead', ),
+        True,
+        [_THIRD_PARTY_EXCEPT_BLINK],  # Don't warn in third_party folders.
+    ),
+    BanRule(
+        'base::PathService::Get',
+        ('Prefer using base::PathService::CheckedGet() instead', ),
+        treat_as_error=False,
+        excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
+    ),
+)
 
 
 # Extend BanRule exclude lists with Brave-specific paths.
@@ -292,7 +361,7 @@ def ApplyBanRuleExcludes():
         value for name, value in globals().items()
         if name.startswith('_BANNED_')
         and isinstance(value, collections.abc.Sequence) and len(value) > 0
-        and isinstance(value[0], BanRule)  # pylint: disable=undefined-variable
+        and isinstance(value[0], BanRule)
     ]
 
     # Get additional excluded paths from the config.
@@ -386,15 +455,13 @@ def CheckJavaStyle(_original_check, input_api, output_api):
             for f in input_api.AffectedFiles()):
         return []
 
-    import sys  # pylint: disable=import-outside-toplevel
     # Android toolchain is only available on Linux.
     if not sys.platform.startswith('linux'):
         return []
 
-    with import_inline.sys_path(
-            input_api.os_path.join(input_api.PresubmitLocalPath(), 'tools',
-                                   'android')):
-        from checkstyle import checkstyle  # pylint: disable=import-outside-toplevel, import-error
+    with brave_chromium_utils.sys_path('//tools/android/checkstyle'):
+        # pylint: disable=import-outside-toplevel
+        import checkstyle
 
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 
@@ -426,4 +493,4 @@ To remove unused imports: ./tools/android/checkstyle/remove_unused_imports.sh"""
         ret.append(output_api.PresubmitError(msg))
     return ret
 
-# DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit_from_src().
+# DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit().

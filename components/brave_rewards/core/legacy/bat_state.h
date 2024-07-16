@@ -17,14 +17,14 @@
 
 namespace brave_rewards::internal {
 
-class RewardsEngineImpl;
+class RewardsEngine;
 
 class LegacyBatState {
  public:
-  explicit LegacyBatState(RewardsEngineImpl& engine);
+  explicit LegacyBatState(RewardsEngine& engine);
   ~LegacyBatState();
 
-  void Load(LegacyResultCallback callback);
+  void Load(ResultCallback callback);
 
   bool GetRewardsMainEnabled() const;
 
@@ -44,14 +44,12 @@ class LegacyBatState {
 
   uint64_t GetCreationStamp() const;
 
-  bool GetInlineTipSetting(const std::string& key) const;
-
  private:
-  void OnLoad(LegacyResultCallback callback,
+  void OnLoad(ResultCallback callback,
               mojom::Result result,
               const std::string& data);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   ClientProperties state_;
 };
 

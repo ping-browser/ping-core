@@ -33,15 +33,13 @@ bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
          advertiser_id == other.advertiser_id && priority == other.priority &&
          base::IsApproximatelyEqual(pass_through_rate, other.pass_through_rate,
                                     std::numeric_limits<double>::epsilon()) &&
-         has_conversion == other.has_conversion && per_day == other.per_day &&
-         per_week == other.per_week && per_month == other.per_month &&
-         total_max == other.total_max &&
+         per_day == other.per_day && per_week == other.per_week &&
+         per_month == other.per_month && total_max == other.total_max &&
          base::IsApproximatelyEqual(value, other.value,
                                     std::numeric_limits<double>::epsilon()) &&
          split_test_group == other.split_test_group &&
-         segment == other.segment && embedding == other.embedding &&
-         geo_targets == other.geo_targets && target_url == other.target_url &&
-         dayparts == other.dayparts;
+         segment == other.segment && geo_targets == other.geo_targets &&
+         target_url == other.target_url && dayparts == other.dayparts;
 }
 
 bool CreativeAdInfo::operator!=(const CreativeAdInfo& other) const {

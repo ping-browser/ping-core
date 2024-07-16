@@ -16,10 +16,10 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kJourneys, base::FEATURE_DISABLED_BY_DEFAULT},
     {kJourneysImages, base::FEATURE_DISABLED_BY_DEFAULT},
     {kJourneysNamedNewTabGroups, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kJourneysPersistCachesToPrefs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kJourneysZeroStateFiltering, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOmniboxAction, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOmniboxHistoryClusterProvider, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPersistedClusters, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPersistContextAnnotationsInHistoryDb, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSidePanelJourneys, base::FEATURE_DISABLED_BY_DEFAULT},
 }});

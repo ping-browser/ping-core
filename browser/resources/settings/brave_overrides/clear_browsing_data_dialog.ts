@@ -32,12 +32,12 @@ RegisterPolymerComponentReplacement(
 RegisterPolymerTemplateModifications({
   'settings-clear-browsing-data-dialog': (templateContent: HTMLTemplateElement) => {
     // Append On exit tab page.
-    const tabsElement = templateContent.querySelector('#tabs')
-    if (!tabsElement) {
-      console.error(`[Brave Settings Overrides] cannot find #tabs in clear-browsing-data-dialog`)
+    const pagesElement = templateContent.querySelector('#pages')
+    if (!pagesElement) {
+      console.error(`[Brave Settings Overrides] cannot find #pages in clear-browsing-data-dialog`)
       return
     }
-    tabsElement.insertAdjacentHTML(
+    pagesElement.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`
         <settings-brave-clear-browsing-data-on-exit-page
@@ -78,7 +78,7 @@ RegisterPolymerTemplateModifications({
     body.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`
-        <a id="rewards-reset-data" href="chrome://rewards/#manage-wallet"></a>
+        <a id="rewards-reset-data" href="chrome://rewards/#reset"></a>
       `)
     const rewardsResetLink =
       templateContent.getElementById('rewards-reset-data')
@@ -87,6 +87,38 @@ RegisterPolymerTemplateModifications({
         '[Brave Settings Overrides] Couldn\'t find Rewards reset link')
     } else {
       rewardsResetLink.textContent = loadTimeData.getString('resetRewardsData')
+    }
+
+    // Append Leo reset checkbox
+    const isLeoAssistantAndHistoryAllowed =
+      loadTimeData.getBoolean('isLeoAssistantAllowed')
+        && loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
+    if (isLeoAssistantAndHistoryAllowed) {
+      const cacheCheckbox = templateContent
+        .querySelector('[id="cacheCheckbox"]')
+      if (!cacheCheckbox) {
+        console.error(`[Brave Settings Overrides] cannot find
+         'id="cacheCheckbox"' in clear-browsing-data-dialog`)
+        return
+      }
+      cacheCheckbox.insertAdjacentHTML(
+        'beforebegin',
+        getTrustedHTML`
+        <settings-checkbox
+          id="leoResetCheckbox"
+          pref="{{prefs.browser.clear_data.brave_leo}}"
+          label="[[i18n('leoClearHistoryData')]]"
+          sub-label="[[i18n('leoClearHistoryDataSubLabel')]]"
+          disabled="[[clearingInProgress_]]"
+          no-set-pref>
+        </settings-checkbox>`)
+
+      const leoResetCheckbox =
+        templateContent.querySelector('[id="leoResetCheckbox"]')
+      if (!leoResetCheckbox) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find Leo reset link')
+      }
     }
   }
 })

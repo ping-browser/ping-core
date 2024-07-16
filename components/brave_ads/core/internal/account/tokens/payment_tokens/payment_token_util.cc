@@ -18,9 +18,9 @@ bool HasPaymentTokens() {
 
 }  // namespace
 
-absl::optional<PaymentTokenInfo> MaybeGetPaymentToken() {
+std::optional<PaymentTokenInfo> MaybeGetPaymentToken() {
   if (!HasPaymentTokens()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ConfirmationStateManager::GetInstance().GetPaymentTokens().GetToken();
@@ -36,7 +36,7 @@ void AddPaymentTokens(const PaymentTokenList& payment_tokens) {
   ConfirmationStateManager::GetInstance().GetPaymentTokens().AddTokens(
       payment_tokens);
 
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 }
 
 bool RemovePaymentToken(const PaymentTokenInfo& payment_token) {
@@ -45,7 +45,7 @@ bool RemovePaymentToken(const PaymentTokenInfo& payment_token) {
     return false;
   }
 
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 
   return true;
 }
@@ -54,13 +54,13 @@ void RemovePaymentTokens(const PaymentTokenList& payment_tokens) {
   ConfirmationStateManager::GetInstance().GetPaymentTokens().RemoveTokens(
       payment_tokens);
 
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 }
 
 void RemoveAllPaymentTokens() {
   ConfirmationStateManager::GetInstance().GetPaymentTokens().RemoveAllTokens();
 
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 }
 
 bool PaymentTokenExists(const PaymentTokenInfo& payment_token) {

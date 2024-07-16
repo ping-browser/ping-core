@@ -7,6 +7,9 @@ package org.brave.bytecode;
 
 import org.objectweb.asm.ClassVisitor;
 
+/**
+ * Adapter, used to make some fields from upstream's ManageSyncSettings be public
+ */
 public class BraveManageSyncSettingsClassAdapter extends BraveClassVisitor {
     static String sManageSyncSettingsClassName =
             "org/chromium/chrome/browser/sync/settings/ManageSyncSettings";
@@ -22,7 +25,7 @@ public class BraveManageSyncSettingsClassAdapter extends BraveClassVisitor {
         deleteField(sBraveManageSyncSettingsClassName, "mSyncEncryption");
         makeProtectedField(sManageSyncSettingsClassName, "mSyncEncryption");
 
-        deleteField(sBraveManageSyncSettingsClassName, "mSyncPaymentsIntegration");
-        makeProtectedField(sManageSyncSettingsClassName, "mSyncPaymentsIntegration");
+        deleteField(sBraveManageSyncSettingsClassName, "mSyncEverything");
+        makeProtectedField(sManageSyncSettingsClassName, "mSyncEverything");
     }
 }

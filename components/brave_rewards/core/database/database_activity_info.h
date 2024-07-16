@@ -16,22 +16,20 @@ namespace database {
 
 class DatabaseActivityInfo : public DatabaseTable {
  public:
-  explicit DatabaseActivityInfo(RewardsEngineImpl& engine);
+  explicit DatabaseActivityInfo(RewardsEngine& engine);
   ~DatabaseActivityInfo() override;
 
-  void InsertOrUpdate(mojom::PublisherInfoPtr info,
-                      LegacyResultCallback callback);
+  void InsertOrUpdate(mojom::PublisherInfoPtr info, ResultCallback callback);
 
   void NormalizeList(std::vector<mojom::PublisherInfoPtr> list,
-                     LegacyResultCallback callback);
+                     ResultCallback callback);
 
   void GetRecordsList(const int start,
                       const int limit,
                       mojom::ActivityInfoFilterPtr filter,
                       GetActivityInfoListCallback callback);
 
-  void DeleteRecord(const std::string& publisher_key,
-                    LegacyResultCallback callback);
+  void DeleteRecord(const std::string& publisher_key, ResultCallback callback);
 
   void GetPublishersVisitedCount(base::OnceCallback<void(int)> callback);
 
@@ -39,8 +37,12 @@ class DatabaseActivityInfo : public DatabaseTable {
   void CreateInsertOrUpdate(mojom::DBTransaction* transaction,
                             mojom::PublisherInfoPtr info);
 
-  void OnGetRecordsList(mojom::DBCommandResponsePtr response,
-                        GetActivityInfoListCallback callback);
+  void OnNormalizeList(ResultCallback callback,
+                       std::vector<mojom::PublisherInfoPtr> list,
+                       mojom::DBCommandResponsePtr response);
+
+  void OnGetRecordsList(GetActivityInfoListCallback callback,
+                        mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

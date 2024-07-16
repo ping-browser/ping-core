@@ -6,182 +6,917 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 
 #include <stdint.h>
-#include <deque>
-#include <set>
+
+#include <algorithm>
+#include <map>
+#include <optional>
+#include <utility>
+#include <vector>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
-#include "base/ranges/algorithm.h"
+#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/sys_byteorder.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_database_synchronizer.h"
-#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction_database.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_knapsack_solver.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_max_send_solver.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/hash_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/l10n/l10n_util.h"
+
+namespace brave_wallet {
 
 namespace {
 
-// We use version 2 per
-// https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki#specification
-constexpr uint32_t kTransactionsVersion = 2;
-constexpr uint32_t kSigHashAll = 1;
+const uint32_t kHighPriorityTargetBlock = 1;
+const uint32_t kMediumPriorityTargetBlock = 4;
+const double kFallbackMainnetFeeRate = 20;  // 20 sat per byte fallback rate.
+const double kFallbackTestnetFeeRate = 1;   // 1 sat per byte fallback rate.
+const double kDustRelayFeeRate = 3;         // 3 sat per byte rate.
+const uint32_t kAddressDiscoveryGapLimit = 20;
 
-std::vector<brave_wallet::mojom::KeyringId> BitcoinKeyringsForNetwork(
-    const std::string& network_id) {
-  DCHECK(brave_wallet::IsBitcoinNetwork(network_id));
-  if (network_id == brave_wallet::mojom::kBitcoinMainnet) {
-    return {brave_wallet::mojom::KeyringId::kBitcoin84};
-  } else if (network_id == brave_wallet::mojom::kBitcoinTestnet) {
-    return {brave_wallet::mojom::KeyringId::kBitcoin84Testnet};
-  } else {
-    NOTREACHED();
+struct ChainBalance {
+  uint64_t funded = 0;
+  uint64_t spent = 0;
+};
+
+ChainBalance GetChainBalance(
+    const bitcoin_rpc::AddressChainStats& chain_stats) {
+  ChainBalance result;
+  if (!base::StringToUint64(chain_stats.funded_txo_sum, &result.funded)) {
+    return {};
+  }
+  if (!base::StringToUint64(chain_stats.spent_txo_sum, &result.spent)) {
+    return {};
   }
 
-  return {};
+  return result;
 }
 
-// TODO(apaymyshev): implement Push* as 'serialize to network' class
-void Push8AsLE(uint8_t i, std::vector<uint8_t>& to) {
-  to.push_back(i);
-}
+std::vector<BitcoinTransaction::TxInputGroup> TxInputGroupsFromUtxoMap(
+    const BitcoinWalletService::UtxoMap& utxo_map) {
+  std::vector<BitcoinTransaction::TxInputGroup> groups;
+  for (const auto& item : utxo_map) {
+    if (item.second.empty()) {
+      continue;
+    }
 
-void Push16AsLE(uint16_t i, std::vector<uint8_t>& to) {
-  i = base::ByteSwapToLE16(i);
-  base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
-  to.insert(to.end(), data_to_insert.begin(), data_to_insert.end());
-}
-
-void Push32AsLE(uint32_t i, std::vector<uint8_t>& to) {
-  i = base::ByteSwapToLE32(i);
-  base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
-  to.insert(to.end(), data_to_insert.begin(), data_to_insert.end());
-}
-
-void Push64AsLE(uint64_t i, std::vector<uint8_t>& to) {
-  i = base::ByteSwapToLE64(i);
-  base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
-  to.insert(to.end(), data_to_insert.begin(), data_to_insert.end());
-}
-
-void PushVectorAsLE(const std::vector<uint8_t>& v, std::vector<uint8_t>& to) {
-  to.insert(to.end(), v.rbegin(), v.rend());
-}
-
-// https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers
-void PushVarInt(uint64_t i, std::vector<uint8_t>& to) {
-  if (i < 0xfd) {
-    Push8AsLE(i, to);
-  } else if (i < 0xffff) {
-    Push8AsLE(0xfd, to);
-    Push16AsLE(i, to);
-  } else if (i < 0xffffffff) {
-    Push8AsLE(0xfe, to);
-    Push32AsLE(i, to);
-  } else {
-    Push8AsLE(0xff, to);
-    Push64AsLE(i, to);
+    auto& group = groups.emplace_back();
+    for (const auto& utxo : item.second) {
+      if (auto input =
+              BitcoinTransaction::TxInput::FromRpcUtxo(item.first, utxo)) {
+        group.AddInput(std::move(*input));
+      }
+    }
   }
+
+  return groups;
 }
 
-void PushVarSizeVector(const std::vector<uint8_t>& v,
-                       std::vector<uint8_t>& to) {
-  PushVarInt(v.size(), to);
-  to.insert(to.end(), v.begin(), v.end());
+std::string InternalErrorString() {
+  return l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
 }
 
-void PushOutpoint(const brave_wallet::bitcoin::Outpoint& outpoint,
-                  std::vector<uint8_t>& to) {
-  PushVectorAsLE(outpoint.txid, to);
-  Push32AsLE(outpoint.index, to);
+std::string ParsingErrorString() {
+  return l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
 }
 
 }  // namespace
 
-namespace brave_wallet {
+bool DiscoveredBitcoinAccount::operator==(
+    const DiscoveredBitcoinAccount& other) const {
+  return std::tie(this->keyring_id, this->account_index,
+                  this->next_unused_receive_index,
+                  this->next_unused_change_index) ==
+         std::tie(other.keyring_id, other.account_index,
+                  other.next_unused_receive_index,
+                  other.next_unused_change_index);
+}
 
-struct SendToContext {
+class GetBalanceTask : public base::RefCountedThreadSafe<GetBalanceTask> {
  public:
-  struct TxInput {
-    bitcoin::Output prev_output;  // Output we are going to spend.
-    mojom::BitcoinKeyIdPtr key_id;
-    // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L945
-    uint32_t n_sequence = 0xfffffffd;
-    std::vector<uint8_t> pubkey;
-    std::vector<uint8_t> signature;
-  };
+  using GetBalanceCallback = mojom::BitcoinWalletService::GetBalanceCallback;
 
-  struct TxOutput {
-    std::string address;
-    std::vector<uint8_t> pubkey_hash;
-    std::vector<uint8_t> script_pubkey;
-    uint64_t amount = 0;
-  };
+  GetBalanceTask(base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service,
+                 const std::string& chain_id,
+                 std::vector<mojom::BitcoinAddressPtr> addresses,
+                 GetBalanceCallback callback);
+  void ScheduleWorkOnTask();
 
-  std::string network_id;
-  mojom::AccountIdPtr account_id;
-  std::string address_to;
-  uint64_t amount = 0;
-  uint64_t fee = 0;
-  uint64_t amount_picked = 0;
-  std::vector<bitcoin::Output> utxo_list;
-  std::vector<TxInput> inputs;
-  std::vector<TxOutput> outputs;
-  std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>> addresses;
-  uint32_t locktime = 0;
+ private:
+  friend class base::RefCountedThreadSafe<GetBalanceTask>;
+  virtual ~GetBalanceTask() = default;
 
-  std::vector<uint8_t> serialized_transaction;
+  void MaybeSendRequests();
+  void OnGetAddressStats(
+      mojom::BitcoinAddressPtr address,
+      base::expected<bitcoin_rpc::AddressStats, std::string> stats);
+  void WorkOnTask();
 
-  mojom::BitcoinWalletService::SendToCallback callback;
+  base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service_;
+  std::string chain_id_;
+  std::vector<mojom::BitcoinAddressPtr> addresses_;
+  bool requests_sent_ = false;
 
-  bool IsTestnet() { return network_id == mojom::kBitcoinTestnet; }
-  bool UtxoListReady() { return !utxo_list.empty(); }
-  bool InputsReady() { return !inputs.empty(); }
-  bool OutputsReady() { return !outputs.empty(); }
-  bool SignaturesReady() {
-    return base::ranges::all_of(
-        inputs, [](auto& input) { return !input.signature.empty(); });
-  }
-  bool IsTransactionSerialized() { return !serialized_transaction.empty(); }
+  std::map<std::string, uint64_t> balances_;
+  uint64_t total_balance_ = 0;
+  uint64_t available_balance_ = 0;
+  int64_t pending_balance_ = 0;
 
-  void ReplyFailure(const std::string& error) {
-    std::move(callback).Run("", error);
-  }
+  std::optional<std::string> error_;
+  mojom::BitcoinBalancePtr result_;
+  GetBalanceCallback callback_;
 };
+
+GetBalanceTask::GetBalanceTask(
+    base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service,
+    const std::string& chain_id,
+    std::vector<mojom::BitcoinAddressPtr> addresses,
+    GetBalanceCallback callback)
+    : bitcoin_wallet_service_(bitcoin_wallet_service),
+      chain_id_(chain_id),
+      addresses_(std::move(addresses)),
+      callback_(std::move(callback)) {}
+
+void GetBalanceTask::ScheduleWorkOnTask() {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&GetBalanceTask::WorkOnTask, this));
+}
+
+void GetBalanceTask::MaybeSendRequests() {
+  if (requests_sent_) {
+    return;
+  }
+  requests_sent_ = true;
+
+  if (addresses_.empty()) {
+    result_ = mojom::BitcoinBalance::New();
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  // Shuffle addresses so requests are always done in different order to
+  // increase privacy a bit.
+  base::RandomShuffle(addresses_.begin(), addresses_.end());
+
+  for (const auto& address_info : addresses_) {
+    bitcoin_wallet_service_->bitcoin_rpc().GetAddressStats(
+        chain_id_, address_info->address_string,
+        base::BindOnce(&GetBalanceTask::OnGetAddressStats, this,
+                       address_info->Clone()));
+  }
+}
+
+void GetBalanceTask::WorkOnTask() {
+  if (!callback_) {
+    return;
+  }
+  if (!bitcoin_wallet_service_) {
+    std::move(callback_).Run(nullptr, InternalErrorString());
+    return;
+  }
+
+  if (error_) {
+    std::move(callback_).Run(nullptr, std::move(*error_));
+    return;
+  }
+
+  if (result_) {
+    std::move(callback_).Run(std::move(result_), std::nullopt);
+    return;
+  }
+
+  MaybeSendRequests();
+}
+
+void GetBalanceTask::OnGetAddressStats(
+    mojom::BitcoinAddressPtr address,
+    base::expected<bitcoin_rpc::AddressStats, std::string> stats) {
+  if (!stats.has_value()) {
+    error_ = stats.error();
+    WorkOnTask();
+    return;
+  }
+
+  auto chain_balance = GetChainBalance(stats->chain_stats);
+  auto mempool_balance = GetChainBalance(stats->mempool_stats);
+
+  uint64_t address_total =
+      base::ClampSub(chain_balance.funded + mempool_balance.funded,
+                     chain_balance.spent + mempool_balance.spent);
+  balances_[address->address_string] = address_total;
+
+  total_balance_ += address_total;
+  available_balance_ +=
+      base::ClampSub(chain_balance.funded,
+                     chain_balance.spent + mempool_balance.spent)
+          .RawValue();
+  pending_balance_ += mempool_balance.funded;
+  pending_balance_ -= mempool_balance.spent;
+
+  CHECK(std::erase(addresses_, address));
+  if (addresses_.empty()) {
+    result_ = mojom::BitcoinBalance::New();
+    result_->total_balance = total_balance_;
+    result_->available_balance = available_balance_;
+    result_->pending_balance = pending_balance_;
+    result_->balances.insert(balances_.begin(), balances_.end());
+  }
+
+  WorkOnTask();
+}
+
+class GetUtxosTask : public base::RefCountedThreadSafe<GetUtxosTask> {
+ public:
+  GetUtxosTask(base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service,
+               const std::string& chain_id,
+               std::vector<mojom::BitcoinAddressPtr> addresses,
+               BitcoinWalletService::GetUtxosCallback callback);
+  void ScheduleWorkOnTask();
+
+ private:
+  friend class base::RefCountedThreadSafe<GetUtxosTask>;
+  virtual ~GetUtxosTask() = default;
+
+  void WorkOnTask();
+  void MaybeSendRequests();
+  void OnGetUtxoList(
+      mojom::BitcoinAddressPtr address,
+      base::expected<bitcoin_rpc::UnspentOutputs, std::string> utxos);
+
+  base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service_;
+  std::string chain_id_;
+  std::vector<mojom::BitcoinAddressPtr> addresses_;
+  bool requests_sent_ = false;
+
+  BitcoinWalletService::UtxoMap utxos_;
+  std::optional<std::string> error_;
+  std::optional<BitcoinWalletService::UtxoMap> result_;
+  BitcoinWalletService::GetUtxosCallback callback_;
+};
+
+GetUtxosTask::GetUtxosTask(
+    base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service,
+    const std::string& chain_id,
+    std::vector<mojom::BitcoinAddressPtr> addresses,
+    BitcoinWalletService::GetUtxosCallback callback)
+    : bitcoin_wallet_service_(bitcoin_wallet_service),
+      chain_id_(chain_id),
+      addresses_(std::move(addresses)),
+      callback_(std::move(callback)) {}
+
+void GetUtxosTask::ScheduleWorkOnTask() {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&GetUtxosTask::WorkOnTask, this));
+}
+
+void GetUtxosTask::MaybeSendRequests() {
+  if (requests_sent_) {
+    return;
+  }
+  requests_sent_ = true;
+
+  if (addresses_.empty()) {
+    result_ = BitcoinWalletService::UtxoMap();
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  // Shuffle addresses so requests are always done in different order to
+  // increase privacy a bit.
+  base::RandomShuffle(addresses_.begin(), addresses_.end());
+
+  for (const auto& address_info : addresses_) {
+    bitcoin_wallet_service_->bitcoin_rpc().GetUtxoList(
+        chain_id_, address_info->address_string,
+        base::BindOnce(&GetUtxosTask::OnGetUtxoList, this,
+                       address_info->Clone()));
+  }
+}
+
+void GetUtxosTask::OnGetUtxoList(
+    mojom::BitcoinAddressPtr address,
+    base::expected<bitcoin_rpc::UnspentOutputs, std::string> utxos) {
+  if (!utxos.has_value()) {
+    error_ = utxos.error();
+    return WorkOnTask();
+  }
+
+  utxos_[address->address_string] = std::move(utxos.value());
+
+  CHECK(std::erase(addresses_, address));
+  if (addresses_.empty()) {
+    result_ = std::move(utxos_);
+  }
+
+  WorkOnTask();
+}
+
+void GetUtxosTask::WorkOnTask() {
+  if (!callback_) {
+    return;
+  }
+  if (!bitcoin_wallet_service_) {
+    std::move(callback_).Run(base::unexpected(InternalErrorString()));
+    return;
+  }
+
+  if (error_) {
+    std::move(callback_).Run(base::unexpected(std::move(*error_)));
+    return;
+  }
+
+  if (result_) {
+    std::move(callback_).Run(base::ok(std::move(*result_)));
+    return;
+  }
+
+  MaybeSendRequests();
+}
+
+class CreateTransactionTask {
+ public:
+  using UtxoMap = BitcoinWalletService::UtxoMap;
+  using CreateTransactionCallback =
+      BitcoinWalletService::CreateTransactionCallback;
+
+  CreateTransactionTask(BitcoinWalletService* bitcoin_wallet_service,
+                        const mojom::AccountIdPtr& account_id,
+                        const std::string& address_to,
+                        uint64_t amount,
+                        bool sending_max_amount,
+                        CreateTransactionCallback callback);
+
+  void ScheduleWorkOnTask();
+  void SetArrangeTransactionForTesting();  // IN-TEST
+
+ private:
+  bool IsTestnet() { return IsBitcoinTestnetKeyring(account_id_->keyring_id); }
+  void WorkOnTask();
+
+  void SetError(const std::string& error_string) { error_ = error_string; }
+
+  double GetFeeRate();
+  double GetLongtermFeeRate();
+
+  BitcoinTransaction::TxOutput CreateTargetOutput();
+  BitcoinTransaction::TxOutput CreateChangeOutput();
+
+  void OnGetChainHeight(base::expected<uint32_t, std::string> chain_height);
+  void OnGetFeeEstimates(
+      base::expected<std::map<uint32_t, double>, std::string> estimates);
+  void OnGetUtxos(base::expected<UtxoMap, std::string> utxo_map);
+  void OnDiscoverNextUnusedChangeAddress(
+      base::expected<mojom::BitcoinAddressPtr, std::string> address);
+
+  raw_ptr<BitcoinWalletService> bitcoin_wallet_service_;  // Owns `this`.
+  mojom::AccountIdPtr account_id_;
+  CreateTransactionCallback callback_;
+
+  std::optional<uint32_t> chain_height_;
+  BitcoinWalletService::UtxoMap utxo_map_;
+  mojom::BitcoinAddressPtr change_address_;
+  std::map<uint32_t, double> estimates_;  // target block -> fee rate (sat/byte)
+
+  std::optional<std::string> error_;
+  BitcoinTransaction transaction_;
+  bool arrange_for_testing_ = false;
+
+  base::WeakPtrFactory<CreateTransactionTask> weak_ptr_factory_{this};
+};
+
+CreateTransactionTask::CreateTransactionTask(
+    BitcoinWalletService* bitcoin_wallet_service,
+    const mojom::AccountIdPtr& account_id,
+    const std::string& address_to,
+    uint64_t amount,
+    bool sending_max_amount,
+    CreateTransactionCallback callback)
+    : bitcoin_wallet_service_(bitcoin_wallet_service),
+      account_id_(account_id.Clone()),
+      callback_(std::move(callback)) {
+  transaction_.set_to(address_to);
+  transaction_.set_amount(amount);
+  transaction_.set_sending_max_amount(sending_max_amount);
+}
+
+void CreateTransactionTask::ScheduleWorkOnTask() {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&CreateTransactionTask::WorkOnTask,
+                                weak_ptr_factory_.GetWeakPtr()));
+}
+
+void CreateTransactionTask::SetArrangeTransactionForTesting() {
+  arrange_for_testing_ = true;
+}
+
+BitcoinTransaction::TxOutput CreateTransactionTask::CreateTargetOutput() {
+  // TODO(apaymyshev): should fail if target output would be dust.
+
+  BitcoinTransaction::TxOutput target_output;
+  target_output.type = BitcoinTransaction::TxOutputType::kTarget;
+  target_output.amount =
+      transaction_.sending_max_amount() ? 0 : transaction_.amount();
+  target_output.address = transaction_.to();
+  target_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+      target_output.address, IsTestnet());
+  CHECK(target_output.script_pubkey.size());
+
+  return target_output;
+}
+
+BitcoinTransaction::TxOutput CreateTransactionTask::CreateChangeOutput() {
+  BitcoinTransaction::TxOutput change_output;
+  change_output.type = BitcoinTransaction::TxOutputType::kChange;
+  change_output.amount = 0;
+  change_output.address = change_address_->address_string;
+  change_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+      change_output.address, IsTestnet());
+  CHECK(change_output.script_pubkey.size());
+
+  return change_output;
+}
+
+void CreateTransactionTask::WorkOnTask() {
+  if (!callback_) {
+    return;
+  }
+
+  if (error_) {
+    std::move(callback_).Run(base::unexpected(*error_));
+    bitcoin_wallet_service_->CreateTransactionTaskDone(this);
+    return;
+  }
+
+  if (BitcoinSerializer::AddressToScriptPubkey(transaction_.to(), IsTestnet())
+          .empty()) {
+    SetError(ParsingErrorString());
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  if (!chain_height_) {
+    bitcoin_wallet_service_->bitcoin_rpc().GetChainHeight(
+        GetNetworkForBitcoinAccount(account_id_),
+        base::BindOnce(&CreateTransactionTask::OnGetChainHeight,
+                       weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
+
+  if (utxo_map_.empty()) {
+    bitcoin_wallet_service_->GetUtxos(
+        account_id_.Clone(), base::BindOnce(&CreateTransactionTask::OnGetUtxos,
+                                            weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
+
+  if (!change_address_) {
+    bitcoin_wallet_service_->DiscoverNextUnusedAddress(
+        account_id_.Clone(), true,
+        base::BindOnce(
+            &CreateTransactionTask::OnDiscoverNextUnusedChangeAddress,
+            weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
+
+  // TODO(apaymyshev): this captures fee estimates at transaction creation
+  // moment and can become outdated when transaction is actually broadcasted
+  // to network. Should handle this somehow.
+  if (estimates_.empty()) {
+    bitcoin_wallet_service_->bitcoin_rpc().GetFeeEstimates(
+        GetNetworkForBitcoinAccount(account_id_),
+        base::BindOnce(&CreateTransactionTask::OnGetFeeEstimates,
+                       weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
+
+  // TODO(apaymyshev): random shift locktime
+  // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
+  transaction_.set_locktime(chain_height_.value());
+
+  base::expected<BitcoinTransaction, std::string> solved_transaction;
+  if (transaction_.sending_max_amount()) {
+    transaction_.AddOutput(CreateTargetOutput());
+    BitcoinMaxSendSolver solver(transaction_, GetFeeRate(),
+                                TxInputGroupsFromUtxoMap(utxo_map_));
+    solved_transaction = solver.Solve();
+  } else {
+    transaction_.AddOutput(CreateTargetOutput());
+    transaction_.AddOutput(CreateChangeOutput());
+
+    // TODO(apaymyshev): consider moving this calculation to separate thread.
+    KnapsackSolver solver(transaction_, GetFeeRate(), GetLongtermFeeRate(),
+                          TxInputGroupsFromUtxoMap(utxo_map_));
+    solved_transaction = solver.Solve();
+  }
+
+  if (!solved_transaction.has_value()) {
+    SetError(solved_transaction.error());
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  transaction_ = std::move(*solved_transaction);
+  if (arrange_for_testing_) {
+    transaction_.ArrangeTransactionForTesting();  // IN-TEST
+  } else {
+    transaction_.ShuffleTransaction();
+  }
+
+  std::move(callback_).Run(base::ok(std::move(transaction_)));
+  bitcoin_wallet_service_->CreateTransactionTaskDone(this);
+}
+
+void CreateTransactionTask::OnGetChainHeight(
+    base::expected<uint32_t, std::string> chain_height) {
+  if (!chain_height.has_value()) {
+    SetError(std::move(chain_height.error()));
+    WorkOnTask();
+    return;
+  }
+
+  chain_height_ = chain_height.value();
+  WorkOnTask();
+}
+
+void CreateTransactionTask::OnGetFeeEstimates(
+    base::expected<std::map<uint32_t, double>, std::string> estimates) {
+  if (!estimates.has_value()) {
+    SetError(std::move(estimates.error()));
+    WorkOnTask();
+    return;
+  }
+
+  estimates_ = std::move(estimates.value());
+  DCHECK(!estimates_.empty());
+  WorkOnTask();
+}
+
+void CreateTransactionTask::OnGetUtxos(
+    base::expected<UtxoMap, std::string> utxo_map) {
+  if (!utxo_map.has_value()) {
+    SetError(std::move(utxo_map.error()));
+    WorkOnTask();
+    return;
+  }
+
+  utxo_map_ = std::move(utxo_map.value());
+  WorkOnTask();
+}
+
+void CreateTransactionTask::OnDiscoverNextUnusedChangeAddress(
+    base::expected<mojom::BitcoinAddressPtr, std::string> address) {
+  if (!address.has_value()) {
+    SetError(std::move(address.error()));
+    WorkOnTask();
+    return;
+  }
+  DCHECK_EQ(address.value()->key_id->change, kBitcoinChangeIndex);
+  bitcoin_wallet_service_->UpdateNextUnusedAddressForAccount(account_id_,
+                                                             address.value());
+  change_address_ = std::move(address.value());
+  WorkOnTask();
+}
+
+double CreateTransactionTask::GetFeeRate() {
+  DCHECK(!estimates_.empty());
+  if (estimates_.contains(kMediumPriorityTargetBlock)) {
+    return estimates_.at(kMediumPriorityTargetBlock);
+  }
+  if (estimates_.contains(kHighPriorityTargetBlock)) {
+    return estimates_.at(kHighPriorityTargetBlock);
+  }
+  return IsTestnet() ? kFallbackTestnetFeeRate : kFallbackMainnetFeeRate;
+}
+
+double CreateTransactionTask::GetLongtermFeeRate() {
+  DCHECK(!estimates_.empty());
+  double result = estimates_.begin()->second;
+  for (auto& e : estimates_) {
+    result = std::min(result, e.second);
+  }
+  return std::max(result, kDustRelayFeeRate);
+}
+
+class DiscoverNextUnusedAddressTask
+    : public base::RefCounted<DiscoverNextUnusedAddressTask> {
+ public:
+  DiscoverNextUnusedAddressTask(
+      base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service,
+      mojom::AccountIdPtr account_id,
+      mojom::BitcoinAddressPtr start_address,
+      BitcoinWalletService::DiscoverNextUnusedAddressCallback callback);
+  void ScheduleWorkOnTask();
+
+ private:
+  friend class base::RefCounted<DiscoverNextUnusedAddressTask>;
+  ~DiscoverNextUnusedAddressTask() = default;
+
+  mojom::BitcoinAddressPtr GetNextAddress(
+      const mojom::BitcoinAddressPtr& address);
+
+  void WorkOnTask();
+  void OnGetAddressStats(
+      base::expected<bitcoin_rpc::AddressStats, std::string> stats);
+
+  base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service_;
+  mojom::AccountIdPtr account_id_;
+  mojom::BitcoinAddressPtr start_address_;
+  mojom::BitcoinAddressPtr current_address_;
+  mojom::BitcoinAddressPtr result_;
+  std::optional<std::string> error_;
+  BitcoinWalletService::DiscoverNextUnusedAddressCallback callback_;
+};
+
+DiscoverNextUnusedAddressTask::DiscoverNextUnusedAddressTask(
+    base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service,
+    mojom::AccountIdPtr account_id,
+    mojom::BitcoinAddressPtr start_address,
+    BitcoinWalletService::DiscoverNextUnusedAddressCallback callback)
+    : bitcoin_wallet_service_(std::move(bitcoin_wallet_service)),
+      account_id_(std::move(account_id)),
+      start_address_(std::move(start_address)),
+      callback_(std::move(callback)) {}
+
+void DiscoverNextUnusedAddressTask::ScheduleWorkOnTask() {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&DiscoverNextUnusedAddressTask::WorkOnTask, this));
+}
+
+mojom::BitcoinAddressPtr DiscoverNextUnusedAddressTask::GetNextAddress(
+    const mojom::BitcoinAddressPtr& address) {
+  auto* keyring_service = bitcoin_wallet_service_->keyring_service();
+  CHECK(keyring_service);
+
+  auto next_key_id = current_address_->key_id.Clone();
+  next_key_id->index++;
+
+  return keyring_service->GetBitcoinAddress(account_id_, next_key_id);
+}
+
+void DiscoverNextUnusedAddressTask::WorkOnTask() {
+  if (!callback_) {
+    return;
+  }
+
+  if (!bitcoin_wallet_service_) {
+    std::move(callback_).Run(base::unexpected(InternalErrorString()));
+    return;
+  }
+
+  if (error_) {
+    std::move(callback_).Run(base::unexpected(std::move(*error_)));
+    return;
+  }
+
+  if (result_) {
+    std::move(callback_).Run(base::ok(std::move(result_)));
+    return;
+  }
+
+  if (start_address_) {
+    current_address_ = std::move(start_address_);
+  } else {
+    current_address_ = GetNextAddress(current_address_);
+  }
+
+  if (!current_address_) {
+    error_ = InternalErrorString();
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  bitcoin_wallet_service_->bitcoin_rpc().GetAddressStats(
+      GetNetworkForBitcoinAccount(account_id_),
+      current_address_->address_string,
+      base::BindOnce(&DiscoverNextUnusedAddressTask::OnGetAddressStats, this));
+}
+
+void DiscoverNextUnusedAddressTask::OnGetAddressStats(
+    base::expected<bitcoin_rpc::AddressStats, std::string> stats) {
+  if (!stats.has_value()) {
+    error_ = stats.error();
+    WorkOnTask();
+    return;
+  }
+
+  uint32_t chain_stats_tx_count = 0;
+  uint32_t mempool_stats_tx_count = 0;
+  if (!base::StringToUint(stats->chain_stats.tx_count, &chain_stats_tx_count) ||
+      !base::StringToUint(stats->mempool_stats.tx_count,
+                          &mempool_stats_tx_count)) {
+    error_ = ParsingErrorString();
+    WorkOnTask();
+    return;
+  }
+
+  if (chain_stats_tx_count == 0 && mempool_stats_tx_count == 0) {
+    result_ = current_address_->Clone();
+  }
+
+  WorkOnTask();
+}
+
+class DiscoverAccountTask : public base::RefCounted<DiscoverAccountTask> {
+ public:
+  DiscoverAccountTask(
+      base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service,
+      mojom::KeyringId keyring_id,
+      uint32_t account_index,
+      BitcoinWalletService::DiscoverAccountCallback callback);
+  void ScheduleWorkOnTask();
+
+ private:
+  struct State {
+    mojom::BitcoinAddressPtr last_transacted_address;
+    mojom::BitcoinAddressPtr last_requested_address;
+  };
+  friend class base::RefCounted<DiscoverAccountTask>;
+  ~DiscoverAccountTask() = default;
+
+  mojom::BitcoinAddressPtr GetNextAddress();
+
+  void MaybeQueueRequests(uint32_t state_index);
+
+  void WorkOnTask();
+  void OnGetAddressStats(
+      mojom::BitcoinAddressPtr address,
+      base::expected<bitcoin_rpc::AddressStats, std::string> stats);
+
+  base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service_;
+  raw_ptr<KeyringService> keyring_service_;
+  const mojom::KeyringId keyring_id_;
+  const std::string chain_id_;
+  const uint32_t account_index_;
+
+  uint32_t active_requests_ = 0;
+  // Indexed by 0 and 1 for receive and change addresses discovery states
+  // respectively.
+  State states_[2];
+  bool account_is_used_ = false;
+
+  std::optional<std::string> error_;
+  BitcoinWalletService::DiscoverAccountCallback callback_;
+};
+
+DiscoverAccountTask::DiscoverAccountTask(
+    base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service,
+    mojom::KeyringId keyring_id,
+    uint32_t account_index,
+    BitcoinWalletService::DiscoverAccountCallback callback)
+    : bitcoin_wallet_service_(std::move(bitcoin_wallet_service)),
+      keyring_id_(keyring_id),
+      chain_id_(GetNetworkForBitcoinKeyring(keyring_id_)),
+      account_index_(account_index),
+      callback_(std::move(callback)) {
+  CHECK(IsBitcoinKeyring(keyring_id_));
+  keyring_service_ = bitcoin_wallet_service_->keyring_service();
+  CHECK(keyring_service_);
+}
+
+void DiscoverAccountTask::ScheduleWorkOnTask() {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&DiscoverAccountTask::WorkOnTask, this));
+}
+
+void DiscoverAccountTask::MaybeQueueRequests(uint32_t state_index) {
+  CHECK_LE(state_index, 1u);
+  CHECK(state_index == kBitcoinReceiveIndex ||
+        state_index == kBitcoinChangeIndex);
+  auto& state = states_[state_index];
+
+  uint32_t start_index = 0;
+
+  // Start with next non-transacted address.
+  if (state.last_transacted_address) {
+    start_index = state.last_transacted_address->key_id->index + 1;
+  }
+
+  for (auto address_index = start_index;
+       address_index < start_index + kAddressDiscoveryGapLimit;
+       ++address_index) {
+    // Skip request if already sent.
+    if (state.last_requested_address &&
+        state.last_requested_address->key_id->index >= address_index) {
+      continue;
+    }
+
+    auto address = keyring_service_->GetBitcoinAccountDiscoveryAddress(
+        keyring_id_, account_index_,
+        mojom::BitcoinKeyId::New(state_index, address_index));
+
+    active_requests_++;
+    state.last_requested_address = address->Clone();
+    bitcoin_wallet_service_->bitcoin_rpc().GetAddressStats(
+        chain_id_, address->address_string,
+        base::BindOnce(&DiscoverAccountTask::OnGetAddressStats, this,
+                       address->Clone()));
+  }
+}
+
+void DiscoverAccountTask::WorkOnTask() {
+  if (!callback_) {
+    return;
+  }
+
+  if (!bitcoin_wallet_service_) {
+    std::move(callback_).Run(base::unexpected(InternalErrorString()));
+    return;
+  }
+
+  if (error_) {
+    std::move(callback_).Run(base::unexpected(std::move(*error_)));
+    return;
+  }
+
+  MaybeQueueRequests(kBitcoinReceiveIndex);
+  if (account_is_used_) {
+    MaybeQueueRequests(kBitcoinChangeIndex);
+  }
+
+  if (active_requests_) {
+    return;
+  }
+
+  DiscoveredBitcoinAccount result;
+
+  result.next_unused_receive_index = 0;
+  if (states_[kBitcoinReceiveIndex].last_transacted_address) {
+    result.next_unused_receive_index =
+        1 +
+        states_[kBitcoinReceiveIndex].last_transacted_address->key_id->index;
+  }
+
+  result.next_unused_change_index = 0;
+  if (states_[kBitcoinChangeIndex].last_transacted_address) {
+    result.next_unused_change_index =
+        1 + states_[kBitcoinChangeIndex].last_transacted_address->key_id->index;
+  }
+
+  result.account_index = account_index_;
+  result.keyring_id = keyring_id_;
+
+  std::move(callback_).Run(base::ok(std::move(result)));
+}
+
+void DiscoverAccountTask::OnGetAddressStats(
+    mojom::BitcoinAddressPtr address,
+    base::expected<bitcoin_rpc::AddressStats, std::string> stats) {
+  DCHECK_GT(active_requests_, 0u);
+  active_requests_--;
+
+  if (!stats.has_value()) {
+    error_ = stats.error();
+    WorkOnTask();
+    return;
+  }
+
+  uint32_t chain_stats_tx_count = 0;
+  uint32_t mempool_stats_tx_count = 0;
+  if (!base::StringToUint(stats->chain_stats.tx_count, &chain_stats_tx_count) ||
+      !base::StringToUint(stats->mempool_stats.tx_count,
+                          &mempool_stats_tx_count)) {
+    error_ = ParsingErrorString();
+    WorkOnTask();
+    return;
+  }
+  auto address_is_transacted = chain_stats_tx_count || mempool_stats_tx_count;
+  if (address_is_transacted) {
+    account_is_used_ = true;
+  }
+
+  CHECK_LE(address->key_id->change, 1u);
+  CHECK(address->key_id->change == kBitcoinReceiveIndex ||
+        address->key_id->change == kBitcoinChangeIndex);
+  auto& state = states_[address->key_id->change];
+
+  if (address_is_transacted) {
+    if (!state.last_transacted_address ||
+        state.last_transacted_address->key_id->index < address->key_id->index) {
+      state.last_transacted_address = address->Clone();
+    }
+  }
+
+  WorkOnTask();
+}
 
 BitcoinWalletService::BitcoinWalletService(
     KeyringService* keyring_service,
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
-      bitcoin_rpc_(std::make_unique<BitcoinRpc>(prefs, url_loader_factory)) {
-  for (auto* network_id : {
-           mojom::kBitcoinMainnet,
-           mojom::kBitcoinTestnet,
-       }) {
-    transaction_database_[network_id] =
-        std::make_unique<BitcoinTransactionDatabase>();
-    database_synchronizer_[network_id] =
-        std::make_unique<BitcoinDatabaseSynchronizer>(
-            network_id, bitcoin_rpc_.get(),
-            transaction_database_[network_id].get());
-
-    for (auto& keyring_id : BitcoinKeyringsForNetwork(network_id)) {
-      DCHECK(IsValidBitcoinNetworkKeyringPair(network_id, keyring_id));
-      if (auto keyring_info =
-              keyring_service_->GetKeyringInfoSync(keyring_id)) {
-        for (auto& account_info : keyring_info->account_infos) {
-          StartDatabaseSynchronizer(network_id, *account_info->account_id);
-        }
-      }
-    }
-  }
-}
+      bitcoin_rpc_(
+          std::make_unique<bitcoin_rpc::BitcoinRpc>(prefs,
+                                                    url_loader_factory)) {}
 
 BitcoinWalletService::~BitcoinWalletService() = default;
 
@@ -197,447 +932,256 @@ void BitcoinWalletService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-void BitcoinWalletService::GetBalance(const std::string& network_id,
-                                      mojom::AccountIdPtr account_id,
+void BitcoinWalletService::Reset() {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+}
+
+void BitcoinWalletService::GetBalance(mojom::AccountIdPtr account_id,
                                       GetBalanceCallback callback) {
-  auto account_info =
-      GetBitcoinAccountInfoSync(network_id, std::move(account_id));
-  if (!account_info) {
-    std::move(callback).Run("0", "Couldn't get balance");
+  CHECK(IsBitcoinAccount(*account_id));
+
+  auto addresses = keyring_service()->GetBitcoinAddresses(account_id);
+  if (!addresses) {
+    std::move(callback).Run(nullptr, InternalErrorString());
     return;
   }
 
-  std::move(callback).Run(base::NumberToString(account_info->balance), "");
+  auto context = base::MakeRefCounted<GetBalanceTask>(
+      weak_ptr_factory_.GetWeakPtr(), GetNetworkForBitcoinAccount(account_id),
+      std::move(*addresses), std::move(callback));
+  context->ScheduleWorkOnTask();
 }
 
 void BitcoinWalletService::GetBitcoinAccountInfo(
-    const std::string& network_id,
     mojom::AccountIdPtr account_id,
     GetBitcoinAccountInfoCallback callback) {
-  std::move(callback).Run(
-      GetBitcoinAccountInfoSync(network_id, std::move(account_id)));
+  std::move(callback).Run(GetBitcoinAccountInfoSync(account_id));
 }
 
 mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
-    const std::string& network_id,
-    mojom::AccountIdPtr account_id) {
-  if (!IsValidBitcoinNetworkKeyringPair(network_id, account_id->keyring_id)) {
-    NOTREACHED();
-    return nullptr;
+    const mojom::AccountIdPtr& account_id) {
+  return keyring_service()->GetBitcoinAccountInfo(account_id);
+}
+
+void BitcoinWalletService::RunDiscovery(mojom::AccountIdPtr account_id,
+                                        bool change,
+                                        RunDiscoveryCallback callback) {
+  DiscoverNextUnusedAddress(
+      account_id, change,
+      base::BindOnce(&BitcoinWalletService::OnRunDiscoveryDone,
+                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+                     std::move(callback)));
+}
+
+void BitcoinWalletService::OnRunDiscoveryDone(
+    mojom::AccountIdPtr account_id,
+    RunDiscoveryCallback callback,
+    base::expected<mojom::BitcoinAddressPtr, std::string> discovered_address) {
+  if (!discovered_address.has_value()) {
+    std::move(callback).Run(nullptr, discovered_address.error());
+    return;
   }
 
-  const auto& addresses = keyring_service_->GetBitcoinAddresses(*account_id);
+  UpdateNextUnusedAddressForAccount(account_id, discovered_address.value());
+  std::move(callback).Run(discovered_address.value().Clone(), std::nullopt);
+}
+
+void BitcoinWalletService::UpdateNextUnusedAddressForAccount(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::BitcoinAddressPtr& address) {
+  std::optional<uint32_t> next_receive_index = address->key_id->change
+                                                   ? std::optional<uint32_t>()
+                                                   : address->key_id->index;
+  std::optional<uint32_t> next_change_index = !address->key_id->change
+                                                  ? std::optional<uint32_t>()
+                                                  : address->key_id->index;
+  keyring_service()->UpdateNextUnusedAddressForBitcoinAccount(
+      account_id, next_receive_index, next_change_index);
+}
+
+void BitcoinWalletService::GetUtxos(mojom::AccountIdPtr account_id,
+                                    GetUtxosCallback callback) {
+  CHECK(IsBitcoinAccount(*account_id));
+
+  auto addresses = keyring_service()->GetBitcoinAddresses(account_id);
   if (!addresses) {
     NOTREACHED();
-    return nullptr;
-  }
-
-  auto bitcoin_account_info = mojom::BitcoinAccountInfo::New();
-
-  for (auto& account_info : keyring_service_->GetAllAccountInfos()) {
-    if (account_info->account_id == account_id) {
-      account_info->name = account_info->name;
-      break;
-    }
-  }
-
-  for (const auto& address : addresses.value()) {
-    const auto& info = bitcoin_account_info->address_infos.emplace_back(
-        mojom::BitcoinAddressInfo::New());
-    info->address_string = address.first;
-    info->key_id = address.second.Clone();
-
-    const auto& outputs = transaction_database_[network_id]->GetUnspentOutputs(
-        info->address_string);
-    for (const auto& o : outputs) {
-      info->utxo_list.push_back(mojom::BitcoinUnspentOutput::New(
-          o.outpoint.txid, o.outpoint.index, o.value));
-      info->balance += o.value;
-      bitcoin_account_info->balance += o.value;
-    }
-  }
-
-  return bitcoin_account_info;
-}
-
-void BitcoinWalletService::SendTo(const std::string& network_id,
-                                  mojom::AccountIdPtr account_id,
-                                  const std::string& address_to,
-                                  uint64_t amount,
-                                  uint64_t fee,
-                                  SendToCallback callback) {
-  if (!IsValidBitcoinNetworkKeyringPair(network_id, account_id->keyring_id)) {
-    NOTREACHED();
-    std::move(callback).Run("", "Invalid (network_id,keyring_id) pair");
+    std::move(callback).Run(base::unexpected(InternalErrorString()));
     return;
   }
 
-  auto account_addresses = keyring_service_->GetBitcoinAddresses(*account_id);
-  if (!account_addresses || account_addresses->empty()) {
-    std::move(callback).Run("", "No bitcoin addresses for account");
+  auto task = base::MakeRefCounted<GetUtxosTask>(
+      weak_ptr_factory_.GetWeakPtr(), GetNetworkForBitcoinAccount(account_id),
+      std::move(*addresses), std::move(callback));
+  task->ScheduleWorkOnTask();
+}
+
+void BitcoinWalletService::CreateTransaction(
+    mojom::AccountIdPtr account_id,
+    const std::string& address_to,
+    uint64_t amount,
+    bool sending_max_amount,
+    CreateTransactionCallback callback) {
+  CHECK(IsBitcoinAccount(*account_id));
+
+  auto& task = create_transaction_tasks_.emplace_back(
+      std::make_unique<CreateTransactionTask>(this, account_id, address_to,
+                                              amount, sending_max_amount,
+                                              std::move(callback)));
+  if (arrange_transactions_for_testing_) {
+    task->SetArrangeTransactionForTesting();  // IN-TEST
+  }
+  task->ScheduleWorkOnTask();
+}
+
+void BitcoinWalletService::CreateTransactionTaskDone(
+    CreateTransactionTask* task) {
+  CHECK(create_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
+}
+
+void BitcoinWalletService::SignAndPostTransaction(
+    const mojom::AccountIdPtr& account_id,
+    BitcoinTransaction bitcoin_transaction,
+    SignAndPostTransactionCallback callback) {
+  CHECK(IsBitcoinAccount(*account_id));
+
+  if (!SignTransactionInternal(bitcoin_transaction, account_id)) {
+    std::move(callback).Run("", std::move(bitcoin_transaction),
+                            InternalErrorString());
     return;
   }
 
-  auto context = std::make_unique<SendToContext>();
-  context->network_id = network_id;
-  context->account_id = account_id->Clone();
-  context->address_to = address_to;
-  context->amount = amount;
-  context->fee = fee;
-  context->addresses = std::move(*account_addresses);
-  context->callback = std::move(callback);
-
-  WorkOnSendTo(std::move(context));
-}
-
-bool BitcoinWalletService::FillUtxoList(SendToContext& context) {
-  context.utxo_list =
-      transaction_database_[context.network_id]->GetAllUnspentOutputs();
-  return !context.utxo_list.empty();
-}
-
-bool BitcoinWalletService::PickInputs(SendToContext& context) {
-  context.amount_picked = 0;
-  bool done = false;
-
-  // TODO(apaymyshev): This just picks ouputs one by one and stops when picked
-  // amount is GE to send amount plus fee. Needs something better than such
-  // greedy strategy.
-  for (bitcoin::Output& utxo : context.utxo_list) {
-    SendToContext::TxInput input;
-    input.prev_output = utxo;
-
-    for (const auto& address : context.addresses) {
-      if (utxo.scriptpubkey_address == address.first) {
-        input.key_id = address.second->Clone();
-        break;
-      }
-    }
-    if (!input.key_id) {
-      NOTREACHED();
-      continue;
-    }
-
-    auto pubkey =
-        keyring_service_->GetBitcoinPubkey(*context.account_id, *input.key_id);
-    if (!pubkey) {
-      return false;
-    }
-    input.pubkey = std::move(*pubkey);
-
-    context.amount_picked += input.prev_output.value;
-    if (context.amount_picked >= context.amount + context.fee) {
-      done = true;
-    }
-
-    context.inputs.push_back(std::move(input));
-
-    if (done) {
-      break;
-    }
-  }
-
-  DCHECK(!context.inputs.empty());
-  return done;
-}
-
-bool BitcoinWalletService::PrepareOutputs(SendToContext& context) {
-  auto& target_output = context.outputs.emplace_back();
-  target_output.address = context.address_to;
-  target_output.amount = context.amount;
-  auto decoded_address =
-      DecodeBitcoinAddress(target_output.address, context.IsTestnet());
-  // TODO(apaymyshev): support more types
-  // TODO(apaymyshev): rewrite as 'convert address to lock script'
-  if (decoded_address && decoded_address->address_type ==
-                             BitcoinAddressType::kWitnessV0PubkeyHash) {
-    target_output.pubkey_hash = std::move(decoded_address->pubkey_hash);
-    CHECK_EQ(target_output.pubkey_hash.size(), 20u);
-
-    Push8AsLE(0, target_output.script_pubkey);  // OP_0
-    Push8AsLE(target_output.pubkey_hash.size(), target_output.script_pubkey);
-    target_output.script_pubkey.insert(target_output.script_pubkey.end(),
-                                       target_output.pubkey_hash.begin(),
-                                       target_output.pubkey_hash.end());
-  } else {
-    return false;
-  }
-
-  CHECK_GE(context.amount_picked, context.amount + context.fee);
-  if (context.amount_picked == context.amount + context.fee) {
-    return true;
-  }
-
-  // TODO(apaymyshev): should always pick new change address.
-  const auto& change_address = GetUnusedChangeAddress(*context.account_id);
-  if (!change_address) {
-    return false;
-  }
-
-  // TODO(apaymyshev): fix copypaste with above.
-  auto& change_output = context.outputs.emplace_back();
-  change_output.address = *change_address;
-  change_output.amount = context.amount_picked - context.amount - context.fee;
-
-  auto decoded_change_address =
-      DecodeBitcoinAddress(change_output.address, context.IsTestnet());
-
-  if (decoded_change_address && decoded_change_address->address_type ==
-                                    BitcoinAddressType::kWitnessV0PubkeyHash) {
-    change_output.pubkey_hash = std::move(decoded_change_address->pubkey_hash);
-    CHECK_EQ(change_output.pubkey_hash.size(), 20u);
-
-    Push8AsLE(0, change_output.script_pubkey);   // OP_0
-    Push8AsLE(change_output.pubkey_hash.size(),  // OP_14
-              change_output.script_pubkey);
-    change_output.script_pubkey.insert(change_output.script_pubkey.end(),
-                                       change_output.pubkey_hash.begin(),
-                                       change_output.pubkey_hash.end());
-  } else {
-    NOTREACHED();
-    return false;
-  }
-
-  return true;
-}
-
-bool PushHashPrevouts(SendToContext& context, std::vector<uint8_t>& to) {
-  std::vector<uint8_t> data;
-  for (const auto& input : context.inputs) {
-    PushOutpoint(input.prev_output.outpoint, data);
-  }
-
-  const auto& double_hash = DoubleSHA256Hash(data);
-  to.insert(to.end(), double_hash.begin(), double_hash.end());
-  return true;
-}
-
-void PushHashSequence(SendToContext& context, std::vector<uint8_t>& to) {
-  std::vector<uint8_t> data;
-  for (const auto& input : context.inputs) {
-    Push32AsLE(input.n_sequence, data);
-  }
-
-  const auto& double_hash = DoubleSHA256Hash(data);
-  to.insert(to.end(), double_hash.begin(), double_hash.end());
-}
-
-void PushScriptCode(SendToContext& context,
-                    uint32_t input_index,
-                    std::vector<uint8_t>& to) {
-  CHECK_LT(input_index, context.inputs.size());
-
-  to.insert(to.end(), {0x19, 0x76, 0xa9, 0x14});
-  const auto& pubkey_hash = Hash160(context.inputs[input_index].pubkey);
-  to.insert(to.end(), pubkey_hash.begin(), pubkey_hash.end());
-  to.insert(to.end(), {0x88, 0xac});
-}
-
-void PushHashOutputs(SendToContext& context, std::vector<uint8_t>& to) {
-  std::vector<uint8_t> data;
-  for (const auto& output : context.outputs) {
-    Push64AsLE(output.amount, data);
-    PushVarInt(output.script_pubkey.size(), data);
-    data.insert(data.end(), output.script_pubkey.begin(),
-                output.script_pubkey.end());
-  }
-
-  const auto& double_hash = DoubleSHA256Hash(data);
-  to.insert(to.end(), double_hash.begin(), double_hash.end());
-}
-
-bool BitcoinWalletService::FillSignature(SendToContext& context,
-                                         uint32_t input_index) {
-  CHECK_LT(input_index, context.inputs.size());
-
-  auto& input = context.inputs[input_index];
-
-  // https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification
-  std::vector<uint8_t> data;
-  Push32AsLE(2, data);              // 1.
-  PushHashPrevouts(context, data);  // 2.
-  PushHashSequence(context, data);  // 3.
-
-  PushOutpoint(input.prev_output.outpoint, data);  // 4
-  PushScriptCode(context, input_index, data);      // 5.
-  Push64AsLE(input.prev_output.value, data);       // 6.
-  Push32AsLE(input.n_sequence, data);              // 7.
-
-  PushHashOutputs(context, data);      // 8.
-  Push32AsLE(context.locktime, data);  // 9.
-  Push32AsLE(kSigHashAll, data);       // 10.
-
-  if (auto signature = keyring_service_->SignMessageByBitcoinKeyring(
-          *context.account_id, *input.key_id, DoubleSHA256Hash(data))) {
-    input.signature = std::move(*signature);
-  } else {
-    return false;
-  }
-
-  Push8AsLE(kSigHashAll, input.signature);
-  return true;
-}
-
-bool BitcoinWalletService::FillSignatures(SendToContext& context) {
-  for (uint32_t i = 0; i < context.inputs.size(); ++i) {
-    if (!FillSignature(context, i)) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-void PushInputs(SendToContext& context, std::vector<uint8_t>& to) {
-  PushVarInt(context.inputs.size(), to);
-  for (const auto& input : context.inputs) {
-    PushOutpoint(input.prev_output.outpoint, to);
-    // TODO(apaymsyhev): support script for non-segwit transactions.
-    PushVarInt(0, to);
-    Push32AsLE(input.n_sequence, to);
-  }
-}
-
-void PushOutputs(SendToContext& context, std::vector<uint8_t>& to) {
-  PushVarInt(context.outputs.size(), to);
-  for (const auto& output : context.outputs) {
-    Push64AsLE(output.amount, to);
-    PushVarInt(output.script_pubkey.size(), to);
-    to.insert(to.end(), output.script_pubkey.begin(),
-              output.script_pubkey.end());
-  }
-}
-
-void PushWitnesses(SendToContext& context, std::vector<uint8_t>& to) {
-  for (const auto& input : context.inputs) {
-    // TODO(apaymyshev): only supports P2WPKH. Should support everything else.
-    PushVarInt(2, to);
-
-    PushVarSizeVector(input.signature, to);
-    PushVarSizeVector(input.pubkey, to);
-  }
-}
-
-// https://github.com/bitcoin/bips/blob/master/bip-0144.mediawiki#specification
-bool BitcoinWalletService::SerializeTransaction(SendToContext& context) {
-  std::vector<uint8_t> data;
-  Push32AsLE(kTransactionsVersion, data);  // version
-  Push8AsLE(0, data);                      // marker
-  Push8AsLE(1, data);                      // flag
-  PushInputs(context, data);
-  PushOutputs(context, data);
-  PushWitnesses(context, data);
-  Push32AsLE(context.locktime, data);
-
-  context.serialized_transaction = std::move(data);
-
-  return true;
-}
-
-void BitcoinWalletService::PostTransaction(
-    std::unique_ptr<SendToContext> context) {
-  auto network_id = context->network_id;
-  const auto transaction = context->serialized_transaction;
+  auto serialized_transaction =
+      BitcoinSerializer::SerializeSignedTransaction(bitcoin_transaction);
 
   bitcoin_rpc_->PostTransaction(
-      network_id, transaction,
+      GetNetworkForBitcoinAccount(account_id), serialized_transaction,
       base::BindOnce(&BitcoinWalletService::OnPostTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(context)));
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(bitcoin_transaction), std::move(callback)));
 }
 
 void BitcoinWalletService::OnPostTransaction(
-    std::unique_ptr<SendToContext> context,
-    base::expected<std::string, std::string> result) {
-  if (!result.has_value()) {
-    return context->ReplyFailure(result.error());
-  }
-
-  auto txid = result.value();
-  std::move(context->callback).Run(txid, "");
-}
-
-void BitcoinWalletService::WorkOnSendTo(
-    std::unique_ptr<SendToContext> context) {
-  DCHECK(context);
-
-  if (context->locktime == 0) {
-    auto height = transaction_database_[context->network_id]->GetChainHeight();
-    if (!height) {
-      context->ReplyFailure("Invalid chain height");
-      return;
-    }
-
-    // TODO(apymyshev): random shift locktime
-    // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
-    context->locktime = height.value();
-  }
-
-  if (!context->UtxoListReady()) {
-    if (!FillUtxoList(*context)) {
-      return context->ReplyFailure("No outputs to spend");
-    }
-  }
-
-  if (!context->InputsReady()) {
-    if (!PickInputs(*context)) {
-      return context->ReplyFailure("Couldn't pick transaction inputs");
-    }
-  }
-
-  if (!context->OutputsReady()) {
-    if (!PrepareOutputs(*context)) {
-      return context->ReplyFailure("Couldn't prepare outputs");
-    }
-  }
-
-  if (!context->SignaturesReady()) {
-    if (!FillSignatures(*context)) {
-      return context->ReplyFailure("Couldn't fill signatures");
-    }
-  }
-
-  if (!context->IsTransactionSerialized()) {
-    if (!SerializeTransaction(*context)) {
-      return context->ReplyFailure("Couldn't serizalize transaction");
-    }
-  }
-
-  PostTransaction(std::move(context));
-}
-
-void BitcoinWalletService::StartDatabaseSynchronizer(
-    const std::string& network_id,
-    const mojom::AccountId& account_id) {
-  CHECK(IsBitcoinAccount(account_id));
-  CHECK(IsValidBitcoinNetworkKeyringPair(network_id, account_id.keyring_id));
-  // TODO(apaymyshev): init address history from persistent storage.
-
-  auto addresses = keyring_service_->GetBitcoinAddresses(account_id);
-  if (!addresses) {
-    NOTREACHED();
+    BitcoinTransaction bitcoin_transaction,
+    SignAndPostTransactionCallback callback,
+    base::expected<std::string, std::string> txid) {
+  if (!txid.has_value()) {
+    std::move(callback).Run("", std::move(bitcoin_transaction), txid.error());
     return;
   }
 
-  std::vector<std::string> addresses_to_watch;
-  for (auto& a : addresses.value()) {
-    addresses_to_watch.push_back(a.first);
+  std::move(callback).Run(txid.value(), std::move(bitcoin_transaction), "");
+}
+
+void BitcoinWalletService::GetTransactionStatus(
+    const std::string& chain_id,
+    const std::string& txid,
+    GetTransactionStatusCallback callback) {
+  bitcoin_rpc_->GetTransaction(
+      chain_id, txid,
+      base::BindOnce(&BitcoinWalletService::OnGetTransaction,
+                     weak_ptr_factory_.GetWeakPtr(), txid,
+                     std::move(callback)));
+}
+
+void BitcoinWalletService::OnGetTransaction(
+    const std::string& txid,
+    GetTransactionStatusCallback callback,
+    base::expected<bitcoin_rpc::Transaction, std::string> transaction) {
+  if (!transaction.has_value()) {
+    std::move(callback).Run(base::unexpected(transaction.error()));
+    return;
   }
 
-  database_synchronizer_[network_id]->Start(addresses_to_watch);
+  if (transaction.value().txid != txid) {
+    std::move(callback).Run(base::unexpected(InternalErrorString()));
+    return;
+  }
+
+  std::move(callback).Run(base::ok(transaction.value().status.confirmed));
 }
 
-absl::optional<std::string> BitcoinWalletService::GetUnusedChangeAddress(
-    const mojom::AccountId& account_id) {
-  CHECK(IsBitcoinAccount(account_id));
-  // TODO(apaymyshev): this always returns first change address. Should return
-  // first unused change address.
-  return keyring_service_->GetBitcoinAddress(
-      account_id, mojom::BitcoinKeyId(account_id.bitcoin_account_index, 1, 0));
+void BitcoinWalletService::DiscoverNextUnusedAddress(
+    const mojom::AccountIdPtr& account_id,
+    bool change,
+    DiscoverNextUnusedAddressCallback callback) {
+  CHECK(IsBitcoinAccount(*account_id));
+
+  auto account_info = keyring_service()->GetBitcoinAccountInfo(account_id);
+  if (!account_info) {
+    return std::move(callback).Run(base::unexpected(InternalErrorString()));
+  }
+  auto start_address = change ? account_info->next_change_address.Clone()
+                              : account_info->next_receive_address.Clone();
+  auto task = base::MakeRefCounted<DiscoverNextUnusedAddressTask>(
+      weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+      std::move(start_address), std::move(callback));
+  task->ScheduleWorkOnTask();
 }
 
-void BitcoinWalletService::AccountsAdded(
-    std::vector<mojom::AccountInfoPtr> accounts) {
-  // TODO(apaymyshev): need keyring_id here.
+void BitcoinWalletService::DiscoverAccount(mojom::KeyringId keyring_id,
+                                           uint32_t account_index,
+                                           DiscoverAccountCallback callback) {
+  auto task = base::MakeRefCounted<DiscoverAccountTask>(
+      weak_ptr_factory_.GetWeakPtr(), keyring_id, account_index,
+      std::move(callback));
+  task->ScheduleWorkOnTask();
+}
+
+bool BitcoinWalletService::SignTransactionInternal(
+    BitcoinTransaction& tx,
+    const mojom::AccountIdPtr& account_id) {
+  auto addresses = keyring_service()->GetBitcoinAddresses(account_id);
+  if (!addresses || addresses->empty()) {
+    return false;
+  }
+
+  std::map<std::string, mojom::BitcoinKeyIdPtr> address_map;
+  for (auto& addr : *addresses) {
+    address_map.emplace(std::move(addr->address_string),
+                        std::move(addr->key_id));
+  }
+
+  for (size_t input_index = 0; input_index < tx.inputs().size();
+       ++input_index) {
+    auto hash = BitcoinSerializer::SerializeInputForSign(tx, input_index);
+    if (!hash) {
+      return false;
+    }
+    auto& input = tx.inputs()[input_index];
+
+    if (!address_map.contains(input.utxo_address)) {
+      return false;
+    }
+    auto& key_id = address_map.at(input.utxo_address);
+
+    auto signature = keyring_service()->SignMessageByBitcoinKeyring(
+        account_id, key_id, *hash);
+    if (!signature) {
+      return false;
+    }
+    signature->push_back(tx.sighash_type());
+
+    auto pubkey = keyring_service()->GetBitcoinPubkey(account_id, key_id);
+    if (!pubkey) {
+      return false;
+    }
+    tx.SetInputWitness(
+        input_index, BitcoinSerializer::SerializeWitness(*signature, *pubkey));
+  }
+
+  return true;
+}
+
+void BitcoinWalletService::SetUrlLoaderFactoryForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  bitcoin_rpc_->SetUrlLoaderFactoryForTesting(  // IN-TEST
+      std::move(url_loader_factory));
+}
+
+void BitcoinWalletService::SetArrangeTransactionsForTesting(bool arrange) {
+  arrange_transactions_for_testing_ = arrange;
 }
 
 }  // namespace brave_wallet

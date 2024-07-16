@@ -8,7 +8,8 @@
 
 #include <libxml/xmlstring.h>
 
-#include "base/strings/string_piece.h"
+#include <string_view>
+
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
@@ -17,8 +18,9 @@ namespace brave_page_graph {
 // UTF-8 characters).
 class XmlUtf8String {
  public:
-  explicit XmlUtf8String(base::StringPiece str);
+  explicit XmlUtf8String(std::string_view str);
   explicit XmlUtf8String(const String& str);
+  explicit XmlUtf8String(int value);
   ~XmlUtf8String();
 
   XmlUtf8String(const XmlUtf8String&) = delete;

@@ -31,6 +31,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "build/build_config.h"
@@ -65,6 +66,10 @@ class SimpleURLLoader;
 
 class Profile;
 
+namespace brave_wallet {
+class JsonRpcService;
+}
+
 namespace brave_rewards {
 
 class RewardsFlagBrowserTest;
@@ -95,13 +100,12 @@ class RewardsServiceImpl : public RewardsService,
 #endif
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
+  RewardsServiceImpl(Profile* profile,
 #if BUILDFLAG(ENABLE_GREASELION)
-  explicit RewardsServiceImpl(
-      Profile* profile,
-      greaselion::GreaselionService* greaselion_service);
-#else
-  explicit RewardsServiceImpl(Profile* profile);
+                     greaselion::GreaselionService* greaselion_service,
 #endif
+                     brave_wallet::JsonRpcService* wallet_rpc_service);
+
   RewardsServiceImpl(const RewardsServiceImpl&) = delete;
   RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
   ~RewardsServiceImpl() override;
@@ -118,9 +122,11 @@ class RewardsServiceImpl : public RewardsService,
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
 
-  bool IsGrandfatheredUser() const override;
-
   void GetUserType(base::OnceCallback<void(mojom::UserType)> callback) override;
+
+  bool IsTermsOfServiceUpdateRequired() override;
+
+  void AcceptTermsOfServiceUpdate() override;
 
   std::string GetCountryCode() const override;
 
@@ -129,17 +135,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
-  void FetchPromotions(FetchPromotionsCallback callback) override;
-
-  void ClaimPromotion(
-      const std::string& promotion_id,
-      ClaimPromotionCallback callback) override;
-  void ClaimPromotion(
-      const std::string& promotion_id,
-      AttestPromotionCallback callback) override;
-  void AttestPromotion(const std::string& promotion_id,
-                       const std::string& solution,
-                       AttestPromotionCallback callback) override;
   void GetActivityInfoList(const uint32_t start,
                            const uint32_t limit,
                            mojom::ActivityInfoFilterPtr filter,
@@ -189,7 +184,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) override;
-  void SetExternalWalletType(const std::string& wallet_type) override;
 
   RewardsNotificationService* GetNotificationService() const override;
   void GetRewardsInternalsInfo(
@@ -197,6 +191,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetEnvironment(GetEnvironmentCallback callback) override;
 
   p3a::ConversionMonitor* GetP3AConversionMonitor() override;
+  void OnRewardsPageShown() override;
 
   mojom::RewardsEngineOptionsPtr HandleFlags(const RewardsFlags& flags);
 
@@ -247,14 +242,6 @@ class RewardsServiceImpl : public RewardsService,
                          mojom::PublisherInfoPtr publisher_info,
                          SavePublisherInfoCallback callback) override;
 
-  void SetInlineTippingPlatformEnabled(
-      const std::string& key,
-      bool enabled) override;
-
-  void GetInlineTippingPlatformEnabled(
-      const std::string& key,
-      GetInlineTippingPlatformEnabledCallback callback) override;
-
   void GetShareURL(
       const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) override;
@@ -276,22 +263,17 @@ class RewardsServiceImpl : public RewardsService,
 
   std::vector<std::string> GetExternalWalletProviders() const override;
 
+  void BeginExternalWalletLogin(
+      const std::string& wallet_type,
+      BeginExternalWalletLoginCallback callback) override;
+
   void ConnectExternalWallet(const std::string& path,
                              const std::string& query,
                              ConnectExternalWalletCallback) override;
 
   void SetAutoContributeEnabled(bool enabled) override;
 
-  void GetMonthlyReport(
-      const uint32_t month,
-      const uint32_t year,
-      GetMonthlyReportCallback callback) override;
-
-  void GetAllMonthlyReportIds(GetAllMonthlyReportIdsCallback callback) override;
-
   void GetAllContributions(GetAllContributionsCallback callback) override;
-
-  void GetAllPromotions(GetAllPromotionsCallback callback) override;
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
@@ -363,9 +345,13 @@ class RewardsServiceImpl : public RewardsService,
                            LoadURLCallback callback,
                            std::unique_ptr<std::string> response_body);
 
-  void StartNotificationTimers();
-  void StopNotificationTimers();
-  void OnNotificationTimerFired();
+  void OnGetSPLTokenAccountBalance(
+      GetSPLTokenAccountBalanceCallback callback,
+      const std::string& amount,
+      uint8_t decimals,
+      const std::string& amount_string,
+      brave_wallet::mojom::SolanaProviderError error,
+      const std::string& error_message);
 
   void MaybeShowNotificationTipsPaid();
   void ShowNotificationTipsPaid(bool ac_enabled);
@@ -376,32 +362,19 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnEngineInitialized(mojom::Result result);
 
-  void OnClaimPromotion(ClaimPromotionCallback callback,
-                        const mojom::Result result,
-                        const std::string& response);
-
-  void AttestationAndroid(const std::string& promotion_id,
-                          AttestPromotionCallback callback,
-                          const mojom::Result result,
-                          const std::string& response);
-
-  void OnAttestationAndroid(
-      const std::string& promotion_id,
-      AttestPromotionCallback callback,
-      const std::string& nonce,
-      const bool token_received,
-      const std::string& token,
-      const bool attestation_passed);
+  void OnExternalWalletLoginStarted(BeginExternalWalletLoginCallback callback,
+                                    mojom::ExternalWalletLoginParamsPtr params);
 
   // mojom::RewardsEngineClient
   void OnReconcileComplete(mojom::Result result,
                            mojom::ContributionInfoPtr contribution) override;
-  void OnAttestPromotion(AttestPromotionCallback callback,
-                         const mojom::Result result,
-                         mojom::PromotionPtr promotion);
   void LoadLegacyState(LoadLegacyStateCallback callback) override;
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
+  void GetSPLTokenAccountBalance(
+      const std::string& solana_address,
+      const std::string& token_mint_address,
+      GetSPLTokenAccountBalanceCallback callback) override;
   void SetPublisherMinVisits(int visits) const override;
   void OnPanelPublisherInfo(mojom::Result result,
                             mojom::PublisherInfoPtr info,
@@ -500,8 +473,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetClientInfo(GetClientInfoCallback callback) override;
 
-  void UnblindedTokensReady() override;
-
   void ReconcileStampReset() override;
 
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
@@ -532,10 +503,12 @@ class RewardsServiceImpl : public RewardsService,
   void OnP3ADailyTimer();
 
   void OnRecordBackendP3AExternalWallet(bool delay_report,
-                                        GetExternalWalletResult result);
+                                        mojom::ExternalWalletPtr wallet);
   void GetAllContributionsForP3A();
   void OnRecordBackendP3AStatsContributions(
       std::vector<mojom::ContributionInfoPtr> list);
+  void OnRecordBackendP3AStatsRecurringTips(
+      std::vector<mojom::PublisherInfoPtr> list);
 
   void OnRecordBackendP3AStatsAC(bool ac_enabled);
 
@@ -543,16 +516,8 @@ class RewardsServiceImpl : public RewardsService,
                           const mojom::Result result,
                           mojom::BalanceReportInfoPtr report);
 
-  void OnGetMonthlyReport(GetMonthlyReportCallback callback,
-                          const mojom::Result result,
-                          mojom::MonthlyReportInfoPtr report);
-
   void OnRunDBTransaction(RunDBTransactionCallback callback,
                           mojom::DBCommandResponsePtr response);
-
-  void OnGetAllPromotions(
-      GetAllPromotionsCallback callback,
-      base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void OnFilesDeletedForCompleteReset(SuccessCallback callback,
                                       const bool success);
@@ -579,6 +544,7 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
+  raw_ptr<brave_wallet::JsonRpcService> wallet_rpc_service_ = nullptr;
   mojo::AssociatedReceiver<mojom::RewardsEngineClient> receiver_;
   mojo::AssociatedRemote<mojom::RewardsEngine> engine_;
   mojo::Remote<mojom::RewardsEngineFactory> engine_factory_;
@@ -599,8 +565,6 @@ class RewardsServiceImpl : public RewardsService,
   SimpleURLLoaderList url_loaders_;
   std::map<std::string, BitmapFetcherService::RequestId>
       current_media_fetchers_;
-  std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
-  std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
   PrefChangeRegistrar profile_pref_change_registrar_;
 
   bool engine_for_testing_ = false;

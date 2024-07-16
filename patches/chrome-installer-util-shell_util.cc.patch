@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index d32b663370c0a568928579560cef97bd4aff8d3d..6b2716b6f8fb008d3b583ad123cb9de1dbe6db18 100644
+index 44aa164a7b903aa5218d529632decb7ffba0b65e..71fb7a20b285696f9f51b0029bd65b0175a71754 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
 @@ -365,6 +365,7 @@ void GetChromeProgIdEntries(
@@ -10,7 +10,7 @@ index d32b663370c0a568928579560cef97bd4aff8d3d..6b2716b6f8fb008d3b583ad123cb9de1
  
    if (!app_info.delegate_clsid.empty()) {
      auto delegate_execute_entries =
-@@ -461,6 +462,7 @@ void GetShellIntegrationEntries(
+@@ -460,6 +461,7 @@ void GetShellIntegrationEntries(
  
    const std::wstring html_prog_id(GetBrowserProgId(suffix));
    for (int i = 0; ShellUtil::kPotentialFileAssociations[i] != nullptr; i++) {
@@ -18,7 +18,7 @@ index d32b663370c0a568928579560cef97bd4aff8d3d..6b2716b6f8fb008d3b583ad123cb9de1
      entries->push_back(std::make_unique<RegistryEntry>(
          capabilities + L"\\FileAssociations",
          ShellUtil::kPotentialFileAssociations[i], html_prog_id));
-@@ -485,6 +487,7 @@ void GetAppExtRegistrationEntries(
+@@ -484,6 +486,7 @@ void GetAppExtRegistrationEntries(
    std::wstring key_name =
        base::StrCat({ShellUtil::kRegClasses, kFilePathSeparator, ext,
                      kFilePathSeparator, ShellUtil::kRegOpenWithProgids});
@@ -26,7 +26,7 @@ index d32b663370c0a568928579560cef97bd4aff8d3d..6b2716b6f8fb008d3b583ad123cb9de1
    entries->push_back(
        std::make_unique<RegistryEntry>(key_name, prog_id, std::wstring()));
  }
-@@ -1740,8 +1743,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
+@@ -1525,8 +1528,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
  const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"http", L"https",

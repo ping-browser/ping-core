@@ -9,7 +9,8 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 
 // POST /v1/orders/{order_id}/transactions/uphold
 //
@@ -42,17 +43,17 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace payment {
 
 using PostTransactionUpholdCallback =
-    std::function<void(const mojom::Result result)>;
+    base::OnceCallback<void(const mojom::Result result)>;
 
 class PostTransactionUphold {
  public:
-  explicit PostTransactionUphold(RewardsEngineImpl& engine);
+  explicit PostTransactionUphold(RewardsEngine& engine);
   ~PostTransactionUphold();
 
   void Request(const mojom::SKUTransaction& transaction,
@@ -65,10 +66,10 @@ class PostTransactionUphold {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 PostTransactionUpholdCallback callback);
+  void OnRequest(PostTransactionUpholdCallback callback,
+                 mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace payment

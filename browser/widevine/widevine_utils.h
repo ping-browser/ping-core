@@ -6,33 +6,21 @@
 #ifndef BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_
 #define BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_
 
-#include <string>
-
 namespace content {
 class WebContents;
 }  // namespace content
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}
-
 class PrefRegistrySimple;
-class PrefService;
-class Profile;
 
-void EnableWidevineCdmComponent();
-void DisableWidevineCdmComponent();
-void RegisterWidevineProfilePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry);
+// On Android, kWidevineEnabled is written through EnableWidevineCdm() for the
+// permission prompt, but r/w through BraveLocalState.java on preference screen
+void EnableWidevineCdm();
+void DisableWidevineCdm();
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart);
 void RequestWidevinePermission(content::WebContents* web_contents,
                                bool for_restart);
 void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry);
-void RegisterWidevineLocalstatePrefsForMigration(PrefRegistrySimple* registry);
-void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask);
-bool IsWidevineOptedIn();
-void SetWidevineOptedIn(bool opted_in);
-void MigrateWidevinePrefs(Profile* profile);
-void MigrateObsoleteWidevineLocalStatePrefs(PrefService* local_state);
+bool IsWidevineEnabled();
+void SetWidevineEnabled(bool opted_in);
 
 #endif  // BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_

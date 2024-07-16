@@ -9,7 +9,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_service_observer.h"
-#include "net/base/mac/url_conversions.h"
+#include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 #include "brave/ios/browser/api/history/brave_history_api.h"
@@ -87,7 +87,7 @@ void HistoryServiceListenerIOS::OnURLsModified(
   }
 }
 
-void HistoryServiceListenerIOS::OnURLsDeleted(
+void HistoryServiceListenerIOS::OnHistoryDeletions(
     history::HistoryService* history_service,
     const history::DeletionInfo& deletion_info) {
   bool isAllHistory = false;

@@ -32,6 +32,8 @@ source_set("brave_wallet") {
     "swap_service_factory.h",
     "tx_service_factory.cc",
     "tx_service_factory.h",
+    "zcash_wallet_service_factory.cc",
+    "zcash_wallet_service_factory.h",
   ]
   if (enable_ipfs_local_node) {
     sources += [
@@ -48,13 +50,16 @@ source_set("brave_wallet") {
     "//brave/browser/profiles:util",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+    "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
@@ -74,6 +79,8 @@ source_set("brave_wallet_delegate") {
   sources = [
     "brave_wallet_provider_delegate_impl.cc",
     "brave_wallet_provider_delegate_impl.h",
+    "brave_wallet_service_delegate_base.cc",
+    "brave_wallet_service_delegate_base.h",
     "brave_wallet_service_delegate_helper.cc",
   ]
   deps = [
@@ -168,7 +175,6 @@ source_set("unit_tests") {
     "asset_discovery_manager_unittest.cc",
     "asset_discovery_task_unittest.cc",
     "blockchain_images_source_unittest.cc",
-    "brave_wallet_p3a_unittest.cc",
     "brave_wallet_prefs_unittest.cc",
     "brave_wallet_service_unittest.cc",
     "eth_allowance_manager_unittest.cc",
@@ -189,6 +195,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser:test_support",
     "//brave/components/brave_wallet/browser:transaction",
     "//brave/components/brave_wallet/browser:utils",
+    "//brave/components/brave_wallet/browser/test:test_support",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:test_support",
@@ -197,6 +204,7 @@ source_set("unit_tests") {
     "//brave/components/resources:strings_grit",
     "//brave/components/version_info",
     "//chrome/browser",
+    "//chrome/browser/permissions",
     "//chrome/test:test_support",
     "//testing/gtest",
   ]
@@ -229,10 +237,10 @@ source_set("browser_tests") {
       "//base/test:test_support",
       "//brave/app:command_ids",
       "//brave/browser",
-      "//brave/browser/ui/sidebar",
+      "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:pref_names",
-      "//brave/components/sidebar",
+      "//brave/components/sidebar/browser",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",

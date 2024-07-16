@@ -7,15 +7,13 @@
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_CONTROLLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/sidebar/sidebar_item.h"
-#include "brave/components/sidebar/sidebar_service.h"
-#include "chrome/browser/ui/side_panel/side_panel_entry_key.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "ui/base/window_open_disposition.h"
 
 class BraveBrowser;
@@ -35,8 +33,7 @@ class SidebarModel;
 // This will observe SidebarService to know per-profile sidebar data changing
 // such as adding new item or deleting existing item.
 // Controller will request about add/delete items to SidebarService.
-class SidebarController : public SidebarService::Observer,
-                          public TabStripModelObserver {
+class SidebarController : public SidebarService::Observer {
  public:
   SidebarController(BraveBrowser* browser, Profile* profile);
   ~SidebarController() override;
@@ -52,7 +49,7 @@ class SidebarController : public SidebarService::Observer,
   // |disposition| is only valid for shortcut type. If |disposition| is not
   // CURRENT_TAB, item at |index| is handled based on |disposition|.
   void ActivateItemAt(
-      absl::optional<size_t> index,
+      std::optional<size_t> index,
       WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
   void AddItemWithCurrentTab();
 
@@ -66,11 +63,7 @@ class SidebarController : public SidebarService::Observer,
   // new tab.
   void LoadAtTab(const GURL& url);
 
-  bool IsActiveIndex(absl::optional<size_t> index) const;
-  void SetBrowserActivePanelKey(absl::optional<SidePanelEntryKey> entry_key);
-  void ClearBrowserActivePanelKey();
-  bool GetIsPanelOperationFromActiveTabChangeAndReset();
-
+  bool IsActiveIndex(std::optional<size_t> index) const;
   bool DoesBrowserHaveOpenedTabForItem(const SidebarItem& item) const;
 
   void SetSidebar(Sidebar* sidebar);
@@ -81,12 +74,6 @@ class SidebarController : public SidebarService::Observer,
   // SidebarService::Observer overrides:
   void OnShowSidebarOptionChanged(
       SidebarService::ShowSidebarOption option) override;
-
-  // TabStripModelObserver
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override;
 
  private:
   void OnPreferenceChanged(const std::string& pref_name);
@@ -102,12 +89,7 @@ class SidebarController : public SidebarService::Observer,
   raw_ptr<BraveBrowser> browser_ = nullptr;
   // Interface to view.
   raw_ptr<Sidebar> sidebar_ = nullptr;
-  // If there is a tab-specific panel open, this is the entry key to restore
-  // when changing active tab to a tab without a tab-specific panel open.
-  absl::optional<SidePanelEntryKey> browser_active_panel_key_;
 
-  // True if panel opening/closing request from active tab change.
-  bool operation_from_active_tab_change_ = false;
   std::unique_ptr<SidebarModel> sidebar_model_;
   base::ScopedObservation<SidebarService, SidebarService::Observer>
       sidebar_service_observed_{this};

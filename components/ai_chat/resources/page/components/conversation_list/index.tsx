@@ -4,86 +4,201 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import classnames from 'classnames'
+import classnames from '$web-common/classnames'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-
+import useLongPress from '$web-common/useLongPress'
+import getPageHandlerInstance, * as mojom from '../../api/page_handler'
+import DataContext from '../../state/context'
+import ContextMenuAssistant from '../context_menu_assistant'
+import { getLocale } from '$web-common/locale'
+import SiteTitle from '../site_title'
+import Quote from '../quote'
+import ActionTypeLabel from '../action_type_label'
+import LongPageInfo from '../alerts/long_page_info'
+import AssistantResponse from '../assistant_response'
 import styles from './style.module.scss'
-import { ConversationTurn, CharacterType } from '../../api/page_handler'
+
+const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
+  mojom.SuggestionGenerationStatus.CanGenerate,
+  mojom.SuggestionGenerationStatus.IsGenerating
+]
 
 interface ConversationListProps {
-  list: ConversationTurn[]
-  suggestedQuestions: string[]
-  isLoading: boolean
-  onQuestionSubmit: (question: string) => void
+  onLastElementHeightChange: () => void
 }
 
-function ConversationList (props: ConversationListProps) {
-  // Scroll the last conversation item in to view when entries are added.
-  const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
+function ConversationList(props: ConversationListProps) {
+  const context = React.useContext(DataContext)
+  const {
+    conversationHistory,
+    suggestedQuestions,
+    shouldDisableUserInput,
+    hasAcceptedAgreement,
+    shouldSendPageContents
+  } = context
+
+  const portalRefs = React.useRef<Map<number, Element>>(new Map())
+
+  const showSuggestions: boolean =
+    hasAcceptedAgreement && context.shouldSendPageContents && (
+    suggestedQuestions.length > 0 ||
+    SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
+
+  const handleQuestionSubmit = (question: string) => {
+    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
+  }
+
+  const lastEntryElementRef = React.useRef<HTMLDivElement>(null)
+  const [activeMenuId, setActiveMenuId] = React.useState<number | null>()
+
+  const showAssistantMenu = (id: number) => {
+    setActiveMenuId(id)
+  }
+
+  const hideAssistantMenu = () => {
+    setActiveMenuId(null)
+  }
+
+  const longPressProps = useLongPress({
+    onLongPress: (e: React.TouchEvent) => {
+      const currentTarget = e.currentTarget as HTMLElement
+      const id = currentTarget.getAttribute('data-id')
+      if (id === null) return
+      showAssistantMenu(parseInt(id))
+    },
+    onTouchMove: () => setActiveMenuId(null)
+  })
 
   React.useEffect(() => {
-    if (!props.list.length && !props.isLoading) {
-      return
-    }
+    if (lastEntryElementRef.current === null) return
+    if (!context.isGenerating) return
+    props.onLastElementHeightChange()
+  }, [conversationHistory.length, lastEntryElementRef.current?.clientHeight])
 
-    if (!lastConversationEntryElementRef.current) {
-      console.error('Conversation entry element did not exist when expected')
-    } else {
-      lastConversationEntryElementRef.current.scrollIntoView(false)
+  const lastAssistantId = React.useMemo(() => {
+    // Get the last entry that is an assistant entry
+    for (let i = conversationHistory.length - 1; i >= 0; i--) {
+      if (conversationHistory[i].characterType === mojom.CharacterType.ASSISTANT) {
+        return i
+      }
     }
-  }, [props.list.length, props.isLoading, lastConversationEntryElementRef.current?.clientHeight])
+    return -1
+  }, [conversationHistory])
 
   return (
     <>
       <div>
-      {props.list.map((turn, id) => {
-        const isLastEntry = (id === (props.list.length - 1))
-        const isLoading = isLastEntry && props.isLoading
-        const elementRef = isLastEntry
-          ? lastConversationEntryElementRef
-          : null
+        {conversationHistory.map((turn, id) => {
+          const isLastEntry = id === lastAssistantId
+          const isAIAssistant = turn.characterType === mojom.CharacterType.ASSISTANT
+          const isEntryInProgress = isLastEntry && isAIAssistant && context.isGenerating
+          const isHuman = turn.characterType === mojom.CharacterType.HUMAN
+          const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
+          const showLongPageContentInfo = id === 1 && isAIAssistant && context.shouldShowLongPageWarning
 
-        const isHuman = turn.characterType === CharacterType.HUMAN
-        const isAIAssistant = turn.characterType === CharacterType.ASSISTANT
+          const turnContainer = classnames({
+            [styles.turnContainerMobile]: context.isMobile,
+            [styles.turnContainerHighlight]: isAIAssistant && activeMenuId === id
+          })
 
-        const turnClass = classnames({
-          [styles.turn]: true,
-          [styles.turnAI]: isAIAssistant,
-        })
+          const turnClass = classnames({
+            [styles.turn]: true,
+            [styles.turnAI]: isAIAssistant,
+          })
 
-        const avatarStyles = classnames({
-          [styles.avatar]: true,
-          [styles.avatarAI]: isAIAssistant,
-        })
+          const avatarStyles = classnames({
+            [styles.avatar]: true,
+            [styles.avatarAI]: isAIAssistant
+          })
 
-        return (
-          <div key={id} ref={elementRef} className={turnClass}>
-            <div className={avatarStyles}>
-              <Icon name={isHuman ? 'user-circle' : 'product-brave-ai'} />
+          return (
+            <div
+              key={id}
+              className={turnContainer}
+              ref={isLastEntry ? lastEntryElementRef : null}
+            >
+              <div
+                data-id={id}
+                className={turnClass}
+                onMouseLeave={isAIAssistant ? () => setActiveMenuId(null) : undefined}
+                {...(isAIAssistant ? longPressProps : {})}
+              >
+                {isAIAssistant && (
+                  <div className={styles.asistantMenu}>
+                    <ContextMenuAssistant
+                      ref={portalRefs}
+                      turnId={id}
+                      turnText={turn.text}
+                      isOpen={activeMenuId === id}
+                      onClick={() => showAssistantMenu(id)}
+                      onClose={hideAssistantMenu}
+                    />
+                  </div>
+                )}
+                <div className={avatarStyles}>
+                  <Icon name={isHuman ? 'user-circle' : 'product-brave-leo'} />
+                </div>
+                <div
+                  className={styles.message}
+                >
+                  { isAIAssistant && (
+                      <AssistantResponse
+                        entry={turn}
+                        isEntryInProgress={isEntryInProgress}
+                      />
+                    )
+                  }
+                  {
+                    !isAIAssistant && !turn.selectedText && turn.text
+                  }
+                  {turn.selectedText &&
+                      <ActionTypeLabel actionType={turn.actionType} />}
+                  {turn.selectedText && <Quote text={turn.selectedText} />}
+                  {showSiteTitle && <div className={styles.siteTitleContainer}><SiteTitle size="default" /></div>}
+                  {showLongPageContentInfo && <LongPageInfo />}
+                </div>
+              </div>
+              {isAIAssistant ? (
+                <div
+                  ref={(el) => el && portalRefs.current.set(id, el)}
+                  className={styles.feedbackFormPortal}
+                />
+              ) : null}
             </div>
-            <div className={styles.message}>
-              {turn.text}
-              {isLoading && <span className={styles.caret}/>}
-            </div>
-          </div>
-        )
-      })}
+          )
+        })}
       </div>
-      {props.suggestedQuestions.length > 0 && (
+      {showSuggestions && (
         <div className={styles.suggestedQuestionsBox}>
-          <div className={styles.suggestedQuestionLabel}>
-            <Icon name="product-brave-ai" />
-            <div>Suggested follow-ups</div>
-          </div>
           <div className={styles.questionsList}>
-            {props.suggestedQuestions.map((question, id) => (
-              <Button key={id} kind='outline' onClick={() => props.onQuestionSubmit(question)}>
-                <span className={styles.buttonText}>
-                  {question}
-                </span>
+            {suggestedQuestions.map((question, id) => (
+              <Button
+                key={id}
+                kind='outline'
+                onClick={() => handleQuestionSubmit(question)}
+                isDisabled={shouldDisableUserInput}
+              >
+                <span className={styles.buttonText}>{question}</span>
               </Button>
             ))}
+            {SUGGESTION_STATUS_SHOW_BUTTON.includes(
+              context.suggestionStatus
+            ) && (
+              <Button
+                onClick={() => context.generateSuggestedQuestions()}
+                // isDisabled={context.suggestionStatus === mojom.SuggestionGenerationStatus.IsGenerating}
+                isLoading={
+                  context.suggestionStatus ===
+                  mojom.SuggestionGenerationStatus.IsGenerating
+                }
+                kind='outline'
+              >
+                <span className={styles.buttonText}>
+                  {getLocale('suggestQuestionsLabel')}
+                </span>
+              </Button>
+            )}
           </div>
         </div>
       )}

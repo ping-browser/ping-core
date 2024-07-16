@@ -22,6 +22,10 @@
     #needsRestart {
       background-color: rgb(22, 23, 25);
     }
+
+    button.primary {
+        color: white;
+    }
   }
 
   #needsRestart .flex:last-child {
@@ -47,7 +51,6 @@
     background: var(--interactive-color);
     border: 0;
     border-radius: 3px;
-    color: white;
     font-size: .875rem;
     padding: 14px 38px;
   }
@@ -85,7 +88,8 @@
   </settings-toggle-button>
   <div class="settings-row" id="manageV2ExtensionsRow" hidden="[[!isExtensionsManifestV2FeatureEnabled_]]">
     <cr-link-row icon-class=" icon-external" label="$i18n{manageExtensionsV2Label}"
-      sub-label="$i18n{manageExtensionsV2SubLabel}" on-click="openManageV2ExtensionPage_">
+      sub-label="$i18n{manageExtensionsV2SubLabel}" on-click="openManageV2ExtensionPage_"
+      id="manageV2Extensions">
     </cr-link-row>
   </div>
   <div class="settings-row" id="manageExtensionsRow">
@@ -116,7 +120,9 @@
 </div>
 <settings-animated-pages id="extensions-v2-subpage" section="extensions">
   <template is="dom-if" route-path="/extensions/v2">
-    <settings-subpage page-title="$i18n{manageExtensionsV2Label}">
+    <settings-subpage
+      associated-control="[[$$('#manageV2Extensions')]]"
+      page-title="$i18n{manageExtensionsV2Label}">
       <brave-extensions-v2-subpage prefs="{{prefs}}"></brave-extensions-v2-subpage>
     </settings-subpage>
   </template>

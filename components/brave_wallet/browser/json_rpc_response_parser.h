@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_RESPONSE_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_RESPONSE_PARSER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -21,11 +22,11 @@
 // Common JSON RPC response parsing functions across different blockchains.
 namespace brave_wallet {
 
-absl::optional<std::string> ParseSingleStringResult(
+std::optional<std::string> ParseSingleStringResult(
     const base::Value& json_value);
-absl::optional<base::Value> ParseResultValue(const base::Value& json_value);
+std::optional<base::Value> ParseResultValue(const base::Value& json_value);
 
-absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
+std::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
     const base::Value& json_value);
 
 template <typename Error>
@@ -40,8 +41,7 @@ void ParseErrorResult(const base::Value& json_value,
   *error = Error::kParsingError;
   *error_message = l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
 
-  auto response =
-      json_rpc_responses::RPCResponse::FromValueDeprecated(json_value);
+  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
   if (!response || !response->error) {
     return;
   }
@@ -56,27 +56,30 @@ void ParseErrorResult(const base::Value& json_value,
   }
 }
 
-absl::optional<base::Value::Dict> ParseResultDict(
-    const base::Value& json_value);
-absl::optional<base::Value::List> ParseResultList(
-    const base::Value& json_value);
-absl::optional<bool> ParseBoolResult(const base::Value& json_value);
+std::optional<base::Value::Dict> ParseResultDict(const base::Value& json_value);
+std::optional<base::Value::List> ParseResultList(const base::Value& json_value);
+std::optional<bool> ParseBoolResult(const base::Value& json_value);
 
-absl::optional<std::string> ConvertInt64ToString(const std::string& path,
+std::optional<std::string> ConvertInt64ToString(const std::string& path,
+                                                const std::string& json);
+
+std::optional<std::string> ConvertUint64ToString(const std::string& path,
                                                  const std::string& json);
 
-absl::optional<std::string> ConvertUint64ToString(const std::string& path,
-                                                  const std::string& json);
-
-absl::optional<std::string> ConvertMultiUint64ToString(
+std::optional<std::string> ConvertMultiUint64ToString(
     const std::vector<std::string>& paths,
     const std::string& json);
 
-absl::optional<std::string> ConvertMultiUint64InObjectArrayToString(
+std::optional<std::string> ConvertMultiUint64InObjectArrayToString(
     const std::string& path_to_list,
     const std::string& path_to_object,
     const std::vector<std::string>& keys,
     const std::string& json);
+
+namespace ankr {
+std::optional<std::vector<mojom::AnkrAssetBalancePtr>>
+ParseGetAccountBalanceResponse(const base::Value& json_value);
+}  // namespace ankr
 
 }  // namespace brave_wallet
 

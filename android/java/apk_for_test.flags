@@ -10,7 +10,7 @@
 
 # Do not obfuscate the above classes as we check on fields in tests
 -keep class org.chromium.brave_wallet.mojom.BlockchainToken { *; }
--keep class org.chromium.brave_wallet.mojom.SwapParams { *; }
+-keep class org.chromium.brave_wallet.mojom.SwapQuoteParams { *; }
 -keep class org.chromium.brave_wallet.mojom.AccountInfo { *; }
 -keep class org.chromium.brave_wallet.mojom.TxData { *; }
 -keep class org.chromium.brave_wallet.mojom.GasEstimation1559 { *; }
@@ -61,8 +61,8 @@
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
     *** mToolbarSupplier;
-    *** mTabModelSelector;
     *** mBottomSheetController;
+    *** mTabStripHeightSupplier;
     *** updateSearchProviderHasLogo(...);
 }
 
@@ -70,19 +70,15 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
-    public <init>(...);
-    *** mHasClearedOmniboxForFocus;
-}
-
--keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
     *** mGoogleActivityControls;
     *** mSyncEncryption;
-    *** mSyncPaymentsIntegration;
+    *** mSyncEverything;
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper {
+    *** mCallback;
+    *** mFragmentManager;
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
@@ -136,7 +132,6 @@
     *** mOverlayPanelVisibilitySupplier;
     *** mTabModelSelector;
     *** mIncognitoStateProvider;
-    *** mTabCountProvider;
     *** mTabGroupUi;
     *** mBottomSheetController;
     *** mActivityLifecycleDispatcher;
@@ -145,6 +140,7 @@
     *** mTabCreatorManager;
     *** mSnackbarManager;
     *** mTabObscuringHandler;
+    *** mReadAloudControllerSupplier;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
@@ -207,11 +203,13 @@
 -keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUtils {
     *** addOrEditBookmark(...);
     *** showBookmarkManagerOnPhone(...);
+    *** isSpecialFolder(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
     *** addOrEditBookmark(...);
     *** showBookmarkManagerOnPhone(...);
+    *** isSpecialFolder(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkToolbar {
@@ -276,8 +274,13 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.preferences.ChromePreferenceKeyChecker {
-    *** getInstance(...);
+-keep class org.chromium.base.shared_preferences.StrictPreferenceKeyChecker {
+    <init>(...);
+    *** isKeyInUse(...);
+}
+
+-keep class org.chromium.base.shared_preferences.BraveStrictPreferenceKeyChecker {
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {
@@ -293,14 +296,6 @@
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
     <init>(...);
-}
-
--keep class org.chromium.chrome.browser.query_tiles.QueryTileSection {
-    *** getMaxRowsForMostVisitedTiles(...);
-}
-
--keep class org.chromium.chrome.browser.query_tiles.BraveQueryTileSection {
-    *** getMaxRowsForMostVisitedTiles(...);
 }
 
 -keep class org.chromium.chrome.browser.password_manager.settings.PasswordSettings {
@@ -383,7 +378,7 @@
     *** getModel(...);
 }
 
--keep class org.chromium.components.permissions.PermissionDialogModel {
+-keep class org.chromium.components.permissions.PermissionDialogModelFactory {
     *** getModel(...);
 }
 
@@ -419,7 +414,6 @@
     <init>(...);
     *** mCoordinator;
     *** mSnapScrollHelper;
-    *** destroyPropertiesForStream(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceMediator {
@@ -476,14 +470,6 @@
     *** getResourceItem(...);
 }
 
--keep class org.chromium.components.browser_ui.site_settings.FourStateCookieSettingsPreference {
-    public <init>(...);
-}
-
--keep class org.chromium.components.browser_ui.site_settings.BraveFourStateCookieSettingsPreferenceBase {
-    public <init>(...);
-}
-
 -keep class org.chromium.components.browser_ui.site_settings.SiteSettings {
     public <init>(...);
 }
@@ -501,23 +487,21 @@
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
-    *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
-    *** getCardViewBackgroundColor(...);
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiThemeProvider {
-    *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
+}
+
+-keep class org.chromium.chrome.browser.tab_ui.TabUiThemeUtils {
+    *** getTitleTextColor(...);
     *** getCardViewBackgroundColor(...);
 }
 
--keep class org.chromium.chrome.browser.autofill.AutofillPopupBridge {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.autofill.BraveAutofillPopupBridge {
-    public <init>(...);
+-keep class org.chromium.chrome.browser.tab_ui.BraveTabUiThemeUtils {
+    *** getTitleTextColor(...);
+    *** getCardViewBackgroundColor(...);
 }
 
 -keep class org.chromium.chrome.browser.download.BraveDownloadMessageUiControllerImpl {
@@ -535,10 +519,39 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mNativeInitialized;
     *** mDropdownViewInfoListManager;
+    *** mDropdownViewInfoListBuilder;
     public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediatorBase {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.MultiInstanceManagerApi31 {
+    *** mInstanceId;
+    moveTabAction(...);
+    handleMenuOrKeyboardAction(...);
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.BraveMultiInstanceManagerApi31 {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.MultiWindowUtils {
+    *** shouldShowManageWindowsMenu(...);
+    *** isOpenInOtherWindowSupported(...);
+    *** isMoveToOtherWindowSupported(...);
+    *** canEnterMultiWindowMode(...);
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils {
+    *** shouldShowManageWindowsMenu(...);
     public <init>(...);
 }
 
@@ -564,6 +577,7 @@
 
 -keep class org.chromium.chrome.browser.omnibox.LocationBarCoordinator {
     *** mLocationBarMediator;
+    *** mUrlBar;
     public <init>(...);
 }
 
@@ -587,6 +601,7 @@
     *** mIsTablet;
     *** mNativeInitialized;
     *** mIsLocationBarFocusedFromNtpScroll;
+    *** mShouldClearOmniboxOnFocus;
     *** mContext;
     *** mBrandedColorScheme;
     *** mAssistantVoiceSearchServiceSupplier;
@@ -631,6 +646,9 @@
 }
 
 -keep class org.chromium.components.variations.firstrun.VariationsSeedFetcher {
+    *** sLock;
+    *** DEFAULT_VARIATIONS_SERVER_URL;
+    *** DEFAULT_FAST_VARIATIONS_SERVER_URL;
     *** get(...);
 }
 
@@ -644,12 +662,11 @@
 
 -keep class org.chromium.chrome.browser.share.send_tab_to_self.ManageAccountDevicesLinkView {
     public <init>(...);
-    *** inflateIfVisible(...);
+    *** getSharingAccountInfo(...);
 }
 
 -keep class org.chromium.chrome.browser.share.send_tab_to_self.BraveManageAccountDevicesLinkView {
     public <init>(...);
-    *** inflateIfVisible(...);
 }
 
 -keep class org.chromium.chrome.browser.ChromeApplicationImpl
@@ -697,12 +714,12 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.flags.CachedFlag {
+-keep class org.chromium.base.cached_flags.CachedFlag {
     *** mDefaultValue;
     <init>(...);
 }
 
--keep class org.chromium.chrome.browser.flags.BraveCachedFlag {
+-keep class org.chromium.base.cached_flags.BraveCachedFlag {
     <init>(...);
 }
 
@@ -718,11 +735,6 @@
     *** mShouldShowLogo;
     public <init>(...);
     *** updateVisibility(...);
-}
-
-
--keep class org.chromium.chrome.browser.paint_preview.StartupPaintPreviewHelper {
-    *** isEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.document.ChromeLauncherActivity {
@@ -773,14 +785,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.incognito.reauth.BravePrivateTabReauthCoordinatorBase {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.incognito.reauth.IncognitoReauthCoordinatorBase {
-    *** mIncognitoReauthView;
-}
-
 -keep class org.chromium.chrome.browser.firstrun.BraveFreIntentCreator {
     public <init>(...);
 }
@@ -802,5 +806,96 @@
 }
 
 -keep class org.chromium.chrome.browser.externalnav.BraveExternalNavigationHandler {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_groups.TabGroupModelFilter {
+    *** mIsResetting;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_groups.BraveTabGroupModelFilter {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.SwipeRefreshHandler {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.BraveSwipeRefreshHandler {
+    public <init>(...);
+    *** mSwipeType;
+    *** mTab;
+}
+
+-keep class org.chromium.chrome.browser.identity_disc.IdentityDiscController {
+    public <init>(...);
+    *** calculateButtonData(...);
+}
+
+-keep class org.chromium.chrome.browser.identity_disc.BraveIdentityDiscController {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUiPrefs {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabBottomSheetStrategy {
+    public <init>(...);
+    *** mStopShowingSpinner;
+    *** mTab;
+}
+
+-keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.language.LocaleManagerDelegateImpl {
+    public <init>(...);
+    *** getApplicationLocale(...);
+    *** setApplicationLocale(...);
+}
+
+-keep class org.chromium.components.language.BraveLocaleManagerDelegateImpl {
+    public <init>(...);
+    *** getApplicationLocale(...);
+    *** setApplicationLocale(...);
+}
+
+-keep class org.chromium.chrome.browser.compositor.layouts.ToolbarSwipeLayout {
+    public <init>(...);
+    *** mMoveToolbar;
+}
+
+-keep class org.chromium.chrome.browser.compositor.layouts.BraveToolbarSwipeLayout {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.embedder_support.view.ContentView {
+    protected <init>(...);
+}
+
+-keep class org.chromium.components.embedder_support.view.BraveContentView {
+    protected <init>(...);
+}
+
+-keep class org.chromium.components.signin.SystemAccountManagerDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.signin.BraveSystemAccountManagerDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.AutocompleteEditText {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.BraveAutocompleteEditText {
     public <init>(...);
 }

@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import getBraveNewsController, * as BraveNews from '../../brave_news/browser/resources/shared/api'
+import { addFeedListener } from '../../brave_news/browser/resources/shared/feedListener'
 import AsyncActionHandler from '../../common/AsyncActionHandler'
 import * as Actions from '../actions/today_actions'
 import { ApplicationState } from '../reducers'
-import getBraveNewsController, * as BraveNews from '../api/brave_news'
 import store from '../store'
-import { addFeedListener } from '../api/brave_news/feedListener'
 
 addFeedListener((hash) => {
   const current = store.getState().today.feed?.hash
@@ -24,18 +24,9 @@ function storeInHistoryState (data: Object) {
 
 const handler = new AsyncActionHandler()
 
-handler.on(Actions.interactionBegin.getType(), async () => {
-  console.debug('Brave News: Marking actual interaction begin')
-  getBraveNewsController().onInteractionSessionStarted()
-})
-
 handler.on<Actions.RefreshPayload>(
   Actions.refresh.getType(),
-  async (store, payload) => {
-    if (payload && payload.isFirstInteraction) {
-      console.debug('Brave News: Marking actual interaction begin')
-      getBraveNewsController().onInteractionSessionStarted()
-    }
+  async (store) => {
     try {
       console.debug('Brave News: Getting data...')
       const [{ feed }, { publishers }] = await Promise.all([
@@ -64,9 +55,6 @@ handler.on<Actions.ReadFeedItemPayload>(
   Actions.readFeedItem.getType(),
   async (store, payload) => {
     const state = store.getState() as ApplicationState
-    getBraveNewsController().onSessionCardVisitsCountChanged(
-      state.today.cardsVisited
-    )
     if (payload.isPromoted) {
       const promotedArticle = payload.item.promotedArticle
       if (!promotedArticle) {
@@ -137,8 +125,7 @@ handler.on<number>(
   Actions.feedItemViewedCountChanged.getType(),
   async (store, payload) => {
     const state = store.getState() as ApplicationState
-    getBraveNewsController().onSessionCardViewsCountChanged(
-      state.today.cardsViewed,
+    getBraveNewsController().onNewCardsViewed(
       state.today.cardsViewedDelta
     )
   }

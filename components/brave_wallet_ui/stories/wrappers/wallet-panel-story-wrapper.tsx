@@ -16,19 +16,13 @@ import { WalletActions } from '../../common/actions'
 // types
 import { PanelState, UIState, WalletState } from '../../constants/types'
 
-// components
-import { LibContext } from '../../common/context/lib.context'
-
 // Mocks
-import * as Lib from '../../common/async/__mocks__/lib'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
-import {
-  getMockedAPIProxy,
-  WalletApiDataOverrides
-} from '../../common/async/__mocks__/bridge'
 import { createMockStore } from '../../utils/test-utils'
+import { WalletApiDataOverrides } from '../../constants/testing_types'
+import getAPIProxy from '../../common/async/bridge' // aut-mocked by complier
 
-const mockedProxy = getMockedAPIProxy()
+const mockedProxy = getAPIProxy()
 
 export interface WalletPanelStoryProps {
   walletStateOverride?: Partial<WalletState>
@@ -37,7 +31,9 @@ export interface WalletPanelStoryProps {
   walletApiDataOverrides?: WalletApiDataOverrides
 }
 
-export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStoryProps>> = ({
+export const WalletPanelStory: React.FC<
+  React.PropsWithChildren<WalletPanelStoryProps>
+> = ({
   children,
   panelStateOverride,
   walletStateOverride,
@@ -70,9 +66,7 @@ export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStory
     <MemoryRouter initialEntries={['/']}>
       <Provider store={store}>
         <ApiProxyContext.Provider value={mockedProxy}>
-          <LibContext.Provider value={Lib as any}>
-            {children}
-          </LibContext.Provider>
+          {children}
         </ApiProxyContext.Provider>
       </Provider>
     </MemoryRouter>

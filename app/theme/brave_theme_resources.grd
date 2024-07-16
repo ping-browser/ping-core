@@ -16,18 +16,20 @@
            BECAUSE YOUR RESOURCES ARE FUNCTIONALLY RELATED OR FALL UNDER THE
            SAME CONDITIONALS. -->
       <if expr="not is_android">
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_DARK" file="common/brave_bookmark_folder_closed-dark.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT" file="common/brave_bookmark_folder_closed-light.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_DARK" file="common/brave_bookmark_folder_closed-lin-dark.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT" file="common/brave_bookmark_folder_closed-lin-light.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_DARK" file="common/brave_bookmark_folder_closed-win-dark.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT" file="common/brave_bookmark_folder_closed-win-light.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_LIN_DARK" file="common/brave_bookmark_folder_open-lin-dark.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_LIN_LIGHT" file="common/brave_bookmark_folder_open-lin-light.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_WIN_DARK" file="common/brave_bookmark_folder_open-win-dark.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_WIN_LIGHT" file="common/brave_bookmark_folder_open-win-light.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_WAYBACK_INFOBAR" file="brave/brave_wayback_infobar.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_WAYBACK_INFOBAR_DARK" file="brave/brave_wayback_infobar_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_DARK" file="common/brave_bookmark_folder_closed_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT" file="common/brave_bookmark_folder_closed_light.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_DARK" file="common/brave_bookmark_folder_closed_lin_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT" file="common/brave_bookmark_folder_closed_lin_light.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_DARK" file="common/brave_bookmark_folder_closed_win_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT" file="common/brave_bookmark_folder_closed_win_light.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_LIN_DARK" file="common/brave_bookmark_folder_open_lin_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_LIN_LIGHT" file="common/brave_bookmark_folder_open_lin_light.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_WIN_DARK" file="common/brave_bookmark_folder_open_win_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_WIN_LIGHT" file="common/brave_bookmark_folder_open_win_light.png" />
+      </if>
+
+      <if expr="enable_ai_chat">
+        <structure type="chrome_scaled_image" name="IDR_LEO_FAVICON" file="brave/product_brave_leo.png" />
       </if>
 
       <if expr="enable_playlist_webui">
@@ -48,15 +50,10 @@
       </if>
 
       <if expr="toolkit_views">
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_BOOKMARKS_FOCUSED" file="brave/sidebar_bookmark_focused.png" />
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_READING_LIST_FOCUSED" file="brave/sidebar_reading_list_focused.png" />
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_BRAVE_TALK_FOCUSED" file="brave/sidebar_brave_talk_focused.png" />
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_CRYPTO_WALLET_FOCUSED" file="brave/sidebar_crypto_wallet_focused.png" />
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_HISTORY_FOCUSED" file="brave/sidebar_history_focused.png" />
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_BOOKMARKS_PANEL_HEADER" file="brave/sidebar_bookmarks_panel_header.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT" file="brave/sidebar_item_highlight.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT_RIGHT" file="brave/sidebar_item_highlight_right.png" />
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_ADD_FOCUSED" file="brave/sidebar_item_add_focused.png" />
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_SETTINGS_FOCUSED" file="brave/sidebar_settings_focused.png" />
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_READING_LIST_PANEL_HEADER" file="brave/sidebar_reading_list_panel_header.png" />
       </if>
       <if expr="enable_ipfs and not is_android">
         <structure type="chrome_scaled_image" name="IDR_BRAVE_IPFS_LOGO" file="brave/ipfs_logo.png" />
@@ -110,6 +107,10 @@
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC" file="brave/brave_search_conversion_banner_graphic.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK" file="brave/brave_search_conversion_banner_graphic_dark.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_LOGO_IN_SEARCH_PROMOTION" file="brave/brave_search_logo_in_search_promotion.png" />
+      </if>
+
+      <if expr="enable_brave_player and not is_android">
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_PLAYER_ACTION_VIEW_ICON" file="brave/brave_player_action_icon.png" />
       </if>
     </structures>
   </release>

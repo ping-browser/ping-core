@@ -11,15 +11,14 @@ namespace brave_ads::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::BlindedToken> Create(
+std::optional<challenge_bypass_ristretto::BlindedToken> Create(
     const std::string& blinded_token_base64) {
   if (blinded_token_base64.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  return ValueOrLogError(
-      challenge_bypass_ristretto::BlindedToken::decode_base64(
-          blinded_token_base64));
+  return ValueOrLogError(challenge_bypass_ristretto::BlindedToken::DecodeBase64(
+      blinded_token_base64));
 }
 
 }  // namespace
@@ -56,12 +55,12 @@ BlindedToken BlindedToken::DecodeBase64(
   return BlindedToken(blinded_token_base64);
 }
 
-absl::optional<std::string> BlindedToken::EncodeBase64() const {
+std::optional<std::string> BlindedToken::EncodeBase64() const {
   if (!blinded_token_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  return ValueOrLogError(blinded_token_->encode_base64());
+  return blinded_token_->EncodeBase64();
 }
 
 std::ostream& operator<<(std::ostream& os, const BlindedToken& blinded_token) {

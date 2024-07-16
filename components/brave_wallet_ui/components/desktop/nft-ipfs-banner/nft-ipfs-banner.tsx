@@ -6,6 +6,9 @@
 import * as React from 'react'
 import { useHistory } from 'react-router'
 
+// api
+import { useGetAutopinEnabledQuery } from '../../../common/slices/api.slice'
+
 // constants
 import { WalletRoutes } from '../../../constants/types'
 
@@ -14,8 +17,7 @@ import { OverallPinningStatus, useNftPin } from '../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../common/locale'
 
 // selectors
-import { useSafePageSelector, useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../page/selectors'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../common/selectors'
 
 // components
@@ -40,9 +42,11 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
   const history = useHistory()
 
   // redux
-  const { pinnableNftsCount, pinnedNftsCount, pinningStatusSummary: status } = useNftPin()
-  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
+  const { pinnedNftsCount, pinningStatusSummary: status } = useNftPin()
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // queries
+  const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
 
   // memos
   const bannerStatus: BannerStatus = React.useMemo(() => {
@@ -56,7 +60,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
       default:
         return 'hidden'
     }
-  }, [status, pinnableNftsCount, isAutoPinEnabled])
+  }, [status, isAutoPinEnabled])
 
   // methods
   const onLearnMore = React.useCallback(() => {
@@ -65,11 +69,14 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
     } else {
       history.push(WalletRoutes.LocalIpfsNode)
     }
-  }, [isPanel])
+  }, [history, isPanel])
 
   return (
     <StyledWrapper status={bannerStatus}>
-      <Row gap='12px' justifyContent='flex-start'>
+      <Row
+        gap='12px'
+        justifyContent='flex-start'
+      >
         <NftPinningStatusAnimation
           size='14px'
           status={status}
@@ -77,25 +84,23 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
         />
         <Text status={bannerStatus}>
           {bannerStatus === 'start' ? (
-            <>
-              {getLocale('braveWalletNftPinningBannerStart')}
-            </>
+            <>{getLocale('braveWalletNftPinningBannerStart')}</>
           ) : bannerStatus === 'success' ? (
-            `${getLocale('braveWalletNftPinningBannerSuccess')
-              .replace('$1', `${pinnedNftsCount}`)}`
+            `${getLocale('braveWalletNftPinningBannerSuccess').replace(
+              '$1',
+              `${pinnedNftsCount}`
+            )}`
           ) : (
             `${getLocale('braveWalletNftPinningBannerUploading')}`
           )}
         </Text>
-        {bannerStatus === 'start' &&
+        {bannerStatus === 'start' && (
           <LearnMore onClick={onLearnMore}>
             {getLocale('braveWalletNftPinningBannerLearnMore')}
           </LearnMore>
-        }
+        )}
       </Row>
-      {(bannerStatus === 'success') && (
-        <CloseButton onClick={onDismiss} />
-      )}
+      {bannerStatus === 'success' && <CloseButton onClick={onDismiss} />}
     </StyledWrapper>
   )
 }

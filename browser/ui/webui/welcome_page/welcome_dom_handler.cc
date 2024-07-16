@@ -10,14 +10,16 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/importer/importer_constants.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/common/webui_url_constants.h"
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -72,7 +74,7 @@ WelcomeDOMHandler::~WelcomeDOMHandler() {
 }
 
 Browser* WelcomeDOMHandler::GetBrowser() {
-  return chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
+  return chrome::FindBrowserWithTab(web_ui()->GetWebContents());
 }
 
 void WelcomeDOMHandler::RegisterMessages() {
@@ -97,6 +99,10 @@ void WelcomeDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getDefaultBrowser",
       base::BindRepeating(&WelcomeDOMHandler::HandleGetDefaultBrowser,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "enableWebDiscovery",
+      base::BindRepeating(&WelcomeDOMHandler::HandleEnableWebDiscovery,
                           base::Unretained(this)));
 }
 
@@ -146,7 +152,7 @@ void WelcomeDOMHandler::HandleOpenSettingsPage(const base::Value::List& args) {
         GURL("brave://settings/privacy"), content::Referrer(),
         WindowOpenDisposition::NEW_BACKGROUND_TAB,
         ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
-    browser->OpenURL(open_params);
+    browser->OpenURL(open_params, /*navigation_handle_callback=*/{});
   }
 }
 
@@ -159,6 +165,12 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
   bool enabled = args[0].GetBool();
   ChangeMetricsReportingState(
       enabled, ChangeMetricsReportingStateCalledFrom::kUiSettings);
+}
+
+void WelcomeDOMHandler::HandleEnableWebDiscovery(
+    const base::Value::List& args) {
+  DCHECK(profile_);
+  profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
 }
 
 void WelcomeDOMHandler::SetLocalStateBooleanEnabled(

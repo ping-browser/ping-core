@@ -19,23 +19,21 @@ class BraveAdsLocaleUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLocaleUserDataTest,
        BuildLocaleUserDataForReleaseBuildChannelAndRewardsUser) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"countryCode":"US"})"),
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "countryCode": "US"
+                    })"),
             BuildLocaleUserData());
 }
 
 TEST_F(BraveAdsLocaleUserDataTest,
        DoNotBuildLocaleUserDataForReleaseBuildChannelForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildLocaleUserData().empty());
 }
 
@@ -68,10 +66,12 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_CX"};
 
-  // Act
-
-  // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"countryCode":"??"})"),
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "countryCode": "??"
+                    })"),
             BuildLocaleUserData());
 }
 

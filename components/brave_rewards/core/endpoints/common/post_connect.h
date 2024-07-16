@@ -6,19 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_COMMON_POST_CONNECT_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_COMMON_POST_CONNECT_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -26,25 +25,26 @@ class PostConnect;
 
 template <>
 struct ResultFor<PostConnect> {
-  using Value = void;
+  using Value = std::string;  // Country ID
   using Error = mojom::PostConnectError;
 };
 
 class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
-  static ConnectExternalWalletResult ToConnectExternalWalletResult(
+  static Result ProcessResponse(RewardsEngine& engine,
+                                const mojom::UrlResponse&);
+  static mojom::ConnectExternalWalletResult ToConnectExternalWalletResult(
       const Result&);
 
-  explicit PostConnect(RewardsEngineImpl& engine);
+  explicit PostConnect(RewardsEngine& engine);
   ~PostConnect() override;
 
  protected:
   virtual const char* Path() const = 0;
 
  private:
-  absl::optional<std::string> Url() const override;
-  absl::optional<std::vector<std::string>> Headers(
+  std::optional<std::string> Url() const override;
+  std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
   std::string ContentType() const override;
 };

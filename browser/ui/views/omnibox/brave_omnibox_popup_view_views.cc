@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"
@@ -15,10 +14,6 @@ BraveOmniboxPopupViewViews::~BraveOmniboxPopupViewViews() = default;
 
 gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
   auto bounds = OmniboxPopupViewViews::GetTargetBounds();
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return bounds;
-  }
-
   if (auto* browser = location_bar_view_->browser();
       tabs::utils::ShouldShowVerticalTabs(browser) &&
       !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
@@ -33,5 +28,9 @@ gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
   return bounds;
 }
 
-BEGIN_METADATA(BraveOmniboxPopupViewViews, OmniboxPopupViewViews)
+int BraveOmniboxPopupViewViews::GetLocationBarViewWidth() const {
+  return location_bar_view()->width();
+}
+
+BEGIN_METADATA(BraveOmniboxPopupViewViews)
 END_METADATA

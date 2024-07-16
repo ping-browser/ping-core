@@ -69,14 +69,15 @@ export const ButtonWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  padding-left: 8px;
+  gap: 8px;
 `
 
 export const Indicator = styled.div<StyleProps>`
   width: 15px;
   height: 15px;
   border-radius: 100%;
-  background-color: ${(p) => p.isConnected ? p.theme.color.successBorder : p.theme.color.errorBorder};
+  background-color: ${(p) =>
+    p.isConnected ? p.theme.color.successBorder : p.theme.color.errorBorder};
   margin-right: 8px;
 `
 

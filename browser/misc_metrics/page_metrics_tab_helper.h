@@ -17,7 +17,7 @@ class NavigationHandle;
 
 namespace misc_metrics {
 
-class PageMetricsService;
+class PageMetrics;
 
 class PageMetricsTabHelper
     : public content::WebContentsObserver,
@@ -36,7 +36,9 @@ class PageMetricsTabHelper
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  raw_ptr<PageMetricsService> page_metrics_service_;
+  bool CheckNavigationEvent(content::NavigationHandle* navigation_handle);
+
+  raw_ptr<PageMetrics> page_metrics_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

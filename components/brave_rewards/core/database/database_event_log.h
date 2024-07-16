@@ -16,20 +16,20 @@ namespace database {
 
 class DatabaseEventLog : public DatabaseTable {
  public:
-  explicit DatabaseEventLog(RewardsEngineImpl& engine);
+  explicit DatabaseEventLog(RewardsEngine& engine);
   ~DatabaseEventLog() override;
 
   void Insert(const std::string& key, const std::string& value);
 
   void InsertRecords(const std::map<std::string, std::string>& records,
-                     LegacyResultCallback callback);
+                     ResultCallback callback);
 
   // returns last 2000 records
   void GetLastRecords(GetEventLogsCallback callback);
 
  private:
-  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       GetEventLogsCallback callback);
+  void OnGetAllRecords(GetEventLogsCallback callback,
+                       mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

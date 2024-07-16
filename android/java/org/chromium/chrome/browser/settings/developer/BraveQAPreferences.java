@@ -23,10 +23,11 @@ import android.widget.EditText;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 
+import org.jni_zero.CalledByNative;
+
 import org.chromium.base.ContextUtils;
 import org.chromium.base.FileUtils;
 import org.chromium.base.Log;
-import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -36,7 +37,7 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
@@ -56,6 +57,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
     implements OnPreferenceChangeListener, BraveRewardsObserver {
     private static final String PREF_USE_REWARDS_STAGING_SERVER = "use_rewards_staging_server";
     private static final String PREF_USE_SYNC_STAGING_SERVER = "use_sync_staging_server";
+    private static final String PREF_USE_LEO_STAGING_SERVER = "use_leo_staging_server";
     private static final String PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER =
         "qa_maximize_initial_ads_number";
     private static final String PREF_QA_DEBUG_NTP = "qa_debug_ntp";
@@ -71,10 +73,10 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final int MAX_ADS = 10;
     private static final int DEFAULT_ADS_PER_HOUR = 2;
 
-    private ChromeSwitchPreference mBraveVpnFeature;
     private ChromeSwitchPreference mVpnLinkSubscriptionOnDev;
     private ChromeSwitchPreference mBraveDormantFeatureEngagement;
     private ChromeSwitchPreference mIsStagingServer;
+    private ChromeSwitchPreference mIsLeoStagingServer;
     private ChromeSwitchPreference mIsSyncStagingServer;
     private ChromeSwitchPreference mMaximizeAdsNumber;
     private ChromeSwitchPreference mDebugNTP;
@@ -92,12 +94,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
         super.onCreate(savedInstanceState);
         SettingsUtils.addPreferencesFromResource(this, R.xml.qa_preferences);
 
-        mBraveVpnFeature =
-                (ChromeSwitchPreference) findPreference(BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE);
-        if (mBraveVpnFeature != null) {
-            mBraveVpnFeature.setOnPreferenceChangeListener(this);
-        }
-
         mVpnLinkSubscriptionOnDev = (ChromeSwitchPreference) findPreference(
                 BraveVpnPrefUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING);
         if (mVpnLinkSubscriptionOnDev != null) {
@@ -114,8 +110,9 @@ public class BraveQAPreferences extends BravePreferenceFragment
         if (mIsStagingServer != null) {
             mIsStagingServer.setOnPreferenceChangeListener(this);
         }
-        mIsStagingServer.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                            .getBoolean(BravePref.USE_REWARDS_STAGING_SERVER));
+        mIsStagingServer.setChecked(
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.USE_REWARDS_STAGING_SERVER));
 
         mIsSyncStagingServer =
                 (ChromeSwitchPreference) findPreference(PREF_USE_SYNC_STAGING_SERVER);
@@ -123,6 +120,12 @@ public class BraveQAPreferences extends BravePreferenceFragment
             mIsSyncStagingServer.setOnPreferenceChangeListener(this);
         }
         mIsSyncStagingServer.setChecked(isSyncStagingUsed());
+
+        mIsLeoStagingServer = (ChromeSwitchPreference) findPreference(PREF_USE_LEO_STAGING_SERVER);
+        if (mIsLeoStagingServer != null) {
+            mIsLeoStagingServer.setOnPreferenceChangeListener(this);
+        }
+        mIsLeoStagingServer.setChecked(isLeoStagingUsed());
 
         mMaximizeAdsNumber =
             (ChromeSwitchPreference) findPreference(PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER);
@@ -156,14 +159,16 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
     private void setRewardsDbClickListeners() {
         if (mImportRewardsDb != null) {
-            mImportRewardsDb.setOnPreferenceClickListener( preference -> {
-                Intent intent = new Intent()
-                .setType("*/*")
-                .setAction(Intent.ACTION_GET_CONTENT);
+            mImportRewardsDb.setOnPreferenceClickListener(
+                    preference -> {
+                        Intent intent =
+                                new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
 
-                startActivityForResult(Intent.createChooser(intent, "Select a file"), CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE);
-                return true;
-            });
+                        startActivityForResult(
+                                Intent.createChooser(intent, "Select a file"),
+                                CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE);
+                        return true;
+                    });
         }
 
         if (mExportRewardsDb != null) {
@@ -239,20 +244,20 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
     @Override
     public void onStart() {
-        BraveRewardsNativeWorker.getInstance().AddObserver(this);
+        BraveRewardsNativeWorker.getInstance().addObserver(this);
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        BraveRewardsNativeWorker.getInstance().RemoveObserver(this);
+        BraveRewardsNativeWorker.getInstance().removeObserver(this);
         super.onStop();
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_USE_REWARDS_STAGING_SERVER.equals(preference.getKey())) {
-            BraveRewardsNativeWorker.getInstance().ResetTheWholeState();
+            BraveRewardsNativeWorker.getInstance().resetTheWholeState();
             mUseRewardsStagingServer = (boolean) newValue;
             mMaximizeAdsNumber.setEnabled((boolean) newValue);
             enableMaximumAdsNumber(((boolean) newValue) && mMaximizeAdsNumber.isChecked());
@@ -260,8 +265,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
             enableMaximumAdsNumber((boolean) newValue);
         } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey())
                 || PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())
+                || PREF_USE_LEO_STAGING_SERVER.equals(preference.getKey())
                 || PREF_QA_VLOG_REWARDS.equals(preference.getKey())
-                || BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE.equals(preference.getKey())
                 || BraveVpnPrefUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING.equals(
                         preference.getKey())
                 || OnboardingPrefManager.PREF_DORMANT_USERS_ENGAGEMENT.equals(
@@ -299,6 +304,10 @@ public class BraveQAPreferences extends BravePreferenceFragment
     @CalledByNative
     public static boolean isSyncStagingUsed() {
         return getPreferenceValue(PREF_USE_SYNC_STAGING_SERVER);
+    }
+
+    public static boolean isLeoStagingUsed() {
+        return getPreferenceValue(PREF_USE_LEO_STAGING_SERVER);
     }
 
     public static boolean shouldVlogRewards() {
@@ -356,34 +365,32 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private void enableMaximumAdsNumber(boolean enable) {
         if (enable) {
             // Save current values
-            int adsPerHour = BraveRewardsNativeWorker.getInstance().GetAdsPerHour();
+            int adsPerHour = BraveRewardsNativeWorker.getInstance().getAdsPerHour();
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
             sharedPreferencesEditor.putInt(QA_ADS_PER_HOUR, adsPerHour);
             sharedPreferencesEditor.apply();
             // Set max value
-            BraveRewardsNativeWorker.getInstance().SetAdsPerHour(MAX_ADS);
+            BraveRewardsNativeWorker.getInstance().setAdsPerHour(MAX_ADS);
             return;
         }
         // Set saved values
         int adsPerHour = ContextUtils.getAppSharedPreferences().getInt(
                              QA_ADS_PER_HOUR, DEFAULT_ADS_PER_HOUR);
-        BraveRewardsNativeWorker.getInstance().SetAdsPerHour(adsPerHour);
+        BraveRewardsNativeWorker.getInstance().setAdsPerHour(adsPerHour);
     }
 
     @Override
-    public void OnResetTheWholeState(boolean success) {
+    public void onResetTheWholeState(boolean success) {
         if (success) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(
-                    BraveRewardsPanel.PREF_GRANTS_NOTIFICATION_RECEIVED, false);
             sharedPreferencesEditor.putBoolean(
                     BraveRewardsPanel.PREF_WAS_BRAVE_REWARDS_TURNED_ON, false);
             sharedPreferencesEditor.apply();
 
             BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
-            UserPrefs.get(Profile.getLastUsedRegularProfile())
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.USE_REWARDS_STAGING_SERVER, mUseRewardsStagingServer);
             BraveRewardsHelper.setRewardsEnvChange(true);
 
@@ -448,7 +455,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
         AlertDialog.Builder alertDialog =
                 new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog)
                         .setMessage(
-                                "This operation requires restart. Would you like to restart application and start operation?")
+                                "This operation requires restart. Would you like to restart"
+                                        + " application and start operation?")
                         .setPositiveButton(R.string.ok, onClickListener)
                         .setNegativeButton(R.string.cancel, onClickListener);
         Dialog dialog = alertDialog.create();

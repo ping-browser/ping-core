@@ -5,13 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
-#include "brave/components/brave_ads/core/public/feature/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,118 +19,76 @@ namespace brave_ads {
 class BraveAdsSettingsTest : public UnitTestBase {};
 
 TEST_F(BraveAdsSettingsTest, UserHasJoinedBraveRewards) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(UserHasJoinedBraveRewards());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasNotJoinedBraveRewards) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(UserHasJoinedBraveRewards());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasOptedInToBraveNewsAds) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(UserHasOptedInToBraveNewsAds());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToBraveNews) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
+  test::OptOutOfBraveNewsAds();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(UserHasOptedInToBraveNewsAds());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasOptedInToNewTabPageAds) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(UserHasOptedInToNewTabPageAds());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNewTabPageAds) {
   // Arrange
-  DisableNewTabPageAdsForTesting();
+  test::OptOutOfNewTabPageAds();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasOptedInToNotificationAds) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(UserHasOptedInToNotificationAds());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNotificationAds) {
   // Arrange
-  DisableNotificationAdsForTesting();
+  test::OptOutOfNotificationAds();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(UserHasOptedInToNotificationAds());
 }
 
 TEST_F(BraveAdsSettingsTest, MaximumNotificationAdsPerHour) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["default_ads_per_hour"] = "2";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature, {{"default_ads_per_hour", "2"}});
 
-  SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 3);
+  SetProfileInt64PrefValue(prefs::kMaximumNotificationAdsPerHour, 3);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, GetMaximumNotificationAdsPerHour());
 }
 
 TEST_F(BraveAdsSettingsTest, DefaultMaximumNotificationAdsPerHour) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["default_ads_per_hour"] = "2";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature, {{"default_ads_per_hour", "2"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, GetMaximumNotificationAdsPerHour());
 }
 

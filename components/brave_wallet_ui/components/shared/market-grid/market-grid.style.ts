@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled, { css } from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 import {
   layoutPanelWidth,
   layoutSmallWidth
 } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
-import { WalletButton } from '../style'
+import { WalletButton, Text } from '../style'
 
 export const breakpoints = {
   panel: `${layoutPanelWidth}px`,
@@ -53,8 +53,8 @@ export const HeaderItem = styled.div<{
 }>`
   display: flex;
   align-items: center;
-  gap: ${({ sortable }) => sortable ? '5px': '0px'};
-  cursor: ${({ sortable }) => sortable ? 'pointer' : 'auto'};
+  gap: ${({ sortable }) => (sortable ? '5px' : '0px')};
+  cursor: ${({ sortable }) => (sortable ? 'pointer' : 'auto')};
   font-family: Poppins;
   font-size: 12px;
   font-style: normal;
@@ -71,8 +71,11 @@ export const HeaderItem = styled.div<{
   ${({ hideOnSmall }) =>
     hideOnSmall &&
     css`
-      @media (min-width: ${breakpoints.panel}) and
-      (max-width: ${breakpoints.small}) {
+      @media (min-width: ${
+          breakpoints.panel //
+        }) and (max-width: ${
+          breakpoints.small //
+        }) {
         display: none;
       }
     `}
@@ -84,12 +87,18 @@ export const GridRowsWrapper = styled.div`
     display: none;
   }
 `
-export const Row = styled.div<{ templateColumns: string }>`
+export const GridRow = styled.div<{ templateColumns: string }>`
   display: grid;
   grid-template-columns: ${({ templateColumns }) => templateColumns};
   gap: 5px;
-  padding: 16px 0;
+  margin-top: 16px;
+  padding: 6px;
   cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 300ms ease-out;
+  &:hover {
+    background-color: ${leo.color.page.background};
+  }
 `
 
 export const Cell = styled.div<{
@@ -116,8 +125,11 @@ export const Cell = styled.div<{
   ${({ hideOnSmall }) =>
     hideOnSmall &&
     css`
-      @media (min-width: ${breakpoints.panel}) and
-      (max-width: ${breakpoints.small}) {
+      @media (min-width: ${
+          breakpoints.panel //
+        }) and (max-width: ${
+          breakpoints.small //
+        }) {
         display: none;
       }
     `}
@@ -157,6 +169,10 @@ export const TextWrapper = styled.div<{
   font-weight: 500;
   line-height: normal;
   color: ${leo.color.text.primary};
+
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    font-size: 12px;
+  }
 `
 
 export const ButtonsRow = styled.div`
@@ -195,4 +211,8 @@ export const ActionButton = styled(WalletButton)`
   line-height: 16px;
   letter-spacing: 0.36px;
   color: ${leo.color.text.interactive};
+`
+
+export const EmptyStateText = styled(Text)`
+  color: ${leo.color.text.secondary};
 `

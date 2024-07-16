@@ -6,17 +6,17 @@
 use std::collections::HashSet;
 use std::str::Utf8Error;
 
-use adblock::Engine as InnerEngine;
-use adblock::lists::FilterSet;
+use adblock::lists::FilterSet as InnerFilterSet;
 use adblock::resources::{MimeType, Resource, ResourceType};
 use adblock::url_parser::ResolvesDomain;
+use adblock::Engine as InnerEngine;
 use cxx::{let_cxx_string, CxxString, CxxVector};
 
 use crate::ffi::{
     resolve_domain_position, BlockerResult, BoxEngineResult, ContentBlockingRulesResult,
-    FilterListMetadata, RegexDebugInfo, RegexManagerDiscardPolicy, UnitResult,
-    VecStringResult,
+    FilterListMetadata, RegexDebugInfo, RegexManagerDiscardPolicy, UnitResult, VecStringResult,
 };
+use crate::filter_set::FilterSet;
 use crate::result::InternalError;
 
 #[cfg(feature = "ios")]
@@ -38,9 +38,18 @@ pub fn new_engine() -> Box<Engine> {
 
 pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
     || -> Result<Box<Engine>, InternalError> {
-        let mut filter_set = FilterSet::new(false);
+        let mut filter_set = InnerFilterSet::new(false);
         filter_set.add_filter_list(std::str::from_utf8(rules.as_slice())?, Default::default());
         let engine = InnerEngine::from_filter_set(filter_set, true);
+        Ok(Box::new(Engine { engine }))
+    }()
+    .into()
+}
+
+/// Creates a new engine with rules from a given filter set.
+pub fn engine_from_filter_set(filter_set: Box<FilterSet>) -> BoxEngineResult {
+    || -> Result<Box<Engine>, InternalError> {
+        let engine = InnerEngine::from_filter_set(filter_set.0, true);
         Ok(Box::new(Engine { engine }))
     }()
     .into()
@@ -75,7 +84,7 @@ pub fn convert_rules_to_content_blocking(rules: &CxxString) -> ContentBlockingRu
         /// https://github.com/WebKit/WebKit/blob/4a2df13be2253f64d8da58b794d74347a3742652/Source/WebCore/contentextensions/ContentExtensionParser.cpp#L299
         const MAX_CB_LIST_SIZE: usize = 150000;
 
-        let mut filter_set = FilterSet::new(true);
+        let mut filter_set = InnerFilterSet::new(true);
         filter_set.add_filter_list(
             rules.to_str()?,
             ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() },
@@ -164,16 +173,23 @@ impl Engine {
     ) -> String {
         // The following strings are also UTF-8.
         self.engine
-            .get_csp_directives(
-                    &adblock::request::Request::preparsed(
-                        url.to_str().unwrap(),
-                        hostname.to_str().unwrap(),
-                        source_hostname.to_str().unwrap(),
-                        request_type.to_str().unwrap(),
-                        third_party_request,
-                    ),
-                )
+            .get_csp_directives(&adblock::request::Request::preparsed(
+                url.to_str().unwrap(),
+                hostname.to_str().unwrap(),
+                source_hostname.to_str().unwrap(),
+                request_type.to_str().unwrap(),
+                third_party_request,
+            ))
             .unwrap_or_default()
+    }
+
+    /// A 0-length vector will be returned if there was any issue during serialization. Be sure to
+    /// handle that case.
+    pub fn serialize(&self) -> Vec<u8> {
+        match self.engine.serialize_raw() {
+            Ok(v) => v,
+            Err(_e) => vec![],
+        }
     }
 
     pub fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool {
@@ -193,7 +209,7 @@ impl Engine {
                 kind: ResourceType::Mime(MimeType::from(content_type.to_str()?)),
                 content: data.to_string(),
                 dependencies: vec![],
-                /// user-added resources require full permissions
+                // user-added resources require full permissions
                 permission: adblock::resources::PermissionMask::from_bits(0b11111111),
             };
             Ok(self.engine.add_resource(resource)?)

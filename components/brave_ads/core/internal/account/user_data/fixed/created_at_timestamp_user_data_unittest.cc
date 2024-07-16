@@ -6,11 +6,10 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/created_at_timestamp_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -22,38 +21,36 @@ class BraveAdsCreatedAtTimestampUserDataTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
+    AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
   }
 };
 
 TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
        BuildCreatedAtTimestampUserDataForRewardsUser) {
   // Arrange
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"({"createdAtTimestamp":"2020-11-18T12:00:00.000Z"})"),
+                R"(
+                    {
+                      "createdAtTimestamp": "2020-11-18T12:00:00.000Z"
+                    })"),
             BuildCreatedAtTimestampUserData(transaction));
 }
 
 TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
        BuildCreatedAtTimestampUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildCreatedAtTimestampUserData(transaction).empty());
 }
 

@@ -4,11 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  Redirect,
-  Route,
-  Switch
-} from 'react-router'
+import { Redirect, Route, Switch } from 'react-router'
 import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
 
 // types
@@ -16,10 +12,18 @@ import { WalletRoutes } from '../../../constants/types'
 import { PageSelectors } from '../../selectors'
 
 // components
-import { BackupEnterPassword } from './backup-enter-password/backup-enter-password'
-import { BackupRecoveryPhrase } from './backup-recovery-phrase/backup-recovery-phrase'
-import { RecoveryPhraseExplainer } from './explain-recovery-phrase/explain-recovery-phrase'
-import { VerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
+import {
+  BackupEnterPassword //
+} from './backup-enter-password/backup-enter-password'
+import {
+  BackupRecoveryPhrase //
+} from './backup-recovery-phrase/backup-recovery-phrase'
+import {
+  RecoveryPhraseExplainer //
+} from './explain-recovery-phrase/explain-recovery-phrase'
+import {
+  VerifyRecoveryPhrase //
+} from './verify-recovery-phrase/verify_recovery_phrase'
 
 export const WALLET_BACKUP_STEPS = [
   WalletRoutes.Backup,
@@ -35,25 +39,41 @@ export const BackupWalletRoutes = () => {
   // render
   return (
     <Switch>
-
-      <Route path={WalletRoutes.Backup} exact>
+      <Route
+        path={WalletRoutes.Backup}
+        exact
+      >
         <BackupEnterPassword />
       </Route>
 
-      {hasMnemonic && <Route path={WalletRoutes.BackupExplainRecoveryPhrase} exact>
-        <RecoveryPhraseExplainer />
-      </Route>}
+      {hasMnemonic && (
+        <Route
+          path={WalletRoutes.BackupExplainRecoveryPhrase}
+          exact
+        >
+          <RecoveryPhraseExplainer />
+        </Route>
+      )}
 
-      {hasMnemonic && <Route path={WalletRoutes.BackupRecoveryPhrase} exact>
-        <BackupRecoveryPhrase />
-      </Route>}
+      {hasMnemonic && (
+        <Route
+          path={WalletRoutes.BackupRecoveryPhrase}
+          exact
+        >
+          <BackupRecoveryPhrase />
+        </Route>
+      )}
 
-      {hasMnemonic && <Route path={WalletRoutes.BackupVerifyRecoveryPhrase} exact>
-        <VerifyRecoveryPhrase />
-      </Route>}
+      {hasMnemonic && (
+        <Route
+          path={WalletRoutes.BackupVerifyRecoveryPhrase}
+          exact
+        >
+          <VerifyRecoveryPhrase />
+        </Route>
+      )}
 
       <Redirect to={WalletRoutes.Backup} />
-
     </Switch>
   )
 }

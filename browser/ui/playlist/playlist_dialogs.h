@@ -21,6 +21,8 @@ void ShowRemovePlaylistDialog(content::WebContents* contents,
 void ShowMoveItemsDialog(content::WebContents* contents,
                          const std::string& playlist_id,
                          const std::vector<std::string>& items);
+void ShowPlaylistSettings(content::WebContents* contents);
+void ClosePanel(content::WebContents* contents);
 
 }  // namespace playlist
 

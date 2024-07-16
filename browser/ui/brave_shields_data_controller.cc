@@ -9,9 +9,10 @@
 #include <string>
 #include <utility>
 
+#include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -33,6 +34,9 @@ HostContentSettingsMap* GetHostContentSettingsMap(
   return HostContentSettingsMapFactory::GetForProfile(
       web_contents->GetBrowserContext());
 }
+
+constexpr char kShieldsAllowScriptOnceHistogramName[] =
+    "Brave.Shields.AllowScriptOnce";
 
 }  // namespace
 
@@ -164,7 +168,8 @@ void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
                                     nullptr) == is_enabled) {
     brave_shields::ResetBraveShieldsEnabled(map, GetCurrentSiteURL());
   } else {
-    brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL());
+    brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL(),
+                                          g_browser_process->local_state());
   }
   ReloadWebContents();
 }
@@ -182,8 +187,9 @@ GURL BraveShieldsDataController::GetFaviconURL(bool refresh) {
                              GetCurrentSiteURL().GetWithoutFilename().spec());
 
   if (refresh) {
-    url = AppendQueryParameter(url, "v",
-                               std::to_string(base::Time::Now().ToJsTime()));
+    url = AppendQueryParameter(
+        url, "v",
+        std::to_string(base::Time::Now().InMillisecondsFSinceUnixEpoch()));
   }
 
   return url;
@@ -214,11 +220,11 @@ FingerprintMode BraveShieldsDataController::GetFingerprintMode() {
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 
   if (control_type == ControlType::ALLOW) {
-    return FingerprintMode::ALLOW;
+    return FingerprintMode::ALLOW_MODE;
   } else if (control_type == ControlType::BLOCK) {
-    return FingerprintMode::STRICT;
+    return FingerprintMode::STRICT_MODE;
   } else {
-    return FingerprintMode::STANDARD;
+    return FingerprintMode::STANDARD_MODE;
   }
 }
 
@@ -244,22 +250,17 @@ CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
   return CookieBlockMode::BLOCKED;
 }
 
-bool BraveShieldsDataController::GetHTTPSEverywhereEnabled() {
-  return brave_shields::GetHTTPSEverywhereEnabled(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
-}
-
 HttpsUpgradeMode BraveShieldsDataController::GetHttpsUpgradeMode() {
   ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
   if (control_type == ControlType::ALLOW) {
-    return HttpsUpgradeMode::DISABLED;
+    return HttpsUpgradeMode::DISABLED_MODE;
   } else if (control_type == ControlType::BLOCK) {
-    return HttpsUpgradeMode::STRICT;
+    return HttpsUpgradeMode::STRICT_MODE;
   } else if (control_type == ControlType::BLOCK_THIRD_PARTY) {
-    return HttpsUpgradeMode::STANDARD;
+    return HttpsUpgradeMode::STANDARD_MODE;
   } else {
-    return HttpsUpgradeMode::STANDARD;
+    return HttpsUpgradeMode::STANDARD_MODE;
   }
 }
 
@@ -315,12 +316,12 @@ void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
 void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
   ControlType control_type;
 
-  if (mode == FingerprintMode::ALLOW) {
+  if (mode == FingerprintMode::ALLOW_MODE) {
     control_type = ControlType::ALLOW;
-  } else if (mode == FingerprintMode::STRICT) {
+  } else if (mode == FingerprintMode::STRICT_MODE) {
     control_type = ControlType::BLOCK;
   } else {
-    control_type = ControlType::DEFAULT;  // STANDARD
+    control_type = ControlType::DEFAULT;  // STANDARD_MODE
   }
 
   PrefService* profile_prefs =
@@ -359,11 +360,11 @@ void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
 
 void BraveShieldsDataController::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
   ControlType control_type;
-  if (mode == HttpsUpgradeMode::DISABLED) {
+  if (mode == HttpsUpgradeMode::DISABLED_MODE) {
     control_type = ControlType::ALLOW;
-  } else if (mode == HttpsUpgradeMode::STRICT) {
+  } else if (mode == HttpsUpgradeMode::STRICT_MODE) {
     control_type = ControlType::BLOCK;
-  } else if (mode == HttpsUpgradeMode::STANDARD) {
+  } else if (mode == HttpsUpgradeMode::STANDARD_MODE) {
     control_type = ControlType::BLOCK_THIRD_PARTY;
   } else {
     control_type = ControlType::DEFAULT;
@@ -386,14 +387,6 @@ void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
 
   brave_shields::SetNoScriptControlType(
       GetHostContentSettingsMap(web_contents()), control_type,
-      GetCurrentSiteURL(), g_browser_process->local_state());
-
-  ReloadWebContents();
-}
-
-void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
-  brave_shields::SetHTTPSEverywhereEnabled(
-      GetHostContentSettingsMap(web_contents()), is_enabled,
       GetCurrentSiteURL(), g_browser_process->local_state());
 
   ReloadWebContents();
@@ -424,6 +417,7 @@ void BraveShieldsDataController::AllowScriptsOnce(
   if (!observer) {
     return;
   }
+  UMA_HISTOGRAM_BOOLEAN(kShieldsAllowScriptOnceHistogramName, true);
   observer->AllowScriptsOnce(origins);
   ReloadWebContents();
 }

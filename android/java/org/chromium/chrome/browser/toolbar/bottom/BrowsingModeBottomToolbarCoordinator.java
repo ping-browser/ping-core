@@ -11,6 +11,7 @@ import android.view.View.OnLongClickListener;
 
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneShotCallback;
@@ -19,23 +20,25 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
-import org.chromium.chrome.browser.tab.TabImpl;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.BraveHomeButton;
-import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonView;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonState;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
+import org.chromium.components.browser_ui.styles.ChromeColors;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
 
 /**
- * The coordinator for the browsing mode bottom toolbar. This class has two primary components,
- * an Android view that handles user actions and a composited texture that draws when the controls
- * are being scrolled off-screen. The Android version does not draw unless the controls offset is 0.
+ * The coordinator for the browsing mode bottom toolbar. This class has two primary components, an
+ * Android view that handles user actions and a composited texture that draws when the controls are
+ * being scrolled off-screen. The Android version does not draw unless the controls offset is 0.
  */
 public class BrowsingModeBottomToolbarCoordinator {
     private static final String TAG = "BrowsingMode";
@@ -78,8 +81,11 @@ public class BrowsingModeBottomToolbarCoordinator {
     private final MenuButton mMenuButton;
     private ThemeColorProvider mThemeColorProvider;
 
-    BrowsingModeBottomToolbarCoordinator(View root, ActivityTabProvider tabProvider,
-            OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
+    BrowsingModeBottomToolbarCoordinator(
+            View root,
+            ActivityTabProvider tabProvider,
+            OnClickListener homeButtonListener,
+            OnClickListener searchAcceleratorListener,
             ObservableSupplier<OnClickListener> shareButtonListenerSupplier,
             OnLongClickListener tabSwitcherLongClickListener) {
         mModel = new BrowsingModeBottomToolbarModel();
@@ -98,6 +104,7 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mSearchAccelerator = mToolbarRoot.findViewById(R.id.search_accelerator);
         mSearchAccelerator.setOnClickListener(searchAcceleratorListener);
+        BraveTouchUtils.ensureMinTouchTarget(mSearchAccelerator);
 
         // TODO(amaralp): Make this adhere to MVC framework.
         mTabSwitcherButtonView = mToolbarRoot.findViewById(R.id.bottom_tab_switcher_button);
@@ -119,31 +126,24 @@ public class BrowsingModeBottomToolbarCoordinator {
         if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
             mBookmarkButton.setVisibility(View.VISIBLE);
             getNewTabButtonParent().setVisibility(View.GONE);
-            OnClickListener bookmarkClickHandler = v -> {
-                TabImpl tab = (TabImpl) mTabProvider.get();
-                try {
-                    BraveActivity activity = BraveActivity.getBraveActivity();
-                    if (tab == null || activity == null) {
-                        assert false;
-                        return;
-                    }
-                    activity.addOrEditBookmark(tab);
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "BookmarkButton click " + e);
-                }
-            };
+            OnClickListener bookmarkClickHandler =
+                    v -> {
+                        Tab tab = mTabProvider.get();
+                        try {
+                            BraveActivity activity = BraveActivity.getBraveActivity();
+                            if (tab == null || activity == null) {
+                                assert false;
+                                return;
+                            }
+                            activity.addOrEditBookmark(tab);
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "BookmarkButton click " + e);
+                        }
+                    };
             mBookmarkButton.setOnClickListener(bookmarkClickHandler);
         }
 
         mMenuButton = mToolbarRoot.findViewById(R.id.menu_button_wrapper);
-        if (mMenuButton != null) {
-            Supplier<MenuButtonState> menuButtonStateSupplier =
-                    () -> UpdateMenuItemHelper.getInstance().getUiState().buttonState;
-            BraveMenuButtonCoordinator.setupPropertyModel(mMenuButton, menuButtonStateSupplier);
-            if (!BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-                mMenuButton.setVisibility(View.GONE);
-            }
-        }
     }
 
     /**
@@ -154,53 +154,93 @@ public class BrowsingModeBottomToolbarCoordinator {
     /**
      * Initialize the bottom toolbar with the components that had native initialization
      * dependencies.
-     * <p>
-     * Calling this must occur after the native library have completely loaded.
-     * @param tabSwitcherListener An {@link OnClickListener} that is triggered when the
-     *                            tab switcher button is clicked.
-     * @param menuButtonHelper An {@link AppMenuButtonHelper} that is triggered when the
-     *                         menu button is clicked.
-     * @param tabCountProvider Updates the tab count number in the tab switcher button.
+     *
+     * <p>Calling this must occur after the native library have completely loaded.
+     *
+     * @param tabSwitcherListener An {@link OnClickListener} that is triggered when the tab switcher
+     *     button is clicked.
+     * @param menuButtonHelper An {@link AppMenuButtonHelper} that is triggered when the menu button
+     *     is clicked.
+     * @param tabModelSelector Updates the tab count number in the tab switcher button.
      * @param themeColorProvider Notifies components when theme color changes.
      * @param incognitoStateProvider Notifies components when incognito state changes.
      */
-    void initializeWithNative(OnClickListener newTabListener, OnClickListener tabSwitcherListener,
+    void initializeWithNative(
+            OnClickListener newTabListener,
+            OnClickListener tabSwitcherListener,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
-            TabCountProvider tabCountProvider, ThemeColorProvider themeColorProvider,
+            TabModelSelector tabModelSelector,
+            ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider) {
+        if (mMenuButton != null) {
+            Supplier<MenuButtonState> menuButtonStateSupplier =
+                    () ->
+                            UpdateMenuItemHelper.getInstance(
+                                            tabModelSelector.getModel(false).getProfile())
+                                    .getUiState()
+                                    .buttonState;
+            BraveMenuButtonCoordinator.setupPropertyModel(mMenuButton, menuButtonStateSupplier);
+            if (!BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+                mMenuButton.setVisibility(View.GONE);
+            }
+        }
         mThemeColorProvider = themeColorProvider;
         mMediator.setThemeColorProvider(themeColorProvider);
+        if (incognitoStateProvider.isIncognitoSelected()) {
+            mMediator.onThemeColorChanged(
+                    ChromeColors.getDefaultThemeColor(ContextUtils.getApplicationContext(), true),
+                    false);
+        }
         if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
             mNewTabButton.setOnClickListener(newTabListener);
             mNewTabButton.setThemeColorProvider(themeColorProvider);
             mNewTabButton.setIncognitoStateProvider(incognitoStateProvider);
+            mNewTabButton.onTintChanged(
+                    mThemeColorProvider.getTint(),
+                    mThemeColorProvider.getTint(),
+                    mThemeColorProvider.getBrandedColorScheme());
         }
 
         if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
             mBraveHomeButton.setThemeColorProvider(themeColorProvider);
+            mBraveHomeButton.onTintChanged(
+                    mThemeColorProvider.getTint(),
+                    mThemeColorProvider.getTint(),
+                    mThemeColorProvider.getBrandedColorScheme());
         }
 
         mSearchAccelerator.setThemeColorProvider(themeColorProvider);
         mSearchAccelerator.setIncognitoStateProvider(incognitoStateProvider);
         mSearchAccelerator.onTintChanged(
-                mThemeColorProvider.getTint(), mThemeColorProvider.getBrandedColorScheme());
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getBrandedColorScheme());
 
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
             mTabSwitcherButtonCoordinator.setTabSwitcherListener(tabSwitcherListener);
             mTabSwitcherButtonCoordinator.setThemeColorProvider(themeColorProvider);
-            mTabSwitcherButtonCoordinator.setTabCountProvider(tabCountProvider);
+            mTabSwitcherButtonCoordinator.setTabCountSupplier(
+                    tabModelSelector.getCurrentModelTabCountSupplier());
         }
 
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
         mBookmarkButton.onTintChanged(
-                mThemeColorProvider.getTint(), mThemeColorProvider.getBrandedColorScheme());
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getBrandedColorScheme());
 
         mThemeColorProvider.addTintObserver(mMenuButton);
+        mMenuButton.onTintChanged(
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getBrandedColorScheme());
 
-        new OneShotCallback<>(menuButtonHelperSupplier, (menuButtonHelper) -> {
-            assert menuButtonHelper != null;
-            mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
-        });
+        new OneShotCallback<>(
+                menuButtonHelperSupplier,
+                (menuButtonHelper) -> {
+                    assert menuButtonHelper != null;
+                    mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
+                });
     }
 
     /**

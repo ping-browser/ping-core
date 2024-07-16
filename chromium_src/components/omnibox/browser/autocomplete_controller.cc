@@ -9,6 +9,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_bookmark_provider.h"
@@ -23,6 +24,7 @@
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
+#include "components/omnibox/browser/calculator_provider.h"
 #include "components/omnibox/browser/clipboard_provider.h"
 #include "components/omnibox/browser/history_cluster_provider.h"
 #include "components/omnibox/browser/history_fuzzy_provider.h"
@@ -33,6 +35,11 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/omnibox/browser/commander_provider.h"
 #endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/omnibox/browser/leo_provider.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 using brave_search_conversion::IsBraveSearchConversionFeatureEnabled;
 
@@ -76,6 +83,40 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
   }
 #endif
 }
+
+void MaybeAddLeoProvider(AutocompleteController::Providers& providers,
+                         AutocompleteController* controller) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  auto* provider_client = controller->autocomplete_provider_client();
+  // TestOmniboxClient has null prefs getter
+  auto* prefs = provider_client->GetPrefs();
+  if (prefs && ai_chat::IsAIChatEnabled(prefs) &&
+      !provider_client->IsOffTheRecord()) {
+    providers.push_back(base::MakeRefCounted<LeoProvider>(provider_client));
+  }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+}
+
+void MaybeShowLeoMatch(AutocompleteResult* result) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  DCHECK(result);
+
+  if (result->size() == 0) {
+    return;
+  }
+
+  ACMatches::iterator leo_match =
+      base::ranges::find_if(*result, &LeoProvider::IsMatchFromLeoProvider);
+  if (leo_match == result->end()) {
+    return;
+  }
+
+  // Regardless of the relevance score, we want to show the Leo match at the
+  // bottom. But could be followed by Brave Search promotion.
+  result->ReorderMatch(leo_match, -1);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+}
+
 }  // namespace
 
 #define SearchProvider BraveSearchProvider
@@ -86,6 +127,7 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
 #define ShortcutsProvider BraveShortcutsProvider
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER         \
   MaybeAddCommanderProvider(providers_, this);                        \
+  MaybeAddLeoProvider(providers_, this);                              \
   providers_.push_back(new TopSitesProvider(provider_client_.get())); \
   if (IsBraveSearchConversionFeatureEnabled() &&                      \
       !provider_client_->IsOffTheRecord())                            \
@@ -95,8 +137,9 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
 // the AutocompleteController::SortCullAndAnnotateResult() to make our sorting
 // run last but before notifying.
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT \
-  SortBraveSearchPromotionMatch(&result_);          \
-  MaybeShowCommands(&result_, input_);
+  MaybeShowLeoMatch(&internal_result_);             \
+  SortBraveSearchPromotionMatch(&internal_result_); \
+  MaybeShowCommands(&internal_result_, input_);
 
 #include "src/components/omnibox/browser/autocomplete_controller.cc"
 

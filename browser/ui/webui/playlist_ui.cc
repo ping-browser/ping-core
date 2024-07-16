@@ -14,6 +14,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/resources/grit/playlist_generated_map.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,7 +22,10 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
@@ -50,6 +54,30 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
        IDS_PLAYLIST_CONTEXT_MENU_RENAME_PLAYLIST},
       {"bravePlaylistContextMenuDeletePlaylist",
        IDS_PLAYLIST_CONTEXT_MENU_DELETE_PLAYLIST},
+      {"bravePlaylistContextMenuViewOriginalPage",
+       IDS_PLAYLIST_CONTEXT_MENU_VIEW_ORIGINAL_PAGE},
+      {"bravePlaylistEmptyFolderMessage", IDS_PLAYLIST_EMPTY_FOLDER_MESSAGE},
+      {"bravePlaylistA11YCreatePlaylistFolder",
+       IDS_PLAYLIST_A11Y_CREATE_PLAYLIST_FOLDER},
+      {"bravePlaylistA11YOpenPlaylistSettings",
+       IDS_PLAYLIST_A11Y_OPEN_PLAYLIST_SETTINGS},
+      {"bravePlaylistA11YClosePanel", IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP},
+      {"bravePlaylistA11YPlay", IDS_PLAYLIST_A11Y_PLAY},
+      {"bravePlaylistA11YPause", IDS_PLAYLIST_A11Y_PAUSE},
+      {"bravePlaylistA11YNext", IDS_PLAYLIST_A11Y_NEXT},
+      {"bravePlaylistA11YPrevious", IDS_PLAYLIST_A11Y_PREVIOUS},
+      {"bravePlaylistA11YShuffle", IDS_PLAYLIST_A11Y_SHUFFLE},
+      {"bravePlaylistA11YRewind", IDS_PLAYLIST_A11Y_REWIND},
+      {"bravePlaylistA11YForward", IDS_PLAYLIST_A11Y_FORWARD},
+      {"bravePlaylistA11YClose", IDS_PLAYLIST_A11Y_CLOSE},
+      {"bravePlaylistA11YLoopOff", IDS_PLAYLIST_A11Y_LOOP_OFF},
+      {"bravePlaylistA11YLoopOne", IDS_PLAYLIST_A11Y_LOOP_ONE},
+      {"bravePlaylistA11YLoopAll", IDS_PLAYLIST_A11Y_LOOP_ALL},
+      {"bravePlaylistFailedToPlayTitle", IDS_PLAYLIST_FAILED_TO_PLAY_TITLE},
+      {"bravePlaylistFailedToPlayDescription",
+       IDS_PLAYLIST_FAILED_TO_PLAY_DESCRIPTION},
+      {"bravePlaylistFailedToPlayRecover", IDS_PLAYLIST_FAILED_TO_PLAY_RECOVER},
+      {"bravePlaylistAlertDismiss", IDS_PLAYLIST_ALERT_DISMISS},
   };
 
   for (const auto& [name, id] : kLocalizedStrings) {
@@ -74,17 +102,20 @@ class UntrustedPlayerUI : public ui::UntrustedWebUIController {
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::MediaSrc,
         std::string("media-src 'self' chrome-untrusted://playlist-data "
-                    "https://*.googlevideo.com:*;"));
+                    "https: http://localhost;"));
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::StyleSrc,
         std::string("style-src chrome-untrusted://resources "
                     "chrome-untrusted://brave-resources 'unsafe-inline';"));
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::ImgSrc,
-        std::string("img-src 'self' chrome-untrusted://resources;"));
+        std::string("img-src 'self' chrome-untrusted://playlist-data "
+                    "chrome-untrusted://resources;"));
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::FontSrc,
         std::string("font-src 'self' chrome-untrusted://resources;"));
+
+    AddLocalizedStrings(source);
   }
 
   UntrustedPlayerUI(const UntrustedPlayerUI&) = delete;
@@ -105,7 +136,9 @@ bool PlaylistUI::ShouldBlockPlaylistWebUI(
     return false;
   }
 
-  return !PlaylistServiceFactory::IsPlaylistEnabled(browser_context);
+  return !PlaylistServiceFactory::IsPlaylistEnabled(browser_context) ||
+         !user_prefs::UserPrefs::Get(browser_context)
+              ->GetBoolean(playlist::kPlaylistEnabledPref);
 }
 
 PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
@@ -185,6 +218,14 @@ void PlaylistUI::ShowRemovePlaylistUI(const std::string& playlist_id) {
 void PlaylistUI::ShowMoveItemsUI(const std::string& playlist_id,
                                  const std::vector<std::string>& items) {
   playlist::ShowMoveItemsDialog(web_ui()->GetWebContents(), playlist_id, items);
+}
+
+void PlaylistUI::OpenSettingsPage() {
+  playlist::ShowPlaylistSettings(web_ui()->GetWebContents());
+}
+
+void PlaylistUI::ClosePanel() {
+  playlist::ClosePanel(web_ui()->GetWebContents());
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)

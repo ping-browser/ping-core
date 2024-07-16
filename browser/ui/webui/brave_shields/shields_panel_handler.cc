@@ -8,16 +8,18 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/constants/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "ui/gfx/geometry/vector2d.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 ShieldsPanelHandler::ShieldsPanelHandler(
     mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
-    ui::MojoBubbleWebUIController* webui_controller,
+    TopChromeWebUIController* webui_controller,
     BraveBrowserWindow* brave_browser_window,
     Profile* profile)
     : receiver_(this, std::move(receiver)),
@@ -32,6 +34,9 @@ void ShieldsPanelHandler::ShowUI() {
   if (embedder) {
     embedder->ShowUI();
   }
+  brave_shields::MaybeRecordShieldsUsageP3A(
+      brave_shields::ShieldsIconUsage::kClicked,
+      g_browser_process->local_state());
 }
 
 void ShieldsPanelHandler::CloseUI() {

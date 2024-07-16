@@ -10,20 +10,16 @@ import {
   BraveWallet,
   SpotPriceRegistry
 } from '../../../../../../constants/types'
-import {
-  QuoteOption
-} from '../../../constants/types'
+import { QuoteOption } from '../../../constants/types'
 
 // Constants
 import LPMetadata from '../../../constants/LpMetadata'
 
 // Utils
 import Amount from '../../../../../../utils/amount'
+import { getLocale } from '../../../../../../../common/locale'
 import {
-  getLocale
-} from '../../../../../../../common/locale'
-import {
-  getTokenPriceAmountFromRegistry
+  getTokenPriceAmountFromRegistry //
 } from '../../../../../../utils/pricing-utils'
 
 // Styled Components
@@ -53,10 +49,12 @@ interface Props {
   toToken: BraveWallet.BlockchainToken | undefined
   toAmount: string
   spotPrices?: SpotPriceRegistry
+  swapFees?: BraveWallet.SwapFees
 }
 
 export const QuoteInfo = (props: Props) => {
-  const { selectedQuoteOption, fromToken, toToken, spotPrices } = props
+  const { selectedQuoteOption, fromToken, toToken, spotPrices, swapFees } =
+    props
 
   // State
   const [showProviders, setShowProviders] = React.useState<boolean>(false)
@@ -67,15 +65,11 @@ export const QuoteInfo = (props: Props) => {
       return ''
     }
 
-    return `1 ${selectedQuoteOption
-      .fromToken.symbol
-      } ≈ ${selectedQuoteOption
-        .rate
-        .format(6)
-      } ${selectedQuoteOption
-        .toToken
-        .symbol
-      }`
+    return `1 ${
+      selectedQuoteOption.fromToken.symbol
+    } ≈ ${selectedQuoteOption.rate.format(6)} ${
+      selectedQuoteOption.toToken.symbol
+    }`
   }, [selectedQuoteOption])
 
   const coinGeckoDelta: Amount = React.useMemo(() => {
@@ -114,20 +108,24 @@ export const QuoteInfo = (props: Props) => {
 
   const coinGeckoDeltaText: string = React.useMemo(() => {
     if (coinGeckoDelta.gte(0)) {
-      return getLocale('braveSwapCoinGeckoCheaper')
-        .replace('$1', coinGeckoDelta.format(2))
+      return getLocale('braveSwapCoinGeckoCheaper').replace(
+        '$1',
+        coinGeckoDelta.format(2)
+      )
     }
 
     if (coinGeckoDelta.gte(-1)) {
-      return getLocale('braveSwapCoinGeckoWithin')
-        .replace('$1', coinGeckoDelta.times(-1).format(2))
+      return getLocale('braveSwapCoinGeckoWithin').replace(
+        '$1',
+        coinGeckoDelta.times(-1).format(2)
+      )
     }
 
     return getLocale('braveSwapCoinGeckoExpensive').replace(
       '$1',
       coinGeckoDelta.times(-1).format(2)
     )
-  }, [coinGeckoDelta, getLocale])
+  }, [coinGeckoDelta])
 
   const coinGeckoDeltaColor = React.useMemo(() => {
     if (coinGeckoDelta.gte(-1)) {
@@ -156,77 +154,112 @@ export const QuoteInfo = (props: Props) => {
       return ''
     }
 
-    return selectedQuoteOption
-      .minimumToAmount
-      .formatAsAsset(6, selectedQuoteOption.toToken.symbol)
+    return selectedQuoteOption.minimumToAmount.formatAsAsset(
+      6,
+      selectedQuoteOption.toToken.symbol
+    )
   }, [selectedQuoteOption])
 
-  const braveFee = React.useMemo(() => {
-    if (!selectedQuoteOption?.braveFee) {
+  const braveFee: BraveWallet.SwapFees | undefined = React.useMemo(() => {
+    if (!swapFees) {
       return undefined
     }
 
-    const { braveFee: braveFeeOriginal } = selectedQuoteOption
-
     return {
-      ...braveFeeOriginal,
-      effectiveFeePct: new Amount(braveFeeOriginal.effectiveFeePct).format(6),
-      protocolFeePct: new Amount(braveFeeOriginal.protocolFeePct),
-      discountOnBraveFeePct: new Amount(braveFeeOriginal.discountOnBraveFeePct).format(6),
-      braveFeePct: new Amount(braveFeeOriginal.braveFeePct).format(6)
+      ...swapFees,
+      effectiveFeePct: new Amount(swapFees.effectiveFeePct).format(6),
+      discountPct: new Amount(swapFees.discountPct).format(6),
+      feePct: new Amount(swapFees.feePct).format(6)
     }
-  }, [selectedQuoteOption])
+  }, [swapFees])
 
   return (
-    <Column columnHeight='dynamic' columnWidth='full'>
+    <Column
+      columnHeight='dynamic'
+      columnWidth='full'
+    >
       <VerticalSpacer size={16} />
-      <Row rowWidth='full' marginBottom={10} horizontalPadding={16}>
+      <Row
+        rowWidth='full'
+        marginBottom={10}
+        horizontalPadding={16}
+      >
         <Text textSize='14px'>{getLocale('braveSwapRate')}</Text>
         <Row>
           <Text textSize='14px'>{swapRate}</Text>
-          <HorizontalArrows name='swap-horizontal' size={16} />
+          <HorizontalArrows
+            name='swap-horizontal'
+            size={16}
+          />
         </Row>
       </Row>
-      <Row rowWidth='full' marginBottom={10} horizontalPadding={16}>
+      <Row
+        rowWidth='full'
+        marginBottom={10}
+        horizontalPadding={16}
+      >
         <HorizontalSpacer size={1} />
         <Row>
-          <Text textSize='14px' textColor={coinGeckoDeltaColor}>
+          <Text
+            textSize='14px'
+            textColor={coinGeckoDeltaColor}
+          >
             {coinGeckoDeltaText}
           </Text>
         </Row>
       </Row>
-      <Row rowWidth='full' marginBottom={10} horizontalPadding={16}>
+      <Row
+        rowWidth='full'
+        marginBottom={10}
+        horizontalPadding={16}
+      >
         <Text textSize='14px'>{getLocale('braveSwapPriceImpact')}</Text>
-        <Text
-          textSize='14px'
-        >
+        <Text textSize='14px'>
           {swapImpact === '0' ? `${swapImpact}%` : `~ ${swapImpact}%`}
         </Text>
       </Row>
       {minimumReceived !== '' && (
-        <Row rowWidth='full' marginBottom={8} horizontalPadding={16}>
-          <Text textSize='14px' textAlign='left'>
+        <Row
+          rowWidth='full'
+          marginBottom={8}
+          horizontalPadding={16}
+        >
+          <Text
+            textSize='14px'
+            textAlign='left'
+          >
             {getLocale('braveSwapMinimumReceivedAfterSlippage')}
           </Text>
-          <Text textSize='14px' textAlign='right'>
+          <Text
+            textSize='14px'
+            textAlign='right'
+          >
             {minimumReceived}
           </Text>
         </Row>
       )}
       {selectedQuoteOption && selectedQuoteOption.sources.length > 0 && (
-        <Column columnWidth='full' marginBottom={8} horizontalPadding={16}>
-          <Row rowWidth='full' marginBottom={8}>
-            <Text textSize='14px' textAlign='left'>
+        <Column
+          columnWidth='full'
+          marginBottom={8}
+          horizontalPadding={16}
+        >
+          <Row
+            rowWidth='full'
+            marginBottom={8}
+          >
+            <Text
+              textSize='14px'
+              textAlign='left'
+            >
               {getLocale('braveSwapLiquidityProvider')}
             </Text>
             <Row>
-              <Text textSize='14px'>
-                {selectedQuoteOption.sources.length}
-              </Text>
+              <Text textSize='14px'>{selectedQuoteOption.sources.length}</Text>
               <HorizontalSpacer size={8} />
               <ExpandButton
                 isExpanded={showProviders}
-                onClick={() => setShowProviders(prev => !prev)}
+                onClick={() => setShowProviders((prev) => !prev)}
               >
                 <Icon
                   size={14}
@@ -235,7 +268,7 @@ export const QuoteInfo = (props: Props) => {
               </ExpandButton>
             </Row>
           </Row>
-          {showProviders &&
+          {showProviders && (
             <LPRow
               rowWidth='full'
               horizontalAlign='flex-start'
@@ -244,13 +277,14 @@ export const QuoteInfo = (props: Props) => {
               {selectedQuoteOption.sources.map((source, idx) => (
                 <Row key={idx}>
                   <Bubble>
-                    <Text
-                      textSize='12px'
-                    >
+                    <Text textSize='12px'>
                       {source.name.split('_').join(' ')}
                     </Text>
                     {LPMetadata[source.name] ? (
-                      <LPIcon icon={LPMetadata[source.name]} size={12} />
+                      <LPIcon
+                        icon={LPMetadata[source.name]}
+                        size={12}
+                      />
                     ) : null}
                   </Bubble>
 
@@ -262,68 +296,64 @@ export const QuoteInfo = (props: Props) => {
                 </Row>
               ))}
             </LPRow>
-          }
+          )}
         </Column>
       )}
       {selectedQuoteOption && (
-        <Row rowWidth='full' marginBottom={8} horizontalPadding={16}>
+        <Row
+          rowWidth='full'
+          marginBottom={8}
+          horizontalPadding={16}
+        >
           <Text textSize='14px'>{getLocale('braveSwapNetworkFee')}</Text>
           <Bubble>
-            <FuelTank name='search-fuel-tank' size={16} />
-            <Text textSize='14px'>{selectedQuoteOption.networkFee}</Text>
+            <FuelTank
+              name='search-fuel-tank'
+              size={16}
+            />
+            <Text textSize='14px'>{selectedQuoteOption.networkFeeFiat}</Text>
           </Bubble>
         </Row>
       )}
       {braveFee && (
-        <Row rowWidth='full' marginBottom={8} horizontalPadding={16}>
+        <Row
+          rowWidth='full'
+          marginBottom={8}
+          horizontalPadding={16}
+        >
           <Text textSize='14px'>{getLocale('braveSwapBraveFee')}</Text>
           <Text textSize='14px'>
             <BraveFeeContainer>
-              {braveFee.discountCode === BraveWallet.DiscountCode.kNone && (
-                <Text textSize='14px'>
-                  {braveFee.effectiveFeePct}%
-                </Text>
+              {braveFee.discountCode === BraveWallet.SwapDiscountCode.kNone && (
+                <Text textSize='14px'>{braveFee.effectiveFeePct}%</Text>
               )}
 
-              {braveFee.discountCode !== BraveWallet.DiscountCode.kNone && (
+              {braveFee.discountCode !== BraveWallet.SwapDiscountCode.kNone && (
                 <>
-                  {!braveFee.hasBraveFee
-                    ? (
-                      <Text textSize='14px' textColor='success' isBold={true}>
-                        {getLocale('braveSwapFree')}
-                      </Text>
-                    )
-                    : (
-                      <Text textSize='14px'>
-                        {braveFee.effectiveFeePct}%
-                      </Text>
-                    )
-                  }
+                  {new Amount(braveFee.effectiveFeePct).isZero() ? (
+                    <Text
+                      textSize='14px'
+                      textColor='success'
+                      isBold={true}
+                    >
+                      {getLocale('braveSwapFree')}
+                    </Text>
+                  ) : (
+                    <Text textSize='14px'>{braveFee.effectiveFeePct}%</Text>
+                  )}
 
-                  <BraveFeeDiscounted textSize='14px' textColor='text03'>
-                    {braveFee.braveFeePct}%
+                  <BraveFeeDiscounted
+                    textSize='14px'
+                    textColor='text03'
+                  >
+                    {braveFee.feePct}%
                   </BraveFeeDiscounted>
 
-                  {braveFee.hasBraveFee &&
-                    <Text textSize='14px'>
-                     (-{braveFee.discountOnBraveFeePct}%)
-                    </Text>
-                  }
+                  {new Amount(braveFee.effectiveFeePct).gt(0) && (
+                    <Text textSize='14px'>(-{braveFee.discountPct}%)</Text>
+                  )}
                 </>
               )}
-            </BraveFeeContainer>
-          </Text>
-        </Row>
-      )}
-
-      {braveFee && !braveFee.protocolFeePct.isZero() && (
-        <Row rowWidth='full' marginBottom={16} horizontalPadding={16}>
-          <Text textSize='14px'>{getLocale('braveSwapProtocolFee')}</Text>
-          <Text textSize='14px'>
-            <BraveFeeContainer>
-              <Text textSize='14px'>
-                {braveFee.protocolFeePct.format(6)}%
-              </Text>
             </BraveFeeContainer>
           </Text>
         </Row>

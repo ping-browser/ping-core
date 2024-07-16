@@ -7,6 +7,8 @@
 
 #include <map>
 #include <memory>
+#include <optional>
+#include <string_view>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -47,7 +49,7 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr base::StringPiece eth_allowance_detected_response = R"({
+constexpr std::string_view eth_allowance_detected_response = R"({
     "jsonrpc": "2.0",
     "id": 1,
     "result": [
@@ -69,7 +71,7 @@ constexpr base::StringPiece eth_allowance_detected_response = R"({
     ]
 })";
 
-constexpr base::StringPiece eth_allowance_error_response = R"({
+constexpr std::string_view eth_allowance_error_response = R"({
                   "error": {
                     "code": -32000,
 "message": "requested too many blocks from 0
@@ -162,8 +164,8 @@ using AllowancesMapCallback = base::OnceCallback<void(const AllowancesMap&)>;
 using OnDiscoverEthAllowancesCompletedValidation =
     base::RepeatingCallback<void(const std::vector<mojom::AllowanceInfoPtr>&)>;
 
-base::Value::Dict ParseTestJson(const base::StringPiece& json) {
-  absl::optional<base::Value> potential_response_dict_val =
+base::Value::Dict ParseTestJson(const std::string_view json) {
+  std::optional<base::Value> potential_response_dict_val =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   return std::move(potential_response_dict_val.value().GetDict());
@@ -234,17 +236,18 @@ class EthAllowanceManagerUnitTest : public testing::Test {
         JsonRpcServiceFactory::GetServiceForContext(profile_.get());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
+    tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
     wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service, GetPrefs(), GetLocalState());
+        json_rpc_service_, tx_service_, nullptr, nullptr, GetPrefs(),
+        GetLocalState(), false /* is_private_window_ */);
     eth_allowance_manager_ = std::make_unique<EthAllowanceManager>(
         json_rpc_service_, keyring_service_, GetPrefs());
   }
 
   void CreateCachedAllowancesPrefs(const std::string& json) {
-    absl::optional<base::Value> allowance_chache_json_value =
+    std::optional<base::Value> allowance_chache_json_value =
         base::JSONReader::Read(json,
                                base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                    base::JSONParserOptions::JSON_PARSE_RFC);
@@ -295,23 +298,22 @@ class EthAllowanceManagerUnitTest : public testing::Test {
         contract_addresses.push_back(tkn->contract_address);
       }
     }
-    keyring_service_->RestoreWallet(kMnemonicDivideCruise, kPasswordBrave,
-                                    false, base::DoNothing());
+    ASSERT_TRUE(keyring_service_->RestoreWalletSync(kMnemonicDivideCruise,
+                                                    kPasswordBrave, false));
     for (int i = 0; i < (eth_account_count - 1); i++) {
       AddEthAccount("additonal eth account");
     }
 
-    const auto keyring_info = keyring_service_->GetKeyringInfoSync(
-        brave_wallet::mojom::kDefaultKeyringId);
     std::vector<std::string> account_addresses;
-    for (const auto& account_info : keyring_info->account_infos) {
-      std::string hex_account_address;
-      if (!PadHexEncodedParameter(account_info->address,
-                                  &hex_account_address)) {
-        ASSERT_TRUE(false);
+    for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
+      if (account_info->account_id->coin == mojom::CoinType::ETH) {
+        std::string hex_account_address;
+        ASSERT_TRUE(PadHexEncodedParameter(account_info->address,
+                                           &hex_account_address));
+        account_addresses.push_back(hex_account_address);
       }
-      account_addresses.push_back(hex_account_address);
     }
+
     auto responses =
         std::move(get_responses).Run(account_addresses, token_list_map);
     blockchain_registry->UpdateTokenList(std::move(token_list_map));
@@ -332,7 +334,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
                                               get_block_response_str);
             } else if (request.url.spec() == url.spec() &&
                        header_value == "eth_getLogs") {
-              absl::optional<base::Value> request_dict_val =
+              std::optional<base::Value> request_dict_val =
                   base::JSONReader::Read(
                       request.request_body->elements()
                           ->at(0)
@@ -362,7 +364,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
                 const auto request_approver_address =
                     (*topics_ptr)[1].GetString();
 
-                absl::optional<base::Value> potential_response_dict_val =
+                std::optional<base::Value> potential_response_dict_val =
                     base::JSONReader::Read(
                         potential_response,
                         base::JSON_PARSE_CHROMIUM_EXTENSIONS |
@@ -482,7 +484,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   }
 
   std::map<GURL, std::map<std::string, std::string>> PrepareResponses(
-      const base::StringPiece& response_json,
+      const std::string_view response_json,
       const std::vector<std::string>& eth_account_address,
       const TokenListMap& token_list_map,
       base::RepeatingCallback<void(base::Value::Dict,
@@ -534,7 +536,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   std::unique_ptr<EthAllowanceManager> eth_allowance_manager_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
-  raw_ptr<TxService> tx_service;
+  raw_ptr<TxService> tx_service_;
   base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };

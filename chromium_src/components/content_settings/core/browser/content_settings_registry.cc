@@ -7,7 +7,7 @@
 #include "src/components/content_settings/core/browser/content_settings_registry.cc"
 #undef BRAVE_INIT
 
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "net/base/features.h"
 
@@ -109,7 +109,7 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   Register(ContentSettingsType::BRAVE_SPEEDREADER, "braveSpeedreader",
-           CONTENT_SETTING_ALLOW, WebsiteSettingsInfo::SYNCABLE,
+           CONTENT_SETTING_DEFAULT, WebsiteSettingsInfo::SYNCABLE,
            /*allowlisted_schemes=*/{},
            /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
@@ -221,6 +221,47 @@ void ContentSettingsRegistry::BraveInit() {
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
+  // Disable idle detection by default (we used to disable feature flag
+  // kIdleDetection, but it went away in cr121).
+  content_settings_info_.erase(ContentSettingsType::IDLE_DETECTION);
+  website_settings_registry_->UnRegister(ContentSettingsType::IDLE_DETECTION);
+  Register(ContentSettingsType::IDLE_DETECTION, "idle-detection",
+           CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE,
+           /*allowlisted_primary_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::ALL_PLATFORMS,
+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
+
+  // Disable storage access by default (we used to disable feature flag
+  // kPermissionStorageAccessAPI, but it went away in cr124).
+  content_settings_info_.erase(ContentSettingsType::STORAGE_ACCESS);
+  website_settings_registry_->UnRegister(ContentSettingsType::STORAGE_ACCESS);
+  content_settings_info_.erase(ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS);
+  website_settings_registry_->UnRegister(
+      ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS);
+  Register(ContentSettingsType::STORAGE_ACCESS, "storage-access",
+           CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE,
+           /*allowlisted_primary_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::REQUESTING_AND_TOP_SCHEMEFUL_SITE_SCOPE,
+           WebsiteSettingsRegistry::ALL_PLATFORMS,
+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+  Register(ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS,
+           "top-level-storage-access", CONTENT_SETTING_BLOCK,
+           WebsiteSettingsInfo::UNSYNCABLE,
+           /*allowlisted_primary_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::REQUESTING_AND_TOP_ORIGIN_SCOPE,
+           WebsiteSettingsRegistry::ALL_PLATFORMS,
+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   website_settings_registry_->UnRegister(ContentSettingsType::HTTP_ALLOWED);

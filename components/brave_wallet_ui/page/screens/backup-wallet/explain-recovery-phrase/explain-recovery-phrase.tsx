@@ -5,56 +5,44 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
+import { useDispatch } from 'react-redux'
+import Button from '@brave/leo/react/button'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // utils
-import { getLocale, splitStringForTag } from '../../../../../common/locale'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+import { getLocale } from '../../../../../common/locale'
+import { WalletPageActions } from '../../../actions'
+import {
+  useReportOnboardingActionMutation //
+} from '../../../../common/slices/api.slice'
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
-import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
-
-// images
-import ExamplePhrase from './images/example-recovery-phrase.svg'
 
 // components
-import {
-  NavButton //
-} from '../../../../components/extension/buttons/nav-button/index'
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
-import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'
-import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
+import { SkipWarningDialog } from './skip_warning_dialog'
 
 // style
+import { ContinueButton } from '../../onboarding/onboarding.style'
 import {
-  StyledWrapper,
-  Title,
-  Description,
-  NextButtonRow,
-  MainWrapper
-} from '../../onboarding/onboarding.style'
-import {
-  BannerCard,
-  WarningCircle,
-  ImportantText,
-  BannerText,
-  CenteredRow
+  Subtitle,
+  BackupInstructions,
+  ExampleRecoveryPhrase
 } from './explain-recovery-phrase.style'
-
-const importantTextParts = splitStringForTag(getLocale('braveWalletRecoveryPhraseBackupWarningImportant'))
-
-const ImportantTextSegments = () => {
-  return <BannerText>
-    {importantTextParts.beforeTag}
-    <ImportantText>{importantTextParts.duringTag}</ImportantText>
-    {importantTextParts.afterTag}
-  </BannerText>
-}
+import { Column, VerticalSpace } from '../../../../components/shared/style'
+import {
+  OnboardingContentLayout //
+} from '../../onboarding/components/onboarding_content_layout/content_layout'
 
 export const RecoveryPhraseExplainer = () => {
-  // custom hooks
-  const { braveWalletP3A } = useApiProxy()
+  // state
+  const [isSkipWarningOpen, setIsSkipWarningOpen] = React.useState(false)
+
+  // redux
+  const dispatch = useDispatch()
+
+  // mutations
+  const [report] = useReportOnboardingActionMutation()
 
   // routing
   const history = useHistory()
@@ -62,72 +50,65 @@ export const RecoveryPhraseExplainer = () => {
   const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
 
   // methods
-  const skipToOnboardingSuccess = () => {
-    braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.CompleteRecoverySkipped);
-    history.push(WalletRoutes.OnboardingComplete)
-  }
-
   const skipBackup = () => {
+    dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
+    if (isOnboarding) {
+      report(BraveWallet.OnboardingAction.CompleteRecoverySkipped)
+      history.push(WalletRoutes.OnboardingComplete)
+      return
+    }
     history.push(WalletRoutes.PortfolioAssets)
   }
 
+  const onContinue = () => {
+    history.push(
+      isOnboarding
+        ? WalletRoutes.OnboardingBackupRecoveryPhrase
+        : WalletRoutes.BackupRecoveryPhrase
+    )
+  }
+
+  // effects
+  React.useEffect(() => {
+    report(BraveWallet.OnboardingAction.RecoverySetup)
+  }, [report])
+
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-
-          {isOnboarding &&
-            <OnboardingNewWalletStepsNavigation
-              preventGoBack
-              currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
-              onSkip={skipToOnboardingSuccess}
-            />
-          }
-          {!isOnboarding &&
-            <StepsNavigation
-              steps={WALLET_BACKUP_STEPS}
-              preventGoBack
-              currentStep={WalletRoutes.BackupExplainRecoveryPhrase}
-              preventSkipAhead
-              onSkip={skipBackup}
-            />
-          }
-
-          <div>
-            <Title>{getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}</Title>
-            <Description>{getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroDescription')}</Description>
-            <CenteredRow>
-              <ArticleLinkBubble
-                icon='key'
-                iconBackgroundColor='red200'
-                text={getLocale('braveWalletArticleLinkWhatsARecoveryPhrase')}
-                url='https://brave.com/learn/wallet-recovery-phrase/'
-              />
-            </CenteredRow>
-          </div>
-
-          <img width='376px' height='118px' src={ExamplePhrase} />
-
-          <BannerCard>
-            <WarningCircle />
-            <ImportantTextSegments />
-          </BannerCard>
-
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={getLocale('braveWalletButtonGotIt')}
-              url={isOnboarding
-                ? WalletRoutes.OnboardingBackupRecoveryPhrase
-                : WalletRoutes.BackupRecoveryPhrase
-              }
-            />
-          </NextButtonRow>
-
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+    <>
+      <SkipWarningDialog
+        isOpen={isSkipWarningOpen}
+        onBack={() => setIsSkipWarningOpen(false)}
+        onSkip={skipBackup}
+      />
+      <OnboardingContentLayout
+        title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
+        subTitle=''
+      >
+        <Subtitle>
+          {getLocale(
+            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
+          )}
+        </Subtitle>
+        <VerticalSpace space='14px' />
+        <BackupInstructions>
+          {getLocale('braveWalletRecoveryPhraseBackupWarningImportant')}
+        </BackupInstructions>
+        <ExampleRecoveryPhrase />
+        <Column gap='24px'>
+          <ContinueButton onClick={onContinue}>
+            {getLocale('braveWalletButtonVerifyPhrase')}
+          </ContinueButton>
+          <Button
+            kind='plain-faint'
+            color={leo.color.text.secondary}
+            onClick={() => setIsSkipWarningOpen(true)}
+          >
+            {getLocale('braveWalletButtonSkip')}
+          </Button>
+        </Column>
+      </OnboardingContentLayout>
+    </>
   )
 }
 

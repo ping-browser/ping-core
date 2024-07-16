@@ -3,23 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
+
 #include <utility>
 #include <vector>
 
-#include "base/big_endian.h"
 #include "base/containers/contains.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "chrome/test/base/ui_test_utils.h"
 
 namespace {
@@ -121,7 +121,8 @@ std::string GetPublisherChannelResponse(
   // Add padding header
   uint32_t length = out.length();
   out.insert(0, 4, ' ');
-  base::WriteBigEndian(&out[0], length);
+  base::as_writable_byte_span(out).first<4u>().copy_from(
+      base::numerics::U32ToBigEndian(length));
   return out;
 }
 
@@ -139,29 +140,6 @@ void RewardsBrowserTestResponse::LoadMocks() {
   ASSERT_TRUE(base::ReadFileToString(
       path.AppendASCII("wallet_resp.json"),
       &wallet_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("promotions_resp.json"),
-      &promotions_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("promotion_empty_key_resp.json"),
-      &promotion_empty_key_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("captcha_resp.json"),
-      &captcha_));
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("promotion_claim_resp.json"),
-      &promotion_claim_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("creds_tokens_resp.json"),
-      &creds_tokens_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("creds_tokens_prod_resp.json"),
-      &creds_tokens_prod_));
 
   ASSERT_TRUE(base::ReadFileToString(
       path.AppendASCII("creds_tokens_sku_resp.json"),
@@ -229,34 +207,6 @@ void RewardsBrowserTestResponse::Get(
   if (url.find("/v1/parameters") != std::string::npos) {
     *response = parameters_;
     return;
-  }
-
-  if (url.find("/v1/promotions?") != std::string::npos) {
-    if (empty_promotion_key_) {
-      *response = promotion_empty_key_;
-    } else {
-      *response = promotions_;
-    }
-    return;
-  }
-
-  if (url.find("/v1/promotions") != std::string::npos) {
-    if (url.find("claims") != std::string::npos) {
-      *response = creds_tokens_;
-    } else {
-      *response = promotion_claim_;
-    }
-    return;
-  }
-
-  if (url.find("/v1/promotions/report-bap") != std::string::npos) {
-    *response = "";
-    *response_status_code = net::HTTP_OK;
-    return;
-  }
-
-  if (url.find("/v1/captchas") != std::string::npos) {
-    *response = captcha_;
   }
 
   if (url.find("/publishers/prefix-list") != std::string::npos) {
@@ -343,10 +293,6 @@ void RewardsBrowserTestResponse::ClearRequests() {
 
 void RewardsBrowserTestResponse::SetSKUOrder(mojom::SKUOrderPtr order) {
   order_ = std::move(order);
-}
-
-void RewardsBrowserTestResponse::SetPromotionEmptyKey(bool empty) {
-  empty_promotion_key_ = empty;
 }
 
 void RewardsBrowserTestResponse::SetAlternativePublisherList(bool alternative) {

@@ -3,7 +3,44 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
+<link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
 <style include="settings-shared md-select iron-flex">
+  .reset-leo {
+      cursor: pointer;
+      color: red;
+  }
+
+  .menu-item-with-icon {
+    --leo-icon-size: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .model-subtitle {
+    font: var(--leo-font-primary-small-regular);
+    padding: 0;
+    margin: 0;
+  }
+
+  .menu-subtitle {
+    --leo-icon-size: 16px;
+    margin: 14px calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+    margin-bottom: 2px;
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-primary-small-regular);
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 6px;
+  }
+
+  leo-dropdown {
+    min-width: 240px;
+  }
 </style>
 <settings-toggle-button class="cr-row hr"
   pref="[[itemPref_(leoAssistantShowOnToolbarPref_)]]"
@@ -11,11 +48,48 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   on-settings-boolean-control-change="onLeoAssistantShowOnToolbarChange_">
 </settings-toggle-button>
 <settings-toggle-button class="cr-row hr"
-  pref="{{prefs.brave.ai_chat.auto_generate_questions}}"
-  label="$i18n{braveLeoAssistantShowSuggestedPromptsLabel}">
+  pref="{{prefs.brave.ai_chat.context_menu_enabled}}"
+  label="$i18n{braveLeoAssistantShowInContextMenuLabel}"
+  sub-label="$i18n{braveLeoAssistantShowInContextMenuDesc}">
 </settings-toggle-button>
+<div class="settings-box">
+  <div class="flex cr-padded-text">
+    <div>$i18n{braveLeoAssistantModelSelectionLabel}</div>
+  </div>
+  <leo-dropdown
+    class="cr-padded-text"
+    value="[[defaultModelKeyPrefValue_]]"
+    on-change="onModelSelectionChange_"
+  >
+    <div slot="value">[[selectedModelDisplayName_]]</div>
+    <div class="menu-subtitle">
+      <leo-icon name="message-bubble-comments"></leo-icon>
+      <span>$i18n{braveLeoModelCategory-chat}</span>
+    </div>
+    <template is="dom-repeat" items="[[models_]]">
+        <leo-option value$="[[item.model.key]]">
+          <div class="menu-item-with-icon">
+            <div>
+              <div>[[item.model.displayName]]</div>
+              <p class="model-subtitle">[[item.subtitle]]</p>
+            </div>
+            <template is="dom-if" if="[[isModelPremium_(item.model.access)]]">
+              <leo-icon name="lock-plain"></leo-icon>
+            </template>
+          </div>
+        </leo-option>
+      </template>
+  </leo-dropdown>
+</div>
+<cr-link-row class="hr"
+  label="$i18n{braveLeoAssistantAutocompleteLink}"
+  on-click="openAutocompleteSetting_">
+</cr-link-row>
+<template is="dom-if" if="[[shouldShowManageSubscriptionLink_]]">
+  <cr-link-row on-click="openManageAccountPage_" external="true" class="hr" label="$i18n{braveLeoAssistantManageUrlLabel}"></cr-link-row>
+</template>
 <div class="settings-box " on-click="onResetAssistantData_">
-    <div class="flex cr-padded-text reset-wallet">
+    <div class="flex cr-padded-text reset-leo">
       <div>$i18n{braveLeoAssistantResetAndClearDataLabel}</div>
     </div>
 </div>

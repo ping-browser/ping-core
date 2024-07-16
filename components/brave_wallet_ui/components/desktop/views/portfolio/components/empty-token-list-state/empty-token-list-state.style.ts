@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Assets
 import {
@@ -13,10 +13,7 @@ import {
 } from '../../../../../../assets/svg-icons/empty-state-icons'
 
 // Shared Styles
-import {
-  Column,
-  Text
-} from '../../../../../shared/style'
+import { Column, Text } from '../../../../../shared/style'
 
 export const StyledWrapper = styled(Column)`
   max-width: 620px;

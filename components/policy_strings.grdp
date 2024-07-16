@@ -223,8 +223,8 @@
   <message name="IDS_POLICY_CLOUD_USER_ONLY_ERROR" desc="The text displayed in the status column when a policy should only be set from cloud user is set from another source.">
     Ignored because the policy can only be set as a cloud user policy.
   </message>
-  <message name="IDS_POLICY_CLOUD_MANAGEMENT_ENROLLMENT_ONLY_ERROR" desc="The text displayed in the status column when a policy that is effective only when the machine is enrolled with the Brave Browser Cloud Management.">
-    Ignored because the machine is not enrolled with Brave Browser Cloud Management.
+  <message name="IDS_POLICY_CLOUD_MANAGEMENT_ENROLLMENT_ONLY_ERROR" desc="The text displayed in the status column when a policy that is effective only when the machine is enrolled with the Ping Browser Cloud Management.">
+    Ignored because the machine is not enrolled with Ping Browser Cloud Management.
   </message>
   <message name="IDS_POLICY_DEFAULT_SEARCH_DISABLED" desc="The text displayed in the status column when a policy value has been ignored because default search has not been enabled.">
     Ignored because default search is not enabled by policy.
@@ -249,6 +249,9 @@
   </message>
   <message name="IDS_POLICY_INVALID_URL_ERROR" desc="The text displayed in the status column when the URL given is invalid.">
     Invalid URL.
+  </message>
+  <message name="IDS_POLICY_URL_NOT_HTTPS_ERROR" desc="The text displayed in the status column when the URL given isn't using the https scheme, but needs to be.">
+    URL must be https.
   </message>
   <message name="IDS_POLICY_INVALID_SEARCH_URL_ERROR" desc="The text displayed in the status column when a the URL given for DefaultSearchProviderSearchURL is invalid.">
     Invalid search URL.
@@ -285,8 +288,8 @@
       Unknown variable "<ph name="VARIABLE">$1<ex>${UNKNOWN_VARIABLE}</ex></ph>" in the managed configuration of "<ph name="APPLICATION_ID">$2<ex>com.dropbox.android</ex></ph>".
     </message>
   </if>
-  <message name="IDS_POLICY_OFF_CWS_URL_ERROR" desc="The text displayed in the status column when the update URL points to a location other than the Brave Webstore and the machine is not enterprise managed.">
-    This computer is not detected as enterprise managed so policy can only automatically install extensions hosted on the Brave Webstore. The Brave Webstore update URL is "<ph name="CWS_UPDATE_URL">$1<ex>https://clients2.google.com/service/update2/crx</ex></ph>".
+  <message name="IDS_POLICY_OFF_CWS_URL_ERROR" desc="The text displayed in the status column when the update URL points to a location other than the Ping Webstore and the machine is not enterprise managed.">
+    This computer is not detected as enterprise managed so policy can only automatically install extensions hosted on the Ping Webstore. The Ping Webstore update URL is "<ph name="CWS_UPDATE_URL">$1<ex>https://clients2.google.com/service/update2/crx</ex></ph>".
   </message>
   <message name="IDS_POLICY_HOMEPAGE_LOCATION_ERROR" desc="The text displayed in the status column when the homepage URL given by the HomepageLocation policy is invalid.">
     Invalid URL. Must be a URL with a standard scheme, e.g http://example.com or https://example.com.
@@ -365,9 +368,60 @@ Additional details:
   <message name="IDS_POLICY_PROTO_PARSING_ERROR" desc="Text displayed when error is encountered during policy parsing/decoding.">
     Policy parsing error: <ph name="ERROR">$1<ex>Invalid JSON string: Line: 1, column: 14</ex></ph>
   </message>
-    <message name="IDS_POLICY_HEX_COLOR_ERROR" desc="Error message in the policy summary page for the BrowserThemeColor policy when the policy value is an invalid hex color.">
-      Value "<ph name="VALUE">$1<ex>#zzzzzz</ex></ph>" is an invalid hex color.
-    </message>
+  <message name="IDS_POLICY_HEX_COLOR_ERROR" desc="Error message in the policy summary page for the BrowserThemeColor policy when the policy value is an invalid hex color.">
+    Value "<ph name="VALUE">$1<ex>#zzzzzz</ex></ph>" is an invalid hex color.
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_MAX_PROVIDERS_LIMIT_ERROR" desc="The text displayed in the status column of the SiteSearchSettings policy when the max number of search providers is exceeded.">
+    This policy should not have more than <ph name="MAX_ITEMS_LIMIT">$1<ex>1000</ex></ph> entries.
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_MAX_FEATURED_PROVIDERS_LIMIT_ERROR" desc="The text displayed in the status column of the SiteSearchSettings policy when the max number of featured search providers is exceeded.">
+    This policy should not have more than <ph name="MAX_ITEMS_LIMIT">$1<ex>10</ex></ph> featured entries.
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_DUPLICATED_SHORTCUT" desc="The text displayed in the status column of the SiteSearchSettings policy when there is more than one entry using the same shortcut.">
+    Ignored non-unique shortcut: <ph name="SHORTCUT_NAME">$1<ex>shortcut</ex></ph>
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_SHORTCUT_CONTAINS_SPACE" desc="The text displayed in the status column of the SiteSearchSettings policy when a shortcut contains a space character.">
+    Shortcut can't contain spaces: "<ph name="SHORTCUT_NAME">$1<ex>shortcut</ex></ph>"
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_SHORTCUT_STARTS_WITH_AT" desc="The text displayed in the status column of the SiteSearchSettings policy when a shortcut starts with the @ character.">
+    Shortcut can't start with the @ character: "<ph name="SHORTCUT_NAME">$1<ex>shortcut</ex></ph>"
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_NO_VALID_PROVIDER" desc="The text displayed in the status column of the SiteSearchSettings policy when there is no valid entry in the policy.">
+    The list contains no valid search provider.
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_SHORTCUT_IS_EMPTY" desc="The text displayed in the status column of the SiteSearchSettings policy when a shortcut is defined as an empty string.">
+    Shortcut can't be empty
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_NAME_IS_EMPTY" desc="The text displayed in the status column of the SiteSearchSettings policy when a name is defined as an empty string.">
+    Name can't be empty
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_URL_IS_EMPTY" desc="The text displayed in the status column of the SiteSearchSettings policy when a URL is defined as an empty string.">
+    URL can't be empty
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_URL_DOESNT_SUPPORT_REPLACEMENT" desc="The text displayed in the status column of the SiteSearchSettings policy when a URL doesn't contain the replacement string '{searchTerms}'. Please do not translate '{searchTerms}' because it's part of the expected syntax.">
+    URL doesn't include required replacement string <ph name="SEARCH_TERMS_REPLACEMENT">"{searchTerms}"</ph>: <ph name="SEARCH_URL">$1<ex>https://www.example.com</ex></ph>
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_SHORTCUT_EQUALS_DSP_KEYWORD" desc="The text displayed in the status column of the SiteSearchSettings policy when a shortcut is the same as the keyword defined by the DefaultSearchProviderKeyword policy.">
+    Shortcut can't be the same as the default search provider keyword defined by <ph name="DEFAULT_SEARCH_PROVIDER_KEYWORD_POLICY_NAME">DefaultSearchProviderKeyword</ph>: <ph name="SHORTCUT_NAME">$1<ex>shortcut</ex></ph>
+  </message>
+  <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_URL_NOT_HTTPS" desc="The text displayed in the status column of the SiteSearchSettings policy when a URL scheme is not HTTPS.">
+    HTTPS scheme recommended for search URL: <ph name="SEARCH_URL">$1<ex>https://www.example.com</ex></ph>
+  </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_MUTUALLY_EXCLUSIVE_KEYS" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains incoherent values">
+    Keys "<ph name="DATA_CONTROLS_KEYS">$1<ex>"and", "or"</ex></ph>" cannot be set in the same dictionary
+  </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_MUTUALLY_EXCLUSIVE_KEY_SETS" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains incoherent values">
+    Keys "<ph name="DATA_CONTROLS_FIRST_KEY_SET">$1<ex>"destinations", "sources"</ex></ph>" cannot be set in the same dictionary as the "<ph name="DATA_CONTROLS_SECOND_KEY_SET">$2<ex>"and", "or"</ex></ph>" keys
+  </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_UNSUPPORTED_CONDITION" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains an unsupported condition">
+    "<ph name="DATA_CONTROLS_ATTRIBUTE">$1<ex>destination</ex></ph>" is not a supported condition for "<ph name="DATA_CONTROLS_RESTRICTION">$2<ex>SCREENSHOT</ex></ph>"
+  </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_UNSUPPORTED_RESTRICTION" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains an unsupported restriction">
+    "<ph name="DATA_CONTROLS_RESTRICTION">$1<ex>SCREENSHARE</ex></ph>" is not a supported restriction on this platform
+  </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_UNSUPPORTED_LEVEL" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains an unsupported restriction level">
+    "<ph name="DATA_CONTROLS_RESTRICTION">$1<ex>SCREENSHOT</ex></ph>" cannot be set to "<ph name="DATA_CONTROLS_LEVEL">$2<ex>WARN</ex></ph>"
+  </message>
 
   <!-- chrome://policy -->
   <message name="IDS_POLICY_TITLE" desc="Page title and the title of the section that lists policies.">
@@ -379,23 +433,26 @@ Additional details:
   <message name="IDS_POLICY_RELOAD_POLICIES" desc="Label for the button that reloads policies.">
     Reload policies
   </message>
-  <message name="IDS_POLICY_LOADING_POLICIES" desc="Screen reader message indicates policies are being loaded.">
-    Loading policies
+  <message name="IDS_POLICY_RELOADING_POLICIES" desc="Toast notification message indicating policies are being loaded.">
+    Reloading policies
   </message>
-  <message name="IDS_POLICY_LOAD_POLICIES_DONE" desc="Screen reader message indicates policies have been loaded.">
-    Policies is loaded
+  <message name="IDS_POLICY_RELOAD_POLICIES_DONE" desc="Toast notification message indicating policies have been reloaded.">
+    Policies reloaded
   </message>
   <message name="IDS_EXPORT_POLICIES_JSON" desc="Label for the button that exports policies in JSON format.">
     Export to JSON
   </message>
-  <message name="IDS_UPLOAD_REPORT" desc="Label for the button that uplaod Brave usage report">
+  <message name="IDS_EXPORT_POLICIES_JSON_DONE" desc="Toast notification message indicating policies are exported.">
+    Exported
+  </message>
+  <message name="IDS_UPLOAD_REPORT" desc="Label for the button that uplaod Ping usage report">
     Upload Report
   </message>
-  <message name="IDS_REPORT_UPLOADING" desc="Screen reader message indicates report is being uploaded">
-    Upload Report
+  <message name="IDS_REPORT_UPLOADING" desc="Toast notification message indicating data is being sent to admin console.">
+    Sending data to admin console
   </message>
-  <message name="IDS_REPORT_UPLOADED" desc="Screen reader message indicates report has been uploaded">
-    Report is uploaded
+  <message name="IDS_REPORT_UPLOADED" desc="Toast notification message indicating data has been sent to admin console.">
+    Data sent to admin console
   </message>
   <message name="IDS_POLICY_STATUS" desc="Title of the status section.">
     Status
@@ -411,7 +468,7 @@ Additional details:
   </message>
  <if expr="is_win">
   <message name="IDS_POLICY_STATUS_UPDATER" desc="Title for the updater policy status box on windows.">
-    Brave Update
+    Ping Update
   </message>
  </if>
   <message name="IDS_POLICY_STATUS_ERROR_MANAGED_NO_POLICY" desc="Message to display when a managed device does not have a policy loaded.">
@@ -534,6 +591,9 @@ Additional details:
   <message name="IDS_POLICY_HEADER_LEVEL" desc="Table header for the column in the policy table that details whether a policy is mandatory or recommended.">
     Level
   </message>
+  <message name="IDS_POLICY_HEADER_NAMESPACE" desc="Table header for the column in the policy table that contains the policy namespace (either 'Ping', or an extension ID).">
+    Namespace
+  </message>
   <message name="IDS_POLICY_HEADER_NAME" desc="Table header for the column in the policy table that contains the policy name.">
     Policy name
   </message>
@@ -628,8 +688,8 @@ Additional details:
   <message name="IDS_POLICY_RISK_TAG_LOCAL_DATA_ACCESS" desc="Title of a group/tag whose policies might allow storage of user data to local drives where others might access them.">
     Local Data Access
   </message>
-  <message name="IDS_POLICY_RISK_TAG_GOOGLE_SHARING" desc="Title of a group/tag whose policies enable functionality that might share user data with trusted Brave services.">
-    Sharing with Brave
+  <message name="IDS_POLICY_RISK_TAG_GOOGLE_SHARING" desc="Title of a group/tag whose policies enable functionality that might share user data with trusted Ping services.">
+    Sharing with Ping
   </message>
   <message name="IDS_POLICY_SHOW_EXPANDED_STATUS" desc="Text for the link that shows the policy status. Used when the policy status is too long to be always visible.">
     Show status
@@ -673,11 +733,11 @@ Additional details:
   <message name="IDS_POLICY_IGNORED_MANDATORY_REPORTING_POLICY" desc="Text explaining that the policy MetricsReportingEnabled can not be forced to enabled anymore">
     This policy cannot be set to "True" and be mandatory, therefore it was changed to recommended.
   </message>
-  <message name="IDS_POLICY_IGNORED_CHROME_PROFILE" desc="Text explaining that the policy cannot be set at the Brave profile level and is therefore ignored.">
-    This policy cannot be set at the Brave profile level and will be ignored.
+  <message name="IDS_POLICY_IGNORED_CHROME_PROFILE" desc="Text explaining that the policy cannot be set at the Ping profile level and is therefore ignored.">
+    This policy cannot be set at the Ping profile level and will be ignored.
   </message>
   <message name="IDS_POLICY_IGNORED_UNAFFILIATED" desc="Text describing that the policy value is not applied because the user is unaffiliated.">
-    This policy is ignored because the user is unaffiliated. For this policy to be applied, the Brave browser and profile must be managed through the Admin console by the same organization.
+    This policy is ignored because the user is unaffiliated. For this policy to be applied, the Ping browser and profile must be managed through the Admin console by the same organization.
   </message>
   <message name="IDS_POLICY_PRECEDENCE_PLATFORM_MACHINE" desc="Text describing the platform machine precedence value.">
     Platform machine
@@ -699,6 +759,9 @@ Additional details:
     List entry "<ph name="LANGUAGE_ID">$1<ex>en-GB</ex></ph>": Entry ignored because it is also included in the SpellcheckLanguage policy.
     </message>
   </if>
+  <message name="IDS_POLICY_DEFAULT_GEO_POLICY_ARC_CONFLICT" desc="Warning message for the DefaultGeolocationSetting policy, when the BraveLocationServicesEnabled policy is set. The former will no longer affect the ARC, when the latter is set.">
+    Warning: This policy is conflicting with the <ph name="POLICY_NAME">$1<ex>BraveLocationServicesEnabled</ex></ph> and will have no effect on Android apps. Otherwise, this policy is working as intended.
+  </message>
   <message name="IDS_POLICY_LABEL_IS_AFFILIATED" desc="Label to indicate if the user is affiliated or not.">
     Is affiliated:
   </message>
@@ -726,6 +789,24 @@ Additional details:
   <message name="IDS_COPY_POLICIES_JSON" desc="Label for the button that copies policies in JSON format.">
     Copy as JSON
   </message>
+  <message name="IDS_COPY_POLICIES_DONE" desc="Toast notification message indicating policies are copied to clipboard.">
+    Copied to clipboard
+  </message>
+  <message name="IDS_VIEW_POLICY_LOGS" desc="Label for the button that redirects from chrome://policy to chrome://policy/logs.">
+    View logs
+  </message>
+  <message name="IDS_POLICY_MORE_ACTIONS" desc="Label for the dropdown menu on the chrome://policy page that offers additional actions such as downloading policy data as a JSON file, uploading report or showing policy logs.">
+    More actions
+  </message>
+  <message name="IDS_POLICY_TABLE_COLUMN_SORT" desc="Part of the label for policy table sorting arrows.">
+    Sort
+  </message>
+  <message name="IDS_POLICY_TABLE_COLUMN_SORT_ASCENDING" desc="Part of the label for policy table sorting arrows denoting ascending sort order.">
+    in ascending order
+  </message>
+  <message name="IDS_POLICY_TABLE_COLUMN_SORT_DESCENDING" desc="Part of the label for policy table sorting arrows denoting descending sort order.">
+    in descending order
+  </message>
 
   <!-- Strings for chrome://policy/logs -->
   <message name="IDS_POLICY_LOGS_TITLE" desc="Title for the page.">
@@ -741,9 +822,51 @@ Additional details:
     Refresh Logs
   </message>
 
-  <!-- Strings for chrome://policy/test -->
+<!-- Strings for chrome://policy/test -->
   <message name="IDS_POLICY_TEST_TITLE" desc="Title for the page.">
     Policy Tests
+  </message>
+  <message name="IDS_POLICY_TEST_RESTART_AND_APPLY" desc="Label for the restart-browser button">
+    Restart and apply policies
+  </message>
+  <message name="IDS_POLICY_TEST_APPLY" desc="Label for the apply-policies button.">
+    Apply policies
+  </message>
+  <message name="IDS_POLICY_TEST_IMPORT" desc="Label for the import-policies-json button.">
+    Import from JSON
+  </message>
+  <message name="IDS_POLICY_TEST_DESC" desc="Text for the page description.">
+    You cannot use this page from a managed acount on this unmanaged device. All managed accounts will be locked if you use this page, except accounts managed by the same entity as this device (affiliated accounts).
+  </message>
+  <message name="IDS_POLICY_TEST_REVERT" desc="Text for the Reset policies button.">
+    Revert applied policies
+  </message>
+  <message name="IDS_POLICY_TEST_TABLE_SCOPE" desc="Text for the column of the policy table for the policy scope.">
+    Scope
+  </message>
+  <message name="IDS_POLICY_TEST_ADD" desc="Label for the add-policy-btn button.">
+    Add policy
+  </message>
+  <message name="IDS_POLICY_SELECT_NAME" desc="Text for the default option in the policy name dropdown menu.">
+    Select policy name
+  </message>
+  <message name="IDS_POLICY_TEST_TABLE_PRESET" desc="Text for the preset column of the policy test table.">
+    Preset
+  </message>
+  <message name="IDS_LOCAL_TEST_POLICIES_ENABLED" desc="Text for banner warning user of test policies being applied">
+    Test policies have been applied. Review and reset them at chrome://policy/test. Admin policies will not be applied.
+  </message>
+  <message name="IDS_POLICY_TEST_PRESET_CUSTOM" desc="Text for the custom option of the preset dropdown in the policy test table.">
+    Custom
+  </message>
+  <message name="IDS_POLICY_TEST_PRESET_LOCAL_MACHINE" desc="Text for the local machine option of the preset dropdown in the policy test table.">
+    Local machine
+  </message>
+  <message name="IDS_POLICY_TEST_PRESET_CLOUD_ACCOUNT" desc="Text for the cloud account option of the preset dropdown in the policy test table.">
+    Cloud account
+  </message>
+  <message name="IDS_POLICY_TEST_USER_AFFILIATED" desc="Text for checkbox to select user affiliation in the policy test table.">
+  User affiliated
   </message>
 
   <!-- Strings for Disabled chrome://.* screen -->
@@ -887,6 +1010,24 @@ Additional details:
           =1 {Open confidential file?}
           other {Open confidential files?}}
   </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_REVIEW_TITLE" desc="The title for notification/dialog informing the user that downloading selected files is not recommended.">
+    Review is required before downloading
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_TRANSFER_REVIEW_TITLE" desc="The title for notification/dialog informing the user that transferring selected files is not recommended.">
+    Review is required before transferring
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_UPLOAD_REVIEW_TITLE" desc="The title for notification/dialog informing the user that uploading selected files is not recommended.">
+    Review is required before uploading
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_MOVE_REVIEW_TITLE" desc="The title for notification/dialog informing the user that moving selected files is not recommended.">
+    Review is required before moving
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_COPY_REVIEW_TITLE" desc="The title for notification/dialog informing the user that copying selected files is not recommended.">
+    Review is required before copying
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_REVIEW_TITLE" desc="The title for notification/dialog informing the user that opening selected files is not recommended.">
+    Review is required before opening
+  </message>
   <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_WARN_MESSAGE" desc="The message for notification informing the user that downloading files is not recommended.">
         {0, plural,
                 =1 {Administrator policy doesn’t recommend downloading this file to <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}
@@ -917,6 +1058,11 @@ Additional details:
                 =1 {Administrator policy doesn’t recommend opening this file in <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}
                 other {Administrator policy doesn’t recommend opening these files in <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}}
   </message>
+  <message name="IDS_POLICY_DLP_FILES_WARN_MESSAGE" desc="The message for notification/dialog warning the user that the selected file(s) might contain sensitive content and need to be reviewed before performing an action (e.g. open, upload).">
+        {0, plural,
+                =1 {<ph name="FILE_NAME">$1<ex>Example.txt</ex></ph> may contain sensitive content}
+                other {<ph name="FILE_COUNT">$1<ex>5</ex></ph> files may contain sensitive content}}
+  </message>
   <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before downloading files.">
     Download anyway
   </message>
@@ -938,11 +1084,23 @@ Additional details:
   <message name="IDS_POLICY_DLP_FILES_DESTINATION_REMOVABLE_STORAGE" desc="A label for the 'Removable storage' files transfer destination.">
     Removable storage
   </message>
+  <message name="IDS_POLICY_DLP_FILES_REVIEW_BUTTON" desc="The label of the warn or block notification 'Review' button, shown when some files action is under a policy restriction, that allows the user to open a dialog with more information.">
+    Review
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DISMISS_BUTTON" desc="The label of the block notification 'Dismiss' button, shown when some files action was blocked due to policy.">
+    Dismiss
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_OK_BUTTON" desc="The label of the block dialog 'OK' button, shown when some files action was blocked due to policy.">
+    OK
+  </message>
   <message name="IDS_POLICY_DLP_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning.">
     Cancel
   </message>
   <message name="IDS_POLICY_DLP_CLIPBOARD_BUBBLE_MESSAGE" desc="Text for a bubble that informs the user that their copy and paste action has been blocked/warned with a link to a help center article about Data Leak Prevention.">
     <ph name="BUBBLE_MESSAGE">$1<ex>Pasting from corp.google.com to this location is blocked by administrator policy</ex></ph>. <ph name="LEARN_MORE_TEXT">$2<ex>Learn more</ex></ph>
+  </message>
+  <message name="IDS_POLICY_DLP_FROM_YOUR_ADMIN_MESSAGE" desc="Introductory text specifying to users that the following message comes from their administrator.">
+    From your administrator: "<ph name="ADMIN_MESSAGE">$1<ex>Files transfer is blocked by a company policy.</ex></ph>"
   </message>
   <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_BLOCK_TITLE" desc="The title of the notification informing the user that downloading files is blocked.">
     Blocked download
@@ -965,6 +1123,121 @@ Additional details:
      {0, plural,
                 =1 {Opening this file is blocked by administrator policy}
                 other {Opening # files is blocked by administrator policy}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_BLOCKED_TITLE" desc="The title of the notification/dialog informing the user that downloading files is blocked.">
+     {0, plural,
+                =1 {File blocked from downloading}
+                other {<ph name="FILE_COUNT">$1<ex>5</ex></ph> files blocked from downloading}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_TRANSFER_BLOCKED_TITLE" desc="The title of the notification/dialog informing the user that transferring files is blocked.">
+     {0, plural,
+                =1 {File blocked from transferring}
+                other {<ph name="FILE_COUNT">$1<ex>5</ex></ph> files blocked from transferring}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_UPLOAD_BLOCKED_TITLE" desc="The title of the notification/dialog informing the user that uploading files is blocked.">
+     {0, plural,
+                =1 {File blocked from uploading}
+                other {<ph name="FILE_COUNT">$1<ex>5</ex></ph> files blocked from uploading}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_MOVE_BLOCKED_TITLE" desc="The title of the notification/dialog informing the user that moving files is blocked.">
+     {0, plural,
+                =1 {File blocked from moving}
+                other {<ph name="FILE_COUNT">$1<ex>5</ex></ph> files blocked from moving}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_COPY_BLOCKED_TITLE" desc="The title of the notification/dialog informing the user that copying files is blocked.">
+     {0, plural,
+                =1 {File blocked from copying}
+                other {<ph name="FILE_COUNT">$1<ex>5</ex></ph> files blocked from copying}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_BLOCKED_TITLE" desc="The title of the notification/dialog informing the user that opening files is blocked.">
+     {0, plural,
+                =1 {File blocked from opening}
+                other {<ph name="FILE_COUNT">$1<ex>5</ex></ph> files blocked from opening}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_POLICY_BLOCK_SINGLE_FILE_MESSAGE" desc="The message for notification/dialog informing the user an action (e.g. open, upload) of the selected file is blocked because of policy.">
+    1 file was blocked because of policy
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_POLICY_BLOCK_MESSAGE" desc="The message for notification/dialog informing the user an action (e.g. open, upload) of the selected file(s) is blocked because of policy.">
+        {0, plural,
+                =1 {<ph name="FILE_NAME">$1<ex>Example.txt</ex></ph> was blocked because of policy}
+                other {<ph name="FILE_COUNT">$1<ex>5</ex></ph> files were blocked because of policy}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_CONTENT_BLOCK_SINGLE_FILE_MESSAGE" desc="The message for notification/dialog informing the user an action (e.g. open, upload) of the selected file is blocked because of sensitive content.">
+    1 file was blocked because of content
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_CONTENT_BLOCK_MESSAGE" desc="The message for notification/dialog informing the user an action (e.g. open, upload) of the selected file(s) is blocked because of sensitive content.">
+        {0, plural,
+                =1 {<ph name="FILE_NAME">$1<ex>Example.txt</ex></ph> was blocked because of content}
+                other {<ph name="FILE_COUNT">$1<ex>5</ex></ph> files were blocked because of content}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_BLOCK_MESSAGE" desc="The message for notification shown when an action (e.g. open, upload) of several files was blocked, that the user can review in more detail by opening a dialog.">
+    Review for further details
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_JUSTIFICATION_LABEL" desc="Text shown in a label above an input area where the user should provide a justification before downlading a file.">
+    Provide reason for downloading (required)
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_UPLOAD_JUSTIFICATION_LABEL" desc="Text shown in a label above an input area where the user should provide a justification before uploading a file.">
+    Provide reason for uploading (required)
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_COPY_JUSTIFICATION_LABEL" desc="Text shown in a label above an input area where the user should provide a justification before copying a file.">
+    Provide reason for copying (required)
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_MOVE_JUSTIFICATION_LABEL" desc="Text shown in a label above an input area where the user should provide a justification before moving a file.">
+    Provide reason for moving (required)
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_JUSTIFICATION_LABEL" desc="Text shown in a label above an input area where the user should provide a justification before opening a file.">
+    Provide reason for opening (required)
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_TRANSFER_JUSTIFICATION_LABEL" desc="Text shown in a label above an input area where the user should provide a justification before transferring a file.">
+    Provide reason for transferring (required)
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_TIMEOUT_TITLE" desc="The title for notification shown after a DLP files warning times out.">
+    Downloading timed out
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_TRANSFER_TIMEOUT_TITLE" desc="The title for notification shown after a DLP files warning times out.">
+    Transferring timed out
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_UPLOAD_TIMEOUT_TITLE" desc="The title for notification shown after a DLP files warning times out.">
+    Uploading timed out
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_MOVE_TIMEOUT_TITLE" desc="The title for notification shown after a DLP files warning times out.">
+    Moving timed out
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_COPY_TIMEOUT_TITLE" desc="The title for notification shown after a DLP files warning times out.">
+    Copying timed out
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_TIMEOUT_TITLE" desc="The title for notification shown after a DLP files warning times out.">
+    Opening timed out
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_TIMEOUT_MESSAGE" desc="The message for notification shown after a DLP files warning times out.">
+    Try downloading your files again
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_TRANSFER_TIMEOUT_MESSAGE" desc="The message for notification shown after a DLP files warning times out.">
+    Try transferring your files again
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_UPLOAD_TIMEOUT_MESSAGE" desc="The message for notification shown after a DLP files warning times out.">
+    Try uploading your files again
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_MOVE_TIMEOUT_MESSAGE" desc="The message for notification shown after a DLP files warning times out.">
+    Try moving your files again
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_COPY_TIMEOUT_MESSAGE" desc="The message for notification shown after a DLP files warning times out.">
+    Try copying your files again
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_TIMEOUT_MESSAGE" desc="The message for notification shown after a DLP files warning times out.">
+    Try opening your files again
+  </message>
+ <message name="IDS_POLICY_DLP_FILES_LEARN_MORE_ABOUT_DATA_CONTROLS_ACCESSIBLE_NAME" desc="The message is read to ChromeVox users when they focus a generic learn more link related to data controls.">
+    Learn more about Data Controls
+  </message>
+ <message name="IDS_POLICY_DLP_FILES_LEARN_MORE_ABOUT_MALWARE_PROTECTION_ACCESSIBLE_NAME" desc="The message is read to ChromeVox users when they focus a generic learn more link related to enterprise connector's malware protection.">
+    Learn more about Malware protection
+  </message>
+ <message name="IDS_POLICY_DLP_FILES_LEARN_MORE_ABOUT_SENSITIVE_DATA_PROTECTION_ACCESSIBLE_NAME" desc="The message is read to ChromeVox users when they focus a generic learn more link related to enterprise connector's sensitive data protection.">
+    Learn more about Sensitive Data protection
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_JUSTIFICATION_TEXTAREA_ACCESSIBLE_DESCRIPTION" desc="The message is read to ChromeVox users when they focus the justification text area.">
+    Please enter a justification message having at most <ph name="MAX_CHAR_COUNT">$2<ex>280</ex></ph> characters. Used <ph name="ACTUAL_CHAR_COUNT">$1<ex>10</ex></ph> out of <ph name="MAX_CHAR_COUNT">$2<ex>280</ex></ph> characters.
   </message>
   <message name="IDS_POLICY_DEVICE_SCHEDULED_REBOOT_TITLE" desc="The title for notification informing the user that the device will restart soon.">
     Device will restart very soon
@@ -994,5 +1267,8 @@ Additional details:
   </message>
   <message name="IDS_POLICY_BROWSING_DATA_DEPENDENCY_APPLIED_INFO" desc="The text displayed in the status column when a browsing data policy is applied for types for which sync will be automatically disabled.">
     This policy automatically disables syncing across devices for: <ph name="ACTION_LIST">$1<ex>passwords, autofill</ex></ph>.
+  </message>
+  <message name="IDS_POLICY_NOT_SUPPORTED_AS_USER_POLICY_ON_IOS" desc="The text displayed in the status column when a policy is not supported as a user policy on ios.">
+    This policy is not yet supported as a user policy on iOS.
   </message>
 </grit-part>

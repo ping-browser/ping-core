@@ -5,10 +5,20 @@
 
 import * as React from 'react'
 
-import { OverallPinningStatus, useNftPin } from '../../../common/hooks/nft-pin'
+// hooks
+import { OverallPinningStatus } from '../../../common/hooks/nft-pin'
+import {
+  useGetPinnableVisibleNftIdsQuery //
+} from '../../../common/slices/api.slice'
 
 // styles
-import { GifWrapper, Ipfs, IpfsUploading, StatusGif, StyledWrapper } from './nft-pinning-status-animation.style'
+import {
+  GifWrapper,
+  Ipfs,
+  IpfsUploading,
+  StatusGif,
+  StyledWrapper
+} from './nft-pinning-status-animation.style'
 import UploadingDarkGif from '../../../assets/svg-icons/nft-ipfs/uploading-dark.gif'
 import UploadingLightGif from '../../../assets/svg-icons/nft-ipfs/uploading-light.gif'
 import SuccessDarkGif from '../../../assets/svg-icons/nft-ipfs/success-dark.gif'
@@ -17,16 +27,26 @@ import SuccessLightGif from '../../../assets/svg-icons/nft-ipfs/success-light.gi
 interface Props {
   size: string | undefined
   status: OverallPinningStatus
-  isAutopinEnabled: boolean
+  isAutopinEnabled?: boolean
 }
 
-export const NftPinningStatusAnimation = ({ size, status, isAutopinEnabled }: Props) => {
-  const { pinnableNftsCount } = useNftPin()
+export const NftPinningStatusAnimation = ({
+  size,
+  status,
+  isAutopinEnabled
+}: Props) => {
+  // queries
+  const { data: pinnableNftIds = [] } = useGetPinnableVisibleNftIdsQuery()
 
+  // computed
+  const pinnableNftsCount = pinnableNftIds.length
+
+  // render
   return (
     <StyledWrapper
       size={
-        status === OverallPinningStatus.PINNING_IN_PROGRESS || status === OverallPinningStatus.PINNING_FINISHED
+        status === OverallPinningStatus.PINNING_IN_PROGRESS ||
+        status === OverallPinningStatus.PINNING_FINISHED
           ? '30px'
           : size || '14px'
       }

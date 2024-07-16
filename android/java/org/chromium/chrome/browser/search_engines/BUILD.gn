@@ -4,8 +4,10 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
 
 android_library("java") {
+  srcjar_deps = [ ":jni_headers" ]
   sources = [
     "settings/BraveBaseSearchEngineAdapter.java",
     "settings/BravePrivateSearchEnginePreference.java",
@@ -17,15 +19,15 @@ android_library("java") {
   deps = [
     ":java_resources",
     "//base:base_java",
-    "//base:jni_java",
     "//build/android:build_java",
     "//chrome/browser/profiles/android:java",
     "//chrome/browser/search_engines/android:java",
     "//components/search_engines/android:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/jni_zero:jni_zero_java",
   ]
 
-  annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
   resources_package = "org.chromium.chrome.browser.search_engines"
 }
 

@@ -1,12 +1,13 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_GREASELION_BROWSER_GREASELION_SERVICE_H_
 #define BRAVE_COMPONENTS_GREASELION_BROWSER_GREASELION_SERVICE_H_
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -27,9 +28,6 @@ namespace greaselion {
 enum GreaselionFeature {
   FIRST_FEATURE = 0,
   REWARDS = FIRST_FEATURE,
-  TWITTER_TIPS,
-  REDDIT_TIPS,
-  GITHUB_TIPS,
   AUTO_CONTRIBUTION,
   ADS,
   SUPPORTS_MINIMUM_BRAVE_VERSION,
@@ -41,6 +39,13 @@ typedef std::map<GreaselionFeature, bool> GreaselionFeatures;
 class GreaselionService : public KeyedService,
                           public extensions::ExtensionRegistryObserver {
  public:
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+    virtual void AddExtension(extensions::Extension* extension) = 0;
+    virtual void UnloadExtension(const std::string& extension_id) = 0;
+  };
+
   GreaselionService() = default;
   GreaselionService(const GreaselionService&) = delete;
   GreaselionService& operator=(const GreaselionService&) = delete;

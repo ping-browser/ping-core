@@ -3,33 +3,33 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 brave_chrome_renderer_sources = [
   "//brave/renderer/brave_content_renderer_client.cc",
   "//brave/renderer/brave_content_renderer_client.h",
   "//brave/renderer/brave_render_thread_observer.cc",
   "//brave/renderer/brave_render_thread_observer.h",
-  "//brave/renderer/brave_url_loader_throttle_provider_impl.cc",
-  "//brave/renderer/brave_url_loader_throttle_provider_impl.h",
 ]
 
 brave_chrome_renderer_deps = [
   "//brave/common:mojo_bindings",
-  "//brave/components/ai_chat/common/buildflags",
+  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/brave_search/common",
   "//brave/components/brave_search/renderer",
-  "//brave/components/brave_shields/common",
+  "//brave/components/brave_shields/core/common",
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/brave_wallet/common",
   "//brave/components/brave_wallet/renderer",
   "//brave/components/cosmetic_filters/renderer",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/safe_builtins/renderer",
+  "//brave/components/script_injector/renderer",
   "//brave/components/skus/common",
   "//brave/components/skus/renderer",
   "//brave/components/speedreader/common/buildflags",
@@ -52,7 +52,10 @@ if (enable_speedreader) {
 }
 
 if (enable_ai_chat) {
-  brave_chrome_renderer_deps += [ "//brave/components/ai_chat/renderer" ]
+  brave_chrome_renderer_deps += [
+    "//brave/components/ai_chat/core/common:common",
+    "//brave/components/ai_chat/renderer",
+  ]
 }
 
 if (enable_playlist) {
@@ -61,11 +64,15 @@ if (enable_playlist) {
 
 if (enable_brave_vpn) {
   brave_chrome_renderer_deps += [ "//brave/components/brave_vpn/common" ]
-  if (is_android) {
-    brave_chrome_renderer_deps +=
-        [ "//brave/components/brave_vpn/renderer/android:android" ]
-  }
 }
+
+if (is_android && (enable_brave_vpn || enable_ai_chat)) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/brave_mobile_subscription/renderer/android:android",
+  ]
+}
+
+brave_chrome_renderer_deps += [ "//third_party/widevine/cdm:headers" ]
 
 # do not add anything else here
 brave_chrome_renderer_public_deps = []

@@ -6,6 +6,7 @@
 #include "brave/test/views/snapshot/widget_snapshot_checker.h"
 
 #include <string>
+#include <string_view>
 
 #include "base/files/file_util.h"
 #include "base/path_service.h"
@@ -17,7 +18,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/compositor/test/draw_waiter_for_test.h"
 #include "ui/gfx/image/image.h"
-#include "ui/snapshot/snapshot.h"
 #include "ui/views/widget/widget.h"
 
 #if defined(USE_AURA)
@@ -28,7 +28,7 @@ namespace {
 
 constexpr char kSnapshotFileName[] = "snapshot.png";
 
-base::StringPiece GetPlatformName() {
+std::string_view GetPlatformName() {
 #if BUILDFLAG(IS_WIN)
   return "win";
 #elif BUILDFLAG(IS_MAC)
@@ -74,9 +74,8 @@ void Capture(views::Widget* widget, gfx::Image* image) {
     run_loop->Quit();
   };
   base::RunLoop run_loop;
-  ui::GrabWindowSnapshotAsyncAura(
-      widget->GetNativeWindow(), widget_bounds,
-      base::BindOnce(on_got_snapshot, &run_loop, image));
+  ui::GrabWindowSnapshotAura(widget->GetNativeWindow(), widget_bounds,
+                             base::BindOnce(on_got_snapshot, &run_loop, image));
   run_loop.Run();
 #endif  // defined(USE_AURA)
 }

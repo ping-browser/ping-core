@@ -6,13 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_LOCATION_BAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_LOCATION_BAR_VIEW_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
+#include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
@@ -28,6 +31,17 @@ class OnionLocationView;
 class IPFSLocationView;
 #endif
 
+namespace playlist {
+FORWARD_DECLARE_TEST(PlaylistBrowserTest, AddItemsToList);
+FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
+                     MediaShouldBeExtractedFromBackground_SucceedInExtracting);
+FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
+                     MediaShouldBeExtractedFromBackground_FailToExtract);
+FORWARD_DECLARE_TEST(
+    PlaylistBrowserTestWithSitesUsingMediaSource,
+    MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia);
+}  // namespace playlist
+
 namespace policy {
 FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 }
@@ -35,8 +49,14 @@ FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 // The purposes of this subclass are to:
 // - Add the BraveActionsContainer to the location bar
 class BraveLocationBarView : public LocationBarView {
+  METADATA_HEADER(BraveLocationBarView, LocationBarView)
  public:
-  using LocationBarView::LocationBarView;
+  BraveLocationBarView(Browser* browser,
+                       Profile* profile,
+                       CommandUpdater* command_updater,
+                       Delegate* delegate,
+                       bool is_popup_mode);
+  ~BraveLocationBarView() override;
 
   BraveLocationBarView(const BraveLocationBarView&) = delete;
   BraveLocationBarView& operator=(const BraveLocationBarView&) = delete;
@@ -54,7 +74,7 @@ class BraveLocationBarView : public LocationBarView {
 #endif
   // LocationBarView:
   std::vector<views::View*> GetTrailingViews() override;
-
+  void RefreshBackground() override;
   ui::ImageModel GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
                                      on_icon_fetched) const override;
   void OnOmniboxBlurred() override;
@@ -63,6 +83,7 @@ class BraveLocationBarView : public LocationBarView {
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
   void ChildVisibilityChanged(views::View* child) override;
+  void AddedToWidget() override;
 
   int GetBorderRadius() const override;
 
@@ -76,13 +97,24 @@ class BraveLocationBarView : public LocationBarView {
   void ShowPlaylistBubble();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, AddItemsToList);
+  FRIEND_TEST_ALL_PREFIXES(
+      playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
+      MediaShouldBeExtractedFromBackground_SucceedInExtracting);
+  FRIEND_TEST_ALL_PREFIXES(
+      playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
+      MediaShouldBeExtractedFromBackground_FailToExtract);
+  FRIEND_TEST_ALL_PREFIXES(
+      playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
+      MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia);
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, AddItemsToList);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 
   PlaylistActionIconView* GetPlaylistActionIconView();
+  void SetupShadow();
 
+  std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
   raw_ptr<BraveNewsLocationView> brave_news_location_view_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)

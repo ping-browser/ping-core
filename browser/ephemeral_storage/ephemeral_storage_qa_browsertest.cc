@@ -7,6 +7,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -19,6 +20,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -144,7 +146,9 @@ std::string AsString(StorageType t) {
 class EphemeralStorageTest : public InProcessBrowserTest {
  public:
   EphemeralStorageTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(net::features::kBraveEphemeralStorage);
+    std::vector<base::test::FeatureRef> disabled_features;
+    feature_list_.InitWithFeatures({net::features::kBraveEphemeralStorage},
+                                   disabled_features);
   }
 
   void SetUpOnMainThread() override {
@@ -197,6 +201,13 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   void SetCookiePref(ContentSetting setting) {
     browser()->profile()->GetPrefs()->SetInteger(
         "profile.default_content_setting_values.cookies", setting);
+  }
+
+  void SetCookieControlType(brave_shields::ControlType control_type) {
+    brave_shields::SetCookieControlType(
+        content_settings(), browser()->profile()->GetPrefs(), control_type,
+        embedded_test_server()->GetURL("dev-pages.brave.software",
+                                       kEphemeralStorageTestPage));
   }
 
   // Starts the JS test code on the QA page to populate storage values so that
@@ -268,19 +279,21 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   void CheckStorageResults(content::WebContents* contents,
                            StorageType storage_type,
                            const StorageResult expected[4]) {
-    ASSERT_EQ(AsNumber(expected[0]),
+    SCOPED_TRACE(::testing::Message()
+                 << "StorageType: " << static_cast<int>(storage_type));
+    EXPECT_EQ(AsNumber(expected[0]),
               EvalJs(contents,
                      "window.generateStorageReport().then(report => report['" +
                          AsString(storage_type) + "']['this-frame'])"));
-    ASSERT_EQ(AsNumber(expected[1]),
+    EXPECT_EQ(AsNumber(expected[1]),
               EvalJs(contents,
                      "window.generateStorageReport().then(report => report['" +
                          AsString(storage_type) + "']['local-frame'])"));
-    ASSERT_EQ(AsNumber(expected[2]),
+    EXPECT_EQ(AsNumber(expected[2]),
               EvalJs(contents,
                      "window.generateStorageReport().then(report => report['" +
                          AsString(storage_type) + "']['remote-frame'])"));
-    ASSERT_EQ(AsNumber(expected[3]),
+    EXPECT_EQ(AsNumber(expected[3]),
               EvalJs(contents,
                      "window.generateStorageReport().then(report => report['" +
                          AsString(storage_type) + "']['nested-frame'])"));
@@ -388,9 +401,11 @@ class EphemeralStorageTest : public InProcessBrowserTest {
                "document.getElementById('continue-test-url-step-6').value")
             .ExtractString();
 
-    ASSERT_TRUE(
-        tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(original_tab_),
-                                  TabCloseTypes::CLOSE_NONE));
+    const int previous_tab_count = browser()->tab_strip_model()->count();
+    tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(original_tab_),
+                              TabCloseTypes::CLOSE_NONE);
+    ASSERT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
+
     EphemeralStorageServiceFactory::GetInstance()
         ->GetForContext(browser()->profile())
         ->FireCleanupTimersForTesting();
@@ -433,9 +448,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest, CrossSiteCookiesBlockedInitial) {
 
   const StorageResult expected[4][4] = {
       {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kBlocked, kSuccess},
+      {kSuccess, kSuccess, kSuccess, kEmpty},
+      {kSuccess, kSuccess, kSuccess, kEmpty},
+      {kSuccess, kSuccess, kSuccess, kEmpty},
   };
   TestInitialCase(expected);
 }
@@ -451,7 +466,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
       {kEmpty, kEmpty, kEmpty, kNA},
       {kEmpty, kEmpty, kEmpty, kNA},
       {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
+      {kEmpty, kEmpty, kEmpty, kNA},
   };
   TestRemotePageSameSession(expected);
 }
@@ -467,7 +482,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
       {kEmpty, kEmpty, kEmpty, kNA},
       {kEmpty, kEmpty, kEmpty, kNA},
       {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
+      {kEmpty, kEmpty, kEmpty, kNA},
   };
   TestRemotePageNewSession(expected);
 }
@@ -483,7 +498,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
       {kSuccess, kSuccess, kSuccess, kNA},
       {kSuccess, kSuccess, kSuccess, kNA},
       {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
+      {kSuccess, kSuccess, kSuccess, kNA},
   };
   TestThisPageSameSession(expected);
 }
@@ -499,7 +514,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
       {kSuccess, kSuccess, kSuccess, kNA},
       {kSuccess, kSuccess, kSuccess, kNA},
       {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
+      {kSuccess, kSuccess, kSuccess, kNA},
   };
   TestThisPageDifferentSession(expected);
 }
@@ -515,7 +530,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
       {kSuccess, kSuccess, kEmpty, kNA},
       {kSuccess, kSuccess, kEmpty, kNA},
       {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
+      {kSuccess, kSuccess, kEmpty, kNA},
   };
   TestNewPageResetSession(expected);
 }
@@ -617,9 +632,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest, CookiesAllowedInitial) {
 
   const StorageResult expected[4][4] = {
       {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kSuccess},
+      {kSuccess, kSuccess, kSuccess, kEmpty},
+      {kSuccess, kSuccess, kSuccess, kEmpty},
+      {kSuccess, kSuccess, kSuccess, kEmpty},
   };
   TestInitialCase(expected);
 }
@@ -633,9 +648,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
 
   const StorageResult expected[4][4] = {
       {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
+      {kEmpty, kEmpty, kEmpty, kNA},
+      {kEmpty, kEmpty, kEmpty, kNA},
+      {kEmpty, kEmpty, kEmpty, kNA},
   };
   TestRemotePageSameSession(expected);
 }
@@ -649,9 +664,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
 
   const StorageResult expected[4][4] = {
       {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
       {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
+      {kEmpty, kEmpty, kEmpty, kNA},
+      {kEmpty, kEmpty, kEmpty, kNA},
   };
   TestRemotePageNewSession(expected);
 }
@@ -704,283 +719,11 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
   TestNewPageResetSession(expected);
 }
 
-// This class runs the same tests as above, but with ephemeral storage disabled.
-class EphemeralStorageDisabledTest : public EphemeralStorageTest {
- public:
-  EphemeralStorageDisabledTest() {
-    feature_list_.Reset();
-    feature_list_.InitAndDisableFeature(net::features::kBraveEphemeralStorage);
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CrossSiteCookiesBlockedInitial) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(true);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kBlocked, kSuccess},
-      {kSuccess, kSuccess, kBlocked, kSuccess},
-      {kSuccess, kSuccess, kBlocked, kSuccess},
-      {kSuccess, kSuccess, kBlocked, kSuccess},
-  };
-  TestInitialCase(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CrossSiteCookiesBlockedRemotePageSameSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(true);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kEmpty, kEmpty, kBlocked, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
-  };
-  TestRemotePageSameSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CrossSiteCookiesBlockedRemotePageNewSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(true);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kEmpty, kEmpty, kBlocked, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
-  };
-  TestRemotePageNewSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CrossSiteCookiesBlockedThisPageSameSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(true);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kBlocked, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
-  };
-  TestThisPageSameSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CrossSiteCookiesBlockedThisPageDifferentSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(true);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kBlocked, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
-  };
-  TestThisPageDifferentSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CrossSiteCookiesBlockedNewPageResetSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(true);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kBlocked, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
-      {kEmpty, kEmpty, kBlocked, kNA},
-      {kSuccess, kSuccess, kBlocked, kNA},
-  };
-  TestNewPageResetSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest, CookiesBlockedInitial) {
-  SetCookiePref(CONTENT_SETTING_BLOCK);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kBlocked},
-      {kBlocked, kBlocked, kBlocked, kBlocked},
-      {kBlocked, kBlocked, kBlocked, kBlocked},
-      {kBlocked, kBlocked, kBlocked, kBlocked},
-  };
-  TestInitialCase(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesBlockedRemotePageSameSession) {
-  SetCookiePref(CONTENT_SETTING_BLOCK);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-  };
-  TestRemotePageSameSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesBlockedRemotePageNewSession) {
-  SetCookiePref(CONTENT_SETTING_BLOCK);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-  };
-  TestRemotePageNewSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesBlockedThisPageSameSession) {
-  SetCookiePref(CONTENT_SETTING_BLOCK);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-  };
-  TestThisPageSameSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesBlockedThisPageDifferentSession) {
-  SetCookiePref(CONTENT_SETTING_BLOCK);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-  };
-  TestThisPageDifferentSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesBlockedNewPageResetSession) {
-  SetCookiePref(CONTENT_SETTING_BLOCK);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-  };
-  TestNewPageResetSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest, CookiesAllowedInitial) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(false);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-  };
-  TestInitialCase(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesAllowedRemotePageSameSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(false);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-  };
-  TestRemotePageSameSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesAllowedRemotePageNewSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(false);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-  };
-  TestRemotePageNewSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesAllowedThisPageSameSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(false);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-  };
-  TestThisPageSameSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesAllowedThisPageDifferentSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(false);
-
-  SetupTestPage();
-
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-  };
-  TestThisPageDifferentSession(expected);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledTest,
-                       CookiesAllowedNewPageResetSession) {
-  SetCookiePref(CONTENT_SETTING_ALLOW);
-  SetThirdPartyCookiePref(false);
+IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+                       CookiesAllowedNewPageResetSessionSetPerDomain) {
+  // Set the cookie control type to allow for the test page's domain (not
+  // browser-wide!).
+  SetCookieControlType(brave_shields::ControlType::ALLOW);
 
   SetupTestPage();
 

@@ -1,27 +1,48 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/feature_list.h"
-#include "components/update_client/update_client.h"
+#include "components/component_updater/component_updater_service.h"
 
-namespace {
-BASE_FEATURE(kEnforceCRX3PublisherProof,
-             "EnforceCRX3PublisherProof",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+#include "base/notreached.h"
+#include "components/component_updater/component_updater_service_internal.h"
 
-crx_file::VerifierFormat GetVerifierFormat() {
-  if (base::FeatureList::IsEnabled(kEnforceCRX3PublisherProof))
-    return crx_file::VerifierFormat::CRX3_WITH_PUBLISHER_PROOF;
-
-  return crx_file::VerifierFormat::CRX3;
-}
-}  // namespace
-
-#define crx_format_requirement                         \
-  crx_format_requirement = GetVerifierFormat();        \
-  [[maybe_unused]] crx_file::VerifierFormat _temp_var; \
-  _temp_var
 #include "src/components/component_updater/component_updater_service.cc"
-#undef crx_format_requirement
+
+namespace component_updater {
+
+void CrxUpdateService::OnDemandUpdate(const std::vector<std::string>& ids,
+                                      Priority priority,
+                                      Callback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  for (const auto& id : ids) {
+    if (!GetComponent(id)) {
+      if (callback) {
+        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+            FROM_HERE, base::BindOnce(std::move(callback),
+                                      update_client::Error::INVALID_ARGUMENT));
+      }
+      return;
+    }
+  }
+
+  auto crx_data_callback = base::BindOnce(&CrxUpdateService::GetCrxComponents,
+                                          base::Unretained(this));
+  auto update_complete_callback = base::BindOnce(
+      &CrxUpdateService::OnUpdateComplete, base::Unretained(this),
+      std::move(callback), base::TimeTicks::Now());
+
+  update_client_->Update(ids, std::move(crx_data_callback), {},
+                         priority == Priority::FOREGROUND,
+                         std::move(update_complete_callback));
+}
+
+void OnDemandUpdater::OnDemandUpdate(const std::vector<std::string>& ids,
+                                     Priority priority,
+                                     Callback callback) {
+  NOTREACHED_NORETURN();
+}
+
+}  // namespace component_updater

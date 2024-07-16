@@ -28,7 +28,7 @@ class URLSanitizerComponentInstaller;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 namespace brave_vpn {
-class BraveVPNOSConnectionAPI;
+class BraveVPNConnectionManager;
 }  // namespace brave_vpn
 #endif
 
@@ -38,7 +38,6 @@ class LocalDataFilesService;
 
 namespace brave_shields {
 class AdBlockService;
-class HTTPSEverywhereService;
 }  // namespace brave_shields
 
 namespace brave_stats {
@@ -121,7 +120,6 @@ class BraveBrowserProcess {
 #endif
   virtual brave::URLSanitizerComponentInstaller*
   URLSanitizerComponentInstaller() = 0;
-  virtual brave_shields::HTTPSEverywhereService* https_everywhere_service() = 0;
   virtual brave_component_updater::LocalDataFilesService*
   local_data_files_service() = 0;
 #if BUILDFLAG(ENABLE_TOR)
@@ -143,7 +141,8 @@ class BraveBrowserProcess {
   speedreader_rewriter_service() = 0;
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  virtual brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() = 0;
+  virtual brave_vpn::BraveVPNConnectionManager*
+  brave_vpn_connection_manager() = 0;
 #endif
   virtual brave_ads::ResourceComponent* resource_component() = 0;
   virtual brave::BraveFarblingService* brave_farbling_service() = 0;

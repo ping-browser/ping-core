@@ -9,10 +9,13 @@
 #include "brave/browser/download/brave_download_item_model.h"
 #include "chrome/browser/ui/download/download_item_mode.h"
 #include "chrome/browser/ui/views/download/download_item_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 // The purpose of this subclass is to add URL origin and lock icon to the
 // download item view (shown in the download shelf).
 class BraveDownloadItemView : public DownloadItemView {
+  METADATA_HEADER(BraveDownloadItemView, DownloadItemView)
+
  public:
   BraveDownloadItemView(DownloadUIModel::DownloadUIModelPtr download,
       DownloadShelfView* parent, views::View* accessible_alert);
@@ -21,7 +24,6 @@ class BraveDownloadItemView : public DownloadItemView {
   ~BraveDownloadItemView() override;
 
   // views::View:
-  void Layout() override;
   gfx::Size CalculatePreferredSize() const override;
 
   // download::DownloadItem::Observer:

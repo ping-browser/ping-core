@@ -5,14 +5,17 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/command_line.h"
+#include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/logging.h"
+#include "base/memory/raw_ref.h"
 #include "base/path_service.h"
 #include "base/rand_util.h"
 #include "base/scoped_native_library.h"
@@ -22,14 +25,12 @@
 #include "base/win/security_descriptor.h"
 #include "base/win/sid.h"
 #include "base/win/windows_types.h"
-#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/process_utils.h"
-#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/tunnel_utils.h"
+#include "brave/browser/brave_vpn/win/service_commands.h"
+#include "brave/browser/brave_vpn/win/service_constants.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
+#include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -48,7 +49,7 @@ std::wstring GetWireguardConfigName(const std::wstring& prefix) {
 }
 
 struct SidAccessDescriptor {
-  const base::win::Sid& sid;
+  base::win::WellKnownSid well_known_sid;
   DWORD access_mask;
   base::win::SecurityAccessMode access_mode;
 };
@@ -67,8 +68,9 @@ bool AddACEToPath(const base::FilePath& path,
 
   std::vector<base::win::ExplicitAccessEntry> entries;
   for (const auto& descriptor : descriptors) {
-    entries.emplace_back(descriptor.sid, descriptor.access_mode,
-                         descriptor.access_mask, inheritance);
+    entries.emplace_back(base::win::Sid(descriptor.well_known_sid),
+                         descriptor.access_mode, descriptor.access_mask,
+                         inheritance);
   }
 
   if (!sd.SetDaclEntries(entries)) {
@@ -91,39 +93,28 @@ bool AddACEToPath(const base::FilePath& path,
 }
 
 bool ConfigureConfigPermissions(const base::FilePath& config_path) {
-  const absl::optional<base::win::Sid> service_sid =
-      base::win::Sid::FromKnownSid(base::win::WellKnownSid::kService);
-  const absl::optional<base::win::Sid> administrators_sid =
-      base::win::Sid::FromKnownSid(
-          base::win::WellKnownSid::kBuiltinAdministrators);
-  if (!service_sid.has_value() || !administrators_sid.has_value()) {
-    VLOG(1) << "Failed to get Sids for service(" << service_sid.has_value()
-            << ") or administrators(" << administrators_sid.has_value() << ")";
-    return false;
-  }
-
   return AddACEToPath(config_path,
-                      // Let only windows services to read the config.
-                      {{service_sid.value(),
-                        GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
+                      {// Let only windows services to read the config.
+                       {base::win::WellKnownSid::kLocalSystem,
+                        GENERIC_READ | GENERIC_WRITE | DELETE,
                         base::win::SecurityAccessMode::kGrant},
                        // Let windows administrators only to remove the config.
-                       {administrators_sid.value(), GENERIC_EXECUTE | DELETE,
+                       {base::win::WellKnownSid::kBuiltinAdministrators, DELETE,
                         base::win::SecurityAccessMode::kGrant}},
                       0, /*recursive=*/false);
 }
 
-absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
+std::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
   base::FilePath temp_dir_path;
   // Intentionally using base::GetTempDir to reuse same directory between
   // launches.
   if (!base::GetTempDir(&temp_dir_path) || temp_dir_path.empty()) {
     VLOG(1) << "Unable to get temporary directory";
-    return absl::nullopt;
+    return std::nullopt;
   }
   base::ScopedTempDir scoped_temp_dir;
   if (!scoped_temp_dir.Set(temp_dir_path.Append(base::FilePath(L"BraveVpn")))) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::FilePath temp_file_path(scoped_temp_dir.GetPath().Append(
@@ -131,7 +122,7 @@ absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
 
   if (!base::WriteFile(temp_file_path, config)) {
     VLOG(1) << "Failed to write config to file:" << temp_file_path;
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (!ConfigureConfigPermissions(temp_file_path)) {
     VLOG(1) << "Failed to set permissions to file:" << temp_file_path;
@@ -150,7 +141,7 @@ bool IsServiceRunning(SC_HANDLE service) {
   return service_status.dwCurrentState == SERVICE_RUNNING;
 }
 
-absl::optional<base::FilePath> GetConfigFilePath(
+std::optional<base::FilePath> GetConfigFilePath(
     const std::wstring& encoded_config) {
   if (encoded_config.empty()) {
     return wireguard::GetLastUsedConfigPath();
@@ -160,7 +151,7 @@ absl::optional<base::FilePath> GetConfigFilePath(
   if (!base::Base64Decode(base::WideToUTF8(encoded_config), &decoded_config) ||
       decoded_config.empty()) {
     VLOG(1) << "Unable to decode wireguard config";
-    return absl::nullopt;
+    return std::nullopt;
   }
   return WriteConfigToFile(decoded_config);
 }
@@ -303,10 +294,6 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
       !UpdateLastUsedConfigPath(config_file_path.value())) {
     VLOG(1) << "Failed to save last used config path";
   }
-  // Run tray process each time we establish connection. System tray icon
-  // manages self state to be visible/hidden due to settings.
-  brave_vpn::RunWireGuardCommandForUsers(
-      brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
   return true;
 }
 
@@ -403,9 +390,8 @@ bool WireguardGenerateKeypair(std::string* public_key,
     return false;
   }
 
-  *public_key = base::Base64Encode(base::span<const uint8_t>(public_key_bytes));
-  *private_key =
-      base::Base64Encode(base::span<const uint8_t>(private_key_bytes));
+  *public_key = base::Base64Encode(base::make_span(public_key_bytes));
+  *private_key = base::Base64Encode(base::make_span(private_key_bytes));
   return true;
 }
 

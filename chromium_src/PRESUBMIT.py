@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import brave_chromium_utils
 import chromium_presubmit_overrides
 
 USE_PYTHON3 = True
@@ -44,3 +45,24 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
         output_api.PresubmitError(
             f'#include "src/**/*.h" should end with {expected_suffix}', items)
     ]
+
+
+def CheckOverrides(input_api, output_api):
+    items = []
+    with brave_chromium_utils.sys_path('//brave/tools/chromium_src'):
+        # pylint: disable=import-outside-toplevel
+        import check_chromium_src
+    overrides = [
+        f.AbsoluteLocalPath() for f in input_api.AffectedSourceFiles(None)
+    ]
+    # We can't provide the gen directory path from presubmit.
+    messages = check_chromium_src.ChromiumSrcOverridesChecker(
+        gen_buildir=None).check_overrides(overrides)
+    for message in messages['infos']:
+        items.append(output_api.PresubmitNotifyResult(message))
+    for message in messages['warnings']:
+        items.append(output_api.PresubmitPromptWarning(message))
+    for message in messages['errors']:
+        items.append(output_api.PresubmitError(message))
+
+    return items

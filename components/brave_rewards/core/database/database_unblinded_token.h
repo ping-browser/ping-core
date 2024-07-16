@@ -15,29 +15,29 @@ namespace brave_rewards::internal {
 namespace database {
 
 using GetUnblindedTokenListCallback =
-    std::function<void(std::vector<mojom::UnblindedTokenPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::UnblindedTokenPtr>)>;
 
 class DatabaseUnblindedToken : public DatabaseTable {
  public:
-  explicit DatabaseUnblindedToken(RewardsEngineImpl& engine);
+  explicit DatabaseUnblindedToken(RewardsEngine& engine);
   ~DatabaseUnblindedToken() override;
 
   void InsertOrUpdateList(std::vector<mojom::UnblindedTokenPtr> list,
-                          LegacyResultCallback callback);
+                          ResultCallback callback);
 
   void GetSpendableRecords(GetUnblindedTokenListCallback callback);
 
   void MarkRecordListAsSpent(const std::vector<std::string>& ids,
                              mojom::RewardsType redeem_type,
                              const std::string& redeem_id,
-                             LegacyResultCallback callback);
+                             ResultCallback callback);
 
   void MarkRecordListAsReserved(const std::vector<std::string>& ids,
                                 const std::string& redeem_id,
-                                LegacyResultCallback callback);
+                                ResultCallback callback);
 
   void MarkRecordListAsSpendable(const std::string& redeem_id,
-                                 LegacyResultCallback callback);
+                                 ResultCallback callback);
 
   void GetReservedRecordList(const std::string& redeem_id,
                              GetUnblindedTokenListCallback callback);
@@ -47,12 +47,12 @@ class DatabaseUnblindedToken : public DatabaseTable {
       GetUnblindedTokenListCallback callback);
 
  private:
-  void OnGetRecords(mojom::DBCommandResponsePtr response,
-                    GetUnblindedTokenListCallback callback);
+  void OnGetRecords(GetUnblindedTokenListCallback callback,
+                    mojom::DBCommandResponsePtr response);
 
-  void OnMarkRecordListAsReserved(mojom::DBCommandResponsePtr response,
+  void OnMarkRecordListAsReserved(ResultCallback callback,
                                   size_t expected_row_count,
-                                  LegacyResultCallback callback);
+                                  mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

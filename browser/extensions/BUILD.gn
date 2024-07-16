@@ -69,8 +69,8 @@ source_set("extensions") {
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core:headers",
-    "//brave/components/brave_shields/browser",
-    "//brave/components/brave_shields/common",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
@@ -100,7 +100,7 @@ source_set("extensions") {
   ]
 
   if (toolkit_views) {
-    deps += [ "//brave/components/sidebar" ]
+    deps += [ "//brave/components/sidebar/browser" ]
   }
 
   if (enable_speedreader) {
@@ -161,4 +161,27 @@ group("resources") {
       "//brave/components/brave_webtorrent:static_resources",
     ]
   }
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "brave_base_local_data_files_browsertest.cc",
+    "brave_base_local_data_files_browsertest.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/constants",
+    "//chrome/browser/extensions",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//net:test_support",
+  ]
 }

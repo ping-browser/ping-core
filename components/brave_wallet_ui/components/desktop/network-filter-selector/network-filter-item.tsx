@@ -14,17 +14,22 @@ import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // Styled Components
-import { NetworkItemButton, NetworkName, LeftSide, NetworkItemWrapper, BigCheckMark } from './style'
+import {
+  NetworkItemButton,
+  NetworkName,
+  LeftSide,
+  NetworkItemWrapper,
+  BigCheckMark
+} from './style'
 
 export interface Props {
-  children?: React.ReactNode
-  selectedNetwork: BraveWallet.NetworkInfo
+  isSelected: boolean
   network: BraveWallet.NetworkInfo
   onSelectNetwork: (network?: BraveWallet.NetworkInfo) => void
 }
 
-function NetworkFilterItem (props: Props) {
-  const { network, onSelectNetwork, selectedNetwork } = props
+function NetworkFilterItem(props: Props) {
+  const { network, onSelectNetwork, isSelected } = props
 
   const onClickSelectNetwork = () => {
     onSelectNetwork(network)
@@ -35,12 +40,15 @@ function NetworkFilterItem (props: Props) {
       <NetworkItemButton onClick={onClickSelectNetwork}>
         <LeftSide>
           {network.chainId !== AllNetworksOption.chainId && (
-            <CreateNetworkIcon network={network} marginRight={14} size='big' />
+            <CreateNetworkIcon
+              network={network}
+              marginRight={14}
+              size='big'
+            />
           )}
           <NetworkName>{network.chainName}</NetworkName>
         </LeftSide>
-        {network.chainId === selectedNetwork.chainId &&
-          network.symbol.toLowerCase() === selectedNetwork.symbol.toLowerCase() && <BigCheckMark />}
+        {isSelected ? <BigCheckMark /> : null}
       </NetworkItemButton>
     </NetworkItemWrapper>
   )

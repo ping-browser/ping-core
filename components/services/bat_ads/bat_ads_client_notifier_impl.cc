@@ -51,6 +51,11 @@ void BatAdsClientNotifierImpl::NotifyDidUpdateResourceComponent(
   notifier_.NotifyDidUpdateResourceComponent(manifest_version, id);
 }
 
+void BatAdsClientNotifierImpl::NotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  notifier_.NotifyDidUnregisterResourceComponent(id);
+}
+
 void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
     const std::string& recovery_seed) {
@@ -84,8 +89,10 @@ void BatAdsClientNotifierImpl::NotifyTabDidStopPlayingMedia(
 void BatAdsClientNotifierImpl::NotifyTabDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
+    const bool is_error_page,
     const bool is_visible) {
-  notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_visible);
+  notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_error_page,
+                               is_visible);
 }
 
 void BatAdsClientNotifierImpl::NotifyDidCloseTab(const int32_t tab_id) {

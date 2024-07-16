@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/run_loop.h"
@@ -43,7 +44,7 @@ class BraveHistoryURLProviderTest : public testing::Test,
   BraveHistoryURLProviderTest& operator=(const BraveHistoryURLProviderTest&) =
       delete;
 
-  AutocompleteInput CreateAutocompleteInput(base::StringPiece text) {
+  AutocompleteInput CreateAutocompleteInput(std::string_view text) {
     AutocompleteInput input(base::UTF8ToUTF16(text),
                             metrics::OmniboxEventProto::OTHER,
                             TestSchemeClassifier());
@@ -79,9 +80,8 @@ class BraveHistoryURLProviderTest : public testing::Test,
         history_dir_.GetPath(), create_history_db));
     client_->set_bookmark_model(bookmarks::TestBookmarkClient::CreateModel());
     client_->set_in_memory_url_index(std::make_unique<InMemoryURLIndex>(
-        client_->GetLocalOrSyncableBookmarkModel(),
-        client_->GetHistoryService(), nullptr, history_dir_.GetPath(),
-        SchemeSet()));
+        client_->GetBookmarkModel(), client_->GetHistoryService(), nullptr,
+        history_dir_.GetPath(), SchemeSet()));
     client_->GetInMemoryURLIndex()->Init();
     if (!client_->GetHistoryService())
       return false;

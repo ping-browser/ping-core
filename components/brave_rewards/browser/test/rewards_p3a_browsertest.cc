@@ -18,12 +18,12 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -42,7 +42,6 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
   RewardsP3ABrowserTest() {
     contribution_ =
         std::make_unique<test_util::RewardsBrowserTestContribution>();
-    promotion_ = std::make_unique<test_util::RewardsBrowserTestPromotion>();
     response_ = std::make_unique<test_util::RewardsBrowserTestResponse>();
     histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
@@ -74,7 +73,6 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     rewards_service_->SetEngineEnvForTesting();
 
     // Other
-    promotion_->Initialize(browser(), rewards_service_);
     contribution_->Initialize(browser(), rewards_service_);
 
     test_util::SetOnboardingBypassed(browser());
@@ -127,7 +125,6 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
   raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestContribution> contribution_;
-  std::unique_ptr<test_util::RewardsBrowserTestPromotion> promotion_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
 
@@ -185,32 +182,28 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
 
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
-  p3a::ConversionMonitor conversion_monitor;
-  conversion_monitor.RecordPanelTrigger(p3a::PanelTrigger::kInlineTip);
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(prefs::kEnabled, false);
+
+  p3a::ConversionMonitor conversion_monitor(prefs);
 
   histogram_tester_->ExpectTotalCount(p3a::kEnabledSourceHistogramName, 0);
-  histogram_tester_->ExpectUniqueSample(p3a::kInlineTipTriggerHistogramName, 1,
-                                        1);
-
-  conversion_monitor.RecordRewardsEnable();
-
-  histogram_tester_->ExpectUniqueSample(p3a::kEnabledSourceHistogramName, 0, 1);
 
   conversion_monitor.RecordPanelTrigger(p3a::PanelTrigger::kToolbarButton);
 
   histogram_tester_->ExpectBucketCount(p3a::kToolbarButtonTriggerHistogramName,
                                        1, 1);
 
+  prefs->SetBoolean(prefs::kEnabled, true);
   conversion_monitor.RecordRewardsEnable();
 
   histogram_tester_->ExpectBucketCount(p3a::kEnabledSourceHistogramName, 1, 1);
 
+  prefs->SetBoolean(prefs::kEnabled, false);
   conversion_monitor.RecordPanelTrigger(p3a::PanelTrigger::kNTP);
 
   histogram_tester_->ExpectBucketCount(p3a::kToolbarButtonTriggerHistogramName,
                                        1, 1);
-  histogram_tester_->ExpectBucketCount(p3a::kInlineTipTriggerHistogramName, 1,
-                                       1);
 
   conversion_monitor.RecordRewardsEnable();
 

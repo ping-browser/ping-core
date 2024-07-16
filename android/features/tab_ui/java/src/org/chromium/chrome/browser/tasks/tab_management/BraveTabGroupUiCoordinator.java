@@ -16,9 +16,10 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider.IncognitoStateObserver;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
@@ -39,7 +40,10 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     private IncognitoStateProvider mIncognitoStateProvider;
     private IncognitoStateObserver mIncognitoStateObserver;
 
-    public BraveTabGroupUiCoordinator(@NonNull Activity activity, @NonNull ViewGroup parentView,
+    public BraveTabGroupUiCoordinator(
+            @NonNull Activity activity,
+            @NonNull ViewGroup parentView,
+            @NonNull BrowserControlsStateProvider browserControlsStateProvider,
             @NonNull IncognitoStateProvider incognitoStateProvider,
             @NonNull ScrimCoordinator scrimCoordinator,
             @NonNull ObservableSupplier<Boolean> omniboxFocusStateSupplier,
@@ -47,15 +51,28 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull ActivityLifecycleDispatcher activityLifecycleDispatcher,
             @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
             @NonNull TabModelSelector tabModelSelector,
-            @NonNull TabContentManager tabContentManager, @NonNull ViewGroup rootView,
+            @NonNull TabContentManager tabContentManager,
+            @NonNull ViewGroup rootView,
             @NonNull Supplier<DynamicResourceLoader> dynamicResourceLoaderSupplier,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             @NonNull SnackbarManager snackbarManager) {
-        super(activity, parentView, incognitoStateProvider, scrimCoordinator,
-                omniboxFocusStateSupplier, bottomSheetController, activityLifecycleDispatcher,
-                isWarmOnResumeSupplier, tabModelSelector, tabContentManager, rootView,
-                dynamicResourceLoaderSupplier, tabCreatorManager, layoutStateProviderSupplier,
+        super(
+                activity,
+                parentView,
+                browserControlsStateProvider,
+                incognitoStateProvider,
+                scrimCoordinator,
+                omniboxFocusStateSupplier,
+                bottomSheetController,
+                activityLifecycleDispatcher,
+                isWarmOnResumeSupplier,
+                tabModelSelector,
+                tabContentManager,
+                rootView,
+                dynamicResourceLoaderSupplier,
+                tabCreatorManager,
+                layoutStateProviderSupplier,
                 snackbarManager);
 
         mIncognitoStateProvider = incognitoStateProvider;
@@ -80,22 +97,24 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     }
 
     @Override
-    public void initializeWithNative(Activity activity,
+    public void initializeWithNative(
+            Activity activity,
             BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
             Callback<Object> onModelTokenChange) {
         super.initializeWithNative(activity, visibilityController, onModelTokenChange);
 
-        mIncognitoStateObserver = (isIncognito) -> {
-            if (!isIncognito) {
-                // Make sure that background color match bottom toolbar color.
-                LinearLayout mainContent = mToolbarView.findViewById(R.id.main_content);
-                assert mainContent != null : "Something has changed in upstream!";
-                if (mainContent != null) {
-                    mainContent.setBackgroundColor(
-                            activity.getResources().getColor(R.color.dialog_bg_color_baseline));
-                }
-            }
-        };
+        mIncognitoStateObserver =
+                (isIncognito) -> {
+                    if (!isIncognito) {
+                        // Make sure that background color match bottom toolbar color.
+                        LinearLayout mainContent = mToolbarView.findViewById(R.id.main_content);
+                        assert mainContent != null : "Something has changed in upstream!";
+                        if (mainContent != null) {
+                            mainContent.setBackgroundColor(
+                                    activity.getColor(R.color.dialog_bg_color_baseline));
+                        }
+                    }
+                };
         mIncognitoStateProvider.addIncognitoStateObserverAndTrigger(mIncognitoStateObserver);
     }
 

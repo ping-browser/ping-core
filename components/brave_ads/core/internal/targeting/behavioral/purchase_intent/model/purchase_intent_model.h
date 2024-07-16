@@ -10,10 +10,12 @@
 
 namespace brave_ads {
 
-class PurchaseIntentModel final {
- public:
-  SegmentList GetSegments() const;
-};
+struct PurchaseIntentSignalInfo;
+
+void BuyPurchaseIntentSignal(
+    const PurchaseIntentSignalInfo& purchase_intent_signal);
+
+SegmentList GetPurchaseIntentSegments();
 
 }  // namespace brave_ads
 

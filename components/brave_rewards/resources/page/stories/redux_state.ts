@@ -19,12 +19,13 @@ export const reduxState: Rewards.ApplicationState = {
     reconcileStamp: 0,
     ui: {
       modalConnect: false,
+      modalConnectState: '',
       modalRedirect: 'hide',
-      modalReset: false,
+      modalRedirectProvider: '',
+      modalReset: true,
       modalAdsHistory: false,
       adsSettings: false,
       autoContributeSettings: false,
-      contributionsSettings: false,
       promosDismissed: {}
     },
     autoContributeList: [
@@ -130,21 +131,9 @@ export const reduxState: Rewards.ApplicationState = {
       adsMaxEarningsLastMonth: 0
     },
     adsHistory: [],
-    promotions: [],
-    inlineTipsEnabled: true,
-    inlineTip: {
-      twitter: true,
-      reddit: true,
-      github: true
-    },
     excludedList: [],
     externalWalletProviderList: ['uphold'],
     balance: optional<number>(),
-    monthlyReport: {
-      month: -1,
-      year: -1
-    },
-    monthlyReportIds: [],
     currentCountryCode: '',
     parameters: {
       autoContributeChoice: 0,
@@ -161,7 +150,7 @@ export const reduxState: Rewards.ApplicationState = {
     },
     initializing: false,
     showOnboarding: false,
-    isGrandfatheredUser: false,
-    userType: 'unconnected'
+    userType: 'unconnected',
+    isUserTermsOfServiceUpdateRequired: true
   }
 }

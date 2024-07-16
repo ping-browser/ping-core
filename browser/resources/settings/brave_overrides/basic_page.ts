@@ -3,13 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
+import '../brave_appearance_page/sidebar.js'
+import '../brave_appearance_page/tabs.js'
+import '../brave_appearance_page/toolbar.js'
+import '../brave_content_page/content.js'
+import '../brave_content_page/playlist.js'
+import '../brave_content_page/speedreader.js'
+import '../brave_data_collection_page/brave_data_collection_page.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
-import '../brave_help_tips_page/brave_help_tips_page.js'
 import '../brave_ipfs_page/brave_ipfs_page.js'
 import '../brave_new_tab_page/brave_new_tab_page.js'
-import '../brave_rewards_page/brave_rewards_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_site_settings/brave_site_data_details_subpage.js'
@@ -27,7 +30,10 @@ import {loadTimeData} from '../i18n_setup.js'
 
 const isGuest = loadTimeData.getBoolean('isGuest')
 
-export function getSectionElement (templateContent, sectionName) {
+export function getSectionElement (
+  templateContent: HTMLTemplateElement,
+  sectionName: string)
+{
   const sectionEl = templateContent.querySelector(`template[if*='showPage_(pageVisibility.${sectionName}']`) ||
     templateContent.querySelector(`template[if*='pageVisibility.${sectionName}']`) ||
     templateContent.querySelector(`settings-section[section="${sectionName}"]`)
@@ -45,7 +51,12 @@ export function getSectionElement (templateContent, sectionName) {
  * @param {Object} childAttributes - key-value pairs of child element attributes
  * @returns {Element}
  */
-function createSectionElement (sectionName, titleName, childName, childAttributes) {
+function createSectionElement (
+  sectionName: string,
+  titleName: string,
+  childName: string,
+  childAttributes: Record<string, string>)
+{
   const childAttributesString = Object.keys(childAttributes).map(attribute =>
       `${attribute}="${childAttributes[attribute]}"`)
     .join(' ')
@@ -61,14 +72,20 @@ function createSectionElement (sectionName, titleName, childName, childAttribute
   `
 }
 
-function createNestedSectionElement(sectionName, nestedUnder, titleName, childName, childAttributes) {
+function createNestedSectionElement (
+  sectionName: string,
+  nestedUnder: string,
+  titleName: string,
+  childName: string,
+  childAttributes: Record<string, string>)
+{
   const childAttributesString = Object.keys(childAttributes).map(attribute =>
     `${attribute}="${childAttributes[attribute]}"`)
     .join(' ')
   // This needs to be inside a template so that our components do not get created immediately.
   // Otherwise the polymer bindings won't be setup correctly at first.
   return html`
-    <settings-section page-title="${loadTimeData.getString(titleName)}" section="${sectionName}" nest-under-section="${nestedUnder}">
+    <settings-section id='${sectionName}-section' page-title="${loadTimeData.getString(titleName)}" section="${sectionName}" nest-under-section="${nestedUnder}">
       <${childName}
         ${childAttributesString}
       >
@@ -85,7 +102,7 @@ RegisterStyleOverride(
         min-width: 544px !important;
       }
     </style>
-  `
+  ` as HTMLTemplateElement
 )
 
 RegisterPolymerTemplateModifications({
@@ -107,9 +124,24 @@ RegisterPolymerTemplateModifications({
       } else {
         privacyGuidePromoSection.remove()
       }
+      const safetyCheckTemplate = actualTemplate.content.querySelector(
+        'template[is="dom-if"][if="[[showSafetyCheckPage_(pageVisibility.safetyCheck)]]"]')
+      if (!safetyCheckTemplate) {
+        console.error(
+          '[Brave Settings Overrides] Could not find safetyCheck template')
+      } else {
+        const safetyCheckSettingsSection = safetyCheckTemplate.content.
+          querySelector('#safetyCheckSettingsSection')
+        if (!safetyCheckSettingsSection) {
+          console.error('[Brave Settings Overrides] Could not find '
+            + 'safetyCheckSettingsSection element to hide')
+        } else {
+          safetyCheckSettingsSection.remove()
+        }
+      }
       const sectionGetStarted = document.createElement('template')
       sectionGetStarted.setAttribute('is', 'dom-if')
-      sectionGetStarted.setAttribute('restamp', true)
+      sectionGetStarted.setAttribute('restamp', 'true')
       sectionGetStarted.setAttribute('if', '[[showPage_(pageVisibility.getStarted)]]')
       sectionGetStarted.content.appendChild(createSectionElement(
         'getStarted',
@@ -120,9 +152,49 @@ RegisterPolymerTemplateModifications({
           'page-visibility': '[[pageVisibility]]'
         }
       ))
+      const sectionToolbar = document.createElement('template')
+      sectionToolbar.setAttribute('is', 'dom-if')
+      sectionToolbar.setAttribute('restamp', 'true')
+      sectionToolbar.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionToolbar.content.appendChild(createNestedSectionElement(
+        'toolbar',
+        'appearance',
+        'appearanceSettingsToolbarSection',
+        'settings-brave-appearance-toolbar',
+        {
+          prefs: '{{prefs}}',
+          'page-visibility': '[[pageVisibility]]'
+        }
+      ))
+      const sectionTabs = document.createElement('template')
+      sectionTabs.setAttribute('is', 'dom-if')
+      sectionTabs.setAttribute('restamp', 'true')
+      sectionTabs.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionTabs.content.appendChild(createNestedSectionElement(
+        'tabs',
+        'appearance',
+        'appearanceSettingsTabsSection',
+        'settings-brave-appearance-tabs',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
+      const sectionSidebar = document.createElement('template')
+      sectionSidebar.setAttribute('is', 'dom-if')
+      sectionSidebar.setAttribute('restamp', 'true')
+      sectionSidebar.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionSidebar.content.appendChild(createNestedSectionElement(
+        'sidebar',
+        'appearance',
+        'sideBar',
+        'settings-brave-appearance-sidebar',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionExtensions = document.createElement('template')
       sectionExtensions.setAttribute('is', 'dom-if')
-      sectionExtensions.setAttribute('restamp', true)
+      sectionExtensions.setAttribute('restamp', 'true')
       sectionExtensions.setAttribute('if', '[[showPage_(pageVisibility.extensions)]]')
       sectionExtensions.content.appendChild(createSectionElement(
         'extensions',
@@ -134,7 +206,7 @@ RegisterPolymerTemplateModifications({
       ))
       const sectionIPFS = document.createElement('template')
       sectionIPFS.setAttribute('is', 'dom-if')
-      sectionIPFS.setAttribute('restamp', true)
+      sectionIPFS.setAttribute('restamp', 'true')
       sectionIPFS.setAttribute('if', '[[showPage_(pageVisibility.braveIPFS)]]')
       sectionIPFS.content.appendChild(createNestedSectionElement(
         'ipfs',
@@ -147,7 +219,7 @@ RegisterPolymerTemplateModifications({
       ))
       const sectionTor = document.createElement('template')
       sectionTor.setAttribute('is', 'dom-if')
-      sectionTor.setAttribute('restamp', true)
+      sectionTor.setAttribute('restamp', 'true')
       sectionTor.setAttribute('if', '[[showPage_(pageVisibility.braveTor)]]')
       sectionTor.content.appendChild(createNestedSectionElement(
         'tor',
@@ -158,12 +230,26 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+      const sectionDataCollection = document.createElement('template')
+      sectionDataCollection.setAttribute('is', 'dom-if')
+      sectionDataCollection.setAttribute('restamp', 'true')
+      sectionDataCollection.
+        setAttribute('if', '[[showPage_(pageVisibility.braveDataCollection)]]')
+      sectionDataCollection.content.appendChild(createNestedSectionElement(
+        'dataCollection',
+        'privacy',
+        'braveDataCollection',
+        'settings-brave-data-collection-subpage',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
       let sectionWallet = undefined
       if (isBraveWalletAllowed) {
         sectionWallet = document.createElement('template')
         sectionWallet.setAttribute('is', 'dom-if')
-        sectionWallet.setAttribute('restamp', true)
+        sectionWallet.setAttribute('restamp', 'true')
         sectionWallet.setAttribute('if', '[[showPage_(pageVisibility.braveWallet)]]')
         sectionWallet.content.appendChild(createNestedSectionElement(
           'wallet',
@@ -177,7 +263,7 @@ RegisterPolymerTemplateModifications({
       }
       const sectionWeb3Domains = document.createElement('template')
       sectionWeb3Domains.setAttribute('is', 'dom-if')
-      sectionWeb3Domains.setAttribute('restamp', true)
+      sectionWeb3Domains.setAttribute('restamp', 'true')
       sectionWeb3Domains.setAttribute('if',
         '[[showPage_(pageVisibility.braveWeb3Domains)]]')
       sectionWeb3Domains.content.appendChild(createNestedSectionElement(
@@ -191,7 +277,7 @@ RegisterPolymerTemplateModifications({
       ))
       const sectionSync = document.createElement('template')
       sectionSync.setAttribute('is', 'dom-if')
-      sectionSync.setAttribute('restamp', true)
+      sectionSync.setAttribute('restamp', 'true')
       sectionSync.setAttribute('if', '[[showPage_(pageVisibility.braveSync)]]')
       sectionSync.content.appendChild(createSectionElement(
         'braveSync',
@@ -201,7 +287,7 @@ RegisterPolymerTemplateModifications({
       ))
       const sectionShields = document.createElement('template')
       sectionShields.setAttribute('is', 'dom-if')
-      sectionShields.setAttribute('restamp', true)
+      sectionShields.setAttribute('restamp', 'true')
       sectionShields.setAttribute('if', '[[showPage_(pageVisibility.shields)]]')
       sectionShields.content.appendChild(createSectionElement(
         'shields',
@@ -211,49 +297,22 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
-      const isBraveRewardsSupported = loadTimeData.getBoolean('isBraveRewardsSupported')
-      let sectionRewards = undefined
-      if (isBraveRewardsSupported) {
-        sectionRewards = document.createElement('template')
-        sectionRewards.setAttribute('is', 'dom-if')
-        sectionRewards.setAttribute('restamp', true)
-        sectionRewards.setAttribute('if', '[[showPage_(pageVisibility.rewards)]]')
-        sectionRewards.content.appendChild(createSectionElement(
-          'rewards',
-          'braveRewards',
-          'settings-brave-rewards-page',
-          {
-            prefs: '{{prefs}}'
-          }
-        ))
-      }
       const sectionSocialBlocking = document.createElement('template')
       sectionSocialBlocking.setAttribute('is', 'dom-if')
-      sectionSocialBlocking.setAttribute('restamp', true)
+      sectionSocialBlocking.setAttribute('restamp', 'true')
       sectionSocialBlocking.setAttribute('if', '[[showPage_(pageVisibility.socialBlocking)]]')
-      sectionSocialBlocking.content.appendChild(createSectionElement(
+      sectionSocialBlocking.content.appendChild(createNestedSectionElement(
         'socialBlocking',
+        'shields',
         'socialBlocking',
         'settings-social-blocking-page',
         {
           prefs: '{{prefs}}'
         }
       ))
-      const sectionHelpTips = document.createElement('template')
-      sectionHelpTips.setAttribute('is', 'dom-if')
-      sectionHelpTips.setAttribute('restamp', true)
-      sectionHelpTips.setAttribute('if', '[[showPage_(pageVisibility.braveHelpTips)]]')
-      sectionHelpTips.content.appendChild(createSectionElement(
-        'braveHelpTips',
-        'braveHelpTips',
-        'settings-brave-help-tips-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
       const sectionLeoAssist = document.createElement('template')
       sectionLeoAssist.setAttribute('is', 'dom-if')
-      sectionLeoAssist.setAttribute('restamp', true)
+      sectionLeoAssist.setAttribute('restamp', 'true')
       sectionLeoAssist
         .setAttribute('if', '[[showPage_(pageVisibility.leoAssistant)]]')
       sectionLeoAssist.content.appendChild(createSectionElement(
@@ -264,12 +323,57 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+
+      const sectionContent = document.createElement('template')
+      sectionContent.setAttribute('is', 'dom-if')
+      sectionContent.setAttribute('restamp', 'true')
+      sectionContent.setAttribute('if', '[[showPage_(pageVisibility.content)]]')
+      sectionContent.content.appendChild(createNestedSectionElement(
+        'content',
+        'content',
+        'contentSettingsContentSection',
+        'settings-brave-content-content',
+        {
+          prefs: '{{prefs}}',
+          'page-visibility': '[[pageVisibility]]'
+        }
+      ))
+
+      const sectionPlaylist = document.createElement('template')
+      sectionPlaylist.setAttribute('is', 'dom-if')
+      sectionPlaylist.setAttribute('restamp', 'true')
+      sectionPlaylist.setAttribute('if', '[[showPage_(pageVisibility.playlist)]]')
+      sectionPlaylist.content.appendChild(createNestedSectionElement(
+        'playlist',
+        'content',
+        'playlist',
+        'settings-brave-content-playlist',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
+
+      const sectionSpeedreader = document.createElement('template')
+      sectionSpeedreader.setAttribute('is', 'dom-if')
+      sectionSpeedreader.setAttribute('restamp', 'true')
+      sectionSpeedreader.setAttribute('if', '[[showPage_(pageVisibility.speedreader)]]')
+      sectionSpeedreader.content.appendChild(createNestedSectionElement(
+        'speedreader',
+        'content',
+        'speedreaderSettingLabel',
+        'settings-brave-content-speedreader',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
+
       const sectionNewTab = document.createElement('template')
       sectionNewTab.setAttribute('is', 'dom-if')
-      sectionNewTab.setAttribute('restamp', true)
+      sectionNewTab.setAttribute('restamp', 'true')
       sectionNewTab.setAttribute('if', '[[showPage_(pageVisibility.newTab)]]')
-      sectionNewTab.content.appendChild(createSectionElement(
+      sectionNewTab.content.appendChild(createNestedSectionElement(
         'newTab',
+        'getStarted',
         'braveNewTab',
         'settings-brave-new-tab-page',
         {
@@ -278,7 +382,7 @@ RegisterPolymerTemplateModifications({
       ))
 
       // Remove all hidden performance options from basic page.
-      // We moved performance elements in system settings.
+      // We moved performance elements into system settings.
       const performanceTemplate = actualTemplate.content.querySelector(
         'template[if="[[showPerformancePage_(pageVisibility.performance)]]"]')
       if (performanceTemplate) {
@@ -291,24 +395,34 @@ RegisterPolymerTemplateModifications({
         batteryTemplate.remove()
       }
 
+      const speedTemplate = actualTemplate.content.querySelector(
+        'template[if="[[showSpeedPage_(pageVisibility.performance)]]"]')
+      if (speedTemplate) {
+        speedTemplate.remove()
+      }
+
       // Get Started at top
       let last = basicPageEl.insertAdjacentElement('afterbegin',
         sectionGetStarted)
+      // Insert New Tab
+      last = last.insertAdjacentElement('afterend', sectionNewTab)
       // Move Appearance item
       const sectionAppearance = getSectionElement(actualTemplate.content,
         'appearance')
       last = last.insertAdjacentElement('afterend', sectionAppearance)
-      // Insert New Tab
-      last = last.insertAdjacentElement('afterend', sectionNewTab)
+      // Insert nested Toolbar, Tabs, Sidebar under 'Appearance' menu
+      last = last.insertAdjacentElement('afterend', sectionToolbar)
+      last = last.insertAdjacentElement('afterend', sectionTabs)
+      // last = last.insertAdjacentElement('afterend', sectionSidebar)
+      // Insert nested Content, Playlist, Speedreader under 'Content' menu
+      last = last.insertAdjacentElement('afterend', sectionContent)
+      last = last.insertAdjacentElement('afterend', sectionPlaylist)
+      last = last.insertAdjacentElement('afterend', sectionSpeedreader)
       // Insert shields
       last = last.insertAdjacentElement('afterend', sectionShields)
-      // Insert Rewards
-      if (sectionRewards) {
-        last = last.insertAdjacentElement('afterend', sectionRewards)
-      }
-      // Insert Social Blocking
+      // Insert nested Social Blocking under shields
       last = last.insertAdjacentElement('afterend', sectionSocialBlocking)
-      // Move privacy section to after social blocking
+      // Move privacy section to after shields
       const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
       last = last.insertAdjacentElement('afterend', sectionPrivacy)
       // Insert sync
@@ -328,8 +442,10 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionWeb3Domains)
       // Insert Tor
       // last = last.insertAdjacentElement('afterend', sectionTor)
+      // Insert Data collection
+      last = last.insertAdjacentElement('afterend', sectionDataCollection)
       // Insert Leo Assistant
-      last = last.insertAdjacentElement('afterend', sectionLeoAssist)
+      // last = last.insertAdjacentElement('afterend', sectionLeoAssist)
 
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
@@ -342,11 +458,13 @@ RegisterPolymerTemplateModifications({
       }
       // Move autofill to before languages
       const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
-      const sectionLanguages = getSectionElement(advancedSubSectionsTemplate.content, 'languages')
-      sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
-      // Move help tips after downloads
-      const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
-      sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
+      if (sectionAutofill) {
+        const sectionLanguages =
+          getSectionElement(advancedSubSectionsTemplate.content, 'languages')
+        if (sectionLanguages) {
+          sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
+        }
+      }
     }
   }
 })

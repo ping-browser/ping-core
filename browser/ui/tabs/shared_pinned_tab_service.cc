@@ -7,12 +7,15 @@
 
 #include <utility>
 
+#include "base/notreached.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -121,17 +124,19 @@ SharedPinnedTabService::GetTabRendererDataForDummyContents(
       DummyContentsData::FromWebContents(maybe_dummy_contents);
   DCHECK(dummy_contents_data);
 
-  const auto& pinned_tab_data = pinned_tab_data_.at(index);
-  DCHECK_EQ(dummy_contents_data->shared_contents(),
-            pinned_tab_data.shared_contents);
+  for (auto& pinned_tab_data : pinned_tab_data_) {
+    if (pinned_tab_data.shared_contents ==
+        dummy_contents_data->shared_contents()) {
+      return &pinned_tab_data.renderer_data;
+    }
+  }
 
-  return &pinned_tab_data.renderer_data;
+  NOTREACHED_NORETURN();
 }
 
 void SharedPinnedTabService::CacheWebContentsIfNeeded(
     Browser* browser,
-    const std::vector<std::unique_ptr<TabStripModel::DetachedWebContents>>&
-        web_contents) {
+    std::vector<std::unique_ptr<tabs::TabModel>> pinned_tabs) {
   DVLOG(2) << __FUNCTION__;
   DCHECK(!profile_will_be_destroyed_);
 
@@ -146,20 +151,18 @@ void SharedPinnedTabService::CacheWebContentsIfNeeded(
     return;
   }
 
-  for (auto& detached_web_contents : web_contents) {
-    if (!detached_web_contents->owned_contents) {
+  for (auto& pinned_tab : pinned_tabs) {
+    if (!pinned_tab->contents()) {
       // Could be already cached by another component.
       continue;
     }
 
-    if (!SharedContentsData::FromWebContents(detached_web_contents->contents)) {
+    if (!SharedContentsData::FromWebContents(pinned_tab->contents())) {
       continue;
     }
 
     cached_shared_contentses_from_closing_browser_.insert(
-        std::move(detached_web_contents->owned_contents));
-    detached_web_contents->remove_reason =
-        TabStripModelChange::RemoveReason::kCached;
+        tabs::TabModel::DestroyAndTakeWebContents(std::move(pinned_tab)));
   }
 }
 
@@ -196,6 +199,13 @@ void SharedPinnedTabService::OnBrowserAdded(Browser* browser) {
 }
 
 void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
+  if (change_source_model_) {
+    // This could happen when a shared web contents is attached to the closing
+    // browser. We attach the shared web contents to the closing browser so that
+    // it can be restore on the next startup.
+    return;
+  }
+
   if (!base::Contains(browsers_, browser)) {
     // Browser could be different profile or not a type we're
     // looking for. Let |OnBrowserAdded| decide which to look for.
@@ -234,12 +244,23 @@ void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
       // This was the last browser and there's a dangling contentses. We should
       // attach them to this |browser| so that they could be cleaned up.
       for (auto i = 0u; i < pinned_tab_data_.size(); i++) {
-        if (!pinned_tab_data_.at(i).contents_owner_model) {
-          MoveSharedWebContentsToBrowser(browser, i);
+        if (!pinned_tab_data_.at(i).contents_owner_model ||
+            pinned_tab_data_.at(i).contents_owner_model !=
+                browser->tab_strip_model()) {
+          MoveSharedWebContentsToBrowser(browser, i,
+                                         /* is_last_closing_browser */ true);
         }
       }
     }
   } else {
+    // Try caching shared contents from the closing browser.
+    auto* tab_strip_model = browser->tab_strip_model();
+    std::vector<std::unique_ptr<tabs::TabModel>> pinned_tabs;
+    for (int i = tab_strip_model->IndexOfFirstNonPinnedTab() - 1; i >= 0; --i) {
+      pinned_tabs.push_back(tab_strip_model->DetachTabAtForInsertion(i));
+    }
+    CacheWebContentsIfNeeded(browser, std::move(pinned_tabs));
+
     for (auto& pinned_tab_data : pinned_tab_data_) {
       if (pinned_tab_data.contents_owner_model == browser->tab_strip_model()) {
         pinned_tab_data.contents_owner_model = nullptr;
@@ -665,8 +686,10 @@ void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(int index) {
   MoveSharedWebContentsToBrowser(last_active_browser_, index);
 }
 
-void SharedPinnedTabService::MoveSharedWebContentsToBrowser(Browser* browser,
-                                                            int index) {
+void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
+    Browser* browser,
+    int index,
+    bool is_last_closing_browser) {
   auto* tab_strip_model = browser->tab_strip_model();
   DCHECK_LT(index, tab_strip_model->count());
 
@@ -709,13 +732,10 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(Browser* browser,
     DCHECK(dummy_contents_data);
     dummy_contents_data->stop_propagation();
 
-    // Unfortunately, We can't replace existing tab contents with cached web
-    // contents. We should use restore method.
-    chrome::AddRestoredTabFromCache(
-        std::move(unique_shared_contents), browser, index,
-        /* group= */ {},
-        /* select */ true, /* pin= */ true, /* user_agent_override= */ {},
-        /* extra_data= */ {});
+    const int add_type =
+        ADD_PINNED | (is_last_closing_browser ? ADD_ACTIVE : 0);
+    tab_strip_model->InsertWebContentsAt(
+        index, std::move(unique_shared_contents), add_type);
 
     // In order to prevent browser from being closed, we should close the dummy
     // contents after we restore the tab.

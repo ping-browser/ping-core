@@ -6,6 +6,7 @@
 #include "base/path_service.h"
 #include "base/strings/pattern.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,12 +17,15 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/location_bar_model.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/no_renderer_crashes_assertion.h"
 #include "net/dns/mock_host_resolver.h"
 
 class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
@@ -37,6 +41,10 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
     ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
+  PrefService* prefs() {
+    return user_prefs::UserPrefs::Get(browser()->profile());
   }
 
   // TabStripModelObserver overrides:
@@ -120,6 +128,21 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     EXPECT_EQ("about:blank",
               private_model->GetActiveWebContents()->GetVisibleURL().spec());
     EXPECT_EQ(1, private_browser->tab_strip_model()->count());
+  }
+
+  void TestURLIsLoadedInPrivateWindow(const std::string& url) {
+    Browser* private_browser = CreateIncognitoBrowser();
+    TabStripModel* private_model = private_browser->tab_strip_model();
+    EXPECT_EQ("about:blank",
+              private_model->GetActiveWebContents()->GetVisibleURL().spec());
+
+    content::WebContents* web_contents = private_model->GetActiveWebContents();
+    EXPECT_TRUE(content::NavigateToURL(web_contents, GURL(url)));
+
+    content::WaitForLoadStop(web_contents);
+
+    EXPECT_EQ(url, web_contents->GetVisibleURL().spec());
+    EXPECT_EQ(web_contents->GetVisibleURL().spec(), url);
   }
 
   base::RepeatingClosure quit_closure_;
@@ -251,7 +274,8 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, MAYBE_CrashURLTest) {
   browser()->OpenURL(
       content::OpenURLParams(GURL("brave://crash/"), content::Referrer(),
                              WindowOpenDisposition::CURRENT_TAB,
-                             ui::PAGE_TRANSITION_TYPED, false));
+                             ui::PAGE_TRANSITION_TYPED, false),
+      /*navigation_handle_callback=*/{});
   crash_observer.Wait();
 }
 
@@ -269,12 +293,28 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        RewardsPageIsNotAllowedInPrivateWindow) {
+  // Check webui host with non chrome scheme is allowed to load in private
+  // window. chrome scheme is used because brave scheme is already replaced with
+  // chrome when IsURLAllowedInIncognito() is called. Verify brave scheme url
+  // with TestURLIsNotLoadedInPrivateWindow().
+  EXPECT_FALSE(
+      IsURLAllowedInIncognito(GURL("chrome://rewards"), browser()->profile()));
+  EXPECT_TRUE(
+      IsURLAllowedInIncognito(GURL("http://rewards"), browser()->profile()));
   TestURLIsNotLoadedInPrivateWindow("brave://rewards");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        WalletPageIsNotAllowedInPrivateWindow) {
+  EXPECT_FALSE(
+      IsURLAllowedInIncognito(GURL("chrome://wallet"), browser()->profile()));
+  EXPECT_TRUE(
+      IsURLAllowedInIncognito(GURL("http://wallet"), browser()->profile()));
   TestURLIsNotLoadedInPrivateWindow("brave://wallet");
+  prefs()->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
+  EXPECT_TRUE(
+      IsURLAllowedInIncognito(GURL("brave://wallet"), browser()->profile()));
+  TestURLIsLoadedInPrivateWindow("chrome://wallet/crypto/onboarding/welcome");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
@@ -284,11 +324,19 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        BraveSyncPageIsNotAllowedInPrivateWindow) {
+  EXPECT_FALSE(
+      IsURLAllowedInIncognito(GURL("chrome://sync"), browser()->profile()));
+  EXPECT_TRUE(
+      IsURLAllowedInIncognito(GURL("http://sync"), browser()->profile()));
   TestURLIsNotLoadedInPrivateWindow("brave://sync");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        BraveWelcomePageIsNotAllowedInPrivateWindow) {
+  EXPECT_FALSE(
+      IsURLAllowedInIncognito(GURL("chrome://welcome"), browser()->profile()));
+  EXPECT_TRUE(
+      IsURLAllowedInIncognito(GURL("http://welcome"), browser()->profile()));
   TestURLIsNotLoadedInPrivateWindow("brave://welcome");
 }
 

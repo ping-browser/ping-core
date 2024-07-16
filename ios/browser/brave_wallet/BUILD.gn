@@ -4,10 +4,11 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("brave_wallet") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "asset_ratio_service_factory.cc",
     "asset_ratio_service_factory.h",
+    "bitcoin_wallet_service_factory.cc",
+    "bitcoin_wallet_service_factory.h",
     "brave_wallet_factory_wrappers.h",
     "brave_wallet_factory_wrappers.mm",
     "brave_wallet_ipfs_service_factory.h",
@@ -22,6 +23,10 @@ source_set("brave_wallet") {
     "swap_service_factory.h",
     "tx_service_factory.cc",
     "tx_service_factory.h",
+    "wallet_data_files_installer_delegate_impl.h",
+    "wallet_data_files_installer_delegate_impl.mm",
+    "zcash_wallet_service_factory.h",
+    "zcash_wallet_service_factory.mm",
   ]
   deps = [
     "//brave/components/brave_wallet/browser",

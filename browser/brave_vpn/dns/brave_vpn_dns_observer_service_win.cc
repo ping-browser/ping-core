@@ -8,12 +8,12 @@
 #include <vector>
 
 #include "base/strings/string_util.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/browser/ui/views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/stub_resolver_config_reader.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -23,7 +23,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/simple_message_box.h"
 #include "chrome/common/pref_names.h"
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -196,6 +196,12 @@ void BraveVpnDnsObserverService::LockDNS() {
 
 void BraveVpnDnsObserverService::OnConnectionStateChanged(
     brave_vpn::mojom::ConnectionState state) {
+  // Check because WG settings could be changed in runtime.
+  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
+    return;
+  }
+
+  VLOG(2) << __func__ << state;
   connection_state_ = state;
   if (state == brave_vpn::mojom::ConnectionState::CONNECTED) {
     if (IsDNSHelperLive()) {

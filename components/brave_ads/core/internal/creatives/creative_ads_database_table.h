@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -37,6 +37,8 @@ class CreativeAds final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
+  void MigrateToV35(mojom::DBTransactionInfo* transaction);
+
   std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
                                      const CreativeAdList& creative_ads) const;
 };

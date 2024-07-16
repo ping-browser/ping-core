@@ -27,7 +27,6 @@ function actionLogger (name: string, ...args: any[]) {
 export function Card () {
   const daysUntilPayment = knobs.number('Days Until Payment', 20)
   const nextPaymentDate = Date.now() + 1000 * 60 * 60 * 24 * daysUntilPayment
-  const showGrant = knobs.boolean('Grant Available', false)
   const disconnectedWallet = knobs.boolean('Disconnected', false)
 
   return (
@@ -36,31 +35,18 @@ export function Card () {
         <div style={{ width: '284px' }}>
           <RewardsCard
             rewardsEnabled={true}
-            isGrandfatheredUser={false}
-            userType='connected'
-            vbatDeadline={Date.parse('2023-01-01T00:00:00-05:00')}
-            isUnsupportedRegion={false}
+            userType='unconnected'
             declaredCountry='US'
             needsBrowserUpgradeToServeAds={false}
             rewardsBalance={optional(91.5812)}
             exchangeCurrency='USD'
             exchangeRate={0.82}
             providerPayoutStatus={'off'}
-            grantInfo={showGrant ? {
-              id: '',
-              amount: 0.15,
-              type: 'ads',
-              createdAt: Date.now(),
-              claimableUntil: Date.now() + 1000 * 10 * 24 * 60 * 60,
-              expiresAt: Date.now() + 1000 * 10 * 24 * 60 * 60
-            } : null}
             externalWallet={disconnectedWallet ? {
               provider: 'uphold',
               status: mojom.WalletStatus.kLoggedOut,
               username: '',
-              links: {
-                reconnect: 'https://brave.com'
-              }
+              links: {}
             } : null}
             nextPaymentDate={nextPaymentDate}
             minEarningsThisMonth={0.142}
@@ -69,10 +55,16 @@ export function Card () {
             maxEarningsLastMonth={1.25}
             contributionsThisMonth={10}
             publishersVisited={4}
-            canConnectAccount={true}
+            showSelfCustodyInvite={true}
+            isTermsOfServiceUpdateRequired={true}
             onEnableRewards={actionLogger('onEnableRewards')}
             onSelectCountry={actionLogger('onSelectCountry')}
-            onClaimGrant={actionLogger('onClaimGrant')}
+            onSelfCustodyInviteDismissed={
+              actionLogger('onSelfCustodyInviteDismissed')
+            }
+            onTermsOfServiceUpdateAccepted={
+              actionLogger('onTermsOfServiceUpdateAgreed')
+            }
           />
         </div>
       </WithThemeVariables>

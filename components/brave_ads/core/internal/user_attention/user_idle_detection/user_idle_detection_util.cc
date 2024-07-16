@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_feature.h"
+#include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
 
 namespace brave_ads {
 
@@ -15,12 +15,8 @@ bool MaybeScreenWasLocked(const bool screen_was_locked) {
 }
 
 bool HasExceededMaximumIdleTime(const base::TimeDelta idle_time) {
-  const base::TimeDelta maximum_idle_time = kMaximumIdleTime.Get();
-  if (maximum_idle_time.is_zero()) {  // Infinite
-    return false;
-  }
-
-  return idle_time > maximum_idle_time;
+  const base::TimeDelta maximum_idle_time = kMaximumUserIdleDetectionTime.Get();
+  return maximum_idle_time.is_positive() && idle_time > maximum_idle_time;
 }
 
 }  // namespace brave_ads

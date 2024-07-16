@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_ANTI_TARGETING_RESOURCE_ANTI_TARGETING_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_ANTI_TARGETING_RESOURCE_ANTI_TARGETING_RESOURCE_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resource_parsing_error_or.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_info.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -28,11 +28,9 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
 
   ~AntiTargetingResource() override;
 
-  bool IsInitialized() const { return static_cast<bool>(anti_targeting_); }
+  bool IsInitialized() const { return !!anti_targeting_; }
 
-  const absl::optional<AntiTargetingInfo>& get() const {
-    return anti_targeting_;
-  }
+  AntiTargetingSiteList GetSites(const std::string& creative_set_id) const;
 
  private:
   void MaybeLoad();
@@ -50,11 +48,12 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                           const std::string& id) override;
+  void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
-  absl::optional<AntiTargetingInfo> anti_targeting_;
+  std::optional<AntiTargetingInfo> anti_targeting_;
 
   bool did_load_ = false;
-  absl::optional<std::string> manifest_version_;
+  std::optional<std::string> manifest_version_;
 
   base::WeakPtrFactory<AntiTargetingResource> weak_factory_{this};
 };

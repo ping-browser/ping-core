@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_wallet/common/solana_address.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 namespace brave_wallet {
@@ -28,31 +30,31 @@ bool SolanaAddress::operator!=(const SolanaAddress& other) const {
 }
 
 // static
-absl::optional<SolanaAddress> SolanaAddress::FromBytes(
+std::optional<SolanaAddress> SolanaAddress::FromBytes(
     base::span<const uint8_t> bytes) {
   if (bytes.size() != kSolanaPubkeySize) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return SolanaAddress(bytes);
 }
 
 // static
-absl::optional<SolanaAddress> SolanaAddress::FromBytes(
+std::optional<SolanaAddress> SolanaAddress::FromBytes(
     std::vector<uint8_t> bytes) {
   if (bytes.size() != kSolanaPubkeySize) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return SolanaAddress(std::move(bytes));
 }
 
 // static
-absl::optional<SolanaAddress> SolanaAddress::FromBase58(
+std::optional<SolanaAddress> SolanaAddress::FromBase58(
     const std::string& base58_string) {
   std::vector<uint8_t> bytes;
   if (!Base58Decode(base58_string, &bytes, kSolanaPubkeySize)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return SolanaAddress(std::move(bytes));

@@ -1,29 +1,23 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index d7bb16c28835bbfdf1d095ed743f621af5e2613f..5842a7e8588802604cec5b89215c136fbe9c5ce0 100644
+index d6c14b3d70a7556c55d24e2da8d2d0ae2347f9e3..d3e3c1a3fab7a11331ab8a38e9284a277850e47c 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -787,6 +787,7 @@ static_library("ui") {
-     "//chrome/browser/profiling_host",
-     "//chrome/browser/ui/webui:configs",
+@@ -740,6 +740,7 @@ static_library("ui") {
+ 
+     "//chrome/browser/permissions",
    ]
 +  public_deps += [ "//brave/browser/ui" ] allow_circular_includes_from += [ "//brave/browser/ui" ]
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -4257,10 +4258,13 @@ static_library("ui") {
+@@ -4715,7 +4716,10 @@ static_library("ui") {
        ]
-       deps += [ "//chrome/updater/app/server/win:updater_legacy_idl_idl" ]
+       deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
--      sources += [
--        "webui/help/version_updater_basic.cc",
--        "webui/help/version_updater_basic.h",
--      ]
+-      sources += [ "webui/help/version_updater_basic.cc" ]
 +      if (!is_official_build) {
 +        # In official build, //brave/browser/ui handles.
-+        sources += [
-+          "webui/help/version_updater_basic.cc",
-+          "webui/help/version_updater_basic.h",
-+        ]
++        sources += [ "webui/help/version_updater_basic.cc" ]
 +      }
      }
    } else {  # 'OS!="win"

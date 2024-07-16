@@ -11,7 +11,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
-#include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
@@ -49,14 +48,19 @@ class CatalogUrlRequest final {
   void RetryCallback();
   void StopRetrying();
 
+  void NotifyWillFetchCatalog(base::Time fetch_at) const;
+  void NotifyDidFetchCatalog(const CatalogInfo& catalog) const;
+  void NotifyFailedToFetchCatalog() const;
+  void NotifyWillRetryFetchingCatalog(base::Time retry_at) const;
+  void NotifyDidRetryFetchingCatalog() const;
+
   raw_ptr<CatalogUrlRequestDelegate> delegate_ = nullptr;
 
   bool is_periodically_fetching_ = false;
 
   bool is_fetching_ = false;
 
-  Timer timer_;
-  BackoffTimer retry_timer_;
+  BackoffTimer timer_;
 
   base::WeakPtrFactory<CatalogUrlRequest> weak_factory_{this};
 };

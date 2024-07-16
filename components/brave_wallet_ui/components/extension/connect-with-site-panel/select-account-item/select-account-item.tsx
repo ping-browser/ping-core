@@ -9,14 +9,8 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // Types
 import {
   BraveWallet,
-  SupportedTestNetworks
+  SupportedTestNetworks //
 } from '../../../../constants/types'
-
-// Selectors
-import { WalletSelectors } from '../../../../common/selectors'
-import {
-  useUnsafeWalletSelector
-} from '../../../../common/hooks/use-safe-selector'
 
 // Styled Components
 import {
@@ -33,25 +27,31 @@ import { LoadingSkeleton } from '../../../shared/loading-skeleton/index'
 import { Tooltip } from '../../../shared/tooltip/index'
 
 // Utils
-import { reduceAccountDisplayName } from '../../../../utils/reduce-account-name'
+import {
+  reduceAccountDisplayName //
+} from '../../../../utils/reduce-account-name'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import Amount from '../../../../utils/amount'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
+import {
+  selectAllVisibleFungibleUserAssetsFromQueryResult //
+} from '../../../../common/slices/entities/blockchain-token.entity'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworksQuery,
   useGetSelectedChainQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
+  useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
 import {
-  querySubscriptionOptions60s
+  querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'
 import {
-  TokenBalancesRegistry
+  TokenBalancesRegistry //
 } from '../../../../common/slices/entities/token-balance.entity'
 
 // Hooks
@@ -61,21 +61,25 @@ interface Props {
   account: BraveWallet.AccountInfo
   isSelected: boolean
   onSelectAccount: () => void
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 }
 
 export const SelectAccountItem = (props: Props) => {
   const { account, isSelected, onSelectAccount, tokenBalancesRegistry } = props
 
-  // Wallet Selectors
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
-
   // Queries
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: networks = [] } = useGetNetworksQuery()
+  const { userVisibleFungibleTokens } = useGetUserTokensRegistryQuery(
+    undefined,
+    {
+      selectFromResult: (res) => ({
+        userVisibleFungibleTokens:
+          selectAllVisibleFungibleUserAssetsFromQueryResult(res)
+      })
+    }
+  )
 
   // Memos
   const orb = useAccountOrb(account)
@@ -86,38 +90,32 @@ export const SelectAccountItem = (props: Props) => {
       selectedNetwork?.chainId &&
       SupportedTestNetworks.includes(selectedNetwork.chainId)
     ) {
-      return userVisibleTokensInfo.filter(
+      return userVisibleFungibleTokens.filter(
         (token) =>
-          token.visible &&
-          !token.isErc721 &&
-          !token.isErc1155 &&
-          !token.isNft &&
           token.chainId === selectedNetwork.chainId &&
           token.coin === selectedNetwork.coin
       )
     }
-    const chainList =
-      networks
-        .filter(
-          (network) =>
-            network.coin === account.accountId.coin &&
-            !SupportedTestNetworks.includes(network.chainId)
-        )
-        .map((network) => network.chainId) ?? []
-    return userVisibleTokensInfo.filter(
-      (token) =>
-        token.visible &&
-        !token.isErc721 &&
-        !token.isErc1155 &&
-        !token.isNft &&
-        chainList.includes(token.chainId)
+    const chainList = networks
+      .filter(
+        (network) =>
+          network.coin === account.accountId.coin &&
+          !SupportedTestNetworks.includes(network.chainId)
+      )
+      .map((network) => network.chainId)
+    return userVisibleFungibleTokens.filter((token) =>
+      chainList.includes(token.chainId)
     )
-  }, [userVisibleTokensInfo, networks, account, selectedNetwork?.coin, selectedNetwork?.chainId])
+  }, [
+    userVisibleFungibleTokens,
+    networks,
+    account,
+    selectedNetwork?.coin,
+    selectedNetwork?.chainId
+  ])
 
-
-
-  const tokenPriceIds = React.useMemo(() =>
-    tokenListByAccount.map(getPriceIdForToken),
+  const tokenPriceIds = React.useMemo(
+    () => tokenListByAccount.map(getPriceIdForToken),
     [tokenListByAccount]
   )
 
@@ -153,13 +151,17 @@ export const SelectAccountItem = (props: Props) => {
     return new Amount(reducedAmounts).formatAsFiat(defaultFiatCurrency)
   }, [
     tokenListByAccount,
-    spotPriceRegistry,
     defaultFiatCurrency,
-    tokenBalancesRegistry
+    account.accountId,
+    tokenBalancesRegistry,
+    spotPriceRegistry
   ])
 
   return (
-    <ConnectPanelButton border='top' onClick={onSelectAccount}>
+    <ConnectPanelButton
+      border='top'
+      onClick={onSelectAccount}
+    >
       <LeftSide>
         <AccountCircle orb={orb} />
         <NameAndAddressColumn>
@@ -179,7 +181,10 @@ export const SelectAccountItem = (props: Props) => {
             </Tooltip>
           )}
           {accountFiatValue === '' ? (
-            <LoadingSkeleton width={60} height={18} />
+            <LoadingSkeleton
+              width={60}
+              height={18}
+            />
           ) : (
             <BalanceText>{accountFiatValue}</BalanceText>
           )}

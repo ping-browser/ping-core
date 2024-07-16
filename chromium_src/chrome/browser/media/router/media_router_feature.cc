@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/media/router/media_router_feature.h"
 
@@ -26,6 +26,13 @@ bool MediaRouterEnabled(content::BrowserContext* context) {
   }
   const PrefService::Preference* pref = GetMediaRouterPref(context);
   CHECK(pref->GetValue()->is_bool());
+  // Chromium has a pref for Media Router but it is only controlled via
+  // enterprise policy. In Brave, the pref can be controlled both via
+  // brave://settings/extensions and enterprise policy, with the latter taking
+  // precedence.
+  if (pref->IsManaged()) {
+    return MediaRouterEnabled_ChromiumImpl(context);
+  }
   return pref->GetValue()->GetBool();
 #endif
 }

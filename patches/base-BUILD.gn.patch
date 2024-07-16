@@ -1,12 +1,28 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 304223b58a7062e3a6ae466d54b9e877708e5cb3..42d684f60658336b564a8754ecf51ec87a17ee27 100644
+index 5dc15da08eeff408c71bb64e63e26540c660350f..09ee85764202b273fd0461518e85166577f188e0 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4433,6 +4433,7 @@ if (is_android) {
+@@ -4632,6 +4632,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/task/ThreadPoolTaskExecutor.java",
        "android/java/src/org/chromium/base/task/UiThreadTaskExecutor.java",
      ]
 +    sources += brave_java_base_sources
  
-     if (!is_cronet_build) {
-       sources += [ "android/java/src/org/chromium/base/IntentUtils.java" ]
+     if (use_clang_profiling) {
+       sources += [
+@@ -4669,6 +4670,7 @@ if (is_android) {
+       "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
+       "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
+     ]
++    sources += brave_base_shared_preferences_java_sources
+   }
+ 
+   android_library("base_cached_flags_java") {
+@@ -4695,6 +4697,7 @@ if (is_android) {
+       "android/java/src/org/chromium/base/cached_flags/ValuesOverridden.java",
+       "android/java/src/org/chromium/base/cached_flags/ValuesReturned.java",
+     ]
++    sources += brave_base_cached_flags_java_sources
+   }
+ 
+   android_aidl("process_launcher_aidl") {

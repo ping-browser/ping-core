@@ -6,15 +6,18 @@
 #ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
 
-#include "brave/components/sidebar/sidebar_item.h"
+#include <optional>
+
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
+#include "components/version_info/channel.h"
 
 class Browser;
 class GURL;
+class PrefService;
 enum class SidePanelEntryId;
 
 namespace sidebar {
-
-class SidebarService;
 
 bool CanUseSidebar(Browser* browser);
 bool CanAddCurrentActiveTabToSidebar(Browser* browser);
@@ -26,7 +29,19 @@ GURL ConvertURLToBuiltInItemURL(const GURL& url);
 SidePanelEntryId SidePanelIdFromSideBarItemType(
     SidebarItem::BuiltInItemType type);
 SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item);
+void SetLastUsedSidePanel(PrefService* prefs,
+                          std::optional<SidePanelEntryId> id);
+std::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser);
 
+// Return the added item if item for |id| is added.
+std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
+                                                         SidePanelEntryId id);
+
+bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type);
+bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type);
+
+SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
+    version_info::Channel channel);
 }  // namespace sidebar
 
 #endif  // BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_

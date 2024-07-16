@@ -29,7 +29,7 @@ export interface Props {
   updateUnapprovedTransactionNonce: (payload: any) => void
 }
 
-const AdvancedTransactionSettings = (props: Props) => {
+export const AdvancedTransactionSettings = (props: Props) => {
   const {
     onCancel,
     nonce,
@@ -41,7 +41,9 @@ const AdvancedTransactionSettings = (props: Props) => {
     nonce && parseInt(nonce).toString()
   )
 
-  const handleNonceInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNonceInputChanged = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setCustomNonce(event.target.value)
   }
 
@@ -63,12 +65,16 @@ const AdvancedTransactionSettings = (props: Props) => {
         <FormColumn>
           <InputLabel>{getLocale('braveWalletEditNonce')}</InputLabel>
           <Input
-            placeholder={getLocale('braveWalletAdvancedTransactionSettingsPlaceholder')}
+            placeholder={getLocale(
+              'braveWalletAdvancedTransactionSettingsPlaceholder'
+            )}
             type='number'
             value={customNonce}
             onChange={handleNonceInputChanged}
           />
-          <InfoText>{getLocale('braveWalletEditGasZeroGasPriceWarning')}</InfoText>
+          <InfoText>
+            {getLocale('braveWalletEditGasZeroGasPriceWarning')}
+          </InfoText>
         </FormColumn>
         <ButtonRow>
           <NavButton

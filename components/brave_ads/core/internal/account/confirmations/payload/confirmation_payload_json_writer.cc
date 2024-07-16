@@ -12,7 +12,6 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/reward_confirmation_payload_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::json::writer {
 
@@ -29,7 +28,7 @@ std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
       base::Value::Dict()
           .Set(kTransactionIdKey, confirmation.transaction_id)
           .Set(kCreativeInstanceIdKey, confirmation.creative_instance_id)
-          .Set(kTypeKey, confirmation.type.ToString());
+          .Set(kTypeKey, ToString(confirmation.type));
 
   if (confirmation.reward) {
     base::Value::Dict reward_dict =

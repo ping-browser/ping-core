@@ -5,11 +5,9 @@ vars = {
 }
 
 deps = {
-  "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
-  "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
   "vendor/omaha": {
-    "url": "https://github.com/brave/omaha.git@826cb43721b58d6da989c8486af9bfe0edb99e22",
+    "url": "https://github.com/brave/omaha.git@e57534eb50ed4a676d430c6199b1dc68edfeacd8",
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
@@ -18,27 +16,25 @@ deps = {
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
-  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@0c281cbdba6fe9c9bbe1d96095e20f857268ddbf",
+  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@3180519fd678a317f3616bbe9497a184321d582f",
   "third_party/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
-  "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@95ea54ba089610019a74c1176a2c7c0dba144b1c",
+  "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@8105bce5b384c72cf08b25b7c5343622754e7337", # v25.0
   "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
   "third_party/rapidjson/src": "https://github.com/Tencent/rapidjson.git@06d58b9e848c650114556a23294d0b6440078c61",
+  "third_party/reclient_configs/src": "https://github.com/EngFlow/reclient-configs.git@21c8fe69ff771956c179847b8c1d9fd216181967",
   'third_party/android_deps/libs/com_google_android_play_core': {
       'packages': [
           {
               'package': 'chromium/third_party/android_deps/libs/com_google_android_play_core',
-              'version': 'version:2@1.10.0.cr1',
+              'version': 'version:2@1.10.3.cr1',
           },
       ],
       'condition': 'checkout_android',
       'dep_type': 'cipd',
   },
-  "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@5434730bf7342f1ba5c057f1640882bb38604a85",
-  "third_party/rust/star_constellation/v0_2/crate": "https://github.com/brave/constellation.git@db575edec12509ce1bda6afe68bb58e538a21d3a",
-  "third_party/rust/challenge_bypass_ristretto/v1/crate": "https://github.com/brave-intl/challenge-bypass-ristretto.git@a1da4641734adc8312215b38a8221962d2c8e045",
+  "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@673d40f017a1559bb685a15cf608ad1d4a94f8fb",
   "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",
-  "third_party/rust/kuchiki/v0_8/crate": "https://github.com/brave/kuchiki.git@589eadca2c1d06ddda2919354590bfe1ace88a43",
   "third_party/macholib": {
     "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
     "condition": "checkout_mac",
@@ -56,11 +52,25 @@ hooks = [
     'action': ['vpython3', 'script/bootstrap.py'],
   },
   {
+    'name': 'bootstrap_ios',
+    'pattern': '.',
+    'condition': 'checkout_ios and host_os == "mac"',
+    'action': ['python3', 'script/ios_bootstrap.py']
+  },
+  {
     # Download hermetic xcode for goma
     'name': 'download_hermetic_xcode',
     'pattern': '.',
     'condition': 'checkout_mac or checkout_ios',
     'action': ['vpython3', 'build/mac/download_hermetic_xcode.py'],
+  },
+  {
+    'name': 'configure_reclient',
+    'pattern': '.',
+    'action': ['python3', 'third_party/reclient_configs/src/configure_reclient.py',
+               '--src_dir=..',
+               '--exec_root=../..',
+               '--custom_py=third_party/reclient_configs/brave_custom/brave_custom.py'],
   },
   {
     'name': 'download_sparkle',
@@ -121,11 +131,19 @@ hooks = [
                '--source-dir', '.',
                '--filter', '^[0-9]\{{1,\}}\.[0-9]\{{1,\}}\.[0-9]\{{1,\}}$'],
   },
+  {
+    # Downloads & overwrites Chromium's swift-format dep on macOS only
+    'name': 'download_swift_format',
+    'pattern': '.',
+    'condition': 'host_os == "mac"',
+    'action': ['python3', 'build/apple/download_swift_format.py', '510.1.0', '0ddbb486640cde862fa311dc0f7387e6c5171bdcc0ee0c89bc9a1f8a75e8bfaf']
+  },
 ]
 
 include_rules = [
   #Everybody can use some things.
   "+brave_base",
+  "+brave_domains",
   "+crypto",
   "+net",
   "+sql",

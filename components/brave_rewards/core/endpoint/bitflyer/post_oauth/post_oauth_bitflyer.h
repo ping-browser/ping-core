@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 // POST https://bitflyer.com/api/link/v1/token
 //
@@ -44,7 +44,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint::bitflyer {
 
@@ -55,7 +55,7 @@ using PostOauthCallback = base::OnceCallback<void(mojom::Result,
 
 class PostOauth {
  public:
-  explicit PostOauth(RewardsEngineImpl& engine);
+  explicit PostOauth(RewardsEngine& engine);
   ~PostOauth();
 
   void Request(const std::string& external_account_id,
@@ -79,7 +79,7 @@ class PostOauth {
 
   void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace endpoint::bitflyer

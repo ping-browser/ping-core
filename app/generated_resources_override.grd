@@ -109,6 +109,9 @@ are declared in tools/grit/grit_rule.gni.
         <part file="shared_settings_strings_override.grdp" />
       </if>
 
+      <if expr="not is_android">
+        </if>
+
       <if expr="enable_extensions">
         <part file="extensions_strings_override.grdp" />
       </if>
@@ -146,6 +149,10 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not is_chromeos and not is_macosx and toolkit_views">
         </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="not is_android">
         <if expr="is_macosx">
           </if>
@@ -162,11 +169,21 @@ are declared in tools/grit/grit_rule.gni.
             </if>
           <if expr="not is_macosx">
             </if>
+
+          <if expr="is_macosx">
+            </if>
+          <if expr="not is_macosx">
+            </if>
           </if>
         <if expr="use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
           </message>
+          <if expr="is_macosx">
+            </if>
+          <if expr="not is_macosx">
+            </if>
+
           <if expr="is_macosx">
             </if>
           <if expr="not is_macosx">
@@ -274,31 +291,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_IN_INCOGNITO" desc="Indicates a download was started in Private mode.">
         Downloaded in Private
       </message>
-      <if expr="is_macosx">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-      <if expr="is_macosx">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-      <if expr="is_macosx">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-      <if expr="is_macosx">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-
       <if expr="not is_android">
         <if expr="not use_titlecase">
           <if expr="is_macosx">
@@ -333,6 +325,10 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         </if>
 
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="is_macosx">
             </if>
       <if expr="not is_macosx">
@@ -532,12 +528,12 @@ are declared in tools/grit/grit_rule.gni.
         </if>
         <if expr="not use_titlecase">
         </if>
+      <message name="IDS_EXTENSIONS_MENU_MAIN_PAGE_OPEN_CHROME_WEBSTORE_TOOLTIP" desc="Tooltip text for the button that opens the chrome webstore.">
+        Web Store
+      </message>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
-        </if>
-
-      <if expr="not is_android">
         </if>
 
       <if expr="is_chromeos">
@@ -565,8 +561,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="is_android">
-        </if>
       <if expr="is_macosx">
         </if>
       <if expr="not is_macosx">
@@ -579,7 +573,11 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="not is_android">
-        </if>
+        <if expr="chromeos_ash">
+          </if>
+        <if expr="chromeos_lacros">
+          </if>
+      </if>
 
       <if expr="toolkit_views and not chromeos_lacros and not chromeos_ash">
         </if>
@@ -596,13 +594,17 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="use_titlecase">
         </if>
-      <if expr="is_android or enable_vr">
-        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
 
+      <message name="IDS_NTP_CUSTOMIZE_CHROME_WEBSTORE_LABEL" desc="The message that prompts user to customize Ping with Ping webstore.">
+        Customize your browser even more with extensions from the <ph name="BEGIN_LINK1">&lt;a href="#" id="chromeWebstoreLink" on-click="onBraveWebStoreLinkClick_"&gt;</ph>Web Store<ph name="END_LINK1">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_NTP_WEBSTORE_TOAST_MESSAGE" desc="The message displayed on the New Tab Page toast that directs users to the Ping webstore themes.">
+        You can find older colors in the Web Store
+      </message>
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on favorite profiles.">
         See memories of your favorite profiles and more
       </message>
@@ -628,19 +630,21 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <message name="IDS_USER_NOTES_MENU_OPEN_IN_INCOGNITO" desc="Menu description for opening a page with notes in a private window.">
         Open in Private Window
       </message>
       <if expr="is_macosx">
         </if>
-      <if expr="not is_android">
-        <if expr="is_chromeos">
-          <then>
-            </then>
-          <else>
-            </else>
+      <if expr="use_titlecase">
         </if>
-      </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="not is_android">
+        </if>
 
       <if expr="_google_chrome">
         <if expr="not is_android">
@@ -687,6 +691,25 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -755,9 +778,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_win">
         </if>
-      <if expr="is_win">
-        </if>
-
       <if expr="is_macosx">
         </if>
       <if expr="not is_macosx">
@@ -787,11 +807,31 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="not use_titlecase">
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_PIN_GROUP" desc="The label of the saved tab group button context menu item to pin a gruop">
+          Pin group to bookmarks
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
+          Unpin group from bookmarks
+        </message>
+        </if>
+      <if expr="use_titlecase">
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_PIN_GROUP" desc="The label of the saved tab group button context menu item to pin a gruop">
+          Pin Group to Bookmarks
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
+          Unpin Group from Bookmarks
+        </message>
+        </if>
+
+      <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
         </if>
       <if expr="is_win or is_macosx or is_linux">
         </if>
+      <if expr="chromeos_lacros">
+        </if>
+
       <if expr="is_macosx">
         </if>
 
@@ -814,7 +854,7 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="not chromeos_ash">
           </if>
-      </if> <if expr="chromeos_ash">
+      </if> <if expr="is_chromeos">
         </if> <if expr="not is_android">
         <message name="IDS_EXTENSIONS_INSTALL_LOCATION_UNKNOWN" desc="The text explaining the the installation location is unknown.">
           Not from Web Store.
@@ -977,6 +1017,9 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_android">
         </if>
+      <if expr="is_macosx">
+        </if>
+
 
       <if expr="is_macosx">
         </if> <if expr="is_macosx">
@@ -989,9 +1032,15 @@ are declared in tools/grit/grit_rule.gni.
         </if> <if expr="is_posix and not is_macosx">
         </if>
 
+      <if expr="is_chromeos">
+        </if>
       <if expr="is_macosx">
         </if>
         <if expr="is_macosx">
+        </if>
+      <if expr="is_chromeos">
+        </if>
+      <if expr="is_macosx or is_chromeos">
         </if>
 
       <if expr="is_android">
@@ -1095,9 +1144,6 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="is_win or is_macosx or is_linux">
       </if>
 
-    <if expr="is_win">
-      </if>
-
     <if expr="is_android">
         </if>
 
@@ -1123,6 +1169,8 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
     <if expr="toolkit_views">
+      <if expr="is_macosx">
+        </if>
       <if expr="is_macosx">
         </if>
 
@@ -1163,12 +1211,6 @@ are declared in tools/grit/grit_rule.gni.
     Close Private
   </message>
   <if expr="not is_android">
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      </if>
-    <if expr="not is_android">
       </if>
 
     <if expr="use_titlecase">
@@ -1223,8 +1265,9 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="is_android">
       </if>
 
-    <if expr="not chromeos_lacros and not is_android and _google_chrome">
-      </if>
-  </messages>
+    <if expr="is_chromeos">
+        </if>
+
+    </messages>
 </release>
 </grit>

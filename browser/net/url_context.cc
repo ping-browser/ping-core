@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -149,9 +149,6 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->aggressive_blocking =
       map ? brave_shields::GetCosmeticFilteringControlType(
                 map, ctx->tab_origin) == brave_shields::ControlType::BLOCK
-          : false;
-  ctx->allow_http_upgradable_resource =
-      map ? !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin)
           : false;
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should

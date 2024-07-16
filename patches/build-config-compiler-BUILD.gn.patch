@@ -1,13 +1,12 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index ae742b0b85a506f550852e611471338bde0da390..fa4c05af9cd5a027ed973614809c3cc620934be0 100644
+index 973d8bcbd2f1fa714ecd6f2752efde6e6770f5d8..d490cc7bbebe1289df38215f376c9988014622d8 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -2570,7 +2570,7 @@ config("symbols") {
-       if (use_dwarf5) {
-         cflags += [ "-gdwarf-5" ]
-         rustflags += [ "-Zdwarf-version=5" ]
--      } else if (!is_apple) {
-+      } else {
-         # Recent clang versions default to DWARF5 on Linux, and Android is about
-         # to switch. TODO: Adopt that in controlled way.
-         # Apple platforms still default to 4, so the flag is not needed there.
+@@ -588,7 +588,6 @@ config("compiler") {
+   }
+ 
+   if (is_clang && !is_nacl && current_os != "zos") {
+-    cflags += [ "-fcrash-diagnostics-dir=" + clang_diagnostic_dir ]
+     if (save_reproducers_on_lld_crash && use_lld) {
+       ldflags += [
+         "-fcrash-diagnostics=all",

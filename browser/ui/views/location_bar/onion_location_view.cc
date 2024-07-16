@@ -15,12 +15,15 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_palette.h"
@@ -44,15 +47,6 @@ constexpr SkColor kOpenInTorBg = SkColorSetRGB(0x6a, 0x37, 0x85);
 constexpr SkColor kIconColor = SkColorSetRGB(0xf0, 0xf2, 0xff);
 constexpr SkColor kTextColor = SK_ColorWHITE;
 constexpr int kIconSize = 12;
-
-void OnTorProfileCreated(GURL onion_location, Browser* browser) {
-  if (!browser)
-    return;
-  content::OpenURLParams open_tor(onion_location, content::Referrer(),
-                                  WindowOpenDisposition::SWITCH_TO_TAB,
-                                  ui::PAGE_TRANSITION_TYPED, false);
-  browser->OpenURL(open_tor);
-}
 
 // Sets the focus and ink drop highlight path to match the background
 // along with it's corner radius.
@@ -79,8 +73,6 @@ class OnionLocationButtonView : public views::LabelButton {
                     brave_l10n::GetLocalizedResourceUTF16String(
                         IDS_LOCATION_BAR_OPEN_IN_TOR)),
         profile_(profile) {
-    SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT));
     if (profile->IsTor()) {
       SetText(brave_l10n::GetLocalizedResourceUTF16String(
           IDS_LOCATION_BAR_ONION_AVAILABLE));
@@ -94,6 +86,7 @@ class OnionLocationButtonView : public views::LabelButton {
                   ui::ImageModel::FromImageSkia(image));
     // Set style specifics
     SetEnabledTextColors(kTextColor);
+    SetTextColor(views::Button::STATE_DISABLED, kTextColor);
     SetHorizontalAlignment(gfx::ALIGN_RIGHT);
     SetImageLabelSpacing(6);
 
@@ -114,12 +107,15 @@ class OnionLocationButtonView : public views::LabelButton {
 
   ~OnionLocationButtonView() override = default;
 
-  void SetOnionLocation(GURL location) { onion_location_ = location; }
+  void SetOnionLocation(const GURL& location) {
+    onion_location_ = location;
+    SetTooltipText(base::UTF8ToUTF16(onion_location_.spec()));
+  }
 
  private:
   // views::View
-  void Layout() override {
-    views::LabelButton::Layout();
+  void Layout(PassKey) override {
+    LayoutSuperclass<views::LabelButton>(this);
     UpdateBorder();
   }
 
@@ -129,9 +125,13 @@ class OnionLocationButtonView : public views::LabelButton {
   }
 
   void ButtonPressed() {
-    TorProfileManager::SwitchToTorProfile(
-        profile_,
-        base::BindRepeating(&OnTorProfileCreated, GURL(onion_location_)));
+    if (Browser* tor_browser =
+            TorProfileManager::SwitchToTorProfile(profile_)) {
+      content::OpenURLParams open_tor(onion_location_, content::Referrer(),
+                                      WindowOpenDisposition::SWITCH_TO_TAB,
+                                      ui::PAGE_TRANSITION_TYPED, false);
+      tor_browser->OpenURL(open_tor, /*navigation_handle_callback=*/{});
+    }
   }
 
   GURL onion_location_;
@@ -173,3 +173,6 @@ void OnionLocationView::Update(content::WebContents* web_contents,
         ->SetOnionLocation(helper->onion_location());
   }
 }
+
+BEGIN_METADATA(OnionLocationView)
+END_METADATA

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/command_line.h"
@@ -18,7 +19,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/country_code_util.h"
+#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -109,6 +111,8 @@ NTPBackgroundImagesService::NTPBackgroundImagesService(
 NTPBackgroundImagesService::~NTPBackgroundImagesService() = default;
 
 void NTPBackgroundImagesService::Init() {
+  pref_change_registrar_.Init(local_pref_);
+
   // Flag override for testing or demo purposes
   base::FilePath forced_local_path(
       base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
@@ -121,6 +125,12 @@ void NTPBackgroundImagesService::Init() {
   } else {
     RegisterBackgroundImagesComponent();
     RegisterSponsoredImagesComponent();
+
+    pref_change_registrar_.Add(
+        brave_l10n::prefs::kCountryCode,
+        base::BindRepeating(
+            &NTPBackgroundImagesService::OnCountryCodePrefChanged,
+            base::Unretained(this)));
   }
 
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
@@ -169,13 +179,24 @@ void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
 }
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
-  const auto data = GetSponsoredImagesComponentData(
-      brave_l10n::GetDefaultISOCountryCodeString());
+  const std::string country_code = brave_l10n::GetCountryCode(local_pref_);
+
+  const auto data = GetSponsoredImagesComponentData(country_code);
   if (!data) {
     DVLOG(2) << __func__ << ": Not support NTP SI component for "
-             << brave_l10n::GetDefaultLocaleString();
+             << country_code;
     return;
   }
+
+  if (sponsored_images_component_id_ == data->component_id.data()) {
+    return;
+  }
+
+  if (sponsored_images_component_id_) {
+    component_update_service_->UnregisterComponent(
+        *sponsored_images_component_id_);
+  }
+  sponsored_images_component_id_ = data->component_id.data();
 
   DVLOG(2) << __func__ << ": Start NTP SI component";
   RegisterNTPSponsoredImagesComponent(
@@ -288,10 +309,10 @@ void NTPBackgroundImagesService::MonitorReferralPromoCodeChange() {
 #if !BUILDFLAG(IS_IOS)
   DVLOG(2) << __func__ << ": Monitor referral promo code change";
 
-  pref_change_registrar_.Init(local_pref_);
-  pref_change_registrar_.Add(kReferralPromoCode,
+  pref_change_registrar_.Add(
+      kReferralPromoCode,
       base::BindRepeating(&NTPBackgroundImagesService::OnPreferenceChanged,
-      base::Unretained(this)));
+                          base::Unretained(this)));
 #endif
 }
 
@@ -314,6 +335,10 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
                        << " after downloading mapping table.";
   DownloadSuperReferralMappingTable();
 #endif
+}
+
+void NTPBackgroundImagesService::OnCountryCodePrefChanged() {
+  RegisterSponsoredImagesComponent();
 }
 
 void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
@@ -380,7 +405,7 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
     return;
   }
 
-  absl::optional<base::Value> mapping_table_value =
+  std::optional<base::Value> mapping_table_value =
       base::JSONReader::Read(json_string);
 
   if (!mapping_table_value) {

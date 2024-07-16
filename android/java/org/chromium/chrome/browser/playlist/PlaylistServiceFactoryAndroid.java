@@ -5,9 +5,9 @@
 
 package org.chromium.chrome.browser.playlist;
 
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.jni_zero.JNINamespace;
+import org.jni_zero.NativeMethods;
+
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
@@ -18,22 +18,22 @@ import org.chromium.playlist.mojom.PlaylistService;
 
 @JNINamespace("chrome::android")
 public class PlaylistServiceFactoryAndroid {
-    private static final Object lock = new Object();
-    private static PlaylistServiceFactoryAndroid instance;
+    private static final Object sLock = new Object();
+    private static PlaylistServiceFactoryAndroid sInstance;
 
     public static PlaylistServiceFactoryAndroid getInstance() {
-        synchronized (lock) {
-            if (instance == null) {
-                instance = new PlaylistServiceFactoryAndroid();
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new PlaylistServiceFactoryAndroid();
             }
         }
-        return instance;
+        return sInstance;
     }
 
     private PlaylistServiceFactoryAndroid() {}
 
-    public PlaylistService getPlaylistService(ConnectionErrorHandler connectionErrorHandler) {
-        Profile profile = Utils.getProfile(false); // Always use regular profile
+    public PlaylistService getPlaylistService(
+            Profile profile, ConnectionErrorHandler connectionErrorHandler) {
         if (profile == null) {
             return null;
         }

@@ -8,8 +8,11 @@ package org.chromium.chrome.browser.externalnav;
 import android.content.Intent;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.BraveWalletProvider;
+import org.chromium.base.Log;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;
 import org.chromium.components.external_intents.ExternalNavigationHandler.OverrideUrlLoadingResult;
@@ -20,7 +23,7 @@ import org.chromium.url.GURL;
  * Extends Chromium's ExternalNavigationHandler
  */
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
-    private BraveWalletProvider mBraveWalletProvider;
+    private static final String TAG = "BraveUrlHandler";
 
     public BraveExternalNavigationHandler(ExternalNavigationDelegate delegate) {
         super(delegate);
@@ -28,46 +31,44 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
 
     @Override
     public OverrideUrlLoadingResult shouldOverrideUrlLoading(ExternalNavigationParams params) {
-        if (isWalletProviderOverride(params)) {
-            String originalUrl = params.getUrl().getSpec();
-            String url = originalUrl.replaceFirst("^rewards://", "brave://rewards/");
-            GURL browserFallbackGURL = new GURL(url);
-            if (params.getRedirectHandler() != null) {
-                params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
+        String originalUrl = params.getUrl().getSpec();
+        if (originalUrl.equalsIgnoreCase("chrome://adblock/")) {
+            try {
+                BraveActivity.getBraveActivity().openBraveContentFilteringSettings();
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "adblock url " + e);
             }
-            return OverrideUrlLoadingResult.forNavigateTab(browserFallbackGURL, params);
+            return OverrideUrlLoadingResult.forExternalIntent();
         }
         return super.shouldOverrideUrlLoading(params);
     }
 
-    private boolean isWalletProviderOverride(ExternalNavigationParams params) {
-        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.UPHOLD_REDIRECT_URL)) {
-            return true;
-        }
-
-        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.BITFLYER_REDIRECT_URL)) {
-            return true;
-        }
-
-        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.GEMINI_REDIRECT_URL)) {
-            return true;
-        }
-
-        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.ZEBPAY_REDIRECT_URL)) {
-            return true;
-        }
-
-        return false;
-    }
-
     @Override
-    protected OverrideUrlLoadingResult startActivity(Intent intent, boolean requiresIntentChooser,
-            QueryIntentActivitiesSupplier resolvingInfos, ResolveActivitySupplier resolveActivity,
-            GURL browserFallbackUrl, GURL intentDataUrl, ExternalNavigationParams params) {
-        if (ContextUtils.getAppSharedPreferences().getBoolean(
-                    BravePrivacySettings.PREF_APP_LINKS, true)) {
-            return super.startActivity(intent, requiresIntentChooser, resolvingInfos,
-                    resolveActivity, browserFallbackUrl, intentDataUrl, params);
+    protected OverrideUrlLoadingResult startActivity(
+            Intent intent,
+            ExternalNavigationParams params,
+            boolean requiresIntentChooser,
+            QueryIntentActivitiesSupplier resolvingInfos,
+            ResolveActivitySupplier resolveActivity,
+            GURL browserFallbackUrl,
+            GURL intentTargetUrl) {
+        boolean isYoutubeDomain =
+                intentTargetUrl != null
+                        ? intentTargetUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN)
+                        : false;
+        if ((isYoutubeDomain
+                        && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled())
+                || (!isYoutubeDomain
+                        && ContextUtils.getAppSharedPreferences()
+                                .getBoolean(BravePrivacySettings.PREF_APP_LINKS, true))) {
+            return super.startActivity(
+                    intent,
+                    params,
+                    requiresIntentChooser,
+                    resolvingInfos,
+                    resolveActivity,
+                    browserFallbackUrl,
+                    intentTargetUrl);
         } else {
             return OverrideUrlLoadingResult.forNoOverride();
         }

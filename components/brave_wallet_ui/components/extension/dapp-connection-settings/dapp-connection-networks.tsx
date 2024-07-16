@@ -17,16 +17,14 @@ import {
 // Types
 import {
   BraveWallet,
+  DAppSupportedCoinTypes,
+  DAppSupportedPrimaryChains,
   SupportedTestNetworks
 } from '../../../constants/types'
-import {
-  DAppConnectionOptionsType
-} from './dapp-connection-settings'
+import { DAppConnectionOptionsType } from './dapp-connection-settings'
 
 // Components
-import {
-  ChangeNetworkButton
-} from './change-network-button'
+import { ChangeNetworkButton } from './change-network-button'
 
 // Styled Components
 import {
@@ -35,31 +33,14 @@ import {
   BackButton,
   BackIcon
 } from './dapp-connection-settings.style'
-import {
-  Row,
-  VerticalSpace,
-  ScrollableColumn
-} from '../../shared/style'
-
-
-const DAppSupportedCoinTypes = [
-  BraveWallet.CoinType.SOL,
-  BraveWallet.CoinType.ETH
-]
-
-const DAppSupportedPrimaryChains = [
-  BraveWallet.MAINNET_CHAIN_ID,
-  BraveWallet.SOLANA_MAINNET
-]
+import { Row, VerticalSpace, ScrollableColumn } from '../../shared/style'
 
 interface Props {
   onSelectOption: (option: DAppConnectionOptionsType) => void
 }
 
 export const DAppConnectionNetworks = (props: Props) => {
-  const {
-    onSelectOption
-  } = props
+  const { onSelectOption } = props
 
   // Queries
   const { data: networkList = [] } = useGetVisibleNetworksQuery()
@@ -67,40 +48,34 @@ export const DAppConnectionNetworks = (props: Props) => {
 
   // Memos
   const dappSupportedNetwork = React.useMemo(() => {
-    return networkList
-      .filter(
-        (network) => DAppSupportedCoinTypes.includes(network.coin)
-      )
+    return networkList.filter((network) =>
+      DAppSupportedCoinTypes.includes(network.coin)
+    )
   }, [networkList])
 
   const primaryNetworks = React.useMemo(() => {
-    return dappSupportedNetwork
-      .filter(
-        (network) => DAppSupportedPrimaryChains.includes(network.chainId))
+    return dappSupportedNetwork.filter((network) =>
+      DAppSupportedPrimaryChains.includes(network.chainId)
+    )
   }, [dappSupportedNetwork])
 
   const secondaryNetworks = React.useMemo(() => {
-    return dappSupportedNetwork
-      .filter(
-        (network) =>
-          !DAppSupportedPrimaryChains.includes(network.chainId) &&
-          !SupportedTestNetworks.includes(network.chainId)
-      )
+    return dappSupportedNetwork.filter(
+      (network) =>
+        !DAppSupportedPrimaryChains.includes(network.chainId) &&
+        !SupportedTestNetworks.includes(network.chainId)
+    )
   }, [dappSupportedNetwork])
 
   const testNetworks = React.useMemo(() => {
-    return dappSupportedNetwork
-      .filter(
-        (network) =>
-          SupportedTestNetworks.includes(network.chainId)
-      )
+    return dappSupportedNetwork.filter((network) =>
+      SupportedTestNetworks.includes(network.chainId)
+    )
   }, [dappSupportedNetwork])
 
   // Methods
   const onSelectNetwork = React.useCallback(
-    async (
-      network: BraveWallet.NetworkInfo
-    ) => {
+    async (network: BraveWallet.NetworkInfo) => {
       try {
         await setNetwork({
           chainId: network.chainId,
@@ -110,7 +85,9 @@ export const DAppConnectionNetworks = (props: Props) => {
         console.error(e)
       }
       onSelectOption('main')
-    }, [setNetwork, onSelectOption])
+    },
+    [setNetwork, onSelectOption]
+  )
 
   const onClickBack = React.useCallback(() => {
     onSelectOption('main')
@@ -122,19 +99,15 @@ export const DAppConnectionNetworks = (props: Props) => {
         marginBottom={22}
         justifyContent='flex-start'
       >
-        <BackButton
-          onClick={onClickBack}
-        >
+        <BackButton onClick={onClickBack}>
           <BackIcon />
         </BackButton>
-        <TitleText
-          textSize='22px'
-        >
+        <TitleText textSize='22px'>
           {getLocale('braveWalletChangeNetwork')}
         </TitleText>
       </Row>
       <ScrollableColumn>
-        {primaryNetworks.length !== 0 &&
+        {primaryNetworks.length !== 0 && (
           <>
             <Row
               justifyContent='flex-start'
@@ -147,19 +120,18 @@ export const DAppConnectionNetworks = (props: Props) => {
                 {getLocale('braveWalletPrimaryNetworks')}
               </DescriptionText>
             </Row>
-            {primaryNetworks.map(
-              (network: BraveWallet.NetworkInfo) =>
-                <ChangeNetworkButton
-                  key={network.chainId}
-                  network={network}
-                  onSelectNetwork={() => onSelectNetwork(network)}
-                />
-            )}
+            {primaryNetworks.map((network: BraveWallet.NetworkInfo) => (
+              <ChangeNetworkButton
+                key={network.chainId}
+                network={network}
+                onSelectNetwork={() => onSelectNetwork(network)}
+              />
+            ))}
             <VerticalSpace space='8px' />
           </>
-        }
+        )}
 
-        {secondaryNetworks.length !== 0 &&
+        {secondaryNetworks.length !== 0 && (
           <>
             <Row
               justifyContent='flex-start'
@@ -172,19 +144,18 @@ export const DAppConnectionNetworks = (props: Props) => {
                 {getLocale('braveWalletNetworkFilterSecondary')}
               </DescriptionText>
             </Row>
-            {secondaryNetworks.map(
-              (network: BraveWallet.NetworkInfo) =>
-                <ChangeNetworkButton
-                  key={network.chainId}
-                  network={network}
-                  onSelectNetwork={() => onSelectNetwork(network)}
-                />
-            )}
+            {secondaryNetworks.map((network: BraveWallet.NetworkInfo) => (
+              <ChangeNetworkButton
+                key={network.chainId}
+                network={network}
+                onSelectNetwork={() => onSelectNetwork(network)}
+              />
+            ))}
             <VerticalSpace space='8px' />
           </>
-        }
+        )}
 
-        {testNetworks.length !== 0 &&
+        {testNetworks.length !== 0 && (
           <>
             <Row
               justifyContent='flex-start'
@@ -197,16 +168,15 @@ export const DAppConnectionNetworks = (props: Props) => {
                 {getLocale('braveWalletNetworkFilterTestNetworks')}
               </DescriptionText>
             </Row>
-            {testNetworks.map(
-              (network: BraveWallet.NetworkInfo) =>
-                <ChangeNetworkButton
-                  key={network.chainId}
-                  network={network}
-                  onSelectNetwork={() => onSelectNetwork(network)}
-                />
-            )}
+            {testNetworks.map((network: BraveWallet.NetworkInfo) => (
+              <ChangeNetworkButton
+                key={network.chainId}
+                network={network}
+                onSelectNetwork={() => onSelectNetwork(network)}
+              />
+            ))}
           </>
-        }
+        )}
       </ScrollableColumn>
     </>
   )

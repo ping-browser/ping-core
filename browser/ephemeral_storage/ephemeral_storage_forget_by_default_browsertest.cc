@@ -5,7 +5,7 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -214,13 +214,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                                  GetValuesFromFrames(incognito_web_contents));
 }
 
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_NavigationCookiesAreCleared DISABLED_NavigationCookiesAreCleared
-#else
-#define MAYBE_NavigationCookiesAreCleared NavigationCookiesAreCleared
-#endif
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
-                       MAYBE_NavigationCookiesAreCleared) {
+                       NavigationCookiesAreCleared) {
   brave_shields::SetForgetFirstPartyStorageEnabled(
       content_settings(), true, a_site_ephemeral_storage_url_);
   brave_shields::SetForgetFirstPartyStorageEnabled(
@@ -491,8 +486,9 @@ class EphemeralStorageForgetByDefaultDisabledBrowserTest
       scoped_feature_list_.InitAndEnableFeature(
           net::features::kBraveForgetFirstPartyStorage);
     } else {
-      scoped_feature_list_.InitAndDisableFeature(
-          net::features::kBraveForgetFirstPartyStorage);
+      scoped_feature_list_.InitWithFeatures(
+          {}, {net::features::kBraveForgetFirstPartyStorage,
+               net::features::kThirdPartyStoragePartitioning});
     }
   }
   ~EphemeralStorageForgetByDefaultDisabledBrowserTest() override = default;

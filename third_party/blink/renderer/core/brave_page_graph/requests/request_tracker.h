@@ -12,9 +12,10 @@
 
 #include "base/memory/ref_counted.h"
 #include "base/time/time.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 
@@ -33,6 +34,7 @@ struct TrackedRequestRecord : public base::RefCounted<TrackedRequestRecord> {
 struct DocumentRequest {
   // Information available at request start
   InspectorId request_id;
+  FrameId frame_id;
   blink::KURL url;
   bool is_main_frame;
   base::TimeDelta start_timestamp;
@@ -46,26 +48,35 @@ struct DocumentRequest {
 
 class RequestTracker {
  public:
-  RequestTracker();
+  explicit RequestTracker(PageGraphContext* page_graph_context);
   ~RequestTracker();
 
   scoped_refptr<const TrackedRequestRecord> RegisterRequestStart(
       const InspectorId request_id,
       GraphNode* requester,
+      const FrameId& frame_id,
       NodeResource* resource,
       const String& resource_type);
+  void RegisterRequestRedirect(const InspectorId request_id,
+                               const FrameId& frame_id,
+                               const blink::KURL& url,
+                               const blink::ResourceResponse& redirect_response,
+                               NodeResource* resource);
   scoped_refptr<const TrackedRequestRecord> RegisterRequestComplete(
       const InspectorId request_id,
-      int64_t encoded_data_length);
+      int64_t encoded_data_length,
+      const FrameId& frame_id);
   scoped_refptr<const TrackedRequestRecord> RegisterRequestError(
-      const InspectorId request_id);
+      const InspectorId request_id,
+      const FrameId& frame_id);
 
   void RegisterDocumentRequestStart(const InspectorId request_id,
-                                    const blink::DOMNodeId frame_id,
+                                    const FrameId& frame_id,
                                     const blink::KURL& url,
                                     const bool is_main_frame,
                                     const base::TimeDelta timestamp);
   void RegisterDocumentRequestComplete(const InspectorId request_id,
+                                       const FrameId& frame_id,
                                        const int64_t encoded_data_length,
                                        const base::TimeDelta timestamp);
   DocumentRequest* GetDocumentRequestInfo(const InspectorId request_id);
@@ -74,13 +85,15 @@ class RequestTracker {
  private:
   HashMap<InspectorId, scoped_refptr<TrackedRequestRecord>> tracked_requests_;
 
-  HashMap<blink::DOMNodeId, InspectorId> document_request_initiators_;
+  HashMap<FrameId, InspectorId> document_request_initiators_;
   HashMap<InspectorId, DocumentRequest> document_requests_;
 
   // Returns the record from the above map, and cleans up the record
   // if the final requester has been responded to.
   scoped_refptr<const TrackedRequestRecord> ReturnTrackingRecord(
       const InspectorId request_id);
+
+  PageGraphContext* const page_graph_context_ = nullptr;
 
   // This structure is just included for debugging, to make sure the
   // assumptions built into this request tracking system (e.g. that

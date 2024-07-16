@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/observer_list_types.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 namespace brave_rewards {
 
@@ -28,14 +28,9 @@ class RewardsServiceObserver : public base::CheckedObserver {
   // updated.
   virtual void OnRewardsWalletCreated() {}
 
-  virtual void OnFetchPromotions(RewardsService* rewards_service,
-                                 const mojom::Result result,
-                                 const std::vector<mojom::PromotionPtr>& list) {
-  }
-
-  virtual void OnPromotionFinished(RewardsService* rewards_service,
-                                   const mojom::Result result,
-                                   mojom::PromotionPtr promotion) {}
+  // Called when the user has accepted a new version of the Rewards terms of
+  // service.
+  virtual void OnTermsOfServiceUpdateAccepted() {}
 
   virtual void OnExcludedSitesChanged(
       RewardsService* rewards_service,
@@ -73,8 +68,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnExternalWalletReconnected() {}
 
   virtual void OnExternalWalletDisconnected() {}
-
-  virtual void OnUnblindedTokensReady(RewardsService* rewards_service) {}
 
   virtual void ReconcileStampReset() {}
 

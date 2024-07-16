@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_GET_WALLET_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_GET_WALLET_H_
 
+#include <optional>
 #include <string>
-#include <utility>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
+#include "base/values.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // GET /v4/wallets/{payment_id}
 //
@@ -33,37 +33,57 @@
 //   "walletProvider": {
 //     "id": "",
 //     "name": "brave"
+//   },
+//   "selfCustodyAvailable": {
+//     "solana": true
 //   }
 // }
 // clang-format on
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
+
+struct GetWalletValue {
+  GetWalletValue();
+  ~GetWalletValue();
+
+  GetWalletValue(const GetWalletValue&) = delete;
+  GetWalletValue& operator=(const GetWalletValue&) = delete;
+
+  GetWalletValue(GetWalletValue&&);
+  GetWalletValue& operator=(GetWalletValue&&);
+
+  std::string wallet_provider;
+  std::string provider_id;
+  bool linked = false;
+  base::Value::Dict self_custody_available;
+};
 
 class GetWallet;
 
 template <>
 struct ResultFor<GetWallet> {
-  using Value = std::pair<std::string /* wallet provider */, bool /* linked */>;
+  using Value = GetWalletValue;
   using Error = mojom::GetWalletError;
 };
 
 class GetWallet final : public RequestBuilder,
                         public ResponseHandler<GetWallet> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse& response);
+  static Result ProcessResponse(RewardsEngine& engine,
+                                const mojom::UrlResponse& response);
 
-  explicit GetWallet(RewardsEngineImpl& engine);
+  explicit GetWallet(RewardsEngine& engine);
   ~GetWallet() override;
 
  private:
   std::string Path() const;
 
-  absl::optional<std::string> Url() const override;
+  std::optional<std::string> Url() const override;
   mojom::UrlMethod Method() const override;
-  absl::optional<std::vector<std::string>> Headers(
+  std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
 };
 

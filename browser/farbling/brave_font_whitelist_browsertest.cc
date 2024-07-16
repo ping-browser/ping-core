@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "content/public/renderer/render_frame.h"
@@ -65,12 +67,10 @@ class BraveFontWhitelistRenderViewTest : public content::RenderViewTest {
 #define MAYBE_FontLocalSource DISABLED_FontLocalSource
 #endif
 TEST_F(BraveFontWhitelistRenderViewTest, MAYBE_FontLocalSource) {
-  // Clear the font whitelist. This creates a situation where we know there is a
-  // font installed locally (Helvetica, preinstalled on every Mac) that is not
-  // on the font whitelist.
-  brave::set_font_whitelist_for_testing(
-      true,
-      base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{}));
+  // Simulate an empty font whitelist. This creates a situation where we know
+  // there is a font installed locally (Helvetica, preinstalled on every Mac)
+  // that is not on the font whitelist.
+  brave::SetSimulateEmptyFontWhitelistForTesting(true);
 
   // Use mock content settings agent that unconditionally enables font
   // whitelisting.
@@ -96,6 +96,8 @@ TEST_F(BraveFontWhitelistRenderViewTest, MAYBE_FontLocalSource) {
   // If the width of both spans is the same, that means they were both blocked
   // from using the specified font (Helvetica), which is what we want.
   EXPECT_EQ(p1.BoundsInWidget().width(), p2.BoundsInWidget().width());
+
+  brave::SetSimulateEmptyFontWhitelistForTesting(false);
 }
 
 }  // namespace content_settings

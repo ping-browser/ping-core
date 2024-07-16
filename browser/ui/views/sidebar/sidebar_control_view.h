@@ -36,8 +36,8 @@ class SidebarControlView : public views::View,
                            public views::ContextMenuController,
                            public ui::SimpleMenuModel::Delegate,
                            public sidebar::SidebarModel::Observer {
+  METADATA_HEADER(SidebarControlView, views::View)
  public:
-  METADATA_HEADER(SidebarControlView);
   class Delegate {
    public:
     virtual void MenuClosed() {}
@@ -52,8 +52,6 @@ class SidebarControlView : public views::View,
   SidebarControlView& operator=(const SidebarControlView&) = delete;
 
   // views::View overrides:
-  void Layout() override;
-  gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
 
   // views::ContextMenuController overrides:

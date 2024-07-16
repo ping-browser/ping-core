@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
@@ -24,7 +23,7 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.developer.BraveRewardsDebugPreferences;
 
-public class BravePreferenceFragment extends PreferenceFragmentCompat {
+public class BravePreferenceFragment extends ChromeBaseSettingsFragment {
     protected static final int STORAGE_PERMISSION_EXPORT_REQUEST_CODE = 8000;
     protected static final int STORAGE_PERMISSION_IMPORT_REQUEST_CODE = STORAGE_PERMISSION_EXPORT_REQUEST_CODE + 1;
 
@@ -39,6 +38,7 @@ public class BravePreferenceFragment extends PreferenceFragmentCompat {
         if (item.getItemId() == R.id.close_menu_id) {
             Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.setAction(Intent.ACTION_VIEW);
             startActivity(intent);
         }
         return false;
@@ -53,7 +53,8 @@ public class BravePreferenceFragment extends PreferenceFragmentCompat {
     public void onResume() {
         super.onResume();
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (braveRewardsNativeWorker == null || !braveRewardsNativeWorker.IsSupported()
+        if (braveRewardsNativeWorker == null
+                || !braveRewardsNativeWorker.isSupported()
                 || BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             if (getPreferenceScreen() == null) return;
             Preference braveRewardsDebugPreference =

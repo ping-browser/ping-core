@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/public/history/category_content_value_util.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
 #include "brave/components/brave_ads/core/public/history/category_content_info.h"
@@ -16,7 +16,14 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kJson[] = R"({"category":"untargeted","optAction":0})";
+
+constexpr char kJson[] =
+    R"(
+        {
+          "category": "untargeted",
+          "optAction": 0
+        })";
+
 }  // namespace
 
 class BraveAdsCategoryContentValueUtilTest : public UnitTestBase {};
@@ -25,9 +32,7 @@ TEST_F(BraveAdsCategoryContentValueUtilTest, FromValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(BuildCategoryContent(kSegment), CategoryContentFromValue(dict));
 }
 
@@ -35,9 +40,7 @@ TEST_F(BraveAdsCategoryContentValueUtilTest, ToValue) {
   // Arrange
   const CategoryContentInfo category_content = BuildCategoryContent(kSegment);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(kJson),
             CategoryContentToValue(category_content));
 }

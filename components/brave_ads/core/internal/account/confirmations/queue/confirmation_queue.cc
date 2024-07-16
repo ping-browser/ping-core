@@ -1,93 +1,124 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_factory.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
 namespace brave_ads {
 
-namespace {
-constexpr base::TimeDelta kProcessQueueItemAfter = base::Seconds(15);
-}  // namespace
-
 ConfirmationQueue::ConfirmationQueue() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 ConfirmationQueue::~ConfirmationQueue() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
   delegate_ = nullptr;
 }
 
 void ConfirmationQueue::Add(const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
 
-  AddConfirmationQueueItem(confirmation);
+  const ConfirmationQueueItemInfo confirmation_queue_item =
+      BuildConfirmationQueueItem(confirmation,
+                                 /*process_at=*/base::Time::Now());
+  CHECK(confirmation_queue_item.IsValid());
 
-  if (delegate_) {
-    delegate_->OnDidAddConfirmationToQueue(confirmation);
-  }
-
-  if (ShouldProcessQueueItem()) {
-    ProcessQueueItemAfterDelay(confirmation);
-  }
+  database_table_.Save(
+      {confirmation_queue_item},
+      base::BindOnce(&ConfirmationQueue::AddCallback,
+                     weak_factory_.GetWeakPtr(), confirmation_queue_item));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool ConfirmationQueue::ShouldProcessQueueItem() {
-  return !timer_.IsRunning();
-}
+void ConfirmationQueue::AddCallback(
+    const ConfirmationQueueItemInfo& confirmation_queue_item,
+    const bool success) {
+  if (!success) {
+    return NotifyFailedToAddConfirmationToQueue(
+        confirmation_queue_item.confirmation);
+  }
 
-void ConfirmationQueue::ProcessQueueItemAfterDelay(
-    const ConfirmationInfo& confirmation) {
-  const base::Time process_at = timer_.StartWithPrivacy(
-      FROM_HERE, kProcessQueueItemAfter,
-      base::BindOnce(&ConfirmationQueue::ProcessQueueItem,
-                     base::Unretained(this), confirmation));
+  NotifyDidAddConfirmationToQueue(confirmation_queue_item.confirmation);
 
-  if (delegate_) {
-    delegate_->OnWillProcessConfirmationQueue(confirmation, process_at);
+  if (ShouldProcessQueueItem(confirmation_queue_item)) {
+    ProcessQueueItemAfterDelay(confirmation_queue_item);
   }
 }
 
-void ConfirmationQueue::ProcessQueueItem(const ConfirmationInfo& confirmation) {
-  CHECK(IsValid(confirmation));
-
-  RebuildConfirmationQueueItem(
-      confirmation, base::BindOnce(&ConfirmationQueue::ProcessQueueItemCallback,
-                                   base::AsWeakPtr(this)));
+bool ConfirmationQueue::ShouldProcessQueueItem(
+    const ConfirmationQueueItemInfo& confirmation_queue_item) {
+  return !is_processing_ &&
+         (!timer_.IsRunning() ||
+          ShouldProcessBeforeScheduledQueueItem(confirmation_queue_item));
 }
 
-void ConfirmationQueue::ProcessQueueItemCallback(
-    const ConfirmationInfo& confirmation) {
-  RedeemConfirmationFactory::BuildAndRedeemConfirmation(base::AsWeakPtr(this),
-                                                        confirmation);
+bool ConfirmationQueue::ShouldProcessBeforeScheduledQueueItem(
+    const ConfirmationQueueItemInfo& confirmation_queue_item) {
+  CHECK(timer_.IsRunning());
+
+  const base::Time process_at =
+      base::Time::Now() + CalculateDelayBeforeProcessingConfirmationQueueItem(
+                              confirmation_queue_item);
+
+  return process_at < timer_.desired_run_time();
+}
+
+void ConfirmationQueue::ProcessQueueItemAfterDelay(
+    const ConfirmationQueueItemInfo& confirmation_queue_item) {
+  const base::Time process_at = timer_.Start(
+      FROM_HERE,
+      CalculateDelayBeforeProcessingConfirmationQueueItem(
+          confirmation_queue_item),
+      base::BindOnce(&ConfirmationQueue::ProcessQueueItem,
+                     weak_factory_.GetWeakPtr(), confirmation_queue_item));
+
+  NotifyWillProcessConfirmationQueue(confirmation_queue_item.confirmation,
+                                     process_at);
+}
+
+void ConfirmationQueue::ProcessQueueItem(
+    const ConfirmationQueueItemInfo& confirmation_queue_item) {
+  CHECK(confirmation_queue_item.IsValid());
+
+  is_processing_ = true;
+
+  RedeemConfirmationFactory::BuildAndRedeemConfirmation(
+      weak_factory_.GetWeakPtr(),
+      RebuildConfirmationDynamicUserData(confirmation_queue_item.confirmation));
 }
 
 void ConfirmationQueue::SuccessfullyProcessedQueueItem(
     const ConfirmationInfo& confirmation) {
-  CHECK(IsValid(confirmation));
+  database_table_.Delete(
+      confirmation.transaction_id,
+      base::BindOnce(&ConfirmationQueue::SuccessfullyProcessedQueueItemCallback,
+                     weak_factory_.GetWeakPtr(), confirmation));
+}
 
-  RemoveConfirmationQueueItem(confirmation);
+void ConfirmationQueue::SuccessfullyProcessedQueueItemCallback(
+    const ConfirmationInfo& confirmation,
+    const bool success) {
+  is_processing_ = false;
 
-  if (delegate_) {
-    delegate_->OnDidProcessConfirmationQueue(confirmation);
+  NotifyDidProcessConfirmationQueue(confirmation);
+
+  if (!success) {
+    return BLOG(0, "Failed to delete confirmation queue item");
   }
-
-  ResetTimerBackoffDelay();
 
   ProcessNextQueueItem();
 }
@@ -95,39 +126,109 @@ void ConfirmationQueue::SuccessfullyProcessedQueueItem(
 void ConfirmationQueue::FailedToProcessQueueItem(
     const ConfirmationInfo& confirmation,
     const bool should_retry) {
-  CHECK(IsValid(confirmation));
+  auto callback =
+      base::BindOnce(&ConfirmationQueue::FailedToProcessQueueItemCallback,
+                     weak_factory_.GetWeakPtr(), confirmation, should_retry);
 
-  if (!should_retry) {
-    RemoveConfirmationQueueItem(confirmation);
+  if (should_retry) {
+    return database_table_.Retry(confirmation.transaction_id,
+                                 std::move(callback));
   }
 
-  if (delegate_) {
-    delegate_->OnFailedToProcessConfirmationQueue(confirmation);
+  database_table_.Delete(confirmation.transaction_id, std::move(callback));
+}
+
+void ConfirmationQueue::FailedToProcessQueueItemCallback(
+    const ConfirmationInfo& confirmation,
+    const bool should_retry,
+    const bool success) {
+  is_processing_ = false;
+
+  NotifyFailedToProcessConfirmationQueue(confirmation);
+
+  if (!success) {
+    if (should_retry) {
+      return BLOG(0, "Failed to retry confirmation queue item");
+    }
+
+    return BLOG(0, "Failed to delete confirmation queue item");
   }
 
   ProcessNextQueueItem();
 }
 
 void ConfirmationQueue::ProcessNextQueueItem() {
-  const absl::optional<ConfirmationInfo> confirmation =
-      MaybeGetNextConfirmationQueueItem();
-  if (!confirmation) {
-    if (delegate_) {
-      delegate_->OnDidExhaustConfirmationQueue();
-    }
-
-    return;
-  }
-
-  ProcessQueueItemAfterDelay(*confirmation);
+  database_table_.GetNext(
+      base::BindOnce(&ConfirmationQueue::ProcessNextQueueItemCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void ConfirmationQueue::ResetTimerBackoffDelay() {
-  timer_.Stop();
+void ConfirmationQueue::ProcessNextQueueItemCallback(
+    const bool success,
+    const ConfirmationQueueItemList& confirmation_queue_items) {
+  if (!success) {
+    return NotifyFailedToProcessNextConfirmationInQueue();
+  }
+
+  if (confirmation_queue_items.empty()) {
+    return NotifyDidExhaustConfirmationQueue();
+  }
+
+  const ConfirmationQueueItemInfo& confirmation_queue_item =
+      confirmation_queue_items.front();
+  ProcessQueueItemAfterDelay(confirmation_queue_item);
 }
 
 void ConfirmationQueue::OnNotifyDidInitializeAds() {
   ProcessNextQueueItem();
+}
+
+void ConfirmationQueue::NotifyFailedToAddConfirmationToQueue(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnFailedToAddConfirmationToQueue(confirmation);
+  }
+}
+
+void ConfirmationQueue::NotifyDidAddConfirmationToQueue(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnDidAddConfirmationToQueue(confirmation);
+  }
+}
+
+void ConfirmationQueue::NotifyWillProcessConfirmationQueue(
+    const ConfirmationInfo& confirmation,
+    const base::Time process_at) const {
+  if (delegate_) {
+    delegate_->OnWillProcessConfirmationQueue(confirmation, process_at);
+  }
+}
+
+void ConfirmationQueue::NotifyDidProcessConfirmationQueue(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnDidProcessConfirmationQueue(confirmation);
+  }
+}
+
+void ConfirmationQueue::NotifyFailedToProcessConfirmationQueue(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnFailedToProcessConfirmationQueue(confirmation);
+  }
+}
+
+void ConfirmationQueue::NotifyFailedToProcessNextConfirmationInQueue() const {
+  if (delegate_) {
+    delegate_->OnFailedToProcessNextConfirmationInQueue();
+  }
+}
+
+void ConfirmationQueue::NotifyDidExhaustConfirmationQueue() const {
+  if (delegate_) {
+    delegate_->OnDidExhaustConfirmationQueue();
+  }
 }
 
 void ConfirmationQueue::OnDidRedeemConfirmation(

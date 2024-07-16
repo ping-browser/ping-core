@@ -12,7 +12,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "third_party/rust/cxx/v1/crate/include/cxx.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 class PrefService;
 
@@ -24,6 +24,9 @@ struct HttpRequest;
 struct HttpResponse;
 struct HttpRoundtripContext;
 struct WakeupContext;
+struct StoragePurgeContext;
+struct StorageSetContext;
+struct StorageGetContext;
 
 class FetchOrderCredentialsCallbackState {
  public:
@@ -60,6 +63,13 @@ class SubmitReceiptCallbackState {
   base::OnceCallback<void(const std::string&)> cb;
 };
 
+class CreateOrderFromReceiptCallbackState {
+ public:
+  CreateOrderFromReceiptCallbackState();
+  ~CreateOrderFromReceiptCallbackState();
+  base::OnceCallback<void(const std::string&)> cb;
+};
+
 class SkusUrlLoader {
  public:
   virtual ~SkusUrlLoader() = default;
@@ -75,9 +85,23 @@ class SkusContext {
  public:
   virtual ~SkusContext() = default;
   virtual std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const = 0;
-  virtual std::string GetValueFromStore(std::string key) const = 0;
-  virtual void PurgeStore() const = 0;
-  virtual void UpdateStoreValue(std::string key, std::string value) const = 0;
+  virtual void GetValueFromStore(
+      const std::string& key,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                                rust::String value,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const = 0;
+  virtual void PurgeStore(
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>
+          done,
+      rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const = 0;
+  virtual void UpdateStoreValue(
+      const std::string& key,
+      const std::string& value,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const = 0;
 };
 
 using RefreshOrderCallback = void (*)(RefreshOrderCallbackState* callback_state,
@@ -97,17 +121,35 @@ using CredentialSummaryCallback =
 using SubmitReceiptCallback =
     void (*)(SubmitReceiptCallbackState* callback_state, SkusResult result);
 
+using CreateOrderFromReceiptCallback =
+    void (*)(CreateOrderFromReceiptCallbackState* callback_state,
+             SkusResult result,
+             rust::cxxbridge1::Str order_id);
+
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,
                      TracingLevel level,
                      rust::cxxbridge1::Str message);
 
-void shim_purge(skus::SkusContext& ctx);  // NOLINT
-void shim_set(skus::SkusContext& ctx,     // NOLINT
-              rust::cxxbridge1::Str key,
-              rust::cxxbridge1::Str value);
-::rust::String shim_get(skus::SkusContext& ctx,  // NOLINT
-                        rust::cxxbridge1::Str key);
+void shim_purge(
+    skus::SkusContext& ctx,  // NOLINT
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx);
+void shim_set(
+    skus::SkusContext& ctx,  // NOLINT
+    rust::cxxbridge1::Str key,
+    rust::cxxbridge1::Str value,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx);
+void shim_get(
+    skus::SkusContext& ctx,  // NOLINT
+    rust::cxxbridge1::Str key,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String value,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx);
 
 void shim_scheduleWakeup(
     ::std::uint64_t delay_ms,

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
 
 source_set("preferences") {
@@ -21,8 +22,8 @@ source_set("preferences") {
     "//brave/common",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/common",
-    "//brave/components/brave_shields/browser",
-    "//brave/components/brave_shields/common",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/brave_sync",
     "//brave/components/p3a",
     "//components/content_settings/core/browser",
@@ -35,22 +36,28 @@ source_set("preferences") {
 
 java_cpp_strings("java_pref_names_srcjar") {
   sources = [
-    "//brave/components/brave_adaptive_captcha/pref_names.cc",
-    "//brave/components/brave_rewards/common/pref_names.cc",
-    "//brave/components/brave_shields/common/pref_names.cc",
-    "//brave/components/brave_vpn/common/pref_names.cc",
-    "//brave/components/constants/pref_names.cc",
+    "//brave/components/brave_adaptive_captcha/pref_names.h",
+    "//brave/components/brave_rewards/common/pref_names.h",
+    "//brave/components/brave_shields/core/common/pref_names.h",
+    "//brave/components/brave_vpn/common/pref_names.h",
+    "//brave/components/constants/pref_names.h",
     "//brave/components/de_amp/common/pref_names.cc",
-    "//brave/components/debounce/common/pref_names.cc",
-    "//brave/components/decentralized_dns/core/pref_names.cc",
-    "//brave/components/ipfs/pref_names.cc",
-    "//brave/components/ntp_background_images/common/pref_names.cc",
+    "//brave/components/de_amp/common/pref_names.h",
+    "//brave/components/debounce/core/common/pref_names.h",
+    "//brave/components/decentralized_dns/core/pref_names.h",
+    "//brave/components/ipfs/pref_names.h",
+    "//brave/components/ntp_background_images/common/pref_names.h",
     "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
-    "//brave/components/p3a/pref_names.cc",
-    "//brave/components/request_otr/common/pref_names.cc",
+    "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
+    "//brave/components/p3a/pref_names.h",
+    "//brave/components/request_otr/common/pref_names.h",
     "//brave/components/speedreader/speedreader_pref_names.h",
-    "//components/translate/core/browser/translate_pref_names.cc",
+    "//components/translate/core/browser/translate_pref_names.h",
   ]
+
+  if (enable_ai_chat) {
+    sources += [ "//brave/components/ai_chat/core/common/pref_names.h" ]
+  }
 
   template =
       "//brave/browser/preferences/android/java_templates/BravePref.java.tmpl"

@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser.vpn.activities;
 
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,13 +18,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class BraveVpnProfileActivity extends BraveVpnParentActivity {
-    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private TextView mProfileTitle;
     private TextView mProfileText;
     private Button mInstallVpnButton;
@@ -84,7 +81,11 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
                 BraveVpnUtils.openBraveVpnSupportActivity(BraveVpnProfileActivity.this);
             }
         });
+    }
 
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
         if (getIntent() != null
                 && getIntent().getBooleanExtra(BraveVpnUtils.VERIFY_CREDENTIALS_FAILED, false)) {
             verifySubscription();
@@ -101,13 +102,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
-            @Override
-            public void onFlowIsKnown(Bundle freProperties) {
-                initializeViews();
-            }
-        };
-        mFirstRunFlowSequencer.start();
+        initializeViews();
         onInitialLayoutInflationComplete();
     }
 

@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include <optional>
+#include <string_view>
+
 #include "base/system/sys_info.h"
 #include "base/test/task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -22,7 +25,7 @@ class TaskEnvironmentOptionalMockTime : public TaskEnvironment {
                 ? TimeSource::MOCK_TIME
                 : TimeSource::DEFAULT) {}
 
-  static bool IsMockTimedTest(base::StringPiece test_name) {
+  static bool IsMockTimedTest(std::string_view test_name) {
     return test_name == "LocalDeleteWhenOffline";
   }
 };
@@ -185,7 +188,7 @@ TEST_F(DeviceInfoSyncBridgeTest,
   // An incoming deletion for the local device info should not cause a reupload
   EXPECT_CALL(*processor(), Put(CacheGuidForSuffix(kLocalSuffix), _, _))
       .Times(0);
-  absl::optional<ModelError> error = bridge()->ApplyIncrementalSyncChanges(
+  std::optional<ModelError> error = bridge()->ApplyIncrementalSyncChanges(
       bridge()->CreateMetadataChangeList(), std::move(changes));
   ASSERT_FALSE(error);
 

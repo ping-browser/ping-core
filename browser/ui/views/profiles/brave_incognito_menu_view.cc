@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/profiles/brave_incognito_menu_view.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "brave/components/l10n/common/localization_util.h"
@@ -74,8 +75,9 @@ void BraveIncognitoMenuView::AddedToWidget() {
   SetProfileIdentityInfo(
       /*profile_name=*/std::u16string(),
       /*profile_background_color=*/SK_ColorTRANSPARENT,
-      /*edit_button_params=*/absl::nullopt,
+      /*edit_button_params=*/std::nullopt,
       ui::ImageModel::FromVectorIcon(kIncognitoProfileIcon, icon_color),
+      ui::ImageModel(),
       brave_l10n::GetLocalizedResourceUTF16String(
           GetProfileMenuTitleId(browser()->profile())),
       window_count > 1 ? l10n_util::GetPluralStringFUTF16(
@@ -95,8 +97,7 @@ void BraveIncognitoMenuView::AddTorButton() {
 }
 
 void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
-  TorProfileManager::SwitchToTorProfile(browser()->profile(),
-                                        base::DoNothing());
+  TorProfileManager::SwitchToTorProfile(browser()->profile());
 }
 
 std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {

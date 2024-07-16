@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
 #include <memory>
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -17,6 +18,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_requests.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/json_rpc_requests.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
@@ -24,43 +26,43 @@
 
 namespace {
 
-absl::optional<base::Value::List> GetParamsList(const std::string& json) {
+std::optional<base::Value::List> GetParamsList(const std::string& json) {
   auto json_value =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value || !json_value->is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto& value = json_value->GetDict();
   auto* params = value.FindListByDottedPath(brave_wallet::kParams);
   if (!params) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::move(*params);
 }
 
-absl::optional<base::Value::Dict> GetObjectFromParamsList(
+std::optional<base::Value::Dict> GetObjectFromParamsList(
     const std::string& json) {
   auto list = GetParamsList(json);
   if (!list || list->size() != 1 || !(*list)[0].is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::move((*list)[0]).TakeDict();
 }
 
-absl::optional<base::Value::Dict> GetParamsDict(const std::string& json) {
+std::optional<base::Value::Dict> GetParamsDict(const std::string& json) {
   auto json_value =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value || !json_value->is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* value = json_value->GetDict().FindDict(brave_wallet::kParams);
   if (!value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::move(*value);
@@ -105,6 +107,39 @@ const char kRequestJsonRPC[] = "2.0";
 }  // namespace
 
 namespace brave_wallet {
+
+namespace {
+// EIP-712 type hash for Order struct used in CoW swap
+//
+// keccak256("Order(address sellToken,address buyToken,address receiver,
+//                  uint256 sellAmount,uint256 buyAmount,uint32 validTo,
+//                  bytes32 appData,uint256 feeAmount,string kind,
+//                  bool partiallyFillable,string sellTokenBalance,
+//                  string buyTokenBalance)")
+constexpr char kCowSwapTypeHash[] =
+    "D5A25BA2E97094AD7D83DC28A6572DA797D6B3E7FC6663BD93EFB789FC17E489";
+
+mojom::EthSignTypedDataMetaPtr ParseCowSwapOrder(
+    const base::Value::Dict& value) {
+  const auto cow_swap_order_value =
+      eth_requests::CowSwapOrder::FromValue(value);
+  if (!cow_swap_order_value) {
+    return nullptr;
+  }
+
+  auto cow_swap_order = mojom::CowSwapOrder::New();
+  cow_swap_order->buy_token = cow_swap_order_value->buy_token;
+  cow_swap_order->buy_amount = cow_swap_order_value->buy_amount;
+  cow_swap_order->sell_token = cow_swap_order_value->sell_token;
+  cow_swap_order->sell_amount = cow_swap_order_value->sell_amount;
+  cow_swap_order->deadline = cow_swap_order_value->valid_to;
+  cow_swap_order->receiver = cow_swap_order_value->receiver;
+
+  return mojom::EthSignTypedDataMeta::NewCowSwapOrder(
+      std::move(cow_swap_order));
+}
+
+}  // namespace
 
 mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
                                            std::string* from) {
@@ -157,11 +192,11 @@ mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
 bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
                         bool network_supports_eip1559,
                         const std::vector<mojom::AccountInfoPtr>& account_infos,
-                        const std::string& address) {
+                        const mojom::AccountIdPtr& account_id) {
   bool keyring_supports_eip1559 = true;
   auto account_it = base::ranges::find_if(
       account_infos, [&](const mojom::AccountInfoPtr& account) {
-        return base::EqualsCaseInsensitiveASCII(account->address, address);
+        return account->account_id == account_id;
       });
 
   // Only ledger and trezor hardware keyrings support EIP-1559 at the moment.
@@ -195,7 +230,7 @@ bool GetEthJsonRequestInfo(const std::string& json,
                            base::Value* id,
                            std::string* method,
                            std::string* params) {
-  absl::optional<base::Value> records_v =
+  std::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
@@ -239,7 +274,7 @@ bool GetEthJsonRequestInfo(const std::string& json,
 bool NormalizeEthRequest(const std::string& input_json,
                          std::string* output_json) {
   CHECK(output_json);
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
@@ -437,9 +472,10 @@ bool ParseEthSignTypedDataParams(const std::string& json,
                                  base::Value::Dict* domain_out,
                                  EthSignTypedDataHelper::Version version,
                                  std::vector<uint8_t>* domain_hash_out,
-                                 std::vector<uint8_t>* primary_hash_out) {
+                                 std::vector<uint8_t>* primary_hash_out,
+                                 mojom::EthSignTypedDataMetaPtr* meta_out) {
   if (!address || !message_out || !domain_out || !domain_hash_out ||
-      !primary_hash_out) {
+      !primary_hash_out || !meta_out) {
     return false;
   }
 
@@ -501,6 +537,13 @@ bool ParseEthSignTypedDataParams(const std::string& json,
     return false;
   }
 
+  auto type_hash = base::HexEncode(helper->GetTypeHash(*primary_type));
+  if (type_hash == kCowSwapTypeHash) {
+    *meta_out = ParseCowSwapOrder(*message);
+  } else {
+    *meta_out = nullptr;
+  }
+
   *domain_hash_out = domain_hash->first;
   *domain_out = std::move(domain_hash->second);
 
@@ -512,7 +555,7 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   return true;
 }
 
-bool ParseEthDecryptData(const std::string& json,
+bool ParseEthDecryptData(const base::Value& obj,
                          std::string* version,
                          std::vector<uint8_t>* nonce,
                          std::vector<uint8_t>* ephemeral_public_key,
@@ -523,12 +566,7 @@ bool ParseEthDecryptData(const std::string& json,
   //   "ephemPublicKey": "base64-string",
   //   "ciphertext":"base64-string"
   // }
-  auto obj = base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                              base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!obj) {
-    return false;
-  }
-  auto* dict = obj->GetIfDict();
+  auto* dict = obj.GetIfDict();
   if (!dict) {
     return false;
   }
@@ -600,62 +638,58 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
   return true;
 }
 
-bool ParseWalletWatchAssetParams(const std::string& json,
-                                 const std::string& chain_id,
-                                 mojom::CoinType coin,
-                                 mojom::BlockchainTokenPtr* token,
-                                 std::string* error_message) {
-  if (!token || !error_message) {
-    return false;
-  }
+mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
+    const std::string& json,
+    const std::string& chain_id,
+    std::string* error_message) {
   *error_message = "";
 
   // Might be a list from legacy send method.
-  absl::optional<base::Value::Dict> params = GetObjectFromParamsList(json);
+  std::optional<base::Value::Dict> params = GetObjectFromParamsList(json);
   if (!params) {
     params = GetParamsDict(json);
   }
 
   if (!params) {
     *error_message = "params parameter is required";
-    return false;
+    return nullptr;
   }
 
   const std::string* type = params->FindString("type");
   if (!type) {
     *error_message = "type parameter is required";
-    return false;
+    return nullptr;
   }
   // Only ERC20 is supported currently.
   if (*type != "ERC20") {
     *error_message =
         base::StringPrintf("Asset of type '%s' not supported", type->c_str());
-    return false;
+    return nullptr;
   }
 
   const auto* options_dict = params->FindDict("options");
   if (!options_dict) {
     *error_message = "options parameter is required";
-    return false;
+    return nullptr;
   }
 
   const std::string* address = options_dict->FindString("address");
   if (!address) {
     *error_message = "address parameter is required";
-    return false;
+    return nullptr;
   }
 
   const auto eth_addr = EthAddress::FromHex(*address);
   if (eth_addr.IsEmpty()) {
     *error_message =
         base::StringPrintf("Invalid address '%s'", address->c_str());
-    return false;
+    return nullptr;
   }
 
   const std::string* symbol = options_dict->FindString("symbol");
   if (!symbol) {
     *error_message = "symbol parameter is required";
-    return false;
+    return nullptr;
   }
 
   // EIP-747 limits the symbol length to 5, but metamask uses 11, so we use
@@ -665,17 +699,17 @@ bool ParseWalletWatchAssetParams(const std::string& json,
         "Invalid symbol '%s': symbol length should be greater than 0 and less "
         "than 12",
         symbol->c_str());
-    return false;
+    return nullptr;
   }
 
-  // Allow decimals in both number and string for compability.
+  // Allow decimals in both number and string for compatibility.
   // EIP747 specifies the type of decimals number, but websites like coingecko
   // uses string.
   const base::Value* decimals_value = options_dict->Find("decimals");
   if (!decimals_value ||
       (!decimals_value->is_int() && !decimals_value->is_string())) {
     *error_message = "decimals parameter is required.";
-    return false;
+    return nullptr;
   }
   int decimals = decimals_value->is_int() ? decimals_value->GetInt() : 0;
   if (decimals_value->is_string() &&
@@ -684,7 +718,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
         "Invalid decimals '%s': decimals should be a number greater than 0 and "
         "less than 36",
         decimals_value->GetString().c_str());
-    return false;
+    return nullptr;
   }
 
   if (decimals < 0 || decimals > 36) {
@@ -692,7 +726,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
         "Invalid decimals '%d': decimals should be greater than 0 and less "
         "than 36",
         decimals);
-    return false;
+    return nullptr;
   }
 
   std::string logo;
@@ -705,11 +739,11 @@ bool ParseWalletWatchAssetParams(const std::string& json,
     }
   }
 
-  *token = mojom::BlockchainToken::New(
-      eth_addr.ToChecksumAddress(), *symbol /* name */, logo, true, false,
-      false, false, /* is_spam */ false, *symbol, decimals, true, "", "",
-      base::ToLowerASCII(chain_id), coin);
-  return true;
+  return mojom::BlockchainToken::New(
+      eth_addr.ToChecksumAddress(), *symbol /* name */, logo,
+      true /* is_erc20 */, false /* is_erc721 */, false /* is_erc1155 */,
+      false /* is_nft */, false /* is_spam */, *symbol, decimals, true, "", "",
+      base::ToLowerASCII(chain_id), mojom::CoinType::ETH);
 }
 
 // Parses param request objects from

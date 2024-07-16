@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ENS_RESOLVER_TASK_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -18,21 +19,22 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 // Selector for `OffchainLookup(address,string[],bytes,bytes4,bytes)`
-constexpr uint8_t kOffchainLookupSelector[] = {0x55, 0x6f, 0x18, 0x30};
+inline constexpr uint8_t kOffchainLookupSelector[] = {0x55, 0x6f, 0x18, 0x30};
 
 // Selector for `resolve(bytes,bytes)`
-constexpr uint8_t kResolveBytesBytesSelector[] = {0x90, 0x61, 0xb9, 0x23};
+inline constexpr uint8_t kResolveBytesBytesSelector[] = {0x90, 0x61, 0xb9,
+                                                         0x23};
 
 // Selector for `addr(bytes32)`
-constexpr uint8_t kAddrBytes32Selector[] = {0x3b, 0x3b, 0x57, 0xde};
+inline constexpr uint8_t kAddrBytes32Selector[] = {0x3b, 0x3b, 0x57, 0xde};
 
 // Selector for `contenthash(bytes32)`
-constexpr uint8_t kContentHashBytes32Selector[] = {0xbc, 0x1c, 0x58, 0xd1};
+inline constexpr uint8_t kContentHashBytes32Selector[] = {0xbc, 0x1c, 0x58,
+                                                          0xd1};
 
 std::vector<uint8_t> MakeAddrCall(const std::string& domain);
 std::vector<uint8_t> MakeContentHashCall(const std::string& domain);
@@ -45,9 +47,9 @@ struct OffchainLookupData {
   OffchainLookupData& operator=(OffchainLookupData&&);
   ~OffchainLookupData();
 
-  static absl::optional<OffchainLookupData> ExtractFromJson(
+  static std::optional<OffchainLookupData> ExtractFromJson(
       const base::Value& json_value);
-  static absl::optional<OffchainLookupData> ExtractFromEthAbiPayload(
+  static std::optional<OffchainLookupData> ExtractFromEthAbiPayload(
       eth_abi::Span bytes);
 
   EthAddress sender;
@@ -90,8 +92,8 @@ class EnsResolverTask {
   using APIRequestResult = api_request_helper::APIRequestResult;
   using DoneCallback =
       base::OnceCallback<void(EnsResolverTask* task,
-                              absl::optional<EnsResolverTaskResult> result,
-                              absl::optional<EnsResolverTaskError> error)>;
+                              std::optional<EnsResolverTaskResult> result,
+                              std::optional<EnsResolverTaskError> error)>;
   using RequestIntermediateCallback =
       base::OnceCallback<void(APIRequestResult api_request_result)>;
 
@@ -101,23 +103,22 @@ class EnsResolverTask {
                   std::vector<uint8_t> ens_call,
                   const std::string& domain,
                   const GURL& network_url,
-                  absl::optional<bool> allow_offchain);
+                  std::optional<bool> allow_offchain);
   EnsResolverTask(const EnsResolverTask&) = delete;
   EnsResolverTask& operator=(const EnsResolverTask&) = delete;
   ~EnsResolverTask();
 
   const std::string& domain() const { return domain_; }
-  const absl::optional<bool>& allow_offchain() const { return allow_offchain_; }
+  const std::optional<bool>& allow_offchain() const { return allow_offchain_; }
 
   static base::RepeatingCallback<void(EnsResolverTask* task)>&
   GetWorkOnTaskForTesting();
-  void SetResultForTesting(absl::optional<EnsResolverTaskResult> task_result,
-                           absl::optional<EnsResolverTaskError> task_error);
+  void SetResultForTesting(std::optional<EnsResolverTaskResult> task_result,
+                           std::optional<EnsResolverTaskError> task_error);
 
  private:
   template <typename T>
   friend class EnsResolverTaskContainer;
-  friend class ScopedWorkOnTask;
   void ScheduleWorkOnTask();
   void WorkOnTask();
 
@@ -147,19 +148,19 @@ class EnsResolverTask {
   std::vector<uint8_t> ens_call_;
   std::string domain_;
   std::string resolver_domain_;
-  absl::optional<std::vector<uint8_t>> dns_encoded_name_;
+  std::optional<std::vector<uint8_t>> dns_encoded_name_;
   GURL network_url_;
-  absl::optional<bool> allow_offchain_;
+  std::optional<bool> allow_offchain_;
   int offchain_lookup_attemps_left_ = 4;
 
-  absl::optional<EnsResolverTaskResult> task_result_;
-  absl::optional<EnsResolverTaskError> task_error_;
+  std::optional<EnsResolverTaskResult> task_result_;
+  std::optional<EnsResolverTaskError> task_error_;
 
   EthAddress resolver_address_;
-  absl::optional<bool> supports_ensip_10_;
+  std::optional<bool> supports_ensip_10_;
 
-  absl::optional<std::vector<uint8_t>> offchain_callback_call_;
-  absl::optional<OffchainLookupData> offchain_lookup_data_;
+  std::optional<std::vector<uint8_t>> offchain_callback_call_;
+  std::optional<OffchainLookupData> offchain_lookup_data_;
 
   base::WeakPtrFactory<EnsResolverTask> weak_ptr_factory_{this};
 };

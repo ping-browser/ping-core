@@ -11,7 +11,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
-#include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
@@ -49,14 +48,19 @@ class IssuersUrlRequest final {
   void RetryCallback();
   void StopRetrying();
 
+  void NotifyDidFetchIssuers(const IssuersInfo& issuers) const;
+  void NotifyFailedToFetchIssuers() const;
+  void NotifyWillFetchIssuers(base::Time fetch_at) const;
+  void NotifyWillRetryFetchingIssuers(base::Time retry_at) const;
+  void NotifyDidRetryFetchingIssuers() const;
+
   raw_ptr<IssuersUrlRequestDelegate> delegate_ = nullptr;
 
   bool is_periodically_fetching_ = false;
 
   bool is_fetching_ = false;
 
-  Timer timer_;
-  BackoffTimer retry_timer_;
+  BackoffTimer timer_;
 
   base::WeakPtrFactory<IssuersUrlRequest> weak_factory_{this};
 };

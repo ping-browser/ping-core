@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -24,7 +25,7 @@ void TestGetTransactionInfoFromData(const std::vector<uint8_t>& data,
   std::vector<std::string> tx_args;
 
   auto result = GetTransactionInfoFromData(data);
-  ASSERT_NE(result, absl::nullopt);
+  ASSERT_NE(result, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *result;
   ASSERT_EQ(tx_type, expected_tx_type);
   ASSERT_EQ(tx_params.size(), expected_tx_params.size());
@@ -53,7 +54,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
       "0000000000000000000000000000000000000000000000003fffffffffffffff",
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Transfer);
   ASSERT_EQ(tx_params.size(), 2UL);
@@ -90,7 +91,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
       "00",
       &data));
   tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Transfer);
   ASSERT_EQ(tx_params.size(), 2UL);
@@ -114,7 +115,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       "0000000000000000000000000000000000000000000000003fffffffffffffff",
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Approve);
   ASSERT_EQ(tx_params.size(), 2UL);
@@ -131,7 +132,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       "0000000000000000000000000000000000000000000000003fffffffffffffff",
       &data));
   tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Approve);
   ASSERT_EQ(tx_params.size(), 2UL);
@@ -168,7 +169,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       "00",
       &data));
   tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Approve);
   ASSERT_EQ(tx_params.size(), 2UL);
@@ -187,7 +188,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataETHSend) {
   std::vector<uint8_t> data;
   ASSERT_TRUE(PrefixedHexStringToBytes("0x0", &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSend);
@@ -195,7 +196,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataETHSend) {
   ASSERT_EQ(tx_args.size(), 0UL);
 
   tx_info = GetTransactionInfoFromData({});
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSend);
   ASSERT_EQ(tx_params.size(), 0UL);
@@ -216,7 +217,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       "000000000000000000000000000000000000000000000000000000000000000f",
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721TransferFrom);
   ASSERT_EQ(tx_params.size(), 3UL);
@@ -236,7 +237,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       "000000000000000000000000000000000000000000000000000000000000000f",
       &data));
   tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SafeTransferFrom);
   ASSERT_EQ(tx_params.size(), 3UL);
@@ -278,7 +279,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       "00",
       &data));
   tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721TransferFrom);
   ASSERT_EQ(tx_params.size(), 3UL);
@@ -418,7 +419,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataOther) {
 
   // No function hash
   auto tx_info = GetTransactionInfoFromData(std::vector<uint8_t>{0x1});
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   EXPECT_EQ(tx_type, mojom::TransactionType::Other);
 
@@ -427,7 +428,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataOther) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f",
       &data));
   tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
   EXPECT_EQ(tx_type, mojom::TransactionType::Other);
 }
@@ -463,7 +464,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellEthForTokenToUniswapV3) {
       "623f4f93",
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
@@ -516,7 +517,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForEthToUniswapV3) {
       "eafe",
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
@@ -570,7 +571,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForTokenToUniswapV3) {
       "0000000000000000000000000000000000495d35e8bf6247f2f1",
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
@@ -623,7 +624,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellToUniswap) {
       "4a716a",
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
@@ -671,7 +672,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransformERC20) {
       "0000000000000000000000000000000000000000000000000000000000000480",
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
@@ -753,7 +754,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderForETH) {
       &data));
 
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
@@ -830,7 +831,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderWithETH) {
       &data));
 
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
@@ -912,7 +913,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
       &data));
 
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
@@ -928,6 +929,68 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
             "dac17f958d2ee523a2206206994597c13d831ec7");  // USDT
   EXPECT_EQ(tx_args[1], "0x1c9c380");
   EXPECT_EQ(tx_args[2], "0x1c6bad5");
+}
+
+TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // TXN: XDAI → USDC
+  // Function:
+  // createOrder((address buyToken,
+  //              address receiver,
+  //              uint256 sellAmount,
+  //              uint256 buyAmount,
+  //              bytes32 appData,
+  //              uint256 feeAmount,
+  //              uint32 validTo,
+  //              bool partiallyFillable,
+  //              int64 quoteId))
+
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x322bba21"  // function selector
+
+      /***************************** HEAD ****************************/
+      /************************ TUPLE INDEX 0 ************************/
+      // buyToken
+      "000000000000000000000000ddafbb505ad214d7b80b1f830fccc89b60fb7a83"
+      // receiver
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      // sellAmount
+      "000000000000000000000000000000000000000000000000004967cb9ebd8176"
+      // buyAmount
+      "0000000000000000000000000000000000000000000000000000000000004f1e"
+      // appData
+      "c21ba2efa76e703f0a9a496e09ea7d0e66d907a47ba8f109a3a760720504ab32"
+      // feeAmount
+      "000000000000000000000000000000000000000000000000000107c0fe0dc060"
+      // validTo
+      "00000000000000000000000000000000000000000000000000000000650b4580"
+      // partiallyFillable
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // quoteId
+      "000000000000000000000000000000000000000000000000000000000332b123",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_params[1], "uint256");
+  EXPECT_EQ(tx_params[2], "uint256");
+
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0],
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  // XDAI
+            "ddafbb505ad214d7b80b1f830fccc89b60fb7a83");  // USDC
+  EXPECT_EQ(tx_args[1], "0x4967cb9ebd8176");  // 0.02066179753911948 XDAI
+  EXPECT_EQ(tx_args[2], "0x4f1e");            // 0.020254 USDC
 }
 
 TEST(EthDataParser, GetTransactionInfoFromFilForward) {
@@ -946,7 +1009,7 @@ TEST(EthDataParser, GetTransactionInfoFromFilForward) {
                                "00000000000000000",  // bytes content
                                &data));
   auto tx_info = GetTransactionInfoFromData(data);
-  ASSERT_NE(tx_info, absl::nullopt);
+  ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args) = *tx_info;
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHFilForwarderTransfer);

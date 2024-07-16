@@ -11,20 +11,22 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "ui/color/color_provider.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/color/color_provider_source.h"
 #include "ui/native_theme/test_native_theme.h"
@@ -38,6 +40,11 @@ const char kMatchDarkModeFormatString[] =
 
 class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  public:
+  BraveDarkModeFingerprintProtectionTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_shields::features::kBraveShowStrictFingerprintingMode);
+  }
+
   class BraveContentBrowserClientWithWebTheme
       : public BraveContentBrowserClient {
    public:
@@ -54,8 +61,8 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   class MockColorProviderSource : public ui::ColorProviderSource {
    public:
     explicit MockColorProviderSource(bool is_dark) {
-      key_.color_mode = is_dark ? ui::ColorProviderManager::ColorMode::kDark
-                                : ui::ColorProviderManager::ColorMode::kLight;
+      key_.color_mode = is_dark ? ui::ColorProviderKey::ColorMode::kDark
+                                : ui::ColorProviderKey::ColorMode::kLight;
       provider_.GenerateColorMap();
     }
     MockColorProviderSource(const MockColorProviderSource&) = delete;
@@ -66,13 +73,23 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     const ui::ColorProvider* GetColorProvider() const override {
       return &provider_;
     }
-    ui::ColorProviderManager::Key GetColorProviderKey() const override {
-      return key_;
+    ui::ColorProviderKey GetColorProviderKey() const override { return key_; }
+
+    ui::RendererColorMap GetRendererColorMap(
+        ui::ColorProviderKey::ColorMode color_mode,
+        ui::ColorProviderKey::ForcedColors forced_colors) const override {
+      auto key = GetColorProviderKey();
+      key.color_mode = color_mode;
+      key.forced_colors = forced_colors;
+      ui::ColorProvider* color_provider =
+          ui::ColorProviderManager::Get().GetColorProviderFor(key);
+      CHECK(color_provider);
+      return ui::CreateRendererColorMap(*color_provider);
     }
 
    private:
     ui::ColorProvider provider_;
-    ui::ColorProviderManager::Key key_;
+    ui::ColorProviderKey key_;
   };
 
   void SetUpOnMainThread() override {
@@ -164,6 +181,7 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  private:
   GURL top_level_page_url_;
   GURL dark_mode_url_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest, DarkModeCheck) {

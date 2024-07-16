@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
@@ -12,6 +13,7 @@
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
@@ -30,6 +32,8 @@
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
 using ntp_background_images::NTPCustomImagesSource;
 
@@ -45,9 +49,6 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       web_contents->GetController().GetLastCommittedEntry();
   const bool was_restored =
       navigation_entry ? navigation_entry->IsRestored() : false;
-
-  const bool is_visible =
-      web_contents->GetVisibility() == content::Visibility::VISIBLE;
 
   Profile* profile = Profile::FromWebUI(web_ui);
   web_ui->OverrideTitle(
@@ -77,8 +78,16 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
                      base::FeatureList::IsEnabled(
                          brave_news::features::kBraveNewsCardPeekFeature));
 
-  web_ui->AddMessageHandler(base::WrapUnique(BraveNewTabMessageHandler::Create(
-      source, profile, was_restored && !is_visible)));
+  source->AddBoolean(
+      "featureFlagBraveNewsFeedV2Enabled",
+      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeedUpdate));
+
+  source->AddBoolean(
+      "featureFlagSearchWidget",
+      base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
+
+  web_ui->AddMessageHandler(base::WrapUnique(
+      BraveNewTabMessageHandler::Create(source, profile, was_restored)));
   web_ui->AddMessageHandler(
       base::WrapUnique(new TopSitesMessageHandler(profile)));
 
@@ -113,6 +122,17 @@ void BraveNewTabUI::BindInterface(
   }
 
   page_factory_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveNewTabUI::BindInterface(
+    mojo::PendingReceiver<searchbox::mojom::PageHandler> pending_page_handler) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  DCHECK(profile);
+
+  realbox_handler_ = std::make_unique<RealboxHandler>(
+      std::move(pending_page_handler), profile, web_ui()->GetWebContents(),
+      /*metrics_reporter=*/nullptr, /*lens_searchbox_client=*/nullptr,
+      /*omnibox_controller=*/nullptr);
 }
 
 void BraveNewTabUI::CreatePageHandler(

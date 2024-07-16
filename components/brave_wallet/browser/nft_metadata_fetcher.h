@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_NFT_METADATA_FETCHER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
 
 class PrefService;
 
@@ -78,12 +78,12 @@ class NftMetadataFetcher {
                               const std::string& error_message)>;
   void FetchMetadata(GURL url, GetTokenMetadataIntermediateCallback callback);
   void OnSanitizeTokenMetadata(GetTokenMetadataIntermediateCallback callback,
-                               data_decoder::JsonSanitizer::Result result);
+                               api_request_helper::ValueOrError result);
   void OnGetTokenMetadataPayload(GetTokenMetadataIntermediateCallback callback,
                                  APIRequestResult api_request_result);
   void OnGetSolanaAccountInfoTokenMetadata(
       GetSolTokenMetadataCallback callback,
-      absl::optional<SolanaAccountInfo> account_info,
+      std::optional<SolanaAccountInfo> account_info,
       mojom::SolanaProviderError error,
       const std::string& error_message);
   void CompleteGetEthTokenMetadata(GetEthTokenMetadataCallback callback,
@@ -100,7 +100,7 @@ class NftMetadataFetcher {
   friend class NftMetadataFetcherUnitTest;
   FRIEND_TEST_ALL_PREFIXES(NftMetadataFetcherUnitTest, DecodeMetadataUri);
 
-  static absl::optional<GURL> DecodeMetadataUri(
+  static std::optional<GURL> DecodeMetadataUri(
       const std::vector<uint8_t>& data);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

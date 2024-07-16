@@ -27,7 +27,7 @@ mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
 bool ShouldCreate1559Tx(mojom::TxData1559Ptr tx_data_1559,
                         bool network_supports_eip1559,
                         const std::vector<mojom::AccountInfoPtr>& account_infos,
-                        const std::string& address);
+                        const mojom::AccountIdPtr& account_id);
 
 bool NormalizeEthRequest(const std::string& input_json,
                          std::string* output_json);
@@ -46,7 +46,7 @@ bool ParseEthGetEncryptionPublicKeyParams(const std::string& json,
 bool ParseEthDecryptParams(const std::string& json,
                            std::string* untrusted_encrypted_data_json,
                            std::string* address);
-bool ParseEthDecryptData(const std::string& json,
+bool ParseEthDecryptData(const base::Value& obj,
                          std::string* version,
                          std::vector<uint8_t>* nonce,
                          std::vector<uint8_t>* ephemeral_public_key,
@@ -58,16 +58,16 @@ bool ParseEthSignTypedDataParams(const std::string& json,
                                  base::Value::Dict* domain,
                                  EthSignTypedDataHelper::Version version,
                                  std::vector<uint8_t>* domain_hash_out,
-                                 std::vector<uint8_t>* primary_hash_out);
+                                 std::vector<uint8_t>* primary_hash_out,
+                                 mojom::EthSignTypedDataMetaPtr* meta_out);
 
 bool ParseSwitchEthereumChainParams(const std::string& json,
                                     std::string* chain_id);
 
-bool ParseWalletWatchAssetParams(const std::string& json,
-                                 const std::string& chain_id,
-                                 mojom::CoinType coin,
-                                 mojom::BlockchainTokenPtr* token,
-                                 std::string* error_message);
+mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
+    const std::string& json,
+    const std::string& chain_id,
+    std::string* error_message);
 bool ParseRequestPermissionsParams(
     const std::string& json,
     std::vector<std::string>* restricted_methods);

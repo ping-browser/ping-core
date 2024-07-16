@@ -51,7 +51,6 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
-import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.brave_news.mojom.Article;
@@ -70,9 +69,10 @@ import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.DisplayAdsTable;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.url.mojom.Url;
@@ -82,17 +82,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CardBuilderFeedCard {
-    private final int CARD_LAYOUT = 7;
-    private final int BUTTON_LAYOUT = 8;
-    private final int ROUNDED_TOP_LAYOUT = 9;
+    private static final int CARD_LAYOUT = 7;
+    private static final int BUTTON_LAYOUT = 8;
+    private static final int ROUNDED_TOP_LAYOUT = 9;
 
-    private final int TITLE = 10;
-    private final int DESC = 11;
-    private final int URL = 12;
-    private final int PUBLISHER = 13;
-    private final int TIME = 14;
-    private final int CATEGORY = 15;
-    private final int DEALS = 16;
+    private static final int TITLE = 10;
+    private static final int DESC = 11;
+    private static final int PUBLISHER = 13;
+    private static final int TIME = 14;
+    private static final int CATEGORY = 15;
+    private static final int DEALS = 16;
 
     public static final int CARDTYPE_BRAVE_RATING = 100;
 
@@ -102,7 +101,6 @@ public class CardBuilderFeedCard {
     private BraveNewsController mBraveNewsController;
     private int mType;
     private int mPosition;
-    private View view;
     private int mHorizontalMargin;
     private int mDeviceWidth;
     private boolean mIsPromo;
@@ -112,8 +110,8 @@ public class CardBuilderFeedCard {
     private DisplayAdsTable mPosTabAd;
 
     private static final String TAG = "BN";
-    private final int MARGIN_VERTICAL = 10;
-    private final String BRAVE_OFFERS_URL = "offers.brave.com";
+    private static final int MARGIN_VERTICAL = 10;
+    private static final String BRAVE_OFFERS_URL = "offers.brave.com";
 
     public CardBuilderFeedCard(BraveNewsController braveNewsController, RequestManager glide,
             LinearLayout layout, Activity activity, int position, FeedItemsCard newsItem,
@@ -167,7 +165,7 @@ public class CardBuilderFeedCard {
     private GradientDrawable roundedBackground() {
         GradientDrawable shape = new GradientDrawable();
         shape.setCornerRadius(15);
-        shape.setColor(mActivity.getResources().getColor(R.color.card_background));
+        shape.setColor(mActivity.getColor(R.color.card_background));
 
         return shape;
     }
@@ -286,9 +284,9 @@ public class CardBuilderFeedCard {
             adLogo.setGravity(Gravity.END);
             adLogo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_rewards, 0, 0, 0);
             adLogo.setText(R.string.brave_news_ad);
-            adLogo.setTextColor(mActivity.getResources().getColor(R.color.blurple));
+            adLogo.setTextColor(mActivity.getColor(R.color.blurple));
             GradientDrawable gd = new GradientDrawable();
-            gd.setColor(mActivity.getResources().getColor(R.color.news_text_color));
+            gd.setColor(mActivity.getColor(R.color.news_text_color));
             gd.setCornerRadius(15);
 
             adLogo.setBackground(gd);
@@ -320,7 +318,7 @@ public class CardBuilderFeedCard {
             adItemsParams.bottomMargin = 2 * MARGIN_VERTICAL;
             adTitle.setTypeface(null, Typeface.BOLD);
             adTitle.setMaxLines(3);
-            adTitle.setTextColor(mActivity.getResources().getColor(R.color.news_text_color));
+            adTitle.setTextColor(mActivity.getColor(R.color.news_text_color));
             adTitle.setEllipsize(TextUtils.TruncateAt.END);
             adTitle.setLayoutParams(adItemsParams);
             adTitle.setText(adData.title);
@@ -333,7 +331,7 @@ public class CardBuilderFeedCard {
             adItemsParams.width = 0;
             adDesc.setLayoutParams(adItemsParams);
 
-            adDesc.setTextColor(mActivity.getResources().getColor(R.color.news_time_color));
+            adDesc.setTextColor(mActivity.getColor(R.color.news_time_color));
             adDesc.setTextSize(12);
             adDesc.setText(adData.description);
 
@@ -343,12 +341,12 @@ public class CardBuilderFeedCard {
             adButton.setTextSize(13);
             adButton.setAllCaps(false);
             GradientDrawable adButtonBG = new GradientDrawable();
-            adButtonBG.setColor(mActivity.getResources().getColor(android.R.color.transparent));
+            adButtonBG.setColor(mActivity.getColor(android.R.color.transparent));
             adButtonBG.setCornerRadius(55);
-            adButtonBG.setStroke(1, mActivity.getResources().getColor(R.color.news_text_color));
+            adButtonBG.setStroke(1, mActivity.getColor(R.color.news_text_color));
             adButton.setBackground(adButtonBG);
             adButton.setText(adData.ctaText);
-            adButton.setTextColor(mActivity.getResources().getColor(R.color.news_text_color));
+            adButton.setTextColor(mActivity.getColor(R.color.news_text_color));
             adButton.setLayoutParams(adButtonParams);
 
             View.OnClickListener listener = v -> {
@@ -374,6 +372,7 @@ public class CardBuilderFeedCard {
         int displayHeight = mActivity.getResources().getDisplayMetrics().heightPixels;
         TableRow rowTop = new TableRow(mActivity);
         TextView topText = new TextView(mActivity);
+        BraveTouchUtils.ensureMinTouchTarget(topText);
 
         TableRow row1 = new TableRow(mActivity);
         TableRow row2 = new TableRow(mActivity);
@@ -389,37 +388,41 @@ public class CardBuilderFeedCard {
             switch (type) {
                 case CardType.HEADLINE:
                 case CardType.PROMOTED_ARTICLE:
-                    addElementsToSingleLayout(mLinearLayout, 0, type);
+                    addElementsToSingleLayout(mLinearLayout, 0, type, position);
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
                     break;
                 case CardType.DISPLAY_AD:
                     try {
+                        Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                        final int tabId = tab != null ? tab.getId() : -1;
                         ExecutorService executor = Executors.newSingleThreadExecutor();
                         Handler handler = new Handler(Looper.getMainLooper());
-                        executor.execute(() -> {
-                            try {
-                                Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-                                if (tab != null) {
-                                    int tabId = tab.getId();
-                                    DatabaseHelper dbHelper = DatabaseHelper.getInstance();
-                                    DisplayAdsTable posTabAd =
-                                            dbHelper.getDisplayAd(position, tabId);
-                                    handler.post(() -> {
-                                        if (posTabAd != null) {
-                                            createAdFromTable(posTabAd);
-                                        } else {
-                                            mBraveNewsController.getDisplayAd(adData -> {
-                                                BraveNewsUtils.putToDisplayAdsMap(position, adData);
-                                                createdDisplayAdCard(adData);
-                                            });
-                                        }
-                                    });
-                                }
-                            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                Log.e(TAG, "createCard DISPLAY_AD " + e);
-                            }
-                        });
+                        executor.execute(
+                                () -> {
+                                    if (tabId != -1) {
+                                        DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+                                        DisplayAdsTable posTabAd =
+                                                dbHelper.getDisplayAd(position, tabId);
+                                        handler.post(
+                                                () -> {
+                                                    if (posTabAd != null) {
+                                                        createAdFromTable(posTabAd);
+                                                    } else {
+                                                        mBraveNewsController.getDisplayAd(
+                                                                adData -> {
+                                                                    BraveNewsUtils
+                                                                            .putToDisplayAdsMap(
+                                                                                    position,
+                                                                                    adData);
+                                                                    createdDisplayAdCard(adData);
+                                                                });
+                                                    }
+                                                });
+                                    }
+                                });
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
+                        Log.e(TAG, "createCard DISPLAY_AD " + e);
                     } catch (Exception e) {
                         Log.e(TAG, "displayad Exception" + e.getMessage());
                     }
@@ -464,8 +467,7 @@ public class CardBuilderFeedCard {
                     rowTop.addView(topText);
 
                     // adds the More Offers bottom layout
-                    lineSeparator.setBackgroundColor(
-                            mActivity.getResources().getColor(R.color.news_time_color));
+                    lineSeparator.setBackgroundColor(mActivity.getColor(R.color.news_time_color));
                     lineSeparator.setLayoutParams(lineSeparatorParams);
                     moreOffersLayout.setOrientation(LinearLayout.HORIZONTAL);
                     moreOffersLayoutParams.setMargins(50, 0, 50, 0);
@@ -477,8 +479,7 @@ public class CardBuilderFeedCard {
                             R.string.brave_news_more_offers_title));
                     moreOffersText.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 13);
                     moreOffersText.setTypeface(null, Typeface.BOLD);
-                    moreOffersText.setTextColor(
-                            mActivity.getResources().getColor(R.color.news_text_color));
+                    moreOffersText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     moreOffersText.setLayoutParams(moreOffersTextParams);
 
                     moreOffersArrow.setImageResource(R.drawable.ic_chevron_right);
@@ -508,8 +509,7 @@ public class CardBuilderFeedCard {
                     rowTop.setLayoutParams(tableParamsTopNews);
                     setTextFromFeed(topText, DEALS, 0);
                     topText.setTextSize(17);
-                    topText.setTextColor(
-                            mActivity.getResources().getColor(R.color.news_text_color));
+                    topText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     topText.setTypeface(null, Typeface.BOLD);
 
                     layout1.setOrientation(LinearLayout.VERTICAL);
@@ -517,9 +517,9 @@ public class CardBuilderFeedCard {
                     layout3.setOrientation(LinearLayout.VERTICAL);
 
                     // adds each of the 3 cards
-                    addElementsToSingleLayout(layout1, 0, type);
-                    addElementsToSingleLayout(layout2, 1, type);
-                    addElementsToSingleLayout(layout3, 2, type);
+                    addElementsToSingleLayout(layout1, 0, type, position);
+                    addElementsToSingleLayout(layout2, 1, type, position);
+                    addElementsToSingleLayout(layout3, 2, type, position);
 
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
@@ -548,20 +548,19 @@ public class CardBuilderFeedCard {
 
                     setTextFromFeed(topText, PUBLISHER, 0);
                     topText.setTextSize(20);
-                    topText.setTextColor(
-                            mActivity.getResources().getColor(R.color.news_text_color));
+                    topText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     topText.setTypeface(null, Typeface.BOLD);
 
-                    addElementsToSingleLayout(row1, 0, type);
+                    addElementsToSingleLayout(row1, 0, type, position);
 
                     row2.setPadding(5, 5, 5, 5);
-                    addElementsToSingleLayout(row2, 1, type);
+                    addElementsToSingleLayout(row2, 1, type, position);
 
                     TableRow.LayoutParams row3Params = new TableRow.LayoutParams(
                             TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
                     row3Params.bottomMargin = 5 * MARGIN_VERTICAL;
                     row3.setPadding(5, 5, 5, 5);
-                    addElementsToSingleLayout(row3, 2, type);
+                    addElementsToSingleLayout(row3, 2, type, position);
 
                     mLinearLayout.setPadding(30, 10, 40, 10);
                     mLinearLayout.setBackground(
@@ -614,8 +613,7 @@ public class CardBuilderFeedCard {
 
                     setTextFromFeed(topText, CATEGORY, 0);
                     topText.setTextSize(26);
-                    topText.setTextColor(
-                            mActivity.getResources().getColor(R.color.news_text_color));
+                    topText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     topText.setTypeface(null, Typeface.BOLD);
 
                     rowTableParams.bottomMargin = 2 * MARGIN_VERTICAL;
@@ -624,9 +622,9 @@ public class CardBuilderFeedCard {
                     rowTableParams.bottomMargin = 4 * MARGIN_VERTICAL;
                     row3.setLayoutParams(rowTableParams);
 
-                    addElementsToSingleLayout(row1, 0, type);
-                    addElementsToSingleLayout(row2, 1, type);
-                    addElementsToSingleLayout(row3, 2, type);
+                    addElementsToSingleLayout(row1, 0, type, position);
+                    addElementsToSingleLayout(row2, 1, type, position);
+                    addElementsToSingleLayout(row3, 2, type, position);
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
                     break;
@@ -663,7 +661,7 @@ public class CardBuilderFeedCard {
                     mLinearLayout.addView(layoutLeft);
                     layoutLeft.setLayoutParams(cellParams);
                     layoutLeft.setOrientation(LinearLayout.VERTICAL);
-                    addElementsToSingleLayout(layoutLeft, 0, type);
+                    addElementsToSingleLayout(layoutLeft, 0, type, position);
 
                     mLinearLayout.addView(layoutRight);
 
@@ -676,7 +674,7 @@ public class CardBuilderFeedCard {
                     layoutRight.setLayoutParams(cellParams);
                     layoutRight.setOrientation(LinearLayout.VERTICAL);
 
-                    addElementsToSingleLayout(layoutRight, 1, type);
+                    addElementsToSingleLayout(layoutRight, 1, type, position);
                     layoutLeft.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
                     layoutRight.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
@@ -721,9 +719,11 @@ public class CardBuilderFeedCard {
 
     private void openUrlInSameTabAndSavePosition(String myUrl) {
         try {
-            SharedPreferencesManager.getInstance().writeInt(
-                    Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()),
-                    mPosition);
+            ChromeSharedPreferences.getInstance()
+                    .writeInt(
+                            Integer.toString(
+                                    BraveActivity.getBraveActivity().getActivityTab().getId()),
+                            mPosition);
             TabUtils.openUrlInSameTab(myUrl);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openUrlInSameTabAndSavePosition " + e);
@@ -737,7 +737,7 @@ public class CardBuilderFeedCard {
         }
     }
 
-    private void addElementsToSingleLayout(ViewGroup view, int index, int itemType) {
+    private void addElementsToSingleLayout(ViewGroup view, int index, int itemType, int position) {
         ImageView image = new ImageView(mActivity);
         ImageView logo = new ImageView(mActivity);
         TextView title = new TextView(mActivity);
@@ -874,8 +874,7 @@ public class CardBuilderFeedCard {
 
                     setTextFromFeed(publisher, PUBLISHER, 0);
 
-                    publisher.setTextColor(
-                            mActivity.getResources().getColor(R.color.news_text_color));
+                    publisher.setTextColor(mActivity.getColor(R.color.news_text_color));
                     publisher.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
                     publisherParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
@@ -974,8 +973,7 @@ public class CardBuilderFeedCard {
                     promoted.setText(
                             mActivity.getResources().getString(R.string.brave_news_promoted_title));
 
-                    promoted.setTextColor(
-                            mActivity.getResources().getColor(R.color.news_text_color));
+                    promoted.setTextColor(mActivity.getColor(R.color.news_text_color));
                     promoted.setTextSize(12);
                     promoted.setLayoutParams(promotedParams);
                     promotedLayoutParams.bottomMargin = 4 * MARGIN_VERTICAL;
@@ -985,8 +983,7 @@ public class CardBuilderFeedCard {
                     promotedLogoLayout.setLayoutParams(promotedLayoutParams);
 
                     setTextFromFeed(publisher, PUBLISHER, 0);
-                    publisher.setTextColor(
-                            mActivity.getResources().getColor(R.color.news_text_color));
+                    publisher.setTextColor(mActivity.getColor(R.color.news_text_color));
                     publisher.setTextSize(12);
                     publisherParams.width = 0;
                     publisherParams.weight = 2;
@@ -1044,8 +1041,7 @@ public class CardBuilderFeedCard {
                     layout.addView(desc);
 
                     setTextFromFeed(publisher, PUBLISHER, index);
-                    publisher.setTextColor(
-                            mActivity.getResources().getColor(R.color.news_text_color));
+                    publisher.setTextColor(mActivity.getColor(R.color.news_text_color));
                     publisher.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
 
                     publisherParams.gravity = Gravity.BOTTOM;
@@ -1082,7 +1078,7 @@ public class CardBuilderFeedCard {
                             TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
 
                     no.setText(String.valueOf(index + 1));
-                    no.setTextColor(mActivity.getResources().getColor(R.color.news_text_color));
+                    no.setTextColor(mActivity.getColor(R.color.news_text_color));
                     noParams.width = 0;
                     noParams.weight = 1;
                     noParams.gravity = Gravity.CENTER_VERTICAL;
@@ -1143,7 +1139,7 @@ public class CardBuilderFeedCard {
                     source.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
                     source.setTypeface(null, Typeface.BOLD);
                     setTextFromFeed(source, PUBLISHER, index);
-                    source.setTextColor(mActivity.getResources().getColor(R.color.news_time_color));
+                    source.setTextColor(mActivity.getColor(R.color.news_time_color));
                     layoutSingleCard.addView(source);
 
                     titleRowParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -1193,28 +1189,32 @@ public class CardBuilderFeedCard {
                     break;
             }
 
-            title.setTextColor(mActivity.getResources().getColor(R.color.news_text_color));
-            desc.setTextColor(mActivity.getResources().getColor(R.color.news_time_color));
+            title.setTextColor(mActivity.getColor(R.color.news_text_color));
+            desc.setTextColor(mActivity.getColor(R.color.news_time_color));
 
             setTextFromFeed(title, TITLE, index);
 
             final FeedItemMetadata itemData = getItemData(index);
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // @TODO alex refactor this with listener in BraveNewTabPageLayout
-                    openUrlInSameTabAndSavePosition(itemData.url.url);
-                }
-            });
+            view.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // @TODO alex refactor this with listener in BraveNewTabPageLayout
+                            openUrlInSameTabAndSavePosition(itemData.url.url);
+                            mBraveNewsController.onCardVisited(position + 1);
+                        }
+                    });
 
-            title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // @TODO alex refactor this with listener in BraveNewTabPageLayout
-                    openUrlInSameTabAndSavePosition(itemData.url.url);
-                }
-            });
+            title.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // @TODO alex refactor this with listener in BraveNewTabPageLayout
+                            openUrlInSameTabAndSavePosition(itemData.url.url);
+                            mBraveNewsController.onCardVisited(position + 1);
+                        }
+                    });
 
             title.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -1303,34 +1303,23 @@ public class CardBuilderFeedCard {
     private void setListeners(
             View view, String urlString, String creativeInstanceId, boolean isPromo) {
         DisplayAd displayAd = mNewsItem.getDisplayAd();
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mBraveNewsController != null) {
-                    if (isPromo) {
-                        // Updates the no. of promotion cards visited
-                        mBraveNewsController.onPromotedItemVisit(
-                                mNewsItem.getUuid(), creativeInstanceId);
-                    } else if (displayAd != null) {
-                        // Updates the no. of ads cards visited
-                        mBraveNewsController.onDisplayAdVisit(
-                                displayAd.uuid, displayAd.creativeInstanceId);
-                    } else {
-                        // Brave News updates the no. of "normal" cards visited
-                        int visitedNewsCardsCount = SharedPreferencesManager.getInstance().readInt(
-                                BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED);
-                        visitedNewsCardsCount++;
-                        SharedPreferencesManager.getInstance().writeInt(
-                                BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED,
-                                visitedNewsCardsCount);
-                        if (visitedNewsCardsCount > 0) {
-                            mBraveNewsController.onSessionCardVisitsCountChanged(
-                                    (short) visitedNewsCardsCount);
+        view.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mBraveNewsController != null) {
+                            if (isPromo) {
+                                // Updates the no. of promotion cards visited
+                                mBraveNewsController.onPromotedItemVisit(
+                                        mNewsItem.getUuid(), creativeInstanceId);
+                            } else if (displayAd != null) {
+                                // Updates the no. of ads cards visited
+                                mBraveNewsController.onDisplayAdVisit(
+                                        displayAd.uuid, displayAd.creativeInstanceId);
+                            }
                         }
                     }
-                }
-            }
-        });
+                });
     }
 
     private void setText(FeedItemMetadata itemData, TextView textView, int type) {
@@ -1473,21 +1462,18 @@ public class CardBuilderFeedCard {
 
         if (type == BUTTON_LAYOUT) {
             backgroundShape = new ShapeDrawable(new RoundRectShape(outerRadii, null, innerRadii));
-            backgroundShape.getPaint().setColor(
-                    mActivity.getResources().getColor(background)); // background color
+            backgroundShape.getPaint().setColor(mActivity.getColor(background)); // background color
             backgroundShape.getPaint().setStyle(Paint.Style.FILL); // Define background
             backgroundShape.getPaint().setAntiAlias(true);
             backgroundShape.setPadding(10, 10, 10, 10);
 
         } else if (type == CARD_LAYOUT) {
             backgroundShape = new ShapeDrawable(new RoundRectShape(outerRadii, null, innerRadii));
-            backgroundShape.getPaint().setColor(
-                    mActivity.getResources().getColor(background)); // background color
+            backgroundShape.getPaint().setColor(mActivity.getColor(background)); // background color
             backgroundShape.getPaint().setStyle(Paint.Style.FILL); // Define background
         } else if (type == ROUNDED_TOP_LAYOUT) {
             backgroundShape = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-            backgroundShape.getPaint().setColor(
-                    mActivity.getResources().getColor(background)); // background color
+            backgroundShape.getPaint().setColor(mActivity.getColor(background)); // background color
             backgroundShape.getPaint().setStyle(Paint.Style.FILL); // Define background
         }
 

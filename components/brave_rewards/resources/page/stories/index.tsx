@@ -8,8 +8,8 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import * as knobs from '@storybook/addon-knobs'
 
+import { ExternalWalletProvider } from '../../shared/lib/external_wallet'
 import { ConnectWalletModal } from '../components/connect_wallet_modal'
-import { ClaimGrantView } from '../components/claim_grant_view'
 import { Settings } from '../components/settings'
 import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext, createLocaleContextForTesting } from '../../shared/lib/locale_context'
@@ -31,16 +31,18 @@ function actionLogger (name: string) {
 }
 
 export function ConnectWallet () {
-  const providers = [
+  const providers: Array<{ provider: ExternalWalletProvider, enabled: boolean }> = [
     {
-      type: 'uphold',
-      name: 'Uphold',
+      provider: 'uphold',
       enabled: true
     },
     {
-      type: 'gemini',
-      name: 'Gemini',
+      provider: 'gemini',
       enabled: false
+    },
+    {
+      provider: 'solana',
+      enabled: true
     }
   ]
 
@@ -53,33 +55,11 @@ export function ConnectWallet () {
           <ConnectWalletModal
             currentCountryCode='US'
             providers={providers}
+            connectState='error'
             onContinue={actionLogger('onContinue')}
             onClose={actionLogger('onClose')}
           />
         </LayoutManager>
-      </WithThemeVariables>
-    </LocaleContext.Provider>
-  )
-}
-
-export function Claim () {
-  return (
-    <LocaleContext.Provider value={locale}>
-      <WithThemeVariables>
-        <div style={{ width: '366px' }}>
-          <ClaimGrantView
-            grantInfo={{
-              id: 'grant-1',
-              type: 'ads',
-              amount: 3.25,
-              createdAt: Date.now(),
-              claimableUntil: Date.now() + 1000 * 60 * 60 * 24 * 5,
-              expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 5
-            }}
-            showSpinner={false}
-            onClaim={actionLogger('onClaim')}
-          />
-        </div>
       </WithThemeVariables>
     </LocaleContext.Provider>
   )

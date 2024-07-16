@@ -4,8 +4,20 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
+
+// Shared Styles
+import { Column } from '../../../components/shared/style'
+
+export const SelectAssetWrapper = styled(Column)`
+  box-sizing: border-box;
+  overflow: hidden;
+`
+
+export const StyledWrapper = styled(SelectAssetWrapper)`
+  flex: 1;
+`
 
 export const ScrollContainer = styled.div`
   width: 100%;
@@ -14,12 +26,8 @@ export const ScrollContainer = styled.div`
   overflow-y: auto;
 `
 
-export const SelectAssetWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: stretch;
-  justify-content: center;
-  flex-direction: column;
+export const TokenListWrapper = styled(StyledWrapper)`
+  overflow-y: auto;
 `
 
 export const SearchWrapper = styled.div`
@@ -31,12 +39,20 @@ export const SearchWrapper = styled.div`
   position: relative;
 `
 
-export const QRCodeImage = styled.img`
+export const QRCodeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 260px;
   height: 260px;
   border-radius: 4px;
   border: 4px solid ${(p) => p.theme.color.text01};
   margin-bottom: 16px;
+`
+
+export const QRCodeImage = styled.img`
+  width: 260px;
+  height: 260px;
 `
 
 export const AddressText = styled.div`
@@ -48,6 +64,7 @@ export const AddressText = styled.div`
   text-align: center;
   color: ${(p) => p.theme.color.text02};
   letter-spacing: 0.01em;
+  word-break: break-all;
 `
 export const AddressTextLabel = styled(AddressText)`
   font-weight: 600;
@@ -82,7 +99,6 @@ export const Divider = styled.div`
   border-bottom: 1px solid ${leo.color.divider.subtle};
 `
 
-
 export const Alert = styled.div`
   display: flex;
   flex-direction: row;
@@ -96,7 +112,7 @@ export const Alert = styled.div`
 
 export const InfoIcon = styled(Icon)`
   --leo-icon-size: 20px;
-  color: ${leo.color.systemfeedback.infoIcon}
+  color: ${leo.color.systemfeedback.infoIcon};
 `
 
 export const AlertText = styled.p`
@@ -106,4 +122,9 @@ export const AlertText = styled.p`
   color: ${leo.color.text.primary};
   margin: 0;
   padding: 0;
+`
+
+export const SearchAndDropdownWrapper = styled(Column)`
+  flex: 1;
+  min-width: 25%;
 `

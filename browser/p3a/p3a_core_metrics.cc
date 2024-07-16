@@ -49,57 +49,7 @@ const char* GetPrefNameForProfile(Profile* profile) {
   return nullptr;
 }
 
-BraveUptimeTracker* g_brave_uptime_tracker_instance = nullptr;
-
-constexpr size_t kUsageTimeQueryIntervalMinutes = 1;
-constexpr char kDailyUptimesListPrefName[] = "daily_uptimes";
-
 }  // namespace
-
-BraveUptimeTracker::BraveUptimeTracker(PrefService* local_state)
-    : state_(local_state, kDailyUptimesListPrefName) {
-  timer_.Start(FROM_HERE, base::Minutes(kUsageTimeQueryIntervalMinutes),
-               base::BindRepeating(&BraveUptimeTracker::RecordUsage,
-                                   base::Unretained(this)));
-}
-
-void BraveUptimeTracker::RecordUsage() {
-  const base::TimeDelta new_total = usage_clock_.GetTotalUsageTime();
-  const base::TimeDelta interval = new_total - current_total_usage_;
-  if (interval > base::TimeDelta()) {
-    state_.AddDelta(interval.InSeconds());
-    current_total_usage_ = new_total;
-
-    RecordP3A();
-  }
-}
-
-void BraveUptimeTracker::RecordP3A() {
-  int answer = 0;
-  if (state_.IsOneWeekPassed()) {
-    uint64_t total = state_.GetWeeklySum();
-    const int minutes = base::Seconds(total).InMinutes();
-    DCHECK_GE(minutes, 0);
-    if (0 <= minutes && minutes < 30) {
-      answer = 1;
-    } else if (30 <= minutes && minutes < 5 * 60) {
-      answer = 2;
-    } else {
-      answer = 3;
-    }
-  }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Uptime.BrowserOpenMinutes", answer, 3);
-}
-
-BraveUptimeTracker::~BraveUptimeTracker() = default;
-
-void BraveUptimeTracker::CreateInstance(PrefService* local_state) {
-  g_brave_uptime_tracker_instance = new BraveUptimeTracker(local_state);
-}
-
-void BraveUptimeTracker::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(kDailyUptimesListPrefName);
-}
 
 BraveWindowTracker::BraveWindowTracker(PrefService* local_state)
     : local_state_(local_state) {

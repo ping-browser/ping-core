@@ -6,15 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_INFO_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
-#include "brave/components/brave_ads/core/public/ad_type.h"
-#include "brave/components/brave_ads/core/public/confirmation_type.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 
@@ -29,18 +29,16 @@ struct ConfirmationInfo final {
 
   ~ConfirmationInfo();
 
+  bool operator==(const ConfirmationInfo&) const = default;
+
   std::string transaction_id;
   std::string creative_instance_id;
   ConfirmationType type = ConfirmationType::kUndefined;
   AdType ad_type = AdType::kUndefined;
-  base::Time created_at;
-  bool was_created = false;
-  absl::optional<RewardInfo> reward;
+  std::optional<base::Time> created_at;
+  std::optional<RewardInfo> reward;
   UserDataInfo user_data;
 };
-
-bool operator==(const ConfirmationInfo&, const ConfirmationInfo&);
-bool operator!=(const ConfirmationInfo&, const ConfirmationInfo&);
 
 using ConfirmationList = std::vector<ConfirmationInfo>;
 

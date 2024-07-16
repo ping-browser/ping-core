@@ -8,9 +8,7 @@ module brave_rewards.mojom;
 enum RewardsPanelView {
   kDefault,
   kRewardsSetup,
-  kGrantCaptcha,
-  kAdaptiveCaptcha,
-  kInlineTip
+  kAdaptiveCaptcha
 };
 
 struct RewardsPanelArgs {

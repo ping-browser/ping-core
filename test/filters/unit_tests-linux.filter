@@ -8,19 +8,22 @@
 # These fail because we override IdentityManager::GetAccountsInCookieJar
 -SupervisedUserURLFilterTest.UrlsNotRequiringGuardianApprovalAllowed
 
+# These fail because we disable DIPS via features::kDIPS
+-All/DIPSDatabasePopupsTest.*
+-DIPSDatabaseBounceTableGarbageCollectionTest.*
+
 # These fail because we disable prefs::kSafeBrowsingScoutReportingEnabled.
 -Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabled/1
 -Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledTwoClients/1
 -Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledUmaOnly/1
 
-# These fail because OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux
-# hard-codes "chrome-" into the shortcut name and the shortcut start with
-# "brave-".
--All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_Disabled
--All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_SaveStateAndExecute
--All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_SaveStateToDB
--All/RunOnOsLoginSubManagerExecuteTest.*
--All/ShortcutSubManagerExecuteTest.*
+# These fail because OsIntegrationTestOverride::GetShortcutPath and
+# OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
+# into the shortcut name but our shortcut starts with "brave-".
+-RunOnOsLoginSubManagerExecuteTest.*
+-ShortcutSubManagerExecuteTest.*
+-InstallAppLocallyCommandTest.BasicBehavior
+-WebAppPolicyForceUnregistrationTest.*
 
 -ChromeBrowsingDataRemoverDelegateTest.*
 -ChromePaths.*

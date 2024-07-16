@@ -3,22 +3,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <AppKit/AppKit.h>
+
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
-#include <stddef.h>
 
+#include <stddef.h>
 #include <string>
 
-#include "base/mac/foundation_util.h"
-#include "base/mac/scoped_objc_class_swizzler.h"
+#include "base/apple/foundation_util.h"
+#include "base/apple/scoped_objc_class_swizzler.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_app_controller_mac.h"
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/tor/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -31,6 +38,7 @@
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/bookmarks/test/bookmark_test_helpers.h"
 #include "components/omnibox/browser/omnibox_view.h"
+#include "components/policy/core/common/policy_pref_names.h"
 #include "content/public/test/browser_test.h"
 
 using bookmarks::BookmarkModel;
@@ -85,7 +93,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   EXPECT_TRUE(omnibox_view->IsSelectAll());
   EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
 
-  BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
+  BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
   NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
@@ -117,7 +125,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   EXPECT_TRUE(omnibox_view->IsSelectAll());
   EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
 
-  BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
+  BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
@@ -145,7 +153,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
   omnibox_view->SetUserText(u"any text");
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  AppController* ac = base::mac::ObjCCastStrict<AppController>(
+  AppController* ac = base::apple::ObjCCastStrict<AppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
@@ -178,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   EXPECT_FALSE(omnibox_view->IsSelectAll());
   EXPECT_FALSE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
 
-  BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
+  BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
@@ -194,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
                        BookmarkItemsFromMenuBarTest) {
   AppController* ac =
-      base::mac::ObjCCastStrict<AppController>([NSApp delegate]);
+      base::apple::ObjCCastStrict<AppController>([NSApp delegate]);
   [ac mainMenuCreated];
   [ac setLastProfile:browser()->profile()];
 
@@ -238,5 +246,90 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
       std::u16string(kPersistBookmarkTitle),
       base::SysNSStringToUTF16([[normal_window_submenu itemAtIndex:4] title]));
 }
+
+#if BUILDFLAG(ENABLE_TOR)
+IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorItemEnabled) {
+  NSApplication* app = [NSApplication sharedApplication];
+  BraveAppController* ac =
+      base::apple::ObjCCastStrict<BraveAppController>([app delegate]);
+  ASSERT_TRUE(ac);
+
+  NSMenu* dockMenu = [ac applicationDockMenu:app];
+  ASSERT_TRUE(dockMenu);
+  ASSERT_FALSE(brave::IsTorDisabledForProfile(browser()->profile()));
+
+  // Tor item should exist and be enabled
+  NSMenuItem* tor_menu = [dockMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
+  EXPECT_TRUE(tor_menu);
+  EXPECT_FALSE(tor_menu.isHidden);
+  EXPECT_TRUE([ac validateUserInterfaceItem:tor_menu]);
+  EXPECT_TRUE(tor_menu.enabled);
+  EXPECT_FALSE(tor_menu.isHidden);
+
+  // Executing the item should create a new incognito window with Tor
+  [ac executeCommand:tor_menu withProfile:browser()->profile()];
+  base::RunLoop().RunUntilIdle();
+
+  Browser* tor_window = chrome::FindLastActive();
+  EXPECT_TRUE(tor_window);
+  EXPECT_TRUE(tor_window->profile()->IsTor());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
+                       TorItemDisabled_ByPolicy) {
+  NSApplication* app = [NSApplication sharedApplication];
+  BraveAppController* ac =
+      base::apple::ObjCCastStrict<BraveAppController>([app delegate]);
+  ASSERT_TRUE(ac);
+
+  NSMenu* dockMenu = [ac applicationDockMenu:app];
+  ASSERT_TRUE(dockMenu);
+  ASSERT_FALSE(brave::IsTorDisabledForProfile(browser()->profile()));
+  NSMenuItem* tor_menu = [dockMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
+  EXPECT_TRUE(tor_menu);
+  EXPECT_TRUE(tor_menu.enabled);
+  EXPECT_FALSE(tor_menu.isHidden);
+
+  // When policy disabled incognito mode, the tor itme should be hidden
+  PrefService* pref_service = browser()->profile()->GetPrefs();
+  pref_service->SetInteger(
+      policy::policy_prefs::kIncognitoModeAvailability,
+      static_cast<int>(policy::IncognitoModeAvailability::kDisabled));
+  ASSERT_TRUE(brave::IsTorDisabledForProfile(browser()->profile()));
+
+  // Tor item should exist and be enabled
+  EXPECT_FALSE([ac validateUserInterfaceItem:tor_menu]);
+  EXPECT_FALSE(tor_menu.enabled);
+  EXPECT_TRUE(tor_menu.isHidden);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
+                       TorItemDisabled_ByLocalState) {
+  NSApplication* app = [NSApplication sharedApplication];
+  BraveAppController* ac =
+      base::apple::ObjCCastStrict<BraveAppController>([app delegate]);
+  ASSERT_TRUE(ac);
+  CHECK(g_browser_process);
+
+  ASSERT_TRUE(g_browser_process);
+  auto* local_state = g_browser_process->local_state();
+  ASSERT_TRUE(local_state);
+  ASSERT_FALSE(local_state->GetBoolean(tor::prefs::kTorDisabled));
+
+  NSMenu* dockMenu = [ac applicationDockMenu:app];
+  ASSERT_TRUE(dockMenu);
+  ASSERT_FALSE(brave::IsTorDisabledForProfile(browser()->profile()));
+  NSMenuItem* tor_menu = [dockMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
+  EXPECT_TRUE(tor_menu);
+  EXPECT_TRUE(tor_menu.enabled);
+  EXPECT_FALSE(tor_menu.isHidden);
+
+  // When local state changed to disable tor, the tor itme should be hidden
+  local_state->SetBoolean(tor::prefs::kTorDisabled, true);
+  EXPECT_FALSE([ac validateUserInterfaceItem:tor_menu]);
+  EXPECT_FALSE(tor_menu.enabled);
+  EXPECT_TRUE(tor_menu.isHidden);
+}
+#endif  // BUILDFLAG(ENABLE_TOR)
 
 }  // namespace

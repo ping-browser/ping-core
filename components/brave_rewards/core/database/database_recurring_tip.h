@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_RECURRING_TIP_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_RECURRING_TIP_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -18,12 +19,11 @@ namespace database {
 
 class DatabaseRecurringTip : public DatabaseTable {
  public:
-  explicit DatabaseRecurringTip(RewardsEngineImpl& engine);
+  explicit DatabaseRecurringTip(RewardsEngine& engine);
   ~DatabaseRecurringTip() override;
 
   // DEPRECATED
-  void InsertOrUpdate(mojom::RecurringTipPtr info,
-                      LegacyResultCallback callback);
+  void InsertOrUpdate(mojom::RecurringTipPtr info, ResultCallback callback);
 
   void InsertOrUpdate(const std::string& publisher_id,
                       double amount,
@@ -34,16 +34,15 @@ class DatabaseRecurringTip : public DatabaseTable {
       base::OnceCallback<void(bool)> callback);
 
   void GetNextMonthlyContributionTime(
-      base::OnceCallback<void(absl::optional<base::Time>)> callback);
+      base::OnceCallback<void(std::optional<base::Time>)> callback);
 
   void GetAllRecords(GetRecurringTipsCallback callback);
 
-  void DeleteRecord(const std::string& publisher_key,
-                    LegacyResultCallback callback);
+  void DeleteRecord(const std::string& publisher_key, ResultCallback callback);
 
  private:
-  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       GetRecurringTipsCallback callback);
+  void OnGetAllRecords(GetRecurringTipsCallback callback,
+                       mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled, { css } from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 import { WalletButton } from '../style'
@@ -19,18 +19,18 @@ export const StyledWrapper = styled.div<LayoutProps>`
   padding: 8px 16px;
   align-items: center;
   justify-content: space-between;
-  
-  ${(p) => p?.layoutType === 'loose'
-    ? css`
-      width: 100%;
-      margin-top: 16px;
-      margin-bottom: 4px;
-      border: 1px solid ${(p) => p.theme.color.divider01};
-      border-radius: 4px;
-      padding: 12px;
-    `
-    : ''
-  }
+
+  ${(p) =>
+    p?.layoutType === 'loose'
+      ? css`
+          width: 100%;
+          margin-top: 16px;
+          margin-bottom: 4px;
+          border: 1px solid ${(p) => p.theme.color.divider01};
+          border-radius: 4px;
+          padding: 12px;
+        `
+      : ''}
 `
 
 export const Logo = styled.img`

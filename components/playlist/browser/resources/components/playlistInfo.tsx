@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { font } from '@brave/leo/tokens/css'
+import { font } from '@brave/leo/tokens/css/variables'
 import styled, { css } from 'styled-components'
 import { formatTimeInSeconds } from '../utils/timeFormatter'
 
@@ -39,12 +39,15 @@ export const PlaylistName = styled.div<{ color?: string }>`
     css`
       color: ${p.color};
     `};
-  font: ${font.primary.large.semibold};
+  font: ${font.large.semibold};
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `
 
 export const PlaylistDetail = styled.div<{ color?: string }>`
   grid-row: 2;
-  font: ${font.primary.small.regular};
+  font: ${font.small.regular};
   ${p =>
     p.color &&
     css`

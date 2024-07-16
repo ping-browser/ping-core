@@ -6,7 +6,8 @@
 #include "brave/browser/themes/brave_private_window_theme_supplier.h"
 
 #include "brave/browser/ui/color/brave_color_mixer.h"
-#include "ui/color/color_provider_manager.h"
+#include "brave/browser/ui/tabs/brave_tab_color_mixer.h"
+#include "ui/color/color_provider_key.h"
 
 BravePrivateWindowThemeSupplier::BravePrivateWindowThemeSupplier(
     bool private_window)
@@ -17,9 +18,14 @@ BravePrivateWindowThemeSupplier::~BravePrivateWindowThemeSupplier() = default;
 
 void BravePrivateWindowThemeSupplier::AddColorMixers(
     ui::ColorProvider* provider,
-    const ui::ColorProviderManager::Key& key) const {
-  for_private_window_ ? AddPrivateThemeColorMixer(provider, key)
-                      : AddTorThemeColorMixer(provider, key);
+    const ui::ColorProviderKey& key) const {
+  if (for_private_window_) {
+    AddPrivateThemeColorMixer(provider, key);
+    tabs::AddBraveTabPrivateThemeColorMixer(provider, key);
+  } else {
+    AddTorThemeColorMixer(provider, key);
+    tabs::AddBraveTabTorThemeColorMixer(provider, key);
+  }
   // Private/Tor uses same omnibox colors.
   AddBraveOmniboxPrivateThemeColorMixer(provider, key);
 }

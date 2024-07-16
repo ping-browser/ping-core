@@ -5,11 +5,13 @@
 
 package org.chromium.chrome.browser.brave_stats;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -38,8 +40,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.ui.permissions.PermissionConstants;
 
 import java.util.List;
 
@@ -68,8 +70,11 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     private LinearLayout websitesLayout;
     private LinearLayout trackersLayout;
 
-    private RadioButton monthRadioButton;
-    private RadioButton monthsRadioButton;
+    private RadioButton mWeekRadioButton;
+    private RadioButton mMonthRadioButton;
+    private RadioButton mMonthsRadioButton;
+    private RadioButton mTrackersRadioButton;
+    private RadioButton mWebsitesRadioButton;
     private View statsNotificationView;
 
     private int selectedType = WEBSITES;
@@ -128,8 +133,11 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             }
         });
 
-        monthRadioButton = view.findViewById(R.id.month_radio);
-        monthsRadioButton = view.findViewById(R.id.months_radio);
+        mWeekRadioButton = view.findViewById(R.id.week_radio);
+        mMonthRadioButton = view.findViewById(R.id.month_radio);
+        mMonthsRadioButton = view.findViewById(R.id.months_radio);
+        mTrackersRadioButton = view.findViewById(R.id.trackers_radio);
+        mWebsitesRadioButton = view.findViewById(R.id.websites_radio);
 
         LinearLayout layout = view.findViewById(R.id.brave_stats_layout);
         adsTrackersCountText = layout.findViewById(R.id.ads_trackers_count_text);
@@ -142,6 +150,12 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         trackersLayout = layout.findViewById(R.id.trackers_layout);
         braveStatsSubSectionText = layout.findViewById(R.id.brave_stats_sub_section_text);
         statsNotificationView = view.findViewById(R.id.brave_stats_notification_permission);
+
+        BraveTouchUtils.ensureMinTouchTarget(mWeekRadioButton);
+        BraveTouchUtils.ensureMinTouchTarget(mMonthRadioButton);
+        BraveTouchUtils.ensureMinTouchTarget(mMonthsRadioButton);
+        BraveTouchUtils.ensureMinTouchTarget(mTrackersRadioButton);
+        BraveTouchUtils.ensureMinTouchTarget(mWebsitesRadioButton);
 
         RadioGroup statTypeRadioGroup = layout.findViewById(R.id.stat_type_radio_group);
         statTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -184,7 +198,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     public void onResume() {
         super.onResume();
         if (!BravePermissionUtils.hasPermission(
-                    getContext(), PermissionConstants.NOTIFICATION_PERMISSION)
+                        getContext(), Manifest.permission.POST_NOTIFICATIONS)
                 || BravePermissionUtils.isGeneralNotificationPermissionBlocked(getActivity())) {
             statsNotificationView.setVisibility(View.VISIBLE);
         } else {
@@ -194,23 +208,32 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
     private void updateNotificationView(View view) {
         ImageView btnDismiss = view.findViewById(R.id.button_dismiss);
-        btnDismiss.setOnClickListener(v -> { statsNotificationView.setVisibility(View.GONE); });
+        btnDismiss.setOnClickListener(
+                v -> {
+                    statsNotificationView.setVisibility(View.GONE);
+                });
         View notificationOnButton = view.findViewById(R.id.notification_on_button);
-        notificationOnButton.setOnClickListener(v -> {
-            if (BravePermissionUtils.isGeneralNotificationPermissionBlocked(getActivity())
-                    || getActivity().shouldShowRequestPermissionRationale(
-                            PermissionConstants.NOTIFICATION_PERMISSION)
-                    || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
-                // other than android 13 redirect to
-                // setting page and for android 13 Last time don't allow selected in permission
-                // dialog, then enable through setting
-                BravePermissionUtils.notificationSettingPage(getContext());
-            } else {
-                // 1st time request permission
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
-            }
-        });
+        notificationOnButton.setOnClickListener(
+                v -> {
+                    if (BravePermissionUtils.isGeneralNotificationPermissionBlocked(getActivity())
+                            || getActivity()
+                                    .shouldShowRequestPermissionRationale(
+                                            Manifest.permission.POST_NOTIFICATIONS)
+                            || (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                                    || !BuildInfo.targetsAtLeastT())) {
+                        // other than android 13 redirect to
+                        // setting page and for android 13 Last time don't allow selected in
+                        // permission
+                        // dialog, then enable through setting
+                        BravePermissionUtils.notificationSettingPage(getContext());
+                    } else {
+                        // 1st time request permission
+                        ActivityCompat.requestPermissions(
+                                getActivity(),
+                                new String[] {Manifest.permission.POST_NOTIFICATIONS},
+                                1);
+                    }
+                });
     }
 
     @Override
@@ -225,29 +248,32 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             long totalSavedBandwidth;
             long adsTrackersCountToCheckForMonth;
             long adsTrackersCountToCheckFor3Month;
+
             @Override
             protected Void doInBackground() {
                 adsTrackersCount =
-                    mDatabaseHelper
-                    .getAllStatsWithDate(BraveStatsUtil.getCalculatedDate(
-                                             "yyyy-MM-dd", selectedDuration),
-                                         BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0))
-                    .size();
-                totalSavedBandwidth = mDatabaseHelper.getTotalSavedBandwidthWithDate(
-                                          BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration),
-                                          BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                        mDatabaseHelper
+                                .getAllStatsWithDate(
+                                        BraveStatsUtil.getCalculatedDate(
+                                                "yyyy-MM-dd", selectedDuration),
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0))
+                                .size();
+                totalSavedBandwidth =
+                        mDatabaseHelper.getTotalSavedBandwidthWithDate(
+                                BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration),
+                                BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
                 adsTrackersCountToCheckForMonth =
-                    mDatabaseHelper
-                    .getAllStatsWithDate(
-                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30),
-                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_7))
-                    .size();
+                        mDatabaseHelper
+                                .getAllStatsWithDate(
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30),
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_7))
+                                .size();
                 adsTrackersCountToCheckFor3Month =
-                    mDatabaseHelper
-                    .getAllStatsWithDate(
-                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_90),
-                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30))
-                    .size();
+                        mDatabaseHelper
+                                .getAllStatsWithDate(
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_90),
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30))
+                                .size();
                 return null;
             }
 
@@ -256,37 +282,46 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 assert ThreadUtils.runningOnUiThread();
                 if (isCancelled()) return;
                 Pair<String, String> adsTrackersPair =
-                    BraveStatsUtil.getBraveStatsStringFormNumberPair(adsTrackersCount, false);
+                        BraveStatsUtil.getBraveStatsStringFormNumberPair(adsTrackersCount, false);
                 adsTrackersCountText.setText(
-                    String.format(mContext.getResources().getString(R.string.ntp_stat_text),
-                                  adsTrackersPair.first, adsTrackersPair.second));
+                        String.format(
+                                mContext.getResources().getString(R.string.ntp_stat_text),
+                                adsTrackersPair.first,
+                                adsTrackersPair.second));
 
                 Pair<String, String> dataSavedPair =
-                    BraveStatsUtil.getBraveStatsStringFormNumberPair(totalSavedBandwidth, true);
+                        BraveStatsUtil.getBraveStatsStringFormNumberPair(totalSavedBandwidth, true);
                 dataSavedCountText.setText(dataSavedPair.first);
                 boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext);
                 if (isTablet) {
                     adsTrackersText.setText(
-                        String.format(mContext.getResources().getString(R.string.trackers_and_ads),
-                                      dataSavedPair.second));
+                            String.format(
+                                    mContext.getResources().getString(R.string.trackers_and_ads),
+                                    dataSavedPair.second));
                     dataSavedText.setText(
-                        String.format(mContext.getResources().getString(R.string.data_saved_tablet_text),
-                                      dataSavedPair.second));
+                            String.format(
+                                    mContext.getResources()
+                                            .getString(R.string.data_saved_tablet_text),
+                                    dataSavedPair.second));
                 } else {
                     adsTrackersText.setText(
-                        String.format(mContext.getResources().getString(R.string.ads_trackers_text),
-                                      dataSavedPair.second));
+                            String.format(
+                                    mContext.getResources().getString(R.string.ads_trackers_text),
+                                    dataSavedPair.second));
                     dataSavedText.setText(
-                        String.format(mContext.getResources().getString(R.string.data_saved_text),
-                                      dataSavedPair.second));
+                            String.format(
+                                    mContext.getResources().getString(R.string.data_saved_text),
+                                    dataSavedPair.second));
                 }
 
                 long timeSavedCount = adsTrackersCount * BraveStatsUtil.MILLISECONDS_PER_ITEM;
                 Pair<String, String> timeSavedPair =
                         BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000);
                 timeSavedCountText.setText(
-                        String.format(mContext.getResources().getString(R.string.ntp_stat_text),
-                                timeSavedPair.first, timeSavedPair.second));
+                        String.format(
+                                mContext.getResources().getString(R.string.ntp_stat_text),
+                                timeSavedPair.first,
+                                timeSavedPair.second));
                 timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));
 
                 if (adsTrackersCount > 0) {
@@ -297,20 +332,20 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
                 // Check for month option
                 if (adsTrackersCountToCheckForMonth > 0) {
-                    monthRadioButton.setEnabled(true);
-                    monthRadioButton.setAlpha(1.0f);
+                    mMonthRadioButton.setEnabled(true);
+                    mMonthRadioButton.setAlpha(1.0f);
                 } else {
-                    monthRadioButton.setEnabled(false);
-                    monthRadioButton.setAlpha(0.2f);
+                    mMonthRadioButton.setEnabled(false);
+                    mMonthRadioButton.setAlpha(0.2f);
                 }
 
                 // Check for 3 month option
                 if (adsTrackersCountToCheckFor3Month > 0) {
-                    monthsRadioButton.setEnabled(true);
-                    monthsRadioButton.setAlpha(1.0f);
+                    mMonthsRadioButton.setEnabled(true);
+                    mMonthsRadioButton.setAlpha(1.0f);
                 } else {
-                    monthsRadioButton.setEnabled(false);
-                    monthsRadioButton.setAlpha(0.2f);
+                    mMonthsRadioButton.setEnabled(false);
+                    mMonthsRadioButton.setAlpha(0.2f);
                 }
                 showWebsitesTrackers();
             }
@@ -320,16 +355,21 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     private void showWebsitesTrackers() {
         new AsyncTask<Void>() {
             List<Pair<String, Integer>> websiteTrackers;
+
             @Override
             protected Void doInBackground() {
                 if (selectedType == WEBSITES) {
-                    websiteTrackers = mDatabaseHelper.getStatsWithDate(
-                                          BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration),
-                                          BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                    websiteTrackers =
+                            mDatabaseHelper.getStatsWithDate(
+                                    BraveStatsUtil.getCalculatedDate(
+                                            "yyyy-MM-dd", selectedDuration),
+                                    BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
                 } else {
-                    websiteTrackers = mDatabaseHelper.getSitesWithDate(
-                                          BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration),
-                                          BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                    websiteTrackers =
+                            mDatabaseHelper.getSitesWithDate(
+                                    BraveStatsUtil.getCalculatedDate(
+                                            "yyyy-MM-dd", selectedDuration),
+                                    BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
                 }
                 return null;
             }
@@ -355,24 +395,24 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                     for (Pair<String, Integer> statPair : websiteTrackers) {
                         LayoutInflater inflater = LayoutInflater.from(mContext);
                         ViewGroup layout =
-                            (ViewGroup) inflater.inflate(R.layout.tracker_item_layout, null);
+                                (ViewGroup) inflater.inflate(R.layout.tracker_item_layout, null);
 
                         TextView mTrackerCountText =
-                            (TextView) layout.findViewById(R.id.tracker_count_text);
+                                (TextView) layout.findViewById(R.id.tracker_count_text);
                         TextView mSiteText = (TextView) layout.findViewById(R.id.site_text);
 
                         mTrackerCountText.setText(String.valueOf(statPair.second));
                         mSiteText.setText(statPair.first);
                         if (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
-                            mSiteText.setTextColor(mContext.getResources().getColor(
-                                    R.color.brave_stats_text_dark_color));
-                            mTrackerCountText.setTextColor(mContext.getResources().getColor(
-                                    R.color.brave_stats_text_dark_color));
+                            mSiteText.setTextColor(
+                                    mContext.getColor(R.color.brave_stats_text_dark_color));
+                            mTrackerCountText.setTextColor(
+                                    mContext.getColor(R.color.brave_stats_text_dark_color));
                         } else {
-                            mSiteText.setTextColor(mContext.getResources().getColor(
-                                    R.color.brave_stats_text_light_color));
-                            mTrackerCountText.setTextColor(mContext.getResources().getColor(
-                                    R.color.brave_stats_text_light_color));
+                            mSiteText.setTextColor(
+                                    mContext.getColor(R.color.brave_stats_text_light_color));
+                            mTrackerCountText.setTextColor(
+                                    mContext.getColor(R.color.brave_stats_text_light_color));
                         }
 
                         rootView.addView(layout);

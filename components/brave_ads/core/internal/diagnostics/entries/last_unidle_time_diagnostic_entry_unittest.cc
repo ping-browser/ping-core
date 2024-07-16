@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
@@ -17,13 +18,11 @@ class BraveAdsLastUnIdleTimeDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   // Arrange
-  AdvanceClockTo(
-      TimeFromString("Mon, 8 July 1996 12:34:56", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("Mon, 8 July 1996 12:34:56"));
 
-  // Act
   LastUnIdleTimeDiagnosticEntry diagnostic_entry(Now());
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kLastUnIdleTime, diagnostic_entry.GetType());
   EXPECT_EQ("Last unidle time", diagnostic_entry.GetName());
   EXPECT_EQ("Monday, July 8, 1996 at 12:34:56\u202fPM",
@@ -34,9 +33,7 @@ TEST_F(BraveAdsLastUnIdleTimeDiagnosticEntryTest, WasNeverUnIdle) {
   // Arrange
   const LastUnIdleTimeDiagnosticEntry diagnostic_entry;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kLastUnIdleTime, diagnostic_entry.GetType());
   EXPECT_EQ("Last unidle time", diagnostic_entry.GetName());
   EXPECT_EQ("Never", diagnostic_entry.GetValue());

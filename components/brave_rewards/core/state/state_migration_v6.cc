@@ -10,18 +10,17 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV6::StateMigrationV6(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+StateMigrationV6::StateMigrationV6(RewardsEngine& engine) : engine_(engine) {}
 
 StateMigrationV6::~StateMigrationV6() = default;
 
-void StateMigrationV6::Migrate(LegacyResultCallback callback) {
+void StateMigrationV6::Migrate(ResultCallback callback) {
   auto uphold_wallet = engine_->GetLegacyWallet();
   engine_->SetState(kWalletUphold, uphold_wallet);
   engine_->client()->ClearState("external_wallets");
@@ -34,7 +33,7 @@ void StateMigrationV6::Migrate(LegacyResultCallback callback) {
   base::JSONWriter::Write(brave, &brave_json);
   engine_->SetState(kWalletBrave, std::move(brave_json));
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace state

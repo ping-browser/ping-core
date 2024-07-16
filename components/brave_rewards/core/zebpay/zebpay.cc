@@ -8,26 +8,31 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet_provider/zebpay/connect_zebpay_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/zebpay/get_zebpay_wallet.h"
 
 using brave_rewards::internal::endpoints::GetBalanceZebPay;
 using brave_rewards::internal::endpoints::RequestFor;
 
 namespace brave_rewards::internal::zebpay {
 
-ZebPay::ZebPay(RewardsEngineImpl& engine)
+ZebPay::ZebPay(RewardsEngine& engine)
     : WalletProvider(engine), engine_(engine) {
   connect_wallet_ = std::make_unique<ConnectZebPayWallet>(engine);
-  get_wallet_ = std::make_unique<GetZebPayWallet>(engine);
 }
 
 const char* ZebPay::WalletType() const {
   return constant::kWalletZebPay;
+}
+
+void ZebPay::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
+  auto url = engine_->Get<EnvironmentConfig>().zebpay_api_url();
+  external_wallet.account_url = url.Resolve("/dashboard").spec();
+  external_wallet.activity_url = url.Resolve("/activity").spec();
 }
 
 void ZebPay::FetchBalance(
@@ -56,8 +61,7 @@ void ZebPay::OnFetchBalance(
           return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
         }
 
-        BLOG(0,
-             "Failed to disconnect " << constant::kWalletZebPay << " wallet!");
+        engine_->LogError(FROM_HERE) << "Failed to disconnect zebpay wallet";
         ABSL_FALLTHROUGH_INTENDED;
       default:
         return std::move(callback).Run(mojom::Result::FAILED, 0.0);

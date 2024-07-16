@@ -12,17 +12,14 @@
 #include "chrome/browser/ui/views/frame/browser_frame_view_linux_native.h"
 
 class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
+  METADATA_HEADER(BraveBrowserFrameViewLinuxNative, BrowserFrameViewLinuxNative)
  public:
-  METADATA_HEADER(BraveBrowserFrameViewLinuxNative);
 
   BraveBrowserFrameViewLinuxNative(
       BrowserFrame* frame,
       BrowserView* browser_view,
-      BrowserFrameViewLayoutLinux* layout,
-      std::unique_ptr<ui::NavButtonProvider> nav_button_provider,
-      ui::WindowFrameProvider* window_frame_provider
-
-  );
+      BrowserFrameViewLayoutLinuxNative* layout,
+      std::unique_ptr<ui::NavButtonProvider> nav_button_provider);
   ~BraveBrowserFrameViewLinuxNative() override;
 
   // Returns caption buttons width provided by GTK.
@@ -32,7 +29,7 @@ class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
 
   // BrowserFrameViewLinuxNative:
   void MaybeUpdateCachedFrameButtonImages() override;
-  void Layout() override;
+  void Layout(PassKey) override;
 
  private:
   views::Button* FrameButtonToButton(views::FrameButton frame_button);

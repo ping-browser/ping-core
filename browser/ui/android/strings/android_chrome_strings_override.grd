@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- android_chrome_strings.grd contains strings for Brave for Android.
+<!-- android_chrome_strings.grd contains strings for Ping for Android.
 
 FAQ:
   - How do I add, change, or remove a string?
@@ -126,28 +126,14 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
         Use screen lock to see open Private tabs
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_SUMMARY" desc="The description of card 3 of 3. * “help”: This API is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
-        Help sites fight fraud and distinguish bots from profiles
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION_TRIALS_ON" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “private state tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players. * “interaction”: is broad. It’s not just viewing a site but also how you interact with it, like by signing in * “Later”:  is important to convey the passage of time. We don’t want to convey how much time (it could be tiny). What’s important is that the user understands this is essentially a two-step process. A private state token is issued. Sometime in the future, when hyou visit a different site, that private state token might get used. ">
-        Spam &amp; fraud reduction relies on private state tokens to help sites fight fraud and distinguish bots from profiles.
-
-Based on your interaction with a site, like regularly signing in to an account, that site can issue a private state token to your browser. Later, if other sites you visit check for and find a valid private state token, they’re more likely to treat you like a profile and not a bot.
-
-Private state tokens improve privacy on the web and can’t be used to find out who you are.
-      </message>
-            <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION_TRIALS_OFF" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “private state tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players. * “interaction”: is broad. It’s not just viewing a site but also how you interact with it, like by signing in * “Later”:  is important to convey the passage of time. We don’t want to convey how much time (it could be tiny). What’s important is that the user understands this is essentially a two-step process. A private state token is issued. Sometime in the future, when hyou visit a different site, that private state token might get used. ">
-        When trials are on, Spam &amp; fraud reduction relies on private state tokens to help sites fight fraud and distinguish bots from profiles.
-
-Based on your interaction with a site, like regularly signing in to an account, that site can issue a private state token to your browser. Later, if other sites you visit check for and find a valid private state token, they’re more likely to treat you like a profile and not a bot.
-
-Private state tokens improve privacy on the web and can’t be used to find out who you are.
-      </message>
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
-        Block while using private
+        Block while using Private
       </message>
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_DESCRIPTION" desc="Description for the radio button for blocking third-party cookies in private.">
-        While in private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+        While in Private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+      </message>
+      <message name="IDS_PRIVACY_GUIDE_SEARCH_SUGGESTIONS_ITEM_ONE" desc="First bullet point that describes the details of the search suggestions toggle.">
+        When you tap or type in the address bar or search box, you'll see suggestions from your default search engine. This is off in Private.
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
@@ -158,7 +144,7 @@ Private state tokens improve privacy on the web and can’t be used to find out 
       <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a new Private tab. [CHAR_LIMIT=30]">
         Open in Private tab
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Brave Private tab from Brave Custom Tab. [CHAR_LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Ping Private tab from Ping Custom Tab. [CHAR_LIMIT=30]">
         Open in Private tab
       </message>
       <message name="IDS_DOWNLOAD_NOTIFICATION_INCOGNITO_SUBTEXT" desc="Displayed in Private mode download notification as subtext.">
@@ -187,7 +173,7 @@ Private state tokens improve privacy on the web and can’t be used to find out 
      <message name="IDS_INCOGNITO_REAUTH_PROMO_DESCRIPTION" desc="The description of the private re-auth promo card.">
        Use screen lock to see open Private tabs
      </message>
-     <message name="IDS_INCOGNITO_REAUTH_LOCK_ACTION_TEXT" desc="The label of the button which upon click would turn on the corresponding Brave level Private lock setting after a re-authentication.">
+     <message name="IDS_INCOGNITO_REAUTH_LOCK_ACTION_TEXT" desc="The label of the button which upon click would turn on the corresponding Ping level Private lock setting after a re-authentication.">
        Turn on Private lock
      </message>
      <message name="IDS_INCOGNITO_REAUTH_SNACKBAR_TEXT" desc="The label of the snackbar notification which appears after the private re-authentication is turned on from the promo card shown inside the Private grid tab switcher.">
@@ -200,12 +186,6 @@ Private state tokens improve privacy on the web and can’t be used to find out 
       <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
         New Private tab
       </message>
-      <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_INCOGNITO_TAB" desc="Notification body text educating user about private tab in chrome.">
-        To browse privately on this device, try out Private
-      </message>
-      <message name="IDS_FEATURE_NOTIFICATION_GUIDE_TOOLTIP_MESSAGE_INCOGNITO_TAB" desc="Tooltip text educating user about using private tab in chrome.">
-        To open a new Private tab, open the menu
-      </message>
       <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new Private browser tab.">
         New Private tab
       </message>
@@ -215,7 +195,7 @@ Private state tokens improve privacy on the web and can’t be used to find out 
       <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
         Close Private tabs
       </message>
-      <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR_LIMIT=30]" translateable="false">
+      <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Ping in a Private tab. [CHAR_LIMIT=30]" translateable="false">
         Open in Private Ping
       </message>
       <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new Private tab view.">
@@ -240,7 +220,7 @@ Private state tokens improve privacy on the web and can’t be used to find out 
       <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER_SELECTED" desc="Content description for the tab that is selected in Private mode">
         Selected Private Tab
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Ping. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab in Private mode
       </message>
       <if expr="enable_arcore">
@@ -274,8 +254,11 @@ Private state tokens improve privacy on the web and can’t be used to find out 
         To share with profiles nearby, let them scan this QR Code
       </message>
 
-      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Ping notifications.">
         You’ll be able to easily manage media controls, Private sessions, downloads and more
+      </message>
+      <message name="IDS_WEBAUTHN_INCOGNITO_CONFIRMATION_TITLE" desc="The title of a bottomsheet that appears before the user saves passkey in Private mode. (See the glossary for translations of the word 'passkey'. Do not translate as 'password'.)" formatter_data="android_java">
+        Save passkey outside Private?
       </message>
       </messages>
   </release>

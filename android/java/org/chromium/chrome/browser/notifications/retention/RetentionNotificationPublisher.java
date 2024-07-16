@@ -50,7 +50,7 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                         case RetentionNotificationUtil.DAY_6:
                             if (braveActivity.getActivityTab() != null
                                     && braveActivity.getActivityTab().getUrl().getSpec() != null
-                                    && !UrlUtilities.isNTPUrl(
+                                    && !UrlUtilities.isNtpUrl(
                                             braveActivity.getActivityTab().getUrl().getSpec())) {
                                 braveActivity.getTabCreator(false).launchUrl(
                                         UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
@@ -111,9 +111,10 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                     try {
                         BraveRewardsNativeWorker rewardsNativeWorker =
                                 BraveRewardsNativeWorker.getInstance();
-                        if (braveActivity != null && rewardsNativeWorker != null
-                                && !rewardsNativeWorker.isRewardsEnabled()
-                                && rewardsNativeWorker.IsSupported()) {
+                            if (braveActivity != null
+                                    && rewardsNativeWorker != null
+                                    && !rewardsNativeWorker.isRewardsEnabled()
+                                    && rewardsNativeWorker.isSupported()) {
                                 createNotification(context, intent);
                         }
                     } catch (IllegalStateException exc) {

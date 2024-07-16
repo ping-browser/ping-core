@@ -28,10 +28,7 @@ chrome.tabs.onCreated.addListener(async (tab) => {
         chrome.tabs.update(tab.id, { url: '../content/ui/sessionTimeout.html' });
     }
     else if (data.loggedIn && !data.sessionTimeout) {
-        const tabs = await chrome.tabs.query({})
-        if (tabs.length === 1) {
-            startTimer();
-        }
+        startTimer();
     }
 });
 
@@ -226,5 +223,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } else if (request.action === 'logout') {
         logoutUser(request.password, sendResponse);
         return true;
+    }
+});
+
+chrome.commands.onCommand.addListener((command) => {
+    console.log("bggg")
+    if (command === "toggle-contrast") {
+        console.log(" from bg")
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, {action: "toggleContrast"});
+        });
     }
 });

@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_CONNECT_UPHOLD_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_CONNECT_UPHOLD_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // POST /v3/wallet/uphold/{rewards_payment_id}/claim
 //
@@ -38,21 +38,24 @@
 //
 // clang-format on
 //
-// Response body: -
+// Response body:
+// {
+//   "geoCountry": "US"
+// }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
 class PostConnectUphold final : public PostConnect {
  public:
-  PostConnectUphold(RewardsEngineImpl& engine, std::string&& address);
+  PostConnectUphold(RewardsEngine& engine, std::string&& address);
   ~PostConnectUphold() override;
 
  private:
-  absl::optional<std::string> Content() const override;
-  absl::optional<std::vector<std::string>> Headers(
+  std::optional<std::string> Content() const override;
+  std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
 
   const char* Path() const override;

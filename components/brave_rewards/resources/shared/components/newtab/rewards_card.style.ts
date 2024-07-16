@@ -5,9 +5,10 @@
 
 import styled from 'styled-components'
 
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import { buttonReset } from '../../lib/css_mixins'
+import selfCustodyImage from '../../assets/self_custody_invitation.svg'
 
 export const root = styled.div.attrs({
   'data-theme': 'dark'
@@ -45,10 +46,6 @@ export const cardHeader = styled.div`
 
 export const cardHeaderText = styled.div`
   margin-top: 2px;
-`
-
-export const unsupportedRegionCard = styled.div`
-  margin-top: 24px;
 `
 
 export const optInIcon = styled.div`
@@ -103,7 +100,7 @@ export const optInLearnMore = styled.div.attrs({
   'data-theme': 'dark'
 })`
   margin-top: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
   text-align: center;
 
   a {
@@ -112,6 +109,20 @@ export const optInLearnMore = styled.div.attrs({
     font-size: 13px;
     line-height: 20px;
     letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+`
+
+export const optInTerms = styled.div.attrs({
+  'data-theme': 'dark'
+})`
+  color: ${leo.color.text.tertiary};
+  text-align: center;
+  font-size: 11px;
+  line-height: 16px;
+
+  a {
+    color: ${leo.color.text.interactive};
     text-decoration: none;
   }
 `
@@ -190,60 +201,6 @@ export const balanceAmount = styled.div`
     line-height: 21px;
     margin-top: 20px;
   }
-`
-
-// TODO(sszaloki):
-// replace color: #FFBC18; with color: ${leo.color.yellow[30]};
-// once the palette adjustments have been merged
-export const balanceInfo = styled.div`
-  position: relative;
-
-  --icon-size: 18px;
-  color: #FFBC18;
-  margin-top: 18px;
-
-  .tooltip {
-    visibility: hidden;
-    transition: visibility 0s linear 300ms;
-  }
-
-  .tooltip-arrow {
-    content: '';
-    position: absolute;
-    top: 29px;
-    left: 4px;
-    background: ${leo.color.white};
-    height: 15px;
-    width: 15px;
-    transform: rotate(45deg);
-    z-index: 2;
-  }
-
-  .tooltip-bubble {
-    position: fixed;
-    right: 12px;
-    width: 260px;
-    padding-top: 8px;
-    z-index: 1;
-  }
-
-  &:hover .tooltip {
-    visibility: initial;
-  }
-`
-
-export const balanceTooltip = styled.div.attrs({
-  'data-theme': 'light'
-})`
-  position: relative;
-  padding: 16px;
-  background: ${leo.color.white};
-  box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
-  border-radius: 8px;
-  color: ${leo.color.text.primary};
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
 `
 
 export const balanceExchange = styled.div.attrs({
@@ -513,18 +470,6 @@ export const connectAction = styled.div`
   }
 `
 
-export const connectLearnMore = styled.div`
-  margin-top: 14px;
-
-  a {
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    color: #FFFFFF;
-    text-decoration: none;
-  }
-`
-
 export const publisherSupport = styled.div`
   margin-top: 18px;
   display: flex;
@@ -564,40 +509,64 @@ export const settings = styled.div`
   }
 `
 
-export const vbatNotice = styled.div`
-  margin: 10px -12px 0;
-  border-radius: 8px;
-  overflow: hidden;
+export const selfCustodyInvite = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin: 12px -12px -6px;
+  border-radius: 12px;
+  background: no-repeat center 16px/auto 67px url(${selfCustodyImage}),
+              linear-gradient(137deg, #346FE1 33.4%, #5844C3 82.8%);
+  padding: 91px 16px 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
-  .vbat-notice-header {
-    font-size: 14px;
-    line-height: 20px;
-    padding: 16px;
+  color: ${leo.color.container.background};
+  text-align: center;
+`
 
-    .icon {
-      width: 20px;
-      height: auto;
-    }
-  }
+export const selfCustodyInviteClose = styled.div`
+  --leo-icon-size: 18px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
 
-  .vbat-notice-close .icon {
-    width: 11px;
-    height: auto;
-  }
-
-  .vbat-notice-content {
-    font-size: 12px;
-    line-height: 18px;
-    padding: 16px;
-  }
-
-  .vbat-notice-actions {
-    display: block;
-    text-align: center;
-  }
-
-  .vbat-notice-connect button {
-    width: 100%;
-    margin-bottom: 10px;
+  button {
+    ${buttonReset}
+    cursor: pointer;
   }
 `
+
+export const selfCustodyInviteHeader = styled.div`
+  font: ${leo.font.default.semibold};
+`
+
+export const selfCustodyInviteText = styled.div`
+  font: ${leo.font.small.regular};
+  padding: 0 16px;
+  margin-bottom: -4px;
+`
+
+export const selfCustodyInviteDismiss = styled.div`
+  button {
+    ${buttonReset}
+    cursor: pointer;
+    padding: 10px 0;
+    opacity: 0.85;
+    font: ${leo.font.components.buttonSmall};
+  }
+`
+
+export const tosUpdateNotice = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin: 8px -10px 0;
+
+  --tos-update-notice-border-radius: 8px;
+  --tos-update-notice-padding: 16px;
+  --tos-update-heading-padding-bottom: 0;
+  --tos-update-notice-heading-font: ${leo.font.heading.h4};
+  --tos-update-notice-text-font: ${leo.font.small.link};
+`;
+

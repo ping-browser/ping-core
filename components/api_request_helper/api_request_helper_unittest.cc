@@ -6,6 +6,8 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 #include <memory>
+#include <optional>
+#include <string_view>
 #include <utility>
 
 #include "base/functional/callback.h"
@@ -32,9 +34,9 @@ MATCHER_P(MatchesAPIRequestResult, request_result, "") {
   return arg == *request_result;
 }
 
-absl::optional<std::string> ConversionCallback(
+std::optional<std::string> ConversionCallback(
     const std::string& expected_raw_response,
-    const absl::optional<std::string>& converted_response,
+    const std::optional<std::string>& converted_response,
     const std::string& raw_response) {
   EXPECT_EQ(expected_raw_response, raw_response);
   return converted_response;
@@ -52,7 +54,8 @@ class ApiRequestHelperUnitTest : public testing::Test {
         shared_url_loader_factory_);
     loader_wrapper_handler_ =
         std::make_unique<APIRequestHelper::URLLoaderHandler>(
-            api_request_helper_.get());
+            api_request_helper_.get(),
+            base::SequencedTaskRunner::GetCurrentDefault());
   }
   ~ApiRequestHelperUnitTest() override = default;
 
@@ -78,21 +81,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
         }));
   }
 
-  void OnRequestResponse(bool* callback_called,
-                         const std::string& expected_response,
-                         const GURL expected_url,
-                         const int expected_http_code,
-                         const int expected_error_code,
-                         APIRequestResult api_request_result) {
-    *callback_called = true;
-    EXPECT_EQ(expected_http_code, api_request_result.response_code());
-    EXPECT_EQ(expected_response, api_request_result.body());
-    EXPECT_EQ(expected_error_code, api_request_result.error_code());
-    EXPECT_EQ(expected_url, api_request_result.final_url());
-  }
-
   void SendRequest(const std::string& server_raw_response,
-                   const std::string& expected_body,
                    const base::Value& expected_value_body,
                    const int expected_http_code = 200,
                    const int expected_error_code = net::OK,
@@ -102,7 +91,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
     GURL network_url("http://localhost/");
 
     APIRequestResult expected_result(
-        expected_http_code, expected_body, expected_value_body.Clone(),
+        expected_http_code, expected_value_body.Clone(),
         {{"content-type", "text/html"}}, expected_error_code, network_url);
     base::MockCallback<APIRequestHelper::ResultCallback> callback;
     EXPECT_CALL(callback, Run(MatchesAPIRequestResult(&expected_result)));
@@ -110,18 +99,18 @@ class ApiRequestHelperUnitTest : public testing::Test {
     SetInterceptor("POST", network_url, server_raw_response, enable_cache);
     api_request_helper_->Request(
         "POST", network_url, "", "application/json", callback.Get(), {},
-        APIRequestOptions(false, enable_cache, -1u, absl::nullopt),
+        APIRequestOptions(false, enable_cache, -1u, std::nullopt),
         std::move(conversion_callback));
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 
-  void SendMessageSSEJSON(base::StringPiece string_piece,
+  void SendMessageSSEJSON(std::string_view string_piece,
                           APIRequestHelper::DataReceivedCallback callback) {
     loader_wrapper_handler_->send_sse_data_for_testing(string_piece, true,
                                                        std::move(callback));
   }
 
-  void SendMessageSSE(base::StringPiece string_piece,
+  void SendMessageSSE(std::string_view string_piece,
                       APIRequestHelper::DataReceivedCallback callback) {
     loader_wrapper_handler_->send_sse_data_for_testing(string_piece, false,
                                                        std::move(callback));
@@ -129,9 +118,9 @@ class ApiRequestHelperUnitTest : public testing::Test {
 
  protected:
   std::unique_ptr<APIRequestHelper> api_request_helper_;
+  base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -143,17 +132,14 @@ TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":1.8446744073709552e+19}";
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response,
-              ParseJson(expected_sanitized_response));
-  SendRequest("", "", base::Value());
-  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT));
-  SendRequest("{", "", base::Value());
-  SendRequest("0", "", base::Value());
-  SendRequest("a", "", base::Value());
-  // Android's sanitizer doesn't support trailing commas.
-#if !BUILDFLAG(IS_ANDROID)
-  SendRequest("{\"a\":1,}", "{\"a\":1}", ParseJson("{\"a\":1}"));
-#endif
+  SendRequest(server_raw_response, ParseJson(expected_sanitized_response));
+  SendRequest("", base::Value());
+  SendRequest("{}", base::Value(base::Value::Type::DICT));
+  SendRequest("{", base::Value());
+  SendRequest("0", base::Value());
+  SendRequest("a", base::Value());
+  // The sanitizer doesn't support trailing commas by default.
+  SendRequest("{\"a\":1,}", base::Value());
 }
 
 TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
@@ -161,56 +147,56 @@ TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"18446744073709551615\"}";
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response,
-              ParseJson(expected_sanitized_response), 200, net::OK,
+  SendRequest(server_raw_response, ParseJson(expected_sanitized_response), 200,
+              net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response,
                              expected_sanitized_response));
 
   // Broken json after conversion
   // expecting empty response body after sanitization
   SendRequest(
-      server_raw_response, "", base::Value(), 200, net::OK,
+      server_raw_response, base::Value(), 200, net::OK,
       base::BindOnce(&ConversionCallback, server_raw_response, "broken json"));
   // Empty json after conversion
   // expecting empty response body after sanitization
-  SendRequest(server_raw_response, "", base::Value(), 200, net::OK,
+  SendRequest(server_raw_response, base::Value(), 200, net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response, ""));
 
-  // Returning absl::nullopt in conversion callback results in empty response
+  // Returning std::nullopt in conversion callback results in empty response
   server_raw_response = "{}";
   SendRequest(
-      server_raw_response, "", base::Value(), 422, net::OK,
-      base::BindOnce(&ConversionCallback, server_raw_response, absl::nullopt));
+      server_raw_response, base::Value(), 422, net::OK,
+      base::BindOnce(&ConversionCallback, server_raw_response, std::nullopt));
 }
 
 TEST_F(ApiRequestHelperUnitTest, Is2XXResponseCode) {
   EXPECT_TRUE(
-      APIRequestResult(200, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(200, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_TRUE(
-      APIRequestResult(201, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(201, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_TRUE(
-      APIRequestResult(250, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(250, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_TRUE(
-      APIRequestResult(299, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(299, {}, {}, net::OK, GURL()).Is2XXResponseCode());
 
   EXPECT_FALSE(
-      APIRequestResult(0, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(0, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(1, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(1, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(-1, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(-1, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(199, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(199, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(300, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(300, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(500, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(500, {}, {}, net::OK, GURL()).Is2XXResponseCode());
 }
 
 TEST_F(ApiRequestHelperUnitTest, EnableCache) {
-  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT), 200, net::OK,
+  SendRequest("{}", base::Value(base::Value::Type::DICT), 200, net::OK,
               base::NullCallback(), false);
-  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT), 200, net::OK,
+  SendRequest("{}", base::Value(base::Value::Type::DICT), 200, net::OK,
               base::NullCallback(), true);
 }
 
@@ -218,13 +204,12 @@ TEST_F(ApiRequestHelperUnitTest, URLLoaderHandlerParsing) {
   base::RunLoop run_loop;
   SendMessageSSE("data: [DONE]",
                  base::BindRepeating(
-                     [](base::RunLoop* run_loop,
-                        data_decoder::DataDecoder::ValueOrError result) {
+                     [](base::RunLoop* run_loop, ValueOrError result) {
                        EXPECT_EQ("data: [DONE]", result->GetString());
                        run_loop->Quit();
                      },
                      &run_loop));
-  run_loop.RunUntilIdle();
+  run_loop.Run();
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
@@ -232,8 +217,7 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   SendMessageSSEJSON(
       "data: {\"completion\": \" Hello there!\", \"stop\": null}",
       base::BindRepeating(
-          [](base::RunLoop* run_loop,
-             data_decoder::DataDecoder::ValueOrError result) {
+          [](base::RunLoop* run_loop, ValueOrError result) {
             const std::string* completion =
                 result->GetDict().FindString("completion");
             EXPECT_EQ(" Hello there!", *completion);
@@ -246,8 +230,7 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   SendMessageSSEJSON(
       "data: {\"completion\": \" Hello there! How are you?\", \"stop\": null}",
       base::BindRepeating(
-          [](base::RunLoop* run_loop,
-             data_decoder::DataDecoder::ValueOrError result) {
+          [](base::RunLoop* run_loop, ValueOrError result) {
             const std::string* completion =
                 result->GetDict().FindString("completion");
             EXPECT_EQ(" Hello there! How are you?", *completion);
@@ -257,28 +240,16 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   run_loop2.Run();
 
   // This test verifies that the callback is not called when the response is
-  // "[DONE]". We use a run loop to wait for the callback to be called, and
-  // we expect it to never be called.
-  base::RunLoop run_loop3;
-  SendMessageSSEJSON("data: [DONE]",
-                     base::BindRepeating(
-                         [](base::RunLoop* run_loop,
-                            data_decoder::DataDecoder::ValueOrError result) {
-                           run_loop->Quit();
-                         },
-                         &run_loop3));
-  run_loop3.RunUntilIdle();
+  // "[DONE]".
+  SendMessageSSEJSON(
+      "data: [DONE]",
+      base::BindRepeating([](ValueOrError result) { ADD_FAILURE(); }));
+  task_environment_.RunUntilIdle();
 
   // Testing with no JSON and an empty string
-  base::RunLoop run_loop4;
-  SendMessageSSEJSON("",
-                     base::BindRepeating(
-                         [](base::RunLoop* run_loop,
-                            data_decoder::DataDecoder::ValueOrError result) {
-                           run_loop->Quit();
-                         },
-                         &run_loop4));
-  run_loop4.RunUntilIdle();
+  SendMessageSSEJSON(
+      "", base::BindRepeating([](ValueOrError result) { ADD_FAILURE(); }));
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace api_request_helper

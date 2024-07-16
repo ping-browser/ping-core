@@ -3,13 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+
 #include <map>
 #include <string>
 
 #include "base/command_line.h"
 #include "base/containers/contains.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
+#include "base/no_destructor.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/switches.h"
 
 namespace brave_wallet {
 
@@ -59,7 +62,7 @@ GetEthBalanceScannerContractAddresses() {
             "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
            // BSC, Optimism, and Arbitrum contract addresses pulled from
            // https://github.com/onyb/x/blob/75800edce88688dcfe59dd6b4a664087862369bb/core/evm/scanner/balances/EVMScanner.ts
-           {mojom::kBinanceSmartChainMainnetChainId,
+           {mojom::kBnbSmartChainMainnetChainId,
             "0x53242a975aa7c607e17138b0e0231162e3e68593"},
            {mojom::kOptimismMainnetChainId,
             "0x9e5076DF494FC949aBc4461F4E57592B81517D81"},
@@ -103,6 +106,29 @@ const std::string GetAssetRatioBaseURL() {
   }
 
   return ratios_url;
+}
+
+// See https://api-docs.ankr.com/reference/post_ankr-getaccountbalance-1
+// for full list.
+const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      blockchains({{mojom::kArbitrumMainnetChainId, "arbitrum"},
+                   {mojom::kAvalancheMainnetChainId, "avalanche"},
+                   {mojom::kBaseMainnetChainId, "base"},
+                   {mojom::kBnbSmartChainMainnetChainId, "bsc"},
+                   {mojom::kMainnetChainId, "eth"},
+                   {mojom::kFantomMainnetChainId, "fantom"},
+                   {mojom::kFlareMainnetChainId, "flare"},
+                   {mojom::kGnosisChainId, "gnosis"},
+                   {mojom::kOptimismMainnetChainId, "optimism"},
+                   {mojom::kPolygonMainnetChainId, "polygon"},
+                   {mojom::kPolygonZKEVMChainId, "polygon_zkevm"},
+                   {mojom::kRolluxMainnetChainId, "rollux"},
+                   {mojom::kSyscoinMainnetChainId, "syscoin"},
+                   {mojom::kZkSyncEraChainId, "zksync_era"},
+                   {mojom::kGoerliChainId, "eth_goerli"}});
+
+  return *blockchains;
 }
 
 }  // namespace brave_wallet

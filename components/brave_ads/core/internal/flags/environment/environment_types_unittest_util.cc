@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_unittest_util.h"
 
-#include "base/check.h"
-
-namespace brave_ads {
+namespace brave_ads::test {
 
 namespace {
 
@@ -16,10 +14,7 @@ constexpr char kStagingEnvironment[] = "Staging";
 
 }  // namespace
 
-std::string EnvironmentTypeEnumToStringForTesting(
-    const mojom::EnvironmentType environment_type) {
-  CHECK(mojom::IsKnownEnumValue(environment_type));
-
+std::string ToString(const mojom::EnvironmentType environment_type) {
   switch (environment_type) {
     case mojom::EnvironmentType::kProduction: {
       return kProductionEnvironment;
@@ -31,4 +26,4 @@ std::string EnvironmentTypeEnumToStringForTesting(
   }
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

@@ -13,13 +13,13 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 
 namespace base {
@@ -67,16 +67,23 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
       IsSearchPromotionEnabledCallback callback) override;
   void UseColorBackground(const std::string& color,
                           bool use_random_color) override;
+  void GetSearchEngines(GetSearchEnginesCallback callback) override;
+  void SearchWhatYouTyped(const std::string& host,
+                          const std::string& query,
+                          bool alt_key,
+                          bool ctrl_key,
+                          bool meta_key,
+                          bool shift_key) override;
 
   // Observe BraveNTPCustomBackgroundService.
   void OnBackgroundUpdated();
   void OnCustomImageBackgroundsUpdated();
 
   // SelectFileDialog::Listener overrides:
-  void FileSelected(const base::FilePath& path,
+  void FileSelected(const ui::SelectedFileInfo& file,
                     int index,
                     void* params) override;
-  void MultiFilesSelected(const std::vector<base::FilePath>& files,
+  void MultiFilesSelected(const std::vector<ui::SelectedFileInfo>& files,
                           void* params) override;
   void FileSelectionCanceled(void* params) override;
 

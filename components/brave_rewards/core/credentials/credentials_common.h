@@ -13,17 +13,19 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/credentials/credentials.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace credential {
 
 class CredentialsCommon {
  public:
-  explicit CredentialsCommon(RewardsEngineImpl& engine);
+  explicit CredentialsCommon(RewardsEngine& engine);
   ~CredentialsCommon();
 
   void GetBlindedCreds(const CredentialsTrigger& trigger,
@@ -44,7 +46,8 @@ class CredentialsCommon {
                             const CredentialsTrigger& trigger,
                             mojom::Result result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
+  base::WeakPtrFactory<CredentialsCommon> weak_factory_{this};
 };
 
 }  // namespace credential

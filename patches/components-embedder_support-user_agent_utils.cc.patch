@@ -1,12 +1,12 @@
 diff --git a/components/embedder_support/user_agent_utils.cc b/components/embedder_support/user_agent_utils.cc
-index 456414fea977bfdc9f41a620e626014e2e499fb4..f0a4cb5b3de06f7a66eff39ee23450b5a8c97bc6 100644
+index 1a388cf3b3c0b6817c6c8ced0a05c3d591ed10fd..e4cb27f1553830fbd0f064ac65ad4abbbe52135f 100644
 --- a/components/embedder_support/user_agent_utils.cc
 +++ b/components/embedder_support/user_agent_utils.cc
-@@ -248,6 +248,7 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
+@@ -190,6 +190,7 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
  #if !BUILDFLAG(CHROMIUM_BRANDING)
    brand = version_info::GetProductName();
  #endif
 +  BRAVE_GET_USER_AGENT_BRAND_LIST
-   absl::optional<std::string> maybe_brand_override =
+   std::optional<std::string> maybe_brand_override =
        base::GetFieldTrialParamValueByFeature(features::kGreaseUACH,
                                               "brand_override");

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_links.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
@@ -18,7 +19,7 @@ namespace database {
 
 class DatabaseServerPublisherBanner : public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherBanner(RewardsEngineImpl& engine);
+  explicit DatabaseServerPublisherBanner(RewardsEngine& engine);
   ~DatabaseServerPublisherBanner() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,
@@ -31,15 +32,16 @@ class DatabaseServerPublisherBanner : public DatabaseTable {
                  GetPublisherBannerCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
+  void OnGetRecord(GetPublisherBannerCallback callback,
                    const std::string& publisher_key,
-                   GetPublisherBannerCallback callback);
+                   mojom::DBCommandResponsePtr response);
 
-  void OnGetRecordLinks(const std::map<std::string, std::string>& links,
-                        const mojom::PublisherBanner& banner,
-                        GetPublisherBannerCallback callback);
+  void OnGetRecordLinks(const mojom::PublisherBanner& banner,
+                        GetPublisherBannerCallback callback,
+                        const std::map<std::string, std::string>& links);
 
   DatabaseServerPublisherLinks links_;
+  base::WeakPtrFactory<DatabaseServerPublisherBanner> weak_factory_{this};
 };
 
 }  // namespace database

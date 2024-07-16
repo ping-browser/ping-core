@@ -39,12 +39,11 @@ TEST_F(BraveAdsTextClassificationModelTest,
        DoNotGetSegmentsForUninitializedResource) {
   // Arrange
   TextClassificationProcessor processor(*resource_);
-  processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
-
-  const TextClassificationModel model;
+  processor.Process(/*text=*/"The quick brown fox jumps over the lazy dog");
+  task_environment_.RunUntilIdle();
 
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetTextClassificationSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -57,11 +56,10 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   const std::string text;
   TextClassificationProcessor processor(*resource_);
   processor.Process(text);
-
-  const TextClassificationModel model;
+  task_environment_.RunUntilIdle();
 
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetTextClassificationSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -73,14 +71,10 @@ TEST_F(BraveAdsTextClassificationModelTest,
   ASSERT_TRUE(LoadResource());
 
   TextClassificationProcessor processor(*resource_);
-  processor.Process(/*text*/ "Some content about technology & computing");
+  processor.Process(/*text=*/"Some content about technology & computing");
+  task_environment_.RunUntilIdle();
 
-  const TextClassificationModel model;
-
-  // Act
-  const SegmentList segments = model.GetSegments();
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {
       "technology & computing-technology & computing",
       "technology & computing-unix",
@@ -138,8 +132,7 @@ TEST_F(BraveAdsTextClassificationModelTest,
       "science-science",
       "arts & entertainment-animation",
       "personal finance-insurance"};
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetTextClassificationSegments());
 }
 
 TEST_F(BraveAdsTextClassificationModelTest,
@@ -155,13 +148,9 @@ TEST_F(BraveAdsTextClassificationModelTest,
   for (const auto& text : texts) {
     processor.Process(text);
   }
+  task_environment_.RunUntilIdle();
 
-  const TextClassificationModel model;
-
-  // Act
-  const SegmentList segments = model.GetSegments();
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {
       "technology & computing-technology & computing",
       "personal finance-banking",
@@ -260,18 +249,15 @@ TEST_F(BraveAdsTextClassificationModelTest,
       "hobbies & interests-dance",
       "travel-adventure travel",
       "food & drink-pasta"};
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetTextClassificationSegments());
 }
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
-  const TextClassificationModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetTextClassificationSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());

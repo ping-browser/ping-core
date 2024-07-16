@@ -12,7 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 class Profile;
 
@@ -36,6 +36,8 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
   void OnRewardsInitialized(RewardsService* rewards_service) override;
 
   void OnRewardsWalletCreated() override;
+
+  void OnTermsOfServiceUpdateAccepted() override;
 
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
@@ -64,19 +66,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
   void OnExternalWalletLoggedOut() override;
 
   void OnExternalWalletDisconnected() override;
-
-  void OnUnblindedTokensReady(
-      brave_rewards::RewardsService* rewards_service) override;
-
-  void OnFetchPromotions(
-      RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result,
-      const std::vector<brave_rewards::mojom::PromotionPtr>& list) override;
-
-  void OnPromotionFinished(
-      RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result,
-      brave_rewards::mojom::PromotionPtr promotion) override;
 
   void OnCompleteReset(const bool success) override;
 

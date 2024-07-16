@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseContributionInfoPublishers : public DatabaseTable {
  public:
-  explicit DatabaseContributionInfoPublishers(RewardsEngineImpl& engine);
+  explicit DatabaseContributionInfoPublishers(RewardsEngine& engine);
   ~DatabaseContributionInfoPublishers() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,
@@ -32,16 +32,15 @@ class DatabaseContributionInfoPublishers : public DatabaseTable {
 
   void UpdateContributedAmount(const std::string& contribution_id,
                                const std::string& publisher_key,
-                               LegacyResultCallback callback);
+                               ResultCallback callback);
 
  private:
-  void OnGetRecordByContributionList(
-      mojom::DBCommandResponsePtr response,
-      ContributionPublisherListCallback callback);
+  void OnGetRecordByContributionList(ContributionPublisherListCallback callback,
+                                     mojom::DBCommandResponsePtr response);
 
   void OnGetContributionPublisherInfoMap(
-      mojom::DBCommandResponsePtr response,
-      ContributionPublisherPairListCallback callback);
+      ContributionPublisherPairListCallback callback,
+      mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

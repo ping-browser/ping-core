@@ -15,18 +15,21 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kMixedContentAutoupgrade, base::FEATURE_ENABLED_BY_DEFAULT},
     {kPrefetchPrivacyChanges, base::FEATURE_ENABLED_BY_DEFAULT},
     {kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kUACHOverrideBlank, base::FEATURE_ENABLED_BY_DEFAULT},
 
+    {kAdAuctionReportingWithMacroApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kAttributionReportingInBrowserMigration,
+     base::FEATURE_DISABLED_BY_DEFAULT},
     {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBiddingAndScoringDebugReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kBrowsingTopicsXHR, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kClientHintsMetaEquivDelegateCH, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kClientHintsFormFactors, base::FEATURE_DISABLED_BY_DEFAULT},
     {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFencedFramesM120FeaturesPart2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeBiddingAndAuctionServer, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeConsiderKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -36,31 +39,20 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivateAggregationApi, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivateAggregationApiMultipleCloudProviders,
+     base::FEATURE_DISABLED_BY_DEFAULT},
+    // This feature uses shared memory to reduce IPCs to access cookies, but
+    // Ephemeral Storage can switch cookie storage backend at runtime, so we
+    // can't use it.
+    {kReduceCookieIPCs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
     {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSharedStorageAPIM118, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSharedStorageAPIM125, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSharedStorageSelectURLLimit, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
-
-// Allow certain client hints in request header.
-BASE_FEATURE(kAllowCertainClientHints,
-             "AllowCertainClientHints",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
-// Clamp platform version client hint's patch field.
-// Platform version client hint is only sent when requested and when the
-// AllowCertainClientHints feature is turned on.
-BASE_FEATURE(kClampPlatformVersionClientHint,
-             "ClampPlatformVersionClientHint",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-constexpr base::FeatureParam<std::string>
-    kClampPlatformVersionClientHintPatchValue{&kClampPlatformVersionClientHint,
-                                              "patch_value", "0"};
 
 BASE_FEATURE(kFileSystemAccessAPI,
              "FileSystemAccessAPI",
@@ -98,6 +90,11 @@ BASE_FEATURE(kBraveRoundTimeStamps,
              "BraveRoundTimeStamps",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+// Enables the Global Privacy Control header and navigator APIs.
+BASE_FEATURE(kBraveGlobalPrivacyControl,
+             "BraveGlobalPrivacyControl",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 // Enable EventSource connection pool limit per eTLD+1.
 BASE_FEATURE(kRestrictEventSourcePool,
              "RestrictEventSourcePool",
@@ -107,6 +104,12 @@ BASE_FEATURE(kRestrictEventSourcePool,
              base::FEATURE_ENABLED_BY_DEFAULT
 #endif
 );
+
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+BASE_FEATURE(kMiddleButtonClickAutoscroll,
+             "MiddelButtonClickAutoscroll",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 
 bool IsPrerender2Enabled() {
   return false;

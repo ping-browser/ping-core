@@ -6,7 +6,9 @@
 #include "brave/browser/prefs/brave_pref_service_incognito_allowlist.h"
 
 #include "base/no_destructor.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
@@ -16,31 +18,38 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if defined(TOOLKIT_VIEWS)
-#include "brave/components/sidebar/pref_names.h"
+#include "brave/components/sidebar/browser/pref_names.h"
 #endif
 
 namespace brave {
 
 const std::vector<const char*>& GetBravePersistentPrefNames() {
   static base::NoDestructor<std::vector<const char*>> brave_allowlist({
-    kBraveAutofillPrivateWindows,
+      kBraveAutofillPrivateWindows,
 #if !BUILDFLAG(IS_ANDROID)
-        prefs::kSidePanelHorizontalAlignment, kTabMuteIndicatorNotClickable,
-        brave_tabs::kVerticalTabsExpandedWidth,
-        brave_tabs::kVerticalTabsEnabled, brave_tabs::kVerticalTabsCollapsed,
-        brave_tabs::kVerticalTabsFloatingEnabled,
+      kShowWalletIconOnToolbar,
+      prefs::kSidePanelHorizontalAlignment,
+      kTabMuteIndicatorNotClickable,
+      brave_tabs::kVerticalTabsExpandedWidth,
+      brave_tabs::kVerticalTabsEnabled,
+      brave_tabs::kVerticalTabsCollapsed,
+      brave_tabs::kVerticalTabsFloatingEnabled,
+      brave_tabs::kVerticalTabsShowTitleOnWindow,
+      brave_tabs::kVerticalTabsOnRight,
+      brave_tabs::kVerticalTabsShowScrollbar,
 #endif
 #if defined(TOOLKIT_VIEWS)
-        sidebar::kSidePanelWidth,
+      sidebar::kSidePanelWidth,
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-        ai_chat::prefs::kBraveChatHasSeenDisclaimer,
-        ai_chat::prefs::kBraveChatAutoGenerateQuestions,
+      ai_chat::prefs::kLastAcceptedDisclaimer,
+      ai_chat::prefs::kBraveChatAutocompleteProviderEnabled,
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+      brave::bookmarks::prefs::kShowAllBookmarksButton,
   });
 
   return *brave_allowlist;

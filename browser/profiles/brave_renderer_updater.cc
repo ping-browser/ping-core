@@ -14,7 +14,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -25,6 +25,11 @@
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_channel_proxy.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry.h"
@@ -32,12 +37,19 @@
 
 BraveRendererUpdater::BraveRendererUpdater(
     Profile* profile,
-    brave_wallet::KeyringService* keyring_service)
-    : profile_(profile), keyring_service_(keyring_service) {
+    brave_wallet::KeyringService* keyring_service,
+    PrefService* local_state)
+    : profile_(profile),
+      keyring_service_(keyring_service),
+      local_state_(local_state) {
   PrefService* pref_service = profile->GetPrefs();
   brave_wallet_ethereum_provider_.Init(kDefaultEthereumWallet, pref_service);
   brave_wallet_solana_provider_.Init(kDefaultSolanaWallet, pref_service);
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
+#if BUILDFLAG(ENABLE_TOR)
+  onion_only_in_tor_windows_.Init(tor::prefs::kOnionOnlyInTorWindows,
+                                  pref_service);
+#endif
 
   CheckActiveWallet();
 
@@ -59,6 +71,21 @@ BraveRendererUpdater::BraveRendererUpdater(
       base::BindRepeating(
           &BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers,
           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_TOR)
+  pref_change_registrar_.Add(
+      tor::prefs::kOnionOnlyInTorWindows,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  widevine_enabled_.Init(kWidevineEnabled, local_state);
+  local_state_change_registrar_.Init(local_state);
+  local_state_change_registrar_.Add(
+      kWidevineEnabled,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+#endif
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
@@ -119,8 +146,7 @@ bool BraveRendererUpdater::CheckActiveWallet() {
   if (!keyring_service_) {
     return false;
   }
-  bool is_wallet_created = keyring_service_->IsKeyringCreated(
-      brave_wallet::mojom::kDefaultKeyringId);
+  bool is_wallet_created = keyring_service_->IsWalletCreatedSync();
   bool changed = is_wallet_created != is_wallet_created_;
   is_wallet_created_ = is_wallet_created;
   return changed;
@@ -140,21 +166,19 @@ void BraveRendererUpdater::UpdateRenderer(
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
   bool has_installed_metamask =
-      registry &&
-      registry->enabled_extensions().Contains(metamask_extension_id);
+      registry && registry->enabled_extensions().Contains(kMetamaskExtensionId);
 #else
   bool has_installed_metamask = false;
 #endif
 
   bool should_ignore_brave_wallet_for_eth =
       !is_wallet_created_ || has_installed_metamask;
-  bool should_ignore_brave_wallet_for_sol = !is_wallet_created_;
 
   auto default_ethereum_wallet =
       static_cast<brave_wallet::mojom::DefaultWallet>(
           brave_wallet_ethereum_provider_.GetValue());
   bool install_window_brave_ethereum_provider =
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled() &&
+      is_wallet_allowed_for_context_ &&
       default_ethereum_wallet != brave_wallet::mojom::DefaultWallet::None;
   bool install_window_ethereum_provider =
       ((default_ethereum_wallet ==
@@ -162,7 +186,7 @@ void BraveRendererUpdater::UpdateRenderer(
         !should_ignore_brave_wallet_for_eth) ||
        default_ethereum_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
+      is_wallet_allowed_for_context_;
   bool allow_overwrite_window_ethereum_provider =
       default_ethereum_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
@@ -170,18 +194,26 @@ void BraveRendererUpdater::UpdateRenderer(
   auto default_solana_wallet = static_cast<brave_wallet::mojom::DefaultWallet>(
       brave_wallet_solana_provider_.GetValue());
   bool brave_use_native_solana_wallet =
-      ((default_solana_wallet ==
-            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
-        !should_ignore_brave_wallet_for_sol) ||
+      (default_solana_wallet ==
+           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
        default_solana_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
+      is_wallet_allowed_for_context_;
   bool allow_overwrite_window_solana_provider =
       default_solana_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
 
   PrefService* pref_service = profile_->GetPrefs();
   bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
+  bool onion_only_in_tor_windows = true;
+#if BUILDFLAG(ENABLE_TOR)
+  onion_only_in_tor_windows =
+      pref_service->GetBoolean(tor::prefs::kOnionOnlyInTorWindows);
+#endif
+  bool widevine_enabled = false;
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+#endif
 
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
@@ -189,5 +221,6 @@ void BraveRendererUpdater::UpdateRenderer(
           install_window_ethereum_provider,
           allow_overwrite_window_ethereum_provider,
           brave_use_native_solana_wallet,
-          allow_overwrite_window_solana_provider, de_amp_enabled));
+          allow_overwrite_window_solana_provider, de_amp_enabled,
+          onion_only_in_tor_windows, widevine_enabled));
 }

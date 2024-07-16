@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 import { ArrowRightIcon, LoaderIcon } from 'brave-ui/components/icons'
+import * as leo from '@brave/leo/tokens/css/variables'
+
 import LinkIcon from '../../../assets/svg-icons/link-icon.svg'
 import { WarningBoxIcon } from '../shared-panel-styles'
 
@@ -86,6 +88,8 @@ export const TransactionAmountBig = styled.span`
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text01};
   font-weight: 600;
+  word-break: break-all;
+  text-align: center;
 `
 
 export const TransactionFiatAmountBig = styled.span`
@@ -95,9 +99,11 @@ export const TransactionFiatAmountBig = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   margin-bottom: 10px;
+  word-break: break-all;
+  text-align: center;
 `
 
-export const MessageBox = styled.div<{ isApprove: boolean, isDetails: boolean }>`
+export const MessageBox = styled.div<{ isDetails: boolean }>`
   display: flex;
   align-items: flex-start;
   justify-content: 'flex-start';
@@ -105,10 +111,9 @@ export const MessageBox = styled.div<{ isApprove: boolean, isDetails: boolean }>
   border: 1px solid ${(p) => p.theme.color.divider01};
   box-sizing: border-box;
   border-radius: 4px;
-  width: 255px;
-  height: ${(p) => p.isApprove ? '120px' : '140px'};
-  padding: ${(p) => p.isDetails ? '14px' : '4px 14px'};
-  margin-bottom: 14px;
+  width: 90%;
+  height: 140px;
+  padding: ${(p) => (p.isDetails ? '14px' : '4px 14px')};
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
@@ -130,22 +135,14 @@ export const TransactionTypeText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   font-weight: 600;
-`
-
-export const FromToRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  width: 100%;
-  margin-bottom: 8px;
+  word-break: break-all;
+  text-align: left;
 `
 
 export const ArrowIcon = styled(ArrowRightIcon)`
-  width: auto;
+  display: inline-block;
+  width: 16px;
   height: 16px;
-  margin-right: 6px;
-  margin-left: 6px;
   color: ${(p) => p.theme.color.text03};
 `
 
@@ -198,8 +195,10 @@ export const TransactionText = styled.span<{ hasError?: boolean }>`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.hasError ? p.theme.color.errorText : p.theme.color.text03};
+  color: ${(p) =>
+    p.hasError ? p.theme.color.errorText : p.theme.color.text03};
   text-align: left;
+  word-break: break-all;
 `
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
@@ -214,72 +213,10 @@ export const WarningIcon = styled(WarningBoxIcon)`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
+  color: ${(p) => p.theme.color.interactive08};
   height: 25px;
   width: 24px;
-  opacity: .4;
-`
-
-export const GroupBox = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: 'flex-start';
-  flex-direction: column;
-  border: 1px solid ${(p) => p.theme.color.divider01};
-  box-sizing: border-box;
-  border-radius: 4px;
-  width: 255px;
-  min-height: 82px;
-  padding: 4px 14px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  position: relative;
-  margin-top: 10px;
-  background: ${p => p.theme.color.infoBackground};
-`
-
-export const GroupBoxColumn = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  flex-direction: column;
-`
-
-export const GroupBoxTitle = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-  word-break: break-all;
-`
-
-export const GroupBoxText = styled.div<{ dark: boolean }>`
-  font-family: Poppins;
-  font-size: 11px;
-  font-weight: ${(p) => p.dark ? 600 : 400};
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.dark ? p.theme.color.text02 : p.theme.color.text03};
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: row;
-`
-
-export const GroupEnumeration = styled.code`
-  padding-right: 5px;
-`
-
-export const SmallLoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
-  height: 16px;
-  width: 16px;
-  opacity: .4;
-  padding-left: 5px;
+  opacity: 0.4;
 `
 
 export const ContractButton = styled(WalletButton)`
@@ -301,12 +238,24 @@ export const ContractButton = styled(WalletButton)`
   padding: 0px;
 `
 
+export const InlineAddressButton = styled(ContractButton)`
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 4px;
+  gap: 4px;
+  text-align: left;
+  vertical-align: center;
+  color: ${leo.color.text.secondary};
+  font-size: 11px;
+`
+
 export const ExplorerIcon = styled.div`
- -webkit-mask-image: url(${LinkIcon});
- mask-image: url(${LinkIcon});
- width: 12px;
- height: 12px;
- margin-left: 8px;
- mask-size: contain;
- background-color: ${(p) => p.theme.color.interactive05};
+  -webkit-mask-image: url(${LinkIcon});
+  mask-image: url(${LinkIcon});
+  width: 12px;
+  height: 12px;
+  margin-left: 8px;
+  mask-size: contain;
+  background-color: ${(p) => p.theme.color.interactive05};
 `

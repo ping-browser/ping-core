@@ -5,21 +5,23 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_highlight.h"
 
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 
 BraveTabGroupHighlight::~BraveTabGroupHighlight() = default;
 
 SkPath BraveTabGroupHighlight::GetPath() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return TabGroupHighlight::GetPath();
-
-  if (!tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser())) {
+  if (!tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()) &&
+      !tabs::features::HorizontalTabsUpdateEnabled()) {
     return TabGroupHighlight::GetPath();
   }
 
-  // We don't have to paint highlight for vertical tabs
   return {};
 }
+
+BEGIN_METADATA(BraveTabGroupHighlight)
+END_METADATA

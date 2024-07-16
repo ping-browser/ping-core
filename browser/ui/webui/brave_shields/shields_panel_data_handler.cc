@@ -9,7 +9,7 @@
 
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 
 using brave_shields::BraveShieldsDataController;
 using brave_shields::mojom::SiteSettings;
@@ -17,7 +17,7 @@ using brave_shields::mojom::SiteSettings;
 ShieldsPanelDataHandler::ShieldsPanelDataHandler(
     mojo::PendingReceiver<brave_shields::mojom::DataHandler>
         data_handler_receiver,
-    ui::MojoBubbleWebUIController* webui_controller,
+    TopChromeWebUIController* webui_controller,
     TabStripModel* tab_strip_model)
     : data_handler_receiver_(this, std::move(data_handler_receiver)),
       webui_controller_(webui_controller) {
@@ -69,8 +69,6 @@ void ShieldsPanelDataHandler::GetSiteSettings(
       active_shields_data_controller_->GetFingerprintMode();
   settings.cookie_block_mode =
       active_shields_data_controller_->GetCookieBlockMode();
-  settings.is_https_everywhere_enabled =
-      active_shields_data_controller_->GetHTTPSEverywhereEnabled();
   settings.https_upgrade_mode =
       active_shields_data_controller_->GetHttpsUpgradeMode();
   settings.is_noscript_enabled =
@@ -135,13 +133,6 @@ void ShieldsPanelDataHandler::BlockAllowedScripts(
   active_shields_data_controller_->BlockAllowedScripts(origins);
 }
 
-void ShieldsPanelDataHandler::SetHTTPSEverywhereEnabled(bool is_enabled) {
-  if (!active_shields_data_controller_)
-    return;
-
-  active_shields_data_controller_->SetIsHTTPSEverywhereEnabled(is_enabled);
-}
-
 void ShieldsPanelDataHandler::SetBraveShieldsEnabled(bool is_enabled) {
   if (!active_shields_data_controller_)
     return;
@@ -163,7 +154,9 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
   if (!active_shields_data_controller_)
     return;
 
-  OpenWebcompatReporterDialog(active_shields_data_controller_->web_contents());
+  webcompat_reporter::OpenReporterDialog(
+      active_shields_data_controller_->web_contents(),
+      webcompat_reporter::UISource::kShieldsPanel);
 }
 
 void ShieldsPanelDataHandler::UpdateFavicon() {

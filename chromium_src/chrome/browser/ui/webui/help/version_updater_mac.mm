@@ -3,18 +3,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/webui/help/version_updater_mac.h"
+#include "brave/updater/buildflags.h"
 
-#include "base/mac/foundation_util.h"
+#if BUILDFLAG(BRAVE_ENABLE_UPDATER)
+#include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
+#else
+
+#include "brave/chromium_src/chrome/browser/ui/webui/help/version_updater_mac.h"
+
+#include <memory>
+
+#include "base/apple/foundation_util.h"
+#include "base/memory/ptr_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/escape.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "chrome/browser/mac/keystone_glue.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -52,8 +61,7 @@
 }
 
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [super dealloc];
+  [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 - (void)handleStatusNotification:(NSNotification*)notification {
@@ -62,10 +70,9 @@
 
 @end  // @implementation KeystoneObserver
 
-
-VersionUpdater* VersionUpdater::Create(
+std::unique_ptr<VersionUpdater> VersionUpdater::Create(
     content::WebContents* web_contents) {
-  return new VersionUpdaterMac;
+  return base::WrapUnique(new VersionUpdaterMac());
 }
 
 VersionUpdaterMac::VersionUpdaterMac()
@@ -73,8 +80,7 @@ VersionUpdaterMac::VersionUpdaterMac()
   show_promote_button_ = false;
 }
 
-VersionUpdaterMac::~VersionUpdaterMac() {
-}
+VersionUpdaterMac::~VersionUpdaterMac() {}
 
 void VersionUpdaterMac::CheckForUpdate(StatusCallback status_callback,
                                        PromoteCallback promote_callback) {
@@ -123,11 +129,11 @@ void VersionUpdaterMac::PromoteUpdater() {
 }
 
 void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
-  AutoupdateStatus sparkle_status = static_cast<AutoupdateStatus>(
-      [base::mac::ObjCCastStrict<NSNumber>(
+  AutoupdateStatus sparkle_status =
+      static_cast<AutoupdateStatus>([base::apple::ObjCCastStrict<NSNumber>(
           [dictionary objectForKey:kAutoupdateStatusStatus]) intValue]);
-  std::string error_messages = base::SysNSStringToUTF8(
-      base::mac::ObjCCastStrict<NSString>(
+  std::string error_messages =
+      base::SysNSStringToUTF8(base::apple::ObjCCastStrict<NSString>(
           [dictionary objectForKey:kAutoupdateStatusErrorMessages]));
 
   std::u16string message;
@@ -169,8 +175,8 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
     case kAutoupdateCheckFailed:
     case kAutoupdateInstallFailed:
       status = FAILED;
-      message = l10n_util::GetStringFUTF16Int(IDS_UPGRADE_ERROR,
-                                              sparkle_status);
+      message =
+          l10n_util::GetStringFUTF16Int(IDS_UPGRADE_ERROR, sparkle_status);
       break;
 
     default:
@@ -198,11 +204,13 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
     }
   }
 
-  if (!status_callback_.is_null())
+  if (!status_callback_.is_null()) {
     status_callback_.Run(status, 0, false, false, std::string(), 0, message);
+  }
 }
-
 
 void VersionUpdaterMac::UpdateShowPromoteButton() {
   NOTIMPLEMENTED();
 }
+
+#endif  // BUILDFLAG(BRAVE_ENABLE_UPDATER)

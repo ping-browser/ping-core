@@ -1,3 +1,7 @@
-# Brave Ads API
+# Core
 
-Public facing API documentation can be found in [ads_service.h](../browser/ads_service.h) and [ads_client.h](ads_client.h). Unit and integration test documentation can be found in [README.md](../core/internal/common/unittest/README.md).
+Platform independent implementation of the world's first global ad platform built on privacy, see [Brave Ads](https://brave.com/brave-ads-launch/).
+
+For more details, refer to [glossary of terms](../GLOSSARY.md).
+
+Please add to it!

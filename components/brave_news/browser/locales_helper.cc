@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_news/browser/locales_helper.h"
 
+#include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/contains.h"
@@ -23,7 +25,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 namespace {
@@ -32,11 +33,23 @@ namespace {
 // list of matches for enabling Brave News on the NTP and prompting the user
 // to opt-in.
 constexpr auto kEnabledLanguages =
-    base::MakeFixedFlatSet<base::StringPiece>({"en", "ja"});
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "en",
+                                                 "ja",
+                                             });
 // We can add to this list as new locales become available to have Brave News
 // show when it's ready for those users.
 constexpr auto kEnabledLocales =
-    base::MakeFixedFlatSet<base::StringPiece>({"es_ES", "es_MX", "pt_BR"});
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "de_DE"
+                                                 "es_AR",
+                                                 "es_ES",
+                                                 "es_MX",
+                                                 "fr_FR",
+                                                 "pt_BR",
+                                             });
 
 bool HasAnyLocale(const base::flat_set<std::string>& locales,
                   const mojom::Publisher* publisher) {
@@ -46,7 +59,7 @@ bool HasAnyLocale(const base::flat_set<std::string>& locales,
                               });
 }
 
-absl::optional<std::string> GetBestMissingLocale(
+std::optional<std::string> GetBestMissingLocale(
     const base::flat_set<std::string>& locales,
     const std::vector<mojom::Publisher*> publishers) {
   base::flat_map<std::string, uint32_t> missing_locale_counts;
@@ -105,7 +118,7 @@ base::flat_set<std::string> GetMinimalLocalesSet(
 
   // While there are publishers which won't be included in the feed, add a new
   // locale and recalculate what's missing.
-  absl::optional<std::string> best_missing_locale;
+  std::optional<std::string> best_missing_locale;
   while ((best_missing_locale =
               GetBestMissingLocale(result, subscribed_publishers))) {
     result.insert(best_missing_locale.value());

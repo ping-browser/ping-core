@@ -11,7 +11,6 @@
 #include "content/public/browser/navigation_throttle.h"
 
 class GURL;
-class PrefService;
 
 namespace content {
 class NavigationHandle;
@@ -22,20 +21,12 @@ namespace tor {
 
 class OnionLocationNavigationThrottle : public content::NavigationThrottle {
  public:
-  class Delegate {
-   public:
-    virtual ~Delegate() = default;
-    virtual void OpenInTorWindow(content::WebContents* context,
-                                 GURL onion_location) = 0;
-  };
   static std::unique_ptr<OnionLocationNavigationThrottle>
   MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle,
                          bool is_tor_disabled,
-                         std::unique_ptr<Delegate> delegate,
                          bool is_tor_profile);
   explicit OnionLocationNavigationThrottle(
       content::NavigationHandle* navigation_handle,
-      std::unique_ptr<Delegate> delegate,
       bool is_tor_profile);
   ~OnionLocationNavigationThrottle() override;
 
@@ -46,10 +37,6 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
 
  private:
   bool is_tor_profile_ = false;
-
-  const raw_ptr<PrefService> pref_service_ = nullptr;
-
-  std::unique_ptr<Delegate> delegate_;
 
   OnionLocationNavigationThrottle(const OnionLocationNavigationThrottle&) =
       delete;

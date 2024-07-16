@@ -7,6 +7,8 @@
 
 // Include these headers from the original download_item_view.cc to prevent
 // unintentional redefinitions of Button into BraveDownloadItemViewButton.
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/button/image_button_factory.h"
 #include "ui/views/controls/button/md_text_button.h"
@@ -19,6 +21,7 @@ namespace {
 // and relays them to BraveDownloadItemView to make decisions on when to hide
 // the download item's URL (i.e. default) and when to show it (i.e. on hover).
 class BraveDownloadItemViewButton : public Button {
+  METADATA_HEADER(BraveDownloadItemViewButton, Button)
  public:
   using Button::Button;
 
@@ -44,6 +47,9 @@ class BraveDownloadItemViewButton : public Button {
     item->OnViewBlurred(observed_view);
   }
 };
+
+BEGIN_METADATA(BraveDownloadItemViewButton)
+END_METADATA
 
 }  // namespace
 

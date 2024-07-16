@@ -10,7 +10,7 @@ import {
 } from 'chrome://resources/brave/polymer_overriding.js'
 import { loadTimeData } from '../i18n_setup.js'
 import '../brave_system_page/brave_performance_page.js'
-// <if expr="enable_brave_vpn and is_win">
+// <if expr="enable_brave_vpn_wireguard">
 import '../brave_system_page/brave_vpn_page.js'
 // </if>
 import '../shortcuts_page/shortcuts_page.js'
@@ -46,7 +46,8 @@ RegisterPolymerTemplateModifications({
               on-click="onShortcutsClicked_"
               id="shortcutsButton"
               label=${loadTimeData.getString('braveShortcutsPage')}
-              role-description="Subpage button">
+              role-description=
+                ${loadTimeData.getString('subpageArrowRoleDescription')}>
               <span id="shortcutsButtonSubLabel" slot="sub-label">
             </cr-link-row>
             <div class="hr"></div>
@@ -76,19 +77,48 @@ RegisterPolymerTemplateModifications({
         <settings-toggle-button
           class="cr-row"
           pref="{{prefs.brave.enable_closing_last_tab}}"
-          label="${loadTimeData.getString('braveHelpTipsClosingLastTab')}"
+          label="${loadTimeData.getString('braveClosingLastTab')}"
         >
         </settings-toggle-button>
       `
     )
 
-    // <if expr="enable_brave_vpn and is_win">
     templateContent.appendChild(
       html`
-        <settings-brave-vpn-page prefs="{{prefs}}">
-        </settings-brave-vpn-page>
+        <settings-toggle-button
+          class="cr-row hr"
+          pref="{{prefs.brave.enable_window_closing_confirm}}"
+          label="${loadTimeData.getString('braveWarnBeforeClosingWindow')}">
+        </settings-toggle-button>
       `
     )
+
+    // <if expr="is_macosx">
+    templateContent.appendChild(
+      html`
+        <settings-toggle-button
+          class="cr-row hr"
+          pref="{{prefs.browser.confirm_to_quit}}"
+          label="${loadTimeData.getString('warnBeforeQuitting')}">
+        </settings-toggle-button>
+      `
+    )
+    // </if>
+
+    // <if expr="enable_brave_vpn_wireguard">
+    let showVpnPage = loadTimeData.getBoolean('isBraveVPNEnabled')
+    // <if expr="is_macosx">
+    showVpnPage = showVpnPage &&
+                  loadTimeData.getBoolean('isBraveVPNWireguardEnabledOnMac')
+    // </if>
+    if (showVpnPage) {
+      templateContent.appendChild(
+        html`
+          <settings-brave-vpn-page prefs="{{prefs}}">
+          </settings-brave-vpn-page>
+        `
+      )
+    }
     // </if>
 
     templateContent.appendChild(

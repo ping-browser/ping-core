@@ -5,10 +5,13 @@
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
+#include <string_view>
+
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "build/build_config.h"
@@ -210,7 +213,14 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
   if (blink::WebContentSettingsClient* settings =
           GetContentSettingsClientFor(&context, true)) {
-    farbling_level_ = settings->GetBraveFarblingLevel();
+    auto raw_farbling_level = settings->GetBraveFarblingLevel();
+    farbling_level_ =
+        base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveShowStrictFingerprintingMode)
+            ? raw_farbling_level
+            : (raw_farbling_level == BraveFarblingLevel::OFF
+                   ? BraveFarblingLevel::OFF
+                   : BraveFarblingLevel::BALANCED);
   }
   if (farbling_level_ != BraveFarblingLevel::OFF) {
     audio_farbling_helper_.emplace(
@@ -251,7 +261,7 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
     return;
 
   uint8_t* pixels = const_cast<uint8_t*>(data);
-  // This needs to be type size_t because we pass it to base::StringPiece
+  // This needs to be type size_t because we pass it to std::string_view
   // later for content hashing. This is safe because the maximum canvas
   // dimensions are less than SIZE_T_MAX. (Width and height are each
   // limited to 32,767 pixels.)
@@ -265,7 +275,7 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_plus_domain_key),
                sizeof session_plus_domain_key));
   uint8_t canvas_key[32];
-  CHECK(h.Sign(base::StringPiece(reinterpret_cast<const char*>(pixels), size),
+  CHECK(h.Sign(std::string_view(reinterpret_cast<const char*>(pixels), size),
                canvas_key, sizeof canvas_key));
   uint64_t v = *reinterpret_cast<uint64_t*>(canvas_key);
   uint64_t pixel_index;
@@ -347,9 +357,13 @@ bool BraveSessionCache::AllowFontFamily(
       if (AllowFontByFamilyName(family_name,
                                 blink::DefaultLanguage().GetString().Left(2)))
         return true;
-      FarblingPRNG prng = MakePseudoRandomGenerator();
-      prng.discard(family_name.Impl()->GetHash() % 16);
-      return ((prng() % 20) == 0);
+      if (IsFontAllowedForFarbling(family_name)) {
+        FarblingPRNG prng = MakePseudoRandomGenerator();
+        prng.discard(family_name.Impl()->GetHash() % 16);
+        return ((prng() % 20) == 0);
+      } else {
+        return false;
+      }
     }
     default:
       NOTREACHED();

@@ -28,19 +28,27 @@
     </cr-button>
   </template>
 </settings-toggle-button>
-<settings-toggle-button id="p3aEnabled"
-    class="cr-row"
-    pref="[[p3aEnabledPref_]]"
-    label="$i18n{p3aEnableTitle}"
-    sub-label="$i18n{p3aEnabledDesc}"
-    on-settings-boolean-control-change="onP3AEnabledChange_">
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.de_amp.enabled}}"
+  label="$i18n{deAmpSettingLabel}"
+  sub-label="$i18n{deAmpSettingSubLabel}"
+  learn-more-url="$i18n{deAmpLearnMoreURL}">
 </settings-toggle-button>
-<settings-toggle-button id="statsUsagePingEnabled"
+<template is="dom-if" if="[[isDebounceFeatureEnabled_]]">
+  <settings-toggle-button
     class="cr-row"
-    pref="[[statsUsagePingEnabledPref_]]"
-    label="$i18n{statsUsagePingEnabledTitle}"
-    sub-label="$i18n{statsUsagePingEnabledDesc}"
-    on-settings-boolean-control-change="onStatsUsagePingEnabledChange_">
+    pref="{{prefs.brave.debounce.enabled}}"
+    label="$i18n{debounceSettingLabel}"
+    sub-label="$i18n{debounceSettingSubLabel}"
+    learn-more-url="$i18n{debounceLearnMoreURL}">
+  </settings-toggle-button>
+</template>
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.reduce_language}}"
+  label="$i18n{reduceLanguageControlLabel}"
+  sub-label="$i18n{reduceLanguageDesc}">
 </settings-toggle-button>
 <div hidden="[[!isRequestOTRFeatureEnabled_]]" class="settings-box">
     <div class="start" id="labelWrapper">
@@ -51,3 +59,5 @@
                             menu-options="[[requestOTRActions_]]">
     </settings-dropdown-menu>
 </div>
+<settings-do-not-track-toggle id="doNotTrack" prefs="{{prefs}}">
+</settings-do-not-track-toggle>

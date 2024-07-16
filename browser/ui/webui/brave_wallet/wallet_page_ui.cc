@@ -18,6 +18,7 @@
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -70,13 +71,19 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       IDR_WALLET_PAGE_HTML);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      "img-src 'self' data: chrome://resources chrome://erc-token-images "
+      "chrome://image;");
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + " " +
           kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedMarketURL + ";");
+          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
+  source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
+  source->AddBoolean("isAndroid", false);
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
@@ -102,6 +109,8 @@ void WalletPageUI::CreatePageHandler(
         json_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
         bitcoin_rpc_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
+        zcash_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
@@ -140,6 +149,8 @@ void WalletPageUI::CreatePageHandler(
       profile, std::move(json_rpc_service_receiver));
   brave_wallet::BitcoinWalletServiceFactory::BindForContext(
       profile, std::move(bitcoin_rpc_service_receiver));
+  brave_wallet::ZCashWalletServiceFactory::BindForContext(
+      profile, std::move(zcash_service_receiver));
   brave_wallet::SwapServiceFactory::BindForContext(
       profile, std::move(swap_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(

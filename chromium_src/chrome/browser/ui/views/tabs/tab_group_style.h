@@ -22,6 +22,14 @@ class TabGroupStyle : public TabGroupStyle_ChromiumImpl {
 
   SkPath GetUnderlinePath(gfx::Rect local_bounds) const override;
 
+  gfx::Insets GetInsetsForHeaderChip(bool should_show_sync_icon) const override;
+
+  gfx::Point GetTitleChipOffset(std::optional<int> text_height) const override;
+
+  int GetChipCornerRadius() const override;
+
+  float GetEmptyChipSize() const override;
+
  private:
   bool ShouldShowVerticalTabs() const;
 };
@@ -37,6 +45,10 @@ class TabGroupStyle : public TabGroupStyle_ChromiumImpl {
 class ChromeRefresh2023TabGroupStyle : public TabGroupStyle {
  public:
   using TabGroupStyle::TabGroupStyle;
+
+  // A necessary stub to go back to the original class, as this static gets used
+  // by `TabGroupUnderline::GetStrokeInset`.
+  static int GetTabGroupOverlapAdjustment();
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_STYLE_H_

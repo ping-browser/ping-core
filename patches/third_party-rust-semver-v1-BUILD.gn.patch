@@ -1,0 +1,10 @@
+diff --git a/third_party/rust/semver/v1/BUILD.gn b/third_party/rust/semver/v1/BUILD.gn
+index db642412e6b3f56aa5868f38d6ace879c2fb6924..019bedcf7ffc05d0875ca13ffeca376ddf4899e7 100644
+--- a/third_party/rust/semver/v1/BUILD.gn
++++ b/third_party/rust/semver/v1/BUILD.gn
+@@ -50,5 +50,4 @@ cargo_crate("lib") {
+   # //third_party/rust/chromium_crates_io/Cargo.toml to use
+   # it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
+-  testonly = true
+ }

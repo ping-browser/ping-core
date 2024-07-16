@@ -31,6 +31,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"termsOfService", IDS_BRAVE_REWARDS_ONBOARDING_TERMS},
     {"sendFormTitle", IDS_REWARDS_TIP_SEND_FORM_TITLE},
     {"sendButtonLabel", IDS_REWARDS_TIP_SEND_BUTTON_LABEL},
+    {"sendWithButtonLabel", IDS_REWARDS_TIP_SEND_WITH_BUTTON_LABEL},
     {"web3ButtonLabel", IDS_REWARDS_TIP_WEB3_BUTTON_LABEL},
     {"verifiedTooltipTitle", IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TITLE},
     {"verifiedTooltipText", IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TEXT},
@@ -59,12 +60,18 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"unexpectedErrorTitle", IDS_REWARDS_TIP_UNEXPECTED_ERROR_TITLE},
     {"unexpectedErrorText", IDS_REWARDS_TIP_UNEXPECTED_ERROR_TEXT},
     {"defaultCreatorDescription", IDS_REWARDS_TIP_DEFAULT_CREATOR_DESCRIPTION},
-    {"platformPublisherTitle", IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE}};
+    {"platformPublisherTitle", IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE},
+    {"selfCustodyTitle", IDS_REWARDS_TIP_SELF_CUSTODY_TITLE},
+    {"selfCustodyHeader", IDS_REWARDS_TIP_SELF_CUSTODY_HEADER},
+    {"selfCustodyText", IDS_REWARDS_TIP_SELF_CUSTODY_TEXT},
+    {"selfCustodySendButtonLabel",
+     IDS_REWARDS_TIP_SELF_CUSTODY_SEND_BUTTON_LABEL},
+    {"selfCustodyNoWeb3Label", IDS_REWARDS_TIP_SELF_CUSTODY_NO_WEB3_LABEL}};
 
 }  // namespace
 
 TipPanelUI::TipPanelUI(content::WebUI* web_ui)
-    : MojoBubbleWebUIController(web_ui, true) {
+    : TopChromeWebUIController(web_ui, true) {
   auto* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kBraveTipPanelHost);
 
@@ -73,6 +80,11 @@ TipPanelUI::TipPanelUI(content::WebUI* web_ui)
   webui::SetupWebUIDataSource(
       source, base::make_span(kTipPanelGenerated, kTipPanelGeneratedSize),
       IDR_TIP_PANEL_HTML);
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      "img-src chrome://resources chrome://theme chrome://rewards-image "
+      "chrome://favicon2 blob: data: 'self';");
 }
 
 TipPanelUI::~TipPanelUI() = default;

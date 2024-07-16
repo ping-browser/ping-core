@@ -49,28 +49,6 @@
       pref="{{prefs.brave.shields.stats_badge_visible}}"
       label="$i18n{showStatsBlockedBadgeLabel}">
   </settings-toggle-button>
-  <settings-toggle-button
-    class="cr-row"
-    pref="{{prefs.brave.de_amp.enabled}}"
-    label="$i18n{deAmpSettingLabel}"
-    sub-label="$i18n{deAmpSettingSubLabel}"
-    learn-more-url="$i18n{deAmpLearnMoreURL}">
-  </settings-toggle-button>
-  <template is="dom-if" if="[[isDebounceFeatureEnabled_]]">
-    <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.debounce.enabled}}"
-      label="$i18n{debounceSettingLabel}"
-      sub-label="$i18n{debounceSettingSubLabel}"
-      learn-more-url="$i18n{debounceLearnMoreURL}">
-    </settings-toggle-button>
-  </template>
-  <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.reduce_language}}"
-      label="$i18n{reduceLanguageControlLabel}"
-      sub-label="$i18n{reduceLanguageDesc}">
-  </settings-toggle-button>
   <div class="settings-box">
     <div class="start">$i18n{adControlLabel}</div>
     <select id="adControlType" class="md-select"
@@ -101,10 +79,10 @@
       label="$i18n{noScriptControlLabel}"
       on-settings-boolean-control-change="onNoScriptControlChange_">
   </settings-toggle-button>
-  <div class="settings-box">
+  <div hidden="[[!showStrictFingerprintingMode_]]" class="settings-box">
     <div class="start">$i18n{fingerprintingControlLabel}</div>
-    <select id="fingerprintingControlType" class="md-select"
-        on-change="onFingerprintingControlChange_">
+    <select id="fingerprintingSelectControlType" class="md-select"
+        on-change="onFingerprintingSelectControlChange_">
       <template is="dom-repeat" items="[[fingerprintingControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, fingerprintingControlType_)]]">
@@ -113,6 +91,13 @@
       </template>
     </select>
   </div>
+  <settings-toggle-button id="fingerprintingToggleControlType"
+    hidden="[[showStrictFingerprintingMode_]]"
+    class="cr-row"
+    pref="[[isFingerprintingEnabled_]]"
+    label="$i18n{fingerprintingControlLabel}"
+    on-settings-boolean-control-change="onFingerprintingToggleControlChange_">
+  </settings-toggle-button>
   <div class="settings-box">
     <div class="start">$i18n{cookieControlLabel}</div>
     <select id="cookieControlType" class="md-select"
@@ -145,7 +130,9 @@
     ></cr-link-row>
   </div>
   <template is="dom-if" route-path="/shields/filters">
-    <settings-subpage page-title="$i18n{adblockContentFiltersLabel}">
+    <settings-subpage
+      associated-control="[[$$('#contentFiltersRow')]]"
+      page-title="$i18n{adblockContentFiltersLabel}">
       <adblock-subpage></adblock-subpage>
     </settings-subpage>
   </template>

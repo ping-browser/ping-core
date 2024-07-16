@@ -6,14 +6,13 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback_helpers.h"
 #include "base/strings/stringprintf.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_event_log.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -24,7 +23,7 @@ const char kTableName[] = "event_log";
 
 }  // namespace
 
-DatabaseEventLog::DatabaseEventLog(RewardsEngineImpl& engine)
+DatabaseEventLog::DatabaseEventLog(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseEventLog::~DatabaseEventLog() = default;
@@ -32,7 +31,7 @@ DatabaseEventLog::~DatabaseEventLog() = default;
 void DatabaseEventLog::Insert(const std::string& key,
                               const std::string& value) {
   if (key.empty()) {
-    BLOG(0, "Key is empty");
+    engine_->LogError(FROM_HERE) << "Key is empty";
     return;
   }
 
@@ -55,16 +54,16 @@ void DatabaseEventLog::Insert(const std::string& key,
 
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(std::move(transaction),
-                            [](mojom::DBCommandResponsePtr response) {});
+  engine_->client()->RunDBTransaction(std::move(transaction),
+                                      base::DoNothing());
 }
 
 void DatabaseEventLog::InsertRecords(
     const std::map<std::string, std::string>& records,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (records.empty()) {
-    BLOG(0, "No records");
-    callback(mojom::Result::NOT_FOUND);
+    engine_->LogError(FROM_HERE) << "No records";
+    std::move(callback).Run(mojom::Result::NOT_FOUND);
     return;
   }
 
@@ -90,9 +89,9 @@ void DatabaseEventLog::InsertRecords(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
@@ -116,18 +115,18 @@ void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseEventLog::OnGetAllRecords, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseEventLog::OnGetAllRecords, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                                       GetEventLogsCallback callback) {
+void DatabaseEventLog::OnGetAllRecords(GetEventLogsCallback callback,
+                                       mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
-    callback({});
+    engine_->LogError(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run({});
     return;
   }
 
@@ -144,7 +143,7 @@ void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 }  // namespace database

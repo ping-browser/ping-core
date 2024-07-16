@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -75,6 +76,20 @@ class AssetDiscoveryTask {
   using DiscoverAssetsCompletedCallback =
       base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr> tokens)>;
 
+  void DiscoverAnkrTokens(const std::vector<std::string>& chain_ids,
+                          const std::vector<std::string>& account_addresses,
+                          DiscoverAssetsCompletedCallback callback);
+  void OnAnkrGetAccountBalances(
+      base::OnceCallback<void(std::vector<mojom::AnkrAssetBalancePtr>)>
+          barrier_callback,
+      std::vector<mojom::AnkrAssetBalancePtr> balances,
+      mojom::ProviderError error,
+      const std::string& error_message);
+  void MergeDiscoveredAnkrTokens(
+      DiscoverAssetsCompletedCallback callback,
+      const std::vector<std::vector<mojom::AnkrAssetBalancePtr>>&
+          discovered_assets_results);
+
   void DiscoverERC20sFromRegistry(
       const std::vector<std::string>& chain_ids,
       const std::vector<std::string>& account_addresses,
@@ -120,10 +135,10 @@ class AssetDiscoveryTask {
       DiscoverAssetsCompletedCallback callback,
       const std::vector<std::vector<mojom::BlockchainTokenPtr>>& nfts);
 
-  absl::optional<std::pair<GURL, std::vector<mojom::BlockchainTokenPtr>>>
+  std::optional<std::pair<GURL, std::vector<mojom::BlockchainTokenPtr>>>
   ParseNFTsFromSimpleHash(const base::Value& json_value, mojom::CoinType coin);
 
-  static absl::optional<SolanaAddress> DecodeMintAddress(
+  static std::optional<SolanaAddress> DecodeMintAddress(
       const std::vector<uint8_t>& data);
 
   raw_ptr<APIRequestHelper> api_request_helper_;

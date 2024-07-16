@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/check_op.h"
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
@@ -59,7 +59,7 @@ class CreativeNewTabPageAds final : public TableInterface {
   void GetForSegments(const SegmentList& segments,
                       GetCreativeNewTabPageAdsCallback callback) const;
 
-  void GetAll(GetCreativeNewTabPageAdsCallback callback) const;
+  void GetForActiveCampaigns(GetCreativeNewTabPageAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     CHECK_GT(batch_size, 0);
@@ -73,6 +73,8 @@ class CreativeNewTabPageAds final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
+  void MigrateToV35(mojom::DBTransactionInfo* transaction);
+
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNewTabPageAdList& creative_ads);
 

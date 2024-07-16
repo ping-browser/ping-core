@@ -5,15 +5,24 @@
 
 import * as React from 'react'
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
-import { color, font, radius } from '@brave/leo/tokens/css'
+import {
+  color,
+  font,
+  radius,
+  spacing,
+  icon,
+  elevation
+} from '@brave/leo/tokens/css/variables'
 import LeoButton from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'
 import {
+  ApplicationState,
+  CachingProgress,
   PlaylistEditMode,
   usePlaylist,
   usePlaylistEditMode,
@@ -24,6 +33,7 @@ import ContextualMenuAnchorButton from './contextualMenu'
 import { getPlaylistAPI } from '../api/api'
 import { getLocalizedString } from '../utils/l10n'
 import { getPlaylistActions } from '../api/getPlaylistActions'
+import { useSelector } from 'react-redux'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -32,7 +42,12 @@ const StyledLink = styled(Link)`
 
 interface HeaderProps {
   playlistId?: string
+  className?: string
 }
+
+const iconSize = css`
+  --leo-icon-size: 20px;
+`
 
 const GradientIcon = styled(Icon)`
   --leo-icon-color: linear-gradient(
@@ -41,21 +56,22 @@ const GradientIcon = styled(Icon)`
     #ff1893 43.72%,
     #a78aff 99.51%
   );
+  ${iconSize}
+  margin-right: calc(-1 * (${spacing.l} - ${spacing.m}));
 `
 
 const ColoredIcon = styled(Icon)<{ color: string }>`
-  color: ${p => p.color};
+  color: ${(p) => p.color};
+  ${iconSize}
 `
 
 const ProductNameContainer = styled.div`
   flex-grow: 1;
-  display: flex;
-  gap: 4px;
-  font: ${font.primary.heading.h4};
+  font: ${font.heading.h4};
 `
 
 const ColoredSpan = styled.span<{ color: string }>`
-  color: ${p => p.color};
+  color: ${(p) => p.color};
 `
 
 const HeaderContainer = styled.div`
@@ -65,30 +81,35 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid ${color.divider.subtle};
   background-color: ${color.container.background};
   height: 100%;
-  padding: 0 16px;
-  gap: 16px;
+  padding: 0 ${spacing.xl};
+  gap: ${spacing.l};
 `
 
 const StyledPlaylistInfo = styled(PlaylistInfo)`
   flex-grow: 1;
 `
 
-const LeoButtonContainer = styled.button`
-  display: contents;
-  cursor: pointer;
+const StyledButton = styled(LeoButton)`
+  flex: 0 0 auto;
+`
+
+const StyledSeparator = styled.div`
+  width: ${elevation.xxs};
+  background-color: ${color.divider.subtle};
+  height: ${icon.m};
 `
 
 const StyledInput = styled.input`
   flex-grow: 1;
   color: ${color.text.primary};
-  font: ${font.primary.heading.h4};
+  font: ${font.heading.h4};
   border: none;
   border-radius: ${radius[8]};
   background: ${color.container.highlight};
   padding: 10px 8px;
 `
 
-const SaveButton = styled(LeoButton)`
+const SaveButton = styled(StyledButton)`
   width: fit-content;
   min-width: 72px;
   flex-grow: 0;
@@ -101,46 +122,80 @@ function BackButton ({
   playlistEditMode?: PlaylistEditMode
 }) {
   return playlistEditMode === PlaylistEditMode.BULK_EDIT ? (
-    <LeoButtonContainer
+    <StyledButton
+      size='large'
+      kind='plain'
       onClick={() => getPlaylistActions().setPlaylistEditMode(undefined)}
     >
-      <ColoredIcon name='arrow-left' color={color.icon.default} />
-    </LeoButtonContainer>
+      <ColoredIcon
+        name='arrow-left'
+        color={color.icon.default}
+      />
+    </StyledButton>
   ) : (
     <StyledLink to='/'>
-      <ColoredIcon name='arrow-left' color={color.icon.default} />
+      <ColoredIcon
+        name='arrow-left'
+        color={color.icon.default}
+      />
     </StyledLink>
   )
 }
 
 function PlaylistHeader ({ playlistId }: { playlistId: string }) {
   const playlist = usePlaylist(playlistId)
-  const contextualMenuItems = playlist?.items.length
-    ? [
-        {
-          name: getLocalizedString('bravePlaylistContextMenuEdit'),
-          iconName: 'list-bullet-default',
-          onClick: () =>
-            getPlaylistActions().setPlaylistEditMode(PlaylistEditMode.BULK_EDIT)
-        },
-        // TODO(sko) We don't support this yet.
-        // { name: 'Share', iconName: 'share-macos', onClick: () => {} },
-        {
-          name: getLocalizedString(
-            'bravePlaylistContextMenuKeepForOfflinePlaying'
-          ),
-          iconName: 'cloud-download',
-          onClick: () => {}
-        },
-        {
-          name: getLocalizedString(
-            'bravePlaylistContextMenuRemovePlayedContents'
-          ),
-          iconName: 'list-checks',
-          onClick: () => {}
+  const cachingProgress = useSelector<
+    ApplicationState,
+    Map<string, CachingProgress> | undefined
+  >((applicationState) => applicationState.playlistData?.cachingProgress)
+
+  const contextualMenuItems = []
+  if (playlist?.items.length) {
+    contextualMenuItems.push({
+      name: getLocalizedString('bravePlaylistContextMenuEdit'),
+      iconName: 'list-bullet-default',
+      onClick: () =>
+        getPlaylistActions().setPlaylistEditMode(PlaylistEditMode.BULK_EDIT)
+    })
+
+    // TODO(sko) We don't support this yet.
+    // contextualMenuItems.push({ name: 'Share', iconName: 'share-macos', onClick: () => {} })
+
+    const uncachedItems = playlist.items.filter(
+      (item) => !item.cached && !cachingProgress?.has(item.id)
+    )
+
+    if (uncachedItems.length) {
+      contextualMenuItems.push({
+        name: getLocalizedString(
+          'bravePlaylistContextMenuKeepForOfflinePlaying'
+        ),
+        iconName: 'cloud-download',
+        onClick: () => {
+          uncachedItems.forEach((item) =>
+            getPlaylistAPI().recoverLocalData(item.id)
+          )
         }
-      ]
-    : []
+      })
+    }
+
+    const playedItems = playlist.items.filter(
+      (item) => item.lastPlayedPosition >= Math.floor(+item.duration / 1e6)
+    )
+    if (playedItems.length) {
+      contextualMenuItems.push({
+        name: getLocalizedString(
+          'bravePlaylistContextMenuRemovePlayedContents'
+        ),
+        iconName: 'list-checks',
+        onClick: () => {
+          playedItems.forEach((item) =>
+            getPlaylistAPI().removeItemFromPlaylist(playlistId, item.id)
+          )
+        }
+      })
+    }
+  }
 
   const isDefaultPlaylist = playlist?.id === 'default'
   if (contextualMenuItems && !isDefaultPlaylist) {
@@ -192,8 +247,8 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
             type='text'
             defaultValue={playlist.name}
             autoFocus
-            onChange={e => setNewName(e.target.value)}
-            onKeyDown={e => {
+            onChange={(e) => setNewName(e.target.value)}
+            onKeyDown={(e) => {
               if (e.key === 'Escape') {
                 getPlaylistActions().setPlaylistEditMode(undefined)
                 e.preventDefault()
@@ -226,9 +281,10 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
           />
-          {!!contextualMenuItems.length && (
-            <ContextualMenuAnchorButton items={contextualMenuItems} />
-          )}
+          <ContextualMenuAnchorButton
+            visible={!!contextualMenuItems.length}
+            items={contextualMenuItems}
+          />
         </>
       )}
     </>
@@ -237,21 +293,51 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
 
 function NewPlaylistButton () {
   return (
-    <LeoButtonContainer
+    <StyledButton
+      size='large'
+      kind='plain'
+      title={getLocalizedString('bravePlaylistA11YCreatePlaylistFolder')}
       onClick={() => {
         getPlaylistAPI().showCreatePlaylistUI()
       }}
     >
-      <ColoredIcon name='plus-add' color={color.icon.default} />
-    </LeoButtonContainer>
+      <ColoredIcon
+        name='plus-add'
+        color={color.icon.default}
+      />
+    </StyledButton>
   )
 }
 
 function SettingButton () {
   return (
-    <LeoButtonContainer onClick={() => {}}>
-      <ColoredIcon name='settings' color={color.icon.default} />
-    </LeoButtonContainer>
+    <StyledButton
+      size='large'
+      kind='plain'
+      title={getLocalizedString('bravePlaylistA11YOpenPlaylistSettings')}
+      onClick={() => getPlaylistAPI().openSettingsPage()}
+    >
+      <ColoredIcon
+        name='settings'
+        color={color.icon.default}
+      />
+    </StyledButton>
+  )
+}
+
+function CloseButton () {
+  return (
+    <StyledButton
+      size='large'
+      kind='plain'
+      title={getLocalizedString('bravePlaylistA11YClosePanel')}
+      onClick={() => getPlaylistAPI().closePanel()}
+    >
+      <ColoredIcon
+        name='close'
+        color={color.icon.default}
+      />
+    </StyledButton>
   )
 }
 
@@ -260,18 +346,19 @@ function PlaylistsCatalogHeader () {
     <>
       <GradientIcon name='product-playlist-bold-add-color' />
       <ProductNameContainer>
-        <ColoredSpan color={color.text.secondary}>Brave</ColoredSpan>
-        <ColoredSpan color={color.text.primary}>Playlist</ColoredSpan>
+        <ColoredSpan color={color.text.primary}>playlist</ColoredSpan>
       </ProductNameContainer>
       <NewPlaylistButton />
       <SettingButton />
+      <StyledSeparator />
+      <CloseButton />
     </>
   )
 }
 
-export default function Header ({ playlistId }: HeaderProps) {
+export default function Header ({ playlistId, className }: HeaderProps) {
   return (
-    <HeaderContainer>
+    <HeaderContainer className={className}>
       {playlistId ? (
         <PlaylistHeader playlistId={playlistId} />
       ) : (

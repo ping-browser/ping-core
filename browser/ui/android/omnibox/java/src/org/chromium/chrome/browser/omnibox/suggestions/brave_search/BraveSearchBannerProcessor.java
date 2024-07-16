@@ -15,6 +15,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.BraveOmniboxSuggestionUiType;
 import org.chromium.chrome.browser.omnibox.suggestions.BraveSuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.DropdownItemProcessor;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -24,7 +25,6 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
     private final int mMinimumHeight;
     private final UrlBarEditingTextStateProvider mUrlBarEditingTextProvider;
     private final AutocompleteDelegate mUrlBarDelegate;
-    public static final int BRAVE_SEARCH_PROMO_GROUP = 100;
 
     /**
      * @param context An Android context.
@@ -40,20 +40,28 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
     }
 
     public void populateModel(final PropertyModel model) {
-        model.set(BraveSearchBannerProperties.DELEGATE, new BraveSearchBannerProperties.Delegate() {
-            @Override
-            public void onPositiveClicked() {
-                mUrlBarDelegate.loadUrl("https://search.brave.com/search?q="
-                                + mUrlBarEditingTextProvider.getTextWithoutAutocomplete()
-                                + "&action=makeDefault",
-                        PageTransition.LINK, System.currentTimeMillis());
-            }
+        model.set(
+                BraveSearchBannerProperties.DELEGATE,
+                new BraveSearchBannerProperties.Delegate() {
+                    @Override
+                    public void onPositiveClicked() {
+                        mUrlBarDelegate.loadUrl(
+                                new OmniboxLoadUrlParams.Builder(
+                                                "https://search.brave.com/search?q="
+                                                        + mUrlBarEditingTextProvider
+                                                                .getTextWithoutAutocomplete()
+                                                        + "&action=makeDefault",
+                                                PageTransition.LINK)
+                                        .setInputStartTimestamp(System.currentTimeMillis())
+                                        .setOpenInNewTab(false)
+                                        .build());
+                    }
 
-            @Override
-            public void onNegativeClicked() {
-                mSuggestionHost.removeBraveSearchSuggestion();
-            }
-        });
+                    @Override
+                    public void onNegativeClicked() {
+                        mSuggestionHost.removeBraveSearchSuggestion();
+                    }
+                });
     }
 
     @Override
@@ -72,13 +80,8 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
     }
 
     @Override
-    public void onUrlFocusChange(boolean hasFocus) {}
+    public void onOmniboxSessionStateChange(boolean activated) {}
 
     @Override
     public void onNativeInitialized() {}
-
-    @Override
-    public boolean allowBackgroundRounding() {
-        return false;
-    }
 }

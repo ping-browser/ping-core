@@ -12,11 +12,6 @@
 #include "build/build_config.h"
 
 class PrefRegistrySimple;
-class Profile;
-
-namespace user_prefs {
-class PrefRegistrySyncable;
-}  // namespace user_prefs
 
 namespace dark_mode {
 
@@ -32,9 +27,6 @@ enum class BraveDarkModeType {
 };
 
 // APIs for prefs.
-void MigrateBraveDarkModePrefs(Profile* profile);
-void RegisterBraveDarkModePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry);
 void RegisterBraveDarkModeLocalStatePrefs(PrefRegistrySimple* registry);
 
 std::string GetStringFromBraveDarkModeType(BraveDarkModeType type);
@@ -56,6 +48,13 @@ void SetUseSystemDarkModeEnabledForTest(bool enabled);
 // notifying to let observers know.
 // By overriding, base ui components also use same brave theme type.
 void SetSystemDarkMode(BraveDarkModeType type);
+
+#if BUILDFLAG(IS_LINUX)
+// Cache system preference from DarkModeManagerLinux.
+// This cached value is used whenever user chooses "Same as Linux" option.
+void CacheSystemDarkModePrefs(bool prefer_dark_theme);
+bool HasCachedSystemDarkModeType();
+#endif
 
 }  // namespace dark_mode
 

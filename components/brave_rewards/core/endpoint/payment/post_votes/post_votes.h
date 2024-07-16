@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST /v1/votes
 //
@@ -37,16 +37,16 @@
 // {Empty}
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace payment {
 
-using PostVotesCallback = std::function<void(const mojom::Result result)>;
+using PostVotesCallback = base::OnceCallback<void(const mojom::Result result)>;
 
 class PostVotes {
  public:
-  explicit PostVotes(RewardsEngineImpl& engine);
+  explicit PostVotes(RewardsEngine& engine);
   ~PostVotes();
 
   void Request(const credential::CredentialsRedeem& redeem,
@@ -59,9 +59,9 @@ class PostVotes {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response, PostVotesCallback callback);
+  void OnRequest(PostVotesCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace payment

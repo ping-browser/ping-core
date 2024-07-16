@@ -7,12 +7,14 @@
 
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/ios/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
+#include "brave/ios/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
@@ -29,6 +31,18 @@
   }
   return [[BraveWalletAssetRatioServiceMojoImpl alloc]
       initWithAssetRatioService:std::move(service)];
+}
+@end
+
+@implementation BraveWalletBitcoinWalletServiceFactory
++ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
+  auto service = brave_wallet::BitcoinWalletServiceFactory::GetForBrowserState(
+      browserState);
+  if (!service) {
+    return nil;
+  }
+  return [[BraveWalletBitcoinWalletServiceMojoImpl alloc]
+      initWithBitcoinWalletService:std::move(service)];
 }
 @end
 
@@ -128,5 +142,17 @@
   }
   return [[BraveWalletIpfsServiceMojoImpl alloc]
       initWithIpfsService:std::move(service)];
+}
+@end
+
+@implementation BraveWalletZCashWalletServiceFactory
++ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
+  auto service =
+      brave_wallet::ZCashWalletServiceFactory::GetForBrowserState(browserState);
+  if (!service) {
+    return nil;
+  }
+  return [[BraveWalletZCashWalletServiceMojoImpl alloc]
+      initWithZCashWalletService:std::move(service)];
 }
 @end

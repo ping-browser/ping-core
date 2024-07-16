@@ -5,36 +5,36 @@
 
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_news/api/publisher.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_news {
 
-absl::optional<Publishers> ParseCombinedPublisherList(
-    const base::Value& value) {
+std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
   if (!value.is_list()) {
-    LOG(ERROR) << "Publisher data expected to be a list";
-    return absl::nullopt;
+    LOG(ERROR) << "Publisher data expected to be a list: " << value;
+    return std::nullopt;
   }
 
   Publishers result;
 
   for (const base::Value& publisher_value : value.GetList()) {
-    std::u16string error;
-    auto parsed_publisher =
-        api::feed::Publisher::FromValueDeprecated(publisher_value, &error);
-    if (!parsed_publisher) {
-      LOG(ERROR) << "Invalid Brave Publisher data. error=" << error;
-      return absl::nullopt;
+    auto parsed_publisher = api::feed::Publisher::FromValue(publisher_value);
+    if (!parsed_publisher.has_value()) {
+      LOG(ERROR) << "Invalid Brave Publisher data. error="
+                 << parsed_publisher.error();
+      return std::nullopt;
     }
     auto& entry = *parsed_publisher;
 
@@ -70,7 +70,18 @@ absl::optional<Publishers> ParseCombinedPublisherList(
         auto locale_info = mojom::LocaleInfo::New();
         locale_info->locale = locale.locale;
         locale_info->rank = locale.rank.value_or(0);
-        locale_info->channels = std::move(locale.channels);
+
+        // With migrations, it's possible we'll end up with duplicate channels,
+        // so filter them out with a set.
+        base::flat_set<std::string> seen;
+        for (const auto& channel : locale.channels) {
+          auto transformed = brave_news::GetMigratedChannel(channel);
+          if (seen.contains(transformed)) {
+            continue;
+          }
+          seen.insert(transformed);
+          locale_info->channels.push_back(std::move(transformed));
+        }
 
         publisher->locales.push_back(std::move(locale_info));
       }
@@ -98,37 +109,13 @@ absl::optional<Publishers> ParseCombinedPublisherList(
   return result;
 }
 
-void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
+void ParseDirectPublisherList(const std::vector<DirectFeed>& direct_feeds,
                               std::vector<mojom::PublisherPtr>* publishers) {
-  for (const auto&& [key, value] : direct_feeds_pref_dict) {
-    const base::Value::Dict* root = value.GetIfDict();
-    if (!root) {
-      // Handle unknown value type
-      LOG(ERROR) << "Found unknown dictionary pref value for"
-                    "Brave News direct feeds at the pref path: "
-                 << key;
-      // TODO(petemill): delete item from pref dict?
-      continue;
-    }
-    VLOG(1) << "Found direct feed in prefs: " << key;
-
-    GURL feed_source(*root->FindString(prefs::kBraveNewsDirectFeedsKeySource));
-    if (!feed_source.is_valid()) {
-      // This is worth error logging because we shouldn't
-      // get in to this state due to validation at the
-      // point of adding the item to prefs.
-      LOG(ERROR) << "Found invalid feed url for Brave News "
-                    "direct feeds pref at the path "
-                 << prefs::kBraveNewsDirectFeeds << " > "
-                 << prefs::kBraveNewsDirectFeedsKeySource;
-      // TODO(petemill): delete item from pref dict?
-      continue;
-    }
+  for (const auto& feed : direct_feeds) {
     auto publisher = mojom::Publisher::New();
-    publisher->feed_source = feed_source;
-    publisher->publisher_id = key;
-    publisher->publisher_name =
-        *root->FindString(prefs::kBraveNewsDirectFeedsKeyTitle);
+    publisher->feed_source = feed.url;
+    publisher->publisher_id = feed.id;
+    publisher->publisher_name = feed.title;
     publisher->type = mojom::PublisherType::DIRECT_SOURCE;
     // This is always true for direct feeds, reserved property for
     // "combined source" feeds, and perhaps marking a direct feed

@@ -9,11 +9,13 @@
 #include "chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"
 
 class BraveOmniboxPopupViewViews : public OmniboxPopupViewViews {
+  METADATA_HEADER(BraveOmniboxPopupViewViews, OmniboxPopupViewViews)
  public:
-  METADATA_HEADER(BraveOmniboxPopupViewViews);
 
   using OmniboxPopupViewViews::OmniboxPopupViewViews;
   ~BraveOmniboxPopupViewViews() override;
+
+  int GetLocationBarViewWidth() const;
 
   // OmniboxPopupViewViews:
   gfx::Rect GetTargetBounds() const override;

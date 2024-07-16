@@ -1,8 +1,11 @@
-// Copyright (c) 2011 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/common/channel_info.h"
+
+#include <string_view>
 
 #include "base/environment.h"
 #include "base/strings/strcat.h"
@@ -43,7 +46,7 @@ std::string GetChannelSuffixForExtraFlagsEnvVarName() {
   const char* const channel_name = getenv("CHROME_VERSION_EXTRA");
   return channel_name
              ? base::StrCat(
-                   {"_", base::ToUpperASCII(base::StringPiece(channel_name))})
+                   {"_", base::ToUpperASCII(std::string_view(channel_name))})
              : std::string();
 #endif  // defined(OFFICIAL_BUILD)
 }
@@ -51,6 +54,10 @@ std::string GetChannelSuffixForExtraFlagsEnvVarName() {
 
 #if BUILDFLAG(IS_LINUX)
 std::string GetDesktopName(base::Environment* env) {
+  std::string brave_snap;
+  if (env->GetVar("BRAVE_SNAP", &brave_snap) && brave_snap == "1") {
+    return "brave.desktop";
+  }
 #if defined(OFFICIAL_BUILD)
   version_info::Channel product_channel(chrome::GetChannel());
   switch (product_channel) {

@@ -5,7 +5,6 @@
 module bat_ads.mojom;
 
 import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
-import "brave/components/brave_federated/public/interfaces/brave_federated.mojom";
 import "mojo/public/mojom/base/big_string.mojom";
 import "mojo/public/mojom/base/file.mojom";
 import "mojo/public/mojom/base/time.mojom";
@@ -30,6 +29,8 @@ interface BatAdsClientNotifier {
 
   NotifyDidUpdateResourceComponent(string manifest_version, string id);
 
+  NotifyDidUnregisterResourceComponent(string id);
+
   NotifyRewardsWalletDidUpdate(string payment_id, string recovery_seed);
 
   NotifyTabHtmlContentDidChange(int32 tab_id,
@@ -42,6 +43,7 @@ interface BatAdsClientNotifier {
   NotifyTabDidStopPlayingMedia(int32 tab_id);
   NotifyTabDidChange(int32 tab_id,
                      array<url.mojom.Url> redirect_chain,
+                     bool is_error_page,
                      bool is_visible);
   NotifyDidCloseTab(int32 tab_id);
 
@@ -77,18 +79,14 @@ interface BatAdsClient {
   ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
   CloseNotificationAd(string placement_id);
 
-  ShowReminder(brave_ads.mojom.ReminderType type);
-
-  UpdateAdRewards();
-
-  RecordAdEventForId(string id,
+  CacheAdEventForInstanceId(string id,
                      string ad_type,
                      string confirmation_type,
                      mojo_base.mojom.Time time);
   [Sync]
-  GetAdEventHistory(string ad_type, string confirmation_type) =>
+  GetCachedAdEvents(string ad_type, string confirmation_type) =>
       (array<mojo_base.mojom.Time> ad_events);
-  ResetAdEventHistoryForId(string id);
+  ResetAdEventCacheForInstanceId(string id);
 
   GetBrowsingHistory(int32 max_count, int32 days_ago) =>
       (array<url.mojom.Url> history);
@@ -98,7 +96,10 @@ interface BatAdsClient {
 
   Save(string name, string value) => (bool success);
   Load(string name) => (string? value);
-  LoadFileResource(string id, int32 version) => (mojo_base.mojom.File? file);
+
+  LoadComponentResource(string id, int32 version) =>
+      (mojo_base.mojom.File? file);
+
   [Sync]
   LoadDataResource(string name) => (mojo_base.mojom.BigString value);
 
@@ -108,47 +109,41 @@ interface BatAdsClient {
   RunDBTransaction(brave_ads.mojom.DBTransactionInfo transaction) =>
       (brave_ads.mojom.DBCommandResponseInfo response);
 
-  RecordP2AEvents(mojo_base.mojom.ListValue events);
-
-  AddTrainingSample(array<brave_federated.mojom.CovariateInfo>
-                          training_sample);
+  RecordP2AEvents(array<string> events);
 
   [Sync]
-  GetBooleanPref(string path) => (bool value);
-  SetBooleanPref(string path, bool value);
+  GetProfilePref(string path) => (mojo_base.mojom.Value? value);
+  SetProfilePref(string path, mojo_base.mojom.Value value);
+  ClearProfilePref(string path);
   [Sync]
-  GetIntegerPref(string path) => (int32 value);
-  SetIntegerPref(string path, int32 value);
+  HasProfilePrefPath(string path) => (bool value);
+
   [Sync]
-  GetDoublePref(string path) => (double value);
-  SetDoublePref(string path, double value);
+  GetLocalStatePref(string path) => (mojo_base.mojom.Value? value);
+  SetLocalStatePref(string path, mojo_base.mojom.Value value);
+  ClearLocalStatePref(string path);
   [Sync]
-  GetStringPref(string path) => (string value);
-  SetStringPref(string path, string value);
-  [Sync]
-  GetInt64Pref(string path) => (int64 value);
-  SetInt64Pref(string path, int64 value);
-  [Sync]
-  GetUint64Pref(string path) => (uint64 value);
-  SetUint64Pref(string path, uint64 value);
-  [Sync]
-  GetTimePref(string path) => (mojo_base.mojom.Time value);
-  SetTimePref(string path, mojo_base.mojom.Time value);
-  [Sync]
-  GetDictPref(string path) => (mojo_base.mojom.DictionaryValue? value);
-  SetDictPref(string path, mojo_base.mojom.DictionaryValue value);
-  [Sync]
-  GetListPref(string path) => (mojo_base.mojom.ListValue? value);
-  SetListPref(string path, mojo_base.mojom.ListValue value);
-  ClearPref(string path);
-  [Sync]
-  HasPrefPath(string path) => (bool value);
+  HasLocalStatePrefPath(string path) => (bool value);
 
   Log(string file, int32 line, int32 verbose_level, string message);
 };
 
+interface BatAdsObserver {
+  // See AdsObserver for documentation.
+
+  OnAdRewardsDidChange();
+
+  OnBrowserUpgradeRequiredToServeAds();
+
+  OnIneligibleRewardsWalletToServeAds();
+
+  OnRemindUser(brave_ads.mojom.ReminderType type);
+};
+
 interface BatAds {
   // See Ads for documentation.
+
+  AddBatAdsObserver(pending_remote<BatAdsObserver> observer);
 
   SetSysInfo(brave_ads.mojom.SysInfo sys_info);
 
@@ -201,12 +196,15 @@ interface BatAds {
       (mojo_base.mojom.DictionaryValue value);
   ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
+
   ToggleLikeCategory(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
   ToggleDislikeCategory(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
+
   ToggleSaveAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
+
   ToggleMarkAdAsInappropriate(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
 };

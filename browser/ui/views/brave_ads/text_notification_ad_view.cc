@@ -23,16 +23,15 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/widget/widget.h"
-#include "ui/views/widget/widget_delegate.h"
 
 namespace brave_ads {
 
 namespace {
 
 #if BUILDFLAG(IS_WIN)
-constexpr int kNotificationWidth = 350;
+constexpr int kNotificationWidth = 336;
 #elif BUILDFLAG(IS_MAC)
-constexpr int kNotificationWidth = 350;
+constexpr int kNotificationWidth = 344;
 #elif BUILDFLAG(IS_LINUX)
 constexpr int kNotificationWidth = 370;
 #endif
@@ -58,7 +57,7 @@ constexpr int kBodyMaximumLines = 2;
 #if BUILDFLAG(IS_WIN)
 constexpr int kBodyLineSpacing = 0;
 #elif BUILDFLAG(IS_MAC)
-constexpr int kBodyLineSpacing = 2;
+constexpr int kBodyLineSpacing = 5;
 #elif BUILDFLAG(IS_LINUX)
 constexpr int kBodyLineSpacing = 2;
 #endif
@@ -88,7 +87,7 @@ void TextNotificationAdView::UpdateContents(
 
   UpdateBodyLabel();
 
-  Layout();
+  DeprecatedLayoutImmediately();
   SchedulePaint();
 }
 

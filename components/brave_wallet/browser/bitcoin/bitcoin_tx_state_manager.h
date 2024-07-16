@@ -8,7 +8,6 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
@@ -21,26 +20,27 @@ class Value;
 namespace brave_wallet {
 
 class TxMeta;
+class BitcoinTxMeta;
 class TxStorageDelegate;
-class JsonRpcService;
 
 class BitcoinTxStateManager : public TxStateManager {
  public:
   BitcoinTxStateManager(PrefService* prefs,
                         TxStorageDelegate* delegate,
-                        JsonRpcService* json_rpc_service,
                         AccountResolverDelegate* account_resolver_delegate);
   ~BitcoinTxStateManager() override;
   BitcoinTxStateManager(const BitcoinTxStateManager&) = delete;
   BitcoinTxStateManager operator=(const BitcoinTxStateManager&) = delete;
+
+  std::unique_ptr<BitcoinTxMeta> GetBitcoinTx(const std::string& id);
+  std::unique_ptr<BitcoinTxMeta> ValueToBitcoinTxMeta(
+      const base::Value::Dict& value);
 
  private:
   mojom::CoinType GetCoinType() const override;
 
   std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) override;
-  std::string GetTxPrefPathPrefix(
-      const absl::optional<std::string>& chain_id) override;
 };
 
 }  // namespace brave_wallet

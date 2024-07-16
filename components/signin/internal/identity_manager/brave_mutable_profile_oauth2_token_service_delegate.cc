@@ -21,7 +21,7 @@ BraveMutableProfileOAuth2TokenServiceDelegate::
         network::NetworkConnectionTracker* network_connection_tracker,
         scoped_refptr<TokenWebData> token_web_data,
         signin::AccountConsistencyMethod account_consistency,
-        bool revoke_all_tokens_on_load,
+        RevokeAllTokensOnLoad revoke_all_tokens_on_load,
 #if BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
         std::unique_ptr<TokenBindingHelper> token_binding_helper,
 #endif  // BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
@@ -42,11 +42,11 @@ BraveMutableProfileOAuth2TokenServiceDelegate::
 BraveMutableProfileOAuth2TokenServiceDelegate::
     ~BraveMutableProfileOAuth2TokenServiceDelegate() = default;
 
-void BraveMutableProfileOAuth2TokenServiceDelegate::LoadCredentials(
+void BraveMutableProfileOAuth2TokenServiceDelegate::LoadCredentialsInternal(
     const CoreAccountId& primary_account_id,
     bool is_syncing) {
   if (!account_tracker_service_->GetAccounts().size())
     return;
-  MutableProfileOAuth2TokenServiceDelegate::LoadCredentials(primary_account_id,
-                                                            is_syncing);
+  MutableProfileOAuth2TokenServiceDelegate::LoadCredentialsInternal(
+      primary_account_id, is_syncing);
 }

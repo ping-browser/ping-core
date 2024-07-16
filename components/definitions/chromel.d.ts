@@ -85,7 +85,6 @@ declare namespace chrome.braveRewards {
   const getAvailableCountries: (callback: (countries: string[]) => void) => void
   const getDefaultCountry: (callback: (defaultCountry: string) => void) => void
   const getDeclaredCountry: (callback: (country: string) => void) => void
-  const isGrandfatheredUser: (callback: (isGrandfatheredUser: boolean) => void) => void
   const getUserType: (callback: (userType: string) => void) => void
   const getPublishersVisitedCount: (callback: (count: number) => void) => void
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
@@ -98,22 +97,12 @@ declare namespace chrome.braveRewards {
 
   const savePublisherInfo: (windowId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, favIconUrl: string, callback: (result: RewardsExtension.Result) => void) => {}
   const tipSite: (tabId: number, publisherKey: string, entryPoint: RewardsExtension.TipDialogEntryPoint) => {}
-  const tipUser: (tabId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, publisherScreenName: string, favIconUrl: string, postId: string, postTimestamp: string, postText: string) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
   const getBalanceReport: (month: number, year: number, callback: (properties: RewardsExtension.BalanceReport) => void) => {}
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
   }
-  const onPromotions: {
-    addListener: (callback: (result: RewardsExtension.Result, promotions: RewardsExtension.Promotion[]) => void) => void
-  }
-  const onPromotionFinish: {
-    addListener: (callback: (result: RewardsExtension.Result, promotion: RewardsExtension.Promotion) => void) => void
-  }
   const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
-  const fetchPromotions: (callback: (promotions: RewardsExtension.Promotion[]) => void) => {}
-  const claimPromotion: (promotionId: string, callback: (properties: RewardsExtension.Captcha) => void) => {}
-  const attestPromotion: (promotionId: string, solution: string, callback: (result: number, promotion?: RewardsExtension.Promotion) => void) => {}
   const getRewardsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsAccountStatement: (callback: (success: boolean, adsAccountStatement: NewTab.AdsAccountStatement) => void) => {}
   const getWalletExists: (callback: (exists: boolean) => void) => {}
@@ -137,7 +126,6 @@ declare namespace chrome.braveRewards {
   }
   const refreshPublisher: (publisherKey: string, callback: (status: number, publisherKey: string) => void) => {}
   const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
-  const getInlineTippingPlatformEnabled: (key: string, callback: (enabled: boolean) => void) => {}
   const fetchBalance: (callback: (balance?: number) => void) => {}
   const onReconcileComplete: {
     addListener: (callback: (result: number, type: number) => void) => void
@@ -165,12 +153,6 @@ declare namespace chrome.braveRewards {
 
   const showRewardsSetup: () => void
 
-  const showGrantCaptcha: (grantId: string) => void
-
-  const onUnblindedTokensReady: {
-    addListener: (callback: () => void) => void
-  }
-
   const onCompleteReset: {
     addListener: (callback: (properties: { success: boolean }) => void) => void
   }
@@ -178,6 +160,26 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
   }
   const isInitialized: (callback: (initialized: boolean) => void) => {}
+
+  const selfCustodyInviteDismissed: (
+    callback: (dismissed: boolean) => void
+  ) => void
+
+  const dismissSelfCustodyInvite: () => void
+
+  const onSelfCustodyInviteDismissed: {
+    addListener: (callback: () => void) => void
+  }
+
+  const isTermsOfServiceUpdateRequired: (
+    callback: (updateRequired: boolean) => void
+  ) => void
+
+  const acceptTermsOfServiceUpdate: () => void
+
+  const onTermsOfServiceUpdateAccepted: {
+    addListener: (callback: () => void) => void
+  }
 
   const getScheduledCaptchaInfo: (
     callback: (scheduledCaptcha: RewardsExtension.ScheduledCaptcha) => void

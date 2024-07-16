@@ -1,6 +1,6 @@
-# Subdivision
+# Subdivision Targeting
 
-Target ads to an area within a country.
+Subdivision targeting in the context of ads refers to the practice of delivering ads to users based on their geographical location at a more granular level than just the country. This could be a state, province, city, or even a specific neighborhood.
 
 See [ISO_3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) for a list of assigned subdivisions.
 
@@ -69,9 +69,14 @@ See [ISO_3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) for a list of assigne
 | BC  | British Columbia  |
 | MB  | Manitoba  |
 | NB  | New Brunswick  |
+| NL  | Newfoundland and Labrador  |
 | NS  | Nova Scotia  |
+| NT  | Northwest Territories  |
+| NU  | Nunavut  |
 | ON  | Ontario  |
+| PE  | Prince Edward Island  |
 | QC  | Quebec  |
 | SK  | Saskatchewan  |
+| YT  | Yukon  |
 
 Please add to it!

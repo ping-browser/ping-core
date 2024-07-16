@@ -76,11 +76,14 @@ class AdblockEngineBox final {
 - (instancetype)initWithRules:(NSString*)rules error:(NSError**)error {
   if ((self = [super init])) {
     if (rules.length > 0) {
-      std::vector<std::uint8_t> vecRules(rules.length);
+      std::vector<std::uint8_t> vecRules;
       NSData* data = [rules dataUsingEncoding:NSUTF8StringEncoding];
+
       if (data) {
+        vecRules.resize(data.length);
         [data getBytes:vecRules.data() length:data.length];
       }
+
       auto result = adblock::engine_with_rules(vecRules);
       if (result.result_kind == adblock::ResultKind::Success) {
         adblock_engine = std::move(result.value);
@@ -89,6 +92,19 @@ class AdblockEngineBox final {
           *error = [[self class] adblockErrorForKind:result.result_kind
                                              message:result.error_message];
         }
+      }
+    }
+  }
+  return self;
+}
+
+- (instancetype)initWithSerializedData:(NSData*)data error:(NSError**)error {
+  if ((self = [super init])) {
+    if (![self deserialize:data]) {
+      if (error) {
+        *error =
+            [[self class] adblockErrorForKind:adblock::ResultKind::AdblockError
+                                      message:"Failed to deserialize data"];
       }
     }
   }
@@ -163,6 +179,21 @@ class AdblockEngineBox final {
   std::vector<std::uint8_t> vecData(data.length);
   [data getBytes:vecData.data() length:data.length];
   return adblock_engine->deserialize(vecData);
+}
+
+- (nullable NSData*)serialize:(NSError**)error {
+  auto result = adblock_engine->serialize();
+
+  if (result.empty()) {
+    if (error) {
+      *error =
+          [[self class] adblockErrorForKind:adblock::ResultKind::AdblockError
+                                    message:"Failed to serialize data"];
+    }
+    return nil;
+  }
+
+  return [NSData dataWithBytes:result.data() length:result.size()];
 }
 
 - (void)addTag:(NSString*)tag {

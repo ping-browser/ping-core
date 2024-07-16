@@ -18,9 +18,9 @@ import androidx.preference.Preference;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
-import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
@@ -30,20 +30,20 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
-import org.chromium.components.browser_ui.accessibility.BraveAccessibilitySettings;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
@@ -67,8 +67,8 @@ public class BraveMainPreferencesBase
     private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
-    private static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
-    private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE = "closing_all_tabs_closes_brave";
+    private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
+            "closing_all_tabs_closes_brave";
     private static final String PREF_PRIVACY = "privacy";
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
     private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";
@@ -79,6 +79,8 @@ public class BraveMainPreferencesBase
     private static final String PREF_NOTIFICATIONS = "notifications";
     private static final String PREF_PAYMENT_METHODS = "autofill_payment_methods";
     private static final String PREF_ADDRESSES = "autofill_addresses";
+    private static final String PREF_AUTOFILL_PRIVATE_WINDOW = "autofill_private_window";
+    private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "appearance";
     private static final String PREF_NEW_TAB_PAGE = "background_images";
     private static final String PREF_ACCESSIBILITY = "accessibility";
@@ -87,6 +89,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_WALLET = "brave_wallet";
     private static final String PREF_BRAVE_VPN = "brave_vpn";
+    private static final String PREF_BRAVE_LEO = "brave_leo";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
     private static final String PREF_BRAVE_LANGUAGES = "brave_languages";
@@ -207,8 +210,18 @@ public class BraveMainPreferencesBase
             || (NTPUtil.isReferralEnabled() && NTPBackgroundImagesBridge.enableSponsoredImages())) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
-        setBgPlaybackPreference();
         setCustomTabPreference();
+        setAutofillPrivateWindowPreference();
+    }
+
+    private void setAutofillPrivateWindowPreference() {
+        boolean isAutofillPrivateWindow =
+                UserPrefs.get(getProfile()).getBoolean(BravePref.BRAVE_AUTOFILL_PRIVATE_WINDOWS);
+        Preference preference = findPreference(PREF_AUTOFILL_PRIVATE_WINDOW);
+        preference.setOnPreferenceChangeListener(this);
+        if (preference instanceof ChromeSwitchPreference) {
+            ((ChromeSwitchPreference) preference).setChecked(isAutofillPrivateWindow);
+        }
     }
 
     private void setCustomTabPreference() {
@@ -216,17 +229,6 @@ public class BraveMainPreferencesBase
         if (preference instanceof ChromeSwitchPreference) {
             ((ChromeSwitchPreference) preference)
                     .setChecked(BraveLaunchIntentDispatcher.useCustomTabs());
-        }
-    }
-
-    private void setBgPlaybackPreference() {
-        Preference preference = findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
-        if (preference instanceof ChromeSwitchPreference) {
-            ((ChromeSwitchPreference) preference)
-                    .setChecked(ChromeFeatureList.isEnabled(
-                                        BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
-                            || BravePrefServiceBridge.getInstance()
-                                       .getBackgroundVideoPlaybackEnabled());
         }
     }
 
@@ -249,10 +251,11 @@ public class BraveMainPreferencesBase
     private void rearrangePreferenceOrders() {
         int firstSectionOrder = 0;
 
-        if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
-                && BraveVpnUtils.isBraveVpnFeatureEnable()
-                && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
-            if (getActivity() != null && mVpnCalloutPreference == null) {
+        if (getActivity() != null && !getActivity().isFinishing()
+                && BraveVpnPrefUtils.shouldShowCallout()
+                && !BraveVpnPrefUtils.isSubscriptionPurchase()
+                && BraveVpnUtils.isVpnFeatureSupported(getActivity()) && false) {
+            if (mVpnCalloutPreference == null) {
                 mVpnCalloutPreference = new VpnCalloutPreference(getActivity());
             }
             if (mVpnCalloutPreference != null) {
@@ -279,12 +282,18 @@ public class BraveMainPreferencesBase
         //     removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
         // }
 
-        // if (BraveVpnUtils.isBraveVpnFeatureEnable()
-        //         && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
+        // if (getActivity() != null && !getActivity().isFinishing()
+        //         && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
         //     findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
         // } else {
         //     removePreferenceIfPresent(PREF_BRAVE_VPN);
         // }
+
+        if (BraveLeoPrefUtils.isLeoEnabled()) {
+            findPreference(PREF_BRAVE_LEO).setOrder(++firstSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_LEO);
+        }
 
         int generalOrder = firstSectionOrder;
         findPreference(PREF_GENERAL_SECTION).setOrder(++generalOrder);
@@ -295,10 +304,11 @@ public class BraveMainPreferencesBase
             preference.setOrder(++generalOrder);
         }
 
-        if (BraveSearchWidgetUtils.isRequestPinAppWidgetSupported())
+        if (BraveSearchWidgetUtils.isRequestPinAppWidgetSupported()) {
             findPreference(PREF_HOME_SCREEN_WIDGET).setOrder(++generalOrder);
-        else
+        } else {
             removePreferenceIfPresent(PREF_HOME_SCREEN_WIDGET);
+        }
 
         findPreference(PREF_PASSWORDS).setOrder(++generalOrder);
         findPreference(PREF_SYNC).setOrder(++generalOrder);
@@ -315,11 +325,11 @@ public class BraveMainPreferencesBase
         } else {
             findPreference(PREF_USE_CUSTOM_TABS).setOrder(++generalOrder);
         }
-        findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK).setOrder(++generalOrder);
 
         int displaySectionOrder = generalOrder;
         findPreference(PREF_DISPLAY_SECTION).setOrder(++displaySectionOrder);
 
+        findPreference(PREF_MEDIA).setOrder(++displaySectionOrder);
         findPreference(PREF_APPEARANCE).setOrder(++displaySectionOrder);
         findPreference(PREF_NEW_TAB_PAGE).setOrder(++displaySectionOrder);
         findPreference(PREF_ACCESSIBILITY).setOrder(++displaySectionOrder);
@@ -330,6 +340,7 @@ public class BraveMainPreferencesBase
 
         findPreference(PREF_PAYMENT_METHODS).setOrder(++onlineCheckoutSectionOrder);
         findPreference(PREF_ADDRESSES).setOrder(++onlineCheckoutSectionOrder);
+        findPreference(PREF_AUTOFILL_PRIVATE_WINDOW).setOrder(++onlineCheckoutSectionOrder);
 
         int supportSectionOrder = onlineCheckoutSectionOrder;
         findPreference(PREF_SUPPORT_SECTION).setOrder(++supportSectionOrder);
@@ -383,14 +394,15 @@ public class BraveMainPreferencesBase
         updatePreferenceIcon(PREF_ACCESSIBILITY, R.drawable.ic_accessibility);
         updatePreferenceIcon(PREF_PRIVACY, R.drawable.ic_privacy_reports);
         updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_addresses);
+        updatePreferenceIcon(PREF_AUTOFILL_PRIVATE_WINDOW, R.drawable.ic_autofill);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
         // updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_info);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_homepage);
     }
 
     private void updateSearchEnginePreference() {
-        if (!TemplateUrlServiceFactory.getForProfile(Profile.getLastUsedRegularProfile())
-                        .isLoaded()) {
+        if (!TemplateUrlServiceFactory.getForProfile(ProfileManager.getLastUsedRegularProfile())
+                .isLoaded()) {
             ChromeBasePreference searchEnginePref =
                     (ChromeBasePreference) findPreference(PREF_BRAVE_SEARCH_ENGINES);
             searchEnginePref.setEnabled(false);
@@ -405,12 +417,6 @@ public class BraveMainPreferencesBase
 
     private void updateSummaries() {
         updateSummary(PREF_BRAVE_STATS, BraveStatsPreferences.getPreferenceSummary());
-
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
-                || BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled()) {
-            updateSummary(
-                    PREF_BACKGROUND_VIDEO_PLAYBACK, R.string.prefs_background_video_playback_on);
-        }
     }
 
     private void overrideChromiumPreferences() {
@@ -425,7 +431,6 @@ public class BraveMainPreferencesBase
 
     private void setPreferenceListeners() {
         findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).setOnPreferenceChangeListener(this);
-        findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK).setOnPreferenceChangeListener(this);
     }
 
     private void initRateBrave() {
@@ -455,9 +460,9 @@ public class BraveMainPreferencesBase
 
     // TODO(simonhong): Make this static public with proper class.
     private int dp2px(int dp) {
-        final float DP_PER_INCH_MDPI = 160f;
+        final float dpPerInchMdpi = 160f;
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / DP_PER_INCH_MDPI);
+        float px = dp * (metrics.densityDpi / dpPerInchMdpi);
         return Math.round(px);
     }
 
@@ -466,19 +471,9 @@ public class BraveMainPreferencesBase
         String key = preference.getKey();
         if (PREF_CLOSING_ALL_TABS_CLOSES_BRAVE.equals(key)) {
             CloseBraveManager.setClosingAllTabsClosesBraveEnabled((boolean) newValue);
-        }
-
-        if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
-            BraveFeatureUtil.enableFeature(
-                    BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, (boolean) newValue,
-                    false);
-            if ((boolean) newValue) {
-                updateSummary(PREF_BACKGROUND_VIDEO_PLAYBACK,
-                        R.string.prefs_background_video_playback_on);
-            } else {
-                findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK).setSummary("");
-            }
-            BraveRelaunchUtils.askForRelaunch(this.getActivity());
+        } else if (PREF_AUTOFILL_PRIVATE_WINDOW.equals(key)) {
+            UserPrefs.get(getProfile())
+                    .setBoolean(BravePref.BRAVE_AUTOFILL_PRIVATE_WINDOWS, (boolean) newValue);
         }
 
         return true;

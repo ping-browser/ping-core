@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 // GET /publishers/prefix-list
 //
@@ -20,17 +20,17 @@
 // blob
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace rewards {
 
 using GetPrefixListCallback =
-    std::function<void(const mojom::Result result, const std::string& body)>;
+    base::OnceCallback<void(mojom::Result result, std::string body)>;
 
 class GetPrefixList {
  public:
-  explicit GetPrefixList(RewardsEngineImpl& engine);
+  explicit GetPrefixList(RewardsEngine& engine);
   ~GetPrefixList();
 
   void Request(GetPrefixListCallback callback);
@@ -40,10 +40,10 @@ class GetPrefixList {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 GetPrefixListCallback callback);
+  void OnRequest(GetPrefixListCallback callback,
+                 mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace rewards

@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 
+#include <limits>
+#include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -13,113 +16,431 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
 
-absl::optional<std::string> EncodeJupiterTransactionParams(
-    mojom::JupiterSwapParamsPtr params,
-    bool has_fee) {
-  DCHECK(params);
+namespace jupiter {
+namespace {
+
+// Docs: https://station.jup.ag/docs/apis/adding-fees
+std::optional<std::string> GetFeeAccount(const std::string& output_mint) {
+  std::vector<std::vector<uint8_t>> seeds;
+  std::vector<uint8_t> referral_account_pubkey_bytes;
+  std::vector<uint8_t> output_mint_bytes;
+
+  if (!Base58Decode(kJupiterReferralKey, &referral_account_pubkey_bytes,
+                    kSolanaPubkeySize) ||
+      !Base58Decode(output_mint, &output_mint_bytes, kSolanaPubkeySize)) {
+    return std::nullopt;
+  }
+
+  const std::string& referral_fee_header = kJupiterReferralProgramHeader;
+  std::vector<uint8_t> referral_ata_bytes(referral_fee_header.begin(),
+                                          referral_fee_header.end());
+
+  seeds.push_back(std::move(referral_ata_bytes));
+  seeds.push_back(std::move(referral_account_pubkey_bytes));
+  seeds.push_back(std::move(output_mint_bytes));
+
+  return SolanaKeyring::FindProgramDerivedAddress(seeds,
+                                                  kJupiterReferralProgram);
+}
+
+}  // namespace
+
+std::optional<std::string> EncodeTransactionParams(
+    const mojom::JupiterTransactionParams& params) {
   base::Value::Dict tx_params;
 
   // The code below does the following two things:
   //   - compute the ATA address that should be used to receive fees
   //   - verify if output_mint is a valid address
-  absl::optional<std::string> associated_token_account =
-      SolanaKeyring::GetAssociatedTokenAccount(
-          params->output_mint, brave_wallet::kSolanaFeeRecipient);
-  if (!associated_token_account) {
-    return absl::nullopt;
+  std::optional<std::string> fee_account =
+      GetFeeAccount(params.quote->output_mint);
+  if (!fee_account) {
+    return std::nullopt;
   }
 
-  // If the if-condition below is false, associated_token_account is unused,
-  // but the originating call to SolanaKeyring::GetAssociatedTokenAccount()
-  // is still done to ensure output_mint is always valid.
-  if (has_fee) {
-    // feeAccount is the ATA account for the output mint where the fee will be
-    // sent to.
-    tx_params.Set("feeAccount", *associated_token_account);
+  // If the if-condition below is false, fee_account is unused,
+  // but the originating call to GetFeeAccount() is still done to ensure
+  // output_mint is always valid.
+  if (params.quote->platform_fee) {
+    tx_params.Set("feeAccount", *fee_account);
   }
 
-  tx_params.Set("userPublicKey", params->user_public_key);
+  tx_params.Set("userPublicKey", params.user_public_key);
 
-  base::Value::Dict route;
-  route.Set("inAmount", base::NumberToString(params->route->in_amount));
-  route.Set("outAmount", base::NumberToString(params->route->out_amount));
-  route.Set("amount", base::NumberToString(params->route->amount));
-  route.Set("otherAmountThreshold",
-            base::NumberToString(params->route->other_amount_threshold));
-  route.Set("swapMode", params->route->swap_mode);
-  route.Set("priceImpactPct", params->route->price_impact_pct);
-  route.Set("slippageBps", base::NumberToString(params->route->slippage_bps));
+  base::Value::Dict quote;
+  quote.Set("inputMint", params.quote->input_mint);
+  quote.Set("inAmount", params.quote->in_amount);
+  quote.Set("outputMint", params.quote->output_mint);
+  quote.Set("outAmount", params.quote->out_amount);
+  quote.Set("otherAmountThreshold", params.quote->other_amount_threshold);
+  quote.Set("swapMode", params.quote->swap_mode);
+  quote.Set("slippageBps", params.quote->slippage_bps);
+  quote.Set("priceImpactPct", params.quote->price_impact_pct);
 
-  base::Value::List market_infos_value;
-  for (const auto& market_info : params->route->market_infos) {
-    base::Value::Dict market_info_value;
-    market_info_value.Set("id", market_info->id);
-    market_info_value.Set("label", market_info->label);
-    market_info_value.Set("inputMint", market_info->input_mint);
-    market_info_value.Set("outputMint", market_info->output_mint);
-    market_info_value.Set("notEnoughLiquidity",
-                          market_info->not_enough_liquidity);
-    market_info_value.Set("inAmount",
-                          base::NumberToString(market_info->in_amount));
-    market_info_value.Set("outAmount",
-                          base::NumberToString(market_info->out_amount));
-    market_info_value.Set("priceImpactPct", market_info->price_impact_pct);
-
-    base::Value::Dict lp_fee_value;
-    lp_fee_value.Set("amount",
-                     base::NumberToString(market_info->lp_fee->amount));
-    lp_fee_value.Set("mint", market_info->lp_fee->mint);
-    lp_fee_value.Set("pct", market_info->lp_fee->pct);
-
-    market_info_value.Set("lpFee", std::move(lp_fee_value));
-
-    base::Value::Dict platform_fee_value;
-    platform_fee_value.Set(
-        "amount", base::NumberToString(market_info->platform_fee->amount));
-    platform_fee_value.Set("mint", market_info->platform_fee->mint);
-    platform_fee_value.Set("pct", market_info->platform_fee->pct);
-    market_info_value.Set("platformFee", std::move(platform_fee_value));
-
-    market_infos_value.Append(std::move(market_info_value));
+  if (params.quote->platform_fee) {
+    base::Value::Dict platform_fee;
+    platform_fee.Set("amount", params.quote->platform_fee->amount);
+    platform_fee.Set("feeBps", params.quote->platform_fee->fee_bps);
+    quote.Set("platformFee", std::move(platform_fee));
+  } else {
+    quote.Set("platformFee", base::Value());
   }
 
-  route.Set("marketInfos", std::move(market_infos_value));
-  tx_params.Set("route", std::move(route));
+  base::Value::List route_plan_value;
+  for (const auto& step : params.quote->route_plan) {
+    base::Value::Dict step_value;
+    step_value.Set("percent", step->percent);
+
+    base::Value::Dict swap_info_value;
+    swap_info_value.Set("ammKey", step->swap_info->amm_key);
+    swap_info_value.Set("label", step->swap_info->label);
+    swap_info_value.Set("inputMint", step->swap_info->input_mint);
+    swap_info_value.Set("outputMint", step->swap_info->output_mint);
+    swap_info_value.Set("inAmount", step->swap_info->in_amount);
+    swap_info_value.Set("outAmount", step->swap_info->out_amount);
+    swap_info_value.Set("feeAmount", step->swap_info->fee_amount);
+    swap_info_value.Set("feeMint", step->swap_info->fee_mint);
+
+    step_value.Set("swapInfo", std::move(swap_info_value));
+    route_plan_value.Append(std::move(step_value));
+  }
+
+  quote.Set("routePlan", std::move(route_plan_value));
+
+  tx_params.Set("quoteResponse", std::move(quote));
 
   // FIXME - GetJSON should be refactored to accept a base::Value::Dict
   std::string result = GetJSON(base::Value(std::move(tx_params)));
-  result = std::string(
-      json::convert_string_value_to_uint64("/route/inAmount", result, false));
-  result = std::string(
-      json::convert_string_value_to_uint64("/route/outAmount", result, false));
-  result = std::string(
-      json::convert_string_value_to_uint64("/route/amount", result, false));
-  result = std::string(json::convert_string_value_to_uint64(
-      "/route/otherAmountThreshold", result, false));
-  result = std::string(json::convert_string_value_to_uint64(
-      "/route/slippageBps", result, false));
 
-  for (int i = 0; i < static_cast<int>(params->route->market_infos.size());
-       i++) {
+  result = std::string(json::convert_string_value_to_uint64(
+      "/quoteResponse/slippageBps", result, false));
+
+  if (params.quote->platform_fee) {
     result = std::string(json::convert_string_value_to_uint64(
-        base::StringPrintf("/route/marketInfos/%d/inAmount", i), result,
+        "/quoteResponse/platformFee/feeBps", result, false));
+  }
+
+  for (int i = 0; i < static_cast<int>(params.quote->route_plan.size()); i++) {
+    result = std::string(json::convert_string_value_to_uint64(
+        base::StringPrintf("/quoteResponse/routePlan/%d/percent", i), result,
         false));
-    result = std::string(json::convert_string_value_to_uint64(
-        base::StringPrintf("/route/marketInfos/%d/outAmount", i), result,
-        false));
-    result = std::string(json::convert_string_value_to_uint64(
-        base::StringPrintf("/route/marketInfos/%d/lpFee/amount", i), result,
-        false));
-    result = std::string(json::convert_string_value_to_uint64(
-        base::StringPrintf("/route/marketInfos/%d/platformFee/amount", i),
-        result, false));
   }
 
   return result;
 }
+
+}  // namespace jupiter
+
+namespace lifi {
+
+namespace {
+
+std::optional<std::string> EncodeChainId(const std::string& value) {
+  if (value == mojom::kSolanaMainnet) {
+    return "SOL";
+  }
+
+  uint256_t val;
+  if (!HexValueToUint256(value, &val)) {
+    return std::nullopt;
+  }
+
+  if (val > std::numeric_limits<uint64_t>::max()) {
+    return std::nullopt;
+  }
+
+  return base::NumberToString(static_cast<uint64_t>(val));
+}
+
+base::Value::Dict EncodeToolDetails(
+    const mojom::LiFiToolDetailsPtr& tool_details) {
+  base::Value::Dict result;
+  result.Set("key", tool_details->key);
+  result.Set("name", tool_details->name);
+  result.Set("logoURI", tool_details->logo);
+  return result;
+}
+
+std::optional<base::Value::Dict> EncodeToken(
+    const mojom::BlockchainTokenPtr& token) {
+  base::Value::Dict result;
+  result.Set("address", token->contract_address.empty()
+                            ? kLiFiNativeEVMAssetContractAddress
+                            : token->contract_address);
+  result.Set("decimals", token->decimals);
+  result.Set("symbol", token->symbol);
+
+  if (auto chain_id = EncodeChainId(token->chain_id)) {
+    result.Set("chainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("name", token->name);
+
+  // fake the usd value since it is not used by LiFi
+  result.Set("priceUSD", "0");
+  return result;
+}
+
+std::string EncodeStepType(const mojom::LiFiStepType type) {
+  if (type == mojom::LiFiStepType::kSwap) {
+    return "swap";
+  }
+
+  if (type == mojom::LiFiStepType::kCross) {
+    return "cross";
+  }
+
+  if (type == mojom::LiFiStepType::kNative) {
+    return "lifi";
+  }
+
+  if (type == mojom::LiFiStepType::kProtocol) {
+    return "protocol";
+  }
+
+  NOTREACHED_NORETURN();
+}
+
+std::optional<base::Value::Dict> EncodeStepAction(mojom::LiFiActionPtr action) {
+  base::Value::Dict result;
+
+  if (auto chain_id = EncodeChainId(action->from_token->chain_id)) {
+    result.Set("fromChainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("fromAmount", action->from_amount);
+
+  if (auto token = EncodeToken(action->from_token)) {
+    result.Set("fromToken", std::move(*token));
+  } else {
+    return std::nullopt;
+  }
+
+  if (action->from_address) {
+    result.Set("fromAddress", *action->from_address);
+  }
+
+  if (auto chain_id = EncodeChainId(action->to_token->chain_id)) {
+    result.Set("toChainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  if (auto token = EncodeToken(action->to_token)) {
+    result.Set("toToken", std::move(*token));
+  } else {
+    return std::nullopt;
+  }
+
+  if (action->to_address) {
+    result.Set("toAddress", *action->to_address);
+  }
+
+  double slippage = 0.0;
+  if (base::StringToDouble(action->slippage, &slippage)) {
+    result.Set("slippage", slippage);
+  } else {
+    return std::nullopt;
+  }
+
+  if (action->destination_call_data) {
+    result.Set("destinationCallData", *action->destination_call_data);
+  }
+
+  return result;
+}
+
+std::optional<base::Value::Dict> EncodeStepEstimate(
+    mojom::LiFiStepEstimatePtr estimate) {
+  base::Value::Dict result;
+
+  result.Set("tool", estimate->tool);
+  result.Set("fromAmount", estimate->from_amount);
+  result.Set("toAmount", estimate->to_amount);
+  result.Set("toAmountMin", estimate->to_amount_min);
+  result.Set("approvalAddress", estimate->approval_address);
+
+  double execution_duration = 0.0;
+  if (base::StringToDouble(estimate->execution_duration, &execution_duration)) {
+    result.Set("executionDuration", execution_duration);
+  } else {
+    return std::nullopt;
+  }
+
+  if (estimate->fee_costs) {
+    base::Value::List fee_costs_value;
+    for (const auto& fee_cost : *estimate->fee_costs) {
+      base::Value::Dict fee_cost_value;
+      fee_cost_value.Set("name", fee_cost->name);
+      fee_cost_value.Set("description", fee_cost->description);
+      fee_cost_value.Set("amount", fee_cost->amount);
+      fee_cost_value.Set("percentage", fee_cost->percentage);
+      fee_cost_value.Set("included", fee_cost->included);
+
+      // fake the USD amount value since it is not used by LiFi
+      fee_cost_value.Set("amountUSD", "0");
+
+      if (auto token = EncodeToken(fee_cost->token)) {
+        fee_cost_value.Set("token", std::move(*token));
+      } else {
+        return std::nullopt;
+      }
+
+      fee_costs_value.Append(std::move(fee_cost_value));
+    }
+    result.Set("feeCosts", std::move(fee_costs_value));
+  }
+
+  base::Value::List gas_costs_value;
+  for (const auto& gas_cost : estimate->gas_costs) {
+    base::Value::Dict gas_cost_value;
+    gas_cost_value.Set("type", gas_cost->type);
+    gas_cost_value.Set("estimate", gas_cost->estimate);
+    gas_cost_value.Set("limit", gas_cost->limit);
+    gas_cost_value.Set("amount", gas_cost->amount);
+
+    // fake the price and USD amount values since they are not used by LiFi
+    gas_cost_value.Set("price", "0");
+    gas_cost_value.Set("amountUSD", "0");
+
+    if (auto token = EncodeToken(gas_cost->token)) {
+      gas_cost_value.Set("token", std::move(*token));
+    } else {
+      return std::nullopt;
+    }
+
+    gas_costs_value.Append(std::move(gas_cost_value));
+  }
+  result.Set("gasCosts", std::move(gas_costs_value));
+
+  return result;
+}
+
+std::optional<base::Value::Dict> EncodeStep(mojom::LiFiStepPtr step) {
+  base::Value::Dict result;
+  result.Set("id", step->id);
+  result.Set("type", EncodeStepType(step->type));
+  result.Set("tool", step->tool);
+
+  if (auto action = EncodeStepAction(std::move(step->action))) {
+    result.Set("action", std::move(*action));
+  } else {
+    return std::nullopt;
+  }
+
+  if (auto estimate = EncodeStepEstimate(step->estimate->Clone())) {
+    result.Set("estimate", std::move(*estimate));
+  } else {
+    return std::nullopt;
+  }
+
+  if (step->integrator) {
+    result.Set("integrator", *step->integrator);
+  }
+
+  result.Set("toolDetails", EncodeToolDetails(std::move(step->tool_details)));
+
+  if (!step->included_steps) {
+    return result;
+  }
+
+  base::Value::List included_steps_value;
+  for (auto& included_step : *step->included_steps) {
+    if (auto included_step_value = EncodeStep(std::move(included_step))) {
+      included_steps_value.Append(std::move(*included_step_value));
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  result.Set("includedSteps", std::move(included_steps_value));
+  return result;
+}
+
+}  // namespace
+
+std::optional<std::string> EncodeQuoteParams(
+    mojom::SwapQuoteParamsPtr params,
+    const std::optional<std::string>& fee_param) {
+  base::Value::Dict result;
+
+  if (auto chain_id = EncodeChainId(params->from_chain_id)) {
+    result.Set("fromChainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("fromAmount", params->from_amount);
+  result.Set("fromTokenAddress",
+             params->from_token.empty()
+                 ? params->from_chain_id == mojom::kSolanaMainnet
+                       ? kLiFiNativeSVMAssetContractAddress
+                       : kLiFiNativeEVMAssetContractAddress
+                 : params->from_token);
+  result.Set("fromAddress", params->from_account_id->address);
+
+  if (auto chain_id = EncodeChainId(params->to_chain_id)) {
+    result.Set("toChainId", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("toTokenAddress",
+             params->to_token.empty()
+                 ? params->to_chain_id == mojom::kSolanaMainnet
+                       ? kLiFiNativeSVMAssetContractAddress
+                       : kLiFiNativeEVMAssetContractAddress
+                 : params->to_token);
+  result.Set("toAddress", params->to_account_id->address);
+  result.Set("allowDestinationCall", true);
+
+  base::Value::Dict options;
+  options.Set("insurance", true);
+  options.Set("integrator", kLiFiIntegratorID);
+  options.Set("allowSwitchChain", false);
+
+  if (fee_param.has_value() && !fee_param->empty()) {
+    double fee = 0.0;
+    if (base::StringToDouble(fee_param.value(), &fee)) {
+      options.Set("fee", fee);
+    }
+  }
+
+  double slippage_percentage = 0.0;
+  if (base::StringToDouble(params->slippage_percentage, &slippage_percentage)) {
+    options.Set("slippage", slippage_percentage / 100);
+  }
+
+  result.Set("options", std::move(options));
+
+  return GetJSON(base::Value(std::move(result)));
+}
+
+std::optional<std::string> EncodeTransactionParams(mojom::LiFiStepPtr step) {
+  auto result = EncodeStep(std::move(step));
+  if (!result) {
+    return std::nullopt;
+  }
+
+  std::string result_str = GetJSON(base::Value(std::move(*result)));
+  if (result_str.empty()) {
+    return std::nullopt;
+  }
+
+  return result_str;
+}
+
+}  // namespace lifi
 
 }  // namespace brave_wallet

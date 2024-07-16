@@ -32,37 +32,33 @@ class Prefs {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
+
   static std::string GetSeedPath();
 
   std::string GetSeed(bool* failed_to_decrypt) const;
   bool SetSeed(const std::string& seed);
 
-  bool IsSyncV1Migrated() const;
-  void SetSyncV1Migrated(bool is_migrated);
-
-  bool IsSyncV1MetaInfoCleared() const;
-  void SetSyncV1MetaInfoCleared(bool is_cleared);
-
-  // It is only used to read whether sync v1 was enabled before upgrading
-  bool IsSyncV1Enabled() const;
-#if BUILDFLAG(IS_ANDROID)
-  // Used for android clients to pretend sync v1 was enabled through the prefs.
-  // Originally Android used shared preferences
-  void SetSyncV1WasEnabled() const;
-#endif
-
-  bool IsSyncMigrateNoticeDismissed() const;
-  void SetDismissSyncMigrateNotice(bool is_dismissed);
   bool IsSyncAccountDeletedNoticePending() const;
   void SetSyncAccountDeletedNoticePending(bool is_pending);
 
   bool IsFailedDecryptSeedNoticeDismissed() const;
   void DismissFailedDecryptSeedNotice();
 
+  enum class AddLeaveChainDetailBehaviour { kAdd, kIgnore };
+  void AddLeaveChainDetail(const char* file, int line, const char* func);
+  std::string GetLeaveChainDetails() const;
+  void ClearLeaveChainDetails();
+  static size_t GetLeaveChainDetailsMaxLenForTests();
+  static std::string GetLeaveChainDetailsPathForTests();
+  void SetAddLeaveChainDetailBehaviourForTests(
+      AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour);
+
   void Clear();
 
  private:
   const raw_ref<PrefService> pref_service_;
+  AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour_;
 };
 
 void MigrateBraveSyncPrefs(PrefService* prefs);

@@ -7,25 +7,31 @@ import("//brave/build/config.gni")
 
 static_library("browser") {
   sources = [
-    "ads_p2a.cc",
-    "ads_p2a.h",
+    "ad_units/notification_ad/custom_notification_ad_constants.h",
+    "ad_units/notification_ad/custom_notification_ad_feature.cc",
+    "ad_units/notification_ad/custom_notification_ad_feature.h",
     "ads_service.cc",
     "ads_service.h",
     "ads_service_observer.h",
+    "analytics/p2a/p2a.cc",
+    "analytics/p2a/p2a.h",
+    "analytics/p2a/p2a_constants.h",
+    "analytics/p3a/notification_ad.cc",
+    "analytics/p3a/notification_ad.h",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
     "component_updater/resource_component.cc",
     "component_updater/resource_component.h",
     "component_updater/resource_component_observer.h",
+    "component_updater/resource_component_registrar.cc",
+    "component_updater/resource_component_registrar.h",
+    "component_updater/resource_component_registrar_delegate.h",
     "component_updater/resource_info.h",
-    "feature/custom_notification_ad_constants.h",
-    "feature/custom_notification_ad_feature.cc",
-    "feature/custom_notification_ad_feature.h",
-    "frequency_capping_helper.cc",
-    "frequency_capping_helper.h",
-    "reminder_util.cc",
-    "reminder_util.h",
+    "reminder/reminder_util.cc",
+    "reminder/reminder_util.h",
+    "user_engagement/ad_events/ad_event_cache_helper.cc",
+    "user_engagement/ad_events/ad_event_cache_helper.h",
   ]
 
   configs += [ "//build/config/compiler:wexit_time_destructors" ]
@@ -56,17 +62,16 @@ static_library("browser") {
   sources += [
     "ads_service_impl.cc",
     "ads_service_impl.h",
-    "ads_tooltips_delegate.h",
     "bat_ads_service_factory.h",
-    "device_id.cc",
-    "device_id.h",
+    "device_id/device_id.cc",
+    "device_id/device_id.h",
+    "tooltips/ads_tooltips_delegate.h",
   ]
 
   deps += [
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/profiles:util",
     "//brave/common",
-    "//brave/components/brave_federated",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
@@ -85,6 +90,23 @@ static_library("browser") {
   public_deps += [
     "//brave/components/services/bat_ads/public/interfaces",
     "//services/network/public/mojom",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "analytics/p3a/notification_ad_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
   ]
 }
 

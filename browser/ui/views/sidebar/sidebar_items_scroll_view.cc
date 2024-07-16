@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 
+#include <optional>
 #include <string>
 
 #include "base/functional/bind.h"
@@ -18,7 +19,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -28,6 +29,7 @@
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/compositor/layer_tree_owner.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
@@ -40,16 +42,18 @@
 namespace {
 
 constexpr char kSidebarItemDragType[] = "brave/sidebar-item";
+constexpr int kArrowHeight = 24;
 
 class SidebarItemsArrowView : public views::ImageButton {
+  METADATA_HEADER(SidebarItemsArrowView, views::ImageButton)
  public:
-  METADATA_HEADER(SidebarItemsArrowView);
   explicit SidebarItemsArrowView(const std::u16string& accessible_name) {
     SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
     SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
     DCHECK(GetInstallFocusRingOnFocus());
     views::FocusRing::Get(this)->SetColorId(gfx::kBraveBlurple300);
     SetAccessibleName(accessible_name);
+    SetPaintToLayer();
   }
 
   ~SidebarItemsArrowView() override = default;
@@ -57,7 +61,11 @@ class SidebarItemsArrowView : public views::ImageButton {
   SidebarItemsArrowView(const SidebarItemsArrowView&) = delete;
   SidebarItemsArrowView& operator=(const SidebarItemsArrowView&) = delete;
 
-  gfx::Size CalculatePreferredSize() const override { return {42, 24}; }
+  gfx::Size CalculatePreferredSize() const override {
+    return {
+        SidebarButtonView::kSidebarButtonSize + SidebarButtonView::kMargin * 2,
+        kArrowHeight};
+  }
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
     if (const ui::ColorProvider* color_provider = GetColorProvider()) {
@@ -81,7 +89,7 @@ class SidebarItemsArrowView : public views::ImageButton {
   }
 };
 
-BEGIN_METADATA(SidebarItemsArrowView, views::ImageButton)
+BEGIN_METADATA(SidebarItemsArrowView)
 END_METADATA
 
 }  // namespace
@@ -89,12 +97,11 @@ END_METADATA
 SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
     : browser_(browser),
       drag_context_(std::make_unique<SidebarItemDragContext>()),
-      scroll_animator_for_new_item_(
-          std::make_unique<views::BoundsAnimator>(this)),
+      scroll_animator_for_item_(std::make_unique<views::BoundsAnimator>(this)),
       scroll_animator_for_smooth_(
           std::make_unique<views::BoundsAnimator>(this)) {
   model_observed_.Observe(browser->sidebar_controller()->model());
-  bounds_animator_observed_.AddObservation(scroll_animator_for_new_item_.get());
+  bounds_animator_observed_.AddObservation(scroll_animator_for_item_.get());
   bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =
       AddChildView(std::make_unique<SidebarItemsContentsView>(browser_, this));
@@ -110,11 +117,16 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
   down_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,
                           base::Unretained(this), down_arrow_));
+
+  // To prevent drawing each item's inkdrop layer.
+  SetPaintToLayer();
+  layer()->SetMasksToBounds(true);
+  layer()->SetFillsBoundsOpaquely(false);
 }
 
 SidebarItemsScrollView::~SidebarItemsScrollView() = default;
 
-void SidebarItemsScrollView::Layout() {
+void SidebarItemsScrollView::Layout(PassKey) {
   // |contents_view_| always has it's preferred size. and this scroll view only
   // shows some parts of it if scroll view can't get enough rect.
   contents_view_->SizeToPreferredSize();
@@ -157,15 +169,18 @@ void SidebarItemsScrollView::Layout() {
 }
 
 void SidebarItemsScrollView::OnMouseEvent(ui::MouseEvent* event) {
-  if (!event->IsMouseWheelEvent())
+  if (!event->IsMouseWheelEvent()) {
     return;
+  }
 
-  if (!IsScrollable())
+  if (!IsScrollable()) {
     return;
+  }
 
   const int y_offset = event->AsMouseWheelEvent()->y_offset();
-  if (y_offset == 0)
+  if (y_offset == 0) {
     return;
+  }
 
   ScrollContentsViewBy(y_offset, false);
   UpdateArrowViewsEnabledState();
@@ -187,10 +202,12 @@ void SidebarItemsScrollView::OnBoundsAnimatorProgressed(
 
 void SidebarItemsScrollView::OnBoundsAnimatorDone(
     views::BoundsAnimator* animator) {
-  if (scroll_animator_for_new_item_.get() == animator) {
-    contents_view_->ShowItemAddedFeedbackBubble();
-    UpdateArrowViewsEnabledState();
+  if (scroll_animator_for_item_.get() == animator &&
+      lastly_added_item_index_.has_value()) {
+    contents_view_->ShowItemAddedFeedbackBubble(*lastly_added_item_index_);
+    lastly_added_item_index_ = std::nullopt;
   }
+  UpdateArrowViewsEnabledState();
 }
 
 void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
@@ -200,17 +217,19 @@ void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
 
   // Calculate and set this view's bounds to determine whether this view is
   // scroll mode or not.
-  parent()->Layout();
+  parent()->DeprecatedLayoutImmediately();
 
   // Only show item added feedback bubble on active browser window if this new
   // item is explicitely by user gesture.
   if (user_gesture && browser_ == BrowserList::GetInstance()->GetLastActive()) {
-    // If scrollable, scroll to bottom with animation before showing feedback.
-    if (IsScrollable()) {
-      scroll_animator_for_new_item_->AnimateViewTo(
-          contents_view_, GetTargetScrollContentsViewRectTo(false));
+    // If added item is not visible because of narrow height, we should scroll
+    // to make it visible.
+    if (NeedScrollForItemAt(index)) {
+      lastly_added_item_index_ = index;
+      scroll_animator_for_item_->AnimateViewTo(
+          contents_view_, GetTargetScrollContentsViewRectForItemAt(index));
     } else {
-      contents_view_->ShowItemAddedFeedbackBubble();
+      contents_view_->ShowItemAddedFeedbackBubble(index);
     }
   }
 }
@@ -226,8 +245,13 @@ void SidebarItemsScrollView::OnItemRemoved(size_t index) {
 }
 
 void SidebarItemsScrollView::OnActiveIndexChanged(
-    absl::optional<size_t> old_index,
-    absl::optional<size_t> new_index) {
+    std::optional<size_t> old_index,
+    std::optional<size_t> new_index) {
+  // If activated item is not visible, scroll to show it.
+  if (new_index && NeedScrollForItemAt(*new_index)) {
+    scroll_animator_for_item_->AnimateViewTo(
+        contents_view_, GetTargetScrollContentsViewRectForItemAt(*new_index));
+  }
   contents_view_->OnActiveIndexChanged(old_index, new_index);
 }
 
@@ -250,18 +274,18 @@ void SidebarItemsScrollView::UpdateArrowViewsTheme() {
     const SkColor arrow_disabled =
         color_provider->GetColor(kColorSidebarArrowDisabled);
 
-    up_arrow_->SetImage(
+    up_arrow_->SetImageModel(
         views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarItemsUpArrowIcon, arrow_normal));
-    up_arrow_->SetImage(
-        views::Button::STATE_DISABLED,
-        gfx::CreateVectorIcon(kSidebarItemsUpArrowIcon, arrow_disabled));
-    down_arrow_->SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarItemsDownArrowIcon, arrow_normal));
-    down_arrow_->SetImage(
-        views::Button::STATE_DISABLED,
-        gfx::CreateVectorIcon(kSidebarItemsDownArrowIcon, arrow_disabled));
+        ui::ImageModel::FromVectorIcon(kSidebarItemsUpArrowIcon, arrow_normal));
+    up_arrow_->SetImageModel(views::Button::STATE_DISABLED,
+                             ui::ImageModel::FromVectorIcon(
+                                 kSidebarItemsUpArrowIcon, arrow_disabled));
+    down_arrow_->SetImageModel(views::Button::STATE_NORMAL,
+                               ui::ImageModel::FromVectorIcon(
+                                   kSidebarItemsDownArrowIcon, arrow_normal));
+    down_arrow_->SetImageModel(views::Button::STATE_DISABLED,
+                               ui::ImageModel::FromVectorIcon(
+                                   kSidebarItemsDownArrowIcon, arrow_disabled));
   }
 }
 
@@ -276,34 +300,40 @@ void SidebarItemsScrollView::UpdateArrowViewsEnabledState() {
 }
 
 bool SidebarItemsScrollView::IsScrollable() const {
-  if (bounds().IsEmpty() || GetPreferredSize().IsEmpty())
+  if (bounds().IsEmpty() || GetPreferredSize().IsEmpty()) {
     return false;
+  }
 
   return bounds().height() < GetPreferredSize().height();
 }
 
 void SidebarItemsScrollView::OnButtonPressed(views::View* view) {
-  const int scroll_offset = SidebarButtonView::kSidebarButtonSize;
-  if (view == up_arrow_)
+  const int scroll_offset =
+      SidebarButtonView::kSidebarButtonSize + SidebarButtonView::kMargin;
+  if (view == up_arrow_) {
     ScrollContentsViewBy(scroll_offset, true);
+  }
 
-  if (view == down_arrow_)
+  if (view == down_arrow_) {
     ScrollContentsViewBy(-scroll_offset, true);
+  }
 
   UpdateArrowViewsEnabledState();
 }
 
 void SidebarItemsScrollView::ScrollContentsViewBy(int offset, bool animate) {
-  if (offset == 0)
+  if (offset == 0) {
     return;
+  }
 
   // If scroll goes up, it should not go further if the origin of contents view
   // is same with bottom_right of up arrow.
   if (offset > 0) {
     const gfx::Rect up_arrow_bounds = up_arrow_->bounds();
     // If contents view already stick to up_arrow bottom, just return.
-    if (contents_view_->origin() == up_arrow_bounds.bottom_left())
+    if (contents_view_->origin() == up_arrow_bounds.bottom_left()) {
       return;
+    }
 
     // If contents view top meets or exceeds the up arrow bottom, attach it to
     // up arrow bottom.
@@ -323,8 +353,9 @@ void SidebarItemsScrollView::ScrollContentsViewBy(int offset, bool animate) {
   if (offset < 0) {
     const gfx::Rect down_arrow_bounds = down_arrow_->bounds();
     // If contents view already stick to down_arrow top, just return.
-    if (contents_view_->bounds().bottom_left() == down_arrow_bounds.origin())
+    if (contents_view_->bounds().bottom_left() == down_arrow_bounds.origin()) {
       return;
+    }
 
     // If contents view bottom meets or exceeds the down arrow top, attach it to
     // down arrow top.
@@ -350,6 +381,53 @@ void SidebarItemsScrollView::ScrollContentsViewBy(int offset, bool animate) {
   }
 }
 
+bool SidebarItemsScrollView::NeedScrollForItemAt(size_t index) const {
+  if (!IsScrollable()) {
+    return false;
+  }
+
+  views::View* item_view = contents_view_->children()[index];
+  auto item_view_bounds_per_scroll_view = item_view->GetLocalBounds();
+  item_view_bounds_per_scroll_view = views::View::ConvertRectToTarget(
+      item_view, this, item_view_bounds_per_scroll_view);
+
+  auto scroll_view_bounds = GetContentsBounds();
+  scroll_view_bounds.Inset(gfx::Insets::VH(kArrowHeight, 0));
+
+  // Need scroll if item is not fully included in scroll view.
+  return !scroll_view_bounds.Contains(item_view_bounds_per_scroll_view);
+}
+
+gfx::Rect SidebarItemsScrollView::GetTargetScrollContentsViewRectForItemAt(
+    size_t index) const {
+  DCHECK(NeedScrollForItemAt(index));
+
+  views::View* item_view = contents_view_->children()[index];
+  auto item_view_bounds_per_scroll_view = item_view->GetLocalBounds();
+  item_view_bounds_per_scroll_view = views::View::ConvertRectToTarget(
+      item_view, this, item_view_bounds_per_scroll_view);
+
+  const bool scroll_up = item_view_bounds_per_scroll_view.bottom() >
+                         (GetContentsBounds().bottom() - kArrowHeight);
+  auto item_view_bounds = item_view->GetLocalBounds();
+  item_view_bounds = views::View::ConvertRectToTarget(item_view, contents_view_,
+                                                      item_view_bounds);
+  gfx::Rect target_bounds = contents_view_->bounds();
+
+  if (scroll_up) {
+    // Scroll to make this item as a last visible item.
+    target_bounds.set_origin({contents_view_->origin().x(),
+                              GetContentsBounds().height() -
+                                  item_view_bounds.bottom() - kArrowHeight});
+  } else {
+    // Scroll to make this item as a first visible item.
+    target_bounds.set_origin(
+        {contents_view_->origin().x(), -item_view_bounds.y() + kArrowHeight});
+  }
+
+  return target_bounds;
+}
+
 gfx::Rect SidebarItemsScrollView::GetTargetScrollContentsViewRectTo(bool top) {
   gfx::Rect target_bounds;
   const gfx::Rect contents_bounds = contents_view_->bounds();
@@ -368,12 +446,14 @@ gfx::Rect SidebarItemsScrollView::GetTargetScrollContentsViewRectTo(bool top) {
 
 bool SidebarItemsScrollView::IsInVisibleContentsViewBounds(
     const gfx::Point& position) const {
-  if (!HitTestPoint(position))
+  if (!HitTestPoint(position)) {
     return false;
+  }
 
   // If this is not scrollable, this scroll view shows all contents view.
-  if (!IsScrollable())
+  if (!IsScrollable()) {
     return true;
+  }
 
   if (up_arrow_->bounds().Contains(position) ||
       down_arrow_->bounds().Contains(position)) {
@@ -393,8 +473,9 @@ bool SidebarItemsScrollView::GetDropFormats(
 bool SidebarItemsScrollView::CanDrop(const OSExchangeData& data) {
   // Null means sidebar item drag and drop is not initiated by this view.
   // Don't allow item move from different window.
-  if (!drag_context_->source())
+  if (!drag_context_->source()) {
     return false;
+  }
 
   return data.HasCustomFormat(
       ui::ClipboardFormatType::GetType(kSidebarItemDragType));
@@ -406,7 +487,7 @@ void SidebarItemsScrollView::OnDragExited() {
 
 void SidebarItemsScrollView::ClearDragIndicator() {
   contents_view_->ClearDragIndicator();
-  drag_context_->set_drag_indicator_index(absl::nullopt);
+  drag_context_->set_drag_indicator_index(std::nullopt);
 }
 
 int SidebarItemsScrollView::OnDragUpdated(const ui::DropTargetEvent& event) {
@@ -483,7 +564,7 @@ bool SidebarItemsScrollView::CanStartDragForView(views::View* sender,
 }
 
 bool SidebarItemsScrollView::IsItemReorderingInProgress() const {
-  return drag_context_->source_index() != absl::nullopt;
+  return drag_context_->source_index() != std::nullopt;
 }
 
 bool SidebarItemsScrollView::IsBubbleVisible() const {
@@ -494,9 +575,5 @@ void SidebarItemsScrollView::Update() {
   contents_view_->Update();
 }
 
-void SidebarItemsScrollView::SetSidebarOnLeft(bool sidebar_on_left) {
-  contents_view_->SetSidebarOnLeft(sidebar_on_left);
-}
-
-BEGIN_METADATA(SidebarItemsScrollView, views::View)
+BEGIN_METADATA(SidebarItemsScrollView)
 END_METADATA

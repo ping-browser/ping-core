@@ -8,7 +8,7 @@ package org.chromium.chrome.browser;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,28 +16,39 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.text.Html;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.ClickableSpan;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.view.TouchDelegate;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import org.jni_zero.CalledByNative;
+
 import org.chromium.base.ContextUtils;
-import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
 import org.chromium.components.favicon.IconType;
 import org.chromium.components.favicon.LargeIconBridge;
+import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.url.GURL;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -52,11 +63,17 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
             "next_rewards_onboarding_modal_date";
     private static final String PREF_REWARDS_ENV_CHANGE = "rewards_env_change";
     private static final String PREF_REWARDS_ONBOARDING_MODAL = "rewards_onboarding_modal";
+    private static final String PREF_REWARDS_ONBOARDING_ICON_TIMING =
+            "rewards_onboarding_icon_timing";
+    private static final String PREF_REWARDS_ONBOARDING_ICON_INVISIBLE_TIMING =
+            "rewards_onboarding_icon_invisible_timing";
+    private static final String PREF_REWARDS_ONBOARDING_ICON_INVISIBLE =
+            "rewards_onboarding_icon_invisible";
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp
     private static final int FAVICON_TEXT_SIZE = 50; // dp
     private static final int FAVICON_FETCH_INTERVAL = 1000; // In milliseconds
     private static final int FAVICON_DESIRED_SIZE = 64; // px
-    private static LargeIconBridge mLargeIconBridge;
+    private static LargeIconBridge sLargeIconBridge;
 
     public static final String BAT_TEXT = "BAT";
     public static final String USD_TEXT = "USD";
@@ -68,7 +85,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private LargeIconReadyCallback mCallback;
     private final Handler mHandler = new Handler();
     private int mFetchCount;
-    private final int MAX_FAVICON_FETCH_COUNT = 8;
+    private static final int MAX_FAVICON_FETCH_COUNT = 8;
     public static final int CROSS_FADE_DURATION = 1000; //ms
     public static final int THANKYOU_FADE_OUT_DURATION = 1500; //ms
     public static final int THANKYOU_FADE_IN_DURATION = 1500; //ms
@@ -83,51 +100,76 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     }
 
     public static void resetRewards() {
-        SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ENV_CHANGE, false);
-        sharedPreferencesEditor.putLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, 0);
-        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ONBOARDING_MODAL, false);
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_ONBOARDING_MINI_MODAL, true);
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, true);
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, false);
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_DECLARE_GEO_MODAL, false);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_REWARDS_ENV_CHANGE, false);
+        ChromeSharedPreferences.getInstance().writeLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, 0);
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_REWARDS_ONBOARDING_MODAL, false);
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_SHOW_ONBOARDING_MINI_MODAL, true);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, true);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, false);
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_SHOW_DECLARE_GEO_MODAL, false);
+        ChromeSharedPreferences.getInstance().writeLong(PREF_REWARDS_ONBOARDING_ICON_TIMING, 0);
+        ChromeSharedPreferences.getInstance()
+                .writeLong(PREF_REWARDS_ONBOARDING_ICON_INVISIBLE_TIMING, 0);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_REWARDS_ONBOARDING_ICON_INVISIBLE, false);
     }
 
     public static void setRewardsEnvChange(boolean isEnabled) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ENV_CHANGE, isEnabled);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_REWARDS_ENV_CHANGE, isEnabled);
     }
 
     public static boolean hasRewardsEnvChange() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(PREF_REWARDS_ENV_CHANGE, false);
+        return ChromeSharedPreferences.getInstance().readBoolean(PREF_REWARDS_ENV_CHANGE, false);
     }
 
     public static long getNextRewardsOnboardingModalDate() {
-        return ContextUtils.getAppSharedPreferences().getLong(
-                PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, 0);
+        return ChromeSharedPreferences.getInstance()
+                .readLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, 0);
     }
 
     public static void setNextRewardsOnboardingModalDate(long nextDate) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, nextDate);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, nextDate);
+    }
+
+    public static long getRewardsOnboardingIconTiming() {
+        return ChromeSharedPreferences.getInstance().readLong(PREF_REWARDS_ONBOARDING_ICON_TIMING);
+    }
+
+    public static void setRewardsOnboardingIconTiming(long nextDate) {
+        ChromeSharedPreferences.getInstance()
+                .writeLong(PREF_REWARDS_ONBOARDING_ICON_TIMING, nextDate);
+    }
+
+    public static long getRewardsOnboardingIconInvisibleTiming() {
+        return ChromeSharedPreferences.getInstance()
+                .readLong(PREF_REWARDS_ONBOARDING_ICON_INVISIBLE_TIMING);
+    }
+
+    public static void setRewardsOnboardingIconInvisibleTiming(long nextDate) {
+        ChromeSharedPreferences.getInstance()
+                .writeLong(PREF_REWARDS_ONBOARDING_ICON_INVISIBLE_TIMING, nextDate);
+    }
+
+    public static void setRewardsOnboardingIconInvisible(boolean hasUpdated) {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_REWARDS_ONBOARDING_ICON_INVISIBLE, hasUpdated);
+    }
+
+    public static boolean hasRewardsOnboardingIconInvisibleUpdated() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_REWARDS_ONBOARDING_ICON_INVISIBLE, false);
     }
 
     public static void setRewardsOnboardingModalShown(boolean isShown) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ONBOARDING_MODAL, isShown);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_REWARDS_ONBOARDING_MODAL, isShown);
     }
 
     public static boolean hasRewardsOnboardingModalShown() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(
-                PREF_REWARDS_ONBOARDING_MODAL, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_REWARDS_ONBOARDING_MODAL, false);
     }
 
     public static boolean shouldShowRewardsOnboardingModalOnDay4() {
@@ -135,8 +177,9 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         if (!hasRewardsOnboardingModalShown()
                 && (getNextRewardsOnboardingModalDate() > 0
                         && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())
-                && shouldShowBraveRewardsOnboardingModal() && braveRewardsNativeWorker != null
-                && braveRewardsNativeWorker.IsSupported()) {
+                && shouldShowBraveRewardsOnboardingModal()
+                && braveRewardsNativeWorker != null
+                && braveRewardsNativeWorker.isSupported()) {
             if (isRewardsEnabled()) {
                 setRewardsOnboardingModalShown(true);
                 return false;
@@ -148,51 +191,42 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     }
 
     public static boolean shouldShowMiniOnboardingModal() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(
-                PREF_SHOW_ONBOARDING_MINI_MODAL, true);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_SHOW_ONBOARDING_MINI_MODAL, true);
     }
 
     public static void setShowMiniOnboardingModal(boolean enabled) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_ONBOARDING_MINI_MODAL, enabled);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_SHOW_ONBOARDING_MINI_MODAL, enabled);
     }
 
     public static boolean shouldShowBraveRewardsOnboardingModal() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(
-                PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, true);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, true);
     }
 
     public static void setShowBraveRewardsOnboardingModal(boolean enabled) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, enabled);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, enabled);
     }
 
     public static boolean shouldShowBraveRewardsOnboardingOnce() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(
-                PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, false);
     }
 
     public static void setShowBraveRewardsOnboardingOnce(boolean enabled) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, enabled);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, enabled);
     }
 
     public static boolean shouldShowDeclareGeoModal() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(
-                PREF_SHOW_DECLARE_GEO_MODAL, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_SHOW_DECLARE_GEO_MODAL, false);
     }
 
     public static void setShowDeclareGeoModal(boolean enabled) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_DECLARE_GEO_MODAL, enabled);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_SHOW_DECLARE_GEO_MODAL, enabled);
     }
 
     public interface LargeIconReadyCallback {
@@ -202,19 +236,17 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     public BraveRewardsHelper(Tab tab) {
         mTab = tab;
         assert mTab != null;
-        mProfile = Profile.getLastUsedRegularProfile();
-        if (mLargeIconBridge == null && mTab != null && mProfile != null) {
-            mLargeIconBridge = new LargeIconBridge(mProfile);
+        mProfile = ProfileManager.getLastUsedRegularProfile();
+        if (sLargeIconBridge == null && mTab != null && mProfile != null) {
+            sLargeIconBridge = new LargeIconBridge(mProfile);
         }
     }
 
-    /**
-     *  we don't destroy mLargeIconBridge sisnce it's static
-     */
+    /** we don't destroy sLargeIconBridge sisnce it's static */
     private void destroy() {
-        if (mLargeIconBridge != null) {
-            mLargeIconBridge.destroy();
-            mLargeIconBridge = null;
+        if (sLargeIconBridge != null) {
+            sLargeIconBridge.destroy();
+            sLargeIconBridge = null;
         }
         mCallback =  null;
     }
@@ -250,9 +282,11 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         }
 
         // Get the icon.
-        if (mLargeIconBridge != null && mCallback != null && !mFaviconUrl.isEmpty()
+        if (sLargeIconBridge != null
+                && mCallback != null
+                && !mFaviconUrl.isEmpty()
                 && mProfile.isNativeInitialized()) {
-            mLargeIconBridge.getLargeIconForUrl(new GURL(mFaviconUrl), FAVICON_DESIRED_SIZE, this);
+            sLargeIconBridge.getLargeIconForUrl(new GURL(mFaviconUrl), FAVICON_DESIRED_SIZE, this);
         }
     }
 
@@ -268,21 +302,14 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
             return;
         }
 
-        if (mFetchCount == MAX_FAVICON_FETCH_COUNT
-                || (icon == null && false == isFallbackColorDefault)) {
-            RoundedIconGenerator mIconGenerator = new RoundedIconGenerator(Resources.getSystem(),
-                    FAVICON_CIRCLE_MEASUREMENTS, FAVICON_CIRCLE_MEASUREMENTS,
-                    FAVICON_CIRCLE_MEASUREMENTS, fallbackColor, FAVICON_TEXT_SIZE);
+        if (mFetchCount == MAX_FAVICON_FETCH_COUNT || (icon == null && !isFallbackColorDefault)) {
+            RoundedIconGenerator mIconGenerator =
+                    createIconGeneratorWithFallbackColor(fallbackColor);
 
             mIconGenerator.setBackgroundColor(fallbackColor);
             icon = mIconGenerator.generateIconForUrl(mFaviconUrl);
-        } else if (icon == null && true == isFallbackColorDefault) {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    retrieveLargeIconInternal();
-                }
-            }, FAVICON_FETCH_INTERVAL);
+        } else if (icon == null && isFallbackColorDefault) {
+            scheduleIconRetrievalWithDelay();
             return;
         }
         //else: icon is available
@@ -292,6 +319,19 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         }
     }
 
+    private RoundedIconGenerator createIconGeneratorWithFallbackColor(int fallbackColor) {
+        return new RoundedIconGenerator(
+                Resources.getSystem(),
+                FAVICON_CIRCLE_MEASUREMENTS,
+                FAVICON_CIRCLE_MEASUREMENTS,
+                FAVICON_CIRCLE_MEASUREMENTS,
+                fallbackColor,
+                FAVICON_TEXT_SIZE);
+    }
+
+    private void scheduleIconRetrievalWithDelay() {
+        mHandler.postDelayed(this::retrieveLargeIconInternal, FAVICON_FETCH_INTERVAL);
+    }
 
     public static Bitmap getCircularBitmap(Bitmap bitmap) {
         Bitmap output;
@@ -325,67 +365,67 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         return output;
     }
 
-    static public ChromeTabbedActivity getChromeTabbedActivity() {
-      return BraveActivity.getChromeTabbedActivity();
+    public static ChromeTabbedActivity getChromeTabbedActivity() {
+        return BraveActivity.getChromeTabbedActivity();
     }
 
-    static public BraveActivity getBraveActivity()
+    public static BraveActivity getBraveActivity()
             throws BraveActivity.BraveActivityNotFoundException {
-      return BraveActivity.getBraveActivity();
+        return BraveActivity.getBraveActivity();
     }
 
-  static public String getCurrentMonth(Calendar currentTime,
-      Resources resources, boolean upper_case) {
-    String month = resources.getString(R.string.brave_ui_month_jan);
-    switch (currentTime.get(Calendar.MONTH)) {
-      case Calendar.JANUARY:
-        month = resources.getString(R.string.brave_ui_month_jan);
-        break;
-      case Calendar.FEBRUARY:
-        month = resources.getString(R.string.brave_ui_month_feb);
-        break;
-      case Calendar.MARCH:
-        month = resources.getString(R.string.brave_ui_month_mar);
-        break;
-      case Calendar.APRIL:
-        month = resources.getString(R.string.brave_ui_month_apr);
-        break;
-      case Calendar.MAY:
-        month = resources.getString(R.string.brave_ui_month_may);
-        break;
-      case Calendar.JUNE:
-        month = resources.getString(R.string.brave_ui_month_jun);
-        break;
-      case Calendar.JULY:
-        month = resources.getString(R.string.brave_ui_month_jul);
-        break;
-      case Calendar.AUGUST:
-        month = resources.getString(R.string.brave_ui_month_aug);
-        break;
-      case Calendar.SEPTEMBER:
-        month = resources.getString(R.string.brave_ui_month_sep);
-        break;
-      case Calendar.OCTOBER:
-        month = resources.getString(R.string.brave_ui_month_oct);
-        break;
-      case Calendar.NOVEMBER:
-        month = resources.getString(R.string.brave_ui_month_nov);
-        break;
-      case Calendar.DECEMBER:
-        month = resources.getString(R.string.brave_ui_month_dec);
-        break;
-    }
-    if (!upper_case && !month.isEmpty()) {
-      return month.substring(0, 1) + month.substring(1).toLowerCase(Locale.getDefault());
+    public static String getCurrentMonth(
+            Calendar currentTime, Resources resources, boolean upperCase) {
+        String month = resources.getString(R.string.brave_ui_month_jan);
+        switch (currentTime.get(Calendar.MONTH)) {
+            case Calendar.JANUARY:
+                month = resources.getString(R.string.brave_ui_month_jan);
+                break;
+            case Calendar.FEBRUARY:
+                month = resources.getString(R.string.brave_ui_month_feb);
+                break;
+            case Calendar.MARCH:
+                month = resources.getString(R.string.brave_ui_month_mar);
+                break;
+            case Calendar.APRIL:
+                month = resources.getString(R.string.brave_ui_month_apr);
+                break;
+            case Calendar.MAY:
+                month = resources.getString(R.string.brave_ui_month_may);
+                break;
+            case Calendar.JUNE:
+                month = resources.getString(R.string.brave_ui_month_jun);
+                break;
+            case Calendar.JULY:
+                month = resources.getString(R.string.brave_ui_month_jul);
+                break;
+            case Calendar.AUGUST:
+                month = resources.getString(R.string.brave_ui_month_aug);
+                break;
+            case Calendar.SEPTEMBER:
+                month = resources.getString(R.string.brave_ui_month_sep);
+                break;
+            case Calendar.OCTOBER:
+                month = resources.getString(R.string.brave_ui_month_oct);
+                break;
+            case Calendar.NOVEMBER:
+                month = resources.getString(R.string.brave_ui_month_nov);
+                break;
+            case Calendar.DECEMBER:
+                month = resources.getString(R.string.brave_ui_month_dec);
+                break;
+        }
+        if (!upperCase && !month.isEmpty()) {
+            return month.substring(0, 1) + month.substring(1).toLowerCase(Locale.getDefault());
+        }
+
+        return month;
     }
 
-    return month;
-  }
-
-  static public String getCurrentYear(Resources resources) {
-    Calendar currentTime = Calendar.getInstance();
-    return Integer.toString(currentTime.get(Calendar.YEAR));
-  }
+    public static String getCurrentYear(Resources resources) {
+        Calendar currentTime = Calendar.getInstance();
+        return Integer.toString(currentTime.get(Calendar.YEAR));
+    }
 
   public static Tab currentActiveChromeTabbedActivityTab() {
       ChromeTabbedActivity activity = BraveRewardsHelper.getChromeTabbedActivity();
@@ -395,63 +435,66 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
       return activity.getActivityTab();
   }
 
-  /**
-   *
-   * @param fadeout: can be null
-   * @param fadein: can be null
-   * @param fade_out_visibility: View.INVISIBLE or View.GONE
-   * @param fadeInAlpha: fade in alpha level
-   * @param fade_out_visibility: fade in/out time (ms)
-   */
-  public static void crossfade(final View fadeout, final View fadein, int fade_out_visibility, float fadeInAlpha, int fade_time) {
-    if (fade_time < 0) {
-        fade_time = 0;
-    }
+    /**
+     * @param fadeout: can be null
+     * @param fadein: can be null
+     * @param fadeOutVisibility: View.INVISIBLE or View.GONE
+     * @param fadeInAlpha: fade in alpha level
+     * @param fadeTime: fade in/out time (ms)
+     */
+    public static void crossfade(
+            final View fadeout,
+            final View fadein,
+            int fadeOutVisibility,
+            float fadeInAlpha,
+            int fadeTime) {
+        if (fadeTime < 0) {
+            fadeTime = 0;
+        }
 
-    if (fadeInAlpha < 0 || fadeInAlpha > 1) {
-        fadeInAlpha= 1f;
-    }
+        if (fadeInAlpha < 0 || fadeInAlpha > 1) {
+            fadeInAlpha = 1f;
+        }
 
-    final int fade_out_visibility_local =
-    (fade_out_visibility != View.GONE && fade_out_visibility != View.INVISIBLE) ?
-      View.GONE : fade_out_visibility;
+        final int fade_out_visibility_local =
+                (fadeOutVisibility != View.GONE && fadeOutVisibility != View.INVISIBLE)
+                        ? View.GONE
+                        : fadeOutVisibility;
 
-    // Set the content view to 0% opacity but visible, so that it is visible
-    // (but fully transparent) during the animation.
-    if (fadein != null) {
-      fadein.setAlpha(0f);
-      fadein.setVisibility(View.VISIBLE);
+        // Set the content view to 0% opacity but visible, so that it is visible
+        // (but fully transparent) during the animation.
+        if (fadein != null) {
+            fadein.setAlpha(0f);
+            fadein.setVisibility(View.VISIBLE);
 
-      // Animate the content view to 100% opacity, and clear any animation
-      // listener set on the view.
-      fadein.animate()
-              .alpha(fadeInAlpha)
-              .setDuration(fade_time)
-              .setListener(null);
-    }
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            fadein.animate().alpha(fadeInAlpha).setDuration(fadeTime).setListener(null);
+        }
 
-    // Animate the loading view to 0% opacity. After the animation ends,
-    // set its visibility to GONE as an optimization step (it won't
-    // participate in layout passes, etc.)
-    if (fadeout != null) {
-      fadeout.animate()
-              .alpha(0f)
-              .setDuration(fade_time)
-              .setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                  fadeout.setVisibility(fade_out_visibility_local);
-                }
-              });
-    }
+        // Animate the loading view to 0% opacity. After the animation ends,
+        // set its visibility to GONE as an optimization step (it won't
+        // participate in layout passes, etc.)
+        if (fadeout != null) {
+            fadeout.animate()
+                    .alpha(0f)
+                    .setDuration(fadeTime)
+                    .setListener(
+                            new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    fadeout.setVisibility(fade_out_visibility_local);
+                                }
+                            });
+        }
   }
 
   public static double probiToDouble(String probi) {
-      final String PROBI_POWER = "1000000000000000000";
+        String probiPower = "1000000000000000000";
       double val = Double.NaN;
       try {
           BigDecimal probiNumber = new BigDecimal(probi);
-          BigDecimal dividerNumber = new BigDecimal(PROBI_POWER);
+            BigDecimal dividerNumber = new BigDecimal(probiPower);
           val = probiNumber.divide(dividerNumber).doubleValue();
       }
       catch(NumberFormatException e) {
@@ -513,5 +556,46 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         } else {
             return Html.fromHtml(string);
         }
+    }
+
+    public static String getFormattedAmount(double amount) {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+        numberFormat.setRoundingMode(RoundingMode.CEILING);
+        numberFormat.setMinimumFractionDigits(3);
+        return numberFormat.format(amount);
+    }
+
+    public static SpannableString tosSpannableString(String text, int colorRes) {
+        Context context = ContextUtils.getApplicationContext();
+        Spanned textSpanned = spannedFromHtmlString(text);
+        SpannableString textSpannableString = new SpannableString(textSpanned.toString());
+
+        NoUnderlineClickableSpan termsOfServiceClickableSpan =
+                new NoUnderlineClickableSpan(context, colorRes, (textView) -> {
+                    CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_TERMS_PAGE);
+                });
+
+        NoUnderlineClickableSpan privacyPolicyClickableSpan =
+                new NoUnderlineClickableSpan(context, colorRes, (textView) -> {
+                    CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_PRIVACY_POLICY);
+                });
+
+        setSpan(context, text, textSpannableString, R.string.terms_of_service,
+                termsOfServiceClickableSpan); // terms of service
+        setSpan(context, text, textSpannableString, R.string.privacy_policy,
+                privacyPolicyClickableSpan); // privacy policy
+        return textSpannableString;
+    }
+
+    public static void setSpan(Context context, String text, SpannableString tosTextSS,
+            int stringId, ClickableSpan clickableSpan) {
+        String spanString = context.getResources().getString(stringId);
+        int spanLength = spanString.length();
+        int index = text.indexOf(spanString);
+        tosTextSS.setSpan(
+                clickableSpan, index, index + spanLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Typeface typeface = Typeface.create("sans-serif", Typeface.NORMAL);
+        tosTextSS.setSpan(new StyleSpan(typeface.getStyle()), index, index + spanLength,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 }

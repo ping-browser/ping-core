@@ -13,40 +13,23 @@ import org.chromium.mojo.system.MojoException;
  */
 public class BraveNewsConnectionErrorHandler implements ConnectionErrorHandler {
     /**
-     *This is a delegate that is implemented in the object where the connection is created
+     * This is a delegate that is implemented in the object where the connection is created
      */
     public interface BraveNewsConnectionErrorHandlerDelegate {
         default void initBraveNewsController() {}
         default void cleanUpBraveNewsController() {}
     }
 
-    private BraveNewsConnectionErrorHandlerDelegate mBraveNewsConnectionErrorHandlerDelegate;
-    private static final Object sLock = new Object();
-    private static BraveNewsConnectionErrorHandler sInstance;
+    private BraveNewsConnectionErrorHandlerDelegate mDelegate;
 
-    public static BraveNewsConnectionErrorHandler getInstance() {
-        synchronized (sLock) {
-            if (sInstance == null) {
-                sInstance = new BraveNewsConnectionErrorHandler();
-            }
-        }
-        return sInstance;
-    }
-
-    public void setDelegate(
-            BraveNewsConnectionErrorHandlerDelegate braveNewsConnectionErrorHandlerDelegate) {
-        mBraveNewsConnectionErrorHandlerDelegate = braveNewsConnectionErrorHandlerDelegate;
-        assert mBraveNewsConnectionErrorHandlerDelegate
-                != null : "mBraveNewsConnectionErrorHandlerDelegate has to be initialized";
+    public BraveNewsConnectionErrorHandler(BraveNewsConnectionErrorHandlerDelegate delegate) {
+        assert delegate != null : "delegate has to be initialized";
+        mDelegate = delegate;
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        if (mBraveNewsConnectionErrorHandlerDelegate == null) {
-            return;
-        }
-
-        mBraveNewsConnectionErrorHandlerDelegate.cleanUpBraveNewsController();
-        mBraveNewsConnectionErrorHandlerDelegate.initBraveNewsController();
+        mDelegate.cleanUpBraveNewsController();
+        mDelegate.initBraveNewsController();
     }
 }

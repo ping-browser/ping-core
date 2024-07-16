@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_TOR_TOR_PROFILE_SERVICE_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -18,7 +19,6 @@
 #include "brave/components/tor/tor_profile_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "net/proxy_resolution/proxy_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class BrowserContext;
@@ -27,12 +27,12 @@ class BrowserContext;
 namespace net {
 class ProxyConfigService;
 class ProxyConfigServiceTor;
-}
+}  // namespace net
 
 namespace tor {
 
 using NewTorCircuitCallback =
-    base::OnceCallback<void(const absl::optional<net::ProxyInfo>& proxy_info)>;
+    base::OnceCallback<void(const std::optional<net::ProxyInfo>& proxy_info)>;
 
 class TorProfileServiceImpl
     : public TorProfileService,
@@ -41,6 +41,7 @@ class TorProfileServiceImpl
       public TorLauncherObserver {
  public:
   TorProfileServiceImpl(
+      content::BrowserContext* original_context,
       content::BrowserContext* context,
       PrefService* local_state,
       BraveTorClientUpdater* tor_client_updater,
@@ -78,6 +79,8 @@ class TorProfileServiceImpl
 
   void OnBridgesConfigChanged();
 
+  void OnBuiltinBridgesResponse(const base::Value::Dict& bridges);
+
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<BraveTorClientUpdater> tor_client_updater_ = nullptr;
@@ -87,6 +90,7 @@ class TorProfileServiceImpl
   raw_ptr<net::ProxyConfigServiceTor> proxy_config_service_ =
       nullptr;  // NOT OWNED
   PrefChangeRegistrar pref_change_registrar_;
+  std::unique_ptr<class BuiltinBridgesRequest> builtin_bridges_request_;
   base::WeakPtrFactory<TorProfileServiceImpl> weak_ptr_factory_;
 };
 

@@ -7,38 +7,34 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/time_util.h"
-#include "brave/components/brave_rewards/core/legacy/bat_helper.h"
 #include "brave/components/brave_rewards/core/legacy/bat_state.h"
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
-LegacyBatState::LegacyBatState(RewardsEngineImpl& engine) : engine_(engine) {}
+LegacyBatState::LegacyBatState(RewardsEngine& engine) : engine_(engine) {}
 
 LegacyBatState::~LegacyBatState() = default;
 
-void LegacyBatState::Load(LegacyResultCallback callback) {
+void LegacyBatState::Load(ResultCallback callback) {
   engine_->client()->LoadLegacyState(base::BindOnce(
       &LegacyBatState::OnLoad, base::Unretained(this), std::move(callback)));
 }
 
-void LegacyBatState::OnLoad(LegacyResultCallback callback,
+void LegacyBatState::OnLoad(ResultCallback callback,
                             mojom::Result result,
                             const std::string& data) {
   if (result != mojom::Result::OK) {
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
   ClientProperties state;
   if (!state.FromJson(data)) {
-    BLOG(0, "Failed to load client state");
-    BLOG(6, "Client state contents: " << data);
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Failed to load client state";
+    engine_->Log(FROM_HERE) << "Client state contents: " << data;
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -54,7 +50,7 @@ void LegacyBatState::OnLoad(LegacyResultCallback callback,
     state_.boot_timestamp = state_.boot_timestamp / 1000;
   }
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 bool LegacyBatState::GetRewardsMainEnabled() const {
@@ -91,16 +87,6 @@ const std::vector<uint8_t>& LegacyBatState::GetRecoverySeed() const {
 
 uint64_t LegacyBatState::GetCreationStamp() const {
   return state_.boot_timestamp;
-}
-
-bool LegacyBatState::GetInlineTipSetting(const std::string& key) const {
-  auto tip = state_.inline_tips.find(key);
-  if (tip == state_.inline_tips.end()) {
-    // not found, all tips are on by default
-    return true;
-  }
-
-  return tip->second;
 }
 
 }  // namespace brave_rewards::internal

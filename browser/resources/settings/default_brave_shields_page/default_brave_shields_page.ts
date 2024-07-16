@@ -5,18 +5,21 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import './brave_adblock_subpage.js';
-import '//resources/cr_elements/md_select.css.js';
+import './brave_adblock_subpage.js'
+import '//resources/cr_elements/md_select.css.js'
 
-import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
-import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
+import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {assertNotReached} from 'chrome://resources/js/assert.js'
 
-import {loadTimeData} from '../i18n_setup.js';
-import {RouteObserverMixin, RouteObserverMixin, Router, Router} from '../router.js';
+import {loadTimeData} from '../i18n_setup.js'
+import {RouteObserverMixin, Router} from '../router.js'
+import {routes} from '../route.js'
+import {CookieControlsMode} from '../site_settings/constants.js'
 
-import {DefaultBraveShieldsBrowserProxyImpl, DefaultBraveShieldsBrowserProxyImpl} from './default_brave_shields_browser_proxy.js';
+import {DefaultBraveShieldsBrowserProxyImpl, DefaultBraveShieldsBrowserProxyImpl} from './default_brave_shields_browser_proxy.js'
 import {getTemplate} from './default_brave_shields_page.html.js'
 
 const BraveShieldsPageBase = WebUiListenerMixin(I18nMixin(PrefsMixin(RouteObserverMixin(PolymerElement))))
@@ -44,7 +47,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
               { value: 'block', name: loadTimeData.getString('blockAdsTrackersAggressive') },
               { value: 'block_third_party', name: loadTimeData.getString('blockAdsTrackersStandard') },
               { value: 'allow', name: loadTimeData.getString('allowAdsTrackers') }
-          ];
+          ]
         }
       },
       cookieControlTypes_: {
@@ -55,7 +58,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
                 { value: 'block', name: loadTimeData.getString('blockAllCookies') },
                 { value: 'block_third_party', name: loadTimeData.getString('block3rdPartyCookies') },
                 { value: 'allow', name: loadTimeData.getString('allowAllCookies') }
-            ];
+            ]
           }
       },
       fingerprintingControlTypes_: {
@@ -66,7 +69,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
                 { value: 'block', name: loadTimeData.getString('strictFingerprinting') },
                 { value: 'default', name: loadTimeData.getString('standardFingerprinting') },
                 { value: 'allow', name: loadTimeData.getString('allowAllFingerprinting') }
-            ];
+            ]
           }
       },
       httpsUpgradeControlTypes_: {
@@ -80,7 +83,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
                   name: loadTimeData.getString('standardHttpsUpgrade') },
                 { value: 'allow',
                   name: loadTimeData.getString('disabledHttpsUpgrade') }
-            ];
+            ]
           }
       },
       isBraveRewardsSupported_: {
@@ -98,16 +101,13 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         type: Boolean,
         value: false
       },
-      isDebounceFeatureEnabled_: {
-        readOnly: true,
-        type: Boolean,
-        value: function () {
-          return loadTimeData.getBoolean('isDebounceFeatureEnabled')
-        }
-      },
       isHttpsByDefaultEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isHttpsByDefaultEnabled')
+      },
+      showStrictFingerprintingMode_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean('showStrictFingerprintingMode')
       },
       isForgetFirstPartyStorageFeatureEnabled_: {
         type: Boolean,
@@ -120,13 +120,21 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           type: chrome.settingsPrivate.PrefType.BOOLEAN,
           value: false,
         }
+      },
+      isFingerprintingEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
       }
     }
   }
 
   browserProxy_ = DefaultBraveShieldsBrowserProxyImpl.getInstance()
 
-  ready () {
+  override ready () {
     super.ready()
 
     this.onShieldsSettingsChanged_()
@@ -136,14 +144,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   /** @protected */
-  currentRouteChanged() {
+  override currentRouteChanged () {
     const router = Router.getInstance()
     this.isAdBlockRoute_ = (router.getCurrentRoute() == router.getRoutes().SHIELDS_ADBLOCK)
   }
 
   onAdblockPageClick_() {
-    const router = Router.getInstance();
-    router.navigateTo(router.getRoutes().SHIELDS_ADBLOCK);
+    const router = Router.getInstance()
+    router.navigateTo(router.getRoutes().SHIELDS_ADBLOCK)
   }
 
   controlEqual_ (val1, val2) {
@@ -167,6 +175,11 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
     this.browserProxy_.getFingerprintingControlType().then(value => {
       this.fingerprintingControlType_ = value
+      this.isFingerprintingEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value != 'allow',
+      }
     })
 
     this.browserProxy_.getHttpsUpgradeControlType().then(value => {
@@ -193,12 +206,12 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     this.browserProxy_.setCookieControlType(this.$.cookieControlType.value)
   }
 
-  onFingerprintingControlChange_ () {
-    this.browserProxy_.setFingerprintingControlType(this.$.fingerprintingControlType.value)
+  onFingerprintingSelectControlChange_ () {
+    this.browserProxy_.setFingerprintingControlType(this.$.fingerprintingSelectControlType.value)
   }
 
-  onHTTPSEverywhereControlChange_ () {
-    this.browserProxy_.setHTTPSEverywhereEnabled(this.$.httpsEverywhereControlType.checked)
+  onFingerprintingToggleControlChange_ () {
+    this.browserProxy_.setFingerprintingBlockEnabled(this.$.fingerprintingToggleControlType.checked)
   }
 
   onHttpsUpgradeControlChange_ () {

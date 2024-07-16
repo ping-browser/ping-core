@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -15,37 +16,24 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/swap_responses.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace {
 
-constexpr int kSwapValidationErrorCode = 100;
+constexpr char kSwapValidationErrorCode[] = "100";
 constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
 constexpr char kJupiterNoRoutesMessage[] =
     "No routes found for the input and output mints";
-
-absl::optional<double> ParsePriceImpactPct(const base::Value& value) {
-  // null value is considered as 0 price impact.
-  if (value.is_none()) {
-    return 0.0;
-  }
-
-  double result;
-  if (value.is_string()) {
-    if (!base::StringToDouble(value.GetString(), &result)) {
-      return absl::nullopt;
-    }
-
-    return result;
-  }
-
-  return absl::nullopt;
-}
 
 }  // namespace
 
 namespace brave_wallet {
 
+namespace zeroex {
 namespace {
 mojom::ZeroExFeePtr ParseZeroExFee(const base::Value& value) {
   if (value.is_none()) {
@@ -73,7 +61,7 @@ mojom::ZeroExFeePtr ParseZeroExFee(const base::Value& value) {
 
 }  // namespace
 
-mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
+mojom::ZeroExQuotePtr ParseQuoteResponse(const base::Value& json_value,
                                          bool expect_transaction_data) {
   // {
   //   "price":"1916.27547998814058355",
@@ -120,12 +108,12 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
   // }
 
   auto swap_response_value =
-      swap_responses::SwapResponse0x::FromValueDeprecated(json_value);
+      swap_responses::SwapResponse0x::FromValue(json_value);
   if (!swap_response_value) {
     return nullptr;
   }
 
-  auto swap_response = mojom::SwapResponse::New();
+  auto swap_response = mojom::ZeroExQuote::New();
   swap_response->price = swap_response_value->price;
 
   if (expect_transaction_data) {
@@ -179,44 +167,43 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
   return swap_response;
 }
 
-mojom::SwapErrorResponsePtr ParseSwapErrorResponse(
-    const base::Value& json_value) {
+mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
   // https://github.com/0xProject/0x-monorepo/blob/development/packages/json-schemas/schemas/relayer_api_error_response_schema.json
   //
   // {
-  // 	"code": 100,
+  // 	"code": "100",
   // 	"reason": "Validation Failed",
   // 	"validationErrors": [{
   // 			"field": "sellAmount",
-  // 			"code": 1001,
+  // 			"code": "1001",
   // 			"reason": "should match pattern \"^\\d+$\""
   // 		},
   // 		{
   // 			"field": "sellAmount",
-  // 			"code": 1001,
+  // 			"code": "1001",
   // 			"reason": "should be integer"
   // 		},
   // 		{
   // 			"field": "sellAmount",
-  // 			"code": 1001,
+  // 			"code": "1001",
   // 			"reason": "should match some schema in anyOf"
   // 		}
   // 	]
   // }
 
   auto swap_error_response_value =
-      swap_responses::SwapErrorResponse0x::FromValueDeprecated(json_value);
+      swap_responses::SwapErrorResponse0x::FromValue(json_value);
   if (!swap_error_response_value) {
     return nullptr;
   }
 
-  auto result = mojom::SwapErrorResponse::New();
+  auto result = mojom::ZeroExError::New();
   result->code = swap_error_response_value->code;
   result->reason = swap_error_response_value->reason;
 
   if (swap_error_response_value->validation_errors) {
     for (auto& error_item : *swap_error_response_value->validation_errors) {
-      result->validation_errors.emplace_back(mojom::SwapErrorResponseItem::New(
+      result->validation_errors.emplace_back(mojom::ZeroExErrorItem::New(
           error_item.field, error_item.code, error_item.reason));
     }
   }
@@ -232,164 +219,130 @@ mojom::SwapErrorResponsePtr ParseSwapErrorResponse(
   return result;
 }
 
-mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
-  //    {
-  //      "data": [
-  //        {
-  //          "inAmount": "10000",
-  //          "outAmount": "261273",
-  //          "amount": "10000",
-  //          "otherAmountThreshold": "258660",
-  //          "swapMode": "ExactIn",
-  //          "priceImpactPct": "0.008955716118219659",
-  //          "slippageBps": "50",
-  //          "marketInfos": [
-  //            {
-  //              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
-  //              "label": "Orca",
-  //              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  //              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-  //              "notEnoughLiquidity": false,
-  //              "inAmount": "10000",
-  //              "outAmount": "117001203",
-  //              "priceImpactPct": "0.0000001196568750220778",
-  //              "lpFee": {
-  //                "amount": "30",
-  //                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  //                "pct": "0.003"
-  //              },
-  //              "platformFee": {
-  //                "amount": "0",
-  //                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-  //                "pct": "0"
-  //              }
-  //            }
-  //          ]
-  //        }
-  //      ],
-  //      "timeTaken": "0.044471802000089156"
-  //    }
+}  // namespace zeroex
 
+namespace jupiter {
+mojom::JupiterQuotePtr ParseQuoteResponse(const base::Value& json_value) {
+  // {
+  //   "inputMint": "So11111111111111111111111111111111111111112",
+  //   "inAmount": "1000000",
+  //   "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+  //   "outAmount": "781469842",
+  //   "otherAmountThreshold": "781391696",
+  //   "swapMode": "ExactIn",
+  //   "slippageBps": "1",
+  //   "platformFee": null,
+  //   "priceImpactPct": "0",
+  //   "routePlan": [
+  //     {
+  //       "swapInfo": {
+  //         "ammKey": "HCk6LA93xPVsF8g4v6gjkiCd88tLXwZq4eJwiYNHR8da",
+  //         "label": "Raydium",
+  //         "inputMint": "So11111111111111111111111111111111111111112",
+  //         "outputMint": "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4",
+  //         "inAmount": "997500",
+  //         "outAmount": "4052482154",
+  //         "feeAmount": "2500",
+  //         "feeMint": "So11111111111111111111111111111111111111112"
+  //       },
+  //       "percent": "100"
+  //     },
+  //     {
+  //       "swapInfo": {
+  //         "ammKey": "HqrRmb2MbEiTrJS5KXhDzUoKbSLbBXJvhNBGEyDNo9Tr",
+  //         "label": "Meteora",
+  //         "inputMint": "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4",
+  //         "outputMint": "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS",
+  //         "inAmount": "4052482154",
+  //         "outAmount": "834185227",
+  //         "feeAmount": "10131205",
+  //         "feeMint": "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS"
+  //       },
+  //       "percent": "100"
+  //     },
+  //     {
+  //       "swapInfo": {
+  //         "ammKey": "6shkv2VNBPWVABvShgcGmrv98Z1vR3EcdwND6XUwGoFq",
+  //         "label": "Meteora",
+  //         "inputMint": "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS",
+  //         "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+  //         "inAmount": "834185227",
+  //         "outAmount": "781469842",
+  //         "feeAmount": "2085463",
+  //         "feeMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
+  //       },
+  //       "percent": "100"
+  //     }
+  //   ]
+  // }
   auto quote_value =
-      swap_responses::JupiterQuoteResponse::FromValueDeprecated(json_value);
+      swap_responses::JupiterQuoteResponse::FromValue(json_value);
   if (!quote_value) {
     return nullptr;
   }
 
   auto swap_quote = mojom::JupiterQuote::New();
-  for (const auto& route_value : quote_value->data) {
-    mojom::JupiterRoute route;
-    if (!base::StringToUint64(route_value.in_amount, &route.in_amount)) {
-      return nullptr;
-    }
-    if (!base::StringToUint64(route_value.out_amount, &route.out_amount)) {
-      return nullptr;
-    }
-    if (!base::StringToUint64(route_value.amount, &route.amount)) {
-      return nullptr;
-    }
-    if (!base::StringToUint64(route_value.other_amount_threshold,
-                              &route.other_amount_threshold)) {
-      return nullptr;
-    }
+  swap_quote->input_mint = quote_value->input_mint;
+  swap_quote->in_amount = quote_value->in_amount;
+  swap_quote->output_mint = quote_value->output_mint;
+  swap_quote->out_amount = quote_value->out_amount;
+  swap_quote->other_amount_threshold = quote_value->other_amount_threshold;
+  swap_quote->swap_mode = quote_value->swap_mode;
+  swap_quote->slippage_bps = quote_value->slippage_bps;
+  swap_quote->price_impact_pct = quote_value->price_impact_pct;
 
-    route.swap_mode = route_value.swap_mode;
-
-    if (!base::StringToInt(route_value.slippage_bps, &route.slippage_bps)) {
+  if (!quote_value->platform_fee.is_none()) {
+    if (!quote_value->platform_fee.is_dict()) {
       return nullptr;
     }
 
-    const auto& route_price_impact_pct =
-        ParsePriceImpactPct(route_value.price_impact_pct);
-    if (!route_price_impact_pct) {
-      return nullptr;
-    }
-    route.price_impact_pct = *route_price_impact_pct;
+    auto platform_fee_value = swap_responses::JupiterPlatformFee::FromValue(
+        quote_value->platform_fee.GetDict());
 
-    for (const auto& market_info_value : route_value.market_infos) {
-      mojom::JupiterMarketInfo market_info;
+    swap_quote->platform_fee = mojom::JupiterPlatformFee::New();
+    swap_quote->platform_fee->amount = platform_fee_value->amount;
+    swap_quote->platform_fee->fee_bps = platform_fee_value->fee_bps;
+  }
 
-      market_info.id = market_info_value.id;
-      market_info.label = market_info_value.label;
-      market_info.input_mint = market_info_value.input_mint;
-      market_info.output_mint = market_info_value.output_mint;
-      market_info.not_enough_liquidity = market_info_value.not_enough_liquidity;
+  for (const auto& step_value : quote_value->route_plan) {
+    auto step = mojom::JupiterRouteStep::New();
+    step->percent = step_value.percent;
 
-      if (!base::StringToUint64(market_info_value.in_amount,
-                                &market_info.in_amount)) {
-        return nullptr;
-      }
-      if (!base::StringToUint64(market_info_value.out_amount,
-                                &market_info.out_amount)) {
-        return nullptr;
-      }
+    auto swap_info = mojom::JupiterSwapInfo::New();
+    swap_info->amm_key = step_value.swap_info.amm_key;
+    swap_info->label = step_value.swap_info.label;
+    swap_info->input_mint = step_value.swap_info.input_mint;
+    swap_info->output_mint = step_value.swap_info.output_mint;
+    swap_info->in_amount = step_value.swap_info.in_amount;
+    swap_info->out_amount = step_value.swap_info.out_amount;
+    swap_info->fee_amount = step_value.swap_info.fee_amount;
+    swap_info->fee_mint = step_value.swap_info.fee_mint;
+    step->swap_info = std::move(swap_info);
 
-      const auto& market_info_price_impact_pct =
-          ParsePriceImpactPct(market_info_value.price_impact_pct);
-      if (!market_info_price_impact_pct) {
-        return nullptr;
-      }
-      market_info.price_impact_pct = *market_info_price_impact_pct;
-
-      // Parse lpFee->amount field as a JSON integer field, since the
-      // values are typically very small, and intermediate conversion to string
-      // is expensive due to its deep nesting.
-      mojom::JupiterFee lp_fee;
-      if (!base::StringToUint64(market_info_value.lp_fee.amount,
-                                &lp_fee.amount)) {
-        return nullptr;
-      }
-      lp_fee.mint = market_info_value.lp_fee.mint;
-      if (!base::StringToDouble(market_info_value.lp_fee.pct, &lp_fee.pct)) {
-        return nullptr;
-      }
-      market_info.lp_fee = lp_fee.Clone();
-
-      // Parse platformFee->amount field as a JSON integer field, since the
-      // values are typically very small, and intermediate conversion to string
-      // is expensive due to its deep nesting.
-      mojom::JupiterFee platform_fee;
-      if (!base::StringToUint64(market_info_value.platform_fee.amount,
-                                &platform_fee.amount)) {
-        return nullptr;
-      }
-      platform_fee.mint = market_info_value.platform_fee.mint;
-      if (!base::StringToDouble(market_info_value.platform_fee.pct,
-                                &platform_fee.pct)) {
-        return nullptr;
-      }
-      market_info.platform_fee = platform_fee.Clone();
-      route.market_infos.push_back(market_info.Clone());
-    }
-
-    swap_quote->routes.push_back(route.Clone());
+    swap_quote->route_plan.push_back(std::move(step));
   }
 
   return swap_quote;
 }
 
-mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
+std::optional<std::string> ParseTransactionResponse(
     const base::Value& json_value) {
-  auto value =
-      swap_responses::JupiterSwapTransactions::FromValueDeprecated(json_value);
+  auto value = swap_responses::JupiterSwapTransactions::FromValue(json_value);
   if (!value) {
-    return nullptr;
+    return std::nullopt;
   }
 
-  auto result = mojom::JupiterSwapTransactions::New();
-  result->swap_transaction = value->swap_transaction;
-  return result;
+  return value->swap_transaction;
 }
 
-mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
-    const base::Value& json_value) {
+mojom::JupiterErrorPtr ParseErrorResponse(const base::Value& json_value) {
   auto jupiter_error_response_value =
-      swap_responses::JupiterErrorResponse::FromValueDeprecated(json_value);
+      swap_responses::JupiterErrorResponse::FromValue(json_value);
   if (!jupiter_error_response_value) {
     return nullptr;
   }
 
-  auto result = mojom::JupiterErrorResponse::New();
+  auto result = mojom::JupiterError::New();
   result->status_code = jupiter_error_response_value->status_code;
   result->error = jupiter_error_response_value->error;
   result->message = jupiter_error_response_value->message;
@@ -399,18 +352,417 @@ mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
 
   return result;
 }
+}  // namespace jupiter
 
 // Function to convert all numbers in JSON string to strings.
 //
-// For sample JSON response, refer to ParseJupiterQuote.
-absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+// For sample JSON response, refer to jupiter::ParseQuoteResponse.
+std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
   auto converted_json =
       std::string(json::convert_all_numbers_to_string(json, ""));
   if (converted_json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return converted_json;
 }
+
+namespace lifi {
+
+namespace {
+
+std::optional<std::string> ChainIdToHex(const std::string& value) {
+  // LiFi uses the following two chain ID strings interchangeably for Solana
+  // Ref: https://docs.li.fi/li.fi-api/solana/request-examples
+  if (value == "SOL" || value == "1151111081099710") {
+    return mojom::kSolanaMainnet;
+  }
+
+  uint256_t out;
+  if (!Base10ValueToUint256(value, &out)) {
+    return std::nullopt;
+  }
+
+  return Uint256ValueToHex(out);
+}
+
+mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
+  auto result = mojom::BlockchainToken::New();
+  result->name = value.name;
+  result->symbol = value.symbol;
+  result->logo = value.logo_uri.value_or("");
+  result->contract_address =
+      (value.address == kLiFiNativeEVMAssetContractAddress ||
+       value.address == kLiFiNativeSVMAssetContractAddress)
+          ? ""
+          : value.address;
+
+  if (!base::StringToInt(value.decimals, &result->decimals)) {
+    return nullptr;
+  }
+
+  auto chain_id = ChainIdToHex(value.chain_id);
+  if (!chain_id) {
+    return nullptr;
+  }
+  result->chain_id = chain_id.value();
+
+  // LiFi does not return the coin type, so we infer it from the chain ID.
+  if (result->chain_id == mojom::kSolanaMainnet) {
+    result->coin = mojom::CoinType::SOL;
+  } else {
+    result->coin = mojom::CoinType::ETH;
+  }
+
+  return result;
+}
+
+std::optional<mojom::LiFiStepType> ParseStepType(const std::string& value) {
+  if (value == "swap") {
+    return mojom::LiFiStepType::kSwap;
+  }
+
+  if (value == "cross") {
+    return mojom::LiFiStepType::kCross;
+  }
+
+  if (value == "lifi") {
+    return mojom::LiFiStepType::kNative;
+  }
+
+  if (value == "protocol") {
+    return mojom::LiFiStepType::kProtocol;
+  }
+
+  return std::nullopt;
+}
+
+mojom::LiFiActionPtr ParseAction(const swap_responses::LiFiAction& value) {
+  auto result = mojom::LiFiAction::New();
+  result->from_amount = value.from_amount;
+  result->from_token = ParseToken(value.from_token);
+  result->from_address = value.from_address;
+
+  result->to_token = ParseToken(value.to_token);
+  result->to_address = value.to_address;
+
+  result->slippage = value.slippage;
+  result->destination_call_data = value.destination_call_data;
+  return result;
+}
+
+mojom::LiFiStepEstimatePtr ParseEstimate(
+    const swap_responses::LiFiEstimate& value) {
+  auto result = mojom::LiFiStepEstimate::New();
+  result->tool = value.tool;
+  result->from_amount = value.from_amount;
+  result->to_amount = value.to_amount;
+  result->to_amount_min = value.to_amount_min;
+  result->approval_address = value.approval_address;
+
+  if (value.fee_costs) {
+    result->fee_costs.emplace(std::vector<mojom::LiFiFeeCostPtr>());
+    for (const auto& fee_cost_value : *value.fee_costs) {
+      auto fee_cost = mojom::LiFiFeeCost::New();
+      fee_cost->name = fee_cost_value.name;
+      fee_cost->description = fee_cost_value.description;
+      fee_cost->percentage = fee_cost_value.percentage;
+      fee_cost->token = ParseToken(fee_cost_value.token);
+      fee_cost->amount = fee_cost_value.amount;
+      fee_cost->included = fee_cost_value.included;
+      result->fee_costs->push_back(std::move(fee_cost));
+    }
+  }
+
+  for (const auto& gas_cost_value : value.gas_costs) {
+    auto gas_cost = mojom::LiFiGasCost::New();
+    gas_cost->type = gas_cost_value.type;
+    gas_cost->estimate = gas_cost_value.estimate;
+    gas_cost->limit = gas_cost_value.limit;
+    gas_cost->amount = gas_cost_value.amount;
+    gas_cost->token = ParseToken(gas_cost_value.token);
+    result->gas_costs.push_back(std::move(gas_cost));
+  }
+
+  result->execution_duration = value.execution_duration;
+
+  return result;
+}
+
+mojom::LiFiStepPtr ParseStep(const swap_responses::LiFiStep& value) {
+  auto result = mojom::LiFiStep::New();
+  result->id = value.id;
+
+  auto step_type = ParseStepType(value.type);
+  if (!step_type) {
+    return nullptr;
+  }
+  result->type = std::move(*step_type);
+
+  result->tool = value.tool;
+
+  auto tool_details = mojom::LiFiToolDetails::New();
+  tool_details->key = value.tool_details.key;
+  tool_details->name = value.tool_details.name;
+  tool_details->logo = value.tool_details.logo_uri;
+  result->tool_details = std::move(tool_details);
+
+  result->action = ParseAction(value.action);
+  result->estimate = ParseEstimate(value.estimate);
+
+  result->integrator = value.integrator;
+
+  if (!value.included_steps) {
+    return result;
+  }
+
+  std::vector<mojom::LiFiStepPtr> included_steps = {};
+  for (const auto& included_step_value : *value.included_steps) {
+    auto included_step = ParseStep(included_step_value);
+    if (!included_step) {
+      return nullptr;
+    }
+
+    included_steps.push_back(std::move(included_step));
+  }
+  result->included_steps = std::move(included_steps);
+
+  return result;
+}
+
+}  // namespace
+
+mojom::LiFiQuotePtr ParseQuoteResponse(const base::Value& json_value) {
+  auto value = swap_responses::LiFiQuoteResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::LiFiQuote::New();
+
+  for (const auto& route_value : value->routes) {
+    auto route = mojom::LiFiRoute::New();
+    route->id = route_value.id;
+
+    auto from_token = ParseToken(route_value.from_token);
+    if (!from_token) {
+      return nullptr;
+    }
+    route->from_token = std::move(from_token);
+    route->from_amount = route_value.from_amount;
+    route->from_address = route_value.from_address;
+
+    auto to_token = ParseToken(route_value.to_token);
+    if (!to_token) {
+      return nullptr;
+    }
+    route->to_token = std::move(to_token);
+
+    route->to_amount = route_value.to_amount;
+    route->to_amount_min = route_value.to_amount_min;
+    route->to_address = route_value.to_address;
+
+    auto insurance = mojom::LiFiInsurance::New();
+    insurance->state = route_value.insurance.state;
+    insurance->fee_amount_usd = route_value.insurance.fee_amount_usd;
+    route->insurance = std::move(insurance);
+
+    for (const auto& step_value : route_value.steps) {
+      auto step = ParseStep(step_value);
+      if (!step) {
+        return nullptr;
+      }
+
+      route->steps.push_back(std::move(step));
+    }
+
+    route->tags = route_value.tags;
+    result->routes.push_back(std::move(route));
+  }
+
+  return result;
+}
+
+mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
+    const base::Value& json_value) {
+  auto value = swap_responses::LiFiTransactionResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  // SOL -> any transfers
+  if (!value->transaction_request.data.empty() &&
+      !value->transaction_request.from && !value->transaction_request.to &&
+      !value->transaction_request.value &&
+      !value->transaction_request.gas_price &&
+      !value->transaction_request.gas_limit &&
+      !value->transaction_request.chain_id.has_value()) {
+    return mojom::LiFiTransactionUnion::NewSolanaTransaction(
+        value->transaction_request.data);
+  }
+
+  // EVM -> any transfers
+  if (value->transaction_request.data.empty() ||
+
+      !value->transaction_request.from ||
+      value->transaction_request.from->empty() ||
+
+      !value->transaction_request.to ||
+      value->transaction_request.to->empty() ||
+
+      !value->transaction_request.value ||
+      value->transaction_request.value->empty() ||
+
+      !value->transaction_request.gas_price ||
+      value->transaction_request.gas_price->empty() ||
+
+      !value->transaction_request.gas_limit ||
+      value->transaction_request.gas_limit->empty() ||
+
+      !value->transaction_request.chain_id ||
+      !value->transaction_request.chain_id.has_value()) {
+    return nullptr;
+  }
+
+  auto evm_transaction = mojom::LiFiEVMTransaction::New();
+  evm_transaction->data = value->transaction_request.data;
+  evm_transaction->from = value->transaction_request.from.value();
+  evm_transaction->to = value->transaction_request.to.value();
+  evm_transaction->value = value->transaction_request.value.value();
+  evm_transaction->gas_price = value->transaction_request.gas_price.value();
+  evm_transaction->gas_limit = value->transaction_request.gas_limit.value();
+
+  if (value->transaction_request.chain_id.has_value()) {
+    auto chain_id = ChainIdToHex(value->transaction_request.chain_id.value());
+    if (!chain_id) {
+      return nullptr;
+    }
+    evm_transaction->chain_id = chain_id.value();
+  }
+
+  return mojom::LiFiTransactionUnion::NewEvmTransaction(
+      std::move(evm_transaction));
+}
+
+mojom::LiFiErrorCode ParseLiFiErrorCode(
+    const std::optional<std::string>& value) {
+  if (!value) {
+    return mojom::LiFiErrorCode::kSuccess;
+  }
+
+  if (value == "1000") {
+    return mojom::LiFiErrorCode::kDefaultError;
+  }
+  if (value == "1001") {
+    return mojom::LiFiErrorCode::kFailedToBuildTransactionError;
+  }
+  if (value == "1002") {
+    return mojom::LiFiErrorCode::kNoQuoteError;
+  }
+  if (value == "1003") {
+    return mojom::LiFiErrorCode::kNotFoundError;
+  }
+  if (value == "1004") {
+    return mojom::LiFiErrorCode::kNotProcessableError;
+  }
+  if (value == "1005") {
+    return mojom::LiFiErrorCode::kRateLimitError;
+  }
+  if (value == "1006") {
+    return mojom::LiFiErrorCode::kServerError;
+  }
+  if (value == "1007") {
+    return mojom::LiFiErrorCode::kSlippageError;
+  }
+  if (value == "1008") {
+    return mojom::LiFiErrorCode::kThirdPartyError;
+  }
+  if (value == "1009") {
+    return mojom::LiFiErrorCode::kTimeoutError;
+  }
+  if (value == "1010") {
+    return mojom::LiFiErrorCode::kUnauthorizedError;
+  }
+  if (value == "1011") {
+    return mojom::LiFiErrorCode::kValidationError;
+  }
+
+  return mojom::LiFiErrorCode::kDefaultError;
+}
+
+mojom::LifiToolErrorCode ParseLiFiToolErrorCode(const std::string& value) {
+  // No route was found for this action.
+  if (value == "NO_POSSIBLE_ROUTE") {
+    return mojom::LifiToolErrorCode::kNoPossibleRoute;
+  }
+
+  // The tool's liquidity is insufficient.
+  if (value == "INSUFFICIENT_LIQUIDITY") {
+    return mojom::LifiToolErrorCode::kInsufficientLiquidity;
+  }
+
+  // The third-party tool timed out.
+  if (value == "TOOL_TIMEOUT") {
+    return mojom::LifiToolErrorCode::kToolTimeout;
+  }
+
+  // An unknown error occurred.
+  if (value == "UNKNOWN_ERROR") {
+    return mojom::LifiToolErrorCode::kUnknownError;
+  }
+
+  // There was a problem getting on-chain data. Please try again later.
+  if (value == "RPC_ERROR") {
+    return mojom::LifiToolErrorCode::kRpcError;
+  }
+
+  // The initial amount is too low to transfer using this tool.
+  if (value == "AMOUNT_TOO_LOW") {
+    return mojom::LifiToolErrorCode::kAmountTooLow;
+  }
+
+  // The initial amount is too high to transfer using this tool.
+  if (value == "AMOUNT_TOO_HIGH") {
+    return mojom::LifiToolErrorCode::kAmountTooHigh;
+  }
+
+  // The fees are higher than the initial amount -- this would result in
+  // negative resulting token.
+  if (value == "FEES_HIGHER_THAN_AMOUNT" || value == "FEES_HGHER_THAN_AMOUNT") {
+    return mojom::LifiToolErrorCode::kFeesHigherThanAmount;
+  }
+
+  // This tool does not support different recipient addresses.
+  if (value == "DIFFERENT_RECIPIENT_NOT_SUPPORTED") {
+    return mojom::LifiToolErrorCode::kDifferentRecipientNotSupported;
+  }
+
+  // The third-party tool returned an error.
+  if (value == "TOOL_SPECIFIC_ERROR") {
+    return mojom::LifiToolErrorCode::kToolSpecificError;
+  }
+
+  // The tool cannot guarantee that the minimum amount will be met.
+  if (value == "CANNOT_GUARANTEE_MIN_AMOUNT") {
+    return mojom::LifiToolErrorCode::kCannotGuaranteeMinAmount;
+  }
+
+  return mojom::LifiToolErrorCode::kUnknownError;
+}
+
+mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value) {
+  auto value = swap_responses::LiFiErrorResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::LiFiError::New();
+  result->message = value->message;
+  result->code = ParseLiFiErrorCode(value->code);
+
+  return result;
+}
+
+}  // namespace lifi
 
 }  // namespace brave_wallet

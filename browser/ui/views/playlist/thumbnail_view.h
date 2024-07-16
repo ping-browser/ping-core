@@ -6,14 +6,17 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PLAYLIST_THUMBNAIL_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_PLAYLIST_THUMBNAIL_VIEW_H_
 
+#include "base/memory/weak_ptr.h"
 #include "ui/views/controls/image_view.h"
 
 class ThumbnailView : public views::ImageView {
+  METADATA_HEADER(ThumbnailView, views::ImageView)
  public:
-  METADATA_HEADER(ThumbnailView);
 
   explicit ThumbnailView(const gfx::Image& thumbnail);
   ~ThumbnailView() override;
+
+  base::OnceCallback<void(const gfx::Image&)> GetThumbnailSetter();
 
   void UpdateImageSize();
 
@@ -21,7 +24,11 @@ class ThumbnailView : public views::ImageView {
   void PreferredSizeChanged() override;
 
  private:
+  void SetThumbnail(const gfx::Image& thumbnail);
+
   bool is_updating_image_size_ = false;
+
+  base::WeakPtrFactory<ThumbnailView> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PLAYLIST_THUMBNAIL_VIEW_H_

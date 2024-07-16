@@ -33,6 +33,7 @@ export const header = styled.div`
   border-bottom: solid 1px var(--brave-palette-neutral200);
   padding-bottom: 7px;
   display: flex;
+  align-items: center;
 
   .brave-theme-dark & {
     border-color: var(--brave-palette-grey700);
@@ -88,6 +89,9 @@ export const link = styled.div`
     line-height: 24px;
     color: var(--brave-color-brandBat);
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
 
     &:hover {
       text-decoration: underline;
@@ -95,6 +99,12 @@ export const link = styled.div`
 
     .brave-theme-dark & {
       color: var(--brave-palette-blurple300);
+    }
+
+    --leo-icon-size: 16px;
+
+    leo-icon {
+      margin-bottom: 1px;
     }
   }
 `

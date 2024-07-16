@@ -6,10 +6,13 @@
 #include "chrome/browser/ssl/https_upgrades_interceptor.h"
 
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
+
+// Prevent double-defining macro
+#include "chrome/browser/renderer_host/chrome_navigation_ui_data.h"
 
 #define MaybeCreateLoader(...)                                                \
   MaybeCreateLoader(__VA_ARGS__) {                                            \
@@ -44,8 +47,7 @@
     }                                                                       \
     return MaybeCreateLoaderForResponse_ChromiumImpl(                       \
         modified_status, request, response_head, response_body, loader,     \
-        client_receiver, url_loader, skip_other_interceptors,               \
-        will_return_unsafe_redirect);                                       \
+        client_receiver, url_loader);                                       \
   }                                                                         \
   bool HttpsUpgradesInterceptor::MaybeCreateLoaderForResponse_ChromiumImpl( \
       __VA_ARGS__)
@@ -57,9 +59,12 @@
 
 #define IsLocalhost(URL) IsLocalhostOrOnion(URL)
 
+#define url_is_typed_with_http_scheme() return_false()
+
 #include "src/chrome/browser/ssl/https_upgrades_interceptor.cc"
 
 #undef MaybeCreateLoader
 #undef MaybeCreateLoaderForResponse
 #undef IsEnabled
 #undef IsLocalhost
+#undef url_is_typed_with_http_scheme

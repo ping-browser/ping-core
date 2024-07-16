@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -25,17 +24,21 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
+import org.chromium.chrome.browser.vpn.activities.VpnAlwaysOnActivity;
+import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
 import org.chromium.chrome.browser.vpn.split_tunnel.SplitTunnelActivity;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
+import org.chromium.gms.ChromiumPlayServicesAvailability;
+import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,20 +56,9 @@ public class BraveVpnUtils {
     private static final String BRAVE_ACCOUNT_STAGING_PAGE_URL =
             "https://account.bravesoftware.com?intent=connect-receipt&product=vpn";
 
-    public static boolean mIsServerLocationChanged;
     public static boolean mUpdateProfileAfterSplitTunnel;
-    public static String selectedServerRegion;
-    private static ProgressDialog mProgressDialog;
-
-    public static boolean isBraveVpnFeatureEnable() {
-        if ((ContextUtils.getApplicationContext().getPackageName().equals(
-                     BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
-                    || BraveVpnPrefUtils.isBraveVpnFeatureEnabled())
-                && Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
-            return true;
-        }
-        return false;
-    }
+    public static BraveVpnServerRegion selectedServerRegion;
+    private static ProgressDialog sProgressDialog;
 
     public static String getBraveAccountUrl() {
         return BraveVpnPrefUtils.isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_STAGING_PAGE_URL
@@ -76,37 +68,58 @@ public class BraveVpnUtils {
     public static void openBraveVpnPlansActivity(Activity activity) {
         Intent braveVpnPlanIntent = new Intent(activity, BraveVpnPlansActivity.class);
         braveVpnPlanIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        braveVpnPlanIntent.setAction(Intent.ACTION_VIEW);
         activity.startActivity(braveVpnPlanIntent);
     }
 
-    public static void openBraveVpnProfileActivity(Context context) {
-        Intent braveVpnProfileIntent = new Intent(context, BraveVpnProfileActivity.class);
+    public static void openBraveVpnProfileActivity(Activity activity) {
+        Intent braveVpnProfileIntent = new Intent(activity, BraveVpnProfileActivity.class);
         braveVpnProfileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(braveVpnProfileIntent);
+        braveVpnProfileIntent.setAction(Intent.ACTION_VIEW);
+        activity.startActivity(braveVpnProfileIntent);
     }
 
-    public static void openBraveVpnSupportActivity(Context context) {
-        Intent braveVpnSupportIntent = new Intent(context, BraveVpnSupportActivity.class);
+    public static void openBraveVpnSupportActivity(Activity activity) {
+        Intent braveVpnSupportIntent = new Intent(activity, BraveVpnSupportActivity.class);
         braveVpnSupportIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(braveVpnSupportIntent);
+        braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
+        activity.startActivity(braveVpnSupportIntent);
     }
 
-    public static void openSplitTunnelActivity(Context context) {
-        Intent braveVpnSupportIntent = new Intent(context, SplitTunnelActivity.class);
-        context.startActivity(braveVpnSupportIntent);
+    public static void openSplitTunnelActivity(Activity activity) {
+        Intent braveVpnSupportIntent = new Intent(activity, SplitTunnelActivity.class);
+        braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
+        activity.startActivity(braveVpnSupportIntent);
+    }
+
+    public static void openAlwaysOnActivity(Activity activity) {
+        Intent vpnAlwaysOnActivityIntent = new Intent(activity, VpnAlwaysOnActivity.class);
+        activity.startActivity(vpnAlwaysOnActivityIntent);
+    }
+
+    public static void openVpnSettings(Activity activity) {
+        Intent vpnSettingsIntent = new Intent("android.net.vpn.SETTINGS");
+        vpnSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(vpnSettingsIntent);
+    }
+
+    public static void openVpnServerSelectionActivity(Activity activity) {
+        Intent vpnServerSelectionIntent = new Intent(activity, VpnServerSelectionActivity.class);
+        activity.startActivity(vpnServerSelectionIntent);
     }
 
     public static void showProgressDialog(Activity activity, String message) {
-        mProgressDialog = ProgressDialog.show(activity, "", message, true);
+        sProgressDialog = ProgressDialog.show(activity, "", message, true);
     }
 
     public static void dismissProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+        if (sProgressDialog != null && sProgressDialog.isShowing()) {
+            sProgressDialog.dismiss();
         }
     }
 
-    public static String getRegionForTimeZone(String jsonTimezones, String currentTimezone) {
+    public static BraveVpnServerRegion getServerRegionForTimeZone(
+            String jsonTimezones, String currentTimezone) {
         // Add root element to make it real JSON, otherwise getJSONArray cannot parse it
         jsonTimezones = "{\"regions\":" + jsonTimezones + "}";
         try {
@@ -117,14 +130,19 @@ public class BraveVpnUtils {
                 JSONArray timezones = region.getJSONArray("timezones");
                 for (int j = 0; j < timezones.length(); j++) {
                     if (timezones.getString(j).equals(currentTimezone)) {
-                        return region.getString("name");
+                        BraveVpnServerRegion braveVpnServerRegion =
+                                new BraveVpnServerRegion(
+                                        region.getString("continent"),
+                                                region.getString("country-iso-code"),
+                                        region.getString("name"), region.getString("name-pretty"));
+                        return braveVpnServerRegion;
                     }
                 }
             }
         } catch (JSONException e) {
             Log.e(TAG, "BraveVpnUtils -> getRegionForTimeZone JSONException error " + e);
         }
-        return "";
+        return null;
     }
 
     public static Pair<String, String> getHostnameForRegion(String jsonHostnames) {
@@ -179,8 +197,10 @@ public class BraveVpnUtils {
             String expiryTimeInString = purchase.getString("expiryTimeMillis");
             return Long.parseLong(expiryTimeInString);
         } catch (JSONException | NumberFormatException e) {
-            Log.e(TAG,
-                    "BraveVpnUtils -> getPurchaseExpiryDate JSONException | NumberFormatException error "
+            Log.e(
+                    TAG,
+                    "BraveVpnUtils -> getPurchaseExpiryDate JSONException | NumberFormatException"
+                            + " error "
                             + e);
         }
         return 0L;
@@ -209,7 +229,8 @@ public class BraveVpnUtils {
             for (int i = 0; i < servers.length(); i++) {
                 JSONObject server = servers.getJSONObject(i);
                 BraveVpnServerRegion vpnServerRegion =
-                        new BraveVpnServerRegion(server.getString("continent"),
+                        new BraveVpnServerRegion(
+                                server.getString("continent"), server.getString("country-iso-code"),
                                 server.getString("name"), server.getString("name-pretty"));
                 vpnServerRegions.add(vpnServerRegion);
             }
@@ -270,5 +291,27 @@ public class BraveVpnUtils {
         // ...and then reset the timestamps so we don't report the same session again.
         BraveVpnPrefUtils.setSessionStartTimeMs(-1);
         BraveVpnPrefUtils.setSessionEndTimeMs(-1);
+    }
+
+    public static void showToast(String message) {
+        Context context = ContextUtils.getApplicationContext();
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private static boolean isRegionSupported() {
+        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        return (braveRewardsNativeWorker != null && braveRewardsNativeWorker.isSupported());
+    }
+
+    public static boolean isVpnFeatureSupported(Context context) {
+        return isRegionSupported()
+                && ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(context);
+    }
+
+    public static String countryCodeToEmoji(String countryCode) {
+        int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
+        int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
+        return new String(Character.toChars(firstLetter))
+                + new String(Character.toChars(secondLetter));
     }
 }

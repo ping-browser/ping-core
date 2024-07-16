@@ -7,11 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_URL_REQUEST_DELEGATE_MOCK_H_
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_delegate.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
-
-struct CatalogInfo;
 
 class CatalogUrlRequestDelegateMock : public CatalogUrlRequestDelegate {
  public:

@@ -6,19 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_DOM_WINDOW_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_DOM_WINDOW_H_
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
 
-#define SetStorageKey                                                        \
-  SetEphemeralStorageOrigin(const SecurityOrigin* ephemeral_storage_origin); \
-  const SecurityOrigin* GetEphemeralStorageOrigin() const;                   \
-  const BlinkStorageKey& GetEphemeralStorageKeyOrStorageKey() const;         \
-  const SecurityOrigin* GetEphemeralStorageOriginOrSecurityOrigin() const;   \
-                                                                             \
- private:                                                                    \
-  absl::optional<BlinkStorageKey> ephemeral_storage_key_;                    \
-                                                                             \
- public:                                                                     \
-  void SetStorageKey
+#include "third_party/blink/renderer/core/frame/local_frame.h"
 
 #define outerHeight                 \
   outerHeight_ChromiumImpl() const; \
@@ -36,8 +26,9 @@
   screenY_ChromiumImpl() const; \
   int screenTop
 
-#define resizeTo                                      \
-  resizeTo_ChromiumImpl(int width, int height) const; \
+#define resizeTo                                                \
+  resizeTo_ChromiumImpl(int width, int height,                  \
+                        ExceptionState& exception_state) const; \
   void resizeTo
 
 #define moveTo                             \
@@ -46,12 +37,18 @@
 
 #include "src/third_party/blink/renderer/core/frame/local_dom_window.h"  // IWYU pragma: export
 
-#undef SetStorageKey
 #undef outerHeight
 #undef outerWidth
 #undef screenLeft
 #undef screenTop
 #undef resizeTo
 #undef moveTo
+
+namespace blink {
+
+CORE_EXPORT const SecurityOrigin* GetEphemeralStorageOrigin(
+    LocalDOMWindow* window);
+
+}  // namespace blink
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_DOM_WINDOW_H_

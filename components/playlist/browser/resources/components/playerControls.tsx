@@ -5,13 +5,16 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import styled from 'styled-components'
 
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-import styled from 'styled-components'
+import { spacing } from '@brave/leo/tokens/css/variables'
 
 import { getPlayerActions } from '../api/getPlayerActions'
-import { ApplicationState, useAutoPlayEnabled } from '../reducers/states'
+import { ApplicationState, useLoopMode } from '../reducers/states'
+import { hiddenOnMiniPlayer, hiddenOnNormalPlayer } from '../constants/style'
+import { getLocalizedString } from '../utils/l10n'
 
 interface Props {
   videoElement?: HTMLVideoElement | null
@@ -25,36 +28,66 @@ const Container = styled.div`
 
   & > div {
     display: flex;
-    gap: 16px;
+    gap: ${spacing.m};
   }
 `
 
 const StyledButton = styled(Button)`
-  --leo-button-padding: 0;
+  color: var(--leo-color-icon-default);
+  --leo-button-padding: ${spacing.s};
+  align-items: center;
+  display: flex;
 `
 
-function Control ({
+const NormalPlayerButton = styled(StyledButton)`
+  ${hiddenOnMiniPlayer}
+`
+
+const MiniPlayerButton = styled(StyledButton)`
+  ${hiddenOnNormalPlayer}
+`
+
+function Control({
   iconName,
+  size,
+  visibility,
+  title,
+  kind,
   onClick
 }: {
   iconName: string
+  title: string
+  size: 'jumbo' | 'large'
+  visibility: 'mini' | 'normal' | 'both'
+  kind: 'plain' | 'plain-faint'
   onClick: () => void
 }) {
+  const Button =
+    visibility === 'both'
+      ? StyledButton
+      : visibility === 'mini'
+      ? MiniPlayerButton
+      : NormalPlayerButton
   return (
-    <StyledButton kind='plain-faint' size='jumbo' onClick={onClick}>
+    <Button
+      kind={kind}
+      size={size}
+      onClick={onClick}
+      title={title}
+    >
       <Icon name={iconName}></Icon>
-    </StyledButton>
+    </Button>
   )
 }
 
-export default function PlayerControls ({ videoElement, className }: Props) {
+export default function PlayerControls({ videoElement, className }: Props) {
   const [isPlaying, setPlaying] = React.useState(false)
 
-  const autoPlayEnabled = useAutoPlayEnabled()
-
   const shuffleEnabled = useSelector<ApplicationState, boolean | undefined>(
-    applicationState => applicationState.playerState?.shuffleEnabled
+    (applicationState) => applicationState.playerState?.shuffleEnabled
   )
+
+  const loopMode = useLoopMode()
 
   React.useEffect(() => {
     if (videoElement) {
@@ -83,51 +116,103 @@ export default function PlayerControls ({ videoElement, className }: Props) {
     <Container className={className}>
       <div>
         <Control
-          iconName='start-outline'
-          onClick={() => getPlayerActions().playPreviousItem()}
-        ></Control>
+          iconName='previous-outline'
+          size='jumbo'
+          visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YPrevious')}
+          kind='plain-faint'
+          onClick={() => {
+            if (!videoElement) return
+
+            if (videoElement.currentTime > 5) {
+              videoElement.currentTime = 0
+            } else {
+              getPlayerActions().playPreviousItem()
+            }
+          }}
+        />
         <Control
           iconName='rewind-15'
+          size='jumbo'
+          visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YRewind')}
+          kind='plain-faint'
           onClick={() => videoElement && (videoElement.currentTime -= 15)}
-        ></Control>
+        />
         {isPlaying ? (
           <Control
             iconName='pause-filled'
+            size='jumbo'
+            visibility='both'
+            title={getLocalizedString('bravePlaylistA11YPause')}
+            kind='plain-faint'
             onClick={() => videoElement?.pause()}
-          ></Control>
+          />
         ) : (
           <Control
             iconName='play-filled'
+            size='jumbo'
+            visibility='both'
+            title={getLocalizedString('bravePlaylistA11YPlay')}
+            kind='plain-faint'
             onClick={() => videoElement?.play()}
-          ></Control>
+          />
         )}
         <Control
           iconName='forward-15'
+          size='jumbo'
+          visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YForward')}
+          kind='plain-faint'
           onClick={() => videoElement && (videoElement.currentTime += 15)}
-        ></Control>
+        />
         <Control
-          iconName='end-outline'
+          iconName='next-outline'
+          size='jumbo'
+          visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YNext')}
+          kind='plain-faint'
           onClick={() => getPlayerActions().playNextItem()}
-        ></Control>
+        />
+        <Control
+          iconName='close'
+          size='jumbo'
+          visibility='mini'
+          title={getLocalizedString('bravePlaylistA11YClose')}
+          kind='plain-faint'
+          onClick={() => getPlayerActions().unloadPlaylist()}
+        />
       </div>
       <div>
         <Control
-          iconName={autoPlayEnabled ? 'autoplay-on' : 'autoplay-off'}
-          onClick={() => getPlayerActions().toggleAutoPlay()}
-        ></Control>
-        <Control
-          iconName={shuffleEnabled ? 'shuffle-on' : 'shuffle-off'}
+          iconName={shuffleEnabled ? 'shuffle-toggle-on' : 'shuffle-off'}
+          size='large'
+          visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YShuffle')}
+          kind={shuffleEnabled ? 'plain' : 'plain-faint'}
           onClick={() => getPlayerActions().toggleShuffle()}
-        ></Control>
-        <Control iconName='sidepanel-open' onClick={() => {}}></Control>
+        />
         <Control
-          iconName='picture-in-picture'
-          onClick={() => videoElement?.requestPictureInPicture()}
-        ></Control>
-        <Control
-          iconName='fullscreen-on'
-          onClick={() => videoElement?.requestFullscreen()}
-        ></Control>
+          iconName={
+            !loopMode
+              ? 'loop-all'
+              : loopMode === 'single-item'
+              ? 'loop-1-toggle-on'
+              : 'loop-all-toggle-on'
+          }
+          size='large'
+          visibility='normal'
+          title={getLocalizedString(
+            !loopMode
+              ? 'bravePlaylistA11YLoopOff'
+              : loopMode === 'single-item'
+              ? 'bravePlaylistA11YLoopOne'
+              : 'bravePlaylistA11YLoopAll'
+          )}
+          kind={loopMode ? 'plain' : 'plain-faint'}
+          onClick={() => getPlayerActions().advanceLoopMode()}
+        />
+        {/* TODO(sko) We disabled PIP and fullscreen button at the moment */}
       </div>
     </Container>
   )

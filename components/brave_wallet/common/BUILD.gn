@@ -14,15 +14,13 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
-if (is_official_build) {
-  assert(brave_zero_ex_api_key != "")
-}
-
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
     "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"",
-    "BRAVE_ZERO_EX_API_KEY=\"$brave_zero_ex_api_key\"",
+    "ENABLE_BITCOIN_BY_DEFAULT=$enable_bitcoin_by_default",
+    "ENABLE_ZCASH_BY_DEFAULT=$enable_zcash_by_default",
+    "ENABLE_ORCHARD=$enable_orchard",
   ]
 }
 
@@ -36,8 +34,12 @@ static_library("common") {
     "brave_wallet_response_helpers.h",
     "brave_wallet_types.cc",
     "brave_wallet_types.h",
+    "btc_like_serializer_stream.cc",
+    "btc_like_serializer_stream.h",
     "common_utils.cc",
     "common_utils.h",
+    "encoding_utils.cc",
+    "encoding_utils.h",
     "eth_abi_utils.cc",
     "eth_abi_utils.h",
     "eth_address.cc",
@@ -46,6 +48,8 @@ static_library("common") {
     "eth_request_helper.h",
     "eth_sign_typed_data_helper.cc",
     "eth_sign_typed_data_helper.h",
+    "f4_jumble.cc",
+    "f4_jumble.h",
     "features.cc",
     "features.h",
     "fil_address.cc",
@@ -62,17 +66,21 @@ static_library("common") {
     "solana_utils.h",
     "string_utils.cc",
     "string_utils.h",
-    "switches.cc",
     "switches.h",
     "value_conversion_utils.cc",
     "value_conversion_utils.h",
+    "zcash_utils.cc",
+    "zcash_utils.h",
   ]
   deps = [
+    ":buildflags",
     ":common_constants",
+    ":generated_eth_requests",
     ":generated_json_rpc_requests",
     ":mojom",
     ":mojom__generator",
     ":pref_names",
+    "//brave/components/brave_wallet/rust:rust_lib",
     "//brave/third_party/argon2",
     "//brave/third_party/bitcoin-core",
     "//brave/third_party/ethash",
@@ -88,7 +96,6 @@ static_library("common") {
 source_set("common_constants") {
   sources = [
     "brave_wallet_constants.h",
-    "web3_provider_constants.cc",
     "web3_provider_constants.h",
   ]
   deps = [ ":mojom" ]
@@ -103,6 +110,16 @@ generated_types("generated_json_rpc_requests") {
   root_namespace = "brave_wallet::%(namespace)s"
   deps = [ "//base" ]
   visibility = [ ":common" ]
+}
+
+generated_types("generated_eth_requests") {
+  sources = [ "eth_requests.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":common",
+    "test:brave_wallet_unit_tests",
+  ]
 }
 
 preprocess_if_expr("preprocess_mojo") {
@@ -128,10 +145,15 @@ source_set("unit_tests") {
   sources = [
     "bitcoin_utils_unittest.cc",
     "brave_wallet_types_unittest.cc",
+    "btc_like_serializer_stream_unittest.cc",
     "common_utils_unittest.cc",
+    "encoding_utils_unittest.cc",
     "eth_abi_utils_unittest.cc",
+    "eth_address_unittest.cc",
     "eth_request_helper_unittest.cc",
     "eth_sign_typed_data_helper_unittest.cc",
+    "f4_jumble_unittest.cc",
+    "fil_address_unittest.cc",
     "hash_utils_unittest.cc",
     "hex_utils_unittest.cc",
     "mem_utils_unittest.cc",
@@ -139,6 +161,7 @@ source_set("unit_tests") {
     "solana_utils_unittest.cc",
     "string_utils_unittest.cc",
     "value_conversion_utils_unittest.cc",
+    "zcash_utils_unittest.cc",
   ]
 
   deps = [

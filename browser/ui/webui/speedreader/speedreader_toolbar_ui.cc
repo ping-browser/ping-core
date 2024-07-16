@@ -7,15 +7,18 @@
 
 #include <utility>
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/constants.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/resources/panel/grit/brave_speedreader_toolbar_generated_map.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/prefs/prefs_tab_helper.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/host_zoom_map.h"
 #include "content/public/browser/web_contents.h"
@@ -23,12 +26,12 @@
 #include "content/public/common/url_constants.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #endif
 
 SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
                                            const std::string& name)
-    : ui::MojoBubbleWebUIController(web_ui, true),
+    : TopChromeWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
   content::HostZoomMap::Get(web_ui->GetWebContents()->GetSiteInstance())
       ->SetZoomLevelForHostAndScheme(content::kChromeUIScheme,
@@ -48,10 +51,15 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   source->AddBoolean("aiChatFeatureEnabled",
-                     ai_chat::features::IsAIChatEnabled());
+                     ai_chat::IsAIChatEnabled(profile_->GetPrefs()) &&
+                         brave::IsRegularProfile(profile_));
 #else
   source->AddBoolean("aiChatFeatureEnabled", false);
 #endif
+  source->AddBoolean("ttsEnabled",
+                     speedreader::features::IsSpeedreaderEnabled() &&
+                         speedreader::kSpeedreaderTTS.Get());
+  PrefsTabHelper::CreateForWebContents(web_ui->GetWebContents());
 }
 
 SpeedreaderToolbarUI::~SpeedreaderToolbarUI() = default;

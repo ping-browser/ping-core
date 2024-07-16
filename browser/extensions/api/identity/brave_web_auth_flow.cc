@@ -6,10 +6,10 @@
 #include "brave/browser/extensions/api/identity/brave_web_auth_flow.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 #include <vector>
 
-#include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "chrome/browser/extensions/api/identity/identity_api.h"
@@ -28,7 +28,7 @@ BraveWebAuthFlow::BraveWebAuthFlow() {}
 BraveWebAuthFlow::~BraveWebAuthFlow() {}
 
 // static
-absl::optional<std::string> BraveWebAuthFlow::token_for_testing_;
+std::optional<std::string> BraveWebAuthFlow::token_for_testing_;
 // static
 void BraveWebAuthFlow::SetTokenForTesting(const std::string& token) {
   token_for_testing_ = token;
@@ -78,7 +78,7 @@ void BraveWebAuthFlow::StartWebAuthFlow(
   web_auth_flow_ = std::make_unique<WebAuthFlow>(
       this, profile_, google_oauth_url,
       interactive ? WebAuthFlow::INTERACTIVE : WebAuthFlow::SILENT,
-      WebAuthFlow::LAUNCH_WEB_AUTH_FLOW, user_gesture);
+      user_gesture);
   web_auth_flow_->Start();
 }
 

@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_UNITTEST_UTIL_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class TimeDelta;
@@ -18,25 +18,28 @@ namespace brave_ads {
 
 struct CreativeSetConversionInfo;
 
-CreativeSetConversionInfo BuildCreativeSetConversionForTesting(
-    const std::string& creative_set_id,
-    const std::string& url_pattern,
-    base::TimeDelta observation_window);
-void BuildAndSaveCreativeSetConversionForTesting(
-    const std::string& creative_set_id,
-    const std::string& url_pattern,
-    base::TimeDelta observation_window);
+namespace test {
 
-CreativeSetConversionInfo BuildVerifiableCreativeSetConversionForTesting(
+CreativeSetConversionInfo BuildCreativeSetConversion(
+    const std::string& creative_set_id,
+    const std::string& url_pattern,
+    base::TimeDelta observation_window);
+void BuildAndSaveCreativeSetConversion(const std::string& creative_set_id,
+                                       const std::string& url_pattern,
+                                       base::TimeDelta observation_window);
+
+CreativeSetConversionInfo BuildVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
     base::TimeDelta observation_window,
-    const absl::optional<std::string>& verifiable_advertiser_public_key_base64);
-void BuildAndSaveVerifiableCreativeSetConversionForTesting(
+    const std::optional<std::string>& verifiable_advertiser_public_key_base64);
+void BuildAndSaveVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
     base::TimeDelta observation_window,
-    const absl::optional<std::string>& verifiable_advertiser_public_key_base64);
+    const std::optional<std::string>& verifiable_advertiser_public_key_base64);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

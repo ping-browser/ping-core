@@ -4,11 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
-import {
-  AssetIconProps,
-  AssetIconFactory
-} from '../style'
+import * as leo from '@brave/leo/tokens/css/variables'
+import { AssetIconProps, AssetIconFactory } from '../style'
 
 export const StackContainer = styled.div<{
   width: string
@@ -17,7 +14,6 @@ export const StackContainer = styled.div<{
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  background-color: ${leo.color.container.highlight};
   border-radius: 4px;
   margin-right: 26px;
   width: ${(p) => p.width};
@@ -35,7 +31,7 @@ export const IconWrapper = styled.div<{
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '16px',
-  height: 'auto',
+  height: 'auto'
 })
 
 export const AdditionalCountBubble = styled.div`
@@ -43,9 +39,10 @@ export const AdditionalCountBubble = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-left: 4px;
+  padding: 0px 4px;
   height: 16px;
   background-color: ${leo.color.container.highlight};
+  color: ${leo.color.text.secondary};
   border-radius: 100px;
   font-size: 11px;
   font-family: Poppins;

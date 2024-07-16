@@ -9,12 +9,13 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 // GET https://api.uphold.com/v0/me/cards?q=currency:BAT
 //
-// Success code:
+// Success codes:
 // HTTP_OK (200)
+// HTTP_PARTIAL_CONTENT (206)
 //
 // Error codes:
 // HTTP_UNAUTHORIZED (401)
@@ -73,7 +74,7 @@
 // ]
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint::uphold {
 
@@ -82,7 +83,7 @@ using GetCardsCallback =
 
 class GetCards {
  public:
-  explicit GetCards(RewardsEngineImpl& engine);
+  explicit GetCards(RewardsEngine& engine);
   ~GetCards();
 
   void Request(const std::string& token, GetCardsCallback) const;
@@ -96,7 +97,7 @@ class GetCards {
 
   void OnRequest(GetCardsCallback, mojom::UrlResponsePtr) const;
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace endpoint::uphold

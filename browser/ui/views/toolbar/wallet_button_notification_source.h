@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_WALLET_BUTTON_NOTIFICATION_SOURCE_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_WALLET_BUTTON_NOTIFICATION_SOURCE_H_
 
+#include <optional>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
@@ -14,8 +16,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/remote.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave {
 
@@ -39,10 +39,8 @@ class WalletButtonNotificationSource
 
  private:
   void EnsureTxServiceConnected();
-  void OnTxServiceConnectionError();
 
   void EnsureKeyringServiceConnected();
-  void OnKeyringServiceConnectionError();
 
   // brave_wallet::mojom::TxServiceObserver
   void OnNewUnapprovedTx(
@@ -54,20 +52,18 @@ class WalletButtonNotificationSource
   void OnTxServiceReset() override;
 
   // brave_wallet::KeyringServiceObserverBase
-  void KeyringCreated(brave_wallet::mojom::KeyringId keyring_id) override;
-  void KeyringRestored(brave_wallet::mojom::KeyringId keyring_id) override;
+  void WalletCreated() override;
+  void WalletRestored() override;
 
-  void OnKeyringReady(brave_wallet::mojom::KeyringId keyring_id);
+  void OnWalletReady();
   void CheckTxStatus();
-  void OnTxStatusResolved(uint32_t count);
-  void OnKeyringInfoResolved(brave_wallet::mojom::KeyringInfoPtr keyring_info);
 
   void NotifyObservers();
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
-  mojo::Remote<brave_wallet::mojom::TxService> tx_service_;
-  mojo::Remote<brave_wallet::mojom::KeyringService> keyring_service_;
+  raw_ptr<brave_wallet::TxService> tx_service_ = nullptr;
+  raw_ptr<brave_wallet::KeyringService> keyring_service_ = nullptr;
 
   mojo::Receiver<brave_wallet::mojom::TxServiceObserver> tx_observer_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
@@ -75,7 +71,7 @@ class WalletButtonNotificationSource
 
   WalletButtonNotificationSourceCallback callback_;
 
-  absl::optional<bool> wallet_created_;
+  std::optional<bool> wallet_created_;
   uint32_t pending_tx_count_ = 0;
 
   base::WeakPtrFactory<WalletButtonNotificationSource> weak_ptr_factory_{this};

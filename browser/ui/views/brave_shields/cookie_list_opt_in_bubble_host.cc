@@ -6,16 +6,17 @@
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/feature_list.h"
 #include "base/metrics/histogram_functions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -61,10 +62,10 @@ bool ShouldEventuallyShowBubble() {
 
   base::UmaHistogramExactLinear(kCookieListPromptHistogram, 0, 4);
 
-  auto* regional_service_manager =
-      g_brave_browser_process->ad_block_service()->regional_service_manager();
-  DCHECK(regional_service_manager);
-  if (regional_service_manager->IsFilterListEnabled(kCookieListUuid)) {
+  auto* component_service_manager =
+      g_brave_browser_process->ad_block_service()->component_service_manager();
+  DCHECK(component_service_manager);
+  if (component_service_manager->IsFilterListEnabled(kCookieListUuid)) {
     return false;
   }
 
@@ -84,23 +85,25 @@ void ShowBubbleOnSessionRestore(base::WeakPtr<Browser> browser, Profile*, int) {
   bubble_host->ShowBubble();
 }
 
-class BubbleManager : public WebUIBubbleManagerT<CookieListOptInUI> {
+class BubbleManager : public WebUIBubbleManagerImpl<CookieListOptInUI> {
  public:
   BubbleManager(views::View* anchor_view, Profile* profile)
-      : WebUIBubbleManagerT<CookieListOptInUI>(anchor_view,
-                                               profile,
-                                               GURL(kCookieListOptInURL),
-                                               IDS_BRAVE_SHIELDS) {}
+      : WebUIBubbleManagerImpl<CookieListOptInUI>(
+            anchor_view,
+            profile,
+            GURL(kCookieListOptInURL),
+            IDS_BRAVE_SHIELDS,
+            /*force_load_on_create=*/false) {}
 
   ~BubbleManager() override = default;
 
-  // WebUIBubbleManagerT<CookieListOptInUI>:
+  // WebUIBubbleManagerImpl<CookieListOptInUI>:
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const absl::optional<gfx::Rect>& anchor,
+      const std::optional<gfx::Rect>& anchor,
       views::BubbleBorder::Arrow arrow) override {
     auto dialog_view =
-        WebUIBubbleManagerT<CookieListOptInUI>::CreateWebUIBubbleDialog(anchor,
-                                                                        arrow);
+        WebUIBubbleManagerImpl<CookieListOptInUI>::CreateWebUIBubbleDialog(
+            anchor, arrow);
     DCHECK(dialog_view);
     dialog_view->set_close_on_deactivate(false);
     return dialog_view;
@@ -146,11 +149,11 @@ void CookieListOptInBubbleHost::ShowBubble() {
   }
 
   // Do not show the bubble if the filter list is not yet available, likely
-  // because the regional filter list has not yet been donwloaded.
-  auto* regional_service_manager =
-      g_brave_browser_process->ad_block_service()->regional_service_manager();
-  DCHECK(regional_service_manager);
-  if (!regional_service_manager->IsFilterListAvailable(kCookieListUuid)) {
+  // because the filter list component has not yet been donwloaded.
+  auto* component_service_manager =
+      g_brave_browser_process->ad_block_service()->component_service_manager();
+  DCHECK(component_service_manager);
+  if (!component_service_manager->IsFilterListAvailable(kCookieListUuid)) {
     return;
   }
 

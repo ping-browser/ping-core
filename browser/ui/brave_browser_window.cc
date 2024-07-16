@@ -12,7 +12,7 @@
 
 speedreader::SpeedreaderBubbleView* BraveBrowserWindow::ShowSpeedreaderBubble(
     speedreader::SpeedreaderTabHelper* tab_helper,
-    bool is_enabled) {
+    speedreader::SpeedreaderBubbleLocation location) {
   return nullptr;
 }
 
@@ -35,6 +35,11 @@ void BraveBrowserWindow::ToggleSidebar() {}
 bool BraveBrowserWindow::HasSelectedURL() const {
   return false;
 }
+
 void BraveBrowserWindow::CleanAndCopySelectedURL() {}
+
+bool BraveBrowserWindow::ShowBraveHelpBubbleView(const std::string& text) {
+  return false;
+}
 
 #endif

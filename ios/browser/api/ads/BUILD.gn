@@ -12,10 +12,7 @@ config("external_config") {
 }
 
 source_set("ads") {
-  configs += [
-    ":external_config",
-    "//build/config/compiler:enable_arc",
-  ]
+  configs += [ ":external_config" ]
 
   sources = [
     "ads_client_bridge.h",
@@ -34,11 +31,14 @@ source_set("ads") {
     ":brave_ads_mojom_wrappers",
     "//base",
     "//brave/components/brave_ads/core",
-    "//brave/components/brave_ads/core",
-    "//brave/components/brave_federated/public/interfaces",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
+    "//brave/components/l10n/common",
+    "//brave/components/ntp_background_images/common",
     "//brave/ios/browser/api/common",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
   ]
 
   frameworks = [

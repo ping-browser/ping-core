@@ -10,7 +10,6 @@ import {
 } from '../../shared/lib/external_wallet'
 
 import { UserType } from '../../shared/lib/user_type'
-import { GrantInfo } from '../../shared/lib/grant_info'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PublisherPlatform } from '../../shared/lib/publisher_platform'
 import { OnboardingResult } from '../../shared/components/onboarding'
@@ -43,17 +42,6 @@ export interface PublisherInfo {
   supportedWalletProviders: ExternalWalletProvider[]
 }
 
-export type GrantCaptchaStatus = 'pending' | 'passed' | 'failed' | 'error'
-
-export interface GrantCaptchaInfo {
-  id: string
-  imageURL: string
-  hint: string
-  status: GrantCaptchaStatus
-  verifying: boolean
-  grantInfo: GrantInfo
-}
-
 export type AdaptiveCaptchaStatus =
   'pending' |
   'success' |
@@ -78,7 +66,7 @@ export interface Options {
   vbatExpired: boolean
 }
 
-type RequestedView = 'rewards-setup' | 'inline-tip'
+type RequestedView = 'rewards-setup'
 
 export interface HostState {
   openTime: number
@@ -88,7 +76,6 @@ export interface HostState {
   balance: Optional<number>
   settings: Settings
   options: Options
-  grantCaptchaInfo: GrantCaptchaInfo | null
   adaptiveCaptchaInfo: AdaptiveCaptchaInfo | null
   exchangeInfo: ExchangeInfo
   earningsInfo: EarningsInfo
@@ -102,9 +89,10 @@ export interface HostState {
   availableCountries: string[]
   defaultCountry: string
   declaredCountry: string
-  isGrandfatheredUser: boolean
   userType: UserType
   publishersVisitedCount: number
+  selfCustodyInviteDismissed: boolean
+  isTermsOfServiceUpdateRequired: boolean
 }
 
 export type HostListener = (state: HostState) => void
@@ -121,8 +109,9 @@ export interface Host {
   handleExternalWalletAction: (action: ExternalWalletAction) => void
   handleNotificationAction: (action: NotificationAction) => void
   dismissNotification: (notification: Notification) => void
-  solveGrantCaptcha: (solution: { x: number, y: number }) => void
-  clearGrantCaptcha: () => void
+  dismissSelfCustodyInvite: () => void
+  acceptTermsOfServiceUpdate: () => void
+  resetRewards: () => void
   clearAdaptiveCaptcha: () => void
   handleAdaptiveCaptchaResult: (result: AdaptiveCaptchaResult) => void
   closePanel: () => void

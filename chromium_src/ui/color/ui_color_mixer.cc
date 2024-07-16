@@ -9,18 +9,20 @@
 
 namespace ui {
 
+// TODO(simonhong): Use nala color if it's available from UI layer.
 void AddBraveUiColorMixer(ColorProvider* provider,
-                          const ColorProviderManager::Key& key) {
+                          const ColorProviderKey& key) {
   ColorMixer& mixer = provider->AddMixer();
 
-  const bool dark_mode =
-      key.color_mode == ColorProviderManager::ColorMode::kDark;
+  const bool dark_mode = key.color_mode == ColorProviderKey::ColorMode::kDark;
 
   // --------------------------------------------------------------------------
   // Border colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_FocusedBorderColor
-  mixer[kColorFocusableBorderFocused] = {gfx::kBraveColorBrand};
+  mixer[kColorFocusableBorderFocused] = {
+      dark_mode ? SkColorSetA(gfx::kBraveColorBrand, 0x66)
+                : SkColorSetA(gfx::kBraveColorBrand, 0x99)};
 
   // --------------------------------------------------------------------------
   // Button colors
@@ -51,9 +53,14 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // Link colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_LinkEnabled & kColorId_LinkPressed
-  mixer[kColorLinkForeground] = {dark_mode ? gfx::kBraveColorOrange300
+  mixer[kColorLinkForeground] = {dark_mode ? gfx::kBraveColorBrandDark
                                            : gfx::kBraveColorBrand};
   mixer[kColorLinkForegroundPressed] = {kColorLinkForeground};
+
+  // --------------------------------------------------------------------------
+  // Checkbox colors
+  // --------------------------------------------------------------------------
+  mixer[kColorCheckboxForegroundChecked] = {kColorLinkForeground};
 
   // --------------------------------------------------------------------------
   // Table colors (e.g. Task Manager)
@@ -78,8 +85,7 @@ void AddBraveUiColorMixer(ColorProvider* provider,
                                                          : gfx::kGoogleBlue200};
 }
 
-void AddUiColorMixer(ColorProvider* provider,
-                     const ColorProviderManager::Key& key) {
+void AddUiColorMixer(ColorProvider* provider, const ColorProviderKey& key) {
   AddUiColorMixer_Chromium(provider, key);
   AddBraveUiColorMixer(provider, key);
 }

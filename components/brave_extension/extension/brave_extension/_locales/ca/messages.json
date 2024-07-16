@@ -1,7 +1,7 @@
 {
   "appName": {
-    "message": "L'Extensió Brave",
-    "description": "The name of the the extension."
+    "message": "L'extensió de Ping",
+    "description": "The name of the extension."
   },
   "shields": {
     "message": "Escuts",
@@ -20,16 +20,16 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Si un lloc sembla trencat, prova a baixar els escuts",
+    "message": "Si un lloc apareix trencat, prova de desactivar els escuts",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Estàs navegant en aquesta web sense les proteccions de privacitat i seguretat de Brave. No funciona bé amb els Escuts activats?",
+    "message": "Estàs navegant en aquesta web sense les proteccions de privacitat i seguretat de Ping. No et funciona bé amb els Escuts activats?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Informa d'una pàgina web inexistent",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Elements bloquejats",
@@ -60,7 +60,7 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Rastrejadors & anuncis bloquejats (agressiu)",
+    "message": "Rastrejadors i anuncis bloquejats (agressiu)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
@@ -68,7 +68,7 @@
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Permeteu tots els rastrejadors & anuncis",
+    "message": "Permet tots els rastrejadors i anuncis",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -96,15 +96,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Impremtes digitals bloquejades",
+    "message": "Empremtes dactilars bloquejades",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Impremtes digitals bloquejades (estàndard)",
+    "message": "Empremtes dactilars bloquejades (estàndard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Empremta digital bloquejada (estrictament, pot trencar llocs)",
+    "message": "Empremta dactilar bloquejada (estrictament, pot trencar llocs)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
@@ -184,19 +184,19 @@
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Vista Simple",
+    "message": "Vista simple",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sovint els llocs inclouen galetes i scripts que proven d'identificar-te a tu i al teu dispositiu (sovint incrustats en anuncis). Volen esbrinar qui ets i seguir-te a través de la xarxa, rastrejant el que fas a cada lloc. Brave bloca aquestes coses de manera que puguis navegar sense que et segueixin.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Sovint els llocs inclouen galetes i scripts que proven d'identificar-te a tu i al teu dispositiu (sovint incrustats en anuncis). Volen esbrinar qui ets i seguir-te a través de la xarxa, rastrejant el que fas a cada lloc. Ping bloca aquestes coses de manera que puguis navegar sense que et segueixin.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Rastrejadors entre dominis i altres coses inquietants blocades",
+    "message": "Rastrejadors entre dominis i altres coses inquietants bloquejades",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Canviar la configuració de l'Escut en aquesta vista pot afectar a la compatibilitat web d'aquest lloc.",
+    "message": "En aquesta vista, canviar la configuració d'Escut pot afectar a la compatibilitat web d'aquest lloc.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Addició a Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Afegeix a Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Suprimeix de Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Suprimeix de Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Afegeix a Chrome",

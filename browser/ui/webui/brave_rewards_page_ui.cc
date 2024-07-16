@@ -21,24 +21,23 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "build/build_config.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
@@ -49,6 +48,8 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -62,19 +63,20 @@
 #include "content/public/browser/url_data_source.h"
 #endif
 
-using brave_rewards::ConnectExternalWalletResult;
-using brave_rewards::FetchBalanceResult;
-using brave_rewards::GetExternalWalletResult;
 using content::WebUIMessageHandler;
 
 namespace {
+
+PrefService* GetLocalState() {
+  return g_browser_process->local_state();
+}
 
 #if !BUILDFLAG(IS_ANDROID)
 
 brave_rewards::RewardsPanelCoordinator* GetPanelCoordinator(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
-  if (auto* browser = chrome::FindBrowserWithWebContents(web_contents)) {
+  if (auto* browser = chrome::FindBrowserWithTab(web_contents)) {
     return brave_rewards::RewardsPanelCoordinator::FromBrowser(browser);
   }
   return nullptr;
@@ -85,8 +87,7 @@ brave_rewards::RewardsPanelCoordinator* GetPanelCoordinator(
 // The handler for Javascript messages for Brave about: pages
 class RewardsDOMHandler
     : public WebUIMessageHandler,
-      public brave_ads::AdsServiceObserver,
-      public brave_rewards::RewardsNotificationServiceObserver,
+      public bat_ads::mojom::BatAdsObserver,
       public brave_rewards::RewardsServiceObserver {
  public:
   RewardsDOMHandler();
@@ -104,14 +105,13 @@ class RewardsDOMHandler
  private:
   void RestartBrowser(const base::Value::List& args);
   void IsInitialized(const base::Value::List& args);
-  void IsGrandfatheredUser(const base::Value::List& args);
   void GetUserType(const base::Value::List& args);
   void OnGetUserType(brave_rewards::mojom::UserType user_type);
+  void IsTermsOfServiceUpdateRequired(const base::Value::List& args);
+  void AcceptTermsOfServiceUpdate(const base::Value::List& args);
   void GetRewardsParameters(const base::Value::List& args);
   void IsAutoContributeSupported(const base::Value::List& args);
   void GetAutoContributeProperties(const base::Value::List& args);
-  void FetchPromotions(const base::Value::List& args);
-  void ClaimPromotion(const base::Value::List& args);
   void GetReconcileStamp(const base::Value::List& args);
   void SaveSetting(const base::Value::List& args);
   void OnPublisherList(
@@ -150,7 +150,8 @@ class RewardsDOMHandler
   void OnAutoContributePropsReady(
       brave_rewards::mojom::AutoContributePropertiesPtr properties);
   void GetStatement(const base::Value::List& args);
-  void OnGetStatement(brave_ads::mojom::StatementInfoPtr statement);
+  void GetStatementOfAccounts();
+  void OnGetStatementOfAccounts(brave_ads::mojom::StatementInfoPtr statement);
   void GetExcludedSites(const base::Value::List& args);
 
   void OnGetRecurringTips(
@@ -159,18 +160,15 @@ class RewardsDOMHandler
   void OnGetOneTimeTips(
       std::vector<brave_rewards::mojom::PublisherInfoPtr> list);
 
-  void GetEnabledInlineTippingPlatforms(const base::Value::List& args);
-  void SetInlineTippingPlatformEnabled(const base::Value::List& args);
-  void SetInlineTipsEnabled(const base::Value::List& args);
-
   void FetchBalance(const base::Value::List& args);
-  void OnFetchBalance(FetchBalanceResult result);
+  void OnFetchBalance(brave_rewards::mojom::BalancePtr balance);
 
   void GetExternalWallet(const base::Value::List& args);
-  void OnGetExternalWallet(GetExternalWalletResult result);
+  void OnGetExternalWallet(brave_rewards::mojom::ExternalWalletPtr wallet);
 
   void ConnectExternalWallet(const base::Value::List& args);
-  void OnConnectExternalWallet(ConnectExternalWalletResult result);
+  void OnConnectExternalWallet(
+      brave_rewards::mojom::ConnectExternalWalletResult result);
 
   void GetBalanceReport(const base::Value::List& args);
 
@@ -179,16 +177,7 @@ class RewardsDOMHandler
                           const brave_rewards::mojom::Result result,
                           brave_rewards::mojom::BalanceReportInfoPtr report);
 
-  void GetMonthlyReport(const base::Value::List& args);
-
-  void GetAllMonthlyReportIds(const base::Value::List& args);
   void GetCountryCode(const base::Value::List& args);
-
-  void OnGetMonthlyReport(const uint32_t month,
-                          const uint32_t year,
-                          brave_rewards::mojom::MonthlyReportInfoPtr report);
-
-  void OnGetAllMonthlyReportIds(const std::vector<std::string>& ids);
 
   void OnGetRewardsParameters(
       brave_rewards::mojom::RewardsParametersPtr parameters);
@@ -198,9 +187,13 @@ class RewardsDOMHandler
   void GetOnboardingStatus(const base::Value::List& args);
   void EnableRewards(const base::Value::List& args);
   void GetExternalWalletProviders(const base::Value::List& args);
-  void SetExternalWalletType(const base::Value::List& args);
 
-  void OnExternalWalletTypeUpdated(GetExternalWalletResult result);
+  void BeginExternalWalletLogin(const base::Value::List& args);
+  void OnBeginExternalWalletLogin(
+      brave_rewards::mojom::ExternalWalletLoginParamsPtr params);
+
+  void ReconnectExternalWallet(const base::Value::List& args);
+
   void GetIsUnsupportedRegion(const base::Value::List& args);
 
   void GetPluralString(const base::Value::List& args);
@@ -208,14 +201,6 @@ class RewardsDOMHandler
   // RewardsServiceObserver implementation
   void OnRewardsInitialized(
       brave_rewards::RewardsService* rewards_service) override;
-  void OnFetchPromotions(
-      brave_rewards::RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result,
-      const std::vector<brave_rewards::mojom::PromotionPtr>& list) override;
-  void OnPromotionFinished(
-      brave_rewards::RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result,
-      brave_rewards::mojom::PromotionPtr promotion) override;
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
                               std::string publisher_id,
                               bool excluded) override;
@@ -246,49 +231,30 @@ class RewardsDOMHandler
 
   void OnRewardsWalletCreated() override;
 
-  void OnUnblindedTokensReady(
-      brave_rewards::RewardsService* rewards_service) override;
+  void OnTermsOfServiceUpdateAccepted() override;
 
   void ReconcileStampReset() override;
 
   void OnCompleteReset(const bool success) override;
 
-  // RewardsNotificationsServiceObserver implementation
-  void OnNotificationAdded(
-      brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotification&
-          notification) override;
-  void OnNotificationDeleted(
-      brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotification&
-          notification) override;
-  void OnAllNotificationsDeleted(brave_rewards::RewardsNotificationService*
-                                     rewards_notification_service) override;
-  void OnGetNotification(
-      brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotification&
-          notification) override;
-  void OnGetAllNotifications(
-      brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
-          notifications_list) override;
-
-  // AdsServiceObserver implementation
+  // bat_ads::mojom::BatAdsObserver implementation
   void OnAdRewardsDidChange() override;
-  void OnNeedsBrowserUpgradeToServeAds() override;
+  void OnBrowserUpgradeRequiredToServeAds() override;
+  void OnIneligibleRewardsWalletToServeAds() override;
+  void OnRemindUser(brave_ads::mojom::ReminderType type) override {}
 
   void InitPrefChangeRegistrar();
   void OnPrefChanged(const std::string& key);
 
   raw_ptr<brave_rewards::RewardsService> rewards_service_ =
-      nullptr;                                            // NOT OWNED
-  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
-
+      nullptr;  // NOT OWNED
   base::ScopedObservation<brave_rewards::RewardsService,
                           brave_rewards::RewardsServiceObserver>
       rewards_service_observation_{this};
-  base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
-      ads_service_observation_{this};
+
+  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
+  mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
+      this};
 
   PrefChangeRegistrar pref_change_registrar_;
 
@@ -327,12 +293,16 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::IsInitialized,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.isGrandfatheredUser",
-      base::BindRepeating(&RewardsDOMHandler::IsGrandfatheredUser,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "brave_rewards.getUserType",
       base::BindRepeating(&RewardsDOMHandler::GetUserType,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.acceptTermsOfServiceUpdate",
+      base::BindRepeating(&RewardsDOMHandler::AcceptTermsOfServiceUpdate,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.isTermsOfServiceUpdateRequired",
+      base::BindRepeating(&RewardsDOMHandler::IsTermsOfServiceUpdateRequired,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getRewardsParameters",
@@ -345,14 +315,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getAutoContributeProperties",
       base::BindRepeating(&RewardsDOMHandler::GetAutoContributeProperties,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.fetchPromotions",
-      base::BindRepeating(&RewardsDOMHandler::FetchPromotions,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.claimPromotion",
-      base::BindRepeating(&RewardsDOMHandler::ClaimPromotion,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getReconcileStamp",
@@ -435,18 +397,6 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::GetStatement,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.getEnabledInlineTippingPlatforms",
-      base::BindRepeating(&RewardsDOMHandler::GetEnabledInlineTippingPlatforms,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.setInlineTippingPlatformEnabled",
-      base::BindRepeating(&RewardsDOMHandler::SetInlineTippingPlatformEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.setInlineTipsEnabled",
-      base::BindRepeating(&RewardsDOMHandler::SetInlineTipsEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "brave_rewards.getExcludedSites",
       base::BindRepeating(&RewardsDOMHandler::GetExcludedSites,
                           base::Unretained(this)));
@@ -465,14 +415,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getBalanceReport",
       base::BindRepeating(&RewardsDOMHandler::GetBalanceReport,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.getMonthlyReport",
-      base::BindRepeating(&RewardsDOMHandler::GetMonthlyReport,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.getMonthlyReportIds",
-      base::BindRepeating(&RewardsDOMHandler::GetAllMonthlyReportIds,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getCountryCode",
@@ -495,8 +437,12 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::GetExternalWalletProviders,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.setExternalWalletType",
-      base::BindRepeating(&RewardsDOMHandler::SetExternalWalletType,
+      "brave_rewards.beginExternalWalletLogin",
+      base::BindRepeating(&RewardsDOMHandler::BeginExternalWalletLogin,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.reconnectExternalWallet",
+      base::BindRepeating(&RewardsDOMHandler::ReconnectExternalWallet,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getIsUnsupportedRegion",
@@ -515,6 +461,10 @@ void RewardsDOMHandler::Init() {
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+
+  if (rewards_service_) {
+    rewards_service_->OnRewardsPageShown();
+  }
 
   // Configure a pref change registrar to update brave://rewards when settings
   // are changed via brave://settings
@@ -552,22 +502,6 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       brave_rewards::prefs::kMinVisits,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kInlineTipButtonsEnabled,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kInlineTipTwitterEnabled,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kInlineTipRedditEnabled,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kInlineTipGithubEnabled,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
 
@@ -608,22 +542,30 @@ void RewardsDOMHandler::IsInitialized(const base::Value::List& args) {
   }
 }
 
-void RewardsDOMHandler::IsGrandfatheredUser(const base::Value::List&) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-  CallJavascriptFunction("brave_rewards.onIsGrandfatheredUser",
-                         base::Value(rewards_service_->IsGrandfatheredUser()));
-}
-
 void RewardsDOMHandler::GetUserType(const base::Value::List&) {
   if (!IsJavascriptAllowed() || !rewards_service_) {
     return;
   }
   rewards_service_->GetUserType(base::BindOnce(
       &RewardsDOMHandler::OnGetUserType, weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::IsTermsOfServiceUpdateRequired(
+    const base::Value::List&) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  if (rewards_service_) {
+    CallJavascriptFunction("brave_rewards.isTermsOfServiceUpdateRequired",
+                           rewards_service_->IsTermsOfServiceUpdateRequired());
+  }
+}
+
+void RewardsDOMHandler::AcceptTermsOfServiceUpdate(
+    const base::Value::List& args) {
+  if (rewards_service_) {
+    rewards_service_->AcceptTermsOfServiceUpdate();
+  }
 }
 
 void RewardsDOMHandler::OnGetUserType(
@@ -638,15 +580,17 @@ void RewardsDOMHandler::OnJavascriptAllowed() {
     rewards_service_observation_.Observe(rewards_service_);
   }
 
+  bat_ads_observer_receiver_.reset();
   if (ads_service_) {
-    ads_service_observation_.Reset();
-    ads_service_observation_.Observe(ads_service_);
+    ads_service_->AddBatAdsObserver(
+        bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
   }
 }
 
 void RewardsDOMHandler::OnJavascriptDisallowed() {
   rewards_service_observation_.Reset();
-  ads_service_observation_.Reset();
+
+  bat_ads_observer_receiver_.reset();
 
   weak_factory_.InvalidateWeakPtrs();
 }
@@ -674,6 +618,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   base::Value::Dict wallet_provider_regions;
   base::Time vbat_deadline;
   bool vbat_expired = false;
+
   if (parameters) {
     rate = parameters->rate;
     auto_contribute_choice = parameters->auto_contribute_choice;
@@ -713,7 +658,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   data.Set("payoutStatus", std::move(payout_status));
   data.Set("walletProviderRegions", std::move(wallet_provider_regions));
   if (!vbat_deadline.is_null()) {
-    data.Set("vbatDeadline", floor(vbat_deadline.ToDoubleT() *
+    data.Set("vbatDeadline", floor(vbat_deadline.InSecondsFSinceUnixEpoch() *
                                    base::Time::kMillisecondsPerSecond));
   }
   data.Set("vbatExpired", vbat_expired);
@@ -753,27 +698,38 @@ void RewardsDOMHandler::GetAutoContributeProperties(
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::SetExternalWalletType(const base::Value::List& args) {
+void RewardsDOMHandler::BeginExternalWalletLogin(
+    const base::Value::List& args) {
   CHECK_EQ(1U, args.size());
   if (!rewards_service_)
     return;
 
   AllowJavascript();
   const std::string wallet_type = args[0].GetString();
-  rewards_service_->SetExternalWalletType(wallet_type);
 
-  rewards_service_->GetExternalWallet(
-      base::BindOnce(&RewardsDOMHandler::OnExternalWalletTypeUpdated,
+  rewards_service_->BeginExternalWalletLogin(
+      wallet_type,
+      base::BindOnce(&RewardsDOMHandler::OnBeginExternalWalletLogin,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnExternalWalletTypeUpdated(
-    GetExternalWalletResult result) {
+void RewardsDOMHandler::OnBeginExternalWalletLogin(
+    brave_rewards::mojom::ExternalWalletLoginParamsPtr params) {
   if (IsJavascriptAllowed()) {
-    auto wallet = std::move(result).value_or(nullptr);
     CallJavascriptFunction("brave_rewards.externalWalletLogin",
-                           base::Value(wallet ? wallet->login_url : ""));
+                           base::Value(params ? params->url : ""));
   }
+}
+
+void RewardsDOMHandler::ReconnectExternalWallet(const base::Value::List& args) {
+  if (!rewards_service_) {
+    return;
+  }
+  AllowJavascript();
+  rewards_service_->BeginExternalWalletLogin(
+      rewards_service_->GetExternalWalletType(),
+      base::BindOnce(&RewardsDOMHandler::OnBeginExternalWalletLogin,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnIsAutoContributeSupported(bool is_ac_supported) {
@@ -795,93 +751,6 @@ void RewardsDOMHandler::OnGetAutoContributeProperties(
   values.Set("contributionMinVisits", properties->contribution_min_visits);
 
   CallJavascriptFunction("brave_rewards.autoContributeProperties", values);
-}
-
-void RewardsDOMHandler::OnFetchPromotions(
-    brave_rewards::RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result,
-    const std::vector<brave_rewards::mojom::PromotionPtr>& list) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-
-  base::Value::List promotions;
-  for (const auto& item : list) {
-    base::Value::Dict dict;
-    dict.Set("promotionId", item->id);
-    dict.Set("type", static_cast<int>(item->type));
-    dict.Set("status", static_cast<int>(item->status));
-    dict.Set("createdAt", static_cast<double>(item->created_at));
-    dict.Set("claimableUntil", static_cast<double>(item->claimable_until));
-    dict.Set("expiresAt", static_cast<double>(item->expires_at));
-    dict.Set("amount", item->approximate_value);
-    promotions.Append(std::move(dict));
-  }
-
-  base::Value::Dict dict;
-  dict.Set("result", static_cast<int>(result));
-  dict.Set("promotions", std::move(promotions));
-
-  CallJavascriptFunction("brave_rewards.promotions", dict);
-}
-
-void RewardsDOMHandler::FetchPromotions(const base::Value::List& args) {
-  if (rewards_service_) {
-    AllowJavascript();
-    rewards_service_->FetchPromotions(base::DoNothing());
-  }
-}
-
-void RewardsDOMHandler::ClaimPromotion(const base::Value::List& args) {
-  CHECK_EQ(1U, args.size());
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-
-  const base::Value& promotion_id = args[0];
-
-#if !BUILDFLAG(IS_ANDROID)
-  if (auto* coordinator = GetPanelCoordinator(web_ui()->GetWebContents())) {
-    coordinator->ShowGrantCaptcha(promotion_id.GetString());
-  }
-#else
-  // Notify the UI that the claim process for this promotion has started.
-  CallJavascriptFunction("brave_rewards.promotionClaimStarted", promotion_id);
-
-  // No need for a callback. The UI receives "brave_rewards.promotionFinish".
-  brave_rewards::AttestPromotionCallback callback = base::DoNothing();
-  rewards_service_->ClaimPromotion(promotion_id.GetString(),
-                                   std::move(callback));
-#endif
-}
-
-void RewardsDOMHandler::OnPromotionFinished(
-    brave_rewards::RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result,
-    brave_rewards::mojom::PromotionPtr promotion) {
-  if (result != brave_rewards::mojom::Result::OK) {
-    return;
-  }
-
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-
-  base::Value::Dict promotion_dict;
-  if (promotion) {
-    promotion_dict.Set("promotionId", promotion->id);
-    promotion_dict.Set("expiresAt", static_cast<double>(promotion->expires_at));
-    promotion_dict.Set("amount", promotion->approximate_value);
-    promotion_dict.Set("type", static_cast<int>(promotion->type));
-  }
-
-  base::Value::Dict finish;
-  finish.Set("result", static_cast<int>(result));
-  finish.Set("promotion", std::move(promotion_dict));
-
-  CallJavascriptFunction("brave_rewards.promotionFinish", finish);
 }
 
 void RewardsDOMHandler::OnGetReconcileStamp(uint64_t reconcile_stamp) {
@@ -943,42 +812,6 @@ void RewardsDOMHandler::OnExcludedSitesChanged(
   CallJavascriptFunction("brave_rewards.excludedSiteChanged");
 }
 
-void RewardsDOMHandler::OnNotificationAdded(
-    brave_rewards::RewardsNotificationService* rewards_notification_service,
-    const brave_rewards::RewardsNotificationService::RewardsNotification&
-        notification) {}
-
-void RewardsDOMHandler::OnNotificationDeleted(
-    brave_rewards::RewardsNotificationService* rewards_notification_service,
-    const brave_rewards::RewardsNotificationService::RewardsNotification&
-        notification) {
-#if BUILDFLAG(IS_ANDROID)
-  if (notification.type_ == brave_rewards::RewardsNotificationService::
-                                REWARDS_NOTIFICATION_GRANT &&
-      IsJavascriptAllowed()) {
-    base::Value::Dict finish;
-    finish.Set("status", false);
-    finish.Set("expiryTime", 0);
-    finish.Set("probi", "0");
-
-    CallJavascriptFunction("brave_rewards.grantFinish", finish);
-  }
-#endif
-}
-
-void RewardsDOMHandler::OnAllNotificationsDeleted(
-    brave_rewards::RewardsNotificationService* rewards_notification_service) {}
-
-void RewardsDOMHandler::OnGetNotification(
-    brave_rewards::RewardsNotificationService* rewards_notification_service,
-    const brave_rewards::RewardsNotificationService::RewardsNotification&
-        notification) {}
-
-void RewardsDOMHandler::OnGetAllNotifications(
-    brave_rewards::RewardsNotificationService* rewards_notification_service,
-    const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
-        notifications_list) {}
-
 void RewardsDOMHandler::SaveSetting(const base::Value::List& args) {
   CHECK_EQ(2U, args.size());
   AllowJavascript();
@@ -988,7 +821,12 @@ void RewardsDOMHandler::SaveSetting(const base::Value::List& args) {
     const std::string value = args[1].GetString();
 
     if (key == "contributionMonthly") {
-      rewards_service_->SetAutoContributionAmount(std::stod(value));
+      double double_value = 0;
+      if (!base::StringToDouble(value, &double_value)) {
+        LOG(ERROR) << "Auto contribution amount not a double";
+        return;
+      }
+      rewards_service_->SetAutoContributionAmount(double_value);
     }
 
     if (key == "contributionMinTime") {
@@ -1241,10 +1079,11 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
       prefs->GetBoolean(brave_ads::prefs::kShouldAllowSubdivisionTargeting));
   ads_data.Set("adsUIEnabled", true);
   ads_data.Set("needsBrowserUpgradeToServeAds",
-               ads_service_->NeedsBrowserUpgradeToServeAds());
+               ads_service_->IsBrowserUpgradeRequiredToServeAds());
 
+  const std::string country_code = brave_l10n::GetCountryCode(GetLocalState());
   ads_data.Set("subdivisions",
-               brave_ads::GetSupportedSubdivisionsAsValueList());
+               brave_ads::GetSupportedSubdivisionsAsValueList(country_code));
 
   ads_data.Set("notificationAdsEnabled",
                prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));
@@ -1484,9 +1323,6 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
                       value == "true");
   } else if (key == kAdsSubdivisionTargeting) {
     prefs->SetString(brave_ads::prefs::kSubdivisionTargetingSubdivision, value);
-  } else if (key == kAutoDetectedSubdivisionTargeting) {
-    prefs->SetString(
-        brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision, value);
   }
 
   GetAdsData(base::Value::List());
@@ -1499,16 +1335,19 @@ void RewardsDOMHandler::OnPublisherListNormalized(
 }
 
 void RewardsDOMHandler::GetStatement(const base::Value::List& args) {
-  if (!ads_service_) {
-    return;
-  }
-
-  AllowJavascript();
-  ads_service_->GetStatementOfAccounts(base::BindOnce(
-      &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
+  GetStatementOfAccounts();
 }
 
-void RewardsDOMHandler::OnGetStatement(
+void RewardsDOMHandler::GetStatementOfAccounts() {
+  if (ads_service_) {
+    AllowJavascript();
+    ads_service_->GetStatementOfAccounts(
+        base::BindOnce(&RewardsDOMHandler::OnGetStatementOfAccounts,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void RewardsDOMHandler::OnGetStatementOfAccounts(
     brave_ads::mojom::StatementInfoPtr statement) {
   if (!statement) {
     return;
@@ -1520,18 +1359,18 @@ void RewardsDOMHandler::OnGetStatement(
 
   base::Value::Dict dict;
   dict.Set("adsNextPaymentDate",
-           statement->next_payment_date.ToDoubleT() * 1000);
+           statement->next_payment_date.InSecondsFSinceUnixEpoch() * 1000);
   dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
   dict.Set("adsMinEarningsThisMonth", statement->min_earnings_this_month);
   dict.Set("adsMaxEarningsThisMonth", statement->max_earnings_this_month);
   dict.Set("adsMinEarningsLastMonth", statement->min_earnings_last_month);
   dict.Set("adsMaxEarningsLastMonth", statement->max_earnings_last_month);
 
-  base::Value::Dict ad_types_received;
-  for (const auto& [ad_type, count] : statement->ad_types_received_this_month) {
-    ad_types_received.Set(ad_type, base::Value(count));
+  base::Value::Dict ads_summary;
+  for (const auto& [ad_type, count] : statement->ads_summary_this_month) {
+    ads_summary.Set(ad_type, base::Value(count));
   }
-  dict.Set("adTypesReceivedThisMonth", std::move(ad_types_received));
+  dict.Set("adTypesReceivedThisMonth", std::move(ads_summary));
 
   CallJavascriptFunction("brave_rewards.statement", dict);
 }
@@ -1544,16 +1383,16 @@ void RewardsDOMHandler::OnStatementChanged(
 }
 
 void RewardsDOMHandler::OnAdRewardsDidChange() {
-  if (!ads_service_) {
-    return;
-  }
-
-  ads_service_->GetStatementOfAccounts(base::BindOnce(
-      &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
+  GetStatementOfAccounts();
 }
 
-void RewardsDOMHandler::OnNeedsBrowserUpgradeToServeAds() {
+void RewardsDOMHandler::OnBrowserUpgradeRequiredToServeAds() {
   GetAdsData(base::Value::List());
+}
+
+void RewardsDOMHandler::OnIneligibleRewardsWalletToServeAds() {
+  // TODO(https://github.com/brave/brave-browser/issues/32201): Add isEligible
+  // UI.
 }
 
 void RewardsDOMHandler::OnRecurringTipSaved(
@@ -1576,73 +1415,22 @@ void RewardsDOMHandler::OnRecurringTipRemoved(
                          base::Value(success));
 }
 
-void RewardsDOMHandler::GetEnabledInlineTippingPlatforms(
-    const base::Value::List& args) {
-  AllowJavascript();
-
-  auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  base::Value::List list;
-
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipButtonsEnabled)) {
-    list.Append("enabled");
-  }
-
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipGithubEnabled)) {
-    list.Append("github");
-  }
-
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipRedditEnabled)) {
-    list.Append("reddit");
-  }
-
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipTwitterEnabled)) {
-    list.Append("twitter");
-  }
-
-  CallJavascriptFunction("brave_rewards.enabledInlineTippingPlatforms", list);
-}
-
-void RewardsDOMHandler::SetInlineTippingPlatformEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(2U, args.size());
-  AllowJavascript();
-
-  std::string key = args[0].GetString();
-  std::string value = args[1].GetString();
-
-  if (rewards_service_) {
-    rewards_service_->SetInlineTippingPlatformEnabled(key, value == "true");
-  }
-}
-
-void RewardsDOMHandler::SetInlineTipsEnabled(const base::Value::List& args) {
-  CHECK_EQ(1U, args.size());
-  AllowJavascript();
-
-  bool enabled = args[0].GetBool();
-  auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  prefs->SetBoolean(brave_rewards::prefs::kInlineTipButtonsEnabled, enabled);
-}
-
-void RewardsDOMHandler::OnFetchBalance(FetchBalanceResult result) {
+void RewardsDOMHandler::OnFetchBalance(
+    brave_rewards::mojom::BalancePtr balance) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value::Dict data;
-  if (result.has_value()) {
-    const auto balance = std::move(result.value());
-
-    base::Value::Dict value_balance;
-    value_balance.Set("total", balance->total);
-    value_balance.Set(
-        "wallets",
-        base::Value::Dict(std::move_iterator(balance->wallets.begin()),
-                          std::move_iterator(balance->wallets.end())));
-    data.SetByDottedPath("value.balance", std::move(value_balance));
-  } else {
-    data.Set("error", static_cast<int>(result.error()));
+  if (!balance) {
+    CallJavascriptFunction("brave_rewards.balance");
+    return;
   }
+
+  base::Value::Dict data;
+  data.Set("total", balance->total);
+  data.Set("wallets",
+           base::Value::Dict(std::move_iterator(balance->wallets.begin()),
+                             std::move_iterator(balance->wallets.end())));
 
   CallJavascriptFunction("brave_rewards.balance", std::move(data));
 }
@@ -1665,30 +1453,26 @@ void RewardsDOMHandler::GetExternalWallet(const base::Value::List& args) {
       &RewardsDOMHandler::OnGetExternalWallet, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetExternalWallet(GetExternalWalletResult result) {
+void RewardsDOMHandler::OnGetExternalWallet(
+    brave_rewards::mojom::ExternalWalletPtr wallet) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value::Dict data;
-  if (result.has_value()) {
-    auto wallet = std::move(result.value());
-
-    base::Value::Dict wallet_dict;
-    wallet_dict.Set("type", wallet->type);
-    wallet_dict.Set("address", wallet->address);
-    wallet_dict.Set("status", static_cast<int>(wallet->status));
-    wallet_dict.Set("userName", wallet->user_name);
-    wallet_dict.Set("accountUrl", wallet->account_url);
-    wallet_dict.Set("loginUrl", wallet->login_url);
-    wallet_dict.Set("activityUrl", wallet->activity_url);
-
-    data.SetByDottedPath("value.wallet", std::move(wallet_dict));
-  } else {
-    data.Set("error", static_cast<int>(result.error()));
+  if (!wallet) {
+    CallJavascriptFunction("brave_rewards.onGetExternalWallet");
+    return;
   }
 
-  CallJavascriptFunction("brave_rewards.onGetExternalWallet", data);
+  base::Value::Dict wallet_dict;
+  wallet_dict.Set("type", wallet->type);
+  wallet_dict.Set("address", wallet->address);
+  wallet_dict.Set("status", static_cast<int>(wallet->status));
+  wallet_dict.Set("userName", wallet->user_name);
+  wallet_dict.Set("accountUrl", wallet->account_url);
+  wallet_dict.Set("activityUrl", wallet->activity_url);
+
+  CallJavascriptFunction("brave_rewards.onGetExternalWallet", wallet_dict);
 }
 
 void RewardsDOMHandler::ConnectExternalWallet(const base::Value::List& args) {
@@ -1708,19 +1492,13 @@ void RewardsDOMHandler::ConnectExternalWallet(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::OnConnectExternalWallet(
-    ConnectExternalWalletResult result) {
+    brave_rewards::mojom::ConnectExternalWalletResult result) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value::Dict data;
-  if (result.has_value()) {
-    data.Set("value", base::Value::Dict());
-  } else {
-    data.Set("error", static_cast<int>(result.error()));
-  }
-
-  CallJavascriptFunction("brave_rewards.onConnectExternalWallet", data);
+  CallJavascriptFunction("brave_rewards.onConnectExternalWallet",
+                         base::Value(static_cast<int>(result)));
 }
 
 void RewardsDOMHandler::OnExternalWalletLoggedOut() {
@@ -1752,13 +1530,11 @@ void RewardsDOMHandler::OnRewardsWalletCreated() {
   GetCountryCode(base::Value::List());
 }
 
-void RewardsDOMHandler::OnUnblindedTokensReady(
-    brave_rewards::RewardsService* rewards_service) {
+void RewardsDOMHandler::OnTermsOfServiceUpdateAccepted() {
   if (!IsJavascriptAllowed()) {
     return;
   }
-
-  CallJavascriptFunction("brave_rewards.unblindedTokensReady");
+  IsTermsOfServiceUpdateRequired(base::Value::List());
 }
 
 void RewardsDOMHandler::ReconcileStampReset() {
@@ -1779,7 +1555,6 @@ void RewardsDOMHandler::OnGetBalanceReport(
   }
 
   base::Value::Dict report_base;
-  report_base.Set("grant", report->grants);
   report_base.Set("ads", report->earning_from_ads);
   report_base.Set("contribute", report->auto_contribute);
   report_base.Set("monthly", report->recurring_donation);
@@ -1807,112 +1582,6 @@ void RewardsDOMHandler::GetBalanceReport(const base::Value::List& args) {
       month, year,
       base::BindOnce(&RewardsDOMHandler::OnGetBalanceReport,
                      weak_factory_.GetWeakPtr(), month, year));
-}
-
-void RewardsDOMHandler::OnGetMonthlyReport(
-    const uint32_t month,
-    const uint32_t year,
-    brave_rewards::mojom::MonthlyReportInfoPtr report) {
-  if (!IsJavascriptAllowed() || !report) {
-    return;
-  }
-
-  base::Value::Dict data;
-  data.Set("month", static_cast<int>(month));
-  data.Set("year", static_cast<int>(year));
-
-  base::Value::Dict balance_report;
-  balance_report.Set("ads", report->balance->earning_from_ads);
-  balance_report.Set("contribute", report->balance->auto_contribute);
-  balance_report.Set("monthly", report->balance->recurring_donation);
-  balance_report.Set("tips", report->balance->one_time_donation);
-
-  base::Value::List transactions;
-  for (const auto& item : report->transactions) {
-    base::Value::Dict transaction_report;
-    transaction_report.Set("amount", item->amount);
-    transaction_report.Set("type", static_cast<int>(item->type));
-    transaction_report.Set("processor", static_cast<int>(item->processor));
-    transaction_report.Set("created_at", static_cast<double>(item->created_at));
-
-    transactions.Append(std::move(transaction_report));
-  }
-
-  base::Value::List contributions;
-  for (const auto& contribution : report->contributions) {
-    base::Value::List publishers;
-    for (const auto& item : contribution->publishers) {
-      base::Value::Dict publisher;
-      publisher.Set("id", item->id);
-      publisher.Set("percentage", static_cast<double>(item->percent));
-      publisher.Set("weight", item->weight);
-      publisher.Set("publisherKey", item->id);
-      publisher.Set("status", static_cast<int>(item->status));
-      publisher.Set("name", item->name);
-      publisher.Set("provider", item->provider);
-      publisher.Set("url", item->url);
-      publisher.Set("favIcon", item->favicon_url);
-      publishers.Append(std::move(publisher));
-    }
-
-    base::Value::Dict contribution_report;
-    contribution_report.Set("amount", contribution->amount);
-    contribution_report.Set("type", static_cast<int>(contribution->type));
-    contribution_report.Set("processor",
-                            static_cast<int>(contribution->processor));
-    contribution_report.Set("created_at",
-                            static_cast<double>(contribution->created_at));
-    contribution_report.Set("publishers", std::move(publishers));
-    contributions.Append(std::move(contribution_report));
-  }
-
-  base::Value::Dict report_base;
-  report_base.Set("balance", std::move(balance_report));
-  report_base.Set("transactions", std::move(transactions));
-  report_base.Set("contributions", std::move(contributions));
-
-  data.Set("report", std::move(report_base));
-
-  CallJavascriptFunction("brave_rewards.monthlyReport", data);
-}
-
-void RewardsDOMHandler::GetMonthlyReport(const base::Value::List& args) {
-  CHECK_EQ(2U, args.size());
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-
-  const uint32_t month = args[0].GetInt();
-  const uint32_t year = args[1].GetInt();
-
-  rewards_service_->GetMonthlyReport(
-      month, year,
-      base::BindOnce(&RewardsDOMHandler::OnGetMonthlyReport,
-                     weak_factory_.GetWeakPtr(), month, year));
-}
-
-void RewardsDOMHandler::OnGetAllMonthlyReportIds(
-    const std::vector<std::string>& ids) {
-  base::Value::List list;
-  for (const auto& item : ids) {
-    list.Append(item);
-  }
-
-  CallJavascriptFunction("brave_rewards.monthlyReportIds", list);
-}
-
-void RewardsDOMHandler::GetAllMonthlyReportIds(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-
-  rewards_service_->GetAllMonthlyReportIds(
-      base::BindOnce(&RewardsDOMHandler::OnGetAllMonthlyReportIds,
-                     weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::GetCountryCode(const base::Value::List& args) {

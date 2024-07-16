@@ -6,14 +6,14 @@
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 
 #include <algorithm>
+#include <optional>
 
 #include "base/containers/contains.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "url/gurl.h"
 
 namespace {
@@ -100,12 +100,12 @@ bool IsShieldsContentSettingsTypeName(const std::string& content_type_name) {
   return false;
 }
 
-absl::optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
+std::optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
   if (!CanPatternBeConvertedToWildcardSchemeAndPort(pattern))
-    return absl::nullopt;
+    return std::nullopt;
   DCHECK(!pattern.GetHost().empty());
-  absl::optional<ContentSettingsPattern> new_pattern =
+  std::optional<ContentSettingsPattern> new_pattern =
       ContentSettingsPattern::FromString("*://" + pattern.GetHost() + "/*");
   return new_pattern;
 }
@@ -118,19 +118,19 @@ std::string GetShieldsSettingUserPrefsPath(const std::string& name) {
 
 // Extract a SessionModel from |dict[key]|. Will return
 // SessionModel::Durable if no model exists.
-content_settings::SessionModel GetSessionModelFromDictionary(
+content_settings::mojom::SessionModel GetSessionModelFromDictionary(
     const base::Value::Dict& dict,
     const char* key) {
-  absl::optional<int> model_int = dict.FindInt(key);
+  std::optional<int> model_int = dict.FindInt(key);
   if (!model_int.has_value() ||
       (model_int >
-       static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
+       static_cast<int>(content_settings::mojom::SessionModel::kMaxValue)) ||
       (model_int < 0)) {
     model_int = 0;
   }
 
-  content_settings::SessionModel session_model =
-      static_cast<content_settings::SessionModel>(model_int.value());
+  content_settings::mojom::SessionModel session_model =
+      static_cast<content_settings::mojom::SessionModel>(model_int.value());
   return session_model;
 }
 

@@ -22,7 +22,7 @@
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_service_impl.h"
 #include "components/sync/service/sync_service_observer.h"
@@ -31,10 +31,8 @@
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_setup_service.h"
-#include "ios/chrome/browser/sync/sync_setup_service_factory.h"
+#include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/web/public/thread/web_thread.h"
 
 namespace {
@@ -313,6 +311,8 @@ void BraveSyncWorker::ResetSync() {
     return;
   }
 
+  sync_service->prefs().AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
   DCHECK(device_info_service);
@@ -357,6 +357,8 @@ void BraveSyncWorker::PermanentlyDeleteAccount(
   if (!sync_service) {
     return;
   }
+
+  sync_service->prefs().AddLeaveChainDetail(__FILE__, __LINE__, __func__);
 
   sync_service->PermanentlyDeleteAccount(std::move(callback));
 }
@@ -432,14 +434,13 @@ void BraveSyncWorker::OnResetDone() {
 
 bool BraveSyncWorker::CanSyncFeatureStart() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* setup_service =
-      SyncSetupServiceFactory::GetForBrowserState(browser_state_);
+  syncer::SyncService* sync_service = GetSyncService();
 
-  if (!setup_service) {
+  if (!sync_service) {
     return false;
   }
 
-  return setup_service->IsSyncFeatureEnabled();
+  return sync_service->IsSyncFeatureEnabled();
 }
 
 bool BraveSyncWorker::IsSyncFeatureActive() {

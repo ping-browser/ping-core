@@ -7,6 +7,8 @@ import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
+import AlertCenter from '@brave/leo/react/alertCenter'
+
 // Components
 import Header from './header'
 import PlaylistsCatalog from './playlistsCatalog'
@@ -17,14 +19,22 @@ import {
   useLastPlayerState,
   usePlaylistEditMode
 } from '../reducers/states'
+import { HistoryContext } from './historyContext'
 
-const HeaderWrapper = styled.header<{ isPlaylistPlayerPage: boolean }>`
-  position: sticky;
-  width: 100%;
-  height: ${({ isPlaylistPlayerPage }) =>
+const AppContainer = styled.div<{ isPlaylistPlayerPage: boolean }>`
+  --header-height: ${({ isPlaylistPlayerPage }) =>
     isPlaylistPlayerPage ? '74px' : '56px'};
+`
+
+const StickyArea = styled.header`
+  position: sticky;
+  width: 100vw;
   top: 0;
   z-index: 1;
+`
+
+const StyledHeader = styled(Header)`
+  height: var(--header-height);
 `
 
 export default function App () {
@@ -32,33 +42,40 @@ export default function App () {
   const editMode = usePlaylistEditMode()
 
   return (
-    <>
+    <HistoryContext>
       <Route
         path={'/playlist/:playlistId'}
         children={({ match }) => {
           const playlistId = match?.params.playlistId
           return (
-            <>
-              <HeaderWrapper isPlaylistPlayerPage={!!playlistId}>
-                <Header playlistId={playlistId} />
-              </HeaderWrapper>
-              <VideoFrame
-                visible={
-                  !!lastPlayerState?.currentItem &&
-                  editMode !== PlaylistEditMode.BULK_EDIT
-                }
-                isMiniPlayer={lastPlayerState?.currentList?.id !== playlistId}
-              />
-            </>
+            <AppContainer isPlaylistPlayerPage={!!playlistId}>
+              <StickyArea>
+                <StyledHeader playlistId={playlistId} />
+                <AlertCenter />
+                <VideoFrame
+                  visible={
+                    !!lastPlayerState?.currentItem &&
+                    editMode !== PlaylistEditMode.BULK_EDIT
+                  }
+                  isMiniPlayer={lastPlayerState?.currentList?.id !== playlistId}
+                />
+              </StickyArea>
+              <section>
+                <Switch>
+                  <Route
+                    path='/playlist/:playlistId'
+                    component={PlaylistFolder}
+                  />
+                  <Route
+                    path='/'
+                    component={PlaylistsCatalog}
+                  ></Route>
+                </Switch>
+              </section>
+            </AppContainer>
           )
         }}
       />
-      <section>
-        <Switch>
-          <Route path='/playlist/:playlistId' component={PlaylistFolder} />
-          <Route path='/' component={PlaylistsCatalog}></Route>
-        </Switch>
-      </section>
-    </>
+    </HistoryContext>
   )
 }

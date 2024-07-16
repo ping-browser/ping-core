@@ -9,7 +9,7 @@ export const StyledExtensionWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
   border-radius: 4px;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   width: 320px;
@@ -21,7 +21,7 @@ export const StyledExtensionWrapperLonger = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
   border-radius: 4px;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   width: 320px;
@@ -43,19 +43,6 @@ export const ChildComponentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
-
-export const SelectContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  height: 100%;
-  padding: 12px 12px 0px 12px;
-  position: relative;
-  box-sizing: border-box;
-  background-color: ${(p) => p.theme.color.background01};
 `
 
 export const LongWrapper = styled.div`
@@ -121,14 +108,4 @@ export const DesktopComponentWrapperRow = styled.div`
   background-color: ${(p) => p.theme.color.background02};
   width: 800px;
   padding: 20px;
-`
-
-export const StyledCreateAccountPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 320px;
-  height: 200px;
-  background-color: ${(p) => p.theme.color.background01};
 `

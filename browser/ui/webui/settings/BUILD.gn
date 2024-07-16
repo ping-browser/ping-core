@@ -10,12 +10,11 @@ source_set("unittests") {
     sources = [
       "brave_importer_observer_unittest.cc",
       "brave_site_settings_handler_unittest.cc",
-      "settings_cookies_view_handler_unittest.cc",
     ]
 
     deps = [
       "//base/test:test_support",
-      "//brave/components/brave_shields/browser",
+      "//brave/components/brave_shields/content/browser",
       "//brave/components/resources:strings_grit",
       "//chrome/browser",
       "//chrome/browser/ui",

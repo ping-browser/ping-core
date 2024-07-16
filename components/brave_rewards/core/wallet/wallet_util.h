@@ -10,40 +10,33 @@
 #include <string>
 
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
 #include "third_party/abseil-cpp/absl/types/variant.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet {
 
-mojom::ExternalWalletPtr GetWallet(RewardsEngineImpl& engine,
+mojom::ExternalWalletPtr GetWallet(RewardsEngine& engine,
                                    const std::string& wallet_type);
 
-mojom::ExternalWalletPtr GetWalletIf(RewardsEngineImpl& engine,
+mojom::ExternalWalletPtr GetWalletIf(RewardsEngine& engine,
                                      const std::string& wallet_type,
                                      const std::set<mojom::WalletStatus>&);
 
-bool SetWallet(RewardsEngineImpl& engine, mojom::ExternalWalletPtr);
+bool SetWallet(RewardsEngine& engine, mojom::ExternalWalletPtr);
 
 mojom::ExternalWalletPtr TransitionWallet(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     absl::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
     mojom::WalletStatus to);
 
-mojom::ExternalWalletPtr MaybeCreateWallet(RewardsEngineImpl& engine,
+mojom::ExternalWalletPtr MaybeCreateWallet(RewardsEngine& engine,
                                            const std::string& wallet_type);
 
-bool LogOutWallet(RewardsEngineImpl& engine,
+bool LogOutWallet(RewardsEngine& engine,
                   const std::string& wallet_type,
                   const std::string& notification = "");
-
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
-
-void FetchBalance(RewardsEngineImpl& engine,
-                  const std::string& wallet_type,
-                  base::OnceCallback<void(mojom::Result, double)> callback);
 
 }  // namespace wallet
 }  // namespace brave_rewards::internal

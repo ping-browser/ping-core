@@ -3,23 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
+
 #include <string>
 #include <utility>
 
-#include "base/big_endian.h"
-#include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
-#include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_util.h"
+#include "base/containers/span.h"
+#include "base/numerics/byte_conversions.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=GetPublisherTest.*
-
 namespace brave_rewards::internal {
-namespace endpoint {
-namespace private_cdn {
 
-class GetPublisherTest : public RewardsEngineTest {
+class RewardsGetPublisherTest : public RewardsEngineTest {
  protected:
   mojom::Result Request(const std::string& id,
                         const std::string& prefix,
@@ -28,15 +26,17 @@ class GetPublisherTest : public RewardsEngineTest {
     base::RunLoop run_loop;
     mojom::Result result;
 
-    GetPublisher(*GetEngineImpl())
-        .Request(id, prefix,
-                 [&run_loop, &result, info](
-                     mojom::Result request_result,
-                     mojom::ServerPublisherInfoPtr request_info) {
-                   result = request_result;
-                   *info = std::move(request_info);
-                   run_loop.Quit();
-                 });
+    endpoint::private_cdn::GetPublisher endpoint(engine());
+
+    endpoint.Request(id, prefix,
+                     base::BindLambdaForTesting(
+                         [&run_loop, &result, info](
+                             mojom::Result request_result,
+                             mojom::ServerPublisherInfoPtr request_info) {
+                           result = request_result;
+                           *info = std::move(request_info);
+                           run_loop.Quit();
+                         }));
 
     run_loop.Run();
     return result;
@@ -50,17 +50,27 @@ class GetPublisherTest : public RewardsEngineTest {
     // Add padding header
     uint32_t length = out.length();
     out.insert(0, 4, ' ');
-    base::WriteBigEndian(&out[0], length);
+    base::as_writable_byte_span(out).first<4u>().copy_from(
+        base::numerics::U32ToBigEndian(length));
 
     return out;
   }
+
+  std::string GetServerUrl(const std::string& path) {
+    return engine()
+        .Get<EnvironmentConfig>()
+        .brave_pcdn_url()
+        .Resolve(path)
+        .spec();
+  }
 };
 
-TEST_F(GetPublisherTest, ServerError404) {
+TEST_F(RewardsGetPublisherTest, ServerError404) {
   auto response = mojom::UrlResponse::New();
   response->status_code = net::HTTP_NOT_FOUND;
-  AddNetworkResultForTesting(GetServerUrl("/publishers/prefixes/ce55"),
-                             mojom::UrlMethod::GET, std::move(response));
+  client().AddNetworkResultForTesting(GetServerUrl("/publishers/prefixes/ce55"),
+                                      mojom::UrlMethod::GET,
+                                      std::move(response));
 
   mojom::Result result;
   mojom::ServerPublisherInfoPtr info;
@@ -72,7 +82,7 @@ TEST_F(GetPublisherTest, ServerError404) {
   EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
 }
 
-TEST_F(GetPublisherTest, UpholdVerified) {
+TEST_F(RewardsGetPublisherTest, UpholdVerified) {
   publishers_pb::ChannelResponseList message;
   auto* channel = message.add_channel_responses();
   channel->set_channel_identifier("brave.com");
@@ -85,8 +95,9 @@ TEST_F(GetPublisherTest, UpholdVerified) {
   response->status_code = net::HTTP_OK;
   response->body = StringifyChannelResponse(message);
 
-  AddNetworkResultForTesting(GetServerUrl("/publishers/prefixes/ce55"),
-                             mojom::UrlMethod::GET, std::move(response));
+  client().AddNetworkResultForTesting(GetServerUrl("/publishers/prefixes/ce55"),
+                                      mojom::UrlMethod::GET,
+                                      std::move(response));
 
   mojom::Result result;
   mojom::ServerPublisherInfoPtr info;
@@ -99,7 +110,7 @@ TEST_F(GetPublisherTest, UpholdVerified) {
   EXPECT_EQ(info->address, "abcd");
 }
 
-TEST_F(GetPublisherTest, EmptyWalletAddress) {
+TEST_F(RewardsGetPublisherTest, EmptyWalletAddress) {
   publishers_pb::ChannelResponseList message;
   auto* channel = message.add_channel_responses();
   channel->set_channel_identifier("brave.com");
@@ -112,8 +123,9 @@ TEST_F(GetPublisherTest, EmptyWalletAddress) {
   response->status_code = net::HTTP_OK;
   response->body = StringifyChannelResponse(message);
 
-  AddNetworkResultForTesting(GetServerUrl("/publishers/prefixes/ce55"),
-                             mojom::UrlMethod::GET, std::move(response));
+  client().AddNetworkResultForTesting(GetServerUrl("/publishers/prefixes/ce55"),
+                                      mojom::UrlMethod::GET,
+                                      std::move(response));
 
   mojom::Result result;
   mojom::ServerPublisherInfoPtr info;
@@ -126,6 +138,4 @@ TEST_F(GetPublisherTest, EmptyWalletAddress) {
   EXPECT_EQ(info->address, "");
 }
 
-}  // namespace private_cdn
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

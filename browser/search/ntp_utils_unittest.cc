@@ -25,6 +25,8 @@ class NTPUtilsTest : public ::testing::Test {
 
   Profile* profile() { return profile_.get(); }
 
+  PrefService* GetPrefs() { return profile_->GetPrefs(); }
+
  protected:
   // BrowserTaskEnvironment is needed before TestingProfile
   content::BrowserTaskEnvironment task_environment_;
@@ -33,32 +35,44 @@ class NTPUtilsTest : public ::testing::Test {
 };
 
 TEST_F(NTPUtilsTest, MigratesHideWidgetTrue) {
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
+  auto* prefs = GetPrefs();
+  prefs->ClearPref(kNewTabPageHideAllWidgets);
+  prefs->ClearPref(kNewTabPageShowRewards);
+  prefs->ClearPref(kNewTabPageShowBraveTalk);
   // Manually turn all off
-  auto* prefs = profile()->GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, false);
   // Migrate
-  new_tab_page::MigrateNewTabPagePrefs(profile());
+  new_tab_page::MigrateNewTabPagePrefs(GetPrefs());
   // Expect migrated to off
   EXPECT_TRUE(prefs->GetBoolean(kNewTabPageHideAllWidgets));
 }
 
 TEST_F(NTPUtilsTest, MigratesHideWidgetFalse) {
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
+  auto* prefs = GetPrefs();
+  prefs->ClearPref(kNewTabPageHideAllWidgets);
+  prefs->ClearPref(kNewTabPageShowRewards);
+  prefs->ClearPref(kNewTabPageShowBraveTalk);
   // Manually turn some off
-  auto* prefs = profile()->GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
   // Migrate
-  new_tab_page::MigrateNewTabPagePrefs(profile());
+  new_tab_page::MigrateNewTabPagePrefs(GetPrefs());
   // Expect not migrated
   EXPECT_FALSE(prefs->GetBoolean(kNewTabPageHideAllWidgets));
 }
 
 TEST_F(NTPUtilsTest, MigratesHideWidgetFalseDefault) {
-  // Don't manually change any settings
-  // Migrate
-  new_tab_page::MigrateNewTabPagePrefs(profile());
-  // Expect not migrated
-  auto* prefs = profile()->GetPrefs();
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
+  auto* prefs = GetPrefs();
+  prefs->ClearPref(kNewTabPageHideAllWidgets);
+  prefs->ClearPref(kNewTabPageShowRewards);
+  prefs->ClearPref(kNewTabPageShowBraveTalk);
+  // Don't manually change any settings and expect not migrated
   EXPECT_FALSE(prefs->GetBoolean(kNewTabPageHideAllWidgets));
 }

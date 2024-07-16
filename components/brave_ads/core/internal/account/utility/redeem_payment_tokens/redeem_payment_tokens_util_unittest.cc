@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_util.h"
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -20,19 +21,12 @@ TEST_F(BraveAdsRedeemPaymentTokensUtilTest, SetNextTokenRedemptionAt) {
   // Arrange
   SetNextTokenRedemptionAt(DistantFuture());
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(
-      ads_client_mock_.GetTimePref(prefs::kNextTokenRedemptionAt).is_null());
+  // Act & Assert
+  EXPECT_FALSE(GetProfileTimePref(prefs::kNextTokenRedemptionAt).is_null());
 }
 
 TEST_F(BraveAdsRedeemPaymentTokensUtilTest, ScheduleNextTokenRedemptionAt) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ScheduleNextTokenRedemptionAt().is_null());
 }
 
@@ -41,9 +35,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUtilTest,
   // Arrange
   SetNextTokenRedemptionAt(Now() + base::Days(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), CalculateDelayBeforeRedeemingTokens());
 }
 
@@ -52,9 +44,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUtilTest,
   // Arrange
   SetNextTokenRedemptionAt({});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ScheduleNextTokenRedemptionAt().is_null());
 }
 
@@ -63,7 +53,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUtilTest,
   // Arrange
   SetNextTokenRedemptionAt(DistantPast());
 
-  // Act
+  // Act & Assert
   EXPECT_EQ(base::Minutes(1), CalculateDelayBeforeRedeemingTokens());
 }
 
@@ -72,9 +62,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUtilTest,
   // Arrange
   SetNextTokenRedemptionAt(Now() + base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(1), CalculateDelayBeforeRedeemingTokens());
 }
 

@@ -11,8 +11,6 @@ assert(enable_playlist)
 # https://github.com/brave/brave-browser/issues/27764
 static_library("renderer") {
   sources = [
-    "playlist_js_handler.cc",
-    "playlist_js_handler.h",
     "playlist_render_frame_observer.cc",
     "playlist_render_frame_observer.h",
   ]
@@ -20,6 +18,7 @@ static_library("renderer") {
   public_deps = [ "//brave/components/playlist/common" ]
 
   deps = [
+    "//brave/gin:converter_specializations",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

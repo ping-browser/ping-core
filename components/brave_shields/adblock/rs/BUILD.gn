@@ -13,6 +13,7 @@ rust_static_library("rust_lib") {
   sources = [
     "src/convert.rs",
     "src/engine.rs",
+    "src/filter_set.rs",
     "src/lib.rs",
     "src/result.rs",
   ]
@@ -20,6 +21,7 @@ rust_static_library("rust_lib") {
   visibility = [
     "//brave/components/brave_shields/adblock:*",
     "//brave/components/brave_shields/adblock/resolver",
+    "//chrome/browser",
   ]
 
   cxx_bindings = [ "src/lib.rs" ]

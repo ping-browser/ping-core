@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
@@ -33,8 +33,8 @@ class Transactions final : public TableInterface {
                        base::Time to_time,
                        GetTransactionsCallback callback) const;
 
-  void Update(const PaymentTokenList& payment_tokens,
-              ResultCallback callback) const;
+  void Reconcile(const PaymentTokenList& payment_tokens,
+                 ResultCallback callback) const;
 
   void Delete(ResultCallback callback) const;
 

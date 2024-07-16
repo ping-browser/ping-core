@@ -5,19 +5,21 @@
 
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
 
+#include <optional>
 #include <utility>
+#include <vector>
 
-#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
-#include "base/task/thread_pool.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/constants.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_search_conversion/types.h"
@@ -34,13 +36,23 @@
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/omnibox/browser/omnibox_view.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/search_engine_type.h"
+#include "components/search_engines/template_url.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/referrer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
+#include "ui/base/window_open_disposition_utils.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -53,11 +65,12 @@ bool IsNTPPromotionEnabled(Profile* profile) {
 
   auto* service =
       ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile);
-  if (!service)
+  if (!service) {
     return false;
+  }
 
   // Only show promotion if current wallpaper is not sponsored images.
-  absl::optional<base::Value::Dict> data =
+  std::optional<base::Value::Dict> data =
       service->GetCurrentWallpaperForDisplay();
   if (data) {
     if (const auto is_background =
@@ -91,8 +104,9 @@ void BraveNewTabPageHandler::InitForSearchPromotion() {
   // If promotion is disabled for this loading, we do nothing.
   // If some condition is changed and it can be enabled, promotion
   // will be shown at the next NTP loading.
-  if (!IsNTPPromotionEnabled(profile_))
+  if (!IsNTPPromotionEnabled(profile_)) {
     return;
+  }
 
   // Observing user's dismiss or default search provider change to hide
   // promotion from NTP while NTP is loaded.
@@ -111,8 +125,9 @@ void BraveNewTabPageHandler::InitForSearchPromotion() {
 
 void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
   // Early return if the select file dialog is already active.
-  if (select_file_dialog_)
+  if (select_file_dialog_) {
     return;
+  }
 
   select_file_dialog_ = ui::SelectFileDialog::Create(
       this, std::make_unique<ChromeSelectFilePolicy>(web_contents_));
@@ -164,8 +179,9 @@ void BraveNewTabPageHandler::GetCustomImageBackgrounds(
 
 void BraveNewTabPageHandler::RemoveCustomImageBackground(
     const std::string& background) {
-  if (background.empty())
+  if (background.empty()) {
     return;
+  }
 
   auto file_path = CustomBackgroundFileManager::Converter(GURL(background),
                                                           file_manager_.get())
@@ -195,9 +211,11 @@ void BraveNewTabPageHandler::TryBraveSearchPromotion(const std::string& input,
     window_open_disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
   }
 
-  web_contents_->OpenURL(content::OpenURLParams(
-      promo_url, content::Referrer(), window_open_disposition,
-      ui::PageTransition::PAGE_TRANSITION_FORM_SUBMIT, false));
+  web_contents_->OpenURL(
+      content::OpenURLParams(
+          promo_url, content::Referrer(), window_open_disposition,
+          ui::PageTransition::PAGE_TRANSITION_FORM_SUBMIT, false),
+      /*navigation_handle_callback=*/{});
 
   brave_search_conversion::p3a::RecordPromoTrigger(
       g_browser_process->local_state(),
@@ -216,8 +234,9 @@ void BraveNewTabPageHandler::IsSearchPromotionEnabled(
 void BraveNewTabPageHandler::NotifySearchPromotionDisabledIfNeeded() const {
   // If enabled, we don't do anything. When NTP is reloaded or opened,
   // user will see promotion.
-  if (IsNTPPromotionEnabled(profile_))
+  if (IsNTPPromotionEnabled(profile_)) {
     return;
+  }
 
   // Hide promotion when it's disabled.
   page_->OnSearchPromotionDisabled();
@@ -242,6 +261,54 @@ void BraveNewTabPageHandler::UseColorBackground(const std::string& color,
   background_pref.SetShouldUseRandomValue(use_random_color);
 
   OnBackgroundUpdated();
+}
+
+void BraveNewTabPageHandler::GetSearchEngines(
+    GetSearchEnginesCallback callback) {
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile_);
+  CHECK(service);
+
+  auto urls = service->GetTemplateURLs();
+  std::vector<brave_new_tab_page::mojom::SearchEngineInfoPtr> search_engines;
+  for (TemplateURL* template_url : urls) {
+    if (template_url->GetBuiltinEngineType() !=
+        BuiltinEngineType::KEYWORD_MODE_PREPOPULATED_ENGINE) {
+      continue;
+    }
+    auto search_engine = brave_new_tab_page::mojom::SearchEngineInfo::New();
+    search_engine->host = GURL(template_url->url()).host();
+    search_engine->name = base::UTF16ToUTF8(template_url->short_name());
+    search_engine->keyword = base::UTF16ToUTF8(template_url->keyword());
+    search_engine->favicon_url = template_url->favicon_url();
+    search_engines.push_back(std::move(search_engine));
+  }
+
+  std::move(callback).Run(std::move(search_engines));
+}
+
+void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
+                                                const std::string& query,
+                                                bool alt_key,
+                                                bool ctrl_key,
+                                                bool meta_key,
+                                                bool shift_key) {
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile_);
+  CHECK(service);
+
+  auto* template_url = service->GetTemplateURLForHost(host);
+  DCHECK(template_url);
+  if (!template_url) {
+    return;
+  }
+
+  GURL search_url = template_url->GenerateSearchURL(
+      service->search_terms_data(), base::UTF8ToUTF16(query));
+
+  const WindowOpenDisposition disposition =
+      ui::DispositionFromClick(false, alt_key, ctrl_key, meta_key, shift_key);
+  content::OpenURLParams params(search_url, content::Referrer(), disposition,
+                                ui::PAGE_TRANSITION_FROM_ADDRESS_BAR, false);
+  web_contents_->OpenURL(params, /*navigation_handle_callback=*/{});
 }
 
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
@@ -302,8 +369,7 @@ void BraveNewTabPageHandler::OnRemoveCustomImageBackground(
   if (background_pref.GetType() == NTPBackgroundPrefs::Type::kCustomImage) {
     if (auto custom_images = background_pref.GetCustomImageList();
         !custom_images.empty() &&
-        absl::get<std::string>(background_pref.GetSelectedValue()) ==
-            file_name) {
+        background_pref.GetSelectedValue() == file_name) {
       // Reset to the next candidate after we've removed the chosen one.
       background_pref.SetSelectedValue(custom_images.front());
     } else if (custom_images.empty()) {
@@ -324,10 +390,10 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
 
     NTPBackgroundPrefs prefs(profile_->GetPrefs());
     auto selected_value = prefs.GetSelectedValue();
-    DCHECK(absl::holds_alternative<std::string>(selected_value));
-    const std::string file_name = absl::get<std::string>(selected_value);
-    if (!file_name.empty())
+    const std::string file_name = selected_value;
+    if (!file_name.empty()) {
       value->url = CustomBackgroundFileManager::Converter(file_name).To<GURL>();
+    }
     value->use_random_item = prefs.ShouldUseRandomValue();
     page_->OnBackgroundUpdated(
         brave_new_tab_page::mojom::Background::NewCustom(std::move(value)));
@@ -338,8 +404,7 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
   if (IsColorBackgroundEnabled()) {
     auto value = brave_new_tab_page::mojom::CustomBackground::New();
     auto selected_value = ntp_background_prefs.GetSelectedValue();
-    DCHECK(absl::holds_alternative<std::string>(selected_value));
-    value->color = absl::get<std::string>(selected_value);
+    value->color = selected_value;
     value->use_random_item = ntp_background_prefs.ShouldUseRandomValue();
     page_->OnBackgroundUpdated(
         brave_new_tab_page::mojom::Background::NewCustom(std::move(value)));
@@ -368,7 +433,7 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
   }
 
   auto selected_value = ntp_background_prefs.GetSelectedValue();
-  auto image_url = absl::get<GURL>(selected_value);
+  auto image_url = GURL(selected_value);
 
   auto iter = base::ranges::find_if(
       image_data->backgrounds, [image_data, &image_url](const auto& data) {
@@ -401,30 +466,31 @@ void BraveNewTabPageHandler::OnCustomImageBackgroundsUpdated() {
   page_->OnCustomImageBackgroundsUpdated(std::move(backgrounds));
 }
 
-void BraveNewTabPageHandler::FileSelected(const base::FilePath& path,
+void BraveNewTabPageHandler::FileSelected(const ui::SelectedFileInfo& file,
                                           int index,
                                           void* params) {
-  profile_->set_last_selected_directory(path.DirName());
+  profile_->set_last_selected_directory(file.path().DirName());
 
   file_manager_->SaveImage(
-      path, base::BindOnce(&BraveNewTabPageHandler::OnSavedCustomImage,
-                           weak_factory_.GetWeakPtr()));
+      file.path(), base::BindOnce(&BraveNewTabPageHandler::OnSavedCustomImage,
+                                  weak_factory_.GetWeakPtr()));
 
   select_file_dialog_ = nullptr;
 }
 
 void BraveNewTabPageHandler::MultiFilesSelected(
-    const std::vector<base::FilePath>& files,
+    const std::vector<ui::SelectedFileInfo>& files,
     void* params) {
   NTPBackgroundPrefs prefs(profile_->GetPrefs());
   auto available_image_count =
       brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
       prefs.GetCustomImageList().size();
-  for (const auto& path : files) {
-    if (available_image_count == 0)
+  for (const auto& file : files) {
+    if (available_image_count == 0) {
       break;
+    }
 
-    FileSelected(path, 0, params);
+    FileSelected(file, 0, params);
     available_image_count--;
   }
 }

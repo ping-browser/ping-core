@@ -5,21 +5,15 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
-#include "base/strings/strcat.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "chrome/browser/content_settings/cookie_settings_factory.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/common/content_settings_pattern.h"
-#include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_test.h"
 #include "net/base/features.h"
-#include "services/network/public/mojom/cookie_manager.mojom.h"
 
 using content::RenderFrameHost;
 using content::WebContents;
@@ -31,19 +25,6 @@ class EphemeralStorage1pBrowserTest : public EphemeralStorageBrowserTest {
         net::features::kBraveFirstPartyEphemeralStorage);
   }
   ~EphemeralStorage1pBrowserTest() override = default;
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
-
-class EphemeralStorage1pDisabledBrowserTest
-    : public EphemeralStorageBrowserTest {
- public:
-  EphemeralStorage1pDisabledBrowserTest() {
-    scoped_feature_list_.InitAndDisableFeature(
-        net::features::kBraveFirstPartyEphemeralStorage);
-  }
-  ~EphemeralStorage1pDisabledBrowserTest() override = default;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -173,26 +154,27 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
-                       IndexedDbUnavailableInES) {
+                       IndexedDbAvailabilityInES) {
   SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
   SetCookieSetting(b_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
 
   WebContents* site_a = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   WebContents* site_b = LoadURLInNewTab(b_site_ephemeral_storage_url_);
 
-  // Main frame and 1p frame.
-  EXPECT_FALSE(SetIDBValue(site_a->GetPrimaryMainFrame()));
-  EXPECT_FALSE(
-      SetIDBValue(content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 2)));
+  // Main frame and 1p frame. Access is forbidden, because permission is not
+  // granted.
+  EXPECT_EQ(false, SetIDBValue(site_a->GetPrimaryMainFrame()));
+  EXPECT_EQ(false, SetIDBValue(content::ChildFrameAt(
+                       site_a->GetPrimaryMainFrame(), 2)));
   // 3p frames.
-  EXPECT_FALSE(
-      SetIDBValue(content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 0)));
-  EXPECT_FALSE(
-      SetIDBValue(content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 1)));
+  EXPECT_EQ(true, SetIDBValue(
+                      content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 0)));
+  EXPECT_EQ(true, SetIDBValue(
+                      content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 1)));
 
   // 3p frame.
-  EXPECT_FALSE(
-      SetIDBValue(content::ChildFrameAt(site_b->GetPrimaryMainFrame(), 2)));
+  EXPECT_EQ(true, SetIDBValue(
+                      content::ChildFrameAt(site_b->GetPrimaryMainFrame(), 2)));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
@@ -539,6 +521,101 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ("name=bcom_simple", site_a_tab_values.iframe_1.cookies);
   EXPECT_EQ("name=bcom_simple", site_a_tab_values.iframe_2.cookies);
 }
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
+                       UseEphemeralStorageAfterReload) {
+  WebContents* first_party_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+
+  // Set values in the main frame.
+  SetValuesInFrame(first_party_tab->GetPrimaryMainFrame(), "a.com",
+                   "from=a.com");
+
+  {
+    ValuesFromFrame first_party_values =
+        GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
+    EXPECT_EQ("a.com", first_party_values.local_storage);
+    EXPECT_EQ("a.com", first_party_values.session_storage);
+    EXPECT_EQ("from=a.com", first_party_values.cookies);
+  }
+
+  // Enable 1p Ephemeral Storage mode.
+  SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+
+  {
+    ValuesFromFrame first_party_values =
+        GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
+    // Local/Session storage should still access the non-Ephemeral backend.
+    EXPECT_EQ("a.com", first_party_values.local_storage);
+    EXPECT_EQ("a.com", first_party_values.session_storage);
+    // Cookies storage always uses sync calls, which means it will access
+    // Ephemeral Storage immediately after Content Settings change.
+    EXPECT_EQ("", first_party_values.cookies);
+  }
+
+  // Reload the page.
+  first_party_tab->GetController().Reload(content::ReloadType::NORMAL, true);
+  WaitForLoadStop(first_party_tab);
+
+  // After reload all values should be read from the Ephemeral Storage and be
+  // empty.
+  ExpectValuesFromFramesAreEmpty(FROM_HERE,
+                                 GetValuesFromFrames(first_party_tab));
+
+  SetValuesInFrame(first_party_tab->GetPrimaryMainFrame(), "ephemeral-a.com",
+                   "from=ephemeral-a.com");
+  {
+    ValuesFromFrame first_party_values =
+        GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
+    EXPECT_EQ("ephemeral-a.com", first_party_values.local_storage);
+    EXPECT_EQ("ephemeral-a.com", first_party_values.session_storage);
+    EXPECT_EQ("from=ephemeral-a.com", first_party_values.cookies);
+  }
+
+  // Disable 1p Ephemeral Storage mode.
+  SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_DEFAULT);
+
+  // Reload the page.
+  first_party_tab->GetController().Reload(content::ReloadType::NORMAL, true);
+  WaitForLoadStop(first_party_tab);
+
+  // Data should be read from non-Ephemeral Storage.
+  {
+    ValuesFromFrame first_party_values =
+        GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
+    EXPECT_EQ("a.com", first_party_values.local_storage);
+    EXPECT_EQ("a.com", first_party_values.session_storage);
+    EXPECT_EQ("from=a.com", first_party_values.cookies);
+  }
+
+  // Re-enable 1p Ephemeral Storage mode.
+  SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+
+  // Reload the page.
+  first_party_tab->GetController().Reload(content::ReloadType::NORMAL, true);
+  WaitForLoadStop(first_party_tab);
+
+  // Data should be read from Ephemeral Storage.
+  {
+    ValuesFromFrame first_party_values =
+        GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
+    EXPECT_EQ("ephemeral-a.com", first_party_values.local_storage);
+    EXPECT_EQ("ephemeral-a.com", first_party_values.session_storage);
+    EXPECT_EQ("from=ephemeral-a.com", first_party_values.cookies);
+  }
+}
+
+class EphemeralStorage1pDisabledBrowserTest
+    : public EphemeralStorageBrowserTest {
+ public:
+  EphemeralStorage1pDisabledBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        net::features::kBraveFirstPartyEphemeralStorage);
+  }
+  ~EphemeralStorage1pDisabledBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
 
 // By default SESSION_ONLY setting means that data for a website should be
 // deleted after a restart, but this also implicitly changes how a website

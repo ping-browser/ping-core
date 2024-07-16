@@ -5,18 +5,14 @@
 
 package org.chromium.chrome.browser.speedreader;
 
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
+import org.jni_zero.JNINamespace;
+import org.jni_zero.NativeMethods;
+
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.content_public.browser.WebContents;
-import org.chromium.url.GURL;
 
 @JNINamespace("speedreader")
 public class BraveSpeedReaderUtils {
-    public static boolean isEnabledForWebContent(WebContents webContents) {
-        return BraveSpeedReaderUtilsJni.get().isEnabledForWebContent(webContents);
-    }
-
     public static void toggleEnabledForWebContent(WebContents webContents, boolean enabled) {
         BraveSpeedReaderUtilsJni.get().toggleEnabledForWebContent(webContents, enabled);
     }
@@ -27,10 +23,6 @@ public class BraveSpeedReaderUtils {
 
     public static boolean tabSupportsDistillation(Tab tab) {
         return BraveSpeedReaderUtilsJni.get().tabSupportsDistillation(tab);
-    }
-
-    public static boolean tabWantsDistill(Tab tab) {
-        return BraveSpeedReaderUtilsJni.get().tabWantsDistill(tab);
     }
 
     public static void singleShotSpeedreaderForWebContent(WebContents webContents) {
@@ -44,8 +36,6 @@ public class BraveSpeedReaderUtils {
     public static void enableSpeedreaderMode(Tab tab) {
         if (tab == null || tab.getWebContents() == null) return;
         WebContents webContents = tab.getWebContents();
-
-        GURL url = webContents.getLastCommittedUrl();
 
         // Enable on tab
         toggleEnabledForWebContent(webContents, true);
@@ -62,12 +52,10 @@ public class BraveSpeedReaderUtils {
 
     @NativeMethods
     interface Natives {
-        boolean isEnabledForWebContent(WebContents webContents);
         void singleShotSpeedreaderForWebContent(WebContents webContents);
         void toggleEnabledForWebContent(WebContents webContents, boolean enabled);
         boolean tabProbablyReadable(Tab tab);
         boolean tabStateIsDistilled(Tab tab);
         boolean tabSupportsDistillation(Tab tab);
-        boolean tabWantsDistill(Tab tab);
     }
 }

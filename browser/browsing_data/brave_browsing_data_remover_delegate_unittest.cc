@@ -10,8 +10,8 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
@@ -41,8 +41,8 @@ class BraveBrowsingDataRemoverDelegateTest : public testing::Test {
     int shields_settings_count = 0;
     for (const auto& content_type :
          content_settings::GetShieldsContentSettingsTypes()) {
-      ContentSettingsForOneType settings;
-      map()->GetSettingsForOneType(content_type, &settings);
+      ContentSettingsForOneType settings =
+          map()->GetSettingsForOneType(content_type);
       shields_settings_count += settings.size();
     }
     return shields_settings_count;

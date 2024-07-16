@@ -52,7 +52,7 @@
 #include "brave/components/brave_rewards/core/database/migration/migration_v8.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v9.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // NOTICE!!
@@ -66,10 +66,11 @@ namespace database {
 
 uint32_t DatabaseMigration::test_target_version_ = 0;
 
-DatabaseMigration::DatabaseMigration(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+DatabaseMigration::DatabaseMigration(RewardsEngine& engine) : engine_(engine) {}
 
 DatabaseMigration::~DatabaseMigration() = default;
+
+// TODO(zenparsing): Remove promotion database?
 
 void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
   const uint32_t start_version = table_version + 1;
@@ -77,9 +78,10 @@ void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
 
   auto transaction = mojom::DBTransaction::New();
   int migrated_version = table_version;
-  const uint32_t target_version = is_testing && test_target_version_
-                                      ? test_target_version_
-                                      : database::GetCurrentVersion();
+  const uint32_t target_version =
+      engine_->options().is_testing && test_target_version_
+          ? test_target_version_
+          : database::GetCurrentVersion();
 
   if (target_version == table_version) {
     return std::move(callback).Run(mojom::Result::OK);
@@ -147,7 +149,7 @@ void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
       GenerateCommand(transaction.get(), mappings[i]);
     }
 
-    BLOG(1, "DB: Migrated to version " << i);
+    engine_->Log(FROM_HERE) << "DB: Migrated to version " << i;
     migrated_version = i;
   }
 
@@ -162,7 +164,7 @@ void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
   command->type = mojom::DBCommand::Type::VACUUM;
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseMigration::RunDBTransactionCallback,
                      base::Unretained(this), std::move(callback), start_version,

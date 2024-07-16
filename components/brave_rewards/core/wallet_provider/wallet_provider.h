@@ -18,17 +18,16 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet_provider {
 
 class WalletProvider {
  public:
-  explicit WalletProvider(RewardsEngineImpl& engine);
+  explicit WalletProvider(RewardsEngine& engine);
   virtual ~WalletProvider();
 
   virtual const char* WalletType() const = 0;
@@ -40,22 +39,26 @@ class WalletProvider {
 
   virtual base::TimeDelta GetDelay() const;
 
+  virtual void AssignWalletLinks(mojom::ExternalWallet& external_wallet) = 0;
+
+  virtual void OnWalletLinked(const std::string& address);
+
   void Initialize();
 
   void StartContribution(const std::string& contribution_id,
                          mojom::ServerPublisherInfoPtr info,
                          double amount,
-                         LegacyResultCallback callback);
+                         ResultCallback callback);
 
   void TransferFunds(double amount,
                      const std::string& address,
                      const std::string& contribution_id,
-                     LegacyResultCallback callback);
+                     ResultCallback callback);
+
+  virtual void BeginLogin(BeginExternalWalletLoginCallback callback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
                      ConnectExternalWalletCallback callback);
-
-  void GetWallet(GetExternalWalletCallback callback);
 
   mojom::ExternalWalletPtr GetWallet();
 
@@ -72,7 +75,7 @@ class WalletProvider {
                       double available);
 
  private:
-  void ContributionCompleted(LegacyResultCallback callback,
+  void ContributionCompleted(ResultCallback callback,
                              const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,
@@ -95,12 +98,11 @@ class WalletProvider {
   void RemoveTransferFee(const std::string& contribution_id);
 
  protected:
+  const raw_ref<RewardsEngine> engine_;
   std::unique_ptr<ConnectExternalWallet> connect_wallet_;
-  std::unique_ptr<GetExternalWallet> get_wallet_;
   std::unique_ptr<Transfer> transfer_;
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 

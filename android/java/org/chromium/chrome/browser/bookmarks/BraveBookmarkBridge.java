@@ -7,14 +7,16 @@ package org.chromium.chrome.browser.bookmarks;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.chromium.base.annotations.CalledByNative;
-import org.chromium.base.annotations.NativeMethods;
+import org.jni_zero.CalledByNative;
+import org.jni_zero.NativeMethods;
+
 import org.chromium.ui.base.WindowAndroid;
 
 class BraveBookmarkBridge extends BookmarkBridge {
     // Overridden Chromium's BookmarkBridge.mNativeBookmarkBridge
     private long mNativeBookmarkBridge;
     private WindowAndroid mWindowAndroid;
+    private String mExportFilePath;
 
     BraveBookmarkBridge(long nativeBookmarkBridge) {
         super(nativeBookmarkBridge);
@@ -28,7 +30,8 @@ class BraveBookmarkBridge extends BookmarkBridge {
                 @Override
                 public void run() {
                     BraveBookmarkUtils.showBookmarkImportExportDialog(
-                            (AppCompatActivity) mWindowAndroid.getContext().get(), true, isSuccess);
+                            (AppCompatActivity) mWindowAndroid.getContext().get(), true, isSuccess,
+                            null);
                 }
             });
         }
@@ -42,8 +45,8 @@ class BraveBookmarkBridge extends BookmarkBridge {
                 @Override
                 public void run() {
                     BraveBookmarkUtils.showBookmarkImportExportDialog(
-                            (AppCompatActivity) mWindowAndroid.getContext().get(), false,
-                            isSuccess);
+                            (AppCompatActivity) mWindowAndroid.getContext().get(), false, isSuccess,
+                            mExportFilePath);
                 }
             });
         }
@@ -57,6 +60,7 @@ class BraveBookmarkBridge extends BookmarkBridge {
 
     public void exportBookmarks(WindowAndroid windowAndroid, String exportFilePath) {
         mWindowAndroid = windowAndroid;
+        mExportFilePath = exportFilePath;
         BraveBookmarkBridgeJni.get().exportBookmarks(
                 mNativeBookmarkBridge, BraveBookmarkBridge.this, windowAndroid, exportFilePath);
     }

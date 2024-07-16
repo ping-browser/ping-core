@@ -1,0 +1,20 @@
+diff --git a/chrome/elevation_service/BUILD.gn b/chrome/elevation_service/BUILD.gn
+index 88ed423e737ea90ba93f97da86ec6b55552bf52e..16222646243e034810a17f83faa158bd7602e92f 100644
+--- a/chrome/elevation_service/BUILD.gn
++++ b/chrome/elevation_service/BUILD.gn
+@@ -11,6 +11,7 @@ import("//testing/test.gni")
+ 
+ midl("elevation_service_idl") {
+   sources = [ "elevation_service_idl.idl" ]
++  sources -= [ "elevation_service_idl.idl" ] sources += ["//brave/chromium_src/chrome/elevation_service/elevation_service_idl.idl" ]
+ 
+   writes_tlb = true
+ }
+@@ -105,6 +106,7 @@ source_set("lib") {
+     "crypt32.lib",
+     "rpcrt4.lib",
+   ]
++  deps += brave_elevation_service_lib_deps
+ }
+ 
+ process_version_rc_template("version_resources") {

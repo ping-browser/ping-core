@@ -13,19 +13,23 @@
 // Allow the embedder to determine the user-agent according to user preferences.
 // Allow the embedder to control if access to privileged functions that could
 // be used by fingerprinting by a shared worker is allowed.
-#define BRAVE_CONTENT_BROWSER_CLIENT_H                                       \
+#define SetBrowserStartupIsCompleteForTesting                                \
+  Unused() {}                                                                \
   virtual void MaybeHideReferrer(                                            \
       BrowserContext* browser_context, const GURL& request_url,              \
       const GURL& document_url, blink::mojom::ReferrerPtr* referrer) {}      \
   virtual std::string GetEffectiveUserAgent(BrowserContext* browser_context, \
                                             const GURL& url);                \
+  virtual std::optional<base::UnguessableToken> GetEphemeralStorageToken(    \
+      RenderFrameHost* render_frame_host, const url::Origin& origin);        \
   virtual bool AllowWorkerFingerprinting(const GURL& url,                    \
                                          BrowserContext* browser_context);   \
   virtual uint8_t WorkerGetBraveFarblingLevel(                               \
-      const GURL& url, BrowserContext* browser_context);
+      const GURL& url, BrowserContext* browser_context);                     \
+  virtual void SetBrowserStartupIsCompleteForTesting
 
 #include "src/content/public/browser/content_browser_client.h"  // IWYU pragma: export
 
-#undef BRAVE_CONTENT_BROWSER_CLIENT_H
+#undef SetBrowserStartupIsCompleteForTesting
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CONTENT_BROWSER_CLIENT_H_

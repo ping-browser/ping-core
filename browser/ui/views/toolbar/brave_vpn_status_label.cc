@@ -14,6 +14,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 
 using ConnectionState = brave_vpn::mojom::ConnectionState;
 using PurchasedState = brave_vpn::mojom::PurchasedState;
@@ -56,7 +57,7 @@ BraveVPNStatusLabel::BraveVPNStatusLabel(Browser* browser)
     : browser_(browser),
       service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->profile())) {
-  DCHECK(service_);
+  CHECK(service_);
 
   Observe(service_);
   SetAutoColorReadabilityEnabled(false);
@@ -75,8 +76,9 @@ void BraveVPNStatusLabel::OnConnectionStateChanged(ConnectionState state) {
   UpdateState();
 }
 
-gfx::Size BraveVPNStatusLabel::CalculatePreferredSize() const {
-  auto size = views::Label::CalculatePreferredSize();
+gfx::Size BraveVPNStatusLabel::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
+  auto size = views::Label::CalculatePreferredSize(available_size);
   if (longest_state_string_id_ == -1)
     return size;
   auto text =
@@ -95,3 +97,6 @@ void BraveVPNStatusLabel::UpdateState() {
   SetText(brave_l10n::GetLocalizedResourceUTF16String(
       GetStringIdForConnectionState(state)));
 }
+
+BEGIN_METADATA(BraveVPNStatusLabel)
+END_METADATA

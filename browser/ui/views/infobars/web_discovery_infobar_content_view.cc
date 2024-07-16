@@ -18,7 +18,6 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/singleton_tabs.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -57,8 +56,9 @@ void OpenMoreInfoPage() {
 // Re-calculated preferred size as it doesn't give proper
 // size when enlarged.
 class InfoBarStyledLabel : public CustomStyledLabel {
+  METADATA_HEADER(InfoBarStyledLabel, CustomStyledLabel)
+
  public:
-  METADATA_HEADER(InfoBarStyledLabel);
   using CustomStyledLabel::CustomStyledLabel;
   InfoBarStyledLabel(const InfoBarStyledLabel&) = delete;
   InfoBarStyledLabel& operator=(const InfoBarStyledLabel&) = delete;
@@ -71,7 +71,8 @@ class InfoBarStyledLabel : public CustomStyledLabel {
     return gfx::Size(pref_size.width() * 0.55, pref_size.height());
   }
 
-  gfx::Size CalculatePreferredSize() const override {
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
     // Reset message label's width so that it can calculate preferred size
     // ignoring the current size. This will allow the label to grow bigger than
     // it is.
@@ -81,19 +82,21 @@ class InfoBarStyledLabel : public CustomStyledLabel {
   }
 
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
+    CustomStyledLabel::OnBoundsChanged(previous_bounds);
+
     auto height = GetHeightForWidth(width());
     SetSize({width(), height});
     SetPosition({x(), (parent()->height() - height) / 2});
   }
 };
 
-BEGIN_METADATA(InfoBarStyledLabel, CustomStyledLabel)
+BEGIN_METADATA(InfoBarStyledLabel)
 END_METADATA
 
 // TODO(simonhong): Use leo MdTextButton when it's stabilized.
 class OkButton : public views::LabelButton {
+  METADATA_HEADER(OkButton, views::LabelButton)
  public:
-  METADATA_HEADER(OkButton);
   explicit OkButton(PressedCallback callback, const std::u16string& text)
       : LabelButton(std::move(callback), text) {
     SetHorizontalAlignment(gfx::ALIGN_CENTER);
@@ -134,13 +137,13 @@ class OkButton : public views::LabelButton {
   }
 };
 
-BEGIN_METADATA(OkButton, views::LabelButton)
+BEGIN_METADATA(OkButton)
 END_METADATA
 
 // Subclassed for font setting.
 class NoThanksButton : public views::LabelButton {
+  METADATA_HEADER(NoThanksButton, views::LabelButton)
  public:
-  METADATA_HEADER(NoThanksButton);
   using views::LabelButton::LabelButton;
   NoThanksButton(const NoThanksButton&) = delete;
   NoThanksButton& operator=(const NoThanksButton&) = delete;
@@ -151,7 +154,7 @@ class NoThanksButton : public views::LabelButton {
   }
 };
 
-BEGIN_METADATA(NoThanksButton, views::LabelButton)
+BEGIN_METADATA(NoThanksButton)
 END_METADATA
 
 // Use image as background.
@@ -219,6 +222,14 @@ void WebDiscoveryInfoBarContentView::SwitchChildLayout() {
   // Not initialized yet.
   if (wide_layout_min_width_ == 0 || narrow_layout_preferred_width_ == 0)
     return;
+
+  // TODO(simonhong): This is workaround to prevent re-layout from narrow layout
+  // to wide layout at startup as we have a regression that StyledLabel doesn't
+  // do proper layout when its width is growing. With this workaround, we can
+  // show wdp infobar w/o wrong layout.
+  if (width() == 0) {
+    return;
+  }
 
   // There are three layout.
   // - Wide layout with wide border
@@ -461,9 +472,9 @@ std::unique_ptr<views::View> WebDiscoveryInfoBarContentView::GetOkButton(
 std::unique_ptr<views::View> WebDiscoveryInfoBarContentView::GetCloseButton() {
   auto close_button = std::make_unique<views::ImageButton>(base::BindRepeating(
       &WebDiscoveryInfoBarContentView::CloseInfoBar, base::Unretained(this)));
-  close_button->SetImage(
+  close_button->SetImageModel(
       views::Button::STATE_NORMAL,
-      gfx::CreateVectorIcon(
+      ui::ImageModel::FromVectorIcon(
           kWebDiscoveryInfobarCloseButtonIcon,
           GetColorProvider()->GetColor(kColorWebDiscoveryInfoBarClose)));
   close_button->SetProperty(
@@ -498,5 +509,5 @@ void WebDiscoveryInfoBarContentView::CloseInfoBar() {
   delegate_->Close(false);
 }
 
-BEGIN_METADATA(WebDiscoveryInfoBarContentView, views::View)
+BEGIN_METADATA(WebDiscoveryInfoBarContentView)
 END_METADATA

@@ -5,24 +5,20 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_util.h"
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {
 
 namespace {
-
-constexpr char kAuto[] = "AUTO";
-constexpr char kDisabled[] = "DISABLED";
 
 bool DoesRequireResource() {
   return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNotificationAds();
@@ -31,96 +27,79 @@ bool DoesRequireResource() {
 }  // namespace
 
 SubdivisionTargeting::SubdivisionTargeting() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 SubdivisionTargeting::~SubdivisionTargeting() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 bool SubdivisionTargeting::IsDisabled() const {
-  return GetLazySubdivision() == kDisabled;
+  return GetLazyUserSelectedSubdivision() == kSubdivisionTargetingDisabled;
 }
 
 bool SubdivisionTargeting::ShouldAutoDetect() const {
-  return GetLazySubdivision() == kAuto;
+  return GetLazyUserSelectedSubdivision() == kSubdivisionTargetingAuto;
 }
 
 // static
 bool SubdivisionTargeting::ShouldAllow() {
-  return AdsClientHelper::GetInstance()->GetBooleanPref(
-      prefs::kShouldAllowSubdivisionTargeting);
+  return GetProfileBooleanPref(prefs::kShouldAllowSubdivisionTargeting);
 }
 
 const std::string& SubdivisionTargeting::GetSubdivision() const {
   return ShouldAutoDetect() ? GetLazyAutoDetectedSubdivision()
-                            : GetLazySubdivision();
+                            : GetLazyUserSelectedSubdivision();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SubdivisionTargeting::Initialize() {
-  MaybeRequireSubdivision();
+void SubdivisionTargeting::MaybeInitialize() {
+  const std::string& auto_detected_subdivision =
+      GetLazyAutoDetectedSubdivision();
+  std::optional<std::string> country_code =
+      GetSubdivisionCountryCode(auto_detected_subdivision);
 
-  MaybeAllowAndFetchSubdivisionForLocale(GetLocale());
-}
-
-void SubdivisionTargeting::MaybeRequireSubdivision() {
-  DoesRequireResource() ? InitializeSubdivisionUrlRequest()
-                        : ShutdownSubdivisionUrlRequest();
-}
-
-void SubdivisionTargeting::InitializeSubdivisionUrlRequest() {
-  if (!subdivision_url_request_) {
-    BLOG(1, "Initialize subdivision URL request");
-    subdivision_url_request_ = std::make_unique<SubdivisionUrlRequest>();
-    subdivision_url_request_->SetDelegate(this);
+  if (!country_code) {
+    country_code = brave_l10n::GetISOCountryCode(GetLocale());
   }
-}
 
-void SubdivisionTargeting::ShutdownSubdivisionUrlRequest() {
-  if (subdivision_url_request_) {
-    subdivision_url_request_.reset();
-    BLOG(1, "Shutdown subdivision URL request");
-  }
+  MaybeAllowForCountry(*country_code);
 }
 
 void SubdivisionTargeting::DisableSubdivision() {
   if (!IsDisabled()) {
-    SetSubdivision(kDisabled);
+    SetUserSelectedSubdivision(kSubdivisionTargetingDisabled);
   }
 }
 
 void SubdivisionTargeting::AutoDetectSubdivision() {
   if (!ShouldAutoDetect()) {
-    SetSubdivision(kAuto);
+    SetUserSelectedSubdivision(kSubdivisionTargetingAuto);
   }
 }
 
-void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
+void SubdivisionTargeting::MaybeAllowForCountry(
+    const std::string& country_code) {
   if (!DoesRequireResource()) {
-    return AdsClientHelper::GetInstance()->SetBooleanPref(
-        prefs::kShouldAllowSubdivisionTargeting, false);
+    return SetProfileBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                 false);
   }
-
-  const std::string country_code = brave_l10n::GetISOCountryCode(locale);
 
   if (!ShouldTargetSubdivisionCountryCode(country_code)) {
     BLOG(1, "Subdivision targeting is unsupported for " << country_code
                                                         << " country code");
-
-    return AdsClientHelper::GetInstance()->SetBooleanPref(
-        prefs::kShouldAllowSubdivisionTargeting, false);
+    return SetProfileBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                 false);
   }
 
   if (IsDisabled()) {
-    return AdsClientHelper::GetInstance()->SetBooleanPref(
-        prefs::kShouldAllowSubdivisionTargeting, true);
+    return SetProfileBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
   }
 
   const std::string& subdivision = GetSubdivision();
 
-  absl::optional<std::string> subdivision_country_code;
+  std::optional<std::string> subdivision_country_code;
   if (!subdivision.empty()) {
     subdivision_country_code = GetSubdivisionCountryCode(subdivision);
   }
@@ -128,8 +107,13 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
   if (country_code != subdivision_country_code) {
     AutoDetectSubdivision();
 
-    return AdsClientHelper::GetInstance()->SetBooleanPref(
-        prefs::kShouldAllowSubdivisionTargeting, false);
+    if (!subdivision_country_code ||
+        !ShouldTargetSubdivisionCountryCode(*subdivision_country_code)) {
+      return SetProfileBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                   false);
+    }
+
+    return SetProfileBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
   }
 
   if (!ShouldTargetSubdivision(country_code, subdivision)) {
@@ -139,8 +123,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
     DisableSubdivision();
   }
 
-  AdsClientHelper::GetInstance()->SetBooleanPref(
-      prefs::kShouldAllowSubdivisionTargeting, true);
+  SetProfileBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 }
 
 bool SubdivisionTargeting::ShouldFetchSubdivision() {
@@ -150,23 +133,12 @@ bool SubdivisionTargeting::ShouldFetchSubdivision() {
   }
 
   if (!ShouldAutoDetect()) {
-    BLOG(1, "Subdivision targeting is set to " << GetLazySubdivision());
+    BLOG(1, "Subdivision targeting is set to "
+                << GetLazyUserSelectedSubdivision());
     return false;
   }
 
   return true;
-}
-
-void SubdivisionTargeting::MaybeFetchSubdivision() {
-  if (subdivision_url_request_ && ShouldFetchSubdivision()) {
-    subdivision_url_request_->PeriodicallyFetch();
-  }
-}
-
-void SubdivisionTargeting::MaybeAllowAndFetchSubdivisionForLocale(
-    const std::string& locale) {
-  MaybeAllowForLocale(locale);
-  MaybeFetchSubdivision();
 }
 
 void SubdivisionTargeting::SetAutoDetectedSubdivision(
@@ -177,15 +149,14 @@ void SubdivisionTargeting::SetAutoDetectedSubdivision(
     BLOG(1, "Automatically detected " << subdivision << " subdivision");
 
     auto_detected_subdivision_ = subdivision;
-    AdsClientHelper::GetInstance()->SetStringPref(
-        prefs::kSubdivisionTargetingAutoDetectedSubdivision, subdivision);
+    SetProfileStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
+                         subdivision);
   }
 }
 
 void SubdivisionTargeting::UpdateAutoDetectedSubdivision() {
   const std::string auto_detected_subdivision =
-      AdsClientHelper::GetInstance()->GetStringPref(
-          prefs::kSubdivisionTargetingAutoDetectedSubdivision);
+      GetProfileStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision);
 
   if (auto_detected_subdivision_ != auto_detected_subdivision) {
     auto_detected_subdivision_ = auto_detected_subdivision;
@@ -197,71 +168,70 @@ void SubdivisionTargeting::UpdateAutoDetectedSubdivision() {
 const std::string& SubdivisionTargeting::GetLazyAutoDetectedSubdivision()
     const {
   if (!auto_detected_subdivision_) {
-    auto_detected_subdivision_ = AdsClientHelper::GetInstance()->GetStringPref(
+    auto_detected_subdivision_ = GetProfileStringPref(
         prefs::kSubdivisionTargetingAutoDetectedSubdivision);
   }
 
   return *auto_detected_subdivision_;
 }
 
-void SubdivisionTargeting::SetSubdivision(const std::string& subdivision) {
+void SubdivisionTargeting::SetUserSelectedSubdivision(
+    const std::string& subdivision) {
   CHECK(!subdivision.empty());
 
-  if (subdivision_ != subdivision) {
-    subdivision_ = subdivision;
-    AdsClientHelper::GetInstance()->SetStringPref(
-        prefs::kSubdivisionTargetingSubdivision, *subdivision_);
+  if (user_selected_subdivision_ != subdivision) {
+    user_selected_subdivision_ = subdivision;
+    SetProfileStringPref(prefs::kSubdivisionTargetingSubdivision,
+                         *user_selected_subdivision_);
   }
 }
 
-void SubdivisionTargeting::UpdateSubdivision() {
-  const std::string subdivision = AdsClientHelper::GetInstance()->GetStringPref(
-      prefs::kSubdivisionTargetingSubdivision);
+void SubdivisionTargeting::UpdateUserSelectedSubdivision() {
+  const std::string subdivision =
+      GetProfileStringPref(prefs::kSubdivisionTargetingSubdivision);
 
-  if (subdivision_ != subdivision) {
-    subdivision_ = subdivision;
+  if (user_selected_subdivision_ != subdivision) {
+    user_selected_subdivision_ = subdivision;
     BLOG(1, "Subdivision changed to " << subdivision);
-
-    if (ShouldAutoDetect()) {
-      MaybeFetchSubdivision();
-    }
   }
 }
 
-const std::string& SubdivisionTargeting::GetLazySubdivision() const {
-  if (!subdivision_) {
-    subdivision_ = AdsClientHelper::GetInstance()->GetStringPref(
-        prefs::kSubdivisionTargetingSubdivision);
+const std::string& SubdivisionTargeting::GetLazyUserSelectedSubdivision()
+    const {
+  if (!user_selected_subdivision_) {
+    user_selected_subdivision_ =
+        GetProfileStringPref(prefs::kSubdivisionTargetingSubdivision);
   }
 
-  return *subdivision_;
+  return *user_selected_subdivision_;
 }
 
 void SubdivisionTargeting::OnNotifyDidInitializeAds() {
-  Initialize();
-}
-
-void SubdivisionTargeting::OnNotifyLocaleDidChange(const std::string& locale) {
-  MaybeAllowAndFetchSubdivisionForLocale(locale);
+  MaybeInitialize();
 }
 
 void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == brave_rewards::prefs::kEnabled ||
-      path == prefs::kOptedInToNotificationAds ||
-      path == brave_news::prefs::kBraveNewsOptedIn ||
-      path == brave_news::prefs::kNewTabPageShowToday) {
-    Initialize();
-  } else if (path == prefs::kSubdivisionTargetingAutoDetectedSubdivision) {
+  if (path == prefs::kSubdivisionTargetingAutoDetectedSubdivision) {
     UpdateAutoDetectedSubdivision();
   } else if (path == prefs::kSubdivisionTargetingSubdivision) {
-    UpdateSubdivision();
+    UpdateUserSelectedSubdivision();
+  } else if (path == brave_news::prefs::kBraveNewsOptedIn ||
+             path == brave_news::prefs::kNewTabPageShowToday ||
+             path == prefs::kOptedInToNotificationAds) {
+    MaybeInitialize();
   }
 }
 
-void SubdivisionTargeting::OnDidFetchSubdivision(
+void SubdivisionTargeting::OnDidUpdateSubdivision(
     const std::string& subdivision) {
+  std::optional<std::string> country_code =
+      GetSubdivisionCountryCode(subdivision);
+  if (!country_code) {
+    return;
+  }
+
   SetAutoDetectedSubdivision(subdivision);
-  MaybeAllowForLocale(GetLocale());
+  MaybeAllowForCountry(*country_code);
 }
 
 }  // namespace brave_ads

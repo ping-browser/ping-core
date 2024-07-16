@@ -5,8 +5,8 @@
 
 import { useEffect, useRef, useCallback } from 'react'
 
-export function useDebouncedCallback<A extends any[]> (
-  callback: (...args: A) => Promise<void>,
+export function useDebouncedCallback<A extends any[]>(
+  callback: ((...args: A) => Promise<void>) | ((...args: A) => void),
   wait: number
 ) {
   // Track args & timeout handle between calls
@@ -24,7 +24,7 @@ export function useDebouncedCallback<A extends any[]> (
   useEffect(() => cleanup, [cleanup])
 
   return useCallback(
-    async function debouncedCallback (...args: A) {
+    async function debouncedCallback(...args: A) {
       // capture latest args
       argsRef.current = args
 

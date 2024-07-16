@@ -13,14 +13,14 @@ namespace brave_ads::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::UnblindedToken> Create(
+std::optional<challenge_bypass_ristretto::UnblindedToken> Create(
     const std::string& unblinded_token_base64) {
   if (unblinded_token_base64.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(
-      challenge_bypass_ristretto::UnblindedToken::decode_base64(
+      challenge_bypass_ristretto::UnblindedToken::DecodeBase64(
           unblinded_token_base64));
 }
 
@@ -60,28 +60,28 @@ UnblindedToken UnblindedToken::DecodeBase64(
   return UnblindedToken(unblinded_token_base64);
 }
 
-absl::optional<std::string> UnblindedToken::EncodeBase64() const {
+std::optional<std::string> UnblindedToken::EncodeBase64() const {
   if (!unblinded_token_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  return ValueOrLogError(unblinded_token_->encode_base64());
+  return unblinded_token_->EncodeBase64();
 }
 
-absl::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
+std::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
   if (!unblinded_token_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  return VerificationKey(unblinded_token_->derive_verification_key());
+  return VerificationKey(unblinded_token_->DeriveVerificationKey());
 }
 
-absl::optional<TokenPreimage> UnblindedToken::GetTokenPreimage() const {
+std::optional<TokenPreimage> UnblindedToken::GetTokenPreimage() const {
   if (!unblinded_token_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  return TokenPreimage(unblinded_token_->preimage());
+  return TokenPreimage(unblinded_token_->Preimage());
 }
 
 std::ostream& operator<<(std::ostream& os,

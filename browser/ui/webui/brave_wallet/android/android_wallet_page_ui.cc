@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_deposit_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_fund_wallet_page_generated_map.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_send_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -25,6 +26,7 @@
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
 
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -59,44 +61,31 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
   }
 
   // Add required resources.
-  if (url.path() == kWalletSwapPagePath) {
-    webui::SetupWebUIDataSource(
-        source,
-        base::make_span(kBraveWalletSwapPageGenerated,
-                        kBraveWalletSwapPageGeneratedSize),
-        IDR_BRAVE_WALLET_SWAP_PAGE_HTML);
-  } else if (url.path() == kWalletSendPagePath) {
-    webui::SetupWebUIDataSource(
-        source,
-        base::make_span(kBraveWalletSendPageGenerated,
-                        kBraveWalletSendPageGeneratedSize),
-        IDR_BRAVE_WALLET_SEND_PAGE_HTML);
-
-  } else if (url.path() == kWalletBuyPagePath) {
-    webui::SetupWebUIDataSource(
-        source,
-        base::make_span(kBraveWalletFundWalletPageGenerated,
-                        kBraveWalletFundWalletPageGeneratedSize),
-        IDR_BRAVE_WALLET_FUND_WALLET_PAGE_HTML);
-
-  } else if (url.path() == kWalletDepositPagePath) {
-    webui::SetupWebUIDataSource(
-        source,
-        base::make_span(kBraveWalletDepositPageGenerated,
-                        kBraveWalletDepositPageGeneratedSize),
-        IDR_BRAVE_WALLET_DEPOSIT_PAGE_HTML);
+  if (url.host() == kWalletPageHost) {
+    webui::SetupWebUIDataSource(source,
+                                base::make_span(kBraveWalletPageGenerated,
+                                                kBraveWalletPageGeneratedSize),
+                                IDR_WALLET_PAGE_HTML);
   } else {
     NOTREACHED() << "Failed to find page resources for:" << url.path();
   }
 
+  source->AddBoolean("isAndroid", true);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + " " +
           kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedMarketURL + ";");
+          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      base::JoinString(
+          {"img-src", "'self'", "chrome://resources",
+           "chrome://erc-token-images", base::StrCat({"data:", ";"})},
+          " "));
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
+  source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
@@ -123,6 +112,8 @@ void AndroidWalletPageUI::CreatePageHandler(
         json_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
         bitcoin_rpc_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
+        zcash_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
@@ -160,6 +151,8 @@ void AndroidWalletPageUI::CreatePageHandler(
       profile, std::move(json_rpc_service_receiver));
   brave_wallet::BitcoinWalletServiceFactory::BindForContext(
       profile, std::move(bitcoin_rpc_service_receiver));
+  brave_wallet::ZCashWalletServiceFactory::BindForContext(
+      profile, std::move(zcash_service_receiver));
   brave_wallet::SwapServiceFactory::BindForContext(
       profile, std::move(swap_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(

@@ -61,8 +61,8 @@ TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
   const std::unique_ptr<Data> text_data =
       std::make_unique<TextData>(kTestString);
 
-  const HashedNGramsTransformation hashed_ngrams(kHashBucketCount,
-                                                 std::vector<int>{1, 2, 3});
+  const HashedNGramsTransformation hashed_ngrams(
+      kHashBucketCount, std::vector<uint32_t>{1, 2, 3});
 
   // Act
   const std::unique_ptr<Data> hashed_data = hashed_ngrams.Apply(text_data);
@@ -73,7 +73,7 @@ TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
       static_cast<VectorData*>(hashed_data.get());
 
   // Assert
-  ASSERT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
+  EXPECT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
   EXPECT_EQ(kHashBucketCount, hashed_vector_data->GetData().size());
 }
 

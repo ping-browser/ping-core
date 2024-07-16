@@ -5,14 +5,13 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 import { ExternalWalletAction } from './external_wallet_action'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
-import { GeminiIcon } from '../icons/gemini_icon'
-import { BitflyerIcon } from '../icons/bitflyer_icon'
-import { UpholdIcon } from '../icons/uphold_icon'
-import { ZebPayIcon } from '../icons/zebpay_icon'
+import { WalletProviderIcon } from '../icons/wallet_provider_icon'
 
 import * as style from './external_wallet_bubble.style'
 
@@ -31,15 +30,6 @@ export function ExternalWalletBubble (props: Props) {
 
   function actionHandler (action: ExternalWalletAction) {
     return () => { props.onExternalWalletAction(action) }
-  }
-
-  function ProviderIcon () {
-    switch (externalWallet.provider) {
-      case 'gemini': return <GeminiIcon />
-      case 'bitflyer': return <BitflyerIcon />
-      case 'uphold': return <UpholdIcon />
-      case 'zebpay': return <ZebPayIcon />
-    }
   }
 
   function getWalletStatus () {
@@ -68,7 +58,10 @@ export function ExternalWalletBubble (props: Props) {
       case mojom.WalletStatus.kConnected:
         return (
           <button onClick={actionHandler('view-account')}>
-            {formatMessage(getString('walletAccountLink'), [providerName])}
+            <span>
+              {formatMessage(getString('walletAccountLink'), [providerName])}
+            </span>
+            <Icon name='launch' />
           </button>
         )
     }
@@ -81,7 +74,7 @@ export function ExternalWalletBubble (props: Props) {
       <style.content>
         <style.header>
           <style.providerIcon>
-            <ProviderIcon />
+            <WalletProviderIcon provider={externalWallet.provider} />
           </style.providerIcon>
           <style.username>
             {externalWallet.username}

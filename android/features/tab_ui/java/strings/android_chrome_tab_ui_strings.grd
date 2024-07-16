@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- android_chrome_strings.grd contains strings for tab ui DFM of Brave for Android. -->
+<!-- android_chrome_strings.grd contains strings for tab ui DFM of Ping for Android. -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit current_release="1" latest_public_release="0" output_all_resource_defines="false">
   <outputs>
@@ -174,7 +174,7 @@
   <release seq="1">
     <messages fallback_to_english="true">
       <!-- In-Product Help strings -->
-      <message name="IDS_IPH_TAB_GROUPS_QUICKLY_COMPARE_PAGES_TEXT" desc="When Brave detects that the user is searching or comparing multiple pages (e.g. while comparison shopping), this in-product help text appears at the bottom of the screen. The text informs the user that they can longpress on a link to open it as a new tab within a tab group.">
+      <message name="IDS_IPH_TAB_GROUPS_QUICKLY_COMPARE_PAGES_TEXT" desc="When Ping detects that the user is searching or comparing multiple pages (e.g. while comparison shopping), this in-product help text appears at the bottom of the screen. The text informs the user that they can longpress on a link to open it as a new tab within a tab group.">
         Quickly compare pages by making a group. To start, touch &amp; hold a link.
       </message>
       <message name="IDS_IPH_TAB_GROUPS_TAP_TO_SEE_ANOTHER_TAB_TEXT" desc="This in-product help text points to the strip of favicons at the bottom of the page. The favicons indicate all the open tabs within the tab group. The text informs the user that they can tap on any favicon to switch to that tab.">
@@ -188,8 +188,11 @@
       </message>
 
       <!-- Undo Bar -->
-      <message name="IDS_UNDO_BAR_GROUP_TABS_MESSAGE" desc="Message shown or announced when a group has been created.">
-        <ph name="TAB_COUNT">%1$s<ex>3</ex></ph> tabs grouped
+      <message name="IDS_UNDO_BAR_GROUP_TAB_MESSAGE" desc="Message shown or announced when a group has been created with a single tab.">
+        <ph name="TABS_COUNT_ONE">%1$s<ex>1</ex></ph> tab grouped
+      </message>
+      <message name="IDS_UNDO_BAR_GROUP_TABS_MESSAGE" desc="Message shown or announced when a group has been created with multiple tabs.">
+        <ph name="TABS_COUNT_MANY">%1$s<ex>3</ex></ph> tabs grouped
       </message>
 
       <!-- Bottom Tab Grid strings -->
@@ -206,6 +209,9 @@
       <message name="IDS_ACCESSIBILITY_BOTTOM_TAB_GRID_CLOSE_TAB_SHEET" desc="Accessibility string for BottomTabGridToolbar button indicated visually by the 'v' sign.">
         Hide fullscreen grid
       </message>
+      <message name="IDS_TAB_GRID_INVITE_BUTTON_TEXT" desc="Text for sharing the current tab group from the tab group dialog bottom toolbar.">
+        Invite people
+      </message>
 
       <!-- Bottom Tab Strip strings -->
       <message name="IDS_ACCESSIBILITY_BOTTOM_TAB_STRIP_EXPAND_TAB_SHEET" desc="Accessibility string for BottomTabStripToolbar button indicated visually by the '^' sign.">
@@ -213,17 +219,23 @@
       </message>
 
       <!-- Tab Group Tab Switcher strings -->
-      <message name="IDS_TABSWITCHER_CREATE_GROUP" desc="This flat button is shown in the Tab Switcher, under an open tab. When the user taps the button, Brave creates a new group of tabs that includes the existing tab. It's okay to use any of the following verbs in order to keep the text under 45 characters: Create, Make, Add.">
+      <message name="IDS_TABSWITCHER_CREATE_GROUP" desc="This flat button is shown in the Tab Switcher, under an open tab. When the user taps the button, Ping creates a new group of tabs that includes the existing tab. It's okay to use any of the following verbs in order to keep the text under 45 characters: Create, Make, Add.">
         Create group
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER" desc="Accessibility string for Tab Switcher view. This string is announced when the Tab Switcher is shown to screen.">
         Tab Switcher
       </message>
-      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. NUMBER_OF_TABS is the number of tabs within this group. Note that there are always at least two tabs in a group so plural form should always be used.">
-        Close tab group with <ph name="NUMBER_OF_TABS">%1$s<ex>2</ex></ph> tabs
+      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. NUMBER_OF_TABS is the number of tabs within this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Close tab group with <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab.}
+          other {Close tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs.}
+        }
       </message>
-      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON_WITH_GROUP_NAME" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. Note that there are always at least two tabs in a group so plural form should always be used.">
-        Close <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> group with <ph name="NUMBER_OF_TABS">%2$s<ex>2</ex></ph> tabs
+      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON_WITH_GROUP_NAME" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Close <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab.}
+          other {Close <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs.}
+        }
       </message>
 
       <!-- Tab Selection Editor strings -->
@@ -237,13 +249,13 @@
         Multi-select mode
       </message>
       <!-- Tab Selection Editor V2 strings -->
-      <message name="IDS_TAB_SELECTION_EDITOR_SELECT_ALL" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Brave selects all the tabs shown in the editor. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_SELECT_ALL" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Ping selects all the tabs shown in the editor. [CHAR_LIMIT=27]">
         Select all
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_DESELECT_ALL" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Brave deselects all the tabs shown in the editor. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_DESELECT_ALL" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Ping deselects all the tabs shown in the editor. [CHAR_LIMIT=27]">
         Deselect all
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_SHARE_TABS_ACTION_BUTTON" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Brave shares all currently selected tabs shown in the editor. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_SHARE_TABS_ACTION_BUTTON" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Ping shares all currently selected tabs shown in the editor. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Share tab}
           other {Share tabs}
@@ -257,20 +269,20 @@
       </message>
       <message name="IDS_TAB_SELECTION_EDITOR_SHARE_SHEET_PREVIEW_MESSAGE" desc="When users click the menu item 'Share tab(s)' in the Tab Selection Editor Toolbar, a share sheet will pop up and this text is the preview message of the share sheet. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
-          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> link from Brave}
-          other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> links from Brave}
+          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> link from Ping}
+          other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> links from Ping}
         }
       </message>
       <message name="IDS_TAB_SELECTION_EDITOR_SHARE_SHEET_PREVIEW_THUMBNAIL" desc="When users click the menu item 'Share tab(s)' in the Tab SelectionEditor Toolbar, a share sheet will pop up and this text is the name for the thumbnail of the share sheet preview. [CHAR_LIMIT=27]">
         Thumbnail for share sheet preview.
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_BOOKMARK_TABS_ACTION_BUTTON" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Brave bookmarks all currently selected tabs shown in the editor. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_BOOKMARK_TABS_ACTION_BUTTON" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Ping bookmarks all currently selected tabs shown in the editor. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Bookmark tab}
           other {Bookmark tabs}
         }
       </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SELECTION_EDITOR_BOOKMARK_TABS_ACTION_BUTTON" desc="The accessibility string for the share button in the Tab Selection Editor Toolbar. Tap this button to bookmark all selected tabs.">
+      <message name="IDS_ACCESSIBILITY_TAB_SELECTION_EDITOR_BOOKMARK_TABS_ACTION_BUTTON" desc="The accessibility string for the bookmark button in the Tab Selection Editor Toolbar. Tap this button to bookmark all selected tabs.">
         {TABS_COUNT, plural,
           =1 {Bookmark <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> selected tab}
           other {Bookmark <ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> selected tabs}
@@ -282,7 +294,7 @@
           other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> tabs}
         }
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_GROUP_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Group' is a verb. When the user taps the menu item, Brave creates a new group that contains the selected tabs. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_GROUP_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Group' is a verb. When the user taps the menu item, Ping creates a new group that contains the selected tabs. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Group tab}
           other {Group tabs}
@@ -294,7 +306,7 @@
           other {Group <ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> selected tabs}
         }
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_UNGROUP_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Ungroup' is a verb. When the user taps the menu item, Brave removes the selected tabs from the group. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_UNGROUP_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Ungroup' is a verb. When the user taps the menu item, Ping removes the selected tabs from the group. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Ungroup tab}
           other {Ungroup tabs}
@@ -306,7 +318,7 @@
           other {Ungroup <ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> selected tabs}
         }
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_CLOSE_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Close' is a verb. When the user taps the menu item, Brave closes the selected tabs. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_CLOSE_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Close' is a verb. When the user taps the menu item, Ping closes the selected tabs. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Close tab}
           other {Close tabs}
@@ -329,13 +341,22 @@
       <message name="IDS_TAB_GRID_DIALOG_TOOLBAR_EDIT_GROUP_NAME" desc="This text shows in the TabGridDialog toolbar menu as one menu item. When user selects this item, the group name field will be focused and the keyboard will show for users to edit the group name.">
         Edit group name
       </message>
+      <message name="IDS_TAB_GRID_DIALOG_TOOLBAR_EDIT_GROUP_COLOR" desc="This text shows in the TabGridDialog toolbar menu as one menu item. When user selects this item, a color picker popup window will appear and allow the user to update the color for this tab group.">
+        Edit group color
+      </message>
 
       <!-- Tab Grid Dialog accessibility strings -->
-      <message name="IDS_ACCESSIBILITY_EXPAND_TAB_GROUP" desc="The accessibility text to read when a card representing a tab group is clicked in grid tab switcher. NUMBER_OF_TABS is the number of tabs within this group. Note that there are always at least two tabs in a group so plural form should always be used.">
-        Expand tab group with <ph name="NUMBER_OF_TABS">%1$s<ex>2</ex></ph> tabs.
+      <message name="IDS_ACCESSIBILITY_EXPAND_TAB_GROUP" desc="The accessibility text to read when a card representing a tab group is clicked in grid tab switcher. NUMBER_OF_TABS is the number of tabs within this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Expand tab group with <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab.}
+          other {Expand tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs.}
+        }
       </message>
-      <message name="IDS_ACCESSIBILITY_EXPAND_TAB_GROUP_WITH_GROUP_NAME" desc="The accessibility text to read when a card representing a tab group is clicked in grid tab switcher. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. Note that there are always at least two tabs in a group so plural form should always be used.">
-        Expand <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="NUMBER_OF_TABS">%2$s<ex>2</ex></ph> tabs.
+      <message name="IDS_ACCESSIBILITY_EXPAND_TAB_GROUP_WITH_GROUP_NAME" desc="The accessibility text to read when a card representing a tab group is clicked in grid tab switcher. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Expand <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab.}
+          other {Expand <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs.}
+        }
       </message>
       <message name="IDS_ACCESSIBILITY_DIALOG_BACK_BUTTON" desc="The accessibility text to read when the back button in the dialog is focused. When this button is tapped, the dialog will be hidden. NUMBER_OF_TABS is the number of tabs within this group. Note that after collapsing with one tab, that group becomes a tab.">
         {TABS_COUNT, plural,
@@ -343,9 +364,9 @@
           other {Collapse tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs.}
         }
       </message>
-      <message name="IDS_ACCESSIBILITY_DIALOG_BACK_BUTTON_WITH_GROUP_NAME" desc="The accessibility text to read when the back button in the dialog is focused. When this button is tapped, the dialog will be hidden. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. Note that after collapsing with one tab, that group becomes a tab.">
+      <message name="IDS_ACCESSIBILITY_DIALOG_BACK_BUTTON_WITH_GROUP_NAME" desc="The accessibility text to read when the back button in the dialog is focused. When this button is tapped, the dialog will be hidden. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group.">
         {TABS_COUNT, plural,
-          =1 {Collapse <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab.}
+          =1 {Collapse <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab.}
           other {Collapse <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs.}
         }
       </message>
@@ -371,19 +392,52 @@
       <message name="IDS_TAB_SWITCHER_CAROUSEL_TITLE" desc="Title of the Tabs carousel section on the single pane start surface.">
           Continue browsing
       </message>
-      <message name="IDS_TAB_SWITCHER_CAROUSEL_VIEW_ALL" desc="Title of the text view button in the Tabs carousel section on the single pane start surface. Click it to view all the existing Tabs.">
-          View all
+
+      <!-- Single Tab module strings -->
+      <message name="IDS_SINGLE_TAB_MODULE_TITLE" desc="Title of the single Tab module on the magic space of the start surface or NTP home surface.">
+          Your last tab
       </message>
 
       <!-- Tab Suggestion strings -->
       <message name="IDS_TAB_SUGGESTION_REVIEW_BUTTON" desc="This text button shows next to the message 'X of your tabs haven't been used lately. Close them?', or 'X tabs seem related. Group them?'. When a user clicks this 'Review' text button, they will enter a selection mode where they can see the suggested tabs to close or to group, see the rest of their open tabs, and choose what tabs to close or to group.">
           Review
       </message>
-      <message name="IDS_TAB_SUGGESTION_CLOSE_STALE_MESSAGE" desc="On Brave mobile, this text shows as a suggestion under a user's tabs. The suggestion prompts the user to automatically close some tabs that haven't been used lately. The placeholder denotes the number of suggested tabs to close, which will always be 2 or more (so 'tabs' should be plural).">
+      <message name="IDS_TAB_SUGGESTION_CLOSE_STALE_MESSAGE" desc="On Ping mobile, this text shows as a suggestion under a user's tabs. The suggestion prompts the user to automatically close some tabs that haven't been used lately. The placeholder denotes the number of suggested tabs to close, which will always be 2 or more (so 'tabs' should be plural).">
           <ph name="NUMBER_OF_TABS">%1$s<ex>2</ex></ph> of your tabs haven't been used lately. Close them?
       </message>
-      <message name="IDS_TAB_SUGGESTION_GROUP_TABS_MESSAGE" desc="On Brave mobile, this text shows as a suggestion under a user's tabs. The suggestion prompts the user to automatically group some tabs that haven been detected as closely related to each other. The placeholder denotes the number of suggested tabs to group, which will always be 2 or more (so 'tabs' should be plural).">
+      <message name="IDS_TAB_SUGGESTION_GROUP_TABS_MESSAGE" desc="On Ping mobile, this text shows as a suggestion under a user's tabs. The suggestion prompts the user to automatically group some tabs that haven been detected as closely related to each other. The placeholder denotes the number of suggested tabs to group, which will always be 2 or more (so 'tabs' should be plural).">
           <ph name="NUMBER_OF_TABS">%1$s<ex>2</ex></ph> tabs seem related. Group them?
+      </message>
+
+      <!-- Tab Cleanup strings -->
+      <message name="IDS_TAB_CLEANUP_MESSAGE_CARD_TITLE" desc="Header for the Tab Cleanup message card where a user can review suggested tabs to close before closing or just close them outright.">
+          Want to close old tabs?
+      </message>
+      <message name="IDS_TAB_CLEANUP_MESSAGE_CARD_SUBTITLE" desc="Subtitle for the Tab Cleanup message card that indicates the number of suggested tabs a user can review to close before closing or just close them outright.">
+          {TABS_COUNT, plural,
+            =1 {You have <ph name="TABS_COUNT_ONE">%1$s<ex>1</ex></ph> tab you haven't used recently}
+            other {You have <ph name="TABS_COUNT_MANY">%1$s<ex>8</ex></ph> tabs you haven't used recently}
+          }
+      </message>
+      <message name="IDS_TAB_CLEANUP_MESSAGE_CARD_REVIEW_TABS_BUTTON" desc="Button text where a user can review suggested tabs to close before closing.">
+          Review tabs
+      </message>
+      <message name="IDS_TAB_CLEANUP_MESSAGE_CARD_CLOSE_TABS_BUTTON" desc="Button text where a user can close suggested tabs without reviewing them.">
+          Close without reviewing
+      </message>
+
+      <!-- Tab Declutter strings -->
+      <message name="IDS_TAB_DECLUTTER_MESSAGE_CARD_TEXT_INFO" desc="Text info for the Tab Declutter message card that indicates the number of archived tabs a user can review to close.">
+          {TABS_COUNT, plural,
+            =1 {You have <ph name="TABS_COUNT_ONE">%1$s<ex>1</ex></ph> archived tab}
+            other {You have <ph name="TABS_COUNT_MANY">%1$s<ex>8</ex></ph> archived tabs}
+          }
+      </message>
+      <message name="IDS_TAB_DECLUTTER_MESSAGE_CARD_REVIEW_SETTINGS_DESCRIPTION" desc="Acessibility string describing the settings icon on the tab declutter message card interface.">
+          Review the current declutter settings.
+      </message>
+      <message name="IDS_TAB_DECLUTTER_MESSAGE_CARD_REVIEW_ARCHIVED_TABS_DESCRIPTION" desc="Acessibility string describing the expand icon for reviewing archived tabs on the tab declutter message card interface.">
+          Review all archived tabs for declutter by entering this editor.
       </message>
 
       <!-- Accessibility strings for Tab Suggestion -->
@@ -485,10 +539,10 @@
             =1 {(<ph name="REVIEWS_COUNT_ONE">%1$s<ex>1</ex></ph> review)}
             other {(<ph name="REVIEWS_COUNT_MANY">%1$s<ex>8</ex></ph> reviews)}}
       </message>
-      <message name="IDS_MERCHANT_VIEWER_MESSAGE_DESCRIPTION_REVIEWS_FROM_GOOGLE" desc="Alternative message description indicating that the reviews come from Brave.">
+      <message name="IDS_MERCHANT_VIEWER_MESSAGE_DESCRIPTION_REVIEWS_FROM_GOOGLE" desc="Alternative message description indicating that the reviews come from Ping.">
          {REVIEWS, plural,
-            =1 {<ph name="REVIEWS_COUNT_ONE">%1$s<ex>1</ex></ph> review from Brave}
-            other {<ph name="REVIEWS_COUNT_MANY">%1$s<ex>8</ex></ph> reviews from Brave}}
+            =1 {<ph name="REVIEWS_COUNT_ONE">%1$s<ex>1</ex></ph> review from Ping}
+            other {<ph name="REVIEWS_COUNT_MANY">%1$s<ex>8</ex></ph> reviews from Ping}}
       </message>
       <message name="IDS_MERCHANT_VIEWER_MESSAGE_RATING_NUMERICAL" desc="The rating of the merchant in numerical form.">
         <ph name="CURRENT_RATING">%1$.1f<ex>4.5</ex></ph>/<ph name="RATING_BASELINE">%2$d<ex>5</ex></ph>
@@ -505,7 +559,7 @@
         View store info, option available near top of the screen
       </message>
       <message name="IDS_MERCHANT_VIEWER_PREVIEW_SHEET_TITLE" desc="Bottom sheet title for the merchant viewer experience.">
-        Brave | About this store
+        Ping | About this store
       </message>
       <message name="IDS_MERCHANT_VIEWER_OMNIBOX_ICON_IPH" desc="IPH shown when merchant trust message is dismissed at the first time.">
         View store info
@@ -537,13 +591,135 @@
         Close all tabs?
       </message>
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE" desc="When users click the menu item 'Close all tabs' in tab switcher, a dialog will pop up and this text is the message of the dialog.">
-        You can find your closed tabs in Recent tabs under the Brave main menu
+        You can find your closed tabs in Recent tabs under the Ping main menu.
+      </message>
+      <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE_WITH_INCOGNITO_TABS" desc="When users click the menu item 'Close all tabs' in tab switcher, a dialog will pop up and this text is the message of the dialog. If there are any Private tabs opened this message would warn users that those Private tabs would be lost.">
+      {INCOGNITO_TABS_COUNT, plural,
+        =1 {You can find your closed tabs in Recent tabs under the Ping main menu. Your Private tab won't be available.}
+        other {You can find your closed tabs in Recent tabs under the Ping main menu. Your # Private tabs won't be available.}}
       </message>
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_TITLE_INCOGNITO" desc="When users click the menu item 'Close all tabs' in Private tab switcher, a dialog will pop up and this text is the title of the dialog.">
         Close all Private tabs?
       </message>
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE_INCOGNITO" desc="When users click the menu item 'Close all tabs' in Private tab switcher, a dialog will pop up and this text is the message of the dialog.">
-        Your activity in these Private tabs will be cleared from this device
+        Your activity in these Private tabs will be removed from this device
+      </message>
+
+      <!-- New Tab Group Dialog Strings -->
+      <message name="IDS_TAB_GROUP_CREATION_DIALOG_TITLE" desc="When users create a new tab group, a dialog will pop up and this text is the title of the dialog. [CHAR_LIMIT=24]">
+        New tab group
+      </message>
+      <message name="IDS_TAB_GROUP_CREATION_MISSING_TITLE" desc="Error message appearing when a user tries to create a tab group without a title. s[CHAR_LIMIT=32]">
+        Title required
+      </message>
+      <message name="IDS_TAB_GROUP_CREATION_POSITIVE_BUTTON_TEXT" desc="Text for creating a new tab group from the merged tabs after confirming the editable details">
+        Done
+      </message>
+
+      <!-- Tab Group Parity Strings -->
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_ICON_DESCRIPTION" desc="Accessibility string describing what color the current tab group color icon has. Tap this item to change the color.">
+        <ph name="COLOR_NAME">%1$s<ex>Blue</ex></ph> tab group color icon
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_GREY" desc="The accessibility string for the grey color item in the tab group color picker. Tap this item to toggle the color selection.">
+        Grey
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_BLUE" desc="The accessibility string for the blue color item in the tab group color picker. Tap this item to toggle the color selection.">
+        Blue
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_RED" desc="The accessibility string for the red color item in the tab group color picker. Tap this item to toggle the color selection.">
+        Red
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_YELLOW" desc="The accessibility string for the yellow color item in the tab group color picker. Tap this item to toggle the color selection.">
+        Yellow
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_GREEN" desc="The accessibility string for the green color item in the tab group color picker. Tap this item to toggle the color selection.">
+        Green
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_PINK" desc="The accessibility string for the pink color item in the tab group color picker. Tap this item to toggle the color selection.">
+        Pink
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_PURPLE" desc="The accessibility string for the purple color item in the tab group color picker. Tap this item to toggle the color selection.">
+        Purple
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_CYAN" desc="The accessibility string for the cyan color item in the tab group color picker. Tap this item to toggle the color selection.">
+        Cyan
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_ORANGE" desc="The accessibility string for the orange color item in the tab group color picker. Tap this item to toggle the color selection.">
+        Orange
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_SELECTED_DESCRIPTION" desc="Accessibility string describing the icon that indicates that this color item is the currently selected one.">
+        <ph name="COLOR_NAME">%1$s<ex>Blue</ex></ph> Selected
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_NOT_SELECTED_DESCRIPTION" desc="Accessibility string describing that no icon is shown to indicate that this color item is the currently selected one.">
+        <ph name="COLOR_NAME">%1$s<ex>Blue</ex></ph> Not selected
+      </message>
+      <message name="IDS_ACCESSIBILITY_EXPAND_TAB_GROUP_WITH_COLOR" desc="The accessibility text to read when a card representing a tab group is clicked in grid tab switcher. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Expand tab group with <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
+          other {Expand tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_EXPAND_TAB_GROUP_WITH_GROUP_NAME_WITH_COLOR" desc="The accessibility text to read when a card representing a tab group is clicked in grid tab switcher. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Expand <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
+          other {Expand <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON_WITH_COLOR" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Close tab group with <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
+          other {Close tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON_WITH_GROUP_NAME_WITH_COLOR" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Close <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
+          other {Close <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
+        }
+      </message>
+
+      <!-- Tab Group Pane Strings -->
+      <message name="IDS_ACCESSIBILITY_TAB_GROUPS" desc="Content description for the button to show tab groups UI.">
+        Tab groups
+      </message>
+      <message name="IDS_TAB_GROUPS_CREATED_AGO_NOW" desc="A subtitle on a row for a tab group. Explains the group was created less than a minute ago.">
+        Created just now
+      </message>
+      <message name="IDS_TAB_GROUPS_CREATED_AGO_MINUTES" desc="A subtitle on a row for a tab group. Explains how many minutes ago the group was created.">
+        {NUM_MINS, plural,
+          =1 {Created <ph name="NUM_MINS_ONE">%d<ex>1</ex></ph> minute ago}
+          other {Created <ph name="NUM_MINS_MANY">%d<ex>2</ex></ph> minutes ago}
+        }
+      </message>
+      <message name="IDS_TAB_GROUPS_CREATED_AGO_HOURS" desc="A subtitle on a row for a tab group. Explains how many hours ago the group was created.">
+        {NUM_HOURS, plural,
+          =1 {Created <ph name="NUM_HOURS_ONE">%d<ex>1</ex></ph> hour ago}
+          other {Created <ph name="NUM_HOURS_MANY">%d<ex>2</ex></ph> hours ago}
+        }
+      </message>
+      <message name="IDS_TAB_GROUPS_CREATED_AGO_DAYS" desc="A subtitle on a row for a tab group. Explains how many days ago the group was created.">
+        {NUM_DAYS, plural,
+          =1 {Created <ph name="NUM_DAYS_ONE">%d<ex>1</ex></ph> day ago}
+          other {Created <ph name="NUM_DAYS_MANY">%d<ex>2</ex></ph> days ago}
+        }
+      </message>
+      <message name="IDS_TAB_GROUPS_CREATED_AGO_WEEKS" desc="A subtitle on a row for a tab group. Explains how many weeks ago the group was created.">
+        {NUM_WEEKS, plural,
+          =1 {Created <ph name="NUM_WEEKS_ONE">%d<ex>1</ex></ph> week ago}
+          other {Created <ph name="NUM_WEEKS_MANY">%d<ex>2</ex></ph> weeks ago}
+        }
+      </message>
+      <message name="IDS_TAB_GROUPS_CREATED_AGO_MONTHS" desc="A subtitle on a row for a tab group. Explains how many months ago the group was created.">
+              {NUM_MONTHS, plural,
+                =1 {Created <ph name="NUM_MONTHS_ONE">%d<ex>1</ex></ph> month ago}
+                other {Created <ph name="NUM_MONTHS_MANY">%d<ex>2</ex></ph> months ago}
+              }
+            </message>
+      <message name="IDS_TAB_GROUPS_CREATED_AGO_YEARS" desc="A subtitle on a row for a tab group. Explains how many years ago the group was created.">
+        {NUM_MONTHS, plural,
+          =1 {Created <ph name="NUM_YEARS_ONE">%d<ex>1</ex></ph> year ago}
+          other {Created <ph name="NUM_YEARS_MANY">%d<ex>2</ex></ph> years ago}
+        }
       </message>
     </messages>
   </release>

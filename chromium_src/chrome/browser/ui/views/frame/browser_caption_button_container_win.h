@@ -9,14 +9,23 @@
 #include <string>
 
 #include "components/prefs/pref_change_registrar.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 #define BrowserCaptionButtonContainer BrowserCaptionButtonContainer_ChromiumImpl
+#define OnWindowControlsOverlayEnabledChanged     \
+  OnWindowControlsOverlayEnabledChanged_Unused(); \
+  friend class BraveBrowserFrameViewWin;          \
+  void OnWindowControlsOverlayEnabledChanged
 
 #include "src/chrome/browser/ui/views/frame/browser_caption_button_container_win.h"  // IWYU pragma: export
+
+#undef OnWindowControlsOverlayEnabledChanged
 #undef BrowserCaptionButtonContainer
 
 class BrowserCaptionButtonContainer
     : public BrowserCaptionButtonContainer_ChromiumImpl {
+  METADATA_HEADER(BrowserCaptionButtonContainer,
+                  BrowserCaptionButtonContainer_ChromiumImpl)
  public:
   explicit BrowserCaptionButtonContainer(BrowserFrameViewWin* frame_view);
   ~BrowserCaptionButtonContainer() override;

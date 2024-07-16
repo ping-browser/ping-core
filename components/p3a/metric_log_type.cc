@@ -5,6 +5,8 @@
 
 #include "brave/components/p3a/metric_log_type.h"
 
+#include <optional>
+
 #include "base/notreached.h"
 
 namespace p3a {
@@ -25,6 +27,18 @@ const char* MetricLogTypeToString(MetricLogType log_type) {
       return kExpressStr;
   }
   NOTREACHED();
+}
+
+std::optional<MetricLogType> StringToMetricLogType(
+    const std::string& log_type_str) {
+  if (log_type_str == kSlowStr) {
+    return MetricLogType::kSlow;
+  } else if (log_type_str == kTypicalStr) {
+    return MetricLogType::kTypical;
+  } else if (log_type_str == kExpressStr) {
+    return MetricLogType::kExpress;
+  }
+  return std::nullopt;
 }
 
 }  // namespace p3a

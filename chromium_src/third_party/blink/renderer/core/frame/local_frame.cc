@@ -1,12 +1,13 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
 #include "brave/components/brave_page_graph/common/buildflags.h"
 #include "skia/ext/skia_utils_base.h"
+#include "third_party/blink/renderer/core/core_probe_sink.h"
 #include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
@@ -16,16 +17,19 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#define FrameAttachedToParent(frame, ad_script_on_stack)             \
-  FrameAttachedToParent(frame, ad_script_on_stack);                  \
-  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                            \
-    if (IsLocalRoot()) {                                             \
-      /* InstallSupplements call is too late, do it here instead. */ \
-      PageGraph::ProvideTo(*this);                                   \
-    }                                                                \
+#define AddInspectorTraceEvents(...)                               \
+  AddInspectorTraceEvents(__VA_ARGS__);                            \
+  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                          \
+    DCHECK(IsLocalRoot());                                         \
+    /* InstallSupplements call is too late, do it here instead. */ \
+    PageGraph::ProvideTo(*this);                                   \
   })
 
+#define ScriptEnabled ScriptEnabled_ChromiumImpl
+
 #include "src/third_party/blink/renderer/core/frame/local_frame.cc"
+#undef ScriptEnabled
+#undef AddInspectorTraceEvents
 
 namespace blink {
 
@@ -39,22 +43,24 @@ scoped_refptr<Image> ImageFromNode(const Node& node) {
       node.GetDocument().Lifecycle());
 
   const LayoutObject* const layout_object = node.GetLayoutObject();
-  if (!layout_object)
+  if (!layout_object) {
     return nullptr;
+  }
 
   if (layout_object->IsCanvas()) {
     return To<HTMLCanvasElement>(const_cast<Node&>(node))
-        .Snapshot(CanvasResourceProvider::FlushReason::kNon2DCanvas,
-                  kFrontBuffer);
+        .Snapshot(FlushReason::kNon2DCanvas, kFrontBuffer);
   }
 
-  if (!layout_object->IsImage())
+  if (!layout_object->IsImage()) {
     return nullptr;
+  }
 
   const auto& layout_image = To<LayoutImage>(*layout_object);
   const ImageResourceContent* const cached_image = layout_image.CachedImage();
-  if (!cached_image || cached_image->ErrorOccurred())
+  if (!cached_image || cached_image->ErrorOccurred()) {
     return nullptr;
+  }
   return cached_image->GetImage();
 }
 
@@ -77,8 +83,9 @@ SkBitmap LocalFrame::GetImageAtViewportPoint(const gfx::Point& viewport_point) {
 
   const scoped_refptr<Image> image =
       ImageFromNode(*result.InnerNodeOrImageMapImage());
-  if (!image.get())
+  if (!image.get()) {
     return {};
+  }
 
   // Referred SystemClipboard::WriteImageWithTag() about how to get bitmap data
   // from Image.
@@ -90,8 +97,9 @@ SkBitmap LocalFrame::GetImageAtViewportPoint(const gfx::Point& viewport_point) {
         kInterpolationNone);
   }
   SkBitmap bitmap;
-  if (sk_sp<SkImage> sk_image = paint_image.GetSwSkImage())
+  if (sk_sp<SkImage> sk_image = paint_image.GetSwSkImage()) {
     sk_image->asLegacyBitmap(&bitmap);
+  }
 
   // The bitmap backing a canvas can be in non-native skia pixel order (aka
   // RGBA when kN32_SkColorType is BGRA-ordered, or higher bit-depth color-types
@@ -106,6 +114,13 @@ SkBitmap LocalFrame::GetImageAtViewportPoint(const gfx::Point& viewport_point) {
   return {};
 }
 
-}  // namespace blink
+bool LocalFrame::ScriptEnabled(const KURL& script_url) {
+  bool enabled = ScriptEnabled_ChromiumImpl();
+  auto* client = GetContentSettingsClient();
+  if (client) {
+    return client->AllowScriptFromSource(enabled, script_url);
+  }
+  return enabled;
+}
 
-#undef FrameAttachedToParent
+}  // namespace blink

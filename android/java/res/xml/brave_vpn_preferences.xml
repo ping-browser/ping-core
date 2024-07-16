@@ -41,9 +41,12 @@
             android:enabled="false"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:fragment="org.chromium.chrome.browser.settings.BraveVpnServerSelectionPreferences"
             android:key="server_change_location"
             android:title="@string/change_location"/>
+
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="always_on"
+            android:title="@string/always_on_vpn"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:key="split_tunneling"

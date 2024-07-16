@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index b73ffcb9031c88906841fa30925623d101c23964..10795a2f2b4c0d9f2e31293a6d120cdbfba06334 100644
+index 7c3535e8c33aa8cd06ec40c45907e1399153f2e8..8b9ccb21376cc91ff5762cece86d8bb229156bd8 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -185,6 +185,7 @@ class InfoBarDelegate {
-     TAILORED_SECURITY_SERVICE_INFOBAR_DELEGATE = 111,
-     CHROME_FOR_TESTING_INFOBAR_DELEGATE = 112,
-     EXTENSIONS_WEB_AUTH_FLOW_INFOBAR_DELEGATE = 113,
+@@ -186,6 +186,7 @@ class InfoBarDelegate {
+     ENABLE_LINK_CAPTURING_INFOBAR_DELEGATE = 119,
+     DEV_TOOLS_SHARED_PROCESS_DELEGATE = 120,
+     ENHANCED_SAFE_BROWSING_INFOBAR_DELEGATE = 121,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  

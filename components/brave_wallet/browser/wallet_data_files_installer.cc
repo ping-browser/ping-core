@@ -6,32 +6,23 @@
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/json/rs/src/lib.rs.h"
 #include "components/component_updater/component_installer.h"
-#include "components/component_updater/component_updater_service.h"
+#include "components/prefs/pref_service.h"
 #include "crypto/sha2.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_wallet/browser/wallet_data_files_installer_android_util.h"
-#endif
 
 namespace brave_wallet {
 
@@ -53,298 +44,7 @@ const char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
 static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");
 
-absl::optional<base::Version> last_installed_wallet_version;
-
-void OnSanitizedTokenList(mojom::CoinType coin,
-                          data_decoder::JsonSanitizer::Result result) {
-  TokenListMap lists;
-  if (!result.has_value()) {
-    VLOG(1) << "TokenList JSON validation error:" << result.error();
-    return;
-  }
-
-  if (!ParseTokenList(*result, &lists, coin)) {
-    VLOG(1) << "Can't parse token list.";
-    return;
-  }
-
-  for (auto& list_pair : lists) {
-    BlockchainRegistry::GetInstance()->UpdateTokenList(
-        list_pair.first, std::move(list_pair.second));
-  }
-}
-
-void OnSanitizedChainList(data_decoder::JsonSanitizer::Result result) {
-  ChainList chains;
-  if (!result.has_value()) {
-    VLOG(1) << "TokenList JSON validation error:" << result.error();
-    return;
-  }
-
-  if (!ParseChainList(*result, &chains)) {
-    VLOG(1) << "Can't parse chain list.";
-    return;
-  }
-
-  BlockchainRegistry::GetInstance()->UpdateChainList(std::move(chains));
-}
-
-void OnSanitizedDappLists(data_decoder::JsonSanitizer::Result result) {
-  if (!result.has_value()) {
-    VLOG(1) << "DappLists JSON validation error:" << result.error();
-    return;
-  }
-
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(*result, ""));
-  if (converted_json.empty()) {
-    return;
-  }
-
-  absl::optional<DappListMap> lists = ParseDappLists(converted_json);
-  if (!lists) {
-    VLOG(1) << "Can't parse dapp lists.";
-    return;
-  }
-
-  BlockchainRegistry::GetInstance()->UpdateDappList(std::move(*lists));
-}
-
-void OnSanitizedRampTokenLists(data_decoder::JsonSanitizer::Result result) {
-  if (!result.has_value()) {
-    VLOG(1) << "Ramp lists JSON validation error:" << result.error();
-    return;
-  }
-
-  auto parsedRampTokensListMaps = ParseRampTokenListMaps(*result);
-  if (!parsedRampTokensListMaps) {
-    VLOG(1) << "Can't parse on/off ramp token lists.";
-    return;
-  }
-
-  if (parsedRampTokensListMaps->first.empty()) {
-    VLOG(1) << "On ramp supported token lists is empty.";
-  } else {
-    BlockchainRegistry::GetInstance()->UpdateOnRampTokenLists(
-        std::move(parsedRampTokensListMaps->first));
-  }
-
-  if (parsedRampTokensListMaps->second.empty()) {
-    VLOG(1) << "Off ramp supported sell token lists is empty.";
-  } else {
-    BlockchainRegistry::GetInstance()->UpdateOffRampTokenLists(
-        std::move(parsedRampTokensListMaps->second));
-  }
-}
-
-void OnSanitizedOnRampCurrenciesLists(
-    data_decoder::JsonSanitizer::Result result) {
-  if (!result.has_value()) {
-    VLOG(1) << "OnRamp lists JSON validation error:" << result.error();
-    return;
-  }
-
-  absl::optional<std::vector<mojom::OnRampCurrency>> lists =
-      ParseOnRampCurrencyLists(*result);
-  if (!lists) {
-    VLOG(1) << "Can't parse on ramp supported sell token lists.";
-    return;
-  }
-
-  BlockchainRegistry::GetInstance()->UpdateOnRampCurrenciesLists(
-      std::move(*lists));
-}
-
-void OnSanitizedCoingeckoIdsMap(data_decoder::JsonSanitizer::Result result) {
-  if (!result.has_value()) {
-    VLOG(1) << "CoingeckoIdsMap JSON validation error:" << result.error();
-    return;
-  }
-
-  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
-      ParseCoingeckoIdsMap(*result);
-  if (!coingecko_ids_map) {
-    VLOG(1) << "Can't parse coingecko-ids.json";
-    return;
-  }
-
-  BlockchainRegistry::GetInstance()->UpdateCoingeckoIdsMap(
-      std::move(*coingecko_ids_map));
-}
-
-void HandleParseCoingeckoIdsMap(base::FilePath absolute_install_dir,
-                                const std::string& filename) {
-  const base::FilePath coingecko_ids_map_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string coingecko_ids_map_json;
-  if (!base::ReadFileToString(coingecko_ids_map_json_path,
-                              &coingecko_ids_map_json)) {
-    VLOG(1) << "Can't read coingecko ids map file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(coingecko_ids_map_json),
-      base::BindOnce(&OnSanitizedCoingeckoIdsMap));
-}
-
-void HandleParseTokenList(base::FilePath absolute_install_dir,
-                          const std::string& filename,
-                          mojom::CoinType coin_type) {
-  const base::FilePath token_list_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string token_list_json;
-  if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
-    VLOG(1) << "Can't read token list file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(token_list_json),
-      base::BindOnce(&OnSanitizedTokenList, coin_type));
-}
-
-void HandleParseChainList(base::FilePath absolute_install_dir,
-                          const std::string& filename) {
-  const base::FilePath chain_list_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string chain_list_json;
-  if (!base::ReadFileToString(chain_list_json_path, &chain_list_json)) {
-    LOG(ERROR) << "Can't read chain list file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(std::move(chain_list_json),
-                                        base::BindOnce(&OnSanitizedChainList));
-}
-
-void HandleParseDappList(base::FilePath absolute_install_dir,
-                         const std::string& filename) {
-  const base::FilePath dapp_lists_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string dapp_lists_json;
-  if (!base::ReadFileToString(dapp_lists_json_path, &dapp_lists_json)) {
-    LOG(ERROR) << "Can't read dapp lists file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(std::move(dapp_lists_json),
-                                        base::BindOnce(&OnSanitizedDappLists));
-}
-
-void HandleParseRampTokenLists(base::FilePath absolute_install_dir,
-                               const std::string& filename) {
-  const base::FilePath ramp_lists_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string ramp_supported_token_lists;
-  if (!base::ReadFileToString(ramp_lists_json_path,
-                              &ramp_supported_token_lists)) {
-    LOG(ERROR) << "Can't read ramp lists file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(ramp_supported_token_lists),
-      base::BindOnce(&OnSanitizedRampTokenLists));
-}
-
-void HandleParseOnRampCurrenciesLists(base::FilePath absolute_install_dir,
-                                      const std::string& filename) {
-  const base::FilePath on_ramp_lists_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string on_ramp_supported_currencies_lists;
-  if (!base::ReadFileToString(on_ramp_lists_json_path,
-                              &on_ramp_supported_currencies_lists)) {
-    LOG(ERROR) << "Can't read on ramp lists file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(on_ramp_supported_currencies_lists),
-      base::BindOnce(&OnSanitizedOnRampCurrenciesLists));
-}
-
-void ParseCoingeckoIdsMapAndUpdateRegistry(const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
-    return;
-  }
-
-  HandleParseCoingeckoIdsMap(absolute_install_dir, "coingecko-ids.json");
-}
-
-void ParseTokenListAndUpdateRegistry(const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
-    return;
-  }
-
-  HandleParseTokenList(absolute_install_dir, "contract-map.json",
-                       mojom::CoinType::ETH);
-  HandleParseTokenList(absolute_install_dir, "evm-contract-map.json",
-                       mojom::CoinType::ETH);
-  HandleParseTokenList(absolute_install_dir, "solana-contract-map.json",
-                       mojom::CoinType::SOL);
-}
-
-void ParseChainListAndUpdateRegistry(const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
-    return;
-  }
-
-  HandleParseChainList(absolute_install_dir, "chainlist.json");
-}
-
-void ParseDappListsAndUpdateRegistry(const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
-    return;
-  }
-
-  HandleParseDappList(absolute_install_dir, "dapp-lists.json");
-}
-
-void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
-    return;
-  }
-
-  HandleParseRampTokenLists(absolute_install_dir, "ramp-tokens.json");
-  HandleParseOnRampCurrenciesLists(absolute_install_dir,
-                                   "on-ramp-currency-lists.json");
-}
+std::optional<base::Version> last_installed_wallet_version;
 
 }  // namespace
 
@@ -355,7 +55,6 @@ class WalletDataFilesInstallerPolicy
   ~WalletDataFilesInstallerPolicy() override = default;
 
  private:
-  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
   // The following methods override ComponentInstallerPolicy.
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
@@ -372,6 +71,7 @@ class WalletDataFilesInstallerPolicy
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
 
   WalletDataFilesInstallerPolicy(const WalletDataFilesInstallerPolicy&) =
       delete;
@@ -379,11 +79,7 @@ class WalletDataFilesInstallerPolicy
       const WalletDataFilesInstallerPolicy&) = delete;
 };
 
-WalletDataFilesInstallerPolicy::WalletDataFilesInstallerPolicy() {
-  sequenced_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-}
+WalletDataFilesInstallerPolicy::WalletDataFilesInstallerPolicy() = default;
 
 bool WalletDataFilesInstallerPolicy::
     SupportsGroupPolicyEnabledComponentUpdates() const {
@@ -408,21 +104,7 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
     const base::FilePath& path,
     base::Value::Dict manifest) {
   last_installed_wallet_version = version;
-
-  sequenced_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&ParseCoingeckoIdsMapAndUpdateRegistry, path));
-
-  sequenced_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&ParseTokenListAndUpdateRegistry, path));
-
-  sequenced_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&ParseChainListAndUpdateRegistry, path));
-
-  sequenced_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&ParseDappListsAndUpdateRegistry, path));
-
-  sequenced_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&ParseOnRampListsAndUpdateRegistry, path));
+  WalletDataFilesInstaller::GetInstance().OnComponentReady(path);
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(
@@ -451,27 +133,39 @@ WalletDataFilesInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 
-void RegisterWalletDataFilesComponent(
-    component_updater::ComponentUpdateService* cus) {
-#if BUILDFLAG(IS_ANDROID)
-  bool should_register_component =
-      IsNativeWalletEnabled() && IsBraveWalletConfiguredOnAndroid();
-#else
-  bool should_register_component = IsNativeWalletEnabled();
-#endif
-  if (should_register_component) {
-    auto installer =
-        base::MakeRefCounted<component_updater::ComponentInstaller>(
-            std::make_unique<WalletDataFilesInstallerPolicy>());
-    installer->Register(
-        cus, base::BindOnce([]() {
-          brave_component_updater::BraveOnDemandUpdater::GetInstance()
-              ->OnDemandUpdate(kComponentId);
-        }));
+bool WalletDataFilesInstallerPolicy::IsBraveComponent() const {
+  return true;
+}
+
+std::optional<base::Version> GetLastInstalledWalletVersion() {
+  return last_installed_wallet_version;
+}
+
+void SetLastInstalledWalletVersionForTest(const base::Version& version) {
+  last_installed_wallet_version = version;
+}
+
+WalletDataFilesInstaller::WalletDataFilesInstaller() = default;
+
+WalletDataFilesInstaller::~WalletDataFilesInstaller() = default;
+
+// static
+WalletDataFilesInstaller& WalletDataFilesInstaller::GetInstance() {
+  static base::NoDestructor<WalletDataFilesInstaller> instance;
+  return *instance;
+}
+
+void WalletDataFilesInstaller::SetDelegate(
+    std::unique_ptr<WalletDataFilesInstallerDelegate> delegate) {
+  CHECK(!delegate_);
+
+  delegate_ = std::move(delegate);
+  if (auto* cus = delegate_->GetComponentUpdater()) {
+    component_updater_observation_.Observe(cus);
   }
 }
 
-void RegisterWalletDataFilesComponentOnDemand(
+void WalletDataFilesInstaller::RegisterWalletDataFilesComponentInternal(
     component_updater::ComponentUpdateService* cus) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<WalletDataFilesInstallerPolicy>());
@@ -483,16 +177,62 @@ void RegisterWalletDataFilesComponentOnDemand(
       }));
 }
 
-absl::optional<base::Version> GetLastInstalledWalletVersion() {
-  return last_installed_wallet_version;
+void WalletDataFilesInstaller::MaybeRegisterWalletDataFilesComponent(
+    component_updater::ComponentUpdateService* cus,
+    PrefService* local_state) {
+  if (!IsNativeWalletEnabled() || !HasCreatedWallets(local_state)) {
+    return;
+  }
+
+  registered_ = true;
+  RegisterWalletDataFilesComponentInternal(cus);
 }
 
-void SetLastInstalledWalletVersionForTest(const base::Version& version) {
-  last_installed_wallet_version = version;
+void WalletDataFilesInstaller::MaybeRegisterWalletDataFilesComponentOnDemand(
+    InstallCallback install_callback) {
+  if (registered_ || !delegate_) {  // delegate_ can be nullptr in tests.
+    std::move(install_callback).Run();
+    return;
+  }
+
+  auto* cus = delegate_->GetComponentUpdater();
+  if (!cus) {
+    std::move(install_callback).Run();
+    return;
+  }
+
+  registered_ = true;
+  CHECK(!install_callback_);
+  install_callback_ = std::move(install_callback);
+  RegisterWalletDataFilesComponentInternal(cus);
 }
 
-std::string GetWalletDataFilesComponentId() {
-  return kComponentId;
+void WalletDataFilesInstaller::OnComponentReady(const base::FilePath& path) {
+  auto callback =
+      install_callback_ ? std::move(install_callback_) : base::DoNothing();
+  BlockchainRegistry::GetInstance()->ParseLists(path, std::move(callback));
+}
+
+void WalletDataFilesInstaller::OnEvent(
+    update_client::UpdateClient::Observer::Events event,
+    const std::string& id) {
+  if (id != kComponentId) {
+    return;
+  }
+
+  if (event ==
+      update_client::UpdateClient::Observer::Events::COMPONENT_UPDATE_ERROR) {
+    if (install_callback_) {
+      std::move(install_callback_).Run();
+    }
+  }
+}
+
+void WalletDataFilesInstaller::ResetForTesting() {
+  component_updater_observation_.Reset();
+  delegate_.reset();
+  registered_ = false;
+  install_callback_.Reset();
 }
 
 }  // namespace brave_wallet

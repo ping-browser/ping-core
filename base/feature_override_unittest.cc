@@ -4,9 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_override.h"
+
+#include <optional>
+
 #include "base/debug/debugging_buildflags.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/memory/raw_ref.h"
 #include "base/test/mock_callback.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -47,28 +51,35 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 
 TEST(FeatureOverrideTest, OverridesTest) {
   struct TestCase {
-    const Feature& feature;
+    const raw_ref<const base::Feature> feature;
     const bool is_enabled;
     const bool is_overridden;
   };
   constexpr TestCase kTestCases[] = {
       // Untouched features.
-      {kTestControlEnabledFeature, true, false},
-      {kTestControlDisabledFeature, false, false},
+      {raw_ref<const base::Feature>(kTestControlEnabledFeature), true, false},
+      {raw_ref<const base::Feature>(kTestControlDisabledFeature), false, false},
 
       // Overridden features.
-      {kTestEnabledButOverridenFeature, false, true},
-      {kTestDisabledButOverridenFeature, true, true},
+      {raw_ref<const base::Feature>(kTestEnabledButOverridenFeature), false,
+       true},
+      {raw_ref<const base::Feature>(kTestDisabledButOverridenFeature), true,
+       true},
 
       // Overridden but with the same state.
-      {kTestEnabledButOverridenFeatureWithSameState, true, false},
+      {raw_ref<const base::Feature>(
+           kTestEnabledButOverridenFeatureWithSameState),
+       true, true},
   };
   for (const auto& test_case : kTestCases) {
-    SCOPED_TRACE(testing::Message() << test_case.feature.name);
-    EXPECT_EQ(test_case.is_enabled, FeatureList::IsEnabled(test_case.feature));
+    SCOPED_TRACE(testing::Message() << test_case.feature->name);
+    EXPECT_EQ(test_case.is_enabled, FeatureList::IsEnabled(*test_case.feature));
     EXPECT_EQ(test_case.is_overridden,
               FeatureList::GetInstance()->IsFeatureOverridden(
-                  test_case.feature.name));
+                  test_case.feature->name));
+    EXPECT_EQ(test_case.is_overridden ? std::make_optional(test_case.is_enabled)
+                                      : std::nullopt,
+              FeatureList::GetStateIfOverridden(*test_case.feature));
   }
 }
 

@@ -5,31 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-#include "base/check.h"
+#include "base/i18n/time_formatting.h"
 #include "base/time/time.h"
-#include "base/time/time_to_iso8601.h"
 
 namespace brave_ads {
 
-base::Time TimeFromString(const std::string& time_string, const bool is_local) {
-  base::Time time;
-
-  if (is_local) {
-    CHECK(base::Time::FromString(time_string.c_str(), &time));
-  } else {
-    CHECK(base::Time::FromUTCString(time_string.c_str(), &time));
-  }
-
-  return time;
-}
-
 base::Time DistantPast() {
   // Just after the myth of the beginning of time.
-  return base::Time() + base::Microseconds(1);
+  return base::Time() + base::Milliseconds(1);
 }
 
-std::string DistantPastAsISO8601() {
-  return base::TimeToISO8601(DistantPast());
+std::string DistantPastAsIso8601() {
+  return base::TimeFormatAsIso8601(DistantPast());
 }
 
 base::Time Now() {
@@ -37,20 +24,20 @@ base::Time Now() {
   return base::Time::Now();
 }
 
-std::string NowAsISO8601() {
-  return base::TimeToISO8601(Now());
+std::string NowAsIso8601() {
+  return base::TimeFormatAsIso8601(Now());
 }
 
 base::Time DistantFuture() {
   // Chrome timestamps are 64-bit and will not overflow at 03:14:08 UTC on 19
   // January 2038. However, I only like to think about so far into the future
   // because it comes soon enough.
-  return base::Time::FromDoubleT(
-      /*Tuesday, 19 January 2038 03:14:07*/ 2147483647);
+  return base::Time::FromSecondsSinceUnixEpoch(
+      /*Tuesday, 19 January 2038 03:14:07=*/2147483647);
 }
 
-std::string DistantFutureAsISO8601() {
-  return base::TimeToISO8601(DistantFuture());
+std::string DistantFutureAsIso8601() {
+  return base::TimeFormatAsIso8601(DistantFuture());
 }
 
 }  // namespace brave_ads

@@ -6,8 +6,11 @@
 #include "brave/components/greaselion/browser/greaselion_service_impl.h"
 
 #include <stddef.h>
+
 #include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -31,7 +34,6 @@
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/update_client/buildflags.h"
 #include "brave/components/version_info//version_info.h"
-#include "chrome/browser/extensions/extension_service.h"
 #include "components/version_info/version_info.h"
 #include "crypto/sha2.h"
 #include "extensions/browser/computed_hashes.h"
@@ -43,7 +45,6 @@
 #include "extensions/common/file_util.h"
 #include "extensions/common/manifest_constants.h"
 #include "extensions/common/mojom/manifest.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using extensions::Extension;
 using extensions::mojom::ManifestLocation;
@@ -64,7 +65,7 @@ bool ShouldComputeHashesForResource(
 // extension that the caller should take ownership of, or nullptr.
 //
 // NOTE: This function does file IO and should not be called on the UI thread.
-absl::optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
+std::optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
 ConvertGreaselionRuleToExtensionOnTaskRunner(
     const greaselion::GreaselionRule& rule,
     const base::FilePath& install_dir) {
@@ -72,13 +73,13 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
       extensions::file_util::GetInstallTempDir(install_dir);
   if (install_temp_dir.empty()) {
     LOG(ERROR) << "Could not get path to profile temp directory";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::ScopedTempDir temp_dir;
   if (!temp_dir.CreateUniqueTempDirUnderPath(install_temp_dir)) {
     LOG(ERROR) << "Could not create Greaselion temp directory";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Create the manifest
@@ -94,7 +95,6 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   // rule name to a known Brave domain and hash the result to create a
   // public key.
   char raw[crypto::kSHA256Length] = {0};
-  std::string key;
   std::string script_name = rule.name();
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
@@ -107,12 +107,12 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
     crypto::SHA256HashString(BUILDFLAG(UPDATER_PROD_ENDPOINT) + script_name,
                              raw, crypto::kSHA256Length);
   }
-  base::Base64Encode(base::StringPiece(raw, crypto::kSHA256Length), &key);
-
   root.SetByDottedPath(extensions::manifest_keys::kName, script_name);
   root.SetByDottedPath(extensions::manifest_keys::kVersion, "1.0");
   root.SetByDottedPath(extensions::manifest_keys::kDescription, "");
-  root.SetByDottedPath(extensions::manifest_keys::kPublicKey, key);
+  root.SetByDottedPath(
+      extensions::manifest_keys::kPublicKey,
+      base::Base64Encode(std::string_view(raw, crypto::kSHA256Length)));
   root.SetByDottedPath("incognito",
                        extensions::manifest_values::kIncognitoNotAllowed);
 
@@ -131,8 +131,8 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   // All Greaselion scripts default to document end.
   content_script.run_at =
       rule.run_at() == kRunAtDocumentStart
-          ? extensions::api::content_scripts::RunAt::kDocumentStart
-          : extensions::api::content_scripts::RunAt::kDocumentEnd;
+          ? extensions::api::extension_types::RunAt::kDocumentStart
+          : extensions::api::extension_types::RunAt::kDocumentEnd;
 
   if (!rule.messages().empty()) {
     root.SetByDottedPath(extensions::manifest_keys::kDefaultLocale, "en_US");
@@ -154,7 +154,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   // files to disk.
   if (!serializer.Serialize(base::Value(std::move(root)))) {
     LOG(ERROR) << "Could not write Greaselion manifest";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Copy the messages directory to our extension directory.
@@ -164,7 +164,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
             temp_dir.GetPath().AppendASCII("_locales"), true)) {
       LOG(ERROR) << "Could not copy Greaselion messages directory at path: "
                  << rule.messages().LossyDisplayName();
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 
@@ -174,7 +174,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
                         temp_dir.GetPath().Append(script.BaseName()))) {
       LOG(ERROR) << "Could not copy Greaselion script at path: "
           << script.LossyDisplayName();
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 
@@ -185,11 +185,11 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   if (!extension.get()) {
     LOG(ERROR) << "Could not load Greaselion extension";
     LOG(ERROR) << error;
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Calculate and write computed hashes.
-  absl::optional<extensions::ComputedHashes::Data> computed_hashes_data =
+  std::optional<extensions::ComputedHashes::Data> computed_hashes_data =
       extensions::ComputedHashes::Compute(
           extension->path(),
           extension_misc::kContentVerificationDefaultBlockSize,
@@ -221,11 +221,11 @@ GreaselionServiceImpl::GreaselionServiceImpl(
     const base::FilePath& install_directory,
     extensions::ExtensionSystem* extension_system,
     extensions::ExtensionRegistry* extension_registry,
-    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
+    std::unique_ptr<Delegate> delegate)
     : download_service_(download_service),
       install_directory_(install_directory),
       extension_system_(extension_system),
-      extension_service_(extension_system->extension_service()),
       extension_registry_(extension_registry),
       all_rules_installed_successfully_(true),
       update_in_progress_(false),
@@ -234,6 +234,7 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       task_runner_(std::move(task_runner)),
       browser_version_(
           version_info::GetBraveVersionWithoutChromiumMajorVersion()),
+      delegate_(std::move(delegate)),
       weak_factory_(this) {
   download_service_->AddObserver(this);
   extension_registry_->AddObserver(this);
@@ -282,8 +283,7 @@ void GreaselionServiceImpl::UpdateInstalledExtensions() {
     // installed. OnExtensionUnloaded will be called on each extension, where we
     // will update the greaselion_extensions_ set. Once it's empty, that
     // callback will call CreateAndInstallExtensions().
-    extension_service_->UnloadExtension(
-        id, extensions::UnloadedExtensionReason::UPDATE);
+    delegate_->UnloadExtension(id);
   }
 }
 
@@ -331,7 +331,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
 }
 
 void GreaselionServiceImpl::PostConvert(
-    absl::optional<GreaselionConvertedExtension> converted_extension) {
+    std::optional<GreaselionConvertedExtension> converted_extension) {
   if (!converted_extension) {
     all_rules_installed_successfully_ = false;
     pending_installs_ -= 1;
@@ -349,7 +349,7 @@ void GreaselionServiceImpl::PostConvert(
 
 void GreaselionServiceImpl::Install(
     scoped_refptr<extensions::Extension> extension) {
-  extension_service_->AddExtension(extension.get());
+  delegate_->AddExtension(extension.get());
 }
 
 void GreaselionServiceImpl::OnExtensionReady(

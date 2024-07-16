@@ -4,13 +4,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "brave/ios/browser/api/favicon/favicon_driver.h"
+
+#include <optional>
+
 #import "base/values.h"
 #import "brave/ios/browser/api/web/web_state/web_state+private.h"
 #import "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/keyed_service/core/service_access_type.h"
-#include "ios/chrome/browser/favicon/favicon_service_factory.h"
+#include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
@@ -19,7 +22,7 @@
 #import "ios/web/navigation/navigation_context_impl.h"
 #include "ios/web/public/js_messaging/script_message.h"
 #import "ios/web/web_state/web_state_impl.h"
-#import "net/base/mac/url_conversions.h"
+#import "net/base/apple/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -129,7 +132,7 @@ void FaviconDriverObserver::OnFaviconUpdated(
   }
 
   NSURL* ns_url = scriptMessage.frameInfo.request.URL;
-  absl::optional<GURL> url;
+  std::optional<GURL> url;
   if (ns_url) {
     url = net::GURLWithNSURL(ns_url);
   }

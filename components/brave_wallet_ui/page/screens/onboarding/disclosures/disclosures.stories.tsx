@@ -4,17 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { WalletRoutes } from '../../../../constants/types'
 
 import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import OnboardingDisclosures from './disclosures'
 
 export const _OnboardingDisclosures = () => {
-  return <WalletPageStory>
-    <OnboardingDisclosures
-      nextStep={WalletRoutes.OnboardingCreatePassword}
-    />
-  </WalletPageStory>
+  return (
+    <WalletPageStory>
+      <OnboardingDisclosures />
+    </WalletPageStory>
+  )
 }
 
 _OnboardingDisclosures.story = {

@@ -17,6 +17,8 @@ using BlobURLStoreImpl_BraveImpl = BlobURLStoreImpl;
   friend BlobURLStoreImpl_BraveImpl; \
   bool BlobUrlIsValid
 
+#include <optional>
+
 #include "src/storage/browser/blob/blob_url_store_impl.h"  // IWYU pragma: export
 
 #undef BlobUrlIsValid
@@ -27,17 +29,8 @@ namespace storage {
 class COMPONENT_EXPORT(STORAGE_BROWSER) BlobURLStoreImpl
     : public BlobURLStoreImpl_ChromiumImpl {
  public:
-  BlobURLStoreImpl(const blink::StorageKey& storage_key,
-                   base::WeakPtr<BlobUrlRegistry> registry,
-                   BlobURLValidityCheckBehavior validity_check_options =
-                       BlobURLValidityCheckBehavior::DEFAULT);
+  using BlobURLStoreImpl_ChromiumImpl::BlobURLStoreImpl_ChromiumImpl;
 
-  void Register(mojo::PendingRemote<blink::mojom::Blob> blob,
-                const GURL& url,
-                const base::UnguessableToken& unsafe_agent_cluster_id,
-                const absl::optional<net::SchemefulSite>& unsafe_top_level_site,
-                RegisterCallback callback) override;
-  void Revoke(const GURL& url) override;
   void Resolve(const GURL& url, ResolveCallback callback) override;
   void ResolveAsURLLoaderFactory(
       const GURL& url,
@@ -47,9 +40,6 @@ class COMPONENT_EXPORT(STORAGE_BROWSER) BlobURLStoreImpl
       const GURL& url,
       mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
       ResolveForNavigationCallback callback) override;
-
- private:
-  GURL GetPartitionedOrOriginalUrl(const GURL& url) const;
 };
 
 }  // namespace storage

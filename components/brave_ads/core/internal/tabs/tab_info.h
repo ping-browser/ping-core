@@ -15,6 +15,11 @@ namespace brave_ads {
 
 struct TabInfo final {
   TabInfo();
+  TabInfo(int32_t id,
+          bool is_visible,
+          std::vector<GURL> redirect_chain,
+          bool is_error_page,
+          bool is_playing_media);
 
   TabInfo(const TabInfo&);
   TabInfo& operator=(const TabInfo&);
@@ -24,11 +29,12 @@ struct TabInfo final {
 
   ~TabInfo();
 
-  bool operator==(const TabInfo&) const;
-  bool operator!=(const TabInfo&) const;
+  bool operator==(const TabInfo&) const = default;
 
   int32_t id = 0;
+  bool is_visible = false;
   std::vector<GURL> redirect_chain;
+  bool is_error_page = false;
   bool is_playing_media = false;
 };
 

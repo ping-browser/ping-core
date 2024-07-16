@@ -13,12 +13,12 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
-#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
+#include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
+#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_resources.h"
@@ -144,7 +144,7 @@ void AdblockDOMHandler::HandleEnableFilterList(const base::Value::List& args) {
   std::string uuid = args[0].GetString();
   bool enabled = args[1].GetBool();
   g_brave_browser_process->ad_block_service()
-      ->regional_service_manager()
+      ->component_service_manager()
       ->EnableFilterList(uuid, enabled);
 }
 
@@ -162,7 +162,7 @@ void AdblockDOMHandler::HandleGetRegionalLists(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   AllowJavascript();
   auto regional_lists = g_brave_browser_process->ad_block_service()
-                            ->regional_service_manager()
+                            ->component_service_manager()
                             ->GetRegionalLists();
   CallJavascriptFunction("brave_adblock.onGetRegionalLists", regional_lists);
 }
@@ -282,10 +282,10 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
       web_ui()->GetWebContents(),
       content::OpenURLParams(file_url, content::Referrer(),
                              WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                             ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false));
+                             ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
+      /*navigation_handle_callback=*/{});
 #else
-  auto* browser =
-      chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
+  auto* browser = chrome::FindBrowserWithTab(web_ui()->GetWebContents());
   ShowSingletonTabOverwritingNTP(browser, file_url);
 #endif
 }
@@ -302,9 +302,10 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
     dict.Set("subscription_url", subscription.subscription_url.spec());
     dict.Set("enabled", subscription.enabled);
     dict.Set("last_update_attempt",
-             subscription.last_update_attempt.ToJsTime());
+             subscription.last_update_attempt.InMillisecondsFSinceUnixEpoch());
     dict.Set("last_successful_update_attempt",
-             subscription.last_successful_update_attempt.ToJsTime());
+             subscription.last_successful_update_attempt
+                 .InMillisecondsFSinceUnixEpoch());
     if (subscription.homepage) {
       dict.Set("homepage", *subscription.homepage);
     }

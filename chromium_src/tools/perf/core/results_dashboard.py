@@ -3,14 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """A inline part of result_dashboard.py"""
-import re
 import os
 import sys
 import subprocess
 
 import override_utils
 
-from core import path_util  # pylint: disable=import-error
+from core import path_util
 
 
 def BraveAuthTokenGeneratorCallback():
@@ -42,10 +41,27 @@ def SendResults(original_function, *args, **kwargs):
 
 
 @override_utils.override_function(globals())
-def _MakeBuildStatusUrl(original_function, project, buildbucket, buildername,
-                        buildnumber):
-    m = re.match('brave/refs/tags/(.+)', buildername)
-    if m:
-        URL = 'https://github.com/brave/brave-browser/releases/tag/%s'
-        return URL % m.group(1)
-    return original_function(project, buildbucket, buildername, buildnumber)
+def _MakeBuildStatusUrl(*_args):
+    return None
+
+
+@override_utils.override_function(globals())
+def MakeHistogramSetWithDiagnostics(original_function, histograms_file,
+                                    test_name, bot, buildername, buildnumber,
+                                    project, buildbucket, revisions_dict, *args,
+                                    **kwargs):
+    # Add the extra diagnostic passed via env
+    for key, value in os.environ.items():
+        s = key.split('DASHBOARD_EXTRA_DIAG_')
+        if len(s) > 1:
+            diag = s[1].lower()
+            logging.info('Extra diag: %s = %s', diag, value)
+            revisions_dict['--' + diag] = value
+
+    # Remove unused fields:
+    revisions_dict.pop('--v8_revisions')
+    revisions_dict.pop('--webrtc_revisions')
+
+    return original_function(histograms_file, test_name, bot, buildername,
+                             buildnumber, project, buildbucket, revisions_dict,
+                             *args, **kwargs)

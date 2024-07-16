@@ -27,7 +27,7 @@ namespace extensions {
       brave_extension_id,
       parental_control_id,
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-      ethereum_remote_client_extension_id,
+      kEthereumRemoteClientExtensionId,
 #endif
       brave_webtorrent_extension_id
     };

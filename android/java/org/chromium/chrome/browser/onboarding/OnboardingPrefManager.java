@@ -18,7 +18,8 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.BraveActivity.BraveActivityNotFoundException;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -68,7 +69,7 @@ public class OnboardingPrefManager {
     public static final int EXISTING_USER_REWARDS_OFF_ONBOARDING = 1;
     public static final int EXISTING_USER_REWARDS_ON_ONBOARDING = 2;
 
-    private static boolean isOnboardingNotificationShown;
+    private static boolean sIsOnboardingNotificationShown;
 
     public static boolean isNotification;
 
@@ -175,7 +176,10 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.getPrivacyHubMetrics().recordEnabledStatus(enabled);
+            MiscAndroidMetrics miscAndroidMetrics = activity.getMiscAndroidMetrics();
+            if (miscAndroidMetrics != null) {
+                miscAndroidMetrics.recordPrivacyHubEnabledStatus(enabled);
+            }
         } catch (BraveActivityNotFoundException e) {
             Log.e(TAG, "Could not report privacy hub enabled change to P3A: " + e);
         }
@@ -212,20 +216,22 @@ public class OnboardingPrefManager {
     }
 
     public boolean isAdsAvailable() {
-        return BraveAdsNativeHelper.nativeIsSupportedRegion(Profile.getLastUsedRegularProfile());
+        return BraveAdsNativeHelper.nativeIsSupportedRegion(
+                ProfileManager.getLastUsedRegularProfile());
     }
 
     public void showOnboarding(Context context) {
         Intent intent = new Intent(context, OnboardingActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
         context.startActivity(intent);
     }
 
     public boolean isOnboardingNotificationShown() {
-        return isOnboardingNotificationShown;
+        return sIsOnboardingNotificationShown;
     }
 
     public void setOnboardingNotificationShown(boolean isShown) {
-        isOnboardingNotificationShown = isShown;
+        sIsOnboardingNotificationShown = isShown;
     }
 
     public void onboardingNotification() {

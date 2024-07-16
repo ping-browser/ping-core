@@ -4,12 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import LeoIcon from '@brave/leo/react/icon'
-import {
-  AssetIconProps,
-  AssetIconFactory
-} from '../../../../components/shared/style'
 
 export const Text = styled.span<{
   textSize?: '20px' | '18px' | '16px' | '14px' | '12px'
@@ -36,10 +32,11 @@ export const Text = styled.span<{
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   @media screen and (max-width: 570px) {
     font-size: ${(p) =>
-    p.responsiveTextSize
-      ? p.responsiveTextSize
-      : p.textSize ? p.textSize : '18px'
-  };
+      p.responsiveTextSize
+        ? p.responsiveTextSize
+        : p.textSize
+        ? p.textSize
+        : '18px'};
   }
 `
 
@@ -56,7 +53,7 @@ export const StyledDiv = styled.div`
   letter-spacing: 0.02em;
 `
 
-export const Row = styled(StyledDiv) <{
+export const Row = styled(StyledDiv)<{
   rowWidth?: 'dynamic' | 'full'
   rowHeight?: 'dynamic' | 'full'
   marginBottom?: number
@@ -70,10 +67,7 @@ export const Row = styled(StyledDiv) <{
   --horizontal-padding: ${(p) => p.horizontalPadding ?? 0}px;
   @media screen and (max-width: 570px) {
     --vertical-padding: ${(p) =>
-    p.verticalPaddingResponsive
-    ?? p.verticalPadding
-    ?? 0
-  }px;
+      p.verticalPaddingResponsive ?? p.verticalPadding ?? 0}px;
   }
   box-sizing: border-box;
   flex-direction: row;
@@ -85,7 +79,7 @@ export const Row = styled(StyledDiv) <{
   height: ${(p) => (p.rowHeight === 'full' ? '100%' : 'unset')};
 `
 
-export const Column = styled(StyledDiv) <{
+export const Column = styled(StyledDiv)<{
   columnWidth?: 'dynamic' | 'full'
   columnHeight?: 'dynamic' | 'full'
   horizontalAlign?: 'flex-start' | 'center' | 'flex-end'
@@ -105,21 +99,21 @@ export const Column = styled(StyledDiv) <{
   width: ${(p) => (p.columnWidth === 'full' ? '100%' : 'unset')};
 `
 
-export const HorizontalSpacer = styled(StyledDiv) <{
+export const HorizontalSpacer = styled(StyledDiv)<{
   size: number
 }>`
   height: 100%;
   width: ${(p) => p.size}px;
 `
 
-export const VerticalSpacer = styled(StyledDiv) <{
+export const VerticalSpacer = styled(StyledDiv)<{
   size: number
 }>`
   height: ${(p) => p.size}px;
   width: 100%;
 `
 
-export const HorizontalDivider = styled(StyledDiv) <{
+export const HorizontalDivider = styled(StyledDiv)<{
   height?: number
   marginLeft?: number
   marginLeftResponsive?: number
@@ -139,7 +133,7 @@ export const HorizontalDivider = styled(StyledDiv) <{
   }
 `
 
-export const VerticalDivider = styled(StyledDiv) <{
+export const VerticalDivider = styled(StyledDiv)<{
   width?: number
   marginTop?: number
   marginBottom?: number
@@ -151,10 +145,10 @@ export const VerticalDivider = styled(StyledDiv) <{
   width: ${(p) => (p.width ? `${p.width}px` : '100%')};
 `
 
-export const Icon = styled(LeoIcon) <{
+export const Icon = styled(LeoIcon)<{
   size?: number
 }>`
-  --leo-icon-size: ${(p) => p.size !== undefined ? p.size : 22}px;
+  --leo-icon-size: ${(p) => (p.size !== undefined ? p.size : 22)}px;
   color: ${leo.color.icon.default};
 `
 
@@ -200,20 +194,19 @@ export const IconButton = styled(StyledButton)`
   padding: 0px;
 `
 
-export const HiddenResponsiveRow = styled(Row) <
-  {
-    dontHide?: boolean,
-    maxWidth?: number
-  }>`
+export const HiddenResponsiveRow = styled(Row)<{
+  dontHide?: boolean
+  maxWidth?: number
+}>`
   display: flex;
-  @media screen and (max-width: ${(p) => p.maxWidth ? p.maxWidth : 800}px) {
+  @media screen and (max-width: ${(p) => (p.maxWidth ? p.maxWidth : 800)}px) {
     display: ${(p) => (p.dontHide ? 'flex' : 'none')};
   }
 `
 
-export const ShownResponsiveRow = styled(Row) <{ maxWidth?: number }>`
+export const ShownResponsiveRow = styled(Row)<{ maxWidth?: number }>`
   display: none;
-  @media screen and (max-width: ${(p) => p.maxWidth ? p.maxWidth : 800}px) {
+  @media screen and (max-width: ${(p) => (p.maxWidth ? p.maxWidth : 800)}px) {
     display: flex;
   }
 `
@@ -257,8 +250,3 @@ export const StyledLabel = styled.label`
   line-height: 18px;
   color: ${(p) => p.theme.color.text01};
 `
-
-export const AssetIcon = AssetIconFactory<AssetIconProps>({
-  width: '40px',
-  height: 'auto'
-})

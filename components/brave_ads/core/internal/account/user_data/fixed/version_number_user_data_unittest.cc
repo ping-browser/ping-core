@@ -5,11 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
 
-#include <string>
-
-#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
@@ -21,25 +17,21 @@ class BraveAdsVersionNumberUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
        BuildVersionNumberUserDataForRewardsUser) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  const std::string expected_json = base::ReplaceStringPlaceholders(
-      R"({"versionNumber":"$1"})", {GetBrowserVersionNumber()}, nullptr);
-  EXPECT_EQ(base::test::ParseJsonDict(expected_json),
-            BuildVersionNumberUserData());
+  // Act & Assert
+  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
+      R"(
+          {
+            "versionNumber": "1.2.3.4"
+          })");
+  EXPECT_EQ(expected_user_data, BuildVersionNumberUserData());
 }
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
        BuildVersionNumberUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildVersionNumberUserData().empty());
 }
 

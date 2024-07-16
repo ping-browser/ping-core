@@ -5,20 +5,33 @@
 
 #include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 
+#include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
+#include "chrome/browser/win/titlebar_config.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 
 #define BrowserCaptionButtonContainer BrowserCaptionButtonContainer_ChromiumImpl
 
+// In case vertical tab is visible without window title bar, we should show
+// custom caption buttons over toolbar.
+#define ShouldBrowserCustomDrawTitlebar(browser_view)        \
+  (static_cast<BraveBrowserFrameViewWin*>(frame_view_.get()) \
+       ->ShouldCaptionButtonsBeDrawnOverToolbar() ||         \
+   ShouldBrowserCustomDrawTitlebar(browser_view))
+
 #include "src/chrome/browser/ui/views/frame/browser_caption_button_container_win.cc"
+
+#undef ShouldBrowserCustomDrawTitlebar
 #undef BrowserCaptionButtonContainer
 
 BrowserCaptionButtonContainer::BrowserCaptionButtonContainer(
     BrowserFrameViewWin* frame_view)
     : BrowserCaptionButtonContainer_ChromiumImpl(frame_view),
       frame_view_(frame_view) {
-  if (WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(
+  if (WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
           frame_view_->browser_view()->browser())) {
     pref_change_registrar_.Init(
         frame_view_->browser_view()->GetProfile()->GetPrefs());
@@ -51,3 +64,6 @@ void BrowserCaptionButtonContainer::UpdateSearchTabsButtonState() {
     button->SetVisible(is_tab_search_visible);
   }
 }
+
+BEGIN_METADATA(BrowserCaptionButtonContainer)
+END_METADATA

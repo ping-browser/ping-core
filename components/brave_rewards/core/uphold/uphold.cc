@@ -8,26 +8,37 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
-#include "brave/components/brave_rewards/core/buildflags.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/connect_uphold_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/uphold/get_uphold_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/uphold_transfer.h"
 
 namespace brave_rewards::internal::uphold {
 
-Uphold::Uphold(RewardsEngineImpl& engine)
+Uphold::Uphold(RewardsEngine& engine)
     : WalletProvider(engine), server_(engine) {
   connect_wallet_ = std::make_unique<ConnectUpholdWallet>(engine);
-  get_wallet_ = std::make_unique<GetUpholdWallet>(engine);
   transfer_ = std::make_unique<UpholdTransfer>(engine);
 }
 
 const char* Uphold::WalletType() const {
   return constant::kWalletUphold;
+}
+
+void Uphold::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
+  auto url = engine_->Get<EnvironmentConfig>().uphold_oauth_url();
+
+  external_wallet.account_url = url.Resolve("/dashboard").spec();
+
+  if (!external_wallet.address.empty()) {
+    external_wallet.activity_url =
+        URLHelpers::Resolve(
+            url, {"/dashboard/cards/", external_wallet.address, "/activity"})
+            .spec();
+  }
 }
 
 void Uphold::FetchBalance(
@@ -45,7 +56,11 @@ void Uphold::FetchBalance(
 }
 
 std::string Uphold::GetFeeAddress() const {
-  return uphold::GetFeeAddress();
+  return engine_->Get<EnvironmentConfig>().uphold_fee_address();
+}
+
+void Uphold::CheckEligibility() {
+  static_cast<ConnectUpholdWallet*>(connect_wallet_.get())->CheckEligibility();
 }
 
 }  // namespace brave_rewards::internal::uphold

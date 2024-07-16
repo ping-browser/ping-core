@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 4dc748c01dbb9a364677edf112b563f44d337743..a801a93ece680e7d965101192a028ddf5d0264bf 100644
+index f97947a6cb5183af03450db40ae3c56df39c1a3d..2a1ff24a4f9e7ebdee573a861eeddbfb303c2816 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -135,6 +135,7 @@ class DeviceInfo {
+@@ -145,6 +145,7 @@ class DeviceInfo {
    DeviceInfo(const DeviceInfo&) = delete;
    DeviceInfo& operator=(const DeviceInfo&) = delete;
  

@@ -10,11 +10,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal::wallet_provider {
 
-Transfer::Transfer(RewardsEngineImpl& engine) : engine_(engine) {}
+Transfer::Transfer(RewardsEngine& engine) : engine_(engine) {}
 
 Transfer::~Transfer() = default;
 
@@ -94,7 +94,7 @@ void Transfer::OnSaveExternalTransaction(
     mojom::ExternalTransactionPtr transaction,
     mojom::Result result) const {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to save external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to save external transaction";
     return std::move(callback).Run(nullptr);
   }
 

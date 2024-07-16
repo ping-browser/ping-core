@@ -1,15 +1,15 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/permissions/permission_request.h"
-
+#include <optional>
 #include <vector>
 
 #include "base/containers/contains.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_request.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -18,6 +18,18 @@
 
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
+#if BUILDFLAG(IS_ANDROID)
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH                              \
+  case RequestType::kBraveEthereum:                              \
+  case RequestType::kBraveSolana:                                \
+    NOTREACHED();                                                \
+    return permissions::PermissionRequest::AnnotatedMessageText( \
+        std::u16string(), {});                                   \
+  case RequestType::kWidevine:                                   \
+    NOTREACHED();                                                \
+    return permissions::PermissionRequest::AnnotatedMessageText( \
+        std::u16string(), {});
+#else
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
@@ -26,6 +38,7 @@
   case RequestType::kWidevine:      \
     NOTREACHED();                   \
     return std::u16string();
+#endif
 
 // For permission strings that we also need on Android, we need to use
 // a string that has a placeholder ($1) in it.
@@ -75,6 +88,9 @@ const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
 #include "src/components/permissions/permission_request.cc"
 #undef IDS_VR_INFOBAR_TEXT
 #undef IDS_VR_PERMISSION_FRAGMENT
+#undef BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID
+#undef BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP
+#undef BRAVE_ENUM_ITEMS_FOR_SWITCH
 #undef IsDuplicateOf
 #undef PermissionRequest
 
@@ -92,7 +108,50 @@ PermissionRequest::PermissionRequest(
                                      std::move(permission_decided_callback),
                                      std::move(delete_callback)) {}
 
+PermissionRequest::PermissionRequest(
+    PermissionRequestData request_data,
+    PermissionDecidedCallback permission_decided_callback,
+    base::OnceClosure delete_callback,
+    bool uses_automatic_embargo)
+    : PermissionRequest_ChromiumImpl(std::move(request_data),
+                                     std::move(permission_decided_callback),
+                                     std::move(delete_callback),
+                                     uses_automatic_embargo) {}
+
 PermissionRequest::~PermissionRequest() = default;
+
+#if BUILDFLAG(IS_ANDROID)
+PermissionRequest::AnnotatedMessageText
+PermissionRequest::GetDialogAnnotatedMessageText(
+    const GURL& embedding_origin) const {
+  if (request_type() != RequestType::kStorageAccess) {
+    return PermissionRequest_ChromiumImpl::GetDialogAnnotatedMessageText(
+        embedding_origin);
+  }
+  std::u16string requesting_origin_string_formatted =
+      url_formatter::FormatUrlForSecurityDisplay(
+          requesting_origin(),
+          url_formatter::SchemeDisplay::OMIT_CRYPTOGRAPHIC);
+  std::u16string embedding_origin_string_formatted =
+      url_formatter::FormatUrlForSecurityDisplay(
+          embedding_origin, url_formatter::SchemeDisplay::OMIT_CRYPTOGRAPHIC);
+  return AnnotatedMessageText(
+      l10n_util::GetStringFUTF16(IDS_STORAGE_ACCESS_INFOBAR_TEXT,
+                                 requesting_origin_string_formatted,
+                                 embedding_origin_string_formatted),
+      /*bolded_ranges=*/{});
+}
+
+// static
+PermissionRequest::AnnotatedMessageText
+PermissionRequest::GetDialogAnnotatedMessageText(
+    std::u16string requesting_origin_formatted_for_display,
+    int message_id,
+    bool format_origin_bold) {
+  return PermissionRequest_ChromiumImpl::GetDialogAnnotatedMessageText(
+      requesting_origin_formatted_for_display, message_id, format_origin_bold);
+}
+#endif
 
 bool PermissionRequest::SupportsLifetime() const {
   const RequestType kExcludedTypes[] = {
@@ -102,8 +161,6 @@ bool PermissionRequest::SupportsLifetime() const {
     RequestType::kProtectedMediaIdentifier,
 #else
     RequestType::kRegisterProtocolHandler,
-    RequestType::kSecurityAttestation,
-    RequestType::kU2fApiRequest,
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_WIDEVINE)
     RequestType::kWidevine
@@ -112,12 +169,12 @@ bool PermissionRequest::SupportsLifetime() const {
   return !base::Contains(kExcludedTypes, request_type());
 }
 
-void PermissionRequest::SetLifetime(absl::optional<base::TimeDelta> lifetime) {
+void PermissionRequest::SetLifetime(std::optional<base::TimeDelta> lifetime) {
   DCHECK(SupportsLifetime());
   lifetime_ = std::move(lifetime);
 }
 
-const absl::optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
+const std::optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
   DCHECK(SupportsLifetime());
   return lifetime_;
 }

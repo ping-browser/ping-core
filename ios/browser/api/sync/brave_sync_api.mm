@@ -20,10 +20,9 @@
 #include "brave/components/brave_sync/qr_code_validator.h"
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
-#include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_service_impl.h"
 #include "components/sync/service/sync_service_observer.h"
@@ -31,15 +30,9 @@
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
-#include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
-#include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_setup_service.h"
-#include "ios/chrome/browser/sync/sync_setup_service_factory.h"
-#include "ios/web/public/thread/web_task_traits.h"
-#include "ios/web/public/thread/web_thread.h"
+#include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/sync_service_factory.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -56,9 +49,6 @@ BraveSyncAPISyncProtocolErrorResult const
 BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultThrottled =
         static_cast<NSInteger>(syncer::SyncProtocolErrorType::THROTTLED);
-BraveSyncAPISyncProtocolErrorResult const
-    BraveSyncAPISyncProtocolErrorResultClearPending =
-        static_cast<NSInteger>(syncer::SyncProtocolErrorType::CLEAR_PENDING);
 BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultTransientError =
         static_cast<NSInteger>(syncer::SyncProtocolErrorType::TRANSIENT_ERROR);
@@ -370,11 +360,6 @@ BraveSyncAPIWordsValidationStatus const
 
 - (void)deleteDevice:(NSString*)guid {
   _worker->DeleteDevice(base::SysNSStringToUTF8(guid));
-}
-
-- (BraveSyncInternalsController*)createSyncInternalsController {
-  return [[BraveSyncInternalsController alloc]
-      initWithBrowserState:_chromeBrowserState];
 }
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged {

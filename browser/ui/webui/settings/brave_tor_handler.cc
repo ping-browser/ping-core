@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/settings/brave_tor_handler.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -157,7 +158,7 @@ class BridgeRequest {
     kWaitForBridges,
   };
 
-  void OnCaptchaResponse(std::unique_ptr<std::string> response_body) {
+  void OnCaptchaResponse(std::optional<std::string> response_body) {
     simple_url_loader_.reset();
 
     if (!response_body) {
@@ -216,7 +217,7 @@ class BridgeRequest {
     state_ = State::kProvideCaptcha;
   }
 
-  void OnBridgesResponse(std::unique_ptr<std::string> response_body) {
+  void OnBridgesResponse(std::optional<std::string> response_body) {
     simple_url_loader_.reset();
 
     if (!response_body) {

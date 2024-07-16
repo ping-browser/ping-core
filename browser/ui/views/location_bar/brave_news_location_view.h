@@ -13,6 +13,7 @@
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "components/prefs/pref_member.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/vector_icon_types.h"
 #include "ui/views/view.h"
 
@@ -24,6 +25,7 @@ class BraveNewsBubbleView;
 class BraveNewsLocationView : public PageActionIconView,
                               public BraveNewsTabHelper::PageFeedsObserver,
                               public content::WebContentsObserver {
+  METADATA_HEADER(BraveNewsLocationView, PageActionIconView)
  public:
   BraveNewsLocationView(
       Profile* profile,
@@ -40,8 +42,7 @@ class BraveNewsLocationView : public PageActionIconView,
   bool ShouldShowLabel() const override;
 
   // BraveNewsTabHelper::PageFeedsObserver:
-  void OnAvailableFeedsChanged(
-      const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override;
+  void OnAvailableFeedsChanged(const std::vector<GURL>& feeds) override;
 
   // views::View:
   void OnThemeChanged() override;

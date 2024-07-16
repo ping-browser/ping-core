@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/probe/BUILD.gn b/third_party/blink/renderer/core/probe/BUILD.gn
-index 064c19ed9d916359b52609aeeefe15297cd86b26..090b3da26c618750e355e59422cf74de0fa8f2bb 100644
+index 3148e66bc1769cc37080ceaa6ee369e93134fa42..979e8dbd5f82024e0b6be11822c0061dc740e282 100644
 --- a/third_party/blink/renderer/core/probe/BUILD.gn
 +++ b/third_party/blink/renderer/core/probe/BUILD.gn
-@@ -28,6 +28,7 @@ action("instrumentation_probes") {
-     "--output_dir",
-     rebase_path(blink_core_output_dir, root_build_dir),
-   ]
-+  import("//brave/third_party/blink/renderer/core/probe/sources.gni") deps = brave_third_party_blink_renderer_core_probe_instrumentation_probes_deps
- }
+@@ -36,6 +36,7 @@ template("probe_generator") {
+       "--output_dir",
+       rebase_path(invoker.output, root_build_dir),
+     ]
++    import("//brave/third_party/blink/renderer/core/probe/sources.gni") deps = brave_third_party_blink_renderer_core_probe_instrumentation_probes_deps
+   }
  
- source_set("generated") {
+   source_set("${target_name}__headers") {

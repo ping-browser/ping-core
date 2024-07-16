@@ -13,63 +13,48 @@
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
-#include "base/scoped_observation.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "components/prefs/pref_service.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace brave_news {
+
+namespace p3a {
+class NewsMetrics;
+}  // namespace p3a
+
 using Channels = base::flat_map<std::string, mojom::ChannelPtr>;
 using ChannelsCallback = base::OnceCallback<void(Channels)>;
 
-constexpr char kTopSourcesChannel[] = "Top Sources";
-constexpr char kTopNewsChannel[] = "Top News";
+inline constexpr char kTopSourcesChannel[] = "Top Sources";
+inline constexpr char kTopNewsChannel[] = "Top News";
+// Channels that are considered sensitive and should not be included in the feed
+// unless the user explicitly subscribes to them.
+inline constexpr std::array<const char*, 1> kSensitiveChannels = {"Politics"};
 
-class ChannelsController : public PublishersController::Observer {
+// Get all the channels for a publisher in a specific locale.
+std::vector<std::string> GetChannelsForPublisher(
+    const std::string& locale,
+    const mojom::PublisherPtr& publisher);
+
+class ChannelsController {
  public:
-  explicit ChannelsController(PrefService* prefs,
-                              PublishersController* publishers_controller);
-  ~ChannelsController() override;
+  explicit ChannelsController(PublishersController* publishers_controller);
+  ~ChannelsController();
   ChannelsController(const ChannelsController&) = delete;
   ChannelsController& operator=(const ChannelsController&) = delete;
 
-  static Channels GetChannelsFromPublishers(const Publishers& publishers,
-                                            PrefService* prefs);
+  static Channels GetChannelsFromPublishers(
+      const Publishers& publishers,
+      const BraveNewsSubscriptions& subscriptions);
 
-  // Get all the Locales the user has subscribed to channels in.
-  std::vector<std::string> GetChannelLocales() const;
-
-  // Gets all the locales the user has subscribed to a channel in.
-  std::vector<std::string> GetChannelLocales(
-      const std::string& channel_id) const;
-  void GetAllChannels(ChannelsCallback callback);
-  void AddListener(mojo::PendingRemote<mojom::ChannelsListener> listener);
-  mojom::ChannelPtr SetChannelSubscribed(const std::string& locale,
-                                         const std::string& channel_id,
-                                         bool subscribed);
-  bool GetChannelSubscribed(const std::string& locale,
-                            const std::string& channel_id);
-
-  // PublishersController::Observer:
-  void OnPublishersUpdated(PublishersController* controller) override;
+  void GetAllChannels(const BraveNewsSubscriptions& subscriptions,
+                      ChannelsCallback callback);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest, BuildFeed);
   FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest,
                            DuplicateItemsAreNotIncluded);
-  static void SetChannelSubscribedPref(PrefService* prefs,
-                                       const std::string& locale,
-                                       const std::string& channel_id,
-                                       bool subscribed);
-  raw_ptr<PrefService> prefs_;
   raw_ptr<PublishersController> publishers_controller_;
-
-  mojo::RemoteSet<mojom::ChannelsListener> listeners_;
-
-  base::ScopedObservation<PublishersController, PublishersController::Observer>
-      scoped_observation_{this};
 };
 }  // namespace brave_news
 

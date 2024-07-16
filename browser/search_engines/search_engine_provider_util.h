@@ -16,12 +16,12 @@ class PrefRegistrySyncable;
 namespace brave {
 
 bool IsRegionForQwant(Profile* profile);
-void SetBraveAsDefaultPrivateSearchProvider(PrefService* prefs);
+void SetBraveAsDefaultPrivateSearchProvider(Profile* profile);
 
 // For prefs migration.
 void RegisterSearchEngineProviderPrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
-void MigrateSearchEngineProviderPrefs(Profile* profile);
+void MigrateSearchEngineProviderPrefs(PrefService* prefs);
 
 // Initialize default provider for private profile.
 void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile);

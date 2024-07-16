@@ -19,7 +19,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/simple_menu_model.h"
 
@@ -58,22 +57,19 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
   menu_model.Build();
   EXPECT_NE(menu_model.GetItemCount(), 0u);
   {
-    auto tray_index =
-        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON);
-    EXPECT_TRUE(tray_index);
-    EXPECT_EQ(
-        menu_model.GetLabelAt(tray_index.value()),
-        l10n_util::GetStringUTF16(IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM));
+    // Don't show toggle menu when tray icon is visible.
+    EXPECT_FALSE(
+        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
   }
 
   // Wireguard protocol disbled in the setting.
-  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, false);
   EXPECT_TRUE(menu_model.IsTrayIconEnabled());
   menu_model.Clear();
   EXPECT_EQ(menu_model.GetItemCount(), 0u);
   menu_model.Build();
   EXPECT_NE(menu_model.GetItemCount(), 0u);
   {
+    // Still toggle menu is hidden.
     EXPECT_FALSE(
         menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
   }
@@ -81,7 +77,6 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
   // Cases with Disabled value.
   menu_model.SetTrayIconEnabledForTesting(false);
   prefs()->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, false);
-  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, true);
   EXPECT_FALSE(menu_model.IsTrayIconEnabled());
   menu_model.Clear();
   EXPECT_EQ(menu_model.GetItemCount(), 0u);
@@ -95,22 +90,6 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
         menu_model.GetLabelAt(tray_index.value()),
         l10n_util::GetStringUTF16(IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM));
   }
-}
-TEST_F(BraveVPNMenuModelUnitTest, TrayIconDisabled) {
-  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, false);
-
-  BraveVPNMenuModel menu_model(nullptr, prefs());
-
-  // Cases with Enabled value.
-  menu_model.SetTrayIconEnabledForTesting(true);
-  prefs()->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, true);
-
-  EXPECT_TRUE(menu_model.IsTrayIconEnabled());
-  menu_model.Clear();
-  EXPECT_EQ(menu_model.GetItemCount(), 0u);
-  menu_model.Build();
-  EXPECT_NE(menu_model.GetItemCount(), 0u);
-  EXPECT_FALSE(menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
 }
 #endif  // BUILDFLAG(IS_WIN)
 
@@ -126,12 +105,9 @@ TEST_F(BraveVPNMenuModelUnitTest, ToolbarVPNButton) {
   menu_model.Build();
   EXPECT_NE(menu_model.GetItemCount(), 0u);
   {
-    auto toolbar_index =
-        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON);
-    EXPECT_TRUE(toolbar_index);
-    EXPECT_EQ(
-        menu_model.GetLabelAt(toolbar_index.value()),
-        l10n_util::GetStringUTF16(IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM));
+    // Don't show toggle menu when button is visible.
+    EXPECT_FALSE(
+        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON));
   }
 
   // Cases with Disabled value.

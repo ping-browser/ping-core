@@ -7,8 +7,8 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -20,7 +20,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/prefetch/pref_names.h"
-#include "chrome/browser/prefetch/prefetch_prefs.h"
+#include "chrome/browser/preloading/preloading_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
@@ -55,6 +55,8 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/ui/webui/bookmarks/bookmark_prefs.h"
+#include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
@@ -143,6 +145,12 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->HasPrefPath(
       NTPBackgroundPrefs::kDeprecatedPrefName));
 #endif
+
+#if !BUILDFLAG(IS_ANDROID)
+  EXPECT_EQ(static_cast<int>(side_panel::mojom::ViewType::kCompact),
+            chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
+                bookmarks_webui::prefs::kBookmarksViewType));
+#endif
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
@@ -168,8 +176,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
   // Verify cloud print is disabled.
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kCloudPrintProxyEnabled));
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      prefs::kCloudPrintSubmitEnabled));
 #if !BUILDFLAG(IS_ANDROID)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       ntp_prefs::kNtpUseMostVisitedTiles));
@@ -179,9 +185,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       ::prefs::kEnableMediaRouter));
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kEnableMediaRouterOnRestart));
 }
 

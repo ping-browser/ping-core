@@ -14,7 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service_impl.h"
 
 namespace syncer {
@@ -42,7 +42,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void OnSyncCycleCompleted(const SyncCycleSnapshot& snapshot) override;
 
   // SyncPrefObserver implementation.
-  void OnPreferredDataTypesPrefChange() override;
+  void OnSelectedTypesPrefChange() override;
 
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
@@ -59,7 +59,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void Initialize() override;
 
-  const brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
+  const brave_sync::Prefs& prefs() const { return brave_sync_prefs_; }
+  brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
 
   void PermanentlyDeleteAccount(
       base::OnceCallback<void(const SyncProtocolError&)> callback);
@@ -75,6 +76,9 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
                            OnAccountDeleted_FailureAndRetry);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinActiveOrNewChain);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinDeletedChain);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, HistoryPreconditions);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
+                           P3aForHistoryThroughDelegate);
 
   BraveSyncAuthManager* GetBraveSyncAuthManager();
   SyncServiceCrypto* GetCryptoForTests();
@@ -90,14 +94,22 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
       base::OnceCallback<void(const SyncProtocolError&)> callback,
       const SyncProtocolError&);
 
-  void ResetEngine(ShutdownReason shutdown_reason,
-                   ResetEngineReason reset_reason) override;
+  std::unique_ptr<SyncEngine> ResetEngine(
+      ShutdownReason shutdown_reason,
+      ResetEngineReason reset_reason) override;
 
   void LocalDeviceAppeared();
 
+  struct SyncedObjectsCountContext {
+    size_t types_requested = 0;
+    size_t types_responed = 0;
+    size_t total_objects_count = 0;
+    void Reset(size_t types_requested);
+  };
+  SyncedObjectsCountContext synced_objects_context_;
+
   void UpdateP3AObjectsNumber();
-  void OnGotEntityCounts(
-      const std::vector<syncer::TypeEntitiesCount>& entity_counts);
+  void OnGetTypeEntitiesCount(const TypeEntitiesCount& count);
 
   brave_sync::Prefs brave_sync_prefs_;
 
@@ -118,6 +130,11 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   bool initiated_self_device_info_deleted_ = false;
 
   int completed_cycles_count_ = 0;
+
+  // This flag is set to true during BraveSyncServiceImpl::Initialize call. The
+  // reason is that upstream SyncServiceImpl::Initialize() can invoke
+  // StopAndClear, but we don't want to invoke AddLeaveChainDetail in that case
+  bool is_initializing_ = false;
 
   std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
   base::OnceCallback<void(bool)> join_chain_result_callback_;

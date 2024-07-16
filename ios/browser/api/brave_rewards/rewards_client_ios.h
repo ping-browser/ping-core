@@ -36,6 +36,10 @@ class RewardsClientIOS : public brave_rewards::mojom::RewardsEngineClient {
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadURL(brave_rewards::mojom::UrlRequestPtr request,
                LoadURLCallback callback) override;
+  void GetSPLTokenAccountBalance(
+      const std::string& solana_address,
+      const std::string& token_mint_address,
+      GetSPLTokenAccountBalanceCallback callback) override;
   void Log(const std::string& file,
            int32_t line,
            int32_t verbose_level,
@@ -101,7 +105,6 @@ class RewardsClientIOS : public brave_rewards::mojom::RewardsEngineClient {
   void IsAutoContributeSupportedForClient(
       IsAutoContributeSupportedForClientCallback callback) override;
   void GetClientInfo(GetClientInfoCallback callback) override;
-  void UnblindedTokensReady() override;
   void ReconcileStampReset() override;
   void RunDBTransaction(brave_rewards::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;

@@ -6,15 +6,20 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 
+// Types
+import { NavOption, WalletRoutes } from '../../../../../../constants/types'
+
+// Selectors
+import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../../../common/selectors'
+
 // Options
 import {
-  BuySendSwapDepositOptions
+  BuySendSwapDepositOptions //
 } from '../../../../../../options/nav-options'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 
 // Styled Components
 import {
@@ -29,24 +34,35 @@ export const BuySendSwapDepositNav = () => {
   // Routing
   const history = useHistory()
 
+  // redux
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // methods
+  const onClick = React.useCallback(
+    (option: NavOption) => {
+      // Redirect to full page view for buy page
+      // until we have a panel view for that page.
+      if (option.route === WalletRoutes.FundWalletPageStart && isPanel) {
+        chrome.tabs.create({
+          url: `brave://wallet${option.route}`
+        })
+      } else {
+        history.push(option.route)
+      }
+    },
+    [history, isPanel]
+  )
+
   return (
-    <ButtonsRow
-      width='unset'
-    >
-      {BuySendSwapDepositOptions.map((option) =>
-        <ButtonWrapper
-          key={option.id}
-        >
-          <Button
-            onClick={() => history.push(option.route)}
-          >
+    <ButtonsRow width='unset'>
+      {BuySendSwapDepositOptions.map((option) => (
+        <ButtonWrapper key={option.id}>
+          <Button onClick={() => onClick(option)}>
             <ButtonIcon name={option.icon} />
           </Button>
-          <ButtonText>
-            {getLocale(option.name)}
-          </ButtonText>
+          <ButtonText>{getLocale(option.name)}</ButtonText>
         </ButtonWrapper>
-      )}
+      ))}
     </ButtonsRow>
   )
 }

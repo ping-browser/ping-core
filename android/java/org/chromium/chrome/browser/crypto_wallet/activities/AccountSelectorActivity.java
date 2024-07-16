@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -15,25 +16,30 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AccountKind;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
-import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSelectorRecyclerView;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
-import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
-import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.listeners.AccountSelectorItemListener;
+import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class AccountSelectorActivity
-        extends BraveWalletBaseActivity implements OnWalletListItemClick {
+public class AccountSelectorActivity extends BraveWalletBaseActivity
+        implements AccountSelectorItemListener {
     private static final String TAG = "AccountSelector";
+
+    private static final List<Integer> SUPPORTED_COIN_TYPES_ON_DAPPS =
+            Arrays.asList(CoinType.ETH, CoinType.SOL);
 
     private KeyringModel mKeyringModel;
     private RecyclerView mRVNetworkSelector;
-    private WalletCoinAdapter mWalletCoinAdapter;
+    private AccountSelectorRecyclerView mAccountSelectorRecyclerView;
     private AccountInfo[] mAccountInfos;
 
     @Override
@@ -52,10 +58,9 @@ public class AccountSelectorActivity
 
     private void init() {
         mRVNetworkSelector = findViewById(R.id.rv_account_selector_activity);
-        mWalletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.SELECT_ACCOUNTS_LIST);
-        mRVNetworkSelector.setAdapter(mWalletCoinAdapter);
-        mWalletCoinAdapter.setOnWalletListItemClick(this);
+        mAccountSelectorRecyclerView = new AccountSelectorRecyclerView();
+        mRVNetworkSelector.setAdapter(mAccountSelectorRecyclerView);
+        mAccountSelectorRecyclerView.setAccountSelectorItemListener(this);
         initAccounts();
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
@@ -68,47 +73,56 @@ public class AccountSelectorActivity
     }
 
     @Override
-    public void onAccountClick(WalletListItemModel walletListItemModel) {
-        if (walletListItemModel.getAccountInfo() == null) {
+    public void onAccountClick(@NonNull final AccountSelectorItemModel accountSelectorItemModel) {
+        if (accountSelectorItemModel.getAccountInfo() == null) {
             return;
         }
 
-        mKeyringModel.setSelectedAccount(walletListItemModel.getAccountInfo());
+        mKeyringModel.setSelectedAccount(accountSelectorItemModel.getAccountInfo());
         finish();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private void initAccounts() {
-        mKeyringModel.mSelectedAccount.observe(this, selectedAccountInfo -> {
-            if (selectedAccountInfo == null) return;
+        mKeyringModel.mSelectedAccount.observe(
+                this,
+                selectedAccountInfo -> {
+                    if (selectedAccountInfo == null) return;
 
-            boolean callDataSetChanged = true;
-            if (mAccountInfos != null) {
-                for (AccountInfo accountInfo : mAccountInfos) {
-                    if (WalletUtils.accountIdsEqual(selectedAccountInfo, accountInfo)) {
-                        callDataSetChanged = false;
-                        break;
+                    boolean callDataSetChanged = true;
+                    if (mAccountInfos != null) {
+                        for (AccountInfo accountInfo : mAccountInfos) {
+                            if (WalletUtils.accountIdsEqual(selectedAccountInfo, accountInfo)) {
+                                callDataSetChanged = false;
+                                break;
+                            }
+                        }
                     }
-                }
-            }
-            if (!callDataSetChanged) return;
+                    if (!callDataSetChanged) return;
 
-            mKeyringModel.getAccounts(accountInfos -> {
-                mAccountInfos = accountInfos;
-                List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-                for (AccountInfo accountInfo : mAccountInfos) {
-                    // TODO(apaymyshev): Why I'm not allowed to select imported account?
-                    if (accountInfo.accountId.kind != AccountKind.IMPORTED) {
-                        walletListItemModelList.add(
-                                WalletListItemModel.makeForAccountInfo(accountInfo));
-                    }
-                }
+                    mKeyringModel.getAccounts(
+                            accountInfos -> {
+                                mAccountInfos = accountInfos;
+                                List<AccountSelectorItemModel> accountSelectorItemModelList =
+                                        new ArrayList<>();
+                                for (AccountInfo accountInfo : mAccountInfos) {
+                                    // TODO(apaymyshev): Why I'm not allowed to select imported
+                                    // account?
+                                    if (accountInfo.accountId.kind != AccountKind.IMPORTED
+                                            && SUPPORTED_COIN_TYPES_ON_DAPPS.contains(
+                                                    accountInfo.accountId.coin)) {
+                                        accountSelectorItemModelList.add(
+                                                AccountSelectorItemModel.makeForAccountInfo(
+                                                        accountInfo));
+                                    }
+                                }
 
-                mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-                mWalletCoinAdapter.notifyDataSetChanged();
-                mWalletCoinAdapter.updateSelectedNetwork(
-                        selectedAccountInfo.name, selectedAccountInfo.address);
-            });
-        });
+                                mAccountSelectorRecyclerView.setWalletListItemModelList(
+                                        accountSelectorItemModelList);
+                                mAccountSelectorRecyclerView.notifyDataSetChanged();
+                                mAccountSelectorRecyclerView.updateSelectedNetwork(
+                                        selectedAccountInfo.name, selectedAccountInfo.address);
+                            });
+                });
     }
 }

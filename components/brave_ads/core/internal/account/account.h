@@ -7,39 +7,32 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards.h"
+#include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-class AdType;
-class ConfirmationType;
 class Confirmations;
-class IssuersUrlRequest;
-class RedeemPaymentTokens;
-class RefillConfirmationTokens;
 class TokenGeneratorInterface;
-struct IssuersInfo;
 struct TransactionInfo;
 
 class Account final : public AdsClientNotifierObserver,
                       public ConfirmationDelegate,
-                      public IssuersUrlRequestDelegate,
-                      public RedeemPaymentTokensDelegate,
-                      public RefillConfirmationTokensDelegate {
+                      public UserRewardsDelegate {
  public:
   explicit Account(TokenGeneratorInterface* token_generator);
 
@@ -56,67 +49,62 @@ class Account final : public AdsClientNotifierObserver,
 
   void SetWallet(const std::string& payment_id,
                  const std::string& recovery_seed);
-  const absl::optional<WalletInfo>& GetWallet() const { return wallet_; }
+
+  static void GetStatement(GetStatementOfAccountsCallback callback);
 
   void Deposit(const std::string& creative_instance_id,
                const std::string& segment,
-               const AdType& ad_type,
-               const ConfirmationType& confirmation_type) const;
-
-  static void GetStatement(GetStatementOfAccountsCallback callback);
+               AdType ad_type,
+               ConfirmationType confirmation_type) const;
+  void DepositWithUserData(const std::string& creative_instance_id,
+                           const std::string& segment,
+                           AdType ad_type,
+                           ConfirmationType confirmation_type,
+                           base::Value::Dict user_data) const;
 
  private:
   void DepositCallback(const std::string& creative_instance_id,
                        const std::string& segment,
-                       const AdType& ad_type,
-                       const ConfirmationType& confirmation_type,
+                       AdType ad_type,
+                       ConfirmationType confirmation_type,
+                       base::Value::Dict user_data,
                        bool success,
                        double value) const;
 
   void ProcessDeposit(const std::string& creative_instance_id,
                       const std::string& segment,
                       double value,
-                      const AdType& ad_type,
-                      const ConfirmationType& confirmation_type) const;
+                      AdType ad_type,
+                      ConfirmationType confirmation_type,
+                      base::Value::Dict user_data) const;
   void ProcessDepositCallback(const std::string& creative_instance_id,
-                              const AdType& ad_type,
-                              const ConfirmationType& confirmation_type,
+                              AdType ad_type,
+                              ConfirmationType confirmation_type,
+                              base::Value::Dict user_data,
                               bool success,
                               const TransactionInfo& transaction) const;
 
-  void SuccessfullyProcessedDeposit(const TransactionInfo& transaction) const;
+  void SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
+                                    base::Value::Dict user_data) const;
   void FailedToProcessDeposit(const std::string& creative_instance_id,
-                              const AdType& ad_type,
-                              const ConfirmationType& confirmation_type) const;
+                              AdType ad_type,
+                              ConfirmationType confirmation_type) const;
 
   void Initialize();
 
   void InitializeConfirmations();
 
-  void MaybeRewardUser();
-  void InitializeUserRewards();
-  void ShutdownUserRewards();
+  void MaybeInitializeUserRewards();
 
-  void MaybeFetchIssuers() const;
-
-  bool ShouldProcessUnclearedTransactions() const;
-  void MaybeProcessUnclearedTransactions() const;
-
-  bool ShouldRefillConfirmationTokens() const;
-  void MaybeRefillConfirmationTokens() const;
-
-  void MaybeReset();
+  void MaybeRefillConfirmationTokens();
 
   void NotifyDidInitializeWallet(const WalletInfo& wallet) const;
   void NotifyFailedToInitializeWallet() const;
 
   void NotifyDidProcessDeposit(const TransactionInfo& transaction) const;
-  void NotifyFailedToProcessDeposit(
-      const std::string& creative_instance_id,
-      const AdType& ad_type,
-      const ConfirmationType& confirmation_type) const;
-
-  void NotifyStatementOfAccountsDidChange() const;
+  void NotifyFailedToProcessDeposit(const std::string& creative_instance_id,
+                                    AdType ad_type,
+                                    ConfirmationType confirmation_type) const;
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
@@ -124,27 +112,13 @@ class Account final : public AdsClientNotifierObserver,
   void OnNotifyRewardsWalletDidUpdate(
       const std::string& payment_id,
       const std::string& recovery_seed) override;
-  void OnNotifyDidSolveAdaptiveCaptcha() override;
 
   // ConfirmationDelegate:
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;
   void OnFailedToConfirm(const ConfirmationInfo& confirmation) override;
 
-  // IssuersUrlRequestDelegate:
-  void OnDidFetchIssuers(const IssuersInfo& issuers) override;
-
-  // RedeemPaymentTokensDelegate:
-  void OnDidRedeemPaymentTokens(
-      const PaymentTokenList& payment_tokens) override;
-
-  // RefillConfirmationTokensDelegate:
-  void OnWillRefillConfirmationTokens() override;
-  void OnDidRefillConfirmationTokens() override;
-  void OnFailedToRefillConfirmationTokens() override;
-  void OnWillRetryRefillingConfirmationTokens(base::Time retry_at) override;
-  void OnDidRetryRefillingConfirmationTokens() override;
-  void OnCaptchaRequiredToRefillConfirmationTokens(
-      const std::string& captcha_id) override;
+  // UserRewardsDelegate:
+  void OnDidMigrateVerifiedRewardsUser() override;
 
   base::ObserverList<AccountObserver> observers_;
 
@@ -153,12 +127,9 @@ class Account final : public AdsClientNotifierObserver,
 
   std::unique_ptr<Confirmations> confirmations_;
 
-  std::unique_ptr<IssuersUrlRequest> issuers_url_request_;
+  std::optional<WalletInfo> wallet_;
 
-  std::unique_ptr<RefillConfirmationTokens> refill_confirmation_tokens_;
-  std::unique_ptr<RedeemPaymentTokens> redeem_payment_tokens_;
-
-  absl::optional<WalletInfo> wallet_;
+  std::unique_ptr<UserRewards> user_rewards_;
 
   base::WeakPtrFactory<Account> weak_factory_{this};
 };

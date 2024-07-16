@@ -12,7 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "url/gurl.h"
 
@@ -62,6 +62,8 @@ class RequestOTRNavigationThrottle : public content::NavigationThrottle {
  private:
   content::NavigationThrottle::ThrottleCheckResult MaybeShowInterstitial();
   void Enable1PESAndResume();
+  void On1PESState(bool is_1pes_enabled);
+  void RestartNavigation(const GURL& url);
 
   raw_ptr<RequestOTRService> request_otr_service_ = nullptr;  // not owned
   raw_ptr<ephemeral_storage::EphemeralStorageService>

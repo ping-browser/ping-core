@@ -1,0 +1,48 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+static_library("common") {
+  sources = [
+    "brave_shield_constants.h",
+    "brave_shield_utils.cc",
+    "brave_shield_utils.h",
+    "features.cc",
+    "features.h",
+    "pref_names.h",
+  ]
+
+  if (!is_android) {
+    sources += [ "brave_shield_localized_strings.h" ]
+  }
+
+  public_deps = [ "//brave/components/resources:strings" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_shields/adblock:rust_lib",
+    "//components/content_settings/core/common",
+    "//net",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+mojom("mojom") {
+  generate_java = true
+  sources = [
+    "brave_shields.mojom",
+    "brave_shields_panel.mojom",
+    "cookie_list_opt_in.mojom",
+    "filter_list.mojom",
+  ]
+
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//ui/gfx/geometry/mojom",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}

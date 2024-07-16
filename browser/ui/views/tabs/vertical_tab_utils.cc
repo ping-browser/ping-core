@@ -6,8 +6,9 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
 #include "base/check_is_test.h"
+#include "base/command_line.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/tabs/switches.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
@@ -35,8 +36,10 @@
 namespace tabs::utils {
 
 bool SupportsVerticalTabs(const Browser* browser) {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "Don't call this before checking the feature flag.";
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableVerticalTabsSwitch)) {
+    return false;
+  }
 
   if (!browser) {
     // During unit tests, |browser| can be null.
@@ -52,7 +55,7 @@ bool ShouldShowVerticalTabs(const Browser* browser) {
     return false;
   }
 
-  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+  return browser->profile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsEnabled);
 }
 
@@ -61,7 +64,7 @@ bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
     return false;
   }
 
-  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+  return browser->profile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow);
 }
 
@@ -70,8 +73,13 @@ bool IsFloatingVerticalTabsEnabled(const Browser* browser) {
     return false;
   }
 
-  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+  return browser->profile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsFloatingEnabled);
+}
+
+bool IsVerticalTabOnRight(const Browser* browser) {
+  return browser->profile()->GetPrefs()->GetBoolean(
+      brave_tabs::kVerticalTabsOnRight);
 }
 
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
@@ -101,9 +109,9 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
   if (!using_gtk_caption_button) {
     auto* window_order_provider =
         views::WindowButtonOrderProvider::GetInstance();
-    return {views::kCaptionButtonWidth *
+    return {views::GetCaptionButtonWidth() *
                 window_order_provider->leading_buttons().size(),
-            views::kCaptionButtonWidth *
+            views::GetCaptionButtonWidth() *
                 window_order_provider->trailing_buttons().size()};
   }
 
@@ -123,13 +131,13 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
     // In this case, we use BrowserFrameViewWin. Native frame will be set to
     // the HWND and BrowserFrameViewWin will draw frame and window caption
     // button.
-    auto size = WindowFrameUtil::GetWindows10GlassCaptionButtonAreaSize();
-    if (WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(
+    auto size = WindowFrameUtil::GetWindowsCaptionButtonAreaSize();
+    if (WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
             BrowserView::GetBrowserViewForNativeWindow(frame->GetNativeWindow())
                 ->browser())) {
-      size.set_width(
-          size.width() + WindowFrameUtil::kWindows10GlassCaptionButtonWidth +
-          WindowFrameUtil::kWindows10GlassCaptionButtonVisualSpacing);
+      size.set_width(size.width() +
+                     WindowFrameUtil::kWindowsCaptionButtonWidth +
+                     WindowFrameUtil::kWindowsCaptionButtonVisualSpacing);
     }
     return {0, size.width()};
   }

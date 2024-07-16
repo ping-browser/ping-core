@@ -5,13 +5,14 @@
 
 #include "brave/browser/extensions/api/brave_shields_api.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/common/extensions/api/brave_shields.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -22,7 +23,7 @@ namespace api {
 
 ExtensionFunction::ResponseAction
 BraveShieldsAddSiteCosmeticFilterFunction::Run() {
-  absl::optional<brave_shields::AddSiteCosmeticFilter::Params> params =
+  std::optional<brave_shields::AddSiteCosmeticFilter::Params> params =
       brave_shields::AddSiteCosmeticFilter::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 

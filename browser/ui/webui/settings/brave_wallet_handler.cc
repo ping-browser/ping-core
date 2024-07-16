@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -18,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -41,17 +43,28 @@ base::Value::Dict MakeSelectValue(const std::u16string& name,
   return item;
 }
 
-absl::optional<brave_wallet::mojom::CoinType> ToCoinType(
-    absl::optional<int> val) {
+base::Value::Dict MakeSelectValue(
+    const std::u16string& name,
+    ::brave_wallet::mojom::BlowfishOptInStatus value) {
+  base::Value::Dict item;
+  item.Set("value", static_cast<int>(value));
+  item.Set("name", name);
+  return item;
+}
+
+std::optional<brave_wallet::mojom::CoinType> ToCoinType(
+    std::optional<int> val) {
   if (!val) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto result = static_cast<brave_wallet::mojom::CoinType>(*val);
   if (result != brave_wallet::mojom::CoinType::ETH &&
       result != brave_wallet::mojom::CoinType::FIL &&
-      result != brave_wallet::mojom::CoinType::SOL) {
+      result != brave_wallet::mojom::CoinType::SOL &&
+      result != brave_wallet::mojom::CoinType::BTC &&
+      result != brave_wallet::mojom::CoinType::ZEC) {
     NOTREACHED();
-    return absl::nullopt;
+    return std::nullopt;
   }
   return result;
 }
@@ -67,6 +80,11 @@ void BraveWalletHandler::RegisterMessages() {
       "getSolanaProviderOptions",
       base::BindRepeating(&BraveWalletHandler::GetSolanaProviderOptions,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getTransactionSimulationOptInStatusOptions",
+      base::BindRepeating(
+          &BraveWalletHandler::GetTransactionSimulationOptInStatusOptions,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "removeChain", base::BindRepeating(&BraveWalletHandler::RemoveChain,
                                          base::Unretained(this)));
@@ -101,12 +119,31 @@ void BraveWalletHandler::RegisterMessages() {
       base::BindRepeating(&BraveWalletHandler::IsNftPinningEnabled,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "isBitcoinEnabled",
+      base::BindRepeating(&BraveWalletHandler::IsBitcoinEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isZCashEnabled", base::BindRepeating(&BraveWalletHandler::IsZCashEnabled,
+                                            base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isTransactionSimulationsFeatureEnabled",
+      base::BindRepeating(&BraveWalletHandler::IsTransactionSimulationsEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "getPinnedNftCount",
       base::BindRepeating(&BraveWalletHandler::GetPinnedNftCount,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "clearPinnedNft", base::BindRepeating(&BraveWalletHandler::ClearPinnedNft,
                                             base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setWalletInPrivateWindowsEnabled",
+      base::BindRepeating(&BraveWalletHandler::SetWalletInPrivateWindowsEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getWalletInPrivateWindowsEnabled",
+      base::BindRepeating(&BraveWalletHandler::GetWalletInPrivateWindowsEnabled,
+                          base::Unretained(this)));
 }
 
 void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
@@ -131,6 +168,26 @@ void BraveWalletHandler::GetSolanaProviderOptions(
   list.Append(MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
                                   IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
                               ::brave_wallet::mojom::DefaultWallet::None));
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], list);
+}
+
+void BraveWalletHandler::GetTransactionSimulationOptInStatusOptions(
+    const base::Value::List& args) {
+  base::Value::List list;
+  list.Append(
+      MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                          IDS_SETTINGS_SELECT_VALUE_ASK),
+                      ::brave_wallet::mojom::BlowfishOptInStatus::kUnset));
+  list.Append(
+      MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                          IDS_SETTINGS_SELECT_VALUE_YES),
+                      ::brave_wallet::mojom::BlowfishOptInStatus::kAllowed));
+  list.Append(MakeSelectValue(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_SETTINGS_SELECT_VALUE_NO),
+      ::brave_wallet::mojom::BlowfishOptInStatus::kDenied));
+
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0], list);
@@ -181,7 +238,7 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
   }
 
   result.Set("defaultNetwork",
-             brave_wallet::GetCurrentChainId(prefs, *coin, absl::nullopt));
+             brave_wallet::GetCurrentChainId(prefs, *coin, std::nullopt));
 
   auto& networks = result.Set("networks", base::Value::List())->GetList();
   for (const auto& it : brave_wallet::GetAllChains(prefs, *coin)) {
@@ -282,7 +339,7 @@ void BraveWalletHandler::SetDefaultNetwork(const base::Value::List& args) {
       brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           Profile::FromWebUI(web_ui()));
   auto result = json_rpc_service ? json_rpc_service->SetNetwork(
-                                       *chain_id, *coin, absl::nullopt)
+                                       *chain_id, *coin, std::nullopt)
                                  : false;
   ResolveJavascriptCallback(args[0], base::Value(result));
 }
@@ -334,6 +391,28 @@ void BraveWalletHandler::IsNftPinningEnabled(const base::Value::List& args) {
                             base::Value(::brave_wallet::IsNftPinningEnabled()));
 }
 
+void BraveWalletHandler::IsBitcoinEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(::brave_wallet::IsBitcoinEnabled()));
+}
+
+void BraveWalletHandler::IsZCashEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(::brave_wallet::IsZCashEnabled()));
+}
+
+void BraveWalletHandler::IsTransactionSimulationsEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(
+      args[0], base::Value(::brave_wallet::IsTransactionSimulationsEnabled()));
+}
+
 void BraveWalletHandler::GetPinnedNftCount(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
@@ -354,6 +433,25 @@ void BraveWalletHandler::ClearPinnedNft(const base::Value::List& args) {
   service->Reset(
       base::BindOnce(&BraveWalletHandler::OnBraveWalletPinServiceReset,
                      weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
+}
+
+void BraveWalletHandler::SetWalletInPrivateWindowsEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 2U);
+  bool enabled = args[1].GetBool();
+  Profile::FromWebUI(web_ui())->GetPrefs()->SetBoolean(
+      kBraveWalletPrivateWindowsEnabled, enabled);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(true));
+}
+
+void BraveWalletHandler::GetWalletInPrivateWindowsEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  bool enabled = Profile::FromWebUI(web_ui())->GetPrefs()->GetBoolean(
+      kBraveWalletPrivateWindowsEnabled);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], enabled);
 }
 
 void BraveWalletHandler::OnBraveWalletPinServiceReset(

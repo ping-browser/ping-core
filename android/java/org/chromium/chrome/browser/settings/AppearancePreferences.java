@@ -21,10 +21,13 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
+import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
+import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -43,6 +46,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
     public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
     public static final String PREF_BRAVE_ENABLE_SPEEDREADER = "brave_enable_speedreader";
+    public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
@@ -51,11 +55,11 @@ public class AppearancePreferences extends BravePreferenceFragment
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.prefs_appearance);
         SettingsUtils.addPreferencesFromResource(this, R.xml.appearance_preferences);
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-                ContextUtils.getApplicationContext());
+        boolean isTablet =
+                DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                        ContextUtils.getApplicationContext());
         if (isTablet) {
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
-            removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
         }
 
         if (!NightModeUtils.isNightModeSupported()) {
@@ -63,12 +67,15 @@ public class AppearancePreferences extends BravePreferenceFragment
         }
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (mBraveRewardsNativeWorker == null || !mBraveRewardsNativeWorker.IsSupported()) {
+        if (mBraveRewardsNativeWorker == null || !mBraveRewardsNativeWorker.isSupported()) {
             removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
         }
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)) {
             removePreferenceIfPresent(PREF_BRAVE_ENABLE_SPEEDREADER);
+        }
+        if (!new BraveMultiWindowUtils().shouldShowEnableWindow(getActivity())) {
+            removePreferenceIfPresent(PREF_ENABLE_MULTI_WINDOWS);
         }
     }
 
@@ -126,8 +133,11 @@ public class AppearancePreferences extends BravePreferenceFragment
             disableSharingHub.setOnPreferenceChangeListener(this);
             if (disableSharingHub instanceof ChromeSwitchPreference) {
                 ((ChromeSwitchPreference) disableSharingHub)
-                        .setChecked(SharedPreferencesManager.getInstance().readBoolean(
-                                BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, false));
+                        .setChecked(
+                                ChromeSharedPreferences.getInstance()
+                                        .readBoolean(
+                                                BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB,
+                                                false));
             }
         }
 
@@ -145,8 +155,18 @@ public class AppearancePreferences extends BravePreferenceFragment
             enableSpeedreader.setOnPreferenceChangeListener(this);
             if (enableSpeedreader instanceof ChromeSwitchPreference) {
                 ((ChromeSwitchPreference) enableSpeedreader)
-                        .setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                            .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED));
+                        .setChecked(
+                                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                                        .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED));
+            }
+        }
+
+        Preference enableMultiWindow = findPreference(PREF_ENABLE_MULTI_WINDOWS);
+        if (enableMultiWindow != null) {
+            enableMultiWindow.setOnPreferenceChangeListener(this);
+            if (enableMultiWindow instanceof ChromeSwitchPreference) {
+                ((ChromeSwitchPreference) enableMultiWindow)
+                        .setChecked(BraveMultiWindowUtils.shouldEnableMultiWindows());
             }
         }
     }
@@ -154,7 +174,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     @Override
     public void onStart() {
         if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.AddObserver(this);
+            mBraveRewardsNativeWorker.addObserver(this);
         }
         super.onStart();
     }
@@ -162,7 +182,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     @Override
     public void onStop() {
         if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.RemoveObserver(this);
+            mBraveRewardsNativeWorker.removeObserver(this);
         }
         super.onStop();
     }
@@ -192,16 +212,43 @@ public class AppearancePreferences extends BravePreferenceFragment
                     BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
             shouldRelaunch = true;
         } else if (PREF_BRAVE_DISABLE_SHARING_HUB.equals(key)) {
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, (boolean) newValue);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
+                            BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, (boolean) newValue);
         } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
-            shouldRelaunch = true;
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
         } else if (PREF_BRAVE_ENABLE_SPEEDREADER.equals(key)) {
-            UserPrefs.get(Profile.getLastUsedRegularProfile())
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.SPEEDREADER_PREF_ENABLED, (boolean) newValue);
             shouldRelaunch = true;
+        } else if (PREF_ENABLE_MULTI_WINDOWS.equals(key)) {
+            if (!(boolean) newValue) {
+                if (MultiWindowUtils.getInstanceCount() > 1) {
+                    BraveMultiWindowDialogFragment dialogFragment =
+                            BraveMultiWindowDialogFragment.newInstance();
+                    BraveMultiWindowDialogFragment.DismissListener dismissListener =
+                            new BraveMultiWindowDialogFragment.DismissListener() {
+                                @Override
+                                public void onDismiss() {
+                                    if (MultiWindowUtils.getInstanceCount() == 1) {
+                                        if (preference instanceof ChromeSwitchPreference) {
+                                            ((ChromeSwitchPreference) preference).setChecked(false);
+                                            BraveMultiWindowUtils.updateEnableMultiWindows(false);
+                                        }
+                                    }
+                                }
+                            };
+                    dialogFragment.setDismissListener(dismissListener);
+
+                    dialogFragment.show(
+                            getActivity().getSupportFragmentManager(),
+                            "BraveMultiWindowDialogFragment");
+
+                    return false;
+                }
+            }
+            BraveMultiWindowUtils.updateEnableMultiWindows((boolean) newValue);
         }
         if (shouldRelaunch) {
             BraveRelaunchUtils.askForRelaunch(getActivity());

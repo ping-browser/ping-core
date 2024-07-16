@@ -174,6 +174,16 @@
       <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NEVER" desc="The name of the context menu item to never show bookmark bar">
         Never
       </message>
+      <if expr="use_titlecase">
+        <message name="IDS_SHOW_ALL_BOOKMARKS_BUTTON" desc="The name of an checked menu item to toggle visibility of All Bookmarks button on the bookmarks bar">
+          Show All Bookmarks Button
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SHOW_ALL_BOOKMARKS_BUTTON" desc="The name of an checked menu item to toggle visibility of All Bookmarks button on the bookmarks bar">
+          Show all bookmarks button
+        </message>
+      </if>
       <message name="IDS_COPY_CLEAN_LINK_SHARING_HUB" desc="The name of the Sharing Hub's menu item to copy clean link">
         Copy clean link
       </message>
@@ -214,7 +224,6 @@
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
       </message>
-
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Google Widevine
@@ -230,18 +239,23 @@
           Restart browser to enable Google Widevine
         </message>
       </if>
+      <if expr="is_android">
+        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_ANDROID" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
+          <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected Google Widevine content, which requires you to allow Android system support for Widevine. By allowing, you'll agree to Google's terms of use.
+        </message>
+      </if>
       <message name="IDS_WIDEVINE_INSTALL_MESSAGE" desc="Bubble info text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
         Widevine is sometimes needed to play media on a webpage. It's a Google extension loaded from Google servers, which Ping cannot inspect. By installing, you'll agree to Google's terms of use.
       </message>
       <message name="IDS_WIDEVINE_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT" desc="Message shown on the bottom of the widevine permissions bubble.">
         <ph name="LEARN_MORE_ABOUT_WIDEVINE">$1<ex>Learn more about Widevine</ex></ph>.
-Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/extensions</ex></ph>.
+Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/extensions</ex></ph>.
       </message>
       <message name="IDS_WIDEVINE_PERMISSIONS_BUBBLE_LEARN_MORE" desc="Message shown on the bottom of the widevine permissions bubble.">
         Learn more about Widevine
       </message>
       <message name="IDS_PERMISSIONS_BUBBLE_SETTINGS_EXTENSIONS_LINK" desc="Settings extenions link in the widevine permission bubble footnote description." translateable="false">
-        ping://settings/extensions
+        brave://settings/extensions
       </message>
       <message name="IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> is asking you to
@@ -305,20 +319,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
       <message name="IDS_LOCATION_BAR_OPEN_IN_TOR" desc="Button in location bar to open onion available site in tor window.">
         Tor
       </message>
-      <message name="IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT" desc="The tooltip text of tor button in location bar.">
-        Open in Tor
-      </message>
       <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
         Tor
       </message>
 
       <!-- Sync Infobars -->
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Ping Sync and need to perform setup again for the new version.">
-        Ping Sync has been upgraded and requires setup
-      </message>
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Ping Sync and need to perform setup again for the new version.">
-        Begin Setup
-      </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE" desc="Message text shown to users who's Sync account was deleted. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT">
         This Ping Sync account was deleted from another device. If you didn’t mean to disable Sync,<ph name="LINK_TEXT">$1<ex>re-create the account</ex></ph>
       </message>
@@ -451,7 +456,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
           With a Directory
         </message>
       </if>
-
+      <!-- Dev channel deprecation infobar -->
+      <message name="IDS_DEV_CHANNEL_DEPRECATION_INFOBAR_MESSAGE" desc="The text label of dev channel deprecation announcement.">
+        Beginning on December 1, 2023, Ping Dev channel will no longer receive browser updates. We recommend users migrate to the Nightly, Beta, or Release versions of Ping.
+      </message>
       <!-- Mac Menubar Menus -->
       <if expr="is_macosx">
         <message name="IDS_REPORT_BROKEN_SITE_MAC" desc="The Mac menu item to report a broken site in the Help menu.">
@@ -549,6 +557,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART" desc="This is used for replacing SETTING_TEXT from above FOOTNOTE_TEXT.">
           this setting
         </message>
+
+        <!-- Geolocation permission bubble -->
+        <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_LOW_ACCURACY_LABEL" desc="The text for geolocation permission bubble with low accuracy. Each part will be used to get offset in the string">
+          This site has requested your <ph name="PART_ONE">$1</ph>general location<ph name="PART_ONE_END">$1</ph>. <ph name="PART_TWO">$1</ph>Learn more<ph name="PART_TWO_END">$1</ph>
+        </message>
+        <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITH_LOCATION_SERVICE_LABEL" desc="The text for geolocation permission bubble with high accuracy. Each part will be used to get offset in the string">
+          This site has requested your <ph name="PART_ONE">$1</ph>precise location<ph name="PART_ONE_END">$1</ph>. <ph name="PART_TWO">$1</ph>Learn more<ph name="PART_TWO_END">$1</ph>
+        </message>
+        <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITHOUT_LOCATION_SERVICE_LABEL" desc="The text for geolocation permission bubble with high accuracy. Each part will be used to get offset in the string">
+          This site has requested your <ph name="PART_ONE">$1</ph>precise location<ph name="PART_ONE_END">$1</ph>. Ping will only able to provide <ph name="PART_TWO">$1</ph>general location<ph name="PART_TWO_END">$1</ph> data due to <ph name="PART_THREE">$1</ph>Location Services<ph name="PART_THREE_END">$1</ph> being disabled. <ph name="PART_FOUR">$1</ph>Learn more<ph name="PART_FOUR_END">$1</ph>
+        </message>
+
         <!-- Closing confirm dialog -->
         <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_OK_BUTTON_LABEL" desc="The text for ok button in the dialog">
           Close all
@@ -569,21 +589,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
           Don't ask me again
         </message>
         <!-- Ping search conversion promotion -->
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_INPUT_APPEND_LABEL" desc="The text that appended to the input query in button type match">
-          - Ping Search
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL" desc="The text for detailed description about ping search in promotion match">
-          Support independent search with better privacy. Ping search doesn't track you, your queries, or your clicks.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL_FIRST_PART" desc="The text for finding the first sentence from above. Both should have the same translation.">
-          Support independent search with better privacy.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_TITLE" desc="The text for the banner type title">
-          Time to ditch big tech.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DESC" desc="The text for the banner type description">
-          Ping doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
-        </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_TITLE" desc="The text for the banner type title">
           Don't Google it. Can't Bing it. Just Ping it.
         </message>
@@ -791,43 +796,25 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
         <message name="IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP" desc="Text of sidebar add item button tooltip">
           Add to Sidebar
         </message>
-      </if>
-
-      <!-- Speedreader -->
-      <if expr="enable_speedreader">
-        <message name="IDS_SPEEDREADER_ASK_ENABLE" desc="Label prompting user to enable Speedreader">
-          Do you want to turn on Speedreader?
+        <message name="IDS_SIDEBAR_BOOKMARKS_PANEL_HEADER_TITLE" desc="Text of bookmarks panel header">
+          bookmarks
         </message>
-        <message name="IDS_SPEEDREADER_ENABLE_BUTTON" desc="Button to enable Speedreader">
-          Turn on Speedreader
+        <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_TITLE" desc="Text of readling list panel header">
+          reading list
         </message>
-        <message name="IDS_SPEEDREADER_EXPLANATION" desc="Label to explain how Speedreader is different from other reader modes">
-          Articles automatically load in reader mode, saving you time.
+        <message name="IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP" desc="Text of side panel's close button">
+          Close
         </message>
-        <message name="IDS_SPEEDREADER_DISABLE_THIS_SITE" desc="Label to enable or disable speedreader per site">
-          Turn on/off reader mode just for this website. To turn off Speedreader for your entire browser profile, visit
-        </message>
-        <message name="IDS_ACCNAME_SPEEDREADER_DISABLE_THIS_SITE_TOGGLE" desc="Accessible text for the toggle to enable or disable speedreader per site">
-          Toggle to turn on/off reader mode just for this website.
-        </message>
-        <message name="IDS_PAGE_IS_DISTILLED" desc="Speedreader is enabled on this page">
-          in Speedreader
-        </message>
-        <message name="IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE" desc="Accessible text shown when a page is in Reader Mode">
-          Turn off reader mode
-        </message>
-        <message name="IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE" desc="Accessible text shown when a page can be distilled">
-          Turn on reader mode
-        </message>
-        <message name="IDS_SPEEDREADER_ICON_SPEEDREADER_SETTINGS" desc="Accessible text shown when a page is in Speedreader Mode">
-          Speedreader settings
-        </message>
-        <message name="IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK" desc="Text of the link to show original page">
-          View original
-        </message>
-        <message name="IDS_SPEEDREADER_MINUTES_TEXT" desc="Text of the read time element">
-          min. read
-        </message>
+        <if expr="not use_titlecase">
+          <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_BOOKMARKS_BUTTON_TOOLTIP" desc="Text of bookmarks panel header button tooltip">
+            Bookmarks manager
+          </message>
+        </if>
+        <if expr="use_titlecase">
+          <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_BOOKMARKS_BUTTON_TOOLTIP" desc="Text of bookmark panel header button tooltip">
+            Bookmarks Manager
+          </message>
+        </if>
       </if>
 
       <!-- Stats -->
@@ -835,7 +822,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
         Automatically send daily usage ping to Ping
       </message>
       <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING_SUBITEM" desc="Description that shows under main toggle setting for usage pings">
-        This anonymous, private ping lets Ping estimate active users.
+        This private ping lets Ping estimate active users.
       </message>
 
       <!-- P3A -->
@@ -852,7 +839,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
         Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
-        This completely anonymized info helps Ping estimate the overall usage of certain features and make them better for you.
+        These private responses help Ping estimate the overall usage of certain features and make them better for you.
       </message>
 
       <!-- Web3 detection -->
@@ -905,22 +892,47 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
       <message name="IDS_BRAVE_IPFS_INFOBAR_LINK" desc="Link redirects to the privacy description article">
         Learn how this affects my privacy
       </message>
+      <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_TEXT" desc="Prompt, asking the user whether they'd like to load the original URL rather than the resolved one when the page load fails">
+        There was an error loading the IPFS URL. Would you like to redirect to the original URL?
+      </message>
+      <message name="IDS_BRAVE_IPFS_FALLBACK_REDIRECT" desc="Redirect to the original url">
+        Redirect
+      </message>
+      <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_NO" desc="Close infobar without redirection">
+        No thanks
+      </message>
+      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_TEXT" desc="Text that proposes to the user to enable always starting an IPFS node with the browser">
+        Would you like to always start an IPFS node on browser startup?
+      </message>
+      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_OK" desc="Enable IPFS always start mode">
+        Enable
+      </message>
+      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_NO" desc="Ignore proposition">
+        Cancel
+      </message>
+      <!-- Ping Wallet -->
+      <message name="IDS_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The utility process running wallet utils">
+        Ping Wallet Utility Service
+      </message>
 
       <!-- Ping Wayback Machine -->
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT" desc="The label for sorry message when page is not available on bubble">
         Sorry, that page is missing.
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_ASK_ABOUT_CHECK_TEXT" desc="The label for asking to check from wayback machine">
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CANT_FIND_HEADER_TEXT" desc="The label for sorry message when page is not available on bubble">
+        Couldn't load saved version
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT" desc="The label for asking to check from wayback machine">
         Do you want to check if a saved version is available on the Wayback Machine?
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_NOT_AVAILABLE_TEXT" desc="The label for wayback machine doesn't have saved version">
-        Sorry, there is no saved version available.
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT" desc="The label for wayback machine doesn't have saved version">
+        Wayback Machine couldn't find a saved version of this site.
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT" desc="The label for check button on wayback infobar">
-        Check for saved version
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT" desc="The label for check button on wayback infobar">
+        Check saved version
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT" desc="Text to show for the don't ask again button.">
-        Don't ask me again
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT" desc="Text to show for the no thanks button.">
+        Dismiss
       </message>
 
       <!-- Ping's copyright statement -->
@@ -949,6 +961,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT_VERTICAL_TABS" desc="The label of the 'Close Tabs below' Tab context menu item for vertical tabs.">
           Close tabs below
         </message>
+        <message name="IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW" desc="The label of the 'Bring all tabs to this window' tab context menu item">
+          Bring all tabs to this window
+        </message>
+        <message name="IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS" desc="The label of the 'Close duplicate tabs' tab context menu item">
+          Close duplicate tabs
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -968,6 +986,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
         </message>
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT_VERTICAL_TABS" desc="The label of the 'Close Tabs below' Tab context menu item for vertical tabs.">
           Close Tabs Below
+        </message>
+        <message name="IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW" desc="The label of the 'Bring all tabs to this window' tab context menu item">
+          Bring All Tabs to This Window
+        </message>
+        <message name="IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS" desc="The label of the 'Close duplicate tabs' tab context menu item">
+          Close Duplicate Tabs
         </message>
       </if>
 
@@ -1000,9 +1024,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
         </message>
         <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when ping vpn connected">
           This setting cannot be changed while Ping VPN is connected.
-        </message>
-        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when ping vpn connected">
-          Requires browser restart.
         </message>
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
           Show VPN button
@@ -1044,9 +1065,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
           <message name="IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for showing vpn tray icon in windows">
             Show VPN Tray Icon
           </message>
-          <message name="IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for hiding vpn tray icon in windows">
-            Hide VPN Tray Icon
-          </message>
           <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
             Send Feedback
           </message>
@@ -1063,9 +1081,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
           </message>
           <message name="IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for showing vpn tray icon in windows">
             Show VPN tray icon
-          </message>
-          <message name="IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for hiding vpn tray icon in windows">
-            Hide VPN tray icon
           </message>
           <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
             Send feedback
@@ -1088,6 +1103,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
       </message>
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_OPEN_PREFS_BUTTON_TEXT" desc="The label for open privacy panel">
         Open System Preferences
+      </message>
+
+      <!-- Downloads -->
+      <message name="IDS_DOWNLOADS_TITLE" desc="Title for the downloads page and navigation bar label.">
+        Downloads
       </message>
 
       <!-- Bookmarks -->
@@ -1160,6 +1180,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
         </if>
       </if>
 
+      <message name="IDS_BOOKMARKS_SORT_CUSTOM" desc="Label for the custom order sort type">
+        Custom order
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_CUSTOM_LOWER" desc="Lowercase label for the custom order sort type">
+        custom order
+      </message>
+
       <!-- Playlist -->
       <if expr="enable_playlist_webui">
           <message name="IDS_PLAYLIST_ADD_TO_PLAYLIST" desc="A title label on a bubble to add media files to Playlist">
@@ -1168,11 +1195,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
           <message name="IDS_PLAYLIST_MEDIA_FOUND_IN_THIS_PAGE" desc="A sub title in a bubble to add media files to playlist">
             Media found in this page
           </message>
-          <message name="IDS_PLAYLIST_DEFAULT_PLAYLIST_NAME" desc="A default playlist folder's name">
-            Play Later
-          </message>
           <message name="IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER" desc="A label on a bubble that shows up when items were added from the current page">
             Added to <ph name="PLAYLIST_FOLDER_NAME">$1<ex>Play Later</ex></ph>
+          </message>
+          <message name="IDS_PLAYLIST_MEDIA_NOT_FOUND_IN_THIS_PAGE" desc="An error message that shows up when we fail to extract media from a page">
+            Sorry, we couldn't find any media on this page.
           </message>
         <if expr="use_titlecase">
           <message name="IDS_PLAYLIST_OPEN_IN_PLAYLIST" desc="A menu name to open added media files on Playlist">
@@ -1280,7 +1307,70 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/exte
         <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_FROM_PLAYLIST" desc="Context menu item on Playlist item to remove it from the folder">
           Remove from playlist
         </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_VIEW_ORIGINAL_PAGE" desc="Context menu item on Playlist item to open the source page in a new tab">
+          View original page
+        </message>
+        <message name="IDS_PLAYLIST_EMPTY_FOLDER_MESSAGE" desc="A message that shows up when a playlist folder is empty">
+          The fun starts when you have something to play. Add your favorite media and playback anytime, anywhere. Even offline.
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_CREATE_PLAYLIST_FOLDER" desc="An a11y name for a button to create new playlist folder">
+          Create a new folder
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_OPEN_PLAYLIST_SETTINGS" desc="An a11y name for a button to open playlist settings">
+          Open Playlist settings
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_PLAY" desc="An a11y name for a 'play' button in media player">
+          Play
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_PAUSE" desc="An a11y name for a 'pause' button in media player">
+          Pause
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_NEXT" desc="An a11y name for a 'next' button in media player">
+          Next Track
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_PREVIOUS" desc="An a11y name for a 'prev' button in media player">
+          Previous Track
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_SHUFFLE" desc="An a11y name for a 'shuffle' button in media player">
+          Shuffle
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_REWIND" desc="An a11y name for a 'rewind' button in media player">
+          Rewind
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_FORWARD" desc="An a11y name for a 'forward' button in media player">
+          Forward
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_CLOSE" desc="An a11y name for a 'close' button in media player when it's mini player mode">
+          Close
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_LOOP_OFF" desc="An a11y name for a 'loop' button in media player when the loop is off">
+          Repeat off
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_LOOP_ONE" desc="An a11y name for a 'loop' button in media player when repeating one item">
+          Repeat one
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_LOOP_ALL" desc="An a11y name for a 'loop' button in media player when repeating all items">
+          Repeat all
+        </message>
+        <message name="IDS_PLAYLIST_FAILED_TO_PLAY_TITLE" desc="A title for alert that shows up when an item is not playable">
+          Failed to play item
+        </message>
+        <message name="IDS_PLAYLIST_FAILED_TO_PLAY_DESCRIPTION" desc="Description for alert that shows up when an item is not playable">
+          [<ph name="ITEM_NAME">$1<ex>Awesome video</ex></ph>] may be expired. Would you like to recover it?
+        </message>
+        <message name="IDS_PLAYLIST_FAILED_TO_PLAY_RECOVER" desc="A label for 'Recover' button">
+          Recover
+        </message>
+        <message name="IDS_PLAYLIST_ALERT_DISMISS" desc="A label for 'Dismiss' button on alert">
+          Dismiss
+        </message>
       </if> <!-- enable_playlist_webui -->
+
+      <if expr="enable_brave_player">
+        <message name="IDS_BRAVE_PLAYER_ACTION_VIEW" desc="A label for a button in the omnibox to open the 'Ping Player Page'">
+          Ping Player
+        </message>
+      </if> <!-- enable_brave_player -->
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

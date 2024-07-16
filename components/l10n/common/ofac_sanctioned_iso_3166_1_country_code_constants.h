@@ -6,47 +6,53 @@
 #ifndef BRAVE_COMPONENTS_L10N_COMMON_OFAC_SANCTIONED_ISO_3166_1_COUNTRY_CODE_CONSTANTS_H_
 #define BRAVE_COMPONENTS_L10N_COMMON_OFAC_SANCTIONED_ISO_3166_1_COUNTRY_CODE_CONSTANTS_H_
 
+#include <string_view>
+
 #include "base/containers/fixed_flat_set.h"
-#include "base/strings/string_piece.h"
 
 namespace brave_l10n {
 
 // See https://orpa.princeton.edu/export-controls/sanctioned-countries.
 
-constexpr auto kOFACSactionedISO31661CountryCodes =
-    base::MakeFixedFlatSet<base::StringPiece>({
+inline constexpr auto kOFACSactionedISO31661CountryCodes =
+    base::MakeFixedFlatSet<std::string_view>({
         // List of Comprehensively Sanctioned Countries. Most transactions,
         // including those involving persons or entities "ordinarily resident"
         // in the following countries, require an Office of Foreign Assets
         // Control (OFAC) License.
-        //
-        // NOTE: This list excludes Crimea, Donetsk, and Luhansk regions of
-        // Ukraine because they are all listed under UA ISO 3166-1 alpha-2 and
-        // UKR ISO 3166-1 alpha-3 country codes.
 
         // ISO 3166-1 alpha-2 country codes. See
         // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2.
+        "BY",  // Belarus
         "CU",  // Cuba
         "IR",  // Iran
         "KP",  // North Korea
+        "MD",  // Moldova
         "RU",  // Russia
         "SY",  // Syria
+        "UA",  // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
 
         // ISO 3166-1 alpha-3 country codes. See
         // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3.
+        "BLR",  // Belarus
         "CUB",  // Cuba
         "IRN",  // Iran
+        "MDA",  // Moldova
         "PRK",  // North Korea
         "RUS",  // Russia
         "SYR",  // Syria
+        "UKR",  // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
 
         // ISO 3166-1 numeric-3 country codes. See
         // https://en.wikipedia.org/wiki/ISO_3166-1_numeric.
+        "112",  // Belarus
         "192",  // Cuba
         "364",  // Iran
         "408",  // North Korea
+        "498",  // Moldova
         "643",  // Russia
-        "760"   // Syria
+        "760",  // Syria
+        "804"   // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
     });
 
 }  // namespace brave_l10n

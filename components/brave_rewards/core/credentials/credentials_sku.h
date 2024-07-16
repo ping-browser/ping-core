@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 
@@ -19,14 +20,14 @@ namespace credential {
 
 class CredentialsSKU : public Credentials {
  public:
-  explicit CredentialsSKU(RewardsEngineImpl& engine);
+  explicit CredentialsSKU(RewardsEngine& engine);
   ~CredentialsSKU() override;
 
   void Start(const CredentialsTrigger& trigger,
              ResultCallback callback) override;
 
   void RedeemTokens(const CredentialsRedeem& redeem,
-                    LegacyResultCallback callback) override;
+                    ResultCallback callback) override;
 
  private:
   void OnStart(ResultCallback callback,
@@ -74,14 +75,15 @@ class CredentialsSKU : public Credentials {
                  const CredentialsTrigger& trigger,
                  mojom::Result result) override;
 
-  void OnRedeemTokens(mojom::Result result,
-                      const std::vector<std::string>& token_id_list,
-                      const CredentialsRedeem& redeem,
-                      LegacyResultCallback callback);
+  void OnRedeemTokens(std::vector<std::string> token_id_list,
+                      CredentialsRedeem redeem,
+                      ResultCallback callback,
+                      mojom::Result result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   CredentialsCommon common_;
   endpoint::PaymentServer payment_server_;
+  base::WeakPtrFactory<CredentialsSKU> weak_factory_{this};
 };
 
 }  // namespace credential

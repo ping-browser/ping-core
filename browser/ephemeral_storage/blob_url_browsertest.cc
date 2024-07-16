@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/memory/raw_ptr.h"
 #include "base/strings/pattern.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -75,7 +77,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
   }
 
   static GURL RegisterBlob(content::RenderFrameHost* render_frame_host,
-                           base::StringPiece content) {
+                           std::string_view content) {
     return GURL(EvalJs(render_frame_host,
                        content::JsReplace(kCreateBlobScript, content))
                     .ExtractString());
@@ -190,8 +192,10 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Close the first a.com tab, ensure all blobs created there become obsolete
     // and can't be fetched.
-    ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
-        1, TabCloseTypes::CLOSE_NONE));
+    const int previous_tab_count = browser()->tab_strip_model()->count();
+    browser()->tab_strip_model()->CloseWebContentsAt(1,
+                                                     TabCloseTypes::CLOSE_NONE);
+    EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh.get();
@@ -267,8 +271,10 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Close the first a.com tab, ensure all blobs created there become obsolete
     // and can't be fetched.
-    ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
-        1, TabCloseTypes::CLOSE_NONE));
+    const int previous_tab_count = browser()->tab_strip_model()->count();
+    browser()->tab_strip_model()->CloseWebContentsAt(1,
+                                                     TabCloseTypes::CLOSE_NONE);
+    EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh.get();
@@ -287,16 +293,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
   }
 };
 
-class BlobUrlPartitionEnabledBrowserTest : public BlobUrlBrowserTestBase {
- public:
-  BlobUrlPartitionEnabledBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        net::features::kBravePartitionBlobStorage);
-  }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
+using BlobUrlPartitionEnabledBrowserTest = BlobUrlBrowserTestBase;
 
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
                        BlobsArePartitioned) {
@@ -320,17 +317,6 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledWithoutSiteIsolationBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
-                       BlobsAreNotPartitionedWhenShieldsDisabled) {
-  // Disable shields on a.com and b.com.
-  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
-                                        a_site_ephemeral_storage_url_);
-  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
-                                        b_site_ephemeral_storage_url_);
-
-  TestBlobsAreNotPartitioned();
-}
-
-IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
                        BlobsArePartitionedIn1PESMode) {
   SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
   TestBlobsArePartitioned();
@@ -347,7 +333,7 @@ class BlobUrlPartitionDisabledBrowserTest : public BlobUrlBrowserTestBase {
  public:
   BlobUrlPartitionDisabledBrowserTest() {
     scoped_feature_list_.InitAndDisableFeature(
-        net::features::kBravePartitionBlobStorage);
+        net::features::kSupportPartitionedBlobUrl);
   }
 
  private:
@@ -355,23 +341,6 @@ class BlobUrlPartitionDisabledBrowserTest : public BlobUrlBrowserTestBase {
 };
 
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionDisabledBrowserTest,
-                       BlobsAreNotPartitioned) {
-  TestBlobsAreNotPartitioned();
-}
-
-class BlobUrlEphemeralStorageDisabledBrowserTest
-    : public BlobUrlBrowserTestBase {
- public:
-  BlobUrlEphemeralStorageDisabledBrowserTest() {
-    scoped_feature_list_.InitAndDisableFeature(
-        net::features::kBraveEphemeralStorage);
-  }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(BlobUrlEphemeralStorageDisabledBrowserTest,
                        BlobsAreNotPartitioned) {
   TestBlobsAreNotPartitioned();
 }
@@ -384,7 +353,7 @@ class BlobUrlBrowserTest : public BlobUrlBrowserTestBase,
  public:
   BlobUrlBrowserTest() {
     scoped_feature_list_.InitWithFeatureState(
-        net::features::kBravePartitionBlobStorage, GetParam());
+        net::features::kSupportPartitionedBlobUrl, GetParam());
   }
 
  private:
@@ -507,9 +476,6 @@ IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, ReplaceStateToAddAuthorityToBlob) {
   EXPECT_FALSE(
       base::MatchPattern(new_contents->GetVisibleURL().spec(), "*spoof*"));
 
-  // The currently implemented behavior is that the URL gets rewritten to
-  // about:blank#blocked. The content of the page stays the same.
-  EXPECT_EQ(content::kBlockedURL, new_contents->GetVisibleURL().spec());
   EXPECT_EQ(
       origin.Serialize() + " potato",
       EvalJs(new_contents, "self.origin + ' ' + document.body.innerText;"));
@@ -518,5 +484,5 @@ IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, ReplaceStateToAddAuthorityToBlob) {
   // This seems unfortunate -- can we fix it?
   std::string window_location =
       EvalJs(new_contents, "window.location.href;").ExtractString();
-  EXPECT_TRUE(base::MatchPattern(window_location, "*spoof*"));
+  EXPECT_FALSE(base::MatchPattern(window_location, "*spoof*"));
 }

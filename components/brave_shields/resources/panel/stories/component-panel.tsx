@@ -67,10 +67,9 @@ export default {
         },
         siteSettings: {
           adBlockMode: AdBlockMode.ALLOW,
-          fingerprintMode: FingerprintMode.ALLOW,
+          fingerprintMode: FingerprintMode.ALLOW_MODE,
           cookieBlockMode: CookieBlockMode.ALLOW,
-          isHttpsEverywhereEnabled: true,
-          httpsUpgradeMode: HttpsUpgradeMode.DISABLED,
+          httpsUpgradeMode: HttpsUpgradeMode.DISABLED_MODE,
           isNoscriptEnabled: false,
           isForgetFirstPartyStorageEnabled: false
         },

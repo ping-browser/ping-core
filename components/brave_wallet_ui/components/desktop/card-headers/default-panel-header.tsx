@@ -5,47 +5,44 @@
 
 import * as React from 'react'
 
+// Types
+import { WalletRoutes } from '../../../constants/types'
+
 // Hooks
-import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
+
+// Utils
+import { openWalletRouteTab } from '../../../utils/routes-utils'
 
 // Components
+import { WalletSettingsMenu } from '../wallet-menus/wallet_settings_menu'
 import {
-  DefaultPanelMenu
-} from '../wallet-menus/default-panel-menu'
-import {
-  DAppConnectionSettings
+  DAppConnectionSettings //
 } from '../../extension/dapp-connection-settings/dapp-connection-settings'
 
 // Styled Components
 import {
   Button,
   ButtonIcon,
-  LeftRightContainer
+  LeftRightContainer,
+  ClickAwayArea
 } from './shared-panel-headers.style'
-import {
-  HeaderTitle,
-  MenuWrapper
-} from './shared-card-headers.style'
+import { HeaderTitle, MenuWrapper } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
 interface Props {
   title: string
+  expandRoute?: WalletRoutes
 }
 
 export const DefaultPanelHeader = (props: Props) => {
-  const {
-    title
-  } = props
+  const { title, expandRoute } = props
 
   // State
-  const [showSettingsMenu, setShowSettingsMenu] =
-    React.useState<boolean>(false)
+  const [showSettingsMenu, setShowSettingsMenu] = React.useState<boolean>(false)
 
   // Refs
-  const settingsMenuRef =
-    React.useRef<HTMLDivElement>(null)
+  const settingsMenuRef = React.useRef<HTMLDivElement>(null)
 
   // Hooks
   useOnClickOutside(
@@ -56,12 +53,12 @@ export const DefaultPanelHeader = (props: Props) => {
 
   // Methods
   const onClickExpand = React.useCallback(() => {
-    chrome.tabs.create({ url: 'chrome://wallet/crypto' }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
-  }, [])
+    if (expandRoute) {
+      openWalletRouteTab(expandRoute)
+      return
+    }
+    openWalletRouteTab(WalletRoutes.PortfolioAssets)
+  }, [expandRoute])
 
   return (
     <Row
@@ -72,39 +69,24 @@ export const DefaultPanelHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-start'
       >
-        <Button
-          onClick={onClickExpand}
-        >
+        <Button onClick={onClickExpand}>
           <ButtonIcon name='expand' />
         </Button>
       </LeftRightContainer>
-      <HeaderTitle
-        isPanel={true}
-      >
-        {title}
-      </HeaderTitle>
+      <HeaderTitle isPanel={true}>{title}</HeaderTitle>
       <LeftRightContainer
         width='unset'
         justifyContent='flex-end'
       >
         <DAppConnectionSettings />
-        <MenuWrapper
-          ref={settingsMenuRef}
-        >
-          <Button
-            onClick={
-              () => setShowSettingsMenu(prev => !prev)
-            }
-          >
-            <ButtonIcon
-              name='more-horizontal'
-            />
+        <MenuWrapper ref={settingsMenuRef}>
+          <Button onClick={() => setShowSettingsMenu((prev) => !prev)}>
+            <ButtonIcon name='more-vertical' />
           </Button>
-          {showSettingsMenu &&
-            <DefaultPanelMenu />
-          }
+          {showSettingsMenu && <WalletSettingsMenu />}
         </MenuWrapper>
       </LeftRightContainer>
+      {showSettingsMenu && <ClickAwayArea />}
     </Row>
   )
 }

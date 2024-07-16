@@ -18,18 +18,14 @@ class BraveBrowser;
 
 class SidebarItemAddButton : public SidebarButtonView,
                              public views::WidgetObserver {
+  METADATA_HEADER(SidebarItemAddButton, SidebarButtonView)
  public:
-  METADATA_HEADER(SidebarItemAddButton);
   explicit SidebarItemAddButton(BraveBrowser* browser,
                                 const std::u16string& accessible_name);
   ~SidebarItemAddButton() override;
 
   SidebarItemAddButton(const SidebarItemAddButton&) = delete;
   SidebarItemAddButton& operator=(const SidebarItemAddButton&) = delete;
-
-  // SidebarButtonView overrides:
-  void AddedToWidget() override;
-  void OnThemeChanged() override;
 
   // views::WidgetObserver overrides:
   void OnWidgetDestroying(views::Widget* widget) override;

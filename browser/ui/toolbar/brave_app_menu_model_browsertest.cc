@@ -6,8 +6,10 @@
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
 #include <algorithm>
+#include <optional>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
@@ -18,11 +20,11 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -31,7 +33,6 @@
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -45,9 +46,9 @@
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #endif
 
-class BraveAppMenuBrowserTest : public InProcessBrowserTest {
+class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
  public:
-  BraveAppMenuBrowserTest() {
+  BraveAppMenuModelBrowserTest() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     scoped_feature_list_.InitWithFeatures(
         {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
@@ -67,7 +68,7 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
         browser->command_controller())
-        ->OnPurchasedStateChanged(target_state, absl::nullopt);
+        ->OnPurchasedStateChanged(target_state, std::nullopt);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -88,13 +89,21 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
     ipfs_service_->GetIpnsKeysManager()->SetKeysForTest(keys);
   }
 #endif
+
+  void RunCommandFromAppMenuModel(Browser* browser, int command_id) {
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+    BraveAppMenuModel model(browser_view->toolbar(), browser);
+    model.Init();
+    model.ExecuteCommand(command_id, /*event_flags=*/0);
+  }
 };
 
 void CheckCommandsAreDisabledInMenuModel(
     ui::SimpleMenuModel* model,
     const std::vector<int>& disabled_commands) {
-  for (int id : disabled_commands)
+  for (int id : disabled_commands) {
     EXPECT_FALSE(model->GetIndexOfCommandId(id).has_value());
+  }
 }
 
 void CheckCommandsAreDisabledInMenuModel(
@@ -120,7 +129,7 @@ void CheckCommandsAreInOrderInMenuModel(
     const std::vector<int>& commands_in_order) {
   std::vector<size_t> commands_index;
   for (int id : commands_in_order) {
-    absl::optional<size_t> index = model->GetIndexOfCommandId(id);
+    std::optional<size_t> index = model->GetIndexOfCommandId(id);
     EXPECT_TRUE(index.has_value());
     commands_index.push_back(index.value());
   }
@@ -187,11 +196,16 @@ void CheckHistoryCommandsAreInOrderInMenuModel(
   CheckCommandsAreInOrderInMenuModel(history_model, history_commands_in_order);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, CommandsExecutionTest) {
+  RunCommandFromAppMenuModel(CreateIncognitoBrowser(),
+                             IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS);
+}
+
 // Test brave menu order test.
 // Brave menu is inserted based on corresponding commands enable status.
 // So, this doesn't test for each profiles(normal, private, tor and guest).
 // Instead, BraveBrowserCommandControllerTest will do that.
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   std::vector<int> commands_in_order_for_normal_profile = {
     IDC_NEW_TAB,
     IDC_NEW_WINDOW,
@@ -206,7 +220,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_RECENT_TABS_MENU,
     IDC_BOOKMARKS_MENU,
     IDC_SHOW_DOWNLOADS,
-    IDC_MANAGE_EXTENSIONS,
+    IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
     IDC_ZOOM_MENU,
     IDC_PRINT,
     IDC_FIND,
@@ -260,7 +274,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_SHOW_BRAVE_WALLET,
     IDC_BOOKMARKS_MENU,
     IDC_SHOW_DOWNLOADS,
-    IDC_MANAGE_EXTENSIONS,
+    IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
     IDC_ZOOM_MENU,
     IDC_PRINT,
     IDC_FIND,
@@ -313,7 +327,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 #endif
     IDC_RECENT_TABS_MENU,
     IDC_BOOKMARKS_MENU,
-    IDC_MANAGE_EXTENSIONS,
+    IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
   };
 
   CheckCommandsAreDisabledInMenuModel(guest_browser,
@@ -352,7 +366,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
       IDC_SHOW_BRAVE_WALLET,
       IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
-      IDC_MANAGE_EXTENSIONS,
+      IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
       IDC_ZOOM_MENU,
       IDC_PRINT,
       IDC_FIND,
@@ -379,7 +393,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 // Check vpn menu based on purchased status.
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BraveVPNMenuTest) {
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveVPNMenuTest) {
   std::vector<int> commands_enabled_for_non_purchased = {
       IDC_SHOW_BRAVE_VPN_PANEL,
   };
@@ -408,7 +422,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BraveVPNMenuTest) {
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BraveIpfsMenuTest) {
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveIpfsMenuTest) {
   CheckIpfsCommandsAreDisabledForMode(
       browser(), ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
   CheckIpfsCommandsAreDisabledForMode(browser(),
@@ -486,3 +500,39 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BraveIpfsMenuTest) {
   }
 }
 #endif
+
+void CheckMenuIcons(ui::MenuModel* menu,
+                    int submenu_depth,
+                    std::u16string path = u"") {
+  constexpr int kIconlessCommands[] = {
+      // Header, with no icon
+      RecentTabsSubMenuModel::kDisabledRecentlyClosedHeaderCommandId};
+  for (size_t i = 0; i < menu->GetItemCount(); ++i) {
+    auto command_id = menu->GetCommandIdAt(i);
+    // Skip separators, headers, & commands which deliberately have no icons
+    if (command_id == -1 || command_id == -2 ||
+        base::Contains(kIconlessCommands, command_id)) {
+      continue;
+    }
+
+    auto label = menu->GetLabelAt(i);
+    auto icon = menu->GetIconAt(i);
+    EXPECT_FALSE(icon.IsEmpty()) << "\"" << path << label << "\""
+                                 << " for Command Id: " << command_id
+                                 << " (at index " << i << ") has no icon";
+
+    if (auto* submenu = menu->GetSubmenuModelAt(i)) {
+      if (submenu_depth > 0) {
+        CheckMenuIcons(submenu, submenu_depth - 1, path + label + +u" > ");
+      }
+    }
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuItemsHaveIcons) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  BraveAppMenuModel model(browser_view->toolbar(), browser());
+  model.Init();
+
+  CheckMenuIcons(&model, 1);
+}

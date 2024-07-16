@@ -6,7 +6,9 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/environment.h"
 #include "base/json/json_writer.h"
@@ -20,7 +22,7 @@ namespace brave_wallet {
 
 namespace internal {
 
-base::Value::Dict ComposeRpcDict(base::StringPiece method) {
+base::Value::Dict ComposeRpcDict(std::string_view method) {
   base::Value::Dict dict;
   dict.Set("jsonrpc", "2.0");
   dict.Set("method", method);
@@ -39,8 +41,8 @@ std::string GetJSON(base::ValueView dict) {
 }
 
 void AddKeyIfNotEmpty(base::Value::Dict* dict,
-                      base::StringPiece name,
-                      base::StringPiece val) {
+                      std::string_view name,
+                      std::string_view val) {
   if (!val.empty()) {
     dict->Set(name, val);
   }
@@ -73,6 +75,31 @@ base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
   request_headers[kBraveServicesKeyHeader] = std::move(brave_key);
 
   return request_headers;
+}
+
+base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders() {
+  return {
+      {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)},
+  };
+}
+
+std::string EncodeAnkrGetAccountBalancesParams(
+    const std::string& address,
+    const std::vector<std::string>& blockchains) {
+  base::Value::Dict dict = internal::ComposeRpcDict("ankr_getAccountBalance");
+
+  base::Value::Dict params;
+  params.Set("nativeFirst", true);
+  params.Set("walletAddress", address);
+
+  base::Value::List blockchains_list;
+  for (const auto& blockchain : blockchains) {
+    blockchains_list.Append(blockchain);
+  }
+  params.Set("blockchains", std::move(blockchains_list));
+
+  dict.Set("params", std::move(params));
+  return GetJSON(dict);
 }
 
 }  // namespace brave_wallet

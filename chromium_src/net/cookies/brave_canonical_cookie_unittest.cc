@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "net/cookies/canonical_cookie.h"
+#include <optional>
 
 #include "base/time/time.h"
+#include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_constants.h"
 #include "net/cookies/cookie_options.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -33,21 +34,18 @@ constexpr base::TimeDelta kMaxCookieExpiration =
 TEST(BraveCanonicalCookieTest, SetMaxExpiration) {
   GURL url("https://www.example.com/test");
 
-  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::Create(
-      url, max_expires_date_cookie, creation_time,
-      /*server_time=*/absl::nullopt, /*cookie_partition_key=*/absl::nullopt));
+  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::CreateForTesting(
+      url, max_expires_date_cookie, creation_time));
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 
-  cookie = CanonicalCookie::Create(url, max_age_cookie, creation_time,
-                                   /*server_time=*/absl::nullopt,
-                                   /*cookie_partition_key=*/absl::nullopt);
+  cookie =
+      CanonicalCookie::CreateForTesting(url, max_age_cookie, creation_time);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 
-  cookie = CanonicalCookie::Create(url, max_expires_and_max_age_cookie,
-                                   creation_time, /*server_time=*/absl::nullopt,
-                                   /*cookie_partition_key=*/absl::nullopt);
+  cookie = CanonicalCookie::CreateForTesting(
+      url, max_expires_and_max_age_cookie, creation_time);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 }
@@ -55,9 +53,8 @@ TEST(BraveCanonicalCookieTest, SetMaxExpiration) {
 TEST(BraveCanonicalCookieTest, AllowShorterThanMaxExpiration) {
   GURL url("https://www.example.com/test");
   // Short-lived cookies get to keep their shorter expiration.
-  std::unique_ptr<CanonicalCookie> cookie = CanonicalCookie::Create(
-      url, short_expiration_cookie, creation_time,
-      /*server_time=*/absl::nullopt, /*cookie_partition_key=*/absl::nullopt);
+  std::unique_ptr<CanonicalCookie> cookie = CanonicalCookie::CreateForTesting(
+      url, short_expiration_cookie, creation_time);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + base::Days(2));
 }
@@ -66,9 +63,8 @@ TEST(BraveCanonicalCookieTest, SetHTTPOnlyMaxExpiration) {
   GURL url("https://www.example.com/test");
 
   // HTTP cookies with 'httponly' work as expected.
-  std::unique_ptr<CanonicalCookie> cookie = CanonicalCookie::Create(
-      url, cookie_line5, creation_time, /*server_time=*/absl::nullopt,
-      /*cookie_partition_key=*/absl::nullopt);
+  std::unique_ptr<CanonicalCookie> cookie =
+      CanonicalCookie::CreateForTesting(url, cookie_line5, creation_time);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 }
@@ -76,9 +72,8 @@ TEST(BraveCanonicalCookieTest, SetHTTPOnlyMaxExpiration) {
 TEST(BraveCanonicalCookieTest, NoExpirationCookie) {
   GURL url("https://www.example.com/test");
 
-  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::Create(
-      url, no_expiration_cookie, creation_time, /*server_time=*/absl::nullopt,
-      /*cookie_partition_key=*/absl::nullopt));
+  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::CreateForTesting(
+      url, no_expiration_cookie, creation_time));
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->IsPersistent(), false);
 }

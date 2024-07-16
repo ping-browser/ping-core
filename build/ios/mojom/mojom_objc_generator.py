@@ -354,7 +354,8 @@ class PendingRemoteMojoTypemap(MojoTypemap):
         return """^{
             auto bridge = std::make_unique<%s>(%s);
             auto bridgePtr = bridge.get();
-            self->_%sReceivers.push_back(std::move(bridge));
+            self->_%sReceivers.push_back(base::SequenceBound<decltype(bridge)>(
+                web::GetUIThreadTaskRunner({}), std::move(bridge)));
             return bridgePtr->GetRemote();
         }()""" % args
     def CppToObjC(self, accessor):
@@ -473,15 +474,16 @@ class Generator(generator.Generator):
         if (mojom.IsNullableKind(kind)
                 and not (isinstance(
                     typemap, (StructMojoTypemap, UnionMojoTypemap)))):
-            typestring = "absl::optional<%s>" % typestring
+            typestring = "std::optional<%s>" % typestring
         if should_pass_param_by_value:
             return typestring
         return "const %s&" % typestring
 
     def _GetObjCPropertyModifiers(self, kind, inside_union=False):
         modifiers = ['nonatomic']
-        if (mojom.IsArrayKind(kind) or mojom.IsStringKind(kind) or
-                mojom.IsMapKind(kind) or mojom.IsStructKind(kind)):
+        if (mojom.IsArrayKind(kind) or mojom.IsStringKind(kind)
+                or mojom.IsMapKind(kind) or mojom.IsStructKind(kind)
+                or mojom.IsUnionKind(kind)):
             modifiers.append('copy')
         if ((inside_union and mojom.IsObjectKind(kind))
                 or mojom.IsNullableKind(kind)):
@@ -581,7 +583,7 @@ class Generator(generator.Generator):
                      kind)]["nullable_is_same_type"])
                     or not isinstance(typemap,
                                       (StructMojoTypemap, UnionMojoTypemap))):
-                cpp_assign = "%s ? absl::make_optional(%s) : absl::nullopt" % (
+                cpp_assign = "%s ? std::make_optional(%s) : std::nullopt" % (
                     accessor, cpp_assign)
             else:
                 cpp_assign = "%s ? %s : nullptr" % (accessor, cpp_assign)

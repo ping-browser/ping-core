@@ -6,6 +6,7 @@
 import("//brave/build/config.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
+import("//third_party/protobuf/proto_library.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
 declare_args() {
@@ -35,16 +36,20 @@ static_library("browser") {
     "asset_ratio_service.h",
     "bitcoin/bitcoin_block_tracker.cc",
     "bitcoin/bitcoin_block_tracker.h",
-    "bitcoin/bitcoin_database_synchronizer.cc",
-    "bitcoin/bitcoin_database_synchronizer.h",
+    "bitcoin/bitcoin_knapsack_solver.cc",
+    "bitcoin/bitcoin_knapsack_solver.h",
+    "bitcoin/bitcoin_max_send_solver.cc",
+    "bitcoin/bitcoin_max_send_solver.h",
     "bitcoin/bitcoin_rpc.cc",
     "bitcoin/bitcoin_rpc.h",
+    "bitcoin/bitcoin_serializer.cc",
+    "bitcoin/bitcoin_serializer.h",
     "bitcoin/bitcoin_transaction.cc",
     "bitcoin/bitcoin_transaction.h",
-    "bitcoin/bitcoin_transaction_database.cc",
-    "bitcoin/bitcoin_transaction_database.h",
     "bitcoin/bitcoin_tx_manager.cc",
     "bitcoin/bitcoin_tx_manager.h",
+    "bitcoin/bitcoin_tx_meta.cc",
+    "bitcoin/bitcoin_tx_meta.h",
     "bitcoin/bitcoin_tx_state_manager.cc",
     "bitcoin/bitcoin_tx_state_manager.h",
     "bitcoin/bitcoin_wallet_service.cc",
@@ -143,6 +148,8 @@ static_library("browser") {
     "simulation_response_parser.h",
     "simulation_service.cc",
     "simulation_service.h",
+    "siwe_message_parser.cc",
+    "siwe_message_parser.h",
     "sns_resolver_task.cc",
     "sns_resolver_task.h",
     "solana_account_meta.cc",
@@ -202,6 +209,27 @@ static_library("browser") {
     "unstoppable_domains_multichain_calls.h",
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
+    "wallet_data_files_installer_delegate.h",
+    "zcash/zcash_block_tracker.cc",
+    "zcash/zcash_block_tracker.h",
+    "zcash/zcash_grpc_utils.cc",
+    "zcash/zcash_grpc_utils.h",
+    "zcash/zcash_rpc.cc",
+    "zcash/zcash_rpc.h",
+    "zcash/zcash_serializer.cc",
+    "zcash/zcash_serializer.h",
+    "zcash/zcash_transaction.cc",
+    "zcash/zcash_transaction.h",
+    "zcash/zcash_tx_manager.cc",
+    "zcash/zcash_tx_manager.h",
+    "zcash/zcash_tx_meta.cc",
+    "zcash/zcash_tx_meta.h",
+    "zcash/zcash_tx_state_manager.cc",
+    "zcash/zcash_tx_state_manager.h",
+    "zcash/zcash_wallet_service.cc",
+    "zcash/zcash_wallet_service.h",
+    "zcash/zcash_wallet_service_tasks.cc",
+    "zcash/zcash_wallet_service_tasks.h",
   ]
   if (enable_ipfs_local_node) {
     sources += [
@@ -213,6 +241,7 @@ static_library("browser") {
   }
   deps = [
     ":constants",
+    ":generated_bitcoin_rpc_responses",
     ":generated_blockchain_list_schemas",
     ":generated_json_rpc_responses",
     ":generated_simulation_responses",
@@ -237,11 +266,17 @@ static_library("browser") {
     "//brave/components/json/rs:rust_lib",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
+    "//brave/components/services/brave_wallet/public/cpp",
+    "//brave/components/services/brave_wallet/public/cpp/utils",
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//brave/components/services/brave_wallet/public/proto:zcash_proto",
+    "//brave/third_party/argon2",
     "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",
+    "//components/update_client",
     "//components/value_store",
     "//crypto",
     "//services/data_decoder/public/cpp",
@@ -261,14 +296,6 @@ static_library("browser") {
   }
 
   configs += [ ":sardine_config" ]
-
-  if (is_android) {
-    sources += [
-      "wallet_data_files_installer_android_util.cc",
-      "wallet_data_files_installer_android_util.h",
-    ]
-    deps += [ "//brave/build/android:jni_headers" ]
-  }
 }
 
 if (!is_ios) {
@@ -307,10 +334,7 @@ source_set("constants") {
 }
 
 source_set("pref_names") {
-  sources = [
-    "pref_names.cc",
-    "pref_names.h",
-  ]
+  sources = [ "pref_names.h" ]
 }
 
 source_set("utils") {
@@ -334,6 +358,7 @@ source_set("utils") {
     "//net",
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
+    "//ui/base",
     "//url",
   ]
 
@@ -350,8 +375,12 @@ source_set("hd_keyring") {
     "filecoin_keyring.h",
     "hd_keyring.cc",
     "hd_keyring.h",
+    "secp256k1_hd_keyring.cc",
+    "secp256k1_hd_keyring.h",
     "solana_keyring.cc",
     "solana_keyring.h",
+    "zcash/zcash_keyring.cc",
+    "zcash/zcash_keyring.h",
   ]
 
   deps = [
@@ -359,6 +388,7 @@ source_set("hd_keyring") {
     "internal:hd_key",
     "//base",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/filecoin/rs:rust_lib",
@@ -396,6 +426,8 @@ source_set("transaction") {
 source_set("test_support") {
   testonly = true
   sources = [
+    "solana_test_utils.cc",
+    "solana_test_utils.h",
     "test_utils.cc",
     "test_utils.h",
   ]
@@ -422,6 +454,17 @@ generated_types("generated_blockchain_list_schemas") {
   visibility = [
     ":browser",
     "test:brave_wallet_unit_tests",
+  ]
+}
+
+generated_types("generated_bitcoin_rpc_responses") {
+  sources = [ "bitcoin_rpc_responses.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
+    "//brave/components/brave_wallet/browser/test:test_support",
   ]
 }
 

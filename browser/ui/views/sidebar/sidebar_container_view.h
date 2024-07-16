@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
@@ -17,7 +18,8 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_show_options_event_detect_widget.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry_observer.h"
@@ -55,9 +57,10 @@ class SidebarContainerView
       public SidebarShowOptionsEventDetectWidget::Delegate,
       public sidebar::SidebarModel::Observer,
       public SidePanelEntryObserver,
-      public SidePanelRegistryObserver {
+      public SidePanelRegistryObserver,
+      public TabStripModelObserver {
+  METADATA_HEADER(SidebarContainerView, views::View)
  public:
-  METADATA_HEADER(SidebarContainerView);
   SidebarContainerView(BraveBrowser* browser,
                        SidePanelCoordinator* side_panel_coordinator,
                        std::unique_ptr<BraveSidePanel> side_panel);
@@ -67,6 +70,8 @@ class SidebarContainerView
   SidebarContainerView& operator=(const SidebarContainerView&) = delete;
 
   void Init();
+
+  bool sidebar_on_left() const { return sidebar_on_left_; }
   void SetSidebarOnLeft(bool sidebar_on_left);
 
   bool IsSidebarVisible() const;
@@ -75,17 +80,20 @@ class SidebarContainerView
 
   bool IsFullscreenForCurrentEntry() const;
 
+  void set_operation_from_active_tab_change(bool tab_change) {
+    operation_from_active_tab_change_ = tab_change;
+  }
+
   // Sidebar overrides:
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;
   void UpdateSidebarItemsState() override;
-  bool HasActiveContextualEntry() override;
 
   // SidebarControlView::Delegate overrides:
   void MenuClosed() override;
 
   // views::View overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
@@ -102,8 +110,8 @@ class SidebarContainerView
   void OnItemAdded(const sidebar::SidebarItem& item,
                    size_t index,
                    bool user_gesture) override;
-  void OnActiveIndexChanged(absl::optional<size_t> old_index,
-                            absl::optional<size_t> new_index) override;
+  void OnActiveIndexChanged(std::optional<size_t> old_index,
+                            std::optional<size_t> new_index) override;
   void OnItemRemoved(size_t index) override;
 
   // NOTE: If SidePanelEntryObserver could be used from outside of view,
@@ -118,6 +126,12 @@ class SidebarContainerView
   void OnEntryWillDeregister(SidePanelRegistry* registry,
                              SidePanelEntry* entry) override;
 
+  // TabStripModelObserver:
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
+
  private:
   friend class sidebar::SidebarBrowserTest;
 
@@ -126,7 +140,7 @@ class SidebarContainerView
   void AddChildViews();
   void UpdateBackground();
   void ShowOptionsEventDetectWidget(bool show);
-  bool ShouldUseAnimation() const;
+  bool ShouldUseAnimation();
 
   // Show control view. panel's visibility depends on |show_side_panel|.
   void ShowSidebar(bool show_side_panel);
@@ -166,6 +180,10 @@ class SidebarContainerView
   void StartBrowserWindowEventMonitoring();
   void StopBrowserWindowEventMonitoring();
 
+  void StartObservingContextualSidePanelRegistry(
+      content::WebContents* contents);
+  void StopObservingContextualSidePanelRegistry(content::WebContents* contents);
+
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;
   raw_ptr<BraveSidePanel> side_panel_ = nullptr;
@@ -173,6 +191,7 @@ class SidebarContainerView
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
   bool initialized_ = false;
   bool sidebar_on_left_ = true;
+  bool operation_from_active_tab_change_ = false;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =
       sidebar::SidebarService::ShowSidebarOption::kShowAlways;
@@ -188,8 +207,9 @@ class SidebarContainerView
       sidebar_model_observation_{this};
   base::ScopedMultiSourceObservation<SidePanelEntry, SidePanelEntryObserver>
       panel_entry_observations_{this};
-  base::ScopedObservation<SidePanelRegistry, SidePanelRegistryObserver>
-      panel_registry_observation_{this};
+  base::ScopedMultiSourceObservation<SidePanelRegistry,
+                                     SidePanelRegistryObserver>
+      panel_registry_observations_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_

@@ -1,8 +1,9 @@
 [package]
 name = "skus"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["eV <ev@7pr.xyz>"]
 edition = "2018"
+license = "MPL-2.0"
 
 autotests = false
 
@@ -12,22 +13,22 @@ path = "tests/e2e.rs"
 required-features = ["e2e_test"]
 
 [dependencies]
-http = { version = "0.1" }
+http = { version = "1" }
 async-trait = "0.1.64"
 rand = { version = "0.7" }
 serde_json = "1.0"
 sha2 = "0.9"
 data-encoding = "2.1.2"
-tracing = { version = "0.1", default-features = false }
+tracing = { version = "0.1", default-features = false, features = ["release_max_level_debug"] }
 bigdecimal = { version = "0.1", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
-uuid = { version = "0.8", features = ["serde"] }
-challenge-bypass-ristretto = { version = "1.0.1", features = ["serde_base64"] }
+uuid = { version = "1", features = ["v4"] }
+challenge-bypass-ristretto = { version = "1.0.2", features = ["serde_base64"] }
 futures-retry = "0.5.0"
 urlencoding = "1.1.1"
 hmac = "0.10"
-base64 = "0.9.3"
+base64 = "0.13.0"
 git-version = { version = "0.3.5", optional = true }
 
 [dev-dependencies]

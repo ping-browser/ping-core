@@ -2,14 +2,14 @@
   "configurations": [{
     "dashboard-bot-name": "test-agent",
     "browser-type": "brave",
-    "profile": "brave-typical-win-v1.55.98",
+    "profile": "brave-typical-win",
     "extra-browser-args": ["--disable-features=CalculateNativeWinOcclusion"],
     "extra-benchmark-args": [],
     "save-artifacts": true,
   }],
   "benchmarks": [
     {
-      "name": "loading.desktop.brave",
+      "name": "loading.desktop.brave.startup",
       "pageset-repeat": 1,
       "stories": [
         "example.com_cold",
@@ -22,7 +22,6 @@
       "pageset-repeat": 1,
       "stories": [
         "load:chrome:blank",
-        "browse:news:hackernews:2020",
       ]
     },
     {
@@ -30,7 +29,6 @@
       "pageset-repeat": 1,
       "stories": [
         "load:chrome:blank",
-        "browse:news:hackernews:2020",
         "load:media:youtube:2018",
       ]
     },

@@ -11,14 +11,14 @@ namespace brave_ads::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::TokenPreimage> Create(
+std::optional<challenge_bypass_ristretto::TokenPreimage> Create(
     const std::string& token_preimage_base64) {
   if (token_preimage_base64.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(
-      challenge_bypass_ristretto::TokenPreimage::decode_base64(
+      challenge_bypass_ristretto::TokenPreimage::DecodeBase64(
           token_preimage_base64));
 }
 
@@ -57,12 +57,12 @@ TokenPreimage TokenPreimage::DecodeBase64(
   return TokenPreimage(token_preimage_base64);
 }
 
-absl::optional<std::string> TokenPreimage::EncodeBase64() const {
+std::optional<std::string> TokenPreimage::EncodeBase64() const {
   if (!token_preimage_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  return ValueOrLogError(token_preimage_->encode_base64());
+  return token_preimage_->EncodeBase64();
 }
 
 std::ostream& operator<<(std::ostream& os,

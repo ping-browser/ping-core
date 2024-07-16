@@ -4,18 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
+
+// api
+import {
+  useGetAutopinEnabledQuery,
+  useSetAutopinEnabledMutation
+} from '../../../common/slices/api.slice'
 
 // types
 import { WalletRoutes } from '../../../constants/types'
-
-// actions
-import { WalletPageActions } from '../../../page/actions'
-
-// selectors
-import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../page/selectors'
 
 // components
 import { Row } from '../../shared/style'
@@ -53,22 +51,27 @@ export const LocalIpfsNodeScreen = (props: Props) => {
   const history = useHistory()
 
   // redux
-  const dispatch = useDispatch()
-  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
+  const { beforeTag, afterTag } = splitStringForTag(
+    getLocale('braveWalletNftPinningRunNodeDescription')
+  )
 
-  const { beforeTag, afterTag } = splitStringForTag(getLocale('braveWalletNftPinningRunNodeDescription'))
+  // queries
+  const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
+
+  // mutations
+  const [setAutoPinStatus] = useSetAutopinEnabledMutation()
 
   // methods
   const onClickCheckNfts = React.useCallback(() => {
     history.push(WalletRoutes.InspectNfts)
-  }, [])
+  }, [history])
 
   const onClickRunNode = React.useCallback(() => {
     if (!isAutoPinEnabled) {
-      dispatch(WalletPageActions.setAutoPinEnabled(true))
+      setAutoPinStatus(true)
     }
     history.push(WalletRoutes.PortfolioNFTs)
-  }, [isAutoPinEnabled])
+  }, [history, isAutoPinEnabled, setAutoPinStatus])
 
   return (
     <RunNodeWrapper>
@@ -85,7 +88,9 @@ export const LocalIpfsNodeScreen = (props: Props) => {
         </HeadingWrapper>
         <Section>
           <LeftWrapper>
-            <SectionText>{getLocale('braveWalletNftPinningRunNodeHeading')}</SectionText>
+            <SectionText>
+              {getLocale('braveWalletNftPinningRunNodeHeading')}
+            </SectionText>
           </LeftWrapper>
           <RightWrapper>
             <Description>
@@ -98,10 +103,19 @@ export const LocalIpfsNodeScreen = (props: Props) => {
         </Section>
         <Section>
           <LeftWrapper>
-            <Row gap='16px' alignItems='center' justifyContent='flex-start' margin='0 0 0 8px'>
-              <ActionButton onClick={onClickRunNode}>{getLocale('braveWalletNftPinningPinNftsButton')}</ActionButton>
+            <Row
+              gap='16px'
+              alignItems='center'
+              justifyContent='flex-start'
+              margin='0 0 0 8px'
+            >
+              <ActionButton onClick={onClickRunNode}>
+                {getLocale('braveWalletNftPinningPinNftsButton')}
+              </ActionButton>
             </Row>
-            <CheckNftsButton onClick={onClickCheckNfts}>{getLocale('braveWalletNftPinningCheckNftsButton')}</CheckNftsButton>
+            <CheckNftsButton onClick={onClickCheckNfts}>
+              {getLocale('braveWalletNftPinningCheckNftsButton')}
+            </CheckNftsButton>
           </LeftWrapper>
         </Section>
       </MainContent>

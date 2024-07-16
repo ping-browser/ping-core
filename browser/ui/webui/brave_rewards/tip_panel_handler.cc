@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/strings/string_piece.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -53,7 +52,7 @@ gfx::Size GetCurrentBrowserSize(Profile* profile) {
 TipPanelHandler::TipPanelHandler(
     mojo::PendingRemote<mojom::TipPanel> banner,
     mojo::PendingReceiver<mojom::TipPanelHandler> receiver,
-    base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
+    base::WeakPtr<TopChromeWebUIController::Embedder> embedder,
     Profile* profile)
     : receiver_(this, std::move(receiver)),
       banner_(std::move(banner)),
@@ -91,16 +90,7 @@ void TipPanelHandler::GetRewardsParameters(
 
 void TipPanelHandler::GetBalance(GetBalanceCallback callback) {
   DCHECK(rewards_service_);
-
-  auto fn = [](GetBalanceCallback callback, FetchBalanceResult result) {
-    if (!result.has_value()) {
-      std::move(callback).Run(nullptr);
-    } else {
-      std::move(callback).Run(std::move(result.value()));
-    }
-  };
-
-  rewards_service_->FetchBalance(base::BindOnce(fn, std::move(callback)));
+  rewards_service_->FetchBalance(std::move(callback));
 }
 
 void TipPanelHandler::GetBanner(GetBannerCallback callback) {
@@ -136,18 +126,7 @@ void TipPanelHandler::GetMonthlyContributionSet(
 
 void TipPanelHandler::GetExternalWallet(GetExternalWalletCallback callback) {
   DCHECK(rewards_service_);
-
-  auto fn = [](GetExternalWalletCallback callback,
-               GetExternalWalletResult result) {
-    auto external_wallet = std::move(result).value_or(nullptr);
-    if (!external_wallet ||
-        external_wallet->status == mojom::WalletStatus::kNotConnected) {
-      return std::move(callback).Run(nullptr);
-    }
-    std::move(callback).Run(std::move(external_wallet));
-  };
-
-  rewards_service_->GetExternalWallet(base::BindOnce(fn, std::move(callback)));
+  rewards_service_->GetExternalWallet(std::move(callback));
 }
 
 void TipPanelHandler::SendContribution(double amount,

@@ -27,7 +27,7 @@ void RecordEnabledTypes(bool sync_everything_enabled,
       selected_types.HasAll(all_brave_supported_types)) {
     // Sync All
     sample = EnabledTypesAnswer::kAllTypes;
-  } else if (selected_types.Empty() ||
+  } else if (selected_types.empty() ||
              selected_types ==
                  UserSelectableTypeSet({UserSelectableType::kBookmarks})) {
     // Bookmarks or no types
@@ -46,12 +46,12 @@ void RecordEnabledTypes(bool sync_everything_enabled,
 }
 
 void RecordSyncedObjectsCount(int total_entities) {
-  // "Brave.Sync.SyncedObjectsCount"
+  // "Brave.Sync.SyncedObjectsCount.2"
   // 0 - 0..1000
   // 1 - 1001..10000
   // 2 - 10001..49000
   // 3 - >= 49001
-  p3a_utils::RecordToHistogramBucket(kSyncedObjectsCountHistogramName,
+  p3a_utils::RecordToHistogramBucket(kSyncedObjectsCountHistogramNameV2,
                                      {1000, 10000, 49000}, total_entities);
 }
 

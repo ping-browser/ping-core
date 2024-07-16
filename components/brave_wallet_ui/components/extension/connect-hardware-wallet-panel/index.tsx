@@ -5,11 +5,11 @@
 
 import * as React from 'react'
 import { ThunkDispatch } from '@reduxjs/toolkit'
+import { useHistory } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../common/locale'
 import { isHardwareAccount } from '../../../utils/account-utils'
-import { PanelSelectors } from '../../../panel/selectors'
 import { UISelectors } from '../../../common/selectors'
 import { PanelActions } from '../../../panel/actions'
 
@@ -21,13 +21,15 @@ import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
 import useInterval from '../../../common/hooks/interval'
 import { useDispatch } from 'react-redux'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
-import {
-  useSafeUISelector,
-  useUnsafePanelSelector
-} from '../../../common/hooks/use-safe-selector'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
   usePendingTransactions //
 } from '../../../common/hooks/use-pending-transaction'
+import {
+  useGetPendingSignMessageRequestsQuery,
+  useProcessSignMessageRequestMutation,
+  useSignMessageHardwareMutation
+} from '../../../common/slices/api.slice'
 
 // components
 import { NavButton } from '../buttons/nav-button/index'
@@ -46,13 +48,21 @@ import {
 } from './style'
 
 export interface Props {
-  onCancel: (account: BraveWallet.AccountInfo) => void
   account: BraveWallet.AccountInfo
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
-  onClickInstructions: () => void
 }
 
-function getAppName (coinType: BraveWallet.CoinType): string {
+const onClickInstructions = () => {
+  const url = 'https://support.brave.com/hc/en-us/articles/4409309138701'
+
+  chrome.tabs.create({ url }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+}
+
+function getAppName(coinType: BraveWallet.CoinType): string {
   switch (coinType) {
     case BraveWallet.CoinType.SOL:
       return 'Solana'
@@ -64,30 +74,29 @@ function getAppName (coinType: BraveWallet.CoinType): string {
 }
 
 export const ConnectHardwareWalletPanel = ({
-  onCancel,
   account,
-  hardwareWalletCode,
-  onClickInstructions
+  hardwareWalletCode
 }: Props) => {
   // redux
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
+  const history = useHistory()
 
-  /**
-   * signMessageData by default initialized as:
-   *
-   * ```[{ id: -1, address: '', message: '' }]```
-   */
-  const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
-  const request = signMessageData.at(0)
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
-  const isSigning = request && request.id !== -1
 
   const isConfirming = !!selectedPendingTransactionId
   const coinType = account.accountId.coin
 
+  // mutations
+  const [signMessageHardware] = useSignMessageHardwareMutation()
+  const [processSignMessageRequest] = useProcessSignMessageRequestMutation()
+
   // queries
+  const { data: signMessageData } = useGetPendingSignMessageRequestsQuery()
+  const request = signMessageData?.at(0)
+  const isSigning = request && request.id !== -1
+
   const { account: messageAccount } = useAccountQuery(request?.accountId)
 
   // pending transactions
@@ -126,30 +135,26 @@ export const ConnectHardwareWalletPanel = ({
 
   // methods
   const onCancelConnect = React.useCallback(() => {
-    onCancel(account)
-  }, [onCancel, account])
+    dispatch(PanelActions.cancelConnectHardwareWallet(account))
+  }, [account, dispatch])
 
-  const onSignData = React.useCallback(() => {
+  const onSignData = React.useCallback(async () => {
     if (!messageAccount || !request) {
       return
     }
 
     if (isHardwareAccount(messageAccount.accountId)) {
-      dispatch(
-        PanelActions.signMessageHardware({
-          account: messageAccount,
-          request: request
-        })
-      )
+      await signMessageHardware({
+        account: messageAccount,
+        request: request
+      }).unwrap()
     } else {
-      dispatch(
-        PanelActions.signMessageProcessed({
-          approved: true,
-          id: request.id
-        })
-      )
+      await processSignMessageRequest({
+        approved: true,
+        id: request.id
+      }).unwrap()
     }
-  }, [messageAccount, request])
+  }, [messageAccount, processSignMessageRequest, request, signMessageHardware])
 
   const retryHardwareOperation = React.useCallback(() => {
     if (isSigning) {
@@ -169,34 +174,47 @@ export const ConnectHardwareWalletPanel = ({
   // custom hooks
   useInterval(retryHardwareOperation, 3000, !isConnected ? 5000 : null)
 
+  React.useEffect(() => {
+    // After Panel V2 this is needed to reset the origin
+    // back to brave://wallet-panel.top-chrome/ without any
+    // params. Otherwise hardware authorization will fail.
+    history.push('')
+  }, [history])
+
   // render
   return (
     <StyledWrapper>
       <ConnectionRow>
         <Indicator isConnected={isConnected} />
         <Description>
-          {
-            isConnected
-              ? getLocale('braveWalletConnectHardwarePanelConnected').replace('$1', account.name)
-              : getLocale('braveWalletConnectHardwarePanelDisconnected').replace('$1', account.name)
-          }
+          {isConnected
+            ? getLocale('braveWalletConnectHardwarePanelConnected').replace(
+                '$1',
+                account.name
+              )
+            : getLocale('braveWalletConnectHardwarePanelDisconnected').replace(
+                '$1',
+                account.name
+              )}
         </Description>
       </ConnectionRow>
       <Title>{title}</Title>
-      <InstructionsButton onClick={onClickInstructions}>{getLocale('braveWalletConnectHardwarePanelInstructions')}</InstructionsButton>
+      <InstructionsButton onClick={onClickInstructions}>
+        {getLocale('braveWalletConnectHardwarePanelInstructions')}
+      </InstructionsButton>
       <PageIcon />
-      {
-        hardwareWalletCode !== 'deviceBusy' && (hardwareWalletCode === 'unauthorized'
-          ? <AuthorizeHardwareDeviceIFrame coinType={coinType}/>
-          : <ButtonWrapper>
-              <NavButton
-                buttonType='secondary'
-                text={getLocale('braveWalletButtonCancel')}
-                onSubmit={onCancelConnect}
-              />
-            </ButtonWrapper>
-        )
-      }
+      {hardwareWalletCode !== 'deviceBusy' &&
+        (hardwareWalletCode === 'unauthorized' ? (
+          <AuthorizeHardwareDeviceIFrame coinType={coinType} />
+        ) : (
+          <ButtonWrapper>
+            <NavButton
+              buttonType='secondary'
+              text={getLocale('braveWalletButtonCancel')}
+              onSubmit={onCancelConnect}
+            />
+          </ButtonWrapper>
+        ))}
     </StyledWrapper>
   )
 }

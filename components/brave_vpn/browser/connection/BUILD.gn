@@ -9,8 +9,10 @@ assert(enable_brave_vpn)
 
 source_set("api") {
   sources = [
-    "brave_vpn_os_connection_api.cc",
-    "brave_vpn_os_connection_api.h",
+    "brave_vpn_connection_manager.cc",
+    "brave_vpn_connection_manager.h",
+    "connection_api_impl.cc",
+    "connection_api_impl.h",
   ]
 
   deps = [
@@ -18,8 +20,11 @@ source_set("api") {
     "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/mojom",
     "//components/prefs",
+    "//components/version_info:channel",
+    "//net",
     "//services/network/public/cpp",
   ]
 }
@@ -31,11 +36,11 @@ group("connection") {
   ]
   if (is_win) {
     deps += [ "ikev2/win" ]
-    deps += [ "wireguard/win" ]
   }
 
   if (is_mac) {
     deps += [ "ikev2/mac" ]
+    deps += [ "wireguard/mac" ]
   }
 }
 

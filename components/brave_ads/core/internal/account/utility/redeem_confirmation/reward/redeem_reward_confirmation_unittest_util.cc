@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_unittest_util.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-std::string BuildCreateRewardConfirmationUrlResponseBodyForTesting() {
-  return R"({
+std::string BuildCreateRewardConfirmationUrlResponseBody() {
+  return R"(
+            {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
@@ -17,8 +18,9 @@ std::string BuildCreateRewardConfirmationUrlResponseBodyForTesting() {
             })";
 }
 
-std::string BuildFetchPaymentTokenUrlResponseBodyForTesting() {
-  return R"({
+std::string BuildFetchPaymentTokenUrlResponseBody() {
+  return R"(
+            {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
@@ -34,4 +36,4 @@ std::string BuildFetchPaymentTokenUrlResponseBodyForTesting() {
             })";
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

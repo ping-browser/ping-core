@@ -58,7 +58,8 @@ std::string GetFunctionHash(const std::string& input) {
 eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input) {
   auto full_hash = KeccakHashBytes32(base::as_bytes(base::make_span(input)));
   eth_abi::Bytes4 bytes_result;
-  base::ranges::copy(base::make_span(full_hash).first(4), bytes_result.begin());
+  base::ranges::copy(base::make_span(full_hash).first<4>(),
+                     bytes_result.begin());
   return bytes_result;
 }
 
@@ -74,8 +75,7 @@ eth_abi::Bytes32 Namehash(const std::string& name) {
   return hash;
 }
 
-std::array<uint8_t, crypto::kSHA256Length> DoubleSHA256Hash(
-    base::span<const uint8_t> input) {
+SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input) {
   return crypto::SHA256Hash(crypto::SHA256Hash(input));
 }
 

@@ -6,14 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_GET_PARAMETERS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_GET_PARAMETERS_H_
 
+#include <optional>
 #include <string>
 
+#include "base/containers/flat_map.h"
+#include "base/values.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // GET /v1/parameters
 //
@@ -57,7 +59,7 @@
 // clang-format on
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -72,13 +74,22 @@ struct ResultFor<GetParameters> {
 class GetParameters final : public RequestBuilder,
                             public ResponseHandler<GetParameters> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngine& engine,
+                                const mojom::UrlResponse&);
 
-  explicit GetParameters(RewardsEngineImpl& engine);
+  explicit GetParameters(RewardsEngine& engine);
   ~GetParameters() override;
 
+  using ProviderRegionsMap = base::flat_map<std::string, mojom::RegionsPtr>;
+
+  // Converts the specified value to a map of wallet provider type to supported
+  // region data. Returns `std::nullopt` if the value is not in the correct
+  // format and cannot be converted.
+  static std::optional<ProviderRegionsMap> ValueToWalletProviderRegions(
+      const base::Value& value);
+
  private:
-  absl::optional<std::string> Url() const override;
+  std::optional<std::string> Url() const override;
   mojom::UrlMethod Method() const override;
 };
 

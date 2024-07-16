@@ -9,35 +9,30 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::p2a {
+namespace brave_ads {
 
-TEST(BraveAdsP2AOpportunityUtilTest, BuildAdOpportunityEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  const std::vector<std::string> expected_events = {
-      "Brave.P2A.AdOpportunitiesPerSegment.technologycomputing",
-      "Brave.P2A.AdOpportunitiesPerSegment.personalfinance",
-      "Brave.P2A.AdOpportunitiesPerSegment.travel",
-      "Brave.P2A.TotalAdOpportunities"};
-
-  EXPECT_EQ(expected_events, BuildAdOpportunityEvents(/*segments*/ {
-                                 "technology & computing",
-                                 "personal finance-crypto", "travel"}));
+TEST(BraveAdsP2AOpportunityUtilTest, BuildP2AAdOpportunityEvents) {
+  // Act & Assert
+  const std::vector<std::string> expected_ad_opportunity_events = {
+      "Brave.P2A.ad_notification.opportunities_per_segment.technologycomputing",
+      "Brave.P2A.ad_notification.opportunities_per_segment.personalfinance",
+      "Brave.P2A.ad_notification.opportunities_per_segment.travel",
+      "Brave.P2A.ad_notification.opportunities"};
+  EXPECT_EQ(
+      expected_ad_opportunity_events,
+      BuildP2AAdOpportunityEvents(
+          AdType::kNotificationAd, /*segments=*/{
+              "technology & computing", "personal finance-crypto", "travel"}));
 }
 
-TEST(BraveAdsP2AOpportunityUtilTest, BuildAdOpportunityEventsForEmptySegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  const std::vector<std::string> expected_events = {
-      "Brave.P2A.TotalAdOpportunities"};
-
-  EXPECT_EQ(expected_events, BuildAdOpportunityEvents(/*segments*/ {}));
+TEST(BraveAdsP2AOpportunityUtilTest,
+     BuildP2AAdOpportunityEventsForEmptySegments) {
+  // Act & Assert
+  const std::vector<std::string> expected_ad_opportunity_events = {
+      "Brave.P2A.ad_notification.opportunities"};
+  EXPECT_EQ(
+      expected_ad_opportunity_events,
+      BuildP2AAdOpportunityEvents(AdType::kNotificationAd, /*segments=*/{}));
 }
 
-}  // namespace brave_ads::p2a
+}  // namespace brave_ads

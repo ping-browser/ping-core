@@ -14,8 +14,8 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/browser/ui/commander/command_source.h"
 #include "brave/components/commander/common/pref_names.h"
-#include "chrome/browser/ui/commander/command_source.h"
 #include "components/history/core/browser/keyword_search_term_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -36,7 +36,7 @@ void Ranker::Visit(const CommandItem& item) {
   auto* entry = update->EnsureDict(id);
   auto visit_count = entry->FindInt("visit_count").value_or(0);
   entry->Set("visit_count", visit_count + 1);
-  entry->Set("last_visit", base::Time::Now().ToJsTime());
+  entry->Set("last_visit", base::Time::Now().InMillisecondsFSinceUnixEpoch());
 }
 
 double Ranker::GetRank(const CommandItem& item) {
@@ -71,8 +71,8 @@ std::tuple<int, base::Time> Ranker::GetInfo(const std::string& id) const {
   }
 
   auto visit_count = entry->FindInt("visit_count").value_or(0);
-  auto last_visit =
-      base::Time::FromJsTime(entry->FindDouble("last_visit").value_or(0));
+  auto last_visit = base::Time::FromMillisecondsSinceUnixEpoch(
+      entry->FindDouble("last_visit").value_or(0));
   return std::make_tuple(visit_count, last_visit);
 }
 

@@ -6,9 +6,16 @@ module brave_rewards.mojom;
 
 import "brave/components/brave_rewards/common/mojom/rewards.mojom";
 import "brave/components/brave_rewards/common/mojom/rewards_database.mojom";
-import "brave/components/brave_rewards/common/mojom/rewards_types.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
+
+struct RewardsEngineOptions {
+  Environment environment = Environment.kProduction;
+  bool is_testing = false;
+  int32 state_migration_target_version_for_testing = -1;
+  int32 reconcile_interval = 0;
+  int32 retry_interval = 0;
+};
 
 interface RewardsEngine {
   Initialize() => (Result result);
@@ -53,14 +60,6 @@ interface RewardsEngine {
       => (Result result);
 
   RestorePublishers() => (Result result);
-
-  FetchPromotions() => (Result result, array<Promotion> promotion);
-
-  ClaimPromotion(string promotion_id, string payload)
-      => (Result result, string response);
-
-  AttestPromotion(string promotion_id, string solution)
-      => (Result result, Promotion? promotion);
 
   SetPublisherMinVisitTime(int32 duration_in_seconds);
 
@@ -127,34 +126,19 @@ interface RewardsEngine {
   SavePublisherInfo(uint64 window_id, PublisherInfo publisher_info)
       => (Result result);
 
-  SetInlineTippingPlatformEnabled(InlineTipsPlatforms platform, bool enabled);
-
-  GetInlineTippingPlatformEnabled(InlineTipsPlatforms platform)
-      => (bool enabled);
-
   GetShareURL(map<string, string> args) => (string url);
 
-  FetchBalance() => (FetchBalanceResult result);
+  FetchBalance() => (Balance? balance);
 
-  GetExternalWallet(string wallet_type) => (GetExternalWalletResult result);
+  GetExternalWallet() => (ExternalWallet? external_wallet);
+
+  BeginExternalWalletLogin(string wallet_type)
+      => (ExternalWalletLoginParams? params);
 
   ConnectExternalWallet(string wallet_type, map<string, string> args)
       => (ConnectExternalWalletResult result);
 
-  GetTransactionReport(ActivityMonth month, int32 year)
-      => (array<TransactionReportInfo> list);
-
-  GetContributionReport(ActivityMonth month, int32 year)
-      => (array<ContributionReportInfo> list);
-
   GetAllContributions() => (array<ContributionInfo> list);
-
-  GetMonthlyReport(ActivityMonth month, int32 year)
-      => (Result result, MonthlyReportInfo report);
-
-  GetAllMonthlyReportIds() => (array<string> ids);
-
-  GetAllPromotions() => (map<string, Promotion> items);
 
   Shutdown() => (Result result);
 
@@ -178,6 +162,10 @@ interface RewardsEngineClient {
       => (bool success, string favicon_url);
 
   LoadURL(UrlRequest request) => (UrlResponse response);
+
+  GetSPLTokenAccountBalance(
+      string solana_address,
+      string token_mint_address) => (SolanaAccountBalance? balance);
 
   PublisherListNormalized(array<PublisherInfo> list);
 
@@ -249,8 +237,6 @@ interface RewardsEngineClient {
 
   [Sync]
   GetClientInfo() => (ClientInfo info);
-
-  UnblindedTokensReady();
 
   ReconcileStampReset();
 

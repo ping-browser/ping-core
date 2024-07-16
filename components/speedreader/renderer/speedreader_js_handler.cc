@@ -16,8 +16,10 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "v8/include/v8-context.h"
 
 namespace {
 constexpr const char kSpeedreader[] = "speedreader";
@@ -36,14 +38,13 @@ SpeedreaderJSHandler::~SpeedreaderJSHandler() = default;
 // static
 void SpeedreaderJSHandler::Install(
     base::WeakPtr<SpeedreaderRenderFrameObserver> owner,
-    int32_t isolated_world_id) {
+    v8::Local<v8::Context> context) {
   DCHECK(owner);
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(owner->render_frame());
+  v8::Isolate* isolate =
+      owner->render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
 
-  v8::Local<v8::Context> context =
-      owner->render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
-          isolate, isolated_world_id);
   if (context.IsEmpty()) {
     return;
   }
@@ -55,13 +56,15 @@ void SpeedreaderJSHandler::Install(
   v8::Local<v8::Value> speedreader_value =
       global->Get(context, gin::StringToV8(isolate, kSpeedreader))
           .ToLocalChecked();
-  if (!speedreader_value->IsUndefined())
+  if (!speedreader_value->IsUndefined()) {
     return;
+  }
 
   gin::Handle<SpeedreaderJSHandler> handler =
       gin::CreateHandle(isolate, new SpeedreaderJSHandler(std::move(owner)));
-  if (handler.IsEmpty())
+  if (handler.IsEmpty()) {
     return;
+  }
 
   v8::PropertyDescriptor desc(handler.ToV8(), false);
   desc.set_configurable(false);
@@ -75,13 +78,15 @@ void SpeedreaderJSHandler::Install(
 gin::ObjectTemplateBuilder SpeedreaderJSHandler::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<SpeedreaderJSHandler>::GetObjectTemplateBuilder(isolate)
-      .SetMethod("showOriginalPage", &SpeedreaderJSHandler::ShowOriginalPage);
+      .SetMethod("showOriginalPage", &SpeedreaderJSHandler::ShowOriginalPage)
+      .SetMethod("ttsPlayPause", &SpeedreaderJSHandler::TtsPlayPause);
 }
 
 void SpeedreaderJSHandler::ShowOriginalPage(v8::Isolate* isolate) {
   DCHECK(isolate);
-  if (!owner_)
+  if (!owner_) {
     return;
+  }
 
   mojo::AssociatedRemote<speedreader::mojom::SpeedreaderHost> speedreader_host;
   owner_->render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
@@ -89,6 +94,22 @@ void SpeedreaderJSHandler::ShowOriginalPage(v8::Isolate* isolate) {
 
   if (speedreader_host.is_bound()) {
     speedreader_host->OnShowOriginalPage();
+  }
+}
+
+void SpeedreaderJSHandler::TtsPlayPause(v8::Isolate* isolate,
+                                        int paragraph_index) {
+  DCHECK(isolate);
+  if (!owner_) {
+    return;
+  }
+
+  mojo::AssociatedRemote<speedreader::mojom::SpeedreaderHost> speedreader_host;
+  owner_->render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
+      &speedreader_host);
+
+  if (speedreader_host.is_bound()) {
+    speedreader_host->OnTtsPlayPause(paragraph_index);
   }
 }
 

@@ -4,16 +4,18 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
+
+#include <optional>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/solana_utils.h"
-#include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -71,45 +73,45 @@ TEST(HDKeyUnitTest, TestVector1) {
     const char* path;
     const char* ext_pub;
     const char* ext_pri;
-    absl::optional<int> derive_normal;
-    absl::optional<int> derive_hardened;
+    std::optional<int> derive_normal;
+    std::optional<int> derive_hardened;
   } cases[] = {
       {"m",
        "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ2"
        "9ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8",
        "xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChk"
        "VvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi",
-       absl::nullopt, absl::nullopt},
+       std::nullopt, std::nullopt},
       {"m/0'",
        "xpub68Gmy5EdvgibQVfPdqkBBCHxA5htiqg55crXYuXoQRKfDBFA1WEjWgP6LH"
        "hwBZeNK1VTsfTFUHCdrfp1bgwQ9xv5ski8PX9rL2dZXvgGDnw",
        "xprv9uHRZZhk6KAJC1avXpDAp4MDc3sQKNxDiPvvkX8Br5ngLNv1TxvUxt4cV1"
        "rGL5hj6KCesnDYUhd7oWgT11eZG7XnxHrnYeSvkzY7d2bhkJ7",
-       absl::nullopt, 0},
+       std::nullopt, 0},
       {"m/0'/1",
        "xpub6ASuArnXKPbfEwhqN6e3mwBcDTgzisQN1wXN9BJcM47sSikHjJf3UFHKkN"
        "AWbWMiGj7Wf5uMash7SyYq527Hqck2AxYysAA7xmALppuCkwQ",
        "xprv9wTYmMFdV23N2TdNG573QoEsfRrWKQgWeibmLntzniatZvR9BmLnvSxqu5"
        "3Kw1UmYPxLgboyZQaXwTCg8MSY3H2EU4pWcQDnRnrVA1xe8fs",
-       1, absl::nullopt},
+       1, std::nullopt},
       {"m/0'/1/2'",
        "xpub6D4BDPcP2GT577Vvch3R8wDkScZWzQzMMUm3PWbmWvVJrZwQY4VUNgqFJP"
        "MM3No2dFDFGTsxxpG5uJh7n7epu4trkrX7x7DogT5Uv6fcLW5",
        "xprv9z4pot5VBttmtdRTWfWQmoH1taj2axGVzFqSb8C9xaxKymcFzXBDptWmT7"
        "FwuEzG3ryjH4ktypQSAewRiNMjANTtpgP4mLTj34bhnZX7UiM",
-       absl::nullopt, 2},
+       std::nullopt, 2},
       {"m/0'/1/2'/2",
        "xpub6FHa3pjLCk84BayeJxFW2SP4XRrFd1JYnxeLeU8EqN3vDfZmbqBqaGJAyi"
        "LjTAwm6ZLRQUMv1ZACTj37sR62cfN7fe5JnJ7dh8zL4fiyLHV",
        "xprvA2JDeKCSNNZky6uBCviVfJSKyQ1mDYahRjijr5idH2WwLsEd4Hsb2Tyh8R"
        "fQMuPh7f7RtyzTtdrbdqqsunu5Mm3wDvUAKRHSC34sJ7in334",
-       2, absl::nullopt},
+       2, std::nullopt},
       {"m/0'/1/2'/2/1000000000",
        "xpub6H1LXWLaKsWFhvm6RVpEL9P4KfRZSW7abD2ttkWP3SSQvnyA8FSVqNTEcY"
        "FgJS2UaFcxupHiYkro49S8yGasTvXEYBVPamhGW6cFJodrTHy",
        "xprvA41z7zogVVwxVSgdKUHDy1SKmdb533PjDz7J6N6mV6uS3ze1ai8FHa8kmH"
        "ScGpWmj4WggLyQjgPie1rFSruoUihUZREPSL39UNdE3BBDu76",
-       1000000000, absl::nullopt},
+       1000000000, std::nullopt},
   };
 
   std::vector<uint8_t> bytes;
@@ -118,12 +120,10 @@ TEST(HDKeyUnitTest, TestVector1) {
       base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &bytes));
 
   std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(bytes);
-  std::unique_ptr<HDKeyBase> derived = HDKey::GenerateFromSeed(bytes);
+  std::unique_ptr<HDKey> derived = HDKey::GenerateFromSeed(bytes);
 
   for (const auto& entry : cases) {
-    std::unique_ptr<HDKeyBase> key_base =
-        m_key->DeriveChildFromPath(entry.path);
-    HDKey* key = static_cast<HDKey*>(key_base.get());
+    std::unique_ptr<HDKey> key = m_key->DeriveChildFromPath(entry.path);
     EXPECT_EQ(key->GetPath(), entry.path);
     EXPECT_EQ(key->GetPublicExtendedKey(), entry.ext_pub);
     EXPECT_EQ(key->GetPrivateExtendedKey(), entry.ext_pri);
@@ -134,10 +134,8 @@ TEST(HDKeyUnitTest, TestVector1) {
       derived = derived->DeriveHardenedChild(*entry.derive_hardened);
     }
     EXPECT_EQ(derived->GetPath(), entry.path);
-    EXPECT_EQ(static_cast<HDKey*>(derived.get())->GetPublicExtendedKey(),
-              entry.ext_pub);
-    EXPECT_EQ(static_cast<HDKey*>(derived.get())->GetPrivateExtendedKey(),
-              entry.ext_pri);
+    EXPECT_EQ(derived->GetPublicExtendedKey(), entry.ext_pub);
+    EXPECT_EQ(derived->GetPrivateExtendedKey(), entry.ext_pri);
   }
 }
 
@@ -146,45 +144,45 @@ TEST(HDKeyUnitTest, TestVector2) {
     const char* path;
     const char* ext_pub;
     const char* ext_pri;
-    absl::optional<int> derive_normal;
-    absl::optional<int> derive_hardened;
+    std::optional<int> derive_normal;
+    std::optional<int> derive_hardened;
   } cases[] = {
       {"m",
        "xpub661MyMwAqRbcFW31YEwpkMuc5THy2PSt5bDMsktWQcFF8syAmRUapSCGu8ED9W6oDMS"
        "gv6Zz8idoc4a6mr8BDzTJY47LJhkJ8UB7WEGuduB",
        "xprv9s21ZrQH143K31xYSDQpPDxsXRTUcvj2iNHm5NUtrGiGG5e2DtALGdso3pGz6ssrdK4"
        "PFmM8NSpSBHNqPqm55Qn3LqFtT2emdEXVYsCzC2U",
-       absl::nullopt, absl::nullopt},
+       std::nullopt, std::nullopt},
       {"m/0",
        "xpub69H7F5d8KSRgmmdJg2KhpAK8SR3DjMwAdkxj3ZuxV27CprR9LgpeyGmXUbC6wb7ERfv"
        "rnKZjXoUmmDznezpbZb7ap6r1D3tgFxHmwMkQTPH",
        "xprv9vHkqa6EV4sPZHYqZznhT2NPtPCjKuDKGY38FBWLvgaDx45zo9WQRUT3dKYnjwih2yJ"
        "D9mkrocEZXo1ex8G81dwSM1fwqWpWkeS3v86pgKt",
-       0, absl::nullopt},
+       0, std::nullopt},
       {"m/0/2147483647'",
        "xpub6ASAVgeehLbnwdqV6UKMHVzgqAG8Gr6riv3Fxxpj8ksbH9ebxaEyBLZ85ySDhKiLDBr"
        "QSARLq1uNRts8RuJiHjaDMBU4Zn9h8LZNnBC5y4a",
        "xprv9wSp6B7kry3Vj9m1zSnLvN3xH8RdsPP1Mh7fAaR7aRLcQMKTR2vidYEeEg2mUCTAwCd"
        "6vnxVrcjfy2kRgVsFawNzmjuHc2YmYRmagcEPdU9",
-       absl::nullopt, 2147483647},
+       std::nullopt, 2147483647},
       {"m/0/2147483647'/1",
        "xpub6DF8uhdarytz3FWdA8TvFSvvAh8dP3283MY7p2V4SeE2wyWmG5mg5EwVvmdMVCQcoNJ"
        "xGoWaU9DCWh89LojfZ537wTfunKau47EL2dhHKon",
        "xprv9zFnWC6h2cLgpmSA46vutJzBcfJ8yaJGg8cX1e5StJh45BBciYTRXSd25UEPVuesF9y"
        "og62tGAQtHjXajPPdbRCHuWS6T8XA2ECKADdw4Ef",
-       1, absl::nullopt},
+       1, std::nullopt},
       {"m/0/2147483647'/1/2147483646'",
        "xpub6ERApfZwUNrhLCkDtcHTcxd75RbzS1ed54G1LkBUHQVHQKqhMkhgbmJbZRkrgZw4kox"
        "b5JaHWkY4ALHY2grBGRjaDMzQLcgJvLJuZZvRcEL",
        "xprvA1RpRA33e1JQ7ifknakTFpgNXPmW2YvmhqLQYMmrj4xJXXWYpDPS3xz7iAxn8L39njG"
        "VyuoseXzU6rcxFLJ8HFsTjSyQbLYnMpCqE2VbFWc",
-       absl::nullopt, 2147483646},
+       std::nullopt, 2147483646},
       {"m/0/2147483647'/1/2147483646'/2",
        "xpub6FnCn6nSzZAw5Tw7cgR9bi15UV96gLZhjDstkXXxvCLsUXBGXPdSnLFbdpq8p9HmGsA"
        "pME5hQTZ3emM2rnY5agb9rXpVGyy3bdW6EEgAtqt",
        "xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38"
        "EGfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j",
-       2, absl::nullopt},
+       2, std::nullopt},
   };
   std::vector<uint8_t> bytes;
   // path: m
@@ -194,12 +192,10 @@ TEST(HDKeyUnitTest, TestVector2) {
       &bytes));
 
   std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(bytes);
-  std::unique_ptr<HDKeyBase> derived = HDKey::GenerateFromSeed(bytes);
+  std::unique_ptr<HDKey> derived = HDKey::GenerateFromSeed(bytes);
 
   for (const auto& entry : cases) {
-    std::unique_ptr<HDKeyBase> key_base =
-        m_key->DeriveChildFromPath(entry.path);
-    HDKey* key = static_cast<HDKey*>(key_base.get());
+    std::unique_ptr<HDKey> key = m_key->DeriveChildFromPath(entry.path);
     EXPECT_EQ(key->GetPath(), entry.path);
     EXPECT_EQ(key->GetPublicExtendedKey(), entry.ext_pub);
     EXPECT_EQ(key->GetPrivateExtendedKey(), entry.ext_pri);
@@ -211,10 +207,8 @@ TEST(HDKeyUnitTest, TestVector2) {
     }
     EXPECT_EQ(derived->GetPath(), entry.path);
 
-    EXPECT_EQ(static_cast<HDKey*>(derived.get())->GetPublicExtendedKey(),
-              entry.ext_pub);
-    EXPECT_EQ(static_cast<HDKey*>(derived.get())->GetPrivateExtendedKey(),
-              entry.ext_pri);
+    EXPECT_EQ(derived->GetPublicExtendedKey(), entry.ext_pub);
+    EXPECT_EQ(derived->GetPrivateExtendedKey(), entry.ext_pri);
   }
 }
 
@@ -223,21 +217,21 @@ TEST(HDKeyUnitTest, TestVector3) {
     const char* path;
     const char* ext_pub;
     const char* ext_pri;
-    absl::optional<int> derive_normal;
-    absl::optional<int> derive_hardened;
+    std::optional<int> derive_normal;
+    std::optional<int> derive_hardened;
   } cases[] = {
       {"m",
        "xpub661MyMwAqRbcEZVB4dScxMAdx6d4nFc9nvyvH3v4gJL378CSRZiYmhRoP7mBy6gSPSC"
        "Yk6SzXPTf3ND1cZAceL7SfJ1Z3GC8vBgp2epUt13",
        "xprv9s21ZrQH143K25QhxbucbDDuQ4naNntJRi4KUfWT7xo4EKsHt2QJDu7KXp1A3u7Bi1j"
        "8ph3EGsZ9Xvz9dGuVrtHHs7pXeTzjuxBrCmmhgC6",
-       absl::nullopt, absl::nullopt},
+       std::nullopt, std::nullopt},
       {"m/0'",
        "xpub68NZiKmJWnxxS6aaHmn81bvJeTESw724CRDs6HbuccFQN9Ku14VQrADWgqbhhTHBaoh"
        "PX4CjNLf9fq9MYo6oDaPPLPxSb7gwQN3ih19Zm4Y",
        "xprv9uPDJpEQgRQfDcW7BkF7eTya6RPxXeJCqCJGHuCJ4GiRVLzkTXBAJMu2qaMWPrS7AAN"
        "Yqdq6vcBcBUdJCVVFceUvJFjaPdGZ2y9WACViL4L",
-       absl::nullopt, 0},
+       std::nullopt, 0},
   };
   std::vector<uint8_t> bytes;
   // path: m
@@ -247,12 +241,10 @@ TEST(HDKeyUnitTest, TestVector3) {
       &bytes));
 
   std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(bytes);
-  std::unique_ptr<HDKeyBase> derived = HDKey::GenerateFromSeed(bytes);
+  std::unique_ptr<HDKey> derived = HDKey::GenerateFromSeed(bytes);
 
   for (const auto& entry : cases) {
-    std::unique_ptr<HDKeyBase> key_base =
-        m_key->DeriveChildFromPath(entry.path);
-    HDKey* key = static_cast<HDKey*>(key_base.get());
+    std::unique_ptr<HDKey> key = m_key->DeriveChildFromPath(entry.path);
     EXPECT_EQ(key->GetPath(), entry.path);
     EXPECT_EQ(key->GetPublicExtendedKey(), entry.ext_pub);
     EXPECT_EQ(key->GetPrivateExtendedKey(), entry.ext_pri);
@@ -264,10 +256,8 @@ TEST(HDKeyUnitTest, TestVector3) {
     }
     EXPECT_EQ(derived->GetPath(), entry.path);
 
-    EXPECT_EQ(static_cast<HDKey*>(derived.get())->GetPublicExtendedKey(),
-              entry.ext_pub);
-    EXPECT_EQ(static_cast<HDKey*>(derived.get())->GetPrivateExtendedKey(),
-              entry.ext_pri);
+    EXPECT_EQ(derived->GetPublicExtendedKey(), entry.ext_pub);
+    EXPECT_EQ(derived->GetPrivateExtendedKey(), entry.ext_pri);
   }
 }
 
@@ -331,8 +321,8 @@ TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_b)),
             "dfae85d39b73c9d143403ce472f7c4c8a5032c13d9546030044050e7d39355e47a"
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
-  EXPECT_TRUE(key->Verify(msg_a, sig_a));
-  EXPECT_TRUE(key->Verify(msg_b, sig_b));
+  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a));
+  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b));
 
   EXPECT_EQ(HDKey::GenerateFromPrivateKey(std::vector<uint8_t>(33)), nullptr);
   EXPECT_EQ(HDKey::GenerateFromPrivateKey(std::vector<uint8_t>(31)), nullptr);
@@ -357,8 +347,8 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_b)),
             "dfae85d39b73c9d143403ce472f7c4c8a5032c13d9546030044050e7d39355e47a"
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
-  EXPECT_TRUE(key->Verify(msg_a, sig_a));
-  EXPECT_TRUE(key->Verify(msg_b, sig_b));
+  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a));
+  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b));
   const std::vector<uint8_t> public_key_a =
       key->RecoverCompact(true, msg_a, sig_a, recid_a);
   const std::vector<uint8_t> public_key_b =
@@ -374,15 +364,16 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   EXPECT_EQ(base::HexEncode(uncompressed_public_key_b),
             base::HexEncode(key->GetUncompressedPublicKey()));
 
-  EXPECT_FALSE(key->Verify(std::vector<uint8_t>(32), std::vector<uint8_t>(64)));
-  EXPECT_FALSE(key->Verify(msg_a, sig_b));
-  EXPECT_FALSE(key->Verify(msg_b, sig_a));
+  EXPECT_FALSE(key->VerifyForTesting(std::vector<uint8_t>(32),
+                                     std::vector<uint8_t>(64)));
+  EXPECT_FALSE(key->VerifyForTesting(msg_a, sig_b));
+  EXPECT_FALSE(key->VerifyForTesting(msg_b, sig_a));
 
-  EXPECT_FALSE(key->Verify(std::vector<uint8_t>(31), sig_a));
-  EXPECT_FALSE(key->Verify(std::vector<uint8_t>(33), sig_a));
+  EXPECT_FALSE(key->VerifyForTesting(std::vector<uint8_t>(31), sig_a));
+  EXPECT_FALSE(key->VerifyForTesting(std::vector<uint8_t>(33), sig_a));
 
-  EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(63)));
-  EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(65)));
+  EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(63)));
+  EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(65)));
 
   EXPECT_TRUE(IsPublicKeyEmpty(
       key->RecoverCompact(true, std::vector<uint8_t>(31), sig_a, recid_a)));
@@ -437,8 +428,7 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
   };
 
   for (auto* entry : cases) {
-    std::unique_ptr<HDKeyBase> key;
-    key = m_key->DeriveChildFromPath(entry);
+    std::unique_ptr<HDKey> key = m_key->DeriveChildFromPath(entry);
     EXPECT_EQ(key, nullptr);
   }
 
@@ -447,14 +437,14 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
     std::unique_ptr<HDKey> key = HDKey::GenerateFromExtendedKey(
         "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJo"
         "Cu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8");
-    std::unique_ptr<HDKeyBase> derived_key = key->DeriveNormalChild(3353535)
-                                                 ->DeriveNormalChild(2223)
-                                                 ->DeriveNormalChild(0)
-                                                 ->DeriveNormalChild(99424)
-                                                 ->DeriveNormalChild(4)
-                                                 ->DeriveNormalChild(33);
+    std::unique_ptr<HDKey> derived_key = key->DeriveNormalChild(3353535)
+                                             ->DeriveNormalChild(2223)
+                                             ->DeriveNormalChild(0)
+                                             ->DeriveNormalChild(99424)
+                                             ->DeriveNormalChild(4)
+                                             ->DeriveNormalChild(33);
     EXPECT_EQ(
-        static_cast<HDKey*>(derived_key.get())->GetPublicExtendedKey(),
+        derived_key->GetPublicExtendedKey(),
         "xpub6JdKdVJtdx6sC3nh87pDvnGhotXuU5Kz6Qy7Piy84vUAwWSYShsUGULE8u6gCi"
         "vTHgz7cCKJHiXaaMeieB4YnoFVAsNgHHKXJ2mN6jCMbH1");
   }
@@ -465,9 +455,9 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
         base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &bytes));
 
     std::unique_ptr<HDKey> key = HDKey::GenerateFromSeed(bytes);
-    std::unique_ptr<HDKeyBase> derived_key =
+    std::unique_ptr<HDKey> derived_key =
         key->DeriveChildFromPath("m/44'/6'/4'");
-    EXPECT_EQ(static_cast<HDKey*>(derived_key.get())->GetPrivateExtendedKey(),
+    EXPECT_EQ(derived_key->GetPrivateExtendedKey(),
               "xprv9ymoag6W7cR6KBcJzhCM6qqTrb3rRVVwXKzwNqp1tDWcwierEv3BA9if3ARH"
               "MhMPh9u2jNoutcgpUBLMfq3kADDo7LzfoCnhhXMRGX3PXDx");
   }
@@ -479,14 +469,13 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(key->GetPrivateKeyBytes())),
         "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
-    std::unique_ptr<HDKeyBase> derived_key = key->DeriveHardenedChild(44)
-                                                 ->DeriveHardenedChild(0)
-                                                 ->DeriveHardenedChild(0)
-                                                 ->DeriveNormalChild(0)
-                                                 ->DeriveHardenedChild(0);
+    std::unique_ptr<HDKey> derived_key = key->DeriveHardenedChild(44)
+                                             ->DeriveHardenedChild(0)
+                                             ->DeriveHardenedChild(0)
+                                             ->DeriveNormalChild(0)
+                                             ->DeriveHardenedChild(0);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(
-            static_cast<HDKey*>(derived_key.get())->GetPrivateKeyBytes())),
+        base::ToLowerASCII(base::HexEncode(derived_key->GetPrivateKeyBytes())),
         "3348069561d2a0fb925e74bf198762acc47dce7db27372257d2d959a9e6f8aeb");
   }
 }
@@ -494,13 +483,12 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
 TEST(HDKeyUnitTest, EncodePrivateKeyForExport) {
   HDKey key;
   ASSERT_TRUE(key.GetPrivateKeyBytes().empty());
-  EXPECT_EQ("", key.EncodePrivateKeyForExport());
 
   std::unique_ptr<HDKey> key2 = HDKey::GenerateFromExtendedKey(
       "xprv9s21ZrQH143K3ckY9DgU79uMTJkQRLdbCCVDh81SnxTgPzLLGax6uHeBULTtaEtcAv"
       "KjXfT7ZWtHzKjTpujMkUd9dDb8msDeAfnJxrgAYhr");
-  EXPECT_EQ(key2->EncodePrivateKeyForExport(),
-            "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
+  EXPECT_EQ(base::HexEncode(key2->GetPrivateKeyBytes()),
+            "00000055378CF5FAFB56C711C674143F9B0EE82AB0BA2924F19B64F5AE7CDBFD");
 }
 
 TEST(HDKeyUnitTest, GenerateFromV3UTC) {
@@ -635,10 +623,7 @@ TEST(HDKeyUnitTest, SignDer) {
 
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 TEST(HDKeyUnitTest, Bip84TestVectors) {
-  auto seed = MnemonicToSeed(
-      "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
-      "abandon abandon about",
-      "");
+  auto seed = MnemonicToSeed(kMnemonicAbandonAbandon, "");
 
   ASSERT_TRUE(seed);
 
@@ -651,12 +636,10 @@ TEST(HDKeyUnitTest, Bip84TestVectors) {
             "eZGmVfQuP5bedXTB8is6fTv19U1GQRyQUKQGUTzyHACMF");
 
   auto base = m_key->DeriveChildFromPath("m/84'/0'/0'");
-  EXPECT_EQ(static_cast<HDKey*>(base.get())
-                ->GetPrivateExtendedKey(ExtendedKeyVersion::kZprv),
+  EXPECT_EQ(base->GetPrivateExtendedKey(ExtendedKeyVersion::kZprv),
             "zprvAdG4iTXWBoARxkkzNpNh8r6Qag3irQB8PzEMkAFeTRXxHpbF9z4QgEvBRmfvqW"
             "vGp42t42nvgGpNgYSJA9iefm1yYNZKEm7z6qUWCroSQnE");
-  EXPECT_EQ(static_cast<HDKey*>(base.get())
-                ->GetPublicExtendedKey(ExtendedKeyVersion::kZpub),
+  EXPECT_EQ(base->GetPublicExtendedKey(ExtendedKeyVersion::kZpub),
             "zpub6rFR7y4Q2AijBEqTUquhVz398htDFrtymD9xYYfG1m4wAcvPhXNfE3EfH1r1AD"
             "qtfSdVCToUG868RvUUkgDKf31mGDtKsAYz2oz2AGutZYs");
 
@@ -666,7 +649,7 @@ TEST(HDKeyUnitTest, Bip84TestVectors) {
   EXPECT_EQ(
       base::HexEncode(base->GetPublicKeyBytes()),
       "0330D54FD0DD420A6E5F8D3624F5F3482CAE350F79D5F0753BF5BEEF9C2D91AF3C");
-  EXPECT_EQ(static_cast<HDKey*>(base.get())->GetSegwitAddress(false),
+  EXPECT_EQ(base->GetSegwitAddress(false),
             "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
 
   base = m_key->DeriveChildFromPath("m/84'/0'/0'/0/1");
@@ -675,7 +658,7 @@ TEST(HDKeyUnitTest, Bip84TestVectors) {
   EXPECT_EQ(
       base::HexEncode(base->GetPublicKeyBytes()),
       "03E775FD51F0DFB8CD865D9FF1CCA2A158CF651FE997FDC9FEE9C1D3B5E995EA77");
-  EXPECT_EQ(static_cast<HDKey*>(base.get())->GetSegwitAddress(false),
+  EXPECT_EQ(base->GetSegwitAddress(false),
             "bc1qnjg0jd8228aq7egyzacy8cys3knf9xvrerkf9g");
 
   base = m_key->DeriveChildFromPath("m/84'/0'/0'/1/0");
@@ -684,8 +667,34 @@ TEST(HDKeyUnitTest, Bip84TestVectors) {
   EXPECT_EQ(
       base::HexEncode(base->GetPublicKeyBytes()),
       "03025324888E429AB8E3DBAF1F7802648B9CD01E9B418485C5FA4C1B9B5700E1A6");
-  EXPECT_EQ(static_cast<HDKey*>(base.get())->GetSegwitAddress(false),
+  EXPECT_EQ(base->GetSegwitAddress(false),
             "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
+}
+
+TEST(HDKeyUnitTest, GetZCashTransparentAddress) {
+  auto seed = MnemonicToSeed(kMnemonicAbandonAbandon, "");
+
+  ASSERT_TRUE(seed);
+
+  std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(*seed);
+
+  {
+    auto base = m_key->DeriveChildFromPath("m/44'/133'/1'/0/0");
+    EXPECT_EQ(base->GetZCashTransparentAddress(false),
+              "t1Hxm2pmTLYuKhyLeZoSPjsHPFLWePSTDka");
+  }
+
+  {
+    auto base = m_key->DeriveChildFromPath("m/44'/133'/1'/1/1");
+    EXPECT_EQ(base->GetZCashTransparentAddress(false),
+              "t1MhfG9BdcchMh1R1THE6yGUgopfEp7hSAy");
+  }
+
+  {
+    auto base = m_key->DeriveChildFromPath("m/44'/133'/1'/1/2");
+    EXPECT_EQ(base->GetZCashTransparentAddress(false),
+              "t1KD4D7F7Ur89pVox3CZi5LvAcsGV3xXFuX");
+  }
 }
 
 }  // namespace brave_wallet

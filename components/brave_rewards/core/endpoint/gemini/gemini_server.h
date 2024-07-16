@@ -10,16 +10,15 @@
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_balance/post_balance_gemini.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_oauth/post_oauth_gemini.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 
 class GeminiServer {
  public:
-  explicit GeminiServer(RewardsEngineImpl& engine);
+  explicit GeminiServer(RewardsEngine& engine);
   ~GeminiServer();
 
   gemini::PostAccount& post_account() { return post_account_; }

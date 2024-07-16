@@ -9,7 +9,14 @@
 namespace request_otr {
 
 // Action for Request Off-The-Record feature
-extern const char kRequestOTRActionOption[];
+inline constexpr char kRequestOTRActionOption[] =
+    "brave.request_otr.request_otr_action_option";
+inline constexpr char kInterstitialShownStorage[] =
+    "brave.request_otr.p3a.interstitial_shown_storage";
+inline constexpr char kInterstitialDurationStorage[] =
+    "brave.request_otr.p3a.interstitial_duration_storage";
+inline constexpr char kSessionCountStorage[] =
+    "brave.request_otr.p3a.session_count_storage";
 
 }  // namespace request_otr
 

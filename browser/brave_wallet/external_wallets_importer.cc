@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -205,7 +206,7 @@ void ExternalWalletsImporter::OnCryptoWalletsLoaded(InitCallback callback) {
 
 bool ExternalWalletsImporter::IsCryptoWalletsInstalledInternal() const {
   if (!extensions::ExtensionPrefs::Get(context_)->HasPrefForExtension(
-          ethereum_remote_client_extension_id)) {
+          kEthereumRemoteClientExtensionId)) {
     return false;
   }
   return true;
@@ -271,7 +272,7 @@ const Extension* ExternalWalletsImporter::GetCryptoWallets() const {
   if (!registry) {
     return nullptr;
   }
-  return registry->GetInstalledExtension(ethereum_remote_client_extension_id);
+  return registry->GetInstalledExtension(kEthereumRemoteClientExtensionId);
 }
 
 const Extension* ExternalWalletsImporter::GetMetaMask() const {
@@ -279,7 +280,7 @@ const Extension* ExternalWalletsImporter::GetMetaMask() const {
   if (!registry) {
     return nullptr;
   }
-  return registry->GetInstalledExtension(metamask_extension_id);
+  return registry->GetInstalledExtension(kMetamaskExtensionId);
 }
 
 void ExternalWalletsImporter::GetLocalStorage(
@@ -376,11 +377,22 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 
   std::unique_ptr<PasswordEncryptor> encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          password, *salt_decoded, 10000, 256);
+          password, *salt_decoded, 600000, 256);
   DCHECK(encryptor);
 
   auto decrypted_keyrings =
       encryptor->DecryptForImporter(*data_decoded, *iv_decoded);
+  if (!decrypted_keyrings) {
+    // Also try with legacy 10K iterations.
+    std::unique_ptr<PasswordEncryptor> encryptor_10k =
+        PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+            password, *salt_decoded, 10000, 256);
+    DCHECK(encryptor_10k);
+
+    decrypted_keyrings =
+        encryptor_10k->DecryptForImporter(*data_decoded, *iv_decoded);
+  }
+
   if (!decrypted_keyrings) {
     VLOG(0) << "Importer decryption failed";
     std::move(callback).Run(false, ImportInfo(), ImportError::kPasswordError);
@@ -398,8 +410,8 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     return;
   }
 
-  absl::optional<std::string> mnemonic = absl::nullopt;
-  absl::optional<int> number_of_accounts = absl::nullopt;
+  std::optional<std::string> mnemonic = std::nullopt;
+  std::optional<int> number_of_accounts = std::nullopt;
   for (const auto& keyring_listed : keyrings->GetList()) {
     DCHECK(keyring_listed.is_dict());
     const auto& keyring = *keyring_listed.GetIfDict();

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
@@ -17,7 +18,10 @@ import {
 // utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
+import {
+  checkIfTokenNeedsNetworkIcon,
+  getAssetIdKey
+} from '../../../utils/asset-utils'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 
@@ -28,14 +32,19 @@ import {
 } from '../../../common/slices/api.slice'
 
 // components
-import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../style'
+import {
+  IconsWrapper,
+  MediumAssetIcon,
+  NetworkIconWrapper,
+  Row
+} from '../style'
 import { withPlaceholderIcon } from '../create-placeholder-icon/index'
 import { CreateNetworkIcon } from '../create-network-icon/index'
 import { NftIcon } from '../nft-icon/nft-icon'
 
 // styles
 import {
-  BuyAssetOptionWrapper,
+  AssetButton,
   AssetName,
   NameAndIcon,
   NameColumn,
@@ -48,7 +57,6 @@ import { LoadIcon } from './buy-option-item-styles'
 interface Props {
   onClick?: (token: BraveWallet.BlockchainToken) => void
   token: BraveWallet.BlockchainToken
-  isSelected?: boolean
   isPanel?: boolean
   /** Set this to a currency-code to fetch & display the token's price */
   selectedCurrency?: string
@@ -61,114 +69,126 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(
 )
 const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
-export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
-  onClick,
-  token,
-  isSelected,
-  isPanel,
-  selectedCurrency
-}: Props, forwardedRef) => {
-  // query Params
-  const tokenIds = React.useMemo(() => {
-    return [getPriceIdForToken(token)]
-  }, [token])
+export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
+  ({ onClick, token, isPanel, selectedCurrency }, ref) => {
+    // routing
+    const { assetId: selectedOnRampAssetId } = useParams<{ assetId: string }>()
 
-  // queries
-  const {
-    data: priceRegistry,
-    isFetching: isFetchingPrice,
-    isLoading: isLoadingPrice
-  } = useGetTokenSpotPricesQuery(
-    !tokenIds.length || !selectedCurrency
-      ? skipToken
-      : {
-          ids: tokenIds,
-          toCurrency: selectedCurrency
-        },
-    // refresh every 15 seconds
-    defaultQuerySubscriptionOptions
-  )
-  const { data: tokenNetwork } = useGetNetworkQuery(token ?? skipToken)
+    // query Params
+    const tokenIds = React.useMemo(() => {
+      return [getPriceIdForToken(token)]
+    }, [token])
 
-  // memos
-  const networkDescription: string = React.useMemo(() => {
-    if (tokenNetwork && !isPanel) {
-      return getLocale('braveWalletPortfolioAssetNetworkDescription')
-        .replace('$1', token.symbol)
-        .replace('$2', tokenNetwork.chainName ?? '')
+    // queries
+    const {
+      data: priceRegistry,
+      isFetching: isFetchingPrice,
+      isLoading: isLoadingPrice
+    } = useGetTokenSpotPricesQuery(
+      !tokenIds.length || !selectedCurrency
+        ? skipToken
+        : {
+            ids: tokenIds,
+            toCurrency: selectedCurrency
+          },
+      // refresh every 15 seconds
+      defaultQuerySubscriptionOptions
+    )
+    const { data: tokenNetwork } = useGetNetworkQuery(token ?? skipToken)
+
+    // memos
+    const networkDescription: string = React.useMemo(() => {
+      if (tokenNetwork && !isPanel) {
+        return getLocale('braveWalletPortfolioAssetNetworkDescription')
+          .replace('$1', token.symbol)
+          .replace('$2', tokenNetwork.chainName ?? '')
+      }
+      return token.symbol
+    }, [tokenNetwork, isPanel, token])
+
+    const price = React.useMemo(() => {
+      return priceRegistry
+        ? getTokenPriceAmountFromRegistry(priceRegistry, token)
+        : Amount.empty()
+    }, [priceRegistry, token])
+
+    // methods
+    const handleOnClick = React.useCallback(() => {
+      if (onClick) {
+        onClick(token)
+      }
+    }, [onClick, token])
+
+    // computed
+    const isSelected = getAssetIdKey(token) === selectedOnRampAssetId
+
+    // render
+    if (!token.visible) {
+      return null
     }
-    return token.symbol
-  }, [tokenNetwork, isPanel, token])
 
-  // memos
-  const price = React.useMemo(() => {
-    return priceRegistry
-      ? getTokenPriceAmountFromRegistry(priceRegistry, token)
-      : Amount.empty()
-  }, [priceRegistry, token])
+    return (
+      <Row
+        padding='6px 12px'
+        ref={ref}
+      >
+        <AssetButton
+          isSelected={isSelected}
+          onClick={handleOnClick}
+        >
+          <NameAndIcon>
+            <IconsWrapper marginRight='14px'>
+              {token.isErc721 || token.isNft ? (
+                <NftAssetIconWithPlaceholder
+                  asset={token}
+                  network={tokenNetwork}
+                />
+              ) : (
+                <AssetIconWithPlaceholder
+                  asset={token}
+                  network={tokenNetwork}
+                />
+              )}
+              {tokenNetwork &&
+                !isPanel &&
+                checkIfTokenNeedsNetworkIcon(
+                  tokenNetwork,
+                  token.contractAddress
+                ) && (
+                  <NetworkIconWrapper>
+                    <CreateNetworkIcon
+                      network={tokenNetwork}
+                      marginRight={0}
+                    />
+                  </NetworkIconWrapper>
+                )}
+            </IconsWrapper>
+            <NameColumn>
+              <AssetName>
+                {token.name}{' '}
+                {token.isErc721 && token.tokenId
+                  ? '#' + new Amount(token.tokenId).toNumber()
+                  : ''}
+              </AssetName>
+              <NetworkDescriptionText>
+                {networkDescription}
+              </NetworkDescriptionText>
+            </NameColumn>
+          </NameAndIcon>
 
-  // methods
-  const handleOnClick = React.useCallback(() => {
-    if (onClick) {
-      onClick(token)
-    }
-  }, [onClick, token])
-
-  // render
-  if (!token.visible) {
-    return null
+          {selectedCurrency && (
+            <PriceContainer>
+              {isFetchingPrice || isLoadingPrice ? (
+                <LoadIcon />
+              ) : (
+                <PriceText>{price.formatAsFiat(selectedCurrency)}</PriceText>
+              )}
+            </PriceContainer>
+          )}
+        </AssetButton>
+      </Row>
+    )
   }
-
-  return (
-    <BuyAssetOptionWrapper
-      ref={forwardedRef}
-      isSelected={isSelected}
-      onClick={handleOnClick}
-    >
-      <NameAndIcon>
-        <IconsWrapper marginRight='14px'>
-          {token.isErc721 || token.isNft ? (
-            <NftAssetIconWithPlaceholder
-              asset={token}
-              network={tokenNetwork}
-            />
-          ) : (
-            <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
-          )}
-          {tokenNetwork &&
-            !isPanel &&
-            checkIfTokenNeedsNetworkIcon(
-              tokenNetwork,
-              token.contractAddress
-            ) && (
-              <NetworkIconWrapper>
-                <CreateNetworkIcon network={tokenNetwork} marginRight={0} />
-              </NetworkIconWrapper>
-            )}
-        </IconsWrapper>
-        <NameColumn>
-          <AssetName>
-            {token.name}{' '}
-            {token.isErc721 && token.tokenId
-              ? '#' + new Amount(token.tokenId).toNumber()
-              : ''}
-          </AssetName>
-          <NetworkDescriptionText>{networkDescription}</NetworkDescriptionText>
-        </NameColumn>
-      </NameAndIcon>
-
-      {selectedCurrency && (
-        <PriceContainer>
-          {isFetchingPrice || isLoadingPrice ? (
-            <LoadIcon />
-          ) : (
-            <PriceText>{price.formatAsFiat(selectedCurrency)}</PriceText>
-          )}
-        </PriceContainer>
-      )}
-    </BuyAssetOptionWrapper>
-  )
-}
 )
 
 export default BuyAssetOptionItem

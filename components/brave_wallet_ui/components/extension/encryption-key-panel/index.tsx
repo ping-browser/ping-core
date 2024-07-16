@@ -34,16 +34,22 @@ import { TabRow, URLText } from '../shared-panel-styles'
 // Hooks
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useProcessPendingDecryptRequestMutation,
+  useProcessPendingGetEncryptionPublicKeyRequestMutation
+} from '../../../common/slices/api.slice'
 
 export interface ProvidePubKeyPanelProps {
   payload: BraveWallet.GetEncryptionPublicKeyRequest
-  onProvide: (requestId: string) => void
-  onCancel: (requestId: string) => void
 }
 
-export function ProvidePubKeyPanel(props: ProvidePubKeyPanelProps) {
-  const { payload, onProvide: onProvideOrAllow, onCancel } = props
+export function ProvidePubKeyPanel({ payload }: ProvidePubKeyPanelProps) {
+  // queries
   const { account } = useAccountQuery(payload.accountId)
+
+  // mutations
+  const [processGetEncryptionPublicKeyRequest] =
+    useProcessPendingGetEncryptionPublicKeyRequestMutation()
 
   const orb = useAccountOrb(account)
 
@@ -52,6 +58,22 @@ export function ProvidePubKeyPanel(props: ProvidePubKeyPanelProps) {
   ).replace('$url', payload.originInfo.originSpec)
   const { duringTag, afterTag } = splitStringForTag(descriptionString)
 
+  // methods
+  const onProvideOrAllow = async () => {
+    await processGetEncryptionPublicKeyRequest({
+      requestId: payload.requestId,
+      approved: true
+    }).unwrap()
+  }
+
+  const onCancel = async (requestId: string) => {
+    await processGetEncryptionPublicKeyRequest({
+      requestId,
+      approved: false
+    }).unwrap()
+  }
+
+  // render
   return (
     <StyledWrapper>
       <AccountCircle orb={orb} />
@@ -85,7 +107,7 @@ export function ProvidePubKeyPanel(props: ProvidePubKeyPanelProps) {
         <NavButton
           buttonType='primary'
           text={getLocale('braveWalletProvideEncryptionKeyButton')}
-          onSubmit={() => onProvideOrAllow(payload.requestId)}
+          onSubmit={onProvideOrAllow}
         />
       </ButtonRow>
     </StyledWrapper>
@@ -94,17 +116,35 @@ export function ProvidePubKeyPanel(props: ProvidePubKeyPanelProps) {
 
 interface DecryptRequestPanelProps {
   payload: BraveWallet.DecryptRequest
-  onAllow: (requestId: string) => void
-  onCancel: (requestId: string) => void
 }
 
-export function DecryptRequestPanel(props: DecryptRequestPanelProps) {
-  const { payload, onAllow, onCancel } = props
+export function DecryptRequestPanel({ payload }: DecryptRequestPanelProps) {
+  // state
   const [isDecrypted, setIsDecrypted] = React.useState<boolean>(false)
 
+  // queries
   const { account } = useAccountQuery(payload.accountId)
 
+  // mutations
+  const [processDecryptRequest] = useProcessPendingDecryptRequestMutation()
+
+  // custom hooks
   const orb = useAccountOrb(account)
+
+  // methods
+  const onAllow = async () => {
+    await processDecryptRequest({
+      requestId: payload.requestId,
+      approved: true
+    }).unwrap()
+  }
+
+  const onCancel = async () => {
+    await processDecryptRequest({
+      requestId: payload.requestId,
+      approved: false
+    }).unwrap()
+  }
 
   const onDecryptMessage = () => {
     setIsDecrypted(true)
@@ -144,12 +184,12 @@ export function DecryptRequestPanel(props: DecryptRequestPanelProps) {
         <NavButton
           buttonType='secondary'
           text={getLocale('braveWalletButtonCancel')}
-          onSubmit={() => onCancel(payload.requestId)}
+          onSubmit={onCancel}
         />
         <NavButton
           buttonType='primary'
           text={getLocale('braveWalletReadEncryptedMessageButton')}
-          onSubmit={() => onAllow(payload.requestId)}
+          onSubmit={onAllow}
         />
       </ButtonRow>
     </StyledWrapper>

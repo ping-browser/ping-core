@@ -13,6 +13,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -21,10 +22,11 @@
 #include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-#include "brave/browser/misc_metrics/page_metrics_service_factory.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
@@ -32,8 +34,10 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -44,6 +48,9 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/skus/skus_service_factory.h"
 #endif
 
@@ -52,6 +59,7 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_global_infobar_service_factory.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -115,7 +123,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave::URLSanitizerServiceFactory::GetInstance();
   BraveRendererUpdaterFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
-  misc_metrics::PageMetricsServiceFactory::GetInstance();
+  misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionServiceFactory::GetInstance();
 #endif
@@ -145,6 +153,13 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::TxServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
 
+  if (brave_wallet::IsBitcoinEnabled()) {
+    brave_wallet::BitcoinWalletServiceFactory::GetInstance();
+  }
+  if (brave_wallet::IsZCashEnabled()) {
+    brave_wallet::ZCashWalletServiceFactory::GetInstance();
+  }
+
 #if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     commands::AcceleratorServiceFactory::GetInstance();
@@ -173,8 +188,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   EphemeralStorageServiceFactory::GetInstance();
   PermissionLifetimeManagerFactory::GetInstance();
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
   skus::SkusServiceFactory::GetInstance();
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVpnServiceFactory::GetInstance();
 #endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -200,6 +217,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderServiceFactory::GetInstance();
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+  BraveGlobalInfobarServiceFactory::GetInstance();
 #endif
 }
 

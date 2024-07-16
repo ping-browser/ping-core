@@ -16,15 +16,17 @@
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profiles_state.h"
@@ -123,6 +125,10 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   brave_news::BraveNewsControllerFactory::GetForContext(profile);
   brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);
   brave::URLSanitizerServiceFactory::GetForBrowserContext(profile);
+  misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  request_otr::RequestOTRServiceFactory::GetForBrowserContext(profile);
+#endif
 }
 
 bool BraveProfileManager::IsAllowedProfilePath(
@@ -168,7 +174,7 @@ void BraveProfileManager::MigrateProfileNames() {
   // e.g. 'Person X' --> 'Profile X'.
   ProfileAttributesStorage& storage = GetProfileAttributesStorage();
   std::vector<ProfileAttributesEntry*> entries =
-      storage.GetAllProfilesAttributesSortedByName();
+      storage.GetAllProfilesAttributesSortedByNameWithCheck();
   // Make sure we keep the numbering the same.
   for (auto* entry : entries) {
     // Rename the necessary profiles. Don't check for legacy names as profile

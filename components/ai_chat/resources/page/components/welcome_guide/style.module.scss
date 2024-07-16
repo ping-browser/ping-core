@@ -1,0 +1,63 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.box {
+  padding: var(--leo-spacing-xl) var(--leo-spacing-xl) 0;
+  overflow: auto;
+
+  p {
+    margin: 0;
+  }
+}
+
+.header {
+  padding: var(--leo-spacing-2xl);
+}
+
+.title {
+  font: var(--leo-font-heading-h1);
+  margin: 0;
+  margin-bottom: var(--leo-spacing-m);
+}
+
+.subtitle {
+  font: var(--leo-font-heading-h2);
+  color: var(--leo-color-text-tertiary);
+  margin: var(--leo-spacing-m) 0;
+}
+
+.card {
+  border-radius: var(--leo-radius-m);
+  padding: var(--leo-spacing-2xl);
+  margin-bottom: 12px;
+
+  p {
+    font: var(--leo-font-default-regular);
+    color: var(--leo-color-text-secondary);
+  }
+}
+
+.cardTitle {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+  margin: 0 0 8px 0;
+}
+
+.cardDesc {
+  color: var(--leo-color-text-secondary);
+}
+
+.siteHelpCard {
+  background-color: var(--leo-color-purple-10);
+}
+
+.chatCard {
+  background-color: var(--leo-color-teal-10);
+}
+
+.actions {
+  margin-top: 16px;
+}
+

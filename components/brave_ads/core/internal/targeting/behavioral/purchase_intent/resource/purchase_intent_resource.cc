@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/common/resources/resources_util_impl.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -30,11 +29,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 PurchaseIntentResource::PurchaseIntentResource() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 PurchaseIntentResource::~PurchaseIntentResource() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -121,6 +120,17 @@ void PurchaseIntentResource::OnNotifyDidUpdateResourceComponent(
   manifest_version_ = manifest_version;
 
   MaybeLoad();
+}
+
+void PurchaseIntentResource::OnNotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  if (!IsValidCountryComponentId(id)) {
+    return;
+  }
+
+  manifest_version_.reset();
+
+  Reset();
 }
 
 }  // namespace brave_ads

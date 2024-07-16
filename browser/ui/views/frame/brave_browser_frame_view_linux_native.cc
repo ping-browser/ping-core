@@ -8,7 +8,6 @@
 #include <numeric>
 #include <string>
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -45,23 +44,16 @@ ui::NavButtonProvider::ButtonState ButtonStateToNavButtonProviderState(
 BraveBrowserFrameViewLinuxNative::BraveBrowserFrameViewLinuxNative(
     BrowserFrame* frame,
     BrowserView* browser_view,
-    BrowserFrameViewLayoutLinux* layout,
-    std::unique_ptr<ui::NavButtonProvider> nav_button_provider,
-    ui::WindowFrameProvider* window_frame_provider)
+    BrowserFrameViewLayoutLinuxNative* layout,
+    std::unique_ptr<ui::NavButtonProvider> nav_button_provider)
     : BrowserFrameViewLinuxNative(frame,
                                   browser_view,
                                   layout,
-                                  std::move(nav_button_provider),
-                                  window_frame_provider) {}
+                                  std::move(nav_button_provider)) {}
 
 BraveBrowserFrameViewLinuxNative::~BraveBrowserFrameViewLinuxNative() = default;
 
 void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    BrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages();
-    return;
-  }
-
   auto* browser = browser_view()->browser();
   DCHECK(browser);
 
@@ -103,22 +95,20 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
       views::Button* button = GetButtonFromDisplayType(type);
       DCHECK_EQ(std::string(views::ImageButton::kViewClassName),
                 button->GetClassName());
-      static_cast<views::ImageButton*>(button)->SetImage(
+      static_cast<views::ImageButton*>(button)->SetImageModel(
           button_state,
-          nav_button_provider_->GetImage(
-              type, ButtonStateToNavButtonProviderState(button_state)));
+          ui::ImageModel::FromImageSkia(nav_button_provider_->GetImage(
+              type, ButtonStateToNavButtonProviderState(button_state))));
     }
   }
 
   UpdateLeadingTrailingCaptionButtonWidth();
 }
 
-void BraveBrowserFrameViewLinuxNative::Layout() {
-  BrowserFrameViewLinuxNative::Layout();
+void BraveBrowserFrameViewLinuxNative::Layout(PassKey) {
+  LayoutSuperclass<BrowserFrameViewLinuxNative>(this);
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    UpdateLeadingTrailingCaptionButtonWidth();
-  }
+  UpdateLeadingTrailingCaptionButtonWidth();
 }
 
 views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(
@@ -137,8 +127,6 @@ views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(
 
 void BraveBrowserFrameViewLinuxNative::
     UpdateLeadingTrailingCaptionButtonWidth() {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
-
   auto* browser = browser_view()->browser();
   DCHECK(browser);
   std::pair<int, int> new_leading_trailing_caption_button_width;
@@ -202,5 +190,5 @@ void BraveBrowserFrameViewLinuxNative::
 
 // Unfortunately, BrowserFrameViewLinux(Native) doesn't declare metadata.
 // OpaqueBrowserFrameView is the nearest ancestor.
-BEGIN_METADATA(BraveBrowserFrameViewLinuxNative, OpaqueBrowserFrameView)
+BEGIN_METADATA(BraveBrowserFrameViewLinuxNative)
 END_METADATA

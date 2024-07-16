@@ -20,7 +20,7 @@ export const root = styled.div`
 
   select {
     -webkit-appearance: none;
-    background: url(/${selectArrow}) calc(100% - 12px) center no-repeat;
+    background: url(${selectArrow}) calc(100% - 12px) center no-repeat;
     background-size: 12px;
     width: 100%;
     border-radius: 4px;
@@ -34,6 +34,9 @@ export const root = styled.div`
   & :where(a) {
     color: #4C54D2;
   }
+
+  --modal-background: rgba(0, 0, 0, 0.15);
+  --modal-backdrop-filter: blur(10px);
 `
 
 export const onboarding = styled.div`
@@ -183,13 +186,3 @@ export const manageAction = styled.div`
 `
 
 export const settingGroup = styled.div``
-
-export const vbatNotice = styled.div`
-  margin-bottom: 32px;
-  background: #fff;
-  box-shadow:
-    0px 0px 1px rgba(0, 0, 0, 0.11),
-    0px 0.5px 1.5px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-`

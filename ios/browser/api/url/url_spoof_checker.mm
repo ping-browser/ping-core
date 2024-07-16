@@ -17,7 +17,7 @@
 #include "components/url_formatter/spoof_checks/top_domains/domains-trie-inc.cc"
 #include "components/url_formatter/spoof_checks/top_domains/top_domain_util.h"
 #include "components/url_formatter/url_formatter.h"
-#include "net/base/mac/url_conversions.h"
+#include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -84,7 +84,7 @@ BraveSpoofCheckerLookalikeURLMatchType const
 - (instancetype)initWithEntry:(url_formatter::TopDomainEntry)entry {
   if ((self = [super init])) {
     _domain = base::SysUTF8ToNSString(entry.domain) ?: @"";
-    _isTop500 = entry.is_top_500;
+    _isTopBucket = entry.is_top_bucket;
     _skeletonType = static_cast<BraveSpoofCheckerLookalikeURLMatchType>(
         entry.skeleton_type);
   }

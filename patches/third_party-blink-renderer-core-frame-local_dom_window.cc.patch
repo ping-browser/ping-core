@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/local_dom_window.cc b/third_party/blink/renderer/core/frame/local_dom_window.cc
+index 7466cdeb03ed2946ea0225936810928831f90e81..c0534cbcb0916657bde4379f61200d4fdb535838 100644
+--- a/third_party/blink/renderer/core/frame/local_dom_window.cc
++++ b/third_party/blink/renderer/core/frame/local_dom_window.cc
+@@ -477,6 +477,7 @@ bool LocalDOMWindow::CanExecuteScripts(
+   bool allow_script_content_setting =
+       GetFrame()->GetContentSettings()->allow_script;
+   bool script_enabled = allow_script_renderer && allow_script_content_setting;
++  BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS
+   if (!script_enabled && reason == kAboutToExecuteScript) {
+     WebContentSettingsClient* settings_client =
+         GetFrame()->GetContentSettingsClient();

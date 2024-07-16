@@ -39,14 +39,12 @@ struct CreativeAdInfo {
   int daily_cap = 0;
   int priority = 0;
   double pass_through_rate = 0.0;
-  bool has_conversion = false;
   int per_day = 0;
   int per_week = 0;
   int per_month = 0;
   int total_max = 0;
   double value = 0.0;
   std::string segment;
-  std::vector<float> embedding;
   std::string split_test_group;
   CreativeDaypartList dayparts;
   base::flat_set<std::string> geo_targets;

@@ -6,19 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_PUBLISHERS_PARSING_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_PUBLISHERS_PARSING_H_
 
-#include <string>
+#include <optional>
 #include <vector>
 
 #include "base/values.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 
-absl::optional<Publishers> ParseCombinedPublisherList(const base::Value& value);
+std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value);
 
-void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
+void ParseDirectPublisherList(const std::vector<DirectFeed>& direct_feeds,
                               std::vector<mojom::PublisherPtr>* publishers);
 
 }  // namespace brave_news

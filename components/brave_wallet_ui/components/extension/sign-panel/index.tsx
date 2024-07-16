@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Hooks
@@ -13,19 +12,24 @@ import { useAccountOrb } from '../../../common/hooks/use-orb'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SignDataSteps } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
-import { useGetNetworkQuery } from '../../../common/slices/api.slice'
-import { PanelActions } from '../../../panel/actions'
+import {
+  useGetNetworkQuery,
+  useProcessSignMessageRequestMutation,
+  useSignMessageHardwareMutation
+} from '../../../common/slices/api.slice'
 import { isHardwareAccount } from '../../../utils/account-utils'
 
 // Components
 import { NavButton } from '../buttons/nav-button/index'
 import { PanelTab } from '../panel-tab/index'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
+import { SignInWithEthereum } from './sign_in_with_ethereum'
+import { SignCowSwapOrder } from './cow_swap_order'
 
 // Styled Components
 import {
@@ -36,9 +40,8 @@ import {
   NetworkText,
   PanelTitle,
   MessageBox,
-  MessageHeader,
   MessageText,
-  ButtonRow,
+  SignPanelButtonRow,
   WarningTitleRow
 } from './style'
 
@@ -57,37 +60,30 @@ import {
   URLText,
   WarningIcon
 } from '../shared-panel-styles'
+import {
+  EthSignTypedData //
+} from './common/eth_sign_typed_data'
 
 interface Props {
   signMessageData: BraveWallet.SignMessageRequest[]
-  onCancel: () => void
   showWarning: boolean
 }
 
-enum SignDataSteps {
-  SignRisk = 0,
-  SignData = 1
-}
-
 const onClickLearnMore = () => {
-  chrome.tabs.create({
-    url: 'https://support.brave.com/hc/en-us/articles/4409513799693'
-  }, () => {
-    if (chrome.runtime.lastError) {
-      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+  chrome.tabs.create(
+    {
+      url: 'https://support.brave.com/hc/en-us/articles/4409513799693'
+    },
+    () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
     }
-  })
+  )
 }
 
 export const SignPanel = (props: Props) => {
-  const {
-    signMessageData,
-    onCancel,
-    showWarning
-  } = props
-
-  // redux
-  const dispatch = useDispatch()
+  const { signMessageData, showWarning } = props
 
   // queries
   const { data: network } = useGetNetworkQuery(
@@ -99,27 +95,50 @@ export const SignPanel = (props: Props) => {
       : skipToken
   )
 
+  // mutations
+  const [processSignMessageRequest] = useProcessSignMessageRequestMutation()
+  const [signMessageHardware] = useSignMessageHardwareMutation()
+
   // state
-  const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
-  const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
+  const [signStep, setSignStep] = React.useState<SignDataSteps>(
+    SignDataSteps.SignData
+  )
+  const [selectedQueueData, setSelectedQueueData] =
+    React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
   const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
   const { account } = useAccountQuery(selectedQueueData?.accountId)
+  const ethStandardSignData = selectedQueueData.signData.ethStandardSignData
+  const ethSignTypedData = selectedQueueData.signData.ethSignTypedData
+  const ethSIWETypedData = selectedQueueData.signData.ethSiweData
+  const solanaSignTypedData = selectedQueueData.signData.solanaSignData
 
-  // memos
+  // methods
+  const onCancel = async () => {
+    await processSignMessageRequest({
+      approved: false,
+      id: signMessageData[0].id
+    }).unwrap()
+  }
+
+  // custom hooks
   const orb = useAccountOrb(account)
 
+  // memos
   const signMessageQueueInfo = React.useMemo(() => {
     return {
       queueLength: signMessageData.length,
-      queueNumber: signMessageData.findIndex((data) => data.id === selectedQueueData.id) + 1
+      queueNumber:
+        signMessageData.findIndex((data) => data.id === selectedQueueData.id) +
+        1
     }
   }, [signMessageData, selectedQueueData])
 
-  const isDisabled = React.useMemo((): boolean => signMessageData.findIndex(
-    (data) =>
-      data.id === selectedQueueData.id) !== 0
-    , [signMessageData, selectedQueueData]
+  const isDisabled = React.useMemo(
+    (): boolean =>
+      signMessageData.findIndex((data) => data.id === selectedQueueData.id) !==
+      0,
+    [signMessageData, selectedQueueData]
   )
 
   // methods
@@ -135,25 +154,21 @@ export const SignPanel = (props: Props) => {
     setSelectedQueueData(signMessageData[signMessageQueueInfo.queueNumber])
   }
 
-  const onSign = () => {
+  const onSign = async () => {
     if (!account) {
       return
     }
 
     if (isHardwareAccount(account.accountId)) {
-      dispatch(
-        PanelActions.signMessageHardware({
-          account,
-          request: signMessageData[0]
-        })
-      )
+      await signMessageHardware({
+        account,
+        request: signMessageData[0]
+      }).unwrap()
     } else {
-      dispatch(
-        PanelActions.signMessageProcessed({
-          approved: true,
-          id: signMessageData[0].id
-        })
-      )
+      await processSignMessageRequest({
+        approved: true,
+        id: signMessageData[0].id
+      }).unwrap()
     }
   }
 
@@ -168,24 +183,50 @@ export const SignPanel = (props: Props) => {
     }
   }, [showWarning])
 
+  if (ethSIWETypedData) {
+    return (
+      <SignInWithEthereum
+        data={selectedQueueData}
+        onCancel={onCancel}
+        onSignIn={onSign}
+      />
+    )
+  }
+
+  if (selectedQueueData.signData.ethSignTypedData?.meta?.cowSwapOrder) {
+    return (
+      <SignCowSwapOrder
+        data={selectedQueueData}
+        onQueueNextSignMessage={onQueueNextSignMessage}
+        queueNumber={signMessageQueueInfo.queueNumber}
+        queueLength={signMessageQueueInfo.queueLength}
+        onCancel={onCancel}
+        onSignIn={onSign}
+        isDisabled={isDisabled}
+      />
+    )
+  }
+
   // render
   return (
     <StyledWrapper>
       <TopRow>
         <NetworkText>{network?.chainName ?? ''}</NetworkText>
-        {signMessageQueueInfo.queueLength > 1 &&
+        {signMessageQueueInfo.queueLength > 1 && (
           <QueueStepRow>
-            <QueueStepText>{signMessageQueueInfo.queueNumber} {getLocale('braveWalletQueueOf')} {signMessageQueueInfo.queueLength}</QueueStepText>
-            <QueueStepButton
-              onClick={onQueueNextSignMessage}
-            >
-              {signMessageQueueInfo.queueNumber === signMessageQueueInfo.queueLength
+            <QueueStepText>
+              {signMessageQueueInfo.queueNumber}{' '}
+              {getLocale('braveWalletQueueOf')}{' '}
+              {signMessageQueueInfo.queueLength}
+            </QueueStepText>
+            <QueueStepButton onClick={onQueueNextSignMessage}>
+              {signMessageQueueInfo.queueNumber ===
+              signMessageQueueInfo.queueLength
                 ? getLocale('braveWalletQueueFirst')
-                : getLocale('braveWalletQueueNext')
-              }
+                : getLocale('braveWalletQueueNext')}
             </QueueStepButton>
           </QueueStepRow>
-        }
+        )}
       </TopRow>
       <AccountCircle orb={orb} />
       <URLText>
@@ -196,89 +237,73 @@ export const SignPanel = (props: Props) => {
       </URLText>
       <AccountNameText>{account?.name ?? ''}</AccountNameText>
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
-      {signStep === SignDataSteps.SignRisk &&
+      {signStep === SignDataSteps.SignRisk && (
         <WarningBox warningType='danger'>
           <WarningTitleRow>
             <WarningIcon />
-            <WarningTitle warningType='danger'>{getLocale('braveWalletSignWarningTitle')}</WarningTitle>
+            <WarningTitle warningType='danger'>
+              {getLocale('braveWalletSignWarningTitle')}
+            </WarningTitle>
           </WarningTitleRow>
           <WarningText>{getLocale('braveWalletSignWarning')}</WarningText>
-          <LearnMoreButton onClick={onClickLearnMore}>{getLocale('braveWalletAllowAddNetworkLearnMoreButton')}</LearnMoreButton>
+          <LearnMoreButton onClick={onClickLearnMore}>
+            {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+          </LearnMoreButton>
         </WarningBox>
-      }
-      {signStep === SignDataSteps.SignData &&
+      )}
+      {signStep === SignDataSteps.SignData && (
         <>
           <TabRow>
             <PanelTab
               isSelected={true}
               text={
-                selectedQueueData.isEip712
+                ethSignTypedData
                   ? getLocale('braveWalletSignTransactionEIP712MessageTitle')
                   : getLocale('braveWalletSignTransactionMessageTitle')
               }
             />
           </TabRow>
 
-          {(hasUnicode(selectedQueueData.message) ||
-              (selectedQueueData.isEip712 && hasUnicode(selectedQueueData.domain))) &&
+          {hasUnicode(
+            selectedQueueData.signData.ethStandardSignData?.message ?? ''
+          ) && (
             <WarningBox warningType='warning'>
               <WarningTitleRow>
                 <WarningIcon color={'warningIcon'} />
                 <WarningTitle warningType='warning'>
-                  {
-                    getLocale('braveWalletNonAsciiCharactersInMessageWarning')
-                  }
+                  {getLocale('braveWalletNonAsciiCharactersInMessageWarning')}
                 </WarningTitle>
               </WarningTitleRow>
               <LearnMoreButton
-                onClick={() => setRenderUnicode(prev => !prev)}
+                onClick={() => setRenderUnicode((prev) => !prev)}
               >
-                {
-                 renderUnicode
+                {renderUnicode
                   ? getLocale('braveWalletViewDecodedMessage')
-                  : getLocale('braveWalletViewEncodedMessage')
-                }
+                  : getLocale('braveWalletViewEncodedMessage')}
               </LearnMoreButton>
             </WarningBox>
-          }
+          )}
 
-          {selectedQueueData.isEip712 && (
-            <MessageBox height='180px'>
-              <MessageHeader>
-                {getLocale('braveWalletSignTransactionEIP712MessageDomain')}:
-              </MessageHeader>
-              <MessageText>
-                {!renderUnicode && hasUnicode(selectedQueueData.domain)
-                  ? unicodeEscape(selectedQueueData.domain)
-                  : selectedQueueData.domain
-                }
-              </MessageText>
+          <EthSignTypedData data={ethSignTypedData} />
 
-              <MessageHeader>
-                {getLocale('braveWalletSignTransactionMessageTitle')}:
-              </MessageHeader>
+          {ethStandardSignData && (
+            <MessageBox>
               <MessageText>
-                {!renderUnicode && hasUnicode(selectedQueueData.message)
-                  ? unicodeEscape(selectedQueueData.message)
-                  : selectedQueueData.message
-                }
+                {!renderUnicode && hasUnicode(ethStandardSignData.message)
+                  ? unicodeEscape(ethStandardSignData.message)
+                  : ethStandardSignData.message}
               </MessageText>
             </MessageBox>
           )}
 
-          {!selectedQueueData.isEip712 && (
+          {solanaSignTypedData && (
             <MessageBox>
-              <MessageText>
-                {!renderUnicode && hasUnicode(selectedQueueData.message)
-                  ? unicodeEscape(selectedQueueData.message)
-                  : selectedQueueData.message
-                }
-              </MessageText>
+              <MessageText>{solanaSignTypedData.message}</MessageText>
             </MessageBox>
           )}
         </>
-      }
-      <ButtonRow>
+      )}
+      <SignPanelButtonRow>
         <NavButton
           buttonType='secondary'
           text={getLocale('braveWalletButtonCancel')}
@@ -287,11 +312,17 @@ export const SignPanel = (props: Props) => {
         />
         <NavButton
           buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
-          text={signStep === SignDataSteps.SignData ? getLocale('braveWalletSignTransactionButton') : getLocale('braveWalletButtonContinue')}
-          onSubmit={signStep === SignDataSteps.SignRisk ? onContinueSigning : onSign}
+          text={
+            signStep === SignDataSteps.SignData
+              ? getLocale('braveWalletSignTransactionButton')
+              : getLocale('braveWalletButtonContinue')
+          }
+          onSubmit={
+            signStep === SignDataSteps.SignRisk ? onContinueSigning : onSign
+          }
           disabled={isDisabled}
         />
-      </ButtonRow>
+      </SignPanelButtonRow>
     </StyledWrapper>
   )
 }

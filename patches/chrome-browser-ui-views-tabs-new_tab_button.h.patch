@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/new_tab_button.h b/chrome/browser/ui/views/tabs/new_tab_button.h
-index 6f882fa3f2a81d52408499fc4d12453428e63fd7..fe6405971c097ef23d9aad6e474fe85dd6ccdce8 100644
+index 0aaacd927eeb3da5d6f64fc851aec1943e2b37b4..0a20f9ecbbd8ab93ff01da21bab90bfa2297bc88 100644
 --- a/chrome/browser/ui/views/tabs/new_tab_button.h
 +++ b/chrome/browser/ui/views/tabs/new_tab_button.h
-@@ -49,6 +49,7 @@ class NewTabButton : public views::ImageButton,
+@@ -50,6 +50,7 @@ class NewTabButton : public views::ImageButton,
    void AddLayerToRegion(ui::Layer* new_layer,
                          views::LayerRegion region) override;
    void RemoveLayerFromRegions(ui::Layer* old_layer) override;

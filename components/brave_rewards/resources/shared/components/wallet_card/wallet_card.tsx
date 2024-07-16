@@ -8,11 +8,18 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
-import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
+
+import {
+  ExternalWallet,
+  getExternalWalletProviderName,
+  isSelfCustodyProvider
+} from '../../lib/external_wallet'
+
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { UserType } from '../../lib/user_type'
 import { Optional } from '../../../shared/lib/optional'
 
+import { useCounterAnimation } from './counter_animation'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { EarningsRange } from '../earnings_range'
@@ -21,7 +28,6 @@ import { ExternalWalletView } from './external_wallet_view'
 import { ExternalWalletAction } from './external_wallet_action'
 import { RewardsSummary, RewardsSummaryData } from './rewards_summary'
 import { PendingRewardsView } from './pending_rewards_view'
-import { WalletInfoIcon } from './icons/wallet_info_icon'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { CaretIcon } from '../icons/caret_icon'
@@ -36,10 +42,13 @@ const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short'
 })
 
+function getIntegerDigits (num: number) {
+  return num <= 1 ? 1 : Math.floor(Math.log10(num)) + 1
+}
+
 interface Props {
   userType: UserType
   balance: Optional<number>
-  isGrandfatheredUser: boolean
   externalWallet: ExternalWallet | null
   providerPayoutStatus: ProviderPayoutStatus
   minEarningsThisMonth: number
@@ -53,16 +62,21 @@ interface Props {
   summaryData: RewardsSummaryData
   autoContributeEnabled: boolean
   onExternalWalletAction: (action: ExternalWalletAction) => void
-  onViewStatement?: () => void
   onManageAds?: () => void
 }
 
 export function WalletCard (props: Props) {
   const { getString } = React.useContext(LocaleContext)
+  const balanceCounterValue =
+    useCounterAnimation(props.balance.valueOr(0), 450)
   const { externalWallet } = props
 
   const walletDisconnected =
     externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut
+
+  // The contribution summary is not currently shown for self-custody users.
+  const showSummary = props.showSummary &&
+    (!externalWallet || !isSelfCustodyProvider(externalWallet.provider))
 
   function renderBalance () {
     if (externalWallet && walletDisconnected) {
@@ -92,28 +106,19 @@ export function WalletCard (props: Props) {
         <style.balanceHeader>
           {getString('walletBalanceTitle')}
         </style.balanceHeader>
-        <style.batAmount data-test-id='rewards-balance-text'>
+        <style.batAmountForTesting data-test-id='rewards-balance-text'>
+          <TokenAmount amount={props.balance.valueOr(0)} />
+        </style.batAmountForTesting>
+        <style.batAmount>
           {
             !props.balance.hasValue()
               ? <style.balanceSpinner>
-                  <LoadingIcon />
-                  <style.loading>{getString('loading')}</style.loading>
+                  <LoadingIcon /> {getString('loading')}
                 </style.balanceSpinner>
-              : <>
-                  <TokenAmount amount={props.balance.value()} />
-                  {
-                    props.externalWallet?.provider === 'zebpay' &&
-                    props.isGrandfatheredUser &&
-                    <style.balanceInfo>
-                      <Icon name='help-outline' />
-                        <div className='tooltip'>
-                          <style.balanceTooltip>
-                            {getString('walletBalanceInfoText')}
-                          </style.balanceTooltip>
-                        </div>
-                    </style.balanceInfo>
-                  }
-              </>
+              : <TokenAmount
+                  minimumIntegerDigits={getIntegerDigits(props.balance.value())}
+                  amount={balanceCounterValue}
+                />
           }
         </style.batAmount>
         <style.exchangeAmount>
@@ -122,7 +127,7 @@ export function WalletCard (props: Props) {
             <>
               ≈&nbsp;
               <ExchangeAmount
-                amount={props.balance.value()}
+                amount={balanceCounterValue}
                 rate={props.exchangeRate}
               />
             </>
@@ -133,7 +138,7 @@ export function WalletCard (props: Props) {
   }
 
   return (
-    <style.root className={props.showSummary ? 'show-summary' : ''}>
+    <style.root className={showSummary ? 'show-summary' : ''}>
       <style.statusPanel>
         <style.statusIndicator>
           <ExternalWalletView
@@ -191,7 +196,7 @@ export function WalletCard (props: Props) {
       </style.statusPanel>
       {renderBalance()}
       {
-        props.showSummary
+        showSummary
           ? <style.summaryBox>
               <RewardsSummary
                 data={props.summaryData}
@@ -205,17 +210,6 @@ export function WalletCard (props: Props) {
                 exchangeRate={props.exchangeRate}
                 exchangeCurrency={props.exchangeCurrency}
               />
-              {
-                props.onViewStatement &&
-                  <style.viewStatement>
-                    <button
-                      onClick={props.onViewStatement}
-                      data-test-id='view-statement-button'
-                    >
-                      <WalletInfoIcon />{getString('walletViewStatement')}
-                    </button>
-                  </style.viewStatement>
-              }
             </style.summaryBox>
           : <style.pendingBox>
               {

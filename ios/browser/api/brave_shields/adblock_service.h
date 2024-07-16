@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_IOS_BROWSER_API_BRAVE_SHIELDS_ADBLOCK_SERVICE_H_
 #define BRAVE_IOS_BROWSER_API_BRAVE_SHIELDS_ADBLOCK_SERVICE_H_
@@ -15,27 +15,29 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface AdblockService : NSObject
 
-/// The main shields file install path (KVO compiliant)
-@property(readonly, nullable) NSString* shieldsInstallPath;
+/// Returns the filter lists that are available for the current platform
+@property(nonatomic, readonly)
+    NSArray<AdblockFilterListCatalogEntry*>* filterListCatalogEntries;
+/// Returns the path to the resources file if it is available
+@property(nonatomic, readonly, nullable) NSURL* resourcesPath;
 
-/// Regional filter lists
-@property(readonly, nullable)
-    NSArray<AdblockFilterListCatalogEntry*>* regionalFilterLists;
+/// Enable or disable a filter list given by its UUID
+- (void)enableFilterListForUUID:(NSString*)uuid isEnabled:(bool)isEnabled;
+/// Returns whether a filter list is available for the given UUID
+- (bool)isFilterListAvailableForUUID:(NSString*)uuid;
+/// Returns whether a filter list is enabled for the given UUID
+- (bool)isFilterListEnabledForUUID:(NSString*)uuid;
+/// Returns the install path for a filter list given by its UUID
+- (nullable NSURL*)installPathForFilterListUUID:(NSString*)uuid;
 
-/// Executed each time the main shields component is updated
-@property(nonatomic, copy, nullable) void (^shieldsComponentReady)
-    (NSString* _Nullable installPath);
+/// Listen to downloaded version changes of filter lists
+- (void)registerFilterListChanges:(void (^)(bool isDefaultEngine))callback;
 
-/// Registers a filter list with the component updater and calls
-/// `componentReady` each time the component is updated
-- (void)registerFilterListComponent:(AdblockFilterListCatalogEntry*)entry
-                 useLegacyComponent:(bool)useLegacyComponent
-                     componentReady:(void (^)(NSString* _Nullable installPath))
-                                        componentReady;
+/// Listen to downloaded version changes of the filter list catalog
+- (void)registerCatalogChanges:(void (^)())callback;
 
-/// Unregisters a filter list with the component updater
-- (void)unregisterFilterListComponent:(AdblockFilterListCatalogEntry*)entry
-                   useLegacyComponent:(bool)useLegacyComponent;
+/// Listen to downloaded version changes of resources
+- (void)registerResourcesChanges:(void (^)(NSString* resourcesJSON))callback;
 
 - (instancetype)init NS_UNAVAILABLE;
 

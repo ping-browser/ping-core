@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -28,23 +29,24 @@
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace brave_wallet {
 namespace {
 
-absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
+std::optional<std::vector<uint8_t>> ExtractGatewayResult(
     const base::Value& json_value) {
   if (!json_value.is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* data = json_value.GetDict().FindString("data");
   if (!data) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> result;
   if (!PrefixedHexStringToBytes(*data, &result)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return result;
 }
@@ -132,26 +134,26 @@ OffchainLookupData& OffchainLookupData::operator=(OffchainLookupData&&) =
     default;
 OffchainLookupData::~OffchainLookupData() = default;
 
-absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
+std::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
     const base::Value& json_value) {
   if (!json_value.is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto* error_data = json_value.GetDict().FindStringByDottedPath("error.data");
   if (!error_data) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto bytes = PrefixedHexStringToBytes(*error_data);
   if (!bytes) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ExtractFromEthAbiPayload(*bytes);
 }
 
-absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
+std::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
     eth_abi::Span bytes) {
   auto [selector, args] =
       eth_abi::ExtractFunctionSelectorAndArgsFromCall(bytes);
@@ -159,7 +161,7 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
   // error OffchainLookup(address sender, string[] urls, bytes callData,
   // bytes4 callbackFunction, bytes extraData)
   if (!base::ranges::equal(selector, kOffchainLookupSelector)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto sender = eth_abi::ExtractAddressFromTuple(args, 0);
   auto urls = eth_abi::ExtractStringArrayFromTuple(args, 1);
@@ -169,7 +171,7 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
 
   if (!sender.IsValid() || !urls || !call_data || !callback_function ||
       !extra_data) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   OffchainLookupData result;
@@ -181,15 +183,6 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
   return result;
 }
 
-class ScopedWorkOnTask {
- public:
-  explicit ScopedWorkOnTask(EnsResolverTask* task) : task_(task) {}
-  ~ScopedWorkOnTask() { task_->WorkOnTask(); }
-
- private:
-  raw_ptr<EnsResolverTask> task_ = nullptr;
-};
-
 EnsResolverTask::EnsResolverTask(
     DoneCallback done_callback,
     APIRequestHelper* api_request_helper,
@@ -197,7 +190,7 @@ EnsResolverTask::EnsResolverTask(
     std::vector<uint8_t> ens_call,
     const std::string& domain,
     const GURL& network_url,
-    absl::optional<bool> allow_offchain)
+    std::optional<bool> allow_offchain)
     : done_callback_(std::move(done_callback)),
       api_request_helper_(api_request_helper),
       api_request_helper_ens_offchain_(api_request_helper_ens_offchain),
@@ -222,8 +215,8 @@ EnsResolverTask::GetWorkOnTaskForTesting() {
 }
 
 void EnsResolverTask::SetResultForTesting(
-    absl::optional<EnsResolverTaskResult> task_result,
-    absl::optional<EnsResolverTaskError> task_error) {
+    std::optional<EnsResolverTaskResult> task_result,
+    std::optional<EnsResolverTaskError> task_error) {
   task_result_ = std::move(task_result);
   task_error_ = std::move(task_error);
 }
@@ -240,12 +233,12 @@ void EnsResolverTask::WorkOnTask() {
   }
 
   if (task_result_) {
-    std::move(done_callback_).Run(this, std::move(task_result_), absl::nullopt);
+    std::move(done_callback_).Run(this, std::move(task_result_), std::nullopt);
     // `this` is not valid here
     return;
   }
   if (task_error_) {
-    std::move(done_callback_).Run(this, absl::nullopt, std::move(task_error_));
+    std::move(done_callback_).Run(this, std::nullopt, std::move(task_error_));
     // `this` is not valid here.
     return;
   }
@@ -296,7 +289,7 @@ void EnsResolverTask::FetchEnsResolver() {
 
 void EnsResolverTask::OnFetchEnsResolverDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -342,7 +335,7 @@ void EnsResolverTask::FetchEnsip10Support() {
 
 void EnsResolverTask::OnFetchEnsip10SupportDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -378,7 +371,7 @@ void EnsResolverTask::FetchEnsRecord() {
 
 void EnsResolverTask::OnFetchEnsRecordDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -429,7 +422,7 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
 
 void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -534,7 +527,7 @@ void EnsResolverTask::FetchOffchainData() {
 }
 
 void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -575,7 +568,7 @@ void EnsResolverTask::FetchOffchainCallback() {
 
 void EnsResolverTask::OnFetchOffchainCallbackDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -596,7 +589,7 @@ void EnsResolverTask::OnFetchOffchainCallbackDone(
     return;
   }
 
-  absl::optional<std::vector<uint8_t>> decoded_resolve_result;
+  std::optional<std::vector<uint8_t>> decoded_resolve_result;
   if (supports_ensip_10_.value()) {
     // Decoding as returned bytes[] per
     // https://github.com/ensdomains/docs/blob/e4da40003943dd25fdf7d4c5552335330a9ee915/ens-improvement-proposals/ensip-10-wildcard-resolution.md?plain=1#L70

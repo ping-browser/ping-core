@@ -8,26 +8,29 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
-#include "brave/components/brave_rewards/core/buildflags.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/connect_gemini_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/gemini_transfer.h"
-#include "brave/components/brave_rewards/core/wallet_provider/gemini/get_gemini_wallet.h"
 
 namespace brave_rewards::internal::gemini {
 
-Gemini::Gemini(RewardsEngineImpl& engine)
+Gemini::Gemini(RewardsEngine& engine)
     : WalletProvider(engine), server_(engine) {
   connect_wallet_ = std::make_unique<ConnectGeminiWallet>(engine);
-  get_wallet_ = std::make_unique<GetGeminiWallet>(engine);
   transfer_ = std::make_unique<GeminiTransfer>(engine);
 }
 
 const char* Gemini::WalletType() const {
   return constant::kWalletGemini;
+}
+
+void Gemini::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
+  auto url = engine_->Get<EnvironmentConfig>().gemini_oauth_url();
+  external_wallet.account_url = url.spec();
+  external_wallet.activity_url = url.Resolve("/balances").spec();
 }
 
 void Gemini::FetchBalance(
@@ -44,7 +47,7 @@ void Gemini::FetchBalance(
 }
 
 std::string Gemini::GetFeeAddress() const {
-  return gemini::GetFeeAddress();
+  return engine_->Get<EnvironmentConfig>().gemini_fee_address();
 }
 
 base::TimeDelta Gemini::GetDelay() const {

@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index 978c739d7e2a88764bc594fc775451bcaad29d4a..f323181c27a5b35bfe1b2d369158c8b9703d2b4b 100644
+index 217449c1fa8888f32086dcc53db5a45d871c9655..9e243ec9ec2950d4e4511711c8bf11227132591d 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -83,6 +83,7 @@ static_library("browser") {
+@@ -85,6 +85,7 @@ static_library("browser") {
    }
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
 +  sources += brave_components_content_settings_core_browser_sources deps += brave_components_content_settings_core_browser_deps
  }
  
- source_set("unit_tests") {
+ source_set("cookie_settings") {

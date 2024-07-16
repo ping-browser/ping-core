@@ -16,27 +16,26 @@ namespace database {
 
 enum class GetSKUTransactionError { kDatabaseError, kTransactionNotFound };
 
-using GetSKUTransactionCallback = std::function<void(
+using GetSKUTransactionCallback = base::OnceCallback<void(
     base::expected<mojom::SKUTransactionPtr, GetSKUTransactionError>)>;
 
 class DatabaseSKUTransaction : public DatabaseTable {
  public:
-  explicit DatabaseSKUTransaction(RewardsEngineImpl& engine);
+  explicit DatabaseSKUTransaction(RewardsEngine& engine);
   ~DatabaseSKUTransaction() override;
 
-  void InsertOrUpdate(mojom::SKUTransactionPtr info,
-                      LegacyResultCallback callback);
+  void InsertOrUpdate(mojom::SKUTransactionPtr info, ResultCallback callback);
 
   void SaveExternalTransaction(const std::string& transaction_id,
                                const std::string& external_transaction_id,
-                               LegacyResultCallback callback);
+                               ResultCallback callback);
 
   void GetRecordByOrderId(const std::string& order_id,
                           GetSKUTransactionCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   GetSKUTransactionCallback callback);
+  void OnGetRecord(GetSKUTransactionCallback callback,
+                   mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

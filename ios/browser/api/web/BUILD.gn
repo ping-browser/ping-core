@@ -6,10 +6,9 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("web") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
-  sources = []
-
-  deps = [ "web_state" ]
+group("web") {
+  public_deps = [
+    "ui",
+    "web_state",
+  ]
 }

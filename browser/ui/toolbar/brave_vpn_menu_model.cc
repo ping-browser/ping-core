@@ -17,7 +17,7 @@
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#include "brave/browser/brave_vpn/win/storage_utils.h"
 #endif
 
 BraveVPNMenuModel::BraveVPNMenuModel(Browser* browser,
@@ -31,16 +31,14 @@ BraveVPNMenuModel::~BraveVPNMenuModel() = default;
 void BraveVPNMenuModel::Build() {
   AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN, IDS_BRAVE_VPN_MENU);
   AddSeparator(ui::NORMAL_SEPARATOR);
-  AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON,
-                      IsBraveVPNButtonVisible()
-                          ? IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM
-                          : IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM);
+  if (!IsBraveVPNButtonVisible()) {
+    AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON,
+                        IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM);
+  }
 #if BUILDFLAG(IS_WIN)
-  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
+  if (!IsTrayIconEnabled()) {
     AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
-                        IsTrayIconEnabled()
-                            ? IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM
-                            : IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM);
+                        IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM);
   }
 #endif  // BUILDFLAG(IS_WIN)
   AddItemWithStringId(IDC_SEND_BRAVE_VPN_FEEDBACK,
@@ -64,6 +62,6 @@ bool BraveVPNMenuModel::IsTrayIconEnabled() const {
     return tray_icon_enabled_for_testing_.value();
   }
 
-  return brave_vpn::wireguard::IsVPNTrayIconEnabled();
+  return brave_vpn::IsVPNTrayIconEnabled();
 }
 #endif

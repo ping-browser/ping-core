@@ -8,16 +8,14 @@ import * as React from 'react'
 // utils
 import { getLocale } from '$web-common/locale'
 
-// components
-import { Tooltip } from './index'
-
 // style
-import { GreenCheckmark } from '../style'
 import {
+  Tooltip,
   CriteriaCheckContainer,
   PasswordStrengthHeading,
   PasswordStrengthText,
-  PasswordStrengthTextWrapper
+  GreenCheckmarkIcon,
+  CloseCircleIcon
 } from './password-strength-tooltip.style'
 
 // types
@@ -29,46 +27,37 @@ interface Props {
 }
 
 const PasswordStrengthDetails = ({
-  passwordStrength: {
-    isLongEnough
-  }
+  passwordStrength: { isLongEnough }
 }: Pick<Props, 'passwordStrength'>) => {
   return (
-    <PasswordStrengthTextWrapper>
+    <>
       <PasswordStrengthHeading>
         {getLocale('braveWalletPasswordStrengthTooltipHeading')}
       </PasswordStrengthHeading>
 
       <CriteriaCheckContainer>
-        {isLongEnough && <GreenCheckmark />}
+        {isLongEnough ? <GreenCheckmarkIcon /> : <CloseCircleIcon />}
         <PasswordStrengthText isStrong={isLongEnough}>
           {getLocale('braveWalletPasswordStrengthTooltipIsLongEnough')}
         </PasswordStrengthText>
       </CriteriaCheckContainer>
-
-    </PasswordStrengthTextWrapper>
+    </>
   )
 }
 
-export const PasswordStrengthTooltip: React.FC<React.PropsWithChildren<Props>> = ({
-  children,
-  isVisible,
-  passwordStrength
-}) => {
+export const PasswordStrengthTooltip: React.FC<
+  React.PropsWithChildren<Props>
+> = ({ children, isVisible, passwordStrength }) => {
   return (
     <Tooltip
-      disableHoverEvents
-      verticalPosition='below'
-      isVisible={isVisible}
-      position='right'
-      pointerPosition={'center'}
-      text={
-        <PasswordStrengthDetails
-          passwordStrength={passwordStrength}
-        />
-      }
+      visible={isVisible}
+      mode='default'
+      flip={true}
     >
-      {children}
+      <div slot='content'>
+        <PasswordStrengthDetails passwordStrength={passwordStrength} />
+        {children}
+      </div>
     </Tooltip>
   )
 }

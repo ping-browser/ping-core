@@ -6,6 +6,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
 #include <memory>
+#include <string_view>
 
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
@@ -16,8 +17,8 @@
 #include "base/time/time.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -29,6 +30,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/common/content_paths.h"
@@ -101,6 +103,22 @@ std::unique_ptr<HttpResponse> HandleFileRequestWithCustomHeaders(
   }
   return http_response;
 }
+
+class BrowsingDataRemoverObserver
+    : public content::BrowsingDataRemover::Observer {
+ public:
+  BrowsingDataRemoverObserver() = default;
+  ~BrowsingDataRemoverObserver() override = default;
+
+  void OnBrowsingDataRemoverDone(uint64_t failed_data_types) override {
+    run_loop_.Quit();
+  }
+
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  base::RunLoop run_loop_;
+};
 
 }  // namespace
 
@@ -254,9 +272,11 @@ WebContents* EphemeralStorageBrowserTest::LoadURLInNewTab(GURL url) {
 void EphemeralStorageBrowserTest::CloseWebContents(WebContents* web_contents) {
   int tab_index =
       browser()->tab_strip_model()->GetIndexOfWebContents(web_contents);
-  bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
-      tab_index, TabCloseTypes::CLOSE_NONE);
-  EXPECT_TRUE(was_closed);
+
+  const int previous_tab_count = browser()->tab_strip_model()->count();
+  browser()->tab_strip_model()->CloseWebContentsAt(tab_index,
+                                                   TabCloseTypes::CLOSE_NONE);
+  EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
 }
 
 void EphemeralStorageBrowserTest::SetStorageValueInFrame(
@@ -290,9 +310,27 @@ content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(
 }
 
 size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(Browser* b) {
-  return EphemeralStorageServiceFactory::GetInstance()
-      ->GetForContext((b ? b : browser())->profile())
-      ->FireCleanupTimersForTesting();
+  if (!b) {
+    b = browser();
+  }
+  const size_t fired_cnt = EphemeralStorageServiceFactory::GetInstance()
+                               ->GetForContext(b->profile())
+                               ->FireCleanupTimersForTesting();
+
+  // NetworkService closes existing connections when a data removal action
+  // linked to these connections is performed. This leads to rare page open
+  // failures when the timing is "just right". Do a no-op removal here to make
+  // sure the queued Ephemeral Storage cleanup was complete.
+  BrowsingDataRemoverObserver data_remover_observer;
+  content::BrowsingDataRemover* remover =
+      b->profile()->GetBrowsingDataRemover();
+  remover->AddObserver(&data_remover_observer);
+  remover->RemoveAndReply(base::Time(), base::Time::Max(), 0, 0,
+                          &data_remover_observer);
+  data_remover_observer.Wait();
+  remover->RemoveObserver(&data_remover_observer);
+
+  return fired_cnt;
 }
 
 void EphemeralStorageBrowserTest::ExpectValuesFromFramesAreEmpty(
@@ -340,7 +378,7 @@ void EphemeralStorageBrowserTest::CreateBroadcastChannel(
 
 void EphemeralStorageBrowserTest::SendBroadcastMessage(
     RenderFrameHost* frame,
-    base::StringPiece message) {
+    std::string_view message) {
   EXPECT_TRUE(content::ExecJs(
       frame, content::JsReplace("(async () => {"
                                 "  self.bc.postMessage($1);"
@@ -397,11 +435,19 @@ void EphemeralStorageBrowserTest::LoadIndexedDbHelper(RenderFrameHost* host) {
   ASSERT_EQ(true, content::EvalJs(host, kLoadIndexMinScript));
 }
 
-bool EphemeralStorageBrowserTest::SetIDBValue(RenderFrameHost* host) {
+content::EvalJsResult EphemeralStorageBrowserTest::SetIDBValue(
+    RenderFrameHost* host) {
   LoadIndexedDbHelper(host);
-  content::EvalJsResult eval_js_result = content::EvalJs(
-      host, "(async () => { await window.idbKeyval.set('a', 'a'); })()");
-  return eval_js_result.error.empty();
+  return content::EvalJs(host,
+                         R"((async () => {
+          try {
+            await window.idbKeyval.set('a', 'a');
+            return true;
+          } catch (e) {
+            return false;
+          }
+        })()
+      )");
 }
 
 HostContentSettingsMap* EphemeralStorageBrowserTest::content_settings() {
@@ -605,10 +651,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", before_timeout.iframe_1.local_storage);
   EXPECT_EQ("a.com value", before_timeout.iframe_2.local_storage);
 
-  // keepalive does not apply to session storage
+  // Session storage data is stored in a tab until its closed.
   EXPECT_EQ("a.com value", before_timeout.main_frame.session_storage);
-  EXPECT_EQ(nullptr, before_timeout.iframe_1.session_storage);
-  EXPECT_EQ(nullptr, before_timeout.iframe_2.session_storage);
+  EXPECT_EQ("a.com value", before_timeout.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", before_timeout.iframe_2.session_storage);
 
   EXPECT_EQ("name=acom_simple; from=a.com", before_timeout.main_frame.cookies);
   EXPECT_EQ("name=bcom_simple; from=a.com", before_timeout.iframe_1.cookies);
@@ -661,9 +707,11 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // an eTLD.
   int tab_index =
       browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab);
-  bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
-      tab_index, TabCloseTypes::CLOSE_NONE);
-  EXPECT_TRUE(was_closed);
+
+  const int previous_tab_count = browser()->tab_strip_model()->count();
+  browser()->tab_strip_model()->CloseWebContentsAt(tab_index,
+                                                   TabCloseTypes::CLOSE_NONE);
+  EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
   EXPECT_TRUE(WaitForCleanupAfterKeepAlive());
 
   // Navigate the main tab to the same site.
@@ -1028,21 +1076,22 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
       ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   RenderFrameHost* site_a_main_frame = web_contents->GetPrimaryMainFrame();
-  RenderFrameHost* nested_frames_tab =
+  RenderFrameHost* third_party_nested_bcom_frames =
       content::ChildFrameAt(site_a_main_frame, 3);
-  ASSERT_NE(nested_frames_tab, nullptr);
-  RenderFrameHost* first_party_nested_acom =
-      content::ChildFrameAt(nested_frames_tab, 2);
-  ASSERT_NE(first_party_nested_acom, nullptr);
+  ASSERT_NE(third_party_nested_bcom_frames, nullptr);
+  RenderFrameHost* third_party_nested_bcom_nested_acom =
+      content::ChildFrameAt(third_party_nested_bcom_frames, 2);
+  ASSERT_NE(third_party_nested_bcom_nested_acom, nullptr);
 
   WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
   RenderFrameHost* site_b_main_frame = site_b_tab->GetPrimaryMainFrame();
   RenderFrameHost* third_party_nested_acom =
       content::ChildFrameAt(site_b_main_frame, 2);
-  ASSERT_NE(first_party_nested_acom, nullptr);
+  ASSERT_NE(third_party_nested_acom, nullptr);
 
   ASSERT_EQ("name=acom", GetCookiesInFrame(site_a_main_frame));
-  ASSERT_EQ("name=acom", GetCookiesInFrame(first_party_nested_acom));
+  ASSERT_EQ("name=acom",
+            GetCookiesInFrame(third_party_nested_bcom_nested_acom));
   ASSERT_EQ("", GetCookiesInFrame(third_party_nested_acom));
 
   SetValuesInFrame(site_a_main_frame, "first-party-a.com",
@@ -1050,11 +1099,15 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   SetValuesInFrame(third_party_nested_acom, "third-party-a.com",
                    "name=third-party-a.com");
 
-  ValuesFromFrame first_party_values =
-      GetValuesFromFrame(first_party_nested_acom);
-  EXPECT_EQ("first-party-a.com", first_party_values.local_storage);
-  EXPECT_EQ("first-party-a.com", first_party_values.session_storage);
-  EXPECT_EQ("name=first-party-a.com", first_party_values.cookies);
+  // Values in a.com (main) -> b.com -> a.com frame.
+  ValuesFromFrame cross_site_acom_values =
+      GetValuesFromFrame(third_party_nested_bcom_nested_acom);
+  // a.com -> b.com -> a.com is considered third-party. Storage should be
+  // partitioned from the main frame.
+  EXPECT_EQ(nullptr, cross_site_acom_values.local_storage);
+  EXPECT_EQ(nullptr, cross_site_acom_values.session_storage);
+  // Cookies are not partitioned via kThirdPartyStoragePartitioning feature.
+  EXPECT_EQ("name=first-party-a.com", cross_site_acom_values.cookies);
 
   ValuesFromFrame third_party_values =
       GetValuesFromFrame(third_party_nested_acom);
@@ -1142,9 +1195,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
   // an eTLD.
   int tab_index =
       browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab);
-  bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
-      tab_index, TabCloseTypes::CLOSE_NONE);
-  EXPECT_TRUE(was_closed);
+  const int previous_tab_count = browser()->tab_strip_model()->count();
+  browser()->tab_strip_model()->CloseWebContentsAt(tab_index,
+                                                   TabCloseTypes::CLOSE_NONE);
+  EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
 
   // Navigate the main tab to the same site.
   ASSERT_TRUE(

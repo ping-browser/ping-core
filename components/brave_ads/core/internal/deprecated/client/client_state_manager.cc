@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -12,14 +13,12 @@
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/history/history_constants.h"
+#include "brave/components/brave_ads/core/internal/history/history_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/public/ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "build/build_config.h"
 
@@ -27,7 +26,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr size_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
+constexpr size_t kMaximumPurchaseIntentSignalHistoryEntriesPerSegment = 100;
 
 FilteredAdvertiserList::iterator FindFilteredAdvertiser(
     const std::string& advertiser_id,
@@ -93,13 +92,12 @@ const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
   return client_.ad_preferences.flagged_ads;
 }
 
-void ClientStateManager::Load(InitializeCallback callback) {
+void ClientStateManager::LoadState(InitializeCallback callback) {
   BLOG(3, "Loading client state");
 
-  AdsClientHelper::GetInstance()->Load(
-      kClientStateFilename,
-      base::BindOnce(&ClientStateManager::LoadCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  Load(kClientStateFilename,
+       base::BindOnce(&ClientStateManager::LoadCallback,
+                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
@@ -108,17 +106,14 @@ void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
 
   client_.history_items.push_front(history_item);
 
-  const base::Time distant_past = base::Time::Now() - kHistoryTimeWindow;
+  const base::Time distant_past = base::Time::Now() - kHistoryTimeWindow.Get();
 
-  const auto iter =
-      std::remove_if(client_.history_items.begin(), client_.history_items.end(),
-                     [distant_past](const HistoryItemInfo& history_item) {
-                       return history_item.created_at < distant_past;
-                     });
+  base::EraseIf(client_.history_items,
+                [distant_past](const HistoryItemInfo& history_item) {
+                  return history_item.created_at < distant_past;
+                });
 
-  client_.history_items.erase(iter, client_.history_items.cend());
-
-  Save();
+  SaveState();
 #endif
 }
 
@@ -141,11 +136,11 @@ void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
   client_.purchase_intent_signal_history.at(segment).push_back(history);
 
   if (client_.purchase_intent_signal_history.at(segment).size() >
-      kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory) {
+      kMaximumPurchaseIntentSignalHistoryEntriesPerSegment) {
     client_.purchase_intent_signal_history.at(segment).pop_back();
   }
 
-  Save();
+  SaveState();
 }
 
 const PurchaseIntentSignalHistoryMap&
@@ -174,7 +169,7 @@ mojom::UserReactionType ClientStateManager::ToggleLikeAd(
     }
   }
 
-  Save();
+  SaveState();
 
   return toggled_user_reaction_type;
 }
@@ -209,7 +204,7 @@ mojom::UserReactionType ClientStateManager::ToggleDislikeAd(
     }
   }
 
-  Save();
+  SaveState();
 
   return toggled_user_reaction_type;
 }
@@ -248,7 +243,7 @@ mojom::UserReactionType ClientStateManager::ToggleLikeCategory(
     }
   }
 
-  Save();
+  SaveState();
 
   return toggled_user_reaction_type;
 }
@@ -281,7 +276,7 @@ mojom::UserReactionType ClientStateManager::ToggleDislikeCategory(
     }
   }
 
-  Save();
+  SaveState();
 
   return toggled_user_reaction_type;
 }
@@ -326,7 +321,7 @@ bool ClientStateManager::ToggleSaveAd(const AdContentInfo& ad_content) {
     }
   }
 
-  Save();
+  SaveState();
 
   return is_saved;
 }
@@ -348,98 +343,17 @@ bool ClientStateManager::ToggleMarkAdAsInappropriate(
         client_.ad_preferences.flagged_ads.end());
   }
 
-  auto iter = base::ranges::find_if(
+  const auto iter = base::ranges::find_if(
       client_.history_items, [&ad_content](const HistoryItemInfo& item) {
         return item.ad_content.creative_set_id == ad_content.creative_set_id;
       });
-  if (iter != client_.history_items.end()) {
+  if (iter != client_.history_items.cend()) {
     iter->ad_content.is_flagged = is_flagged;
   }
 
-  Save();
+  SaveState();
 
   return is_flagged;
-}
-
-void ClientStateManager::UpdateSeenAd(const AdInfo& ad) {
-  CHECK(is_initialized_);
-
-  const std::string type_as_string = ad.type.ToString();
-  client_.seen_ads[type_as_string][ad.creative_instance_id] = true;
-  client_.seen_advertisers[type_as_string][ad.advertiser_id] = true;
-  Save();
-}
-
-const std::map<std::string, bool>& ClientStateManager::GetSeenAdsForType(
-    const AdType& type) {
-  CHECK(is_initialized_);
-
-  const std::string type_as_string = type.ToString();
-  return client_.seen_ads[type_as_string];
-}
-
-void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
-                                             const AdType& type) {
-  CHECK(is_initialized_);
-
-  const std::string type_as_string = type.ToString();
-
-  BLOG(1, "Resetting seen " << type_as_string << "s");
-
-  for (const auto& creative_ad : creative_ads) {
-    const auto iter =
-        client_.seen_ads[type_as_string].find(creative_ad.creative_instance_id);
-    if (iter != client_.seen_ads[type_as_string].cend()) {
-      client_.seen_ads[type_as_string].erase(iter);
-    }
-  }
-
-  Save();
-}
-
-void ClientStateManager::ResetAllSeenAdsForType(const AdType& type) {
-  CHECK(is_initialized_);
-
-  const std::string type_as_string = type.ToString();
-  BLOG(1, "Resetting seen " << type_as_string << "s");
-  client_.seen_ads[type_as_string] = {};
-  Save();
-}
-
-const std::map<std::string, bool>&
-ClientStateManager::GetSeenAdvertisersForType(const AdType& type) {
-  CHECK(is_initialized_);
-
-  return client_.seen_advertisers[type.ToString()];
-}
-
-void ClientStateManager::ResetSeenAdvertisersForType(
-    const CreativeAdList& creative_ads,
-    const AdType& type) {
-  CHECK(is_initialized_);
-
-  const std::string type_as_string = type.ToString();
-
-  BLOG(1, "Resetting seen " << type_as_string << " advertisers");
-
-  for (const auto& creative_ad : creative_ads) {
-    const auto iter = client_.seen_advertisers[type_as_string].find(
-        creative_ad.advertiser_id);
-    if (iter != client_.seen_advertisers[type_as_string].cend()) {
-      client_.seen_advertisers[type_as_string].erase(iter);
-    }
-  }
-
-  Save();
-}
-
-void ClientStateManager::ResetAllSeenAdvertisersForType(const AdType& type) {
-  CHECK(is_initialized_);
-
-  const std::string type_as_string = type.ToString();
-  BLOG(1, "Resetting seen " << type_as_string << " advertisers");
-  client_.seen_advertisers[type_as_string] = {};
-  Save();
 }
 
 void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
@@ -454,7 +368,7 @@ void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
     client_.text_classification_probabilities.resize(maximum_entries);
   }
 
-  Save();
+  SaveState();
 }
 
 const TextClassificationProbabilityList&
@@ -466,43 +380,49 @@ ClientStateManager::GetTextClassificationProbabilitiesHistory() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void ClientStateManager::Save() {
+void ClientStateManager::SaveState() {
   if (!is_initialized_) {
     return;
   }
 
   BLOG(9, "Saving client state");
 
-  AdsClientHelper::GetInstance()->Save(
-      kClientStateFilename, client_.ToJson(),
-      base::BindOnce([](const bool success) {
-        if (!success) {
-          return BLOG(0, "Failed to save client state");
-        }
+  Save(kClientStateFilename, client_.ToJson(),
+       base::BindOnce([](const bool success) {
+         if (!success) {
+           // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+           // potential defects using `DumpWithoutCrashing`.
+           SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                     "Failed to save client state");
+           base::debug::DumpWithoutCrashing();
 
-        BLOG(9, "Successfully saved client state");
-      }));
+           return BLOG(0, "Failed to save client state");
+         }
+
+         BLOG(9, "Successfully saved client state");
+       }));
 }
 
 void ClientStateManager::LoadCallback(InitializeCallback callback,
-                                      const absl::optional<std::string>& json) {
+                                      const std::optional<std::string>& json) {
   if (!json) {
     BLOG(3, "Client state does not exist, creating default state");
 
     is_initialized_ = true;
     client_ = {};
 
-    Save();
+    SaveState();
   } else {
     if (!FromJson(*json)) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-      // migration failure dumps.
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Failed to parse client state");
       base::debug::DumpWithoutCrashing();
 
-      BLOG(0, "Failed to load client state");
       BLOG(3, "Failed to parse client state: " << *json);
 
-      return std::move(callback).Run(/*success*/ false);
+      return std::move(callback).Run(/*success=*/false);
     }
 
     BLOG(3, "Successfully loaded client state");
@@ -510,7 +430,7 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     is_initialized_ = true;
   }
 
-  std::move(callback).Run(/*success */ true);
+  std::move(callback).Run(/*success=*/true);
 }
 
 bool ClientStateManager::FromJson(const std::string& json) {

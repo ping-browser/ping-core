@@ -12,17 +12,33 @@
   overflow: hidden;
 }
 
-.inputBox {
+.input {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  padding: 16px;
-  border-top: 1px solid var(--leo-color-divider-subtle);
-  background-color: var(--leo-color-container-background);
+  padding: 0 8px 8px 8px;
 }
 
 .scroller {
   overflow: auto;
   height: 100%;
   padding-bottom: 16px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-gray-20);
+    border-radius: var(--leo-spacing-m);
+  }
+}
+
+.flushBottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 0;
 }
 
 .header {
@@ -32,17 +48,29 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 60px;
 }
 
 .actions {
   --leo-icon-size: 20px;
+  --gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
 
-  leo-button {
-    margin-right: 18px;
+.closeButton {
+  position: relative;
+  display: flex;
+  align-items: center;
 
-    &:last-child {
-      margin-right: 0;
-    }
+  &:before {
+    content: '';
+    width: 1px;
+    height: 50%;
+    background: var(--leo-color-divider-subtle);
+    position: absolute;
+    left: calc(var(--gap)/2 * -1);
   }
 }
 
@@ -53,20 +81,39 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font: var(--leo-font-primary-large-regular);
+  font: var(--leo-font-large-regular);
 }
 
 .logoTitle {
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+  font-size: 19px;
   line-height: 1;
-
-  span {
-    color: var(--leo-color-text-primary);
-  }
 }
 
-.siteTitleBox {
-  padding: 16px 16px 0 16px;
+.promptContainer {
+  margin: 24px;
+}
+
+.badgePremium {
+  background: var(--leo-color-blue-20);
+  color: var(--leo-color-blue-50);
+  user-select: none;
+  padding: 3px 5px;
+  font: var(--leo-font-x-small-semibold);
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+.alertCenter {
+  --leo-alert-center-width: calc(100% - 32px); /* remove scrollbar space */
+  position: absolute;
+  left: 0;
+  z-index: 5;
+  width: 100%;
+}
+
+.toggleContainer {
+  margin-bottom: var(--leo-spacing-m);
 }

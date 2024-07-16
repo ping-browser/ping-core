@@ -5,12 +5,12 @@
 
 #include <ctime>
 #include <memory>
+#include <string_view>
 
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 #include "base/environment.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
@@ -75,13 +75,14 @@ base::Time GetLastMondayTime(const base::Time& time) {
 
   int days_adjusted =
       (exploded.day_of_week == 0) ? 6 : exploded.day_of_week - 1;
-  base::Time last_monday = base::Time::FromJsTime(
-      time.ToJsTime() - (days_adjusted * base::Time::kMillisecondsPerDay));
+  base::Time last_monday = base::Time::FromMillisecondsSinceUnixEpoch(
+      time.InMillisecondsFSinceUnixEpoch() -
+      (days_adjusted * base::Time::kMillisecondsPerDay));
 
   return last_monday;
 }
 
-base::Time GetYMDAsDate(const base::StringPiece& ymd) {
+base::Time GetYMDAsDate(const std::string_view ymd) {
   const auto pieces = base::SplitStringPiece(ymd, "-", base::TRIM_WHITESPACE,
                                              base::SPLIT_WANT_NONEMPTY);
   DCHECK_EQ(pieces.size(), 3ull);

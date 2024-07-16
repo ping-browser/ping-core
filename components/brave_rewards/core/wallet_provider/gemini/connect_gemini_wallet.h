@@ -15,20 +15,22 @@
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace gemini {
 
 class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectGeminiWallet(RewardsEngineImpl& engine);
+  explicit ConnectGeminiWallet(RewardsEngine& engine);
 
   ~ConnectGeminiWallet() override;
 
  private:
   const char* WalletType() const override;
 
-  void Authorize(OAuthInfo&&, ConnectExternalWalletCallback) override;
+  std::string GetOAuthLoginURL() const override;
+
+  void Authorize(ConnectExternalWalletCallback callback) override;
 
   void OnAuthorize(ConnectExternalWalletCallback,
                    mojom::Result,

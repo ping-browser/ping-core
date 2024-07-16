@@ -11,12 +11,12 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/perf/brave_perf_switches.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/ui/browser.h"
@@ -38,13 +38,13 @@ namespace brave_shields {
 
 namespace {
 
-auto* GetRegionalServiceManager() {
+auto* GetComponentServiceManager() {
   return g_brave_browser_process->ad_block_service()
-      ->regional_service_manager();
+      ->component_service_manager();
 }
 
 bool IsCookieListFilterEnabled() {
-  return GetRegionalServiceManager()->IsFilterListEnabled(kCookieListUuid);
+  return GetComponentServiceManager()->IsFilterListEnabled(kCookieListUuid);
 }
 
 class CookieListFilterEnabledObserver {
@@ -127,10 +127,10 @@ class CookieListOptInBrowserTest : public InProcessBrowserTest {
         kCookieListUuid,
         "https://secure.fanboy.co.nz/fanboy-cookiemonster_ubo.txt",
         "Easylist-Cookie List - Filter Obtrusive Cookie Notices", {},
-        "https://forums.lanik.us/", kRegionalAdBlockComponentTestId,
-        kRegionalAdBlockComponentTest64PublicKey,
-        "Removes obtrusive cookie law notices", "", "")};
-    GetRegionalServiceManager()->SetFilterListCatalog(filter_list_catalog);
+        "https://forums.lanik.us/", "Removes obtrusive cookie law notices",
+        false, false, false, 0, {}, kRegionalAdBlockComponentTestId,
+        kRegionalAdBlockComponentTest64PublicKey)};
+    GetComponentServiceManager()->SetFilterListCatalog(filter_list_catalog);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -208,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(CookieListOptInBrowserTest, FirstRun) {
                                     chrome::startup::IsFirstRun::kYes);
 
   creator.Launch(browser()->profile(), chrome::startup::IsProcessStartup::kNo,
-                 nullptr);
+                 nullptr, /*restore_tabbed_browser=*/true);
 
   Browser* new_browser = chrome::FindBrowserWithProfile(browser()->profile());
   ASSERT_TRUE(new_browser);
@@ -248,7 +248,7 @@ class CookieListOptInPreEnabledBrowserTest : public CookieListOptInBrowserTest {
   void SetUpLocalState() override {
     CookieListOptInBrowserTest::SetUpLocalState();
 
-    GetRegionalServiceManager()->EnableFilterList(kCookieListUuid, true);
+    GetComponentServiceManager()->EnableFilterList(kCookieListUuid, true);
 
     // Since `AdBlockRegionalServiceManager::EnableFilterList` modifies local
     // state asynchronously in a posted task, waiting for the update to complete

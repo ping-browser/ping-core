@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_
 
+#include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
 
 #include "base/containers/span.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -21,20 +21,9 @@ namespace brave_wallet {
 // https://docs.solana.com/developing/programming-model/transactions#compact-u16-format
 void CompactU16Encode(uint16_t u16, std::vector<uint8_t>* compact_u16);
 
-absl::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
+std::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
     const std::vector<uint8_t>& compact_u16,
     size_t start_index);
-
-// A bridge function to call DecodeBase58 in bitcoin-core.
-// It will return false if length of decoded byte array does not match len
-// param.
-bool Base58Decode(const std::string& str,
-                  std::vector<uint8_t>* ret,
-                  int len,
-                  bool strict = true);
-// A bridge function to call EncodeBase58 in bitcoin-core.
-std::string Base58Encode(const std::vector<uint8_t>& bytes);
-std::string Base58Encode(base::span<const uint8_t> bytes);
 
 bool IsBase58EncodedSolanaPubkey(const std::string& key);
 
@@ -42,13 +31,13 @@ bool Uint8ArrayDecode(const std::string& str,
                       std::vector<uint8_t>* ret,
                       size_t len);
 
-absl::optional<uint8_t> GetUint8FromStringDict(const base::Value::Dict& dict,
-                                               const std::string& key);
+std::optional<uint8_t> GetUint8FromStringDict(const base::Value::Dict& dict,
+                                              const std::string& key);
 
 // A compact-array is serialized as the array length, followed by each array
 // item. bytes_index will be increased by the bytes read (consumed) in this
 // function.
-absl::optional<std::vector<uint8_t>> CompactArrayDecode(
+std::optional<std::vector<uint8_t>> CompactArrayDecode(
     const std::vector<uint8_t>& bytes,
     size_t* bytes_index);
 

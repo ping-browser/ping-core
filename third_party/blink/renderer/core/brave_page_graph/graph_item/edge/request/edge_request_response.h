@@ -23,6 +23,7 @@ class EdgeRequestResponse : public EdgeRequest {
                       NodeResource* out_node,
                       GraphNode* in_node,
                       const InspectorId request_id,
+                      const FrameId& frame_id,
                       const RequestStatus request_status,
                       const ResponseMetadata& metadata);
 
@@ -42,6 +43,7 @@ class EdgeRequestResponse : public EdgeRequest {
   bool IsEdgeRequestResponse() const override;
 
   virtual bool IsEdgeRequestComplete() const;
+  virtual bool IsEdgeRequestRedirect() const;
   virtual bool IsEdgeRequestError() const;
 
  private:

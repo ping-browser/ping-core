@@ -6,14 +6,10 @@
 import * as React from 'react'
 
 // Selectors
-import {
-  UISelectors
-} from '../../../common/selectors'
+import { UISelectors } from '../../../common/selectors'
 
 // Hooks
-import {
-  useSafeUISelector
-} from '../../../common/hooks/use-safe-selector'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 
 // Options
 import {
@@ -34,35 +30,40 @@ import {
 } from './wallet-nav.style'
 
 export const WalletNav = () => {
-  // Selectors
+  // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   return (
-    <Wrapper
-      isPanel={isPanel}
-    >
-
+    <Wrapper isPanel={isPanel}>
       <PanelOptionsWrapper>
         <Section>
-          {PanelNavOptions.map((option) =>
-            <WalletNavButton option={option} key={option.id} />
-          )}
+          {PanelNavOptions.map((option) => (
+            <WalletNavButton
+              option={option}
+              key={option.id}
+            />
+          ))}
         </Section>
       </PanelOptionsWrapper>
 
       <PageOptionsWrapper>
         <Section showBorder={true}>
-          {NavOptions.map((option) =>
-            <WalletNavButton option={option} key={option.id} />
-          )}
+          {NavOptions.map((option) => (
+            <WalletNavButton
+              option={option}
+              key={option.id}
+            />
+          ))}
         </Section>
         <Section>
-          {BuySendSwapDepositOptions.map((option) =>
-            <WalletNavButton option={option} key={option.id} />
-          )}
+          {BuySendSwapDepositOptions.map((option) => (
+            <WalletNavButton
+              option={option}
+              key={option.id}
+            />
+          ))}
         </Section>
       </PageOptionsWrapper>
-
     </Wrapper>
   )
 }

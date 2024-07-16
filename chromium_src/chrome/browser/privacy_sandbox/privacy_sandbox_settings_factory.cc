@@ -6,17 +6,25 @@
 #include "chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.h"
 
 #include "brave/components/privacy_sandbox/brave_privacy_sandbox_settings.h"
+#include "chrome/browser/privacy_sandbox/tracking_protection_settings_factory.h"
+#include "chrome/browser/tpcd/experiment/experiment_manager_impl.h"
 
-#define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
+#define BuildServiceInstanceForBrowserContext \
+  BuildServiceInstanceForBrowserContext_ChromiumImpl
 #include "src/chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.cc"
-#undef BuildServiceInstanceFor
+#undef BuildServiceInstanceForBrowserContext
 
-KeyedService* PrivacySandboxSettingsFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+PrivacySandboxSettingsFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   Profile* profile = Profile::FromBrowserContext(context);
 
-  return new BravePrivacySandboxSettings(
-      std::make_unique<PrivacySandboxSettingsDelegate>(profile),
+  return std::make_unique<BravePrivacySandboxSettings>(
+      std::make_unique<PrivacySandboxSettingsDelegate>(
+          profile,
+          tpcd::experiment::ExperimentManagerImpl::GetForProfile(profile)),
       HostContentSettingsMapFactory::GetForProfile(profile),
-      CookieSettingsFactory::GetForProfile(profile).get(), profile->GetPrefs());
+      CookieSettingsFactory::GetForProfile(profile).get(),
+      TrackingProtectionSettingsFactory::GetForProfile(profile),
+      profile->GetPrefs());
 }

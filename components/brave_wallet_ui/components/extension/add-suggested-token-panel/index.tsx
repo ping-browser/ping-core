@@ -29,6 +29,7 @@ import LoadingSkeleton from '../../shared/loading-skeleton/index'
 import { NavButton } from '../buttons/nav-button/index'
 
 // Utils
+import { BraveWallet } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 
@@ -53,8 +54,9 @@ export function AddSuggestedTokenPanel() {
     isFetching: isFetchingSuggestions,
     isLoading: isLoadingSuggestions
   } = useGetPendingTokenSuggestionRequestsQuery()
-  const suggestion = suggestions[0]
-  const { origin, token } = suggestion
+  const suggestion: BraveWallet.AddSuggestTokenRequest | undefined =
+    suggestions[0]
+  const { origin, token } = suggestion || {}
 
   const { data: tokenNetwork, isLoading: isFetchingTokenNetwork } =
     useGetNetworkQuery(token ?? skipToken)
@@ -110,13 +112,19 @@ export function AddSuggestedTokenPanel() {
           {!isFetching && tokenNetwork?.chainName ? (
             <NetworkText>{tokenNetwork.chainName}</NetworkText>
           ) : (
-            <LoadingSkeleton height={12} width={'50px'} />
+            <LoadingSkeleton
+              height={12}
+              width={'50px'}
+            />
           )}
         </TopRow>
         <Title>{getLocale('braveWalletAddSuggestedTokenTitle')}</Title>
         <URLText>
-          {isFetching ? (
-            <LoadingSkeleton height={12} width={'50px'} />
+          {isFetching || !origin ? (
+            <LoadingSkeleton
+              height={12}
+              width={'50px'}
+            />
           ) : (
             <CreateSiteOrigin
               originSpec={origin.originSpec}
@@ -130,14 +138,20 @@ export function AddSuggestedTokenPanel() {
         {isFetching ? (
           <LoadingRing size={'40px'} />
         ) : (
-          <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
+          <AssetIconWithPlaceholder
+            asset={token}
+            network={tokenNetwork}
+          />
         )}
         {!isFetching && token ? (
           <TokenName>
             {token.name ?? ''} ({token.symbol ?? ''})
           </TokenName>
         ) : (
-          <LoadingSkeleton height={12} width={'50px'} />
+          <LoadingSkeleton
+            height={12}
+            width={'50px'}
+          />
         )}
         <Tooltip text={getLocale('braveWalletTransactionExplorer')}>
           <ContractAddress

@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
+
 import { WalletButton } from '../shared/style'
 import WarningTriangle from '../../assets/svg-icons/warning-triangle.svg'
 import IThemeProps from 'brave-ui/theme/theme-interface'
@@ -46,14 +48,6 @@ export const AddressAndOrb = styled.div`
   flex-direction: row;
 `
 
-export const AccountCircle = styled.div<Partial<StyleProps>>`
-  width: 32px;
-  height: 32px;
-  border-radius: 100%;
-  background-image: url(${(p) => p.orb});
-  background-size: cover;
-`
-
 export const AddressText = styled.span`
   cursor: default;
   font-family: Poppins;
@@ -86,7 +80,7 @@ export const PanelTitle = styled.span`
 `
 
 export const Description = styled.span`
-  width: 275px;
+  width: 90%;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
@@ -94,7 +88,6 @@ export const Description = styled.span`
   text-align: center;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 12px;
-  width: 60%;
 `
 
 export const TabRow = styled.div`
@@ -102,7 +95,7 @@ export const TabRow = styled.div`
   align-items: flex-end;
   justify-content: center;
   flex-direction: row;
-  width: 255px;
+  width: 90%;
   margin-bottom: 10px;
 `
 
@@ -112,22 +105,6 @@ export const DetailTextDarkBold = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text02};
-`
-
-export const DetailTextLight = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
-`
-
-export const DetailTextDark = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
 `
 
@@ -152,14 +129,13 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
   flex-direction: column;
   box-sizing: border-box;
   border-radius: 4px;
-  width: 255px;
+  width: 90%;
   padding: 10px;
   margin-bottom: 14px;
   background-color: ${(p) =>
     p.warningType === 'danger'
       ? p.theme.color.errorBackground
-      : p.theme.color.warningBackground
-  };
+      : p.theme.color.warningBackground};
 `
 
 export const WarningTitle = styled.span<Partial<StyleProps>>`
@@ -171,8 +147,7 @@ export const WarningTitle = styled.span<Partial<StyleProps>>`
   color: ${(p) =>
     p.warningType === 'danger'
       ? p.theme.color.errorText
-      : p.theme.color.text01
-  };
+      : p.theme.color.text01};
 `
 
 export const WarningBoxTitleRow = styled.div`
@@ -196,10 +171,8 @@ export const WarningBoxIcon = styled.div<{
   color?: keyof IThemeProps['color']
 }>`
   mask-size: 100%;
-  background-color: ${(p) => p?.color
-    ? p.theme.color[p.color]
-    : p.theme.color.errorIcon
-  };
+  background-color: ${(p) =>
+    p?.color ? p.theme.color[p.color] : p.theme.color.errorIcon};
   -webkit-mask-image: url(${WarningTriangle});
   mask-image: url(${WarningTriangle});
 `
@@ -223,4 +196,37 @@ export const LearnMoreButton = styled(WalletButton)`
   border: none;
   margin: 0px;
   padding: 0px;
+`
+
+// Floating card panel styles
+export const Background = styled.div`
+  background-color: ${leo.color.container.background};
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`
+
+export const Backdrop = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+`
+
+export const FloatingCard = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: ${leo.color.container.background};
+  box-shadow: 0px 10px 48px 0px ${leo.effect.elevation['06']};
 `

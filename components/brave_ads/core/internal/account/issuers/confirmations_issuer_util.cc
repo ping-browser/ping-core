@@ -5,23 +5,26 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/confirmations_issuer_util.h"
 
+#include <cstddef>
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_constants.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 bool IsConfirmationsIssuerValid(const IssuersInfo& issuers) {
-  const absl::optional<IssuerInfo> confirmations_issuer =
+  const std::optional<IssuerInfo> confirmations_issuer =
       GetIssuerForType(issuers, IssuerType::kConfirmations);
   if (!confirmations_issuer) {
     return false;
   }
 
-  return confirmations_issuer->public_keys.size() <= kMaximumIssuerPublicKeys;
+  return confirmations_issuer->public_keys.size() <=
+         static_cast<size_t>(kMaximumIssuerPublicKeys.Get());
 }
 
 }  // namespace brave_ads

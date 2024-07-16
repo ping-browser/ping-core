@@ -14,14 +14,12 @@ import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
 
 // utils
 import { loadTimeData } from '../../common/loadTimeData'
-import * as Lib from '../common/async/lib'
 import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
 
 // actions
 import * as WalletActions from '../common/actions/wallet_actions'
 
 // contexts
-import { LibContext } from '../common/context/lib.context'
 import { ApiProxyContext } from '../common/context/api-proxy.context'
 
 // components
@@ -37,12 +35,7 @@ import 'emptykit.css'
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
-function App () {
-  const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
-  React.useEffect(() => {
-    chrome.braveTheme.getBraveThemeType(setInitialThemeType)
-  }, [])
-
+function App() {
   React.useEffect(() => {
     /** Sets FAVICON for Wallet Pages */
     let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement
@@ -61,25 +54,20 @@ function App () {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        {initialThemeType &&
-          <BraveCoreThemeProvider
-            initialThemeType={initialThemeType}
-            dark={walletDarkTheme}
-            light={walletLightTheme}
-          >
-            <ApiProxyContext.Provider value={walletPageApiProxy}>
-              <LibContext.Provider value={Lib}>
-                <Container />
-              </LibContext.Provider>
-            </ApiProxyContext.Provider>
-          </BraveCoreThemeProvider>
-        }
+        <BraveCoreThemeProvider
+          dark={walletDarkTheme}
+          light={walletLightTheme}
+        >
+          <ApiProxyContext.Provider value={walletPageApiProxy}>
+            <Container />
+          </ApiProxyContext.Provider>
+        </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>
   )
 }
 
-function initialize () {
+function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
   render(<App />, document.getElementById('root'))

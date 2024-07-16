@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ACCOUNT_DISCOVERY_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ACCOUNT_DISCOVERY_MANAGER_H_
 
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -16,7 +17,10 @@
 #include "components/prefs/pref_service.h"
 
 namespace brave_wallet {
+
+class BitcoinWalletService;
 class KeyringService;
+struct DiscoveredBitcoinAccount;
 
 // Start account discovery process. Consecutively look for accounts with at
 // least one transaction. Add such ones and all missing previous ones(so no
@@ -25,7 +29,8 @@ class KeyringService;
 class AccountDiscoveryManager {
  public:
   AccountDiscoveryManager(JsonRpcService* rpc_service,
-                          KeyringService* keyring_service);
+                          KeyringService* keyring_service,
+                          BitcoinWalletService* bitcoin_wallet_service);
   ~AccountDiscoveryManager();
 
   void StartDiscovery();
@@ -45,6 +50,8 @@ class AccountDiscoveryManager {
     int attempts_left;
   };
 
+  std::map<mojom::KeyringId, uint32_t> GetDerivedAccountsCount();
+
   void AddDiscoveryAccount(std::unique_ptr<DiscoveryContext> context);
 
   void OnEthGetTransactionCount(std::unique_ptr<DiscoveryContext> context,
@@ -59,12 +66,15 @@ class AccountDiscoveryManager {
                                      uint64_t value,
                                      mojom::SolanaProviderError error,
                                      const std::string& error_message);
+  void OnBitcoinDiscoverAccountsDone(
+      base::expected<DiscoveredBitcoinAccount, std::string> dicovered_account);
 
   void ProcessDiscoveryResult(std::unique_ptr<DiscoveryContext> context,
                               bool result);
 
   raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_;
   raw_ptr<brave_wallet::KeyringService> keyring_service_;
+  raw_ptr<brave_wallet::BitcoinWalletService> bitcoin_wallet_service_;
 
   base::WeakPtrFactory<AccountDiscoveryManager> weak_ptr_factory_{this};
 };

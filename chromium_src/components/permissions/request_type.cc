@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/permissions/request_type.h"
+#include <optional>
 
 #include "build/build_config.h"
+#include "components/permissions/request_type.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "components/resources/android/theme_resources.h"
@@ -16,8 +17,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 namespace {
-constexpr auto kAndroidInfobarPermissionCookie =
-    IDR_ANDROID_INFOBAR_PERMISSION_COOKIE;
+constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
 }  // namespace
 #else
 namespace vector_icons {
@@ -32,8 +32,8 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 //
 // TODO(jocelyn): Might need to update icon when we have ethereum.enable UI
 // support in Android.
-#define IDR_ANDROID_INFOBAR_PERMISSION_COOKIE        \
-  kAndroidInfobarPermissionCookie;                   \
+#define IDR_ANDROID_STORAGE_ACCESS                   \
+  kAndroidStorageAccess;                             \
   case RequestType::kWidevine:                       \
   case RequestType::kBraveEthereum:                  \
   case RequestType::kBraveSolana:                    \
@@ -73,12 +73,12 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 
 #include "src/components/permissions/request_type.cc"
 
-#undef BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
-#undef IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
-#undef kMicIcon
-#undef ContentSettingsTypeToRequestType
-#undef RequestTypeToContentSettingsType
 #undef IsRequestablePermissionType
+#undef RequestTypeToContentSettingsType
+#undef ContentSettingsTypeToRequestType
+#undef BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
+#undef kMicIcon
+#undef IDR_ANDROID_STORAGE_ACCESS
 
 namespace permissions {
 
@@ -99,7 +99,7 @@ RequestType ContentSettingsTypeToRequestType(
   }
 }
 
-absl::optional<ContentSettingsType> RequestTypeToContentSettingsType(
+std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
     RequestType request_type) {
   switch (request_type) {
     case RequestType::kBraveGoogleSignInPermission:

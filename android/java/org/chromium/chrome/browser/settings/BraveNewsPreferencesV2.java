@@ -38,8 +38,9 @@ import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.components.browser_ui.settings.FragmentSettingsLauncher;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -106,6 +107,13 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             mLayoutChannels = (View) view.findViewById(R.id.layout_channels);
             mLayoutFollowing = (View) view.findViewById(R.id.layout_following);
 
+            BraveTouchUtils.ensureMinTouchTarget(mBtnTurnOnNews);
+            BraveTouchUtils.ensureMinTouchTarget(mLayoutChannels);
+            BraveTouchUtils.ensureMinTouchTarget(mLayoutFollowing);
+            BraveTouchUtils.ensureMinTouchTarget(mLayoutPopularSources);
+            BraveTouchUtils.ensureMinTouchTarget(mLayoutSuggestions);
+            BraveTouchUtils.ensureMinTouchTarget(mTvSearch);
+
             setData();
             onClickViews();
         }
@@ -134,7 +142,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             mIsSuggestionAvailable = true;
         }
 
-        boolean isNewsEnable = BraveNewsUtils.shouldDisplayNews();
+        boolean isNewsEnable = BraveNewsUtils.shouldDisplayNewsFeed();
         mSwitchShowNews.setChecked(isNewsEnable);
         onShowNewsToggle(isNewsEnable);
     }
@@ -189,8 +197,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     private void onShowNewsToggle(boolean isEnable) {
         BravePrefServiceBridge.getInstance().setShowNews(isEnable);
 
-        SharedPreferencesManager.getInstance().writeBoolean(
-                BravePreferenceKeys.BRAVE_NEWS_PREF_SHOW_NEWS, isEnable);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_NEWS_PREF_SHOW_NEWS, isEnable);
 
         FrameLayout.LayoutParams parentLayoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -259,7 +267,10 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     private void updateFollowerCount() {
         List<Publisher> followingPublisherList = BraveNewsUtils.getFollowingPublisherList();
         List<Channel> followingChannelList = BraveNewsUtils.getFollowingChannelList();
-        int followingCount = followingChannelList.size() + followingPublisherList.size();
+        int followingPublisherCount =
+                followingPublisherList != null ? followingPublisherList.size() : 0;
+        int followingChannelCount = followingChannelList != null ? followingChannelList.size() : 0;
+        int followingCount = followingPublisherCount + followingChannelCount;
         if (mLayoutFollowing != null && mTvFollowingCount != null) {
             mTvFollowingCount.setText(String.valueOf(followingCount));
             mLayoutFollowing.setVisibility(View.VISIBLE);

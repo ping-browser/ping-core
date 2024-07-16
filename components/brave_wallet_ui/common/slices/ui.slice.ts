@@ -9,31 +9,14 @@ import { BraveWallet, UIState } from '../../constants/types'
 import { walletApi } from './api.slice'
 import { SetTransactionProviderErrorType } from '../constants/action_types'
 
-// Utils
-import {
-  parseJSONFromLocalStorage
-} from '../../utils/local-storage-utils'
-
 export const defaultUIState: UIState = {
   selectedPendingTransactionId: undefined,
   transactionProviderErrorRegistry: {},
-  isPanel: false,
-  collapsedPortfolioAccountAddresses:
-    parseJSONFromLocalStorage(
-      'COLLAPSED_PORTFOLIO_ACCOUNT_ADDRESSES',
-      []
-    ),
-  collapsedPortfolioNetworkKeys:
-    parseJSONFromLocalStorage(
-      'COLLAPSED_PORTFOLIO_NETWORK_KEYS',
-      []
-    )
+  isPanel: false
 }
 
 // slice
-export const createUISlice = (
-  initialState: UIState = defaultUIState
-) => {
+export const createUISlice = (initialState: UIState = defaultUIState) => {
   return createSlice({
     name: 'ui',
     initialState,
@@ -51,24 +34,7 @@ export const createUISlice = (
       ) => {
         state.transactionProviderErrorRegistry[payload.transactionId] =
           payload.providerError
-      },
-
-      setCollapsedPortfolioAccountAddresses
-        (
-          state: UIState,
-          { payload }: PayloadAction<string[]>
-        ) {
-        state.collapsedPortfolioAccountAddresses = payload
-      },
-
-      setCollapsedPortfolioNetworkKeys
-        (
-          state: UIState,
-          { payload }: PayloadAction<string[]>
-        ) {
-        state.collapsedPortfolioNetworkKeys = payload
-      },
-
+      }
     },
     extraReducers: (builder) => {
       builder.addMatcher(

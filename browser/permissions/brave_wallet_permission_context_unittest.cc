@@ -30,8 +30,9 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
     map_ = HostContentSettingsMapFactory::GetForProfile(&profile_);
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<BravePermissionManager*>(
-            PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
-                browser_context()))));
+            PermissionManagerFactory::GetInstance()
+                ->BuildServiceInstanceForBrowserContext(browser_context())
+                .release())));
   }
 
   void TearDown() override {
@@ -144,6 +145,44 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetPermission) {
 
     // Verify the permission is reset
     success = permissions::BraveWalletPermissionContext::HasPermission(
+        entry.type, browser_context(), origin, entry.address, &has_permission);
+    EXPECT_TRUE(success);
+    EXPECT_FALSE(has_permission);
+  }
+}
+
+TEST_F(BraveWalletPermissionContextUnitTest, ResetAllPermissions) {
+  url::Origin origin = url::Origin::Create(GURL("https://www.brave.com/"));
+  const struct {
+    const char* address;
+    blink::PermissionType type;
+  } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
+                blink::PermissionType::BRAVE_ETHEREUM},
+               {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                blink::PermissionType::BRAVE_SOLANA}};
+  for (auto entry : cases) {
+    SCOPED_TRACE(entry.address);
+    bool success = permissions::BraveWalletPermissionContext::AddPermission(
+        entry.type, browser_context(), origin, entry.address);
+    EXPECT_TRUE(success);
+
+    // Verify the permission is set
+    bool has_permission;
+    success = permissions::BraveWalletPermissionContext::HasPermission(
+        entry.type, browser_context(), origin, entry.address, &has_permission);
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(has_permission);
+  }
+
+  // Reset all permissions
+  permissions::BraveWalletPermissionContext::ResetAllPermissions(
+      browser_context());
+
+  // Verify permissions are reset
+  for (auto entry : cases) {
+    SCOPED_TRACE(entry.address);
+    bool has_permission;
+    bool success = permissions::BraveWalletPermissionContext::HasPermission(
         entry.type, browser_context(), origin, entry.address, &has_permission);
     EXPECT_TRUE(success);
     EXPECT_FALSE(has_permission);

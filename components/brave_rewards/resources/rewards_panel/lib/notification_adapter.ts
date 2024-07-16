@@ -2,44 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {
-  ExternalWalletProvider,
-  externalWalletProviderFromString
-} from '../../shared/lib/external_wallet'
+import { externalWalletProviderFromString } from '../../shared/lib/external_wallet'
 
 import {
   Notification,
   AutoContributeCompletedNotification,
   MonthlyContributionFailedNotification,
-  GrantAvailableNotification,
   ExternalWalletDisconnectedNotification,
   UpholdBATNotAllowedNotification,
   UpholdInsufficientCapabilitiesNotification
 } from '../../shared/components/notifications'
 
-function parseGrantId (id: string) {
-  const parts = id.split('_')
-  return (parts.length > 1 && parts.pop()) || ''
-}
-
-function parseGrantDetails (args: string[]) {
-  return {
-    amount: parseFloat(args[0]) || 0,
-    createdAt: parseFloat(args[1]) || null,
-    claimableUntil: parseFloat(args[2]) || null,
-    expiresAt: null
-  }
-}
-
-function mapProvider (name: string): ExternalWalletProvider {
-  const provider = externalWalletProviderFromString(name.toLocaleLowerCase())
-  return provider || 'uphold'
-}
-
 enum ExtensionNotificationType {
   AUTO_CONTRIBUTE = 1,
-  GRANT = 2,
-  GRANT_ADS = 3,
   TIPS_PROCESSED = 8,
   GENERAL = 12
 }
@@ -76,26 +51,6 @@ export function mapNotification (
           })
       }
       break
-    case ExtensionNotificationType.GRANT:
-      return create<GrantAvailableNotification>({
-        ...baseProps,
-        type: 'grant-available',
-        grantInfo: {
-          type: 'ugp',
-          id: parseGrantId(obj.id),
-          ...parseGrantDetails(obj.args)
-        }
-      })
-    case ExtensionNotificationType.GRANT_ADS:
-      return create<GrantAvailableNotification>({
-        ...baseProps,
-        type: 'grant-available',
-        grantInfo: {
-          type: 'ads',
-          id: parseGrantId(obj.id),
-          ...parseGrantDetails(obj.args)
-        }
-      })
     case ExtensionNotificationType.TIPS_PROCESSED:
       return {
         ...baseProps,
@@ -103,25 +58,31 @@ export function mapNotification (
       }
     case ExtensionNotificationType.GENERAL:
       switch (obj.args[0]) {
-        case 'wallet_disconnected':
+        case 'wallet_disconnected': {
+          const provider = externalWalletProviderFromString(obj.args[1] || '')
+          if (!provider) {
+            return null
+          }
           return create<ExternalWalletDisconnectedNotification>({
             ...baseProps,
             type: 'external-wallet-disconnected',
-            // The provider is not currently recorded for this notification
-            provider: mapProvider('')
+            provider
           })
-        case 'uphold_bat_not_allowed':
+        }
+        case 'uphold_bat_not_allowed': {
           return create<UpholdBATNotAllowedNotification>({
             ...baseProps,
             type: 'uphold-bat-not-allowed',
             provider: 'uphold'
           })
-        case 'uphold_insufficient_capabilities':
+        }
+        case 'uphold_insufficient_capabilities': {
           return create<UpholdInsufficientCapabilitiesNotification>({
             ...baseProps,
             type: 'uphold-insufficient-capabilities',
             provider: 'uphold'
           })
+        }
       }
       break
   }

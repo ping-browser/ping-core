@@ -7,7 +7,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import Keys from './Keys'
 import { keysToString } from '../utils/accelerator'
-import { color, font, spacing } from '@brave/leo/tokens/css'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 import Button from '@brave/leo/react/button'
 import Alert from '@brave/leo/react/alert'
 import { useCommands } from '../commands'
@@ -37,7 +37,7 @@ const HintText = styled.div`
   text-align: center;
   margin: ${spacing['4Xl']};
   color: ${color.text.tertiary};
-  font: ${font.primary.default.regular};
+  font: ${font.default.regular};
 `
 
 const InUseAlert = styled(Alert)`

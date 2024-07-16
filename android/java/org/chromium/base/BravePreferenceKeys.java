@@ -33,7 +33,6 @@ public final class BravePreferenceKeys {
             "org.chromium.chrome.browser.Brave_Tab_Groups_Enabled";
     public static final String BRAVE_DISABLE_SHARING_HUB =
             "org.chromium.chrome.browser.Brave_Disable_Sharing_Hub";
-    public static final String BRAVE_NEWS_CARDS_VISITED = "brave_news_cards_visited";
     public static final String BRAVE_NEWS_CHANGE_SOURCE = "brave_news_change_source";
     public static final String BRAVE_NEWS_FEED_HASH = "brave_news_feed_hash";
     public static final String BRAVE_NEWS_PREF_SHOW_NEWS = "kNewTabPageShowToday";
@@ -46,14 +45,43 @@ public final class BravePreferenceKeys {
             "org.chromium.chrome.browser.Brave_Biometrics_For_Wallet_Encrypted";
     public static final String BRAVE_AD_FREE_CALLOUT_DIALOG = "brave_ad_free_callout_dialog";
     public static final String BRAVE_OPENED_YOUTUBE = "brave_opened_youtube";
-    public static final String SHOULD_SHOW_COOKIE_CONSENT_NOTICE =
-            "should_show_cookie_consent_notice";
-    public static final String LOADED_SITE_COUNT = "loaded_site_count";
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE =
             "brave_background_video_playback_converted_to_feature";
-    public static final String BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO =
-            "brave_app_open_count_for_widget_promo";
     public static final String BRAVE_DEFERRED_DEEPLINK_PLAYLIST =
             "brave_deferred_deeplink_playlist";
     public static final String BRAVE_DEFERRED_DEEPLINK_VPN = "brave_deferred_deeplink_vpn";
+    public static final String BRAVE_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
+    public static final String BRAVE_CLEAR_ON_EXIT = "clear_on_exit";
+    public static final String BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES =
+            "org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider.TILES";
+    public static final String ENABLE_MULTI_WINDOWS = "enable_multi_windows";
+    public static final String ENABLE_MULTI_WINDOWS_UPGRADE = "enable_multi_windows_upgrade";
+
+    public static final String BRAVE_LEO_AUTOCOMPLETE =
+            "org.chromium.chrome.browser.Brave_Leo_AutoComplete";
+
+    // Playlist preference keys
+    public static final String PREF_ENABLE_PLAYLIST = "enable_playlist";
+    public static final String PREF_ADD_TO_PLAYLIST_BUTTON = "add_to_playlist_button";
+    public static final String PREF_REMEMBER_FILE_PLAYBACK_POSITION =
+            "remember_file_playback_position";
+    public static final String PREF_REMEMBER_LIST_PLAYBACK_POSITION =
+            "remember_list_playback_position";
+    public static final String PREF_CONTINUOUS_LISTENING = "continuous_listening";
+    public static final String PREF_RESET_PLAYLIST = "reset_playlist";
+
+    // These are dynamic keys
+    public static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
+    public static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION = "recyclerview_offset_position_";
+
+    public static final String BRAVE_IN_APP_UPDATE_TIMING = "in_app_update_timing";
+
+    /*
+     * Checks if preference key is used in Brave.
+     * It's no op currently. We might reconsider
+     * using it in the future for keys sanitation
+     */
+    public static boolean isBraveKeyInUse(String key) {
+        return true;
+    }
 }

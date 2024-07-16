@@ -21,7 +21,7 @@ module.exports = {
     'es6': true,
     'jest/globals': true
   },
-  'plugins': ['jest', 'licenses'],
+  'plugins': ['jest', 'licenses', 'react-hooks'],
   'globals': {
     'chrome': 'readonly'
   },
@@ -113,6 +113,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 0,
     'multiline-ternary': 0,
     '@typescript-eslint/prefer-readonly': 0,
+    '@typescript-eslint/key-spacing': 0,
     /* TODO(nullhook): ENABLE the below rules in the future */
     'no-useless-call': 0,
     '@typescript-eslint/consistent-type-assertions': 0,
@@ -120,5 +121,46 @@ module.exports = {
     '@typescript-eslint/no-invalid-void-type': 0,
     'prefer-const': 0,
     '@typescript-eslint/return-await': 0
-  }
+  },
+  'overrides': [
+    // opt-in directories for line length warnings
+    {
+      'files': [
+        'components/brave_wallet/**/*.js',
+        'components/brave_wallet/**/*.ts',
+        'components/brave_wallet/**/*.tsx',
+        'components/brave_wallet_ui/**/*.js',
+        'components/brave_wallet_ui/**/*.ts',
+        'components/brave_wallet_ui/**/*.tsx'
+      ],
+      'rules': {
+        'max-len': [
+          1,
+          {
+            'code': 80,
+            'ignoreStrings': true, // to allow long import paths
+            'ignoreUrls': true, // allow URLs to be clickable
+            'ignoreRegExpLiterals': true
+          }
+        ],
+        'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+        'react-hooks/exhaustive-deps': 'warn' // Checks effect dependencies
+      }
+    },
+    // opt-in directories react-hooks linting
+    {
+      'files': [
+        'components/brave_wallet/**/*.js',
+        'components/brave_wallet/**/*.ts',
+        'components/brave_wallet/**/*.tsx',
+        'components/brave_wallet_ui/**/*.js',
+        'components/brave_wallet_ui/**/*.ts',
+        'components/brave_wallet_ui/**/*.tsx'
+      ],
+      'rules': {
+        'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+        'react-hooks/exhaustive-deps': 'warn' // Checks effect dependencies
+      }
+    }
+  ]
 }

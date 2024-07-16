@@ -5,11 +5,10 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import { loadTimeData } from '../../../../common/loadTimeData'
 
 // Options
-import {
-  CreateAccountOptions
-} from '../../../options/nav-options'
+import { CreateAccountOptions } from '../../../options/nav-options'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -22,27 +21,26 @@ import {
   ButtonIcon
 } from './wellet-menus.style'
 
-
 export const AccountsMenu = () => {
   // routing
   const history = useHistory()
 
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
   return (
     <StyledWrapper yPosition={42}>
-      {CreateAccountOptions.map((option) =>
+      {CreateAccountOptions.filter(option => (
+        // Filter out hardware wallet item on Android.
+        !isAndroid || option.name !== 'braveWalletConnectHardwareWallet'
+      )).map((option) => (
         <PopupButton
           key={option.name}
-          onClick={
-            () => history.push(option.route)
-          }
+          onClick={() => history.push(option.route)}
           minWidth={240}
         >
           <ButtonIcon name={option.icon} />
-          <PopupButtonText>
-            {getLocale(option.name)}
-          </PopupButtonText>
+          <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
         </PopupButton>
-      )}
+      ))}
     </StyledWrapper>
   )
 }

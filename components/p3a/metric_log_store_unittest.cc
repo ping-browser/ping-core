@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <set>
+#include <string_view>
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/metric_log_type.h"
@@ -22,7 +23,7 @@ class P3AMetricLogStoreTest : public testing::Test,
   P3AMetricLogStoreTest() {}
   ~P3AMetricLogStoreTest() override {}
 
-  std::string SerializeLog(base::StringPiece histogram_name,
+  std::string SerializeLog(std::string_view histogram_name,
                            uint64_t value,
                            MetricLogType log_type,
                            bool is_constellation,
@@ -51,7 +52,7 @@ class P3AMetricLogStoreTest : public testing::Test,
   }
 
   void UpdateSomeValues(size_t message_count) {
-    auto* histogram_it = p3a::kCollectedTypicalHistograms.begin();
+    auto histogram_it = p3a::kCollectedTypicalHistograms.begin();
     for (size_t i = 1; i <= message_count &&
                        histogram_it != p3a::kCollectedTypicalHistograms.end();
          i++) {

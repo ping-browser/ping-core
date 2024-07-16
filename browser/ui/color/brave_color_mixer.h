@@ -7,34 +7,31 @@
 #define BRAVE_BROWSER_UI_COLOR_BRAVE_COLOR_MIXER_H_
 
 #include "third_party/skia/include/core/SkColor.h"
-#include "ui/color/color_provider_manager.h"
+#include "ui/color/color_provider_key.h"
 
 namespace ui {
 class ColorProvider;
 }  // namespace ui
 
 // Exposed for testing.
-SkColor GetLocationBarBackground(bool dark, bool priv, bool hover);
+SkColor GetLocationBarBackground(bool dark, bool priv);
 SkColor GetOmniboxResultBackground(int id, bool dark, bool priv);
 
 // Handling normal profile's dark or light theme.
 void AddBraveThemeColorMixer(ui::ColorProvider* provider,
-                             const ui::ColorProviderManager::Key& key);
-void AddBravifiedChromeThemeColorMixer(
-    ui::ColorProvider* provider,
-    const ui::ColorProviderManager::Key& key);
+                             const ui::ColorProviderKey& key);
+void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
+                                       const ui::ColorProviderKey& key);
 void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
-                               const ui::ColorProviderManager::Key& key);
+                               const ui::ColorProviderKey& key);
 void AddTorThemeColorMixer(ui::ColorProvider* provider,
-                           const ui::ColorProviderManager::Key& key);
-void AddBraveOmniboxLightThemeColorMixer(
-    ui::ColorProvider* provider,
-    const ui::ColorProviderManager::Key& key);
-void AddBraveOmniboxDarkThemeColorMixer(
-    ui::ColorProvider* provider,
-    const ui::ColorProviderManager::Key& key);
-void AddBraveOmniboxPrivateThemeColorMixer(
-    ui::ColorProvider* provider,
-    const ui::ColorProviderManager::Key& key);
-
+                           const ui::ColorProviderKey& key);
+void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
+                                         const ui::ColorProviderKey& key);
+void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
+                                        const ui::ColorProviderKey& key);
+void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
+                                           const ui::ColorProviderKey& key);
+void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
+                                    const ui::ColorProviderKey& key);
 #endif  // BRAVE_BROWSER_UI_COLOR_BRAVE_COLOR_MIXER_H_

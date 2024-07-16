@@ -13,9 +13,10 @@ namespace p3a {
 
 // TODO(alexeybarabash): move here also "Brave.Sync.Status.2" and
 // "Brave.Sync.ProgressTokenEverReset"
-constexpr char kEnabledTypesHistogramName[] = "Brave.Sync.EnabledTypes";
-constexpr char kSyncedObjectsCountHistogramName[] =
-    "Brave.Sync.SyncedObjectsCount";
+inline constexpr char kEnabledTypesHistogramName[] = "Brave.Sync.EnabledTypes";
+// Improved version of metric which includes count of synced History objects
+inline constexpr char kSyncedObjectsCountHistogramNameV2[] =
+    "Brave.Sync.SyncedObjectsCount.2";
 
 enum class EnabledTypesAnswer {
   kEmptyOrBookmarksOnly = 0,

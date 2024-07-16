@@ -34,6 +34,7 @@ class SolanaTxMeta : public TxMeta {
   // TxMeta
   base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
+  mojom::CoinType GetCoinType() const override;
 
   SolanaTransaction* tx() const { return tx_.get(); }
   SolanaSignatureStatus signature_status() const { return signature_status_; }
@@ -42,6 +43,8 @@ class SolanaTxMeta : public TxMeta {
   void set_signature_status(const SolanaSignatureStatus& signature_status) {
     signature_status_ = signature_status;
   }
+
+  bool IsRetriable() const;
 
  private:
   std::unique_ptr<SolanaTransaction> tx_;

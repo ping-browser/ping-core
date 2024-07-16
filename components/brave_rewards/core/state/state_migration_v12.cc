@@ -9,15 +9,13 @@
 #include <vector>
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal::state {
 
-StateMigrationV12::StateMigrationV12(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+StateMigrationV12::StateMigrationV12(RewardsEngine& engine) : engine_(engine) {}
 
 StateMigrationV12::~StateMigrationV12() = default;
 
@@ -41,7 +39,8 @@ StateMigrationV12::~StateMigrationV12() = default;
 bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
   auto wallet = wallet::GetWallet(*engine_, wallet_type);
   if (!wallet) {
-    BLOG(1, "User doesn't have a(n) " << wallet_type << " wallet.");
+    engine_->Log(FROM_HERE)
+        << "User doesn't have a(n) " << wallet_type << " wallet.";
     return true;
   }
 
@@ -82,31 +81,25 @@ bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
       return false;
   }
 
-  wallet->one_time_string = util::GenerateRandomHexString();
-  wallet->code_verifier = util::GeneratePKCECodeVerifier();
-  wallet = wallet::GenerateLinks(std::move(wallet));
-  if (!wallet) {
-    BLOG(0, "Failed to generate links for " << wallet_type << " wallet!");
-    return false;
-  }
-
   if (!wallet::SetWallet(*engine_, std::move(wallet))) {
-    BLOG(0, "Failed to set " << wallet_type << " wallet!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to set " << wallet_type << " wallet";
     return false;
   }
 
   return true;
 }
 
-void StateMigrationV12::Migrate(LegacyResultCallback callback) {
-  callback(base::ranges::all_of(
-               std::vector{constant::kWalletBitflyer, constant::kWalletGemini,
-                           constant::kWalletUphold},
-               [this](const std::string& wallet_type) {
-                 return MigrateExternalWallet(wallet_type);
-               })
-               ? mojom::Result::OK
-               : mojom::Result::FAILED);
+void StateMigrationV12::Migrate(ResultCallback callback) {
+  std::move(callback).Run(
+      base::ranges::all_of(
+          std::vector{constant::kWalletBitflyer, constant::kWalletGemini,
+                      constant::kWalletUphold},
+          [this](const std::string& wallet_type) {
+            return MigrateExternalWallet(wallet_type);
+          })
+          ? mojom::Result::OK
+          : mojom::Result::FAILED);
 }
 
 }  // namespace brave_rewards::internal::state

@@ -6,11 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 
-#include <map>
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"
@@ -20,11 +19,9 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-class AdType;
 struct AdContentInfo;
 struct AdInfo;
 
@@ -42,7 +39,7 @@ class ClientStateManager final {
 
   static ClientStateManager& GetInstance();
 
-  void Load(InitializeCallback callback);
+  void LoadState(InitializeCallback callback);
 
   const FilteredAdvertiserList& GetFilteredAdvertisers() const;
   const FilteredCategoryList& GetFilteredCategories() const;
@@ -72,27 +69,16 @@ class ClientStateManager final {
 
   bool ToggleMarkAdAsInappropriate(const AdContentInfo& ad_content);
 
-  void UpdateSeenAd(const AdInfo& ad);
-  const std::map<std::string, bool>& GetSeenAdsForType(const AdType& type);
-  void ResetSeenAdsForType(const CreativeAdList& creative_ads,
-                           const AdType& type);
-  void ResetAllSeenAdsForType(const AdType& type);
-  const std::map<std::string, bool>& GetSeenAdvertisersForType(
-      const AdType& type);
-  void ResetSeenAdvertisersForType(const CreativeAdList& creative_ads,
-                                   const AdType& type);
-  void ResetAllSeenAdvertisersForType(const AdType& type);
-
   void AppendTextClassificationProbabilitiesToHistory(
       const TextClassificationProbabilityMap& probabilities);
   const TextClassificationProbabilityList&
   GetTextClassificationProbabilitiesHistory() const;
 
  private:
-  void Save();
+  void SaveState();
 
   void LoadCallback(InitializeCallback callback,
-                    const absl::optional<std::string>& json);
+                    const std::optional<std::string>& json);
 
   [[nodiscard]] bool FromJson(const std::string& json);
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { ConnectExternalWalletError, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m.js'
+import { ConnectExternalWalletResult, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m.js'
 import { Optional } from '../../shared/lib/optional'
 import { PublisherStatus } from '../../shared/lib/publisher_status'
 import { UserType } from '../../shared/lib/user_type'
@@ -30,8 +30,8 @@ export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
 export type Address = { address: string, qr: string | null }
 
 export interface State {
-  isGrandfatheredUser: boolean
   userType: UserType
+  isUserTermsOfServiceUpdateRequired: boolean
   adsData: AdsData
   adsHistory: AdsHistory[]
   autoContributeList: Publisher[]
@@ -45,34 +45,26 @@ export interface State {
   enabledContribute: boolean
   externalWallet?: ExternalWallet
   initializing: boolean
-  inlineTipsEnabled: boolean
-  inlineTip: {
-    twitter: boolean
-    reddit: boolean
-    github: boolean
-  }
   isUnsupportedRegion: boolean
   excludedList: ExcludedPublisher[]
   externalWalletProviderList: string[]
-  monthlyReport: MonthlyReport
-  monthlyReportIds: string[]
   parameters: RewardsParameters
-  promotions: Promotion[]
   reconcileStamp: number
   recurringList: Publisher[]
   showOnboarding: boolean | null
   tipsList: Publisher[]
   ui: {
     modalConnect: boolean
-    modalRedirect: ConnectExternalWalletError
+    modalConnectState: 'loading' | 'error' | ''
+    modalRedirect: ConnectExternalWalletResult
       | 'error'
       | 'hide'
       | 'show'
+    modalRedirectProvider: string
     modalReset: boolean
     modalAdsHistory: boolean
     adsSettings: boolean
     autoContributeSettings: boolean
-    contributionsSettings: boolean
     promosDismissed: {
       [key: string]: boolean
     }
@@ -90,88 +82,6 @@ export interface RewardsParameters {
   walletProviderRegions: Record<string, Regions | undefined>
   vbatDeadline: number | undefined
   vbatExpired: boolean
-}
-
-export interface ComponentProps {
-  rewardsData: State
-  actions: any
-}
-
-export interface MonthlyReport {
-  month: number
-  year: number
-  balance?: BalanceReport
-  transactions?: TransactionReport[]
-  contributions?: ContributionReport[]
-}
-
-export enum ReportType {
-  GRANT_UGP = 0,
-  AUTO_CONTRIBUTION = 1,
-  GRANT_AD = 3,
-  TIP_RECURRING = 4,
-  TIP = 5
-}
-
-export enum Processor {
-  NONE = 0,
-  BRAVE_TOKENS = 1,
-  UPHOLD = 2,
-  BITFLYER = 4,
-  GEMINI = 5
-}
-
-export interface TransactionReport {
-  amount: number
-  type: ReportType
-  processor: Processor
-  created_at: number
-}
-
-export interface ContributionReport {
-  amount: number
-  type: ReportType
-  processor: Processor
-  created_at: number
-  publishers: Publisher[]
-}
-
-export type CaptchaStatus = 'start' | 'wrongPosition' | 'generalError' | 'finished' | null
-
-export enum PromotionTypes {
-  UGP = 0,
-  ADS = 1
-}
-
-export enum PromotionStatus {
-  ACTIVE = 0,
-  ATTESTED = 1,
-  FINISHED = 4,
-  OVER = 5
-}
-
-export interface Promotion {
-  promotionId: string
-  amount: number
-  createdAt: number
-  claimableUntil: number
-  expiresAt: number
-  status: PromotionStatus
-  type: PromotionTypes
-  captchaImage?: string
-  captchaId?: string
-  hint?: string
-  captchaStatus?: CaptchaStatus
-}
-
-export interface PromotionResponse {
-  result: number
-  promotions: Promotion[]
-}
-
-export interface PromotionFinish {
-  result: Result,
-  promotion?: Promotion
 }
 
 export interface Publisher {
@@ -206,15 +116,7 @@ export interface BalanceReport {
   ads: number
   contribute: number
   monthly: number
-  grant: number
   tips: number
-}
-
-export interface Captcha {
-  result: number
-  promotionId: string
-  captchaImage: string
-  hint: string
 }
 
 export interface Subdivision {
@@ -242,17 +144,6 @@ export interface AdsData {
   adsMaxEarningsLastMonth: number
 }
 
-export enum RewardsType {
-  AUTO_CONTRIBUTE = 2,
-  ONE_TIME_TIP = 8,
-  RECURRING_TIP = 16
-}
-
-export interface ContributionSaved {
-  success: boolean
-  type: RewardsType
-}
-
 export type WalletType = 'uphold' | 'bitflyer' | 'gemini' | 'zebpay'
 
 export interface ExternalWallet {
@@ -261,7 +152,6 @@ export interface ExternalWallet {
   type: WalletType
   userName?: string
   accountUrl: string
-  loginUrl: string
   activityUrl: string
 }
 

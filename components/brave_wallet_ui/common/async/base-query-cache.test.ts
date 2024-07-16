@@ -3,28 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  BaseQueryCache,
-  resetCache,
-  setApiProxyFetcher
-} from './base-query-cache'
-
-// mocks
-import { getMockedAPIProxy } from './__mocks__/bridge'
+import { getAPIProxy } from './bridge'
+import { BaseQueryCache } from './base-query-cache'
 
 describe('BaseQueryCache', () => {
-
-  beforeAll(() => {
-    setApiProxyFetcher(getMockedAPIProxy)
-  })
-
-  beforeEach(() => {
-    resetCache()
-  })
-
   it('should cache WalletInfo after fetching', async () => {
     const getWalletInfoSpy = jest.spyOn(
-      getMockedAPIProxy().walletHandler,
+      getAPIProxy().walletHandler,
       'getWalletInfo'
     )
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(0)
@@ -55,13 +40,13 @@ describe('BaseQueryCache', () => {
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(2)
 
     // reset spy
-    getWalletInfoSpy.mockReset();
-    getWalletInfoSpy.mockRestore();
+    getWalletInfoSpy.mockReset()
+    getWalletInfoSpy.mockRestore()
   })
 
   it('should cache accounts after fetching', async () => {
     const getAllAcountsSpy = jest.spyOn(
-      getMockedAPIProxy().keyringService,
+      getAPIProxy().keyringService,
       'getAllAccounts'
     )
     expect(getAllAcountsSpy).toHaveBeenCalledTimes(0)
@@ -88,21 +73,21 @@ describe('BaseQueryCache', () => {
     expect(getAllAcountsSpy).toHaveBeenCalledTimes(2)
 
     // reset spy
-    getAllAcountsSpy.mockReset();
-    getAllAcountsSpy.mockRestore();
+    getAllAcountsSpy.mockReset()
+    getAllAcountsSpy.mockRestore()
   })
 
   it('should cache networks after fetching', async () => {
     const getWalletInfoSpy = jest.spyOn(
-      getMockedAPIProxy().walletHandler,
+      getAPIProxy().walletHandler,
       'getWalletInfo'
     )
     const getAllNetworksSpy = jest.spyOn(
-      getMockedAPIProxy().jsonRpcService,
+      getAPIProxy().jsonRpcService,
       'getAllNetworks'
     )
     const getHiddenNetworksSpy = jest.spyOn(
-      getMockedAPIProxy().jsonRpcService,
+      getAPIProxy().jsonRpcService,
       'getHiddenNetworks'
     )
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(0)
@@ -114,8 +99,8 @@ describe('BaseQueryCache', () => {
     // access the uncached registry
     const registry = await cache.getNetworksRegistry()
     expect(registry.entities).toBeDefined()
-    // once per coin type (ETH, FIL, SOL, BTC)
-    const numberOfCoins = 4
+    // once per coin type (ETH, FIL, SOL, BTC, ZEC)
+    const numberOfCoins = 5
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
     expect(getAllNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
     expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
@@ -140,11 +125,11 @@ describe('BaseQueryCache', () => {
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
 
     // reset spies
-    getWalletInfoSpy.mockReset();
-    getWalletInfoSpy.mockRestore();
-    getAllNetworksSpy.mockReset();
-    getAllNetworksSpy.mockRestore();
-    getHiddenNetworksSpy.mockReset();
-    getHiddenNetworksSpy.mockRestore();
+    getWalletInfoSpy.mockReset()
+    getWalletInfoSpy.mockRestore()
+    getAllNetworksSpy.mockReset()
+    getAllNetworksSpy.mockRestore()
+    getHiddenNetworksSpy.mockReset()
+    getHiddenNetworksSpy.mockRestore()
   })
 })

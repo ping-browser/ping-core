@@ -17,18 +17,20 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
+#include "components/bookmarks/browser/bookmark_uuids.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/undo/bookmark_undo_service.h"
 #include "components/undo/undo_manager.h"
 #include "components/user_prefs/user_prefs.h"
+#include "ios/chrome/browser/bookmarks/model/legacy_bookmark_model.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/ui/bookmarks/bookmark_utils_ios.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
-#import "net/base/mac/url_conversions.h"
+#import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -91,13 +93,13 @@
     node->SetTitle(base::SysNSStringToUTF16(title));
 
     if (dateAdded) {
-      node->set_date_added(
-          base::Time::FromDoubleT([dateAdded timeIntervalSince1970]));
+      node->set_date_added(base::Time::FromSecondsSinceUnixEpoch(
+          [dateAdded timeIntervalSince1970]));
     }
 
     if (dateModified) {
-      node->set_date_folder_modified(
-          base::Time::FromDoubleT([dateModified timeIntervalSince1970]));
+      node->set_date_folder_modified(base::Time::FromSecondsSinceUnixEpoch(
+          [dateModified timeIntervalSince1970]));
     }
 
     for (IOSBookmarkNode* child : children) {
@@ -130,25 +132,23 @@
 }
 
 + (NSString*)rootNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kRootNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kRootNodeUuid);
 }
 
 + (NSString*)bookmarkBarNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kBookmarkBarNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kBookmarkBarNodeUuid);
 }
 
 + (NSString*)otherBookmarksNodeGuid {
-  return base::SysUTF8ToNSString(
-      bookmarks::BookmarkNode::kOtherBookmarksNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kOtherBookmarksNodeUuid);
 }
 
 + (NSString*)mobileBookmarksNodeGuid {
-  return base::SysUTF8ToNSString(
-      bookmarks::BookmarkNode::kMobileBookmarksNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kMobileBookmarksNodeUuid);
 }
 
 + (NSString*)managedNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kManagedNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kManagedNodeUuid);
 }
 
 - (bool)isPermanentNode {
@@ -217,27 +217,28 @@
 
 - (NSDate*)dateAdded {
   DCHECK(node_);
-  return [NSDate dateWithTimeIntervalSince1970:node_->date_added().ToDoubleT()];
+  return [NSDate dateWithTimeIntervalSince1970:node_->date_added()
+                                                   .InSecondsFSinceUnixEpoch()];
 }
 
 - (void)setDateAdded:(NSDate*)date {
   DCHECK(node_);
   DCHECK(model_);
-  model_->SetDateAdded(node_,
-                       base::Time::FromDoubleT([date timeIntervalSince1970]));
+  model_->SetDateAdded(node_, base::Time::FromSecondsSinceUnixEpoch(
+                                  [date timeIntervalSince1970]));
 }
 
 - (NSDate*)dateFolderModified {
   DCHECK(node_);
-  return [NSDate
-      dateWithTimeIntervalSince1970:node_->date_folder_modified().ToDoubleT()];
+  return [NSDate dateWithTimeIntervalSince1970:node_->date_folder_modified()
+                                                   .InSecondsFSinceUnixEpoch()];
 }
 
 - (void)setDateFolderModified:(NSDate*)date {
   DCHECK(node_);
   DCHECK(model_);
-  model_->SetDateFolderModified(
-      node_, base::Time::FromDoubleT([date timeIntervalSince1970]));
+  model_->SetDateFolderModified(node_, base::Time::FromSecondsSinceUnixEpoch(
+                                           [date timeIntervalSince1970]));
 }
 
 - (bool)isFolder {
@@ -637,9 +638,9 @@
         bookmarks::QueryFields queryFields;
         queryFields.word_phrase_query.reset(
             new std::u16string(base::SysNSStringToUTF16(query)));
-        std::vector<const bookmarks::BookmarkNode*> results;
-        GetBookmarksMatchingProperties(bookmarks_api->bookmark_model_,
-                                       queryFields, maxCount, &results);
+        std::vector<const bookmarks::BookmarkNode*> results =
+            GetBookmarksMatchingProperties(bookmarks_api->bookmark_model_,
+                                           queryFields, maxCount);
 
         NSMutableArray<IOSBookmarkNode*>* nodes = [[NSMutableArray alloc] init];
         for (const bookmarks::BookmarkNode* bookmark : results) {

@@ -7,10 +7,12 @@
 #define BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_BRIDGE_H_
 
 #import <Foundation/Foundation.h>
-#import "brave/components/brave_ads/core/public/client/ads_client.h"
 
+#include <optional>
 #include <string>
 #include <vector>
+
+#import "brave/components/brave_ads/core/public/client/ads_client.h"
 
 @protocol AdsClientBridge
 @required
@@ -23,9 +25,9 @@
 - (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
-- (void)loadFileResource:(const std::string&)id
-                 version:(const int)version
-                callback:(brave_ads::LoadFileCallback)callback;
+- (void)loadComponentResource:(const std::string&)id
+                      version:(const int)version
+                     callback:(brave_ads::LoadFileCallback)callback;
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(brave_ads::GetScheduledCaptchaCallback)callback;
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id
@@ -45,44 +47,27 @@
     callback:(brave_ads::SaveCallback)callback;
 - (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
-- (void)showReminder:(const brave_ads::mojom::ReminderType)type;
-- (void)recordAdEventForId:(const std::string&)id
-                    adType:(const std::string&)ad_type
-          confirmationType:(const std::string&)confirmation_type
-                      time:(const base::Time)time;
-- (std::vector<base::Time>)getAdEventHistory:(const std::string&)ad_type
+- (void)cacheAdEventForInstanceId:(const std::string&)id
+                           adType:(const std::string&)ad_type
+                 confirmationType:(const std::string&)confirmation_type
+                             time:(const base::Time)time;
+- (std::vector<base::Time>)getCachedAdEvents:(const std::string&)ad_type
                             confirmationType:
                                 (const std::string&)confirmation_type;
-- (void)resetAdEventHistoryForId:(const std::string&)id;
+- (void)resetAdEventCacheForInstanceId:(const std::string&)id;
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
           callback:(brave_ads::UrlRequestCallback)callback;
 - (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
                 callback:(brave_ads::RunDBTransactionCallback)callback;
-- (void)updateAdRewards;
-- (void)setBooleanPref:(const std::string&)path value:(const bool)value;
-- (bool)getBooleanPref:(const std::string&)path;
-- (void)setIntegerPref:(const std::string&)path value:(const int)value;
-- (int)getIntegerPref:(const std::string&)path;
-- (void)setDoublePref:(const std::string&)path value:(const double)value;
-- (double)getDoublePref:(const std::string&)path;
-- (void)setStringPref:(const std::string&)path value:(const std::string&)value;
-- (std::string)getStringPref:(const std::string&)path;
-- (void)setInt64Pref:(const std::string&)path value:(const int64_t)value;
-- (int64_t)getInt64Pref:(const std::string&)path;
-- (void)setUint64Pref:(const std::string&)path value:(const uint64_t)value;
-- (uint64_t)getUint64Pref:(const std::string&)path;
-- (void)setTimePref:(const std::string&)path value:(const base::Time)value;
-- (base::Time)getTimePref:(const std::string&)path;
-- (void)setDictPref:(const std::string&)path value:(base::Value::Dict)value;
-- (absl::optional<base::Value::Dict>)getDictPref:(const std::string&)path;
-- (void)setListPref:(const std::string&)path value:(base::Value::List)value;
-- (absl::optional<base::Value::List>)getListPref:(const std::string&)path;
-- (void)clearPref:(const std::string&)path;
-- (bool)hasPrefPath:(const std::string&)path;
-- (void)recordP2AEvents:(base::Value::List)events;
-- (void)addTrainingSample:
-    (const std::vector<brave_federated::mojom::CovariateInfoPtr>)
-        training_sample;
+- (void)setProfilePref:(const std::string&)path value:(base::Value)value;
+- (std::optional<base::Value>)getProfilePref:(const std::string&)path;
+- (void)clearProfilePref:(const std::string&)path;
+- (bool)hasProfilePrefPath:(const std::string&)path;
+- (void)setLocalStatePref:(const std::string&)path value:(base::Value)value;
+- (std::optional<base::Value>)getLocalStatePref:(const std::string&)path;
+- (void)clearLocalStatePref:(const std::string&)path;
+- (bool)hasLocalStatePrefPath:(const std::string&)path;
+- (void)recordP2AEvents:(const std::vector<std::string>&)events;
 
 @end
 

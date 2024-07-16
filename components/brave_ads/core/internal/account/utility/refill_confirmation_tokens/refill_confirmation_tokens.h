@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_H_
 
+#include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -72,6 +73,14 @@ class RefillConfirmationTokens final {
 
   void Reset();
 
+  void NotifyWillRefillConfirmationTokens() const;
+  void NotifyCaptchaRequiredToRefillConfirmationTokens(
+      const std::string& captcha_id) const;
+  void NotifyDidRefillConfirmationTokens() const;
+  void NotifyFailedToRefillConfirmationTokens() const;
+  void NotifyWillRetryRefillingConfirmationTokens(base::Time retry_at) const;
+  void NotifyDidRetryRefillingConfirmationTokens() const;
+
   const raw_ptr<TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
@@ -79,14 +88,14 @@ class RefillConfirmationTokens final {
 
   WalletInfo wallet_;
 
-  absl::optional<std::string> nonce_;
+  std::optional<std::string> nonce_;
 
-  absl::optional<std::vector<cbr::Token>> tokens_;
-  absl::optional<std::vector<cbr::BlindedToken>> blinded_tokens_;
+  std::optional<std::vector<cbr::Token>> tokens_;
+  std::optional<std::vector<cbr::BlindedToken>> blinded_tokens_;
 
-  bool is_processing_ = false;
+  bool is_refilling_ = false;
 
-  BackoffTimer retry_timer_;
+  BackoffTimer timer_;
 
   base::WeakPtrFactory<RefillConfirmationTokens> weak_factory_{this};
 };

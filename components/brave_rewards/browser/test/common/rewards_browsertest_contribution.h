@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "chrome/browser/ui/browser.h"
 
 namespace brave_rewards::test_util {
@@ -73,17 +73,7 @@ class RewardsBrowserTestContribution : public RewardsServiceObserver {
 
   std::vector<mojom::Result> GetMultipleACStatus();
 
-  void SetUpUpholdWallet(
-      RewardsServiceImpl* rewards_service,
-      const double balance,
-      const mojom::WalletStatus status = mojom::WalletStatus::kConnected);
-
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-  void SetUpGeminiWallet(
-      RewardsServiceImpl* rewards_service,
-      const double balance,
-      const mojom::WalletStatus status = mojom::WalletStatus::kConnected);
-#endif
+  void StartProcessWithBalance(double balance);
 
   std::vector<mojom::Result> GetMultipleTipStatus();
 

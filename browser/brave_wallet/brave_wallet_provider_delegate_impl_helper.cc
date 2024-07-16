@@ -33,9 +33,13 @@ void ShowPanel(content::WebContents* web_contents) {
   }
 }
 
+void ShowWalletBackup() {
+  NOTREACHED();
+}
+
 void ShowWalletOnboarding(content::WebContents* web_contents) {
   Browser* browser =
-      web_contents ? chrome::FindBrowserWithWebContents(web_contents) : nullptr;
+      web_contents ? chrome::FindBrowserWithTab(web_contents) : nullptr;
 
   if (browser) {
     brave::ShowBraveWalletOnboarding(browser);
@@ -47,7 +51,7 @@ void ShowWalletOnboarding(content::WebContents* web_contents) {
 void ShowAccountCreation(content::WebContents* web_contents,
                          brave_wallet::mojom::CoinType coin_type) {
   Browser* browser =
-      web_contents ? chrome::FindBrowserWithWebContents(web_contents) : nullptr;
+      web_contents ? chrome::FindBrowserWithTab(web_contents) : nullptr;
 
   if (browser) {
     brave::ShowBraveWalletAccountCreation(browser, coin_type);

@@ -8,10 +8,8 @@
 #include <utility>
 
 #include "base/check_op.h"
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
@@ -52,7 +50,7 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
+  RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -64,9 +62,17 @@ void DatabaseManager::CreateOrOpenCallback(
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    BLOG(0, "Failed to open or create database");
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to create or open database");
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version",
+                            database::kVersion);
+    base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Failed to create or open database");
     NotifyFailedToCreateOrOpenDatabase();
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   CHECK(command_response->result);
@@ -100,9 +106,17 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
   const int to_version = database::kVersion;
 
   if (!success) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to create database");
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version", to_version);
+    base::debug::DumpWithoutCrashing();
+
     BLOG(1, "Failed to create database for schema version " << to_version);
     NotifyFailedToCreateOrOpenDatabase();
-    return std::move(callback).Run(/*success*/ false);
+
+    return std::move(callback).Run(/*success=*/false);
   }
 
   BLOG(1, "Created database for schema version " << to_version);
@@ -111,7 +125,7 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
 
   NotifyDatabaseIsReady();
 
-  std::move(callback).Run(/*success*/ true);
+  std::move(callback).Run(/*success=*/true);
 }
 
 void DatabaseManager::MaybeMigrate(const int from_version,
@@ -120,14 +134,24 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   if (from_version == to_version) {
     BLOG(1, "Database is up to date on schema version " << from_version);
     NotifyDatabaseIsReady();
-    return std::move(callback).Run(/*success*/ true);
+    return std::move(callback).Run(/*success=*/true);
   }
 
   if (from_version > to_version) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "from_sqlite_schema_version",
+                            from_version);
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "to_sqlite_schema_version",
+                            to_version);
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Database downgrade not supported");
+    base::debug::DumpWithoutCrashing();
+
     BLOG(0, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
     NotifyFailedToMigrateDatabase(from_version, to_version);
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   BLOG(1, "Migrating database from schema version "
@@ -147,10 +171,20 @@ void DatabaseManager::MigrateFromVersionCallback(const int from_version,
   const int to_version = database::kVersion;
 
   if (!success) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "from_sqlite_schema_version",
+                            from_version);
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "to_sqlite_schema_version",
+                            to_version);
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Database migration failed");
+    base::debug::DumpWithoutCrashing();
+
     BLOG(1, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
     NotifyFailedToMigrateDatabase(from_version, to_version);
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   BLOG(1, "Migrated database from schema version "
@@ -160,7 +194,7 @@ void DatabaseManager::MigrateFromVersionCallback(const int from_version,
 
   NotifyDatabaseIsReady();
 
-  std::move(callback).Run(/*success*/ true);
+  std::move(callback).Run(/*success=*/true);
 }
 
 void DatabaseManager::NotifyWillCreateOrOpenDatabase() const {

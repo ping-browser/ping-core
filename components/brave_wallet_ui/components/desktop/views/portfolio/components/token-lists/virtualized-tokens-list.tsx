@@ -5,102 +5,162 @@
 
 import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
+import AutoSizer from 'react-virtualized-auto-sizer'
 
-// types
-import {
-  BraveWallet,
-  UserAssetInfoType
-} from '../../../../../../constants/types'
+// Types
+import { BraveWallet } from '../../../../../../constants/types'
+
+// Utils
 import { getAssetIdKey } from '../../../../../../utils/asset-utils'
+
+// Styles
+import { listItemInitialHeight, AutoSizerStyle } from './token-list.style'
 
 type ViewMode = 'list' | 'grid'
 
-type RenderTokenProps = {
-  item: UserAssetInfoType
+type RenderTokenProps<T> = {
+  item: T
   viewMode: ViewMode
   index: number
   account?: BraveWallet.AccountInfo
+  ref?: React.Ref<HTMLDivElement> | undefined
 }
 
-export type RenderTokenFunc = (props: RenderTokenProps) => JSX.Element | undefined | null
+const getItemKey = (i: number, data: BraveWallet.BlockchainToken[]) =>
+  getAssetIdKey(data[i])
 
-type VirtualizedTokensListProps = {
-  userAssetList: UserAssetInfoType[]
-  renderToken: RenderTokenFunc
-  estimatedItemSize: number
-  getItemSize: (index: number) => number
-  maximumViewableTokens?: number
+export type RenderTokenFunc<T> = (
+  props: RenderTokenProps<T>
+) => JSX.Element | undefined | null
+
+type VirtualizedTokensListProps<T extends any[]> = {
+  userAssetList: T
+  selectedAssetId: string
+  renderToken: RenderTokenFunc<T[number]>
 }
 
-type ListItemProps<T extends UserAssetInfoType | BraveWallet.BlockchainToken = UserAssetInfoType> = {
+type ListItemProps<T> = {
   index: number
   data: T
   style: React.CSSProperties
-  renderToken: RenderTokenFunc
+  setSize: (index: number, size: number) => void
+  renderToken: RenderTokenFunc<T>
 }
 
-const ListItem = ({
+const ListItem = React.memo(function <T>({
   data,
   index,
   renderToken,
+  setSize,
   style
-}: ListItemProps) => {
+}: ListItemProps<T>) {
   if (!data) {
-    console.warn('Token was null at index',
-      index,
-      data
-    )
+    console.warn('Token was null at index', index, data)
   }
+
+  const handleSetSize = React.useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref) {
+        setSize(index, ref.getBoundingClientRect().height)
+      }
+    },
+    [index, setSize]
+  )
 
   return (
     <div style={style}>
-      {data && renderToken({ index, item: data, viewMode: 'list' })}
+      {data &&
+        renderToken({
+          index,
+          item: data,
+          viewMode: 'list',
+          ref: handleSetSize
+        })}
     </div>
   )
-}
+})
 
-const LIST_STYLE = {
-  overscrollBehavior: 'contain'
-}
-
-const getListItemKey = (i: number, data: UserAssetInfoType[]) => getAssetIdKey(data[i].asset)
-
-export const VirtualizedTokensList = ({
+export const VirtualizedTokensList = React.memo(function <T extends any[]>({
   renderToken,
   userAssetList,
-  estimatedItemSize,
-  getItemSize,
-  maximumViewableTokens
-}: VirtualizedTokensListProps) => {
-  // computed
-  // last item shown as 50% visible to indicate that scrolling is possible here
-  const maxTokens =
-    maximumViewableTokens !== undefined
-      ? maximumViewableTokens
-      : 4.5
-  const minimumItems =
-    (Math.min(maxTokens, userAssetList.length || 1)) // min: 1, max: 4.5
-  const listHeight = estimatedItemSize * minimumItems
+  selectedAssetId
+}: VirtualizedTokensListProps<T>) {
+  // Refs
+  const listRef = React.useRef<List | null>(null)
+  const itemSizes = React.useRef<number[]>(
+    new Array(userAssetList.length).fill(listItemInitialHeight)
+  )
+
+  // Methods
+  const onListMount = React.useCallback(
+    (ref: List | null) => {
+      if (ref) {
+        // Set ref on mount
+        listRef.current = ref
+        // Clear cached data and rerender
+        listRef.current.resetAfterIndex(0)
+      }
+      // Get selectedAssetId index
+      if (listRef.current && selectedAssetId) {
+        const itemIndex = userAssetList.findIndex(
+          (asset) => getAssetIdKey(asset) === selectedAssetId
+        )
+        // Scroll selected asset into view
+        if (itemIndex > -1) {
+          listRef.current.scrollToItem(itemIndex)
+        }
+      }
+    },
+    [listRef, selectedAssetId, userAssetList]
+  )
+
+  const setSize = React.useCallback(
+    (index: number, size: number) => {
+      // Performance: Only update the sizeMap and reset cache if an actual value
+      // changed
+      if (itemSizes.current[index] !== size && size > -1) {
+        itemSizes.current[index] = size
+        if (listRef.current) {
+          // Clear cached data and rerender
+          listRef.current.resetAfterIndex(0)
+        }
+      }
+    },
+    [itemSizes, listRef]
+  )
+
+  const getSize = React.useCallback(
+    (index: number) => {
+      return itemSizes.current[index] || listItemInitialHeight
+    },
+    [itemSizes]
+  )
 
   // render
   return (
-    <List
-      width={'100%'}
-      height={listHeight}
-      itemSize={getItemSize}
-      itemData={userAssetList}
-      itemCount={userAssetList.length}
-      estimatedItemSize={estimatedItemSize}
-      overscanCount={20}
-      itemKey={getListItemKey}
-      style={LIST_STYLE}
-      children={(itemProps) => (
-        <ListItem
-          {...itemProps}
-          data={itemProps.data[itemProps.index]}
-          renderToken={renderToken}
-        />
-      )}
-    />
+    <AutoSizer style={AutoSizerStyle}>
+      {function ({ height, width }: { height: number; width: number }) {
+        return (
+          <List
+            ref={onListMount}
+            width={width}
+            height={height}
+            itemSize={getSize}
+            itemData={userAssetList}
+            itemCount={userAssetList.length}
+            overscanCount={10}
+            itemKey={getItemKey}
+            children={(itemProps) => (
+              <ListItem
+                {...itemProps}
+                data={itemProps.data[itemProps.index]}
+                renderToken={renderToken}
+                setSize={setSize}
+              />
+            )}
+          />
+        )
+      }}
+    </AutoSizer>
   )
-}
+})

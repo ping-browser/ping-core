@@ -7,19 +7,19 @@
 #define BRAVE_COMPONENTS_P3A_MESSAGE_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/ref_counted.h"
-#include "base/strings/string_piece_forward.h"
 #include "base/timer/timer.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_message.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -53,7 +53,7 @@ class MessageManager : public MetricLogStore::Delegate {
       base::RepeatingCallback<bool(const std::string& histogram_name)>;
   class Delegate {
    public:
-    virtual absl::optional<MetricLogType> GetDynamicMetricLogType(
+    virtual std::optional<MetricLogType> GetDynamicMetricLogType(
         const std::string& histogram_name) const = 0;
     virtual void OnRotation(MetricLogType log_type, bool is_constellation) = 0;
     // A metric "cycle" is a transmission to the P3A JSON server,
@@ -76,15 +76,22 @@ class MessageManager : public MetricLogStore::Delegate {
 
   void Init(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
-  void UpdateMetricValue(base::StringPiece histogram_name, size_t bucket);
-
-  void RemoveMetricValue(base::StringPiece histogram_name);
+  // If only_update_for_constellation is null, the value will be updated for
+  // both STAR and Constellation. If true, only the Constellation log store will
+  // be updated. If false, only the JSON log store will be updated.
+  void UpdateMetricValue(
+      std::string_view histogram_name,
+      size_t bucket,
+      std::optional<bool> only_update_for_constellation = std::nullopt);
+  void RemoveMetricValue(
+      std::string_view histogram_name,
+      std::optional<bool> only_update_for_constellation = std::nullopt);
 
  private:
   void StartScheduledUpload(bool is_constellation, MetricLogType log_type);
-  void StartScheduledConstellationPrep();
+  void StartScheduledConstellationPrep(MetricLogType log_type);
 
-  MetricLogType GetLogTypeForHistogram(base::StringPiece histogram_name);
+  MetricLogType GetLogTypeForHistogram(std::string_view histogram_name);
 
   void OnLogUploadComplete(bool is_ok,
                            int response_code,
@@ -93,18 +100,20 @@ class MessageManager : public MetricLogStore::Delegate {
 
   void OnNewConstellationMessage(
       std::string histogram_name,
+      MetricLogType log_type,
       uint8_t epoch,
       std::unique_ptr<std::string> serialized_message);
 
-  void OnRandomnessServerInfoReady(RandomnessServerInfo* server_info);
+  void OnRandomnessServerInfoReady(MetricLogType log_type,
+                                   RandomnessServerInfo* server_info);
 
   // Restart the uploading process (i.e. mark all values as unsent).
   void DoJsonRotation(MetricLogType log_type);
 
-  void DoConstellationRotation();
+  void DoConstellationRotation(MetricLogType log_type);
 
   // MetricLogStore::Delegate
-  std::string SerializeLog(base::StringPiece histogram_name,
+  std::string SerializeLog(std::string_view histogram_name,
                            const uint64_t value,
                            MetricLogType log_type,
                            bool is_constellation,
@@ -120,14 +129,18 @@ class MessageManager : public MetricLogStore::Delegate {
 
   base::flat_map<MetricLogType, std::unique_ptr<MetricLogStore>>
       json_log_stores_;
-  std::unique_ptr<MetricLogStore> constellation_prep_log_store_;
-  std::unique_ptr<ConstellationLogStore> constellation_send_log_store_;
+  base::flat_map<MetricLogType, std::unique_ptr<MetricLogStore>>
+      constellation_prep_log_stores_;
+  base::flat_map<MetricLogType, std::unique_ptr<ConstellationLogStore>>
+      constellation_send_log_stores_;
 
   std::unique_ptr<Uploader> uploader_;
   base::flat_map<MetricLogType, std::unique_ptr<Scheduler>>
       json_upload_schedulers_;
-  std::unique_ptr<Scheduler> constellation_prep_scheduler_;
-  std::unique_ptr<Scheduler> constellation_upload_scheduler_;
+  base::flat_map<MetricLogType, std::unique_ptr<Scheduler>>
+      constellation_prep_schedulers_;
+  base::flat_map<MetricLogType, std::unique_ptr<Scheduler>>
+      constellation_upload_schedulers_;
 
   std::unique_ptr<ConstellationHelper> constellation_helper_;
 

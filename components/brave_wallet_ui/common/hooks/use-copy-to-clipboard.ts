@@ -40,7 +40,7 @@ export const useTemporaryCopyToClipboard = (
     return () => {
       timer && clearTimeout(timer)
     }
-  }, [isCopied])
+  }, [isCopied, timeoutMs])
 
   return {
     temporaryCopyToClipboard,
@@ -48,9 +48,7 @@ export const useTemporaryCopyToClipboard = (
   }
 }
 
-export const useCopyToClipboard = (
-  timeoutMs = copiedMessageTimeout
-) => {
+export const useCopyToClipboard = (timeoutMs = copiedMessageTimeout) => {
   // state
   const [isCopied, setIsCopied] = React.useState(false)
 
@@ -80,7 +78,7 @@ export const useCopyToClipboard = (
     return () => {
       timer && clearTimeout(timer)
     }
-  }, [isCopied, resetCopyState])
+  }, [isCopied, resetCopyState, timeoutMs])
 
   return {
     copyToClipboard: _copyToClipboard,

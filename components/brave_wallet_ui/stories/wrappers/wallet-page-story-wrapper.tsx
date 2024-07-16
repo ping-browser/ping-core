@@ -22,13 +22,10 @@ import {
   UIState
 } from '../../constants/types'
 
-// components
-import { LibContext } from '../../common/context/lib.context'
-
 // Mocks
-import * as Lib from '../../common/async/__mocks__/lib'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
-import { WalletApiDataOverrides, getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
+import { WalletApiDataOverrides } from '../../constants/testing_types'
+import getAPIProxy from '../../common/async/bridge' // aut-mocked by complier
 
 export interface WalletPageStoryProps {
   walletStateOverride?: Partial<WalletState>
@@ -36,17 +33,21 @@ export interface WalletPageStoryProps {
   accountTabStateOverride?: Partial<AccountsTabState>
   uiStateOverride?: Partial<UIState>
   apiOverrides?: WalletApiDataOverrides
+  initialRoute?: WalletRoutes
 }
 
-const mockedProxy = getMockedAPIProxy()
+const mockedProxy = getAPIProxy()
 
-export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryProps>> = ({
+export const WalletPageStory: React.FC<
+  React.PropsWithChildren<WalletPageStoryProps>
+> = ({
   children,
   pageStateOverride,
   walletStateOverride,
   accountTabStateOverride,
   uiStateOverride,
   apiOverrides,
+  initialRoute
 }) => {
   // redux
   const store = React.useMemo(() => {
@@ -63,7 +64,8 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
     accountTabStateOverride,
     pageStateOverride,
     walletStateOverride,
-    uiStateOverride
+    uiStateOverride,
+    apiOverrides
   ])
 
   React.useEffect(() => {
@@ -72,12 +74,12 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
 
   // render
   return (
-    <MemoryRouter initialEntries={[WalletRoutes.OnboardingWelcome]}>
+    <MemoryRouter
+      initialEntries={[initialRoute || WalletRoutes.OnboardingWelcome]}
+    >
       <Provider store={store}>
         <ApiProxyContext.Provider value={mockedProxy}>
-          <LibContext.Provider value={Lib as any}>
-            {children}
-          </LibContext.Provider>
+          {children}
         </ApiProxyContext.Provider>
       </Provider>
     </MemoryRouter>

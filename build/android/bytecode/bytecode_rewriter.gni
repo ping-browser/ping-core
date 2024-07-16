@@ -6,13 +6,17 @@
 import("//build/config/python.gni")
 
 brave_bytecode_jars = [
+  "obj/base/base_cached_flags_java.javac.jar",
+  "obj/base/base_shared_preferences_java.javac.jar",
   "obj/brave/android/features/tab_ui/java.javac.jar",
   "obj/brave/android/java/org/chromium/chrome/browser/search_engines/java.javac.jar",
   "obj/brave/browser/notifications/java.javac.jar",
+  "obj/brave/browser/tab_group/java.javac.jar",
   "obj/brave/browser/ui/android/logo/java.javac.jar",
   "obj/brave/browser/ui/android/omnibox/java.javac.jar",
   "obj/brave/browser/ui/android/theme/java.javac.jar",
   "obj/brave/components/browser_ui/site_settings/android/java.javac.jar",
+  "obj/brave/components/variations/android/java.javac.jar",
   "obj/chrome/android/base_module_java.javac.jar",
   "obj/chrome/android/chrome_java.javac.jar",
   "obj/chrome/android/features/tab_ui/java.javac.jar",
@@ -22,10 +26,13 @@ brave_bytecode_jars = [
   "obj/chrome/browser/locale/delegate_java.javac.jar",
   "obj/chrome/browser/notifications/java.javac.jar",
   "obj/chrome/browser/partnercustomizations/java.javac.jar",
+  "obj/chrome/browser/password_manager/android/java.javac.jar",
   "obj/chrome/browser/preferences/java.javac.jar",
   "obj/chrome/browser/safe_browsing/android/java.javac.jar",
   "obj/chrome/browser/search_engines/android/java.javac.jar",
   "obj/chrome/browser/site_settings/android/java.javac.jar",
+  "obj/chrome/browser/tab_group/java.javac.jar",
+  "obj/chrome/browser/tab_ui/android/java.javac.jar",
   "obj/chrome/browser/ui/android/appmenu/internal/java.javac.jar",
   "obj/chrome/browser/ui/android/logo/java.javac.jar",
   "obj/chrome/browser/ui/android/omnibox/java.javac.jar",
@@ -34,9 +41,12 @@ brave_bytecode_jars = [
   "obj/chrome/browser/ui/android/toolbar/java.javac.jar",
   "obj/components/browser_ui/notifications/android/java.javac.jar",
   "obj/components/browser_ui/site_settings/android/java.javac.jar",
+  "obj/components/embedder_support/android/content_view_java.javac.jar",
   "obj/components/external_intents/android/java.javac.jar",
   "obj/components/permissions/android/java.javac.jar",
   "obj/components/sync/android/sync_java.javac.jar",
+  "obj/components/variations/android/variations_java.javac.jar",
+  "obj/chrome/browser/language/android/base_module_java.javac.jar",
 ]
 
 template("brave_bytecode_rewriter") {

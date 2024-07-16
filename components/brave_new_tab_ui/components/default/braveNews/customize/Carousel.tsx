@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import Flex from '../../../Flex'
-import FeedCard from './FeedCard'
-import { ArrowRight } from './Icons'
+import Flex from '$web-common/Flex'
+import PublisherCard from '../../../../../brave_news/browser/resources/shared/PublisherCard'
+import { ArrowRight } from '../../../../../brave_news/browser/resources/shared/Icons'
 
 const CARD_SIZE = 208
 const CARD_SIZE_PX = `${CARD_SIZE}px`
@@ -84,7 +84,7 @@ const ItemsContainer = styled(Flex)`
   }
 `
 
-const FeedCardContainer = styled.div`
+const PublisherCardContainer = styled.div`
   min-width: calc((100cqi - ${CARD_GAP} * 2) / 3);
   max-width: ${CARD_SIZE_PX};
   scroll-snap-align: start;
@@ -96,7 +96,7 @@ interface Props {
   publisherIds: string[]
 }
 
-export default function Carousel (props: Props) {
+export default function Carousel(props: Props) {
   const scrollContainerRef = React.useRef<HTMLDivElement>()
   const [availableDirections, setAvailableDirections] = React.useState<'none' | 'left' | 'right' | 'both'>('right')
   const updateAvailableDirections = React.useCallback(() => {
@@ -138,11 +138,11 @@ export default function Carousel (props: Props) {
       </Subtitle>}
       <CarouselContainer>
         <ItemsContainer direction='row' gap={CARD_GAP} ref={scrollContainerRef as any} onScroll={updateAvailableDirections}>
-          {props.publisherIds.map(p => <FeedCardContainer key={p}>
-            <FeedCard publisherId={p}/>
-          </FeedCardContainer>)}
+          {props.publisherIds.map(p => <PublisherCardContainer key={p}>
+            <PublisherCard publisherId={p} />
+          </PublisherCardContainer>)}
         </ItemsContainer>
-         <ScrollButtonLeft onClick={() => scroll('left')} hidden={availableDirections === 'right' || availableDirections === 'none'}>
+        <ScrollButtonLeft onClick={() => scroll('left')} hidden={availableDirections === 'right' || availableDirections === 'none'}>
           {ArrowRight}
         </ScrollButtonLeft>
         <ScrollButtonRight onClick={() => scroll('right')} hidden={availableDirections === 'left' || availableDirections === 'none'}>

@@ -6,9 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_UPDATE_CHECKER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_UPDATE_CHECKER_H_
 
-#include "src/components/update_client/update_checker.h"  // IWYU pragma: export
-
 #include <deque>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,18 +15,17 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/threading/thread_checker.h"
-#include "brave/components/widevine/static_buildflags.h"
 #include "components/update_client/component.h"
 #include "components/update_client/configurator.h"
 #include "components/update_client/persisted_data.h"
 #include "components/update_client/update_client_errors.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "src/components/update_client/update_checker.h"  // IWYU pragma: export
 
 namespace update_client {
 
 // SequentialUpdateChecker delegates to UpdateChecker to perform a separate
 // update request for each component, instead of one request for all components.
-// We do for the following reason:
+// We do this for the following reason:
 // Google's ToS do not allow distributing all components. In particular, the
 // Widevine plugin must be fetched from Google servers. Brave's update server
 // for components handles this as follows: When an update for a Google
@@ -56,28 +54,14 @@ class SequentialUpdateChecker : public UpdateChecker {
   ~SequentialUpdateChecker() override;
 
  private:
-  void CheckNext(
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-      std::string fake_architecture = ""
-#endif
-  );
+  void CheckNext();
   void UpdateResultAvailable(
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-      std::string fake_architecture,
-#endif
-      const absl::optional<ProtocolParser::Results>& results,
+      const std::optional<ProtocolParser::Results>& results,
       ErrorCategory error_category,
       int error,
       int retry_after_sec);
 
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-  void SetPersistedFlag(const std::string& extension_id,
-                        const std::string& key);
-  bool GetPersistedFlag(const std::string& extension_id,
-                        const std::string& key);
-#endif
-
-  base::ThreadChecker thread_checker_;
+  THREAD_CHECKER(thread_checker_);
 
   const scoped_refptr<Configurator> config_;
   const raw_ptr<PersistedData> metadata_ = nullptr;

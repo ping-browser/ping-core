@@ -11,9 +11,9 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 namespace content {
 class WebUI;
@@ -24,7 +24,7 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   using PanelCloseOnDeactivationCallback = base::RepeatingCallback<void(bool)>;
   WalletPanelHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
-      ui::MojoBubbleWebUIController* webui_controller,
+      TopChromeWebUIController* webui_controller,
       content::WebContents* active_web_contents,
       PanelCloseOnDeactivationCallback close_on_deactivation);
 
@@ -44,10 +44,12 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   void IsSolanaAccountConnected(
       const std::string& account,
       IsSolanaAccountConnectedCallback callback) override;
+  void RequestPermission(brave_wallet::mojom::AccountIdPtr account_id,
+                         RequestPermissionCallback callback) override;
 
  private:
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
-  const raw_ptr<ui::MojoBubbleWebUIController> webui_controller_;
+  const raw_ptr<TopChromeWebUIController> webui_controller_;
   raw_ptr<content::WebContents> active_web_contents_ = nullptr;
   const PanelCloseOnDeactivationCallback close_on_deactivation_;
 };

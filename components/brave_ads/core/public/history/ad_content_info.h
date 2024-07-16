@@ -9,8 +9,8 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/ad_type.h"
-#include "brave/components/brave_ads/core/public/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/export.h"
 #include "url/gurl.h"
 
@@ -26,6 +26,8 @@ struct ADS_EXPORT AdContentInfo final {
   AdContentInfo& operator=(AdContentInfo&&) noexcept;
 
   ~AdContentInfo();
+
+  bool operator==(const AdContentInfo&) const = default;
 
   AdType type = AdType::kUndefined;
   std::string placement_id;
@@ -44,9 +46,6 @@ struct ADS_EXPORT AdContentInfo final {
   bool is_saved = false;
   bool is_flagged = false;
 };
-
-bool operator==(const AdContentInfo&, const AdContentInfo&);
-bool operator!=(const AdContentInfo&, const AdContentInfo&);
 
 }  // namespace brave_ads
 

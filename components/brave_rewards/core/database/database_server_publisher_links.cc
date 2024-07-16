@@ -8,9 +8,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_links.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace {
 
@@ -22,7 +20,7 @@ namespace brave_rewards::internal {
 namespace database {
 
 DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(
-    RewardsEngineImpl& engine)
+    RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseServerPublisherLinks::~DatabaseServerPublisherLinks() = default;
@@ -77,8 +75,8 @@ void DatabaseServerPublisherLinks::GetRecord(
     const std::string& publisher_key,
     ServerPublisherLinksCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(1, "Publisher key is empty");
-    callback({});
+    engine_->Log(FROM_HERE) << "Publisher key is empty";
+    std::move(callback).Run({});
     return;
   }
 
@@ -97,19 +95,19 @@ void DatabaseServerPublisherLinks::GetRecord(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseServerPublisherLinks::OnGetRecord, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseServerPublisherLinks::OnGetRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseServerPublisherLinks::OnGetRecord(
-    mojom::DBCommandResponsePtr response,
-    ServerPublisherLinksCallback callback) {
+    ServerPublisherLinksCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
-    callback({});
+    engine_->LogError(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run({});
     return;
   }
 
@@ -121,7 +119,7 @@ void DatabaseServerPublisherLinks::OnGetRecord(
     links.insert(pair);
   }
 
-  callback(links);
+  std::move(callback).Run(links);
 }
 
 }  // namespace database

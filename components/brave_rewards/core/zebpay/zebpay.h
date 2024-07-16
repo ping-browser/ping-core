@@ -15,15 +15,17 @@
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace zebpay {
 
 class ZebPay final : public wallet_provider::WalletProvider {
  public:
-  explicit ZebPay(RewardsEngineImpl& engine);
+  explicit ZebPay(RewardsEngine& engine);
 
   const char* WalletType() const override;
+
+  void AssignWalletLinks(mojom::ExternalWallet& external_wallet) override;
 
   void FetchBalance(
       base::OnceCallback<void(mojom::Result, double)> callback) override;
@@ -34,7 +36,7 @@ class ZebPay final : public wallet_provider::WalletProvider {
   void OnFetchBalance(base::OnceCallback<void(mojom::Result, double)> callback,
                       endpoints::GetBalanceZebPay::Result&& result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace zebpay

@@ -8,6 +8,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "chrome/test/base/testing_profile.h"
+#include "content/public/test/browser_task_environment.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -56,7 +58,7 @@ class BraveWalleBrowserClientUnitTest
                                       .Set("name", "ext")
                                       .Set("version", "0.1")
                                       .Set("manifest_version", 2))
-                     .SetID(ethereum_remote_client_extension_id)
+                     .SetID(kEthereumRemoteClientExtensionId)
                      .Build();
     ASSERT_TRUE(extension_);
     ExtensionRegistry::Get(browser_context())->AddReady(extension_.get());
@@ -84,13 +86,17 @@ TEST_F(BraveWalleBrowserClientUnitTest,
   GURL url("chrome://wallet/");
   ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
         &url, browser_context()));
-  ASSERT_STREQ(url.spec().c_str(), ethereum_remote_client_base_url);
+  EXPECT_EQ(url, GURL(kEthereumRemoteClientBaseUrl));
 }
 
 }  // namespace extensions
 #endif
 
-using BraveContentBrowserClientTest = testing::Test;
+class BraveContentBrowserClientTest : public testing::Test {
+ protected:
+  content::BrowserTaskEnvironment task_environment_;
+  TestingProfile profile_;
+};
 
 TEST_F(BraveContentBrowserClientTest, ResolvesSync) {
   GURL url("chrome://sync/");
@@ -107,4 +113,9 @@ TEST_F(BraveContentBrowserClientTest, ResolvesWelcomePage) {
   GURL url("chrome://welcome/");
   ASSERT_TRUE(
       BraveContentBrowserClient::HandleURLOverrideRewrite(&url, nullptr));
+}
+
+TEST_F(BraveContentBrowserClientTest, IsolatedWebAppsAreDisabled) {
+  BraveContentBrowserClient client;
+  EXPECT_FALSE(client.AreIsolatedWebAppsEnabled(&profile_));
 }

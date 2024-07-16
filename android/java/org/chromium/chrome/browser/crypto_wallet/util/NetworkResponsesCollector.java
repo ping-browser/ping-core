@@ -5,13 +5,12 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class NetworkResponsesCollector {
@@ -41,17 +40,18 @@ public class NetworkResponsesCollector {
             mJsonRpcService.getAllNetworks(coin, networksContext);
         }
 
-        networkInfosMultiResponse.setWhenAllCompletedAction(() -> {
-            for (AsyncUtils.GetNetworkResponseContext getNetworkResponseContext :
-                    accountsPermissionsContexts) {
-                if (getNetworkResponseContext.networkInfos.length == 0) {
-                    continue;
-                }
+        networkInfosMultiResponse.setWhenAllCompletedAction(
+                () -> {
+                    for (AsyncUtils.GetNetworkResponseContext getNetworkResponseContext :
+                            accountsPermissionsContexts) {
+                        if (getNetworkResponseContext.networkInfos.length == 0) {
+                            continue;
+                        }
 
-                mNetworks.addAll(Arrays.asList(getNetworkResponseContext.networkInfos));
-            }
-            Collections.sort(mNetworks, NetworkUtils.sSortNetworkByPriority);
-            runWhenDone.call(mNetworks);
-        });
+                        mNetworks.addAll(Arrays.asList(getNetworkResponseContext.networkInfos));
+                    }
+                    mNetworks.sort(NetworkUtils.sSortNetworkByPriority);
+                    runWhenDone.call(mNetworks);
+                });
     }
 }

@@ -6,13 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_ORIGIN_TRIALS_ORIGIN_TRIALS_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_ORIGIN_TRIALS_ORIGIN_TRIALS_H_
 
+#include <string_view>
+
 #include "src/third_party/blink/public/common/origin_trials/origin_trials.h"  // IWYU pragma: export
 
 namespace blink {
 namespace origin_trials {
 
-BLINK_COMMON_EXPORT bool IsTrialDisabledInBrave(base::StringPiece trial_name);
-BLINK_COMMON_EXPORT bool IsTrialDisabledInBrave(OriginTrialFeature feature);
+BLINK_COMMON_EXPORT bool IsTrialDisabledInBrave(std::string_view trial_name);
+BLINK_COMMON_EXPORT bool IsTrialDisabledInBrave(
+    blink::mojom::OriginTrialFeature feature);
 
 }  // namespace origin_trials
 }  // namespace blink

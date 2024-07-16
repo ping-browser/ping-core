@@ -9,17 +9,17 @@ assert(enable_request_otr)
 
 source_set("browser_tests") {
   testonly = true
-  check_includes = false
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [ "//brave/browser/request_otr/request_otr_browsertest.cc" ]
   deps = [
     "//base",
     "//brave/browser",
+    "//brave/browser/extensions:test_support",
     "//brave/common:common",
     "//brave/components/brave_component_updater/browser:browser",
-    "//brave/components/brave_shields/browser:browser",
-    "//brave/components/brave_shields/common:common",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/request_otr/browser",
     "//brave/components/request_otr/common",
     "//chrome/browser",

@@ -1,15 +1,17 @@
 def SKIP_SIGNING_DEFAULT = ! JOB_NAME.contains("windows")
+
 pipeline {
     agent none
     options {
         ansiColor('xterm')
+        skipDefaultCheckout(true)
         timestamps()
     }
     parameters {
-        choice(name: 'CHANNEL', choices: ['nightly', 'dev', 'beta', 'release', 'development'])
+        choice(name: 'CHANNEL', choices: ['nightly', 'beta', 'release'])
         choice(name: 'BUILD_TYPE', choices: ["Static", "Release", "Component", "Debug"])
         booleanParam(name: 'WIPE_WORKSPACE', defaultValue: false)
-        booleanParam(name: 'USE_GOMA', defaultValue: true)
+        booleanParam(name: 'USE_RBE', defaultValue: true)
         booleanParam(name: 'SKIP_SIGNING', defaultValue: SKIP_SIGNING_DEFAULT)
         booleanParam(name: 'DCHECK_ALWAYS_ON', defaultValue: true)
         string(name: 'DEVOPS_BRANCH', defaultValue: 'master')
@@ -29,7 +31,9 @@ pipeline {
                         GITHUB_AUTH_HEADERS = [[name: 'Authorization', value: 'token ' + PR_BUILDER_TOKEN]]
                         CHANGE_BRANCH_ENCODED = java.net.URLEncoder.encode(CHANGE_BRANCH, 'UTF-8')
                         def prDetails = readJSON(text: httpRequest(url: GITHUB_API + '/brave-core/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
-                        SKIP = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) || prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1)
+                        SKIP = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) ||\
+                               prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1) ||\
+                               PLATFORM in ["linux-arm64", "macos-arm64", "windows-arm64", "windows-x86"] && prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/run-${PLATFORM}") }.equals(0)
                         SKIP_ALL_LINTERS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip-all-linters') }.equals(1)
                         RUN_NETWORK_AUDIT = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-network-audit') }.equals(1)
                         RUN_AUDIT_DEPS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-audit-deps') }.equals(1)
@@ -39,7 +43,7 @@ pipeline {
                     }
 
                     if (SKIP && PLATFORM != 'noplatform') {
-                        echo "Aborting build as PRs have a skip label (CI/skip or CI/skip-${PLATFORM})"
+                        echo "Skipping build, not required"
                         currentBuild.result = 'SUCCESS'
                         return
                     }
@@ -55,10 +59,10 @@ pipeline {
                         pipelineJob('${PIPELINE_NAME}') {
                             // this list has to match the parameters in the Jenkinsfile from devops repo
                             parameters {
-                                choiceParam('CHANNEL', ['nightly', 'dev', 'beta', 'release', 'development'])
+                                choiceParam('CHANNEL', ['nightly', 'beta', 'release'])
                                 choiceParam('BUILD_TYPE', ["Static", "Release", "Component", "Debug"])
                                 booleanParam('WIPE_WORKSPACE', false)
-                                booleanParam('USE_GOMA', true)
+                                booleanParam('USE_RBE', true)
                                 booleanParam('SKIP_ALL_LINTERS', false)
                                 booleanParam('SKIP_SIGNING', ${SKIP_SIGNING_DEFAULT})
                                 booleanParam('DCHECK_ALWAYS_ON', true)
@@ -90,9 +94,10 @@ pipeline {
 
                     params = [
                         string(name: 'CHANNEL', value: params.CHANNEL),
+                        // TODO: mihai could pass Debug for migrated iOS
                         string(name: 'BUILD_TYPE', value: PLATFORM == 'android' ? 'Release' : params.BUILD_TYPE),
                         booleanParam(name: 'WIPE_WORKSPACE', value: params.WIPE_WORKSPACE),
-                        booleanParam(name: 'USE_GOMA', value: params.USE_GOMA),
+                        booleanParam(name: 'USE_RBE', value: params.USE_RBE),
                         booleanParam(name: 'SKIP_ALL_LINTERS', value: SKIP_ALL_LINTERS),
                         booleanParam(name: 'SKIP_SIGNING', value: params.SKIP_SIGNING),
                         booleanParam(name: 'DCHECK_ALWAYS_ON', value: params.DCHECK_ALWAYS_ON),

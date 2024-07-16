@@ -74,9 +74,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mIncognitoStateProvider");
         makeProtectedField(sToolbarManagerClassName, "mIncognitoStateProvider");
 
-        deleteField(sBraveToolbarManagerClassName, "mTabCountProvider");
-        makeProtectedField(sToolbarManagerClassName, "mTabCountProvider");
-
         deleteField(sBraveToolbarManagerClassName, "mTabGroupUi");
         makeProtectedField(sToolbarManagerClassName, "mTabGroupUi");
 
@@ -100,6 +97,9 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveToolbarManagerClassName, "mTabObscuringHandler");
         makeProtectedField(sToolbarManagerClassName, "mTabObscuringHandler");
+
+        deleteField(sBraveToolbarManagerClassName, "mReadAloudControllerSupplier");
+        makeProtectedField(sToolbarManagerClassName, "mReadAloudControllerSupplier");
 
         makePublicMethod(sToolbarManagerClassName, "onOrientationChange");
         addMethodAnnotation(

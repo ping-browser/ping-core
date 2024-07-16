@@ -12,7 +12,7 @@ import {
 } from '../../../constants/types'
 import {
   TokenBalancesRegistry,
-  TokenBalancesForChainId
+  ChainBalances
 } from '../entities/token-balance.entity'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
@@ -21,9 +21,7 @@ import { maxConcurrentPriceRequests, maxBatchSizePrice } from '../constants'
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../../constants/magics'
 
 // Utils
-import {
-  makeSerializableTimeDelta
-} from '../../../utils/model-serialization-utils'
+import { makeSerializableTimeDelta } from '../../../utils/model-serialization-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import Amount from '../../../utils/amount'
 
@@ -95,14 +93,14 @@ export const pricingEndpoints = ({
             data: { assetRatioService }
           } = baseQuery(undefined)
 
+          if (!ids.length) {
+            throw new Error('no token ids provided for price lookup')
+          }
+
           // dedupe ids to prevent duplicate price requests
           const uniqueIds = [...new Set(ids)]
             // skip flagged coins such as testnet coins other than Goerli-ETH
-            .filter(id => id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
-
-          if (!uniqueIds.length) {
-            throw new Error('no token ids provided for price lookup')
-          }
+            .filter((id) => id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
 
           const chunkedParams = []
           for (let i = 0; i < uniqueIds.length; i += maxBatchSizePrice) {
@@ -156,7 +154,7 @@ export const pricingEndpoints = ({
               acc[assetPrice.fromAsset.toLowerCase()] = assetPrice
               return acc
             }, {})
-          
+
           // add skipped value
           registry[SKIP_PRICE_LOOKUP_COINGECKO_ID] = {
             assetTimeframeChange: (
@@ -270,32 +268,30 @@ export const pricingEndpoints = ({
             }
           )
 
-          const aggregatedBalances: Record<string, TokenBalancesForChainId> = {}
-          for (const chainIds of Object.values(tokenBalancesRegistry)) {
+          const aggregatedBalances: Record<string, ChainBalances> = {}
+          for (const chainIds of Object.values(
+            tokenBalancesRegistry.accounts
+          )) {
             for (const [chainId, tokenBalancesForChainId] of Object.entries(
-              chainIds
+              chainIds.chains
             )) {
               if (!aggregatedBalances[chainId]) {
-                aggregatedBalances[chainId] = {}
+                aggregatedBalances[chainId] = { tokenBalances: {} }
               }
 
+              const chainBalances = aggregatedBalances[chainId].tokenBalances
+
               for (const [contractAddress, tokenBalance] of Object.entries(
-                tokenBalancesForChainId
+                tokenBalancesForChainId.tokenBalances
               )) {
-                if (
-                  !aggregatedBalances[chainId][contractAddress.toLowerCase()]
-                ) {
-                  aggregatedBalances[chainId][contractAddress.toLowerCase()] =
-                    tokenBalance
+                if (!chainBalances[contractAddress.toLowerCase()]) {
+                  chainBalances[contractAddress.toLowerCase()] = tokenBalance
                 } else {
-                  aggregatedBalances[chainId][contractAddress.toLowerCase()] =
-                    new Amount(tokenBalance)
-                      .plus(
-                        aggregatedBalances[chainId][
-                          contractAddress.toLowerCase()
-                        ]
-                      )
-                      .format()
+                  chainBalances[contractAddress.toLowerCase()] = new Amount(
+                    tokenBalance
+                  )
+                    .plus(chainBalances[contractAddress.toLowerCase()])
+                    .format()
                 }
               }
             }
@@ -303,7 +299,7 @@ export const pricingEndpoints = ({
 
           const jointHistory = Object.entries(aggregatedBalances)
             .map(([chainId, tokenBalancesForChainId]) => {
-              return Object.entries(tokenBalancesForChainId).map(
+              return Object.entries(tokenBalancesForChainId.tokenBalances).map(
                 ([contractAddress, balance]) => {
                   const token = tokens.find(
                     (t) =>

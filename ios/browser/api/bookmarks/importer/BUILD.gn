@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("importer") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "bookmark_html_reader.cc",
     "bookmark_html_reader.h",
@@ -31,7 +29,7 @@ source_set("importer") {
     "//components/search_engines:search_engines",
     "//components/strings:components_strings_grit",
     "//components/user_prefs:user_prefs",
-    "//ios/chrome/browser/bookmarks",
+    "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
     "//ios/web/public/thread",

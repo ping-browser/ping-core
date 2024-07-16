@@ -42,11 +42,11 @@ export function Wallet () {
   }
 
   const externalWallet: ExternalWallet = {
-    provider: 'uphold',
+    provider: 'solana',
     status: knobs.boolean('Wallet disconnected', false)
       ? mojom.WalletStatus.kLoggedOut
       : mojom.WalletStatus.kConnected,
-    username: 'brave123',
+    username: '66DcE...Vke3',
     links: {}
   }
 
@@ -59,9 +59,8 @@ export function Wallet () {
         <div style={{ width: '375px' }}>
           <WalletCard
             userType={'connected'}
-            balance={optional(0)}
-            isGrandfatheredUser={false}
-            externalWallet={externalWallet && null}
+            balance={optional(123.032)}
+            externalWallet={externalWallet}
             providerPayoutStatus={'complete'}
             minEarningsThisMonth={0.25}
             maxEarningsThisMonth={0.75}
@@ -74,7 +73,6 @@ export function Wallet () {
             summaryData={summaryData}
             autoContributeEnabled={true}
             onExternalWalletAction={actionLogger('onExternalWalletAction')}
-            onViewStatement={actionLogger('onViewStatement')}
             onManageAds={actionLogger('onManageAds')}
           />
         </div>

@@ -13,6 +13,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
 #include "extensions/buildflags/buildflags.h"
@@ -24,10 +25,13 @@ class NoDestructor;
 }  // namespace base
 
 // Exposed for tests.
-constexpr char kDefaultSearchEngineMetric[] = "Brave.Search.DefaultEngine.4";
-constexpr char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
-constexpr char kWebDiscoveryEnabledMetric[] =
+inline constexpr char kDefaultSearchEngineMetric[] =
+    "Brave.Search.DefaultEngine.4";
+inline constexpr char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
+inline constexpr char kWebDiscoveryEnabledMetric[] =
     "Brave.Search.WebDiscoveryEnabled";
+inline constexpr char kWebDiscoveryAndAdsMetric[] =
+    "Brave.Search.WebDiscoveryAndAds";
 
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
@@ -60,9 +64,14 @@ enum class SearchEngineSwitchP3A {
   kMaxValue = kOtherToOther,
 };
 
+class SearchEngineTracker;
+
 class SearchEngineTrackerFactory : public BrowserContextKeyedServiceFactory {
  public:
   static SearchEngineTrackerFactory* GetInstance();
+
+  static SearchEngineTracker* GetForBrowserContext(
+      content::BrowserContext* context);
 
  private:
   friend base::NoDestructor<SearchEngineTrackerFactory>;
@@ -82,7 +91,8 @@ class SearchEngineTrackerFactory : public BrowserContextKeyedServiceFactory {
       user_prefs::PrefRegistrySyncable* registry) override;
 };
 
-// Records P3A metrics when default search engine changes.
+// Records P3A metrics when default search engine changes,
+// and when queries are made in the location bar.
 class SearchEngineTracker : public KeyedService,
                             public TemplateURLServiceObserver {
  public:
@@ -93,6 +103,8 @@ class SearchEngineTracker : public KeyedService,
 
   SearchEngineTracker(const SearchEngineTracker&) = delete;
   SearchEngineTracker& operator=(const SearchEngineTracker&) = delete;
+
+  void RecordLocationBarQuery();
 
  private:
   // TemplateURLServiceObserver overrides:
@@ -110,6 +122,7 @@ class SearchEngineTracker : public KeyedService,
   // Keeping this to check for changes in |OnTemplateURLServiceChanged|.
   GURL default_search_url_;
   GURL previous_search_url_;
+  SearchEngineP3A current_default_engine_ = SearchEngineP3A::kOther;
   WeeklyEventStorage switch_record_;
 
   raw_ptr<PrefService> local_state_;

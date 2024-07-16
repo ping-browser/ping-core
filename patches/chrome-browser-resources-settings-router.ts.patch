@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/router.ts b/chrome/browser/resources/settings/router.ts
-index f8b2a426544a1b985fe2e00735fdd8e66458d3ab..bf1178d021516caad6d36cdd6c968eacb23f311e 100644
+index 45c20848955e5faf57160b858cce11da646fcf7b..7acb1de8b0b8cc658e7042f41a4346eb59cdc92b 100644
 --- a/chrome/browser/resources/settings/router.ts
 +++ b/chrome/browser/resources/settings/router.ts
-@@ -105,6 +105,7 @@ export interface SettingsRoutes {
-   SYNC_ADVANCED: Route;
+@@ -113,6 +113,7 @@ export interface SettingsRoutes {
    SYSTEM: Route;
+   TRACKING_PROTECTION: Route;
    TRIGGERED_RESET_DIALOG: Route;
-+  GET_STARTED: Route; SHIELDS: Route; SOCIAL_BLOCKING: Route; REWARDS: Route; EXTENSIONS: Route; EXTENSIONS_V2: Route; BRAVE_SYNC: Route; BRAVE_SYNC_SETUP: Route; BRAVE_IPFS: Route; BRAVE_WALLET: Route; BRAVE_WEB3: Route; BRAVE_HELP_TIPS: Route; BRAVE_NEW_TAB: Route; THEMES: Route; BRAVE_SITE_SETTINGS_COOKIES_DETAILS: Route;
++  GET_STARTED: Route; SHIELDS: Route; SOCIAL_BLOCKING: Route; EXTENSIONS: Route; EXTENSIONS_V2: Route; BRAVE_SYNC: Route; BRAVE_SYNC_SETUP: Route; BRAVE_IPFS: Route; BRAVE_WALLET: Route; BRAVE_WEB3: Route; BRAVE_NEW_TAB: Route; THEMES: Route; BRAVE_SITE_SETTINGS_COOKIES_DETAILS: Route;
  }
  
  /** Class for navigable routes. */

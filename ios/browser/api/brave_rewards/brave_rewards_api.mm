@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#import "brave_rewards_api.h"
+#import "brave/ios/browser/api/brave_rewards/brave_rewards_api.h"
+
 #import <UIKit/UIKit.h>
+
+#include <optional>
 
 #include "base/base64.h"
 #include "base/containers/flat_map.h"
@@ -17,19 +20,18 @@
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#import "brave/ios/browser/api/brave_rewards/promotion_solution.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #import "brave/ios/browser/api/brave_rewards/rewards.mojom.objc+private.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_client_bridge.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_client_ios.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_notification.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_observer.h"
-#import "brave/ios/browser/api/brave_rewards/rewards_types.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -85,23 +87,18 @@ BraveGeneralRewardsNotificationID const
 
 static NSString* const kContributionQueueAutoincrementID =
     @"BATContributionQueueAutoincrementID";
-static NSString* const kUnblindedTokenAutoincrementID =
-    @"BATUnblindedTokenAutoincrementID";
 
 static NSString* const kExternalWalletsPrefKey = @"external_wallets";
 static NSString* const kTransferFeesPrefKey = @"transfer_fees";
-
-static const auto kOneDay =
-    base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
 /// ---
 
 @interface BraveRewardsAPI () <RewardsClientBridge> {
   // DO NOT ACCESS DIRECTLY, use `postEngineTask` or ensure you are accessing
   // _engine from a task posted in `_engineTaskRunner`
-  std::unique_ptr<brave_rewards::internal::RewardsEngineImpl,
+  std::unique_ptr<brave_rewards::internal::RewardsEngine,
                   brave_rewards::internal::task_deleter<
-                      brave_rewards::internal::RewardsEngineImpl>>
+                      brave_rewards::internal::RewardsEngine>>
       _engine;
   std::unique_ptr<RewardsClientIOS,
                   brave_rewards::internal::task_deleter<RewardsClientIOS>>
@@ -119,10 +116,6 @@ static const auto kOneDay =
 @property(nonatomic) BraveCommonOperations* commonOps;
 @property(nonatomic) NSMutableDictionary<NSString*, __kindof NSObject*>* prefs;
 
-@property(nonatomic) NSMutableArray<BraveRewardsPromotion*>* mPendingPromotions;
-@property(nonatomic)
-    NSMutableArray<BraveRewardsPromotion*>* mFinishedPromotions;
-
 @property(nonatomic) NSHashTable<RewardsObserver*>* observers;
 
 @property(nonatomic, getter=isInitialized) BOOL initialized;
@@ -132,11 +125,6 @@ static const auto kOneDay =
 @property(nonatomic, getter=isLoadingPublisherList) BOOL loadingPublisherList;
 @property(nonatomic, getter=isInitializingWallet) BOOL initializingWallet;
 
-/// Notifications
-
-@property(nonatomic) NSTimer* notificationStartupTimer;
-@property(nonatomic) NSDate* lastNotificationCheckDate;
-
 /// Temporary blocks
 
 @end
@@ -145,10 +133,11 @@ static const auto kOneDay =
 
 - (instancetype)initWithStateStoragePath:(NSString*)path {
   if ((self = [super init])) {
-    _engineTaskRunner = base::ThreadPool::CreateSequencedTaskRunner(
+    _engineTaskRunner = base::ThreadPool::CreateSingleThreadTaskRunner(
         {base::MayBlock(), base::WithBaseSyncPrimitives(),
          base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
+        base::SingleThreadTaskRunnerThreadMode::DEDICATED);
 
     self.storagePath = path;
     self.commonOps =
@@ -159,8 +148,6 @@ static const auto kOneDay =
                      ?: [[NSMutableDictionary alloc] init];
     self.fileWriteThread =
         dispatch_queue_create("com.rewards.file-write", DISPATCH_QUEUE_SERIAL);
-    self.mPendingPromotions = [[NSMutableArray alloc] init];
-    self.mFinishedPromotions = [[NSMutableArray alloc] init];
     self.observers = [NSHashTable weakObjectsHashTable];
 
     self.prefs =
@@ -174,8 +161,6 @@ static const auto kOneDay =
         ![self.prefs[walletProviderRegionsKey] isKindOfClass:NSString.class]) {
       self.prefs[walletProviderRegionsKey] = @"{}";
     }
-
-    [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
 
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -191,9 +176,11 @@ static const auto kOneDay =
         FROM_HERE, base::BindOnce(^{
           self->_rewardsClient =
               brave_rewards::internal::make_task_ptr<RewardsClientIOS>(self);
+          auto options = [self
+              handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
           self->_engine = brave_rewards::internal::make_task_ptr<
-              brave_rewards::internal::RewardsEngineImpl>(
-              self->_rewardsClient->MakeRemote());
+              brave_rewards::internal::RewardsEngine>(
+              self->_rewardsClient->MakeRemote(), std::move(options));
         }));
 
     // Add notifications for standard app foreground/background
@@ -213,42 +200,37 @@ static const auto kOneDay =
 
 - (void)dealloc {
   [NSNotificationCenter.defaultCenter removeObserver:self];
-  [self.notificationStartupTimer invalidate];
 }
 
-- (void)handleFlags:(const brave_rewards::RewardsFlags&)flags {
+- (brave_rewards::mojom::RewardsEngineOptions)handleFlags:
+    (const brave_rewards::RewardsFlags&)flags {
+  brave_rewards::mojom::RewardsEngineOptions options;
   if (flags.environment) {
     switch (*flags.environment) {
       case brave_rewards::RewardsFlags::Environment::kDevelopment:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::DEVELOPMENT;
+        options.environment = brave_rewards::mojom::Environment::kDevelopment;
         break;
       case brave_rewards::RewardsFlags::Environment::kStaging:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::STAGING;
+        options.environment = brave_rewards::mojom::Environment::kStaging;
         break;
       case brave_rewards::RewardsFlags::Environment::kProduction:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::PRODUCTION;
+        options.environment = brave_rewards::mojom::Environment::kProduction;
         break;
     }
   }
 
-  if (flags.debug) {
-    brave_rewards::internal::is_debug = true;
-  }
-
   if (flags.reconcile_interval) {
-    brave_rewards::internal::reconcile_interval = *flags.reconcile_interval;
+    options.reconcile_interval = *flags.reconcile_interval;
   }
 
   if (flags.retry_interval) {
-    brave_rewards::internal::retry_interval = *flags.retry_interval;
+    options.retry_interval = *flags.retry_interval;
   }
+
+  return options;
 }
 
-- (void)postEngineTask:
-    (void (^)(brave_rewards::internal::RewardsEngineImpl*))task {
+- (void)postEngineTask:(void (^)(brave_rewards::internal::RewardsEngine*))task {
   _engineTaskRunner->PostTask(FROM_HERE, base::BindOnce(^{
                                 CHECK(self->_engine != nullptr);
                                 task(self->_engine.get());
@@ -261,7 +243,7 @@ static const auto kOneDay =
   }
   self.initializing = YES;
 
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->Initialize(base::BindOnce(^(brave_rewards::mojom::Result result) {
       self.initialized =
           (result == brave_rewards::mojom::Result::OK ||
@@ -272,7 +254,8 @@ static const auto kOneDay =
         [self getRewardsParameters:nil];
         [self fetchBalance:nil];
       } else {
-        LLOG(0, @"Rewards Initialization Failed with error: %d", result);
+        LLOG(0, @"Rewards Initialization Failed with error: %d",
+             base::to_underlying(result));
       }
       self.initializationResult = static_cast<BraveRewardsResult>(result);
       if (completion) {
@@ -344,7 +327,7 @@ static const auto kOneDay =
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->CreateRewardsWallet(
         "", base::BindOnce(^(
                 brave_rewards::mojom::CreateRewardsWalletResult create_result) {
@@ -385,7 +368,6 @@ static const auto kOneDay =
                                     userInfo:userInfo];
           }
 
-          [strongSelf startNotificationTimers];
           strongSelf.initializingWallet = NO;
 
           dispatch_async(dispatch_get_main_queue(), ^{
@@ -406,7 +388,7 @@ static const auto kOneDay =
 
 - (void)currentWalletInfo:
     (void (^)(BraveRewardsRewardsWallet* _Nullable wallet))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetRewardsWallet(
         base::BindOnce(^(brave_rewards::mojom::RewardsWalletPtr wallet) {
           const auto bridgedWallet = wallet.get() != nullptr
@@ -422,7 +404,7 @@ static const auto kOneDay =
 
 - (void)getRewardsParameters:
     (void (^)(BraveRewardsRewardsParameters* _Nullable))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetRewardsParameters(
         base::BindOnce(^(brave_rewards::mojom::RewardsParametersPtr info) {
           if (info) {
@@ -443,14 +425,13 @@ static const auto kOneDay =
 
 - (void)fetchBalance:(void (^)(BraveRewardsBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
-    engine->FetchBalance(base::BindOnce(
-        ^(base::expected<brave_rewards::mojom::BalancePtr,
-                         brave_rewards::mojom::FetchBalanceError> result) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
+    engine->FetchBalance(
+        base::BindOnce(^(brave_rewards::mojom::BalancePtr balance) {
           const auto strongSelf = weakSelf;
-          if (result.has_value()) {
+          if (balance) {
             strongSelf.balance = [[BraveRewardsBalance alloc]
-                initWithBalancePtr:std::move(result.value())];
+                initWithBalancePtr:std::move(balance)];
           }
           dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
@@ -488,7 +469,7 @@ static const auto kOneDay =
                        completion:
                            (void (^)(NSArray<BraveRewardsPublisherInfo*>*))
                                completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     auto cppFilter = filter ? filter.cppObjPtr
                             : brave_rewards::mojom::ActivityInfoFilter::New();
     if (filter.excluded == BraveRewardsExcludeFilterFilterExcluded) {
@@ -527,7 +508,7 @@ static const auto kOneDay =
                            faviconURL:(nullable NSURL*)faviconURL
                         publisherBlob:(nullable NSString*)publisherBlob
                                 tabId:(uint64_t)tabId {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     if (!URL.absoluteString) {
       return;
     }
@@ -574,7 +555,7 @@ static const auto kOneDay =
     completion(BraveRewardsPublisherStatusNotVerified);
     return;
   }
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->RefreshPublisher(
         base::SysNSStringToUTF8(publisherId),
         base::BindOnce(^(brave_rewards::mojom::PublisherStatus status) {
@@ -589,7 +570,7 @@ static const auto kOneDay =
 
 - (void)listRecurringTips:
     (void (^)(NSArray<BraveRewardsPublisherInfo*>*))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetRecurringTips(base::BindOnce(
         ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
           const auto publishers = NSArrayFromVector(
@@ -606,159 +587,11 @@ static const auto kOneDay =
 }
 
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->RemoveRecurringTip(
         base::SysNSStringToUTF8(publisherId),
         base::BindOnce(^(brave_rewards::mojom::Result result){
             // Not Used
-        }));
-  }];
-}
-
-#pragma mark - Grants
-
-- (NSArray<BraveRewardsPromotion*>*)pendingPromotions {
-  return [self.mPendingPromotions copy];
-}
-
-- (NSArray<BraveRewardsPromotion*>*)finishedPromotions {
-  return [self.mFinishedPromotions copy];
-}
-
-- (NSString*)notificationIDForPromo:
-    (const brave_rewards::mojom::PromotionPtr)promo {
-  bool isUGP = promo->type == brave_rewards::mojom::PromotionType::UGP;
-  const auto prefix = isUGP ? @"rewards_grant_" : @"rewards_grant_ads_";
-  const auto promotionId = base::SysUTF8ToNSString(promo->id);
-  return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
-}
-
-- (void)updatePendingAndFinishedPromotions:(void (^)())completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
-    engine->GetAllPromotions(base::BindOnce(^(
-        base::flat_map<std::string, brave_rewards::mojom::PromotionPtr> map) {
-      NSMutableArray* promos = [[NSMutableArray alloc] init];
-      for (auto it = map.begin(); it != map.end(); ++it) {
-        if (it->second.get() != nullptr) {
-          [promos addObject:[[BraveRewardsPromotion alloc]
-                                initWithPromotion:*it->second]];
-        }
-      }
-      [self.mFinishedPromotions removeAllObjects];
-      [self.mPendingPromotions removeAllObjects];
-      for (BraveRewardsPromotion* promotion in promos) {
-        if (promotion.status == BraveRewardsPromotionStatusFinished) {
-          [self.mFinishedPromotions addObject:promotion];
-        } else if (promotion.status == BraveRewardsPromotionStatusActive ||
-                   promotion.status == BraveRewardsPromotionStatusAttested) {
-          [self.mPendingPromotions addObject:promotion];
-        }
-      }
-      dispatch_async(dispatch_get_main_queue(), ^{
-        if (completion) {
-          completion();
-        }
-        for (RewardsObserver* observer in [self.observers copy]) {
-          if (observer.promotionsAdded) {
-            observer.promotionsAdded(self.pendingPromotions);
-          }
-          if (observer.finishedPromotionsAdded) {
-            observer.finishedPromotionsAdded(self.finishedPromotions);
-          }
-        }
-      });
-    }));
-  }];
-}
-
-- (void)fetchPromotions:
-    (nullable void (^)(NSArray<BraveRewardsPromotion*>* grants))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
-    engine->FetchPromotions(base::BindOnce(
-        ^(brave_rewards::mojom::Result result,
-          std::vector<brave_rewards::mojom::PromotionPtr> promotions) {
-          if (result != brave_rewards::mojom::Result::OK) {
-            return;
-          }
-          [self updatePendingAndFinishedPromotions:^{
-            if (completion) {
-              dispatch_async(dispatch_get_main_queue(), ^{
-                completion(self.pendingPromotions);
-              });
-            }
-          }];
-        }));
-  }];
-}
-
-- (void)claimPromotion:(NSString*)promotionId
-             publicKey:(NSString*)deviceCheckPublicKey
-            completion:(void (^)(BraveRewardsResult result,
-                                 NSString* _Nonnull nonce))completion {
-  const auto payload = [NSDictionary dictionaryWithObject:deviceCheckPublicKey
-                                                   forKey:@"publicKey"];
-  const auto jsonData = [NSJSONSerialization dataWithJSONObject:payload
-                                                        options:0
-                                                          error:nil];
-  if (!jsonData) {
-    LLOG(0, @"Missing JSON payload while attempting to claim promotion");
-    return;
-  }
-  const auto jsonString = [[NSString alloc] initWithData:jsonData
-                                                encoding:NSUTF8StringEncoding];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
-    engine->ClaimPromotion(
-        base::SysNSStringToUTF8(promotionId),
-        base::SysNSStringToUTF8(jsonString),
-        base::BindOnce(^(brave_rewards::mojom::Result result,
-                         const std::string& nonce) {
-          const auto bridgedNonce = base::SysUTF8ToNSString(nonce);
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(static_cast<BraveRewardsResult>(result), bridgedNonce);
-          });
-        }));
-  }];
-}
-
-- (void)attestPromotion:(NSString*)promotionId
-               solution:(PromotionSolution*)solution
-             completion:(void (^)(BraveRewardsResult result,
-                                  BraveRewardsPromotion* _Nullable promotion))
-                            completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
-    engine->AttestPromotion(
-        base::SysNSStringToUTF8(promotionId),
-        base::SysNSStringToUTF8(solution.JSONPayload),
-        base::BindOnce(^(brave_rewards::mojom::Result result,
-                         brave_rewards::mojom::PromotionPtr promotion) {
-          if (promotion.get() == nullptr) {
-            if (completion) {
-              dispatch_async(dispatch_get_main_queue(), ^{
-                completion(static_cast<BraveRewardsResult>(result), nil);
-              });
-            }
-            return;
-          }
-
-          const auto bridgedPromotion =
-              [[BraveRewardsPromotion alloc] initWithPromotion:*promotion];
-          if (result == brave_rewards::mojom::Result::OK) {
-            [self fetchBalance:nil];
-          }
-
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-              completion(static_cast<BraveRewardsResult>(result),
-                         bridgedPromotion);
-            }
-            if (result == brave_rewards::mojom::Result::OK) {
-              for (RewardsObserver* observer in [self.observers copy]) {
-                if (observer.promotionClaimed) {
-                  observer.promotionClaimed(bridgedPromotion);
-                }
-              }
-            }
-          });
         }));
   }];
 }
@@ -778,7 +611,7 @@ static const auto kOneDay =
 
 - (void)rewardsInternalInfo:
     (void (^)(BraveRewardsRewardsInternalsInfo* _Nullable info))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetRewardsInternalsInfo(
         base::BindOnce(^(brave_rewards::mojom::RewardsInternalsInfoPtr info) {
           auto bridgedInfo = info.get() != nullptr
@@ -795,7 +628,7 @@ static const auto kOneDay =
 - (void)allContributions:
     (void (^)(NSArray<BraveRewardsContributionInfo*>* contributions))
         completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetAllContributions(base::BindOnce(
         ^(std::vector<brave_rewards::mojom::ContributionInfoPtr> list) {
           const auto convetedList = NSArrayFromVector(
@@ -814,7 +647,7 @@ static const auto kOneDay =
 - (void)fetchAutoContributeProperties:
     (void (^)(BraveRewardsAutoContributeProperties* _Nullable properties))
         completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetAutoContributeProperties(base::BindOnce(
         ^(brave_rewards::mojom::AutoContributePropertiesPtr props) {
           auto properties =
@@ -839,13 +672,13 @@ static const auto kOneDay =
   const auto time = [[NSDate date] timeIntervalSince1970];
   if (_selectedTabId != selectedTabId) {
     const auto oldTabId = _selectedTabId;
-    [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+    [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
       engine->OnHide(oldTabId, time);
     }];
   }
   _selectedTabId = selectedTabId;
   if (_selectedTabId > 0) {
-    [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+    [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
       engine->OnShow(selectedTabId, time);
     }];
   }
@@ -857,14 +690,9 @@ static const auto kOneDay =
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->OnForeground(self.selectedTabId, time);
   }];
-
-  // Check if the last notification check was more than a day ago
-  if (fabs([self.lastNotificationCheckDate timeIntervalSinceNow]) > kOneDay) {
-    [self checkForNotificationsAndFetchGrants];
-  }
 }
 
 - (void)applicationDidBackground {
@@ -873,7 +701,7 @@ static const auto kOneDay =
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->OnBackground(self.selectedTabId, time);
   }];
 }
@@ -884,7 +712,7 @@ static const auto kOneDay =
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
     url::Origin origin = url::Origin::Create(parsedUrl);
     const std::string baseDomain = GetDomainAndRegistry(
@@ -918,7 +746,7 @@ static const auto kOneDay =
     return;
   }
 
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     base::flat_map<std::string, std::string> partsMap;
     const auto urlComponents = [[NSURLComponents alloc] initWithURL:url
                                             resolvingAgainstBaseURL:NO];
@@ -951,7 +779,7 @@ static const auto kOneDay =
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->OnUnload(tabId, time);
   }];
 }
@@ -959,25 +787,25 @@ static const auto kOneDay =
 #pragma mark - Preferences
 
 - (void)setMinimumVisitDuration:(int)minimumVisitDuration {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->SetPublisherMinVisitTime(minimumVisitDuration);
   }];
 }
 
 - (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->SetPublisherMinVisits(minimumNumberOfVisits);
   }];
 }
 
 - (void)setContributionAmount:(double)contributionAmount {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->SetAutoContributionAmount(contributionAmount);
   }];
 }
 
 - (void)setAutoContributeEnabled:(bool)autoContributeEnabled {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->SetAutoContributeEnabled(autoContributeEnabled);
   }];
 }
@@ -1148,7 +976,7 @@ static const auto kOneDay =
             (brave_rewards::mojom::RewardsEngineClient::SetTimeStateCallback)
                 callback {
   const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = @(value.ToDoubleT());
+  self.prefs[key] = @(value.InSecondsFSinceUnixEpoch());
   [self savePrefs];
   std::move(callback).Run();
 }
@@ -1159,7 +987,7 @@ static const auto kOneDay =
                  callback {
   const auto key = base::SysUTF8ToNSString(name);
   std::move(callback).Run(
-      base::Time::FromDoubleT([self.prefs[key] doubleValue]));
+      base::Time::FromSecondsSinceUnixEpoch([self.prefs[key] doubleValue]));
 }
 
 - (void)clearState:(const std::string&)name
@@ -1190,25 +1018,6 @@ static const auto kOneDay =
   // Not used on iOS
 }
 
-- (void)startNotificationTimers {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    // Startup timer, begins after 30-second delay.
-    self.notificationStartupTimer =
-        [NSTimer scheduledTimerWithTimeInterval:30
-                                         target:self
-                                       selector:@selector
-                                       (checkForNotificationsAndFetchGrants)
-                                       userInfo:nil
-                                        repeats:NO];
-  });
-}
-
-- (void)checkForNotificationsAndFetchGrants {
-  self.lastNotificationCheckDate = [NSDate date];
-
-  [self fetchPromotions:nil];
-}
-
 #pragma mark - State
 
 - (void)loadLegacyState:
@@ -1222,7 +1031,6 @@ static const auto kOneDay =
     std::move(callback).Run(brave_rewards::mojom::Result::NO_LEGACY_STATE,
                             contents);
   }
-  [self startNotificationTimers];
 }
 
 - (void)loadPublisherState:
@@ -1357,10 +1165,6 @@ static const auto kOneDay =
   std::move(callback).Run(std::move(info));
 }
 
-- (void)unblindedTokensReady {
-  [self fetchBalance:nil];
-}
-
 - (void)reconcileStampReset {
   // Not used on iOS
 }
@@ -1399,10 +1203,10 @@ static const auto kOneDay =
                  callback {
   std::string encrypted_value;
   if (!OSCrypt::EncryptString(value, &encrypted_value)) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
-  std::move(callback).Run(absl::make_optional(encrypted_value));
+  std::move(callback).Run(std::make_optional(encrypted_value));
 }
 
 - (void)
@@ -1412,10 +1216,10 @@ static const auto kOneDay =
                  callback {
   std::string decrypted_value;
   if (!OSCrypt::DecryptString(value, &decrypted_value)) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
-  std::move(callback).Run(absl::make_optional(decrypted_value));
+  std::move(callback).Run(std::make_optional(decrypted_value));
 }
 
 - (void)externalWalletConnected {

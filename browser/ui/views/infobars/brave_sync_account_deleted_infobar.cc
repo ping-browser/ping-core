@@ -25,8 +25,8 @@ BraveSyncAccountDeletedInfoBar::BraveSyncAccountDeletedInfoBar(
 
 BraveSyncAccountDeletedInfoBar::~BraveSyncAccountDeletedInfoBar() {}
 
-void BraveSyncAccountDeletedInfoBar::Layout() {
-  InfoBarView::Layout();
+void BraveSyncAccountDeletedInfoBar::Layout(PassKey) {
+  LayoutSuperclass<InfoBarView>(this);
 
   if (ok_button_) {
     ok_button_->SizeToPreferredSize();
@@ -34,8 +34,8 @@ void BraveSyncAccountDeletedInfoBar::Layout() {
 
   int x = GetStartX();
   Views views;
-  views.push_back(label_);
-  views.push_back(link_);
+  views.push_back(label_.get());
+  views.push_back(link_.get());
   AssignWidths(&views, std::max(0, GetEndX() - x - NonLabelWidth()));
 
   ChromeLayoutProvider* layout_provider = ChromeLayoutProvider::Get();

@@ -11,60 +11,35 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposit_interface.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_factory.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
+#include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/public/ad_type.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {
-
-namespace {
-
-bool ShouldReset() {
-  return UserHasJoinedBraveRewards() &&
-         AdsClientHelper::GetInstance()->GetBooleanPref(
-             prefs::kShouldMigrateVerifiedRewardsUser);
-}
-
-void UpdateIssuers(const IssuersInfo& issuers) {
-  if (!HasIssuersChanged(issuers)) {
-    return BLOG(1, "Issuers already up to date");
-  }
-
-  BLOG(1, "Updated issuers");
-  SetIssuers(issuers);
-}
-
-}  // namespace
 
 Account::Account(TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator) {
   CHECK(token_generator_);
 
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 
   InitializeConfirmations();
 }
 
 Account::~Account() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 void Account::AddObserver(AccountObserver* observer) {
@@ -79,14 +54,10 @@ void Account::RemoveObserver(AccountObserver* observer) {
 
 void Account::SetWallet(const std::string& payment_id,
                         const std::string& recovery_seed) {
-  const absl::optional<WalletInfo> wallet = ToWallet(payment_id, recovery_seed);
+  const std::optional<WalletInfo> wallet = ToWallet(payment_id, recovery_seed);
   if (!wallet) {
     BLOG(0, "Failed to initialize wallet");
     return NotifyFailedToInitializeWallet();
-  }
-
-  if (wallet_ == wallet) {
-    return;
   }
 
   wallet_ = wallet;
@@ -95,12 +66,29 @@ void Account::SetWallet(const std::string& payment_id,
   NotifyDidInitializeWallet(*wallet);
 }
 
+// static
+void Account::GetStatement(GetStatementOfAccountsCallback callback) {
+  if (!UserHasJoinedBraveRewards()) {
+    return std::move(callback).Run(/*statement*/ nullptr);
+  }
+
+  return BuildStatement(std::move(callback));
+}
+
 void Account::Deposit(const std::string& creative_instance_id,
                       const std::string& segment,
-                      const AdType& ad_type,
-                      const ConfirmationType& confirmation_type) const {
+                      const AdType ad_type,
+                      const ConfirmationType confirmation_type) const {
+  DepositWithUserData(creative_instance_id, segment, ad_type, confirmation_type,
+                      /*user_data=*/base::Value::Dict());
+}
+
+void Account::DepositWithUserData(const std::string& creative_instance_id,
+                                  const std::string& segment,
+                                  const AdType ad_type,
+                                  const ConfirmationType confirmation_type,
+                                  base::Value::Dict user_data) const {
   CHECK(!creative_instance_id.empty());
-  CHECK(!segment.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
@@ -113,25 +101,17 @@ void Account::Deposit(const std::string& creative_instance_id,
   deposit->GetValue(
       creative_instance_id,
       base::BindOnce(&Account::DepositCallback, weak_factory_.GetWeakPtr(),
-                     creative_instance_id, segment, ad_type,
-                     confirmation_type));
-}
-
-// static
-void Account::GetStatement(GetStatementOfAccountsCallback callback) {
-  if (!UserHasJoinedBraveRewards()) {
-    return std::move(callback).Run(/*statement*/ nullptr);
-  }
-
-  return BuildStatement(std::move(callback));
+                     creative_instance_id, segment, ad_type, confirmation_type,
+                     std::move(user_data)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void Account::DepositCallback(const std::string& creative_instance_id,
                               const std::string& segment,
-                              const AdType& ad_type,
-                              const ConfirmationType& confirmation_type,
+                              const AdType ad_type,
+                              const ConfirmationType confirmation_type,
+                              base::Value::Dict user_data,
                               const bool success,
                               const double value) const {
   if (!success) {
@@ -140,29 +120,33 @@ void Account::DepositCallback(const std::string& creative_instance_id,
   }
 
   ProcessDeposit(creative_instance_id, segment, value, ad_type,
-                 confirmation_type);
+                 confirmation_type, std::move(user_data));
 }
 
 void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const std::string& segment,
                              const double value,
-                             const AdType& ad_type,
-                             const ConfirmationType& confirmation_type) const {
+                             const AdType ad_type,
+                             const ConfirmationType confirmation_type,
+                             base::Value::Dict user_data) const {
   if (!UserHasJoinedBraveRewards()) {
-    return SuccessfullyProcessedDeposit(BuildTransaction(
-        creative_instance_id, segment, value, ad_type, confirmation_type));
+    return SuccessfullyProcessedDeposit(
+        BuildTransaction(creative_instance_id, segment, value, ad_type,
+                         confirmation_type),
+        std::move(user_data));
   }
 
   AddTransaction(
       creative_instance_id, segment, value, ad_type, confirmation_type,
       base::BindOnce(&Account::ProcessDepositCallback,
                      weak_factory_.GetWeakPtr(), creative_instance_id, ad_type,
-                     confirmation_type));
+                     confirmation_type, std::move(user_data)));
 }
 
 void Account::ProcessDepositCallback(const std::string& creative_instance_id,
-                                     const AdType& ad_type,
-                                     const ConfirmationType& confirmation_type,
+                                     const AdType ad_type,
+                                     const ConfirmationType confirmation_type,
+                                     base::Value::Dict user_data,
                                      const bool success,
                                      const TransactionInfo& transaction) const {
   if (!success) {
@@ -170,28 +154,28 @@ void Account::ProcessDepositCallback(const std::string& creative_instance_id,
                                   confirmation_type);
   }
 
-  SuccessfullyProcessedDeposit(transaction);
+  SuccessfullyProcessedDeposit(transaction, std::move(user_data));
 }
 
-void Account::SuccessfullyProcessedDeposit(
-    const TransactionInfo& transaction) const {
+void Account::SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
+                                           base::Value::Dict user_data) const {
   BLOG(3, "Successfully processed deposit for "
               << transaction.ad_type << " with creative instance id "
               << transaction.creative_instance_id << " and "
               << transaction.confirmation_type << " valued at "
               << transaction.value);
 
+  confirmations_->Confirm(transaction, std::move(user_data));
+
   NotifyDidProcessDeposit(transaction);
 
-  NotifyStatementOfAccountsDidChange();
-
-  confirmations_->Confirm(transaction);
+  AdsNotifierManager::GetInstance().NotifyAdRewardsDidChange();
 }
 
 void Account::FailedToProcessDeposit(
     const std::string& creative_instance_id,
-    const AdType& ad_type,
-    const ConfirmationType& confirmation_type) const {
+    const AdType ad_type,
+    const ConfirmationType confirmation_type) const {
   BLOG(0, "Failed to process deposit for "
               << ad_type << " with creative instance id "
               << creative_instance_id << " and " << confirmation_type);
@@ -201,108 +185,44 @@ void Account::FailedToProcessDeposit(
 }
 
 void Account::Initialize() {
-  MaybeReset();
+  MaybeInitializeUserRewards();
 
-  MaybeRewardUser();
-
-  NotifyStatementOfAccountsDidChange();
-
-  MaybeFetchIssuers();
-
-  MaybeProcessUnclearedTransactions();
+  AdsNotifierManager::GetInstance().NotifyAdRewardsDidChange();
 }
 
 void Account::InitializeConfirmations() {
   BLOG(1, "Initialize confirmations");
+
   confirmations_ = std::make_unique<Confirmations>(token_generator_);
   confirmations_->SetDelegate(this);
 }
 
-void Account::MaybeRewardUser() {
-  UserHasJoinedBraveRewards() ? InitializeUserRewards() : ShutdownUserRewards();
-}
-
-void Account::InitializeUserRewards() {
-  if (!issuers_url_request_) {
-    BLOG(1, "Initialize issuers url request");
-    issuers_url_request_ = std::make_unique<IssuersUrlRequest>();
-    issuers_url_request_->SetDelegate(this);
-  }
-
-  if (!refill_confirmation_tokens_) {
-    BLOG(1, "Initialize refill confirmation tokens");
-    refill_confirmation_tokens_ =
-        std::make_unique<RefillConfirmationTokens>(token_generator_);
-    refill_confirmation_tokens_->SetDelegate(this);
-  }
-
-  if (!redeem_payment_tokens_) {
-    BLOG(1, "Initialize redeem payment tokens");
-    redeem_payment_tokens_ = std::make_unique<RedeemPaymentTokens>();
-    redeem_payment_tokens_->SetDelegate(this);
-  }
-}
-
-void Account::ShutdownUserRewards() {
-  if (issuers_url_request_) {
-    issuers_url_request_.reset();
-    BLOG(1, "Shutdown issuers url request");
-
-    ResetIssuers();
-    BLOG(1, "Reset issuers");
-  }
-
-  if (refill_confirmation_tokens_) {
-    refill_confirmation_tokens_.reset();
-    BLOG(1, "Shutdown refill confirmation tokens");
-  }
-
-  if (redeem_payment_tokens_) {
-    redeem_payment_tokens_.reset();
-    BLOG(1, "Shutdown redeem payment tokens");
-  }
-}
-
-void Account::MaybeFetchIssuers() const {
-  if (issuers_url_request_) {
-    issuers_url_request_->PeriodicallyFetch();
-  }
-}
-
-bool Account::ShouldProcessUnclearedTransactions() const {
-  return wallet_ && redeem_payment_tokens_;
-}
-
-void Account::MaybeProcessUnclearedTransactions() const {
-  if (ShouldProcessUnclearedTransactions()) {
-    redeem_payment_tokens_->MaybeRedeemAfterDelay(*wallet_);
-  }
-}
-
-bool Account::ShouldRefillConfirmationTokens() const {
-  return wallet_ && refill_confirmation_tokens_;
-}
-
-void Account::MaybeReset() {
-  if (!ShouldReset()) {
+void Account::MaybeInitializeUserRewards() {
+  if (!wallet_) {
     return;
   }
 
-  InitializeConfirmations();
+  if (user_rewards_ || !UserHasJoinedBraveRewards()) {
+    return;
+  }
 
-  ResetIssuers();
+  BLOG(1, "Initialize user rewards");
 
-  ResetTokens();
+  // We do not need to destroy the `user_rewards` object when a user resets
+  // Brave Rewards because the associated data and the `Ads` instance will be
+  // destroyed.
 
-  AdsClientHelper::GetInstance()->SetBooleanPref(
-      prefs::kShouldMigrateVerifiedRewardsUser, false);
+  user_rewards_ = std::make_unique<UserRewards>(token_generator_, *wallet_);
+  user_rewards_->SetDelegate(this);
 
-  MaybeFetchIssuers();
+  user_rewards_->FetchIssuers();
+
+  user_rewards_->MaybeRedeemPaymentTokens();
 }
 
-void Account::MaybeRefillConfirmationTokens() const {
-  if (ShouldRefillConfirmationTokens()) {
-    refill_confirmation_tokens_->MaybeRefill(*wallet_);
+void Account::MaybeRefillConfirmationTokens() {
+  if (user_rewards_) {
+    user_rewards_->MaybeRefillConfirmationTokens();
   }
 }
 
@@ -327,17 +247,11 @@ void Account::NotifyDidProcessDeposit(
 
 void Account::NotifyFailedToProcessDeposit(
     const std::string& creative_instance_id,
-    const AdType& ad_type,
-    const ConfirmationType& confirmation_type) const {
+    const AdType ad_type,
+    const ConfirmationType confirmation_type) const {
   for (AccountObserver& observer : observers_) {
     observer.OnFailedToProcessDeposit(creative_instance_id, ad_type,
                                       confirmation_type);
-  }
-}
-
-void Account::NotifyStatementOfAccountsDidChange() const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnStatementOfAccountsDidChange();
   }
 }
 
@@ -348,8 +262,6 @@ void Account::OnNotifyDidInitializeAds() {
 void Account::OnNotifyPrefDidChange(const std::string& path) {
   if (path == brave_rewards::prefs::kEnabled) {
     Initialize();
-  } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
-    MaybeReset();
   }
 }
 
@@ -357,73 +269,19 @@ void Account::OnNotifyRewardsWalletDidUpdate(const std::string& payment_id,
                                              const std::string& recovery_seed) {
   SetWallet(payment_id, recovery_seed);
 
+  Initialize();
+}
+
+void Account::OnDidConfirm(const ConfirmationInfo& /*confirmation*/) {
   MaybeRefillConfirmationTokens();
 }
 
-void Account::OnNotifyDidSolveAdaptiveCaptcha() {
+void Account::OnFailedToConfirm(const ConfirmationInfo& /*confirmation*/) {
   MaybeRefillConfirmationTokens();
 }
 
-void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
-  CHECK(IsValid(confirmation));
-
-  MaybeRefillConfirmationTokens();
-}
-
-void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
-  CHECK(IsValid(confirmation));
-
-  MaybeRefillConfirmationTokens();
-}
-
-void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
-  if (!IsIssuersValid(issuers)) {
-    return BLOG(0, "Invalid issuers");
-  }
-
-  UpdateIssuers(issuers);
-
-  MaybeRefillConfirmationTokens();
-}
-
-void Account::OnDidRedeemPaymentTokens(const PaymentTokenList& payment_tokens) {
-  const database::table::Transactions database_table;
-  database_table.Update(payment_tokens, base::BindOnce([](const bool success) {
-                          if (!success) {
-                            return BLOG(0, "Failed to update transactions");
-                          }
-
-                          BLOG(3, "Successfully updated transactions");
-                        }));
-}
-
-void Account::OnWillRefillConfirmationTokens() {
-  BLOG(1, "Refill confirmation tokens");
-}
-
-void Account::OnDidRefillConfirmationTokens() {
-  BLOG(1, "Successfully refilled confirmation tokens");
-}
-
-void Account::OnFailedToRefillConfirmationTokens() {
-  BLOG(1, "Failed to refill confirmation tokens");
-}
-
-void Account::OnWillRetryRefillingConfirmationTokens(base::Time retry_at) {
-  BLOG(1,
-       "Retry refilling confirmation tokens " << FriendlyDateAndTime(retry_at));
-}
-
-void Account::OnDidRetryRefillingConfirmationTokens() {
-  BLOG(1, "Retry refilling confirmation tokens");
-}
-
-void Account::OnCaptchaRequiredToRefillConfirmationTokens(
-    const std::string& captcha_id) {
-  if (wallet_) {
-    AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
-        wallet_->payment_id, captcha_id);
-  }
+void Account::OnDidMigrateVerifiedRewardsUser() {
+  InitializeConfirmations();
 }
 
 }  // namespace brave_ads

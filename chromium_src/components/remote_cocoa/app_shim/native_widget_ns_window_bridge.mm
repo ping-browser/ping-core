@@ -3,8 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "skia/ext/skia_utils_mac.h"
+
 #include "src/components/remote_cocoa/app_shim/native_widget_ns_window_bridge.mm"
 
+namespace {
+NSColor* g_brave_title_color = nil;
+}  // namespace
+
+@interface NSThemeFrame (BraveTheme)
+- (NSColor*)_currentTitleColor;  // Forward declaration of method
+@end
+
+@interface BrowserWindowFrame : NativeWidgetMacNSWindowTitledFrame
+@end
+
+// Custom implementation for BrowserWindowFrame only
+@implementation BrowserWindowFrame (BraveTheme)
+
+// Override currentTitleColor to return our own.
+- (NSColor*)_currentTitleColor {
+  return g_brave_title_color;
+}
+
+@end
 namespace remote_cocoa {
 
 void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
@@ -21,9 +43,9 @@ void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
   // Sometimes title is not visible until window is resized. In order to avoid
   // this, reset title to force it to be visible.
   if (visible) {
-    NSString* title = window_.get().title;
-    window_.get().title = @"";
-    window_.get().title = title;
+    NSString* title = window_.title;
+    window_.title = @"";
+    window_.title = title;
   }
 }
 
@@ -43,13 +65,31 @@ void NativeWidgetNSWindowBridge::ResetWindowControlsPosition() {
   //
   // If this behavior is broken, we should run `class-dump` by ourselves and
   // find out what can be used instead of this.
-  NSView* frameView = window_.get().contentView.superview;
+  NSView* frameView = window_.contentView.superview;
   DCHECK([frameView isKindOfClass:[NSThemeFrame class]]);
-  SEL selector = @selector(_resetTitleBarButtons);
-  if ([frameView respondsToSelector:selector])
-    [frameView performSelector:selector];
-  else
+  if ([frameView respondsToSelector:@selector(_resetTitleBarButtons)]) {
+    [frameView performSelector:@selector(_resetTitleBarButtons)];
+  } else {
     LOG(ERROR) << "Failed to find selector for resetting window controls";
+  }
+}
+
+void NativeWidgetNSWindowBridge::UpdateWindowTitleColor(SkColor color) {
+  NSView* frameView = window_.contentView.superview;
+  if (![frameView isKindOfClass:[BrowserWindowFrame class]]) {
+    return;
+  }
+
+  if (![frameView respondsToSelector:@selector(_currentTitleColor)]) {
+    return;
+  }
+
+  g_brave_title_color = skia::SkColorToDeviceNSColor(color);
+
+  // Reset title to apply new title color.
+  NSString* title = window_.title;
+  window_.title = @"";
+  window_.title = title;
 }
 
 }  // namespace remote_cocoa

@@ -12,7 +12,7 @@ import {
 
 // Hooks
 import { useExplorer } from '../../../../common/hooks/explorer'
-import { useGetSelectedChainQuery } from '../../../../common/slices/api.slice'
+import { useTransactionsNetwork } from '../../../../common/hooks/use-transactions-network'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -36,11 +36,9 @@ interface Props {
 export const TransactionSubmittedOrSigned = (props: Props) => {
   const { headerTitle, transaction, onClose } = props
 
-  // queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-
   // custom hooks
-  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const transactionNetwork = useTransactionsNetwork(transaction)
+  const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)
 
   const title =
     transaction.txStatus === BraveWallet.TransactionStatus.Submitted
@@ -48,18 +46,22 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
       : getLocale('braveWalletTransactionSignedTitle')
   const description =
     transaction.txStatus === BraveWallet.TransactionStatus.Submitted
-     ? getLocale('braveWalletTransactionSubmittedDescription')
-     : getLocale('braveWalletTransactionSignedDescription')
+      ? getLocale('braveWalletTransactionSubmittedDescription')
+      : getLocale('braveWalletTransactionSignedDescription')
 
   return (
-    <Panel navAction={onClose} title={headerTitle} headerStyle='slim'>
+    <Panel
+      navAction={onClose}
+      title={headerTitle}
+      headerStyle='slim'
+    >
       <SubmittedOrSignedIcon />
       <Title>{title}</Title>
-      <TransactionStatusDescription>
-        {description}
-      </TransactionStatusDescription>
+      <TransactionStatusDescription>{description}</TransactionStatusDescription>
       <ButtonRow>
-        <DetailButton onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}>
+        <DetailButton
+          onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}
+        >
           {getLocale('braveWalletTransactionExplorer')}
         </DetailButton>
         <LinkIcon />

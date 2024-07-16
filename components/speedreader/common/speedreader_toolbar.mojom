@@ -11,9 +11,6 @@ interface ToolbarFactory {
 };
 
 interface ToolbarDataHandler {
-  GetSiteSettings() => (SiteSettings site_settings);
-  SetSiteSettings(SiteSettings site_settings);
-
   GetAppearanceSettings() =>(AppearanceSettings appearance_settings);
   SetAppearanceSettings(AppearanceSettings appearance_settings);
 
@@ -21,6 +18,8 @@ interface ToolbarDataHandler {
   SetTtsSettings(TtsSettings tts_settings);
 
   ObserveThemeChange();
+
+  ShowTuneBubble(bool show);
 
   ViewOriginal();
 
@@ -35,25 +34,24 @@ interface ToolbarDataHandler {
   Pause();
   Stop();
   Forward();
+
+  OnToolbarStateChanged(MainButtonType button);
 };
 
 interface ToolbarEventsHandler {
-  OnSiteSettingsChanged(SiteSettings site_settings);
   OnAppearanceSettingsChanged(AppearanceSettings appearance_settings);
   OnTtsSettingsChanged(TtsSettings tts_settings);
   OnBrowserThemeChanged(ToolbarColors colors);
+  OnTuneBubbleClosed();
 
   SetPlaybackState(PlaybackState playback_state);
-};
-
-struct SiteSettings {
-  bool speedreader_enabled = false;
 };
 
 struct AppearanceSettings {
   Theme theme = Theme.kNone;
   FontSize fontSize = FontSize.k100;
   FontFamily fontFamily = FontFamily.kSans;
+  ColumnWidth columnWidth = ColumnWidth.kNarrow;
 };
 
 struct TtsSettings {
@@ -68,6 +66,15 @@ struct ToolbarColors {
   uint32 button_hover;
   uint32 button_active;
   uint32 button_border;
+  uint32 button_active_text;
+};
+
+enum MainButtonType {
+  None,
+  Tune,
+  Appearance,
+  TextToSpeech,
+  AI,
 };
 
 // Enum is used in prefs. Be careful when changing or extending.
@@ -100,6 +107,12 @@ enum FontFamily {
   kSerif = 1,
   kMono = 2,
   kDyslexic = 3,
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+enum ColumnWidth {
+  kNarrow = 0,
+  kWide = 1,
 };
 
 // Enum is used in prefs. Be careful when changing or extending.

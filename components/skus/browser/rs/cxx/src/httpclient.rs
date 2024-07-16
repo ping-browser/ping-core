@@ -35,21 +35,14 @@ impl TryFrom<http::Request<Vec<u8>>> for ffi::HttpRequest {
         let mut headers: Vec<String> = Vec::new();
 
         for (key, value) in req.headers().iter() {
-            let value = value
-                .to_str()
-                .map_err(|_| InternalError::UnhandledVariant)?;
+            let value = value.to_str().map_err(|_| InternalError::UnhandledVariant)?;
             let header = format!("{}: {}", key.as_str(), value);
             headers.push(header);
         }
 
         let body = req.body().to_vec();
 
-        Ok(ffi::HttpRequest {
-            url,
-            method,
-            headers,
-            body,
-        })
+        Ok(ffi::HttpRequest { url, method, headers, body })
     }
 }
 
@@ -57,9 +50,8 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalErr
     fn from(resp: ffi::HttpResponse<'_>) -> Self {
         match resp.result {
             ffi::SkusResult::Ok => {
-                let mut response = http::Response::builder();
+                let mut response = http::Response::builder().status(resp.return_code);
 
-                response.status(resp.return_code);
                 for header in resp.headers {
                     let header = header.to_string();
                     // header: value
@@ -70,14 +62,32 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalErr
                         ))
                         .debug_unwrap()?;
                     let (key, value) = header.split_at(idx);
+                    let key = http::HeaderName::try_from(key).map_err(|_| {
+                        InternalError::InvalidCall(
+                            concat!(
+                                "must pass a valid HTTP header name,",
+                                " i.e. ASCII charaters with no whitespace",
+                                " or separator punctuation.",
+                                "\nSee RFC 9110 section 5.6.2 for details.",
+                            )
+                            .to_string(),
+                        )
+                    })?;
                     let value = value
                         .get(1..)
                         .ok_or(InternalError::InvalidCall(
                             "must pass headers as `KEY: VALUE`".to_string(),
                         ))
                         .debug_unwrap()?;
+                    let value = http::HeaderValue::try_from(value).map_err(|_| {
+                        InternalError::InvalidCall(
+                            "must pass a valid (ASCII-printable) HTTP header value".to_string(),
+                        )
+                    })?;
 
-                    response.header(key, value);
+                    if let Some(headers) = response.headers_mut() {
+                        headers.insert(key, value);
+                    }
                 }
 
                 response
@@ -96,17 +106,18 @@ impl NativeClient {
         req: ffi::HttpRequest,
     ) -> Result<http::Response<Vec<u8>>, InternalError> {
         let (tx, rx) = oneshot::channel();
-        let context = Box::new(HttpRoundtripContext {
-            tx,
-            client: self.clone(),
-        });
+        let context = Box::new(HttpRoundtripContext { tx, client: self.clone() });
+        let ctx = self
+                .inner
+                .lock().await
+                .ctx
+                .clone();
 
         let fetcher = ffi::shim_executeRequest(
-            &self
-                .ctx
-                .try_borrow()
-                .map_err(|_| InternalError::BorrowFailed)?
-                .ctx,
+            &*ctx
+              .try_borrow()
+              .map_err(|_| InternalError::BorrowFailed)?
+            ,
             &req,
             |context, resp| {
                 let _ = context.tx.send(resp.into());
@@ -144,9 +155,7 @@ impl HTTPClient for NativeClient {
                 debug!("woke up!");
                 context.client.try_run_until_stalled();
             },
-            Box::new(WakeupContext {
-                client: self.clone(),
-            }),
+            Box::new(WakeupContext { client: self.clone() }),
         )
     }
 

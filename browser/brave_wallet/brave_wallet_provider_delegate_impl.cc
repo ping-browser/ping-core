@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -50,22 +51,10 @@ void OnRequestPermissions(
   // The responses array will be empty if operation failed.
   if (responses.empty()) {
     std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
-                            absl::nullopt);
+                            std::nullopt);
   } else {
     std::move(callback).Run(mojom::RequestPermissionsError::kNone,
                             granted_accounts);
-  }
-}
-
-absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
-    mojom::CoinType coin_type) {
-  switch (coin_type) {
-    case mojom::CoinType::ETH:
-      return permissions::RequestType::kBraveEthereum;
-    case mojom::CoinType::SOL:
-      return permissions::RequestType::kBraveSolana;
-    default:
-      return absl::nullopt;
   }
 }
 
@@ -96,6 +85,10 @@ void BraveWalletProviderDelegateImpl::ShowPanel() {
   ::brave_wallet::ShowPanel(web_contents_);
 }
 
+void BraveWalletProviderDelegateImpl::ShowWalletBackup() {
+  ::brave_wallet::ShowWalletBackup();
+}
+
 void BraveWalletProviderDelegateImpl::WalletInteractionDetected() {
   ::brave_wallet::WalletInteractionDetected(web_contents_);
 }
@@ -109,7 +102,7 @@ void BraveWalletProviderDelegateImpl::ShowAccountCreation(
   ::brave_wallet::ShowAccountCreation(web_contents_, type);
 }
 
-absl::optional<std::vector<std::string>>
+std::optional<std::vector<std::string>>
 BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     mojom::CoinType type,
     const std::vector<std::string>& accounts) {
@@ -119,7 +112,7 @@ BraveWalletProviderDelegateImpl::GetAllowedAccounts(
 
   auto permission = CoinTypeToPermissionType(type);
   if (!permission) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return permissions::BraveWalletPermissionContext::GetAllowedAccounts(
@@ -139,7 +132,7 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
   auto permission = CoinTypeToPermissionType(type);
   if (!request_type || !permission) {
     std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
-                            absl::nullopt);
+                            std::nullopt);
     return;
   }
   // Check if there's already a permission request in progress
@@ -147,7 +140,7 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
   if (rfh && permissions::BraveWalletPermissionContext::HasRequestsInProgress(
                  rfh, *request_type)) {
     std::move(callback).Run(mojom::RequestPermissionsError::kRequestInProgress,
-                            absl::nullopt);
+                            std::nullopt);
     return;
   }
 

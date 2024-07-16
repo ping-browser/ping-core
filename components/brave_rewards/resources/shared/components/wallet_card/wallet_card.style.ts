@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const root = styled.div`
   background: linear-gradient(125.83deg, #392DD1 0%, #A91B78 99.09%);
@@ -180,9 +180,15 @@ export const batAmount = styled.div`
   align-items: stretch;
   gap: 4px;
 
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 48px;
+  .amount {
+    font: ${leo.font.default.regular};
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 48px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    padding-right: 4px;
+  }
 
   .currency {
     font-weight: 400;
@@ -192,57 +198,26 @@ export const batAmount = styled.div`
   }
 `
 
-// TODO(sszaloki):
-// replace color: #FFBC18; with color: ${leo.color.yellow[30]};
-// once the palette adjustments have been merged
-export const balanceInfo = styled.div`
-  position: relative;
-
-  --icon-size: 18px;
-  color: #FFBC18;
-  margin-top: 14px;
-
-  .tooltip {
-    position: absolute;
-    right: -118px;
-    width: 260px;
-    padding-top: 8px;
-    visibility: hidden;
-    transition: visibility 0s linear 300ms;
-    z-index: 1;
-  }
-
-  &:hover .tooltip {
-    visibility: initial;
-  }
-`
-
-export const balanceTooltip = styled.div.attrs({
-  'data-theme': 'light'
-})`
-  position: relative;
-  padding: 16px;
-  background: ${leo.color.white};
-  box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
-  border-radius: 8px;
-  color: ${leo.color.text.primary};
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: 122px;
-    background: inherit;
-    height: 15px;
-    width: 15px;
-    transform: rotate(45deg);
-  }
+export const batAmountForTesting = styled.div`
+  display: none;
 `
 
 export const balanceSpinner = styled.div`
+  font-size: 14px;
+  line-height: 18px;
+  padding: 16px 0;
+  min-height: 62px;
+
+  animation-name: fade-in;
+  animation-delay: 1s;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: .8; }
+  }
+
   .icon {
     height: 24px;
     vertical-align: middle;
@@ -250,16 +225,19 @@ export const balanceSpinner = styled.div`
   }
 `
 
-export const loading = styled.span`
-  font-size: 14px;
-  line-height: 18px;
-  vertical-align: middle;
-`
-
 export const exchangeAmount = styled.div`
   font-size: 12px;
   line-height: 14px;
   opacity: 0.66;
+
+  .amount {
+    font: ${leo.font.default.regular};
+    font-size: 12px;
+    line-height: 14px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.05em;
+    padding-right: 4px;
+  }
 `
 
 export const hiddenEarnings = styled.div`
@@ -278,30 +256,6 @@ export const hiddenEarnings = styled.div`
 
 export const hiddenEarningsValue = styled.span`
   opacity: 0.65;
-`
-
-export const viewStatement = styled.div`
-  margin-top: 12px;
-  text-align: center;
-
-  button {
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 20px;
-    padding: 0;
-    border-radius: 48px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .icon {
-    width: 15px;
-    height: auto;
-    vertical-align: middle;
-    margin-right: 6px;
-    margin-bottom: 2px;
-  }
 `
 
 export const summaryBox = styled.div`

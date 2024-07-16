@@ -29,11 +29,13 @@ import {
   GridContainer,
   Header,
   HeaderItem,
-  Row,
+  GridRow,
   GridRowsWrapper,
   SortIcon,
-  StyledWrapper
+  StyledWrapper,
+  EmptyStateText
 } from './market-grid.style'
+import { Row } from '../style'
 
 export type MarketGridProps = {
   headers: MarketGridHeader[]
@@ -56,7 +58,7 @@ export type MarketGridProps = {
 }
 
 const defaultVisibleRows = 15
-const defaultRowHeight = 72
+const defaultRowHeight = 65
 const defaultOverScanCount = 15
 
 export const MarketGrid = ({
@@ -110,6 +112,7 @@ export const MarketGrid = ({
     })
   }, [
     coinMarketData,
+    fiatCurrency,
     isBuySupported,
     isDepositSupported,
     onClickBuy,
@@ -134,7 +137,7 @@ export const MarketGrid = ({
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
       const row = rows[index]
       return (
-        <Row
+        <GridRow
           key={row.id}
           templateColumns={gridTemplateColumns}
           style={style}
@@ -150,17 +153,17 @@ export const MarketGrid = ({
               {cell.content}
             </Cell>
           ))}
-        </Row>
+        </GridRow>
       )
     },
-    [rows, gridTemplateColumns]
+    [rows, gridTemplateColumns, headers]
   )
 
   const onContentLoad = React.useCallback(() => {
     if (wrapperRef.current) {
       onUpdateIframeHeight(wrapperRef.current.scrollHeight)
     }
-  }, [onUpdateIframeHeight, wrapperRef.current])
+  }, [onUpdateIframeHeight, wrapperRef])
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -174,7 +177,10 @@ export const MarketGrid = ({
   }, [headers])
 
   return (
-    <StyledWrapper onLoad={onContentLoad} ref={wrapperRef}>
+    <StyledWrapper
+      onLoad={onContentLoad}
+      ref={wrapperRef}
+    >
       <GridContainer>
         <Header templateColumns={gridTemplateColumns}>
           {headers.map((header) => (
@@ -195,18 +201,28 @@ export const MarketGrid = ({
             </HeaderItem>
           ))}
         </Header>
-        <FixedSizeList
-          height={visibleRows * rowHeight}
-          itemCount={rows.length}
-          itemSize={rowHeight}
-          overscanCount={overScanCount}
-          width='100%'
-          outerElementType={GridRowsWrapper}
-        >
-          {renderRows}
-        </FixedSizeList>
+        {showEmptyState ? (
+          <Row margin='30px 0px'>
+            <EmptyStateText
+              isBold={true}
+              textSize='14px'
+            >
+              {getLocale('braveWalletMarketDataNoAssetsFound')}
+            </EmptyStateText>
+          </Row>
+        ) : (
+          <FixedSizeList
+            height={visibleRows * rowHeight}
+            itemCount={rows.length}
+            itemSize={rowHeight}
+            overscanCount={overScanCount}
+            width='100%'
+            outerElementType={GridRowsWrapper}
+          >
+            {renderRows}
+          </FixedSizeList>
+        )}
       </GridContainer>
-      {showEmptyState && getLocale('braveWalletMarketDataNoAssetsFound')}
       <CoinGeckoText>
         {getLocale('braveWalletPoweredByCoinGecko')}
       </CoinGeckoText>

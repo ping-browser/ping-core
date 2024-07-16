@@ -5,36 +5,44 @@
 
 import { Reducer } from 'redux'
 
+import { closeDialog, submitReport } from '../browser_proxy'
 // Constants
 import { types } from '../constants/webcompatreporter_types'
 
 const defaultState: WebcompatReporter.State = {
-  siteUrl: '',
+  dialogArgs: {
+    url: '',
+    isErrorPage: false,
+    adBlockSetting: '',
+    fpBlockSetting: '',
+    shieldsEnabled: ''
+  },
   submitted: false
 }
 
 const webcompatReporterReducer: Reducer<WebcompatReporter.State | undefined> = (state: WebcompatReporter.State = defaultState, action) => {
   switch (action.type) {
     case types.WEBCOMPATREPORTER_ON_SUBMIT_REPORT:
-      chrome.send('webcompat_reporter.submitReport', [
-        state.siteUrl,
-        action.payload.details || null,
-        action.payload.contact || null
-      ])
+      submitReport({
+        ...state.dialogArgs,
+        additionalDetails: action.payload.details || null,
+        contactInfo: action.payload.contact || null,
+        attachScreenshot: action.payload.attachScreenshot || false
+      })
       state = {
         ...state,
         submitted: true
       }
-      setTimeout(() => chrome.send('dialogClose'), 5000)
+      setTimeout(closeDialog, 5000)
       break
-    case types.WEBCOMPATREPORTER_SET_SITE_URL:
+    case types.WEBCOMPATREPORTER_SET_DIALOG_ARGS:
       state = {
         ...state,
-        siteUrl: action.payload.siteUrl
+        dialogArgs: action.payload.dialogArgs
       }
       break
     case types.WEBCOMPATREPORTER_ON_CLOSE:
-      chrome.send('dialogClose')
+      closeDialog()
       break
     default:
       break

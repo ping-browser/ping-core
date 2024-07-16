@@ -5,8 +5,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_content_browser_client.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -17,7 +16,6 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -30,7 +28,9 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #endif
 
 using brave_shields::ControlType;
@@ -45,6 +45,7 @@ struct TestCase {
   const char* domain;
   const char* path;
   ControlType control_type;
+  bool type_url;
   PageResult expected_result;
 };
 
@@ -53,24 +54,36 @@ constexpr char kSimple[] = "/simple.html";
 constexpr char kNonexistent[] = "/nonexistent.html";
 
 constexpr TestCase kTestCases[] = {
-    {false, "insecure1.com", kSimple, ControlType::ALLOW, PageResult::kHttp},
-    {false, "insecure2.com", kSimple, ControlType::BLOCK_THIRD_PARTY,
+    {false, "insecure1.com", kSimple, ControlType::ALLOW, false,
      PageResult::kHttp},
-    {false, "insecure3.com", kSimple, ControlType::BLOCK,
-     PageResult::kInterstitial},
-    {false, "broken1.com", kNonexistent, ControlType::ALLOW, PageResult::kHttp},
-    {false, "broken2.com", kNonexistent, ControlType::BLOCK_THIRD_PARTY,
+    {false, "insecure2.com", kSimple, ControlType::BLOCK_THIRD_PARTY, false,
      PageResult::kHttp},
-    {false, "broken3.com", kNonexistent, ControlType::BLOCK,
+    {false, "insecure3.com", kSimple, ControlType::BLOCK, false,
      PageResult::kInterstitial},
-    {false, "upgradable1.com", kSimple, ControlType::ALLOW, PageResult::kHttp},
-    {false, "upgradable2.com", kSimple, ControlType::BLOCK_THIRD_PARTY,
+    {false, "broken1.com", kNonexistent, ControlType::ALLOW, false,
+     PageResult::kHttp},
+    {false, "broken2.com", kNonexistent, ControlType::BLOCK_THIRD_PARTY, false,
+     PageResult::kHttp},
+    {false, "broken3.com", kNonexistent, ControlType::BLOCK, false,
+     PageResult::kInterstitial},
+    {false, "upgradable1.com", kSimple, ControlType::ALLOW, false,
+     PageResult::kHttp},
+    {false, "upgradable2.com", kSimple, ControlType::BLOCK_THIRD_PARTY, false,
      PageResult::kHttps},
-    {false, "upgradable3.com", kSimple, ControlType::BLOCK, PageResult::kHttps},
-    {true, "secure1.com", kSimple, ControlType::ALLOW, PageResult::kHttps},
-    {true, "secure2.com", kSimple, ControlType::BLOCK_THIRD_PARTY,
+    {false, "upgradable3.com", kSimple, ControlType::BLOCK, false,
      PageResult::kHttps},
-    {true, "secure3.com", kSimple, ControlType::BLOCK, PageResult::kHttps}};
+    {false, "upgradable1.com", kSimple, ControlType::ALLOW, true,
+     PageResult::kHttp},
+    {false, "upgradable2.com", kSimple, ControlType::BLOCK_THIRD_PARTY, true,
+     PageResult::kHttps},
+    {false, "upgradable3.com", kSimple, ControlType::BLOCK, true,
+     PageResult::kHttps},
+    {true, "secure1.com", kSimple, ControlType::ALLOW, false,
+     PageResult::kHttps},
+    {true, "secure2.com", kSimple, ControlType::BLOCK_THIRD_PARTY, false,
+     PageResult::kHttps},
+    {true, "secure3.com", kSimple, ControlType::BLOCK, false,
+     PageResult::kHttps}};
 
 base::FilePath GetTestDataDir() {
   return base::FilePath(FILE_PATH_LITERAL("net/data/url_request_unittest"));
@@ -84,14 +97,12 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
   ~HttpsUpgradeBrowserTest() override = default;
 
   void SetUp() override {
-    feature_list_.InitWithFeatures(
-        {features::kHttpsFirstModeV2, kBraveHttpsByDefault}, {});
+    feature_list_.InitWithFeatures({kBraveHttpsByDefault}, {});
     PlatformBrowserTest::SetUp();
   }
 
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
-    content::SetBrowserClientForTesting(&client_);
     g_brave_browser_process->https_upgrade_exceptions_service()
         ->SetIsReadyForTesting();
     // By default allow all hosts on HTTPS.
@@ -135,14 +146,24 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
-  void AttemptToNavigateToURL(const GURL& url) {
+  void AttemptNavigation(const GURL& url, bool url_typed_with_http_scheme) {
+#if BUILDFLAG(IS_ANDROID)
+    // Chromium Android does not appear to skip upgrading URLs typed
+    // with an http scheme, so we don't need a special setting:
     content::NavigateToURLBlockUntilNavigationsComplete(Contents(), url, 1,
                                                         true);
+#else
+    NavigateParams params(chrome_test_utils::GetProfile(this), url,
+                          ui::PAGE_TRANSITION_TYPED);
+    params.url_typed_with_http_scheme = url_typed_with_http_scheme;
+    ui_test_utils::NavigateToURL(&params);
+#endif
   }
 
   GURL RunTestCaseNavigation(bool shields_enabled,
                              bool global_setting,
-                             const TestCase& test_case) {
+                             const TestCase& test_case,
+                             bool type_url) {
     SCOPED_TRACE(testing::Message()
                  << "global_setting: " << global_setting << ", "
                  << "test_case.init_secure: " << test_case.init_secure << ", "
@@ -161,7 +182,7 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
     // Run navigation twice to ensure that the behavior doesn't
     // change after first run.
     for (int i = 0; i < 2; ++i) {
-      AttemptToNavigateToURL(initial_url);
+      AttemptNavigation(initial_url, type_url);
     }
     return initial_url;
   }
@@ -184,7 +205,6 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
   net::EmbeddedTestServer http_server_{net::EmbeddedTestServer::TYPE_HTTP};
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
   content::ContentMockCertVerifier mock_cert_verifier_;
-  BraveContentBrowserClient client_;
 };
 
 class HttpsUpgradeBrowserTest_FlagDisabled : public HttpsUpgradeBrowserTest {
@@ -201,7 +221,8 @@ class HttpsUpgradeBrowserTest_FlagDisabled : public HttpsUpgradeBrowserTest {
 IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest, CheckUpgrades) {
   for (bool global_setting : {true, false}) {
     for (const TestCase& test_case : kTestCases) {
-      RunTestCaseNavigation(true, global_setting, test_case);
+      RunTestCaseNavigation(true, global_setting, test_case,
+                            test_case.type_url);
       bool interstitial_showing =
           chrome_browser_interstitials::IsShowingInterstitial(Contents());
       if (test_case.expected_result == PageResult::kInterstitial) {
@@ -221,8 +242,8 @@ IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest, CheckUpgrades) {
 IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest, CheckUpgradesWithShieldsDown) {
   for (bool global_setting : {true, false}) {
     for (const TestCase& test_case : kTestCases) {
-      const GURL initial_url =
-          RunTestCaseNavigation(false, global_setting, test_case);
+      const GURL initial_url = RunTestCaseNavigation(
+          false, global_setting, test_case, test_case.type_url);
       // Shields down means no URLs change and no interstitials shown.
       EXPECT_EQ(initial_url, Contents()->GetLastCommittedURL());
       bool interstitial_showing =
@@ -235,8 +256,8 @@ IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest, CheckUpgradesWithShieldsDown) {
 IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest_FlagDisabled, CheckUpgrades) {
   for (bool global_setting : {true, false}) {
     for (const TestCase& test_case : kTestCases) {
-      const GURL initial_url =
-          RunTestCaseNavigation(true, global_setting, test_case);
+      const GURL initial_url = RunTestCaseNavigation(
+          true, global_setting, test_case, test_case.type_url);
       // Disabled flag means no URLs change and no interstitials shown.
       EXPECT_EQ(initial_url, Contents()->GetLastCommittedURL());
       bool interstitial_showing =

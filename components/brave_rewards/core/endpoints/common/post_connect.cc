@@ -5,76 +5,95 @@
 
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
 using Error = PostConnect::Error;
 using Result = PostConnect::Result;
+using mojom::ConnectExternalWalletResult;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseGeoCountry(RewardsEngine& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
+    return base::unexpected(Error::kFailedToParseBody);
+  }
+
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* geo_country = dict.FindString("geoCountry");
+  if (!geo_country || geo_country->empty()) {
+    engine.LogError(FROM_HERE) << "Missing geoCountry response field";
+    return base::unexpected(Error::kFailedToParseBody);
+  }
+
+  return *geo_country;
+}
+
+Result ParseErrorMessage(RewardsEngine& engine, const std::string& body) {
+  const auto value = base::JSONReader::Read(body);
+  if (!value || !value->is_dict()) {
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* message = dict.FindString("message");
   if (!message) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   if (message->find("KYC required") != std::string::npos) {
     // HTTP 403: Uphold
-    BLOG(0, "KYC required!");
+    engine.LogError(FROM_HERE) << "KYC required";
     return base::unexpected(Error::kKYCRequired);
   } else if (message->find("mismatched provider accounts") !=
              std::string::npos) {
     // HTTP 403: bitFlyer, Gemini, Uphold
-    BLOG(0, "Mismatched provider accounts!");
+    engine.LogError(FROM_HERE) << "Mismatched provider accounts";
     return base::unexpected(Error::kMismatchedProviderAccounts);
   } else if (message->find("transaction verification failure") !=
              std::string::npos) {
     // HTTP 403: Uphold
-    BLOG(0, "Transaction verification failure!");
+    engine.LogError(FROM_HERE) << "Transaction verification failure";
     return base::unexpected(Error::kTransactionVerificationFailure);
   } else if (message->find("request signature verification failure") !=
              std::string::npos) {
     // HTTP 403: bitFlyer, Gemini
-    BLOG(0, "Request signature verification failure!");
+    engine.LogError(FROM_HERE) << "Request signature verification failure";
     return base::unexpected(Error::kRequestSignatureVerificationFailure);
   } else if (message->find("unable to link - unusual activity") !=
              std::string::npos) {
     // HTTP 400: bitFlyer, Gemini, Uphold
-    BLOG(0, "Flagged wallet!");
+    engine.LogError(FROM_HERE) << "Flagged wallet";
     return base::unexpected(Error::kFlaggedWallet);
   } else if (message->find("region not supported") != std::string::npos) {
     // HTTP 400: bitFlyer, Gemini, Uphold
-    BLOG(0, "Region not supported!");
+    engine.LogError(FROM_HERE) << "Region not supported";
     return base::unexpected(Error::kRegionNotSupported);
   } else if (message->find("mismatched provider account regions") !=
              std::string::npos) {
     // HTTP 400: bitFlyer, Gemini, Uphold
-    BLOG(0, "Mismatched countries!");
+    engine.LogError(FROM_HERE) << "Mismatched countries";
     return base::unexpected(Error::kMismatchedCountries);
   } else if (message->find("is temporarily unavailable") != std::string::npos) {
     // HTTP 400: bitFlyer, Gemini, Uphold
-    BLOG(0, "Provider unavailable!");
+    engine.LogError(FROM_HERE) << "Provider unavailable";
     return base::unexpected(Error::kProviderUnavailable);
   } else {
     // bitFlyer, Gemini, Uphold
-    BLOG(0, "Unknown message!");
+    engine.LogError(FROM_HERE) << "Unknown message";
     return base::unexpected(Error::kUnknownMessage);
   }
 }
@@ -82,25 +101,27 @@ Result ParseBody(const std::string& body) {
 }  // namespace
 
 // static
-Result PostConnect::ProcessResponse(const mojom::UrlResponse& response) {
+Result PostConnect::ProcessResponse(RewardsEngine& engine,
+                                    const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return {};
+      return ParseGeoCountry(engine, response.body);
     case net::HTTP_BAD_REQUEST:  // HTTP 400
-      return ParseBody(response.body);
+      return ParseErrorMessage(engine, response.body);
     case net::HTTP_FORBIDDEN:  // HTTP 403
-      return ParseBody(response.body);
+      return ParseErrorMessage(engine, response.body);
     case net::HTTP_NOT_FOUND:  // HTTP 404
-      BLOG(0, "KYC required!");
+      engine.LogError(FROM_HERE) << "KYC required";
       return base::unexpected(Error::kKYCRequired);
     case net::HTTP_CONFLICT:  // HTTP 409
-      BLOG(0, "Device limit reached!");
+      engine.LogError(FROM_HERE) << "Device limit reached";
       return base::unexpected(Error::kDeviceLimitReached);
     case net::HTTP_INTERNAL_SERVER_ERROR:  // HTTP 500
-      BLOG(0, "Unexpected error!");
+      engine.LogError(FROM_HERE) << "Unexpected error";
       return base::unexpected(Error::kUnexpectedError);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
@@ -111,79 +132,80 @@ ConnectExternalWalletResult PostConnect::ToConnectExternalWalletResult(
   if (!result.has_value()) {
     switch (result.error()) {
       case Error::kFailedToCreateRequest:
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
       case Error::kFlaggedWallet:  // HTTP 400
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kFlaggedWallet);
+        return ConnectExternalWalletResult::kFlaggedWallet;
       case Error::kMismatchedCountries:  // HTTP 400
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kMismatchedCountries);
+        return ConnectExternalWalletResult::kMismatchedCountries;
       case Error::kProviderUnavailable:  // HTTP 400
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kProviderUnavailable);
+        return ConnectExternalWalletResult::kProviderUnavailable;
       case Error::kRegionNotSupported:  // HTTP 400
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kRegionNotSupported);
+        return ConnectExternalWalletResult::kRegionNotSupported;
       case Error::kUnknownMessage:  // HTTP 400, HTTP 403
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
       case Error::kKYCRequired:  // HTTP 403, HTTP 404
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kKYCRequired);
+        return ConnectExternalWalletResult::kKYCRequired;
       case Error::kMismatchedProviderAccounts:  // HTTP 403
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kMismatchedProviderAccounts);
+        return ConnectExternalWalletResult::kMismatchedProviderAccounts;
       case Error::kRequestSignatureVerificationFailure:  // HTTP 403
-        return base::unexpected(mojom::ConnectExternalWalletError::
-                                    kRequestSignatureVerificationFailure);
+        return ConnectExternalWalletResult::
+            kRequestSignatureVerificationFailure;
       case Error::kTransactionVerificationFailure:  // HTTP 403
-        return base::unexpected(mojom::ConnectExternalWalletError::
-                                    kUpholdTransactionVerificationFailure);
+        return ConnectExternalWalletResult::
+            kUpholdTransactionVerificationFailure;
       case Error::kDeviceLimitReached:  // HTTP 409
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kDeviceLimitReached);
+        return ConnectExternalWalletResult::kDeviceLimitReached;
       case Error::kUnexpectedError:  // HTTP 500
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
       case Error::kUnexpectedStatusCode:  // HTTP xxx
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
       case Error::kFailedToParseBody:
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
     }
   }
 
-  return {};
+  return ConnectExternalWalletResult::kSuccess;
 }
 
-PostConnect::PostConnect(RewardsEngineImpl& engine) : RequestBuilder(engine) {}
+PostConnect::PostConnect(RewardsEngine& engine) : RequestBuilder(engine) {}
 
 PostConnect::~PostConnect() = default;
 
-absl::optional<std::string> PostConnect::Url() const {
+std::optional<std::string> PostConnect::Url() const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
+    return std::nullopt;
   }
 
   DCHECK(!wallet->payment_id.empty());
 
-  return endpoint::promotion::GetServerUrl(
-      base::StringPrintf(Path(), wallet->payment_id.c_str()));
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_grant_url()
+      .Resolve(base::StringPrintf(Path(), wallet->payment_id.c_str()))
+      .spec();
 }
 
-absl::optional<std::vector<std::string>> PostConnect::Headers(
+std::optional<std::vector<std::string>> PostConnect::Headers(
     const std::string& content) const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
+    return std::nullopt;
   }
 
   DCHECK(!wallet->payment_id.empty());
   DCHECK(!wallet->recovery_seed.empty());
 
-  return util::BuildSignHeaders(
-      "post " + base::StringPrintf(Path(), wallet->payment_id.c_str()), content,
-      wallet->payment_id, wallet->recovery_seed);
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer) {
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
+    return std::nullopt;
+  }
+
+  return signer->GetSignedHeaders(
+      "post " + base::StringPrintf(Path(), wallet->payment_id.c_str()),
+      content);
 }
 
 std::string PostConnect::ContentType() const {

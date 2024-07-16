@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 
 import { initLocale } from 'brave-ui'
 
@@ -16,31 +17,38 @@ import 'emptykit.css'
 
 // Utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
-import * as Lib from '../../../../common/async/lib'
 
 // actions
 import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
 import { store } from '../../../store'
-import BraveCoreThemeProvider
-  from '../../../../../common/BraveCoreThemeProvider'
+import {
+  // eslint-disable-next-line import/no-named-default
+  default as BraveCoreThemeProvider
+} from '../../../../../common/BraveCoreThemeProvider'
 import { Swap } from '../swap'
-import { LibContext } from '../../../../common/context/lib.context'
 
 export function AndroidSwapApp() {
   return (
     <Provider store={store}>
-      <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
-        <LibContext.Provider value={Lib}>
-          <Swap />
-        </LibContext.Provider>
-      </BraveCoreThemeProvider>
+      <BrowserRouter>
+        <BraveCoreThemeProvider
+          dark={walletDarkTheme}
+          light={walletLightTheme}
+        >
+          <Switch>
+            <Route>
+              <Swap />
+            </Route>
+          </Switch>
+        </BraveCoreThemeProvider>
+      </BrowserRouter>
     </Provider>
   )
 }
 
-function initialize () {
+function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
   render(AndroidSwapApp(), document.getElementById('root'))

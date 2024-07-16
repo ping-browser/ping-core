@@ -42,7 +42,8 @@ TEST_F(BraveContentSettingsRegistryTest, Properties) {
       registry()->Get(ContentSettingsType::BRAVE_COOKIES);
   ASSERT_TRUE(info);
 
-  EXPECT_THAT(info->allowlisted_schemes(), ElementsAre("chrome", "devtools"));
+  EXPECT_THAT(info->allowlisted_primary_schemes(),
+              ElementsAre("chrome", "devtools"));
 
   // Check the other properties are populated correctly.
   EXPECT_FALSE(info->IsSettingValid(CONTENT_SETTING_SESSION_ONLY));
@@ -147,12 +148,6 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   }
 
   {
-    SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
-    info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
-    EXPECT_EQ(CONTENT_SETTING_ALLOW, info->GetInitialDefaultSetting());
-  }
-
-  {
     SCOPED_TRACE("Content setting: BRAVE_ETHEREUM");
     info = registry()->Get(ContentSettingsType::BRAVE_ETHEREUM);
     EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
@@ -181,6 +176,12 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   // {
   //   SCOPED_TRACE("Content setting: BRAVE_COOKIES");
   //   info = registry()->Get(ContentSettingsType::BRAVE_COOKIES);
+  //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
+  // }
+
+  // {
+  //   SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
+  //   info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
   //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
   // }
 }

@@ -16,6 +16,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -26,10 +27,11 @@ import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
-import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.resources.ResourceManager;
 
@@ -52,22 +54,42 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
 
     public BraveBottomControlsCoordinator(
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            OnLongClickListener tabSwitcherLongclickListener, ActivityTabProvider tabProvider,
-            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
+            OnLongClickListener tabSwitcherLongclickListener,
+            ActivityTabProvider tabProvider,
+            Runnable openHomepageAction,
+            Callback<Integer> setUrlBarFocusAction,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             ThemeColorProvider themeColorProvider,
+            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            LocationBarModel locationBarModel,
             /* Below are parameters from BottomControlsCoordinator */
-            Activity activity, WindowAndroid windowAndroid, LayoutManager layoutManager,
-            ResourceManager resourceManager, BrowserControlsSizer controlsSizer,
-            FullscreenManager fullscreenManager, ScrollingBottomViewResourceFrameLayout root,
-            BottomControlsContentDelegate contentDelegate, TabObscuringHandler tabObscuringHandler,
+            Activity activity,
+            WindowAndroid windowAndroid,
+            LayoutManager layoutManager,
+            ResourceManager resourceManager,
+            BrowserControlsSizer controlsSizer,
+            FullscreenManager fullscreenManager,
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            ScrollingBottomViewResourceFrameLayout root,
+            BottomControlsContentDelegate contentDelegate,
+            TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
             ObservableSupplier<Integer> constraintsSupplier,
-            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
-            LocationBarModel locationBarModel) {
-        super(activity, windowAndroid, layoutManager, resourceManager, controlsSizer,
-                fullscreenManager, root, contentDelegate, tabObscuringHandler,
-                overlayPanelVisibilitySupplier, constraintsSupplier);
+            Supplier<Boolean> readAloudRestoringSupplier) {
+        super(
+                activity,
+                windowAndroid,
+                layoutManager,
+                resourceManager,
+                controlsSizer,
+                fullscreenManager,
+                edgeToEdgeControllerSupplier,
+                root,
+                contentDelegate,
+                tabObscuringHandler,
+                overlayPanelVisibilitySupplier,
+                constraintsSupplier,
+                readAloudRestoringSupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;
@@ -81,20 +103,40 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
         mLocationBarModel = locationBarModel;
     }
 
-    public void initializeWithNative(Activity activity, ResourceManager resourceManager,
-            LayoutManagerImpl layoutManager, OnClickListener tabSwitcherListener,
-            OnClickListener newTabClickListener, WindowAndroid windowAndroid,
-            TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
-            ViewGroup topToolbarRoot, Runnable closeAllTabsAction) {
+    public void initializeWithNative(
+            Activity activity,
+            ResourceManager resourceManager,
+            LayoutManagerImpl layoutManager,
+            OnClickListener tabSwitcherListener,
+            OnClickListener newTabClickListener,
+            WindowAndroid windowAndroid,
+            TabModelSelector tabModelSelector,
+            IncognitoStateProvider incognitoStateProvider,
+            ViewGroup topToolbarRoot,
+            Runnable closeAllTabsAction) {
         if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
-            mBottomToolbarCoordinator = new BottomToolbarCoordinator(mRoot,
-                    mRoot.findViewById(R.id.bottom_toolbar), mTabProvider,
-                    mTabSwitcherLongclickListener, mThemeColorProvider, mOpenHomepageAction,
-                    mSetUrlBarFocusAction, mLayoutStateProviderSupplier, mMenuButtonHelperSupplier,
-                    mMediator, mBookmarkModelSupplier, mLocationBarModel);
+            mBottomToolbarCoordinator =
+                    new BottomToolbarCoordinator(
+                            mRoot,
+                            mRoot.findViewById(R.id.bottom_toolbar),
+                            mTabProvider,
+                            mTabSwitcherLongclickListener,
+                            mThemeColorProvider,
+                            mOpenHomepageAction,
+                            mSetUrlBarFocusAction,
+                            mLayoutStateProviderSupplier,
+                            mMenuButtonHelperSupplier,
+                            mMediator,
+                            mBookmarkModelSupplier,
+                            mLocationBarModel);
 
-            mBottomToolbarCoordinator.initializeWithNative(tabSwitcherListener, newTabClickListener,
-                    tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);
+            mBottomToolbarCoordinator.initializeWithNative(
+                    tabSwitcherListener,
+                    newTabClickListener,
+                    tabModelSelector,
+                    incognitoStateProvider,
+                    topToolbarRoot,
+                    closeAllTabsAction);
         }
     }
 

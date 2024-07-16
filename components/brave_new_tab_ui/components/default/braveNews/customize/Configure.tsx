@@ -3,22 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Flex from '$web-common/Flex'
+import { getLocale } from '$web-common/locale'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import Toggle from '@brave/leo/react/toggle'
+import { spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
-import Flex from '../../../Flex'
-import Discover from './Discover'
-import { BackArrow } from './Icons'
-import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
-import Toggle from '@brave/leo/react/toggle'
-import SourcesList from './SourcesList'
-import DisabledPlaceholder from './DisabledPlaceholder'
-import { useBraveNews } from './Context'
-import { getLocale } from '$web-common/locale'
+import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
+import { BackArrow } from '../../../../../brave_news/browser/resources/shared/Icons'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
-import { SuggestionsPage } from './Suggestions'
+import DisabledPlaceholder from './DisabledPlaceholder'
+import Discover from './Discover'
 import { PopularPage } from './Popular'
-import { spacing } from '@brave/leo/tokens/css'
+import SourcesList from './SourcesList'
+import { SuggestionsPage } from './Suggestions'
+import Dropdown from '@brave/leo/react/dropdown'
+import { defaultState } from '../../../../storage/new_tab_storage'
 
 const Grid = styled.div`
   width: 100%;
@@ -54,6 +56,7 @@ const BackButtonContainer = styled.div`
   display: flex;
   padding: 12px;
   padding-left: 34px;
+  & > leo-button { max-width: max-content; }
 `
 
 const CloseButton = styled(Button)`
@@ -94,13 +97,19 @@ const Content = styled.div`
   padding: 20px 64px;
 `
 
+const OpenArticlesDropdown = styled(Dropdown)`
+  margin-left: ${spacing['3Xl']};
+`
+
 export default function Configure() {
   const {
     setCustomizePage,
     customizePage,
     toggleBraveNewsOnNTP,
     isOptInPrefEnabled,
-    isShowOnNTPPrefEnabled
+    isShowOnNTPPrefEnabled,
+    openArticlesInNewTab,
+    setOpenArticlesInNewTab
   } = useBraveNews()
 
   // TODO(petemill): We'll probably need to have 2 toggles, or some other
@@ -123,7 +132,7 @@ export default function Configure() {
     <Grid id='brave-news-configure'>
       <BackButtonContainer>
         <Button onClick={() => setCustomizePage(null)} kind='plain-faint'>
-          <Flex direction='row' align='center' gap={spacing[8]}>
+          <Flex direction='row' align='center' gap={spacing.m}>
             {BackArrow}
             <span>
               {formatMessage(getLocale('braveNewsBackToDashboard'), {
@@ -141,7 +150,15 @@ export default function Configure() {
         </CloseButton>
         {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveNewsTitle')}</HeaderText>
-          <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.detail.checked)} />
+          <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.checked)} />
+          {defaultState.featureFlagBraveNewsFeedV2Enabled && <OpenArticlesDropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.value === 'true')}>
+            <span slot="label">{getLocale('braveNewsOpenArticlesIn')}</span>
+            <span slot='value'>
+              {openArticlesInNewTab ? getLocale('braveNewsOpenArticlesInNewTab') : getLocale('braveNewsOpenArticlesInCurrentTab')}
+            </span>
+            <leo-option value={'true'}>{getLocale('braveNewsOpenArticlesInNewTab')}</leo-option>
+            <leo-option value={'false'}>{getLocale('braveNewsOpenArticlesInCurrentTab')}</leo-option>
+          </OpenArticlesDropdown>}
         </Flex>}
       </Header>
       <Hr />

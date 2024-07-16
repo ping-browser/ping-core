@@ -8,7 +8,8 @@
 
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
 
-class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
+class BraveAvatarToolbarButtonDelegate final
+    : public AvatarToolbarButtonDelegate {
  public:
   using AvatarToolbarButtonDelegate::AvatarToolbarButtonDelegate;
   BraveAvatarToolbarButtonDelegate(AvatarToolbarButton* button,
@@ -17,9 +18,16 @@ class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
       delete;
   BraveAvatarToolbarButtonDelegate& operator=(
       const BraveAvatarToolbarButtonDelegate&) = delete;
-  ~BraveAvatarToolbarButtonDelegate() override = default;
 
   gfx::Image GetGaiaAccountImage() const;
+
+  // Overrides from AvatarToolbarButtonDelegate:
+  ui::ImageModel GetAvatarIcon(int icon_size,
+                               SkColor icon_color) const override;
+  std::u16string GetAvatarTooltipText() const override;
+
+ private:
+  raw_ptr<Browser> browser_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_AVATAR_TOOLBAR_BUTTON_DELEGATE_H_

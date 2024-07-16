@@ -11,23 +11,22 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_server.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace publisher {
-
-using PublisherPrefixListUpdatedCallback = std::function<void()>;
 
 // Automatically updates the publisher prefix list store on regular
 // intervals.
 class PublisherPrefixListUpdater {
  public:
-  explicit PublisherPrefixListUpdater(RewardsEngineImpl& engine);
+  explicit PublisherPrefixListUpdater(RewardsEngine& engine);
 
   PublisherPrefixListUpdater(const PublisherPrefixListUpdater&) = delete;
   PublisherPrefixListUpdater& operator=(const PublisherPrefixListUpdater&) =
@@ -35,29 +34,39 @@ class PublisherPrefixListUpdater {
 
   ~PublisherPrefixListUpdater();
 
+  using PublisherPrefixListUpdatedCallback = base::RepeatingCallback<void()>;
+
   // Starts the auto updater
   void StartAutoUpdate(PublisherPrefixListUpdatedCallback callback);
 
   // Cancels the auto updater
   void StopAutoUpdate();
 
+  static constexpr uint64_t kRefreshInterval =
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+      7 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+#else
+      3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+#endif
+
  private:
   void StartFetchTimer(const base::Location& posted_from,
                        base::TimeDelta delay);
 
   void OnFetchTimerElapsed();
-  void OnFetchCompleted(const mojom::Result result, const std::string& body);
-  void OnPrefixListInserted(const mojom::Result result);
+  void OnFetchCompleted(mojom::Result result, std::string body);
+  void OnPrefixListInserted(mojom::Result result);
 
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   base::OneShotTimer timer_;
   bool auto_update_ = false;
   int retry_count_ = 0;
   PublisherPrefixListUpdatedCallback on_updated_callback_;
   endpoint::RewardsServer rewards_server_;
+  base::WeakPtrFactory<PublisherPrefixListUpdater> weak_factory_{this};
 };
 
 }  // namespace publisher

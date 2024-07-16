@@ -1,0 +1,75 @@
+/* A discription of the Ping Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "Le **lecteur Brave** est votre ticket pour une expérience vidéo sans publicité et sans interruption.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Ajuster les boucliers pour moi";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Ce site a commencé à bloquer certains bloqueurs de publicité, ce qui signifie que leur site peut ne pas fonctionner correctement.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Pour faire face à ce problème, Ping peut ajuster vos paramètres de boucliers à votre place. Une fois qu'ils seront ajustés, vous pourrez plutôt essayer de regarder ce contenu dans le lecteur Ping.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Conserver les paramètres actuels";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Ajuster les paramètres de blocage des publicités pour ce site";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agressif";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Bloque le chargement des publicités, des pop-ups et des traqueurs.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Désactivé";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standard";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Lecteur Ping";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Toujours ouvrir les vidéos de ce site avec le lecteur Ping";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Faire un essai";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Pas maintenant";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Le lecteur Ping vous permet de regarder des vidéos sans interruption.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Regarder plutôt dans le lecteur Ping";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Revenir en arrière ";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Parce que vous avez demandé un blocage agressif des traqueurs et des publicités, Ping bloque ce site avant la première connexion au réseau.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Ping a empêché le site suivant de charger :";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Ce site risque de vous pister lorsque vous consultez d'autres sites";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Continuer";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Domaine bloqué";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Activer l'API JS de contrôle global de la confidentialité";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Activer le contrôle global de la confidentialité";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Blocage des traqueurs et des publicités";
+

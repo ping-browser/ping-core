@@ -8,6 +8,7 @@ import { Reducer } from 'redux'
 import { types } from '../actions/rewards_types'
 import { userTypeFromMojo } from '../../shared/lib/user_type'
 import * as Rewards from '../lib/types'
+import * as mojom from '../../shared/lib/mojom'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -19,15 +20,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.isInitialized')
       break
     }
-    case types.GET_IS_GRANDFATHERED_USER: {
-      chrome.send('brave_rewards.isGrandfatheredUser')
-      break
-    }
-    case types.ON_IS_GRANDFATHERED_USER: {
-      state = { ...state }
-      state.isGrandfatheredUser = action.payload.isGrandfatheredUser
-      break
-    }
     case types.GET_USER_TYPE: {
       chrome.send('brave_rewards.getUserType')
       break
@@ -35,6 +27,22 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_USER_TYPE: {
       state = { ...state }
       state.userType = userTypeFromMojo(action.payload.userType)
+      break
+    }
+    case types.IS_TERMS_OF_SERVICE_UPDATE_REQUIRED: {
+      chrome.send('brave_rewards.isTermsOfServiceUpdateRequired')
+      break
+    }
+    case types.ON_IS_TERMS_OF_SERVICE_UPDATE_REQUIRED: {
+      state = {
+        ...state,
+        isUserTermsOfServiceUpdateRequired: action.payload.updateRequired
+      }
+      break
+    }
+    case types.ACCEPT_TERMS_OF_SERVICE_UPDATE: {
+      chrome.send('brave_rewards.acceptTermsOfServiceUpdate')
+      chrome.send('brave_rewards.isTermsOfServiceUpdateRequired')
       break
     }
     case types.GET_IS_AUTO_CONTRIBUTE_SUPPORTED: {
@@ -162,24 +170,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
-    case types.ON_CONTRIBUTIONS_SETTINGS_CLOSE: {
-      let ui = state.ui
-      ui.contributionsSettings = false
-      state = {
-        ...state,
-        ui
-      }
-      break
-    }
-    case types.ON_CONTRIBUTIONS_SETTINGS_OPEN: {
-      let ui = state.ui
-      ui.contributionsSettings = true
-      state = {
-        ...state,
-        ui
-      }
-      break
-    }
     case types.ON_MODAL_CONNECT_CLOSE: {
       let ui = state.ui
       ui.modalConnect = false
@@ -192,6 +182,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_MODAL_CONNECT_OPEN: {
       let ui = state.ui
       ui.modalConnect = true
+      ui.modalConnectState = ''
       state = {
         ...state,
         ui
@@ -343,81 +334,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.adsMaxEarningsLastMonth = data.adsMaxEarningsLastMonth
       break
     }
-    case types.GET_ENABLED_INLINE_TIPPING_PLATFORMS: {
-      chrome.send('brave_rewards.getEnabledInlineTippingPlatforms')
-      break
-    }
-    case types.ON_ENABLED_INLINE_TIPPING_PLATFORMS: {
-      let inlineTipsEnabled = false
-      const inlineTip = {
-        twitter: false,
-        reddit: false,
-        github: false
-      }
-
-      for (const platform of action.payload.platforms) {
-        switch (platform) {
-          case 'enabled':
-            inlineTipsEnabled = true
-            break
-          case 'github':
-            inlineTip.github = true
-            break
-          case 'reddit':
-            inlineTip.reddit = true
-            break
-          case 'twitter':
-            inlineTip.twitter = true
-            break
-        }
-      }
-
-      state = {
-        ...state,
-        inlineTipsEnabled,
-        inlineTip
-      }
-
-      break
-    }
-    case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
-      if (!state.inlineTip) {
-        state.inlineTip = {
-          twitter: true,
-          reddit: true,
-          github: true
-        }
-      }
-
-      const key = action.payload.key
-      const value = action.payload.value
-
-      if (key == null || key.length === 0 || value == null) {
-        break
-      }
-
-      let inlineTip = state.inlineTip
-
-      inlineTip[key] = value
-      chrome.send('brave_rewards.setInlineTippingPlatformEnabled', [key, value.toString()])
-
-      state = {
-        ...state,
-        inlineTip
-      }
-
-      break
-    }
-    case types.ON_INLINE_TIPS_ENABLED_CHANGE: {
-      const inlineTipsEnabled = action.payload.enabled
-      chrome.send('brave_rewards.setInlineTipsEnabled', [inlineTipsEnabled])
-      state = {
-        ...state,
-        inlineTipsEnabled
-      }
-
-      break
-    }
     case types.CONNECT_EXTERNAL_WALLET: {
       const path = action.payload.path
       const query = action.payload.query
@@ -425,6 +341,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       chrome.send('brave_rewards.connectExternalWallet', [path, query])
       ui.modalRedirect = 'show'
+      // The first non-empty path segment contains the wallet provider type.
+      ui.modalRedirectProvider = path.replace(/^\//, '').split('/')[0] || ''
 
       state = { ...state, ui }
       break
@@ -433,14 +351,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getExternalWallet')
 
       const ui = state.ui
-      const { value, error } = action.payload.result
+      const { result } = action.payload
 
-      if (value) {
+      if (result === mojom.ConnectExternalWalletResult.kSuccess) {
         chrome.send('brave_rewards.getUserType')
         chrome.send('brave_rewards.fetchBalance')
         ui.modalRedirect = 'hide'
       } else {
-        ui.modalRedirect = error
+        ui.modalRedirect = result
       }
 
       state = { ...state, ui }
@@ -523,7 +441,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_PREF_CHANGED: {
-      chrome.send('brave_rewards.getEnabledInlineTippingPlatforms')
       chrome.send('brave_rewards.getContributionAmount')
       chrome.send('brave_rewards.getAutoContributeProperties')
       chrome.send('brave_rewards.getAdsData')

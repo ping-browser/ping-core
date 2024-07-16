@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/commander/commander_service.h"
 
-#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <iterator>
@@ -16,31 +15,28 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
-#include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/browser/ui/commander/brave_simple_command_source.h"
+#include "brave/browser/ui/commander/bookmark_command_source.h"
+#include "brave/browser/ui/commander/command_source.h"
 #include "brave/browser/ui/commander/ranker.h"
+#include "brave/browser/ui/commander/simple_command_source.h"
+#include "brave/browser/ui/commander/tab_command_source.h"
+#include "brave/browser/ui/commander/window_command_source.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/browser/commander_item_model.h"
 #include "brave/components/commander/common/constants.h"
+#include "brave/components/commander/common/features.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/commander/bookmark_command_source.h"
-#include "chrome/browser/ui/commander/command_source.h"
-#include "chrome/browser/ui/commander/commander.h"
-#include "chrome/browser/ui/commander/commander_view_model.h"
-#include "chrome/browser/ui/commander/open_url_command_source.h"
-#include "chrome/browser/ui/commander/tab_command_source.h"
-#include "chrome/browser/ui/commander/window_command_source.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
-#include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/omnibox/browser/omnibox_view.h"
 
 namespace commander {
@@ -51,12 +47,16 @@ CommandItemModel FromCommand(const std::unique_ptr<CommandItem>& item) {
 }
 }  // namespace
 
+bool IsEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveCommander);
+}
+
 CommanderService::CommanderService(Profile* profile)
     : profile_(profile), ranker_(profile->GetPrefs()) {
-  command_sources_.push_back(std::make_unique<BraveSimpleCommandSource>());
+  command_sources_.push_back(std::make_unique<SimpleCommandSource>());
   command_sources_.push_back(std::make_unique<BookmarkCommandSource>());
   command_sources_.push_back(std::make_unique<WindowCommandSource>());
-  command_sources_.push_back(std::make_unique<BraveTabCommandSource>());
+  command_sources_.push_back(std::make_unique<TabCommandSource>());
 }
 
 CommanderService::~CommanderService() = default;
@@ -70,35 +70,8 @@ void CommanderService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void CommanderService::UpdateText(bool force) {
-  auto* browser = chrome::FindLastActiveWithProfile(profile_);
-
-  // The last active browser can have no tabs, if we're in the process of moving
-  // the last tab from the current window into another one.
-  if (!browser || browser->tab_strip_model()->empty()) {
-    return;
-  }
-
-  auto* window = browser->window();
-  CHECK(window);
-
-  auto text = window->GetLocationBar()->GetOmniboxView()->GetText();
-  if (!base::StartsWith(text, kCommandPrefix)) {
-    return;
-  }
-
-  std::u16string trimmed_text(base::TrimWhitespace(
-      text.substr(kCommandPrefix.size()), base::TRIM_LEADING));
-
-  // If nothing has changed (and we aren't forcing things), don't update the
-  // commands.
-  if (trimmed_text == last_searched_ && browser == last_browser_ && !force) {
-    return;
-  }
-  last_searched_ = trimmed_text;
-  last_browser_ = browser;
-
-  UpdateCommands();
+void CommanderService::UpdateText(const std::u16string& text) {
+  UpdateText(text, false);
 }
 
 void CommanderService::SelectCommand(uint32_t command_index,
@@ -146,6 +119,7 @@ const std::u16string& CommanderService::GetPrompt() {
 
 void CommanderService::Shutdown() {
   weak_ptr_factory_.InvalidateWeakPtrs();
+  items_.clear();
 }
 
 void CommanderService::Toggle() {
@@ -182,6 +156,54 @@ void CommanderService::Reset() {
     composite_command_provider_.Reset();
   }
   NotifyObservers();
+}
+
+void CommanderService::UpdateTextFromCurrentBrowserOmnibox() {
+  auto* browser = chrome::FindLastActiveWithProfile(profile_);
+
+  // The last active browser can have no tabs, if we're in the process of moving
+  // the last tab from the current window into another one.
+  if (!browser || browser->tab_strip_model()->empty()) {
+    return;
+  }
+
+  auto* window = browser->window();
+  CHECK(window);
+
+  auto text = window->GetLocationBar()->GetOmniboxView()->GetText();
+  UpdateText(text, /*force=*/true);
+}
+
+void CommanderService::UpdateText(const std::u16string& text, bool force) {
+  auto* browser = chrome::FindLastActiveWithProfile(profile_);
+  if (!browser) {
+    return;
+  }
+
+  auto has_prefix = base::StartsWith(text, kCommandPrefix);
+  if (!has_prefix && !browser->profile()->GetPrefs()->GetBoolean(
+                         omnibox::kCommanderSuggestionsEnabled)) {
+    return;
+  }
+
+  if (text.empty()) {
+    return;
+  }
+
+  std::u16string trimmed_text(
+      has_prefix ? base::TrimWhitespace(text.substr(kCommandPrefix.size()),
+                                        base::TRIM_LEADING)
+                 : text);
+
+  // If nothing has changed (and we aren't forcing things), don't update the
+  // commands.
+  if (trimmed_text == last_searched_ && browser == last_browser_ && !force) {
+    return;
+  }
+  last_searched_ = trimmed_text;
+  last_browser_ = browser;
+
+  UpdateCommands();
 }
 
 OmniboxView* CommanderService::GetOmnibox() const {
@@ -237,7 +259,7 @@ void CommanderService::ShowCommander() {
     auto text = base::StrCat({commander::kCommandPrefix, u" "});
     omnibox->SetUserText(text);
     omnibox->SetCaretPos(text.size());
-    UpdateText(true);
+    UpdateTextFromCurrentBrowserOmnibox();
   }
 }
 

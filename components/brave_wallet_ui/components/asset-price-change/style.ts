@@ -4,8 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
+import { layoutPanelWidth } from '../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.span`
   display: flex;
@@ -22,11 +23,15 @@ export const PriceChange = styled.span<{
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  letter-spacing: 0.14px;
   color: ${(p) =>
     p.isDown
-      ? leo.color.systemfeedback.successIcon
-      : leo.color.systemfeedback.errorIcon};
+      ? leo.color.systemfeedback.errorText
+      : leo.color.systemfeedback.successText};
+
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    font-size: 12px;
+    font-weight: 400;
+  }
 `
 
 export const Arrow = styled(Icon)<{
@@ -35,6 +40,6 @@ export const Arrow = styled(Icon)<{
   --leo-icon-size: 24px;
   color: ${(p) =>
     p.isDown
-      ? leo.color.systemfeedback.successIcon
-      : leo.color.systemfeedback.errorIcon};
+      ? leo.color.systemfeedback.errorText
+      : leo.color.systemfeedback.successText};
 `

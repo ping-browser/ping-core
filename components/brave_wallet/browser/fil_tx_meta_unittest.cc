@@ -32,7 +32,6 @@ TEST(FilTxMeta, ToTransactionInfo) {
   EXPECT_TRUE(base::Time::FromUTCExploded(x, &confirmed_time));
   meta.set_submitted_time(confirmed_time - base::Seconds(3));
   meta.set_created_time(confirmed_time - base::Minutes(1));
-  meta.set_group_id("mockGroupId");
 
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
@@ -41,7 +40,6 @@ TEST(FilTxMeta, ToTransactionInfo) {
   EXPECT_EQ(ti->from_account_id, fil_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_TRUE(ti->tx_data_union->is_fil_tx_data());
-  EXPECT_EQ(ti->group_id, meta.group_id());
 
   const auto& tx_data = ti->tx_data_union->get_fil_tx_data();
   EXPECT_EQ(tx_data->nonce, "1");
@@ -52,11 +50,11 @@ TEST(FilTxMeta, ToTransactionInfo) {
   EXPECT_EQ(tx_data->to, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
   EXPECT_EQ(tx_data->value, "6");
 
-  EXPECT_EQ(meta.created_time().ToJavaTime(),
+  EXPECT_EQ(meta.created_time().InMillisecondsSinceUnixEpoch(),
             ti->created_time.InMilliseconds());
-  EXPECT_EQ(meta.submitted_time().ToJavaTime(),
+  EXPECT_EQ(meta.submitted_time().InMillisecondsSinceUnixEpoch(),
             ti->submitted_time.InMilliseconds());
-  EXPECT_EQ(meta.confirmed_time().ToJavaTime(),
+  EXPECT_EQ(meta.confirmed_time().InMillisecondsSinceUnixEpoch(),
             ti->confirmed_time.InMilliseconds());
 }
 

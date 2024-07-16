@@ -3,9 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_news/browser/feed_building.h"
+
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -16,15 +19,14 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
-#include "brave/components/brave_news/browser/feed_building.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/mojom/url.mojom.h"
 
 namespace brave_news {
@@ -129,26 +131,26 @@ void PopulatePublishers(Publishers* publisher_list) {
   auto publisher1 = mojom::Publisher::New(
       "111", mojom::PublisherType::COMBINED_SOURCE, "First Publisher",
       "Top News", true, CreateLocales({"en_US"}, {"Top News", "Top Sources"}),
-      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
-      absl::nullopt, GURL("https://first-publisher.com/feed.xml"),
+      GURL("https://www.example.com"), std::nullopt, std::nullopt, std::nullopt,
+      GURL("https://first-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher2 = mojom::Publisher::New(
       "222", mojom::PublisherType::COMBINED_SOURCE, "Second Publisher",
       "Top News", true, CreateLocales({"en_US"}, {"Top News", "Top Sources"}),
-      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
-      absl::nullopt, GURL("https://second-publisher.com/feed.xml"),
+      GURL("https://www.example.com"), std::nullopt, std::nullopt, std::nullopt,
+      GURL("https://second-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher3 = mojom::Publisher::New(
       "333", mojom::PublisherType::COMBINED_SOURCE, "Third Publisher",
       "Top News", true, CreateLocales({"en_US"}, {"Top News"}),
-      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
-      absl::nullopt, GURL("https://third-publisher.com/feed.xml"),
+      GURL("https://www.example.com"), std::nullopt, std::nullopt, std::nullopt,
+      GURL("https://third-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
 
   auto publisher4 = mojom::Publisher::New(
       "444", mojom::PublisherType::COMBINED_SOURCE, "Fourth Publisher", "f",
       false, CreateLocales({}, {}), GURL("https://fourth.example.com"),
-      absl::nullopt, absl::nullopt, absl::nullopt,
+      std::nullopt, std::nullopt, std::nullopt,
       GURL("https://fourth-publisher.com/feed.xml"),
       mojom::UserEnabled::ENABLED);
 
@@ -166,7 +168,8 @@ void PopulatePublishers(Publishers* publisher_list) {
 
 class BraveNewsFeedBuildingTest : public testing::Test {
  public:
-  BraveNewsFeedBuildingTest() = default;
+  BraveNewsFeedBuildingTest() : pref_manager_(*profile_.GetPrefs()) {}
+
   BraveNewsFeedBuildingTest(const BraveNewsFeedBuildingTest&) = delete;
   BraveNewsFeedBuildingTest& operator=(const BraveNewsFeedBuildingTest&) =
       delete;
@@ -175,11 +178,11 @@ class BraveNewsFeedBuildingTest : public testing::Test {
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
+  BraveNewsPrefManager pref_manager_;
 };
 
 TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
-  ChannelsController::SetChannelSubscribedPref(profile_.GetPrefs(), "en_US",
-                                               "Top Sources", true);
+  pref_manager_.SetChannelSubscribed("en_US", "Top Sources", true);
 
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
@@ -191,7 +194,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
   mojom::Feed feed;
 
   ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
-                        profile_.GetPrefs()));
+                        pref_manager_.GetSubscriptions()));
   ASSERT_EQ(feed.pages.size(), 1u);
   // Validate featured article is top news
   ASSERT_TRUE(feed.featured_item->is_article());
@@ -239,7 +242,7 @@ TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
           "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
           mojom::Image::NewPaddedImageUrl(
               GURL("https://example.com/article/image")),
-          publisher->publisher_id, "Source", 10, "a minute ago"),
+          publisher->publisher_id, "Source", 10, 0, "a minute ago"),
       false));
   EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
@@ -274,7 +277,7 @@ TEST_F(BraveNewsFeedBuildingTest, RemovesUserDisabledItems) {
               GURL("https://pcdn.brave.com/brave-today/cache/"
                    "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
                    "0a815.jpg.pad")),
-          publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
+          publisher_id_to_hide, "ESPN - Football", 14.525910905005045, 0,
           "a minute ago"),
       false));
 
@@ -310,7 +313,7 @@ TEST_F(BraveNewsFeedBuildingTest, IncludesUserEnabledItems) {
               GURL("https://pcdn.brave.com/brave-today/cache/"
                    "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
                    "0a815.jpg.pad")),
-          publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
+          publisher_id_to_hide, "ESPN - Football", 14.525910905005045, 0,
           "a minute ago"),
       false));
 
@@ -336,7 +339,7 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsed) {
           "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
           mojom::Image::NewPaddedImageUrl(
               GURL("https://example.com/article/image")),
-          publisher->publisher_id, "Source", 10, "a minute ago"),
+          publisher->publisher_id, "Source", 10, 0, "a minute ago"),
       false));
 
   // Publisher: NOT_MODIFIED, Channel: Subscribed, Should display.
@@ -361,8 +364,7 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsed) {
 }
 
 TEST_F(BraveNewsFeedBuildingTest, DuplicateItemsAreNotIncluded) {
-  ChannelsController::SetChannelSubscribedPref(profile_.GetPrefs(), "en_US",
-                                               "Top Sources", true);
+  pref_manager_.SetChannelSubscribed("en_US", "Top Sources", true);
 
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
@@ -376,7 +378,7 @@ TEST_F(BraveNewsFeedBuildingTest, DuplicateItemsAreNotIncluded) {
   mojom::Feed feed;
 
   ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
-                        profile_.GetPrefs()));
+                        pref_manager_.GetSubscriptions()));
   ASSERT_EQ(feed.pages.size(), 1u);
   ASSERT_EQ(feed.pages[0]->items.size(), 18u);
 }

@@ -9,10 +9,16 @@
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/web/public/thread/web_thread.h"
+
+#if !defined(__has_feature) || !__has_feature(objc_arc)
+#error "This file requires ARC support."
+#endif
 
 @implementation KeyedServiceFactoryWrapper
 
 + (nullable id)getForPrivateMode:(bool)isPrivateBrowsing {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* browserStateManager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   auto* browserState = browserStateManager->GetLastUsedBrowserState();

@@ -8,14 +8,13 @@ import * as React from 'react'
 // Constants
 import { BraveWallet } from '../../constants/types'
 
-// Utils
-import { WalletSelectors } from '../selectors'
+// Hooks
 import { useGetSelectedChainQuery } from '../slices/api.slice'
-import { useUnsafeWalletSelector } from './use-safe-selector'
+import { useAccountsQuery } from '../slices/api.slice.extra'
 
-export function useHasAccount () {
+export function useHasAccount() {
   // redux
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const { accounts } = useAccountsQuery()
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -45,11 +44,14 @@ export function useHasAccount () {
     }
 
     switch (selectedNetwork?.coin) {
-      case BraveWallet.CoinType.SOL: return !hasSolAccount
-      case BraveWallet.CoinType.FIL: return !hasFilAccount
-      default: return false
+      case BraveWallet.CoinType.SOL:
+        return !hasSolAccount
+      case BraveWallet.CoinType.FIL:
+        return !hasFilAccount
+      default:
+        return false
     }
-  }, [hasSolAccount, hasFilAccount, selectedNetwork])
+  }, [accounts.length, selectedNetwork?.coin, hasSolAccount, hasFilAccount])
 
   return {
     hasSolAccount,

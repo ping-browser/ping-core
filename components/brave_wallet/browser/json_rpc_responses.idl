@@ -17,7 +17,7 @@ namespace json_rpc_responses {
   };
 
   dictionary EthGetFeeHistoryResult {
-    DOMString[] baseFeePerGas;
+    any[] baseFeePerGas;
     DOMString[] gasUsedRatio;
     DOMString oldestBlock;
     any? reward;
@@ -47,5 +47,25 @@ namespace json_rpc_responses {
     DOMString transactionHash;
     DOMString transactionIndex;
     DOMString[] topics;
+  };
+
+  dictionary AnkrAssetBalance {
+    DOMString blockchain;
+    DOMString tokenName;
+    DOMString tokenSymbol;
+    DOMString tokenDecimals;
+    DOMString tokenType;
+    DOMString? contractAddress;
+    DOMString holderAddress;
+    DOMString balance;
+    DOMString balanceRawInteger;
+    DOMString balanceUsd;
+    DOMString tokenPrice;
+    DOMString thumbnail;
+  };
+
+  dictionary AnkrGetAccountBalancesResult {
+    DOMString totalBalanceUsd;
+    AnkrAssetBalance[] assets;
   };
 };

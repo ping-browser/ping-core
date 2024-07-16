@@ -28,8 +28,8 @@ function createMenuElement(title, href, iconName, pageVisibilitySection) {
 
   const text = document.createTextNode(title)
   menuEl.appendChild(text)
-  const paperRippleChild = document.createElement('paper-ripple')
-  menuEl.appendChild(paperRippleChild)
+  const crRippleChild = document.createElement('cr-ripple')
+  menuEl.appendChild(crRippleChild)
   return menuEl
 }
 
@@ -88,11 +88,11 @@ RegisterStyleOverride(
         // --iron-icon-fill-color: var(--leo-gradient-icons-active);
         --iron-icon-fill-color: #27a348;
 
-        color: var(--cr-link-color) !important;
+        color: var(--leo-color-text-interactive) !important;
         background: transparent !important;
       }
 
-      .cr-nav-menu-item paper-ripple {
+      .cr-nav-menu-item cr-ripple {
         display: none !important;
       }
 
@@ -184,6 +184,10 @@ RegisterStyleOverride(
         margin-bottom: 20px !important;
       }
 
+      #autofill {
+        margin-top: 20px !important;
+      }
+
       #about-menu {
         display: flex;
         flex-direction: row;
@@ -212,17 +216,6 @@ RegisterStyleOverride(
 
 RegisterPolymerTemplateModifications({
   'settings-menu': (templateContent) => {
-    // Add title
-    const titleEl = document.createElement('h1')
-    titleEl.id = 'settingsHeader'
-    titleEl.textContent = loadTimeData.getString('settings')
-    const menuEl = templateContent.querySelector('#menu')
-    if (!menuEl) {
-      console.error('[Brave Settings Overrides] Could not find menu element to add title after')
-    } else {
-      menuEl.insertAdjacentElement('afterbegin', titleEl)
-    }
-
     // Hide performance menu. We moved it under system menu instead.
     const performanceEl = getMenuElement(templateContent, '/performance')
     if (performanceEl) {
@@ -238,18 +231,20 @@ RegisterPolymerTemplateModifications({
       'getStarted'
     )
     peopleEl.insertAdjacentElement('afterend', getStartedEl)
+
     // Move Appearance item
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
 
-    // Add New Tab item
-    const newTabEl = createMenuElement(
-      loadTimeData.getString('braveNewTab'),
-      '/newTab',
-      'window-tab-new',
-      'newTab'
+    // Add Content item
+    const contentEl = createMenuElement(
+      loadTimeData.getString('contentSettingsContentSection'),
+      '/braveContent',
+      'content-big',
+      'content',
     )
-    // appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
+    // appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
+
     // Add Shields item
     const shieldsEl = createMenuElement(
       loadTimeData.getString('braveShieldsTitle'),
@@ -257,34 +252,30 @@ RegisterPolymerTemplateModifications({
       'shield-done',
       'shields',
     )
-    newTabEl.insertAdjacentElement('afterend', shieldsEl)
-    // Add Rewards item
-    const isBraveRewardsSupported = loadTimeData.getBoolean('isBraveRewardsSupported')
-    let rewardsEl = undefined
-    if (isBraveRewardsSupported) {
-      rewardsEl = createMenuElement(
-        loadTimeData.getString('braveRewards'),
-        '/rewards',
-        'product-bat-outline',
-        'rewards',
-      )
-      shieldsEl.insertAdjacentElement('afterend', rewardsEl)
-    }
-    // Add Embed Blocking item
-    const embedEl = createMenuElement(
-      loadTimeData.getString('socialBlocking'),
-      '/socialBlocking',
-      'thumb-down',
-      'socialBlocking',
-    )
-    if (isBraveRewardsSupported) {
-      rewardsEl.insertAdjacentElement('afterend', embedEl)
-    } else {
-      shieldsEl.insertAdjacentElement('afterend', embedEl)
-    }
-    // Add privacy
+    contentEl.insertAdjacentElement('afterend', shieldsEl)
+
+    // Add privacy item
     const privacyEl = getMenuElement(templateContent, '/privacy')
-    embedEl.insertAdjacentElement('afterend', privacyEl)
+    shieldsEl.insertAdjacentElement('afterend', privacyEl)
+
+    // Add web3 item
+    const web3El = createMenuElement(
+      loadTimeData.getString('braveWeb3'),
+      '/web3',
+      'product-brave-wallet',
+      'wallet',
+    )
+    privacyEl.insertAdjacentElement('afterend', web3El)
+
+    // Add leo item
+    // const leoAssistantEl = createMenuElement(
+    //   loadTimeData.getString('leoAssistant'),
+    //   '/leo-assistant',
+    //   'product-brave-leo',
+    //   'leoAssistant',
+    // )
+    // web3El.insertAdjacentElement('afterend', leoAssistantEl)
+
     // Add Sync item
     const syncEl = createMenuElement(
       loadTimeData.getString('braveSync'),
@@ -292,10 +283,12 @@ RegisterPolymerTemplateModifications({
       'product-sync',
       'braveSync',
     )
-    privacyEl.insertAdjacentElement('afterend', syncEl)
-    // Move search item
+    web3El.insertAdjacentElement('afterend', syncEl)
+
+    // Add search item
     const searchEl = getMenuElement(templateContent, '/search')
     syncEl.insertAdjacentElement('afterend', searchEl)
+
     // Add Extensions item
     const extensionEl = createMenuElement(
       loadTimeData.getString('braveDefaultExtensions'),
@@ -305,37 +298,10 @@ RegisterPolymerTemplateModifications({
     )
     searchEl.insertAdjacentElement('afterend', extensionEl)
 
-
-    const web3El = createMenuElement(
-      loadTimeData.getString('braveWeb3'),
-      '/web3',
-      'product-brave-wallet',
-      'wallet',
-    )
-
-    const leoAssistantEl = createMenuElement(
-      loadTimeData.getString('leoAssistant'),
-      '/leo-assistant',
-      'product-brave-ai',
-      'leoAssistant',
-    )
-
-    extensionEl.insertAdjacentElement('afterend', web3El)
-    web3El.insertAdjacentElement('afterend', leoAssistantEl)
-
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
     languagesEl.insertAdjacentElement('beforebegin', autofillEl)
-    // Move HelpTips after downloads
-    const helpTipsEl = createMenuElement(
-      loadTimeData.getString('braveHelpTips'),
-      '/braveHelpTips',
-      'help-outline',
-      'braveHelpTips',
-    )
-    const downloadsEl = getMenuElement(templateContent, '/downloads')
-    downloadsEl.insertAdjacentElement('afterend', helpTipsEl)
     // Allow Accessibility to be removed :-(
     const a11yEl = getMenuElement(templateContent, '/accessibility')
     a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')
@@ -357,12 +323,16 @@ RegisterPolymerTemplateModifications({
     const newAboutEl = document.createElement('a')
     newAboutEl.setAttribute('href', '/help')
     newAboutEl.setAttribute('id', aboutEl.id)
+    newAboutEl.setAttribute('role', 'menuitem')
 
     const graphicsEl = document.createElement('div')
     graphicsEl.setAttribute('class', 'brave-about-graphic')
 
-    // const icon = document.createElement('leo-icon')
-    // icon.setAttribute('name', 'brave-icon-release-color')
+    // Use per-channel logo image.
+    // const icon = document.createElement('img')
+    // icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
+    // icon.setAttribute('width', '24px')
+    // icon.setAttribute('height', '24px')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')

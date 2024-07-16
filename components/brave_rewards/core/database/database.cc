@@ -3,19 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/database/database.h"
+
+#include <optional>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
 
-Database::Database(RewardsEngineImpl& engine)
+Database::Database(RewardsEngine& engine)
     : engine_(engine),
       initialize_(engine),
       activity_info_(engine),
@@ -25,9 +25,7 @@ Database::Database(RewardsEngineImpl& engine)
       creds_batch_(engine),
       event_log_(engine),
       external_transactions_(engine),
-      promotion_(engine),
       media_publisher_info_(engine),
-      multi_tables_(engine),
       publisher_info_(engine),
       publisher_prefix_list_(engine),
       recurring_tip_(engine),
@@ -42,41 +40,43 @@ void Database::Initialize(ResultCallback callback) {
   initialize_.Start(std::move(callback));
 }
 
-void Database::Close(LegacyResultCallback callback) {
+void Database::Close(ResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::CLOSE;
 
   transaction->commands.push_back(std::move(command));
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 /**
  * ACTIVITY INFO
  */
 void Database::SaveActivityInfo(mojom::PublisherInfoPtr info,
-                                LegacyResultCallback callback) {
-  activity_info_.InsertOrUpdate(std::move(info), callback);
+                                ResultCallback callback) {
+  activity_info_.InsertOrUpdate(std::move(info), std::move(callback));
 }
 
 void Database::NormalizeActivityInfoList(
     std::vector<mojom::PublisherInfoPtr> list,
-    LegacyResultCallback callback) {
-  activity_info_.NormalizeList(std::move(list), callback);
+    ResultCallback callback) {
+  activity_info_.NormalizeList(std::move(list), std::move(callback));
 }
 
 void Database::GetActivityInfoList(uint32_t start,
                                    uint32_t limit,
                                    mojom::ActivityInfoFilterPtr filter,
                                    GetActivityInfoListCallback callback) {
-  activity_info_.GetRecordsList(start, limit, std::move(filter), callback);
+  activity_info_.GetRecordsList(start, limit, std::move(filter),
+                                std::move(callback));
 }
 
 void Database::DeleteActivityInfo(const std::string& publisher_key,
-                                  LegacyResultCallback callback) {
-  activity_info_.DeleteRecord(publisher_key, callback);
+                                  ResultCallback callback) {
+  activity_info_.DeleteRecord(publisher_key, std::move(callback));
 }
 
 void Database::GetPublishersVisitedCount(
@@ -88,22 +88,22 @@ void Database::GetPublishersVisitedCount(
  * BALANCE REPORT INFO
  */
 void Database::SaveBalanceReportInfo(mojom::BalanceReportInfoPtr info,
-                                     LegacyResultCallback callback) {
-  balance_report_.InsertOrUpdate(std::move(info), callback);
+                                     ResultCallback callback) {
+  balance_report_.InsertOrUpdate(std::move(info), std::move(callback));
 }
 
 void Database::SaveBalanceReportInfoList(
     std::vector<mojom::BalanceReportInfoPtr> list,
-    LegacyResultCallback callback) {
-  balance_report_.InsertOrUpdateList(std::move(list), callback);
+    ResultCallback callback) {
+  balance_report_.InsertOrUpdateList(std::move(list), std::move(callback));
 }
 
 void Database::SaveBalanceReportInfoItem(mojom::ActivityMonth month,
                                          int year,
                                          mojom::ReportType type,
                                          double amount,
-                                         LegacyResultCallback callback) {
-  balance_report_.SetAmount(month, year, type, amount, callback);
+                                         ResultCallback callback) {
+  balance_report_.SetAmount(month, year, type, amount, std::move(callback));
 }
 
 void Database::GetBalanceReportInfo(
@@ -114,134 +114,132 @@ void Database::GetBalanceReportInfo(
 }
 
 void Database::GetAllBalanceReports(GetBalanceReportListCallback callback) {
-  balance_report_.GetAllRecords(callback);
+  balance_report_.GetAllRecords(std::move(callback));
 }
 
-void Database::DeleteAllBalanceReports(LegacyResultCallback callback) {
-  balance_report_.DeleteAllRecords(callback);
+void Database::DeleteAllBalanceReports(ResultCallback callback) {
+  balance_report_.DeleteAllRecords(std::move(callback));
 }
 
 /**
  * CONTRIBUTION INFO
  */
 void Database::SaveContributionInfo(mojom::ContributionInfoPtr info,
-                                    LegacyResultCallback callback) {
-  contribution_info_.InsertOrUpdate(std::move(info), callback);
+                                    ResultCallback callback) {
+  contribution_info_.InsertOrUpdate(std::move(info), std::move(callback));
 }
 
 void Database::GetContributionInfo(const std::string& contribution_id,
                                    GetContributionInfoCallback callback) {
-  contribution_info_.GetRecord(contribution_id, callback);
+  contribution_info_.GetRecord(contribution_id, std::move(callback));
 }
 
 void Database::GetAllContributions(ContributionInfoListCallback callback) {
-  contribution_info_.GetAllRecords(callback);
+  contribution_info_.GetAllRecords(std::move(callback));
 }
 
 void Database::GetOneTimeTips(const mojom::ActivityMonth month,
                               const int year,
                               GetOneTimeTipsCallback callback) {
-  contribution_info_.GetOneTimeTips(month, year, callback);
-}
-
-void Database::GetContributionReport(const mojom::ActivityMonth month,
-                                     const int year,
-                                     GetContributionReportCallback callback) {
-  contribution_info_.GetContributionReport(month, year, callback);
+  contribution_info_.GetOneTimeTips(month, year, std::move(callback));
 }
 
 void Database::GetNotCompletedContributions(
     ContributionInfoListCallback callback) {
-  contribution_info_.GetNotCompletedRecords(callback);
+  contribution_info_.GetNotCompletedRecords(std::move(callback));
 }
 
 void Database::UpdateContributionInfoStep(const std::string& contribution_id,
                                           mojom::ContributionStep step,
-                                          LegacyResultCallback callback) {
-  contribution_info_.UpdateStep(contribution_id, step, callback);
+                                          ResultCallback callback) {
+  contribution_info_.UpdateStep(contribution_id, step, std::move(callback));
 }
 
 void Database::UpdateContributionInfoStepAndCount(
     const std::string& contribution_id,
     mojom::ContributionStep step,
     int32_t retry_count,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   contribution_info_.UpdateStepAndCount(contribution_id, step, retry_count,
-                                        callback);
+                                        std::move(callback));
 }
 
 void Database::UpdateContributionInfoContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   contribution_info_.UpdateContributedAmount(contribution_id, publisher_key,
-                                             callback);
+                                             std::move(callback));
 }
 
-void Database::FinishAllInProgressContributions(LegacyResultCallback callback) {
-  contribution_info_.FinishAllInProgressRecords(callback);
+void Database::FinishAllInProgressContributions(ResultCallback callback) {
+  contribution_info_.FinishAllInProgressRecords(std::move(callback));
 }
 
 /**
  * CONTRIBUTION QUEUE
  */
 void Database::SaveContributionQueue(mojom::ContributionQueuePtr info,
-                                     LegacyResultCallback callback) {
-  return contribution_queue_.InsertOrUpdate(std::move(info), callback);
+                                     ResultCallback callback) {
+  return contribution_queue_.InsertOrUpdate(std::move(info),
+                                            std::move(callback));
 }
 
 void Database::GetFirstContributionQueue(
     GetFirstContributionQueueCallback callback) {
-  return contribution_queue_.GetFirstRecord(callback);
+  return contribution_queue_.GetFirstRecord(std::move(callback));
 }
 
 void Database::MarkContributionQueueAsComplete(const std::string& id,
-                                               LegacyResultCallback callback) {
-  return contribution_queue_.MarkRecordAsComplete(id, callback);
+                                               ResultCallback callback) {
+  return contribution_queue_.MarkRecordAsComplete(id, std::move(callback));
 }
 
 /**
  * CREDS BATCH
  */
 void Database::SaveCredsBatch(mojom::CredsBatchPtr info,
-                              LegacyResultCallback callback) {
-  creds_batch_.InsertOrUpdate(std::move(info), callback);
+                              ResultCallback callback) {
+  creds_batch_.InsertOrUpdate(std::move(info), std::move(callback));
 }
 
 void Database::GetCredsBatchByTrigger(const std::string& trigger_id,
                                       const mojom::CredsBatchType trigger_type,
                                       GetCredsBatchCallback callback) {
-  creds_batch_.GetRecordByTrigger(trigger_id, trigger_type, callback);
+  creds_batch_.GetRecordByTrigger(trigger_id, trigger_type,
+                                  std::move(callback));
 }
 
 void Database::SaveSignedCreds(mojom::CredsBatchPtr info,
-                               LegacyResultCallback callback) {
-  creds_batch_.SaveSignedCreds(std::move(info), callback);
+                               ResultCallback callback) {
+  creds_batch_.SaveSignedCreds(std::move(info), std::move(callback));
 }
 
 void Database::GetAllCredsBatches(GetCredsBatchListCallback callback) {
-  creds_batch_.GetAllRecords(callback);
+  creds_batch_.GetAllRecords(std::move(callback));
 }
 
 void Database::UpdateCredsBatchStatus(const std::string& trigger_id,
                                       mojom::CredsBatchType trigger_type,
                                       mojom::CredsBatchStatus status,
-                                      LegacyResultCallback callback) {
-  creds_batch_.UpdateStatus(trigger_id, trigger_type, status, callback);
+                                      ResultCallback callback) {
+  creds_batch_.UpdateStatus(trigger_id, trigger_type, status,
+                            std::move(callback));
 }
 
 void Database::UpdateCredsBatchesStatus(
     const std::vector<std::string>& trigger_ids,
     mojom::CredsBatchType trigger_type,
     mojom::CredsBatchStatus status,
-    LegacyResultCallback callback) {
-  creds_batch_.UpdateRecordsStatus(trigger_ids, trigger_type, status, callback);
+    ResultCallback callback) {
+  creds_batch_.UpdateRecordsStatus(trigger_ids, trigger_type, status,
+                                   std::move(callback));
 }
 
 void Database::GetCredsBatchesByTriggers(
     const std::vector<std::string>& trigger_ids,
     GetCredsBatchListCallback callback) {
-  creds_batch_.GetRecordsByTriggers(trigger_ids, callback);
+  creds_batch_.GetRecordsByTriggers(trigger_ids, std::move(callback));
 }
 
 /**
@@ -252,12 +250,12 @@ void Database::SaveEventLog(const std::string& key, const std::string& value) {
 }
 
 void Database::SaveEventLogs(const std::map<std::string, std::string>& records,
-                             LegacyResultCallback callback) {
-  event_log_.InsertRecords(records, callback);
+                             ResultCallback callback) {
+  event_log_.InsertRecords(records, std::move(callback));
 }
 
 void Database::GetLastEventLogs(GetEventLogsCallback callback) {
-  event_log_.GetLastRecords(callback);
+  event_log_.GetLastRecords(std::move(callback));
 }
 
 /**
@@ -281,93 +279,33 @@ void Database::GetExternalTransaction(const std::string& contribution_id,
  */
 void Database::SaveMediaPublisherInfo(const std::string& media_key,
                                       const std::string& publisher_key,
-                                      LegacyResultCallback callback) {
-  media_publisher_info_.InsertOrUpdate(media_key, publisher_key, callback);
+                                      ResultCallback callback) {
+  media_publisher_info_.InsertOrUpdate(media_key, publisher_key,
+                                       std::move(callback));
 }
 
 void Database::GetMediaPublisherInfo(const std::string& media_key,
                                      PublisherInfoCallback callback) {
-  media_publisher_info_.GetRecord(media_key, callback);
-}
-
-/**
- * MULTI TABLES
- * for queries that are not limited to one table
- */
-void Database::GetTransactionReport(const mojom::ActivityMonth month,
-                                    const int year,
-                                    GetTransactionReportCallback callback) {
-  multi_tables_.GetTransactionReport(month, year, callback);
-}
-
-/**
- * PROMOTION
- */
-void Database::SavePromotion(mojom::PromotionPtr info,
-                             LegacyResultCallback callback) {
-  promotion_.InsertOrUpdate(std::move(info), callback);
-}
-
-void Database::GetPromotion(const std::string& id,
-                            GetPromotionCallback callback) {
-  promotion_.GetRecord(id, callback);
-}
-
-void Database::GetAllPromotions(GetAllPromotionsCallback callback) {
-  promotion_.GetAllRecords(callback);
-}
-
-void Database::SavePromotionClaimId(const std::string& promotion_id,
-                                    const std::string& claim_id,
-                                    LegacyResultCallback callback) {
-  promotion_.SaveClaimId(promotion_id, claim_id, callback);
-}
-
-void Database::UpdatePromotionStatus(const std::string& promotion_id,
-                                     mojom::PromotionStatus status,
-                                     LegacyResultCallback callback) {
-  promotion_.UpdateStatus(promotion_id, status, callback);
-}
-
-void Database::UpdatePromotionsStatus(
-    const std::vector<std::string>& promotion_ids,
-    mojom::PromotionStatus status,
-    LegacyResultCallback callback) {
-  promotion_.UpdateRecordsStatus(promotion_ids, status, callback);
-}
-
-void Database::PromotionCredentialCompleted(const std::string& promotion_id,
-                                            LegacyResultCallback callback) {
-  promotion_.CredentialCompleted(promotion_id, callback);
-}
-
-void Database::GetPromotionList(const std::vector<std::string>& ids,
-                                GetPromotionListCallback callback) {
-  promotion_.GetRecords(ids, callback);
-}
-
-void Database::UpdatePromotionsBlankPublicKey(
-    const std::vector<std::string>& ids,
-    LegacyResultCallback callback) {
-  promotion_.UpdateRecordsBlankPublicKey(ids, callback);
+  media_publisher_info_.GetRecord(media_key, std::move(callback));
 }
 
 /**
  * PUBLISHER INFO
  */
 void Database::SavePublisherInfo(mojom::PublisherInfoPtr publisher_info,
-                                 LegacyResultCallback callback) {
-  publisher_info_.InsertOrUpdate(std::move(publisher_info), callback);
+                                 ResultCallback callback) {
+  publisher_info_.InsertOrUpdate(std::move(publisher_info),
+                                 std::move(callback));
 }
 
 void Database::GetPublisherInfo(const std::string& publisher_key,
                                 GetPublisherInfoCallback callback) {
-  publisher_info_.GetRecord(publisher_key, callback);
+  publisher_info_.GetRecord(publisher_key, std::move(callback));
 }
 
 void Database::GetPanelPublisherInfo(mojom::ActivityInfoFilterPtr filter,
                                      GetPublisherPanelInfoCallback callback) {
-  publisher_info_.GetPanelRecord(std::move(filter), callback);
+  publisher_info_.GetPanelRecord(std::move(filter), std::move(callback));
 }
 
 void Database::RestorePublishers(ResultCallback callback) {
@@ -375,18 +313,18 @@ void Database::RestorePublishers(ResultCallback callback) {
 }
 
 void Database::GetExcludedList(GetExcludedListCallback callback) {
-  publisher_info_.GetExcludedList(callback);
+  publisher_info_.GetExcludedList(std::move(callback));
 }
 
 /**
  * RECURRING TIPS
  */
 void Database::SaveRecurringTip(mojom::RecurringTipPtr info,
-                                LegacyResultCallback callback) {
+                                ResultCallback callback) {
   if (info) {
     SaveEventLog(log::kRecurringTipAdded, info->publisher_key);
   }
-  recurring_tip_.InsertOrUpdate(std::move(info), callback);
+  recurring_tip_.InsertOrUpdate(std::move(info), std::move(callback));
 }
 
 void Database::SetMonthlyContribution(const std::string& publisher_id,
@@ -404,18 +342,18 @@ void Database::AdvanceMonthlyContributionDates(
 }
 
 void Database::GetNextMonthlyContributionTime(
-    base::OnceCallback<void(absl::optional<base::Time>)> callback) {
+    base::OnceCallback<void(std::optional<base::Time>)> callback) {
   recurring_tip_.GetNextMonthlyContributionTime(std::move(callback));
 }
 
 void Database::GetRecurringTips(GetRecurringTipsCallback callback) {
-  recurring_tip_.GetAllRecords(callback);
+  recurring_tip_.GetAllRecords(std::move(callback));
 }
 
 void Database::RemoveRecurringTip(const std::string& publisher_key,
-                                  LegacyResultCallback callback) {
+                                  ResultCallback callback) {
   SaveEventLog(log::kRecurringTipRemoved, publisher_key);
-  recurring_tip_.DeleteRecord(publisher_key, callback);
+  recurring_tip_.DeleteRecord(publisher_key, std::move(callback));
 }
 
 /**
@@ -424,79 +362,80 @@ void Database::RemoveRecurringTip(const std::string& publisher_key,
 void Database::SearchPublisherPrefixList(
     const std::string& publisher_prefix,
     SearchPublisherPrefixListCallback callback) {
-  publisher_prefix_list_.Search(publisher_prefix, callback);
+  publisher_prefix_list_.Search(publisher_prefix, std::move(callback));
 }
 
 void Database::ResetPublisherPrefixList(publisher::PrefixListReader reader,
-                                        LegacyResultCallback callback) {
-  publisher_prefix_list_.Reset(std::move(reader), callback);
+                                        ResultCallback callback) {
+  publisher_prefix_list_.Reset(std::move(reader), std::move(callback));
 }
 
 void Database::InsertServerPublisherInfo(
     const mojom::ServerPublisherInfo& server_info,
-    LegacyResultCallback callback) {
-  server_publisher_info_.InsertOrUpdate(server_info, callback);
+    ResultCallback callback) {
+  server_publisher_info_.InsertOrUpdate(server_info, std::move(callback));
 }
 
 void Database::GetServerPublisherInfo(const std::string& publisher_key,
                                       GetServerPublisherInfoCallback callback) {
-  server_publisher_info_.GetRecord(publisher_key, callback);
+  server_publisher_info_.GetRecord(publisher_key, std::move(callback));
 }
 
 void Database::DeleteExpiredServerPublisherInfo(int64_t max_age_seconds,
-                                                LegacyResultCallback callback) {
-  server_publisher_info_.DeleteExpiredRecords(max_age_seconds, callback);
+                                                ResultCallback callback) {
+  server_publisher_info_.DeleteExpiredRecords(max_age_seconds,
+                                              std::move(callback));
 }
 
 /**
  * SKU ORDER
  */
-void Database::SaveSKUOrder(mojom::SKUOrderPtr order,
-                            LegacyResultCallback callback) {
-  sku_order_.InsertOrUpdate(std::move(order), callback);
+void Database::SaveSKUOrder(mojom::SKUOrderPtr order, ResultCallback callback) {
+  sku_order_.InsertOrUpdate(std::move(order), std::move(callback));
 }
 
 void Database::UpdateSKUOrderStatus(const std::string& order_id,
                                     mojom::SKUOrderStatus status,
-                                    LegacyResultCallback callback) {
-  sku_order_.UpdateStatus(order_id, status, callback);
+                                    ResultCallback callback) {
+  sku_order_.UpdateStatus(order_id, status, std::move(callback));
 }
 
 void Database::GetSKUOrder(const std::string& order_id,
                            GetSKUOrderCallback callback) {
-  sku_order_.GetRecord(order_id, callback);
+  sku_order_.GetRecord(order_id, std::move(callback));
 }
 
 void Database::GetSKUOrderByContributionId(const std::string& contribution_id,
                                            GetSKUOrderCallback callback) {
-  sku_order_.GetRecordByContributionId(contribution_id, callback);
+  sku_order_.GetRecordByContributionId(contribution_id, std::move(callback));
 }
 
 void Database::SaveContributionIdForSKUOrder(const std::string& order_id,
                                              const std::string& contribution_id,
-                                             LegacyResultCallback callback) {
-  sku_order_.SaveContributionIdForSKUOrder(order_id, contribution_id, callback);
+                                             ResultCallback callback) {
+  sku_order_.SaveContributionIdForSKUOrder(order_id, contribution_id,
+                                           std::move(callback));
 }
 
 /**
  * SKU TRANSACTION
  */
 void Database::SaveSKUTransaction(mojom::SKUTransactionPtr transaction,
-                                  LegacyResultCallback callback) {
-  sku_transaction_.InsertOrUpdate(std::move(transaction), callback);
+                                  ResultCallback callback) {
+  sku_transaction_.InsertOrUpdate(std::move(transaction), std::move(callback));
 }
 
 void Database::SaveSKUExternalTransaction(
     const std::string& transaction_id,
     const std::string& external_transaction_id,
-    LegacyResultCallback callback) {
-  sku_transaction_.SaveExternalTransaction(transaction_id,
-                                           external_transaction_id, callback);
+    ResultCallback callback) {
+  sku_transaction_.SaveExternalTransaction(
+      transaction_id, external_transaction_id, std::move(callback));
 }
 
 void Database::GetSKUTransactionByOrderId(const std::string& order_id,
                                           GetSKUTransactionCallback callback) {
-  sku_transaction_.GetRecordByOrderId(order_id, callback);
+  sku_transaction_.GetRecordByOrderId(order_id, std::move(callback));
 }
 
 /**
@@ -504,27 +443,29 @@ void Database::GetSKUTransactionByOrderId(const std::string& order_id,
  */
 void Database::SaveUnblindedTokenList(
     std::vector<mojom::UnblindedTokenPtr> list,
-    LegacyResultCallback callback) {
-  unblinded_token_.InsertOrUpdateList(std::move(list), callback);
+    ResultCallback callback) {
+  unblinded_token_.InsertOrUpdateList(std::move(list), std::move(callback));
 }
 
 void Database::MarkUnblindedTokensAsSpent(const std::vector<std::string>& ids,
                                           mojom::RewardsType redeem_type,
                                           const std::string& redeem_id,
-                                          LegacyResultCallback callback) {
-  unblinded_token_.MarkRecordListAsSpent(ids, redeem_type, redeem_id, callback);
+                                          ResultCallback callback) {
+  unblinded_token_.MarkRecordListAsSpent(ids, redeem_type, redeem_id,
+                                         std::move(callback));
 }
 
 void Database::MarkUnblindedTokensAsReserved(
     const std::vector<std::string>& ids,
     const std::string& redeem_id,
-    LegacyResultCallback callback) {
-  unblinded_token_.MarkRecordListAsReserved(ids, redeem_id, callback);
+    ResultCallback callback) {
+  unblinded_token_.MarkRecordListAsReserved(ids, redeem_id,
+                                            std::move(callback));
 }
 
 void Database::MarkUnblindedTokensAsSpendable(const std::string& redeem_id,
-                                              LegacyResultCallback callback) {
-  unblinded_token_.MarkRecordListAsSpendable(redeem_id, callback);
+                                              ResultCallback callback) {
+  unblinded_token_.MarkRecordListAsSpendable(redeem_id, std::move(callback));
 }
 
 void Database::GetSpendableUnblindedTokens(
@@ -535,13 +476,14 @@ void Database::GetSpendableUnblindedTokens(
 void Database::GetReservedUnblindedTokens(
     const std::string& redeem_id,
     GetUnblindedTokenListCallback callback) {
-  unblinded_token_.GetReservedRecordList(redeem_id, callback);
+  unblinded_token_.GetReservedRecordList(redeem_id, std::move(callback));
 }
 
 void Database::GetSpendableUnblindedTokensByBatchTypes(
     const std::vector<mojom::CredsBatchType>& batch_types,
     GetUnblindedTokenListCallback callback) {
-  unblinded_token_.GetSpendableRecordListByBatchTypes(batch_types, callback);
+  unblinded_token_.GetSpendableRecordListByBatchTypes(batch_types,
+                                                      std::move(callback));
 }
 
 }  // namespace database

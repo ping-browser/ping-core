@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -115,11 +115,11 @@ void EthAllowanceManager::DiscoverEthAllowancesOnAllSupportedChains(
   }
   discover_eth_allowance_callbacks_.push_back(std::move(callback));
 
-  const auto keyring_info =
-      keyring_service_->GetKeyringInfoSync(mojom::kDefaultKeyringId);
   std::vector<std::string> account_addresses;
-  for (const auto& account_info : keyring_info->account_infos) {
-    account_addresses.push_back(account_info->address);
+  for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
+    if (account_info->account_id->coin == mojom::CoinType::ETH) {
+      account_addresses.push_back(account_info->address);
+    }
   }
 
   if (account_addresses.empty()) {

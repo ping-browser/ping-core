@@ -10,6 +10,7 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -29,10 +30,6 @@ namespace brave_search_conversion {
 namespace {
 
 ConversionType GetConversionTypeFromBannerTypeParam(const std::string& param) {
-  if (param == "type_A") {
-    return ConversionType::kBannerTypeA;
-  }
-
   if (param == "type_B") {
     return ConversionType::kBannerTypeB;
   }
@@ -56,14 +53,16 @@ bool IsNTPPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
   DCHECK(prefs);
   DCHECK(service);
 
-  if (prefs->GetBoolean(prefs::kDismissed))
+  if (prefs->GetBoolean(prefs::kDismissed)) {
     return false;
+  }
 
   // Don't need to prompt for conversion if user uses brave as a default
   // provider.
   auto* template_url = service->GetDefaultSearchProvider();
-  if (!template_url)
+  if (!template_url) {
     return false;
+  }
 
   const auto id = template_url->prepopulate_id();
   if (id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
@@ -79,18 +78,15 @@ ConversionType GetConversionType(PrefService* prefs,
   DCHECK(prefs);
   DCHECK(service);
 
-  if (prefs->GetBoolean(prefs::kDismissed))
+  if (prefs->GetBoolean(prefs::kDismissed)) {
     return ConversionType::kNone;
+  }
 
   // Don't need to ask conversion if user uses brave as a default provider.
   auto id = service->GetDefaultSearchProvider()->data().prepopulate_id;
   if (id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
       id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR) {
     return ConversionType::kNone;
-  }
-
-  if (base::FeatureList::IsEnabled(features::kOmniboxButton)) {
-    return ConversionType::kButton;
   }
 
   if (base::FeatureList::IsEnabled(features::kOmniboxBanner)) {
@@ -101,12 +97,7 @@ ConversionType GetConversionType(PrefService* prefs,
       return ConversionType::kNone;
     }
 
-    // Fetch banner type from griffin.
-    constexpr char kPromotionTrial[] = "BraveSearchPromotionBannerStudy";
-    constexpr char kBannerTypeParamName[] = "banner_type";
-    const std::string banner_type =
-        base::GetFieldTrialParamValue(kPromotionTrial, kBannerTypeParamName);
-    return GetConversionTypeFromBannerTypeParam(banner_type);
+    return GetConversionTypeFromBannerTypeParam(features::kBannerType.Get());
   }
 
   return ConversionType::kNone;
@@ -114,6 +105,7 @@ ConversionType GetConversionType(PrefService* prefs,
 
 void RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kDismissed, false);
+  registry->RegisterBooleanPref(prefs::kShowNTPSearchBox, true);
   registry->RegisterTimePref(prefs::kMaybeLaterClickedTime, base::Time());
 }
 
@@ -137,8 +129,7 @@ GURL GetPromoURL(const std::string& search_term) {
 }
 
 bool IsBraveSearchConversionFeatureEnabled() {
-  return base::FeatureList::IsEnabled(features::kOmniboxButton) ||
-         base::FeatureList::IsEnabled(features::kOmniboxBanner);
+  return base::FeatureList::IsEnabled(features::kOmniboxBanner);
 }
 
 }  // namespace brave_search_conversion

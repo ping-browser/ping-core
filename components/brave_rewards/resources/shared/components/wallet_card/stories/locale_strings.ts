@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 export const localeStrings = {
+  loading: 'Loading...',
   rewardsLearnMore: 'Learn more',
   rewardsLogInToSeeBalance: '$1Log in to $2$3 to see your balance',
   rewardsPaymentCheckStatus: 'Check status',
@@ -12,10 +13,9 @@ export const localeStrings = {
   rewardsPaymentSupport: 'Support',
   walletAccountLink: 'Go to your $1 account',
   walletAutoContribute: 'Auto-Contribute',
-  walletBalanceInfoText: 'Now that you\'re connected to ZebPay, any previous balance you had will be deposited into your ZebPay account as part of your next earnings payout. Once it arrives, you\'ll see your BAT reflected in your Rewards balance.',
   walletBalanceTitle: 'Balance',
   walletDisconnected: 'Logged out',
-  walletEstimatedEarnings: 'Estimated earnings',
+  walletEstimatedEarnings: 'Earnings so far',
   walletEarningInfoText: 'This reflects your estimated earnings range for Brave Ads this month.',
   walletLogIntoYourAccount: 'Log in to your $1 account',
   walletManageAds: 'Manage ads',

@@ -10,7 +10,8 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 
 // GET /v1/promotions/{promotion_id}/claims/{claim_id}
 //
@@ -45,7 +46,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace payment {
@@ -55,7 +56,7 @@ using GetCredentialsCallback =
 
 class GetCredentials {
  public:
-  explicit GetCredentials(RewardsEngineImpl& engine);
+  explicit GetCredentials(RewardsEngine& engine);
   ~GetCredentials();
 
   void Request(const std::string& order_id,
@@ -72,7 +73,7 @@ class GetCredentials {
   void OnRequest(GetCredentialsCallback callback,
                  mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace payment

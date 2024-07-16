@@ -4,8 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
+
+// api
+import {
+  useGetAutopinEnabledQuery,
+  useGetPinnableVisibleNftIdsQuery,
+  useSetAutopinEnabledMutation
+} from '../../../common/slices/api.slice'
 
 // components
 import { NftList } from './components/nft-list/nft-list'
@@ -15,14 +21,8 @@ import { InfoTooltip } from './components/info-tooltip/info-tooltip'
 // styled components
 import { Row } from '../../shared/style'
 
-// selectors
-import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../page/selectors'
-
 // utils
-import { WalletPageActions } from '../../../page/actions'
 import { getLocale } from '../../../../common/locale'
-import { useNftPin } from '../../../common/hooks/nft-pin'
 
 // routes
 import { WalletRoutes } from '../../../constants/types'
@@ -52,22 +52,25 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
   const [showTooltip, setShowTooltip] = React.useState<boolean>(false)
 
   // hooks
-  const { pinnableNftsCount } = useNftPin()
+  const { data: pinnableNftIds = [] } = useGetPinnableVisibleNftIdsQuery()
+  const pinnableNftsCount = pinnableNftIds.length
 
   // routing
   const history = useHistory()
 
-  // redux
-  const dispatch = useDispatch()
-  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
+  // queries
+  const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
+
+  // mutations
+  const [setAutoPinStatus] = useSetAutopinEnabledMutation()
 
   // methods
   const onClickRunNode = React.useCallback(() => {
     if (!isAutoPinEnabled) {
-      dispatch(WalletPageActions.setAutoPinEnabled(true))
+      setAutoPinStatus(true)
     }
     history.push(WalletRoutes.PortfolioNFTs)
-  }, [isAutoPinEnabled])
+  }, [history, isAutoPinEnabled, setAutoPinStatus])
 
   const onShowTooltip = React.useCallback(() => setShowTooltip(true), [])
   const onHideTooltip = React.useCallback(() => setShowTooltip(false), [])
@@ -85,7 +88,11 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
         </TopRowButton>
       </TopRow>
       <MainContent>
-        <Row maxWidth='100%' alignItems='center' justifyContent='center'>
+        <Row
+          maxWidth='100%'
+          alignItems='center'
+          justifyContent='center'
+        >
           <NftList />
         </Row>
         <Row
@@ -96,8 +103,10 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
           onMouseEnter={onShowTooltip}
           onMouseLeave={onHideTooltip}
         >
-          <InfoSubHeading>{getLocale('braveWalletNftPinningWhyNotAvailable')}</InfoSubHeading>
-          <InfoIcon/>
+          <InfoSubHeading>
+            {getLocale('braveWalletNftPinningWhyNotAvailable')}
+          </InfoSubHeading>
+          <InfoIcon />
           {showTooltip && (
             <InfoTooltip text={getLocale('braveWalletNftPinningTooltip')} />
           )}
@@ -106,9 +115,15 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
           <SubDivider />
         </Row>
         <Row margin='32px 0 0'>
-          <Description>{getLocale('braveWalletNftPinningBenefitsHeading')}</Description>
+          <Description>
+            {getLocale('braveWalletNftPinningBenefitsHeading')}
+          </Description>
         </Row>
-        <Row gap='16px' alignItems='center' justifyContent='center'>
+        <Row
+          gap='16px'
+          alignItems='center'
+          justifyContent='center'
+        >
           <PinNftsButton
             onClick={onClickRunNode}
             disabled={pinnableNftsCount === 0}

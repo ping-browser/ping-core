@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_CONNECT_ZEBPAY_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_CONNECT_ZEBPAY_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
@@ -19,20 +20,23 @@
 // }
 // clang-format on
 //
-// Response body: -
+// Response body:
+// {
+//   "geoCountry": "IN"
+// }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
 class PostConnectZebPay final : public PostConnect {
  public:
-  PostConnectZebPay(RewardsEngineImpl& engine, std::string&& linking_info);
+  PostConnectZebPay(RewardsEngine& engine, std::string&& linking_info);
   ~PostConnectZebPay() override;
 
  private:
-  absl::optional<std::string> Content() const override;
+  std::optional<std::string> Content() const override;
 
   const char* Path() const override;
 

@@ -44,11 +44,7 @@ class BraveAdsEnvironmentCommandLineSwitchParserUtilTest
 
 TEST_P(BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
        ParseEnvironmentCommandLineSwitch) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetParam().expected_environment_type,
             GlobalState::GetInstance()->Flags().environment_type);
 }
@@ -56,8 +52,7 @@ TEST_P(BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
   const std::string expected_environment_type =
-      EnvironmentTypeEnumToStringForTesting(
-          test_param.param.expected_environment_type);
+      test::ToString(test_param.param.expected_environment_type);
 
   const std::string sanitized_command_line_switch =
       SanitizeCommandLineSwitch(test_param.param.command_line_switch);

@@ -5,9 +5,11 @@
 
 #include "brave/common/brave_content_client.h"
 
+#include <optional>
 #include <string>
 
 #include "base/memory/ref_counted_memory.h"
+#include "base/version.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/flags_ui_resources.h"
 #include "content/public/common/url_constants.h"
@@ -53,7 +55,8 @@ void CreateDefaultWidevineCdmHintFile() {
     return;
   }
 
-  DCHECK(UpdateWidevineCdmHintFile(widevine_root_dir_path));
+  DCHECK(UpdateWidevineCdmHintFile(widevine_root_dir_path,
+                                   /*bundled_version=*/std::nullopt));
 }
 #endif
 
@@ -65,7 +68,7 @@ BraveContentClient::~BraveContentClient() = default;
 
 base::RefCountedMemory* BraveContentClient::GetDataResourceBytes(
     int resource_id) {
-  if (resource_id == IDR_FLAGS_UI_FLAGS_JS) {
+  if (resource_id == IDR_FLAGS_UI_APP_JS) {
     const ui::ResourceBundle& resource_bundle =
         ui::ResourceBundle::GetSharedInstance();
     const std::string flags_js =

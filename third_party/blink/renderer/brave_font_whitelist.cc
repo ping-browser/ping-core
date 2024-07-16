@@ -5,20 +5,90 @@
 
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 
+#include <string_view>
 #include <vector>
+
+#include "base/containers/fixed_flat_set.h"
+
+#if BUILDFLAG(IS_LINUX)
+#include "base/linux_util.h"
+#endif
 
 namespace brave {
 
 namespace {
 
-base::flat_set<base::StringPiece> kEmptyFontSet =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+bool g_simulate_empty_font_whitelist_for_testing = false;
+
+#if BUILDFLAG(IS_LINUX)
+
+constexpr char kUbuntu2204Prefix[] = "Ubuntu 22.04";
+constexpr char kUbuntu2004Prefix[] = "Ubuntu 20.04";
+constexpr char kFedora32Prefix[] = "Fedora";
+
+enum class LinuxDistro {
+  kUnknown,
+  kUbuntu2204,
+  kUbuntu2004,
+  kFedora32,
+};
+
+LinuxDistro GetLinuxDistro() {
+  static const LinuxDistro kLinuxDistro = []() {
+    const auto distro = base::GetLinuxDistro();
+    if (distro.starts_with(kUbuntu2204Prefix)) {
+      return LinuxDistro::kUbuntu2204;
+    } else if (distro.starts_with(kUbuntu2004Prefix)) {
+      return LinuxDistro::kUbuntu2004;
+    } else if (distro.starts_with(kFedora32Prefix)) {
+      return LinuxDistro::kFedora32;
+    } else {
+      return LinuxDistro::kUnknown;
+    }
+  }();
+  return kLinuxDistro;
+}
+
+#endif
+
+constexpr auto kEmptyFontSet = base::span<std::string_view>({});
+
+constexpr auto kFontFarblingSet = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
+        "agency fb",        "arabic typesetting",
+        "arial unicode ms", "arno pro",
+        "avantgarde bk bt", "bankgothic md bt",
+        "batang",           "bitstream vera sans mono",
+        "calibri",          "century",
+        "century gothic",   "clarendon",
+        "eurostile",        "franklin gothic",
+        "futura bk bt",     "futura md bt",
+        "gill sans",        "gotham",
+        "haettenschweiler", "helv",
+        "helvetica neue",   "humanst521 bt",
+        "leelawadee",       "letter gothic",
+        "levenim mt",       "lucida bright",
+        "lucida sans",      "marlett",
+        "meiryo ui",        "menlo",
+        "microsoft uighur", "minion pro",
+        "monotype corsiva", "ms mincho",
+        "ms outlook",       "ms reference specialty",
+        "ms ui gothic",     "mt extra",
+        "myriad pro",       "pmingliu",
+        "pristina",         "sans-serif-thin",
+        "scriptina",        "segoe ui light",
+        "serifa",           "simhei",
+        "small fonts",      "staccato222 bt",
+        "trajan pro",       "univers ce 55 medium",
+        "vrinda",           "zwadobef",
+    });
 
 #if BUILDFLAG(IS_MAC)
-bool kCanRestrictFonts = true;
 // This list covers the fonts installed by default on Mac OS as of Mac OS 12.3.
-base::flat_set<base::StringPiece> kFontWhitelist =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
+constexpr auto kFontWhitelist = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
         "-apple-system",
         "academy engraved let",
         "al bayan",
@@ -26,11 +96,11 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "al tarikh",
         "american typewriter",
         "andale mono",
+        "apple braille",
         "apple braille outline 6 dot",
         "apple braille outline 8 dot",
         "apple braille pinpoint 6 dot",
         "apple braille pinpoint 8 dot",
-        "apple braille",
         "apple chancery",
         "apple color emoji",
         "apple sd gothic neo",
@@ -38,31 +108,31 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "applegothic",
         "applemyungjo",
         "aquakana",
+        "arial",
         "arial black",
-        "arial hebrew scholar",
         "arial hebrew",
+        "arial hebrew scholar",
         "arial narrow",
         "arial rounded mt bold",
         "arial unicode ms",
-        "arial",
         "athelas",
-        "avenir black oblique",
+        "avenir",
         "avenir black",
+        "avenir black oblique",
         "avenir book",
         "avenir heavy",
         "avenir light",
         "avenir medium",
+        "avenir next",
+        "avenir next condensed",
         "avenir next condensed demi bold",
         "avenir next condensed heavy",
         "avenir next condensed medium",
         "avenir next condensed ultra light",
-        "avenir next condensed",
         "avenir next demi bold",
         "avenir next heavy",
         "avenir next medium",
         "avenir next ultra light",
-        "avenir next",
-        "avenir",
         "ayuthaya",
         "baghdad",
         "bangla mn",
@@ -77,32 +147,32 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "bodoni ornaments",
         "bradley hand",
         "brush script mt",
-        "chalkboard se",
         "chalkboard",
+        "chalkboard se",
         "chalkduster",
-        "charter black",
         "charter",
+        "charter black",
         "cochin",
         "comic sans ms",
         "copperplate",
         "corsiva hebrew",
         "courier",
         "courier new",
-        "din alternate",
-        "din condensed",
         "damascus",
         "decotype naskh",
         "devanagari mt",
         "devanagari sangam mn",
         "didot",
+        "din alternate",
+        "din condensed",
         "diwan kufi",
         "diwan thuluth",
         "euphemia ucas",
         "farah",
         "farisi",
         "futura",
-        "gb18030 bitmap",
         "galvji",
+        "gb18030 bitmap",
         "geeza pro",
         "geneva",
         "georgia",
@@ -118,29 +188,30 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "helvetica",
         "helvetica neue",
         "herculanum",
+        "hiragino kaku gothic pro",
         "hiragino kaku gothic pro w3",
         "hiragino kaku gothic pro w6",
-        "hiragino kaku gothic pro",
+        "hiragino kaku gothic pron",
         "hiragino kaku gothic pron w3",
         "hiragino kaku gothic pron w6",
-        "hiragino kaku gothic pron",
-        "hiragino kaku gothic std w8",
         "hiragino kaku gothic std",
-        "hiragino kaku gothic stdn w8",
+        "hiragino kaku gothic std w8",
         "hiragino kaku gothic stdn",
-        "hiragino maru gothic pro w4",
+        "hiragino kaku gothic stdn w8",
         "hiragino maru gothic pro",
-        "hiragino maru gothic pron w4",
+        "hiragino maru gothic pro w4",
         "hiragino maru gothic pron",
+        "hiragino maru gothic pron w4",
+        "hiragino mincho pro",
         "hiragino mincho pro w3",
         "hiragino mincho pro w6",
-        "hiragino mincho pro",
+        "hiragino mincho pron",
         "hiragino mincho pron w3",
         "hiragino mincho pron w6",
-        "hiragino mincho pron",
+        "hiragino sans",
+        "hiragino sans gb",
         "hiragino sans gb w3",
         "hiragino sans gb w6",
-        "hiragino sans gb",
         "hiragino sans w0",
         "hiragino sans w1",
         "hiragino sans w2",
@@ -151,15 +222,14 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "hiragino sans w7",
         "hiragino sans w8",
         "hiragino sans w9",
-        "hiragino sans",
-        "hoefler text ornaments",
         "hoefler text",
-        "itf devanagari marathi",
-        "itf devanagari",
+        "hoefler text ornaments",
         "impact",
         "inaimathi",
-        "iowan old style black",
         "iowan old style",
+        "iowan old style black",
+        "itf devanagari",
+        "itf devanagari marathi",
         "kailasa",
         "kannada mn",
         "kannada sangam mn",
@@ -184,8 +254,8 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "marker felt",
         "menlo",
         "microsoft sans serif",
-        "mishafi gold",
         "mishafi",
+        "mishafi gold",
         "monaco",
         "mshtakan",
         "mukta mahee",
@@ -206,12 +276,6 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "optima",
         "oriya mn",
         "oriya sangam mn",
-        "pt mono",
-        "pt sans caption",
-        "pt sans narrow",
-        "pt sans",
-        "pt serif caption",
-        "pt serif",
         "palatino",
         "papyrus",
         "party let",
@@ -220,8 +284,33 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "pingfang sc",
         "pingfang tc",
         "plantagenet cherokee",
+        "pt mono",
+        "pt sans",
+        "pt sans caption",
+        "pt sans narrow",
+        "pt serif",
+        "pt serif caption",
         "raanana",
         "rockwell",
+        "sana",
+        "sathu",
+        "savoye let",
+        "savoye let plain cc.:1.0",
+        "savoye let plain:1.0",
+        "seravek",
+        "seravek extralight",
+        "seravek light",
+        "seravek medium",
+        "shree devanagari 714",
+        "signpainter",
+        "signpainter-housescript",
+        "silom",
+        "sinhala mn",
+        "sinhala sangam mn",
+        "skia",
+        "snell roundhand",
+        "songti sc",
+        "songti tc",
         "stixgeneral",
         "stixgeneral-bold",
         "stixgeneral-bolditalic",
@@ -265,25 +354,6 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "stixvariants-bold",
         "stixvariants-regular",
         "stsong",
-        "sana",
-        "sathu",
-        "savoye let plain cc.:1.0",
-        "savoye let plain:1.0",
-        "savoye let",
-        "seravek extralight",
-        "seravek light",
-        "seravek medium",
-        "seravek",
-        "shree devanagari 714",
-        "signpainter",
-        "signpainter-housescript",
-        "silom",
-        "sinhala mn",
-        "sinhala sangam mn",
-        "skia",
-        "snell roundhand",
-        "songti sc",
-        "songti tc",
         "sukhumvit set",
         "superclarendon",
         "symbol",
@@ -300,18 +370,18 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "verdana",
         "waseem",
         "webdings",
+        "wingdings",
         "wingdings 2",
         "wingdings 3",
-        "wingdings",
         "zapf dingbats",
         "zapfino",
     });
 #elif BUILDFLAG(IS_WIN)
-bool kCanRestrictFonts = true;
 // This list covers the fonts installed by default on Windows 11.
 // See <https://docs.microsoft.com/en-us/typography/fonts/windows_11_font_list>
-base::flat_set<base::StringPiece> kFontWhitelist =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
+constexpr auto kFontWhitelist = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
         "arial",
         "arial black",
         "arial bold",
@@ -382,7 +452,6 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "georgia bold italic",
         "georgia italic",
         "georgia pro",
-        "georgia pro",
         "georgia pro black",
         "georgia pro black italic",
         "georgia pro bold",
@@ -402,7 +471,6 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "georgia pro light italic",
         "georgia pro semibold",
         "georgia pro semibold italic",
-        "gill sans nova",
         "gill sans nova",
         "gill sans nova bold",
         "gill sans nova bold italic",
@@ -429,10 +497,6 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "leelawadee ui semilight",
         "lucida console",
         "lucida sans unicode",
-        "ms gothic",
-        "ms pgothic",
-        "ms ui gothic",
-        "mv boli",
         "malgun gothic",
         "malgun gothic bold",
         "malgun gothic semilight",
@@ -461,9 +525,12 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "mingliu-extb",
         "mingliu_hkscs-extb",
         "mongolian baiti",
+        "ms gothic",
+        "ms pgothic",
+        "ms ui gothic",
+        "mv boli",
         "myanmar text",
         "myanmar text bold",
-        "nsimsun",
         "neue haas grotesk text pro",
         "neue haas grotesk text pro black",
         "neue haas grotesk text pro black italic",
@@ -484,11 +551,12 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "nirmala ui",
         "nirmala ui bold",
         "nirmala ui semilight",
-        "pmingliu-extb",
+        "nsimsun",
         "palatino linotype",
         "palatino linotype bold",
         "palatino linotype bold italic",
         "palatino linotype italic",
+        "pmingliu-extb",
         "rockwell nova",
         "rockwell nova bold",
         "rockwell nova bold italic",
@@ -509,7 +577,6 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "segoe print bold",
         "segoe script",
         "segoe script bold",
-        "segoe ui",
         "segoe ui",
         "segoe ui black",
         "segoe ui black italic",
@@ -597,7 +664,6 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "verdana bold italic",
         "verdana italic",
         "verdana pro",
-        "verdana pro",
         "verdana pro black",
         "verdana pro black italic",
         "verdana pro bold",
@@ -628,187 +694,1305 @@ base::flat_set<base::StringPiece> kFontWhitelist =
         "yu gothic ui light",
         "yu gothic ui regular",
         "yu gothic ui semibold",
-        "yu gothic ui semilight"});
+        "yu gothic ui semilight",
+    });
 #elif BUILDFLAG(IS_ANDROID)
-bool kCanRestrictFonts = true;
 // This list covers the fonts and font aliases listed in data/fonts/fonts.xml of
 // the Android Open Source Project. To reduce memory and maintenance, most
 // region-specific Noto fonts are handled by wildcards outside this list.
-base::flat_set<base::StringPiece> kFontWhitelist =
-    base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"androidclock",
-                                       "arial",
-                                       "baskerville",
-                                       "carrois gothic",
-                                       "coming soon",
-                                       "courier",
-                                       "courier new",
-                                       "cutive mono",
-                                       "dancing script",
-                                       "droid sans",
-                                       "droid sans mono",
-                                       "erif-bold",
-                                       "fantasy",
-                                       "georgia",
-                                       "goudy",
-                                       "helvetica",
-                                       "itc stone serif",
-                                       "monaco",
-                                       "noto color emoji",
-                                       "noto kufi arabic",
-                                       "noto naskh arabic",
-                                       "noto nastaliq urdu",
-                                       "noto sans",
-                                       "noto serif",
-                                       "palatino",
-                                       "roboto",
-                                       "roboto static",
-                                       "sans-serif-black",
-                                       "sans-serif-condensed-light",
-                                       "sans-serif-condensed-medium",
-                                       "sans-serif-light",
-                                       "sans-serif-medium",
-                                       "sans-serif-monospace",
-                                       "sans-serif-thin",
-                                       "source sans pro",
-                                       "source-sans-pro-semi-bold",
-                                       "tahoma",
-                                       "times",
-                                       "times new roman",
-                                       "verdana"});
+constexpr auto kFontWhitelist =
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "androidclock",
+                                                 "arial",
+                                                 "baskerville",
+                                                 "carrois gothic",
+                                                 "coming soon",
+                                                 "courier",
+                                                 "courier new",
+                                                 "cutive mono",
+                                                 "dancing script",
+                                                 "droid sans",
+                                                 "droid sans mono",
+                                                 "erif-bold",
+                                                 "fantasy",
+                                                 "georgia",
+                                                 "goudy",
+                                                 "helvetica",
+                                                 "itc stone serif",
+                                                 "monaco",
+                                                 "noto color emoji",
+                                                 "noto kufi arabic",
+                                                 "noto naskh arabic",
+                                                 "noto nastaliq urdu",
+                                                 "noto sans",
+                                                 "noto serif",
+                                                 "palatino",
+                                                 "roboto",
+                                                 "roboto static",
+                                                 "sans-serif-black",
+                                                 "sans-serif-condensed-light",
+                                                 "sans-serif-condensed-medium",
+                                                 "sans-serif-light",
+                                                 "sans-serif-medium",
+                                                 "sans-serif-monospace",
+                                                 "sans-serif-thin",
+                                                 "source sans pro",
+                                                 "source-sans-pro-semi-bold",
+                                                 "tahoma",
+                                                 "times",
+                                                 "times new roman",
+                                                 "verdana",
+                                             });
+#elif BUILDFLAG(IS_LINUX)
+// Distro-specific lists borrowed from
+// https://searchfox.org/mozilla-central/rev/76b13c585e575cf273fd05ab3b48a1532c1d1faa/gfx/thebes/StandardFonts-linux.inc
+// If ubuntu 22_04:
+constexpr auto kFontWhitelistUbuntu2204 =
+    base::MakeFixedFlatSet<std::string_view>({
+        "aakar",
+        "abyssinica sil",
+        "ani",
+        "anjalioldlipi",
+        "bitstream charter",
+        "c059",
+        "chandas",
+        "chilanka",
+        "courier 10 pitch",
+        "d050000l",
+        "dejavu sans",
+        "dejavu sans mono",
+        "dejavu serif",
+        "dhurjati",
+        "droid sans fallback",
+        "dyuthi",
+        "freemono",
+        "freesans",
+        "freeserif",
+        "gargi",
+        "garuda",
+        "gayathri",
+        "gayathri thin",
+        "gidugu",
+        "gubbi",
+        "gurajada",
+        "jamrul",
+        "kacstart",
+        "kacstbook",
+        "kacstdecorative",
+        "kacstdigital",
+        "kacstfarsi",
+        "kacstletter",
+        "kacstnaskh",
+        "kacstoffice",
+        "kacstone",
+        "kacstpen",
+        "kacstposter",
+        "kacstqurn",
+        "kacstscreen",
+        "kacsttitle",
+        "kacsttitlel",
+        "kalapi",
+        "kalimati",
+        "karumbi",
+        "keraleeyam",
+        "khmer os",
+        "khmer os system",
+        "kinnari",
+        "lakkireddy",
+        "laksaman",
+        "liberation mono",
+        "liberation sans",
+        "liberation sans narrow",
+        "liberation serif",
+        "likhan",
+        "lklug",
+        "lohit assamese",
+        "lohit bengali",
+        "lohit devanagari",
+        "lohit gujarati",
+        "lohit gurmukhi",
+        "lohit kannada",
+        "lohit malayalam",
+        "lohit odia",
+        "lohit tamil",
+        "lohit tamil classical",
+        "lohit telugu",
+        "loma",
+        "mallanna",
+        "mandali",
+        "manjari",
+        "manjari thin",
+        "meera",
+        "mitra",
+        "mry_kacstqurn",
+        "mukti",
+        "nakula",
+        "nats",
+        "navilu",
+        "nimbus mono ps",
+        "nimbus roman",
+        "nimbus sans",
+        "nimbus sans narrow",
+        "norasi",
+        "noto color emoji",
+        "noto mono",
+        "noto sans cjk hk",
+        "noto sans cjk jp",
+        "noto sans cjk kr",
+        "noto sans cjk sc",
+        "noto sans cjk tc",
+        "noto sans mono",
+        "noto sans mono cjk hk",
+        "noto sans mono cjk jp",
+        "noto sans mono cjk kr",
+        "noto sans mono cjk sc",
+        "noto sans mono cjk tc",
+        "noto serif cjk hk",
+        "noto serif cjk jp",
+        "noto serif cjk kr",
+        "noto serif cjk sc",
+        "noto serif cjk tc",
+        "ntr",
+        "opensymbol",
+        "ori1uni",
+        "p052",
+        "padauk",
+        "padauk book",
+        "padmaa",
+        "padmmaa",
+        "pagul",
+        "peddana",
+        "phetsarath ot",
+        "ponnala",
+        "pothana2000",
+        "potti sreeramulu",
+        "purisa",
+        "rachana",
+        "raghumalayalamsans",
+        "ramabhadra",
+        "ramaraja",
+        "rasa",
+        "rasa light",
+        "rasa medium",
+        "rasa semibold",
+        "raviprakash",
+        "rekha",
+        "saab",
+        "sahadeva",
+        "samanata",
+        "samyak devanagari",
+        "samyak gujarati",
+        "samyak malayalam",
+        "samyak tamil",
+        "sarai",
+        "sawasdee",
+        "sree krushnadevaraya",
+        "standard symbols ps",
+        "suranna",
+        "suravaram",
+        "suruma",
+        "syamala ramana",
+        "tenaliramakrishna",
+        "tibetan machine uni",
+        "timmana",
+        "tlwg mono",
+        "tlwg typewriter",
+        "tlwg typist",
+        "tlwg typo",
+        "ubuntu",
+        "ubuntu condensed",
+        "ubuntu light",
+        "ubuntu mono",
+        "ubuntu thin",
+        "umpush",
+        "uroob",
+        "urw bookman",
+        "urw gothic",
+        "utkal",
+        "vemana2000",
+        "waree",
+        "yrsa",
+        "yrsa light",
+        "yrsa medium",
+        "yrsa semibold",
+        "z003",
+        "गार्गी",
+        "नालिमाटी",
+        "অনি",
+        "মুক্তি",
+    });
+
+// Additional font families installed when all languages are enabled via the
+// Language Support utility on Ubuntu 22.04:
+constexpr auto kFontWhitelistUbuntu2204Languages =
+    base::MakeFixedFlatSet<std::string_view>({
+        "ar pl ukai cn",
+        "ar pl ukai hk",
+        "ar pl ukai tw",
+        "ar pl ukai tw mbe",
+        "ar pl uming cn",
+        "ar pl uming hk",
+        "ar pl uming tw",
+        "ar pl uming tw mbe",
+        "ezra sil",
+        "ezra sil sr",
+        "homa",
+        "khmer os battambang",
+        "khmer os bokor",
+        "khmer os content",
+        "khmer os fasthand",
+        "khmer os freehand",
+        "khmer os metal chrieng",
+        "khmer os muol",
+        "khmer os muol light",
+        "khmer os muol pali",
+        "khmer os siemreap",
+        "nazli",
+        "noto kufi arabic",
+        "noto looped lao",
+        "noto looped lao bold",
+        "noto looped lao regular",
+        "noto looped lao ui",
+        "noto looped lao ui bold",
+        "noto looped lao ui regular",
+        "noto looped thai",
+        "noto looped thai bold",
+        "noto looped thai regular",
+        "noto looped thai ui",
+        "noto looped thai ui bold",
+        "noto looped thai ui regular",
+        "noto music",
+        "noto naskh arabic",
+        "noto naskh arabic ui",
+        "noto nastaliq urdu",
+        "noto rashi hebrew",
+        "noto sans",
+        "noto sans adlam",
+        "noto sans adlam unjoined",
+        "noto sans anatohiero",
+        "noto sans anatolian hieroglyphs",
+        "noto sans arabic",
+        "noto sans arabic ui",
+        "noto sans armenian",
+        "noto sans avestan",
+        "noto sans balinese",
+        "noto sans bamum",
+        "noto sans bassa vah",
+        "noto sans batak",
+        "noto sans bengali",
+        "noto sans bengali ui",
+        "noto sans bhaiksuki",
+        "noto sans brahmi",
+        "noto sans buginese",
+        "noto sans buhid",
+        "noto sans canaborig",
+        "noto sans canadian aboriginal",
+        "noto sans carian",
+        "noto sans caucalban",
+        "noto sans caucasian albanian",
+        "noto sans chakma",
+        "noto sans cham",
+        "noto sans cherokee",
+        "noto sans cjk hk black",
+        "noto sans cjk hk demilight",
+        "noto sans cjk hk light",
+        "noto sans cjk hk medium",
+        "noto sans cjk hk thin",
+        "noto sans cjk jp black",
+        "noto sans cjk jp demilight",
+        "noto sans cjk jp light",
+        "noto sans cjk jp medium",
+        "noto sans cjk jp thin",
+        "noto sans cjk kr black",
+        "noto sans cjk kr demilight",
+        "noto sans cjk kr light",
+        "noto sans cjk kr medium",
+        "noto sans cjk kr thin",
+        "noto sans cjk sc black",
+        "noto sans cjk sc demilight",
+        "noto sans cjk sc light",
+        "noto sans cjk sc medium",
+        "noto sans cjk sc thin",
+        "noto sans cjk tc black",
+        "noto sans cjk tc demilight",
+        "noto sans cjk tc light",
+        "noto sans cjk tc medium",
+        "noto sans cjk tc thin",
+        "noto sans coptic",
+        "noto sans cuneiform",
+        "noto sans cypriot",
+        "noto sans deseret",
+        "noto sans devanagari",
+        "noto sans devanagari ui",
+        "noto sans display",
+        "noto sans duployan",
+        "noto sans egypthiero",
+        "noto sans egyptian hieroglyphs",
+        "noto sans elbasan",
+        "noto sans elymaic",
+        "noto sans ethiopic",
+        "noto sans georgian",
+        "noto sans glagolitic",
+        "noto sans gothic",
+        "noto sans grantha",
+        "noto sans gujarati",
+        "noto sans gujarati ui",
+        "noto sans gunjala gondi",
+        "noto sans gurmukhi",
+        "noto sans gurmukhi ui",
+        "noto sans hanifi rohingya",
+        "noto sans hanunoo",
+        "noto sans hatran",
+        "noto sans hebrew",
+        "noto sans imparamaic",
+        "noto sans imperial aramaic",
+        "noto sans indic siyaq numbers",
+        "noto sans inscriptional pahlavi",
+        "noto sans inscriptional parthian",
+        "noto sans inspahlavi",
+        "noto sans insparthi",
+        "noto sans javanese",
+        "noto sans kaithi",
+        "noto sans kannada",
+        "noto sans kannada ui",
+        "noto sans kayah li",
+        "noto sans kharoshthi",
+        "noto sans khmer",
+        "noto sans khmer ui",
+        "noto sans khojki",
+        "noto sans khudawadi",
+        "noto sans lao",
+        "noto sans lao ui",
+        "noto sans lepcha",
+        "noto sans limbu",
+        "noto sans linear a",
+        "noto sans linear b",
+        "noto sans lisu",
+        "noto sans lycian",
+        "noto sans lydian",
+        "noto sans mahajani",
+        "noto sans malayalam",
+        "noto sans malayalam ui",
+        "noto sans mandaic",
+        "noto sans manichaean",
+        "noto sans marchen",
+        "noto sans masaram gondi",
+        "noto sans math",
+        "noto sans mayan numerals",
+        "noto sans medefaidrin",
+        "noto sans meetei mayek",
+        "noto sans mende kikakui",
+        "noto sans meroitic",
+        "noto sans miao",
+        "noto sans modi",
+        "noto sans mongolian",
+        "noto sans mro",
+        "noto sans multani",
+        "noto sans myanmar",
+        "noto sans myanmar ui",
+        "noto sans nabataean",
+        "noto sans new tai lue",
+        "noto sans newa",
+        "noto sans nko",
+        "noto sans nushu",
+        "noto sans ogham",
+        "noto sans ol chiki",
+        "noto sans old hungarian",
+        "noto sans old italic",
+        "noto sans old north arabian",
+        "noto sans old permic",
+        "noto sans old persian",
+        "noto sans old sogdian",
+        "noto sans old south arabian",
+        "noto sans old turkic",
+        "noto sans oldhung",
+        "noto sans oldnorarab",
+        "noto sans oldsouarab",
+        "noto sans oriya",
+        "noto sans oriya ui",
+        "noto sans osage",
+        "noto sans osmanya",
+        "noto sans pahawh hmong",
+        "noto sans palmyrene",
+        "noto sans pau cin hau",
+        "noto sans phagspa",
+        "noto sans phoenician",
+        "noto sans psalter pahlavi",
+        "noto sans psapahlavi",
+        "noto sans rejang",
+        "noto sans runic",
+        "noto sans samaritan",
+        "noto sans saurashtra",
+        "noto sans sharada",
+        "noto sans shavian",
+        "noto sans siddham",
+        "noto sans signwrit",
+        "noto sans signwriting",
+        "noto sans sinhala",
+        "noto sans sinhala ui",
+        "noto sans sogdian",
+        "noto sans sora sompeng",
+        "noto sans soyombo",
+        "noto sans sundanese",
+        "noto sans syloti nagri",
+        "noto sans symbols",
+        "noto sans symbols2",
+        "noto sans syriac",
+        "noto sans tagalog",
+        "noto sans tagbanwa",
+        "noto sans tai le",
+        "noto sans tai tham",
+        "noto sans tai viet",
+        "noto sans takri",
+        "noto sans tamil",
+        "noto sans tamil supplement",
+        "noto sans tamil ui",
+        "noto sans telugu",
+        "noto sans telugu ui",
+        "noto sans thaana",
+        "noto sans thai",
+        "noto sans thai ui",
+        "noto sans tifinagh",
+        "noto sans tifinagh adrar",
+        "noto sans tifinagh agraw imazighen",
+        "noto sans tifinagh ahaggar",
+        "noto sans tifinagh air",
+        "noto sans tifinagh apt",
+        "noto sans tifinagh azawagh",
+        "noto sans tifinagh ghat",
+        "noto sans tifinagh hawad",
+        "noto sans tifinagh rhissa ixa",
+        "noto sans tifinagh sil",
+        "noto sans tifinagh tawellemmet",
+        "noto sans tirhuta",
+        "noto sans ugaritic",
+        "noto sans vai",
+        "noto sans wancho",
+        "noto sans warang citi",
+        "noto sans yi",
+        "noto sans zanabazar",
+        "noto sans zanabazar square",
+        "noto serif",
+        "noto serif ahom",
+        "noto serif armenian",
+        "noto serif balinese",
+        "noto serif bengali",
+        "noto serif cjk hk black",
+        "noto serif cjk hk extralight",
+        "noto serif cjk hk light",
+        "noto serif cjk hk medium",
+        "noto serif cjk hk semibold",
+        "noto serif cjk jp black",
+        "noto serif cjk jp extralight",
+        "noto serif cjk jp light",
+        "noto serif cjk jp medium",
+        "noto serif cjk jp semibold",
+        "noto serif cjk kr black",
+        "noto serif cjk kr extralight",
+        "noto serif cjk kr light",
+        "noto serif cjk kr medium",
+        "noto serif cjk kr semibold",
+        "noto serif cjk sc black",
+        "noto serif cjk sc extralight",
+        "noto serif cjk sc light",
+        "noto serif cjk sc medium",
+        "noto serif cjk sc semibold",
+        "noto serif cjk tc black",
+        "noto serif cjk tc extralight",
+        "noto serif cjk tc light",
+        "noto serif cjk tc medium",
+        "noto serif cjk tc semibold",
+        "noto serif devanagari",
+        "noto serif display",
+        "noto serif dogra",
+        "noto serif ethiopic",
+        "noto serif georgian",
+        "noto serif grantha",
+        "noto serif gujarati",
+        "noto serif gurmukhi",
+        "noto serif hebrew",
+        "noto serif hmong nyiakeng",
+        "noto serif kannada",
+        "noto serif khmer",
+        "noto serif khojki",
+        "noto serif lao",
+        "noto serif malayalam",
+        "noto serif myanmar",
+        "noto serif sinhala",
+        "noto serif tamil",
+        "noto serif tamil slanted",
+        "noto serif tangut",
+        "noto serif telugu",
+        "noto serif thai",
+        "noto serif tibetan",
+        "noto serif yezidi",
+        "noto traditional nushu",
+        "scheherazade",
+        "titr",
+        "ukij 3d",
+        "ukij basma",
+        "ukij bom",
+        "ukij chechek",
+        "ukij chiwer kesme",
+        "ukij cjk",
+        "ukij diwani",
+        "ukij diwani kawak",
+        "ukij diwani tom",
+        "ukij diwani yantu",
+        "ukij ekran",
+        "ukij elipbe",
+        "ukij elipbe_chekitlik",
+        "ukij esliye",
+        "ukij esliye chiwer",
+        "ukij esliye neqish",
+        "ukij esliye qara",
+        "ukij esliye tom",
+        "ukij imaret",
+        "ukij inchike",
+        "ukij jelliy",
+        "ukij junun",
+        "ukij kawak",
+        "ukij kawak 3d",
+        "ukij kesme",
+        "ukij kesme tuz",
+        "ukij kufi",
+        "ukij kufi 3d",
+        "ukij kufi chiwer",
+        "ukij kufi gul",
+        "ukij kufi kawak",
+        "ukij kufi tar",
+        "ukij kufi uz",
+        "ukij kufi yay",
+        "ukij kufi yolluq",
+        "ukij mejnun",
+        "ukij mejnuntal",
+        "ukij merdane",
+        "ukij moy qelem",
+        "ukij nasq",
+        "ukij nasq zilwa",
+        "ukij orqun basma",
+        "ukij orqun yazma",
+        "ukij orxun-yensey",
+        "ukij qara",
+        "ukij qolyazma",
+        "ukij qolyazma tez",
+        "ukij qolyazma tuz",
+        "ukij qolyazma yantu",
+        "ukij ruqi",
+        "ukij saet",
+        "ukij sulus",
+        "ukij sulus tom",
+        "ukij teng",
+        "ukij tiken",
+        "ukij title",
+        "ukij tor",
+        "ukij tughra",
+        "ukij tuz",
+        "ukij tuz basma",
+        "ukij tuz gezit",
+        "ukij tuz kitab",
+        "ukij tuz neqish",
+        "ukij tuz qara",
+        "ukij tuz tom",
+        "ukij tuz tor",
+        "ukij zilwa",
+        "ukij_mac basma",
+        "ukij_mac ekran",
+    });
+
+// Standard fonts from previous LTS version Ubuntu 20.04:
+constexpr auto kFontWhitelistUbuntu2004 =
+    base::MakeFixedFlatSet<std::string_view>({
+        "aakar",
+        "abyssinica sil",
+        "ani",
+        "anjalioldlipi",
+        "bitstream charter",
+        "c059",
+        "century schoolbook l",
+        "chandas",
+        "chilanka",
+        "courier 10 pitch",
+        "d050000l",
+        "dejavu sans",
+        "dejavu sans mono",
+        "dejavu serif",
+        "dingbats",
+        "droid sans fallback",
+        "dyuthi",
+        "freemono",
+        "freesans",
+        "freeserif",
+        "gargi",
+        "garuda",
+        "gayathri",
+        "gayathri thin",
+        "gubbi",
+        "jamrul",
+        "kacstart",
+        "kacstbook",
+        "kacstdecorative",
+        "kacstdigital",
+        "kacstfarsi",
+        "kacstletter",
+        "kacstnaskh",
+        "kacstoffice",
+        "kacstone",
+        "kacstpen",
+        "kacstposter",
+        "kacstqurn",
+        "kacstscreen",
+        "kacsttitle",
+        "kacsttitlel",
+        "kalapi",
+        "kalimati",
+        "karumbi",
+        "keraleeyam",
+        "khmer os",
+        "khmer os system",
+        "kinnari",
+        "laksaman",
+        "liberation mono",
+        "liberation sans",
+        "liberation sans narrow",
+        "liberation serif",
+        "likhan",
+        "lklug",
+        "lohit assamese",
+        "lohit bengali",
+        "lohit devanagari",
+        "lohit gujarati",
+        "lohit gurmukhi",
+        "lohit kannada",
+        "lohit malayalam",
+        "lohit odia",
+        "lohit tamil",
+        "lohit tamil classical",
+        "lohit telugu",
+        "loma",
+        "manjari",
+        "manjari thin",
+        "meera",
+        "mitra mono",
+        "mry_kacstqurn",
+        "mukti narrow",
+        "mukti narrow bold",
+        "nakula",
+        "navilu",
+        "nimbus mono l",
+        "nimbus mono ps",
+        "nimbus roman",
+        "nimbus roman no9 l",
+        "nimbus sans",
+        "nimbus sans l",
+        "nimbus sans narrow",
+        "norasi",
+        "noto color emoji",
+        "noto mono",
+        "noto sans cjk hk",
+        "noto sans cjk jp",
+        "noto sans cjk kr",
+        "noto sans cjk sc",
+        "noto sans cjk tc",
+        "noto sans mono cjk hk",
+        "noto sans mono cjk jp",
+        "noto sans mono cjk kr",
+        "noto sans mono cjk sc",
+        "noto sans mono cjk tc",
+        "noto serif cjk jp",
+        "noto serif cjk kr",
+        "noto serif cjk sc",
+        "noto serif cjk tc",
+        "opensymbol",
+        "ori1uni",
+        "p052",
+        "padauk",
+        "padauk book",
+        "padmaa",
+        "padmaa-bold.1.1",
+        "padmmaa",
+        "pagul",
+        "phetsarath ot",
+        "pothana2000",
+        "purisa",
+        "rachana",
+        "raghumalayalamsans",
+        "rasa",
+        "rasa light",
+        "rasa medium",
+        "rasa semibold",
+        "rekha",
+        "saab",
+        "sahadeva",
+        "samanata",
+        "samyak devanagari",
+        "samyak gujarati",
+        "samyak malayalam",
+        "samyak tamil",
+        "sarai",
+        "sawasdee",
+        "standard symbols l",
+        "standard symbols ps",
+        "suruma",
+        "tibetan machine uni",
+        "tlwg mono",
+        "tlwg typewriter",
+        "tlwg typist",
+        "tlwg typo",
+        "ubuntu",
+        "ubuntu condensed",
+        "ubuntu light",
+        "ubuntu mono",
+        "ubuntu thin",
+        "umpush",
+        "uroob",
+        "urw bookman",
+        "urw bookman l",
+        "urw chancery l",
+        "urw gothic",
+        "urw gothic l",
+        "urw palladio l",
+        "utkal",
+        "vemana2000",
+        "waree",
+        "yrsa",
+        "yrsa light",
+        "yrsa medium",
+        "yrsa semibold",
+        "z003",
+        "गार्गी",
+        "नालिमाटी",
+        "অনি  dvf",
+        "মিত্র",
+        "মুক্তি",
+        "মুক্তি  পাতনা",
+    });
+
+// Additional font families installed when all languages are enabled via the
+// Language Support utility on Ubuntu 20.04:
+constexpr auto kFontWhitelistUbuntu2004Languages =
+    base::MakeFixedFlatSet<std::string_view>({
+        "aharoni clm",
+        "alarabiya",
+        "albattar",
+        "alhor",
+        "almanzomah",
+        "alyarmook",
+        "amiri",
+        "amiri quran",
+        "amiri quran colored",
+        "ar pl ukai cn",
+        "ar pl ukai hk",
+        "ar pl ukai tw",
+        "ar pl ukai tw mbe",
+        "ar pl uming cn",
+        "ar pl uming hk",
+        "ar pl uming tw",
+        "ar pl uming tw mbe",
+        "arab",
+        "caladings clm",
+        "cortoba",
+        "david clm",
+        "dimnah",
+        "drugulin clm",
+        "electron",
+        "ellinia clm",
+        "ezra sil",
+        "ezra sil sr",
+        "frank ruehl clm",
+        "furat",
+        "granada",
+        "graph",
+        "hadasim clm",
+        "hani",
+        "haramain",
+        "homa",
+        "hor",
+        "japan",
+        "jet",
+        "kayrawan",
+        "keter yg",
+        "khalid",
+        "khmer os battambang",
+        "khmer os bokor",
+        "khmer os content",
+        "khmer os fasthand",
+        "khmer os freehand",
+        "khmer os metal chrieng",
+        "khmer os muol",
+        "khmer os muol light",
+        "khmer os muol pali",
+        "khmer os siemreap",
+        "mashq",
+        "mashq-bold",
+        "metal",
+        "miriam clm",
+        "miriam mono clm",
+        "nachlieli clm",
+        "nada",
+        "nagham",
+        "nazli",
+        "nice",
+        "noto sans cjk hk black",
+        "noto sans cjk hk demilight",
+        "noto sans cjk hk light",
+        "noto sans cjk hk medium",
+        "noto sans cjk hk thin",
+        "noto sans cjk jp black",
+        "noto sans cjk jp demilight",
+        "noto sans cjk jp light",
+        "noto sans cjk jp medium",
+        "noto sans cjk jp thin",
+        "noto sans cjk kr black",
+        "noto sans cjk kr demilight",
+        "noto sans cjk kr light",
+        "noto sans cjk kr medium",
+        "noto sans cjk kr thin",
+        "noto sans cjk sc black",
+        "noto sans cjk sc demilight",
+        "noto sans cjk sc light",
+        "noto sans cjk sc medium",
+        "noto sans cjk sc thin",
+        "noto sans cjk tc black",
+        "noto sans cjk tc demilight",
+        "noto sans cjk tc light",
+        "noto sans cjk tc medium",
+        "noto sans cjk tc thin",
+        "noto serif cjk jp black",
+        "noto serif cjk jp extralight",
+        "noto serif cjk jp light",
+        "noto serif cjk jp medium",
+        "noto serif cjk jp semibold",
+        "noto serif cjk kr black",
+        "noto serif cjk kr extralight",
+        "noto serif cjk kr light",
+        "noto serif cjk kr medium",
+        "noto serif cjk kr semibold",
+        "noto serif cjk sc black",
+        "noto serif cjk sc extralight",
+        "noto serif cjk sc light",
+        "noto serif cjk sc medium",
+        "noto serif cjk sc semibold",
+        "noto serif cjk tc black",
+        "noto serif cjk tc extralight",
+        "noto serif cjk tc light",
+        "noto serif cjk tc medium",
+        "noto serif cjk tc semibold",
+        "ostorah",
+        "ouhod",
+        "ouhod-bold",
+        "petra",
+        "rasheeq",
+        "rasheeq-bold",
+        "rehan",
+        "salem",
+        "scheherazade",
+        "shado",
+        "sharjah",
+        "shofar",
+        "simple clm",
+        "sindbad",
+        "stam ashkenaz clm",
+        "stam sefarad clm",
+        "tarablus",
+        "tholoth",
+        "titr",
+        "ukij 3d",
+        "ukij basma",
+        "ukij bom",
+        "ukij chechek",
+        "ukij chiwer kesme",
+        "ukij cjk",
+        "ukij diwani",
+        "ukij diwani kawak",
+        "ukij diwani tom",
+        "ukij diwani yantu",
+        "ukij ekran",
+        "ukij elipbe",
+        "ukij elipbe_chekitlik",
+        "ukij esliye",
+        "ukij esliye chiwer",
+        "ukij esliye neqish",
+        "ukij esliye qara",
+        "ukij esliye tom",
+        "ukij imaret",
+        "ukij inchike",
+        "ukij jelliy",
+        "ukij junun",
+        "ukij kawak",
+        "ukij kawak 3d",
+        "ukij kesme",
+        "ukij kesme tuz",
+        "ukij kufi",
+        "ukij kufi 3d",
+        "ukij kufi chiwer",
+        "ukij kufi gul",
+        "ukij kufi kawak",
+        "ukij kufi tar",
+        "ukij kufi uz",
+        "ukij kufi yay",
+        "ukij kufi yolluq",
+        "ukij mejnun",
+        "ukij mejnuntal",
+        "ukij merdane",
+        "ukij moy qelem",
+        "ukij nasq",
+        "ukij nasq zilwa",
+        "ukij orqun basma",
+        "ukij orqun yazma",
+        "ukij orxun-yensey",
+        "ukij qara",
+        "ukij qolyazma",
+        "ukij qolyazma tez",
+        "ukij qolyazma tuz",
+        "ukij qolyazma yantu",
+        "ukij ruqi",
+        "ukij saet",
+        "ukij sulus",
+        "ukij sulus tom",
+        "ukij teng",
+        "ukij tiken",
+        "ukij title",
+        "ukij tor",
+        "ukij tughra",
+        "ukij tuz",
+        "ukij tuz basma",
+        "ukij tuz gezit",
+        "ukij tuz kitab",
+        "ukij tuz neqish",
+        "ukij tuz qara",
+        "ukij tuz tom",
+        "ukij tuz tor",
+        "ukij zilwa",
+        "ukij_mac basma",
+        "ukij_mac ekran",
+        "yehuda clm",
+        "מרים",
+    });
+
+// List of standard font families installed on Fedora 32 Workstation:
+constexpr auto kFontWhitelistFedora32 =
+    base::MakeFixedFlatSet<std::string_view>({
+        "abyssinica sil",
+        "c059",
+        "caladea",
+        "cantarell",
+        "cantarell extra bold",
+        "cantarell light",
+        "cantarell thin",
+        "carlito",
+        "comfortaa",
+        "comfortaa light",
+        "d050000l",
+        "dejavu math tex gyre",
+        "dejavu sans",
+        "dejavu sans condensed",
+        "dejavu sans light",
+        "dejavu sans mono",
+        "dejavu serif",
+        "dejavu serif condensed",
+        "droid arabic kufi",
+        "droid sans",
+        "droid sans armenian",
+        "droid sans devanagari",
+        "droid sans ethiopic",
+        "droid sans fallback",
+        "droid sans georgian",
+        "droid sans hebrew",
+        "droid sans japanese",
+        "droid sans tamil",
+        "droid sans thai",
+        "jomolhari",
+        "khmer os",
+        "khmer os content",
+        "khmer os system",
+        "liberation mono",
+        "liberation sans",
+        "liberation serif",
+        "lohit assamese",
+        "lohit bengali",
+        "lohit devanagari",
+        "lohit gujarati",
+        "lohit kannada",
+        "lohit odia",
+        "lohit tamil",
+        "lohit telugu",
+        "meera",
+        "mingzat",
+        "montserrat",
+        "montserrat black",
+        "montserrat extrabold",
+        "montserrat extralight",
+        "montserrat light",
+        "montserrat medium",
+        "montserrat semibold",
+        "montserrat thin",
+        "nimbus mono ps",
+        "nimbus roman",
+        "nimbus sans",
+        "nimbus sans narrow",
+        "noto color emoji",
+        "noto sans cjk hk",
+        "noto sans cjk hk black",
+        "noto sans cjk hk demilight",
+        "noto sans cjk hk light",
+        "noto sans cjk hk medium",
+        "noto sans cjk hk thin",
+        "noto sans cjk jp",
+        "noto sans cjk jp black",
+        "noto sans cjk jp demilight",
+        "noto sans cjk jp light",
+        "noto sans cjk jp medium",
+        "noto sans cjk jp thin",
+        "noto sans cjk kr",
+        "noto sans cjk kr black",
+        "noto sans cjk kr demilight",
+        "noto sans cjk kr light",
+        "noto sans cjk kr medium",
+        "noto sans cjk kr thin",
+        "noto sans cjk sc",
+        "noto sans cjk sc black",
+        "noto sans cjk sc demilight",
+        "noto sans cjk sc light",
+        "noto sans cjk sc medium",
+        "noto sans cjk sc thin",
+        "noto sans cjk tc",
+        "noto sans cjk tc black",
+        "noto sans cjk tc demilight",
+        "noto sans cjk tc light",
+        "noto sans cjk tc medium",
+        "noto sans cjk tc thin",
+        "noto sans gurmukhi",
+        "noto sans mono cjk hk",
+        "noto sans mono cjk jp",
+        "noto sans mono cjk kr",
+        "noto sans mono cjk sc",
+        "noto sans mono cjk tc",
+        "noto sans sinhala",
+        "nuosu sil",
+        "opensymbol",
+        "p052",
+        "padauk",
+        "paktype naskh basic",
+        "pt sans",
+        "pt sans narrow",
+        "source code pro",
+        "source code pro black",
+        "source code pro extralight",
+        "source code pro light",
+        "source code pro medium",
+        "source code pro semibold",
+        "standard symbols ps",
+        "stix",
+        "stix two math",
+        "stix two text",
+        "symbola",
+        "urw bookman",
+        "urw gothic",
+        "waree",
+        "z003",
+    });
+
+constexpr auto kFontWhitelist = kEmptyFontSet;
 #else
-bool kCanRestrictFonts = false;
-base::flat_set<base::StringPiece> kFontWhitelist =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+constexpr auto kFontWhitelist = kEmptyFontSet;
 #endif
 
 #if BUILDFLAG(IS_WIN)
-base::flat_set<base::StringPiece> kFontWhitelistAR =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "aldhabi", "andalus", "arabic typesetting", "microsoft uighur",
-        "microsoft uighur bold", "sakkal majalla", "sakkal majalla bold",
-        "simplified arabic", "simplified arabic bold",
-        "simplified arabic fixed", "traditional arabic",
-        "traditional arabic bold", "urdu typesetting",
-        "urdu typesetting bold"});
-base::flat_set<base::StringPiece> kFontWhitelistAS =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "shonar bangla", "shonar bangla bold", "vrinda", "vrinda bold"});
-base::flat_set<base::StringPiece> kFontWhitelistIU =
-    base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"euphemia"});
-base::flat_set<base::StringPiece> kFontWhitelistHI =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "aparajita", "aparajita italic", "aparajita bold",
-        "aparajita bold italic", "kokila", "kokila italic", "kokila bold",
-        "kokila bold italic", "mangal", "mangal bold", "sanskrit text",
-        "utsaah", "utsaah italic", "utsaah bold", "utsaah bold italic"});
-base::flat_set<base::StringPiece> kFontWhitelistAM =
-    base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"nyala"});
-base::flat_set<base::StringPiece> kFontWhitelistGU =
-    base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"shruti", "shruti bold"});
-base::flat_set<base::StringPiece> kFontWhitelistPA =
-    base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"raavi", "raavi bold"});
-base::flat_set<base::StringPiece> kFontWhitelistZH =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "dengxian light", "dengxian", "dengxian bold", "fangsong", "kaiti",
-        "simhei", "dfkai-sb", "mingliu", "mingliu_hkscs", "pmingliu"});
-base::flat_set<base::StringPiece> kFontWhitelistHE =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "aharoni bold", "david", "david bold", "frankruehl", "gisha",
-        "gisha bold", "levenim mt", "levenim mt bold", "miriam", "miriam fixed",
-        "narkisim", "rod"});
-base::flat_set<base::StringPiece> kFontWhitelistJA =
-    base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"biz udgothic",
-                                       "biz udgothic bold",
-                                       "biz udpgothic",
-                                       "biz udpgothic bold",
-                                       "biz udmincho medium",
-                                       "biz udpmincho medium",
-                                       "meiryo",
-                                       "meiryo italic",
-                                       "meiryo bold",
-                                       "meiryo bold italic",
-                                       "meiryo ui",
-                                       "meiryo ui italic",
-                                       "meiryo ui bold",
-                                       "meiryo ui bold italic",
-                                       "ms mincho",
-                                       "ms pmincho",
-                                       "ud digi kyokasho",
-                                       "ud digi kyokasho n-b",
-                                       "ud digi kyokasho nk-b",
-                                       "ud digi kyokasho nk-r",
-                                       "ud digi kyokasho np-b",
-                                       "ud digi kyokasho np-r",
-                                       "ud digi kyokasho n-r",
-                                       "yu mincho light",
-                                       "yu mincho regular",
-                                       "yu mincho demibold"});
-base::flat_set<base::StringPiece> kFontWhitelistKN =
-    base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"tunga", "tunga bold"});
-base::flat_set<base::StringPiece> kFontWhitelistKM =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "daunpenh", "khmer ui", "khmer ui bold", "moolboran"});
-base::flat_set<base::StringPiece> kFontWhitelistKO =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "batang", "batangche", "dotum", "dotumche", "gulim", "gulimche",
-        "gungsuh", "gungsuhche"});
-base::flat_set<base::StringPiece> kFontWhitelistLO =
-    base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"dokchampa", "lao ui", "lao ui bold"});
-base::flat_set<base::StringPiece> kFontWhitelistML =
-    base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"kartika", "kartika bold"});
-#else
-base::flat_set<base::StringPiece> kFontWhitelistAR =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistAS =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistIU =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistHI =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistAM =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistGU =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistPA =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistZH =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistHE =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistJA =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistKN =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistKM =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistKO =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistLO =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kFontWhitelistML =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+constexpr auto kFontWhitelistAR = base::MakeFixedFlatSet<std::string_view>({
+    "aldhabi",
+    "andalus",
+    "arabic typesetting",
+    "microsoft uighur",
+    "microsoft uighur bold",
+    "sakkal majalla",
+    "sakkal majalla bold",
+    "simplified arabic",
+    "simplified arabic bold",
+    "simplified arabic fixed",
+    "traditional arabic",
+    "traditional arabic bold",
+    "urdu typesetting",
+    "urdu typesetting bold",
+});
+constexpr auto kFontWhitelistAS = base::MakeFixedFlatSet<std::string_view>({
+    "shonar bangla",
+    "shonar bangla bold",
+    "vrinda",
+    "vrinda bold",
+});
+constexpr auto kFontWhitelistIU = base::MakeFixedFlatSet<std::string_view>({
+    "euphemia",
+});
+constexpr auto kFontWhitelistHI = base::MakeFixedFlatSet<std::string_view>({
+    "aparajita",
+    "aparajita italic",
+    "aparajita bold",
+    "aparajita bold italic",
+    "kokila",
+    "kokila italic",
+    "kokila bold",
+    "kokila bold italic",
+    "mangal",
+    "mangal bold",
+    "sanskrit text",
+    "utsaah",
+    "utsaah italic",
+    "utsaah bold",
+    "utsaah bold italic",
+});
+constexpr auto kFontWhitelistAM = base::MakeFixedFlatSet<std::string_view>({
+    "nyala",
+});
+constexpr auto kFontWhitelistGU = base::MakeFixedFlatSet<std::string_view>({
+    "shruti",
+    "shruti bold",
+});
+constexpr auto kFontWhitelistPA = base::MakeFixedFlatSet<std::string_view>({
+    "raavi",
+    "raavi bold",
+});
+constexpr auto kFontWhitelistZH = base::MakeFixedFlatSet<std::string_view>({
+    "dengxian light",
+    "dengxian",
+    "dengxian bold",
+    "fangsong",
+    "kaiti",
+    "simhei",
+    "dfkai-sb",
+    "mingliu",
+    "mingliu_hkscs",
+    "pmingliu",
+});
+constexpr auto kFontWhitelistHE = base::MakeFixedFlatSet<std::string_view>({
+    "aharoni bold",
+    "david",
+    "david bold",
+    "frankruehl",
+    "gisha",
+    "gisha bold",
+    "levenim mt",
+    "levenim mt bold",
+    "miriam",
+    "miriam fixed",
+    "narkisim",
+    "rod",
+});
+constexpr auto kFontWhitelistJA = base::MakeFixedFlatSet<std::string_view>({
+    "biz udgothic",
+    "biz udgothic bold",
+    "biz udpgothic",
+    "biz udpgothic bold",
+    "biz udmincho medium",
+    "biz udpmincho medium",
+    "meiryo",
+    "meiryo italic",
+    "meiryo bold",
+    "meiryo bold italic",
+    "meiryo ui",
+    "meiryo ui italic",
+    "meiryo ui bold",
+    "meiryo ui bold italic",
+    "ms mincho",
+    "ms pmincho",
+    "ud digi kyokasho",
+    "ud digi kyokasho n-b",
+    "ud digi kyokasho nk-b",
+    "ud digi kyokasho nk-r",
+    "ud digi kyokasho np-b",
+    "ud digi kyokasho np-r",
+    "ud digi kyokasho n-r",
+    "yu mincho light",
+    "yu mincho regular",
+    "yu mincho demibold",
+});
+constexpr auto kFontWhitelistKN = base::MakeFixedFlatSet<std::string_view>({
+    "tunga",
+    "tunga bold",
+});
+constexpr auto kFontWhitelistKM = base::MakeFixedFlatSet<std::string_view>({
+    "daunpenh",
+    "khmer ui",
+    "khmer ui bold",
+    "moolboran",
+});
+constexpr auto kFontWhitelistKO = base::MakeFixedFlatSet<std::string_view>({
+    "batang",
+    "batangche",
+    "dotum",
+    "dotumche",
+    "gulim",
+    "gulimche",
+    "gungsuh",
+    "gungsuhche",
+});
+constexpr auto kFontWhitelistLO = base::MakeFixedFlatSet<std::string_view>({
+    "dokchampa",
+    "lao ui",
+    "lao ui bold",
+});
+constexpr auto kFontWhitelistML = base::MakeFixedFlatSet<std::string_view>({
+    "kartika",
+    "kartika bold",
+});
+#elif !BUILDFLAG(IS_LINUX)
+constexpr auto kFontWhitelistAR = kEmptyFontSet;
+constexpr auto kFontWhitelistAS = kEmptyFontSet;
+constexpr auto kFontWhitelistIU = kEmptyFontSet;
+constexpr auto kFontWhitelistHI = kEmptyFontSet;
+constexpr auto kFontWhitelistAM = kEmptyFontSet;
+constexpr auto kFontWhitelistGU = kEmptyFontSet;
+constexpr auto kFontWhitelistPA = kEmptyFontSet;
+constexpr auto kFontWhitelistZH = kEmptyFontSet;
+constexpr auto kFontWhitelistHE = kEmptyFontSet;
+constexpr auto kFontWhitelistJA = kEmptyFontSet;
+constexpr auto kFontWhitelistKN = kEmptyFontSet;
+constexpr auto kFontWhitelistKM = kEmptyFontSet;
+constexpr auto kFontWhitelistKO = kEmptyFontSet;
+constexpr auto kFontWhitelistLO = kEmptyFontSet;
+constexpr auto kFontWhitelistML = kEmptyFontSet;
 #endif
 }  // namespace
 
+base::span<const std::string_view> GetMainFontWhitelist() {
+#if BUILDFLAG(IS_LINUX)
+  const auto distro = GetLinuxDistro();
+  if (distro == LinuxDistro::kUbuntu2204) {
+    return base::make_span(kFontWhitelistUbuntu2204.begin(),
+                           kFontWhitelistUbuntu2204.end());
+  } else if (distro == LinuxDistro::kUbuntu2004) {
+    return base::make_span(kFontWhitelistUbuntu2004.begin(),
+                           kFontWhitelistUbuntu2004.end());
+  } else if (distro == LinuxDistro::kFedora32) {
+    return base::make_span(kFontWhitelistFedora32.begin(),
+                           kFontWhitelistFedora32.end());
+  } else {
+    return base::make_span(kFontWhitelist.begin(), kFontWhitelist.end());
+  }
+#else
+  return base::make_span(kFontWhitelist.begin(), kFontWhitelist.end());
+#endif
+}
+
 bool AllowFontByFamilyName(const AtomicString& family_name,
                            WTF::String default_language) {
-  if (!kCanRestrictFonts)
+  auto fontWhitelist = GetMainFontWhitelist();
+  if (UNLIKELY(g_simulate_empty_font_whitelist_for_testing)) {
+    return false;
+  }
+  if (fontWhitelist.empty()) {
     return true;
+  }
   std::string lower_ascii_name = family_name.LowerASCII().Ascii();
-  if (kFontWhitelist.contains(lower_ascii_name))
+  if (base::ranges::binary_search(fontWhitelist, lower_ascii_name)) {
     return true;
-  if (GetAdditionalFontWhitelistByLocale(default_language)
-          .contains(lower_ascii_name))
+  }
+  if (base::ranges::binary_search(
+          GetAdditionalFontWhitelistByLocale(default_language),
+          lower_ascii_name)) {
     return true;
+  }
 #if BUILDFLAG(IS_ANDROID)
   // There are literally hundreds of region-specific Noto fonts.
   // To reduce memory and maintenance, we allow them by wildcard.
@@ -819,55 +2003,69 @@ bool AllowFontByFamilyName(const AtomicString& family_name,
   return false;
 }
 
-const base::flat_set<base::StringPiece>& GetAdditionalFontWhitelistByLocale(
+bool IsFontAllowedForFarbling(const AtomicString& family_name) {
+  std::string lower_ascii_name = family_name.LowerASCII().Ascii();
+  return kFontFarblingSet.contains(lower_ascii_name);
+}
+
+base::span<const std::string_view> GetAdditionalFontWhitelistByLocale(
     WTF::String locale_language) {
+#if BUILDFLAG(IS_LINUX)
+  if (locale_language != "en" && locale_language != "la") {
+    const auto distro = GetLinuxDistro();
+    if (distro == LinuxDistro::kUbuntu2204) {
+      return base::make_span(kFontWhitelistUbuntu2204Languages.begin(),
+                             kFontWhitelistUbuntu2204Languages.end());
+    } else if (distro == LinuxDistro::kUbuntu2004) {
+      return base::make_span(kFontWhitelistUbuntu2004Languages.begin(),
+                             kFontWhitelistUbuntu2004Languages.end());
+    } else if (distro == LinuxDistro::kFedora32) {
+      return base::make_span(kFontWhitelistFedora32.begin(),
+                             kFontWhitelistFedora32.end());
+    }
+  }
+#else
   if (locale_language == "ar" || locale_language == "fa" ||
       locale_language == "ur")
-    return kFontWhitelistAR;
+    return base::make_span(kFontWhitelistAR.begin(), kFontWhitelistAR.end());
   if (locale_language == "as")
-    return kFontWhitelistAS;
+    return base::make_span(kFontWhitelistAS.begin(), kFontWhitelistAS.end());
   if (locale_language == "iu")
-    return kFontWhitelistIU;
+    return base::make_span(kFontWhitelistIU.begin(), kFontWhitelistIU.end());
   if (locale_language == "hi" || locale_language == "mr")
-    return kFontWhitelistHI;
+    return base::make_span(kFontWhitelistHI.begin(), kFontWhitelistHI.end());
   if (locale_language == "am" || locale_language == "ti")
-    return kFontWhitelistAM;
+    return base::make_span(kFontWhitelistAM.begin(), kFontWhitelistAM.end());
   if (locale_language == "gu")
-    return kFontWhitelistGU;
+    return base::make_span(kFontWhitelistGU.begin(), kFontWhitelistGU.end());
   if (locale_language == "pa")
-    return kFontWhitelistPA;
+    return base::make_span(kFontWhitelistPA.begin(), kFontWhitelistPA.end());
   if (locale_language == "zh")
-    return kFontWhitelistZH;
+    return base::make_span(kFontWhitelistZH.begin(), kFontWhitelistZH.end());
   if (locale_language == "he")
-    return kFontWhitelistHE;
+    return base::make_span(kFontWhitelistHE.begin(), kFontWhitelistHE.end());
   if (locale_language == "ja")
-    return kFontWhitelistJA;
+    return base::make_span(kFontWhitelistJA.begin(), kFontWhitelistJA.end());
   if (locale_language == "kn")
-    return kFontWhitelistKN;
+    return base::make_span(kFontWhitelistKN.begin(), kFontWhitelistKN.end());
   if (locale_language == "km")
-    return kFontWhitelistKM;
+    return base::make_span(kFontWhitelistKM.begin(), kFontWhitelistKM.end());
   if (locale_language == "ko")
-    return kFontWhitelistKO;
+    return base::make_span(kFontWhitelistKO.begin(), kFontWhitelistKO.end());
   if (locale_language == "lo")
-    return kFontWhitelistLO;
+    return base::make_span(kFontWhitelistLO.begin(), kFontWhitelistLO.end());
   if (locale_language == "ml")
-    return kFontWhitelistML;
+    return base::make_span(kFontWhitelistML.begin(), kFontWhitelistML.end());
+#endif
   return kEmptyFontSet;
 }
 
-void set_font_whitelist_for_testing(
-    bool can_restrict_fonts,
-    const base::flat_set<base::StringPiece>& font_whitelist) {
-  kCanRestrictFonts = can_restrict_fonts;
-  kFontWhitelist = font_whitelist;
+size_t GetFontWhitelistSizeForTesting() {
+  return GetMainFontWhitelist().size();
 }
 
-bool get_can_restrict_fonts_for_testing() {
-  return kCanRestrictFonts;
-}
-
-const base::flat_set<base::StringPiece>& get_font_whitelist_for_testing() {
-  return kFontWhitelist;
+void SetSimulateEmptyFontWhitelistForTesting(bool enable) {
+  g_simulate_empty_font_whitelist_for_testing = enable;
 }
 
 }  // namespace brave

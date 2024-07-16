@@ -10,26 +10,35 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
 class GURL;
 
 namespace brave_ads {
 
-using CreativeSetConversionBuckets =
+using CreativeSetConversionBucketMap =
     std::map</*creative_set_id*/ std::string, CreativeSetConversionList>;
 
-CreativeSetConversionList FilterConvertedAndNonMatchingCreativeSetConversions(
+using CreativeSetConversionCountMap = std::map</*creative_set_id*/ std::string,
+                                               /*count*/ size_t>;
+
+CreativeSetConversionList GetMatchingCreativeSetConversions(
     const CreativeSetConversionList& creative_set_conversions,
-    const AdEventList& ad_events,
     const std::vector<GURL>& redirect_chain);
 
-CreativeSetConversionBuckets SortCreativeSetConversionsIntoBuckets(
+CreativeSetConversionCountMap GetCreativeSetConversionCounts(
+    const AdEventList& ad_events);
+
+CreativeSetConversionBucketMap SortCreativeSetConversionsIntoBuckets(
     const CreativeSetConversionList& creative_set_conversions);
 
-absl::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
+void FilterCreativeSetConversionBucketsThatExceedTheCap(
+    const std::map<std::string, size_t>& creative_set_conversion_counts,
+    size_t creative_set_conversion_cap,
+    CreativeSetConversionBucketMap& creative_set_conversion_buckets);
+
+CreativeSetConversionList GetCreativeSetConversionsWithinObservationWindow(
     const CreativeSetConversionList& creative_set_conversions,
     const AdEventInfo& ad_event);
 

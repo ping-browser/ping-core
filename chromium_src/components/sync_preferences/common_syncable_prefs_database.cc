@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/sync_preferences/common_syncable_prefs_database.h"
+#include <optional>
+#include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
-#include "base/strings/string_piece.h"
 #include "components/search_engines/search_engines_pref_names.h"
+#include "components/sync_preferences/common_syncable_prefs_database.h"
 // "//components/sync_preferences:common_syncable_prefs_database" already
 // depends on "//components/search_engines"
 
@@ -22,13 +23,15 @@ enum {
 
 const auto& BraveSyncablePreferences() {
   static const auto kBraveCommonSyncablePrefsAllowlist =
-      base::MakeFixedFlatMap<base::StringPiece, SyncablePrefMetadata>(
+      base::MakeFixedFlatMap<std::string_view, SyncablePrefMetadata>(
           {{prefs::kSyncedDefaultPrivateSearchProviderGUID,
             {brave_syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderGUID,
-             syncer::PREFERENCES, /*is_history_opt_in_required*/ false}},
+             syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+             MergeBehavior::kNone}},
            {prefs::kSyncedDefaultPrivateSearchProviderData,
             {brave_syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderData,
-             syncer::PREFERENCES, /*is_history_opt_in_required*/ false}}});
+             syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+             MergeBehavior::kNone}}});
   return kBraveCommonSyncablePrefsAllowlist;
 }
 }  // namespace
@@ -40,17 +43,17 @@ const auto& BraveSyncablePreferences() {
 
 namespace sync_preferences {
 
-absl::optional<SyncablePrefMetadata>
+std::optional<SyncablePrefMetadata>
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata(
     const std::string& pref_name) const {
-  const auto* it = BraveSyncablePreferences().find(pref_name);
+  const auto it = BraveSyncablePreferences().find(pref_name);
   if (it != BraveSyncablePreferences().end()) {
     return it->second;
   }
   return GetSyncablePrefMetadata_ChromiumOriginalImpl(pref_name);
 }
 
-absl::optional<SyncablePrefMetadata>
+std::optional<SyncablePrefMetadata>
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata_ChromiumImpl(
     const std::string& pref_name) const {
   return GetSyncablePrefMetadata(pref_name);

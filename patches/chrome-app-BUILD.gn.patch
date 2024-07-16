@@ -1,22 +1,12 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index d7531ca3e7b29ad67ce5e8f893f02b7a11d58191..9db19f0addf6a72c5aac59bdc01366b55a04c1c9 100644
+index 28b4f8022051e1e4ee4c49d57caed969068adf55..06992a466bb8d78e123071fe7b30fec1dd36a7e5 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -124,6 +124,8 @@ grit("generated_resources") {
+@@ -108,6 +108,7 @@ grit("generated_resources") {
    if (is_android) {
      outputs += android_generated_java_resources
    }
-+
 +  deps = [ "//brave/app:brave_generated_resources_grit" ]
  }
  
  if (is_android) {
-@@ -159,7 +161,7 @@ grit("google_chrome_strings") {
- }
- 
- grit("chromium_strings") {
--  source = "chromium_strings.grd"
-+  source = "${branding_path_component}_strings.grd"
-   defines = chrome_grit_defines
-   output_dir = "$root_gen_dir/chrome"
-   outputs =

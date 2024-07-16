@@ -6,15 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_WALLETS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_WALLETS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // POST /v4/wallets
 //
@@ -31,7 +31,7 @@
 // clang-format on
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -46,22 +46,22 @@ struct ResultFor<PostWallets> {
 class PostWallets final : public RequestBuilder,
                           public ResponseHandler<PostWallets> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngine& engine,
+                                const mojom::UrlResponse&);
 
-  PostWallets(RewardsEngineImpl& engine,
-              absl::optional<std::string>&& geo_country);
+  PostWallets(RewardsEngine& engine, std::optional<std::string>&& geo_country);
   ~PostWallets() override;
 
  private:
   const char* Path() const;
 
-  absl::optional<std::string> Url() const override;
-  absl::optional<std::vector<std::string>> Headers(
+  std::optional<std::string> Url() const override;
+  std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
-  absl::optional<std::string> Content() const override;
+  std::optional<std::string> Content() const override;
   std::string ContentType() const override;
 
-  absl::optional<std::string> geo_country_;
+  std::optional<std::string> geo_country_;
 };
 
 }  // namespace endpoints

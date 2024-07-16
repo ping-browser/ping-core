@@ -7,10 +7,14 @@
 
 #include <utility>
 
-#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#endif
 namespace tor {
 class BraveTorClientUpdater;
 }
@@ -96,12 +100,6 @@ TestingBraveBrowserProcess::localhost_permission_component() {
   return nullptr;
 }
 
-brave_shields::HTTPSEverywhereService*
-TestingBraveBrowserProcess::https_everywhere_service() {
-  NOTREACHED();
-  return nullptr;
-}
-
 brave_component_updater::LocalDataFilesService*
 TestingBraveBrowserProcess::local_data_files_service() {
   NOTREACHED();
@@ -175,9 +173,13 @@ TestingBraveBrowserProcess::brave_farbling_service() {
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-brave_vpn::BraveVPNOSConnectionAPI*
-TestingBraveBrowserProcess::brave_vpn_os_connection_api() {
-  return nullptr;
+brave_vpn::BraveVPNConnectionManager*
+TestingBraveBrowserProcess::brave_vpn_connection_manager() {
+  return brave_vpn_connection_manager_.get();
+}
+void TestingBraveBrowserProcess::SetBraveVPNConnectionManagerForTesting(
+    std::unique_ptr<brave_vpn::BraveVPNConnectionManager> manager) {
+  brave_vpn_connection_manager_ = std::move(manager);
 }
 #endif
 
@@ -191,7 +193,6 @@ void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {
   ad_block_service_ = std::move(service);
 }
-
 ///////////////////////////////////////////////////////////////////////////////
 
 TestingBraveBrowserProcessInitializer::TestingBraveBrowserProcessInitializer() {

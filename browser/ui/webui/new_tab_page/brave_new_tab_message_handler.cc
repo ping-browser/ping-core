@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -26,6 +27,7 @@
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -90,6 +92,9 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.Set(
+      "showSearchBox",
+      prefs->GetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox));
   return pref_data;
 }
 
@@ -109,8 +114,10 @@ base::Value::Dict GetPrivatePropertiesDictionary(PrefService* prefs) {
 
 enum class NTPCustomizeUsage { kNeverOpened, kOpened, kOpenedAndEdited, kSize };
 
-const char kNTPCustomizeUsageStatus[] =
+constexpr char kNTPCustomizeUsageStatus[] =
     "brave.new_tab_page.customize_p3a_usage";
+constexpr char kCustomizeUsageHistogramName[] =
+    "Brave.NTP.CustomizeUsageStatus.2";
 
 const char kNeedsBrowserUpgradeToServeAds[] = "needsBrowserUpgradeToServeAds";
 
@@ -125,7 +132,7 @@ void BraveNewTabMessageHandler::RegisterLocalStatePrefs(
 void BraveNewTabMessageHandler::RecordInitialP3AValues(
     PrefService* local_state) {
   p3a::RecordValueIfGreater<NTPCustomizeUsage>(
-      NTPCustomizeUsage::kNeverOpened, "Brave.NTP.CustomizeUsageStatus",
+      NTPCustomizeUsage::kNeverOpened, kCustomizeUsageHistogramName,
       kNTPCustomizeUsageStatus, local_state);
 }
 
@@ -133,7 +140,7 @@ void BraveNewTabMessageHandler::RecordInitialP3AValues(
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     content::WebUIDataSource* source,
     Profile* profile,
-    bool was_invisible_and_restored) {
+    bool was_restored) {
   //
   // Initial Values
   // Should only contain data that is static
@@ -157,15 +164,12 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     source->AddBoolean("isTor", profile->IsTor());
     source->AddBoolean("isQwant", brave::IsRegionForQwant(profile));
   }
-  return new BraveNewTabMessageHandler(profile, was_invisible_and_restored);
+  return new BraveNewTabMessageHandler(profile, was_restored);
 }
 
-BraveNewTabMessageHandler::BraveNewTabMessageHandler(
-    Profile* profile,
-    bool was_invisible_and_restored)
-    : profile_(profile),
-      was_invisible_and_restored_(was_invisible_and_restored),
-      weak_ptr_factory_(this) {
+BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile,
+                                                     bool was_restored)
+    : profile_(profile), was_restored_(was_restored), weak_ptr_factory_(this) {
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
@@ -280,6 +284,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
+      brave_search_conversion::prefs::kShowNTPSearchBox,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
       kNewTabPageShowClock,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
@@ -312,15 +320,16 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
 
+  bat_ads_observer_receiver_.reset();
   if (ads_service_) {
-    ads_service_observation_.Reset();
-    ads_service_observation_.Observe(ads_service_);
+    ads_service_->AddBatAdsObserver(
+        bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
   }
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   pref_change_registrar_.RemoveAll();
-  ads_service_observation_.Reset();
+  bat_ads_observer_receiver_.reset();
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
@@ -369,14 +378,22 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     LOG(ERROR) << "Invalid input";
     return;
   }
-  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
-      NTPCustomizeUsage::kOpenedAndEdited, "Brave.NTP.CustomizeUsageStatus",
-      kNTPCustomizeUsageStatus, g_browser_process->local_state());
   PrefService* prefs = profile_->GetPrefs();
   // Collect args
   std::string settingsKeyInput = args[0].GetString();
   auto settingsValue = args[1].Clone();
   std::string settingsKey;
+
+  // Prevent News onboarding below NTP and sponsored NTP notification
+  // state from triggering the "shown & changed" answer for the
+  // customize dialog metric.
+  if (settingsKeyInput != "showToday" &&
+      settingsKeyInput != "isBraveNewsOptedIn" &&
+      settingsKeyInput != "isBrandedWallpaperNotificationDismissed") {
+    p3a::RecordValueIfGreater<NTPCustomizeUsage>(
+        NTPCustomizeUsage::kOpenedAndEdited, kCustomizeUsageHistogramName,
+        kNTPCustomizeUsageStatus, g_browser_process->local_state());
+  }
 
   // Handle string settings
   if (settingsValue.is_string()) {
@@ -419,6 +436,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageHideAllWidgets;
   } else if (settingsKeyInput == "showBraveTalk") {
     settingsKey = kNewTabPageShowBraveTalk;
+  } else if (settingsKeyInput == "showSearchBox") {
+    settingsKey = brave_search_conversion::prefs::kShowNTPSearchBox;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;
@@ -437,14 +456,15 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
   AllowJavascript();
 
   // Decrement original value only if there's actual branded content and we are
-  // not restoring invisible (hidden or occluded) browser tabs.
-  if (was_invisible_and_restored_) {
-    was_invisible_and_restored_ = false;
+  // not restoring browser tabs.
+  if (was_restored_) {
+    was_restored_ = false;
     return;
   }
 
-  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_))
+  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_)) {
     service->RegisterPageView();
+  }
 }
 
 void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
@@ -487,8 +507,9 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
-  absl::optional<base::Value::Dict> data =
-      service->GetCurrentWallpaperForDisplay();
+  std::optional<base::Value::Dict> data =
+      was_restored_ ? service->GetNextWallpaperForDisplay()
+                    : service->GetCurrentWallpaperForDisplay();
 
   if (!data) {
     ResolveJavascriptCallback(args[0], wallpaper);
@@ -532,7 +553,7 @@ void BraveNewTabMessageHandler::HandleCustomizeClicked(
     const base::Value::List& args) {
   AllowJavascript();
   p3a::RecordValueIfGreater<NTPCustomizeUsage>(
-      NTPCustomizeUsage::kOpened, "Brave.NTP.CustomizeUsageStatus",
+      NTPCustomizeUsage::kOpened, kCustomizeUsageHistogramName,
       kNTPCustomizeUsageStatus, g_browser_process->local_state());
 }
 
@@ -555,18 +576,15 @@ void BraveNewTabMessageHandler::OnPreferencesChanged() {
 }
 
 base::Value::Dict BraveNewTabMessageHandler::GetAdsDataDictionary() const {
-  base::Value::Dict ads_data;
-
-  bool needs_browser_update_to_see_ads = false;
-  if (ads_service_) {
-    needs_browser_update_to_see_ads =
-        ads_service_->NeedsBrowserUpgradeToServeAds();
+  if (!ads_service_) {
+    return {};
   }
-  ads_data.Set(kNeedsBrowserUpgradeToServeAds, needs_browser_update_to_see_ads);
 
-  return ads_data;
+  return base::Value::Dict().Set(
+      kNeedsBrowserUpgradeToServeAds,
+      ads_service_->IsBrowserUpgradeRequiredToServeAds());
 }
 
-void BraveNewTabMessageHandler::OnNeedsBrowserUpgradeToServeAds() {
+void BraveNewTabMessageHandler::OnBrowserUpgradeRequiredToServeAds() {
   FireWebUIListener("new-tab-ads-data-updated", GetAdsDataDictionary());
 }

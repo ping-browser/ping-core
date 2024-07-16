@@ -5,12 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 
 namespace brave_ads {
+
+namespace {
+std::optional<base::TimeDelta> g_timer_delay_for_testing;
+}  // namespace
 
 Timer::Timer() = default;
 
@@ -23,7 +28,8 @@ base::Time Timer::Start(const base::Location& location,
                         base::OnceClosure user_task) {
   Stop();
 
-  const base::Time fire_at = base::Time::Now() + delay;
+  const base::Time fire_at =
+      base::Time::Now() + g_timer_delay_for_testing.value_or(delay);
   timer_.Start(location, fire_at, std::move(user_task));
   return fire_at;
 }
@@ -44,13 +50,18 @@ bool Timer::IsRunning() const {
 }
 
 bool Timer::Stop() {
-  if (!IsRunning()) {
-    return false;
-  }
-
+  const bool was_running = IsRunning();
   timer_.Stop();
+  return was_running;
+}
 
-  return true;
+ScopedTimerDelaySetterForTesting::ScopedTimerDelaySetterForTesting(
+    const base::TimeDelta delay) {
+  g_timer_delay_for_testing = delay;
+}
+
+ScopedTimerDelaySetterForTesting::~ScopedTimerDelaySetterForTesting() {
+  g_timer_delay_for_testing = std::nullopt;
 }
 
 }  // namespace brave_ads

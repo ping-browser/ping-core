@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/raw_ref.h"
 #include "base/notreached.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
@@ -37,6 +38,10 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
         return "Bitcoin Account";
       case mojom::KeyringId::kBitcoin84Testnet:
         return "Bitcoin Testnet Account";
+      case mojom::KeyringId::kZCashMainnet:
+        return "Zcash Mainnet Account";
+      case mojom::KeyringId::kZCashTestnet:
+        return "Zcash Testnet Account";
     }
     NOTREACHED();
     return "";
@@ -134,6 +139,14 @@ mojom::AccountInfoPtr AccountUtils::EnsureBtcTestAccount(uint32_t index) {
   return EnsureAccount(mojom::KeyringId::kBitcoin84Testnet, index);
 }
 
+mojom::AccountInfoPtr AccountUtils::EnsureZecAccount(uint32_t index) {
+  return EnsureAccount(mojom::KeyringId::kZCashMainnet, index);
+}
+
+mojom::AccountInfoPtr AccountUtils::EnsureZecTestAccount(uint32_t index) {
+  return EnsureAccount(mojom::KeyringId::kZCashTestnet, index);
+}
+
 mojom::AccountInfoPtr AccountUtils::CreateEthAccount(const std::string& name) {
   return CreateDerivedAccount(mojom::KeyringId::kDefault, name);
 }
@@ -160,6 +173,15 @@ mojom::AccountInfoPtr AccountUtils::CreateBtcTestAccount(
   return CreateDerivedAccount(mojom::KeyringId::kBitcoin84Testnet, name);
 }
 
+mojom::AccountInfoPtr AccountUtils::CreateZecAccount(const std::string& name) {
+  return CreateDerivedAccount(mojom::KeyringId::kZCashMainnet, name);
+}
+
+mojom::AccountInfoPtr AccountUtils::CreateZecTestAccount(
+    const std::string& name) {
+  return CreateDerivedAccount(mojom::KeyringId::kZCashTestnet, name);
+}
+
 mojom::AccountInfoPtr AccountUtils::CreateEthHWAccount() {
   std::string address = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
 
@@ -184,7 +206,54 @@ mojom::AccountIdPtr AccountUtils::FindAccountIdByAddress(
   return nullptr;
 }
 
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllAccounts(
+    mojom::KeyringId keyring_id) {
+  std::vector<mojom::AccountInfoPtr> result;
+  for (auto& acc : keyring_service_->GetAllAccountInfos()) {
+    if (acc->account_id->keyring_id == keyring_id) {
+      result.push_back(acc->Clone());
+    }
+  }
+  return result;
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllEthAccounts() {
+  return AllAccounts(mojom::KeyringId::kDefault);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllSolAccounts() {
+  return AllAccounts(mojom::KeyringId::kSolana);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllFilAccounts() {
+  return AllAccounts(mojom::KeyringId::kFilecoin);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllFilTestAccounts() {
+  return AllAccounts(mojom::KeyringId::kFilecoinTestnet);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcAccounts() {
+  return AllAccounts(mojom::KeyringId::kBitcoin84);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcTestAccounts() {
+  return AllAccounts(mojom::KeyringId::kBitcoin84Testnet);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllZecAccounts() {
+  return AllAccounts(mojom::KeyringId::kZCashMainnet);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllZecTestAccounts() {
+  return AllAccounts(mojom::KeyringId::kZCashTestnet);
+}
+
 void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
+  if (delegate->IsInitialized()) {
+    return;
+  }
+
   base::RunLoop run_loop;
   class TestTxStorageDelegateObserver : public TxStorageDelegate::Observer {
    public:
@@ -194,12 +263,12 @@ void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
       observation_.Observe(delegate);
     }
 
-    void OnStorageInitialized() override { run_loop_.Quit(); }
+    void OnStorageInitialized() override { run_loop_->Quit(); }
 
    private:
     base::ScopedObservation<TxStorageDelegate, TxStorageDelegate::Observer>
         observation_{this};
-    base::RunLoop& run_loop_;
+    raw_ref<base::RunLoop> run_loop_;
   } observer(delegate, run_loop);
   run_loop.Run();
 }
@@ -216,8 +285,10 @@ scoped_refptr<value_store::TestValueStoreFactory> GetTestValueStoreFactory(
 std::unique_ptr<TxStorageDelegateImpl> GetTxStorageDelegateForTest(
     PrefService* prefs,
     scoped_refptr<value_store::ValueStoreFactory> store_factory) {
-  return std::make_unique<TxStorageDelegateImpl>(
+  auto delegate = std::make_unique<TxStorageDelegateImpl>(
       prefs, store_factory, base::SequencedTaskRunner::GetCurrentDefault());
+  WaitForTxStorageDelegateInitialized(delegate.get());
+  return delegate;
 }
 
 AccountResolverDelegateForTest::AccountResolverDelegateForTest() = default;

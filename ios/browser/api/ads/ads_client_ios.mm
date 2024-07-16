@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import "ads_client_ios.h"
-#import "ads_client_bridge.h"
+#import "brave/ios/browser/api/ads/ads_client_ios.h"
+
+#include <optional>
+
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+#import "brave/ios/browser/api/ads/ads_client_bridge.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -60,28 +62,25 @@ void AdsClientIOS::CloseNotificationAd(const std::string& placement_id) {
   [bridge_ closeNotificationAd:placement_id];
 }
 
-void AdsClientIOS::ShowReminder(const brave_ads::mojom::ReminderType type) {
-  [bridge_ showReminder:type];
+void AdsClientIOS::CacheAdEventForInstanceId(
+    const std::string& id,
+    const std::string& ad_type,
+    const std::string& confirmation_type,
+    const base::Time time) const {
+  [bridge_ cacheAdEventForInstanceId:id
+                              adType:ad_type
+                    confirmationType:confirmation_type
+                                time:time];
 }
 
-void AdsClientIOS::RecordAdEventForId(const std::string& id,
-                                      const std::string& ad_type,
-                                      const std::string& confirmation_type,
-                                      const base::Time time) const {
-  [bridge_ recordAdEventForId:id
-                       adType:ad_type
-             confirmationType:confirmation_type
-                         time:time];
-}
-
-std::vector<base::Time> AdsClientIOS::GetAdEventHistory(
+std::vector<base::Time> AdsClientIOS::GetCachedAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
-  return [bridge_ getAdEventHistory:ad_type confirmationType:confirmation_type];
+  return [bridge_ getCachedAdEvents:ad_type confirmationType:confirmation_type];
 }
 
-void AdsClientIOS::ResetAdEventHistoryForId(const std::string& id) const {
-  [bridge_ resetAdEventHistoryForId:id];
+void AdsClientIOS::ResetAdEventCacheForInstanceId(const std::string& id) const {
+  [bridge_ resetAdEventCacheForInstanceId:id];
 }
 
 void AdsClientIOS::UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
@@ -95,10 +94,12 @@ void AdsClientIOS::Save(const std::string& name,
   [bridge_ save:name value:value callback:std::move(callback)];
 }
 
-void AdsClientIOS::LoadFileResource(const std::string& id,
-                                    const int version,
-                                    brave_ads::LoadFileCallback callback) {
-  [bridge_ loadFileResource:id version:version callback:std::move(callback)];
+void AdsClientIOS::LoadComponentResource(const std::string& id,
+                                         const int version,
+                                         brave_ads::LoadFileCallback callback) {
+  [bridge_ loadComponentResource:id
+                         version:version
+                        callback:std::move(callback)];
 }
 
 void AdsClientIOS::GetBrowsingHistory(
@@ -145,102 +146,41 @@ void AdsClientIOS::RunDBTransaction(
                    callback:std::move(callback)];
 }
 
-void AdsClientIOS::UpdateAdRewards() {
-  [bridge_ updateAdRewards];
+void AdsClientIOS::SetProfilePref(const std::string& path, base::Value value) {
+  [bridge_ setProfilePref:path value:std::move(value)];
 }
 
-void AdsClientIOS::SetBooleanPref(const std::string& path, const bool value) {
-  [bridge_ setBooleanPref:path value:value];
+std::optional<base::Value> AdsClientIOS::GetProfilePref(
+    const std::string& path) {
+  return [bridge_ getProfilePref:path];
 }
 
-bool AdsClientIOS::GetBooleanPref(const std::string& path) const {
-  return [bridge_ getBooleanPref:path];
+void AdsClientIOS::ClearProfilePref(const std::string& path) {
+  [bridge_ clearProfilePref:path];
 }
 
-void AdsClientIOS::SetIntegerPref(const std::string& path, const int value) {
-  [bridge_ setIntegerPref:path value:value];
+bool AdsClientIOS::HasProfilePrefPath(const std::string& path) const {
+  return [bridge_ hasProfilePrefPath:path];
 }
 
-int AdsClientIOS::GetIntegerPref(const std::string& path) const {
-  return [bridge_ getIntegerPref:path];
+void AdsClientIOS::SetLocalStatePref(const std::string& path,
+                                     base::Value value) {
+  [bridge_ setLocalStatePref:path value:std::move(value)];
 }
 
-void AdsClientIOS::SetDoublePref(const std::string& path, const double value) {
-  [bridge_ setDoublePref:path value:value];
+std::optional<base::Value> AdsClientIOS::GetLocalStatePref(
+    const std::string& path) {
+  return [bridge_ getLocalStatePref:path];
 }
 
-double AdsClientIOS::GetDoublePref(const std::string& path) const {
-  return [bridge_ getDoublePref:path];
+void AdsClientIOS::ClearLocalStatePref(const std::string& path) {
+  [bridge_ clearLocalStatePref:path];
 }
 
-void AdsClientIOS::SetStringPref(const std::string& path,
-                                 const std::string& value) {
-  [bridge_ setStringPref:path value:value];
+bool AdsClientIOS::HasLocalStatePrefPath(const std::string& path) const {
+  return [bridge_ hasLocalStatePrefPath:path];
 }
 
-std::string AdsClientIOS::GetStringPref(const std::string& path) const {
-  return [bridge_ getStringPref:path];
-}
-
-void AdsClientIOS::SetInt64Pref(const std::string& path, const int64_t value) {
-  [bridge_ setInt64Pref:path value:value];
-}
-
-int64_t AdsClientIOS::GetInt64Pref(const std::string& path) const {
-  return [bridge_ getInt64Pref:path];
-}
-
-void AdsClientIOS::SetUint64Pref(const std::string& path,
-                                 const uint64_t value) {
-  [bridge_ setUint64Pref:path value:value];
-}
-
-uint64_t AdsClientIOS::GetUint64Pref(const std::string& path) const {
-  return [bridge_ getUint64Pref:path];
-}
-
-void AdsClientIOS::SetTimePref(const std::string& path,
-                               const base::Time value) {
-  [bridge_ setTimePref:path value:value];
-}
-
-base::Time AdsClientIOS::GetTimePref(const std::string& path) const {
-  return [bridge_ getTimePref:path];
-}
-
-void AdsClientIOS::SetDictPref(const std::string& path,
-                               base::Value::Dict value) {
-  [bridge_ setDictPref:path value:std::move(value)];
-}
-
-absl::optional<base::Value::Dict> AdsClientIOS::GetDictPref(
-    const std::string& path) const {
-  return [bridge_ getDictPref:path];
-}
-
-void AdsClientIOS::SetListPref(const std::string& path,
-                               base::Value::List value) {
-  [bridge_ setListPref:path value:std::move(value)];
-}
-
-absl::optional<base::Value::List> AdsClientIOS::GetListPref(
-    const std::string& path) const {
-  return [bridge_ getListPref:path];
-}
-
-void AdsClientIOS::ClearPref(const std::string& path) {
-  [bridge_ clearPref:path];
-}
-
-bool AdsClientIOS::HasPrefPath(const std::string& path) const {
-  return [bridge_ hasPrefPath:path];
-}
-
-void AdsClientIOS::RecordP2AEvents(base::Value::List events) {
-  [bridge_ recordP2AEvents:std::move(events)];
-}
-
-void AdsClientIOS::AddTrainingSample(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
-  [bridge_ addTrainingSample:std::move(training_sample)];
+void AdsClientIOS::RecordP2AEvents(const std::vector<std::string>& events) {
+  [bridge_ recordP2AEvents:events];
 }

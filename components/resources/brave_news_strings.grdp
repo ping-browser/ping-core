@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_BRAVE_NEWS_INTRO_TITLE" desc="Title for introduction to Brave News news feed section">
-    Turn on Brave News, and never miss a story
+  <message name="IDS_BRAVE_NEWS_INTRO_TITLE" desc="Title for introduction to Ping News news feed section">
+    Turn on Ping News, and never miss a story
   </message>
-  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION" desc="Description for introduction to Brave News news feed section. Do not translate the title Brave News.">
-    Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and… voila!
+  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION" desc="Description for introduction to Ping News news feed section. Do not translate the title Ping News.">
+    Follow your favorite sources, in a single feed. Just open a tab in Ping, scroll down, and… voila!
   </message>
-  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO" desc="Description second paragraph for introduction to Brave News news feed section. Do not translate the title Brave News.">
-    Brave News is ad-supported with private, anonymized ads. <ph name="LINK_START">$1<ex>{</ex></ph>Learn more.<ph name="LINK_END">$2<ex>}</ex></ph>.
+  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO" desc="Description second paragraph for introduction to Ping News news feed section. Do not translate the title Ping News.">
+    Ping News is ad-supported with private, anonymized ads. <ph name="LINK_START">$1<ex>{</ex></ph>Learn more.<ph name="LINK_END">$2<ex>}</ex></ph>.
   </message>
-  <message name="IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL" desc="Button text for opting in to Brave News">
-    Turn on Brave News
+  <message name="IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL" desc="Button text for opting in to Ping News">
+    Turn on Ping News
   </message>
-  <message name="IDS_BRAVE_NEWS_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Brave News">
+  <message name="IDS_BRAVE_NEWS_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Ping News">
     No thanks
   </message>
   <message name="IDS_BRAVE_NEWS_BACK_TO_DASHBOARD" desc="Label for the back to dashboard button">
@@ -75,27 +75,27 @@
   <message name="IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE" desc="Subtitle of the suggested sources section">
     Some sources you might like. Suggestions are anonymous and matched only on your device.
   </message>
-  <message name="IDS_BRAVE_NEWS_ERROR_HEADING" desc="Message heading for when there is a Brave News error">
+  <message name="IDS_BRAVE_NEWS_ERROR_HEADING" desc="Message heading for when there is a Ping News error">
     Oops…
   </message>
-  <message name="IDS_BRAVE_NEWS_ERROR_MESSAGE" desc="Message body for when there is a Brave News error">
-    Brave News was unable to fetch content.
+  <message name="IDS_BRAVE_NEWS_ERROR_MESSAGE" desc="Message body for when there is a Ping News error">
+    Ping News was unable to fetch content.
   </message>
-  <message name="IDS_BRAVE_NEWS_ERROR_ACTION_LABEL" desc="Message action label for when there is a Brave News error">
+  <message name="IDS_BRAVE_NEWS_ERROR_ACTION_LABEL" desc="Message action label for when there is a Ping News error">
     Try again
   </message>
-  <message name="IDS_BRAVE_NEWS_NO_CONTENT_HEADING" desc="Message heading for when there is no Brave News content">
-    No content
+  <message name="IDS_BRAVE_NEWS_NO_CONTENT_HEADING" desc="Message heading for when there is no Ping News content">
+    Your Feed is Empty
   </message>
-  <message name="IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE" desc="Message body for when there is no Brave News content">
-    Brave News has no content to show.
+  <message name="IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE" desc="Message body for when there is no Ping News content">
+    Follow publishers and channels to see them in your feed.
   </message>
-  <message name="IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL" desc="Message action label for when there is no Brave News content">
-    Choose content sources
+  <message name="IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL" desc="Message action label for when there is no Ping News content">
+    Add content sources
   </message>
 
-  <message name="IDS_BRAVE_NEWS_CHANNEL_BRAVE" desc="Translation of the 'Brave' channel">
-    Brave
+  <message name="IDS_BRAVE_NEWS_CHANNEL_BRAVE" desc="Translation of the 'Ping' channel">
+    Ping
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_BUSINESS" desc="Translation of the 'Business' channel">
     Business
@@ -103,17 +103,20 @@
   <message name="IDS_BRAVE_NEWS_CHANNEL_CARS" desc="Translation of the 'Cars' channel">
     Cars
   </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_CELEBRITIES" desc="Translation of the 'Celebrities' channel">
+    Celebrities
+  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_CRYPTO" desc="Translation of the 'Crypto' channel">
     Crypto
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_CULTURE" desc="Translation of the 'Culture' channel">
     Culture
   </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_EDUCATION" desc="Translation of the 'Education' channel">
+    Education
+  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT" desc="Translation of the 'Entertainment' channel">
     Entertainment
-  </message>
-  <message name="IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT_NEWS" desc="Translation of the 'Entertainment News' channel">
-    Entertainment News
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_FASHION" desc="Translation of the 'Fashion' channel">
     Fashion
@@ -136,6 +139,9 @@
   <message name="IDS_BRAVE_NEWS_CHANNEL_HOME" desc="Translation of the 'Home' channel">
     Home
   </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_LIFESTYLE" desc="Translation of the 'Lifestyle' channel">
+    Lifestyle
+  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_MUSIC" desc="Translation of the 'Music' channel">
     Music
   </message>
@@ -157,17 +163,14 @@
   <message name="IDS_BRAVE_NEWS_CHANNEL_TECHNOLOGY" desc="Translation of the 'Technology' channel">
     Technology
   </message>
-  <message name="IDS_BRAVE_NEWS_CHANNEL_TECH_NEWS" desc="Translation of the 'Tech News' channel">
-    Tech News
-  </message>
-  <message name="IDS_BRAVE_NEWS_CHANNEL_TECH_REVIEWS" desc="Translation of the 'Tech Reviews' channel">
-    Tech Reviews
-  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_TOP_NEWS" desc="Translation of the 'Top News' channel">
     Top News
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_TOP_SOURCES" desc="Translation of the 'Top Sources' channel">
     Top Sources
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_UK_NEWS" desc="Translation of the 'UK News' channel">
+    UK News
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_US_NEWS" desc="Translation of the 'US News' channel">
     US News
@@ -177,5 +180,67 @@
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_WORLD_NEWS" desc="Translation of the 'World News' channel">
     World News
+  </message>
+
+  <!-- Feed -->
+  <message name="IDS_BRAVE_NEWS_NEWS_PEEK" desc="The 'News' heading for the peeking card">
+    News
+  </message>
+  <message name="IDS_BRAVE_NEWS_FOR_YOU_FEED" desc="The heading for For You feed">
+    For You
+  </message>
+  <message name="IDS_BRAVE_NEWS_FOLLOWING_FEED" desc="The heading for Following feed">
+    Following
+  </message>
+  <message name="IDS_BRAVE_NEWS_PUBLISHERS_HEADING" desc="Heading for the list of followed publishers">
+    Publishers
+  </message>
+  <message name="IDS_BRAVE_NEWS_SHOW_ALL" desc="Text for the button to show all publishers or channels">
+    Show all
+  </message>
+  <message name="IDS_BRAVE_NEWS_SHOW_LESS" desc="Text for the button to show fewer publishers or channels">
+    Show less
+  </message>
+  <message name="IDS_BRAVE_NEWS_ADVERT_BADGE" desc="Text for the badge indicating advertisements. Should be short">
+    Ad
+  </message>
+  <message name="IDS_BRAVE_NEWS_HIDE_CONTENT_FROM" desc="Text for menu item to hide content from a publisher">
+    Hide content from <ph name="PUBLISHER_NAME">$1<ex>The Verge</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_NEWS_SOURCES_RECOMMENDATION" desc="Text recommending publishers">
+    You might also like
+  </message>
+  <message name="IDS_BRAVE_NEWS_NO_ARTICLES_TITLE" desc="Title of no articles message">
+    This feed is empty
+  </message>
+  <message name="IDS_BRAVE_NEWS_NO_ARTICLES_MESSAGE" desc="Message displayed when there are no articles available">
+    There don't seem to be any articles in this feed at this moment. Try coming back later or refreshing the feed.
+  </message>
+  <message name="IDS_BRAVE_NEWS_OFFLINE_TITLE" desc="Title of offline message">
+    You appear to be offline
+  </message>
+  <message name="IDS_BRAVE_NEWS_OFFLINE_MESSAGE" desc="Message displayed when offline">
+    Check your internet connection and refresh
+  </message>
+  <message name="IDS_BRAVE_NEWS_CUSTOMIZE_FEED" desc="Text of button for opening the customize dialog">
+    Customize
+  </message>
+  <message name="IDS_BRAVE_NEWS_REFRESH_FEED" desc="Text of button for refreshing the feed">
+    Refresh
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPEN_ARTICLES_IN" desc="Question for how the user would like to open their articles">
+    Open articles in
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB" desc="Indicates the user would like to open articles in a new tab">
+    New tab
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB" desc="Indicates the user would like to open articles in the current tab">
+    Current tab
+  </message>
+  <message name="IDS_BRAVE_NEWS_CAUGHT_UP" desc="Text for when the user reaches the end of the feed">
+    You're all caught up
+  </message>
+  <message name="IDS_BRAVE_NEWS_NEW_CONTENT_AVAILABLE" desc="Indicates that new content is available, and prompts the user to load the new data">
+    New content available. Reload?
   </message>
 </grit-part>

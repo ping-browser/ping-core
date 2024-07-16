@@ -1,3 +1,8 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use std::fmt::{self, Display};
 use std::str::FromStr;
 
@@ -127,7 +132,7 @@ pub struct UnredeemedToken {
     pub promotion_id: String,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub enum CredentialType {
     SingleUse,
@@ -165,6 +170,7 @@ pub struct CredentialSummary {
     pub remaining_credential_count: usize,
     pub expires_at: Option<NaiveDateTime>,
     pub active: bool,
+    pub next_active_at: Option<NaiveDateTime>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -205,7 +211,22 @@ impl Order {
     }
 
     pub fn is_paid(&self) -> bool {
-        self.status == "paid" || (self.status == "canceled" && self.expires_at.is_some())
+        self.status == "paid"
+    }
+
+    pub fn is_cancelled(&self) -> bool {
+        self.status == "canceled" || self.status == "cancelled"
+    }
+
+    pub fn has_expired(&self, now: NaiveDateTime) -> bool {
+        if let Some(expires_at) = self.expires_at {
+            return expires_at <= now;
+        }
+        false
+    }
+
+    pub fn can_submit_credentials(&self, now: NaiveDateTime) -> bool {
+        return self.is_paid() || (self.is_cancelled() && !self.has_expired(now));
     }
 }
 
@@ -237,6 +258,7 @@ pub struct TimeLimitedV2Credentials {
     pub creds: Vec<Token>,
     pub unblinded_creds: Option<Vec<TimeLimitedV2Credential>>,
     pub state: CredentialState,
+    pub request_id: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

@@ -8,6 +8,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/js/node_js.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
@@ -18,8 +19,10 @@ namespace brave_page_graph {
 EdgeJSResult::EdgeJSResult(GraphItemContext* context,
                            NodeJS* out_node,
                            NodeScript* in_node,
-                           const String& result)
-    : EdgeJS(context, out_node, in_node), result_(result) {}
+                           const FrameId& frame_id,
+                           const blink::PageGraphValue& result)
+    : EdgeJS(context, out_node, in_node, frame_id),
+      result_(blink::PageGraphValueToString(result)) {}
 
 EdgeJSResult::~EdgeJSResult() = default;
 
@@ -40,7 +43,7 @@ void EdgeJSResult::AddGraphMLAttributes(xmlDocPtr doc,
       ->AddValueNode(doc, parent_node, result_);
 }
 
-const String& EdgeJSResult::GetResult() const {
+const std::string& EdgeJSResult::GetResult() const {
   return result_;
 }
 

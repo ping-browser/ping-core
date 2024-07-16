@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sync/sync_service_factory.cc b/chrome/browser/sync/sync_service_factory.cc
-index 4d6fd63391bfdc8410a99c28e1c5fe752750ebb7..1ff9a9c392a16596645ae8007a95fe8c3fef28aa 100644
+index 18a182e38d66995d9627b772216b2d2069dd1f51..a3a3eef04f5e24eda2083aef8ab3f4eeb5a5334d 100644
 --- a/chrome/browser/sync/sync_service_factory.cc
 +++ b/chrome/browser/sync/sync_service_factory.cc
-@@ -165,7 +165,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
+@@ -168,7 +168,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
    }
  
    auto sync_service =
@@ -10,4 +10,4 @@ index 4d6fd63391bfdc8410a99c28e1c5fe752750ebb7..1ff9a9c392a16596645ae8007a95fe8c
 +      BRAVE_BUILD_SERVICE_INSTANCE_FOR
    sync_service->Initialize();
  
-   // Notify PasswordStore of complete initialisation to resolve a circular
+   // Notify the PasswordStore of complete initialisation to resolve a circular

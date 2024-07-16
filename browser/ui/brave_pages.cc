@@ -10,7 +10,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/sidebar/constants.h"
+#include "brave/components/sidebar/browser/constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/chrome_pages.h"
@@ -53,7 +53,8 @@ void ShowWebcompatReporter(Browser* browser) {
     return;
   }
 
-  OpenWebcompatReporterDialog(web_contents);
+  webcompat_reporter::OpenReporterDialog(
+      web_contents, webcompat_reporter::UISource::kAppMenu);
 }
 
 void ShowBraveWallet(Browser* browser) {

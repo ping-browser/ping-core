@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { LeoColors } from '../../leo/alert-inline/leo-colors'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -14,6 +14,7 @@ export const StyledWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 5px 15px 15px 15px;
+  overflow-x: hidden;
   overflow-y: auto;
 `
 
@@ -48,7 +49,7 @@ export const Input = styled.input<{
   border-width: 1px;
   border-color: ${(p) =>
     p.hasError
-      ? LeoColors['light.system.feedback.error.icon']
+      ? leo.color.systemfeedback.errorIcon
       : p.theme.color.interactive08};
   border-radius: 4px;
   font-family: Poppins;
@@ -78,12 +79,6 @@ export const Input = styled.input<{
     -webkit-appearance: none;
     margin: 0;
   }
-  @media (prefers-color-scheme: dark) {
-    border-color: ${(p) =>
-      p.hasError
-        ? LeoColors['light.system.feedback.error.icon']
-        : p.theme.color.interactive08};
-  }
 `
 
 export const ButtonRow = styled.div`
@@ -93,10 +88,11 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   width: 100%;
   flex-wrap: wrap-reverse;
+  gap: 8px;
 `
 
 export const Description = styled.span`
-  width: 275px;
+  width: 100%;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;

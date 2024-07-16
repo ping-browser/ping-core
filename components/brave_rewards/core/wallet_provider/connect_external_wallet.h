@@ -10,55 +10,57 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
-#include "base/timer/timer.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_rewards/core/endpoints/brave/get_wallet.h"
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet_provider {
 
 class ConnectExternalWallet {
  public:
-  explicit ConnectExternalWallet(RewardsEngineImpl& engine);
+  explicit ConnectExternalWallet(RewardsEngine& engine);
 
   virtual ~ConnectExternalWallet();
+
+  std::string GenerateLoginURL();
 
   void Run(const base::flat_map<std::string, std::string>& query_parameters,
            ConnectExternalWalletCallback);
 
+  struct OAuthInfo {
+    std::string one_time_string;
+    std::string code_verifier;
+    std::string code;
+  };
+
+  void SetOAuthStateForTesting(const OAuthInfo& oauth_info) {
+    oauth_info_ = oauth_info;
+  }
+
+  const OAuthInfo& GetOAuthStateForTesting() const { return oauth_info_; }
+
  protected:
   virtual const char* WalletType() const = 0;
 
-  struct OAuthInfo {
-    std::string one_time_string, code_verifier, code;
-  };
+  virtual std::string GetOAuthLoginURL() const = 0;
 
-  virtual void Authorize(OAuthInfo&&, ConnectExternalWalletCallback) = 0;
+  virtual void Authorize(ConnectExternalWalletCallback) = 0;
 
   void OnConnect(ConnectExternalWalletCallback,
                  std::string&& token,
                  std::string&& address,
-                 std::string&& country_id,
                  endpoints::PostConnect::Result&&) const;
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
+  OAuthInfo oauth_info_;
 
  private:
-  absl::optional<OAuthInfo> ExchangeOAuthInfo(mojom::ExternalWalletPtr) const;
-
-  base::expected<std::string, mojom::ConnectExternalWalletError> GetCode(
+  base::expected<std::string, mojom::ConnectExternalWalletResult> GetCode(
       const base::flat_map<std::string, std::string>& query_parameters,
       const std::string& current_one_time_string) const;
-
-  void CheckLinkage();
-
-  void CheckLinkageCallback(endpoints::GetWallet::Result&& result);
-
-  base::RetainingOneShotTimer linkage_checker_;
 };
 
 }  // namespace wallet_provider

@@ -6,9 +6,8 @@
 import * as React from 'react'
 import { getLocale } from '../../../../../../../common/locale'
 
-// selectors
-import { useSafePageSelector } from '../../../../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../../../../page/selectors'
+// api
+import { useGetLocalIpfsNodeStatusQuery } from '../../../../../../common/slices/api.slice'
 
 import {
   IpfsNodeStatusWrapper,
@@ -17,12 +16,16 @@ import {
 } from './ipfs-node-status.style'
 
 export const IpfsNodeStatus = () => {
-  const isLocalIpfsNodeRunning = useSafePageSelector(PageSelectors.isLocalIpfsNodeRunning)
+  const { data: isLocalIpfsNodeRunning } = useGetLocalIpfsNodeStatusQuery()
 
   return (
     <IpfsNodeStatusWrapper>
       <StatusIcon running={isLocalIpfsNodeRunning} />
-      <Text>{isLocalIpfsNodeRunning ? getLocale('braveWalletNftPinningNodeRunningStatus') : getLocale('braveWalletNftPinningNodeNotRunningStatus')}</Text>
+      <Text>
+        {isLocalIpfsNodeRunning
+          ? getLocale('braveWalletNftPinningNodeRunningStatus')
+          : getLocale('braveWalletNftPinningNodeNotRunningStatus')}
+      </Text>
     </IpfsNodeStatusWrapper>
   )
 }

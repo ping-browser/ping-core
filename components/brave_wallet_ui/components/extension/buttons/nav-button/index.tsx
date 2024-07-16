@@ -32,19 +32,17 @@ interface BaseProps {
   maxHeight?: string
   minHeight?: string
   minWidth?: string
-  isV2?: boolean
 }
 
-type ClickProps = (
-  {
-    onSubmit: () => void
-    url?: string
-  }
+type ClickProps =
   | {
-    url: string
-    onSubmit?: () => void
-  }
-)
+      onSubmit: () => void
+      url?: string
+    }
+  | {
+      url: string
+      onSubmit?: () => void
+    }
 
 export type Props = BaseProps & ClickProps
 
@@ -57,23 +55,18 @@ export const NavButton: React.FC<Props> = ({
   needsTopMargin,
   onSubmit,
   text,
-  url,
-  isV2
+  url
 }) => {
   // memos
   const buttonContent = React.useMemo(() => {
-    return <>
-      {buttonType === 'reject' &&
-        <RejectIcon />
-      }
-      {buttonType === 'sign' &&
-        <SignIcon />
-      }
-      {buttonType === 'confirm' &&
-        <ConfirmIcon />
-      }
-      <ButtonText buttonType={buttonType} isV2={isV2}>{text}</ButtonText>
-    </>
+    return (
+      <>
+        {buttonType === 'reject' && <RejectIcon />}
+        {buttonType === 'sign' && <SignIcon />}
+        {buttonType === 'confirm' && <ConfirmIcon />}
+        <ButtonText buttonType={buttonType}>{text}</ButtonText>
+      </>
+    )
   }, [buttonType, text])
 
   // render
@@ -97,7 +90,6 @@ export const NavButton: React.FC<Props> = ({
       maxHeight={maxHeight}
       minWidth={minWidth}
       minHeight={minHeight}
-      isV2={isV2}
     >
       {buttonContent}
     </StyledButton>

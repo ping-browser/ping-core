@@ -25,6 +25,8 @@
 <translation id="8712637175834984815">అర్థమైంది</translation>
 <translation id="4394049700291259645">ఆపివెయ్యి</translation>
 <translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
+<translation id="7473891865547856676">వద్దు, ధన్యవాదాలు</translation>
+<translation id="3435896845095436175">ప్రారంభించండి</translation>
 <translation id="4474155171896946103">అన్ని టాబ్‌లను బుక్‌మార్క్ చెయ్యి...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{ట్యాబ్‌ను మ్యూట్ చేయి}other{ట్యాబ్‌లను మ్యూట్ చేయి}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{ట్యాబ్‌ని అన్‌మ్యూట్ చేయి}other{ట్యాబ్‌లను అన్‌మ్యూట్ చేయి}}</translation>
@@ -37,13 +39,29 @@
 <translation id="8041089156583427627">ప్రతిస్పందనను పంపండి</translation>
 <translation id="945522503751344254">అభిప్రాయాన్ని పంపండి</translation>
 <translation id="7537601449003285327">విధి పట్టీకి పిన్ చేయి</translation>
+<translation id="385051799172605136">వెనుకకు</translation>
+<translation id="5317780077021120954">సేవ్ చేయి</translation>
+<translation id="8261506727792406068">తొలగించు</translation>
+<translation id="7525067979554623046">సృష్టించు</translation>
+<translation id="9065203028668620118">సవరించు</translation>
+<translation id="6527303717912515753">భాగస్వామ్యం చేయి</translation>
+<translation id="1173894706177603556">పేరుమార్చు</translation>
+<translation id="7765158879357617694">తరలించు</translation>
+<translation id="6790428901817661496">ప్లే చేయి</translation>
+<translation id="1178581264944972037">పాజ్ చేయి</translation>
+<translation id="7544853251252956727">షఫుల్ చేయి</translation>
+<translation id="7481312909269577407">ఫార్వర్డ్</translation>
 <translation id="9156965752763025780">మీ మార్పులు మీరు Braveని మరుసటిసారి ప్రారంభించినప్పుడు ప్రభావాన్ని చూపుతాయి.</translation>
+<translation id="1426410128494586442">అవును</translation>
+<translation id="4250680216510889253">కాదు</translation>
+<translation id="2356070529366658676">అడుగు</translation>
 <translation id="4472575034687746823">ప్రారంభించండి</translation>
 <translation id="6786747875388722282">ఎక్స్‌టెన్షన్‌లు</translation>
 <translation id="984275831282074731">చెల్లింపు పద్ధతులు</translation>
 <translation id="1807246157184219062">లేత</translation>
 <translation id="2414886740292270097">ముదురు</translation>
 <translation id="8076492880354921740">ట్యాబ్‌లు</translation>
+<translation id="8168435359814927499">కంటెంట్</translation>
 <translation id="2858138569776157458">టాప్ సైట్‌లు</translation>
 <translation id="8820817407110198400">బుక్‌మార్క్‌లు</translation>
 <translation id="383007806262310953">బుక్‌మార్క్‌ల పట్టీని చూపు</translation>
@@ -53,13 +71,10 @@
 <translation id="7791543448312431591">జోడించు</translation>
 <translation id="6745592621698551453">ఇప్పుడే నవీకరించు</translation>
 <translation id="802154636333426148">డౌన్‌లోడ్ విఫలమైంది</translation>
-<translation id="2635094637295383009">Twitter</translation>
 <translation id="6165508094623778733">మరింత తెలుసుకోండి</translation>
 <translation id="8798099450830957504">డిఫాల్ట్</translation>
-<translation id="2356070529366658676">అడుగు</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> స్థానికంగా నిల్వ చేసిన డేటా</translation>
 <translation id="1963227389609234879">అన్నీ తొలగించు</translation>
-<translation id="8168435359814927499">కంటెంట్</translation>
 <translation id="7702907602086592255">డొమైన్</translation>
 <translation id="3202131003361292969">పథం</translation>
 <translation id="5390743329570580756">దీని కోసం పంపు</translation>
@@ -83,7 +98,7 @@
 <translation id="1736420071277903564">కంప్యూటర్</translation>
 <translation id="2653659639078652383">సమర్పించు</translation>
 <translation id="8137559199583651773">పొడిగింపులను నిర్వహించండి</translation>
-<translation id="1426410128494586442">అవును</translation>
+<translation id="5840822070878669614">Brave వెబ్ స్టోర్‌ను తెరువు</translation>
 <translation id="1327977588028644528">గేట్‌వే</translation>
 <translation id="8425213833346101688">మార్చు</translation>
 <translation id="8275038454117074363">దిగుమతి చెయ్యి</translation>

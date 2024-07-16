@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/bookmarks/bookmark_bar_instructions_view.h"
 
@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/accessibility/ax_node_data.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/events/event.h"
@@ -70,7 +71,7 @@ BookmarkBarInstructionsView::BookmarkBarInstructionsView(Browser* browser)
 
 gfx::Size BookmarkBarInstructionsView::CalculatePreferredSize() const {
   int height = 0, width = 0;
-  for (auto* view : children()) {
+  for (views::View* view : children()) {
     gfx::Size pref = view->GetPreferredSize();
     height = std::max(pref.height(), height);
     width += pref.width();
@@ -80,20 +81,16 @@ gfx::Size BookmarkBarInstructionsView::CalculatePreferredSize() const {
   return gfx::Size(width + insets.width(), height + insets.height());
 }
 
-void BookmarkBarInstructionsView::Layout() {
+void BookmarkBarInstructionsView::Layout(PassKey) {
   int remaining_width = width();
   int x = 0;
-  for (auto* view : children()) {
+  for (views::View* view : children()) {
     gfx::Size pref = view->GetPreferredSize();
     int view_width = std::min(remaining_width, pref.width());
     view->SetBounds(x, 0, view_width, height());
     x += view_width + GetViewPadding();
     remaining_width = std::max(0, width() - x);
   }
-}
-
-const char* BookmarkBarInstructionsView::GetClassName() const {
-  return "BookmarkBarInstructionsView";
 }
 
 void BookmarkBarInstructionsView::OnThemeChanged() {
@@ -133,3 +130,6 @@ void BookmarkBarInstructionsView::UpdateColors() {
     import_link_->SetEnabledColor(cp->GetColor(ui::kColorLinkForeground));
   }
 }
+
+BEGIN_METADATA(BookmarkBarInstructionsView)
+END_METADATA

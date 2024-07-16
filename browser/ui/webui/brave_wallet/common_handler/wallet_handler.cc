@@ -33,13 +33,11 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
     return;
   }
 
-  auto default_keyring =
-      keyring_service_->GetKeyringInfoSync(mojom::kDefaultKeyringId);
-  DCHECK_EQ(default_keyring->id, mojom::kDefaultKeyringId);
   std::move(callback).Run(mojom::WalletInfo::New(
-      default_keyring->is_keyring_created, default_keyring->is_locked,
-      default_keyring->is_backed_up, IsFilecoinEnabled(), IsSolanaEnabled(),
-      IsBitcoinEnabled(), IsNftPinningEnabled(), IsPanelV2Enabled()));
+      keyring_service_->IsWalletCreatedSync(), keyring_service_->IsLockedSync(),
+      keyring_service_->IsWalletBackedUpSync(), IsBitcoinEnabled(),
+      IsZCashEnabled(), IsNftPinningEnabled(), IsAnkrBalancesEnabled(),
+      IsTransactionSimulationsEnabled()));
 }
 
 }  // namespace brave_wallet

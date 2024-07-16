@@ -7,11 +7,13 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "chrome/browser/ui/views/tabs/tab.h"
-#include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/point.h"
+
+class ViewShadow;
 
 class BraveTab : public Tab {
  public:
@@ -30,38 +32,24 @@ class BraveTab : public Tab {
 
   void ActiveStateChanged() override;
 
-  absl::optional<SkColor> GetGroupColor() const override;
+  std::optional<SkColor> GetGroupColor() const override;
 
   void UpdateIconVisibility() override;
   bool ShouldRenderAsNormalTab() const override;
-  void Layout() override;
-  void ReorderChildLayers(ui::Layer* parent_layer) override;
+  void Layout(PassKey) override;
   void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                    int visual_width) const override;
 
-  void ViewHierarchyChanged(
-      const views::ViewHierarchyChangedDetails& details) override;
-  void OnLayerBoundsChanged(const gfx::Rect& old_bounds,
-                            ui::PropertyChangeReason reason) override;
   gfx::Insets GetInsets() const override;
 
  private:
   friend class BraveTabTest;
 
   bool IsAtMinWidthForVerticalTabStrip() const;
-
   void UpdateShadowForActiveTab();
-  std::unique_ptr<ui::Layer> CreateShadowLayer();
-  void LayoutShadowLayer();
-
-  // TODO(sko) This method could be hopefully replaced with
-  // views::View::AddLayerRegion in the latest version. ReorederChildLayers()
-  // override could be removed together.
-  void AddLayerToBelowThis();
 
   std::unique_ptr<ui::Layer> shadow_layer_;
-  gfx::FontList normal_font_;
-  gfx::FontList active_tab_font_;
+  std::unique_ptr<ViewShadow> view_shadow_;
 
   static constexpr int kExtraLeftPadding = 4;
 };

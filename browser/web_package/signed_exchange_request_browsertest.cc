@@ -4,8 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <map>
+#include <optional>
 
 #include "base/functional/bind.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/synchronization/lock.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -113,12 +115,11 @@ class SignedExchangeRequestBrowserTest : public InProcessBrowserTest {
                             : std::string(kDefaultAcceptHeaderValue));
   }
 
-  absl::optional<std::string> GetInterceptedAcceptHeader(
-      const GURL& url) const {
+  std::optional<std::string> GetInterceptedAcceptHeader(const GURL& url) const {
     base::AutoLock lock(url_accept_header_map_lock_);
     const auto it = url_accept_header_map_.find(url);
     if (it == url_accept_header_map_.end())
-      return absl::nullopt;
+      return std::nullopt;
     return it->second;
   }
 

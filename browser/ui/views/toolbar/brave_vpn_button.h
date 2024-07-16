@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -17,6 +18,7 @@
 
 namespace brave_vpn {
 class BraveVpnService;
+class BraveVpnButtonUnitTest;
 }  // namespace brave_vpn
 
 namespace views {
@@ -27,8 +29,8 @@ class Browser;
 
 class BraveVPNButton : public ToolbarButton,
                        public brave_vpn::BraveVPNServiceObserver {
+  METADATA_HEADER(BraveVPNButton, ToolbarButton)
  public:
-  METADATA_HEADER(BraveVPNButton);
 
   explicit BraveVPNButton(Browser* browser);
   ~BraveVPNButton() override;
@@ -41,19 +43,33 @@ class BraveVPNButton : public ToolbarButton,
       brave_vpn::mojom::ConnectionState state) override;
   void OnPurchasedStateChanged(
       brave_vpn::mojom::PurchasedState state,
-      const absl::optional<std::string>& description) override;
+      const std::optional<std::string>& description) override;
 
  private:
+  friend class brave_vpn::BraveVpnButtonUnitTest;
+
   // ToolbarButton overrides:
   void UpdateColorsAndInsets() override;
   std::u16string GetTooltipText(const gfx::Point& p) const override;
+  void OnThemeChanged() override;
 
+  void SetVpnConnectionStateForTesting(
+      brave_vpn::mojom::ConnectionState state) {
+    connection_state_for_testing_ = state;
+  }
+  brave_vpn::mojom::ConnectionState GetVpnConnectionState() const;
+  bool IsErrorState() const { return is_error_state_; }
   bool IsConnected() const;
   bool IsConnectError() const;
   bool IsPurchased() const;
   std::unique_ptr<views::Border> GetBorder(SkColor border_color) const;
   void OnButtonPressed(const ui::Event& event);
+  void UpdateButtonState();
 
+  bool is_error_state_ = false;
+  bool is_connected_ = false;
+  std::optional<brave_vpn::mojom::ConnectionState>
+      connection_state_for_testing_;
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;

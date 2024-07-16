@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -18,10 +19,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_rewards::internal {
 
@@ -29,7 +30,7 @@ std::string FakeEncryption::EncryptString(const std::string& value) {
   return "ENCRYPTED:" + value;
 }
 
-absl::optional<std::string> FakeEncryption::DecryptString(
+std::optional<std::string> FakeEncryption::DecryptString(
     const std::string& value) {
   size_t pos = value.find("ENCRYPTED:");
   if (pos == 0) {
@@ -40,13 +41,10 @@ absl::optional<std::string> FakeEncryption::DecryptString(
 }
 
 std::string FakeEncryption::Base64EncryptString(const std::string& value) {
-  std::string fake_encrypted = EncryptString(value);
-  std::string encoded;
-  base::Base64Encode(fake_encrypted, &encoded);
-  return encoded;
+  return base::Base64Encode(EncryptString(value));
 }
 
-absl::optional<std::string> FakeEncryption::Base64DecryptString(
+std::optional<std::string> FakeEncryption::Base64DecryptString(
     const std::string& value) {
   std::string decoded;
   if (!base::Base64Decode(value, &decoded)) {
@@ -64,8 +62,8 @@ TestNetworkResult::TestNetworkResult(const std::string& url,
 TestNetworkResult::~TestNetworkResult() = default;
 
 base::FilePath GetTestDataPath() {
-  base::FilePath path;
-  base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
+  base::FilePath path =
+      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
   path = path.AppendASCII("brave");
   path = path.AppendASCII("components");
   path = path.AppendASCII("brave_rewards");
@@ -74,6 +72,16 @@ base::FilePath GetTestDataPath() {
   path = path.AppendASCII("data");
   return path;
 }
+
+TestSPLAccountBalanceResult::TestSPLAccountBalanceResult(
+    const std::string& solana_address,
+    const std::string& token_mint_address,
+    mojom::SolanaAccountBalancePtr balance)
+    : solana_address(solana_address),
+      token_mint_address(token_mint_address),
+      balance(std::move(balance)) {}
+
+TestSPLAccountBalanceResult::~TestSPLAccountBalanceResult() = default;
 
 TestRewardsEngineClient::TestRewardsEngineClient()
     : engine_database_(base::FilePath()) {
@@ -127,6 +135,27 @@ void TestRewardsEngineClient::LoadURL(mojom::UrlRequestPtr request,
   response->url = request->url;
   response->status_code = net::HTTP_BAD_REQUEST;
   std::move(callback).Run(std::move(response));
+}
+
+void TestRewardsEngineClient::GetSPLTokenAccountBalance(
+    const std::string& solana_address,
+    const std::string& token_mint_address,
+    GetSPLTokenAccountBalanceCallback callback) {
+  auto iter = base::ranges::find_if(spl_balance_results_, [&](auto& result) {
+    return solana_address == result.solana_address &&
+           token_mint_address == result.token_mint_address;
+  });
+
+  if (iter != spl_balance_results_.end()) {
+    std::move(callback).Run(std::move(iter->balance));
+    spl_balance_results_.erase(iter);
+    return;
+  }
+
+  LOG(INFO) << "Test SPL token account balance result not found for "
+            << solana_address;
+
+  std::move(callback).Run(nullptr);
 }
 
 void TestRewardsEngineClient::PublisherListNormalized(
@@ -245,11 +274,10 @@ void TestRewardsEngineClient::SetValueState(const std::string& name,
 void TestRewardsEngineClient::GetTimeState(const std::string& name,
                                            GetTimeStateCallback callback) {
   const auto* value = state_store_.FindByDottedPath(name);
-  DCHECK(value);
   if (!value) {
-    return std::move(callback).Run(base::Time());
+    std::move(callback).Run(base::Time());
+    return;
   }
-
   auto time = base::ValueToTime(*value);
   DCHECK(time);
   std::move(callback).Run(time.value_or(base::Time()));
@@ -297,8 +325,6 @@ void TestRewardsEngineClient::GetClientInfo(GetClientInfoCallback callback) {
   std::move(callback).Run(std::move(info));
 }
 
-void TestRewardsEngineClient::UnblindedTokensReady() {}
-
 void TestRewardsEngineClient::ReconcileStampReset() {}
 
 void TestRewardsEngineClient::RunDBTransaction(
@@ -316,10 +342,6 @@ void TestRewardsEngineClient::Log(const std::string& file,
       logging::GetVlogLevelHelper(file.c_str(), strlen(file.c_str()));
   if (verbose_level <= vlog_level) {
     logging::LogMessage(file.c_str(), line, -verbose_level).stream() << message;
-  }
-
-  if (log_callback_) {
-    log_callback_.Run(message);
   }
 }
 
@@ -354,8 +376,12 @@ void TestRewardsEngineClient::AddNetworkResultForTesting(
   network_results_.emplace_back(url, method, std::move(response));
 }
 
-void TestRewardsEngineClient::SetLogCallbackForTesting(LogCallback callback) {
-  log_callback_ = std::move(callback);
+void TestRewardsEngineClient::AddSPLAccountBalanceResultForTesting(
+    const std::string& solana_address,
+    const std::string& token_mint_address,
+    mojom::SolanaAccountBalancePtr balance) {
+  spl_balance_results_.emplace_back(solana_address, token_mint_address,
+                                    std::move(balance));
 }
 
 }  // namespace brave_rewards::internal

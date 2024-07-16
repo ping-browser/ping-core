@@ -19,6 +19,7 @@
 #include "chrome/browser/profile_resetter/profile_resetter_test_base.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -28,6 +29,7 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/country_codes/country_codes.h"
+#include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_engines_test_util.h"
 #include "components/search_engines/template_url_data_util.h"
@@ -62,12 +64,6 @@ testing::AssertionResult VerifyTemplateURLServiceLoad(
   return testing::AssertionFailure() << "TemplateURLService isn't loaded";
 }
 
-// An observer that returns back to test code after a new profile is
-// initialized.
-void OnProfileCreation(base::RunLoop* run_loop, Browser* browser) {
-  run_loop->Quit();
-}
-
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
   result.SetShortName(u"test1");
@@ -77,8 +73,12 @@ TemplateURLData CreateTestSearchEngine() {
 }
 
 std::string GetBraveSearchProviderSyncGUID(PrefService* prefs) {
+  CHECK(prefs);
+  search_engines::SearchEngineChoiceService search_engine_choice_service(
+      *prefs);
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      prefs, TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+      prefs, &search_engine_choice_service,
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   DCHECK(data);
   return data->sync_guid;
 }
@@ -91,8 +91,13 @@ bool PrepopulatedDataHasDDG(PrefService* prefs) {
           TemplateURLPrepopulateData::
               PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE};
 
+  CHECK(prefs);
+  search_engines::SearchEngineChoiceService search_engine_choice_service(
+      *prefs);
+
   for (const auto& id : alt_search_providers) {
-    if (TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, id)) {
+    if (TemplateURLPrepopulateData::GetPrepopulatedEngine(
+            prefs, &search_engine_choice_service, id)) {
       return true;
     }
   }
@@ -239,12 +244,13 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
             incognito_service->GetDefaultSearchProvider()->prepopulate_id());
 
 #if BUILDFLAG(ENABLE_TOR)
-  base::RunLoop run_loop;
-  TorProfileManager::SwitchToTorProfile(
-      browser()->profile(), base::BindOnce(&OnProfileCreation, &run_loop));
-  run_loop.Run();
-  Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
+  Browser* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->profile());
+  Profile* tor_profile = tor_browser->profile();
   EXPECT_TRUE(tor_profile->IsTor());
+
+  // Wait for the search provider to initialize.
+  base::RunLoop().RunUntilIdle();
 
   const int default_provider_id =
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
@@ -261,11 +267,29 @@ namespace extensions {
 // Copied from settings_overrides_browsertest.cc
 // On linux, search engine from extension is not set by default.
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-// Prepopulated id hardcoded in test_extension.
-const int kTestExtensionPrepopulatedId = 3;
+// Prepopulated id hardcoded in test_extension. We select it to be a
+// prepopulated ID unlikely to match an engine that is part of the TopEngines
+// tier for the environments where the test run, but still matches some
+// known engine (context around these requirements: https://crbug.com/1500526).
+// The default set of engines (when no country is available) has ids 1, 2
+// and 3. The ID 83 is associated with mail.ru, chosen because it's not part
+// of the prepopulated set where we run tests.
+// TODO(crbug.com/1500526): Update the test to fix the country in such a way
+// that we have more control on what is in the prepopulated set or not.
+const int kTestExtensionPrepopulatedId = 83;
 // TemplateURLData with search engines settings from test extension manifest.
 // chrome/test/data/extensions/settings_override/manifest.json
-std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(PrefService* prefs) {
+std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
+  PrefService* prefs = profile->GetPrefs();
+  search_engines::SearchEngineChoiceService* search_engine_choice_service =
+      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
+  // Enforcing that `kTestExtensionPrepopulatedId` is not part of the
+  // prepopulated set for the current profile's country.
+  for (auto& data : TemplateURLPrepopulateData::GetPrepopulatedEngines(
+           prefs, search_engine_choice_service, nullptr)) {
+    EXPECT_NE(data->prepopulate_id, kTestExtensionPrepopulatedId);
+  }
+
   auto result = std::make_unique<TemplateURLData>();
   result->SetShortName(u"name.de");
   result->SetKeyword(u"keyword.de");
@@ -281,8 +305,9 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(PrefService* prefs) {
   result->input_encodings.push_back("UTF-8");
 
   std::unique_ptr<TemplateURLData> prepopulated =
-      TemplateURLPrepopulateData::GetPrepopulatedEngine(
-          prefs, kTestExtensionPrepopulatedId);
+      TemplateURLPrepopulateData::GetPrepopulatedEngineFromFullList(
+          prefs, search_engine_choice_service, kTestExtensionPrepopulatedId);
+  CHECK(prepopulated);
   // Values below do not exist in extension manifest and are taken from
   // prepopulated engine with prepopulated_id set in extension manifest.
   result->contextual_search_url = prepopulated->contextual_search_url;
@@ -292,8 +317,6 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(PrefService* prefs) {
 
 IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
                        ExtensionSearchProviderWithPrivateWindow) {
-  PrefService* prefs = profile()->GetPrefs();
-  ASSERT_TRUE(prefs);
   TemplateURLService* url_service =
       TemplateURLServiceFactory::GetForProfile(profile());
   ASSERT_TRUE(url_service);
@@ -309,7 +332,7 @@ IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
   EXPECT_EQ(TemplateURL::NORMAL_CONTROLLED_BY_EXTENSION, current_dse->type());
 
   std::unique_ptr<TemplateURLData> extension_dse =
-      TestExtensionSearchEngine(prefs);
+      TestExtensionSearchEngine(profile());
   ExpectSimilar(extension_dse.get(), &current_dse->data());
 
   Profile* incognito_profile =

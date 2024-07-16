@@ -7,8 +7,10 @@ import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // actions
-import { WalletActions } from '../../../../common/actions'
-import { AccountsTabActions, AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
+import {
+  AccountsTabActions,
+  AccountsTabState
+} from '../../../../page/reducers/accounts-tab-reducer'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -16,6 +18,7 @@ import { BraveWallet } from '../../../../constants/types'
 
 // hooks
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
+import { useRemoveAccountMutation } from '../../../../common/slices/api.slice'
 
 // components
 import { PopupModal } from '../../popup-modals/index'
@@ -23,33 +26,34 @@ import { NavButton } from '../../../extension/buttons/nav-button/index'
 import { PasswordInput } from '../../../shared/password-input/index'
 
 // style
-import {
-  Row,
-  VerticalSpace
-} from '../../../shared/style'
+import { Row, VerticalSpace } from '../../../shared/style'
 import { Title } from '../style'
-import {
-  modalWidth,
-  StyledWrapper
-} from './confirm-password-modal.style'
+import { modalWidth, StyledWrapper } from './confirm-password-modal.style'
 
 export const ConfirmPasswordModal = () => {
   // redux
   const dispatch = useDispatch()
 
   // accounts tab state
-  const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)
+  const accountToRemove = useSelector(
+    ({ accountsTab }: { accountsTab: AccountsTabState }) =>
+      accountsTab.accountToRemove
+  )
 
   // state
   const [password, setPassword] = React.useState<string>('')
-  const [isCorrectPassword, setIsCorrectPassword] = React.useState<boolean>(true)
+  const [isCorrectPassword, setIsCorrectPassword] =
+    React.useState<boolean>(true)
+
+  // mutations
+  const [removeAccount] = useRemoveAccountMutation()
 
   // custom hooks
   const { attemptPasswordEntry } = usePasswordAttempts()
 
   // methods
   const onConfirmRemoveAccount = React.useCallback(
-    (password: string) => {
+    async (password: string) => {
       if (!accountToRemove) {
         return
       }
@@ -60,16 +64,17 @@ export const ConfirmPasswordModal = () => {
         accountId.kind === BraveWallet.AccountKind.kHardware ||
         accountId.kind === BraveWallet.AccountKind.kImported
       ) {
-        dispatch(WalletActions.removeAccount({ accountId, password }))
+        await removeAccount({ accountId, password })
       }
 
       dispatch(AccountsTabActions.setAccountToRemove(undefined)) // close modal
     },
-    [accountToRemove, dispatch]
+    [accountToRemove, dispatch, removeAccount]
   )
 
   const onSubmit = React.useCallback(async () => {
-    if (!password) { // require password to view key
+    if (!password) {
+      // require password to view key
       return
     }
 
@@ -86,30 +91,31 @@ export const ConfirmPasswordModal = () => {
     setIsCorrectPassword(true)
 
     onConfirmRemoveAccount(password)
-  }, [
-    attemptPasswordEntry,
-    password,
-    onConfirmRemoveAccount
-  ])
+  }, [attemptPasswordEntry, password, onConfirmRemoveAccount])
 
   const onPasswordChange = React.useCallback((value: string): void => {
     setIsCorrectPassword(true) // clear error
     setPassword(value)
   }, [])
 
-  const handlePasswordKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      onSubmit()
-    }
-  }, [onSubmit])
+  const handlePasswordKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        onSubmit()
+      }
+    },
+    [onSubmit]
+  )
 
   // memos
   const title = React.useMemo(() => {
     if (!accountToRemove) {
       return
     }
-    return getLocale('braveWalletRemoveAccountModalTitle')
-      .replace('$1', accountToRemove.name ?? accountToRemove.accountId.address)
+    return getLocale('braveWalletRemoveAccountModalTitle').replace(
+      '$1',
+      accountToRemove.name ?? accountToRemove.accountId.address
+    )
   }, [accountToRemove])
 
   // render
@@ -120,15 +126,17 @@ export const ConfirmPasswordModal = () => {
       width={modalWidth}
     >
       <StyledWrapper>
-
-        {title &&
+        {title && (
           <>
-            <Row alignItems={'flex-start'} justifyContent={'flex-start'}>
+            <Row
+              alignItems={'flex-start'}
+              justifyContent={'flex-start'}
+            >
               <Title>{title}</Title>
             </Row>
             <VerticalSpace space='24px' />
           </>
-        }
+        )}
 
         <Row>
           <PasswordInput

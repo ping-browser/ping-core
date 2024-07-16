@@ -6,31 +6,31 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_PIPELINE_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_PIPELINE_INFO_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
+#include "brave/components/brave_ads/core/internal/ml/model/neural/neural.h"
 
 namespace brave_ads::ml::pipeline {
 
 struct PipelineInfo final {
   PipelineInfo();
-  PipelineInfo(int version,
-               std::string timestamp,
-               std::string locale,
+  PipelineInfo(std::string locale,
                TransformationVector transformations,
-               LinearModel linear_model);
+               std::optional<LinearModel> linear_model,
+               std::optional<NeuralModel> neural_model);
 
   PipelineInfo(PipelineInfo&&) noexcept;
   PipelineInfo& operator=(PipelineInfo&&) noexcept;
 
   ~PipelineInfo();
 
-  int version;
-  std::string timestamp;
   std::string locale;
   TransformationVector transformations;
-  LinearModel linear_model;
+  std::optional<LinearModel> linear_model;
+  std::optional<NeuralModel> neural_model;
 };
 
 }  // namespace brave_ads::ml::pipeline

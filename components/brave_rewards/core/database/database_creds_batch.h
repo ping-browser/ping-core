@@ -14,46 +14,44 @@
 namespace brave_rewards::internal {
 namespace database {
 
-using GetCredsBatchCallback = std::function<void(mojom::CredsBatchPtr)>;
+using GetCredsBatchCallback = base::OnceCallback<void(mojom::CredsBatchPtr)>;
 using GetCredsBatchListCallback =
-    std::function<void(std::vector<mojom::CredsBatchPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::CredsBatchPtr>)>;
 
 class DatabaseCredsBatch : public DatabaseTable {
  public:
-  explicit DatabaseCredsBatch(RewardsEngineImpl& engine);
+  explicit DatabaseCredsBatch(RewardsEngine& engine);
   ~DatabaseCredsBatch() override;
 
-  void InsertOrUpdate(mojom::CredsBatchPtr creds,
-                      LegacyResultCallback callback);
+  void InsertOrUpdate(mojom::CredsBatchPtr creds, ResultCallback callback);
 
   void GetRecordByTrigger(const std::string& trigger_id,
                           const mojom::CredsBatchType trigger_type,
                           GetCredsBatchCallback callback);
 
-  void SaveSignedCreds(mojom::CredsBatchPtr creds,
-                       LegacyResultCallback callback);
+  void SaveSignedCreds(mojom::CredsBatchPtr creds, ResultCallback callback);
 
   void GetAllRecords(GetCredsBatchListCallback callback);
 
   void UpdateStatus(const std::string& trigger_id,
                     mojom::CredsBatchType trigger_type,
                     mojom::CredsBatchStatus status,
-                    LegacyResultCallback callback);
+                    ResultCallback callback);
 
   void UpdateRecordsStatus(const std::vector<std::string>& trigger_ids,
                            mojom::CredsBatchType trigger_type,
                            mojom::CredsBatchStatus status,
-                           LegacyResultCallback callback);
+                           ResultCallback callback);
 
   void GetRecordsByTriggers(const std::vector<std::string>& trigger_ids,
                             GetCredsBatchListCallback callback);
 
  private:
-  void OnGetRecordByTrigger(mojom::DBCommandResponsePtr response,
-                            GetCredsBatchCallback callback);
+  void OnGetRecordByTrigger(GetCredsBatchCallback callback,
+                            mojom::DBCommandResponsePtr response);
 
-  void OnGetRecords(mojom::DBCommandResponsePtr response,
-                    GetCredsBatchListCallback callback);
+  void OnGetRecords(GetCredsBatchListCallback callback,
+                    mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

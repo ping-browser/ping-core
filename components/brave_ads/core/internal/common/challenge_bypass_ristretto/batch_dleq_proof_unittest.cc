@@ -7,21 +7,16 @@
 
 #include <sstream>
 
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -33,9 +28,7 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToInitialize) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
@@ -43,9 +36,7 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
@@ -53,51 +44,41 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidBlindedTokens) {
   // Arrange
-  const BatchDLEQProof batch_dleq_proof(GetInvalidBlindedTokensForTesting(),
-                                        GetSignedTokensForTesting(),
-                                        GetSigningKeyForTesting());
+  const BatchDLEQProof batch_dleq_proof(test::GetInvalidBlindedTokens(),
+                                        test::GetSignedTokens(),
+                                        test::GetSigningKey());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidSignedTokens) {
   // Arrange
-  const BatchDLEQProof batch_dleq_proof(GetBlindedTokensForTesting(),
-                                        GetInvalidSignedTokensForTesting(),
-                                        GetSigningKeyForTesting());
+  const BatchDLEQProof batch_dleq_proof(test::GetBlindedTokens(),
+                                        test::GetInvalidSignedTokens(),
+                                        test::GetSigningKey());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
   // Arrange
-  const BatchDLEQProof batch_dleq_proof(GetBlindedTokensForTesting(),
-                                        GetSignedTokensForTesting(),
-                                        GetInvalidSigningKeyForTesting());
+  const BatchDLEQProof batch_dleq_proof(test::GetBlindedTokens(),
+                                        test::GetSignedTokens(),
+                                        test::GetInvalidSigningKey());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, DecodeBase64) {
-  // Arrange
-
   // Act
   const BatchDLEQProof batch_dleq_proof =
       BatchDLEQProof::DecodeBase64(kBatchDLEQProofBase64);
@@ -107,8 +88,6 @@ TEST_F(BraveAdsBatchDLEQProofTest, DecodeBase64) {
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToDecodeEmptyBase64) {
-  // Arrange
-
   // Act
   const BatchDLEQProof batch_dleq_proof = BatchDLEQProof::DecodeBase64("");
 
@@ -117,8 +96,6 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToDecodeEmptyBase64) {
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToDecodeInvalidBase64) {
-  // Arrange
-
   // Act
   const BatchDLEQProof batch_dleq_proof =
       BatchDLEQProof::DecodeBase64(kInvalidBase64);
@@ -131,9 +108,7 @@ TEST_F(BraveAdsBatchDLEQProofTest, EncodeBase64) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kBatchDLEQProofBase64, batch_dleq_proof.EncodeBase64());
 }
 
@@ -141,9 +116,7 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.EncodeBase64());
 }
 
@@ -151,109 +124,89 @@ TEST_F(BraveAdsBatchDLEQProofTest, Verify) {
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
-  EXPECT_TRUE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
-                                      GetSignedTokensForTesting(),
-                                      GetPublicKeyForTesting()));
+  // Act & Assert
+  EXPECT_TRUE(batch_dleq_proof.Verify(
+      test::GetBlindedTokens(), test::GetSignedTokens(), test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWhenUninitialized) {
   // Arrange
   BatchDLEQProof batch_dleq_proof;
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
-                                       GetSignedTokensForTesting(),
-                                       GetPublicKeyForTesting()));
+  // Act & Assert
+  EXPECT_FALSE(batch_dleq_proof.Verify(
+      test::GetBlindedTokens(), test::GetSignedTokens(), test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithInvalidBlindedTokens) {
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(GetInvalidBlindedTokensForTesting(),
-                                       GetSignedTokensForTesting(),
-                                       GetPublicKeyForTesting()));
+  // Act & Assert
+  EXPECT_FALSE(batch_dleq_proof.Verify(test::GetInvalidBlindedTokens(),
+                                       test::GetSignedTokens(),
+                                       test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithInvalidSignedTokens) {
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
-                                       GetInvalidSignedTokensForTesting(),
-                                       GetPublicKeyForTesting()));
+  // Act & Assert
+  EXPECT_FALSE(batch_dleq_proof.Verify(test::GetBlindedTokens(),
+                                       test::GetInvalidSignedTokens(),
+                                       test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
-                                       GetSignedTokensForTesting(),
-                                       GetMismatchingPublicKeyForTesting()));
+  // Act & Assert
+  EXPECT_FALSE(batch_dleq_proof.Verify(test::GetBlindedTokens(),
+                                       test::GetSignedTokens(),
+                                       test::GetMismatchingPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
-                                       GetSignedTokensForTesting(),
-                                       GetInvalidPublicKeyForTesting()));
+  // Act & Assert
+  EXPECT_FALSE(batch_dleq_proof.Verify(test::GetBlindedTokens(),
+                                       test::GetSignedTokens(),
+                                       test::GetInvalidPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, VerifyAndUnblind) {
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
-  EXPECT_EQ(GetUnblindedTokensForTesting(),
+  // Act & Assert
+  EXPECT_EQ(test::GetUnblindedTokens(),
             batch_dleq_proof.VerifyAndUnblind(
-                GetTokensForTesting(), GetBlindedTokensForTesting(),
-                GetSignedTokensForTesting(), GetPublicKeyForTesting()));
+                test::GetTokens(), test::GetBlindedTokens(),
+                test::GetSignedTokens(), test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWhenUninitialized) {
   // Arrange
   BatchDLEQProof batch_dleq_proof;
 
-  // Act
-
-  // Assert
-  ASSERT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetTokensForTesting(), GetBlindedTokensForTesting(),
-      GetSignedTokensForTesting(), GetPublicKeyForTesting()));
+  // Act & Assert
+  EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
+      test::GetTokens(), test::GetBlindedTokens(), test::GetSignedTokens(),
+      test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidTokens) {
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetInvalidTokensForTesting(), GetBlindedTokensForTesting(),
-      GetSignedTokensForTesting(), GetPublicKeyForTesting()));
+      test::GetInvalidTokens(), test::GetBlindedTokens(),
+      test::GetSignedTokens(), test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest,
@@ -261,12 +214,10 @@ TEST_F(BraveAdsBatchDLEQProofTest,
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetTokensForTesting(), GetInvalidBlindedTokensForTesting(),
-      GetSignedTokensForTesting(), GetPublicKeyForTesting()));
+      test::GetTokens(), test::GetInvalidBlindedTokens(),
+      test::GetSignedTokens(), test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest,
@@ -274,12 +225,10 @@ TEST_F(BraveAdsBatchDLEQProofTest,
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetTokensForTesting(), GetBlindedTokensForTesting(),
-      GetInvalidSignedTokensForTesting(), GetPublicKeyForTesting()));
+      test::GetTokens(), test::GetBlindedTokens(),
+      test::GetInvalidSignedTokens(), test::GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest,
@@ -287,33 +236,27 @@ TEST_F(BraveAdsBatchDLEQProofTest,
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetTokensForTesting(), GetBlindedTokensForTesting(),
-      GetSignedTokensForTesting(), GetMismatchingPublicKeyForTesting()));
+      test::GetTokens(), test::GetBlindedTokens(), test::GetSignedTokens(),
+      test::GetMismatchingPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidPublicKey) {
   // Arrange
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetTokensForTesting(), GetBlindedTokensForTesting(),
-      GetSignedTokensForTesting(), GetInvalidPublicKeyForTesting()));
+      test::GetTokens(), test::GetBlindedTokens(), test::GetSignedTokens(),
+      test::GetInvalidPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, IsEqual) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(batch_dleq_proof, batch_dleq_proof);
 }
 
@@ -321,9 +264,7 @@ TEST_F(BraveAdsBatchDLEQProofTest, IsEqualWhenUninitialized) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(batch_dleq_proof, batch_dleq_proof);
 }
 
@@ -331,9 +272,7 @@ TEST_F(BraveAdsBatchDLEQProofTest, IsEmptyBase64Equal) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(batch_dleq_proof, batch_dleq_proof);
 }
 
@@ -341,9 +280,7 @@ TEST_F(BraveAdsBatchDLEQProofTest, IsInvalidBase64Equal) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(batch_dleq_proof, batch_dleq_proof);
 }
 
@@ -351,9 +288,7 @@ TEST_F(BraveAdsBatchDLEQProofTest, IsNotEqual) {
   // Arrange
   const BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const BatchDLEQProof different_batch_dleq_proof(kInvalidBase64);
   EXPECT_NE(different_batch_dleq_proof, batch_dleq_proof);
 }

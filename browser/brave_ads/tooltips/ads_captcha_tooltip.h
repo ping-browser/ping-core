@@ -8,14 +8,13 @@
 
 #include <string>
 
-#include "base/functional/callback.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
-#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
+#include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 
 namespace brave_ads {
 
-extern const char kScheduledCaptchaTooltipId[];
+inline constexpr char kScheduledCaptchaTooltipId[] = "scheduled-captcha";
 
 class AdsCaptchaTooltip : public brave_tooltips::BraveTooltip {
  public:

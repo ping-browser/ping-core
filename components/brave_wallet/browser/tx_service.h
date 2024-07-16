@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -36,13 +37,16 @@ namespace brave_wallet {
 class AccountResolverDelegate;
 class JsonRpcService;
 class BitcoinWalletService;
+class ZCashWalletService;
 class KeyringService;
 class TxManager;
 class TxStorageDelegate;
 class TxStorageDelegateImpl;
 class EthTxManager;
 class SolanaTxManager;
+class BitcoinTxManager;
 class FilTxManager;
+class ZCashTxManager;
 
 class TxService : public KeyedService,
                   public mojom::TxService,
@@ -52,6 +56,7 @@ class TxService : public KeyedService,
  public:
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
+            ZCashWalletService* zcash_wallet_service,
             KeyringService* keyring_service,
             PrefService* prefs,
             const base::FilePath& context_path,
@@ -76,10 +81,15 @@ class TxService : public KeyedService,
 
   // mojom::TxService
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
+                                const std::string& chain_id,
                                 mojom::AccountIdPtr from,
-                                const absl::optional<url::Origin>& origin,
-                                const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
+  void AddUnapprovedTransactionWithOrigin(
+      mojom::TxDataUnionPtr tx_data_union,
+      const std::string& chain_id,
+      mojom::AccountIdPtr from,
+      const std::optional<url::Origin>& origin,
+      AddUnapprovedTransactionCallback);
   void ApproveTransaction(mojom::CoinType coin_type,
                           const std::string& chain_id,
                           const std::string& tx_meta_id,
@@ -93,11 +103,12 @@ class TxService : public KeyedService,
                           const std::string& tx_meta_id,
                           GetTransactionInfoCallback) override;
   void GetAllTransactionInfo(mojom::CoinType coin_type,
-                             const absl::optional<std::string>& chain_id,
+                             const std::optional<std::string>& chain_id,
                              mojom::AccountIdPtr from,
                              GetAllTransactionInfoCallback) override;
   void GetPendingTransactionsCount(
       GetPendingTransactionsCountCallback callback) override;
+  uint32_t GetPendingTransactionsCountSync();
 
   void SpeedupOrCancelTransaction(
       mojom::CoinType coin_type,
@@ -231,6 +242,8 @@ class TxService : public KeyedService,
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
+  friend class BitcoinTxManagerUnitTest;
+  friend class BraveWalletP3AUnitTest;
 
   void MigrateTransactionsFromPrefsToDB(PrefService* prefs);
 
@@ -238,6 +251,8 @@ class TxService : public KeyedService,
   EthTxManager* GetEthTxManager();
   SolanaTxManager* GetSolanaTxManager();
   FilTxManager* GetFilTxManager();
+  BitcoinTxManager* GetBitcoinTxManager();
+  ZCashTxManager* GetZCashTxManager();
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;

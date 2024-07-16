@@ -22,13 +22,13 @@ constexpr int brave_value(int incr) {
 
 }  // namespace
 
-static_assert(static_cast<int>(ContentSettingsType::NUM_TYPES) <
+static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
                   kBraveValuesStart,
               "There must a gap between the histograms used by Chromium, and "
               "the ones used by Brave.");
 
 // clang-format off
-#define BRAVE_HISTOGRAM_VALUE_LIST ,                                      \
+#define BRAVE_HISTOGRAM_VALUE_LIST                                        \
   {ContentSettingsType::BRAVE_ADS, brave_value(0)},                       \
   {ContentSettingsType::BRAVE_COSMETIC_FILTERING, brave_value(1)},        \
   {ContentSettingsType::BRAVE_TRACKERS, brave_value(2)},                  \

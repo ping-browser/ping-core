@@ -9,6 +9,7 @@
 #include <libxml/tree.h>
 
 #include <string>
+#include <string_view>
 
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
@@ -24,10 +25,13 @@ uint32_t graphml_index = 0;
 GraphMLAttr::GraphMLAttr(const GraphMLAttrForType for_value,
                          const String& name,
                          const GraphMLAttrType type)
-    : id_(++graphml_index), for_(for_value), name_(name), type_(type) {}
+    : for_(for_value),
+      name_(name),
+      type_(type),
+      graphml_id_("d" + base::NumberToString(++graphml_index)) {}
 
-GraphMLId GraphMLAttr::GetGraphMLId() const {
-  return "d" + base::NumberToString(id_);
+const GraphMLId& GraphMLAttr::GetGraphMLId() const {
+  return graphml_id_;
 }
 
 void GraphMLAttr::AddDefinitionNode(xmlNodePtr parent_node) const {
@@ -43,7 +47,7 @@ void GraphMLAttr::AddDefinitionNode(xmlNodePtr parent_node) const {
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc,
                                xmlNodePtr parent_node,
-                               base::StringPiece value) const {
+                               std::string_view value) const {
   AddValueNodeXmlChar(doc, parent_node, XmlUtf8String(value).get());
 }
 
@@ -144,8 +148,14 @@ const GraphMLAttrs& GetGraphMLAttrs() {
       {kGraphMLAttrDefEventListenerId,
        new GraphMLAttr(kGraphMLAttrForTypeEdge, "event listener id",
                        kGraphMLAttrTypeInt)},
-      {kGraphMLAttrDefFrameId,
-       new GraphMLAttr(kGraphMLAttrForTypeNode, "frame id")},
+      {kGraphMLAttrDefEdgeFrameId,
+       new GraphMLAttr(kGraphMLAttrForTypeEdge, "frame id",
+                       kGraphMLAttrTypeInt)},
+      {kGraphMLAttrDefNodeFrameId,
+       new GraphMLAttr(kGraphMLAttrForTypeNode, "frame id",
+                       kGraphMLAttrTypeInt)},
+      {kGraphMLAttrDefHeaders,
+       new GraphMLAttr(kGraphMLAttrForTypeEdge, "headers")},
       {kGraphMLAttrDefHost, new GraphMLAttr(kGraphMLAttrForTypeNode, "host")},
       {kGraphMLAttrDefIncognito,
        new GraphMLAttr(kGraphMLAttrForTypeNode, "incognito")},
@@ -160,6 +170,8 @@ const GraphMLAttrs& GetGraphMLAttrs() {
        new GraphMLAttr(kGraphMLAttrForTypeNode, "method")},
       {kGraphMLAttrDefNodeId, new GraphMLAttr(kGraphMLAttrForTypeNode,
                                               "node id", kGraphMLAttrTypeInt)},
+      {kGraphMLAttrDefNodeTag,
+       new GraphMLAttr(kGraphMLAttrForTypeNode, "tag name")},
       {kGraphMLAttrDefNodeText,
        new GraphMLAttr(kGraphMLAttrForTypeNode, "text")},
       {kGraphMLAttrDefNodeType,
@@ -183,10 +195,10 @@ const GraphMLAttrs& GetGraphMLAttrs() {
       {kGraphMLAttrDefResponseHash,
        new GraphMLAttr(kGraphMLAttrForTypeEdge, "response hash")},
       {kGraphMLAttrDefRule, new GraphMLAttr(kGraphMLAttrForTypeNode, "rule")},
-      {kGraphMLAttrDefScriptIdForEdge,
+      {kGraphMLAttrDefEdgeScriptId,
        new GraphMLAttr(kGraphMLAttrForTypeEdge, "script id",
                        kGraphMLAttrTypeInt)},
-      {kGraphMLAttrDefScriptIdForNode,
+      {kGraphMLAttrDefNodeScriptId,
        new GraphMLAttr(kGraphMLAttrForTypeNode, "script id",
                        kGraphMLAttrTypeInt)},
       {kGraphMLAttrDefScriptPosition,
@@ -196,6 +208,7 @@ const GraphMLAttrs& GetGraphMLAttrs() {
        new GraphMLAttr(kGraphMLAttrForTypeNode, "script type")},
       {kGraphMLAttrDefSecondaryPattern,
        new GraphMLAttr(kGraphMLAttrForTypeNode, "secondary pattern")},
+      {kGraphMLAttrDefSize, new GraphMLAttr(kGraphMLAttrForTypeEdge, "size")},
       {kGraphMLAttrDefSource,
        new GraphMLAttr(kGraphMLAttrForTypeNode, "source")},
       {kGraphMLAttrDefStatus,
@@ -203,13 +216,8 @@ const GraphMLAttrs& GetGraphMLAttrs() {
       {kGraphMLAttrDefSuccess,
        new GraphMLAttr(kGraphMLAttrForTypeNode, "is success",
                        kGraphMLAttrTypeBoolean)},
-      {kGraphMLAttrDefNodeTag,
-       new GraphMLAttr(kGraphMLAttrForTypeNode, "tag name")},
       {kGraphMLAttrDefURL, new GraphMLAttr(kGraphMLAttrForTypeNode, "url")},
       {kGraphMLAttrDefValue, new GraphMLAttr(kGraphMLAttrForTypeEdge, "value")},
-      {kGraphMLAttrDefSize, new GraphMLAttr(kGraphMLAttrForTypeEdge, "size")},
-      {kGraphMLAttrDefHeaders,
-       new GraphMLAttr(kGraphMLAttrForTypeEdge, "headers")},
   });
   return *attrs;
 }

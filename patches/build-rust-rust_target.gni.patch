@@ -1,0 +1,13 @@
+diff --git a/build/rust/rust_target.gni b/build/rust/rust_target.gni
+index 439a8e98ef864b72a06efba8a5a2d6816172e7bc..ca17dfe50baaea48e054c933051f4d6b944b317b 100644
+--- a/build/rust/rust_target.gni
++++ b/build/rust/rust_target.gni
+@@ -190,7 +190,7 @@ template("rust_target") {
+     _cxx_bindings = invoker.cxx_bindings
+   }
+   _rustenv = [ "OUT_DIR=" +
+-               rebase_path(_env_out_dir, get_path_info(_crate_root, "dir")) ]
++               rebase_path(_env_out_dir) ]
+   if (defined(invoker.rustenv)) {
+     _rustenv += invoker.rustenv
+   }

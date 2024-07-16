@@ -6,15 +6,10 @@ import * as React from 'react'
 
 // utils
 import { NFTMetadataReturnType } from '../../../constants/types'
-import {
-  getMediaType,
-  MultimediaType
-} from '../../nft-utils'
+import { getMediaType, MultimediaType } from '../../nft-utils'
 
 // styles
-import {
-  MultiMediaWrapper
-} from './nft-multimedia.styles'
+import { MultiMediaWrapper } from './nft-multimedia.styles'
 import { NftImage } from '../nft-image/nft-image'
 import placeholderImage from '../../../assets/svg-icons/nft-placeholder.svg'
 
@@ -25,9 +20,7 @@ interface Props {
 }
 
 export const NftMultimedia = (props: Props) => {
-  const {
-    nftMetadata
-  } = props
+  const { nftMetadata } = props
 
   // state
   const [mediaUrl, setMediaUrl] = React.useState<string>('')
@@ -67,11 +60,7 @@ export const NftMultimedia = (props: Props) => {
         mimeType={mimeType}
       />
     )
-  }, [mediaUrl, mediaType])
+  }, [mediaType, mediaUrl, mimeType])
 
-  return (
-    <MultiMediaWrapper>
-      {renderMedia()}
-    </MultiMediaWrapper>
-  )
+  return <MultiMediaWrapper>{renderMedia()}</MultiMediaWrapper>
 }

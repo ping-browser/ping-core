@@ -13,7 +13,7 @@ import { match } from './utils/match'
 import { getLocale } from '$web-common/locale'
 
 import Icon, { setIconBasePath } from '@brave/leo/react/icon'
-import { color, font, radius, spacing } from '@brave/leo/tokens/css'
+import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import Button from '@brave/leo/react/button'
 setIconBasePath('chrome://resources/brave-icons')
 
@@ -24,7 +24,7 @@ const Container = styled.div`
 const CommandsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  font: ${font.primary.default.regular};
+  font: ${font.default.regular};
   margin-bottom: ${spacing['2Xl']};
   border: 1px solid ${color.divider.subtle};
   border-radius: ${radius.m};

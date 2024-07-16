@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/side_panel/playlist/playlist_contents_wrapper.h"
 
+#include <utility>
+
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "chrome/browser/picture_in_picture/picture_in_picture_window_manager.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -23,11 +25,11 @@ PlaylistContentsWrapper::PlaylistContentsWrapper(
     bool esc_closes_ui,
     BrowserView* browser_view,
     PlaylistSidePanelCoordinator* coordinator)
-    : BubbleContentsWrapperT(webui_url,
-                             browser_context,
-                             task_manager_string_id,
-                             webui_resizes_host,
-                             esc_closes_ui),
+    : WebUIContentsWrapperT(webui_url,
+                            browser_context,
+                            task_manager_string_id,
+                            webui_resizes_host,
+                            esc_closes_ui),
       browser_view_(browser_view),
       coordinator_(coordinator) {}
 
@@ -127,6 +129,25 @@ content::PictureInPictureResult PlaylistContentsWrapper::EnterPictureInPicture(
 
 void PlaylistContentsWrapper::ExitPictureInPicture() {
   PictureInPictureWindowManager::GetInstance()->ExitPictureInPicture();
+}
+
+void PlaylistContentsWrapper::AddNewContents(
+    content::WebContents* source,
+    std::unique_ptr<content::WebContents> new_contents,
+    const GURL& target_url,
+    WindowOpenDisposition disposition,
+    const blink::mojom::WindowFeatures& window_features,
+    bool user_gesture,
+    bool* was_blocked) {
+  static_cast<WebContentsDelegate*>(browser_view_->browser())
+      ->AddNewContents(source, std::move(new_contents), target_url, disposition,
+                       window_features, user_gesture, was_blocked);
+}
+
+std::string PlaylistContentsWrapper::GetTitleForMediaControls(
+    content::WebContents* web_contents) {
+  // This string is DNT.
+  return "Playlist";
 }
 
 bool PlaylistContentsWrapper::IsFullscreenForPlaylist() const {

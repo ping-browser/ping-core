@@ -15,16 +15,19 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
-#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "printing/buildflags/buildflags.h"
 
-class TabStripModel;
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "brave/browser/ui/webui/ai_chat/print_preview_extractor.h"
+#endif
 
 namespace content {
 class WebContents;
@@ -36,13 +39,12 @@ class FaviconService;
 
 namespace ai_chat {
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
-                            public TabStripModelObserver,
                             public AIChatTabHelper::Observer,
                             public content::WebContentsObserver {
  public:
   AIChatUIPageHandler(
       content::WebContents* owner_web_contents,
-      TabStripModel* tab_strip_model,
+      content::WebContents* chat_context_web_contents,
       Profile* profile,
       mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver);
 
@@ -54,40 +56,83 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   // ai_chat::mojom::PageHandler:
   void SetClientPage(
       mojo::PendingRemote<ai_chat::mojom::ChatUIPage> page) override;
+  void GetModels(GetModelsCallback callback) override;
+  void ChangeModel(const std::string& model_key) override;
   void SubmitHumanConversationEntry(const std::string& input) override;
+  void SubmitHumanConversationEntryWithAction(
+      const std::string& input,
+      mojom::ActionType action_type) override;
+  void SubmitSummarizationRequest() override;
+  void HandleVoiceRecognition() override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void MarkAgreementAccepted() override;
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
   void GenerateQuestions() override;
-  void SetAutoGenerateQuestions(bool can_auto_generate_questions) override;
   void GetSiteInfo(GetSiteInfoCallback callback) override;
   void OpenBraveLeoSettings() override;
-  void OpenBraveLeoWiki() override;
-  void DisconnectPageContents() override;
+  void OpenURL(const GURL& url) override;
+  void SetShouldSendPageContents(bool should_send) override;
+  void GetShouldSendPageContents(
+      GetShouldSendPageContentsCallback callback) override;
+  void GoPremium() override;
+  void ManagePremium() override;
+  void RefreshPremiumSession() override;
   void ClearConversationHistory() override;
+  void RetryAPIRequest() override;
+  void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
+  void ClearErrorAndGetFailedMessage(
+      ClearErrorAndGetFailedMessageCallback callback) override;
+  void GetCanShowPremiumPrompt(
+      GetCanShowPremiumPromptCallback callback) override;
+  void DismissPremiumPrompt() override;
+  void RateMessage(bool is_liked,
+                   uint32_t turn_id,
+                   RateMessageCallback callback) override;
+  void SendFeedback(const std::string& category,
+                    const std::string& feedback,
+                    const std::string& rating_id,
+                    bool send_hostname,
+                    SendFeedbackCallback callback) override;
+  void ClosePanel() override;
+  void GetActionMenuList(GetActionMenuListCallback callback) override;
+  void OpenModelSupportUrl() override;
 
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
+  void GetPremiumStatus(GetPremiumStatusCallback callback) override;
 
  private:
-  // ChatTabHelper::Observer
+  class ChatContextObserver : public content::WebContentsObserver {
+   public:
+    explicit ChatContextObserver(content::WebContents* web_contents,
+                                 AIChatUIPageHandler& page_handler);
+    ~ChatContextObserver() override;
+
+   private:
+    // content::WebContentsObserver
+    void WebContentsDestroyed() override;
+    raw_ref<AIChatUIPageHandler> page_handler_;
+  };
+
+  void HandleWebContentsDestroyed();
+
+  // AIChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
+  void OnAPIResponseError(mojom::APIError error) override;
+  void OnModelChanged(const std::string& model_key) override;
   void OnSuggestedQuestionsChanged(
       std::vector<std::string> questions,
-      bool has_generated,
-      mojom::AutoGenerateQuestionsPref auto_generate) override;
+      mojom::SuggestionGenerationStatus suggestion_generation_status) override;
   void OnFaviconImageDataChanged() override;
-  void OnPageHasContent() override;
-
-  // TabStripModelObserver
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override;
+  void OnPageHasContent(mojom::SiteInfoPtr site_info) override;
+  void OnPrintPreviewRequested(bool is_pdf) override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
-  absl::optional<mojom::SiteInfo> BuildSiteInfo();
+
+  void OnGetPremiumStatus(GetPremiumStatusCallback callback,
+                          ai_chat::mojom::PremiumStatus status,
+                          ai_chat::mojom::PremiumInfoPtr info);
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
@@ -99,7 +144,11 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
 
   base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
       chat_tab_helper_observation_{this};
+  std::unique_ptr<ChatContextObserver> chat_context_observer_;
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+  std::unique_ptr<PrintPreviewExtractor> print_preview_extractor_;
+#endif
   mojo::Receiver<ai_chat::mojom::PageHandler> receiver_;
 
   base::WeakPtrFactory<AIChatUIPageHandler> weak_ptr_factory_{this};

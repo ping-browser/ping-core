@@ -7,12 +7,12 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
-#include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -26,15 +26,6 @@ class BraveExtensionProviderTest : public extensions::ExtensionFunctionalTest {
 };
 
 namespace extensions {
-
-IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, WhitelistedExtension) {
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
-  const extensions::Extension* extension = InstallExtension(
-      test_data_dir.AppendASCII("adblock-data").AppendASCII("adblock-default"),
-      1);
-  ASSERT_TRUE(extension);
-}
 
 // Load an extension page with an ad image, and make sure it is NOT blocked.
 // It would otherwise be blocked though if it wasn't an extension.

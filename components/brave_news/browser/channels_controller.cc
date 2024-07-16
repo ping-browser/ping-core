@@ -12,76 +12,66 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
-#include "base/values.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "components/prefs/pref_service.h"
-#include "components/prefs/scoped_user_pref_update.h"
-#include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace brave_news {
-namespace {
-bool IsChannelSubscribedInLocale(const base::Value::Dict& subscriptions,
-                                 const std::string& locale,
-                                 const std::string& channel_id) {
-  const auto* locale_dict = subscriptions.FindDict(locale);
-  if (!locale_dict) {
-    return false;
-  }
 
-  return locale_dict->FindBool(channel_id).value_or(false);
-}
-}  // namespace
-
-// static
-void ChannelsController::SetChannelSubscribedPref(PrefService* prefs,
-                                                  const std::string& locale,
-                                                  const std::string& channel_id,
-                                                  bool subscribed) {
-  ScopedDictPrefUpdate update(prefs, prefs::kBraveNewsChannels);
-  auto* dict = update->EnsureDict(locale);
-  if (!subscribed) {
-    dict->Remove(channel_id);
-  } else {
-    dict->Set(channel_id, true);
+std::vector<std::string> GetChannelsForPublisher(
+    const std::string& locale,
+    const mojom::PublisherPtr& publisher) {
+  std::vector<std::string> result;
+  for (const auto& locale_info : publisher->locales) {
+    if (locale_info->locale != locale) {
+      continue;
+    }
+    for (const auto& channel : locale_info->channels) {
+      result.push_back(channel);
+    }
   }
+  return result;
 }
 
 ChannelsController::ChannelsController(
-    PrefService* prefs,
     PublishersController* publishers_controller)
-    : prefs_(prefs), publishers_controller_(publishers_controller) {
-  scoped_observation_.Observe(publishers_controller_);
-}
+    : publishers_controller_(publishers_controller) {}
 
 ChannelsController::~ChannelsController() = default;
 
 Channels ChannelsController::GetChannelsFromPublishers(
     const Publishers& publishers,
-    PrefService* prefs) {
+    const BraveNewsSubscriptions& subscriptions) {
   Channels channels;
-  const auto& channel_subscriptions = prefs->GetDict(prefs::kBraveNewsChannels);
-
   for (const auto& it : publishers) {
+    // Collect all channels from all locales first...
     for (const auto& locale_info : it.second->locales) {
       for (const auto& channel_id : locale_info->channels) {
-        if (!channels.contains(channel_id)) {
+        auto migrated_channel_id = GetMigratedChannel(channel_id);
+        if (!channels.contains(migrated_channel_id)) {
           auto channel = mojom::Channel::New();
           channel->channel_name = channel_id;
-          channels[channel_id] = std::move(channel);
+          channels[migrated_channel_id] = std::move(channel);
         }
-
-        auto& channel = channels[channel_id];
-
+      }
+    }
+    // ...and then check subscription statuses.
+    // We iterate twice (once above, and once here),
+    // just in case the user is subscribed to a channel
+    // that does not have sources for their locale. In that case,
+    // the channel struct could be created via occurence in another
+    // locale, which would result in potential missing subscription statuses
+    // if we only iterated once.
+    for (const auto& locale_info : it.second->locales) {
+      for (auto& [channel_id, channel] : channels) {
         // We already know we're subscribed to this channel in this locale.
         if (base::Contains(channel->subscribed_locales, locale_info->locale)) {
           continue;
         }
 
-        auto subscribed_in_locale = IsChannelSubscribedInLocale(
-            channel_subscriptions, locale_info->locale, channel_id);
+        auto subscribed_in_locale =
+            subscriptions.GetChannelSubscribed(locale_info->locale, channel_id);
         if (subscribed_in_locale) {
           channel->subscribed_locales.push_back(locale_info->locale);
         }
@@ -91,96 +81,17 @@ Channels ChannelsController::GetChannelsFromPublishers(
   return channels;
 }
 
-std::vector<std::string> ChannelsController::GetChannelLocales() const {
-  std::vector<std::string> result;
-  const auto& pref = prefs_->GetDict(prefs::kBraveNewsChannels);
-
-  for (const auto&& [locale, channel] : pref) {
-    if (channel.GetDict().empty()) {
-      continue;
-    }
-    result.push_back(locale);
-  }
-
-  return result;
-}
-
-std::vector<std::string> ChannelsController::GetChannelLocales(
-    const std::string& channel_id) const {
-  std::vector<std::string> result;
-  const auto& pref = prefs_->GetDict(prefs::kBraveNewsChannels);
-  for (const auto&& [locale, channels] : pref) {
-    auto subscribed = channels.GetDict().FindBool(channel_id).value_or(false);
-    if (subscribed) {
-      result.push_back(locale);
-    }
-  }
-  return result;
-}
-
-void ChannelsController::GetAllChannels(ChannelsCallback callback) {
-  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      [](ChannelsCallback callback, PrefService* prefs, Publishers publishers) {
-        auto result = GetChannelsFromPublishers(publishers, prefs);
-        std::move(callback).Run(std::move(std::move(result)));
-      },
-      std::move(callback), base::Unretained(prefs_)));
-}
-
-void ChannelsController::AddListener(
-    mojo::PendingRemote<mojom::ChannelsListener> listener) {
-  auto id = listeners_.Add(std::move(listener));
-  GetAllChannels(base::BindOnce(
-      [](ChannelsController* controller, mojo::RemoteSetElementId id,
-         Channels channels) {
-        auto* listener = controller->listeners_.Get(id);
-        if (listener) {
-          auto event = mojom::ChannelsEvent::New();
-          event->addedOrUpdated = std::move(channels);
-          listener->Changed(std::move(event));
-        }
-      },
-      base::Unretained(this), id));
-}
-
-mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
-    const std::string& locale,
-    const std::string& channel_id,
-    bool subscribed) {
-  // Persist the pref
-  ChannelsController::SetChannelSubscribedPref(prefs_, locale, channel_id,
-                                               subscribed);
-
-  // Provide an updated entity
-  auto result = mojom::Channel::New();
-  result->channel_name = channel_id;
-  result->subscribed_locales = GetChannelLocales(channel_id);
-
-  for (const auto& listener : listeners_) {
-    auto event = mojom::ChannelsEvent::New();
-    event->addedOrUpdated[channel_id] = result->Clone();
-    listener->Changed(std::move(event));
-  }
-
-  return result;
-}
-
-bool ChannelsController::GetChannelSubscribed(const std::string& locale,
-                                              const std::string& channel_id) {
-  const auto& subscriptions = prefs_->GetDict(prefs::kBraveNewsChannels);
-  return IsChannelSubscribedInLocale(subscriptions, locale, channel_id);
-}
-
-void ChannelsController::OnPublishersUpdated(PublishersController* controller) {
-  GetAllChannels(base::BindOnce(
-      [](ChannelsController* controller, Channels channels) {
-        auto event = mojom::ChannelsEvent::New();
-        event->addedOrUpdated = std::move(channels);
-        for (const auto& listener : controller->listeners_) {
-          listener->Changed(event->Clone());
-        }
-      },
-      base::Unretained(this)));
+void ChannelsController::GetAllChannels(
+    const BraveNewsSubscriptions& subscriptions,
+    ChannelsCallback callback) {
+  publishers_controller_->GetOrFetchPublishers(
+      subscriptions, base::BindOnce(
+                         [](const BraveNewsSubscriptions& subscriptions,
+                            ChannelsCallback callback, Publishers publishers) {
+                           std::move(callback).Run(GetChannelsFromPublishers(
+                               publishers, subscriptions));
+                         },
+                         subscriptions, std::move(callback)));
 }
 
 }  // namespace brave_news

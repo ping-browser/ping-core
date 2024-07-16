@@ -11,7 +11,7 @@
 #include <utility>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
 
 // GET https://api.uphold.com/v0/me/capabilities
@@ -167,7 +167,7 @@
 // ]
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace uphold {
@@ -177,7 +177,7 @@ using GetCapabilitiesCallback =
 
 class GetCapabilities {
  public:
-  explicit GetCapabilities(RewardsEngineImpl& engine);
+  explicit GetCapabilities(RewardsEngine& engine);
   ~GetCapabilities();
 
   void Request(const std::string& token,
@@ -199,7 +199,7 @@ class GetCapabilities {
 
   CapabilityMap ParseBody(const std::string& body) const;
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace uphold

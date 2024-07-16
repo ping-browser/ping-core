@@ -5,10 +5,21 @@
 
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 
+#include <optional>
+
+#include "base/check_is_test.h"
+#include "base/command_line.h"
+#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/sidebar/constants.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/constants.h"
+#include "brave/components/sidebar/browser/pref_names.h"
+#include "brave/components/sidebar/common/features.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -16,6 +27,7 @@
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/common/webui_url_constants.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -23,6 +35,7 @@
 namespace sidebar {
 
 using BuiltInItemType = SidebarItem::BuiltInItemType;
+using ShowSidebarOption = SidebarService::ShowSidebarOption;
 
 namespace {
 
@@ -138,6 +151,109 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
 SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item) {
   DCHECK(item.open_in_panel);
   return SidePanelIdFromSideBarItemType(item.built_in_item_type);
+}
+
+std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
+                                                         SidePanelEntryId id) {
+  const auto hidden_default_items =
+      GetSidebarService(browser)->GetHiddenDefaultSidebarItems();
+  if (hidden_default_items.empty()) {
+    return std::nullopt;
+  }
+
+  for (const auto& item : hidden_default_items) {
+    if (id == sidebar::SidePanelIdFromSideBarItem(item)) {
+      GetSidebarService(browser)->AddItem(item);
+      return item;
+    }
+  }
+
+  return std::nullopt;
+}
+
+void SetLastUsedSidePanel(PrefService* prefs,
+                          std::optional<SidePanelEntryId> id) {
+  BuiltInItemType type = BuiltInItemType::kNone;
+  if (id) {
+    switch (*id) {
+      case SidePanelEntryId::kReadingList:
+        type = BuiltInItemType::kReadingList;
+        break;
+      case SidePanelEntryId::kBookmarks:
+        type = BuiltInItemType::kBookmarks;
+        break;
+      case SidePanelEntryId::kPlaylist:
+        type = BuiltInItemType::kPlaylist;
+        break;
+      case SidePanelEntryId::kChatUI:
+        type = BuiltInItemType::kChatUI;
+        break;
+      default:
+        break;
+    }
+  }
+
+  prefs->SetInteger(kLastUsedBuiltInItemType, static_cast<int>(type));
+}
+
+std::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser) {
+  PrefService* prefs = browser->profile()->GetPrefs();
+  BuiltInItemType type =
+      static_cast<BuiltInItemType>(prefs->GetInteger(kLastUsedBuiltInItemType));
+  // If cached type item is not included in current model, return null.
+  if (!static_cast<BraveBrowser*>(browser)
+           ->sidebar_controller()
+           ->model()
+           ->GetIndexOf(type)) {
+    return std::nullopt;
+  }
+  return SidePanelIdFromSideBarItemType(type);
+}
+
+bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+    default:
+      break;
+  }
+  return false;
+}
+
+bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kBookmarks:
+    case SidebarItem::BuiltInItemType::kReadingList:
+    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+    default:
+      break;
+  }
+  return false;
+}
+
+SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
+    version_info::Channel channel) {
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDontShowSidebarOnNonStable) &&
+      channel != version_info::Channel::STABLE) {
+    return ShowSidebarOption::kShowAlways;
+  }
+
+  if (!g_browser_process) {
+    CHECK_IS_TEST();
+    return ShowSidebarOption::kShowAlways;
+  }
+
+  if (auto* local_state = g_browser_process->local_state()) {
+    return local_state->GetBoolean(kTargetUserForSidebarEnabledTest)
+               ? ShowSidebarOption::kShowAlways
+               : ShowSidebarOption::kShowNever;
+  }
+
+  return ShowSidebarOption::kShowNever;
 }
 
 }  // namespace sidebar

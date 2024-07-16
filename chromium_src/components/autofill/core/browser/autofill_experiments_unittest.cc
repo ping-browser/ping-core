@@ -12,6 +12,7 @@
 #include "components/autofill/core/common/autofill_prefs.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync/base/pref_names.h"
 #include "components/sync/test/test_sync_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -24,25 +25,30 @@ class AutofillExperimentsTest : public testing::Test {
  protected:
   void SetUp() override {
     pref_service_.registry()->RegisterBooleanPref(
-        prefs::kAutofillWalletImportEnabled, true);
+        syncer::prefs::internal::kSyncPayments, true);
     log_manager_ = LogManager::Create(nullptr, base::RepeatingClosure());
   }
 
-  bool IsCreditCardUploadEnabled(const AutofillSyncSigninState sync_state) {
-    return IsCreditCardUploadEnabled("john.smith@gmail.com", sync_state);
+  bool IsCreditCardUploadEnabled(
+      const AutofillMetrics::PaymentsSigninState signin_state_for_metrics) {
+    return IsCreditCardUploadEnabled("john.smith@gmail.com",
+                                     signin_state_for_metrics);
   }
 
-  bool IsCreditCardUploadEnabled(const std::string& user_email,
-                                 const AutofillSyncSigninState sync_state) {
-    return IsCreditCardUploadEnabled(user_email, "US", sync_state);
+  bool IsCreditCardUploadEnabled(
+      const std::string& user_email,
+      const AutofillMetrics::PaymentsSigninState signin_state_for_metrics) {
+    return IsCreditCardUploadEnabled(user_email, "US",
+                                     signin_state_for_metrics);
   }
 
-  bool IsCreditCardUploadEnabled(const std::string& user_email,
-                                 const std::string& user_country,
-                                 const AutofillSyncSigninState sync_state) {
-    return autofill::IsCreditCardUploadEnabled(&pref_service_, &sync_service_,
-                                               user_email, user_country,
-                                               sync_state, log_manager_.get());
+  bool IsCreditCardUploadEnabled(
+      const std::string& user_email,
+      const std::string& user_country,
+      const AutofillMetrics::PaymentsSigninState signin_state_for_metrics) {
+    return autofill::IsCreditCardUploadEnabled(
+        &sync_service_, user_email, user_country, signin_state_for_metrics,
+        log_manager_.get());
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -54,13 +60,13 @@ class AutofillExperimentsTest : public testing::Test {
 TEST_F(AutofillExperimentsTest, IsCardUploadEnabled_FeatureEnabled) {
   scoped_feature_list_.InitAndEnableFeature(features::kAutofillUpstream);
   EXPECT_FALSE(IsCreditCardUploadEnabled(
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
 }
 
 TEST_F(AutofillExperimentsTest, IsCardUploadEnabled_FeatureDisabled) {
   scoped_feature_list_.InitAndDisableFeature(features::kAutofillUpstream);
   EXPECT_FALSE(IsCreditCardUploadEnabled(
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
 }
 
 TEST_F(
@@ -82,43 +88,40 @@ TEST_F(
   sync_service_.SetFailedDataTypes({syncer::AUTOFILL_PROFILE});
 
   EXPECT_FALSE(IsCreditCardUploadEnabled(
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
 }
 
 TEST_F(AutofillExperimentsTest, IsCardUploadEnabled_UserEmailWithGoogleDomain) {
   scoped_feature_list_.InitAndEnableFeature(features::kAutofillUpstream);
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       "john.smith@gmail.com",
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       "googler@google.com",
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       "old.school@googlemail.com",
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       "code.committer@chromium.org",
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
 }
 
 TEST_F(AutofillExperimentsTest,
        IsCardUploadEnabled_UserEmailWithNonGoogleDomainIfExperimentEnabled) {
-  scoped_feature_list_.InitWithFeatures(
-      {features::kAutofillUpstream,
-       features::kAutofillUpstreamAllowAllEmailDomains},
-      {});
+  scoped_feature_list_.InitWithFeatures({features::kAutofillUpstream}, {});
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       "cool.user@hotmail.com",
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       "john.smith@johnsmith.com",
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       "fake.googler@google.net",
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       "fake.committer@chromium.com",
-      AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));
+      AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
 }
 
 }  // namespace autofill

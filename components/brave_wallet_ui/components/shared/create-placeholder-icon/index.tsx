@@ -22,6 +22,7 @@ import {
   isComponentInStorybook,
   stripChromeImageURL
 } from '../../../utils/string-utils'
+import { isNativeAsset } from '../../../utils/asset-utils'
 
 // Hooks
 import {
@@ -40,14 +41,21 @@ interface Config {
   marginRight?: number
 }
 
+export type IconAsset = Pick<
+  BraveWallet.BlockchainToken,
+  | 'chainId'
+  | 'contractAddress'
+  | 'isErc721'
+  | 'isNft'
+  | 'logo'
+  | 'name'
+  | 'symbol'
+>
+
 interface Props {
-  asset:
-    | Pick<
-        BraveWallet.BlockchainToken,
-        'symbol' | 'logo' | 'isNft' | 'isErc721' | 'contractAddress' | 'name'
-      >
-    | undefined
-  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'> | undefined
+  asset: IconAsset | undefined
+  /** @deprecated Not used */
+  network?: Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'> | null
 }
 
 const isStorybook = isComponentInStorybook()
@@ -69,14 +77,10 @@ export function withPlaceholderIcon<
   return function (funcProps: Props & PROPS_FOR_FUNCTION) {
     const { asset, network, ...wrappedComponentProps } = funcProps
 
-    const isNativeAsset =
-      asset &&
-      network &&
-      asset.symbol.toLowerCase() === network.symbol.toLowerCase()
+    const isNative = asset && isNativeAsset(asset)
 
-    const nativeAssetLogo = isNativeAsset
-      ? makeNativeAssetLogo(network.symbol, network.chainId)
-      : null
+    const nativeAssetLogo =
+      isNative && asset ? makeNativeAssetLogo(asset.symbol, asset.chainId) : ''
 
     const tokenImageURL = stripERC20TokenImageURL(
       nativeAssetLogo || asset?.logo || ''
@@ -106,11 +110,10 @@ export function withPlaceholderIcon<
           : isValidIconExtension(new URL(asset?.logo || '').pathname)
       }
       return false
-    }, [isRemoteURL, tokenImageURL, asset?.logo, isStorybook])
+    }, [asset?.logo, isRemoteURL, tokenImageURL, isNonFungibleToken])
 
-    const needsPlaceholder = isNativeAsset
-      ? (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
-      : tokenImageURL === '' || !isValidIcon
+    const needsPlaceholder =
+      (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
 
     const bg = React.useMemo(() => {
       if (needsPlaceholder) {
@@ -127,14 +130,16 @@ export function withPlaceholderIcon<
         return isStorybook ? ipfsUrl || '' : `chrome://image?${ipfsUrl}`
       }
       return ''
-    }, [isRemoteURL, tokenImageURL, ipfsUrl])
+    }, [isRemoteURL, ipfsUrl])
 
     // render
-    if (!asset || !network) {
+    if (!asset) {
       return null
     }
 
-    if (needsPlaceholder) {
+    const icon = nativeAssetLogo || (isRemoteURL ? remoteImage : asset?.logo)
+
+    if (needsPlaceholder || !icon) {
       return (
         <IconWrapper
           panelBackground={bg}
@@ -144,17 +149,11 @@ export function withPlaceholderIcon<
           marginRight={marginRight ?? 0}
         >
           <PlaceholderText size={size}>
-            {asset.symbol.charAt(0)}
+            {asset?.symbol.charAt(0) || '?'}
           </PlaceholderText>
         </IconWrapper>
       )
     }
-
-    const icon = isNativeAsset && nativeAssetLogo
-      ? nativeAssetLogo
-      : isRemoteURL
-        ? remoteImage
-        : asset.logo
 
     return (
       <IconWrapper

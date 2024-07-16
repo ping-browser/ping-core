@@ -12,24 +12,23 @@ import { getLocale } from '../../../../common/locale'
 import { NavButton } from '../buttons/nav-button/index'
 
 // style
-import {
-  VerticalSpace,
-  WalletWelcomeGraphic
-} from '../../shared/style'
-import {
-  StyledWrapper,
-  Title,
-  Description
-} from './style'
+import { VerticalSpace, WalletWelcomeGraphic } from '../../shared/style'
+import { StyledWrapper, Title, Description } from './style'
 
-interface Props {
-  onSetup: () => void
-}
+export const WelcomePanel = () => {
+  // methods
+  const onSetup = () => {
+    chrome.tabs.create({ url: 'chrome://wallet' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
 
-export const WelcomePanel = ({ onSetup }: Props) => {
+  // render
   return (
     <StyledWrapper>
-      <WalletWelcomeGraphic scale={0.9}/>
+      <WalletWelcomeGraphic scale={0.9} />
 
       <VerticalSpace space='16px' />
 

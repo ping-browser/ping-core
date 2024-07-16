@@ -8,18 +8,13 @@ import * as React from 'react'
 import { CUSTOM_ASSET_NAV_OPTIONS } from '../../../options/add-custom-asset-nav-options'
 
 // components
-import {
-  TabOption,
-  Tabs
-} from '../../shared/tabs/tabs'
+import { TabOption, Tabs } from '../../shared/tabs/tabs'
 import { AddCustomTokenForm } from '../../shared/add-custom-token-form/add-custom-token-form'
 import { AddNftForm } from '../../shared/add-custom-token-form/add-nft-form'
 
 // styles
 import { AddAssetWrapper } from './add-asset.styles'
-import {
-  PaddedRow
-} from '../popup-modals/style'
+import { PaddedRow } from '../popup-modals/style'
 
 interface Props {
   contractAddress: string | undefined
@@ -27,59 +22,50 @@ interface Props {
 }
 
 export const AddAsset = (props: Props) => {
-  const {
-    contractAddress,
-    onHideForm
-  } = props
-  const [tokenContractAddress, setTokenContractAddress] = React.useState<string>(contractAddress || '')
+  const { contractAddress, onHideForm } = props
+  const [tokenContractAddress, setTokenContractAddress] =
+    React.useState<string>(contractAddress || '')
   const [selectedTab, setSelectedTab] = React.useState<string>('token')
 
-  const onSelectTab = React.useCallback((tab: TabOption) => {
-    // Reset contractAddress when a user switches tabs
-    // This will reset the form to avoid the tabs being auto selected based
-    // on found token type
-    if (tokenContractAddress !== '') setTokenContractAddress('')
-    setSelectedTab(tab.id)
-  }, [tokenContractAddress])
+  const onSelectTab = React.useCallback(
+    (tab: TabOption) => {
+      // Reset contractAddress when a user switches tabs
+      // This will reset the form to avoid the tabs being auto selected based
+      // on found token type
+      if (tokenContractAddress !== '') setTokenContractAddress('')
+      setSelectedTab(tab.id)
+    },
+    [tokenContractAddress]
+  )
 
-  const onNftAssetFound = React.useCallback((contractAddress: string) => {
-    setTokenContractAddress(contractAddress)
-    setSelectedTab('nft')
-  }, [])
-
-  const onTokenFound = React.useCallback((contractAddress: string) => {
-    setTokenContractAddress(contractAddress)
-    setSelectedTab('token')
-  }, [])
-
-  const onChangeContractAddress = React.useCallback((contractAddress: string) => {
-    setTokenContractAddress(contractAddress)
-  }, [])
+  const onChangeContractAddress = React.useCallback(
+    (contractAddress: string) => {
+      setTokenContractAddress(contractAddress)
+    },
+    []
+  )
 
   return (
     <AddAssetWrapper>
-      <PaddedRow
-        justifyContent='flex-start'
-      >
+      <PaddedRow justifyContent='flex-start'>
         <Tabs
           options={CUSTOM_ASSET_NAV_OPTIONS}
           onSelect={onSelectTab}
         />
       </PaddedRow>
-      {selectedTab === 'token'
-        ? <AddCustomTokenForm
+      {selectedTab === 'token' ? (
+        <AddCustomTokenForm
           contractAddress={tokenContractAddress}
           onHideForm={onHideForm}
-          onNftAssetFound={onNftAssetFound}
           onChangeContractAddress={onChangeContractAddress}
         />
-        : <AddNftForm
+      ) : (
+        <AddNftForm
           contractAddress={tokenContractAddress}
           onHideForm={onHideForm}
-          onTokenFound={onTokenFound}
           onChangeContractAddress={onChangeContractAddress}
         />
-      }
+      )}
     </AddAssetWrapper>
   )
 }

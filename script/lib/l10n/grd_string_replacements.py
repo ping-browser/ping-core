@@ -18,14 +18,14 @@ branding_replacements = [
     (r'(Google)(?! Play)', r'Brave'),
     (r'Chromium', r'Brave'),
     (r'Chrome', r'Brave'),
-    (r'क्रोमियम', 'Brave'), # Chromium in Hindi
+    (r'क्रोमियम', r'Brave'),  # Chromium in Hindi
 ]
 
 
 # Strings we want to replace but that we need to use Transifex for
 # to translate the XTB files
 default_replacements = [
-    (r'Brave Web Store', r'Web Store'),
+    (r'Ping Web Store', r'Web Store'),
     (r'You\'re incognito', r'This is a private window'),
     (r'an incognito', r'a private'),
     (r'an Incognito', r'a Private'),
@@ -54,7 +54,7 @@ fixup_replacements = [
     (r'Brave Safe Browsing', r'Google Safe Browsing'),
     (r'Safe Browsing \(protects you and your device from dangerous sites\)',
      r'Google Safe Browsing (protects you and your device from dangerous sites)'
-    ),
+     ),
     (r'Sends URLs of some pages you visit to Brave',
      r'Sends URLs of some pages you visit to Google'),
     (r'Google Google', r'Google'),
@@ -67,6 +67,9 @@ fixup_replacements = [
     (r'Brave Photos', r'Google Photos'),
     (r'Brave Projects', r'Chromium Projects'),
     (r'BraveVox', r'ChromeVox'),
+    (r'powered by Brave AI', r'powered by Google AI'),
+    (r'Invite profiles', r'Invite people'),
+    (r'Profiles & Society', r'People & Society'),
 ]
 
 

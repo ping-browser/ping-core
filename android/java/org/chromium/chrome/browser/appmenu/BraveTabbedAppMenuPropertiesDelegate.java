@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser.appmenu;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -14,24 +16,29 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
-import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
@@ -40,40 +47,60 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
-import org.chromium.chrome.features.start_surface.StartSurface;
+import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+/**
+ * Brave's extension for TabbedAppMenuPropertiesDelegate
+ */
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private Menu mMenu;
     private AppMenuDelegate mAppMenuDelegate;
     private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
 
-    public BraveTabbedAppMenuPropertiesDelegate(Context context,
+    public BraveTabbedAppMenuPropertiesDelegate(
+            Context context,
             ActivityTabProvider activityTabProvider,
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
-            TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
+            TabModelSelector tabModelSelector,
+            ToolbarManager toolbarManager,
+            View decorView,
             AppMenuDelegate appMenuDelegate,
             OneshotSupplier<LayoutStateProvider> layoutStateProvider,
-            OneshotSupplier<StartSurface> startSurfaceSupplier,
-            ObservableSupplier<BookmarkModel> bookmarkBridgeSupplier,
+            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             WebFeedSnackbarController.FeedLauncher feedLauncher,
-            ModalDialogManager modalDialogManager, SnackbarManager snackbarManager,
-            @NonNull OneshotSupplier<IncognitoReauthController>
-                    incognitoReauthControllerOneshotSupplier) {
-        super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
-                toolbarManager, decorView, appMenuDelegate, layoutStateProvider,
-                startSurfaceSupplier, bookmarkBridgeSupplier, feedLauncher, modalDialogManager,
-                snackbarManager, incognitoReauthControllerOneshotSupplier);
+            ModalDialogManager modalDialogManager,
+            SnackbarManager snackbarManager,
+            @NonNull
+                    OneshotSupplier<IncognitoReauthController>
+                            incognitoReauthControllerOneshotSupplier,
+            Supplier<ReadAloudController> readAloudControllerSupplier) {
+        super(
+                context,
+                activityTabProvider,
+                multiWindowModeStateDispatcher,
+                tabModelSelector,
+                toolbarManager,
+                decorView,
+                appMenuDelegate,
+                layoutStateProvider,
+                bookmarkModelSupplier,
+                feedLauncher,
+                modalDialogManager,
+                snackbarManager,
+                incognitoReauthControllerOneshotSupplier,
+                readAloudControllerSupplier);
 
         mAppMenuDelegate = appMenuDelegate;
-        mBookmarkModelSupplier = bookmarkBridgeSupplier;
+        mBookmarkModelSupplier = bookmarkModelSupplier;
     }
 
     @Override
@@ -82,8 +109,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         mMenu = menu;
 
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()
-                && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
+        if (BraveVpnUtils.isVpnFeatureSupported(mContext) && false) {
             SubMenu vpnSubMenu = menu.findItem(R.id.request_brave_vpn_row_menu_id).getSubMenu();
             MenuItem braveVpnSubMenuItem = vpnSubMenu.findItem(R.id.request_brave_vpn_id);
             if (shouldShowIconBeforeItem()) {
@@ -97,9 +123,40 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 braveVpnCheckedSubMenuItem.setChecked(
                         BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext));
             }
+
+            if (BraveVpnPrefUtils.isSubscriptionPurchase()
+                    && !TextUtils.isEmpty(BraveVpnPrefUtils.getServerIsoCode())) {
+                String serverLocation =
+                        " "
+                                + BraveVpnUtils.countryCodeToEmoji(
+                                        BraveVpnPrefUtils.getServerIsoCode())
+                                + "   "
+                                + BraveVpnPrefUtils.getServerNamePretty();
+
+                SubMenu vpnLocationSubMenu =
+                        menu.findItem(R.id.request_vpn_location_row_menu_id).getSubMenu();
+                MenuItem vpnLocationSubMenuItem =
+                        vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
+                vpnLocationSubMenuItem.setTitle(serverLocation);
+                MenuItem vpnLocationIconSubMenuItem =
+                        vpnLocationSubMenu.findItem(R.id.request_vpn_location_icon_id);
+                Drawable drawable = vpnLocationIconSubMenuItem.getIcon();
+
+                drawable = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(
+                        drawable, ContextCompat.getColor(mContext, R.color.vpn_timer_icon_color));
+                vpnLocationIconSubMenuItem.setIcon(drawable);
+            } else {
+                menu.findItem(R.id.request_vpn_location_row_menu_id).setVisible(false);
+            }
         } else {
             menu.findItem(R.id.request_brave_vpn_row_menu_id).setVisible(false);
+            menu.findItem(R.id.request_vpn_location_row_menu_id).setVisible(false);
         }
+
+        // Brave donesn't show `Clear browsing data` menu.
+        menu.findItem(R.id.quick_delete_menu_id).setVisible(false).setEnabled(false);
+        menu.findItem(R.id.quick_delete_divider_line_id).setVisible(false).setEnabled(false);
 
         // Brave's items are only visible for page menu.
         // To make logic simple, below three items are added whenever menu gets visible
@@ -127,10 +184,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         //reimplemented the brave_rewards rendering inorder to stop it from getting rendered in the  main_menu panel
         //Basically removed the below commented line for removing the context that was being created from the BraveRewardsNativeWorker
         //BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        //removed the condition for the rendering of the string and icon, as it was based on the output from the context generated by BraveRewardsNativeWorker 
+        //removed the condition for the rendering of the string and icon, as it was based on the output from the context generated by BraveRewardsNativeWorker
 
         //MenuItem rewards =menu.add(Menu.NONE, R.id.brave_rewards_id, 0, R.string.menu_brave_rewards);
-        //the above line was responsible for the rendering of the brave_rewards string in the main_menu panel, but rewards was required by the setIcon, so chnaged the below linw to the newly added line 
+        //the above line was responsible for the rendering of the brave_rewards string in the main_menu panel, but rewards was required by the setIcon, so chnaged the below linw to the newly added line
         MenuItem rewards = menu.findItem(R.id.brave_rewards_id);
         //we can't remove the below line to avoid the rendering of rewards_icon as it throws some xml related error, so changed the condition for the rendering of the icon, as we know we don't have any option for changing its value, so this condition will never become true
         if (!shouldShowIconBeforeItem()) {
@@ -148,12 +205,25 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 braveWallet.setVisible(false);
             }
         }
+        MenuItem braveLeo = menu.findItem(R.id.brave_leo_id);
+        if (braveLeo != null) {
+            Tab tab = mActivityTabProvider.get();
+            if (BraveLeoPrefUtils.isLeoEnabled() && tab != null && !tab.isIncognito()) {
+                braveLeo.setVisible(true);
+                if (shouldShowIconBeforeItem()) {
+                    braveLeo.setIcon(
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_brave_ai));
+                }
+            } else {
+                braveLeo.setVisible(false);
+            }
+        }
 
         MenuItem bravePlaylist = menu.findItem(R.id.brave_playlist_id);
-        if (bravePlaylist != null) {
+        if (bravePlaylist != null || true) {
             if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                    && SharedPreferencesManager.getInstance().readBoolean(
-                            BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+                    && ChromeSharedPreferences.getInstance()
+                            .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true) && false) {
                 bravePlaylist.setVisible(true);
                 if (shouldShowIconBeforeItem()) {
                     bravePlaylist.setIcon(
@@ -164,11 +234,29 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             }
         }
 
-        //commented this part for removing the rendering of brave_news in the main_menu panel
-        // MenuItem braveNews = menu.add(Menu.NONE, R.id.brave_news_id, 0, R.string.brave_news_title);
-        // if (shouldShowIconBeforeItem()) {
-        //     braveNews.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.ic_news));
-        // }
+       MenuItem addToPlaylist = menu.findItem(R.id.add_to_playlist_id);
+       if (addToPlaylist != null || true) {
+           if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                   && ChromeSharedPreferences.getInstance()
+                           .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)
+                   && !ChromeSharedPreferences.getInstance()
+                           .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)
+                   && BraveToolbarLayoutImpl.mShouldShowPlaylistMenu && false) {
+               addToPlaylist.setVisible(true);
+               if (shouldShowIconBeforeItem()) {
+                   addToPlaylist.setIcon(
+                           AppCompatResources.getDrawable(
+                                   mContext, R.drawable.ic_baseline_add_24));
+               }
+           } else {
+               addToPlaylist.setVisible(false);
+           }
+       }
+//
+//        MenuItem braveNews = menu.add(Menu.NONE, R.id.brave_news_id, 0, R.string.brave_news_title);
+//        if (shouldShowIconBeforeItem()) {
+//            braveNews.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.ic_news));
+//        }
 
         MenuItem braveSpeedReader = menu.findItem(R.id.brave_speedreader_id);
         braveSpeedReader.setVisible(false);
@@ -194,18 +282,22 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             menu.findItem(R.id.set_default_browser).setVisible(false);
         }
 
+        Tab currentTab = mActivityTabProvider.get();
+
         // Replace info item with share
         MenuItem shareItem = menu.findItem(R.id.info_menu_id);
         if (shareItem != null) {
             shareItem.setTitle(mContext.getString(R.string.share));
             shareItem.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
+            if (currentTab != null && UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
+                shareItem.setEnabled(false);
+            }
         }
 
         // By this we forcibly initialize BookmarkBridge
         MenuItem bookmarkItem = menu.findItem(R.id.bookmark_this_page_id);
-        Tab currentTab = mActivityTabProvider.get();
         if (bookmarkItem != null && currentTab != null) {
-            updateBookmarkMenuItemShortcut(bookmarkItem, currentTab, /*fromCCT=*/false);
+            updateBookmarkMenuItemShortcut(bookmarkItem, currentTab, /* fromCCT= */ false);
         }
 
         // Remove unused dividers. This needs to be done after the visibility of all the items is
@@ -237,10 +329,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         mMenu.removeItem(R.id.brave_rewards_id);
         mMenu.removeItem(R.id.brave_wallet_id);
         mMenu.removeItem(R.id.brave_playlist_id);
+        mMenu.removeItem(R.id.add_to_playlist_id);
         mMenu.removeItem(R.id.brave_speedreader_id);
         mMenu.removeItem(R.id.exit_id);
-        if (BraveVpnUtils.isBraveVpnFeatureEnable())
-            mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
+        mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
+        mMenu.removeItem(R.id.request_vpn_location_id);
     }
 
     @Override
@@ -274,6 +367,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             shareButton.setImageDrawable(
                     AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
             shareButton.setContentDescription(mContext.getString(R.string.share));
+            Tab currentTab = mActivityTabProvider.get();
+            if (currentTab != null && UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
+                shareButton.setEnabled(false);
+            }
         }
     }
 

@@ -13,11 +13,11 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -32,6 +32,7 @@
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/hit_test.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
 #include "ui/views/window/hit_test_utils.h"
@@ -128,7 +129,13 @@ void BraveToolbarView::Init() {
   // This will allow us to move this window by dragging toolbar.
   // See brave_non_client_hit_test_helper.h
   views::SetHitTestComponent(this, HTCAPTION);
-  DCHECK_EQ(1u, children().size());
+  if (features::IsChromeRefresh2023()) {
+    // Upstream has two more children |background_view_left_| and
+    // |background_view_right_| behind the container view.
+    DCHECK_EQ(3u, children().size());
+  } else {
+    DCHECK_EQ(1u, children().size());
+  }
   views::SetHitTestComponent(children()[0], HTCAPTION);
 
   // For non-normal mode, we don't have to more.
@@ -153,14 +160,27 @@ void BraveToolbarView::Init() {
       kShowBookmarksButton, browser_->profile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::OnShowBookmarksButtonChanged,
                           base::Unretained(this)));
+
+  show_wallet_button_.Init(
+      kShowWalletIconOnToolbar, browser_->profile()->GetPrefs(),
+      base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
+                          base::Unretained(this)));
+
+  if (browser_->profile()->IsIncognitoProfile() &&
+      !browser_->profile()->IsTor()) {
+    wallet_private_window_enabled_.Init(
+        kBraveWalletPrivateWindowsEnabled, browser_->profile()->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
+                            base::Unretained(this)));
+  }
+
   // track changes in wide locationbar setting
   location_bar_is_wide_.Init(
       kLocationBarIsWide, profile->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::OnLocationBarIsWideChanged,
                           base::Unretained(this)));
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-      tabs::utils::SupportsVerticalTabs(browser_)) {
+  if (tabs::utils::SupportsVerticalTabs(browser_)) {
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled,
         profile->GetOriginalProfile()->GetPrefs(),
@@ -191,22 +211,21 @@ void BraveToolbarView::Init() {
   views::View* container_view = location_bar_->parent();
   DCHECK(container_view);
   bookmark_ = container_view->AddChildViewAt(
-      std::make_unique<BookmarkButton>(
+      std::make_unique<BraveBookmarkButton>(
           base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB)),
       *container_view->GetIndexOf(location_bar_));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
 
-  if (brave_wallet::IsNativeWalletEnabled() &&
-      brave_wallet::IsAllowedForContext(profile)) {
-    wallet_ = container_view->AddChildViewAt(
-        std::make_unique<WalletButton>(GetAppMenuButton(), profile),
-        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
-    wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
-                                      ui::EF_MIDDLE_MOUSE_BUTTON);
-    wallet_->UpdateImageAndText();
-  }
+  wallet_ = container_view->AddChildViewAt(
+      std::make_unique<WalletButton>(GetAppMenuButton(), profile),
+      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
+                                    ui::EF_MIDDLE_MOUSE_BUTTON);
+  wallet_->UpdateImageAndText();
+
+  UpdateWalletButtonVisibility();
 
 #if !BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(profile)) {
@@ -224,6 +243,12 @@ void BraveToolbarView::Init() {
     brave_vpn_->SetVisible(IsBraveVPNButtonVisible());
   }
 #endif
+
+  // Make sure that avatar button should be located right before the app menu.
+  if (auto* avatar = GetAvatarToolbarButton()) {
+    container_view->ReorderChildView(
+        avatar, *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  }
 
   brave_initialized_ = true;
   UpdateHorizontalPadding();
@@ -255,7 +280,7 @@ void BraveToolbarView::OnShowBookmarksButtonChanged() {
 void BraveToolbarView::OnLocationBarIsWideChanged() {
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
 
-  Layout();
+  DeprecatedLayoutImmediately();
   SchedulePaint();
 }
 
@@ -316,8 +341,6 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
 }
 
 void BraveToolbarView::UpdateHorizontalPadding() {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
-
   if (!brave_initialized_) {
     return;
   }
@@ -348,7 +371,7 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
   if (bookmark_ && bookmark_->GetVisible())
     anchor_view = bookmark_;
 
-  std::unique_ptr<BubbleSyncPromoDelegate> delegate;
+  std::unique_ptr<BubbleSignInPromoDelegate> delegate;
   delegate =
       std::make_unique<BookmarkBubbleSignInDelegate>(browser()->profile());
   BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(), bookmark_,
@@ -367,8 +390,8 @@ void BraveToolbarView::ViewHierarchyChanged(
   }
 }
 
-void BraveToolbarView::Layout() {
-  ToolbarView::Layout();
+void BraveToolbarView::Layout(PassKey) {
+  LayoutSuperclass<ToolbarView>(this);
 
   if (!brave_initialized_)
     return;
@@ -410,3 +433,28 @@ void BraveToolbarView::ResetButtonBounds() {
     bookmark_->SetX(bookmark_x);
   }
 }
+
+void BraveToolbarView::UpdateWalletButtonVisibility() {
+  Profile* profile = browser()->profile();
+  if (brave_wallet::IsNativeWalletEnabled() &&
+      brave_wallet::IsAllowedForContext(profile)) {
+    // Hide all if user wants to hide.
+    if (!show_wallet_button_.GetValue()) {
+      wallet_->SetVisible(false);
+      return;
+    }
+
+    if (!profile->IsIncognitoProfile()) {
+      wallet_->SetVisible(true);
+      return;
+    }
+
+    wallet_->SetVisible(wallet_private_window_enabled_.GetValue());
+    return;
+  }
+
+  wallet_->SetVisible(false);
+}
+
+BEGIN_METADATA(BraveToolbarView)
+END_METADATA

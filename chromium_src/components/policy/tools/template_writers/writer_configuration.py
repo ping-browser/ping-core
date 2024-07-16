@@ -14,7 +14,7 @@ _BRAVE_VALUES = {
   'build': 'brave',
   'app_name': 'Brave',
   'doc_url':
-    'https://support.brave.com/hc/en-us/articles/360039248271-Group-Policy',
+    'https://ping-browser.com/faqs-and-help',
   'frame_name': 'Brave Frame',
   'webview_name': 'Brave WebView',
   'win_config': {
@@ -42,7 +42,7 @@ _BRAVE_VALUES = {
     'Brave': 'BraveSoftware.Policies'  # prefix: namespace
   },
   'linux_policy_path': '/etc/brave/policies/',
-  'bundle_id': 'com.brave.ios.core',
+  'bundle_id': 'com.ping.ios.core',
 }
 
 def _merge_dicts(src, dst):

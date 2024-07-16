@@ -7,11 +7,13 @@
 #include <vector>
 
 #include "base/path_service.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -22,7 +24,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/common/buildflags.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -31,9 +32,9 @@
 #include "components/omnibox/browser/location_bar_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "content/public/test/test_navigation_observer.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
@@ -44,6 +45,10 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
 #endif
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
@@ -59,8 +64,6 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_ = std::make_unique<ChromeContentClient>();
-    content::SetContentClient(content_client_.get());
     browser_content_client_ = std::make_unique<BraveContentBrowserClient>();
     content::SetBrowserClientForTesting(browser_content_client_.get());
 
@@ -107,10 +110,7 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
         "brave_webtorrent.html?chrome://settings");
   }
 
-  void TearDown() override {
-    browser_content_client_.reset();
-    content_client_.reset();
-  }
+  void TearDown() override { browser_content_client_.reset(); }
 
   const GURL& magnet_html_url() { return magnet_html_url_; }
   const GURL& magnet_url() { return magnet_url_; }
@@ -132,7 +132,6 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
   GURL torrent_url_;
   GURL torrent_extension_url_;
   GURL torrent_invalid_query_extension_url_;
-  std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
@@ -321,7 +320,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
-  EXPECT_EQ(true, content::EvalJs(contents, "clickMagnetLink();"));
+  EXPECT_TRUE(content::ExecJs(contents, "clickMagnetLink();"));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
@@ -336,12 +338,15 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, TypedMagnetURL) {
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  content::TestNavigationObserver observer(web_contents);
   ui_test_utils::SendToOmniboxAndSubmit(browser(), magnet_url().spec());
-  observer.Wait();
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(WaitForLoadStop(web_contents));
   EXPECT_EQ(magnet_url(), web_contents->GetLastCommittedURL().spec());
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
                        ReverseRewriteTorrentURL) {
   content::WebContents* contents =
@@ -354,14 +359,58 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), torrent_extension_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
 
-  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-               torrent_url().spec().c_str())
+  EXPECT_EQ(contents->GetLastCommittedURL().spec(),
+            base::StrCat({url::kWebTorrentScheme, ":", torrent_url().spec()}))
       << "URL visible to users should stay as the torrent URL";
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
                torrent_extension_url().spec().c_str())
       << "Real URL should be extension URL";
+}
+#endif
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       MagnetIframeWithUserGestureOpensWebtorrent) {
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
+  EXPECT_TRUE(content::ExecJs(contents, "createMagnetIframe(false);"));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  EXPECT_EQ(contents->GetLastCommittedURL(), magnet_url());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       MagnetIframeWithoutUserGestureDoesNotOpenWebtorrent) {
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
+  EXPECT_TRUE(content::ExecJs(contents, "createMagnetIframe(false);",
+                              content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  EXPECT_EQ(contents->GetLastCommittedURL(), magnet_html_url());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       MagnetIframeSandboxedDoesNotOpenWebtorrent) {
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
+  EXPECT_TRUE(content::ExecJs(contents, "createMagnetIframe(true);"));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  EXPECT_EQ(contents->GetLastCommittedURL(), magnet_html_url());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
@@ -446,7 +495,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
-  EXPECT_EQ(true, content::EvalJs(contents, "clickMagnetLink();"));
+  EXPECT_TRUE(content::ExecJs(contents, "clickMagnetLink();"));
+  // Magnet protocol handler posts to UIThreadTaskRunner, so let all tasks run,
+  // otherwise WaitForLoadStop may return right away.
+  base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
@@ -490,14 +542,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
   tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
-  base::RunLoop loop;
-  Browser* tor_browser = nullptr;
-  TorProfileManager::SwitchToTorProfile(
-      browser()->profile(), base::BindLambdaForTesting([&](Browser* browser) {
-        tor_browser = browser;
-        loop.Quit();
-      }));
-  loop.Run();
+  Browser* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->profile());
 
   const GURL onion_url =
       embedded_test_server()->GetURL("test.onion", "/onion.html");

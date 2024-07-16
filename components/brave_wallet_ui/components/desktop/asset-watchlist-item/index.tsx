@@ -7,13 +7,9 @@ import { useLocation } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import {
-  BraveWallet,
-  WalletRoutes
-} from '../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../constants/types'
 
 // Utils
-import { isDataURL } from '../../../utils/string-utils'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
@@ -36,15 +32,10 @@ import {
   NameAndSymbol,
   AssetSymbol
 } from './style'
-import {
-  HorizontalSpace
-} from '../../shared/style'
+import { HorizontalSpace } from '../../shared/style'
 
 export interface Props {
-  onSelectAsset: (
-    selected: boolean,
-    token: BraveWallet.BlockchainToken
-  ) => void
+  onSelectAsset: (token: BraveWallet.BlockchainToken) => void
   onRemoveAsset: (token: BraveWallet.BlockchainToken) => void
   isRemovable: boolean
   isSelected: boolean
@@ -57,13 +48,8 @@ const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
-    const {
-      onSelectAsset,
-      onRemoveAsset,
-      isRemovable,
-      token,
-      isSelected
-    } = props
+    const { onSelectAsset, onRemoveAsset, isRemovable, token, isSelected } =
+      props
 
     // routing
     const { hash } = useLocation()
@@ -72,64 +58,64 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
     const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
     // callbacks
-    const onCheck = React.useCallback(() => {
-      onSelectAsset(!isSelected, token)
-    }, [onSelectAsset, token, isSelected])
-
     const onClickAsset = React.useCallback(() => {
-      onSelectAsset(!isSelected, token)
-    }, [onSelectAsset, token, isSelected])
+      onSelectAsset(token)
+    }, [onSelectAsset, token])
 
     const onClickRemoveAsset = React.useCallback(() => {
       onRemoveAsset(token)
     }, [token, onRemoveAsset])
 
-    const networkDescription = React.useMemo(() => {
-      return getLocale('braveWalletPortfolioAssetNetworkDescription')
-        .replace('$1', token.symbol)
-        .replace('$2', tokensNetwork?.chainName ?? '')
-    }, [tokensNetwork, token])
+    // computed
+    const isVisible = isSelected
+      ? !token.visible // pending visibility change
+      : token.visible
 
     return (
       <StyledWrapper ref={forwardedRef}>
-        <NameAndIcon onClick={onClickAsset}>
-          {token.isErc721 && !isDataURL(token.logo) ? (
-            <NftIconWithPlaceholder asset={token} network={tokensNetwork} />
+        <NameAndIcon>
+          {token.isNft ? (
+            <NftIconWithPlaceholder
+              asset={token}
+              network={tokensNetwork}
+            />
           ) : (
-            <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+            <AssetIconWithPlaceholder
+              asset={token}
+              network={tokensNetwork}
+            />
           )}
           <NameAndSymbol>
             <AssetName>
-              {token.name} {
-                token.isErc721 && token.tokenId
-                  ? '#' + new Amount(token.tokenId).toNumber()
-                  : ''
-              }
+              {token.name}{' '}
+              {token.isErc721 && token.tokenId
+                ? '#' + new Amount(token.tokenId).toNumber()
+                : ''}
             </AssetName>
-            <AssetSymbol>{networkDescription}</AssetSymbol>
+            <AssetSymbol>
+              {getLocale('braveWalletPortfolioAssetNetworkDescription')
+                .replace('$1', token.symbol)
+                .replace('$2', tokensNetwork?.chainName ?? '')}
+            </AssetSymbol>
           </NameAndSymbol>
         </NameAndIcon>
         <RightSide>
-          {
-            isRemovable &&
-            hash !== WalletRoutes.AvailableAssetsHash &&
+          {isRemovable && hash !== WalletRoutes.AvailableAssetsHash && (
             <>
               <Button onClick={onClickRemoveAsset}>
                 <Icon name='trash' />
               </Button>
               <HorizontalSpace space='8px' />
             </>
-          }
-          <Button
-            onClick={onCheck}
-          >
+          )}
+          <Button onClick={onClickAsset}>
             <Icon
               name={
                 hash === WalletRoutes.AvailableAssetsHash
                   ? 'plus-add'
-                  : isSelected
-                    ? 'eye-on'
-                    : 'eye-off'
+                  : isVisible
+                  ? 'eye-on'
+                  : 'eye-off'
               }
             />
           </Button>

@@ -10,19 +10,14 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
-#include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
-#include "url/gurl.h"
-
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "mojo/public/cpp/bindings/remote.h"
+#include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -56,7 +51,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   // Get sell URL for off-ramps
   void GetSellUrl(mojom::OffRampProvider provider,
                   const std::string& chain_id,
-                  const std::string& address,
                   const std::string& symbol,
                   const std::string& amount,
                   const std::string& currency_code,
@@ -65,18 +59,14 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   // mojom::AssetRatioService
   void GetPrice(const std::vector<std::string>& from_assets,
                 const std::vector<std::string>& to_assets,
-                brave_wallet::mojom::AssetPriceTimeframe timeframe,
+                mojom::AssetPriceTimeframe timeframe,
                 GetPriceCallback callback) override;
 
   // The asset and vs_asset params are strings like: "bat"
   void GetPriceHistory(const std::string& asset,
                        const std::string& vs_asset,
-                       brave_wallet::mojom::AssetPriceTimeframe timeframe,
+                       mojom::AssetPriceTimeframe timeframe,
                        GetPriceHistoryCallback callback) override;
-  // Note: The is_nft value of the token is not reliable because
-  // it is determined only by whether the token is an ERC721 token.
-  void GetTokenInfo(const std::string& contract_address,
-                    GetTokenInfoCallback callback) override;
   void GetCoinMarkets(const std::string& vs_asset,
                       const uint8_t limit,
                       GetCoinMarketsCallback callback) override;
@@ -90,17 +80,16 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
 
   static GURL GetPriceURL(const std::vector<std::string>& from_assets,
                           const std::vector<std::string>& to_assets,
-                          brave_wallet::mojom::AssetPriceTimeframe timeframe);
-  static GURL GetPriceHistoryURL(
-      const std::string& asset,
-      const std::string& vs_asset,
-      brave_wallet::mojom::AssetPriceTimeframe timeframe);
-  static GURL GetTokenInfoURL(const std::string& contract_address);
+                          mojom::AssetPriceTimeframe timeframe);
+  static GURL GetPriceHistoryURL(const std::string& asset,
+                                 const std::string& vs_asset,
+                                 mojom::AssetPriceTimeframe timeframe);
   static GURL GetCoinMarketsURL(const std::string& vs_asset, uint8_t limit);
 
   static void SetBaseURLForTest(const GURL& base_url_for_test);
   void SetAPIRequestHelperForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  void EnableDummyPricesForTesting();
 
  private:
   friend class AssetRatioServiceUnitTest;
@@ -130,15 +119,13 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   void OnGetPriceHistory(GetPriceHistoryCallback callback,
                          APIRequestResult api_request_result);
 
-  void OnGetTokenInfo(GetTokenInfoCallback callback,
-                      APIRequestResult api_request_result);
-
   void OnGetCoinMarkets(GetCoinMarketsCallback callback,
                         APIRequestResult api_request_result);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;
 
   static GURL base_url_for_test_;
+  bool dummy_prices_for_testing_ = false;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<AssetRatioService> weak_ptr_factory_;
 };

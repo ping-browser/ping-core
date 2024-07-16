@@ -10,26 +10,28 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/legacy/bat_state.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace state {
 
 class StateMigrationV2 {
  public:
-  explicit StateMigrationV2(RewardsEngineImpl& engine);
+  explicit StateMigrationV2(RewardsEngine& engine);
   ~StateMigrationV2();
 
-  void Migrate(LegacyResultCallback callback);
+  void Migrate(ResultCallback callback);
 
  private:
-  void OnLoadState(mojom::Result result, LegacyResultCallback callback);
+  void OnLoadState(ResultCallback callback, mojom::Result result);
 
   std::unique_ptr<LegacyBatState> legacy_state_;
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
+  base::WeakPtrFactory<StateMigrationV2> weak_factory_{this};
 };
 
 }  // namespace state

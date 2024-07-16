@@ -7,8 +7,11 @@
 #define BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_
 
 #import <Foundation/Foundation.h>
+
+#include <optional>
 #include <string>
 #include <vector>
+
 #import "brave/components/brave_ads/core/public/client/ads_client.h"
 
 @protocol AdsClientBridge;
@@ -31,24 +34,23 @@ class AdsClientIOS : public brave_ads::AdsClient {
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   bool CanShowNotificationAds() override;
   void CloseNotificationAd(const std::string& placement_id) override;
-  void ShowReminder(const brave_ads::mojom::ReminderType type) override;
-  void RecordAdEventForId(const std::string& id,
-                          const std::string& ad_type,
-                          const std::string& confirmation_type,
-                          const base::Time time) const override;
-  std::vector<base::Time> GetAdEventHistory(
+  void CacheAdEventForInstanceId(const std::string& id,
+                                 const std::string& ad_type,
+                                 const std::string& confirmation_type,
+                                 const base::Time time) const override;
+  std::vector<base::Time> GetCachedAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
-  void ResetAdEventHistoryForId(const std::string& id) const override;
+  void ResetAdEventCacheForInstanceId(const std::string& id) const override;
   void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
                   brave_ads::UrlRequestCallback callback) override;
   void Save(const std::string& name,
             const std::string& value,
             brave_ads::SaveCallback callback) override;
   void Load(const std::string& name, brave_ads::LoadCallback callback) override;
-  void LoadFileResource(const std::string& id,
-                        const int version,
-                        brave_ads::LoadFileCallback callback) override;
+  void LoadComponentResource(const std::string& id,
+                             const int version,
+                             brave_ads::LoadFileCallback callback) override;
   void GetBrowsingHistory(
       const int max_count,
       const int days_ago,
@@ -65,34 +67,16 @@ class AdsClientIOS : public brave_ads::AdsClient {
            const std::string& message) override;
   void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
                         brave_ads::RunDBTransactionCallback callback) override;
-  void UpdateAdRewards() override;
-  void SetBooleanPref(const std::string& path, const bool value) override;
-  bool GetBooleanPref(const std::string& path) const override;
-  void SetIntegerPref(const std::string& path, const int value) override;
-  int GetIntegerPref(const std::string& path) const override;
-  void SetDoublePref(const std::string& path, const double value) override;
-  double GetDoublePref(const std::string& path) const override;
-  void SetStringPref(const std::string& path,
-                     const std::string& value) override;
-  std::string GetStringPref(const std::string& path) const override;
-  void SetInt64Pref(const std::string& path, const int64_t value) override;
-  int64_t GetInt64Pref(const std::string& path) const override;
-  void SetUint64Pref(const std::string& path, const uint64_t value) override;
-  uint64_t GetUint64Pref(const std::string& path) const override;
-  void SetTimePref(const std::string& path, const base::Time value) override;
-  base::Time GetTimePref(const std::string& path) const override;
-  void SetDictPref(const std::string& path, base::Value::Dict value) override;
-  absl::optional<base::Value::Dict> GetDictPref(
-      const std::string& path) const override;
-  void SetListPref(const std::string& path, base::Value::List value) override;
-  absl::optional<base::Value::List> GetListPref(
-      const std::string& path) const override;
-  void ClearPref(const std::string& path) override;
-  bool HasPrefPath(const std::string& path) const override;
-  void RecordP2AEvents(base::Value::List events) override;
-  void AddTrainingSample(
-      const std::vector<brave_federated::mojom::CovariateInfoPtr>
-          training_sample) override;
+  void SetProfilePref(const std::string& path, base::Value value) override;
+  std::optional<base::Value> GetProfilePref(const std::string& path) override;
+  void ClearProfilePref(const std::string& path) override;
+  bool HasProfilePrefPath(const std::string& path) const override;
+  void SetLocalStatePref(const std::string& path, base::Value value) override;
+  std::optional<base::Value> GetLocalStatePref(
+      const std::string& path) override;
+  void ClearLocalStatePref(const std::string& path) override;
+  bool HasLocalStatePrefPath(const std::string& path) const override;
+  void RecordP2AEvents(const std::vector<std::string>& events) override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_

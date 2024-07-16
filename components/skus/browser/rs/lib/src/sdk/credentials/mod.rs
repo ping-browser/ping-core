@@ -1,8 +1,13 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 mod fetch;
 mod present;
 
-use chrono::Utc;
-use tracing::instrument;
+use chrono::{NaiveDateTime, Utc};
+use tracing::{debug, instrument, Level};
 
 use crate::errors::{InternalError, SkusError};
 use crate::models::*;
@@ -31,6 +36,9 @@ where
         order_id: &str,
         domain: &str,
     ) -> Result<Option<CredentialSummary>, SkusError> {
+        // refresh order credentials if necessary
+        self.refresh_order_credentials(order_id).await?;
+
         let wrapped_order = self.client.get_order(order_id).await?;
         let order = wrapped_order.ok_or(InternalError::NotFound)?;
         if !order.location_matches(&self.environment, domain) {
@@ -46,15 +54,6 @@ where
                         .await?
                         .map(|cred| cred.valid_to)
                         .or(expires_at);
-                    if let Some(expires_at) = expires_at {
-                        // attempt to refresh credentials if we're within 5 days of expiry
-                        if Utc::now().naive_utc() > (expires_at - chrono::Duration::days(5)) {
-                            let refreshed = self.refresh_order_credentials(order_id).await;
-                            if refreshed.is_err() {
-                                continue;
-                            }
-                        }
-                    }
 
                     if let Some(creds) = self.matching_time_limited_v2_credential(&item.id).await? {
                         let unblinded_creds =
@@ -63,13 +62,18 @@ where
                             unblinded_creds.into_iter().filter(|cred| !cred.spent).count();
 
                         let active = remaining_credential_count > 0;
+
+                        let next_active_at = self.next_active_at(&item.id).await?;
                         return Ok(Some(CredentialSummary {
                             order,
                             remaining_credential_count, // number unspent
                             expires_at,
                             active,
+                            next_active_at,
                         }));
                     }
+
+                    debug!("No matches found for credential summary.");
                 }
                 CredentialType::SingleUse => {
                     let wrapped_creds = self.client.get_single_use_item_creds(&item.id).await?;
@@ -87,6 +91,7 @@ where
                             remaining_credential_count,
                             expires_at,
                             active,
+                            next_active_at: None,
                         }));
                     } else {
                         continue;
@@ -98,26 +103,18 @@ where
                         .await?
                         .map(|cred| cred.expires_at)
                         .or(expires_at);
-                    if let Some(expires_at) = expires_at {
-                        // attempt to refresh credentials if we're within 5 days of expiry
-                        if Utc::now().naive_utc() > (expires_at - chrono::Duration::days(5)) {
-                            let refreshed = self.refresh_order_credentials(order_id).await;
-                            if refreshed.is_err() {
-                                continue;
-                            }
-                        }
-                    }
-                    let active = matches!(
-                        self.matching_time_limited_credential(&item.id).await,
-                        Ok(Some(_))
-                    );
 
-                    return Ok(Some(CredentialSummary {
-                        order,
-                        remaining_credential_count: 1,
-                        expires_at,
-                        active,
-                    }));
+                    if let Ok(Some(_)) = self.matching_time_limited_credential(&item.id).await {
+                        return Ok(Some(CredentialSummary {
+                            order,
+                            remaining_credential_count: 1,
+                            expires_at,
+                            active: true,
+                            next_active_at: None,
+                        }));
+                    }
+
+                    debug!("No matches found for credential summary.");
                 }
             };
         } // for
@@ -134,6 +131,38 @@ where
                 Utc::now().naive_utc() < cred.valid_to && Utc::now().naive_utc() > cred.valid_from
             })
         }))
+    }
+
+    #[instrument]
+    pub async fn next_active_at(&self, item_id: &str) -> Result<Option<NaiveDateTime>, SkusError> {
+        let now = Utc::now().naive_utc();
+        let creds = self.client.get_time_limited_v2_creds(item_id).await?;
+        // Of the TimeLimitedV2Credentials, find the TimeLimitedV2Credential that has
+        // the smallest valid_from that's greater than the current time, and also
+        // has at least one unspent SingleUseCredential.
+        match creds {
+            Some(tlv2_creds) => {
+                // Check if unblinded_creds is present and filter out unspent credentials with
+                // valid_from greater than now
+                let next_valid_from = tlv2_creds
+                    .unblinded_creds
+                    .unwrap_or_default()
+                    .into_iter()
+                    .filter_map(|tlv2_cred| {
+                        tlv2_cred
+                            .unblinded_creds
+                            .unwrap_or_default()
+                            .into_iter()
+                            .filter(|single_cred| !single_cred.spent && tlv2_cred.valid_from > now)
+                            .map(|_| tlv2_cred.valid_from)
+                            .next()
+                    })
+                    .min(); // Find the smallest valid_from among them
+
+                Ok(next_valid_from)
+            }
+            None => Ok(None), // No credentials found for the item
+        }
     }
 
     #[instrument]
@@ -172,20 +201,36 @@ where
             .and_then(|creds| creds.creds.into_iter().last()))
     }
 
-    #[instrument]
+    #[instrument(err(level = Level::WARN), ret)]
     pub async fn matching_credential_summary(
         &self,
         domain: &str,
     ) -> Result<Option<CredentialSummary>, SkusError> {
         if let Some(orders) = self.client.get_orders().await? {
-            for order in orders {
-                if order.location_matches(&self.environment, domain) {
-                    let wrapped_value =
-                        self.matching_order_credential_summary(&order.id, domain).await;
-                    if wrapped_value.is_err() {
-                        continue;
+            let mut orders: Vec<_> = orders
+                .into_iter()
+                .filter(|order| order.location_matches(&self.environment, domain))
+                .collect();
+            orders.sort_by(|a, b| b.expires_at.cmp(&a.expires_at));
+            if let Some(order) = orders.first() {
+                // We have at least one order for the specified location
+                if let Ok(Some(summary)) =
+                    self.matching_order_credential_summary(&order.id, domain).await
+                {
+                    return Ok(Some(summary));
+                } else {
+                    if let Some(expires_at) = order.expires_at {
+                        let now = Utc::now().naive_utc();
+                        if expires_at > now {
+                            return Ok(Some(CredentialSummary {
+                                order: order.clone(),
+                                remaining_credential_count: 0,
+                                expires_at: None,
+                                active: false,
+                                next_active_at: None,
+                            }));
+                        }
                     }
-                    return wrapped_value;
                 }
             }
         }

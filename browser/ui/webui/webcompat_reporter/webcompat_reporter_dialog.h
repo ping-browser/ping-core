@@ -10,6 +10,16 @@ namespace content {
 class WebContents;
 }
 
-void OpenWebcompatReporterDialog(content::WebContents* initiator);
+namespace webcompat_reporter {
+
+enum class UISource {
+  kShieldsPanel = 0,
+  kAppMenu,
+  kMaxValue = kAppMenu,
+};
+
+void OpenReporterDialog(content::WebContents* initiator, UISource source);
+
+}  // namespace webcompat_reporter
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_DIALOG_H_

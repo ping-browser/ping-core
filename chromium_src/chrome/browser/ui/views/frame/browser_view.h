@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_
 
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/views/bookmarks/brave_bookmark_bar_view.h"
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "build/build_config.h"
@@ -19,15 +20,14 @@
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
-#define GetContentsLayoutManager     \
-  GetContentsLayoutManager_Unused(); \
-  virtual ContentsLayoutManager* GetContentsLayoutManager
+#define BookmarkBarView BraveBookmarkBarView
+#define ContentsLayoutManager BraveContentsLayoutManager
 
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
 
+#define UpdateDevToolsForContents virtual UpdateDevToolsForContents
 #define GetTabStripVisible virtual GetTabStripVisible
-#define BrowserViewLayout BraveBrowserViewLayout
 
 #define GetTabSearchBubbleHost     \
   GetTabSearchBubbleHost_Unused(); \
@@ -37,7 +37,9 @@
 #define GetSupportsTitle virtual GetSupportsTitle
 
 // On Windows <winuser.h> defines LoadAccelerators
-#pragma push_macro("LoadAccelerators")
+// Using push_macro seems to be causing #undef not to work in Chromium 125.
+// Unclear what causes this.
+// #pragma push_macro("LoadAccelerators")
 #undef LoadAccelerators
 #endif
 #define LoadAccelerators virtual LoadAccelerators
@@ -46,18 +48,19 @@
 
 #undef LoadAccelerators
 #if BUILDFLAG(IS_WIN)
-#pragma pop_macro("LoadAccelerators")
+// #pragma pop_macro("LoadAccelerators")
 #undef GetSupportsTitle
 #endif
 
 #undef GetTabSearchBubbleHost
-#undef BrowserViewLayout
 #undef GetTabStripVisible
-#undef BrowserViewLayoutDelegateImpl
-#undef BrowserWindow
+#undef UpdateDevToolsForContents
 #undef MaybeShowReadingListInSidePanelIPH
-#undef BrowserViewLayout
+#undef ContentsLayoutManager
+#undef BookmarkBarView
 #undef SidePanel
-#undef GetContentsLayoutManager
+#undef BrowserViewLayout
+#undef BrowserWindow
+#undef BrowserViewLayoutDelegateImpl
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_

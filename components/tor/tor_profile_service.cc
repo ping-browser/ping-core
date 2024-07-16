@@ -7,10 +7,9 @@
 
 #include <string>
 
+#include "base/time/time.h"
 #include "brave/components/tor/pref_names.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "components/prefs/pref_service.h"
 
 namespace tor {
 
@@ -22,11 +21,13 @@ TorProfileService::~TorProfileService() = default;
 void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kTorDisabled, true);
   registry->RegisterDictionaryPref(prefs::kBridgesConfig);
+  registry->RegisterTimePref(prefs::kBuiltinBridgesRequestTime, base::Time());
 }
 
 // static
 void TorProfileService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAutoOnionRedirect, false);
+  registry->RegisterBooleanPref(prefs::kOnionOnlyInTorWindows, true);
 }
 
 }  // namespace tor

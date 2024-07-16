@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// Utils
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
+
 // Options
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
@@ -33,6 +36,9 @@ interface Props {
   onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
   useWithSearch?: boolean
   customNetwork?: BraveWallet.NetworkInfo | undefined
+  networkListSubset?: BraveWallet.NetworkInfo[]
+  disabled?: boolean
+  reduceDisplayName?: boolean
 }
 
 export const SelectNetworkDropdown = (props: Props) => {
@@ -42,37 +48,49 @@ export const SelectNetworkDropdown = (props: Props) => {
     showNetworkDropDown,
     onSelectCustomNetwork,
     useWithSearch,
-    customNetwork
+    customNetwork,
+    networkListSubset,
+    disabled,
+    reduceDisplayName
   } = props
 
+  const networkDisplayName = selectedNetwork?.chainName
+    ? reduceDisplayName && selectedNetwork.chainId !== AllNetworksOption.chainId
+      ? reduceNetworkDisplayName(selectedNetwork.chainName)
+      : selectedNetwork.chainName
+    : getLocale('braveWalletSelectNetwork')
+
   return (
-    <StyledWrapper
-      useWithSearch={useWithSearch}
-    >
+    <StyledWrapper useWithSearch={useWithSearch}>
       <NetworkButton
         onClick={onClick}
         useWithSearch={useWithSearch}
+        disabled={disabled}
       >
         <LeftSide>
-          {selectedNetwork && selectedNetwork.chainId !== AllNetworksOption.chainId &&
-            <CreateNetworkIcon network={selectedNetwork} marginRight={14} size='big' />
-          }
-          <NetworkText>
-            {selectedNetwork?.chainName || getLocale('braveWalletSelectNetwork')}
-          </NetworkText>
+          {selectedNetwork &&
+            selectedNetwork.chainId !== AllNetworksOption.chainId && (
+              <CreateNetworkIcon
+                network={selectedNetwork}
+                marginRight={14}
+                size='big'
+              />
+            )}
+          <NetworkText>{networkDisplayName}</NetworkText>
         </LeftSide>
         <DropDownIcon isOpen={showNetworkDropDown} />
       </NetworkButton>
-      {showNetworkDropDown &&
+      {showNetworkDropDown && (
         <DropDown useWithSearch={useWithSearch}>
           <SelectNetwork
             onSelectCustomNetwork={onSelectCustomNetwork}
             selectedNetwork={selectedNetwork}
             customNetwork={customNetwork}
+            networkListSubset={networkListSubset}
           />
         </DropDown>
-      }
-    </StyledWrapper >
+      )}
+    </StyledWrapper>
   )
 }
 

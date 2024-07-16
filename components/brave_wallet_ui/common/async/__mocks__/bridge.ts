@@ -3,44 +3,49 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { assert } from 'chrome://resources/js/assert_ts.js'
+/* eslint-disable @typescript-eslint/key-spacing */
+import { assert } from 'chrome://resources/js/assert.js'
 
 // redux
 import { createStore, combineReducers } from 'redux'
 import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
-import {
-  BraveWallet,
-  SafeBlowfishEvmResponse,
-  SafeBlowfishSolanaResponse,
-  TxSimulationOptInStatus
-} from '../../../constants/types'
+import { BraveWallet, CommonNftMetadata } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
 // utils
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { deserializeTransaction } from '../../../utils/model-serialization-utils'
+import { getAssetIdKey } from '../../../utils/asset-utils'
 
 // mocks
 import { mockWalletState } from '../../../stories/mock-data/mock-wallet-state'
 import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
 import {
+  NativeAssetBalanceRegistry,
+  TokenBalanceRegistry,
   mockAccount,
-  mockErc721Token,
   mockEthAccountInfo,
   mockFilecoinAccountInfo,
   mockFilecoinMainnetNetwork,
+  mockOnRampCurrencies,
   mockSolanaAccountInfo,
-  mockSolanaMainnetNetwork,
-  mockSplNft
+  mockSolanaMainnetNetwork
 } from '../../constants/mocks'
-import { mockEthMainnet, mockNetworks } from '../../../stories/mock-data/mock-networks'
+import {
+  mockEthMainnet,
+  mockNetworks
+} from '../../../stories/mock-data/mock-networks'
 import {
   mockAccountAssetOptions,
   mockBasicAttentionToken,
   mockErc20TokensList,
+  mockErc721Token,
+  mockSplBat,
+  mockSplNft,
+  mockSplUSDC
 } from '../../../stories/mock-data/mock-asset-options'
 import {
   mockFilSendTransaction,
@@ -49,13 +54,27 @@ import {
 } from '../../../stories/mock-data/mock-transaction-info'
 import { blockchainTokenEntityAdaptor } from '../../slices/entities/blockchain-token.entity'
 import { findAccountByUniqueKey } from '../../../utils/account-utils'
-import { CommonNftMetadata } from '../../slices/endpoints/nfts.endpoints'
 import { mockNFTMetadata } from '../../../stories/mock-data/mock-nft-metadata'
+import {
+  coinMarketMockData //
+} from '../../../stories/mock-data/mock-coin-market-data'
+import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
+import { WalletApiDataOverrides } from '../../../constants/testing_types'
+import {
+  mockAddChainRequest,
+  mockDecryptRequest,
+  mockGetEncryptionPublicKeyRequest,
+  mockSignMessageError,
+  mockSignMessageRequest,
+  mockSwitchChainRequest
+} from '../../../stories/mock-data/mock-eth-requests'
 
 export const makeMockedStoreWithSpy = () => {
-  const store = createStore(combineReducers({
-    wallet: createWalletReducer(mockWalletState)
-  }))
+  const store = createStore(
+    combineReducers({
+      wallet: createWalletReducer(mockWalletState)
+    })
+  )
 
   const areWeTestingWithJest = process.env.JEST_WORKER_ID !== undefined
 
@@ -70,44 +89,6 @@ export const makeMockedStoreWithSpy = () => {
   }
 
   return { store }
-}
-
-type NativeAssetBalanceRegistry = Record<
-  string, // account address
-  | Record<
-      string, // chainId
-      string // balance
-    >
-  | undefined
->
-
-type TokenBalanceRegistry = Record<
-  string, // account address
-  Record<
-    string, // asset identifier
-    string // balance
-  >
->
-
-export interface WalletApiDataOverrides {
-  selectedCoin?: BraveWallet.CoinType
-  selectedAccountId?: BraveWallet.AccountId
-  chainIdsForCoins?: Record<BraveWallet.CoinType, string>
-  networks?: BraveWallet.NetworkInfo[]
-  defaultBaseCurrency?: string
-  transactionInfos?: BraveWallet.TransactionInfo[]
-  blockchainTokens?: BraveWallet.BlockchainToken[]
-  userAssets?: BraveWallet.BlockchainToken[]
-  accountInfos?: BraveWallet.AccountInfo[]
-  nativeBalanceRegistry?: NativeAssetBalanceRegistry
-  tokenBalanceRegistry?: TokenBalanceRegistry
-  simulationOptInStatus?: TxSimulationOptInStatus
-  evmSimulationResponse?: BraveWallet.EVMSimulationResponse
-    | SafeBlowfishEvmResponse
-    | null
-  svmSimulationResponse?: BraveWallet.SolanaSimulationResponse
-    | SafeBlowfishSolanaResponse
-    | null
 }
 
 export class MockedWalletApiProxy {
@@ -141,20 +122,19 @@ export class MockedWalletApiProxy {
   blockchainTokens: BraveWallet.BlockchainToken[] = [
     ...mockErc20TokensList,
     mockErc721Token,
-    mockSplNft
+    mockSplNft,
+    mockSplBat,
+    mockSplUSDC
   ]
 
   userAssets: BraveWallet.BlockchainToken[] = mockAccountAssetOptions
 
-  evmSimulationResponse: BraveWallet.EVMSimulationResponse
-    | SafeBlowfishEvmResponse
-    | null = null
+  evmSimulationResponse: BraveWallet.EVMSimulationResponse | null = null
 
-  svmSimulationResponse: BraveWallet.SolanaSimulationResponse
-    | SafeBlowfishSolanaResponse
-    | null = null
+  svmSimulationResponse: BraveWallet.SolanaSimulationResponse | null = null
 
-  txSimulationOptInStatus: TxSimulationOptInStatus = 'allowed'
+  txSimulationOptInStatus: BraveWallet.BlowfishOptInStatus =
+    BraveWallet.BlowfishOptInStatus.kAllowed
 
   /**
    * balance = [accountAddress][chainId]
@@ -175,7 +155,7 @@ export class MockedWalletApiProxy {
     }
   }
 
-  mockQuote = {
+  mockZeroExQuote = {
     price: '1705.399509',
     guaranteedPrice: '',
     to: '',
@@ -200,7 +180,7 @@ export class MockedWalletApiProxy {
     }
   }
 
-  mockTransaction = {
+  mockZeroExTransaction = {
     allowanceTarget: '',
     price: '',
     guaranteedPrice: '',
@@ -231,6 +211,27 @@ export class MockedWalletApiProxy {
     deserializeTransaction(mockedErc20ApprovalTransaction)
   ]
 
+  // name service lookups
+  requireOffchainConsent: number = BraveWallet.ResolveMethod.kAsk
+
+  private pendingAddChainRequests = [mockAddChainRequest]
+  private pendingSwitchChainRequests: BraveWallet.SwitchChainRequest[] = [
+    mockSwitchChainRequest
+  ]
+
+  private pendingDecryptRequests: BraveWallet.DecryptRequest[] = [
+    mockDecryptRequest
+  ]
+
+  private pendingEncryptionPublicKeyRequests = [
+    mockGetEncryptionPublicKeyRequest
+  ]
+
+  private signTransactionRequests: BraveWallet.SignTransactionRequest[] = []
+
+  private signAllTransactionsRequests =
+    [] as BraveWallet.SignAllTransactionsRequest[]
+
   constructor(overrides?: WalletApiDataOverrides | undefined) {
     this.applyOverrides(overrides)
   }
@@ -260,6 +261,53 @@ export class MockedWalletApiProxy {
       overrides.svmSimulationResponse ?? this.svmSimulationResponse
     this.txSimulationOptInStatus =
       overrides.simulationOptInStatus ?? this.txSimulationOptInStatus
+    this.signTransactionRequests =
+      overrides.signTransactionRequests ?? this.signTransactionRequests
+    this.signAllTransactionsRequests =
+      overrides.signAllTransactionsRequests ?? this.signAllTransactionsRequests
+  }
+
+  assetsRatioService: Partial<
+    InstanceType<typeof BraveWallet.AssetRatioServiceInterface>
+  > = {
+    getBuyUrlV1: async (
+      provider,
+      chainId,
+      address,
+      symbol,
+      amount,
+      currencyCode
+    ) => {
+      if (
+        !provider ||
+        !chainId ||
+        !address ||
+        !symbol ||
+        !amount ||
+        !currencyCode
+      ) {
+        return {
+          url: '',
+          error: 'missing param(s)'
+        }
+      }
+      return {
+        url: `provider=${
+          provider //
+        }&chainId=${
+          chainId //
+        }&address=${
+          address //
+        }&symbol=${
+          symbol //
+        }&amount=${
+          amount //
+        }&currencyCode=${
+          currencyCode //
+        }`,
+        error: null
+      }
+    }
   }
 
   blockchainRegistry: Partial<
@@ -270,6 +318,18 @@ export class MockedWalletApiProxy {
         tokens: this.blockchainTokens.filter(
           (t) => t.chainId === chainId && t.coin === coin
         )
+      }
+    },
+
+    getBuyTokens: async (provider, chainId) => {
+      return {
+        tokens: this.blockchainTokens.filter((t) => t.chainId === chainId)
+      }
+    },
+
+    getOnRampCurrencies: async () => {
+      return {
+        currencies: mockOnRampCurrencies
       }
     }
   }
@@ -300,40 +360,192 @@ export class MockedWalletApiProxy {
     },
     getNetworkForSelectedAccountOnActiveOrigin: async () => {
       return { network: this.selectedNetwork }
+    },
+    isBase58EncodedSolanaPubkey: async (key) => {
+      return {
+        result: true
+      }
+    },
+    getBalanceScannerSupportedChains: async () => {
+      return {
+        chainIds: this.networks.map((n) => n.chainId)
+      }
+    },
+    ensureSelectedAccountForChain: async (coin, chainId) => {
+      const foundAccount = findAccountByUniqueKey(
+        this.accountInfos,
+        this.selectedAccountId.uniqueKey
+      )
+
+      return {
+        accountId:
+          foundAccount?.accountId.coin === coin
+            ? foundAccount.accountId
+            : this.accountInfos.find((a) => a.accountId.coin === coin)
+                ?.accountId ?? null
+      }
+    },
+    setNetworkForSelectedAccountOnActiveOrigin: async (chainId) => {
+      if (this.selectedNetwork.chainId === chainId) {
+        return {
+          success: true
+        }
+      }
+
+      const net = this.networks.find((n) => n.chainId === chainId)
+
+      if (net) {
+        this.selectedNetwork = net
+      }
+
+      return {
+        success: !!net
+      }
+    },
+    getPendingAddSuggestTokenRequests: async () => {
+      return {
+        requests: [{ origin: mockOriginInfo, token: mockBasicAttentionToken }]
+      }
+    },
+    removeUserAsset: async (token) => {
+      const tokenId = getAssetIdKey(token)
+      this.userAssets = this.userAssets.filter(
+        (t) => getAssetIdKey(t) !== tokenId
+      )
+      return {
+        success: true
+      }
+    },
+    addUserAsset: async (token) => {
+      this.userAssets = this.userAssets.concat(token)
+      return {
+        success: true
+      }
+    },
+    setUserAssetVisible: async (token, visible) => {
+      const tokenId = getAssetIdKey(token)
+      this.userAssets = this.userAssets.map((t) =>
+        getAssetIdKey(t) === tokenId ? { ...t, visible } : t
+      )
+      return { success: true }
+    },
+    getPendingDecryptRequests: async () => {
+      return {
+        requests: this.pendingDecryptRequests
+      }
+    },
+    notifyDecryptRequestProcessed: (requestId, approved) => {
+      this.pendingDecryptRequests = this.pendingDecryptRequests.filter(
+        (req) => req.requestId !== requestId
+      )
+    },
+    getPendingGetEncryptionPublicKeyRequests: async () => {
+      return {
+        requests: this.pendingEncryptionPublicKeyRequests
+      }
+    },
+    notifyGetPublicKeyRequestProcessed: (requestId, approved) => {
+      this.pendingEncryptionPublicKeyRequests =
+        this.pendingEncryptionPublicKeyRequests.filter(
+          (req) => req.requestId !== requestId
+        )
+    },
+    getPendingSignTransactionRequests: async () => {
+      return {
+        requests: this.signTransactionRequests
+      }
+    },
+    getPendingSignAllTransactionsRequests: async () => {
+      return {
+        requests: this.signAllTransactionsRequests
+      }
+    },
+    notifySignTransactionRequestProcessed: (approved, id, signature, error) => {
+      this.signTransactionRequests = this.signTransactionRequests.filter(
+        (req) => req.id !== id
+      )
+    },
+    notifySignAllTransactionsRequestProcessed: (
+      approved,
+      id,
+      signatures,
+      error
+    ) => {
+      this.signAllTransactionsRequests =
+        this.signAllTransactionsRequests.filter((req) => req.id !== id)
+    },
+    getPendingSignMessageRequests: async () => {
+      return {
+        requests: [mockSignMessageRequest]
+      }
+    },
+    getPendingSignMessageErrors: async () => {
+      return {
+        errors: [mockSignMessageError]
+      }
     }
   }
 
   swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> =
     {
-      getTransactionPayload: async ({
-        buyAmount,
-        buyToken,
-        sellAmount,
-        sellToken
-      }: BraveWallet.SwapParams): Promise<{
-        response: BraveWallet.SwapResponse
-        errorResponse: BraveWallet.SwapErrorResponse
+      getTransaction: async (
+        params: BraveWallet.SwapTransactionParamsUnion
+      ): Promise<{
+        response: BraveWallet.SwapTransactionUnion | null
+        error: BraveWallet.SwapErrorUnion | null
+        errorString: string
+      }> => {
+        const { zeroExTransactionParams } = params
+        if (!zeroExTransactionParams) {
+          return {
+            response: null,
+            error: null,
+            errorString: 'missing params'
+          }
+        }
+
+        const { fromToken, toToken, fromAmount, toAmount } =
+          zeroExTransactionParams
+
+        return {
+          error: null,
+          response: {
+            zeroExTransaction: {
+              ...this.mockZeroExQuote,
+              buyTokenAddress: toToken,
+              sellTokenAddress: fromToken,
+              buyAmount: toAmount || '',
+              sellAmount: fromAmount || '',
+              price: '1'
+            },
+            jupiterTransaction: undefined,
+            lifiTransaction: undefined
+          },
+          errorString: ''
+        }
+      },
+
+      getQuote: async (
+        params: BraveWallet.SwapQuoteParams
+      ): Promise<{
+        response: BraveWallet.SwapQuoteUnion | null
+        fees: BraveWallet.SwapFees | null
+        error: BraveWallet.SwapErrorUnion | null
         errorString: string
       }> => ({
-        errorResponse: {
-          code: 0,
-          isInsufficientLiquidity: false,
-          reason: '',
-          validationErrors: []
-        },
         response: {
-          ...this.mockQuote,
-          buyTokenAddress: buyToken,
-          sellTokenAddress: sellToken,
-          buyAmount: buyAmount || '',
-          sellAmount: sellAmount || '',
-          price: '1'
+          zeroExQuote: this.mockZeroExQuote,
+          jupiterQuote: undefined,
+          lifiQuote: undefined
         },
-        errorString: ''
-      }),
-      getPriceQuote: async () => ({
-        response: this.mockTransaction,
-        errorResponse: null,
+        fees: {
+          feeParam: '0.00875',
+          feePct: '0.875',
+          discountPct: '0',
+          effectiveFeePct: '0.875',
+          discountCode: BraveWallet.SwapDiscountCode.kNone
+        },
+        error: null,
         errorString: ''
       })
     }
@@ -375,6 +587,29 @@ export class MockedWalletApiProxy {
       return password === 'password'
         ? { mnemonic: mockedMnemonic }
         : { mnemonic: '' }
+    },
+    getChecksumEthAddress: async (address) => {
+      return {
+        checksumAddress: address.toLocaleLowerCase()
+      }
+    },
+    setSelectedAccount: async (accountId) => {
+      const validId = !!this.accountInfos.find(
+        (a) => a.accountId.uniqueKey === accountId.uniqueKey
+      )
+
+      if (validId) {
+        this.selectedAccountId = accountId
+      } else {
+        console.log('invalid id: ' + accountId.uniqueKey)
+      }
+
+      return {
+        success: validId
+      }
+    },
+    unlock: async (password) => {
+      return { success: password === 'password' }
     }
   }
 
@@ -418,6 +653,12 @@ export class MockedWalletApiProxy {
           }
         ]
       }
+    },
+    getCoinMarkets: async (vsAsset: string, limit: number) => {
+      return {
+        success: true,
+        values: coinMarketMockData
+      }
     }
   }
 
@@ -455,6 +696,36 @@ export class MockedWalletApiProxy {
       this.chainsForCoins[coin] = foundNetwork
       return { success: true }
     },
+    getPendingAddChainRequests: async () => {
+      return {
+        requests: this.pendingAddChainRequests
+      }
+    },
+    addEthereumChainRequestCompleted: (chainId, approved) => {
+      this.pendingAddChainRequests = this.pendingAddChainRequests.filter(
+        (req) => req.networkInfo.chainId !== chainId
+      )
+    },
+    getPendingSwitchChainRequests: async () => {
+      return {
+        requests: this.pendingSwitchChainRequests
+      }
+    },
+    notifySwitchChainRequestProcessed: (requestId, approved) => {
+      const request = this.pendingSwitchChainRequests.find(
+        (req) => req.requestId === requestId
+      )
+
+      if (request) {
+        this.pendingSwitchChainRequests =
+          this.pendingSwitchChainRequests.filter(
+            (req) => req.requestId !== requestId
+          )
+        this.braveWalletService.setNetworkForSelectedAccountOnActiveOrigin?.(
+          request.chainId
+        )
+      }
+    },
     // Native asset balances
     getBalance: async (address: string, coin: number, chainId: string) => {
       return {
@@ -464,16 +735,18 @@ export class MockedWalletApiProxy {
       }
     },
     getSolanaBalance: async (pubkey: string, chainId: string) => {
+      const balance = BigInt(this.nativeBalanceRegistry[pubkey]?.[chainId] ?? 0)
       return {
-        balance: BigInt(this.nativeBalanceRegistry[pubkey]?.[chainId] || 0),
+        balance,
         error: 0,
         errorMessage: ''
       }
     },
+    // Token balances
     getERC20TokenBalance: async (contract, address, chainId) => {
       return {
         balance:
-          this.nativeBalanceRegistry[address]?.[
+          this.tokenBalanceRegistry[address]?.[
             blockchainTokenEntityAdaptor.selectId({
               coin: BraveWallet.CoinType.ETH,
               chainId,
@@ -495,7 +768,7 @@ export class MockedWalletApiProxy {
     ) => {
       return {
         balance:
-          this.nativeBalanceRegistry[accountAddress]?.[
+          this.tokenBalanceRegistry[accountAddress]?.[
             blockchainTokenEntityAdaptor.selectId({
               coin: BraveWallet.CoinType.ETH,
               chainId,
@@ -517,7 +790,7 @@ export class MockedWalletApiProxy {
     ) => {
       return {
         balance:
-          this.nativeBalanceRegistry[accountAddress]?.[
+          this.tokenBalanceRegistry[accountAddress]?.[
             blockchainTokenEntityAdaptor.selectId({
               coin: BraveWallet.CoinType.ETH,
               chainId,
@@ -538,7 +811,7 @@ export class MockedWalletApiProxy {
     ) => {
       return {
         amount:
-          this.nativeBalanceRegistry[walletAddress]?.[
+          this.tokenBalanceRegistry[walletAddress]?.[
             blockchainTokenEntityAdaptor.selectId({
               coin: BraveWallet.CoinType.ETH,
               chainId,
@@ -554,6 +827,66 @@ export class MockedWalletApiProxy {
         errorMessage: ''
       }
     },
+    getSPLTokenBalances: async (pubkey, chainId) => {
+      const balances = Object.keys(this.tokenBalanceRegistry?.[pubkey])
+        .filter((tokenId) => tokenId.includes(chainId))
+        .map((tokenIdentifier) => {
+          const token = this.blockchainTokens.find(
+            (t) => getAssetIdKey(t) === tokenIdentifier
+          )
+
+          const amount =
+            this.tokenBalanceRegistry[pubkey][tokenIdentifier] || '0'
+
+          return {
+            amount: this.tokenBalanceRegistry[pubkey][tokenIdentifier] || '0',
+            decimals: token?.decimals ?? 1,
+            mint: token?.contractAddress ?? '',
+            uiAmount: amount
+          }
+        })
+      return {
+        balances,
+        error: 0,
+        errorMessage: ''
+      }
+    },
+    getERC20TokenBalances: async (contracts, address, chainId) => {
+      const balances = Object.keys(this.tokenBalanceRegistry?.[address])
+        .filter((tokenId) => tokenId.includes(chainId))
+        .map((tokenIdentifier) => {
+          const token = this.blockchainTokens.find(
+            (t) => getAssetIdKey(t) === tokenIdentifier
+          )
+
+          const amount =
+            this.tokenBalanceRegistry[address][tokenIdentifier] || '0'
+
+          return {
+            balance: amount,
+            contractAddress: token?.contractAddress || ''
+          }
+        })
+      return {
+        balances,
+        error: 0,
+        errorMessage: ''
+      }
+    },
+    // Allowances
+    getERC20TokenAllowance: async (
+      contract,
+      ownerAddress,
+      spenderAddress,
+      chainId
+    ) => {
+      return {
+        allowance: '1000000000000000000', // 1 unit
+        error: BraveWallet.ProviderError.kSuccess,
+        errorMessage: ''
+      }
+    },
+    // NFT Metadata
     getERC721Metadata: async (contract, tokenId, chainId) => {
       const mockedMetadata =
         mockNFTMetadata.find(
@@ -603,6 +936,61 @@ export class MockedWalletApiProxy {
           name: mockedMetadata.contractInformation.name
         } as CommonNftMetadata)
       }
+    },
+    // name service lookups
+    setEnsOffchainLookupResolveMethod(method) {
+      this.requireOffchainConsent = method
+    },
+    ensGetEthAddr: async (domain) => {
+      return {
+        address: `0x1234abcd1234${domain}`,
+        error: 0,
+        errorMessage: '',
+        requireOffchainConsent:
+          this.requireOffchainConsent !== BraveWallet.ResolveMethod.kEnabled
+      }
+    },
+    snsGetSolAddr: async (domain) => {
+      return {
+        address: `s1abcd1234567890${domain}`,
+        error: 0,
+        errorMessage: ''
+      }
+    },
+    unstoppableDomainsGetWalletAddr: async (domain, token) => {
+      return {
+        address: `0x${token?.chainId}abcd${domain}`,
+        error: 0,
+        errorMessage: ''
+      }
+    },
+
+    getEthTokenInfo: async (contractAddress, chainId) => {
+      const foundToken = mockErc20TokensList.find(
+        (t) => t.contractAddress === contractAddress
+      )
+
+      return {
+        token: {
+          contractAddress,
+          chainId,
+          coin: BraveWallet.CoinType.ETH,
+          name: foundToken?.name || 'Mocked Token',
+          symbol: foundToken?.symbol || 'MTK',
+          decimals: foundToken?.decimals || 18,
+          coingeckoId: foundToken?.coingeckoId || 'mocked-token',
+          isErc20: true,
+          isErc721: false,
+          isErc1155: false,
+          isNft: false,
+          tokenId: '',
+          logo: '',
+          isSpam: false,
+          visible: false
+        },
+        error: 0,
+        errorMessage: ''
+      }
     }
   }
 
@@ -626,14 +1014,14 @@ export class MockedWalletApiProxy {
     }> => {
       return {
         walletInfo: {
-          isSolanaEnabled: true,
-          isFilecoinEnabled: true,
           isBitcoinEnabled: true,
+          isZCashEnabled: true,
           isWalletBackedUp: true,
           isWalletCreated: true,
           isWalletLocked: false,
           isNftPinningFeatureEnabled: false,
-          isPanelV2FeatureEnabled: false
+          isAnkrBalancesFeatureEnabled: false,
+          isTransactionSimulationsFeatureEnabled: false
         }
       }
     }
@@ -730,12 +1118,12 @@ export class MockedWalletApiProxy {
     }
   }
 
-  setMockedQuote(newQuote: typeof this.mockQuote) {
-    this.mockQuote = newQuote
+  setMockedQuote(newQuote: typeof this.mockZeroExQuote) {
+    this.mockZeroExQuote = newQuote
   }
 
-  setMockedTransactionPayload(newTx: typeof this.mockQuote) {
-    this.mockTransaction = newTx
+  setMockedTransactionPayload(newTx: typeof this.mockZeroExQuote) {
+    this.mockZeroExTransaction = newTx
   }
 
   setMockedStore = (newStore: typeof this.store) => {
@@ -745,7 +1133,7 @@ export class MockedWalletApiProxy {
 
 let apiProxy: Partial<WalletApiProxy> | undefined
 
-export function getAPIProxy (): Partial<WalletApiProxy> {
+export function getAPIProxy(): Partial<WalletApiProxy> {
   if (!apiProxy) {
     apiProxy =
       new MockedWalletApiProxy() as unknown as Partial<WalletApiProxy> &
@@ -754,12 +1142,14 @@ export function getAPIProxy (): Partial<WalletApiProxy> {
   return apiProxy
 }
 
-export function getMockedAPIProxy (): WalletApiProxy & MockedWalletApiProxy {
+export function getMockedAPIProxy(): WalletApiProxy & MockedWalletApiProxy {
   return getAPIProxy() as unknown as WalletApiProxy & MockedWalletApiProxy
 }
 
-export function resetMockedAPIProxy() {
-  apiProxy = undefined
+export function resetAPIProxy(overrides?: WalletApiDataOverrides | undefined) {
+  apiProxy = new MockedWalletApiProxy(
+    overrides
+  ) as unknown as Partial<WalletApiProxy> & MockedWalletApiProxy
 }
 
 export default getAPIProxy

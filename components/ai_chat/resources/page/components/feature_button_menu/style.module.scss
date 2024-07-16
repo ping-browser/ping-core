@@ -1,0 +1,71 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.menuSectionTitle {
+  background-color: var(--leo-color-page-background);
+  padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+  color: var(--leo-color-text-tertiary);
+  font: var(--leo-font-small-regular);
+
+}
+
+.menuSubtitle {
+  --leo-icon-size: 16px;
+  margin: 14px calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+  margin-bottom: 2px;
+  color: var(--leo-color-text-tertiary);
+  font: var(--leo-font-small-regular);
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 6px;
+}
+
+.menuSeparator {
+  padding: 0;
+  height: 1px;
+  background-color: var(--leo-color-divider-subtle);
+}
+
+.menuItemWithIcon {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.menuItemMainItem {
+  margin-left: -6px;
+  margin-right: -6px;
+}
+
+.menuText {
+  flex-grow: 2;
+}
+
+.menuIconSpace {
+  width: calc(var(--leo-icon-size) + 8px);
+}
+
+.modelSubtitle {
+  font: var(--leo-font-small-regular);
+  padding: 0;
+  margin: 0;
+}
+
+.modelFreemiumLabel {
+  align-self: flex-start;
+}
+
+.lockOpen {
+  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+}
+
+.settingsButton {
+  margin-top: 8px;
+}

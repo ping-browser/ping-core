@@ -9,10 +9,11 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/skus/common/features.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -101,12 +102,18 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   }
 
   bool is_bookmark_button_shown() {
-    BookmarkButton* bookmark_button = toolbar_view_->bookmark_button();
+    BraveBookmarkButton* bookmark_button = toolbar_view_->bookmark_button();
     DCHECK(bookmark_button);
     return bookmark_button->GetVisible();
   }
 
- private:
+  bool is_wallet_button_shown(Browser* browser) {
+    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+    toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
+    WalletButton* wallet_button = toolbar_view_->wallet_button();
+    return wallet_button->GetVisible();
+  }
+
   raw_ptr<ToolbarButtonProvider> toolbar_button_provider_ = nullptr;
   raw_ptr<BraveToolbarView> toolbar_view_ = nullptr;
 
@@ -205,6 +212,16 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
+
+  // Check avatar is positioned at the right before app menu button.
+  views::View* avatar = toolbar_button_provider_->GetAvatarToolbarButton();
+  ASSERT_TRUE(!!avatar);
+  views::View* container = avatar->parent();
+  ASSERT_TRUE(!!container);
+  views::View* app_menu = toolbar_button_provider_->GetAppMenuButton();
+  ASSERT_TRUE(!!app_menu);
+  EXPECT_EQ(container->GetIndexOf(avatar).value(),
+            container->GetIndexOf(app_menu).value() - 1ul);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
@@ -222,4 +239,40 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   // Reshowing the button should also work.
   prefs->SetBoolean(kShowBookmarksButton, true);
   EXPECT_TRUE(is_bookmark_button_shown());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
+                       WalletButtonCanBeToggledWithPrefInPrivateTabs) {
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* incognito_prefs = incognito_browser->profile()->GetPrefs();
+  auto* normal_prefs = browser()->profile()->GetPrefs();
+
+  // By default, the button in normal window should be shown.
+  EXPECT_TRUE(is_wallet_button_shown(browser()));
+
+  // By default, the button in private window should be hidden.
+  EXPECT_FALSE(incognito_prefs->GetBoolean(kBraveWalletPrivateWindowsEnabled));
+  EXPECT_FALSE(is_wallet_button_shown(incognito_browser));
+
+  // Turn on brave wallet in private tabs should reveal the button in private
+  // window.
+  incognito_prefs->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
+  EXPECT_TRUE(is_wallet_button_shown(incognito_browser));
+
+  // Turning off wallet icon should hide icon on both windows.
+  normal_prefs->SetBoolean(kShowWalletIconOnToolbar, false);
+  EXPECT_FALSE(is_wallet_button_shown(browser()));
+  EXPECT_FALSE(is_wallet_button_shown(incognito_browser));
+
+  // Turn on wallet icon should show icons on both windows.
+  incognito_prefs->SetBoolean(kShowWalletIconOnToolbar, true);
+  EXPECT_TRUE(is_wallet_button_shown(browser()));
+  EXPECT_TRUE(is_wallet_button_shown(incognito_browser));
+
+  // Turning off brave wallet in private tabs should hide it again.
+  incognito_prefs->SetBoolean(kBraveWalletPrivateWindowsEnabled, false);
+  EXPECT_FALSE(is_wallet_button_shown(incognito_browser));
+
+  // Normal winwow still has visible button.
+  EXPECT_TRUE(is_wallet_button_shown(browser()));
 }

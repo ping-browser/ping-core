@@ -10,8 +10,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <utility>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
@@ -25,9 +23,17 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
 namespace brave_wallet {
-class BitcoinTransactionDatabase;
-class BitcoinDatabaseSynchronizer;
-struct SendToContext;
+class CreateTransactionTask;
+class DiscoverNextUnusedAddressTask;
+
+struct DiscoveredBitcoinAccount {
+  mojom::KeyringId keyring_id = mojom::KeyringId::kBitcoin84;
+  uint32_t account_index = 0;
+  uint32_t next_unused_receive_index = 0;
+  uint32_t next_unused_change_index = 0;
+
+  bool operator==(const DiscoveredBitcoinAccount& other) const;
+};
 
 class BitcoinWalletService : public KeyedService,
                              public mojom::BitcoinWalletService,
@@ -42,59 +48,95 @@ class BitcoinWalletService : public KeyedService,
   mojo::PendingRemote<mojom::BitcoinWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BitcoinWalletService> receiver);
 
-  void GetBalance(const std::string& network_id,
-                  mojom::AccountIdPtr account_id,
-                  GetBalanceCallback callback) override;
+  void Reset();
 
-  void GetBitcoinAccountInfo(const std::string& network_id,
-                             mojom::AccountIdPtr account_id,
+  // mojom::BitcoinWalletService:
+  void GetBalance(mojom::AccountIdPtr account_id,
+                  GetBalanceCallback callback) override;
+  void GetBitcoinAccountInfo(mojom::AccountIdPtr account_id,
                              GetBitcoinAccountInfoCallback callback) override;
   mojom::BitcoinAccountInfoPtr GetBitcoinAccountInfoSync(
-      const std::string& network_id,
-      mojom::AccountIdPtr account_id);
+      const mojom::AccountIdPtr& account_id);
+  void RunDiscovery(mojom::AccountIdPtr account_id,
+                    bool change,
+                    RunDiscoveryCallback callback) override;
 
-  void SendTo(const std::string& network_id,
-              mojom::AccountIdPtr account_id,
-              const std::string& address_to,
-              uint64_t amount,
-              uint64_t fee,
-              SendToCallback callback) override;
+  // address -> related utxo list
+  using UtxoMap = std::map<std::string, bitcoin_rpc::UnspentOutputs>;
+  using GetUtxosCallback =
+      base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
+  void GetUtxos(mojom::AccountIdPtr account_id, GetUtxosCallback callback);
 
-  BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
+  using CreateTransactionCallback =
+      base::OnceCallback<void(base::expected<BitcoinTransaction, std::string>)>;
+  void CreateTransaction(mojom::AccountIdPtr account_id,
+                         const std::string& address_to,
+                         uint64_t amount,
+                         bool sending_max_amount,
+                         CreateTransactionCallback callback);
+
+  using SignAndPostTransactionCallback =
+      base::OnceCallback<void(std::string, BitcoinTransaction, std::string)>;
+  void SignAndPostTransaction(const mojom::AccountIdPtr& account_id,
+                              BitcoinTransaction bitcoin_transaction,
+                              SignAndPostTransactionCallback callback);
+
+  using GetTransactionStatusCallback =
+      base::OnceCallback<void(base::expected<bool, std::string>)>;
+  void GetTransactionStatus(const std::string& chain_id,
+                            const std::string& txid,
+                            GetTransactionStatusCallback callback);
+
+  using DiscoverNextUnusedAddressCallback = base::OnceCallback<void(
+      base::expected<mojom::BitcoinAddressPtr, std::string>)>;
+  void DiscoverNextUnusedAddress(const mojom::AccountIdPtr& account_id,
+                                 bool change,
+                                 DiscoverNextUnusedAddressCallback callback);
+
+  using DiscoverAccountCallback = base::OnceCallback<void(
+      base::expected<DiscoveredBitcoinAccount, std::string>)>;
+  void DiscoverAccount(mojom::KeyringId keyring_id,
+                       uint32_t account_index,
+                       DiscoverAccountCallback callback);
+
+  bitcoin_rpc::BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
+  KeyringService* keyring_service() { return keyring_service_; }
+
+  void SetUrlLoaderFactoryForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  void SetArrangeTransactionsForTesting(bool arrange);
 
  private:
-  // KeyringServiceObserverBase:
-  void AccountsAdded(std::vector<mojom::AccountInfoPtr> accounts) override;
+  friend CreateTransactionTask;
+  friend DiscoverNextUnusedAddressTask;
 
-  void StartDatabaseSynchronizer(const std::string& network_id,
-                                 const mojom::AccountId& account_id);
+  void OnRunDiscoveryDone(
+      mojom::AccountIdPtr account_id,
+      RunDiscoveryCallback callback,
+      base::expected<mojom::BitcoinAddressPtr, std::string>);
+  void UpdateNextUnusedAddressForAccount(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::BitcoinAddressPtr& address);
 
-  absl::optional<std::string> GetUnusedChangeAddress(
-      const mojom::AccountId& account_id);
+  void OnPostTransaction(BitcoinTransaction bitcoin_transaction,
+                         SignAndPostTransactionCallback callback,
+                         base::expected<std::string, std::string> txid);
 
-  bool FillUtxoList(SendToContext& context);
-  bool PickInputs(SendToContext& context);
-  bool PrepareOutputs(SendToContext& context);
-  bool FillInputTransactions(std::unique_ptr<SendToContext> context);
-  void OnFetchTransactionForSendTo(std::unique_ptr<SendToContext> context,
-                                   std::string txid,
-                                   base::Value transaction);
-  bool FillSignature(SendToContext& context, uint32_t input_index);
-  bool FillSignatures(SendToContext& context);
-  bool SerializeTransaction(SendToContext& context);
-  void PostTransaction(std::unique_ptr<SendToContext> context);
-  void OnPostTransaction(std::unique_ptr<SendToContext> context,
-                         base::expected<std::string, std::string> result);
-  void WorkOnSendTo(std::unique_ptr<SendToContext> context);
+  void OnGetTransaction(
+      const std::string& txid,
+      GetTransactionStatusCallback callback,
+      base::expected<bitcoin_rpc::Transaction, std::string> transaction);
+
+  bool SignTransactionInternal(BitcoinTransaction& tx,
+                               const mojom::AccountIdPtr& account_id);
+  void CreateTransactionTaskDone(CreateTransactionTask* task);
 
   raw_ptr<KeyringService> keyring_service_;
-  std::map<std::string, std::unique_ptr<BitcoinTransactionDatabase>>
-      transaction_database_;
-  std::map<std::string, std::unique_ptr<BitcoinDatabaseSynchronizer>>
-      database_synchronizer_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::list<std::unique_ptr<CreateTransactionTask>> create_transaction_tasks_;
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
-  std::unique_ptr<BitcoinRpc> bitcoin_rpc_;
+  std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
+  bool arrange_transactions_for_testing_ = false;
   base::WeakPtrFactory<BitcoinWalletService> weak_ptr_factory_{this};
 };
 

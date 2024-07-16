@@ -60,12 +60,8 @@ void NativePopupMenu::AddMenuItemAt(size_t menu_index) {
   MENUITEMINFO mii = {
       .cbSize = sizeof(mii),
       .fMask = MIIM_FTYPE | MIIM_ID | MIIM_DATA | MIIM_STRING | MIIM_STATE,
+      .fType = MFT_STRING,
   };
-  if (!model_->HasIcons()) {
-    mii.fType = MFT_STRING;
-  } else {
-    mii.fType = MFT_OWNERDRAW;
-  }
 
   std::unique_ptr<ItemData> item_data = std::make_unique<ItemData>();
   item_data->label = model_->GetLabelAt(menu_index);
@@ -77,7 +73,6 @@ void NativePopupMenu::AddMenuItemAt(size_t menu_index) {
   mii.dwTypeData = base::as_writable_wcstr(items_[menu_index]->label);
   // MIIM_STATE
   mii.fState = model_->IsEnabledAt(menu_index) ? MFS_ENABLED : MFS_DISABLED;
-  ;
 
   InsertMenuItem(GetWeakMenuHandle(), menu_index, TRUE, &mii);
 }

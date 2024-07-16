@@ -18,6 +18,7 @@
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/common/origin_util.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
@@ -74,10 +75,6 @@ BraveDownloadItemView::BraveDownloadItemView(
 BraveDownloadItemView::~BraveDownloadItemView() = default;
 
 // View overrides.
-
-void BraveDownloadItemView::Layout() {
-  DownloadItemView::Layout();
-}
 
 gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
   // Call base class to get the width.
@@ -262,3 +259,6 @@ void BraveDownloadItemView::OnViewFocused(View* observed_view) {
 void BraveDownloadItemView::OnViewBlurred(View* observed_view) {
   SetOriginUrlVisible(false);
 }
+
+BEGIN_METADATA(BraveDownloadItemView)
+END_METADATA

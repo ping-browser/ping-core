@@ -1,11 +1,11 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index cfadbd5701c8d47142ab7f7549bbeeba118033a0..d27a3aaa9cae1c2e0f45f1eb505292d41e57d9f5 100644
+index e48bc182ef8fc0a2d728de87b28d0d221ac971ed..5cf79e67682587d35d357de33a7d8986f4be88c0 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
-@@ -126,6 +126,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
+@@ -142,6 +142,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
  #endif
-     case RequestType::kTopLevelStorageAccess:
-       return RequestTypeForUma::PERMISSION_TOP_LEVEL_STORAGE_ACCESS;
+     case RequestType::kIdentityProvider:
+       return RequestTypeForUma::PERMISSION_IDENTITY_PROVIDER;
 +    BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
    }
  }

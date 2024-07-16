@@ -10,9 +10,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_queue_publishers.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -24,7 +22,7 @@ const char kTableName[] = "contribution_queue_publishers";
 }  // namespace
 
 DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers(
-    RewardsEngineImpl& engine)
+    RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseContributionQueuePublishers::~DatabaseContributionQueuePublishers() =
@@ -33,10 +31,10 @@ DatabaseContributionQueuePublishers::~DatabaseContributionQueuePublishers() =
 void DatabaseContributionQueuePublishers::InsertOrUpdate(
     const std::string& id,
     std::vector<mojom::ContributionQueuePublisherPtr> list,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (id.empty() || list.empty()) {
-    BLOG(1, "Empty data");
-    callback(mojom::Result::FAILED);
+    engine_->Log(FROM_HERE) << "Empty data";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -59,17 +57,17 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
     transaction->commands.push_back(command->Clone());
   }
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
     const std::string& queue_id,
     ContributionQueuePublishersListCallback callback) {
   if (queue_id.empty()) {
-    BLOG(1, "Queue id is empty");
-    callback({});
+    engine_->Log(FROM_HERE) << "Queue id is empty";
+    std::move(callback).Run({});
     return;
   }
 
@@ -91,20 +89,20 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseContributionQueuePublishers::OnGetRecordsByQueueId,
-                this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(
+          &DatabaseContributionQueuePublishers::OnGetRecordsByQueueId,
+          base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
-    mojom::DBCommandResponsePtr response,
-    ContributionQueuePublishersListCallback callback) {
+    ContributionQueuePublishersListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
-    callback({});
+    engine_->LogError(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run({});
     return;
   }
 
@@ -119,7 +117,7 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 }  // namespace database

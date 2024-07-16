@@ -8,27 +8,26 @@
 
 #include <stdint.h>
 
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet {
 
 class Wallet {
  public:
-  explicit Wallet(RewardsEngineImpl& engine);
+  explicit Wallet(RewardsEngine& engine);
   ~Wallet();
 
-  void CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
+  void CreateWalletIfNecessary(std::optional<std::string>&& geo_country,
                                CreateRewardsWalletCallback callback);
 
   void FetchBalance(FetchBalanceCallback callback);
@@ -39,10 +38,9 @@ class Wallet {
   bool SetWallet(mojom::RewardsWalletPtr wallet);
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   WalletCreate create_;
   WalletBalance balance_;
-  endpoint::PromotionServer promotion_server_;
 };
 
 }  // namespace wallet

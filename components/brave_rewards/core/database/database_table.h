@@ -12,10 +12,13 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_database.mojom.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace database {
 
@@ -23,27 +26,27 @@ using ContributionPublisherInfoPair =
     std::pair<std::string, mojom::PublisherInfoPtr>;
 
 using ServerPublisherLinksCallback =
-    std::function<void(const std::map<std::string, std::string>& links)>;
+    base::OnceCallback<void(const std::map<std::string, std::string>& links)>;
 
 using ServerPublisherAmountsCallback =
-    std::function<void(const std::vector<double>& amounts)>;
+    base::OnceCallback<void(const std::vector<double>& amounts)>;
 
 using ContributionQueuePublishersListCallback =
-    std::function<void(std::vector<mojom::ContributionQueuePublisherPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionQueuePublisherPtr>)>;
 
 using ContributionPublisherListCallback =
-    std::function<void(std::vector<mojom::ContributionPublisherPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionPublisherPtr>)>;
 
 using ContributionPublisherPairListCallback =
-    std::function<void(std::vector<ContributionPublisherInfoPair>)>;
+    base::OnceCallback<void(std::vector<ContributionPublisherInfoPair>)>;
 
 class DatabaseTable {
  public:
-  explicit DatabaseTable(RewardsEngineImpl& engine);
+  explicit DatabaseTable(RewardsEngine& engine);
   virtual ~DatabaseTable();
 
  protected:
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace database

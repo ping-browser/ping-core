@@ -6,6 +6,7 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -20,7 +21,6 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace brave_vpn {
@@ -58,8 +58,8 @@ std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames_value) {
     constexpr char kCapacityScoreKey[] = "capacity-score";
     const std::string* hostname_str = dict.FindString(kHostnameKey);
     const std::string* display_name_str = dict.FindString(kDisplayNameKey);
-    absl::optional<bool> offline = dict.FindBool(kOfflineKey);
-    absl::optional<int> capacity_score = dict.FindInt(kCapacityScoreKey);
+    std::optional<bool> offline = dict.FindBool(kOfflineKey);
+    std::optional<int> capacity_score = dict.FindInt(kCapacityScoreKey);
 
     if (!hostname_str || !display_name_str || !offline || !capacity_score)
       continue;
@@ -99,12 +99,11 @@ base::Value::Dict GetValueWithTicketInfos(
   base::TrimWhitespaceASCII(subject, base::TRIM_ALL, &subject_trimmed);
   base::TrimWhitespaceASCII(body_with_credential, base::TRIM_ALL,
                             &body_trimmed);
-  base::Base64Encode(body_trimmed, &body_encoded);
 
   // required fields
   dict.Set(kSupportTicketEmailKey, email_trimmed);
   dict.Set(kSupportTicketSubjectKey, subject_trimmed);
-  dict.Set(kSupportTicketSupportTicketKey, body_encoded);
+  dict.Set(kSupportTicketSupportTicketKey, base::Base64Encode(body_trimmed));
   dict.Set(kSupportTicketPartnerClientIdKey, "com.brave.browser");
   dict.Set(kSupportTicketTimezoneKey, timezone);
 

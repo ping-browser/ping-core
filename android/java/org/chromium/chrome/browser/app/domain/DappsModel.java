@@ -8,14 +8,16 @@ package org.chromium.chrome.browser.app.domain;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.ByteArrayStringUnion;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
+import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.brave_wallet.mojom.SignTransactionRequest;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -23,7 +25,6 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActi
 import org.chromium.chrome.browser.crypto_wallet.model.WalletAccountCreationRequest;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.Pair;
 
@@ -76,20 +77,12 @@ public class DappsModel implements KeyringServiceObserver {
             return;
         }
 
-        mKeyringService.getAllAccounts(allAccounts -> {
-            if (coinType == CoinType.SOL) {
-                // only the selected account is used for solana dapps
-                if (allAccounts.solDappSelectedAccount != null) {
-                    List<AccountInfo> accounts = new ArrayList();
-                    accounts.add(allAccounts.solDappSelectedAccount);
-                    callback.call(new Pair<>(allAccounts.solDappSelectedAccount, accounts));
-                }
-            } else {
-                List<AccountInfo> accounts =
-                        Utils.filterAccountsByCoin(allAccounts.accounts, coinType);
-                callback.call(new Pair<>(allAccounts.ethDappSelectedAccount, accounts));
-            }
-        });
+        mKeyringService.getAllAccounts(
+                allAccounts -> {
+                    List<AccountInfo> accounts =
+                            Utils.filterAccountsByCoin(allAccounts.accounts, coinType);
+                    callback.call(new Pair<>(allAccounts.ethDappSelectedAccount, accounts));
+                });
     }
 
     public LiveData<List<SignTransactionRequest>> fetchSignTxRequest() {
@@ -218,6 +211,17 @@ public class DappsModel implements KeyringServiceObserver {
         }
     }
 
+    public void notifySignMessageRequestProcessed(boolean isApproved, int id) {
+        notifySignMessageRequestProcessed(isApproved, id, null, null);
+    }
+    public void notifySignMessageRequestProcessed(
+            boolean isApproved, int id, ByteArrayStringUnion signature, String error) {
+        mBraveWalletService.notifySignMessageRequestProcessed(isApproved, id, signature, error);
+    }
+    public void getPendingSignMessageRequests(Callbacks.Callback1<SignMessageRequest[]> callback) {
+        mBraveWalletService.getPendingSignMessageRequests(callback::call);
+    }
+
     private void updateWalletBadgeVisibilityInternal() {
         if (mBraveWalletService == null || mJsonRpcService == null || mPendingTxHelper == null) {
             return;
@@ -283,13 +287,13 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringCreated(@KeyringId.EnumType int keyringId) {}
+    public void walletCreated() {}
 
     @Override
-    public void keyringRestored(@KeyringId.EnumType int keyringId) {}
+    public void walletRestored() {}
 
     @Override
-    public void keyringReset() {}
+    public void walletReset() {}
 
     @Override
     public void locked() {}

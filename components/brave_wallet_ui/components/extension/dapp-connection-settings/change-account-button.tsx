@@ -5,57 +5,44 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import { useDispatch } from 'react-redux'
-
-// Actions
-import {
-  WalletActions
-} from '../../../common/actions'
 
 // Utils
-import {
-  reduceAddress
-} from '../../../utils/reduce-address'
+import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 
 // Components
 import {
-  CreateAccountIcon
+  CreateAccountIcon //
 } from '../../shared/create-account-icon/create-account-icon'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
-// Selectors
-import {
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import {
-  WalletSelectors
-} from '../../../common/selectors'
-
 // Queries
 import {
-  useSelectedAccountQuery
+  useSelectedAccountQuery //
 } from '../../../common/slices/api.slice.extra'
 import {
+  useGetActiveOriginConnectedAccountIdsQuery,
   useGetDefaultFiatCurrencyQuery,
+  useRemoveSitePermissionMutation,
+  useRequestSitePermissionMutation,
   useSetSelectedAccountMutation
 } from '../../../common/slices/api.slice'
 
 // Types
-import {
-  BraveWallet
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Styled Components
 import {
+  ActiveIndicator,
   DescriptionText,
   NameText
 } from './dapp-connection-settings.style'
 import {
   Row,
   Column,
-  VerticalSpace
+  VerticalSpace,
+  HorizontalSpace //
 } from '../../shared/style'
 
 interface Props {
@@ -64,24 +51,20 @@ interface Props {
 }
 
 export const ChangeAccountButton = (props: Props) => {
-  const {
-    account,
-    getAccountsFiatValue
-  } = props
-
-  // Redux
-  const dispatch = useDispatch()
+  const { account, getAccountsFiatValue } = props
 
   // Queries
   const { data: selectedAccount } = useSelectedAccountQuery()
-  const [setSelectedAccount] = useSetSelectedAccountMutation()
   const isActive =
     account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  const { data: connectedAccounts = [] } =
+    useGetActiveOriginConnectedAccountIdsQuery()
 
-  // Selectors
-  const connectedAccounts =
-    useUnsafeWalletSelector(WalletSelectors.connectedAccounts)
+  // mutations
+  const [setSelectedAccount] = useSetSelectedAccountMutation()
+  const [removeSitePermission] = useRemoveSitePermissionMutation()
+  const [requestSitePermission] = useRequestSitePermissionMutation()
 
   // Constants
   const selectedCoin = selectedAccount?.accountId.coin
@@ -89,8 +72,7 @@ export const ChangeAccountButton = (props: Props) => {
   // Memos
   const hasPermission = React.useMemo((): boolean => {
     return connectedAccounts.some(
-      (accountId) =>
-        accountId.uniqueKey === account.accountId.uniqueKey
+      (accountId) => accountId.uniqueKey === account.accountId.uniqueKey
     )
   }, [connectedAccounts, account.accountId.uniqueKey])
 
@@ -112,86 +94,101 @@ export const ChangeAccountButton = (props: Props) => {
 
   const accountFiatValue = React.useMemo(() => {
     return getAccountsFiatValue(account)
-  }, [
-    getAccountsFiatValue,
-    account
-  ])
+  }, [getAccountsFiatValue, account])
 
   // Methods
-  const onClickConnect = React.useCallback(() => {
-    dispatch(
-      WalletActions
-        .addSitePermission({ accountId: account.accountId })
-    )
+  const onClickConnect = React.useCallback(async () => {
+    await requestSitePermission(account.accountId).unwrap()
+
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }
-  }, [account.accountId, selectedCoin])
+  }, [
+    requestSitePermission,
+    account.accountId,
+    selectedCoin,
+    setSelectedAccount
+  ])
 
-  const onClickDisconnect = React.useCallback(() => {
-    dispatch(
-      WalletActions
-        .removeSitePermission({ accountId: account.accountId })
-    )
+  const onClickDisconnect = React.useCallback(async () => {
+    await removeSitePermission(account.accountId).unwrap()
+
     if (
       connectedAccounts.length !== 0 &&
       selectedCoin !== BraveWallet.CoinType.SOL
     ) {
       setSelectedAccount(account.accountId)
     }
-  }, [connectedAccounts, account.accountId, selectedCoin])
+  }, [
+    removeSitePermission,
+    account.accountId,
+    connectedAccounts.length,
+    selectedCoin,
+    setSelectedAccount
+  ])
 
   const onClickSwitchAccount = React.useCallback(() => {
     setSelectedAccount(account.accountId)
-  }, [account.accountId])
+  }, [account.accountId, setSelectedAccount])
 
-  const onClickConnectDisconnectOrSwitch =
-    React.useCallback(() => {
-      return hasPermission
-        ? isActive
-          ? onClickDisconnect()
-          : onClickSwitchAccount()
-        : onClickConnect()
-    }, [
-      hasPermission,
-      isActive,
-      onClickDisconnect,
-      onClickConnect,
-      onClickSwitchAccount
-    ])
+  const onClickConnectDisconnectOrSwitch = React.useCallback(() => {
+    return hasPermission
+      ? isActive
+        ? onClickDisconnect()
+        : onClickSwitchAccount()
+      : onClickConnect()
+  }, [
+    hasPermission,
+    isActive,
+    onClickDisconnect,
+    onClickConnect,
+    onClickSwitchAccount
+  ])
 
   return (
     <Row
       justifyContent='space-between'
       padding='8px 0px'
     >
-      <Row
-        width='unset'
-      >
+      <Row width='unset'>
         <CreateAccountIcon
           size='medium'
           account={account}
           marginRight={16}
         />
-        <Column
-          alignItems='flex-start'
-        >
+        <Column alignItems='flex-start'>
           <NameText
             textSize='14px'
             isBold={true}
           >
             {account.name}
           </NameText>
-          <DescriptionText
-            textSize='12px'
-            isBold={false}
+          <Row
+            width='unset'
+            justifyContent='flex-start'
           >
-            {reduceAddress(account.accountId.address)}
-          </DescriptionText>
+            <DescriptionText
+              textSize='12px'
+              isBold={false}
+            >
+              {reduceAddress(account.accountId.address)}
+            </DescriptionText>
+            {isActive && (
+              <>
+                <HorizontalSpace space='8px' />
+                <ActiveIndicator>
+                  {getLocale('braveWalletActive')}
+                </ActiveIndicator>
+              </>
+            )}
+          </Row>
           {accountFiatValue.isUndefined() ? (
             <>
               <VerticalSpace space='3px' />
-              <LoadingSkeleton width={60} height={12} />
+              <LoadingSkeleton
+                width={60}
+                height={12}
+              />
               <VerticalSpace space='3px' />
             </>
           ) : (
@@ -204,9 +201,7 @@ export const ChangeAccountButton = (props: Props) => {
           )}
         </Column>
       </Row>
-      <Row
-        width='unset'
-      >
+      <Row width='unset'>
         <Button
           onClick={onClickConnectDisconnectOrSwitch}
           kind='outline'

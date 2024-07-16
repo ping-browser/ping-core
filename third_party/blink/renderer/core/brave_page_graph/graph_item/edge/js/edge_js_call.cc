@@ -5,38 +5,24 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/js/edge_js_call.h"
 
-#include <utility>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/js/node_js.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 using ::blink::To;
 
 namespace brave_page_graph {
 
-String BuildArgumentsString(const Vector<String>& arguments) {
-  WTF::TextStream ts;
-  const size_t num_args = arguments.size();
-  const size_t last_index = num_args - 1;
-  for (wtf_size_t i = 0; i < num_args; i += 1) {
-    if (i == last_index) {
-      ts << arguments.at(i);
-    } else {
-      ts << arguments.at(i) << ", ";
-    }
-  }
-  return ts.Release();
-}
-
 EdgeJSCall::EdgeJSCall(GraphItemContext* context,
                        NodeScript* out_node,
                        NodeJS* in_node,
-                       Vector<String> arguments,
+                       const FrameId& frame_id,
+                       const blink::PageGraphValues& arguments,
                        const int script_position)
-    : EdgeJS(context, out_node, in_node),
-      arguments_(std::move(arguments)),
+    : EdgeJS(context, out_node, in_node, frame_id),
+      arguments_(blink::PageGraphValueToString(arguments)),
       script_position_(script_position) {}
 
 EdgeJSCall::~EdgeJSCall() = default;
@@ -52,8 +38,7 @@ ItemName EdgeJSCall::GetItemName() const {
 
 ItemDesc EdgeJSCall::GetItemDesc() const {
   WTF::TextStream ts;
-  ts << GetItemName() << " [arguments: " << BuildArgumentsString(arguments_)
-     << "]";
+  ts << GetItemName() << " [arguments: " << arguments_ << "]";
   return ts.Release();
 }
 
@@ -61,7 +46,7 @@ void EdgeJSCall::AddGraphMLAttributes(xmlDocPtr doc,
                                       xmlNodePtr parent_node) const {
   EdgeJS::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefCallArgs)
-      ->AddValueNode(doc, parent_node, BuildArgumentsString(arguments_));
+      ->AddValueNode(doc, parent_node, arguments_);
   GraphMLAttrDefForType(kGraphMLAttrDefScriptPosition)
       ->AddValueNode(doc, parent_node, script_position_);
 }

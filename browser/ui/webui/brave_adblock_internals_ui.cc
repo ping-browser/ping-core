@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -16,7 +17,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_adblock/adblock_internals/resources/grit/brave_adblock_internals_generated_map.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_controller.h"
@@ -85,7 +86,7 @@ class BraveAdblockInternalsMessageHandler
     CHECK(!dump->process_dumps().empty());
     const auto& pmd = dump->process_dumps().front();
     for (const auto& metric : kCollectedMemoryMetrics) {
-      absl::optional<uint64_t> value =
+      std::optional<uint64_t> value =
           pmd.GetMetric(metric.dump_name, metric.metric);
 
       if (value) {

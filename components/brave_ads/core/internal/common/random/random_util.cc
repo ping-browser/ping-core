@@ -5,13 +5,32 @@
 
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 
+#include <optional>
+
 #include "base/time/time.h"
 #include "brave_base/random.h"
 
 namespace brave_ads {
 
+namespace {
+std::optional<base::TimeDelta> g_rand_time_delta_for_testing;
+}  // namespace
+
 base::TimeDelta RandTimeDelta(const base::TimeDelta time_delta) {
+  if (g_rand_time_delta_for_testing) {
+    return *g_rand_time_delta_for_testing;
+  }
+
   return base::Seconds(brave_base::random::Geometric(time_delta.InSecondsF()));
+}
+
+ScopedRandTimeDeltaSetterForTesting::ScopedRandTimeDeltaSetterForTesting(
+    const base::TimeDelta time_delta) {
+  g_rand_time_delta_for_testing = time_delta;
+}
+
+ScopedRandTimeDeltaSetterForTesting::~ScopedRandTimeDeltaSetterForTesting() {
+  g_rand_time_delta_for_testing = std::nullopt;
 }
 
 }  // namespace brave_ads

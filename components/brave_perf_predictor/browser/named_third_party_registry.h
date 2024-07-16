@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_NAMED_THIRD_PARTY_REGISTRY_H_
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_NAMED_THIRD_PARTY_REGISTRY_H_
 
+#include <optional>
 #include <string>
+#include <string_view>
 #include <tuple>
 
 #include "base/containers/flat_map.h"
@@ -30,11 +32,10 @@ class NamedThirdPartyRegistry : public KeyedService {
   // Parse the provided mappings (in JSON format), potentially discarding
   // entities not relevant to the bandwith prediction model (i.e. those not
   // seen in training the model).
-  bool LoadMappings(const base::StringPiece entities, bool discard_irrelevant);
+  bool LoadMappings(const std::string_view entities, bool discard_irrelevant);
   // Default initialization - asynchronously load from bundled resource
   void InitializeDefault();
-  absl::optional<std::string> GetThirdParty(
-      const base::StringPiece domain) const;
+  std::optional<std::string> GetThirdParty(const std::string_view domain) const;
 
  private:
   bool IsInitialized() const { return initialized_; }

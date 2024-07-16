@@ -7,14 +7,6 @@
 
 namespace tabs::features {
 
-BASE_FEATURE(kBraveVerticalTabs,
-             "BraveVerticalTabs",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveVerticalTabsStickyPinnedTabs,
-             "BraveVerticalTabsStickyPinnedTabs",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 #if BUILDFLAG(IS_LINUX)
 BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
              "BraveChangeActiveTabOnScrollEvent",
@@ -24,5 +16,21 @@ BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
 BASE_FEATURE(kBraveSharedPinnedTabs,
              "BraveSharedPinnedTabs",
              base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveHorizontalTabsUpdate,
+             "BraveHorizontalTabsUpdate",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveVerticalTabScrollBar,
+             "BraveVerticalTabScrollBar",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveSplitView,
+             "BraveSplitView",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool HorizontalTabsUpdateEnabled() {
+  return base::FeatureList::IsEnabled(kBraveHorizontalTabsUpdate);
+}
 
 }  // namespace tabs::features

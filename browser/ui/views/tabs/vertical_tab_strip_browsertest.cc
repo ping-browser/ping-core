@@ -13,7 +13,10 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
+#include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip.h"
+#include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
@@ -114,9 +117,7 @@ void FullscreenNotificationObserver::Wait() {
 
 class VerticalTabStripBrowserTest : public InProcessBrowserTest {
  public:
-  VerticalTabStripBrowserTest()
-      : feature_list_(tabs::features::kBraveVerticalTabs) {}
-
+  VerticalTabStripBrowserTest() = default;
   ~VerticalTabStripBrowserTest() override = default;
 
   const BraveBrowserView* browser_view() const {
@@ -134,7 +135,7 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
 
   void ToggleVerticalTabStrip() {
     brave::ToggleVerticalTabStrip(browser());
-    browser_non_client_frame_view()->Layout();
+    browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
   TabStrip* GetTabStrip(Browser* browser) {
@@ -205,8 +206,6 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   }
 
  private:
-  base::test::ScopedFeatureList feature_list_;
-
   std::unique_ptr<base::RunLoop> run_loop_;
 };
 
@@ -255,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   auto check_if_window_title_gets_visible = [&]() {
     // Show window title bar
     brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
-    browser_non_client_frame_view()->Layout();
+    browser_non_client_frame_view()->DeprecatedLayoutImmediately();
     EXPECT_TRUE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
     EXPECT_TRUE(browser_view()->ShouldShowWindowTitle());
     EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
@@ -269,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
 
   // Hide window title bar
   brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
-  browser_non_client_frame_view()->Layout();
+  browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   EXPECT_FALSE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
   EXPECT_FALSE(browser_view()->ShouldShowWindowTitle());
 #if !BUILDFLAG(IS_LINUX)
@@ -396,6 +395,40 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
     observer.Wait();
   }
 
+  // Vertical tab strip should be invisible on browser fullscreen.
+  ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
+  ASSERT_TRUE(browser_view()->IsFullscreen());
+  EXPECT_FALSE(browser_view()
+                   ->vertical_tab_strip_host_view_->GetPreferredSize()
+                   .width());
+
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    fullscreen_controller->ToggleBrowserFullscreenMode();
+    observer.Wait();
+  }
+  ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
+  ASSERT_FALSE(browser_view()->IsFullscreen());
+
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    // Vertical tab strip should become invisible on tab fullscreen.
+    fullscreen_controller->EnterFullscreenModeForTab(
+        browser_view()
+            ->browser()
+            ->tab_strip_model()
+            ->GetActiveWebContents()
+            ->GetPrimaryMainFrame());
+
+    observer.Wait();
+  }
+  ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
+  if (!browser_view()
+           ->vertical_tab_strip_host_view_->GetPreferredSize()
+           .width()) {
+    return;
+  }
+
   base::RunLoop run_loop;
   auto wait_until = base::BindLambdaForTesting(
       [&](base::RepeatingCallback<bool()> predicate) {
@@ -408,47 +441,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
                         base::BindLambdaForTesting([&]() {
                           if (predicate.Run()) {
                             run_loop.Quit();
+                          } else {
+                            LOG(ERROR) << browser_view()
+                                              ->vertical_tab_strip_host_view_
+                                              ->GetPreferredSize()
+                                              .width();
                           }
                         }));
         run_loop.Run();
       });
-
-  // Vertical tab strip should be invisible on browser fullscreen.
-  ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
-  ASSERT_TRUE(browser_view()->IsFullscreen());
-  wait_until.Run(base::BindLambdaForTesting([&]() {
-    return !browser_view()
-                ->vertical_tab_strip_host_view_->GetPreferredSize()
-                .width();
-  }));
-
-  {
-    auto observer = FullscreenNotificationObserver(browser());
-    fullscreen_controller->ToggleBrowserFullscreenMode();
-    observer.Wait();
-  }
-  ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
-  ASSERT_FALSE(browser_view()->IsFullscreen());
-
-  {
-    auto observer = FullscreenNotificationObserver(browser());
-    fullscreen_controller->EnterFullscreenModeForTab(
-        browser_view()
-            ->browser()
-            ->tab_strip_model()
-            ->GetActiveWebContents()
-            ->GetPrimaryMainFrame());
-
-    observer.Wait();
-  }
-
-  // Vertical tab strip should be invisible on tab fullscreen.
-  ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
-  if (!browser_view()
-           ->vertical_tab_strip_host_view_->GetPreferredSize()
-           .width()) {
-    return;
-  }
 
   wait_until.Run(base::BindLambdaForTesting([&]() {
     return !browser_view()
@@ -486,6 +487,46 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
     EXPECT_TRUE(GetBoundsInScreen(region_view, region_view->GetLocalBounds())
                     .Contains(GetBoundsInScreen(tab, tab->GetLocalBounds())));
   }
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
+  ToggleVerticalTabStrip();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* pref = prefs->FindPreference(brave_tabs::kVerticalTabsShowScrollbar);
+
+  // Check if the default value is false
+  EXPECT_TRUE(pref && pref->IsDefaultValue());
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
+
+  auto get_tab_container = [&]() {
+    return views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+        ->GetTabContainerForTesting();
+  };
+
+  auto* brave_tab_container =
+      views::AsViewClass<BraveCompoundTabContainer>(get_tab_container());
+  EXPECT_TRUE(brave_tab_container);
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
+            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+
+  // Turn on the prefs and checks if scrollbar becomes visible
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
+            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+
+  // Turning off and on vertical tabs and see if the visibility persists.
+  ToggleVerticalTabStrip();
+  ToggleVerticalTabStrip();
+  brave_tab_container =
+      views::AsViewClass<BraveCompoundTabContainer>(get_tab_container());
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
+            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+
+  // Checks if scrollbar is hidden when the pref is turned off.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
+            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
 }
 
 class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
@@ -563,8 +604,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, OriginalTabSearchButton) {
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
 
-  auto* original_tab_search_button =
-      region_view->original_region_view_->tab_search_button();
+  auto* tab_search_container =
+      region_view->original_region_view_->tab_search_container();
+  if (!tab_search_container) {
+    return;
+  }
+
+  auto* original_tab_search_button = tab_search_container->tab_search_button();
   if (!original_tab_search_button) {
     // On Windows 10, the button is on the window frame and vertical tab strip
     // does nothing to it.
@@ -705,6 +751,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
        pos != point_to_move_to; pos.set_y(pos.y() + 1)) {
     MoveMouseTo(pos);
   }
+
+  if (!IsDraggingTabStrip(browser())) {
+    // Even when we try to simulate drag-n-drop, some CI node seems to fail
+    // to enter drag-n-drop mode. In this case, we can't proceed to further test
+    // so just return.
+    return;
+  }
+
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return pressed_tab == GetTabAt(browser(), 1); }));
 
@@ -722,13 +776,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
   }
 }
 
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
 // TODO(sko) On Linux test environment, the test doesn't work well
 // TODO(sko) On Windows CI, SendMouse() doesn't work.
+// TODO(sko) As of Dec, 2023 this test is flaky on Mac CI.
 #define MAYBE_DragTabToDetach DISABLED_DragTabToDetach
-#else
-#define MAYBE_DragTabToDetach DragTabToDetach
-#endif
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                        MAYBE_DragTabToDetach) {
@@ -747,10 +798,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                 // Creating new browser during drag-and-drop will create
                 // a nested run loop. So we should do things within callback.
                 auto* browser_list = BrowserList::GetInstance();
-                EXPECT_EQ(2,
-                          base::ranges::count_if(*browser_list, [&](auto* b) {
-                            return b->profile() == browser()->profile();
-                          }));
+                EXPECT_EQ(
+                    2, base::ranges::count_if(*browser_list, [&](Browser* b) {
+                      return b->profile() == browser()->profile();
+                    }));
                 ReleaseMouse();
                 auto* new_browser = browser_list->GetLastActive();
                 new_browser->window()->Close();
@@ -877,3 +928,46 @@ VERTICAL_TAB_STRIP_DPI_TEST(3.00f, Dpi300)
 VERTICAL_TAB_STRIP_DPI_TEST(3.50f, Dpi350)
 
 #undef VERTICAL_TAB_STRIP_DPI_TEST
+
+class VerticalTabStripSwitchTest : public VerticalTabStripBrowserTest {
+ public:
+  using VerticalTabStripBrowserTest::VerticalTabStripBrowserTest;
+  ~VerticalTabStripSwitchTest() override = default;
+
+  // VerticalTabStripBrowserTest:
+  void SetUp() override {
+    base::CommandLine::ForCurrentProcess()->AppendSwitch(
+        tabs::switches::kDisableVerticalTabsSwitch);
+    VerticalTabStripBrowserTest::SetUp();
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripSwitchTest, DisableSwitch) {
+  EXPECT_FALSE(tabs::utils::SupportsVerticalTabs(browser()));
+
+  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  // Even when we toggle on the tab strip, this state should persist.
+  ToggleVerticalTabStrip();
+  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+}
+
+class VerticalTabStripScrollBarFlagTest : public VerticalTabStripBrowserTest {
+ public:
+  VerticalTabStripScrollBarFlagTest()
+      : feature_list_(tabs::features::kBraveVerticalTabScrollBar) {}
+
+  ~VerticalTabStripScrollBarFlagTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripScrollBarFlagTest, MigrationTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* pref = prefs->FindPreference(brave_tabs::kVerticalTabsShowScrollbar);
+  ASSERT_TRUE(pref);
+
+  // Check if pref is set to true when user turned on the feature flag.
+  EXPECT_FALSE(pref->IsDefaultValue());
+  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
+}

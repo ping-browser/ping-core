@@ -2,13 +2,14 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import { BraveWallet } from '../../constants/types'
 import {
-  BTCIconUrl,
   ETHIconUrl,
   FILECOINIconUrl,
-  SOLIconUrl
-} from './asset-icons'
+  SOLIconUrl,
+  BTCIconUrl
+} from '../../assets/network_token_icons/network_token_icons'
 
 export const mockEthMainnet: BraveWallet.NetworkInfo = {
   activeRpcEndpointIndex: 0,
@@ -35,7 +36,10 @@ export const mockGoerli: BraveWallet.NetworkInfo = {
   decimals: 18,
   iconUrls: [ETHIconUrl],
   isEip1559: true,
-  rpcEndpoints: [{ url: 'https://goerli.infura.io/v3/' }, { url: 'wss://goerli.infura.io/ws/v3/' }],
+  rpcEndpoints: [
+    { url: 'https://goerli.infura.io/v3/' },
+    { url: 'wss://goerli.infura.io/ws/v3/' }
+  ],
   symbol: 'ETH',
   symbolName: 'Ethereum'
 }
@@ -134,7 +138,7 @@ export const mockBitcoinMainnet: BraveWallet.NetworkInfo = {
   activeRpcEndpointIndex: 0,
   blockExplorerUrls: ['https://bitcoin.explorer'],
   chainId: 'bitcoin_mainnet',
-  chainName: 'Bitcoin Mainnnet',
+  chainName: 'Bitcoin Mainnet',
   coin: BraveWallet.CoinType.BTC,
   supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84],
   decimals: 8,

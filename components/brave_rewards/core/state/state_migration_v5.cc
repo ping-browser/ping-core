@@ -9,21 +9,20 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV5::StateMigrationV5(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+StateMigrationV5::StateMigrationV5(RewardsEngine& engine) : engine_(engine) {}
 
 StateMigrationV5::~StateMigrationV5() = default;
 
-void StateMigrationV5::Migrate(LegacyResultCallback callback) {
+void StateMigrationV5::Migrate(ResultCallback callback) {
   const auto seed = engine_->GetState<std::string>(kRecoverySeed);
   if (seed.empty()) {
-    callback(mojom::Result::OK);
+    std::move(callback).Run(mojom::Result::OK);
     return;
   }
 
@@ -57,7 +56,7 @@ void StateMigrationV5::Migrate(LegacyResultCallback callback) {
   const auto creation_stamp = engine_->GetState<uint64_t>(kCreationStamp);
   events.insert(std::make_pair(kCreationStamp, std::to_string(creation_stamp)));
 
-  engine_->database()->SaveEventLogs(events, callback);
+  engine_->database()->SaveEventLogs(events, std::move(callback));
 }
 
 }  // namespace state

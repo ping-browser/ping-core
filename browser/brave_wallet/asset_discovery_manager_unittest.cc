@@ -12,6 +12,7 @@
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
@@ -37,12 +38,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
-
-namespace {
-
-const char kPasswordBrave[] = "brave";
-
-}  // namespace
 
 class TestBraveWalletServiceObserverForAssetDiscoveryManager
     : public brave_wallet::BraveWalletServiceObserverBase {
@@ -130,7 +125,8 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service_, GetPrefs(), GetLocalState());
+        json_rpc_service_, tx_service_, nullptr, nullptr, GetPrefs(),
+        GetLocalState(), false);
     simple_hash_client_ =
         std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
@@ -177,7 +173,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
       EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
       EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsCompletedFired());
     } else {
-      base::RunLoop().RunUntilIdle();
+      task_environment_.RunUntilIdle();
       EXPECT_FALSE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
       EXPECT_FALSE(wallet_service_observer_->OnDiscoverAssetsCompletedFired());
     }
@@ -302,8 +298,8 @@ TEST_F(AssetDiscoveryManagerUnitTest, AccountsAdded) {
   base::Time current_assets_last_discovered_at =
       GetPrefs()->GetTime(kBraveWalletLastDiscoveredAssetsAt);
   ASSERT_EQ(current_assets_last_discovered_at, base::Time());
-  keyring_service_->RestoreWallet(kMnemonicDivideCruise, kPasswordBrave, false,
-                                  base::DoNothing());
+  ASSERT_TRUE(keyring_service_->RestoreWalletSync(kMnemonicDivideCruise,
+                                                  kTestWalletPassword, false));
   wallet_service_observer_->WaitForOnDiscoverAssetsCompleted({});
   base::Time previous_assets_last_discovered_at =
       current_assets_last_discovered_at;

@@ -1,11 +1,12 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index e7abdf55abaf79904201886cec4efe2cb24f2ad0..8444faf4f4580343fe27682cbd4c2035815f3904 100644
+index fa224cb49d66d8530fd743b406b9be6a01d659d0..fb0757639b695dc95a40595e934d4f82aba7bc44 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -421,6 +421,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
-       "safetyCheckShowReviewPanel",
-       base::FeatureList::IsEnabled(features::kSafetyCheckExtensions));
- 
+@@ -454,7 +454,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+   source->AddBoolean("isLacrosEnabled",
+                      crosapi::browser_util::IsLacrosEnabled());
+ #endif
+-
 +  BRAVE_CREATE_EXTENSIONS_SOURCE
    return source;
  }

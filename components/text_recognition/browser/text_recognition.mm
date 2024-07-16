@@ -8,10 +8,10 @@
 #import <Foundation/Foundation.h>
 #import <Vision/Vision.h>
 
+#include "base/apple/foundation_util.h"
+#include "base/apple/scoped_cftyperef.h"
 #include "base/logging.h"
-#include "base/mac/foundation_util.h"
 #include "base/mac/mac_util.h"
-#include "base/mac/scoped_cftyperef.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "skia/ext/skia_utils_base.h"
@@ -21,7 +21,8 @@
 
 namespace text_recognition {
 
-std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
+std::pair<bool, std::vector<std::string>> GetTextFromImage(
+    const SkBitmap& image) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   std::vector<std::string> result;
@@ -66,7 +67,8 @@ std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
     }
 
     NSError* error = nil;
-    base::ScopedCFTypeRef<CGImageRef> cg_image(SkCreateCGImageRef(image));
+    base::apple::ScopedCFTypeRef<CGImageRef> cg_image(
+        SkCreateCGImageRef(image));
     VNImageRequestHandler* requestHandler =
         [[VNImageRequestHandler alloc] initWithCGImage:cg_image.get()
                                                options:@{}];
@@ -76,7 +78,7 @@ std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
     }
   }
 
-  return result;
+  return {true, result};
 }
 
 }  // namespace text_recognition

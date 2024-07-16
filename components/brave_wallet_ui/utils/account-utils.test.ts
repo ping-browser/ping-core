@@ -5,12 +5,24 @@
 
 import { BraveWallet } from '../constants/types'
 
-import { mockAccount } from '../common/constants/mocks'
+import {
+  mockAccount,
+  mockBitcoinAccount,
+  mockBitcoinTestnetAccount,
+  mockEthAccountInfo,
+  mockFilecoinAccount,
+  mockSolanaAccount,
+  mockFilecoinEVMMMainnetNetwork,
+  mockFilecoinEVMMTestnetNetwork,
+  mockBtcMainnetNetwork
+} from '../common/constants/mocks'
 
 import {
   isHardwareAccount,
   findAccountByAddress,
-  getAccountTypeDescription
+  getAccountTypeDescription,
+  findAccountByAccountId,
+  isFVMAccount
 } from './account-utils'
 
 import {
@@ -49,23 +61,26 @@ const mockHardwareAccounts: BraveWallet.AccountInfo[] = [
 ]
 
 const mockAccounts: AccountInfoEntity[] = [
-  {
-    ...mockAccount,
-  },
-  {
-    ...mockAccount,
-    accountId: {
-      ...mockAccount.accountId,
-      address: 'mockAccount2'
-    },
-    address: 'mockAccount2',
-  }
+  mockAccount,
+  mockEthAccountInfo,
+  mockSolanaAccount,
+  mockFilecoinAccount,
+  mockBitcoinAccount,
+  mockBitcoinTestnetAccount
 ]
 
 const mockAccountsRegistry = accountInfoEntityAdaptor.setAll(
   accountInfoEntityAdaptor.getInitialState(),
   mockAccounts
 )
+
+const mockFilecoinMainnetAccount: BraveWallet.AccountInfo = {
+  ...mockFilecoinAccount,
+  accountId: {
+    ...mockFilecoinAccount.accountId,
+    keyringId: BraveWallet.KeyringId.kFilecoin
+  }
+}
 
 describe('Account Utils', () => {
   describe('isHardwareAccount', () => {
@@ -80,8 +95,20 @@ describe('Account Utils', () => {
     it.each(mockAccounts)(
       'should return true if accounts have deviceId and address matches',
       (account) => {
+        if (account.address) {
+          expect(
+            findAccountByAddress(account.address, mockAccountsRegistry)
+          ).toBe(account)
+        }
+      }
+    )
+  })
+  describe('findAccountByAccountId', () => {
+    it.each(mockAccounts)(
+      'should return true if accounts have accountId matches',
+      (account) => {
         expect(
-          findAccountByAddress(account.address, mockAccountsRegistry)
+          findAccountByAccountId(account.accountId, mockAccountsRegistry)
         ).toBe(account)
       }
     )
@@ -89,20 +116,50 @@ describe('Account Utils', () => {
 })
 
 describe('Test getAccountTypeDescription', () => {
-  test('CoinType ETH Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.ETH))
-      .toEqual('braveWalletETHAccountDescrption')
+  test('ETH Account Description', () => {
+    expect(getAccountTypeDescription(mockEthAccountInfo.accountId)).toEqual(
+      'braveWalletETHAccountDescription'
+    )
   })
-  test('CoinType SOL Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.SOL))
-      .toEqual('braveWalletSOLAccountDescrption')
+  test('SOL Account Description', () => {
+    expect(getAccountTypeDescription(mockSolanaAccount.accountId)).toEqual(
+      'braveWalletSOLAccountDescription'
+    )
   })
-  test('CoinType FIL Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.FIL))
-      .toEqual('braveWalletFILAccountDescrption')
+  test('FIL Account Description', () => {
+    expect(getAccountTypeDescription(mockFilecoinAccount.accountId)).toEqual(
+      'braveWalletFILAccountDescription'
+    )
   })
-  test('CoinType BTC Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.BTC))
-      .toEqual('braveWalletBTCAccountDescrption')
+  test('BTC Mainnet Account Description', () => {
+    expect(getAccountTypeDescription(mockBitcoinAccount.accountId)).toEqual(
+      'braveWalletBTCMainnetAccountDescription'
+    )
+  })
+  test('BTC Testnet Account Description', () => {
+    expect(
+      getAccountTypeDescription(mockBitcoinTestnetAccount.accountId)
+    ).toEqual('braveWalletBTCTestnetAccountDescription')
+  })
+})
+
+describe('Test isFVMAccount', () => {
+  test('FIL Mainnet Account + Filecoin EVM Mainnet Network', () => {
+    expect(
+      isFVMAccount(mockFilecoinMainnetAccount, mockFilecoinEVMMMainnetNetwork)
+    ).toBe(true)
+  })
+  test('FIL Testnet Account + Filecoin EVM Testnet Network', () => {
+    expect(
+      isFVMAccount(mockFilecoinAccount, mockFilecoinEVMMTestnetNetwork)
+    ).toBe(true)
+  })
+  test('FIL Testnet Account + Bitcoin Mainnet Network', () => {
+    expect(isFVMAccount(mockFilecoinAccount, mockBtcMainnetNetwork)).toBe(false)
+  })
+  test('FIL Mainnet Account + Bitcoin Mainnet Network', () => {
+    expect(
+      isFVMAccount(mockFilecoinMainnetAccount, mockBtcMainnetNetwork)
+    ).toBe(false)
   })
 })

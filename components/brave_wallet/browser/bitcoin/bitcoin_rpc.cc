@@ -5,12 +5,23 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 
+#include <optional>
+
+#include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/json/rs/src/lib.rs.h"
+#include "components/grit/brave_components_strings.h"
 #include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -47,6 +58,9 @@ bool UrlPathEndsWithSlash(const GURL& base_url) {
 }
 
 const GURL MakeGetChainHeightUrl(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
   if (!UrlPathEndsWithSlash(base_url)) {
     return GURL();
   }
@@ -58,29 +72,85 @@ const GURL MakeGetChainHeightUrl(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-const GURL MakeAddressHistoryUrl(const GURL& base_url,
-                                 const std::string& address,
-                                 const std::string& last_seen_txid) {
+const GURL MakeGetFeeEstimatesUrl(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
   if (!UrlPathEndsWithSlash(base_url)) {
     return GURL();
   }
-  if (!IsAsciiAlphaNumeric(address) || !IsAsciiAlphaNumeric(last_seen_txid)) {
+
+  GURL::Replacements replacements;
+  const std::string path = base::StrCat({base_url.path(), "fee-estimates"});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
+const GURL MakeGetTransactionUrl(const GURL& base_url,
+                                 const std::string& txid) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+  if (!IsAsciiAlphaNumeric(txid)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path =
+      base::StrCat({base_url.path(), base::JoinString({"tx", txid}, "/")});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
+const GURL MakeAddressStatsUrl(const GURL& base_url,
+                               const std::string& address) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+  if (!IsAsciiAlphaNumeric(address)) {
     return GURL();
   }
 
   GURL::Replacements replacements;
   std::string path = base::StrCat(
-      {base_url.path(),
-       base::JoinString({"address", address, "txs", "chain"}, "/")});
-  if (!last_seen_txid.empty()) {
-    base::StrAppend(&path, {"/", last_seen_txid});
+      {base_url.path(), base::JoinString({"address", address}, "/")});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
+const GURL MakeUtxoListUrl(const GURL& base_url, const std::string& address) {
+  if (!base_url.is_valid()) {
+    return GURL();
   }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+  if (!IsAsciiAlphaNumeric(address)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path = base::StrCat(
+      {base_url.path(), base::JoinString({"address", address, "utxo"}, "/")});
+
   replacements.SetPathStr(path);
 
   return base_url.ReplaceComponents(replacements);
 }
 
 const GURL MakePostTransactionUrl(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
   if (!UrlPathEndsWithSlash(base_url)) {
     return GURL();
   }
@@ -92,19 +162,58 @@ const GURL MakePostTransactionUrl(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-absl::optional<std::string> ConvertPlainIntToJsonArray(
-    const std::string& json) {
-  return base::StrCat({"[", json, "]"});
+std::string EndpointHost(const GURL& request_url) {
+  DCHECK(request_url.is_valid());
+  return request_url.host();
 }
 
-absl::optional<std::string> ConvertPlainStringToJsonArray(
+bool ShouldThrottleEndpoint(const std::string& endpoint_host) {
+  // Don't throttle requests if host matches brave proxy.
+  return EndpointHost(GURL(brave_wallet::kBitcoinMainnetRpcEndpoint)) !=
+         endpoint_host;
+}
+
+std::optional<std::string> ConvertPlainStringToJsonArray(
     const std::string& json) {
   return base::StrCat({"[\"", json, "\"]"});
 }
 
+std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(json, ""));
+  if (converted_json.empty()) {
+    return std::nullopt;
+  }
+
+  return converted_json;
+}
+
+template <class TCallback>
+void ReplyWithInvalidJsonError(TCallback callback) {
+  std::move(callback).Run(
+      base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
+}
+
+template <class TCallback>
+void ReplyWithInternalError(TCallback callback) {
+  std::move(callback).Run(
+      base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+}
+
 }  // namespace
 
-namespace brave_wallet {
+namespace brave_wallet::bitcoin_rpc {
+
+struct QueuedRequestData {
+  GURL request_url;
+  BitcoinRpc::RequestIntermediateCallback callback;
+  BitcoinRpc::ResponseConversionCallback conversion_callback;
+};
+
+struct EndpointQueue {
+  uint32_t active_requests = 0;
+  base::circular_deque<QueuedRequestData> requests_queue;
+};
 
 BitcoinRpc::BitcoinRpc(
     PrefService* prefs,
@@ -115,92 +224,194 @@ BitcoinRpc::BitcoinRpc(
 
 BitcoinRpc::~BitcoinRpc() = default;
 
-void BitcoinRpc::GetChainHeight(const std::string& network_id,
+void BitcoinRpc::GetChainHeight(const std::string& chain_id,
                                 GetChainHeightCallback callback) {
-  GURL network_url = GetNetworkURL(prefs_, network_id, mojom::CoinType::BTC);
+  GURL request_url = MakeGetChainHeightUrl(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC));
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
 
   auto internal_callback =
       base::BindOnce(&BitcoinRpc::OnGetChainHeight,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   // Response comes as a plain integer which is not accepted by json sanitizer.
-  // Wrap response into a json array.
-  auto conversion_callback = base::BindOnce(&ConvertPlainIntToJsonArray);
-  RequestInternal(MakeGetChainHeightUrl(network_url),
-                  std::move(internal_callback), std::move(conversion_callback));
+  // Wrap response into a json string array.
+  auto conversion_callback = base::BindOnce(&ConvertPlainStringToJsonArray);
+  RequestInternal(request_url, std::move(internal_callback),
+                  std::move(conversion_callback));
 }
 
 void BitcoinRpc::OnGetChainHeight(GetChainHeightCallback callback,
                                   APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(base::unexpected("Unexpected HTTP result code"));
-    return;
+    return ReplyWithInternalError(std::move(callback));
   }
 
   auto* list = api_request_result.value_body().GetIfList();
   if (!list) {
-    std::move(callback).Run(base::unexpected("Json response is not an array"));
-    return;
+    return ReplyWithInvalidJsonError(std::move(callback));
   }
 
-  if (list->size() != 1 || !list->front().is_int()) {
-    std::move(callback).Run(
-        base::unexpected("Json response value is not an int"));
-    return;
+  uint32_t height = 0;
+  if (list->size() != 1 || !list->front().is_string() ||
+      !base::StringToUint(list->front().GetString(), &height)) {
+    return ReplyWithInvalidJsonError(std::move(callback));
   }
 
-  std::move(callback).Run(base::ok(list->front().GetInt()));
+  std::move(callback).Run(base::ok(height));
 }
 
-void BitcoinRpc::GetAddressHistory(const std::string& network_id,
-                                   const std::string& address,
-                                   const uint32_t max_block_height,
-                                   const std::string& last_seen_txid,
-                                   GetAddressHistoryCallback callback) {
-  GURL network_url = GetNetworkURL(prefs_, network_id, mojom::CoinType::BTC);
+void BitcoinRpc::GetFeeEstimates(const std::string& chain_id,
+                                 GetFeeEstimatesCallback callback) {
+  GURL request_url = MakeGetFeeEstimatesUrl(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC));
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
 
-  auto internal_callback = base::BindOnce(
-      &BitcoinRpc::OnGetAddressHistory, weak_ptr_factory_.GetWeakPtr(),
-      max_block_height, std::move(callback));
-  RequestInternal(MakeAddressHistoryUrl(network_url, address, last_seen_txid),
-                  std::move(internal_callback));
+  auto internal_callback =
+      base::BindOnce(&BitcoinRpc::OnGetFeeEstimates,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(request_url, std::move(internal_callback));
 }
 
-void BitcoinRpc::OnGetAddressHistory(const uint32_t max_block_height,
-                                     GetAddressHistoryCallback callback,
-                                     APIRequestResult api_request_result) {
+void BitcoinRpc::OnGetFeeEstimates(GetFeeEstimatesCallback callback,
+                                   APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(base::unexpected("Unexpected HTTP result code"));
-    return;
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto* dict = api_request_result.value_body().GetIfDict();
+  if (!dict || dict->empty()) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
+
+  std::map<uint32_t, double> estimates;
+
+  for (auto&& item : *dict) {
+    uint32_t blocks = 0;
+    if (!base::StringToUint(item.first, &blocks) ||
+        !item.second.GetIfDouble()) {
+      return ReplyWithInvalidJsonError(std::move(callback));
+    }
+    estimates[blocks] = item.second.GetDouble();
+  }
+
+  std::move(callback).Run(base::ok(std::move(estimates)));
+}
+
+void BitcoinRpc::GetTransaction(const std::string& chain_id,
+                                const std::string& txid,
+                                GetTransactionCallback callback) {
+  GURL request_url = MakeGetTransactionUrl(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC), txid);
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto internal_callback =
+      base::BindOnce(&BitcoinRpc::OnGetTransaction,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(request_url, std::move(internal_callback));
+}
+
+void BitcoinRpc::OnGetTransaction(GetTransactionCallback callback,
+                                  APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto transaction = Transaction::FromValue(api_request_result.value_body());
+  if (!transaction) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
+
+  std::move(callback).Run(base::ok(std::move(*transaction)));
+}
+
+void BitcoinRpc::GetAddressStats(const std::string& chain_id,
+                                 const std::string& address,
+                                 GetAddressStatsCallback callback) {
+  GURL request_url = MakeAddressStatsUrl(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC), address);
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto internal_callback =
+      base::BindOnce(&BitcoinRpc::OnGetAddressStats,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  RequestInternal(request_url, std::move(internal_callback),
+                  std::move(conversion_callback));
+}
+
+void BitcoinRpc::OnGetAddressStats(GetAddressStatsCallback callback,
+                                   APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto result = AddressStats::FromValue(api_request_result.value_body());
+  if (!result) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
+
+  std::move(callback).Run(base::ok(std::move(*result)));
+}
+
+void BitcoinRpc::GetUtxoList(const std::string& chain_id,
+                             const std::string& address,
+                             GetUtxoListCallback callback) {
+  GURL request_url = MakeUtxoListUrl(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC), address);
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto internal_callback =
+      base::BindOnce(&BitcoinRpc::OnGetUtxoList, weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback), address);
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  RequestInternal(request_url, std::move(internal_callback),
+                  std::move(conversion_callback));
+}
+
+void BitcoinRpc::OnGetUtxoList(GetUtxoListCallback callback,
+                               const std::string& address,
+                               APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    return ReplyWithInternalError(std::move(callback));
   }
 
   auto* items = api_request_result.value_body().GetIfList();
   if (!items) {
-    std::move(callback).Run(base::unexpected("Json response is not an array"));
-    return;
+    return ReplyWithInvalidJsonError(std::move(callback));
   }
 
-  std::vector<bitcoin::Transaction> result;
+  UnspentOutputs result;
 
   for (const auto& item : *items) {
-    auto transaction = bitcoin::Transaction::FromRpcValue(item);
-    if (!transaction) {
-      std::move(callback).Run(base::unexpected("Invalid transaction dict"));
-      return;
-    }
-    if (transaction->block_height > max_block_height) {
-      continue;
+    auto utxo = UnspentOutput::FromValue(item);
+    if (!utxo) {
+      return ReplyWithInvalidJsonError(std::move(callback));
     }
 
-    result.push_back(std::move(*transaction));
+    result.push_back(std::move(*utxo));
   }
 
-  std::move(callback).Run(base::ok(result));
+  std::move(callback).Run(base::ok(std::move(result)));
 }
 
-void BitcoinRpc::PostTransaction(const std::string& network_id,
+void BitcoinRpc::PostTransaction(const std::string& chain_id,
                                  const std::vector<uint8_t>& transaction,
                                  PostTransactionCallback callback) {
-  GURL network_url = GetNetworkURL(prefs_, network_id, mojom::CoinType::BTC);
+  GURL request_url = MakePostTransactionUrl(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC));
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
 
   auto payload = base::HexEncode(transaction);
 
@@ -210,30 +421,31 @@ void BitcoinRpc::PostTransaction(const std::string& network_id,
 
   auto conversion_callback = base::BindOnce(&ConvertPlainStringToJsonArray);
   api_request_helper_->Request(
-      net::HttpRequestHeaders::kPostMethod, MakePostTransactionUrl(network_url),
-      payload, "", std::move(internal_callback), {},
-      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
+      net::HttpRequestHeaders::kPostMethod, request_url, payload, "",
+      std::move(internal_callback), {}, {.auto_retry_on_network_change = true},
+      std::move(conversion_callback));
 }
 
 void BitcoinRpc::OnPostTransaction(PostTransactionCallback callback,
                                    APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(base::unexpected("Unexpected HTTP result code"));
-    return;
+    return ReplyWithInternalError(std::move(callback));
   }
 
   auto* list = api_request_result.value_body().GetIfList();
   if (!list) {
-    std::move(callback).Run(base::unexpected("Json response is not an array"));
-    return;
+    return ReplyWithInvalidJsonError(std::move(callback));
   }
 
   if (list->size() != 1 || !list->front().is_string()) {
-    std::move(callback).Run(base::unexpected("Invalid txid string"));
-    return;
+    return ReplyWithInvalidJsonError(std::move(callback));
   }
 
   auto txid = list->front().GetString();
+  std::vector<uint8_t> bytes(32, 0);
+  if (!base::HexStringToSpan(txid, bytes)) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
   std::move(callback).Run(base::ok(txid));
 }
 
@@ -243,10 +455,60 @@ void BitcoinRpc::RequestInternal(
     APIRequestHelper::ResponseConversionCallback conversion_callback) {
   DCHECK(request_url.is_valid());
 
-  api_request_helper_->Request(net::HttpRequestHeaders::kGetMethod, request_url,
-                               "", "", std::move(callback), {},
-                               {.auto_retry_on_network_change = true},
-                               std::move(conversion_callback));
+  auto endpoint_host = EndpointHost(request_url);
+
+  auto& endpoint = endpoints_[endpoint_host];
+
+  auto& request = endpoint.requests_queue.emplace_back();
+  request.request_url = request_url;
+  request.callback = std::move(callback);
+  request.conversion_callback = std::move(conversion_callback);
+
+  MaybeStartQueuedRequest(endpoint_host);
 }
 
-}  // namespace brave_wallet
+void BitcoinRpc::OnRequestInternalDone(const std::string& endpoint_host,
+                                       RequestIntermediateCallback callback,
+                                       APIRequestResult api_request_result) {
+  auto& endpoint = endpoints_[endpoint_host];
+  endpoint.active_requests--;
+  DCHECK_GE(endpoint.active_requests, 0u);
+  std::move(callback).Run(std::move(api_request_result));
+
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&BitcoinRpc::MaybeStartQueuedRequest,
+                                weak_ptr_factory_.GetWeakPtr(), endpoint_host));
+}
+
+void BitcoinRpc::MaybeStartQueuedRequest(const std::string& endpoint_host) {
+  auto& endpoint = endpoints_[endpoint_host];
+
+  auto rpc_throttle = features::kBitcoinRpcThrottle.Get();
+  if (ShouldThrottleEndpoint(endpoint_host) && rpc_throttle > 0 &&
+      endpoint.active_requests >= static_cast<uint32_t>(rpc_throttle)) {
+    return;
+  }
+  if (endpoint.requests_queue.empty()) {
+    return;
+  }
+
+  auto request = std::move(endpoint.requests_queue.front());
+  endpoint.requests_queue.pop_front();
+
+  endpoint.active_requests++;
+  api_request_helper_->Request(
+      net::HttpRequestHeaders::kGetMethod, request.request_url, "", "",
+      base::BindOnce(&BitcoinRpc::OnRequestInternalDone,
+                     weak_ptr_factory_.GetWeakPtr(), endpoint_host,
+                     std::move(request.callback)),
+      {}, {.auto_retry_on_network_change = true},
+      std::move(request.conversion_callback));
+}
+
+void BitcoinRpc::SetUrlLoaderFactoryForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  api_request_helper_->SetUrlLoaderFactoryForTesting(  // IN-TEST
+      std::move(url_loader_factory));
+}
+
+}  // namespace brave_wallet::bitcoin_rpc

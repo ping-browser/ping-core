@@ -6,6 +6,8 @@
 #include "brave/components/request_otr/browser/request_otr_rule.h"
 
 #include <memory>
+#include <optional>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -26,7 +28,7 @@ const char kExclude[] = "exclude";
 
 // Removes trailing dot from |host_piece| if any.
 // Copied from extensions/common/url_pattern.cc
-base::StringPiece CanonicalizeHostForMatching(base::StringPiece host_piece) {
+std::string_view CanonicalizeHostForMatching(std::string_view host_piece) {
   if (base::EndsWith(host_piece, ".")) {
     host_piece.remove_suffix(1);
   }
@@ -74,7 +76,7 @@ void RequestOTRRule::RegisterJSONConverter(
 // are consistent in their private registries configuration.
 const std::string RequestOTRRule::GetETLDForRequestOTR(
     const std::string& host) {
-  base::StringPiece host_piece = CanonicalizeHostForMatching(host);
+  std::string_view host_piece = CanonicalizeHostForMatching(host);
   return net::registry_controlled_domains::GetDomainAndRegistry(
       host_piece, net::registry_controlled_domains::PrivateRegistryFilter::
                       EXCLUDE_PRIVATE_REGISTRIES);
@@ -88,7 +90,7 @@ RequestOTRRule::ParseRules(const std::string& contents) {
   if (contents.empty()) {
     return base::unexpected("Could not obtain request_otr configuration");
   }
-  absl::optional<base::Value> root = base::JSONReader::Read(contents);
+  std::optional<base::Value> root = base::JSONReader::Read(contents);
   if (!root) {
     return base::unexpected("Failed to parse request_otr configuration");
   }

@@ -10,10 +10,11 @@
 #include <utility>
 
 #include "base/files/file.h"
+#include "base/files/file_path.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resources_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -30,20 +31,17 @@ class BraveAdsPurchaseIntentResourceTest : public UnitTestBase {
     resource_ = std::make_unique<PurchaseIntentResource>();
   }
 
-  void LoadResource(const std::string& id) {
+  bool LoadResource(const std::string& id) {
     NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion, id);
     task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
   }
 
   std::unique_ptr<PurchaseIntentResource> resource_;
 };
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, IsNotInitialized) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(resource_->IsInitialized());
 }
 
@@ -52,42 +50,35 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadInvalidResource) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
                                              kPurchaseIntentResourceId));
 
-  // Act
-  LoadResource(kCountryComponentId);
-
-  // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_, LoadFileResource(kPurchaseIntentResourceId,
-                                                 ::testing::_, ::testing::_))
-      .WillOnce(
-          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
-                               LoadFileCallback callback) {
-            const base::FilePath path =
-                GetFileResourcePath().AppendASCII(kMissingResourceId);
+  ON_CALL(ads_client_mock_, LoadComponentResource(kPurchaseIntentResourceId,
+                                                  ::testing::_, ::testing::_))
+      .WillByDefault(::testing::Invoke([](const std::string& /*id*/,
+                                          const int /*version*/,
+                                          LoadFileCallback callback) {
+        const base::FilePath path =
+            ComponentResourcesTestDataPath().AppendASCII(kMissingResourceId);
 
-            base::File file(path, base::File::Flags::FLAG_OPEN |
-                                      base::File::Flags::FLAG_READ);
-            std::move(callback).Run(std::move(file));
-          }));
+        base::File file(
+            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+        std::move(callback).Run(std::move(file));
+      }));
 
-  // Act
-  LoadResource(kCountryComponentId);
-
-  // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResourceWhenLocaleDidChange) {
   // Arrange
-  LoadResource(kCountryComponentId);
+  ASSERT_TRUE(LoadResource(kCountryComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
-  task_environment_.RunUntilIdle();
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -97,14 +88,13 @@ TEST_F(
     BraveAdsPurchaseIntentResourceTest,
     DoNotLoadResourceWhenLocaleDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAdsForTesting();
-  DisableBraveNewsAdsForTesting();
+  test::OptOutOfNotificationAds();
+  test::OptOutOfBraveNewsAds();
 
-  LoadResource(kCountryComponentId);
+  ASSERT_FALSE(LoadResource(kCountryComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
-  task_environment_.RunUntilIdle();
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -113,11 +103,10 @@ TEST_F(
 TEST_F(BraveAdsPurchaseIntentResourceTest,
        DoNotResetResourceWhenLocaleDidChange) {
   // Arrange
-  LoadResource(kCountryComponentId);
+  ASSERT_TRUE(LoadResource(kCountryComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
-  task_environment_.RunUntilIdle();
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -126,11 +115,10 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 TEST_F(BraveAdsPurchaseIntentResourceTest,
        LoadResourceWhenOptedInToNotificationAdsPrefDidChange) {
   // Arrange
-  LoadResource(kCountryComponentId);
+  ASSERT_TRUE(LoadResource(kCountryComponentId));
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -140,14 +128,13 @@ TEST_F(
     BraveAdsPurchaseIntentResourceTest,
     DoNotLoadResourceWhenOptedInToNotificationAdsPrefDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAdsForTesting();
-  DisableBraveNewsAdsForTesting();
+  ASSERT_TRUE(LoadResource(kCountryComponentId));
 
-  LoadResource(kCountryComponentId);
+  test::OptOutOfNotificationAds();
+  test::OptOutOfBraveNewsAds();
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -156,11 +143,10 @@ TEST_F(
 TEST_F(BraveAdsPurchaseIntentResourceTest,
        DoNotResetResourceWhenOptedInToNotificationAdsPrefDidChange) {
   // Arrange
-  LoadResource(kCountryComponentId);
+  ASSERT_TRUE(LoadResource(kCountryComponentId));
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -168,51 +154,35 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
        LoadResourceWhenDidUpdateResourceComponent) {
-  // Arrange
-
-  // Act
-  LoadResource(kCountryComponentId);
-
-  // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(
     BraveAdsPurchaseIntentResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfInvalidCountryComponentId) {
-  // Arrange
-
-  // Act
-  LoadResource(kInvalidCountryComponentId);
-
-  // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_FALSE(LoadResource(kInvalidCountryComponentId));
 }
 
 TEST_F(
     BraveAdsPurchaseIntentResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAdsForTesting();
-  DisableBraveNewsAdsForTesting();
+  test::OptOutOfNotificationAds();
+  test::OptOutOfBraveNewsAds();
 
-  // Act
-  LoadResource(kCountryComponentId);
-
-  // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
        DoNotResetResourceWhenDidUpdateResourceComponent) {
   // Arrange
-  LoadResource(kCountryComponentId);
+  ASSERT_TRUE(LoadResource(kCountryComponentId));
 
-  // Act
-  LoadResource(kCountryComponentId);
-
-  // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 
 }  // namespace brave_ads

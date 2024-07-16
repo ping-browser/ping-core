@@ -40,6 +40,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.ImageUtils;
@@ -205,7 +206,8 @@ public class NTPUtil {
         Spanned learnMoreSpanned = BraveRewardsHelper.spannedFromHtmlString(bannerText);
         SpannableString learnMoreTextSS = new SpannableString(learnMoreSpanned.toString());
 
-        ForegroundColorSpan brOffForegroundSpan = new ForegroundColorSpan(chromeActivity.getResources().getColor(R.color.brave_theme_color));
+        ForegroundColorSpan brOffForegroundSpan =
+                new ForegroundColorSpan(chromeActivity.getColor(R.color.brave_theme_color));
         // setSpan gives us IndexOutOfBoundsException in case of end or start are > length and in
         // some other cases.
         int length = learnMoreTextSS.length();
@@ -235,7 +237,8 @@ public class NTPUtil {
         bundle.putInt(SponsoredImageUtil.NTP_TYPE, ntpType);
         rewardsBottomSheetDialogFragment.setArguments(bundle);
         rewardsBottomSheetDialogFragment.setNewTabPageListener(newTabPageListener);
-        rewardsBottomSheetDialogFragment.show(chromeActivity.getSupportFragmentManager(), "rewards_bottom_sheet_dialog_fragment");
+        rewardsBottomSheetDialogFragment.show(
+                chromeActivity.getSupportFragmentManager(), "rewards_bottom_sheet_dialog_fragment");
         rewardsBottomSheetDialogFragment.setCancelable(false);
     }
 
@@ -462,9 +465,16 @@ public class NTPUtil {
     }
 
     public static boolean isReferralEnabled() {
-        Profile mProfile = Profile.getLastUsedRegularProfile();
-        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
-        boolean isReferralEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile()).getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
+        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
+        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge =
+                NTPBackgroundImagesBridge.getInstance(mProfile);
+        boolean isReferralEnabled =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                                        .getInteger(
+                                                BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION)
+                                == 1
+                        ? true
+                        : false;
         return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
     }
 

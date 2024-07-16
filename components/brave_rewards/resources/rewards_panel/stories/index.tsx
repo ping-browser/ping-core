@@ -17,7 +17,6 @@ import { NotificationCard } from '../components/notification_card'
 
 import { App } from '../components/app'
 
-import grantCaptchaImageURL from './grant_captcha_image.png'
 import * as mojom from '../../shared/lib/mojom'
 import { optional } from '../../shared/lib/optional'
 
@@ -52,26 +51,11 @@ function createHost (): Host {
       vbatDeadline: Date.parse('2023-01-01T00:00:00-05:00'),
       vbatExpired: false
     },
-    grantCaptchaInfo: null && {
-      id: '123',
-      imageURL: grantCaptchaImageURL,
-      hint: 'square',
-      status: 'pending',
-      verifying: false,
-      grantInfo: {
-        id: 'grant123',
-        createdAt: Date.now(),
-        claimableUntil: Date.now() + 120_000,
-        expiresAt: Date.now() + 120_000,
-        amount: 10,
-        type: 'ads'
-      }
-    },
     adaptiveCaptchaInfo: null && {
       url: '',
       status: 'pending'
     },
-    externalWalletProviders: ['uphold', 'gemini'],
+    externalWalletProviders: ['uphold', 'gemini', 'solana'],
     balance: optional(10.2),
     exchangeInfo: {
       rate: 0.75,
@@ -121,9 +105,10 @@ function createHost (): Host {
     availableCountries: ['US'],
     defaultCountry: 'US',
     declaredCountry: 'US',
-    isGrandfatheredUser: false,
     userType: 'unconnected',
-    publishersVisitedCount: 4
+    publishersVisitedCount: 4,
+    selfCustodyInviteDismissed: true,
+    isTermsOfServiceUpdateRequired: true
   })
 
   return {
@@ -184,24 +169,16 @@ function createHost (): Host {
       })
     },
 
-    solveGrantCaptcha (solution) {
-      console.log('solveGrantCaptcha', solution)
-      const { grantCaptchaInfo } = stateManager.getState()
-      if (!grantCaptchaInfo) {
-        return
-      }
-      stateManager.update({
-        grantCaptchaInfo: {
-          ...grantCaptchaInfo,
-          status: 'passed'
-        }
-      })
+    dismissSelfCustodyInvite () {
+      console.log('dismissSelfCustodyInvite')
     },
 
-    clearGrantCaptcha () {
-      stateManager.update({
-        grantCaptchaInfo: null
-      })
+    acceptTermsOfServiceUpdate () {
+      console.log('acceptTermsOfServiceUpdate')
+    },
+
+    resetRewards () {
+      console.log('resetRewards')
     },
 
     clearAdaptiveCaptcha () {
@@ -262,6 +239,25 @@ export function Notification () {
               id: '123',
               timeStamp: Date.now()
             }}
+          />
+        </div>
+      </WithThemeVariables>
+    </LocaleContext.Provider>
+  )
+}
+
+export function ExternalWalletDisconnectedNotification () {
+  return (
+    <LocaleContext.Provider value={locale}>
+      <WithThemeVariables>
+        <div style={{ width: '375px' }}>
+          <NotificationCard
+            notification={{
+              type: 'external-wallet-disconnected',
+              id: '123',
+              timeStamp: Date.now(),
+              provider: 'Uphold'
+            } as any}
           />
         </div>
       </WithThemeVariables>

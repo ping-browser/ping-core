@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -11,14 +12,16 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/sidebar/constants.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/constants.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/version_info/channel.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -46,8 +49,8 @@ class MockSidebarModelObserver : public SidebarModel::Observer {
   MOCK_METHOD(void, OnItemRemoved, (size_t index), (override));
   MOCK_METHOD(void,
               OnActiveIndexChanged,
-              (absl::optional<size_t> old_index,
-               absl::optional<size_t> new_index),
+              (std::optional<size_t> old_index,
+               std::optional<size_t> new_index),
               (override));
   MOCK_METHOD(void,
               OnItemUpdated,
@@ -66,6 +69,9 @@ class SidebarModelTest : public testing::Test {
   ~SidebarModelTest() override = default;
 
   void SetUp() override {
+    // Instantiate SidebarServiceFactory before creating TestingProfile
+    // as SidebarServiceFactory registers profile prefs.
+    SidebarServiceFactory::GetInstance();
     profile_ = std::make_unique<TestingProfile>();
     service_ = SidebarServiceFactory::GetForProfile(profile_.get());
     model_ = std::make_unique<SidebarModel>(profile_.get());
@@ -78,11 +84,11 @@ class SidebarModelTest : public testing::Test {
 
   content::BrowserTaskEnvironment browser_task_environment_;
   testing::NiceMock<MockSidebarModelObserver> observer_;
-  raw_ptr<SidebarService> service_ = nullptr;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<SidebarModel> model_;
   base::ScopedObservation<SidebarModel, SidebarModel::Observer> observation_{
       &observer_};
+  raw_ptr<SidebarService> service_ = nullptr;
 };
 
 TEST_F(SidebarModelTest, ItemsChangedTest) {
@@ -90,7 +96,7 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
 
   model()->Init(nullptr);
 
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   // Add one more item to test with 5 items.
   SidebarItem new_item = SidebarItem::Create(
@@ -133,10 +139,10 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
             service()->items()[2].built_in_item_type);
   EXPECT_EQ(item_data.url, service()->items()[2].url);
   EXPECT_EQ(item_data.title, service()->items()[2].title);
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
   EXPECT_EQ(items_size, service()->items().size());
 
-  model()->SetActiveIndex(1, false);
+  model()->SetActiveIndex(1);
   EXPECT_THAT(model()->active_index(), Optional(1u));
 
   // Move item at 1 to 2. This causes active index change because item at 1 was
@@ -173,8 +179,56 @@ TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {
 
   // Remove builtin talk item and check builtin talk item will be used
   // instead of adding |talk| url.
-  service()->RemoveItemAt(0);
+  const auto items = service()->items();
+  const auto talk_iter =
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
+                         &SidebarItem::built_in_item_type);
+  ASSERT_NE(talk_iter, items.cend());
+  service()->RemoveItemAt(std::distance(items.cbegin(), talk_iter));
   EXPECT_TRUE(HiddenDefaultSidebarItemsContains(service(), talk));
+}
+
+TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
+  model()->SetActiveIndex(1);
+  EXPECT_THAT(model()->active_index(), Optional(1u));
+
+  SidebarItem item_1 = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+
+  // Check active index is still 1 when new item is added at 2.
+  model()->AddItem(item_1, 2, true);
+  EXPECT_THAT(model()->active_index(), Optional(1u));
+
+  SidebarItem item_2 = SidebarItem::Create(
+      GURL("https://www.braves.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+
+  // Check active index is changed to 2 when new item is added at 1.
+  model()->AddItem(item_2, 1, true);
+  EXPECT_THAT(model()->active_index(), Optional(2u));
+}
+
+// Check Leo item is top-most item.
+TEST_F(SidebarModelTest, TopItemTest) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  const auto first_item = service()->items()[0];
+  EXPECT_EQ(first_item.built_in_item_type,
+            SidebarItem::BuiltInItemType::kChatUI);
+#else
+  const auto first_item = service()->items()[0];
+  EXPECT_EQ(first_item.built_in_item_type,
+            SidebarItem::BuiltInItemType::kReadingList);
+#endif
+}
+
+TEST(SidebarUtilTest, SidebarShowOptionsDefaultTest) {
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowNever,
+            GetDefaultShowSidebarOption(version_info::Channel::STABLE));
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
+            GetDefaultShowSidebarOption(version_info::Channel::BETA));
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
+            GetDefaultShowSidebarOption(version_info::Channel::CANARY));
 }
 
 TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {

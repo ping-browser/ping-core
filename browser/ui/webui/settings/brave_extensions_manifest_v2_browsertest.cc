@@ -13,6 +13,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "extensions/browser/disable_reason.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/extension.h"
@@ -57,14 +58,10 @@ class BraveExtensionsManifestV2BrowserTest : public InProcessBrowserTest {
  public:
   BraveExtensionsManifestV2BrowserTest() {
     feature_list_.InitAndEnableFeature(kExtensionsManifestV2);
-
-    // Disabling CSP on webui pages so EvalJS could be run in main world.
-    BraveSettingsUI::ShouldDisableCSPForTesting() = true;
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
   }
 
   ~BraveExtensionsManifestV2BrowserTest() override {
-    BraveSettingsUI::ShouldDisableCSPForTesting() = false;
     BraveSettingsUI::ShouldExposeElementsForTesting() = false;
   }
 

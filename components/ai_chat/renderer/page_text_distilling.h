@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_RENDERER_PAGE_TEXT_DISTILLING_H_
 #define BRAVE_COMPONENTS_AI_CHAT_RENDERER_PAGE_TEXT_DISTILLING_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback_forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class RenderFrame;
@@ -19,7 +19,8 @@ namespace ai_chat {
 
 void DistillPageText(
     content::RenderFrame* render_frame,
-    base::OnceCallback<void(const absl::optional<std::string>&)>);
+    int32_t isolated_world_id,
+    base::OnceCallback<void(const std::optional<std::string>&)>);
 
 }  // namespace ai_chat
 

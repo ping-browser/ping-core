@@ -6,16 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -34,24 +33,15 @@ class ConfirmationStateManager final {
 
   static ConfirmationStateManager& GetInstance();
 
-  void Load(const absl::optional<WalletInfo>& wallet,
-            InitializeCallback callback);
+  void LoadState(const std::optional<WalletInfo>& wallet,
+                 InitializeCallback callback);
 
   bool IsInitialized() const { return is_initialized_; }
 
-  void Save();
+  void SaveState();
 
   std::string ToJson();
   [[nodiscard]] bool FromJson(const std::string& json);
-
-  absl::optional<RewardInfo> GetReward(const base::Value::Dict& dict) const;
-
-  bool GetConfirmationsFromDictionary(const base::Value::Dict& dict,
-                                      ConfirmationList* confirmations) const;
-  ConfirmationList GetConfirmations() const;
-  void AddConfirmation(const ConfirmationInfo& confirmation);
-  bool RemoveConfirmation(const ConfirmationInfo& confirmation);
-  void reset_confirmations() { confirmations_.clear(); }
 
   const ConfirmationTokens& GetConfirmationTokens() const {
     CHECK(is_initialized_);
@@ -75,19 +65,15 @@ class ConfirmationStateManager final {
 
  private:
   void LoadCallback(InitializeCallback callback,
-                    const absl::optional<std::string>& json);
+                    const std::optional<std::string>& json);
 
-  bool ParseConfirmationsFromDictionary(const base::Value::Dict& dict);
+  void ParseConfirmationTokensFromDictionary(const base::Value::Dict& dict);
 
-  bool ParseConfirmationTokensFromDictionary(const base::Value::Dict& dict);
-
-  bool ParsePaymentTokensFromDictionary(const base::Value::Dict& dict);
+  void ParsePaymentTokensFromDictionary(const base::Value::Dict& dict);
 
   bool is_initialized_ = false;
 
-  absl::optional<WalletInfo> wallet_;
-
-  ConfirmationList confirmations_;
+  std::optional<WalletInfo> wallet_;
 
   ConfirmationTokens confirmation_tokens_;
   PaymentTokens payment_tokens_;

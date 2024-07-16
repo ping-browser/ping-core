@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("brave_shields") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "adblock_engine.h",
     "adblock_engine.mm",
@@ -20,8 +19,9 @@ source_set("brave_shields") {
     "//brave/base/mac",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/adblock:rust_lib",
-    "//brave/components/brave_shields/browser:component_installer",
-    "//brave/components/brave_shields/common",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
     "//components/component_updater",
+    "//ios/chrome/browser/shared/model/application_context",
   ]
 }

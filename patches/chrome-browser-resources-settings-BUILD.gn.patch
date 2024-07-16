@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index d86fe848aded1075c0285fa1dadda0aab7af7c23..f59c7339b4a4761e04638bb55e334f00c108ed1e 100644
+index 4233117fc1e8eaaea5b3127756752034e7c207e0..6e1c5ef430950b96eca0975af99a8c097a394f33 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -450,4 +450,5 @@ build_webui("build") {
+@@ -462,4 +462,5 @@ build_webui("build") {
                "$root_gen_dir/chrome/browser/resources/settings_shared/tsc",
                root_build_dir) ]
    }
-+  import("//brave/browser/resources/settings/sources.gni") web_component_files += brave_settings_web_component_files non_web_component_files += brave_settings_non_web_component_files icons_html_files += brave_settings_icons_html_files exclude_html_css_preprocess_files = brave_settings_local_html_files exclude_ts_preprocess_files = brave_settings_local_ts_files preprocess_deps = brave_settings_preprocess_deps ts_extra_deps = brave_settings_ts_extra_deps ts_definitions += brave_settings_ts_definitions if (optimize_webui) { extra_grdp_deps += [ "//brave/browser/resources/settings:resources" ] }
++  import("//brave/browser/resources/settings/sources.gni") web_component_files += brave_settings_web_component_files non_web_component_files += brave_settings_non_web_component_files icons_html_files += brave_settings_icons_html_files exclude_html_css_preprocess_files = brave_settings_local_html_files exclude_ts_preprocess_files = brave_settings_local_ts_files preprocess_deps = brave_settings_preprocess_deps ts_extra_deps = brave_settings_ts_extra_deps ts_definitions += brave_settings_ts_definitions if (optimize_webui) { extra_grdp_deps = [ "//brave/browser/resources/settings:resources" ] extra_grdp_files = [] } mojo_files = brave_settings_mojo_files mojo_files_deps = brave_settings_mojo_files_deps ts_deps += brave_settings_ts_deps
  }

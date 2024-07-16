@@ -8,9 +8,13 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 assert(enable_brave_vpn)
 
 source_set("wireguard") {
-  sources = [ "constants.h" ]
+  sources = [
+    "wireguard_utils.cc",
+    "wireguard_utils.h",
+  ]
   deps = [
     "//base",
-    "//third_party/abseil-cpp:absl",
+    "//crypto",
+    "//third_party/boringssl",
   ]
 }

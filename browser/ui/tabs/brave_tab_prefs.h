@@ -13,18 +13,29 @@ namespace brave_tabs {
 
 enum TabHoverMode { TOOLTIP = 0, CARD = 1, CARD_WITH_PREVIEW = 2 };
 
-extern const char kTabHoverMode[];
+inline constexpr char kTabHoverMode[] = "brave.tabs.hover_mode";
 
-extern const char kVerticalTabsEnabled[];
-extern const char kVerticalTabsCollapsed[];
-extern const char kVerticalTabsShowTitleOnWindow[];
-extern const char kVerticalTabsFloatingEnabled[];
-extern const char kVerticalTabsExpandedWidth[];
+inline constexpr char kVerticalTabsEnabled[] =
+    "brave.tabs.vertical_tabs_enabled";
+inline constexpr char kVerticalTabsCollapsed[] =
+    "brave.tabs.vertical_tabs_collapsed";
+inline constexpr char kVerticalTabsShowTitleOnWindow[] =
+    "brave.tabs.vertical_tabs_show_title_on_window";
+inline constexpr char kVerticalTabsFloatingEnabled[] =
+    "brave.tabs.vertical_tabs_floating_enabled";
+inline constexpr char kVerticalTabsExpandedWidth[] =
+    "brave.tabs.vertical_tabs_expanded_width";
+inline constexpr char kVerticalTabsOnRight[] =
+    "brave.tabs.vertical_tabs_on_right";
+inline constexpr char kVerticalTabsShowScrollbar[] =
+    "brave.tabs.vertical_tabs_show_scrollbar";
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
+void MigrateBraveProfilePrefs(PrefService* prefs);
 
 bool AreTooltipsEnabled(PrefService* prefs);
 bool AreCardPreviewsEnabled(PrefService* prefs);
+
 }  // namespace brave_tabs
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_

@@ -16,19 +16,19 @@ namespace database {
 
 class DatabaseContributionQueuePublishers : public DatabaseTable {
  public:
-  explicit DatabaseContributionQueuePublishers(RewardsEngineImpl& engine);
+  explicit DatabaseContributionQueuePublishers(RewardsEngine& engine);
   ~DatabaseContributionQueuePublishers() override;
 
   void InsertOrUpdate(const std::string& id,
                       std::vector<mojom::ContributionQueuePublisherPtr> list,
-                      LegacyResultCallback callback);
+                      ResultCallback callback);
 
   void GetRecordsByQueueId(const std::string& queue_id,
                            ContributionQueuePublishersListCallback callback);
 
  private:
-  void OnGetRecordsByQueueId(mojom::DBCommandResponsePtr response,
-                             ContributionQueuePublishersListCallback callback);
+  void OnGetRecordsByQueueId(ContributionQueuePublishersListCallback callback,
+                             mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

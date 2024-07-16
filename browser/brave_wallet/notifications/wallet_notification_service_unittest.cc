@@ -6,6 +6,7 @@
 #include "brave/browser/brave_wallet/notifications/wallet_notification_service.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -26,7 +27,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -47,10 +47,11 @@ class WalletNotificationServiceUnitTest : public testing::Test {
                                                         prefs(), local_state());
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), nullptr, keyring_service_.get(), prefs(),
-        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
-    notification_service_ =
-        std::make_unique<WalletNotificationService>(profile());
+        json_rpc_service_.get(), nullptr, nullptr, keyring_service_.get(),
+        prefs(), temp_dir_.GetPath(),
+        base::SequencedTaskRunner::GetCurrentDefault());
+    notification_service_ = std::make_unique<WalletNotificationService>(
+        tx_service_.get(), profile());
     tester_ = std::make_unique<NotificationDisplayServiceTester>(profile());
     keyring_service_->CreateWallet(kMnemonicDivideCruise, "brave",
                                    base::DoNothing());
@@ -59,11 +60,12 @@ class WalletNotificationServiceUnitTest : public testing::Test {
   PrefService* prefs() { return profile_.GetPrefs(); }
   PrefService* local_state() { return &local_state_; }
 
+  AccountUtils GetAccountUtils() {
+    return AccountUtils(keyring_service_.get());
+  }
+
   mojom::AccountIdPtr EthAccount(size_t index) {
-    return keyring_service_
-        ->GetKeyringInfoSync(brave_wallet::mojom::kDefaultKeyringId)
-        ->account_infos[index]
-        ->account_id->Clone();
+    return GetAccountUtils().EnsureEthAccount(index)->account_id->Clone();
   }
 
   bool ShouldDisplayNotifications(mojom::TransactionStatus status) {
@@ -75,7 +77,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
         *EthTransaction::FromTxData(mojom::TxData::New(
             "0x01", "0x4a817c800", "0x5208",
             "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-            std::vector<uint8_t>(), false, absl::nullopt)));
+            std::vector<uint8_t>(), false, std::nullopt)));
     EthTxMeta meta(EthAccount(0), std::move(tx));
     meta.set_status(status);
     notification_service_->OnTransactionStatusChanged(meta.ToTransactionInfo());

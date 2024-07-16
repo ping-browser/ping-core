@@ -4,246 +4,229 @@
 {
   "SRCDIR": "../..",
   "brave/common/extensions/api/brave_api_resources.grd": {
-    "includes": [49500],
+    "includes": [55400],
   },
   "brave/components/resources/brave_components_resources.grd": {
-    "includes": [49550],
+    "includes": [55410],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_adblock/brave_adblock.grd": {
-    "META": {"sizes": {"includes": [50]}},
-    "includes": [49600],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_new_tab/brave_new_tab.grd": {
-    "META": {"sizes": {"includes": [350]}},
-    "includes": [49650],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_welcome/brave_welcome.grd": {
-    "META": {"sizes": {"includes": [200]}},
-    "includes": [51000],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/settings/brave_settings_resources.grd": {
-    "META": {"sizes": {"includes": [400]}},
-    "includes": [51200],
-  },
-  "brave/app/brave_generated_resources.grd": {
-    "includes": [51600],
-    "messages": [52100],
-  },
-  "brave/app/theme/brave_theme_resources.grd": {
-    "structures": [52600],
-  },
-  "brave/app/theme/brave_unscaled_resources.grd": {
-    "includes": [53100],
-  },
-  "brave/components/brave_sync/resources.grd": {
-    "includes": [53600],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_sync/brave_sync.grd": {
-    "META": {"sizes": {"includes": [500]}},
-    "includes": [53700],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_webtorrent/brave_webtorrent.grd": {
-    "META": {"sizes": {"includes": [500]}},
-    "includes": [54200],
-  },
-  "brave/components/brave_rewards/resources/extension/extension_static_resources.grd": {
-    "includes": [54700],
-  },
-  "brave/components/brave_webtorrent/resources.grd": {
-    "includes": [55300],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_extension_panel/brave_rewards_extension_panel.grd": {
-    "META": {"sizes": {"includes": [100]}},
-    "includes": [55400],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_panel/brave_rewards_panel.grd": {
-    "META": {"sizes": {"includes": [100]}},
-    "includes": [55500],
-  },
-  "brave/components/brave_rewards/resources/brave_rewards_static_resources.grd": {
+    "META": {"sizes": {"includes": [10]}},
     "includes": [55600],
   },
   # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_new_tab/brave_new_tab.grd": {
+    "META": {"sizes": {"includes": [50]}},
+    "includes": [55620],
+  },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_welcome/brave_welcome.grd": {
+    "META": {"sizes": {"includes": [20]}},
+    "includes": [55670],
+  },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/settings/brave_settings_resources.grd": {
+    "META": {"sizes": {"includes": [20]}},
+    "includes": [55690],
+  },
+  "brave/app/brave_generated_resources.grd": {
+    "includes": [55700],
+    "messages": [55750],
+  },
+  "brave/app/theme/brave_theme_resources.grd": {
+    "structures": [56700],
+  },
+  "brave/app/theme/brave_unscaled_resources.grd": {
+    "includes": [56800],
+  },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_webtorrent/brave_webtorrent.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [56810],
+  },
+  "brave/components/brave_webtorrent/resources.grd": {
+    "includes": [56820],
+  },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_panel/brave_rewards_panel.grd": {
+    "META": {"sizes": {"includes": [20]}},
+    "includes": [56830],
+  },
+  "brave/components/brave_rewards/resources/brave_rewards_static_resources.grd": {
+    "includes": [56850],
+  },
+  # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_page/brave_rewards_page.grd": {
-    "META": {"sizes": {"includes": [500]}},
-    "includes": [55800],
+    "META": {"sizes": {"includes": [20]}},
+    "includes": [56860],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_internals/brave_rewards_internals.grd": {
-    "META": {"sizes": {"includes": [300]}},
-    "includes": [56300],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [56880],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_tip/brave_rewards_tip.grd": {
-    "META": {"sizes": {"includes": [200]}},
-    "includes": [56600],
+    "META": {"sizes": {"includes": [20]}},
+    "includes": [56890],
   },
   "brave/components/resources/brave_components_strings.grd": {
-    "messages": [56800],
+    "messages": [56950],
   },
   "brave/components/brave_ads/resources/bat_ads_resources.grd": {
-    "includes": [56900]
+    "includes": [59450]
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_page/brave_wallet_page.grd": {
     "META": {"sizes": {"includes": [200]}},
-    "includes": [57800],
+    "includes": [59460],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ethereum_remote_client_page/ethereum_remote_client_page.grd": {
-    "META": {"sizes": {"includes": [100]}},
-    "includes": [57900],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [59660],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_panel/brave_wallet_panel.grd": {
     "META": {"sizes": {"includes": [200]}},
-    "includes": [58000],
+    "includes": [59670],
   },
   "brave/components/brave_extension/extension/resources.grd": {
-    "includes": [58200],
+    "includes": [59950],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_extension/brave_extension.grd": {
-    "META": {"sizes": {"includes": [500]}},
-    "includes": [58700],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [59970],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-webcompat_reporter/webcompat_reporter.grd": {
-    "META": {"sizes": {"includes": [500]}},
-    "includes": [59200],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [59980],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ipfs/ipfs.grd": {
-    "META": {"sizes": {"includes": [500]}},
-    "includes": [59700],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [59990],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-cosmetic_filters/cosmetic_filters.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [60200],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60000],
   },
   "brave/components/tor/resources/tor_static_resources.grd": {
-    "includes": [60450],
+    "includes": [60010],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-tor_internals/tor_internals.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [60700],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60020],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_script/brave_wallet_script.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [60950],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60030],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_vpn_panel/brave_vpn_panel.grd": {
-    "META": {"sizes": {"includes": [50]}},
-    "includes": [61200],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60040],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_shields_panel/brave_shields_panel.grd": {
-    "META": {"sizes": {"includes": [200]}},
-    "includes": [61250],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60050],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-trezor_bridge/trezor_bridge.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [61450],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/sidebar/sidebar_resources.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [61700],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/federated_internals/federated_internals_resources.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [61950],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60060],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-market_display/market_display.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [62200],
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [60070],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_private_new_tab/brave_private_new_tab.grd": {
-    "META": {"sizes": {"includes": [20]}},
-    "includes": [62220],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60170],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-playlist/playlist.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [62470],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60180],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ledger_bridge/ledger_bridge.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [62720],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60190],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-nft_display/nft_display.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [62970],
+    "META": {"sizes": {"includes": [90]}},
+    "includes": [60200],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-cookie_list_opt_in/cookie_list_opt_in.grd": {
-    "META": {"sizes": {"includes": [30]}},
-    "includes": [63000],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60290],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_speedreader_toolbar/brave_speedreader_toolbar.grd": {
-    "META": {"sizes": {"includes": [20]}},
-    "includes": [63020],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60300],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_adblock_internals/brave_adblock_internals.grd": {
-    "META": {"sizes": {"includes": [50]}},
-    "includes": [63040],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60310],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-commands/commands.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [63290],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60320],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_swap_page/brave_wallet_swap_page.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [63300],
+    "META": {"sizes": {"includes": [150]}},
+    "includes": [60330],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_send_page/brave_wallet_send_page.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [63350],
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [60470],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_deposit_page/brave_wallet_deposit_page.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [63370],
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [60570],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_fund_wallet_page/brave_wallet_fund_wallet_page.grd": {
-    "META": {"sizes": {"includes": [250]}},
-    "includes": [63390],
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [60670],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-tip_panel/tip_panel.grd": {
-    "META": {"sizes": {"includes": [100]}},
-    "includes": [63400]
+    "META": {"sizes": {"includes": [20]}},
+    "includes": [60770]
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_ui/ai_chat_ui.grd": {
-    "META": {"sizes": {"includes": [50]}},
-    "includes": [63500],
+    "META": {"sizes": {"includes": [200]}},
+    "includes": [60970],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-skus_internals/skus_internals.grd": {
-    "META": {"sizes": {"includes": [100]}},
-    "includes": [63550],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60980],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_news_internals/brave_news_internals.grd": {
-    "META": {"sizes": {"includes": [100]}},
-    "includes": [63650],
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [60990],
+  },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-line_chart_display/line_chart_display.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [61000]
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_player/brave_player.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [61010],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-parental_control/parental_control.grd": {
-    "META": {"sizes": {"includes": [500]}},
-    "includes": [65000],
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [62000],
   },
   "brave/components/parental_control/resources.grd": {
-    "includes": [71000],
-  } 
+    "includes": [62100],
+  }
 }

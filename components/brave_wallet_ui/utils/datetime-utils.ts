@@ -5,9 +5,22 @@
 
 import { SerializableTimeDelta, TimeDelta } from '../constants/types'
 
-const monthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const monthMap = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+]
 
-export function formatDateAsRelative (date: Date, now: Date = new Date()) {
+export function formatDateAsRelative(date: Date, now: Date = new Date()) {
   // the difference in milliseconds
   const diff = now.getTime() - date.getTime()
 
@@ -48,32 +61,20 @@ export function formatDateAsRelative (date: Date, now: Date = new Date()) {
  * @param {SerializableTimeDelta} timeDelta
  * @return {!Date}
  */
-export function serializedTimeDeltaToJSDate (
+export function serializedTimeDeltaToJSDate(
   timeDelta: SerializableTimeDelta | TimeDelta
 ): Date {
   return new Date(Number(timeDelta.microseconds) / 1000)
 }
 
+const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
+  month: 'numeric',
+  day: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric'
+})
+
 export const formatTimelineDate = (date: Date) => {
-  const formatedDate =
-    new Date(date)
-      .toLocaleDateString(
-        'en-US',
-        {
-          month: 'numeric',
-          day: 'numeric',
-          year: 'numeric'
-        }
-      )
-  const formatedTime =
-    new Date(date)
-      .toLocaleTimeString(
-        'en-US',
-        {
-          hour: 'numeric',
-          minute: 'numeric',
-          hour12: true
-        }
-      )
-  return `${formatedDate} ${formatedTime}`
+  return dateTimeFormatter.format(new Date(date))
 }

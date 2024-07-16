@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { getLocale } from '../api/localeAPI'
-import { addSiteCosmeticFilter, openFilterManagementPage } from '../api/cosmeticFilterAPI'
+import { addSiteCosmeticFilter } from '../api/cosmeticFilterAPI'
+import { signDocument } from '../docSigner'
 
 export let rule = {
   host: '',
@@ -32,7 +33,7 @@ export const applyCosmeticFilter = (host: string, selector: string) => {
 
 // parent menu
 chrome.contextMenus.create({
-  title: 'Brave',
+  title: 'Ping',
   id: 'brave',
   contexts: ['all']
 })
@@ -43,9 +44,15 @@ chrome.contextMenus.create({
   contexts: ['all'],
   enabled: !chrome.extension.inIncognitoContext
 })
+// chrome.contextMenus.create({
+//   title: getLocale('manageCustomFilters'),
+//   id: 'manageCustomFilters',
+//   parentId: 'brave',
+//   contexts: ['all']
+// })
 chrome.contextMenus.create({
-  title: getLocale('manageCustomFilters'),
-  id: 'manageCustomFilters',
+  title: 'Sign PDF',
+  id: 'documentSigner',
   parentId: 'brave',
   contexts: ['all']
 })
@@ -73,9 +80,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) {
   switch (info.menuItemId) {
-    case 'manageCustomFilters':
-      openFilterManagementPage()
-      break
+    // case 'manageCustomFilters':
+    //   openFilterManagementPage()
+    //   break
     case 'elementPickerMode': {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs: [chrome.tabs.Tab]) => {
         if (tabs.length > 0) {
@@ -84,6 +91,9 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
       })
       break
     }
+    case 'documentSigner':
+      signDocument();
+      break
     default: {
       console.warn(`[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}`)
     }

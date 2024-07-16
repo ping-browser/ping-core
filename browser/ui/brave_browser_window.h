@@ -6,7 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include <string>
+
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -21,10 +24,13 @@ class Sidebar;
 }  // namespace sidebar
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 namespace speedreader {
 class SpeedreaderBubbleView;
 class SpeedreaderTabHelper;
+enum class SpeedreaderBubbleLocation : int;
 }  // namespace speedreader
+#endif
 
 class BraveBrowserWindow : public BrowserWindow {
  public:
@@ -42,12 +48,9 @@ class BraveBrowserWindow : public BrowserWindow {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
-      bool is_enabled);
+      speedreader::SpeedreaderBubbleLocation location);
   virtual void ShowReaderModeToolbar() {}
   virtual void HideReaderModeToolbar() {}
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  virtual void OpenAiChatPanel() {}
-#endif
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -55,10 +58,17 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual void ToggleSidebar();
   virtual bool HasSelectedURL() const;
   virtual void CleanAndCopySelectedURL();
+
+  // Returns true when bubble is shown.
+  virtual bool ShowBraveHelpBubbleView(const std::string& text);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   virtual void ShowPlaylistBubble() {}
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  virtual void ShowWaybackMachineBubble() {}
 #endif
 
   virtual void ShowBraveVPNBubble() {}

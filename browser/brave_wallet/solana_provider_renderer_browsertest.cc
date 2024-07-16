@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
@@ -10,7 +12,6 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
@@ -19,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
@@ -31,6 +33,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -320,7 +323,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
       events_listener_.Bind(std::move(events_listener));
     }
   }
-  void Connect(absl::optional<base::Value::Dict> arg,
+  void Connect(std::optional<base::Value::Dict> arg,
                ConnectCallback callback) override {
     if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(SolanaProviderError::kSuccess, "",
@@ -333,7 +336,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   void Disconnect() override {
     // Used to test onAccountChanged
     if (emit_empty_account_changed_) {
-      events_listener_->AccountChangedEvent(absl::nullopt);
+      events_listener_->AccountChangedEvent(std::nullopt);
     } else {
       events_listener_->AccountChangedEvent(kTestPublicKey);
     }
@@ -385,7 +388,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   }
   void SignAndSendTransaction(
       brave_wallet::mojom::SolanaSignTransactionParamPtr param,
-      absl::optional<base::Value::Dict> send_options,
+      std::optional<base::Value::Dict> send_options,
       SignAndSendTransactionCallback callback) override {
     EXPECT_EQ(param->encoded_serialized_msg,
               brave_wallet::Base58Encode(kSerializedMessage));
@@ -409,7 +412,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     }
   }
   void SignMessage(const std::vector<uint8_t>& blob_msg,
-                   const absl::optional<std::string>& display_encoding,
+                   const std::optional<std::string>& display_encoding,
                    SignMessageCallback callback) override {
     EXPECT_EQ(blob_msg, kMessageToSign);
     base::Value::Dict result;
@@ -441,7 +444,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     error_message_ = error_message;
   }
 
-  void SetSendOptions(absl::optional<base::Value::Dict> options) {
+  void SetSendOptions(std::optional<base::Value::Dict> options) {
     send_options_ = std::move(options);
   }
 
@@ -457,7 +460,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   SolanaProviderError error_ = SolanaProviderError::kSuccess;
   std::string error_message_;
   bool emit_empty_account_changed_ = false;
-  absl::optional<base::Value::Dict> send_options_;
+  std::optional<base::Value::Dict> send_options_;
   mojo::Remote<brave_wallet::mojom::SolanaEventsListener> events_listener_;
 };
 
@@ -481,11 +484,11 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
   }
 
   TestSolanaProvider* GetProvider(content::RenderFrameHost* frame_host) {
-    if (!provider_map_.contains(frame_host)) {
+    if (!provider_map_.contains(frame_host->GetGlobalId())) {
       return nullptr;
     }
     return static_cast<TestSolanaProvider*>(
-        provider_map_.at(frame_host)->impl());
+        provider_map_.at(frame_host->GetGlobalId())->impl());
   }
   bool WaitForBinding(content::RenderFrameHost* render_frame_host,
                       base::OnceClosure callback) {
@@ -496,7 +499,7 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
     return true;
   }
   bool IsBound(content::RenderFrameHost* frame_host) {
-    return provider_map_.contains(frame_host);
+    return provider_map_.contains(frame_host->GetGlobalId());
   }
 
  private:
@@ -505,21 +508,21 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
       mojo::PendingReceiver<brave_wallet::mojom::SolanaProvider> receiver) {
     auto provider = mojo::MakeSelfOwnedReceiver(
         std::make_unique<TestSolanaProvider>(), std::move(receiver));
-    provider->set_connection_error_handler(
-        base::BindOnce(&TestBraveContentBrowserClient::OnDisconnect,
-                       weak_ptr_factory_.GetWeakPtr(), frame_host));
-    provider_map_[frame_host] = provider;
+    provider->set_connection_error_handler(base::BindOnce(
+        &TestBraveContentBrowserClient::OnDisconnect,
+        weak_ptr_factory_.GetWeakPtr(), frame_host->GetGlobalId()));
+    provider_map_[frame_host->GetGlobalId()] = provider;
     if (quit_on_binding_) {
       std::move(quit_on_binding_).Run();
     }
   }
-  void OnDisconnect(content::RenderFrameHost* frame_host) {
-    provider_map_.erase(frame_host);
+  void OnDisconnect(content::GlobalRenderFrameHostId frame_host_id) {
+    provider_map_.erase(frame_host_id);
   }
 
   base::OnceClosure quit_on_binding_;
   base::flat_map<
-      content::RenderFrameHost*,
+      content::GlobalRenderFrameHostId,
       mojo::SelfOwnedReceiverRef<brave_wallet::mojom::SolanaProvider>>
       provider_map_;
   base::WeakPtrFactory<TestBraveContentBrowserClient> weak_ptr_factory_{this};
@@ -531,10 +534,6 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
  public:
   SolanaProviderRendererTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitWithFeatures(
-        {brave_wallet::features::kBraveWalletSolanaFeature,
-         brave_wallet::features::kBraveWalletSolanaProviderFeature},
-        {});
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -598,26 +597,11 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
  protected:
   net::EmbeddedTestServer https_server_;
   TestBraveContentBrowserClient test_content_browser_client_;
-  base::test::ScopedFeatureList feature_list_;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServerHandle test_server_handle_;
 };
-
-class SolanaProviderDisabledTest : public SolanaProviderRendererTest {
- public:
-  SolanaProviderDisabledTest() {
-    feature_list_.Reset();
-    feature_list_.InitAndDisableFeature(
-        brave_wallet::features::kBraveWalletSolanaFeature);
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(SolanaProviderDisabledTest, SolanaObject) {
-  auto result = EvalJs(web_contents(browser()), CheckSolanaProviderScript);
-  EXPECT_EQ(base::Value(false), result.value);
-}
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Incognito) {
   Browser* private_browser = CreateIncognitoBrowser(nullptr);
@@ -664,7 +648,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
-                       DoNotAttachIfNoWalletCreated) {
+                       AttachEvenIfNoWalletCreated) {
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           browser()->profile());
@@ -675,10 +659,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop(browser());
 
-  std::string command = "window.solana.isBraveWallet";
-  EXPECT_TRUE(content::EvalJs(web_contents(browser()), command)
-                  .error.find("Cannot read properties of undefined") !=
-              std::string::npos);
+  constexpr char kEvalIsBraveWallet[] = "window.solana.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(web_contents(browser())->GetPrimaryMainFrame(),
+                              kEvalIsBraveWallet)
+                  .ExtractBool());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
 
@@ -927,7 +911,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
              SignAndSendTransactionScript(tx_with_send_options));
   EXPECT_EQ(base::Value(true), send_options_result.value);
 
-  provider->SetSendOptions(absl::nullopt);
+  provider->SetSendOptions(std::nullopt);
   const std::string tx =
       base::StrCat({"(", CreateTransactionScript(kSerializedTx), ")"});
 
@@ -946,7 +930,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   auto result2 =
       EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx2));
   EXPECT_EQ(base::Value(true), result2.value);
-  provider->SetSendOptions(absl::nullopt);
+  provider->SetSendOptions(std::nullopt);
 
   // no arg
   auto result3 =

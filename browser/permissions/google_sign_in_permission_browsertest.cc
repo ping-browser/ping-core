@@ -5,8 +5,8 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/google_sign_in_permission/features.h"
@@ -35,6 +35,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
+#include "services/network/public/mojom/cookie_manager.mojom.h"
 #include "url/gurl.h"
 
 using net::test_server::EmbeddedTestServer;

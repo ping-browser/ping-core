@@ -5,6 +5,7 @@
 
 #include "brave/components/skus/renderer/skus_js_handler.h"
 
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -21,11 +22,16 @@
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
 
 namespace skus {
 
@@ -43,18 +49,22 @@ bool SkusJSHandler::EnsureConnected() {
   }
   bool result = skus_service_.is_bound();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (!vpn_service_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
-        vpn_service_.BindNewPipeAndPassReceiver());
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
+    if (!vpn_service_.is_bound()) {
+      render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+          vpn_service_.BindNewPipeAndPassReceiver());
+    }
+    result = result && vpn_service_.is_bound();
   }
-  result = result && vpn_service_.is_bound();
 #endif
 
   return result;
 }
 
 void SkusJSHandler::Install(content::RenderFrame* render_frame) {
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(render_frame);
+  v8::Isolate* isolate =
+      render_frame->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame->GetWebFrame()->MainWorldScriptContext();
@@ -129,7 +139,7 @@ void SkusJSHandler::OnRefreshOrder(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
@@ -194,10 +204,14 @@ void SkusJSHandler::OnFetchOrderCredentials(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  v8::Local<v8::String> result;
-  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+  v8::Local<v8::String> result =
+      v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
 
-  std::ignore = resolver->Resolve(context, result);
+  if (response.empty()) {
+    std::ignore = resolver->Resolve(context, result);
+  } else {
+    std::ignore = resolver->Reject(context, result);
+  }
 }
 
 // window.chrome.braveSkus.prepare_credentials_presentation
@@ -286,7 +300,7 @@ void SkusJSHandler::OnCredentialSummary(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
@@ -307,7 +321,9 @@ void SkusJSHandler::OnCredentialSummary(
     return;
   }
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_service_->LoadPurchasedState(domain);
+  if (vpn_service_.is_bound()) {
+    vpn_service_->LoadPurchasedState(domain);
+  }
 #endif
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(*result_dict, context);

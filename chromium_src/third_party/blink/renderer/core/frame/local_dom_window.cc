@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
@@ -17,8 +17,14 @@
 #define resizeTo resizeTo_ChromiumImpl
 #define moveTo moveTo_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"
+#define BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS                 \
+  if (WebContentSettingsClient* settings_client =                  \
+          GetFrame()->GetContentSettingsClient()) {                \
+    script_enabled = settings_client->AllowScript(script_enabled); \
+  }
 
+#include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"
+#undef BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS
 #undef outerHeight
 #undef outerWidth
 #undef screenX
@@ -32,29 +38,17 @@ using brave::BlockScreenFingerprinting;
 using brave::FarbleInteger;
 using brave::FarbleKey;
 
-void LocalDOMWindow::SetEphemeralStorageOrigin(
-    const SecurityOrigin* ephemeral_storage_origin) {
-  DCHECK(ephemeral_storage_origin);
-  ephemeral_storage_key_ =
-      BlinkStorageKey::CreateFirstParty(ephemeral_storage_origin);
-}
+const SecurityOrigin* GetEphemeralStorageOrigin(LocalDOMWindow* window) {
+  auto* frame = window->GetFrame();
+  if (!frame) {
+    return nullptr;
+  }
 
-const SecurityOrigin* LocalDOMWindow::GetEphemeralStorageOrigin() const {
-  return ephemeral_storage_key_
-             ? ephemeral_storage_key_->GetSecurityOrigin().get()
-             : nullptr;
-}
+  if (auto* settings_client = frame->GetContentSettingsClient()) {
+    return settings_client->GetEphemeralStorageOriginSync().Get();
+  }
 
-const BlinkStorageKey& LocalDOMWindow::GetEphemeralStorageKeyOrStorageKey()
-    const {
-  return ephemeral_storage_key_ ? *ephemeral_storage_key_ : storage_key_;
-}
-
-const SecurityOrigin*
-LocalDOMWindow::GetEphemeralStorageOriginOrSecurityOrigin() const {
-  return ephemeral_storage_key_
-             ? ephemeral_storage_key_->GetSecurityOrigin().get()
-             : GetSecurityOrigin();
+  return nullptr;
 }
 
 int LocalDOMWindow::outerWidth() const {
@@ -95,13 +89,16 @@ int LocalDOMWindow::screenY() const {
              : screenY_ChromiumImpl();
 }
 
-void LocalDOMWindow::resizeTo(int width, int height) const {
+void LocalDOMWindow::resizeTo(int width,
+                              int height,
+                              ExceptionState& exception_state) const {
   ExecutionContext* context = GetExecutionContext();
   if (BlockScreenFingerprinting(context)) {
     resizeTo_ChromiumImpl(width + outerWidth_ChromiumImpl() - outerWidth(),
-                          height + outerHeight_ChromiumImpl() - outerHeight());
+                          height + outerHeight_ChromiumImpl() - outerHeight(),
+                          exception_state);
   } else {
-    resizeTo_ChromiumImpl(width, height);
+    resizeTo_ChromiumImpl(width, height, exception_state);
   }
 }
 

@@ -4,10 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import {
-  BraveWallet,
-  SerializableTransactionInfo,
-} from '../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../constants/types'
 import { SwapExchangeProxy } from '../common/constants/registry'
 
 // utils
@@ -16,10 +13,8 @@ import Amount from './amount'
 // mocks
 import {
   getMockedTransactionInfo,
-  mockERC20Token,
-  mockEthAccountInfo,
+  mockEthAccountInfo
 } from '../common/constants/mocks'
-import { mockWalletState } from '../stories/mock-data/mock-wallet-state'
 import {
   findTransactionToken,
   getTransactionGasLimit,
@@ -28,9 +23,13 @@ import {
   transactionHasSameAddressError,
   isSendingToKnownTokenContractAddress
 } from './tx-utils'
+import {
+  mockERC20Token,
+  mockErc20TokensList
+} from '../stories/mock-data/mock-asset-options'
 
 const tokenList = [
-  ...mockWalletState.fullTokenList,
+  ...mockErc20TokensList,
   { ...mockERC20Token, contractAddress: '0xdeadbeef' },
   mockERC20Token
 ]
@@ -130,11 +129,16 @@ describe('Transaction Parsing utils', () => {
             ethTxData: {} as any,
             filTxData: undefined,
             solanaTxData: undefined,
+            btcTxData: undefined,
+            zecTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
                 ...mockTransactionInfo.txDataUnion.ethTxData1559.baseData,
-                to: name === '0x Swap' ? SwapExchangeProxy : mockEthAccountInfo.address
+                to:
+                  name === '0x Swap'
+                    ? SwapExchangeProxy
+                    : mockEthAccountInfo.address
               }
             }
           }
@@ -167,6 +171,8 @@ describe('Transaction Parsing utils', () => {
             ethTxData: {} as any,
             filTxData: undefined,
             solanaTxData: undefined,
+            btcTxData: undefined,
+            zecTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
@@ -254,6 +260,8 @@ describe('Transaction Parsing utils', () => {
             ethTxData: {} as any,
             filTxData: undefined,
             solanaTxData: undefined,
+            btcTxData: undefined,
+            zecTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
@@ -286,6 +294,8 @@ describe('Transaction Parsing utils', () => {
             ethTxData: {} as any,
             filTxData: undefined,
             solanaTxData: undefined,
+            btcTxData: undefined,
+            zecTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
@@ -338,6 +348,8 @@ describe('Transaction Parsing utils', () => {
               ethTxData: {} as any,
               filTxData: undefined,
               solanaTxData: undefined,
+              btcTxData: undefined,
+              zecTxData: undefined,
               ethTxData1559: {
                 ...baseMockTransactionInfo.txDataUnion.ethTxData1559,
                 baseData: {
@@ -357,6 +369,8 @@ describe('Transaction Parsing utils', () => {
               ethTxData: {} as any,
               filTxData: undefined,
               solanaTxData: undefined,
+              btcTxData: undefined,
+              zecTxData: undefined,
               ethTxData1559: {
                 ...baseMockTransactionInfo.txDataUnion.ethTxData1559,
                 baseData: {
@@ -378,6 +392,8 @@ describe('Transaction Parsing utils', () => {
               ethTxData: {} as any,
               filTxData: undefined,
               solanaTxData: undefined,
+              btcTxData: undefined,
+              zecTxData: undefined,
               ethTxData1559: {
                 ...baseMockTransactionInfo.txDataUnion.ethTxData1559,
                 baseData: {

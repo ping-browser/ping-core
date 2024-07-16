@@ -1,4 +1,4 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -7,12 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_CONFIRMATION_QUEUE_DELEGATE_MOCK_H_
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
-
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
-
-struct ConfirmationInfo;
 
 class ConfirmationQueueDelegateMock : public ConfirmationQueueDelegate {
  public:
@@ -34,6 +31,10 @@ class ConfirmationQueueDelegateMock : public ConfirmationQueueDelegate {
               (const ConfirmationInfo& confirmation));
 
   MOCK_METHOD(void,
+              OnFailedToAddConfirmationToQueue,
+              (const ConfirmationInfo& confirmation));
+
+  MOCK_METHOD(void,
               OnWillProcessConfirmationQueue,
               (const ConfirmationInfo& confirmation, base::Time process_at));
 
@@ -44,6 +45,8 @@ class ConfirmationQueueDelegateMock : public ConfirmationQueueDelegate {
   MOCK_METHOD(void,
               OnFailedToProcessConfirmationQueue,
               (const ConfirmationInfo& confirmation));
+
+  MOCK_METHOD(void, OnFailedToProcessNextConfirmationInQueue, ());
 
   MOCK_METHOD(void, OnDidExhaustConfirmationQueue, ());
 };

@@ -14,11 +14,11 @@ VerificationKey::VerificationKey(
     const challenge_bypass_ristretto::VerificationKey& verification_key)
     : verification_key_(verification_key) {}
 
-absl::optional<VerificationSignature> VerificationKey::Sign(
+std::optional<VerificationSignature> VerificationKey::Sign(
     const std::string& message) {
   return ValueOrLogError<challenge_bypass_ristretto::VerificationSignature,
                          VerificationSignature>(
-      verification_key_.sign(message));
+      verification_key_.Sign(message));
 }
 
 bool VerificationKey::Verify(
@@ -28,7 +28,7 @@ bool VerificationKey::Verify(
     return false;
   }
 
-  return verification_key_.verify(verification_signature.get(), message)
+  return verification_key_.Verify(verification_signature.get(), message)
       .value_or(false);
 }
 

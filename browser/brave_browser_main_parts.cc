@@ -5,11 +5,13 @@
 
 #include "brave/browser/brave_browser_main_parts.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/command_line.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_sync/features.h"
@@ -19,8 +21,10 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_language_list.h"
@@ -49,8 +53,6 @@
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
-#include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
-#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -61,15 +63,19 @@
 #include "brave/browser/android/preferences/features.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR) || !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/browser_process.h"
-#endif
-
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_system.h"
 #endif
+
+int BraveBrowserMainParts::PreMainMessageLoopRun() {
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()
+      ->RegisterOnDemandUpdater(
+          &g_browser_process->component_updater()->GetOnDemandUpdater());
+
+  return ChromeBrowserMainParts::PreMainMessageLoopRun();
+}
 
 void BraveBrowserMainParts::PreBrowserStart() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -140,15 +146,6 @@ void BraveBrowserMainParts::PostBrowserStart() {
       if (profile && infobar_manager) {
         BraveConfirmP3AInfoBarDelegate::Create(
             infobar_manager, g_browser_process->local_state());
-        auto* sync_service = SyncServiceFactory::IsSyncAllowed(profile)
-                                 ? SyncServiceFactory::GetForProfile(profile)
-                                 : nullptr;
-        const bool is_v2_user =
-            sync_service && sync_service->GetUserSettings()
-                                ->IsInitialSyncFeatureSetupComplete();
-        SyncV2MigrateInfoBarDelegate::Create(infobar_manager, is_v2_user,
-                                             profile, browser);
-
         SyncCannotRunInfoBarDelegate::Create(infobar_manager, profile, browser);
 
         BraveSyncAccountDeletedInfoBarDelegate::Create(active_web_contents,

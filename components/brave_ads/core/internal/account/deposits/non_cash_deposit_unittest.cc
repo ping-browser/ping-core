@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/non_cash_deposit.h"
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,13 +17,11 @@ class BraveAdsNonCashDepositTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNonCashDepositTest, GetValue) {
   // Arrange
-
-  // Assert
-  base::MockCallback<GetDepositCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, /*value*/ 0.0));
-
-  // Act
   NonCashDeposit deposit;
+
+  // Act & Assert
+  base::MockCallback<GetDepositCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true, /*value=*/0.0));
   deposit.GetValue(kCreativeInstanceId, callback.Get());
 }
 

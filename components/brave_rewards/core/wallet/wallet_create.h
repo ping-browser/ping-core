@@ -6,31 +6,31 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_CREATE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_CREATE_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet {
 
 class WalletCreate {
  public:
-  explicit WalletCreate(RewardsEngineImpl& engine);
+  explicit WalletCreate(RewardsEngine& engine);
 
-  void CreateWallet(absl::optional<std::string>&& geo_country,
+  void CreateWallet(std::optional<std::string>&& geo_country,
                     CreateRewardsWalletCallback callback);
 
  private:
   template <typename Result>
   void OnResult(CreateRewardsWalletCallback,
-                absl::optional<std::string>&& geo_country,
+                std::optional<std::string>&& geo_country,
                 Result&&);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace wallet

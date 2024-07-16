@@ -5,8 +5,11 @@
 
 import * as React from 'react'
 import { render } from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
+import { setIconBasePath } from '@brave/leo/react/icon'
+
 import { loadTimeData } from '../../common/loadTimeData'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
@@ -14,15 +17,13 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import store, { walletPanelApiProxy } from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
-import { LibContext } from '../common/context/lib.context'
-import * as Lib from '../common/async/lib'
 import { ApiProxyContext } from '../common/context/api-proxy.context'
-import { setIconBasePath } from '@brave/leo/react/icon'
 import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
 setIconBasePath('chrome://resources/brave-icons')
 
-function App () {
-  const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
+function App() {
+  const [initialThemeType, setInitialThemeType] =
+    React.useState<chrome.braveTheme.ThemeType>()
   React.useEffect(() => {
     chrome.braveTheme.getBraveThemeType(setInitialThemeType)
   }, [])
@@ -33,29 +34,31 @@ function App () {
 
   return (
     <Provider store={store}>
-      {initialThemeType &&
+      {initialThemeType && (
         <BraveCoreThemeProvider
           initialThemeType={initialThemeType}
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
           <ApiProxyContext.Provider value={walletPanelApiProxy}>
-            <LibContext.Provider value={Lib}>
+            <BrowserRouter>
               <Container />
-            </LibContext.Provider>
+            </BrowserRouter>
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
-      }
+      )}
     </Provider>
   )
 }
 
-function initialize () {
+function initialize() {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize({
-    skipBalancesRefresh: true
-  }))
   render(<App />, document.getElementById('mountPoint'))
+  store.dispatch(
+    WalletActions.initialize({
+      skipBalancesRefresh: true
+    })
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

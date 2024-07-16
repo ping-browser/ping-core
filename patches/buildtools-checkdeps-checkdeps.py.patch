@@ -1,13 +1,11 @@
 diff --git a/buildtools/checkdeps/checkdeps.py b/buildtools/checkdeps/checkdeps.py
-index 19e0854786de291fd9c94ac64dbbe181faee6180..f4e8c49b31da1e2b8f2c6e0570fbafd8564752da 100755
+index 19e0854786de291fd9c94ac64dbbe181faee6180..55e02d2aee620da2312c0d41e5965ea828fc471b 100755
 --- a/buildtools/checkdeps/checkdeps.py
 +++ b/buildtools/checkdeps/checkdeps.py
-@@ -24,7 +24,7 @@ import cpp_checker
- import java_checker
- import results
- 
--from builddeps import DepsBuilder
-+from buildtools.checkdeps.brave_builddeps import DepsBuilder
- from rules import Rule, Rules
+@@ -290,5 +290,6 @@ def main():
+   return deps_checker.Report()
  
  
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if '__main__' == __name__:
+   sys.exit(main())

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEMS_SCROLL_VIEW_H_
 
 #include <memory>
+#include <optional>
 #include <set>
 
 #include "base/memory/raw_ptr.h"
@@ -41,8 +42,8 @@ class SidebarItemsScrollView : public views::View,
                                public views::BoundsAnimatorObserver,
                                public views::DragController,
                                public sidebar::SidebarModel::Observer {
+  METADATA_HEADER(SidebarItemsScrollView, views::View)
  public:
-  METADATA_HEADER(SidebarItemsScrollView);
   explicit SidebarItemsScrollView(BraveBrowser* browser);
   ~SidebarItemsScrollView() override;
 
@@ -50,7 +51,7 @@ class SidebarItemsScrollView : public views::View,
   SidebarItemsScrollView operator=(const SidebarItemsScrollView&) = delete;
 
   // views::View overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   void OnMouseEvent(ui::MouseEvent* event) override;
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
@@ -84,8 +85,8 @@ class SidebarItemsScrollView : public views::View,
                    size_t from,
                    size_t to) override;
   void OnItemRemoved(size_t index) override;
-  void OnActiveIndexChanged(absl::optional<size_t> old_index,
-                            absl::optional<size_t> new_index) override;
+  void OnActiveIndexChanged(std::optional<size_t> old_index,
+                            std::optional<size_t> new_index) override;
   void OnItemUpdated(const sidebar::SidebarItem& item,
                      const sidebar::SidebarItemUpdate& update) override;
   void OnFaviconUpdatedForItem(const sidebar::SidebarItem& item,
@@ -94,7 +95,6 @@ class SidebarItemsScrollView : public views::View,
   bool IsItemReorderingInProgress() const;
   bool IsBubbleVisible() const;
   void Update();
-  void SetSidebarOnLeft(bool sidebar_on_left);
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -110,6 +110,13 @@ class SidebarItemsScrollView : public views::View,
   gfx::Rect GetTargetScrollContentsViewRectTo(bool top);
   void ScrollContentsViewBy(int offset, bool animate);
 
+  // Returns true when needs scroll for showing an item at |index|.
+  bool NeedScrollForItemAt(size_t index) const;
+
+  // Get bounds for |contents_view_| to make item at |index| visible in
+  // scroll view.
+  gfx::Rect GetTargetScrollContentsViewRectForItemAt(size_t index) const;
+
   // Put NOLINT here because our cpp linter complains -
   // "make const or use a pointer: ui::mojom::DragOperation& output_drag_op"
   // But can't avoid because View::DropCallback uses non const refererence
@@ -122,12 +129,13 @@ class SidebarItemsScrollView : public views::View,
   bool IsInVisibleContentsViewBounds(const gfx::Point& position) const;
   void ClearDragIndicator();
 
+  std::optional<size_t> lastly_added_item_index_;
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<views::ImageButton> up_arrow_ = nullptr;
   raw_ptr<views::ImageButton> down_arrow_ = nullptr;
   raw_ptr<SidebarItemsContentsView> contents_view_ = nullptr;
   std::unique_ptr<SidebarItemDragContext> drag_context_;
-  std::unique_ptr<views::BoundsAnimator> scroll_animator_for_new_item_;
+  std::unique_ptr<views::BoundsAnimator> scroll_animator_for_item_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_smooth_;
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>

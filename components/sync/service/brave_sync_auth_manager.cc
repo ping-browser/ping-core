@@ -114,15 +114,15 @@ std::string BraveSyncAuthManager::GenerateAccessToken(
   // base64(timestamp_hex|signed_timestamp_hex|public_key_hex)
   const std::string access_token =
       timestamp_hex + "|" + signed_timestamp_hex + "|" + public_key_hex;
-  std::string encoded_access_token;
-  base::Base64Encode(access_token, &encoded_access_token);
+  std::string encoded_access_token = base::Base64Encode(access_token);
   DCHECK(!encoded_access_token.empty());
 
   return encoded_access_token + AppendBraveServiceKeyHeaderString();
 }
 
 void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {
-  std::string timestamp = std::to_string(int64_t(time.ToJsTime()));
+  std::string timestamp =
+      std::to_string(int64_t(time.InMillisecondsFSinceUnixEpoch()));
   if (public_key_.empty() || private_key_.empty()) {
     return;
   }

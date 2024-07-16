@@ -7,14 +7,7 @@
 
 namespace dark_mode {
 
-void MigrateBraveDarkModePrefs(Profile* profile) {
-}
-
 void RegisterBraveDarkModeLocalStatePrefs(PrefRegistrySimple* registry) {
-}
-
-void RegisterBraveDarkModePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry) {
 }
 
 bool SystemDarkModeEnabled() {

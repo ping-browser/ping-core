@@ -3,32 +3,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#import "brave/ios/browser/api/ads/brave_ads.h"
+
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
-#include "brave/components/brave_news/common/pref_names.h"
 
-#import "ads_client_bridge.h"
-#import "ads_client_ios.h"
-#include "base/base64.h"
+#include <optional>
+
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
-#include "brave/components/brave_ads/core/public/ads/ad_event/ad_event_history.h"
-#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
@@ -40,14 +39,26 @@
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/user_engagement/ad_events/ad_event_cache.h"
+#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/prefs.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
+#import "brave/ios/browser/api/ads/ads_client_bridge.h"
+#import "brave/ios/browser/api/ads/ads_client_ios.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
+#import "brave/ios/browser/api/ads/inline_content_ad_ios.h"
+#import "brave/ios/browser/api/ads/notification_ad_ios.h"
 #import "brave/ios/browser/api/common/common_operations.h"
-#import "brave_ads.h"
 #include "build/build_config.h"
-#import "inline_content_ad_ios.h"
-#include "net/base/mac/url_conversions.h"
-#import "notification_ad_ios.h"
+#include "components/prefs/pref_service.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -68,53 +79,9 @@
     brave_ads::__cpp_var = newValue;                                       \
   }
 
-static const NSInteger kDefaultNumberOfAdsPerHour = 2;
-
-static const int kCurrentAdsResourceManifestSchemaVersion = 1;
-
-static NSString* const kLegacyAdsEnabledPrefKey = @"BATAdsEnabled";
-static NSString* const kLegacyNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
-static NSString* const kLegacyShouldAllowAdsSubdivisionTargetingPrefKey =
-    @"BATShouldAllowAdsSubdivisionTargetingPrefKey";
-static NSString* const kLegacyAdsSubdivisionTargetingCodePrefKey =
-    @"BATAdsSubdivisionTargetingCodePrefKey";
-static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
-    @"BATAutoDetectedAdsSubdivisionTargetingCodePrefKey";
-
-static NSString* const kEnabledPrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kOptedInToNotificationAds);
-static NSString* const kMaximumNotificationAdsPerHourPrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kMaximumNotificationAdsPerHour);
-static NSString* const kShouldAllowSubdivisionTargetingPrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kShouldAllowSubdivisionTargeting);
-static NSString* const kSubdivisionTargetingSubdivisionPrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kSubdivisionTargetingSubdivision);
-static NSString* const kSubdivisionTargetingAutoDetectedSubdivisionPrefKey =
-    base::SysUTF8ToNSString(
-        brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
-static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
-static NSString* const kBraveNewsOptedInPrefKey =
-    base::SysUTF8ToNSString(brave_news::prefs::kBraveNewsOptedIn);
-static NSString* const kNewTabPageShowTodayPrefKey =
-    base::SysUTF8ToNSString(brave_news::prefs::kNewTabPageShowToday);
-
-namespace {
-
-brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
-    brave_ads::mojom::DBTransactionInfoPtr transaction,
-    brave_ads::Database* database) {
-  auto response = brave_ads::mojom::DBCommandResponseInfo::New();
-  if (!database) {
-    response->status =
-        brave_ads::mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
-  } else {
-    database->RunTransaction(std::move(transaction), response.get());
-  }
-
-  return response;
-}
-
-}  // namespace
+static const int kComponentUpdaterManifestSchemaVersion = 1;
+static NSString* const kComponentUpdaterMetadataPrefKey =
+    @"BraveAdsComponentUpdaterMetadata";
 
 @interface NotificationAdIOS ()
 - (instancetype)initWithNotificationInfo:
@@ -130,23 +97,31 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   AdsClientIOS* adsClient;
   brave_ads::AdsClientNotifier* adsClientNotifier;
   brave_ads::Ads* ads;
-  brave_ads::Database* adsDatabase;
-  brave_ads::AdEventHistory* adEventHistory;
+  brave_ads::AdEventCache* adEventCache;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
-
+  base::SequenceBound<brave_ads::Database> adsDatabase;
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
 }
+
+// TODO(https://github.com/brave/brave-browser/issues/33730): Unify Brave Ads
+// common operations.
 @property(nonatomic) BraveCommonOperations* commonOps;
+
+// TODO(https://github.com/brave/brave-browser/issues/33574): Unify Brave Ads
+// component updater.
+@property(nonatomic) dispatch_group_t componentUpdaterPrefsWriteGroup;
+@property(nonatomic) dispatch_queue_t componentUpdaterPrefsWriteThread;
+@property(nonatomic) NSMutableDictionary* componentUpdaterPrefs;
+@property(nonatomic, copy) NSDictionary* componentUpdaterMetadata;
+@property(nonatomic) NSTimer* componentUpdaterTimer;
+@property(nonatomic) int64_t componentUpdaterRetryCount;
+@property(nonatomic, readonly) NSDictionary* componentPaths;
+
 @property(nonatomic) BOOL networkConnectivityAvailable;
 @property(nonatomic, copy) NSString* storagePath;
-@property(nonatomic) dispatch_group_t prefsWriteGroup;
-@property(nonatomic) dispatch_queue_t prefsWriteThread;
-@property(nonatomic) NSMutableDictionary* prefs;
-@property(nonatomic, copy) NSDictionary* adsResourceMetadata;
-@property(nonatomic) NSTimer* updateAdsResourceTimer;
-@property(nonatomic) int64_t adsResourceRetryCount;
-@property(nonatomic, readonly) NSDictionary* componentPaths;
+@property(nonatomic) PrefService* profilePrefService;
+@property(nonatomic) PrefService* localStatePrefService;
 @end
 
 @implementation BraveAds
@@ -155,55 +130,21 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if ((self = [super init])) {
     self.storagePath = path;
     self.commonOps = [[BraveCommonOperations alloc] initWithStoragePath:path];
-    adsDatabase = nullptr;
-    adEventHistory = nullptr;
 
-    self.prefsWriteThread =
-        dispatch_queue_create("com.rewards.ads.prefs", DISPATCH_QUEUE_SERIAL);
-    self.prefsWriteGroup = dispatch_group_create();
-    self.prefs =
-        [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
-    if (!self.prefs) {
-      self.prefs = [[NSMutableDictionary alloc] init];
-      self.numberOfAllowableAdsPerHour = kDefaultNumberOfAdsPerHour;
-    } else {
-      [self migratePrefs];
-    }
+    [self startNetworkMonitoring];
 
-    // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
-    // code that permanently enables Brave Today preferences when the issue is
-    // resolved.
-    self.prefs[kBraveNewsOptedInPrefKey] = @(true);
-    self.prefs[kNewTabPageShowTodayPrefKey] = @(true);
+    [self initComponentUpdater];
 
-    [self setupNetworkMonitoring];
+    [self initProfilePrefService];
+    [self maybeMigrateProfilePrefs];
 
-    if (self.adsResourceMetadata == nil) {
-      self.adsResourceMetadata = [[NSDictionary alloc] init];
-    }
+    [self initLocalStatePrefService];
 
-    self.adsResourceRetryCount = 1;
+    [self initObservers];
 
-    databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
-        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+    [self initDatabase];
 
-    // Add notifications for standard app foreground/background
-    [NSNotificationCenter.defaultCenter
-        addObserver:self
-           selector:@selector(applicationDidBecomeActive)
-               name:UIApplicationDidBecomeActiveNotification
-             object:nil];
-    [NSNotificationCenter.defaultCenter
-        addObserver:self
-           selector:@selector(applicationDidBackground)
-               name:UIApplicationDidEnterBackgroundNotification
-             object:nil];
-
-    const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
-    adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
-
-    adEventHistory = new brave_ads::AdEventHistory();
+    adEventCache = new brave_ads::AdEventCache();
 
     adsClient = new AdsClientIOS(self);
   }
@@ -211,55 +152,84 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)dealloc {
-  [self.updateAdsResourceTimer invalidate];
-  self.updateAdsResourceTimer = nil;
+  [self removeObservers];
 
-  [NSNotificationCenter.defaultCenter removeObserver:self];
-  if (networkMonitor) {
-    nw_path_monitor_cancel(networkMonitor);
-  }
+  [self stopComponentUpdaterTimer];
 
-  if (adsDatabase) {
-    databaseQueue->DeleteSoon(FROM_HERE, adsDatabase);
-  }
+  [self stopNetworkMonitor];
 
+  [self deallocAds];
+  [self deallocAdsClientNotifier];
+  [self deallocAdsClient];
+
+  [self deallocAdEventCache];
+}
+
+- (void)deallocAds {
   if (ads != nil) {
     delete ads;
+    ads = nil;
   }
+}
+
+- (void)deallocAdsClientNotifier {
   if (adsClientNotifier != nil) {
     delete adsClientNotifier;
+    adsClientNotifier = nil;
   }
+}
+
+- (void)deallocAdsClient {
   if (adsClient != nil) {
     delete adsClient;
+    adsClient = nil;
   }
-  if (adEventHistory != nil) {
-    delete adEventHistory;
-  }
-  ads = nil;
-  adsClientNotifier = nil;
-  adsClient = nil;
-  adEventHistory = nil;
 }
 
-- (NSString*)prefsPath {
-  return [self.storagePath stringByAppendingPathComponent:@"ads_pref.plist"];
+- (void)deallocAdEventCache {
+  if (adEventCache != nil) {
+    delete adEventCache;
+    adEventCache = nil;
+  }
 }
 
-#pragma mark - Global
+#pragma mark -
 
 + (BOOL)isSupportedRegion {
   return brave_ads::IsSupportedRegion();
 }
 
+- (BOOL)isServiceRunning {
+  return ads != nil && adsClientNotifier != nil;
+}
+
++ (BOOL)shouldAlwaysRunService {
+  return brave_ads::ShouldAlwaysRunService();
+}
+
++ (BOOL)shouldSupportSearchResultAds {
+  return brave_ads::ShouldSupportSearchResultAds();
+}
+
+- (BOOL)isEnabled {
+  return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
+- (void)setEnabled:(BOOL)enabled {
+  [self setProfilePref:brave_rewards::prefs::kEnabled
+                 value:base::Value(enabled)];
+  [self setProfilePref:brave_ads::prefs::kOptedInToNotificationAds
+                 value:base::Value(enabled)];
+}
+
 #pragma mark - Initialization / Shutdown
 
-- (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
-             buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
-                   walletInfo:(nullable BraveAdsWalletInfo*)walletInfo
-                   completion:(void (^)(bool))completion {
-  if ([self isAdsServiceRunning]) {
-    completion(false);
-    return;
+- (void)initServiceWithSysInfo:(BraveAdsSysInfo*)sysInfo
+              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
+                    walletInfo:(nullable BraveAdsWalletInfo*)walletInfo
+                    completion:(void (^)(bool))completion {
+  if ([self isServiceRunning]) {
+    return completion(/*success=*/false);
   }
 
   adsClientNotifier = new brave_ads::AdsClientNotifier();
@@ -280,79 +250,35 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                   base::BindOnce(^(const bool success) {
                     [self periodicallyCheckForAdsResourceUpdates];
                     [self registerAdsResources];
-                    if (success && self->adsClientNotifier != nil) {
-                      self->adsClientNotifier->NotifyDidInitializeAds();
+                    if (success) {
+                      [self notifyDidInitializeAds];
                     }
                     completion(success);
                     if (!success) {
-                      if (self->ads != nil) {
-                        delete self->ads;
-                      }
-                      if (self->adsClientNotifier != nil) {
-                        delete self->adsClientNotifier;
-                      }
-                      self->ads = nil;
-                      self->adsClientNotifier = nil;
+                      [self deallocAds];
+                      [self deallocAdsClientNotifier];
                     }
                   }));
 }
 
-- (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  adsClientNotifier->NotifyRewardsWalletDidUpdate(
-      base::SysNSStringToUTF8(paymentId), base::SysNSStringToUTF8(base64Seed));
-}
+- (void)shutdownService:(nullable void (^)())completion {
+  if ([self isServiceRunning]) {
+    dispatch_group_notify(
+        self.componentUpdaterPrefsWriteGroup, dispatch_get_main_queue(), ^{
+          // TODO(https://github.com/brave/brave-browser/issues/32917):
+          // Deprecate shutdown API call.
+          self->ads->Shutdown(base::BindOnce(^(bool) {
+            [self deallocAds];
+            [self deallocAdsClientNotifier];
+            [self deallocAdsClient];
 
-- (NSString*)adsDatabasePath {
-  return [self.storagePath stringByAppendingPathComponent:@"Ads.db"];
-}
+            [self deallocAdEventCache];
 
-- (void)resetAdsDatabase {
-  delete adsDatabase;
-  const auto dbPath = [self adsDatabasePath];
-  [NSFileManager.defaultManager removeItemAtPath:dbPath error:nil];
-  [NSFileManager.defaultManager
-      removeItemAtPath:[dbPath stringByAppendingString:@"-journal"]
-                 error:nil];
-  adsDatabase =
-      new brave_ads::Database(base::FilePath(base::SysNSStringToUTF8(dbPath)));
-}
-
-- (void)shutdown:(nullable void (^)())completion {
-  if ([self isAdsServiceRunning]) {
-    dispatch_group_notify(self.prefsWriteGroup, dispatch_get_main_queue(), ^{
-      self->ads->Shutdown(base::BindOnce(^(bool) {
-        if (self->ads != nil) {
-          delete self->ads;
-        }
-        if (self->adsClientNotifier != nil) {
-          delete self->adsClientNotifier;
-        }
-        if (self->adsClient != nil) {
-          delete self->adsClient;
-        }
-        if (self->adsDatabase != nil) {
-          self->databaseQueue->PostTask(
-              FROM_HERE,
-              base::BindOnce(
-                  [](brave_ads::Database* database) { delete database; },
-                  self->adsDatabase));
-        }
-        if (self->adEventHistory != nil) {
-          delete self->adEventHistory;
-        }
-        self->ads = nil;
-        self->adsClientNotifier = nil;
-        self->adsClient = nil;
-        self->adsDatabase = nil;
-        self->adEventHistory = nil;
-        if (completion) {
-          completion();
-        }
-      }));
-    });
+            if (completion) {
+              completion();
+            }
+          }));
+        });
   } else {
     if (completion) {
       completion();
@@ -360,125 +286,55 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
-- (BOOL)isAdsServiceRunning {
-  return ads != nil && adsClientNotifier != nil;
+#pragma mark - Observers
+
+- (void)initObservers {
+  [NSNotificationCenter.defaultCenter
+      addObserver:self
+         selector:@selector(applicationDidBecomeActive)
+             name:UIApplicationDidBecomeActiveNotification
+           object:nil];
+
+  [NSNotificationCenter.defaultCenter
+      addObserver:self
+         selector:@selector(applicationDidBackground)
+             name:UIApplicationDidEnterBackgroundNotification
+           object:nil];
 }
 
-#pragma mark - Configuration
-
-- (BOOL)isEnabled {
-  return [self.prefs[kEnabledPrefKey] boolValue];
+- (void)removeObservers {
+  [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
-- (void)setEnabled:(BOOL)enabled {
-  self.prefs[kEnabledPrefKey] = @(enabled);
-  [self savePref:kEnabledPrefKey];
+- (void)applicationDidBecomeActive {
+  [self notifyBrowserDidEnterForeground];
+  [self notifyBrowserDidBecomeActive];
 }
 
-- (NSInteger)numberOfAllowableAdsPerHour {
-  return [self.prefs[kMaximumNotificationAdsPerHourPrefKey] integerValue];
+- (void)applicationDidBackground {
+  [self notifyBrowserDidResignActive];
+  [self notifyBrowserDidEnterBackground];
 }
 
-- (void)setNumberOfAllowableAdsPerHour:(NSInteger)numberOfAllowableAdsPerHour {
-  self.prefs[kMaximumNotificationAdsPerHourPrefKey] =
-      @(numberOfAllowableAdsPerHour);
-  [self savePref:kMaximumNotificationAdsPerHourPrefKey];
+#pragma mark - Database
+
+- (NSString*)adsDatabasePath {
+  return [self.storagePath stringByAppendingPathComponent:@"Ads.db"];
 }
 
-- (BOOL)shouldAllowSubdivisionTargeting {
-  return [self.prefs[kShouldAllowSubdivisionTargetingPrefKey] boolValue];
+- (void)initDatabase {
+  databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
+  adsDatabase = base::SequenceBound<brave_ads::Database>(
+      databaseQueue, base::FilePath(dbPath));
 }
 
-- (void)setAllowSubdivisionTargeting:(BOOL)allowAdsSubdivisionTargeting {
-  self.prefs[kShouldAllowSubdivisionTargetingPrefKey] =
-      @(allowAdsSubdivisionTargeting);
-  [self savePref:kShouldAllowSubdivisionTargetingPrefKey];
-}
+#pragma mark - Network
 
-- (NSString*)subdivisionTargetingCode {
-  return (NSString*)self.prefs[kSubdivisionTargetingSubdivisionPrefKey]
-             ?: @"AUTO";
-}
-
-- (void)setSubdivisionTargetingCode:(NSString*)subdivisionTargetingCode {
-  self.prefs[kSubdivisionTargetingSubdivisionPrefKey] =
-      subdivisionTargetingCode;
-  [self savePref:kSubdivisionTargetingSubdivisionPrefKey];
-}
-
-- (NSString*)autoDetectedSubdivisionTargetingCode {
-  return (NSString*)
-                 self.prefs[kSubdivisionTargetingAutoDetectedSubdivisionPrefKey]
-             ?: @"";
-}
-
-- (void)setAutoDetectedSubdivisionTargetingCode:
-    (NSString*)autoDetectedSubdivisionTargetingCode {
-  self.prefs[kSubdivisionTargetingAutoDetectedSubdivisionPrefKey] =
-      autoDetectedSubdivisionTargetingCode;
-  [self savePref:kSubdivisionTargetingAutoDetectedSubdivisionPrefKey];
-}
-
-- (void)savePref:(NSString*)name {
-  if ([self isAdsServiceRunning]) {
-    adsClientNotifier->NotifyPrefDidChange(base::SysNSStringToUTF8(name));
-  }
-
-  [self savePrefs];
-}
-
-- (void)savePrefs {
-  NSDictionary* prefs = [self.prefs copy];
-  NSString* path = [[self prefsPath] copy];
-  dispatch_group_enter(self.prefsWriteGroup);
-  dispatch_async(self.prefsWriteThread, ^{
-    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
-    dispatch_group_leave(self.prefsWriteGroup);
-  });
-}
-
-#pragma mark -
-
-- (void)migratePrefs {
-  if ([self.prefs objectForKey:kLegacyAdsEnabledPrefKey]) {
-    self.prefs[kEnabledPrefKey] = self.prefs[kLegacyAdsEnabledPrefKey];
-    [self.prefs removeObjectForKey:kLegacyAdsEnabledPrefKey];
-  }
-
-  if ([self.prefs objectForKey:kLegacyNumberOfAdsPerHourKey]) {
-    self.prefs[kMaximumNotificationAdsPerHourPrefKey] =
-        self.prefs[kLegacyNumberOfAdsPerHourKey];
-    [self.prefs removeObjectForKey:kLegacyNumberOfAdsPerHourKey];
-  }
-
-  if ([self.prefs
-          objectForKey:kLegacyShouldAllowAdsSubdivisionTargetingPrefKey]) {
-    self.prefs[kShouldAllowSubdivisionTargetingPrefKey] =
-        self.prefs[kLegacyShouldAllowAdsSubdivisionTargetingPrefKey];
-    [self.prefs
-        removeObjectForKey:kLegacyShouldAllowAdsSubdivisionTargetingPrefKey];
-  }
-
-  if ([self.prefs objectForKey:kLegacyAdsSubdivisionTargetingCodePrefKey]) {
-    self.prefs[kSubdivisionTargetingSubdivisionPrefKey] =
-        self.prefs[kLegacyAdsSubdivisionTargetingCodePrefKey];
-    [self.prefs removeObjectForKey:kLegacyAdsSubdivisionTargetingCodePrefKey];
-  }
-
-  if ([self.prefs
-          objectForKey:kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey]) {
-    self.prefs[kSubdivisionTargetingAutoDetectedSubdivisionPrefKey] =
-        self.prefs[kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];
-    [self.prefs removeObjectForKey:
-                    kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];
-  }
-
-  [self savePrefs];
-}
-
-- (void)setupNetworkMonitoring {
+- (void)startNetworkMonitoring {
   auto const __weak weakSelf = self;
-
   monitorQueue = dispatch_queue_create("bat.nw.monitor", DISPATCH_QUEUE_SERIAL);
   networkMonitor = nw_path_monitor_create();
   nw_path_monitor_set_queue(networkMonitor, monitorQueue);
@@ -495,62 +351,25 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   nw_path_monitor_start(networkMonitor);
 }
 
-#pragma mark - Observers
-
-- (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->AddObserver(observer);
+- (void)stopNetworkMonitor {
+  if (networkMonitor) {
+    nw_path_monitor_cancel(networkMonitor);
   }
 }
 
-- (void)removeObserver:(brave_ads::AdsClientNotifierObserver*)observer {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->RemoveObserver(observer);
-  }
-}
+#pragma mark - URLs
 
-- (void)notifyPendingObservers {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyPendingObservers();
-  }
-}
+- (std::vector<GURL>)GURLsWithNSURLs:(NSArray<NSURL*>*)redirectChain {
+  std::vector<GURL> urls;
 
-- (void)applicationDidBecomeActive {
-  if (![self isAdsServiceRunning]) {
-    return;
+  for (NSURL* redirect_chain_url in redirectChain) {
+    urls.push_back(net::GURLWithNSURL(redirect_chain_url));
   }
-  adsClientNotifier->NotifyBrowserDidEnterForeground();
-  adsClientNotifier->NotifyBrowserDidBecomeActive();
-}
 
-- (void)applicationDidBackground {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  adsClientNotifier->NotifyBrowserDidResignActive();
-  adsClientNotifier->NotifyBrowserDidEnterBackground();
+  return urls;
 }
 
 #pragma mark - History
-
-- (NSArray<NSDate*>*)getAdsHistoryDates {
-  if (![self isAdsServiceRunning]) {
-    return @[];
-  }
-
-  const auto history_items = ads->GetHistory(
-      brave_ads::HistoryFilterType::kNone, brave_ads::HistorySortType::kNone,
-      base::Time::Min(), base::Time::Max());
-
-  const auto dates = [[NSMutableArray<NSDate*> alloc] init];
-  for (const auto& history_item : history_items) {
-    const auto date = [NSDate
-        dateWithTimeIntervalSince1970:history_item.created_at.ToDoubleT()];
-    [dates addObject:date];
-  }
-
-  return dates;
-}
 
 - (BOOL)hasViewedAdsInPreviousCycle {
   const auto calendar =
@@ -578,292 +397,159 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return NO;
 }
 
-#pragma mark - Reporting
+- (NSArray<NSDate*>*)getAdsHistoryDates {
+  if (![self isServiceRunning]) {
+    return @[];
+  }
 
-- (void)reportLoadedPageWithURL:(NSURL*)url
-             redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-                           html:(NSString*)html
-                      innerText:(NSString*)text
-                          tabId:(NSInteger)tabId {
-  if (![self isAdsServiceRunning]) {
+  const auto history_items = ads->GetHistory(
+      brave_ads::HistoryFilterType::kNone, brave_ads::HistorySortType::kNone,
+      base::Time::Min(), base::Time::Max());
+
+  const auto dates = [[NSMutableArray<NSDate*> alloc] init];
+  for (const auto& history_item : history_items) {
+    const auto date =
+        [NSDate dateWithTimeIntervalSince1970:history_item.created_at
+                                                  .InSecondsFSinceUnixEpoch()];
+    [dates addObject:date];
+  }
+
+  return dates;
+}
+
+#pragma mark - Profile prefs
+
+- (void)initProfilePrefService {
+  ios::ChromeBrowserStateManager* browserStateManager =
+      GetApplicationContext()->GetChromeBrowserStateManager();
+  CHECK(browserStateManager);
+
+  ChromeBrowserState* chromeBrowserState =
+      browserStateManager->GetLastUsedBrowserState();
+  CHECK(chromeBrowserState);
+
+  _profilePrefService = chromeBrowserState->GetPrefs();
+  CHECK(_profilePrefService);
+}
+
+- (void)migrateBooleanProfilePref:(NSDictionary*)legacyProfilePrefs
+                             path:(const std::string&)path {
+  // Only for "ads_pref.plist" migration; please see pref service migration
+  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
+  NSString* legacyProfilePref = base::SysUTF8ToNSString(path);
+  if ([legacyProfilePrefs objectForKey:legacyProfilePref]) {
+    self.profilePrefService->SetBoolean(
+        path, [legacyProfilePrefs[legacyProfilePref] boolValue]);
+  }
+}
+
+- (void)maybeMigrateProfilePrefs {
+  // Only for "ads_pref.plist" migration; please see pref service migration
+  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
+  NSString* legacyProfilePrefsPath =
+      [self.storagePath stringByAppendingPathComponent:@"ads_pref.plist"];
+  NSDictionary* legacyProfilePrefs = [[NSMutableDictionary alloc]
+      initWithContentsOfFile:legacyProfilePrefsPath];
+  if (!legacyProfilePrefs) {
     return;
   }
-  std::vector<GURL> urls;
-  for (NSURL* redirectURL in redirectionURLs) {
-    urls.push_back(net::GURLWithNSURL(redirectURL));
+
+  BLOG(1, @"Migrating profile prefs");
+
+  if ([legacyProfilePrefs objectForKey:@"BATAdsEnabled"]) {
+    const BOOL isEnabled = [legacyProfilePrefs[@"BATAdsEnabled"] boolValue];
+    self.profilePrefService->SetBoolean(brave_rewards::prefs::kEnabled,
+                                        isEnabled);
+    self.profilePrefService->SetBoolean(
+        brave_ads::prefs::kOptedInToNotificationAds, isEnabled);
+  } else {
+    [self migrateBooleanProfilePref:legacyProfilePrefs
+                               path:brave_rewards::prefs::kEnabled];
+    [self
+        migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::kOptedInToNotificationAds];
   }
-  urls.push_back(net::GURLWithNSURL(url));
-  adsClientNotifier->NotifyTabTextContentDidChange(
-      (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
-  adsClientNotifier->NotifyTabHtmlContentDidChange(
-      (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
-}
 
-- (void)reportMediaStartedWithTabId:(NSInteger)tabId {
-  if (![self isAdsServiceRunning]) {
-    return;
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::kHasMigratedClientState];
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::
+                                      kHasMigratedConfirmationState];
+
+  [self
+      migrateBooleanProfilePref:legacyProfilePrefs
+                           path:brave_ads::prefs::kHasMigratedConversionState];
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::
+                                      kHasMigratedNotificationState];
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::kHasMigratedRewardsState];
+
+  NSError* error = nil;
+  [[NSFileManager defaultManager] removeItemAtPath:legacyProfilePrefsPath
+                                             error:&error];
+  if (error) {
+    BLOG(0, @"Failed to remove legacy prefs: %@", error);
   }
-  adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
 }
 
-- (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
-  if (![self isAdsServiceRunning]) {
-    return;
+#pragma mark - Local state prefs
+
+- (void)initLocalStatePrefService {
+  _localStatePrefService = GetApplicationContext()->GetLocalState();
+  CHECK(_localStatePrefService);
+}
+
+#pragma mark - Component updater
+
+- (NSString*)componentUpdaterPrefsPath {
+  return [self.storagePath
+      stringByAppendingPathComponent:@"component_updater_pref.plist"];
+}
+
+- (void)initComponentUpdater {
+  self.componentUpdaterPrefsWriteThread =
+      dispatch_queue_create("com.rewards.ads.prefs", DISPATCH_QUEUE_SERIAL);
+  self.componentUpdaterPrefsWriteGroup = dispatch_group_create();
+  self.componentUpdaterPrefs = [[NSMutableDictionary alloc]
+      initWithContentsOfFile:[self componentUpdaterPrefsPath]];
+  if (!self.componentUpdaterPrefs) {
+    self.componentUpdaterPrefs = [[NSMutableDictionary alloc] init];
   }
-  adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
-}
 
-- (void)reportTabUpdated:(NSInteger)tabId
-                     url:(NSURL*)url
-      redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-              isSelected:(BOOL)isSelected {
-  if (![self isAdsServiceRunning]) {
-    return;
+  if (self.componentUpdaterMetadata == nil) {
+    self.componentUpdaterMetadata = [[NSDictionary alloc] init];
   }
-  std::vector<GURL> urls;
-  for (NSURL* redirectURL in redirectionURLs) {
-    urls.push_back(net::GURLWithNSURL(redirectURL));
-  }
-  urls.push_back(net::GURLWithNSURL(url));
-  const bool isVisible = isSelected && [self isBrowserActive];
-  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isVisible);
+
+  self.componentUpdaterRetryCount = 1;
 }
 
-- (void)reportTabClosedWithTabId:(NSInteger)tabId {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
+- (void)saveComponentUpdaterPrefs {
+  NSDictionary* prefs = [self.componentUpdaterPrefs copy];
+  NSString* path = [[self componentUpdaterPrefsPath] copy];
+  dispatch_group_enter(self.componentUpdaterPrefsWriteGroup);
+  dispatch_async(self.componentUpdaterPrefsWriteThread, ^{
+    NSError* error = nil;
+    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:&error];
+    if (error) {
+      BLOG(0, @"Failed to write component updater prefs: %@", error);
+    }
+    dispatch_group_leave(self.componentUpdaterPrefsWriteGroup);
+  });
 }
 
-- (void)reportNotificationAdEvent:(NSString*)placementId
-                        eventType:(BraveAdsNotificationAdEventType)eventType
-                       completion:(void (^)(BOOL success))completion {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->TriggerNotificationAdEvent(
-      base::SysNSStringToUTF8(placementId),
-      static_cast<brave_ads::mojom::NotificationAdEventType>(eventType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
+- (NSDictionary*)componentUpdaterMetadata {
+  return (NSDictionary*)
+      self.componentUpdaterPrefs[kComponentUpdaterMetadataPrefKey];
 }
 
-- (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
-             creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BraveAdsNewTabPageAdEventType)eventType
-                     completion:(void (^)(BOOL success))completion {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->TriggerNewTabPageAdEvent(
-      base::SysNSStringToUTF8(wallpaperId),
-      base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
-}
-
-- (void)inlineContentAdsWithDimensions:(NSString*)dimensionsArg
-                            completion:
-                                (void (^)(NSString* dimensions,
-                                          InlineContentAdIOS* ad))completion {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->MaybeServeInlineContentAd(
-      base::SysNSStringToUTF8(dimensionsArg),
-      base::BindOnce(
-          ^(const std::string& dimensions,
-            const absl::optional<brave_ads::InlineContentAdInfo>& ad) {
-            if (!ad) {
-              completion(base::SysUTF8ToNSString(dimensions), nil);
-              return;
-            }
-
-            const auto inline_content_ad =
-                [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
-            completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
-          }));
-}
-
-- (void)reportInlineContentAdEvent:(NSString*)placementId
-                creativeInstanceId:(NSString*)creativeInstanceId
-                         eventType:(BraveAdsInlineContentAdEventType)eventType
-                        completion:(void (^)(BOOL success))completion {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->TriggerInlineContentAdEvent(
-      base::SysNSStringToUTF8(placementId),
-      base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
-}
-
-- (void)reportPromotedContentAdEvent:(NSString*)placementId
-                  creativeInstanceId:(NSString*)creativeInstanceId
-                           eventType:
-                               (BraveAdsPromotedContentAdEventType)eventType
-                          completion:(void (^)(BOOL success))completion {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->TriggerPromotedContentAdEvent(
-      base::SysNSStringToUTF8(placementId),
-      base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
-}
-
-- (void)purgeOrphanedAdEvents:(BraveAdsAdType)adType
-                   completion:(void (^)(BOOL success))completion {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->PurgeOrphanedAdEventsForType(
-      static_cast<brave_ads::mojom::AdType>(adType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
-}
-
-- (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived,
-                                         double estimatedEarnings,
-                                         NSDate* nextPaymentDate))completion {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->GetStatementOfAccounts(
-      base::BindOnce(^(brave_ads::mojom::StatementInfoPtr statement) {
-        if (!statement) {
-          completion(0, 0, nil);
-          return;
-        }
-
-        NSDate* nextPaymentDate = nil;
-        if (!statement->next_payment_date.is_null()) {
-          nextPaymentDate =
-              [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
-                                                        .ToDoubleT()];
-        }
-        completion(statement->ads_received_this_month,
-                   statement->max_earnings_this_month, nextPaymentDate);
-      }));
-}
-
-- (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId
-               advertiserId:(NSString*)advertiserId
-                    segment:(NSString*)segment {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  brave_ads::AdContentInfo ad_content;
-  ad_content.type = brave_ads::AdType::kNotificationAd;
-  ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
-  ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  ad_content.segment = base::SysNSStringToUTF8(segment);
-  ads->ToggleLikeAd(brave_ads::AdContentToValue(ad_content));
-}
-
-- (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
-                 advertiserId:(NSString*)advertiserId
-                      segment:(NSString*)segment {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  brave_ads::AdContentInfo ad_content;
-  ad_content.type = brave_ads::AdType::kNotificationAd;
-  ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
-  ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  ad_content.segment = base::SysNSStringToUTF8(segment);
-  ads->ToggleDislikeAd(brave_ads::AdContentToValue(ad_content));
-}
-
-#pragma mark - Configuration
-
-- (uint64_t)getNotificationAdsPerHour {
-  return self.numberOfAllowableAdsPerHour;
-}
-
-- (bool)isAdsEnabled {
-  return self.enabled;
-}
-
-- (bool)isBrowserActive {
-  return UIApplication.sharedApplication.applicationState ==
-         UIApplicationStateActive;
-}
-
-- (bool)isBrowserInFullScreenMode {
-  return true;
-}
-
-- (bool)canShowNotificationAdsWhileBrowserIsBackgrounded {
-  return false;
-}
-
-- (bool)isNetworkConnectionAvailable {
-  return self.networkConnectivityAvailable;
-}
-
-- (void)setIdleThreshold:(const int)threshold {
-  // Not needed on mobile
-}
-
-#pragma mark - Network
-
-- (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
-          callback:(brave_ads::UrlRequestCallback)callback {
-  std::map<brave_ads::mojom::UrlRequestMethodType, std::string> methodMap{
-      {brave_ads::mojom::UrlRequestMethodType::kGet, "GET"},
-      {brave_ads::mojom::UrlRequestMethodType::kPost, "POST"},
-      {brave_ads::mojom::UrlRequestMethodType::kPut, "PUT"}};
-
-  const auto copiedURL = url_request->url;
-
-  auto cb = std::make_shared<decltype(callback)>(std::move(callback));
-  const auto __weak weakSelf = self;
-  return [self.commonOps
-      loadURLRequest:url_request->url.spec()
-             headers:url_request->headers
-             content:url_request->content
-        content_type:url_request->content_type
-              method:methodMap[url_request->method]
-            callback:^(
-                const std::string& errorDescription, int statusCode,
-                const std::string& response,
-                const base::flat_map<std::string, std::string>& headers) {
-              const auto strongSelf = weakSelf;
-              if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
-                return;
-              }
-              brave_ads::mojom::UrlResponseInfo url_response;
-              url_response.url = copiedURL;
-              url_response.status_code = statusCode;
-              url_response.body = response;
-              url_response.headers = headers;
-              if (cb) {
-                std::move(*cb).Run(url_response);
-              }
-            }];
-}
-
-#pragma mark - File IO
-
-- (NSDictionary*)adsResourceMetadata {
-  return (NSDictionary*)self.prefs[kAdsResourceMetadataPrefKey];
-}
-
-- (void)setAdsResourceMetadata:(NSDictionary*)adsResourceMetadata {
-  self.prefs[kAdsResourceMetadataPrefKey] = adsResourceMetadata;
-  [self savePref:kAdsResourceMetadataPrefKey];
+- (void)setComponentUpdaterMetadata:(NSDictionary*)componentUpdaterMetadata {
+  self.componentUpdaterPrefs[kComponentUpdaterMetadataPrefKey] =
+      componentUpdaterMetadata;
+  [self saveComponentUpdaterPrefs];
 }
 
 - (BOOL)registerAdsResourcesForLanguageCode:(NSString*)languageCode {
@@ -895,11 +581,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      return;
                    }
                    if (success) {
-                     const std::string bridged_language_code_adsResource_idkey =
-                         base::SysNSStringToUTF8(languageCodeAdsResourceId);
-                     strongSelf->adsClientNotifier
-                         ->NotifyDidUpdateResourceComponent(
-                             "1", bridged_language_code_adsResource_idkey);
+                     [strongSelf
+                         notifyDidUpdateResourceComponent:@"1"
+                                                       id:languageCodeAdsResourceId];
                    }
                  }];
 
@@ -925,6 +609,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
        countryCode, countryCodeAdsResourceId);
 
   BLOG(1, @"Notifying ads resource observers");
+
   const auto __weak weakSelf = self;
   [self downloadAdsResource:isoCountryCode
                  completion:^(BOOL success) {
@@ -933,12 +618,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      return;
                    }
                    if (success) {
-                     const std::string bridged_country_code_adsResource_idkey =
-                         base::SysNSStringToUTF8(countryCodeAdsResourceId);
-
-                     strongSelf->adsClientNotifier
-                         ->NotifyDidUpdateResourceComponent(
-                             "1", bridged_country_code_adsResource_idkey);
+                     [strongSelf
+                         notifyDidUpdateResourceComponent:@"1"
+                                                       id:countryCodeAdsResourceId];
                    }
                  }];
 
@@ -960,11 +642,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)periodicallyCheckForAdsResourceUpdates {
-  const uint64_t time_offset = 6 * 60 * 60;  // every 6 hours
+  const double time_interval = 6 * base::Time::kSecondsPerHour;
 
   const auto __weak weakSelf = self;
-  self.updateAdsResourceTimer = [NSTimer
-      scheduledTimerWithTimeInterval:time_offset
+  self.componentUpdaterTimer = [NSTimer
+      scheduledTimerWithTimeInterval:time_interval
                              repeats:YES
                                block:^(NSTimer* _Nonnull timer) {
                                  const auto strongSelf = weakSelf;
@@ -983,8 +665,13 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                                           stringFromDate:
                                               [[NSDate date]
                                                   dateByAddingTimeInterval:
-                                                      time_offset]]);
+                                                      time_interval]]);
                                }];
+}
+
+- (void)stopComponentUpdaterTimer {
+  [self.componentUpdaterTimer invalidate];
+  self.componentUpdaterTimer = nil;
 }
 
 - (void)updateAdsResources {
@@ -1013,9 +700,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      }
 
                      BLOG(1, @"Notifying ads resource observers");
-                     strongSelf->adsClientNotifier
-                         ->NotifyDidUpdateResourceComponent(
-                             "1", base::SysNSStringToUTF8(key));
+
+                     [strongSelf notifyDidUpdateResourceComponent:@"1" id:key];
                    }];
   }
 }
@@ -1029,11 +715,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   void (^handleRetry)() = ^{
     const auto strongSelf = weakSelf;
     const int64_t backoff = 1 * 60;
-    int64_t delay = backoff << strongSelf.adsResourceRetryCount;
+    int64_t delay = backoff << strongSelf.componentUpdaterRetryCount;
     if (delay >= 60 * 60) {
       delay = 60 * 60;
     } else {
-      strongSelf.adsResourceRetryCount++;
+      strongSelf.componentUpdaterRetryCount++;
     }
 
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
@@ -1046,7 +732,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC),
                    dispatch_get_main_queue(), ^{
                      const auto strongSelf2 = weakSelf;
-                     if (!strongSelf2 || ![strongSelf2 isAdsServiceRunning]) {
+                     if (!strongSelf2 || ![strongSelf2 isServiceRunning]) {
                        return;
                      }
                      [strongSelf2 downloadAdsResource:folderName
@@ -1080,7 +766,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                  const std::string& responseStr,
                  const base::flat_map<std::string, std::string>& headersArg) {
         const auto strongSelf = weakSelf;
-        if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
+        if (!strongSelf || ![strongSelf isServiceRunning]) {
           return;
         }
 
@@ -1108,7 +794,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
         NSNumber* schemaVersion = dict[@"schemaVersion"];
         if ([schemaVersion intValue] !=
-            kCurrentAdsResourceManifestSchemaVersion) {
+            kComponentUpdaterManifestSchemaVersion) {
           BLOG(1, @"Invalid schema version for ads resource manifest %@ (%d)",
                folderName, [schemaVersion intValue]);
           handleRetry();
@@ -1144,7 +830,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
           }
 
           NSDictionary* adsResourceMetadataDict =
-              [strongSelf adsResourceMetadata];
+              [strongSelf componentUpdaterMetadata];
           if (version <= adsResourceMetadataDict[adsResourceId]) {
             BLOG(1, @"%@ ads resource is up to date on version %@",
                  adsResourceId, version);
@@ -1168,7 +854,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                   const std::string& errorDescription, int statusCode,
                   const std::string& response,
                   const base::flat_map<std::string, std::string>& headers) {
-                if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
+                if (!strongSelf || ![strongSelf isServiceRunning]) {
                   return;
                 }
 
@@ -1192,9 +878,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      version);
 
                 NSMutableDictionary* dictionary =
-                    [[strongSelf adsResourceMetadata] mutableCopy];
+                    [[strongSelf componentUpdaterMetadata] mutableCopy];
                 dictionary[adsResourceId] = version;
-                [strongSelf setAdsResourceMetadata:dictionary];
+                [strongSelf setComponentUpdaterMetadata:dictionary];
 
                 BLOG(1, @"%@ ads resource updated to version %@", adsResourceId,
                      version);
@@ -1211,355 +897,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
         });
       }];
 }
-
-- (void)getBrowsingHistory:(const int)max_count
-                   forDays:(const int)days_ago
-                  callback:(brave_ads::GetBrowsingHistoryCallback)callback {
-  // To be implemented https://github.com/brave/brave-ios/issues/3499
-  std::move(callback).Run({});
-}
-
-- (void)loadFileResource:(const std::string&)id
-                 version:(const int)version
-                callback:(brave_ads::LoadFileCallback)callback {
-  NSString* bridgedId = base::SysUTF8ToNSString(id);
-  NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
-
-  BLOG(1, @"Loading %@ ads resource descriptor", nsFilePath);
-
-  base::FilePath file_path(nsFilePath.UTF8String);
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()}, base::BindOnce(^base::File {
-        return base::File(file_path,
-                          base::File::FLAG_OPEN | base::File::FLAG_READ);
-      }),
-      base::BindOnce(std::move(callback)));
-}
-
-- (void)getScheduledCaptcha:(const std::string&)payment_id
-                   callback:(brave_ads::GetScheduledCaptchaCallback)callback {
-  // Adaptive captcha not supported on iOS
-  std::move(callback).Run("");
-}
-
-- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
-                               captchaId:(const std::string&)captcha_id {
-  [self.captchaHandler
-      handleAdaptiveCaptchaForPaymentId:base::SysUTF8ToNSString(payment_id)
-                              captchaId:base::SysUTF8ToNSString(captcha_id)];
-}
-
-- (void)load:(const std::string&)name
-    callback:(brave_ads::LoadCallback)callback {
-  const auto contents = [self.commonOps loadContentsFromFileWithName:name];
-  if (contents.empty()) {
-    std::move(callback).Run(/*value*/ absl::nullopt);
-  } else {
-    std::move(callback).Run(contents);
-  }
-}
-
-- (const std::string)loadDataResource:(const std::string&)name {
-  const auto bundle = [NSBundle bundleForClass:[BraveAds class]];
-  const auto path = [bundle pathForResource:base::SysUTF8ToNSString(name)
-                                     ofType:nil];
-  if (!path || path.length == 0) {
-    return "";
-  }
-  NSError* error = nil;
-  const auto contents = [NSString stringWithContentsOfFile:path
-                                                  encoding:NSUTF8StringEncoding
-                                                     error:&error];
-  if (!contents || error) {
-    return "";
-  }
-  return std::string(contents.UTF8String);
-}
-
-- (void)save:(const std::string&)name
-       value:(const std::string&)value
-    callback:(brave_ads::SaveCallback)callback {
-  if ([self.commonOps saveContents:value name:name]) {
-    std::move(callback).Run(/*success*/ true);
-  } else {
-    std::move(callback).Run(/*success*/ false);
-  }
-}
-
-#pragma mark - Logging
-
-- (void)log:(const char*)file
-            line:(const int)line
-    verboseLevel:(const int)verbose_level
-         message:(const std::string&)message {
-  const int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
-  if (verbose_level <= vlog_level) {
-    logging::LogMessage(file, line, -verbose_level).stream() << message;
-  }
-}
-
-#pragma mark - Notifications
-
-- (nullable NotificationAdIOS*)notificationAdForIdentifier:
-    (NSString*)identifier {
-  if (![self isAdsServiceRunning]) {
-    return nil;
-  }
-
-  const absl::optional<brave_ads::NotificationAdInfo> ad =
-      ads->MaybeGetNotificationAd(identifier.UTF8String);
-  if (!ad) {
-    return nil;
-  }
-
-  return [[NotificationAdIOS alloc] initWithNotificationInfo:*ad];
-}
-
-- (bool)canShowNotificationAds {
-  return [self.notificationsHandler shouldShowNotifications];
-}
-
-- (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info {
-  const auto notification =
-      [[NotificationAdIOS alloc] initWithNotificationInfo:info];
-  [self.notificationsHandler showNotification:notification];
-}
-
-- (void)closeNotificationAd:(const std::string&)placement_id {
-  const auto bridgedPlacementId = base::SysUTF8ToNSString(placement_id);
-  [self.notificationsHandler
-      clearNotificationWithIdentifier:bridgedPlacementId];
-}
-
-- (void)showReminder:(const brave_ads::mojom::ReminderType)type {
-  // Not needed on iOS
-}
-
-- (void)recordAdEventForId:(const std::string&)id
-                    adType:(const std::string&)ad_type
-          confirmationType:(const std::string&)confirmation_type
-                      time:(const base::Time)time {
-  if (!adEventHistory) {
-    return;
-  }
-
-  adEventHistory->RecordForId(id, ad_type, confirmation_type, time);
-}
-
-- (std::vector<base::Time>)getAdEventHistory:(const std::string&)ad_type
-                            confirmationType:
-                                (const std::string&)confirmation_type {
-  if (!adEventHistory) {
-    return {};
-  }
-
-  return adEventHistory->Get(ad_type, confirmation_type);
-}
-
-- (void)resetAdEventHistoryForId:(const std::string&)id {
-  if (!adEventHistory) {
-    return;
-  }
-
-  return adEventHistory->ResetForId(id);
-}
-
-- (bool)shouldAllowAdsSubdivisionTargeting {
-  return self.shouldAllowSubdivisionTargeting;
-}
-
-- (void)setAllowAdsSubdivisionTargeting:(const bool)should_allow {
-  self.allowSubdivisionTargeting = should_allow;
-}
-
-- (std::string)adsSubdivisionTargetingCode {
-  return base::SysNSStringToUTF8(self.subdivisionTargetingCode);
-}
-
-- (void)setAdsSubdivisionTargetingCode:
-    (const std::string&)subdivision_targeting_code {
-  self.subdivisionTargetingCode =
-      [NSString stringWithCString:subdivision_targeting_code.c_str()
-                         encoding:[NSString defaultCStringEncoding]];
-}
-
-- (std::string)autoDetectedAdsSubdivisionTargetingCode {
-  return base::SysNSStringToUTF8(self.autoDetectedSubdivisionTargetingCode);
-}
-
-- (void)setAutoDetectedAdsSubdivisionTargetingCode:
-    (const std::string&)subdivision_targeting_code {
-  self.autoDetectedSubdivisionTargetingCode =
-      [NSString stringWithCString:subdivision_targeting_code.c_str()
-                         encoding:[NSString defaultCStringEncoding]];
-}
-
-- (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
-                callback:(brave_ads::RunDBTransactionCallback)completion {
-  __weak BraveAds* weakSelf = self;
-  databaseQueue->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
-                     adsDatabase),
-      base::BindOnce(
-          ^(brave_ads::RunDBTransactionCallback callback,
-            brave_ads::mojom::DBCommandResponseInfoPtr response) {
-            const auto strongSelf = weakSelf;
-            if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
-              return;
-            }
-            std::move(callback).Run(std::move(response));
-          },
-          std::move(completion)));
-}
-
-- (void)updateAdRewards {
-  // Not needed on iOS because ads do not show unless you are viewing a tab
-}
-
-- (void)setBooleanPref:(const std::string&)path value:(const bool)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (bool)getBooleanPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] boolValue];
-}
-
-- (void)setIntegerPref:(const std::string&)path value:(const int)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (int)getIntegerPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] intValue];
-}
-
-- (void)setDoublePref:(const std::string&)path value:(const double)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (double)getDoublePref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] doubleValue];
-}
-
-- (void)setStringPref:(const std::string&)path value:(const std::string&)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = base::SysUTF8ToNSString(value);
-  [self savePref:key];
-}
-
-- (std::string)getStringPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto value = (NSString*)self.prefs[key];
-  if (!value) {
-    return "";
-  }
-  return value.UTF8String;
-}
-
-- (void)setInt64Pref:(const std::string&)path value:(const int64_t)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (int64_t)getInt64Pref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] longLongValue];
-}
-
-- (void)setUint64Pref:(const std::string&)path value:(const uint64_t)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (uint64_t)getUint64Pref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] unsignedLongLongValue];
-}
-
-- (void)setTimePref:(const std::string&)path value:(const base::Time)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value.ToDoubleT());
-  [self savePref:key];
-}
-
-- (base::Time)getTimePref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return base::Time::FromDoubleT([self.prefs[key] doubleValue]);
-}
-
-- (void)setDictPref:(const std::string&)path value:(base::Value::Dict)value {
-  std::string json;
-  if (base::JSONWriter::Write(value, &json)) {
-    const auto key = base::SysUTF8ToNSString(path);
-    self.prefs[key] = base::SysUTF8ToNSString(json);
-    [self savePref:key];
-  }
-}
-
-- (absl::optional<base::Value::Dict>)getDictPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto json = (NSString*)self.prefs[key];
-  if (!json) {
-    return absl::nullopt;
-  }
-
-  absl::optional<base::Value> value =
-      base::JSONReader::Read(base::SysNSStringToUTF8(json));
-  if (!value || !value->is_dict()) {
-    return absl::nullopt;
-  }
-
-  return value->GetDict().Clone();
-}
-
-- (void)setListPref:(const std::string&)path value:(base::Value::List)value {
-  std::string json;
-  if (base::JSONWriter::Write(value, &json)) {
-    const auto key = base::SysUTF8ToNSString(path);
-    self.prefs[key] = base::SysUTF8ToNSString(json);
-    [self savePref:key];
-  }
-}
-
-- (absl::optional<base::Value::List>)getListPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto json = (NSString*)self.prefs[key];
-  if (!json) {
-    return absl::nullopt;
-  }
-
-  absl::optional<base::Value> value =
-      base::JSONReader::Read(base::SysNSStringToUTF8(json));
-  if (!value || !value->is_list()) {
-    return absl::nullopt;
-  }
-
-  return value->GetList().Clone();
-}
-
-- (void)clearPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  [self.prefs removeObjectForKey:key];
-  [self savePref:key];
-}
-
-- (bool)hasPrefPath:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs objectForKey:key] != nil;
-}
-
-#pragma mark - Ads Resources Paths
 
 - (NSDictionary*)componentPaths {
   static NSDictionary* _paths = nil;
@@ -2006,13 +1343,590 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return _paths;
 }
 
-- (void)recordP2AEvents:(base::Value::List)events {
-  // Not needed on iOS
+#pragma mark - Ads client
+
+- (bool)isNetworkConnectionAvailable {
+  return self.networkConnectivityAvailable;
 }
 
-- (void)addTrainingSample:
-    (std::vector<brave_federated::mojom::CovariateInfoPtr>)training_sample {
-  // Not needed on iOS
+- (bool)isBrowserActive {
+  return UIApplication.sharedApplication.applicationState ==
+         UIApplicationStateActive;
+}
+
+- (bool)isBrowserInFullScreenMode {
+  return true;
+}
+
+- (bool)canShowNotificationAds {
+  return [self.notificationsHandler canShowNotificationAds];
+}
+
+- (bool)canShowNotificationAdsWhileBrowserIsBackgrounded {
+  return false;
+}
+
+- (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)ad {
+  const auto notificationAd =
+      [[NotificationAdIOS alloc] initWithNotificationInfo:ad];
+  [self.notificationsHandler showNotificationAd:notificationAd];
+}
+
+- (void)closeNotificationAd:(const std::string&)placement_id {
+  [self.notificationsHandler
+      closeNotificationAd:base::SysUTF8ToNSString(placement_id)];
+}
+
+- (void)cacheAdEventForInstanceId:(const std::string&)id
+                           adType:(const std::string&)ad_type
+                 confirmationType:(const std::string&)confirmation_type
+                             time:(const base::Time)time {
+  if (adEventCache) {
+    adEventCache->AddEntryForInstanceId(id, ad_type, confirmation_type, time);
+  }
+}
+
+- (std::vector<base::Time>)getCachedAdEvents:(const std::string&)ad_type
+                            confirmationType:
+                                (const std::string&)confirmation_type {
+  if (!adEventCache) {
+    return {};
+  }
+
+  return adEventCache->Get(ad_type, confirmation_type);
+}
+
+- (void)resetAdEventCacheForInstanceId:(const std::string&)id {
+  if (adEventCache) {
+    return adEventCache->ResetForInstanceId(id);
+  }
+}
+
+- (void)getBrowsingHistory:(const int)max_count
+                   forDays:(const int)days_ago
+                  callback:(brave_ads::GetBrowsingHistoryCallback)callback {
+  // TODO(https://github.com/brave/brave-browser/issues/33681): Unify Brave Ads
+  // browsing history.
+  std::move(callback).Run({});
+}
+
+- (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
+          callback:(brave_ads::UrlRequestCallback)callback {
+  std::map<brave_ads::mojom::UrlRequestMethodType, std::string> methodMap{
+      {brave_ads::mojom::UrlRequestMethodType::kGet, "GET"},
+      {brave_ads::mojom::UrlRequestMethodType::kPost, "POST"},
+      {brave_ads::mojom::UrlRequestMethodType::kPut, "PUT"}};
+
+  const auto copiedURL = url_request->url;
+
+  auto cb = std::make_shared<decltype(callback)>(std::move(callback));
+  const auto __weak weakSelf = self;
+  return [self.commonOps
+      loadURLRequest:url_request->url.spec()
+             headers:url_request->headers
+             content:url_request->content
+        content_type:url_request->content_type
+              method:methodMap[url_request->method]
+            callback:^(
+                const std::string& errorDescription, int statusCode,
+                const std::string& response,
+                const base::flat_map<std::string, std::string>& headers) {
+              const auto strongSelf = weakSelf;
+              if (!strongSelf || ![strongSelf isServiceRunning]) {
+                return;
+              }
+
+              brave_ads::mojom::UrlResponseInfo url_response;
+              url_response.url = copiedURL;
+              url_response.status_code = statusCode;
+              url_response.body = response;
+              url_response.headers = headers;
+              if (cb) {
+                std::move(*cb).Run(url_response);
+              }
+            }];
+}
+
+- (void)save:(const std::string&)name
+       value:(const std::string&)value
+    callback:(brave_ads::SaveCallback)callback {
+  const bool success = [self.commonOps saveContents:value name:name];
+  std::move(callback).Run(success);
+}
+
+- (void)load:(const std::string&)name
+    callback:(brave_ads::LoadCallback)callback {
+  const auto contents = [self.commonOps loadContentsFromFileWithName:name];
+  if (contents.empty()) {
+    return std::move(callback).Run(/*value*/ std::nullopt);
+  }
+
+  std::move(callback).Run(contents);
+}
+
+- (void)loadComponentResource:(const std::string&)id
+                      version:(const int)version
+                     callback:(brave_ads::LoadFileCallback)callback {
+  NSString* bridgedId = base::SysUTF8ToNSString(id);
+  NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
+
+  BLOG(1, @"Loading %@ ads resource descriptor", nsFilePath);
+
+  base::FilePath file_path(nsFilePath.UTF8String);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()}, base::BindOnce(^base::File {
+        return base::File(file_path,
+                          base::File::FLAG_OPEN | base::File::FLAG_READ);
+      }),
+      base::BindOnce(std::move(callback)));
+}
+
+- (const std::string)loadDataResource:(const std::string&)name {
+  const auto bundle = [NSBundle bundleForClass:[BraveAds class]];
+  const auto path = [bundle pathForResource:base::SysUTF8ToNSString(name)
+                                     ofType:nil];
+  if (!path || path.length == 0) {
+    return "";
+  }
+  NSError* error = nil;
+  const auto contents = [NSString stringWithContentsOfFile:path
+                                                  encoding:NSUTF8StringEncoding
+                                                     error:&error];
+  if (!contents || error) {
+    return "";
+  }
+  return std::string(contents.UTF8String);
+}
+
+- (void)getScheduledCaptcha:(const std::string&)payment_id
+                   callback:(brave_ads::GetScheduledCaptchaCallback)callback {
+  // TODO(https://github.com/brave/brave-browser/issues/33794): Unify Brave Ads
+  // adaptive captcha.
+  std::move(callback).Run("");
+}
+
+- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
+                               captchaId:(const std::string&)captcha_id {
+  [self.captchaHandler
+      handleAdaptiveCaptchaForPaymentId:base::SysUTF8ToNSString(payment_id)
+                              captchaId:base::SysUTF8ToNSString(captcha_id)];
+}
+
+- (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
+                callback:(brave_ads::RunDBTransactionCallback)completion {
+  __weak BraveAds* weakSelf = self;
+  adsDatabase.AsyncCall(&brave_ads::Database::RunTransaction)
+      .WithArgs(std::move(transaction))
+      .Then(base::BindOnce(
+          ^(brave_ads::RunDBTransactionCallback callback,
+            brave_ads::mojom::DBCommandResponseInfoPtr response) {
+            const auto strongSelf = weakSelf;
+            if (!strongSelf || ![strongSelf isServiceRunning]) {
+              return;
+            }
+            std::move(callback).Run(std::move(response));
+          },
+          std::move(completion)));
+}
+
+- (void)recordP2AEvents:(const std::vector<std::string>&)events {
+  // TODO(https://github.com/brave/brave-browser/issues/33786): Unify Brave Ads
+  // P3A analytics.
+}
+
+- (std::optional<base::Value>)getProfilePref:(const std::string&)path {
+  if (path == brave_news::prefs::kBraveNewsOptedIn ||
+      path == brave_news::prefs::kNewTabPageShowToday ||
+      path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
+      path == ntp_background_images::prefs::
+                  kNewTabPageShowSponsoredImagesBackgroundImage) {
+    // TODO(https://github.com/brave/brave-browser/issues/33745): Decouple Brave
+    // Rewards, News and New Tab Page prefs from core.
+    return base::Value(/*enabled*/ true);
+  }
+
+  return self.profilePrefService->GetValue(path).Clone();
+}
+
+- (void)setProfilePref:(const std::string&)path value:(base::Value)value {
+  self.profilePrefService->Set(path, value);
+  [self notifyPrefDidChange:path];
+}
+
+- (void)clearProfilePref:(const std::string&)path {
+  self.profilePrefService->ClearPref(path);
+  [self notifyPrefDidChange:path];
+}
+
+- (bool)hasProfilePrefPath:(const std::string&)path {
+  return self.profilePrefService->HasPrefPath(path);
+}
+
+- (std::optional<base::Value>)getLocalStatePref:(const std::string&)path {
+  return self.localStatePrefService->GetValue(path).Clone();
+}
+
+- (void)setLocalStatePref:(const std::string&)path value:(base::Value)value {
+  self.localStatePrefService->Set(path, value);
+  [self notifyPrefDidChange:path];
+}
+
+- (void)clearLocalStatePref:(const std::string&)path {
+  self.localStatePrefService->ClearPref(path);
+  [self notifyPrefDidChange:path];
+}
+
+- (bool)hasLocalStatePrefPath:(const std::string&)path {
+  return self.localStatePrefService->HasPrefPath(path);
+}
+
+- (void)log:(const char*)file
+            line:(const int)line
+    verboseLevel:(const int)verbose_level
+         message:(const std::string&)message {
+  if (verbose_level <= logging::GetVlogLevelHelper(file, strlen(file))) {
+    logging::LogMessage(file, line, -verbose_level).stream()
+        << "[ads] " << message;
+  }
+}
+
+#pragma mark - Ads
+
+- (void)getStatementOfAccounts:(void (^)(NSInteger adsReceived,
+                                         double estimatedEarnings,
+                                         NSDate* nextPaymentDate))completion {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  ads->GetStatementOfAccounts(
+      base::BindOnce(^(brave_ads::mojom::StatementInfoPtr statement) {
+        if (!statement) {
+          completion(0, 0, nil);
+          return;
+        }
+
+        NSDate* nextPaymentDate = nil;
+        if (!statement->next_payment_date.is_null()) {
+          nextPaymentDate = [NSDate
+              dateWithTimeIntervalSince1970:statement->next_payment_date
+                                                .InSecondsFSinceUnixEpoch()];
+        }
+        completion(statement->ads_received_this_month,
+                   statement->max_earnings_this_month, nextPaymentDate);
+      }));
+}
+
+- (void)maybeServeInlineContentAd:(NSString*)dimensionsArg
+                       completion:(void (^)(NSString* dimensions,
+                                            InlineContentAdIOS* ad))completion {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  ads->MaybeServeInlineContentAd(
+      base::SysNSStringToUTF8(dimensionsArg),
+      base::BindOnce(
+          ^(const std::string& dimensions,
+            const std::optional<brave_ads::InlineContentAdInfo>& ad) {
+            if (!ad) {
+              completion(base::SysUTF8ToNSString(dimensions), nil);
+              return;
+            }
+
+            const auto inline_content_ad =
+                [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
+            completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
+          }));
+}
+
+- (void)triggerInlineContentAdEvent:(NSString*)placementId
+                 creativeInstanceId:(NSString*)creativeInstanceId
+                          eventType:(BraveAdsInlineContentAdEventType)eventType
+                         completion:(void (^)(BOOL success))completion {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  ads->TriggerInlineContentAdEvent(
+      base::SysNSStringToUTF8(placementId),
+      base::SysNSStringToUTF8(creativeInstanceId),
+      static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
+}
+
+// TODO(https://github.com/brave/brave-browser/issues/33470): Unify Brave Ads
+// new tab page ad serving.
+
+- (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
+              creativeInstanceId:(NSString*)creativeInstanceId
+                       eventType:(BraveAdsNewTabPageAdEventType)eventType
+                      completion:(void (^)(BOOL success))completion {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  ads->TriggerNewTabPageAdEvent(
+      base::SysNSStringToUTF8(wallpaperId),
+      base::SysNSStringToUTF8(creativeInstanceId),
+      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
+}
+
+- (nullable NotificationAdIOS*)maybeGetNotificationAd:(NSString*)identifier {
+  if (![self isServiceRunning]) {
+    return nil;
+  }
+
+  const std::optional<brave_ads::NotificationAdInfo> ad =
+      ads->MaybeGetNotificationAd(identifier.UTF8String);
+  if (!ad) {
+    return nil;
+  }
+
+  return [[NotificationAdIOS alloc] initWithNotificationInfo:*ad];
+}
+
+- (void)triggerNotificationAdEvent:(NSString*)placementId
+                         eventType:(BraveAdsNotificationAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  ads->TriggerNotificationAdEvent(
+      base::SysNSStringToUTF8(placementId),
+      static_cast<brave_ads::mojom::NotificationAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
+}
+
+- (void)triggerPromotedContentAdEvent:(NSString*)placementId
+                   creativeInstanceId:(NSString*)creativeInstanceId
+                            eventType:
+                                (BraveAdsPromotedContentAdEventType)eventType
+                           completion:(void (^)(BOOL success))completion {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  ads->TriggerPromotedContentAdEvent(
+      base::SysNSStringToUTF8(placementId),
+      base::SysNSStringToUTF8(creativeInstanceId),
+      static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
+}
+
+- (void)triggerSearchResultAdEvent:(BraveAdsSearchResultAdInfo*)searchResultAd
+                         eventType:(BraveAdsSearchResultAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion {
+  if (![self isServiceRunning] || !searchResultAd) {
+    return;
+  }
+
+  ads->TriggerSearchResultAdEvent(
+      searchResultAd.cppObjPtr,
+      static_cast<brave_ads::mojom::SearchResultAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
+}
+
+- (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
+                          completion:(void (^)(BOOL success))completion {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  ads->PurgeOrphanedAdEventsForType(
+      static_cast<brave_ads::mojom::AdType>(adType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
+}
+
+- (void)toggleLikeAd:(NSString*)creativeInstanceId
+        advertiserId:(NSString*)advertiserId
+             segment:(NSString*)segment {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  brave_ads::AdContentInfo ad_content;
+  ad_content.type = brave_ads::AdType::kNotificationAd;
+  ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
+  ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  ad_content.segment = base::SysNSStringToUTF8(segment);
+
+  ads->ToggleLikeAd(brave_ads::AdContentToValue(ad_content));
+}
+
+- (void)toggleDislikeAd:(NSString*)creativeInstanceId
+           advertiserId:(NSString*)advertiserId
+                segment:(NSString*)segment {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  brave_ads::AdContentInfo ad_content;
+  ad_content.type = brave_ads::AdType::kNotificationAd;
+  ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
+  ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  ad_content.segment = base::SysNSStringToUTF8(segment);
+
+  ads->ToggleDislikeAd(brave_ads::AdContentToValue(ad_content));
+}
+
+// TODO(https://github.com/brave/brave-browser/issues/33788): Unify Brave Ads
+// like category.
+
+// TODO(https://github.com/brave/brave-browser/issues/33788): Unify Brave Ads
+// dislike category.
+
+// TODO(https://github.com/brave/brave-browser/issues/33789): Unify Brave Ads
+// save ad.
+
+// TODO(https://github.com/brave/brave-browser/issues/33790): Unify Brave Ads
+// mark ad as inappropriate.
+
+#pragma mark - Ads client notifier
+
+- (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer {
+  if (adsClientNotifier != nil) {
+    adsClientNotifier->AddObserver(observer);
+  }
+}
+
+- (void)removeObserver:(brave_ads::AdsClientNotifierObserver*)observer {
+  if (adsClientNotifier != nil) {
+    adsClientNotifier->RemoveObserver(observer);
+  }
+}
+
+- (void)notifyPendingObservers {
+  if (adsClientNotifier != nil) {
+    adsClientNotifier->NotifyPendingObservers();
+  }
+}
+
+- (void)notifyDidInitializeAds {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyDidInitializeAds();
+  }
+}
+
+- (void)notifyPrefDidChange:(const std::string&)path {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyPrefDidChange(path);
+  }
+}
+
+- (void)notifyDidUpdateResourceComponent:(NSString*)manifest_version
+                                      id:(NSString*)id {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyDidUpdateResourceComponent(
+        base::SysNSStringToUTF8(manifest_version), base::SysNSStringToUTF8(id));
+  }
+}
+
+- (void)notifyRewardsWalletDidUpdate:(NSString*)paymentId
+                          base64Seed:(NSString*)base64Seed {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyRewardsWalletDidUpdate(
+        base::SysNSStringToUTF8(paymentId),
+        base::SysNSStringToUTF8(base64Seed));
+  }
+}
+
+- (void)notifyTabTextContentDidChange:(NSInteger)tabId
+                        redirectChain:(NSArray<NSURL*>*)redirectChain
+                                 text:(NSString*)text {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
+
+  adsClientNotifier->NotifyTabTextContentDidChange(
+      (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
+}
+
+- (void)notifyTabHtmlContentDidChange:(NSInteger)tabId
+                        redirectChain:(NSArray<NSURL*>*)redirectChain
+                                 html:(NSString*)html {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
+
+  adsClientNotifier->NotifyTabHtmlContentDidChange(
+      (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
+}
+
+- (void)notifyTabDidStartPlayingMedia:(NSInteger)tabId {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
+  }
+}
+
+- (void)notifyTabDidStopPlayingMedia:(NSInteger)tabId {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
+  }
+}
+
+- (void)notifyTabDidChange:(NSInteger)tabId
+             redirectChain:(NSArray<NSURL*>*)redirectChain
+               isErrorPage:(BOOL)isErrorPage
+                isSelected:(BOOL)isSelected {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
+
+  const bool isVisible = isSelected && [self isBrowserActive];
+
+  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isErrorPage,
+                                        isVisible);
+}
+
+- (void)notifyDidCloseTab:(NSInteger)tabId {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
+  }
+}
+
+- (void)notifyBrowserDidEnterForeground {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidEnterForeground();
+  }
+}
+
+- (void)notifyBrowserDidEnterBackground {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidEnterBackground();
+  }
+}
+
+- (void)notifyBrowserDidBecomeActive {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidBecomeActive();
+  }
+}
+
+- (void)notifyBrowserDidResignActive {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidResignActive();
+  }
 }
 
 @end

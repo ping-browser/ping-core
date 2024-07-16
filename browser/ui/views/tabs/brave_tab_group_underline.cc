@@ -7,14 +7,17 @@
 
 #include <algorithm>
 
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/view_utils.h"
 
 BraveTabGroupUnderline::BraveTabGroupUnderline(
     TabGroupViews* tab_group_views,
@@ -45,10 +48,20 @@ void BraveTabGroupUnderline::UpdateBounds(const views::View* leading_view,
 
 gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
     const views::View* sibling_view) const {
-  if (!ShouldShowVerticalTabs())
-    return TabGroupUnderline::GetInsetsForUnderline(sibling_view);
+  if (ShouldShowVerticalTabs()) {
+    return {};
+  }
 
-  return {};
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return TabGroupUnderline::GetInsetsForUnderline(sibling_view);
+  }
+
+  // For horizontal tabs, the underline should be inset slightly within the
+  // visual edges of the tab.
+  int horizontal_inset =
+      TabGroupUnderline::kStrokeThickness + brave_tabs::kHorizontalTabInset;
+
+  return gfx::Insets::VH(0, horizontal_inset);
 }
 
 gfx::Rect BraveTabGroupUnderline::CalculateTabGroupUnderlineBounds(
@@ -80,9 +93,35 @@ gfx::Rect BraveTabGroupUnderline::CalculateTabGroupUnderlineBounds(
   return group_bounds;
 }
 
-bool BraveTabGroupUnderline::ShouldShowVerticalTabs() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return false;
+void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return TabGroupUnderline::OnPaint(canvas);
+  }
 
+  SkColor color = tab_group_views_->GetGroupColor();
+  if (!ShouldShowVerticalTabs()) {
+    color = SkColorSetA(color, 0.6 * 255);
+  }
+
+  SkPath path = style_->GetUnderlinePath(GetLocalBounds());
+  cc::PaintFlags flags;
+  flags.setAntiAlias(true);
+  flags.setColor(color);
+  flags.setStyle(cc::PaintFlags::kFill_Style);
+  canvas->DrawPath(path, flags);
+}
+
+bool BraveTabGroupUnderline::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
 }
+
+// static
+int BraveTabGroupUnderline::GetStrokeInset() {
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return TabGroupUnderline::GetStrokeInset();
+  }
+  return brave_tabs::kHorizontalTabInset;
+}
+
+BEGIN_METADATA(BraveTabGroupUnderline)
+END_METADATA

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
-index 7cb58a2986602aaa5076ff4ca0dfe9b6cf87e4d3..6e6d847f5b13cdc997849498757cc1522376ca95 100644
+index 46154f4501a36134e7116e9673f7e8996cdc5cef..95543b36511684d37e4e9bd85ed1cfbe034f1973 100644
 --- a/chrome/browser/extensions/extension_tab_util.cc
 +++ b/chrome/browser/extensions/extension_tab_util.cc
-@@ -804,6 +804,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
-   };
+@@ -902,6 +902,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
+   }
  
-   if (!url.SchemeIs(content::kChromeUIScheme))
-+  if (!url.SchemeIs(content::kBraveUIScheme))
+   if (!url.SchemeIs(content::kChromeUIScheme)) {
++    if (!url.SchemeIs(content::kBraveUIScheme))
      return false;
+   }
  
-   return base::Contains(kill_hosts, url.host_piece());

@@ -14,14 +14,29 @@ class PrefService;
 namespace brave_search_conversion {
 namespace p3a {
 
-constexpr char kSearchPromoButtonHistogramName[] = "Brave.Search.Promo.Button";
-constexpr char kSearchPromoBannerHistogramName[] = "Brave.Search.Promo.Banner";
-constexpr char kSearchPromoNTPHistogramName[] = "Brave.Search.Promo.NewTabPage";
+inline constexpr char kSearchPromoButtonHistogramName[] =
+    "Brave.Search.Promo.Button";
+inline constexpr char kSearchPromoBannerBHistogramName[] =
+    "Brave.Search.Promo.BannerB";
+inline constexpr char kSearchPromoBannerCHistogramName[] =
+    "Brave.Search.Promo.BannerC";
+inline constexpr char kSearchPromoBannerDHistogramName[] =
+    "Brave.Search.Promo.BannerD";
+inline constexpr char kSearchPromoNTPHistogramName[] =
+    "Brave.Search.Promo.NewTabPage";
+inline constexpr char kSearchQueriesBeforeChurnHistogramName[] =
+    "Brave.Search.QueriesBeforeChurn";
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
+
 void RecordPromoShown(PrefService* prefs, ConversionType type);
 void RecordPromoTrigger(PrefService* prefs, ConversionType type);
-void RecordDefaultEngineChange(PrefService* prefs);
+
+void RecordLocationBarQuery(PrefService* prefs);
+void RecordDefaultEngineConversion(PrefService* prefs);
+void RecordDefaultEngineChurn(PrefService* prefs);
 
 }  // namespace p3a
 }  // namespace brave_search_conversion

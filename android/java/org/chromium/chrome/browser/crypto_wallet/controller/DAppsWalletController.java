@@ -5,11 +5,14 @@
 
 package org.chromium.chrome.browser.crypto_wallet.controller;
 
+import static org.chromium.chrome.browser.app.BraveActivity.BRAVE_WALLET_HOST;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -32,15 +35,16 @@ import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.url.GURL;
 
-public class DAppsWalletController
-        implements ConnectionErrorHandler, BraveWalletPanel.BraveWalletPanelServices {
+public class DAppsWalletController implements ConnectionErrorHandler {
     private static final String TAG = DAppsWalletController.class.getSimpleName();
     private FullscreenManager mFullscreenManager;
-    private Context mContext;
-    private View mAnchorViewHost;
+    private final Context mContext;
+    private final View mAnchorViewHost;
     private AssetRatioService mAssetRatioService;
     private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
@@ -50,39 +54,71 @@ public class DAppsWalletController
     private BraveWalletPanel mBraveWalletPanel;
     private DialogInterface.OnDismissListener mOnDismissListener;
     private final AppCompatActivity mActivity;
+    @Nullable private final GURL mVisibleUrl;
 
-    private DialogInterface.OnDismissListener mDialogOrPanelDismissListener = dialog -> {
-        if (mOnDismissListener != null) {
-            mOnDismissListener.onDismiss(dialog);
-        }
-        cleanUp();
-    };
+    @NonNull private final DefaultLifecycleObserver mDefaultLifecycleObserver;
+
+    @NonNull private final DialogInterface.OnDismissListener mDialogOrPanelDismissListener;
 
     public DAppsWalletController(Context mContext, View mAnchorViewHost) {
         this.mContext = mContext;
         this.mAnchorViewHost = mAnchorViewHost;
         this.mActivity = BraveActivity.getChromeTabbedActivity();
+        WebContents webContents = null;
+        mDefaultLifecycleObserver =
+                new DefaultLifecycleObserver() {
+                    @Override
+                    public void onResume(@NonNull LifecycleOwner owner) {
+                        if (mBraveWalletPanel != null) {
+                            mBraveWalletPanel.resume();
+                        }
+                    }
+
+                    @Override
+                    public void onPause(@NonNull LifecycleOwner owner) {
+                        if (mBraveWalletPanel != null) {
+                            mBraveWalletPanel.pause();
+                        }
+                    }
+                };
+        mDialogOrPanelDismissListener =
+                dialog -> {
+                    if (mOnDismissListener != null) {
+                        mOnDismissListener.onDismiss(dialog);
+                    }
+                    DAppsWalletController.this.cleanUp();
+                };
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
+            webContents = activity.getCurrentWebContents();
+
             ObservableSupplier<BrowserControlsManager> managerSupplier =
                     activity.getBrowserControlsManagerSupplier();
             mFullscreenManager = managerSupplier.get().getFullscreenManager();
         } catch (BraveActivity.BraveActivityNotFoundException | NullPointerException e) {
             Log.e(TAG, "Constructor", e);
         }
+
+        if (webContents != null) {
+            mVisibleUrl = webContents.getVisibleUrl();
+        } else {
+            mVisibleUrl = null;
+        }
     }
 
-    public DAppsWalletController(Context mContext, View mAnchorViewHost,
+    public DAppsWalletController(
+            Context context,
+            View anchorViewHost,
             DialogInterface.OnDismissListener onDismissListener) {
-        this(mContext, mAnchorViewHost);
+        this(context, anchorViewHost);
         this.mOnDismissListener = onDismissListener;
     }
 
     public void showWalletPanel() {
-        InitAssetRatioService();
-        InitKeyringService();
-        InitJsonRpcService();
-        InitBraveWalletService();
+        initAssetRatioService();
+        initKeyringService();
+        initJsonRpcService();
+        initBraveWalletService();
         if (Utils.shouldShowCryptoOnboarding()) {
             showOnBoardingOrUnlock();
         } else {
@@ -102,14 +138,17 @@ public class DAppsWalletController
     }
 
     private void createAndShowWalletPanel() {
+        boolean showExpandButton =
+                mVisibleUrl != null && !mVisibleUrl.getHost().equals(BRAVE_WALLET_HOST);
         mBraveWalletPanel =
-                new BraveWalletPanel(mAnchorViewHost, mDialogOrPanelDismissListener, this);
+                new BraveWalletPanel(
+                        mAnchorViewHost, mDialogOrPanelDismissListener, showExpandButton);
         mBraveWalletPanel.showLikePopDownMenu();
         setupLifeCycleUpdater();
     }
 
     private void setupLifeCycleUpdater() {
-        mActivity.getLifecycle().addObserver(defaultLifecycleObserver);
+        mActivity.getLifecycle().addObserver(mDefaultLifecycleObserver);
     }
 
     private void showOnBoardingOrUnlock() {
@@ -121,30 +160,6 @@ public class DAppsWalletController
         mDAppsDialog =
                 DAppsDialog.newInstance(mContext, mDialogOrPanelDismissListener, dialogStyle);
         mDAppsDialog.showOnboarding(Utils.shouldShowCryptoOnboarding());
-    }
-
-    @Override
-    public AssetRatioService getAssetRatioService() {
-        assert mAssetRatioService != null;
-        return mAssetRatioService;
-    }
-
-    @Override
-    public BraveWalletService getBraveWalletService() {
-        assert mBraveWalletService != null;
-        return mBraveWalletService;
-    }
-
-    @Override
-    public KeyringService getKeyringService() {
-        assert mKeyringService != null;
-        return mKeyringService;
-    }
-
-    @Override
-    public JsonRpcService getJsonRpcService() {
-        assert mJsonRpcService != null;
-        return mJsonRpcService;
     }
 
     @Override
@@ -165,10 +180,10 @@ public class DAppsWalletController
             mAssetRatioService.close();
             mAssetRatioService = null;
         }
-        InitAssetRatioService();
-        InitKeyringService();
-        InitJsonRpcService();
-        InitBraveWalletService();
+        initAssetRatioService();
+        initKeyringService();
+        initJsonRpcService();
+        initBraveWalletService();
         updateState();
     }
 
@@ -198,28 +213,28 @@ public class DAppsWalletController
         mHasStateInitialise = true;
     }
 
-    private void InitKeyringService() {
+    private void initKeyringService() {
         if (mKeyringService != null) {
             return;
         }
         mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
     }
 
-    private void InitJsonRpcService() {
+    private void initJsonRpcService() {
         if (mJsonRpcService != null) {
             return;
         }
         mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
-    private void InitBraveWalletService() {
+    private void initBraveWalletService() {
         if (mBraveWalletService != null) {
             return;
         }
         mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
-    private void InitAssetRatioService() {
+    private void initAssetRatioService() {
         if (mAssetRatioService != null) {
             return;
         }
@@ -244,26 +259,9 @@ public class DAppsWalletController
             mAssetRatioService = null;
         }
         if (mActivity != null) {
-            mActivity.getLifecycle().removeObserver(defaultLifecycleObserver);
+            mActivity.getLifecycle().removeObserver(mDefaultLifecycleObserver);
         }
     }
-
-    private final DefaultLifecycleObserver defaultLifecycleObserver =
-            new DefaultLifecycleObserver() {
-                @Override
-                public void onResume(@NonNull LifecycleOwner owner) {
-                    if (mBraveWalletPanel != null) {
-                        mBraveWalletPanel.resume();
-                    }
-                }
-
-                @Override
-                public void onPause(@NonNull LifecycleOwner owner) {
-                    if (mBraveWalletPanel != null) {
-                        mBraveWalletPanel.pause();
-                    }
-                }
-            };
 
     private boolean shouldShowNotificationAtTop(Context context) {
         return ConfigurationUtils.isTablet(context)

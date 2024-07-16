@@ -6,22 +6,22 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace state {
 
 class State {
  public:
-  explicit State(RewardsEngineImpl& engine);
+  explicit State(RewardsEngine& engine);
   ~State();
 
   void Initialize(ResultCallback callback);
@@ -60,57 +60,16 @@ class State {
 
   void SetCreationStamp(const uint64_t stamp);
 
-  bool GetInlineTippingPlatformEnabled(
-      const mojom::InlineTipsPlatforms platform);
-
-  void SetInlineTippingPlatformEnabled(
-      const mojom::InlineTipsPlatforms platform,
-      const bool enabled);
-
-  void SetRewardsParameters(const mojom::RewardsParameters& parameters);
-
-  mojom::RewardsParametersPtr GetRewardsParameters();
-
-  double GetRate();
-
-  double GetAutoContributeChoice();
-
-  std::vector<double> GetAutoContributeChoices();
-
-  std::vector<double> GetTipChoices();
-
-  std::vector<double> GetMonthlyTipChoices();
-
-  base::flat_map<std::string, std::string> GetPayoutStatus();
-
-  base::flat_map<std::string, mojom::RegionsPtr> GetWalletProviderRegions();
-
-  base::Time GetVBatDeadline();
-
-  bool GetVBatExpired();
-
-  void SetEmptyBalanceChecked(const bool checked);
-
-  bool GetEmptyBalanceChecked();
-
   void SetServerPublisherListStamp(const uint64_t stamp);
 
   uint64_t GetServerPublisherListStamp();
 
-  void SetPromotionCorruptedMigrated(const bool migrated);
-
-  bool GetPromotionCorruptedMigrated();
-
-  void SetPromotionLastFetchStamp(const uint64_t stamp);
-
-  uint64_t GetPromotionLastFetchStamp();
-
-  absl::optional<std::string> GetEncryptedString(const std::string& key);
+  std::optional<std::string> GetEncryptedString(const std::string& key);
 
   bool SetEncryptedString(const std::string& key, const std::string& value);
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   StateMigration migration_;
 };
 

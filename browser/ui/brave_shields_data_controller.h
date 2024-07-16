@@ -13,7 +13,7 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/favicon/core/favicon_driver_observer.h"
@@ -69,7 +69,6 @@ class BraveShieldsDataController
   CookieBlockMode GetCookieBlockMode();
   bool IsBraveShieldsManaged();
   bool IsForgetFirstPartyStorageFeatureEnabled() const;
-  bool GetHTTPSEverywhereEnabled();
   HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
   bool GetForgetFirstPartyStorageEnabled();
@@ -78,7 +77,6 @@ class BraveShieldsDataController
   void SetCookieBlockMode(CookieBlockMode mode);
   void SetHttpsUpgradeMode(HttpsUpgradeMode mode);
   void SetIsNoScriptEnabled(bool is_enabled);
-  void SetIsHTTPSEverywhereEnabled(bool is_enabled);
   void SetForgetFirstPartyStorageEnabled(bool is_enabled);
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);

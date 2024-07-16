@@ -9,18 +9,16 @@ import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
-import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
+import { isSelfCustodyProvider } from '../../shared/lib/external_wallet'
 
 import PageWallet from './pageWallet'
 
-import { VBATNotice, shouldShowVBATNotice } from '../../shared/components/vbat_notice'
 import { AdsPanel } from './ads_panel'
 import { AutoContributePanel } from './auto_contribute_panel'
 import { TipsPanel } from './tips_panel'
 import { MonthlyTipsPanel } from './monthly_tips_panel'
 import { SettingsOptInForm } from '../../shared/components/onboarding'
 import { ProviderRedirectModal } from './provider_redirect_modal'
-import { GrantList } from './grant_list'
 import { SidebarPromotionPanel } from './sidebar_promotion_panel'
 import { UnsupportedRegionNotice } from './unsupported_region_notice'
 import { BatIcon } from '../../shared/components/icons/bat_icon'
@@ -92,8 +90,6 @@ export function Settings () {
     new HashHandler('ads', actions.onAdsSettingsOpen, true),
     new HashHandler(
       'auto-contribute', actions.onAutoContributeSettingsOpen, true),
-    new HashHandler(
-      'contributions', actions.onContributionsSettingsOpen, true),
     new HashHandler('monthly-contributions'),
     new HashHandler('ads-history', actions.onModalAdsHistoryOpen, false, 'ads'),
     new HashHandler('reset', actions.onModalResetOpen, false, 'top')
@@ -126,8 +122,8 @@ export function Settings () {
   }
 
   React.useEffect(() => {
-    actions.getIsGrandfatheredUser()
     actions.getUserType()
+    actions.isTermsOfServiceUpdateRequired()
     actions.getIsUnsupportedRegion()
     const date = new Date()
     actions.getBalanceReport(date.getMonth() + 1, date.getFullYear())
@@ -141,10 +137,8 @@ export function Settings () {
     actions.getIsAutoContributeSupported()
     actions.getAutoContributeProperties()
     actions.getBalance()
-    actions.fetchPromotions()
     actions.getExternalWallet()
     actions.getOnboardingStatus()
-    actions.getEnabledInlineTippingPlatforms()
 
     if (handleURLActions()) {
       clearURLPath()
@@ -154,7 +148,7 @@ export function Settings () {
   }, [rewardsData.initializing])
 
   React.useEffect(() => {
-    const id = setInterval(() => { actions.getBalance() }, 60000)
+    const id = setInterval(() => { actions.getBalance() }, 180000)
     return () => { clearInterval(id) }
   }, [rewardsData.initializing])
 
@@ -163,17 +157,29 @@ export function Settings () {
     actions.getReconcileStamp()
   }, [rewardsData.enabledContribute])
 
-  const canConnectAccount = () => {
-    const {
-      currentCountryCode,
-      externalWalletProviderList,
-      parameters
-    } = rewardsData
+  const shouldShowAutoContribute = () => {
+    if (rewardsData.userType === 'unconnected') {
+      return false
+    }
+    if (!rewardsData.isAcSupported) {
+      return false
+    }
+    const { externalWallet } = rewardsData
+    if (externalWallet && isSelfCustodyProvider(externalWallet.type)) {
+      return false
+    }
+    return true
+  }
 
-    return externalWalletProviderList.some((provider) => {
-      const regionInfo = parameters.walletProviderRegions[provider] || null
-      return isExternalWalletProviderAllowed(currentCountryCode, regionInfo)
-    })
+  const shouldShowTips = () => {
+    if (rewardsData.userType === 'unconnected') {
+      return false
+    }
+    const { externalWallet } = rewardsData
+    if (externalWallet && isSelfCustodyProvider(externalWallet.type)) {
+      return false
+    }
+    return true
   }
 
   const onManageClick = () => { actions.onModalResetOpen() }
@@ -204,26 +210,6 @@ export function Settings () {
       <style.onboarding>
         <SettingsOptInForm onEnable={isAndroid ? undefined : onEnable} />
       </style.onboarding>
-    )
-  }
-
-  function renderVBATNotice () {
-    const { vbatDeadline } = rewardsData.parameters
-    if (!shouldShowVBATNotice(rewardsData.userType, vbatDeadline)) {
-      return null
-    }
-
-    const onConnect = () => { actions.onModalConnectOpen() }
-
-    return (
-      <style.vbatNotice>
-        <VBATNotice
-          vbatDeadline={vbatDeadline}
-          canConnectAccount={canConnectAccount()}
-          declaredCountry={rewardsData.currentCountryCode}
-          onConnectAccount={onConnect}
-        />
-      </style.vbatNotice>
     )
   }
 
@@ -258,18 +244,17 @@ export function Settings () {
               </button>
             </style.manageAction>
           </style.header>
-          {renderVBATNotice()}
           <style.settingGroup>
             <AdsPanel />
           </style.settingGroup>
           {
-            rewardsData.userType !== 'unconnected' &&
+            shouldShowAutoContribute() &&
               <style.settingGroup data-test-id='auto-contribute-settings'>
                 <AutoContributePanel />
               </style.settingGroup>
           }
           {
-            rewardsData.userType !== 'unconnected' &&
+            shouldShowTips() &&
               <>
                 <style.settingGroup>
                   <TipsPanel />
@@ -281,8 +266,7 @@ export function Settings () {
           }
         </style.main>
         <style.sidebar>
-          {rewardsData.userType !== 'unconnected' && <GrantList />}
-          <PageWallet layout={layoutKind} />
+          <PageWallet />
           <SidebarPromotionPanel />
         </style.sidebar>
       </style.content>

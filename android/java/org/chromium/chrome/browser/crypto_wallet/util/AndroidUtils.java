@@ -9,18 +9,21 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.text.Html;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
+import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 public class AndroidUtils {
     public static int getToolBarHeight(Context context) {
@@ -32,29 +35,8 @@ public class AndroidUtils {
         return 0;
     }
 
-    public static void disableViewsByIds(View view, int... ids) {
-        if (view != null) {
-            for (int id : ids) {
-                disableView(view, id);
-            }
-        }
-    }
-
-    public static void disableView(View containerView, @IdRes int id) {
-        if (containerView == null) return;
-        View view = containerView.findViewById(id);
-        if (view != null) {
-            view.setEnabled(false);
-            view.setClickable(false);
-        }
-    }
-
     public static Spanned formatHTML(String html) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            return Html.fromHtml(html);
-        }
+        return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
     }
 
     // Views
@@ -71,6 +53,12 @@ public class AndroidUtils {
         textView.setTextAppearance(R.style.BraveWalletTextViewSubTitle);
         textView.setId(View.generateViewId());
         return textView;
+    }
+
+    public static void disable(@NonNull View... views) {
+        for (View view : views) {
+            view.setEnabled(false);
+        }
     }
 
     public static void gone(View... views) {
@@ -114,7 +102,6 @@ public class AndroidUtils {
 
     /**
      * Calculated an ideal row count for shimmer effect based on screen size
-     * @param context of app
      * @param skeletonRowHeight of a skeleton row view in pixels
      * @return count of rows for the skeleton list
      */
@@ -130,5 +117,14 @@ public class AndroidUtils {
         return (ContextUtils.getApplicationContext().getApplicationInfo().flags
                        & ApplicationInfo.FLAG_DEBUGGABLE)
                 != 0;
+    }
+
+    public static SpannableString createClickableSpanString(
+            Context context, @StringRes int id, Callback listener) {
+        NoUnderlineClickableSpan noUnderlineClickableSpan =
+                new NoUnderlineClickableSpan(context, R.color.brave_link, listener);
+        SpannableString spannableString = new SpannableString(context.getString(id));
+        spannableString.setSpan(noUnderlineClickableSpan, 0, spannableString.length(), 0);
+        return spannableString;
     }
 }

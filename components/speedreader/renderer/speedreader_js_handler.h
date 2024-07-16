@@ -22,7 +22,7 @@ class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler> {
   SpeedreaderJSHandler& operator=(const SpeedreaderJSHandler&) = delete;
 
   static void Install(base::WeakPtr<SpeedreaderRenderFrameObserver> owner,
-                      int32_t isolated_world_id);
+                      v8::Local<v8::Context> context);
 
  private:
   explicit SpeedreaderJSHandler(
@@ -35,6 +35,8 @@ class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler> {
 
   // A function to be called from JS
   void ShowOriginalPage(v8::Isolate* isolate);
+
+  void TtsPlayPause(v8::Isolate* isolate, int index);
 
   base::WeakPtr<SpeedreaderRenderFrameObserver> owner_;
 };

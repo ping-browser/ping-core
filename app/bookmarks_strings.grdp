@@ -31,6 +31,9 @@
     <message name="IDS_BOOKMARK_BAR_SHOW_APPS_SHORTCUT" desc="Name shown in the context menu to hide/show the apps shortcut in the bookmark bar">
       Show apps shortcut
     </message>
+    <message name="IDS_BOOKMARK_BAR_SHOW_TAB_GROUPS" desc="Name shown in the context menu to hide/show the tab groups in the bookmark bar">
+      Show tab groups
+    </message>
     <message name="IDS_BOOKMARK_BAR_SHOW_READING_LIST" desc="Name shown in the context menu to hide/show the reading list in the bookmark bar">
       Show reading list
     </message>
@@ -44,6 +47,9 @@
   <if expr="use_titlecase">
     <message name="IDS_BOOKMARK_BAR_SHOW_APPS_SHORTCUT" desc="In Title Case: Name shown in the context menu to hide/show the apps shortcut in the bookmark bar">
       Show Apps Shortcut
+    </message>
+    <message name="IDS_BOOKMARK_BAR_SHOW_TAB_GROUPS" desc="Name shown in the context menu to hide/show the tab groups in the bookmark bar">
+      Show Tab Groups
     </message>
     <message name="IDS_BOOKMARK_BAR_SHOW_READING_LIST" desc="In Title Case: Name shown in the context menu to hide/show the reading list in the bookmark bar">
       Show Reading List
@@ -201,8 +207,14 @@
   <message name="IDS_BOOKMARK_BUBBLE_PAGE_BOOKMARK" desc="Title of the bubble when re-clicking on a bookmark">
     Edit bookmark
   </message>
+  <message name="IDS_BOOKMARK_BUBBLE_EDIT_BOOKMARK" desc="Title of the button for editing the bookmark">
+    Edit
+  </message>
   <message name="IDS_BOOKMARK_BUBBLE_NAME_LABEL" desc="Text preceding the title of the page that was bookmarked" meaning="Name of an inanimate object">
     Name
+  </message>
+  <message name="IDS_BOOKMARK_BUBBLE_SAVED_TO" desc="Text notifying a user which folder their bookmark was saved to.">
+    This page is saved to <ph name="BOOKMARK_FOLDER">$1<ex>All Bookmarks</ex></ph>
   </message>
   <message name="IDS_BOOKMARK_AX_BUBBLE_NAME_LABEL" desc="Text preceding the title of the page that was bookmarked, read by spoken feedback">
     Bookmark name

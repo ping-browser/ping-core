@@ -6,22 +6,18 @@
 import * as React from 'react'
 
 // Options
-import {
-  ChartTimelineOptions
-} from '../../../options/chart-timeline-options'
+import { ChartTimelineOptions } from '../../../options/chart-timeline-options'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 
 // Types
-import {
-  BraveWallet
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Styled Components
 import {
   LineChartWrapper,
-  PopupButton,
+  LineChartButton,
   PopupButtonText
 } from './wellet-menus.style'
 
@@ -30,25 +26,19 @@ export interface Props {
 }
 
 export const LineChartControlsMenu = (props: Props) => {
-  const {
-    onClick
-  } = props
+  const { onClick } = props
 
   return (
-    <LineChartWrapper yPosition={32}>
-      {ChartTimelineOptions.map((option) =>
-        <PopupButton
+    <LineChartWrapper yPosition={38}>
+      {ChartTimelineOptions.map((option) => (
+        <LineChartButton
           key={option.id}
           onClick={() => onClick(option.id)}
-          minWidth={130}
+          minWidth={150}
         >
-          <PopupButtonText>
-            {getLocale(option.name)}
-          </PopupButtonText>
-        </PopupButton>
-      )}
+          <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
+        </LineChartButton>
+      ))}
     </LineChartWrapper>
   )
 }
-
-export default LineChartControlsMenu

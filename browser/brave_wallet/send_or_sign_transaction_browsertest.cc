@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
@@ -11,17 +13,16 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -47,7 +48,6 @@
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -136,8 +136,7 @@ class TestJsonRpcServiceObserver : public mojom::JsonRpcServiceObserver {
 
   void ChainChangedEvent(const std::string& chain_id,
                          brave_wallet::mojom::CoinType coin,
-                         const absl::optional<::url::Origin>& origin) override {
-  }
+                         const std::optional<::url::Origin>& origin) override {}
 
   void OnIsEip1559Changed(const std::string& chain_id,
                           bool is_eip1559) override {}
@@ -190,9 +189,6 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     https_server_for_files()->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(https_server_for_files()->Start());
 
-    brave_wallet_service_ =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-            browser()->profile());
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(browser()->profile());
     tx_service_ = TxServiceFactory::GetServiceForContext(browser()->profile());
@@ -210,7 +206,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     https_server_for_rpc()->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_for_rpc()->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_for_rpc()->Start());
-    SetNetworkForTesting(mojom::kLocalhostChainId, absl::nullopt);
+    SetNetworkForTesting(mojom::kLocalhostChainId, std::nullopt);
   }
 
   content::WebContents* web_contents() {
@@ -230,17 +226,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   TestTxServiceObserver* observer() { return &observer_; }
 
   void RestoreWallet() {
-    const char mnemonic[] =
-        "drip caution abandon festival order clown oven regular absorb "
-        "evidence crew where";
-    base::RunLoop run_loop;
-    keyring_service_->RestoreWallet(
-        mnemonic, "brave123", false,
-        base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+        kMnemonicDripCaution, kTestWalletPassword, false));
 
     default_account_ =
         keyring_service_->GetAllAccountsSync()->accounts[0]->Clone();
@@ -257,7 +244,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void UnlockWallet() {
     base::RunLoop run_loop;
-    keyring_service_->Unlock("brave123",
+    keyring_service_->Unlock(kTestWalletPassword,
                              base::BindLambdaForTesting([&](bool success) {
                                ASSERT_TRUE(success);
                                run_loop.Quit();
@@ -340,13 +327,10 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void AddEthereumPermission(const mojom::AccountIdPtr& account_id) {
-    base::RunLoop run_loop;
-    brave_wallet_service_->AddPermission(
-        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    EXPECT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+        blink::PermissionType::BRAVE_ETHEREUM, browser()->profile(),
+        web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin(),
+        account_id->address));
   }
 
   const mojom::AccountInfoPtr& default_account() const {
@@ -392,7 +376,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void TestUserApproved(
-      absl::optional<std::string> expected_signed_tx,
+      std::optional<std::string> expected_signed_tx,
       const std::string& test_method,
       const std::string& data = "",
       bool skip_restore = false,
@@ -565,7 +549,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void SetNetworkForTesting(const std::string& chain_id,
-                            const absl::optional<::url::Origin>& origin,
+                            const std::optional<::url::Origin>& origin,
                             bool skip_rpc_url_override = false) {
     mojom::NetworkInfoPtr chain;
     ASSERT_TRUE(
@@ -599,12 +583,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     base::RunLoop().RunUntilIdle();
   }
 
-  std::string chain_id(const absl::optional<::url::Origin>& origin) {
+  std::string chain_id(const std::optional<::url::Origin>& origin) {
     return json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH, origin);
   }
 
  protected:
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   mojom::AccountInfoPtr default_account_;
 
  private:
@@ -620,40 +603,40 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedRequestSend) {
-  TestUserApproved(absl::nullopt, "request");
+  TestUserApproved(std::nullopt, "request");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, UserApprovedSend1) {
-  TestUserApproved(absl::nullopt, "send1");
+  TestUserApproved(std::nullopt, "send1");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, UserApprovedSend2) {
-  TestUserApproved(absl::nullopt, "send2");
+  TestUserApproved(std::nullopt, "send2");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedSendAsync) {
-  TestUserApproved(absl::nullopt, "sendAsync");
+  TestUserApproved(std::nullopt, "sendAsync");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedRequestData0x) {
-  TestUserApproved(absl::nullopt, "request", "0x");
+  TestUserApproved(std::nullopt, "request", "0x");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedSend1Data0x) {
-  TestUserApproved(absl::nullopt, "send1", "0x1");
+  TestUserApproved(std::nullopt, "send1", "0x1");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedSend2Data0x) {
-  TestUserApproved(absl::nullopt, "send2", "0x11");
+  TestUserApproved(std::nullopt, "send2", "0x11");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedSendAsyncData0x) {
-  TestUserApproved(absl::nullopt, "sendAsync", "0x");
+  TestUserApproved(std::nullopt, "sendAsync", "0x");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, UserRejectedRequest) {
@@ -946,16 +929,16 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, CallViaProxy) {
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSendTransactionEIP1559Tx) {
-  SetNetworkForTesting(mojom::kMainnetChainId, absl::nullopt);
+  SetNetworkForTesting(mojom::kMainnetChainId, std::nullopt);
   observer()->SetExpectEip1559Tx(true);
-  TestUserApproved(absl::nullopt, "request", "", false, mojom::kMainnetChainId);
+  TestUserApproved(std::nullopt, "request", "", false, mojom::kMainnetChainId);
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSendTransactionLegacyTx) {
-  SetNetworkForTesting(mojom::kLocalhostChainId, absl::nullopt);
+  SetNetworkForTesting(mojom::kLocalhostChainId, std::nullopt);
   observer()->SetExpectEip1559Tx(false);
-  TestUserApproved(absl::nullopt, "request");
+  TestUserApproved(std::nullopt, "request");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
@@ -965,16 +948,16 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
   AddCustomNetwork(browser()->profile()->GetPrefs(), chain);
 
-  SetNetworkForTesting("0x5566", absl::nullopt);
+  SetNetworkForTesting("0x5566", std::nullopt);
   observer()->SetExpectEip1559Tx(false);
 
-  TestUserApproved(absl::nullopt, "request", "", true /* skip_restore */,
+  TestUserApproved(std::nullopt, "request", "", true /* skip_restore */,
                    "0x5566");
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSignTransactionEIP1559Tx) {
-  SetNetworkForTesting(mojom::kMainnetChainId, absl::nullopt);
+  SetNetworkForTesting(mojom::kMainnetChainId, std::nullopt);
   observer()->SetExpectEip1559Tx(true);
   TestUserApproved(
       "0x02f86d0182960484f38e9e008525f38e9e0082960494084dcb94038af1715963f14907"
@@ -986,7 +969,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSignTransactionLegacyTx) {
-  SetNetworkForTesting(mojom::kLocalhostChainId, absl::nullopt);  // localhost
+  SetNetworkForTesting(mojom::kLocalhostChainId, std::nullopt);  // localhost
   observer()->SetExpectEip1559Tx(false);
   TestUserApproved(kSignedTransaction, "request");
 }
@@ -998,7 +981,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
   AddCustomNetwork(browser()->profile()->GetPrefs(), chain);
 
-  SetNetworkForTesting("0x5566", absl::nullopt);
+  SetNetworkForTesting("0x5566", std::nullopt);
   observer()->SetExpectEip1559Tx(false);
 
   TestUserApproved(

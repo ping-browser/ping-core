@@ -5,7 +5,6 @@
 
 import { Reducer } from 'redux'
 import { types } from '../actions/rewards_types'
-import * as mojom from '../../shared/lib/mojom'
 import {
   optional
 } from '../../../../brave_rewards/resources/shared/lib/optional'
@@ -64,26 +63,32 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.ON_BALANCE: {
-      const { value, error } = action.payload.result
-
-      if (value) {
-        state = { ...state, balance: optional(value.balance.total) }
+      const { balance } = action.payload
+      if (balance) {
+        state = { ...state, balance: optional(balance.total) }
       } else {
         state = { ...state, balance: optional<number>() }
-
-        if (error === mojom.FetchBalanceError.kAccessTokenExpired) {
-          chrome.send('brave_rewards.getExternalWallet')
-        }
       }
-
       break
     }
     case types.GET_EXTERNAL_WALLET_PROVIDERS: {
       chrome.send('brave_rewards.getExternalWalletProviders')
       break
     }
-    case types.SET_EXTERNAL_WALLET_TYPE: {
-      chrome.send('brave_rewards.setExternalWalletType', [action.payload.provider])
+    case types.BEGIN_EXTERNAL_WALLET_LOGIN: {
+      const { provider } = action.payload
+      chrome.send('brave_rewards.beginExternalWalletLogin', [provider])
+      state = {
+        ...state,
+        ui: { ...state.ui, modalConnectState: 'loading' }
+      }
+      break
+    }
+    case types.ON_EXTERNAL_WALLET_LOGIN_ERROR: {
+      state = {
+        ...state,
+        ui: { ...state.ui, modalConnectState: 'error' }
+      }
       break
     }
     case types.GET_EXTERNAL_WALLET: {
@@ -91,56 +96,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.ON_GET_EXTERNAL_WALLET: {
-      const { value, error } = action.payload.result
-
-      if (value) {
-        state = { ...state, externalWallet: value.wallet }
+      const { externalWallet } = action.payload
+      if (externalWallet) {
+        state = { ...state, externalWallet }
         chrome.send('brave_rewards.fetchBalance')
-      } else {
-        switch (error) {
-          case mojom.GetExternalWalletError.kAccessTokenExpired:
-            chrome.send('brave_rewards.getExternalWallet')
-            break
-        }
       }
-
-      break
-    }
-    case types.GET_MONTHLY_REPORT: {
-      let month = action.payload.month
-      let year = action.payload.year
-      if (month == null) {
-        month = new Date().getMonth() + 1
-      }
-
-      if (year == null) {
-        year = new Date().getFullYear()
-      }
-
-      chrome.send('brave_rewards.getMonthlyReport', [month, year])
-      break
-    }
-    case types.ON_MONTHLY_REPORT: {
-      state = { ...state }
-      state.monthlyReport = {
-        month: action.payload.month,
-        year: action.payload.year
-      }
-
-      if (!action.payload.report) {
-        break
-      }
-
-      state.monthlyReport = Object.assign(state.monthlyReport, action.payload.report)
-      break
-    }
-    case types.GET_MONTHLY_REPORT_IDS: {
-      chrome.send('brave_rewards.getMonthlyReportIds')
-      break
-    }
-    case types.ON_MONTHLY_REPORT_IDS: {
-      state = { ...state }
-      state.monthlyReportIds = action.payload
       break
     }
   }

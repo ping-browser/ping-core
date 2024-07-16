@@ -20,6 +20,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/native_theme/native_theme.h"
@@ -108,7 +109,7 @@ void BraveNewsLocationView::UpdateImpl() {
   UpdateIconColor(tab_helper->IsSubscribed());
 
   // Don't show icon if there are no feeds
-  const bool has_feeds = !tab_helper->GetAvailableFeeds().empty();
+  const bool has_feeds = !tab_helper->GetAvailableFeedUrls().empty();
   const bool is_visible = has_feeds || IsBubbleShowing();
   SetVisible(is_visible);
 }
@@ -132,7 +133,7 @@ bool BraveNewsLocationView::ShouldShowLabel() const {
 }
 
 void BraveNewsLocationView::OnAvailableFeedsChanged(
-    const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) {
+    const std::vector<GURL>& feeds) {
   Update();
 }
 
@@ -180,3 +181,6 @@ void BraveNewsLocationView::UpdateIconColor(bool subscribed) {
 void BraveNewsLocationView::OnBubbleClosed() {
   bubble_view_ = nullptr;
 }
+
+BEGIN_METADATA(BraveNewsLocationView)
+END_METADATA

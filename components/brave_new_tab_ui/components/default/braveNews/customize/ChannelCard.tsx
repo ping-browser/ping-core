@@ -3,22 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import styled from 'styled-components'
+import Flex from '$web-common/Flex'
 import * as React from 'react'
-import Flex from '../../../Flex'
-import FollowButton from './FollowButton'
-import { useChannelSubscribed } from './Context'
-import { channelIcons } from './Icons'
-import { getLocale } from '$web-common/locale'
-
-export const getTranslatedChannelName = (channelName: string) => {
-  try {
-    return getLocale(`braveNewsChannel-${channelName}`)
-  } catch (err) {
-    console.error(`Couldn't find translation for channel '${channelName}'`)
-    return channelName
-  }
-}
+import styled from 'styled-components'
+import { useChannelSubscribed } from '../../../../../brave_news/browser/resources/shared/Context'
+import { channelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
+import FollowButton from '../../../../../brave_news/browser/resources/shared/FollowButton'
+import { getTranslatedChannelName } from '../../../../../brave_news/browser/resources/shared/channel'
 
 const SubscribeButton = styled(FollowButton)`
     position: absolute;
@@ -65,7 +56,7 @@ interface Props {
   channelName: string
 }
 
-export default function ChannelCard ({ channelName }: Props) {
+export default function ChannelCard({ channelName }: Props) {
   const { subscribed, setSubscribed } = useChannelSubscribed(channelName)
   return <Container
     direction='column'

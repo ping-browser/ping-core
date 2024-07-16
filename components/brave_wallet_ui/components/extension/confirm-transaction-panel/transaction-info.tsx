@@ -5,12 +5,15 @@
 
 import * as React from 'react'
 
+// Types
+import { BraveWallet } from '../../../constants/types'
+import { ParsedTransaction } from '../../../utils/tx-utils'
+
 // utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 
 // hooks
-import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import {
   useGetDefaultFiatCurrencyQuery //
 } from '../../../common/slices/api.slice'
@@ -19,7 +22,8 @@ import {
 import {
   TransactionTitle,
   TransactionTypeText,
-  TransactionText, Divider,
+  TransactionText,
+  Divider,
   SectionRow,
   SectionColumn,
   EditButton
@@ -30,25 +34,41 @@ import { Column } from '../../shared/style'
 
 interface TransactionInfoProps {
   onToggleEditGas?: () => void
-}
-export const TransactionInfo = ({
-  onToggleEditGas
-}: TransactionInfoProps) => {
-  const {
-    transactionDetails,
-    isERC721SafeTransferFrom,
-    isERC721TransferFrom,
-    isSolanaTransaction,
-    isFilecoinTransaction,
-    transactionsNetwork,
-    sendOptions,
-    hasFeeEstimatesError,
-    isLoadingGasFee,
-    gasFee,
-    insufficientFundsError,
-    insufficientFundsForGasError
-  } = usePendingTransactions()
+  transactionDetails: ParsedTransaction | undefined
+  isZCashTransaction: boolean
+  isBitcoinTransaction: boolean
+  isERC721SafeTransferFrom: boolean
+  isERC721TransferFrom: boolean
+  transactionsNetwork: BraveWallet.NetworkInfo | undefined
+  hasFeeEstimatesError: boolean
+  isLoadingGasFee: boolean
+  gasFee: string
+  insufficientFundsError: boolean
+  insufficientFundsForGasError: boolean
 
+  // ERC20 Approve
+  isERC20Approve?: boolean
+  currentTokenAllowance?: string
+  isCurrentAllowanceUnlimited?: boolean
+}
+
+export const TransactionInfo = ({
+  onToggleEditGas,
+  transactionDetails,
+  isERC721SafeTransferFrom,
+  isERC721TransferFrom,
+  transactionsNetwork,
+  hasFeeEstimatesError,
+  isLoadingGasFee,
+  gasFee,
+  insufficientFundsError,
+  insufficientFundsForGasError,
+  isZCashTransaction,
+  isBitcoinTransaction,
+  isERC20Approve,
+  isCurrentAllowanceUnlimited,
+  currentTokenAllowance
+}: TransactionInfoProps) => {
   // queries
   const {
     isLoading: isLoadingDefaultFiatCurrency,
@@ -62,53 +82,22 @@ export const TransactionInfo = ({
 
   const isLoadingGasFeeFiat = isLoadingDefaultFiatCurrency || isLoadingGasFee
 
-  /**
-   * This will need updating if we ever switch to using per-locale formatting,
-   * since `.` isn't always the decimal separator
-  */
-  const transactionValueParts = (
-    (!isERC721SafeTransferFrom && !isERC721TransferFrom)
-      ? new Amount(transactionDetails.valueExact)
-        .format(undefined, true)
-      : transactionDetails.valueExact
-  ).split('.')
-
-  /**
-   * Inserts a <wbr /> tag between the integer and decimal portions of the value for wrapping
-   * This will need updating if we ever switch to using per-locale formatting
-   */
-  const transactionValueText = <span>
-    {transactionValueParts.map((part, i, { length }) => [
-      part,
-      ...(i < (length - 1) ? ['.'] : []),
-      <wbr key={part} />
-    ])}
-  </span>
+  const { isSolanaTransaction, isFilecoinTransaction } = transactionDetails
+  const feeLocale =
+    isSolanaTransaction || isZCashTransaction || isBitcoinTransaction
+      ? 'braveWalletConfirmTransactionTransactionFee'
+      : 'braveWalletConfirmTransactionGasFee'
 
   // render
   return (
     <>
-      {!isFilecoinTransaction && (
-        <SectionRow>
-          <TransactionTitle>
-            {isSolanaTransaction
-              ? getLocale('braveWalletConfirmTransactionTransactionFee')
-              : getLocale('braveWalletConfirmTransactionGasFee')}
-          </TransactionTitle>
-
-          {!isSolanaTransaction && onToggleEditGas && (
-            <EditButton onClick={onToggleEditGas}>
-              {getLocale('braveWalletAllowSpendEditButton')}
-            </EditButton>
-          )}
-        </SectionRow>
-      )}
-
-      {isFilecoinTransaction && (
+      {isFilecoinTransaction ? (
         <>
           {transactionDetails.gasPremium && (
             <SectionColumn>
-              <TransactionTitle>{getLocale('braveWalletTransactionGasPremium')}</TransactionTitle>
+              <TransactionTitle>
+                {getLocale('braveWalletTransactionGasPremium')}
+              </TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasPremium)
@@ -120,7 +109,9 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasLimit && (
             <SectionColumn>
-              <TransactionTitle>{getLocale('braveWalletTransactionGasLimit')}</TransactionTitle>
+              <TransactionTitle>
+                {getLocale('braveWalletTransactionGasLimit')}
+              </TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasLimit)
@@ -132,7 +123,9 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasFeeCap && (
             <SectionColumn>
-              <TransactionTitle>{getLocale('braveWalletTransactionGasFeeCap')}</TransactionTitle>
+              <TransactionTitle>
+                {getLocale('braveWalletTransactionGasFeeCap')}
+              </TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasFeeCap)
@@ -142,6 +135,20 @@ export const TransactionInfo = ({
             </SectionColumn>
           )}
         </>
+      ) : (
+        <SectionRow>
+          <TransactionTitle>
+            {getLocale(
+              isERC20Approve ? 'braveWalletAllowSpendTransactionFee' : feeLocale
+            )}
+          </TransactionTitle>
+
+          {onToggleEditGas && (
+            <EditButton onClick={onToggleEditGas}>
+              {getLocale('braveWalletAllowSpendEditButton')}
+            </EditButton>
+          )}
+        </SectionRow>
       )}
 
       {hasFeeEstimatesError ? (
@@ -149,14 +156,7 @@ export const TransactionInfo = ({
           {getLocale('braveWalletTransactionHasFeeEstimatesError')}
         </TransactionText>
       ) : isLoadingGasFee ? (
-        <Column
-          fullHeight
-          fullWidth
-          alignItems={'flex-start'}
-          justifyContent='flex-start'
-        >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
-        </Column>
+        <FeeSkeleton />
       ) : (
         <TransactionTypeText>
           {(transactionsNetwork &&
@@ -168,14 +168,7 @@ export const TransactionInfo = ({
       )}
 
       {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
-        <Column
-          fullHeight
-          fullWidth
-          alignItems={'flex-start'}
-          justifyContent='flex-start'
-        >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
-        </Column>
+        <FeeSkeleton />
       ) : (
         <TransactionText>
           {new Amount(transactionDetails.gasFeeFiat).formatAsFiat(
@@ -183,61 +176,51 @@ export const TransactionInfo = ({
           )}
         </TransactionText>
       )}
-      <Divider />
-      <WarningBoxTitleRow>
-        <TransactionTitle>
-          {getLocale('braveWalletConfirmTransactionTotal')}{' '}
-          {!isFilecoinTransaction && (
-            <>
-              {isSolanaTransaction
-                ? getLocale('braveWalletConfirmTransactionAmountFee')
-                : getLocale('braveWalletConfirmTransactionAmountGas')}
-            </>
-          )}
-        </TransactionTitle>
-      </WarningBoxTitleRow>
-      <TransactionTypeText>
-        {transactionValueText} {transactionDetails.symbol}
-      </TransactionTypeText>
-      {!isFilecoinTransaction &&
-        (hasFeeEstimatesError ? (
-          <TransactionText hasError={true}>
-            {getLocale('braveWalletTransactionHasFeeEstimatesError')}
-          </TransactionText>
-        ) : isLoadingGasFee ? (
-          <Column
-            fullHeight
-            fullWidth
-            alignItems={'flex-start'}
-            justifyContent='flex-start'
-          >
-            <Skeleton width={'40px'} height={'12px'} enableAnimation />
-          </Column>
-        ) : (
-          <TransactionTypeText>
-            +{' '}
-            {transactionsNetwork &&
-              new Amount(gasFee)
-                .divideByDecimals(transactionsNetwork.decimals)
-                .formatAsAsset(6, transactionsNetwork.symbol)}
-          </TransactionTypeText>
-        ))}
 
-      {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
-        <Column
-          fullHeight
-          fullWidth
-          alignItems={'flex-start'}
-          justifyContent='flex-start'
-        >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
-        </Column>
-      ) : (
-        <TransactionText hasError={false}>
-          {new Amount(transactionDetails.fiatTotal).formatAsFiat(
-            defaultFiatCurrency
+      {/* TODO: ERC allowance checks */}
+
+      {!isERC20Approve && (
+        <>
+          <Divider />
+
+          <WarningBoxTitleRow>
+            <TransactionTitle>
+              {getLocale('braveWalletConfirmTransactionTotal')}{' '}
+              {!isFilecoinTransaction && getLocale(feeLocale)}
+            </TransactionTitle>
+          </WarningBoxTitleRow>
+          <TransactionValue
+            isErc721Transfer={isERC721SafeTransferFrom || isERC721TransferFrom}
+            symbol={transactionDetails.symbol}
+            valueExact={transactionDetails.valueExact}
+          />
+
+          {isFilecoinTransaction ? null : hasFeeEstimatesError ? (
+            <TransactionText hasError>
+              {getLocale('braveWalletTransactionHasFeeEstimatesError')}
+            </TransactionText>
+          ) : isLoadingGasFee ? (
+            <FeeSkeleton />
+          ) : (
+            <TransactionTypeText>
+              +{' '}
+              {transactionsNetwork &&
+                new Amount(gasFee)
+                  .divideByDecimals(transactionsNetwork.decimals)
+                  .formatAsAsset(6, transactionsNetwork.symbol)}
+            </TransactionTypeText>
           )}
-        </TransactionText>
+
+          {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
+            <FeeSkeleton />
+          ) : (
+            <TransactionText>
+              {new Amount(transactionDetails.fiatTotal).formatAsFiat(
+                defaultFiatCurrency
+              )}
+            </TransactionText>
+          )}
+        </>
       )}
 
       {insufficientFundsForGasError && (
@@ -245,43 +228,100 @@ export const TransactionInfo = ({
           {getLocale('braveWalletSwapInsufficientFundsForGas')}
         </TransactionText>
       )}
-      {!insufficientFundsForGasError &&
-        insufficientFundsError && (
-          <TransactionText hasError={true}>
-            {getLocale('braveWalletSwapInsufficientBalance')}
-          </TransactionText>
-        )}
-      {sendOptions && <Divider />}
-      {!!Number(sendOptions?.maxRetries?.maxRetries) && (
-        <>
-          <TransactionTitle>
-            {getLocale('braveWalletSolanaMaxRetries')}
-          </TransactionTitle>
-          <TransactionTypeText>
-            {Number(sendOptions?.maxRetries?.maxRetries)}
-          </TransactionTypeText>
-        </>
+      {!insufficientFundsForGasError && insufficientFundsError && (
+        <TransactionText hasError={true}>
+          {getLocale('braveWalletSwapInsufficientBalance')}
+        </TransactionText>
       )}
-      {sendOptions?.preflightCommitment && (
+
+      {isERC20Approve && (
         <>
+          <Divider />
+
           <TransactionTitle>
-            {getLocale('braveWalletSolanaPreflightCommitment')}
+            {getLocale('braveWalletAllowSpendCurrentAllowance')}
           </TransactionTitle>
           <TransactionTypeText>
-            {sendOptions.preflightCommitment}
+            {isCurrentAllowanceUnlimited
+              ? getLocale('braveWalletTransactionApproveUnlimited')
+              : currentTokenAllowance}{' '}
+            {transactionDetails.symbol}
           </TransactionTypeText>
-        </>
-      )}
-      {sendOptions?.skipPreflight && (
-        <>
+
+          <Divider />
+
           <TransactionTitle>
-            {getLocale('braveWalletSolanaSkipPreflight')}
+            {getLocale('braveWalletAllowSpendProposedAllowance')}
           </TransactionTitle>
           <TransactionTypeText>
-            {sendOptions.skipPreflight.skipPreflight.toString()}
+            {transactionDetails.isApprovalUnlimited
+              ? getLocale('braveWalletTransactionApproveUnlimited')
+              : new Amount(transactionDetails.valueExact).formatAsAsset(
+                  undefined,
+                  transactionDetails.symbol
+                )}
           </TransactionTypeText>
         </>
       )}
     </>
+  )
+}
+
+const FeeSkeleton = () => {
+  return (
+    <Column
+      fullHeight
+      fullWidth
+      alignItems={'flex-start'}
+      justifyContent='flex-start'
+    >
+      <Skeleton
+        width={'40px'}
+        height={'12px'}
+        enableAnimation
+      />
+    </Column>
+  )
+}
+
+const TransactionValue = ({
+  isErc721Transfer,
+  symbol,
+  valueExact
+}: {
+  isErc721Transfer: boolean
+  valueExact: string
+  symbol: string
+}) => {
+  /**
+   * This will need updating if we ever switch to using per-locale formatting,
+   * since `.` isn't always the decimal separator
+   */
+  const transactionValueParts = (
+    isErc721Transfer
+      ? valueExact
+      : new Amount(valueExact).format(undefined, true)
+  ).split('.')
+
+  /**
+   * Inserts a <wbr /> tag between the integer and decimal portions of the value
+   * for wrapping
+   * This will need updating if we ever switch to using per-locale formatting
+   */
+  const transactionValueText = (
+    <span>
+      {transactionValueParts.map((part, i, { length }) => [
+        part,
+        ...(i < length - 1 ? ['.'] : []),
+        <wbr key={part} />
+      ])}
+    </span>
+  )
+
+  // render
+  return (
+    <TransactionTypeText>
+      {transactionValueText} {symbol}
+    </TransactionTypeText>
   )
 }

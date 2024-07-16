@@ -14,7 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
-#include "brave/components/brave_shields/common/brave_shields.mojom.h"
+#include "brave/components/brave_shields/core/common/brave_shields.mojom.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -22,7 +22,7 @@
 #include "mojo/public/cpp/bindings/associated_receiver_set.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
-
+#include "third_party/blink/public/web/web_frame.h"
 #include "url/gurl.h"
 
 namespace blink {
@@ -47,6 +47,9 @@ class BraveContentSettingsAgentImpl
   bool IsCosmeticFilteringEnabled(const GURL& url) override;
 
   bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) override;
+
+  // RenderFrameObserver:
+  void DidCommitProvisionalLoad(ui::PageTransition transition) override;
 
  protected:
   bool AllowScript(bool enabled_per_settings) override;
@@ -98,7 +101,7 @@ class BraveContentSettingsAgentImpl
   GURL blocked_script_url_;
 
   // Status of "reduce language identifiability" feature.
-  bool reduce_language_enabled_;
+  bool reduce_language_enabled_ = false;
 
   base::flat_map<url::Origin, blink::WebSecurityOrigin>
       cached_ephemeral_storage_origins_;

@@ -20,6 +20,7 @@
 #include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -54,8 +55,8 @@
 #endif
 
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
-    : ui::MojoBubbleWebUIController(web_ui,
-                                    true /* Needed for webui browser tests */) {
+    : TopChromeWebUIController(web_ui,
+                               true /* Needed for webui browser tests */) {
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
       content::WebUIDataSource::CreateAndAdd(profile, kWalletPanelHost);
@@ -72,10 +73,10 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::JoinString(
-          {"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
-           kUntrustedNftURL, base::StrCat({kUntrustedMarketURL, ";"})},
-          " "));
+      base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
+                        kUntrustedLineChartURL, kUntrustedNftURL,
+                        base::StrCat({kUntrustedMarketURL, ";"})},
+                       " "));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       base::JoinString(
@@ -85,13 +86,12 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
           " "));
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
+  source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
+  source->AddBoolean("isAndroid", false);
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
-  if (ShouldDisableCSPForTesting()) {
-    source->DisableContentSecurityPolicy();
-  }
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
@@ -121,6 +121,8 @@ void WalletPanelUI::CreatePanelHandler(
         json_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
         bitcoin_rpc_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
+        zcash_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SimulationService>
@@ -162,6 +164,8 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(json_rpc_service_receiver));
   brave_wallet::BitcoinWalletServiceFactory::BindForContext(
       profile, std::move(bitcoin_rpc_service_receiver));
+  brave_wallet::ZCashWalletServiceFactory::BindForContext(
+      profile, std::move(zcash_rpc_service_receiver));
   brave_wallet::SwapServiceFactory::BindForContext(
       profile, std::move(swap_service_receiver));
   brave_wallet::SimulationServiceFactory::BindForContext(
@@ -198,10 +202,4 @@ void WalletPanelUI::CreatePanelHandler(
   if (blockchain_registry) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
-}
-
-// static
-bool& WalletPanelUI::ShouldDisableCSPForTesting() {
-  static bool disable_csp = false;
-  return disable_csp;
 }

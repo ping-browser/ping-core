@@ -16,7 +16,6 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -28,12 +27,6 @@ namespace {
 
 bool g_is_test_ = false;
 bool g_system_dark_mode_enabled_in_test_ = false;
-
-void ClearBraveDarkModeProfilePrefs(Profile* profile) {
-  PrefService* prefs = profile->GetPrefs();
-  prefs->ClearPref(kBraveThemeType);
-  prefs->ClearPref(kUseOverriddenBraveThemeType);
-}
 
 dark_mode::BraveDarkModeType GetDarkModeTypeBasedOnChannel() {
   switch (chrome::GetChannel()) {
@@ -69,40 +62,21 @@ dark_mode::BraveDarkModeType GetDarkModeSwitchValue(
 
 namespace dark_mode {
 
-void MigrateBraveDarkModePrefs(Profile* profile) {
-  auto* local_state = g_browser_process->local_state();
-  // If migration is done, local state doesn't have default value because
-  // they were explicitly set by primary prefs' value. After that, we don't
-  // need to try migration again and prefs from profiles are already cleared.
-  if (local_state->FindPreference(kBraveDarkMode)->IsDefaultValue()) {
-    PrefService* prefs = profile->GetPrefs();
-    local_state->SetInteger(kBraveDarkMode,
-                            prefs->GetInteger(kBraveThemeType));
-  }
-
-  // Clear deprecated prefs.
-  ClearBraveDarkModeProfilePrefs(profile);
-}
-
 void RegisterBraveDarkModeLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(
       kBraveDarkMode,
       static_cast<int>(BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT));
 }
 
-void RegisterBraveDarkModePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterIntegerPref(
-      kBraveThemeType,
-      static_cast<int>(BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT));
-  registry->RegisterBooleanPref(kUseOverriddenBraveThemeType, false);
-}
-
 bool SystemDarkModeEnabled() {
   if (g_is_test_)
     return g_system_dark_mode_enabled_in_test_;
 
+#if BUILDFLAG(IS_LINUX)
+  return HasCachedSystemDarkModeType();
+#else
   return ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported();
+#endif
 }
 
 void SetUseSystemDarkModeEnabledForTest(bool enabled) {

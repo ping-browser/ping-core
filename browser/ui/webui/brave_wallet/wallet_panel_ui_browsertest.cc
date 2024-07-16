@@ -4,16 +4,19 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include <string>
+#include <string_view>
 
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
+#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -27,6 +30,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -133,10 +137,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    // Disabling CSP on webui pages so EvalJS could be run in main world.
-    BraveSettingsUI::ShouldDisableCSPForTesting() = true;
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
-    WalletPanelUI::ShouldDisableCSPForTesting() = true;
 
     auto* profile = browser()->profile();
 
@@ -145,6 +146,9 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
             &url_loader_factory_);
     JsonRpcServiceFactory::GetServiceForContext(profile)
         ->SetAPIRequestHelperForTesting(shared_url_loader_factory_);
+
+    AssetRatioServiceFactory::GetServiceForContext(profile)
+        ->EnableDummyPricesForTesting();
 
     KeyringServiceFactory::GetServiceForContext(profile)->CreateWallet(
         "password_123", base::DoNothing());
@@ -196,10 +200,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
                                 const std::string& chain_id) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [=](const network::ResourceRequest& request) {
-          base::StringPiece request_string(request.request_body->elements()
-                                               ->at(0)
-                                               .As<network::DataElementBytes>()
-                                               .AsStringPiece());
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
           url_loader_factory_.ClearResponses();
           if (request_string.find("eth_chainId") != std::string::npos) {
             const std::string response = base::StringPrintf(
@@ -278,6 +282,7 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, MAYBE_HideNetworkInSettings) {
 
   ActivateWalletTab();
   wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(wallet()));
   // Wait and click on DApp settings button.
   ASSERT_TRUE(
       WaitAndClickElement(wallet(), QuerySelectorJS(DAppSettingsButton())));

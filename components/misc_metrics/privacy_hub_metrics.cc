@@ -15,11 +15,9 @@ namespace misc_metrics {
 
 namespace {
 const int kViewsMonthlyBucketValues[] = {1, 10, 20};
+const base::TimeDelta kReportUpdateInterval = base::Days(1);
 }  // namespace
 
-const char kViewsMonthlyHistogramName[] = "Brave.PrivacyHub.Views";
-const char kIsEnabledHistogramName[] = "Brave.PrivacyHub.IsEnabled";
-const base::TimeDelta kReportUpdateInterval = base::Days(1);
 
 PrivacyHubMetrics::PrivacyHubMetrics(PrefService* local_state)
     : view_storage_(local_state, kMiscMetricsPrivacyHubViews) {
@@ -31,14 +29,6 @@ PrivacyHubMetrics::~PrivacyHubMetrics() = default;
 void PrivacyHubMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsPrivacyHubViews);
 }
-
-#if BUILDFLAG(IS_ANDROID)
-mojo::PendingRemote<mojom::PrivacyHubMetrics> PrivacyHubMetrics::MakeRemote() {
-  mojo::PendingRemote<mojom::PrivacyHubMetrics> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-#endif  // BUILDFLAG(IS_ANDROID)
 
 void PrivacyHubMetrics::RecordView() {
   view_storage_.AddDelta(1u);

@@ -6,6 +6,7 @@
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
@@ -60,8 +61,8 @@ const size_t EthereumRemoteClientService::kSeedByteLength = 32;
 std::string
 EthereumRemoteClientService::GetEthereumRemoteClientSeedFromRootSeed(
     const std::string& seed) {
-  base::StringPiece salt("brave-ethwallet-salt");
-  base::StringPiece info("ethwallet");
+  std::string_view salt("brave-ethwallet-salt");
+  std::string_view info("ethwallet");
   return crypto::HkdfSha256(base::MakeStringPiece(seed.begin(), seed.end()),
                             salt, info, kSeedByteLength);
 }
@@ -90,7 +91,7 @@ bool EthereumRemoteClientService::OpenSeed(const std::string& cipher_seed,
                                            std::string* seed) {
   crypto::Aead aes_256_gcm_siv(crypto::Aead::AES_256_GCM_SIV);
   aes_256_gcm_siv.Init(&key);
-  return aes_256_gcm_siv.Open(cipher_seed, nonce, base::StringPiece(""), seed);
+  return aes_256_gcm_siv.Open(cipher_seed, nonce, std::string_view(""), seed);
 }
 
 // Generate a new random nonce
@@ -119,7 +120,7 @@ bool EthereumRemoteClientService::SealSeed(const std::string& seed,
   crypto::Aead aes_256_gcm_siv(crypto::Aead::AES_256_GCM_SIV);
   aes_256_gcm_siv.Init(&key);
   return aes_256_gcm_siv.Seal(base::MakeStringPiece(seed.begin(), seed.end()),
-                              nonce, base::StringPiece(""), cipher_seed);
+                              nonce, std::string_view(""), cipher_seed);
 }
 
 // Store the seed in preferences, binary pref strings need to be
@@ -130,19 +131,13 @@ void EthereumRemoteClientService::SaveToPrefs(PrefService* prefs,
                                               const std::string& nonce) {
   // Store the seed in preferences, binary pref strings need to be
   // base64 encoded.  Base64 encoding is fail safe.
-  std::string base64_nonce;
-  std::string base64_cipher_seed;
-  base::Base64Encode(nonce, &base64_nonce);
-  base::Base64Encode(
-      base::MakeStringPiece(cipher_seed.begin(), cipher_seed.end()),
-      &base64_cipher_seed);
-  prefs->SetString(kERCAES256GCMSivNonce, base64_nonce);
-  prefs->SetString(kERCEncryptedSeed, base64_cipher_seed);
+  prefs->SetString(kERCAES256GCMSivNonce, base::Base64Encode(nonce));
+  prefs->SetString(kERCEncryptedSeed, base::Base64Encode(cipher_seed));
 }
 
 void EthereumRemoteClientService::ResetCryptoWallets() {
   extensions::ExtensionPrefs::Get(context_)->DeleteExtensionPrefs(
-      ethereum_remote_client_extension_id);
+      kEthereumRemoteClientExtensionId);
 }
 
 // Generates a random 32 byte root seed and stores it in prefs
@@ -220,7 +215,7 @@ bool EthereumRemoteClientService::IsLegacyCryptoWalletsSetup() const {
 bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
   auto* registry = extensions::ExtensionRegistry::Get(context_);
   return registry && registry->ready_extensions().Contains(
-                         ethereum_remote_client_extension_id);
+                         kEthereumRemoteClientExtensionId);
 }
 
 void EthereumRemoteClientService::MaybeLoadCryptoWalletsExtension(

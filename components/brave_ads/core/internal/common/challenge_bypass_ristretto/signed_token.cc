@@ -11,13 +11,13 @@ namespace brave_ads::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::SignedToken> Create(
+std::optional<challenge_bypass_ristretto::SignedToken> Create(
     const std::string& signed_token_base64) {
   if (signed_token_base64.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  return ValueOrLogError(challenge_bypass_ristretto::SignedToken::decode_base64(
+  return ValueOrLogError(challenge_bypass_ristretto::SignedToken::DecodeBase64(
       signed_token_base64));
 }
 
@@ -54,11 +54,11 @@ SignedToken SignedToken::DecodeBase64(const std::string& signed_token_base64) {
   return SignedToken(signed_token_base64);
 }
 
-absl::optional<std::string> SignedToken::EncodeBase64() const {
+std::optional<std::string> SignedToken::EncodeBase64() const {
   if (!signed_token_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
-  return ValueOrLogError(signed_token_->encode_base64());
+  return signed_token_->EncodeBase64();
 }
 
 std::ostream& operator<<(std::ostream& os, const SignedToken& signed_token) {

@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 namespace brave_wallet {
@@ -19,12 +20,12 @@ namespace brave_wallet {
 namespace {
 
 constexpr base::TimeDelta kExpiredTimeDelta =
-    base::Seconds(kBlockTrackerDefaultTimeInSeconds);
+    base::Seconds(kSolanaBlockTrackerTimeInSeconds);
 
-}
+}  // namespace
 
 SolanaBlockTracker::SolanaBlockTracker(JsonRpcService* json_rpc_service)
-    : BlockTracker(json_rpc_service), weak_ptr_factory_(this) {}
+    : json_rpc_service_(json_rpc_service), weak_ptr_factory_(this) {}
 
 SolanaBlockTracker::~SolanaBlockTracker() = default;
 

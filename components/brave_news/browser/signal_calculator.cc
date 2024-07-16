@@ -7,12 +7,14 @@
 
 #include <iterator>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/features.h"
 
 namespace brave_news {
 
@@ -32,16 +34,15 @@ std::vector<mojom::FeedItemMetadataPtr> GetArticles(const FeedItems& feed) {
 
 SignalCalculator::SignalCalculator(PublishersController& publishers_controller,
                                    ChannelsController& channels_controller,
-                                   PrefService& prefs,
                                    history::HistoryService& history_service)
     : publishers_controller_(publishers_controller),
       channels_controller_(channels_controller),
-      prefs_(prefs),
       history_service_(history_service) {}
 
 SignalCalculator::~SignalCalculator() = default;
 
-void SignalCalculator::GetSignals(const FeedItems& feed,
+void SignalCalculator::GetSignals(const BraveNewsSubscriptions& subscriptions,
+                                  const FeedItems& feed,
                                   SignalsCallback callback) {
   auto articles = GetArticles(feed);
   history::QueryOptions options;
@@ -50,12 +51,13 @@ void SignalCalculator::GetSignals(const FeedItems& feed,
   history_service_->QueryHistory(
       u"", options,
       base::BindOnce(&SignalCalculator::OnGotHistory,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(articles),
-                     std::move(callback)),
+                     weak_ptr_factory_.GetWeakPtr(), subscriptions,
+                     std::move(articles), std::move(callback)),
       &task_tracker_);
 }
 
 void SignalCalculator::OnGotHistory(
+    const BraveNewsSubscriptions& subscriptions,
     std::vector<mojom::FeedItemMetadataPtr> articles,
     SignalsCallback callback,
     history::QueryResults results) {
@@ -63,7 +65,30 @@ void SignalCalculator::OnGotHistory(
 
   const auto& publishers = publishers_controller_->GetLastPublishers();
   const auto& channels = channels_controller_->GetChannelsFromPublishers(
-      publishers, &prefs_.get());
+      publishers, subscriptions);
+
+  // Work out how many articles we have in each publisher/channel. We'll use
+  // these values to normalize the boost we apply to articles within those
+  // publishers/channels so we don't overwhelm the user with articles from
+  // certain areas.
+  base::flat_map<std::string, uint32_t> article_counts;
+  for (const auto& article : articles) {
+    auto it = publishers.find(article->publisher_id);
+    if (it == publishers.end()) {
+      continue;
+    }
+
+    article_counts[article->publisher_id]++;
+    for (const auto& locale_info : it->second->locales) {
+      if (locale_info->locale != locale) {
+        continue;
+      }
+      for (const auto& channel : locale_info->channels) {
+        article_counts[channel]++;
+      }
+    }
+  }
+
   base::flat_map<std::string, std::vector<std::string>> origin_visits;
   for (const auto& item : results) {
     auto host = item.url().host();
@@ -115,9 +140,12 @@ void SignalCalculator::OnGotHistory(
   // Add publisher signals
   for (const auto& [id, publisher] : publishers) {
     const auto& visits = publisher_visits.at(publisher->publisher_id);
+    auto disabled =
+        publisher->user_enabled_status == mojom::UserEnabled::DISABLED;
     signals[id] = mojom::Signal::New(
-        IsPublisherSubscribed(publisher),
-        visits.size() / static_cast<double>(total_publisher_visits));
+        disabled, GetSubscribedWeight(publisher),
+        visits.size() / static_cast<double>(total_publisher_visits),
+        article_counts[id]);
   }
 
   // Add channel signals
@@ -125,34 +153,29 @@ void SignalCalculator::OnGotHistory(
     auto it = channel_visits.find(channel.first);
     auto visit_count = it == channel_visits.end() ? 0 : it->second.size();
     signals[channel.first] = mojom::Signal::New(
-        channels_controller_->GetChannelSubscribed(locale, channel.first),
-        visit_count / static_cast<double>(total_channel_visits));
+        /*disabled=*/false,
+        subscriptions.GetChannelSubscribed(locale, channel.first)
+            ? features::kBraveNewsChannelSubscribedBoost.Get()
+            : 0,
+        visit_count / static_cast<double>(total_channel_visits),
+        article_counts[channel.first]);
   }
 
   std::move(callback).Run(std::move(signals));
 }
 
-bool SignalCalculator::IsPublisherSubscribed(
+double SignalCalculator::GetSubscribedWeight(
     const mojom::PublisherPtr& publisher) {
-  // Direct feeds are deleted when removed.
-  if (publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
-    return true;
+  auto enabled = publisher->user_enabled_status;
+  // Disabled sources should never show up in the feed
+  if (enabled == mojom::UserEnabled::DISABLED) {
+    return 0;
   }
 
-  bool channel_subscribed = false;
-  for (const auto& locale_info : publisher->locales) {
-    for (const auto& channel : locale_info->channels) {
-      if (channels_controller_->GetChannelSubscribed(locale_info->locale,
-                                                     channel)) {
-        channel_subscribed = true;
-        break;
-      }
-    }
-  }
-
-  return publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
-         (channel_subscribed &&
-          publisher->user_enabled_status != mojom::UserEnabled::DISABLED);
+  return publisher->type == mojom::PublisherType::DIRECT_SOURCE ||
+                 enabled == mojom::UserEnabled::ENABLED
+             ? features::kBraveNewsSourceSubscribedBoost.Get()
+             : 0;
 }
 
 }  // namespace brave_news

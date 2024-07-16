@@ -6,20 +6,41 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 
+#include <optional>
+
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "base/timer/timer.h"
+#include "base/timer/wall_clock_timer.h"
+#include "brave/components/time_period_storage/weekly_storage.h"
 
 class PrefService;
 
 namespace brave_rewards {
 namespace p3a {
 
-extern const char kEnabledSourceHistogramName[];
-extern const char kInlineTipTriggerHistogramName[];
-extern const char kToolbarButtonTriggerHistogramName[];
-extern const char kTipsSentHistogramName[];
-extern const char kAutoContributionsStateHistogramName[];
-extern const char kAdTypesEnabledHistogramName[];
+inline constexpr char kEnabledSourceHistogramName[] =
+    "Brave.Rewards.EnabledSource";
+inline constexpr char kToolbarButtonTriggerHistogramName[] =
+    "Brave.Rewards.ToolbarButtonTrigger";
+inline constexpr char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent.2";
+inline constexpr char kRecurringTipHistogramName[] =
+    "Brave.Rewards.RecurringTip";
+inline constexpr char kAutoContributionsStateHistogramName[] =
+    "Brave.Rewards.AutoContributionsState.3";
+inline constexpr char kAdTypesEnabledHistogramName[] =
+    "Brave.Rewards.AdTypesEnabled";
+inline constexpr char kMobileConversionHistogramName[] =
+    "Brave.Rewards.MobileConversion";
+#if BUILDFLAG(IS_ANDROID)
+inline constexpr char kPanelCountHistogramName[] =
+    "Brave.Rewards.MobilePanelCount";
+#else
+inline constexpr char kPanelCountHistogramName[] =
+    "Brave.Rewards.DesktopPanelCount";
+#endif
+inline constexpr char kPageViewCountHistogramName[] =
+    "Brave.Rewards.PageViewCount";
 
 enum class AutoContributionsState {
   kNoWallet,
@@ -29,7 +50,7 @@ enum class AutoContributionsState {
 };
 
 enum class PanelTrigger {
-  kInlineTip = 0,
+  kInlineTip = 0,  // DEPRECATED
   kToolbarButton = 1,
   kNTP = 2,
   kMaxValue = kNTP
@@ -37,9 +58,13 @@ enum class PanelTrigger {
 
 void RecordTipsSent(size_t tip_count);
 
+void RecordRecurringTipConfigured(bool tip_configured);
+
 void RecordAutoContributionsState(bool ac_enabled);
 
 void RecordNoWalletCreatedForAllMetrics();
+
+void RecordRewardsPageViews(PrefService* prefs, bool new_view);
 
 enum class AdTypesEnabled {
   kNone,
@@ -53,7 +78,7 @@ void RecordAdTypesEnabled(PrefService* prefs);
 
 class ConversionMonitor {
  public:
-  ConversionMonitor();
+  explicit ConversionMonitor(PrefService* prefs);
   ~ConversionMonitor();
 
   ConversionMonitor(const ConversionMonitor&) = delete;
@@ -68,8 +93,19 @@ class ConversionMonitor {
   void RecordRewardsEnable();
 
  private:
-  absl::optional<PanelTrigger> last_trigger_;
+  void ReportPeriodicMetrics();
+  void ReportPanelTriggerCount();
+#if BUILDFLAG(IS_ANDROID)
+  void OnMobileTriggerTimer();
+
+  base::OneShotTimer mobile_trigger_timer_;
+#else
+  std::optional<PanelTrigger> last_trigger_;
   base::Time last_trigger_time_;
+#endif
+  raw_ptr<PrefService> prefs_;
+  base::WallClockTimer daily_timer_;
+  WeeklyStorage panel_trigger_count_;
 };
 
 }  // namespace p3a

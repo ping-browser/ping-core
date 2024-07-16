@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   position: absolute;
@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div`
   z-index: 3;
   background-color: ${leo.color.white};
   @media (prefers-color-scheme: dark) {
-    background-color: ${leo.color.black}
+    background-color: ${leo.color.black};
   }
   width: 280px;
   border-radius: 6px;

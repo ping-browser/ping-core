@@ -11,11 +11,12 @@
 
 namespace speedreader {
 
-constexpr webui::LocalizedString kLocalizedStrings[] = {
+inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveReaderModeCaption", IDS_READER_MODE_CAPTION},
     {"braveReaderModeClose", IDS_READER_MODE_CLOSE},
     {"braveReaderModeExit", IDS_READER_MODE_EXIT},
     {"braveReaderModeVoice", IDS_READER_MODE_VOICE},
+    {"braveReaderModeTune", IDS_READER_MODE_TUNE},
     {"braveReaderModeAppearance", IDS_READER_MODE_APPEARANCE},
     {"braveReaderModeAppearanceThemeLight",
      IDS_READER_MODE_APPEARANCE_THEME_LIGHT},
@@ -31,8 +32,11 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveReaderModeAppearanceFontMono", IDS_READER_MODE_APPEARANCE_FONT_MONO},
     {"braveReaderModeAppearanceFontDyslexic",
      IDS_READER_MODE_APPEARANCE_FONT_DYSLEXIC},
+    {"braveReaderModeAppearanceColumnWidthNarrow",
+     IDS_READER_MODE_APPEARANCE_COLUMN_WIDTH_NARROW},
+    {"braveReaderModeAppearanceColumnWidthWide",
+     IDS_READER_MODE_APPEARANCE_COLUMN_WIDTH_WIDE},
     {"braveReaderModeTextToSpeech", IDS_READER_MODE_TEXT_TO_SPEECH},
-    {"braveReaderModeSpeedreader", IDS_READER_MODE_SPEEDREADER},
     {"braveReaderModeAI", IDS_READER_MODE_AI},
     {"braveReaderModeFontSizeDecrease",
      IDS_READER_MODE_APPEARANCE_FONT_SIZE_DECREASE},

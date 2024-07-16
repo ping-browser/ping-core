@@ -6,20 +6,18 @@
 import * as React from 'react'
 
 // Redux
-import { useDispatch } from 'react-redux'
-import { WalletActions } from '../../../common/actions'
-import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
+import {
+  useAddAccountMutation,
+  useGetNetworkQuery
+} from '../../../common/slices/api.slice'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
 
 // Components
 import { NavButton } from '../../extension/buttons/nav-button/index'
-import { LockPanel } from '../../extension/lock-panel'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -27,68 +25,71 @@ import { suggestNewAccountName } from '../../../utils/address-utils'
 import { keyringIdForNewAccount } from '../../../utils/account-utils'
 
 // Styled Components
-import {
-  StyledWrapper,
-  Description,
-  ButtonRow
-} from './style'
+import { StyledWrapper, Description, ButtonRow } from './style'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 export interface Props {
-  network: BraveWallet.NetworkInfo
-  onCreated?: () => void
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+  onCreated?: (account: BraveWallet.AccountInfo) => void
   onCancel: () => void
 }
 
 export const CreateAccountTab = ({
   network: accountNetwork,
   onCreated,
-  onCancel,
+  onCancel
 }: Props) => {
   // redux
-  const dispatch = useDispatch()
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+
+  // queries
+  const { accounts } = useAccountsQuery()
+  const { data: network } = useGetNetworkQuery({
+    chainId: accountNetwork.chainId,
+    coin: accountNetwork.coin
+  })
+
+  // mutations
+  const [addAccount] = useAddAccountMutation()
 
   // state
   const [showUnlock, setShowUnlock] = React.useState<boolean>(false)
 
-  const suggestedAccountName = React.useMemo((): string => {
-    return accountNetwork
-      ? suggestNewAccountName(accounts, accountNetwork)
-      : ''
-  }, [accounts, accountNetwork])
+  const suggestedAccountName = network
+    ? suggestNewAccountName(accounts, network)
+    : ''
 
-  const onCreateAccount = React.useCallback(() => {
+  const onCreateAccount = React.useCallback(async () => {
     // unlock needed to create accounts
     if (isWalletLocked && !showUnlock) {
       return setShowUnlock(true)
     }
 
-    dispatch(
-      WalletActions.addAccount({
+    try {
+      const account = await addAccount({
         coin: accountNetwork.coin,
         keyringId: keyringIdForNewAccount(
           accountNetwork.coin,
           accountNetwork.chainId
         ),
         accountName: suggestedAccountName
-      })
-    )
-    if (onCreated) {
-      onCreated()
+      }).unwrap()
+
+      if (account && onCreated) {
+        onCreated(account)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }, [
     isWalletLocked,
     showUnlock,
-    accountNetwork,
+    addAccount,
+    accountNetwork.coin,
+    accountNetwork.chainId,
     suggestedAccountName,
-    onCreated,
+    onCreated
   ])
-
-  const handleUnlockAttempt = React.useCallback((password: string): void => {
-    dispatch(WalletActions.unlockWallet({ password }))
-    onCreateAccount()
-  }, [onCreateAccount])
 
   // effects
   React.useEffect(() => {
@@ -99,25 +100,15 @@ export const CreateAccountTab = ({
   }, [isWalletLocked, showUnlock])
 
   // render
-  if (isWalletLocked && showUnlock) {
-    return <StyledWrapper>
-      <Description style={{ fontSize: 16 }}>
-        {getLocale('braveWalletUnlockNeededToCreateAccount')}
-      </Description>
-      <LockPanel
-        hideBackground
-        onSubmit={handleUnlockAttempt}
-      />
-    </StyledWrapper>
-  }
-
   return (
     <StyledWrapper>
       <Description>
-        {accountNetwork
-          ? getLocale('braveWalletCreateAccountDescription').replace('$1', accountNetwork.symbolName)
-          : ''
-        }
+        {network
+          ? getLocale('braveWalletCreateAccountDescription').replace(
+              '$1',
+              network.symbolName
+            )
+          : ''}
       </Description>
 
       <ButtonRow>

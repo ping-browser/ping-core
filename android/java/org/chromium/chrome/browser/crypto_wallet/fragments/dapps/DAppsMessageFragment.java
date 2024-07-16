@@ -15,12 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 
+/**
+ * Fragment to show DApps-related messages
+ */
 public class DAppsMessageFragment extends BaseDAppsFragment {
+    private static final String TAG = "DAppsMessageFragment";
     private SignMessageRequest mCurrentSignMessageRequest;
     private boolean mUnicodeEscapeVersion;
     private TextView mSignMessageText;
@@ -37,8 +42,28 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
         mSignMessageText = view.findViewById(R.id.sign_message_text);
 
         mUnicodeEscapeVersion = false;
-        updateText(mUnicodeEscapeVersion);
-        if (Validations.hasUnicode(mCurrentSignMessageRequest.message)) {
+        final String message;
+        final boolean isEip712;
+        if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthStandardSignData) {
+            message = mCurrentSignMessageRequest.signData.getEthStandardSignData().message;
+            isEip712 = false;
+        } else if (mCurrentSignMessageRequest.signData.which()
+                == SignDataUnion.Tag.EthSignTypedData) {
+            message = mCurrentSignMessageRequest.signData.getEthSignTypedData().message;
+            isEip712 = true;
+        } else if (mCurrentSignMessageRequest.signData.which()
+                == SignDataUnion.Tag.SolanaSignData) {
+            message = mCurrentSignMessageRequest.signData.getSolanaSignData().message;
+            isEip712 = false;
+        } else if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData) {
+            message = mCurrentSignMessageRequest.signData.getEthSiweData().statement;
+            isEip712 = false;
+        } else {
+            message = "";
+            isEip712 = false;
+        }
+        updateTextEthSign(mUnicodeEscapeVersion, message, isEip712);
+        if (Validations.hasUnicode(message)) {
             mSignMessageText.setLines(12);
             view.findViewById(R.id.non_ascii_warning_layout).setVisibility(View.VISIBLE);
             TextView warningLinkText = view.findViewById(R.id.non_ascii_warning_text_link);
@@ -47,20 +72,21 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
                                 ? getString(R.string.wallet_non_ascii_characters_original)
                                 : getString(R.string.wallet_non_ascii_characters_ascii));
                 mUnicodeEscapeVersion = !mUnicodeEscapeVersion;
-                updateText(mUnicodeEscapeVersion);
+                updateTextEthSign(mUnicodeEscapeVersion, message, isEip712);
             });
         }
 
         return view;
     }
 
-    private void updateText(boolean unicodeEscape) {
-        String escapedDomain = unicodeEscape
-                ? Validations.unicodeEscape(mCurrentSignMessageRequest.domain)
-                : mCurrentSignMessageRequest.domain;
-        String escapedMessage = unicodeEscape
-                ? Validations.unicodeEscape(mCurrentSignMessageRequest.message)
-                : mCurrentSignMessageRequest.message;
+    private void updateTextEthSign(
+            boolean unicodeEscape, final String message, final boolean isEip712) {
+        String escapedDomain = "";
+        if (isEip712) {
+            String domain = mCurrentSignMessageRequest.signData.getEthSignTypedData().domain;
+            escapedDomain = unicodeEscape ? Validations.unicodeEscape(domain) : domain;
+        }
+        String escapedMessage = unicodeEscape ? Validations.unicodeEscape(message) : message;
 
         Spanned domainPart = escapedDomain.isEmpty()
                 ? new SpannableString("")
@@ -73,4 +99,5 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
 
         mSignMessageText.setText(TextUtils.concat(domainPart, messagePart));
     }
+
 }

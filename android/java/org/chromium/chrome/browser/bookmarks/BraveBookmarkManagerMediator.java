@@ -18,6 +18,7 @@ import android.provider.OpenableColumns;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -40,6 +41,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Consumer;
 
 class BraveBookmarkManagerMediator
         extends BookmarkManagerMediator implements BraveBookmarkDelegate {
@@ -52,21 +54,48 @@ class BraveBookmarkManagerMediator
     private Context mContext;
     private static final String TAG = "BraveBookmarkManager";
 
-    BraveBookmarkManagerMediator(Context context, BookmarkModel bookmarkModel,
-            BookmarkOpener bookmarkOpener, SelectableListLayout<BookmarkId> selectableListLayout,
-            SelectionDelegate<BookmarkId> selectionDelegate, RecyclerView recyclerView,
+    BraveBookmarkManagerMediator(
+            Context context,
+            BookmarkModel bookmarkModel,
+            BookmarkOpener bookmarkOpener,
+            SelectableListLayout<BookmarkId> selectableListLayout,
+            SelectionDelegate<BookmarkId> selectionDelegate,
+            RecyclerView recyclerView,
             DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
-            LargeIconBridge largeIconBridge, boolean isDialogUi, boolean isIncognito,
-            ObservableSupplierImpl<Boolean> backPressStateSupplier, Profile profile,
-            BookmarkUndoController bookmarkUndoController, ModelList modelList,
-            BookmarkUiPrefs bookmarkUiPrefs, Runnable hideKeyboardRunnable,
-            BookmarkImageFetcher bookmarkImageFetcher, ShoppingService shoppingService,
-            SnackbarManager snackbarManager) {
-        super(context, bookmarkModel, bookmarkOpener, selectableListLayout, selectionDelegate,
-                recyclerView, dragReorderableRecyclerViewAdapter, largeIconBridge, isDialogUi,
-                isIncognito, backPressStateSupplier, profile, bookmarkUndoController, modelList,
-                bookmarkUiPrefs, hideKeyboardRunnable, bookmarkImageFetcher, shoppingService,
-                snackbarManager);
+            LargeIconBridge largeIconBridge,
+            boolean isDialogUi,
+            ObservableSupplierImpl<Boolean> backPressStateSupplier,
+            Profile profile,
+            BookmarkUndoController bookmarkUndoController,
+            ModelList modelList,
+            BookmarkUiPrefs bookmarkUiPrefs,
+            Runnable hideKeyboardRunnable,
+            BookmarkImageFetcher bookmarkImageFetcher,
+            ShoppingService shoppingService,
+            SnackbarManager snackbarManager,
+            Consumer<OnScrollListener> onScrollListenerConsumer,
+            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager) {
+        super(
+                context,
+                bookmarkModel,
+                bookmarkOpener,
+                selectableListLayout,
+                selectionDelegate,
+                recyclerView,
+                dragReorderableRecyclerViewAdapter,
+                largeIconBridge,
+                isDialogUi,
+                backPressStateSupplier,
+                profile,
+                bookmarkUndoController,
+                modelList,
+                bookmarkUiPrefs,
+                hideKeyboardRunnable,
+                bookmarkImageFetcher,
+                shoppingService,
+                snackbarManager,
+                onScrollListenerConsumer,
+                bookmarkMoveSnackbarManager);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

@@ -28,6 +28,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,7 +48,8 @@ public class BraveStatsUtil {
     public static final int SHARE_STATS_REQUEST_CODE = 4367;
     private static final String TAG = "BraveStatsUtil";
     public static final String STATS_FRAGMENT_TAG = "brave_stats_bottom_sheet_dialog_fragment";
-    private static String shareStatsFile = "";
+    private static String sShareStatsFile = "";
+
     /*
      * Gets string view of specific time in seconds for Brave stats
      */
@@ -108,8 +111,9 @@ public class BraveStatsUtil {
                     BraveStatsBottomSheetDialogFragment.newInstance();
             braveStatsBottomSheetDialogFragment.show(
                     activity.getSupportFragmentManager(), STATS_FRAGMENT_TAG);
-            if (activity.getPrivacyHubMetrics() != null) {
-                activity.getPrivacyHubMetrics().recordView();
+            MiscAndroidMetrics miscAndroidMetrics = activity.getMiscAndroidMetrics();
+            if (miscAndroidMetrics != null) {
+                miscAndroidMetrics.recordPrivacyHubView();
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showBraveStats " + e);
@@ -172,14 +176,15 @@ public class BraveStatsUtil {
             Bitmap bmp = convertToBitmap(view);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                shareStatsFile = MediaStore.Images.Media.insertImage(
-                        context.getContentResolver(), bmp, "tempimage", null);
+                sShareStatsFile =
+                        MediaStore.Images.Media.insertImage(
+                                context.getContentResolver(), bmp, "tempimage", null);
             } else {
                 storeImage(bmp);
-                shareStatsFile = getOutputMediaFile().getAbsolutePath();
+                sShareStatsFile = getOutputMediaFile().getAbsolutePath();
             }
 
-            Uri uri = Uri.parse(shareStatsFile);
+            Uri uri = Uri.parse(sShareStatsFile);
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -201,11 +206,11 @@ public class BraveStatsUtil {
     public static void removeShareStatsFile() {
         Context context = ContextUtils.getApplicationContext();
         try {
-            if (shareStatsFile.startsWith("content://")) {
+            if (sShareStatsFile.startsWith("content://")) {
                 ContentResolver contentResolver = context.getContentResolver();
-                contentResolver.delete(Uri.parse(shareStatsFile), null, null);
+                contentResolver.delete(Uri.parse(sShareStatsFile), null, null);
             } else {
-                File file = new File(shareStatsFile);
+                File file = new File(sShareStatsFile);
                 if (file.exists()) {
                     file.delete();
                 }
@@ -297,7 +302,7 @@ public class BraveStatsUtil {
 
     public static List<Pair<String, String>> getStatsPairs() {
         List<Pair<String, String>> statsPair = new ArrayList<>();
-        Profile mProfile = Profile.getLastUsedRegularProfile();
+        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
         long trackersBlockedCount =
                 BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
         long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
@@ -319,7 +324,7 @@ public class BraveStatsUtil {
     }
 
     public static Pair<String, String> getAdsTrackersBlocked() {
-        Profile mProfile = Profile.getLastUsedRegularProfile();
+        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
         long trackersBlockedCount =
                 BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
         long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);

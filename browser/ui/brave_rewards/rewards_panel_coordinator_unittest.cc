@@ -51,6 +51,14 @@ class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
     coordinator_->AddObserver(observer_.get());
   }
 
+  void TearDown() override {
+    // Clean up coordinator pointer, so it doesn't dangle during the browsers
+    // destruction.
+    coordinator_ = nullptr;
+
+    BrowserWithTestWindowTest::TearDown();
+  }
+
  protected:
   const mojom::RewardsPanelArgs& last_args() const {
     CHECK(last_args_);
@@ -75,12 +83,6 @@ TEST_F(RewardsPanelCoordinatorTest, ShowRewardsSetup) {
   EXPECT_TRUE(coordinator().ShowRewardsSetup());
   EXPECT_EQ(last_args().view, mojom::RewardsPanelView::kRewardsSetup);
   EXPECT_EQ(last_args().data, "");
-}
-
-TEST_F(RewardsPanelCoordinatorTest, ShowGrantCaptcha) {
-  EXPECT_TRUE(coordinator().ShowGrantCaptcha("abc123"));
-  EXPECT_EQ(last_args().view, mojom::RewardsPanelView::kGrantCaptcha);
-  EXPECT_EQ(last_args().data, "abc123");
 }
 
 TEST_F(RewardsPanelCoordinatorTest, ShowAdaptiveCaptcha) {

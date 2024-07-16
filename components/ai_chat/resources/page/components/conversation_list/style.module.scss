@@ -7,60 +7,50 @@
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  font: var(--leo-font-secondary-default-regular);
+  font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   padding: 16px;
-  background-color: var(--leo-color-page-background);
-  margin-top: 16px;
+  position: relative;
+  letter-spacing: -0.1px;
+}
+
+.turnContainerMobile {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.turnContainerHighlight {
+  background: var(--leo-color-container-interactive);
 }
 
 .turnAI {
   background-color: transparent;
-  margin-top: initial;
-  padding-bottom: 0;
-}
-
-.caret {
-  display: inline-block;
-  margin-left: 5px;
-  width: 8px;
-  height: 12px;
-  background-color: currentColor;
 }
 
 .suggestedQuestionsBox {
   padding: 16px 16px 16px 64px;
 }
 
-.suggestedQuestionLabel {
-  --leo-icon-size: 18px;
-
-  font: var(--leo-font-secondary-small-regular);
-  color: var(--leo-color-text-secondary);
-  padding-bottom: 16px;
-  display: flex;
-  gap: 6px;
-}
-
 .buttonText {
   display: flex;
   align-items: flex-start;
   text-align: left;
-  font: var(--leo-font-secondary-default-regular);
+  font: var(--leo-font-default-regular);
 }
 
 .questionsList {
+  --leo-button-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 8px;
+  gap: var(--leo-spacing-m);
 }
 
 .avatar {
   --leo-icon-size: 18px;
   width: 32px;
   height: 32px;
-  background-color: var(--leo-color-container-background);
+  background: var(--leo-color-container-highlight);
   border-radius: 100px;
   flex-shrink: 0;
   color: var(--leo-color-icon-default);
@@ -76,6 +66,26 @@
 
 .message {
   margin: 0;
-  white-space: pre-wrap;
   padding-top: 5px;
+  width: 100%;
+}
+
+.feedbackFormPortal {
+  padding: 0 16px;
+}
+
+.asistantMenu {
+  position: absolute;
+  right: 16px;
+  z-index: inherit;
+}
+
+@media (pointer: fine) {
+  .turn:not(:hover) > .asistantMenu {
+    display: none;
+  }
+}
+
+.siteTitleContainer {
+  margin-top: var(--leo-spacing-m);
 }

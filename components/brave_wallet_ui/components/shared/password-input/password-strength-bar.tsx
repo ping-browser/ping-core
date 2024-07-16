@@ -10,61 +10,39 @@ import { getLocale } from '$web-common/locale'
 
 // style
 import {
-  Bar,
+  ProgressBar,
   BarAndMessageContainer,
-  BarBackground,
-  BarMessage,
-  BarProgress,
-  BarProgressTooltipContainer
+  BarMessage
 } from './password-strength-bar.styles'
 
-// types
-import { PasswordStrengthResults } from '../../../common/hooks/use-password-strength'
-
 // components
-import { PasswordStrengthTooltip } from '../tooltip/password-strength-tooltip'
 
 interface Props {
   criteria: boolean[]
-  isVisible: boolean
-  passwordStrength: PasswordStrengthResults
 }
 
 export const PasswordStrengthBar: React.FC<Props> = ({
-  criteria,
-  isVisible,
-  passwordStrength
+  criteria
 }) => {
   // memos
   const strongPasswordCrtieriaPercentComplete = React.useMemo(
-    () => ((criteria.filter(c => !!c).length / criteria.length) * 100),
+    () => (criteria.filter((c) => !!c).length / criteria.length) * 100,
     [criteria]
   )
 
   // render
   return (
     <BarAndMessageContainer>
-      <Bar>
-        <BarBackground />
-        <BarProgress criteria={criteria}>
-          <BarProgressTooltipContainer
-            criteria={criteria}
-          >
-            <PasswordStrengthTooltip
-              passwordStrength={passwordStrength}
-              isVisible={isVisible}
-            />
-          </BarProgressTooltipContainer>
-        </BarProgress>
-      </Bar>
-
+      <ProgressBar
+        criteria={criteria}
+        progress={strongPasswordCrtieriaPercentComplete / 100}
+      />
       <BarMessage criteria={criteria}>
         {strongPasswordCrtieriaPercentComplete === 100
           ? getLocale('braveWalletPasswordIsStrong')
           : strongPasswordCrtieriaPercentComplete < 50
-            ? getLocale('braveWalletPasswordIsWeak')
-            : getLocale('braveWalletPasswordIsMediumStrength')
-        }
+          ? getLocale('braveWalletPasswordIsWeak')
+          : getLocale('braveWalletPasswordIsMediumStrength')}
       </BarMessage>
     </BarAndMessageContainer>
   )

@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("bookmarks") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "bookmark_model_listener_ios.h",
     "bookmark_model_listener_ios.mm",
@@ -24,10 +22,9 @@ source_set("bookmarks") {
     "//components/prefs",
     "//components/undo",
     "//components/user_prefs",
-    "//ios/chrome/browser/bookmarks",
+    "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
-    "//ios/chrome/browser/ui/bookmarks",
     "//ios/chrome/browser/ui/bookmarks:core",
     "//ios/chrome/browser/ui/bookmarks:utils",
     "//ios/web/public/thread",

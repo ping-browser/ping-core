@@ -5,18 +5,18 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
+import { Feed } from '../../../../brave_news/browser/resources/shared/api'
+import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
 import * as TodayActions from '../../../actions/today_actions'
-import { Feed } from '../../../api/brave_news'
-import CardLoading from './cards/cardLoading'
-import CardError from './cards/cardError'
-import CardNoContent from './cards/cardNoContent'
+import { attributeNameCardCount, Props } from './'
 import CardLarge from './cards/_articles/cardArticleLarge'
+import CardError from './cards/cardError'
+import CardLoading from './cards/cardLoading'
+import CardNoContent from './cards/cardNoContent'
 import CardDisplayAd from './cards/displayAd'
 import CardsGroup from './cardsGroup'
 import Customize from './options/customize'
-import { attributeNameCardCount, Props } from './'
 import Refresh from './options/refresh'
-import { useBraveNews } from './customize/Context'
 
 function getFeedHashForCache (feed?: Feed) {
   return feed ? feed.hash : ''
@@ -34,7 +34,7 @@ export default function BraveNewsContent (props: Props) {
   const [showOptions, setShowOptions] = React.useState(false)
 
   // When an element at the bottom enters the viewport, ask for a new page
-  const setScrollTriggerRef = React.useCallback((element) => {
+  const setScrollTriggerRef = React.useCallback((element: HTMLElement | null) => {
     if (!element) {
       return
     }

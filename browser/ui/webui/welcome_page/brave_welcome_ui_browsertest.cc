@@ -6,7 +6,6 @@
 #include "base/command_line.h"
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -27,7 +26,8 @@ Browser* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
   StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
                                     chrome::startup::IsFirstRun::kYes);
-  creator.Launch(profile, chrome::startup::IsProcessStartup::kNo, nullptr);
+  creator.Launch(profile, chrome::startup::IsProcessStartup::kNo, nullptr,
+                 /*restore_tabbed_browser=*/true);
   return chrome::FindBrowserWithProfile(profile);
 }
 }  // namespace

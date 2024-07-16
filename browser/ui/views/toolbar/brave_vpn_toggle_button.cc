@@ -14,6 +14,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_id.h"
 
 using ConnectionState = brave_vpn::mojom::ConnectionState;
@@ -23,7 +24,7 @@ BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
     : browser_(browser),
       service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->profile())) {
-  DCHECK(service_);
+  CHECK(service_);
 
   Observe(service_);
 
@@ -60,3 +61,6 @@ void BraveVPNToggleButton::UpdateState() {
                 state == ConnectionState::CONNECTED);
   SetIsOn(is_on);
 }
+
+BEGIN_METADATA(BraveVPNToggleButton)
+END_METADATA

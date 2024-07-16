@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ssl/https_first_mode_settings_tracker.h"
@@ -67,8 +67,7 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
   security_interstitials::https_only_mode::HttpInterstitialState
       interstitial_state;
   interstitial_state.enabled_by_pref =
-      (base::FeatureList::IsEnabled(features::kHttpsFirstModeV2) && prefs &&
-       prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) ||
+      (prefs && prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) ||
       (map && brave_shields::ShouldForceHttps(map, request_url));
 
   StatefulSSLHostStateDelegate* state =
@@ -81,11 +80,12 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
       HttpsFirstModeServiceFactory::GetForProfile(profile);
   if (hfm_service) {
     // Can be null in some cases, e.g. when using Ash sign-in profile.
-    hfm_service->MaybeEnableHttpsFirstModeForUrl(profile, handle->GetURL());
+    interstitial_state.enabled_by_typically_secure_browsing =
+        hfm_service->IsInterstitialEnabledByTypicallySecureUserHeuristic();
   }
   // StatefulSSLHostStateDelegate can be null during tests.
-  if (state && state->IsHttpsEnforcedForHost(handle->GetURL().host(),
-                                             storage_partition)) {
+  if (state &&
+      state->IsHttpsEnforcedForUrl(handle->GetURL(), storage_partition)) {
     interstitial_state.enabled_by_engagement_heuristic = true;
   }
 
@@ -106,5 +106,5 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
   HttpsOnlyModeTabHelper::CreateForWebContents(handle->GetWebContents());
 
   return std::make_unique<HttpsUpgradesNavigationThrottle>(
-      handle, std::move(blocking_page_factory), interstitial_state);
+      handle, profile, std::move(blocking_page_factory), interstitial_state);
 }

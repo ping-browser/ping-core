@@ -13,11 +13,11 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kAccountStatementFeature);
 
-constexpr base::FeatureParam<int> kNextPaymentDay{&kAccountStatementFeature,
-                                                  "next_payment_day", 7};
+inline constexpr base::FeatureParam<int> kNextPaymentDay{
+    &kAccountStatementFeature, "next_payment_day", 7};
 
-constexpr base::FeatureParam<double> kMinEstimatedEarningsMultiplier{
-    &kAccountStatementFeature, "min_estimated_earnings_multiplier", 0.8};
+inline constexpr base::FeatureParam<double> kMinEstimatedEarningsMultiplier{
+    &kAccountStatementFeature, "minimum_estimated_earnings_multiplier", 0.8};
 
 }  // namespace brave_ads
 

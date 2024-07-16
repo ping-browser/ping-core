@@ -15,19 +15,25 @@ class PrefService;
 
 namespace brave_wallet {
 
-constexpr mojom::CoinType kAllCoins[] = {
+inline constexpr mojom::CoinType kAllCoins[] = {
     mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL,
-    mojom::CoinType::BTC};
+    mojom::CoinType::BTC, mojom::CoinType::ZEC};
+
+inline constexpr mojom::KeyringId kAllKeyrings[] = {
+    mojom::KeyringId::kDefault,          mojom::KeyringId::kBitcoin84,
+    mojom::KeyringId::kBitcoin84Testnet, mojom::KeyringId::kFilecoin,
+    mojom::KeyringId::kFilecoinTestnet,  mojom::KeyringId::kSolana,
+    mojom::KeyringId::kZCashMainnet,     mojom::KeyringId::kZCashTestnet};
+
+bool IsZCashKeyring(mojom::KeyringId keyring_id);
 
 bool IsNativeWalletEnabled();
-bool IsFilecoinEnabled();
-bool IsSolanaEnabled();
-bool ShouldShowTxStatusInToolbar();
 bool IsNftPinningEnabled();
-bool IsPanelV2Enabled();
-bool ShouldCreateDefaultSolanaAccount();
-bool IsDappsSupportEnabled();
 bool IsBitcoinEnabled();
+bool IsZCashEnabled();
+bool IsZCashShieldedTransactionsEnabled();
+bool IsAnkrBalancesEnabled();
+bool IsTransactionSimulationsEnabled();
 
 bool IsAllowed(PrefService* prefs);
 
@@ -37,15 +43,20 @@ bool IsBitcoinKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinMainnetKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinTestnetKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinNetwork(const std::string& network_id);
-bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
-                                      mojom::KeyringId keyring_id);
 bool IsBitcoinAccount(const mojom::AccountId& account_id);
+
+bool IsZCashAccount(const mojom::AccountId& account_id);
+bool IsZCashNetwork(const std::string& network_id);
+bool IsZCashKeyring(mojom::KeyringId keyring_id);
 
 mojom::KeyringId GetFilecoinKeyringId(const std::string& network);
 
 std::string GetFilecoinChainId(mojom::KeyringId keyring_id);
 
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
+
+mojom::CoinType GetCoinTypeFromTxDataUnion(
+    const mojom::TxDataUnion& tx_data_union);
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
@@ -63,6 +74,15 @@ mojom::AccountIdPtr MakeBitcoinAccountId(mojom::CoinType coin,
                                          mojom::KeyringId keyring_id,
                                          mojom::AccountKind kind,
                                          uint32_t account_index);
+std::string GetNetworkForBitcoinKeyring(const mojom::KeyringId& keyring_id);
+std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id);
+
+std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id);
+
+mojom::AccountIdPtr MakeZCashAccountId(mojom::CoinType coin,
+                                       mojom::KeyringId keyring_id,
+                                       mojom::AccountKind kind,
+                                       uint32_t account_index);
 
 }  // namespace brave_wallet
 

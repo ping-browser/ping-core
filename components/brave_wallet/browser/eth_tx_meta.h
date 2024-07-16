@@ -35,6 +35,7 @@ class EthTxMeta : public TxMeta {
   // TxMeta
   base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
+  mojom::CoinType GetCoinType() const override;
 
   TransactionReceipt tx_receipt() const { return tx_receipt_; }
   EthTransaction* tx() const { return tx_.get(); }
@@ -45,6 +46,8 @@ class EthTxMeta : public TxMeta {
   }
   void set_tx(std::unique_ptr<EthTransaction> tx) { tx_ = std::move(tx); }
   void set_sign_only(bool sign_only) { sign_only_ = sign_only; }
+
+  bool IsRetriable() const;
 
  private:
   bool sign_only_ = false;

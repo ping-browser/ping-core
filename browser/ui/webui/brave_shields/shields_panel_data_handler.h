@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
-#include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -19,9 +19,7 @@
 
 class TabStripModel;
 
-namespace ui {
-class MojoBubbleWebUIController;
-}  // namespace ui
+class TopChromeWebUIController;
 
 class ShieldsPanelDataHandler
     : public brave_shields::mojom::DataHandler,
@@ -31,7 +29,7 @@ class ShieldsPanelDataHandler
   ShieldsPanelDataHandler(
       mojo::PendingReceiver<brave_shields::mojom::DataHandler>
           data_handler_receiver,
-      ui::MojoBubbleWebUIController* webui_controller,
+      TopChromeWebUIController* webui_controller,
       TabStripModel* browser);
 
   ShieldsPanelDataHandler(const ShieldsPanelDataHandler&) = delete;
@@ -48,7 +46,6 @@ class ShieldsPanelDataHandler
   void SetCookieBlockMode(CookieBlockMode mode) override;
   void SetHttpsUpgradeMode(HttpsUpgradeMode mode) override;
   void SetIsNoScriptsEnabled(bool is_enabled) override;
-  void SetHTTPSEverywhereEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
   void SetForgetFirstPartyStorageEnabled(bool is_enabled) override;
   void OpenWebCompatWindow() override;
@@ -71,7 +68,7 @@ class ShieldsPanelDataHandler
 
   mojo::Receiver<brave_shields::mojom::DataHandler> data_handler_receiver_;
   mojo::Remote<brave_shields::mojom::UIHandler> ui_handler_remote_;
-  raw_ptr<ui::MojoBubbleWebUIController> const webui_controller_ = nullptr;
+  raw_ptr<TopChromeWebUIController> const webui_controller_ = nullptr;
   raw_ptr<brave_shields::BraveShieldsDataController>
       active_shields_data_controller_ = nullptr;
 

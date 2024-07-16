@@ -24,10 +24,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
 
-#if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
-#endif
-
 namespace brave_vpn {
 
 namespace {
@@ -45,30 +41,45 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveVPNSubscriberCredential);
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
   registry->RegisterTimePref(prefs::kBraveVPNSessionExpiredDate, {});
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   registry->RegisterBooleanPref(prefs::kBraveVPNWireguardEnabled, false);
+#endif
+#if BUILDFLAG(IS_MAC)
+  registry->RegisterBooleanPref(prefs::kBraveVPNOnDemandEnabled, false);
 #endif
 }
 
 }  // namespace
 
-#if BUILDFLAG(IS_WIN)
 bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
-  DCHECK(IsBraveVPNFeatureEnabled());
-  return local_state->GetBoolean(prefs::kBraveVPNWireguardEnabled);
+  if (!IsBraveVPNFeatureEnabled()) {
+    return false;
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  auto enabled = local_state->GetBoolean(prefs::kBraveVPNWireguardEnabled);
+#if BUILDFLAG(IS_MAC)
+  enabled = enabled && base::FeatureList::IsEnabled(
+                           brave_vpn::features::kBraveVPNEnableWireguardForOSX);
+#endif  // BUILDFLAG(IS_MAC)
+  return enabled;
+#else
+  return false;
+#endif
 }
 
-void MigrateWireguardFeatureFlag(PrefService* local_prefs) {
+#if BUILDFLAG(IS_WIN)
+void EnableWireguardIfPossible(PrefService* local_prefs) {
   auto* wireguard_enabled_pref =
       local_prefs->FindPreference(prefs::kBraveVPNWireguardEnabled);
   if (wireguard_enabled_pref && wireguard_enabled_pref->IsDefaultValue()) {
     local_prefs->SetBoolean(
         prefs::kBraveVPNWireguardEnabled,
-        base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService) &&
-            brave_vpn::wireguard::IsWireguardServiceRegistered());
+        base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService));
   }
 }
-#endif
+
+#endif  // BUILDFLAG(IS_WIN)
 void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   if (local_prefs->GetBoolean(prefs::kBraveVPNLocalStateMigrated)) {
     return;

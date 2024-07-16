@@ -5,18 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 
-#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
-#include "brave/components/brave_ads/core/public/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -27,39 +27,54 @@ class BraveAdsNonRewardConfirmationUtilTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    DisableBraveRewardsForTesting();
-
     MockConfirmationUserData();
-
-    AdvanceClockTo(
-        TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ false));
   }
 };
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
   // Arrange
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+  test::DisableBraveRewards();
 
-  // Assert
-  base::MockCallback<BuildConfirmationUserDataCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([&transaction](const UserDataInfo& user_data) {
-        ConfirmationInfo expected_confirmation;
-        expected_confirmation.transaction_id = kTransactionId;
-        expected_confirmation.creative_instance_id = kCreativeInstanceId;
-        expected_confirmation.type = ConfirmationType::kViewed;
-        expected_confirmation.ad_type = AdType::kNotificationAd;
-        expected_confirmation.created_at = Now();
-        expected_confirmation.was_created = false;
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
 
-        EXPECT_EQ(expected_confirmation,
-                  BuildNonRewardConfirmation(transaction, user_data));
-      });
+  // Act & Assert
+  ConfirmationInfo expected_confirmation;
+  expected_confirmation.transaction_id = kTransactionId;
+  expected_confirmation.creative_instance_id = kCreativeInstanceId;
+  expected_confirmation.type = ConfirmationType::kViewedImpression;
+  expected_confirmation.ad_type = AdType::kNotificationAd;
+  expected_confirmation.created_at = Now();
 
-  // Act
-  BuildConfirmationUserData(transaction, callback.Get());
+  EXPECT_EQ(expected_confirmation,
+            BuildNonRewardConfirmation(transaction, /*user_data=*/{}));
+}
+
+TEST_F(BraveAdsNonRewardConfirmationUtilTest,
+       DISABLED_DoNotBuildNonRewardConfirmationWithInvalidTransaction) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  const TransactionInfo transaction;
+
+  // Act & Assert
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
+      "Check failed: transaction.IsValid*");
+}
+
+TEST_F(BraveAdsNonRewardConfirmationUtilTest,
+       DISABLED_DoNotBuildNonRewardConfirmationForRewardsUser) {
+  // Arrange
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
+
+  // Act & Assert
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
+      "Check failed: !UserHasJoinedBraveRewards*");
 }
 
 }  // namespace brave_ads

@@ -5,129 +5,144 @@
 
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 
-#include <vector>
+#include <utility>
 
-#include "brave/components/playlist/common/features.h"
-#include "brave/components/playlist/renderer/playlist_js_handler.h"
+#include "base/functional/bind.h"
+#include "base/values.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
+#include "brave/gin/converter_specializations.h"
 #include "content/public/renderer/render_frame.h"
-#include "third_party/blink/public/common/web_preferences/web_preferences.h"
-#include "third_party/blink/public/platform/web_isolated_world_info.h"
-#include "third_party/blink/public/platform/web_string.h"
+#include "gin/function_template.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
+#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
+#include "v8/include/v8.h"
 
 namespace playlist {
 
 PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
-    content::RenderFrame* render_frame,
-    const int32_t isolated_world_id)
-    : RenderFrameObserver(render_frame),
-      RenderFrameObserverTracker<PlaylistRenderFrameObserver>(render_frame),
-      isolated_world_id_(isolated_world_id),
-      javascript_handler_(std::make_unique<PlaylistJSHandler>(render_frame)) {}
+    content::RenderFrame* frame,
+    int32_t isolated_world_id)
+    : RenderFrameObserver(frame),
+      RenderFrameObserverTracker<PlaylistRenderFrameObserver>(frame),
+      isolated_world_id_(isolated_world_id) {
+  render_frame()
+      ->GetAssociatedInterfaceRegistry()
+      ->AddInterface<mojom::PlaylistRenderFrameObserverConfigurator>(
+          base::BindRepeating(&PlaylistRenderFrameObserver::BindConfigurator,
+                              weak_ptr_factory_.GetWeakPtr()));
+}
 
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
-
-void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
-  const auto& blink_preferences = render_frame()->GetBlinkPreferences();
-  if (blink_preferences.hide_media_src_api) {
-    HideMediaSourceAPI();
-  }
-
-  if (blink_preferences.should_detect_media_files) {
-    InstallMediaDetector();
-  }
-}
-
-void PlaylistRenderFrameObserver::HideMediaSourceAPI() {
-  // Hide MediaSource API so that we can get downloadable URL from the page.
-  // Otherwise, we get "blob: " url which we can't handle.
-  // This script is from
-  // https://github.com/brave/brave-ios/blob/development/Client/Frontend/UserContent/UserScripts/PlaylistSwizzler.js
-  static const char16_t kScriptToHideMediaSourceAPI[] =
-      uR"-(
-    (function() {
-      // Stub out the MediaSource API so video players do not attempt to use `blob` for streaming
-      if (window.MediaSource || window.WebKitMediaSource || window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId) {
-        window.MediaSource = null;
-        window.WebKitMediaSource = null;
-        delete window.MediaSource;
-        delete window.WebKitMediaSource;
-      }
-    })();
-    )-";
-
-  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
-  if (web_frame->IsProvisional())
-    return;
-
-  web_frame->ExecuteScript(blink::WebScriptSource(
-      blink::WebString::FromUTF16(kScriptToHideMediaSourceAPI)));
-}
-
-void PlaylistRenderFrameObserver::InstallMediaDetector() {
-  DVLOG(2) << __FUNCTION__;
-
-  static const char16_t kScriptToDetectVideoAndAudio[] =
-      uR"-(
-    (function() {
-      // Firstly, we try to get find all <video> or <audio> tags periodically,
-      // for a a while from the start up. If we find them, then we attach 
-      // MutationObservers to them to detect source URL.
-      // After a given amount of time, we do this in requestIdleCallback().
-      // Note that there's a global object named |pl_worker|. This worker is
-      // created and bound by PlaylistJSHandler.
-
-      const mutationSources = new Set();
-      const mutationObserver = new MutationObserver(mutations => {
-          mutations.forEach(mutation => { pl_worker.onMediaUpdated(mutation.target.src); })
-      });
-      const findNewMediaAndObserveMutation = () => {
-          return document.querySelectorAll('video, audio').forEach((mediaNode) => {
-              if (mutationSources.has(mediaNode)) return
-
-              mutationSources.add(mediaNode)
-              pl_worker.onMediaUpdated(mediaNode.src)
-              mutationObserver.observe(mediaNode, { attributeFilter: ['src'] })
-          });
-      }
-
-      const pollingIntervalId = window.setInterval(findNewMediaAndObserveMutation, 1000);
-      window.setTimeout(() => {
-          window.clearInterval(pollingIntervalId)
-          window.requestIdleCallback(findNewMediaAndObserveMutation)
-          // TODO(sko) We might want to check if idle callback is waiting too long.
-          // In that case, we should get back to the polling style. And also, this
-          // time could be too long for production.
-      }, 20000)
-    })();
-    )-";
-
-  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
-  if (web_frame->IsProvisional()) {
-    return;
-  }
-
-  web_frame->ExecuteScriptInIsolatedWorld(
-      isolated_world_id_,
-      blink::WebScriptSource(
-          blink::WebString::FromUTF16(kScriptToDetectVideoAndAudio)),
-      blink::BackForwardCacheAware::kAllow);
-}
 
 void PlaylistRenderFrameObserver::OnDestruct() {
   delete this;
 }
 
-void PlaylistRenderFrameObserver::DidCreateScriptContext(
+void PlaylistRenderFrameObserver::AddMediaSourceAPISuppressor(
+    const std::string& media_source_api_suppressor) {
+  DVLOG(2) << __FUNCTION__;
+
+  media_source_api_suppressor_ = media_source_api_suppressor;
+  CHECK(!media_source_api_suppressor_->empty());
+}
+
+void PlaylistRenderFrameObserver::AddMediaDetector(
+    const std::string& media_detector) {
+  DVLOG(2) << __FUNCTION__;
+
+  media_detector_ = media_detector;
+  CHECK(!media_detector_->empty());
+}
+
+void PlaylistRenderFrameObserver::BindConfigurator(
+    mojo::PendingAssociatedReceiver<
+        mojom::PlaylistRenderFrameObserverConfigurator> receiver) {
+  configurator_receiver_.reset();
+  configurator_receiver_.Bind(std::move(receiver));
+}
+
+const mojo::AssociatedRemote<mojom::PlaylistMediaResponder>&
+PlaylistRenderFrameObserver::GetMediaResponder() {
+  if (!media_responder_) {
+    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
+        &media_responder_);
+    media_responder_.reset_on_disconnect();
+  }
+
+  return media_responder_;
+}
+
+void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
+  if (media_source_api_suppressor_) {
+    v8::Isolate* isolate =
+        render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
+    v8::Isolate::Scope isolate_scope(isolate);
+    v8::HandleScope handle_scope(isolate);
+
+    Inject(*media_source_api_suppressor_,
+           render_frame()->GetWebFrame()->MainWorldScriptContext());
+  }
+}
+
+void PlaylistRenderFrameObserver::RunScriptsAtDocumentEnd() {
+  if (media_detector_) {
+    v8::Isolate* isolate =
+        render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
+    v8::Isolate::Scope isolate_scope(isolate);
+    v8::HandleScope handle_scope(isolate);
+
+    v8::Local<v8::Context> context =
+#if !BUILDFLAG(IS_ANDROID)
+        render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
+            isolate, isolated_world_id_);
+#else
+        render_frame()->GetWebFrame()->MainWorldScriptContext();
+#endif
+    v8::Local<v8::Function> on_media_detected =
+        gin::CreateFunctionTemplate(
+            isolate,
+            base::BindRepeating(&PlaylistRenderFrameObserver::OnMediaDetected,
+                                weak_ptr_factory_.GetWeakPtr()))
+            ->GetFunction(context)
+            .ToLocalChecked();
+    Inject(*media_detector_, context, {on_media_detected.As<v8::Value>()});
+  }
+}
+
+void PlaylistRenderFrameObserver::Inject(
+    const std::string& script_text,
     v8::Local<v8::Context> context,
-    int32_t world_id) {
-  if (world_id != isolated_world_id_) {
+    std::vector<v8::Local<v8::Value>> args) const {
+  DVLOG(2) << __FUNCTION__;
+
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks_scope(
+      context, v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Script> script =
+      v8::Script::Compile(context,
+                          gin::StringToV8(context->GetIsolate(), script_text))
+          .ToLocalChecked();
+  v8::Local<v8::Function> function =
+      v8::Local<v8::Function>::Cast(script->Run(context).ToLocalChecked());
+
+  std::ignore = function->Call(context, context->Global(), args.size(),
+                               args.empty() ? nullptr : args.data());
+}
+
+void PlaylistRenderFrameObserver::OnMediaDetected(base::Value::List media) {
+  const auto url = render_frame()->GetWebFrame()->GetDocument().Url();
+  DVLOG(2) << __FUNCTION__ << " - " << url << ":\n" << media;
+
+  auto items = ExtractPlaylistItems(url, std::move(media));
+  if (items.empty()) {  // ExtractPlaylistItems() might discard media
     return;
   }
 
-  DVLOG(2) << __FUNCTION__ << "Will add Playlist worker object to the frame";
-  javascript_handler_->AddWorkerObjectToFrame(context);
+  GetMediaResponder()->OnMediaDetected(std::move(items));
 }
 
 }  // namespace playlist

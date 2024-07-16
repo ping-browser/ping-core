@@ -20,7 +20,8 @@ import * as rewardsActions from './actions/rewards_actions'
 import { PlatformContext } from './lib/platform_context'
 import { createReducer } from './reducers'
 import { getCurrentBalanceReport } from './reducers/utils'
-
+// import { App } from './components/app'
+import { PdfRenderer } from './components/pdf_renderer'
 import * as mojom from '../shared/lib/mojom'
 
 import * as Rewards from './lib/types'
@@ -31,6 +32,14 @@ const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
 setIconBasePath('chrome://resources/brave-icons')
 
 function initialize () {
+  // For `brave://rewards/reconnect`, automatically trigger reconnection on page
+  // load and send the user immediately to the external wallet login page. Do
+  // not show any additional UI while redirecting.
+  if (window.location.pathname === '/reconnect') {
+    chrome.send('brave_rewards.reconnectExternalWallet')
+    return
+  }
+
   initLocale(loadTimeData.data_)
 
   const platformInfo = {
@@ -44,6 +53,7 @@ function initialize () {
           <PlatformContext.Provider value={platformInfo}>
             <WithThemeVariables>
               {/* <App /> */}
+              <PdfRenderer />
               <></>
             </WithThemeVariables>
           </PlatformContext.Provider>
@@ -53,12 +63,12 @@ function initialize () {
     document.getElementById('root'))
 }
 
-function onIsGrandfatheredUser (isGrandfatheredUser: boolean) {
-  actions.onIsGrandfatheredUser(isGrandfatheredUser)
-}
-
 function userType (userType: number) {
   actions.onUserType(userType)
+}
+
+function isTermsOfServiceUpdateRequired (updateRequired: boolean) {
+  actions.onIsTermsOfServiceUpdateRequired(updateRequired)
 }
 
 function rewardsParameters (properties: Rewards.RewardsParameters) {
@@ -66,18 +76,6 @@ function rewardsParameters (properties: Rewards.RewardsParameters) {
   // Get the current AC amount after rewards parameters have been
   // updated, as the default AC amount may have been changed.
   actions.getContributionAmount()
-}
-
-function promotions (properties: Rewards.PromotionResponse) {
-  actions.onPromotions(properties)
-}
-
-function promotionClaimStarted (promotionId: string) {
-  actions.onPromotionClaimStarted(promotionId)
-}
-
-function promotionFinish (properties: Rewards.PromotionFinish) {
-  actions.onPromotionFinish(properties)
 }
 
 function reconcileStamp (stamp: number) {
@@ -173,8 +171,8 @@ function excludedSiteChanged () {
   actions.getContributeList()
 }
 
-function balance (result: mojom.FetchBalanceResult) {
-  actions.onBalance(result)
+function balance (balance?: mojom.Balance) {
+  actions.onBalance(balance)
 }
 
 function reconcileComplete (properties: { type: number, result: number }) {
@@ -192,8 +190,8 @@ function reconcileComplete (properties: { type: number, result: number }) {
   }
 }
 
-function onGetExternalWallet (result: mojom.GetExternalWalletResult) {
-  actions.onGetExternalWallet(result)
+function onGetExternalWallet (externalWallet?: mojom.ExternalWallet) {
+  actions.onGetExternalWallet(externalWallet)
 }
 
 function onConnectExternalWallet (result: mojom.ConnectExternalWalletResult) {
@@ -209,20 +207,8 @@ function onExternalWalletDisconnected () {
   actions.getUserType()
 }
 
-function unblindedTokensReady () {
-  actions.getBalance()
-}
-
-function monthlyReport (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport }) {
-  actions.onMonthlyReport(properties)
-}
-
 function reconcileStampReset () {
   actions.onReconcileStampReset()
-}
-
-function monthlyReportIds (ids: string[]) {
-  actions.onMonthlyReportIds(ids)
 }
 
 function countryCode (countryCode: string) {
@@ -241,12 +227,12 @@ function onboardingStatus (result: { showOnboarding: boolean }) {
   actions.onOnboardingStatus(result.showOnboarding)
 }
 
-function enabledInlineTippingPlatforms (list: string[]) {
-  actions.onEnabledInlineTippingPlatforms(list)
-}
-
 function externalWalletLogin (url: string) {
-  window.open(url, '_self', 'noreferrer')
+  if (url) {
+    window.open(url, '_self', 'noreferrer')
+  } else {
+    actions.onExternalWalletLoginError()
+  }
 }
 
 function onPrefChanged (key: string) {
@@ -261,12 +247,9 @@ function onIsUnsupportedRegion (isUnsupportedRegion: boolean) {
 Object.defineProperty(window, 'brave_rewards', {
   configurable: true,
   value: {
-    onIsGrandfatheredUser,
     userType,
+    isTermsOfServiceUpdateRequired,
     rewardsParameters,
-    promotions,
-    promotionClaimStarted,
-    promotionFinish,
     reconcileStamp,
     contributeList,
     externalWalletProviderList,
@@ -296,15 +279,11 @@ Object.defineProperty(window, 'brave_rewards', {
     onConnectExternalWallet,
     onExternalWalletLoggedOut,
     onExternalWalletDisconnected,
-    unblindedTokensReady,
-    monthlyReport,
     reconcileStampReset,
-    monthlyReportIds,
     countryCode,
     initialized,
     completeReset,
     onboardingStatus,
-    enabledInlineTippingPlatforms,
     externalWalletLogin,
     onPrefChanged,
     onIsUnsupportedRegion

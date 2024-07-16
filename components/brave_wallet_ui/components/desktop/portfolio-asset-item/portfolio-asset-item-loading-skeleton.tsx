@@ -9,33 +9,52 @@ import * as React from 'react'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Styled Components
-import { StyledWrapper, NameAndIcon, NameColumn, Spacer, BalanceColumn, ButtonArea } from './style'
+import {
+  HoverArea,
+  NameAndIcon,
+  NameColumn,
+  Spacer,
+  BalanceColumn,
+  Button
+} from './style'
 import { IconsWrapper } from '../../shared/style'
 
 export const PortfolioAssetItemLoadingSkeleton = () => {
   return (
-    <StyledWrapper>
-      <ButtonArea disabled={true}>
-      <NameAndIcon>
-        <IconsWrapper>
+    <HoverArea noHover={true}>
+      <Button disabled={true}>
+        <NameAndIcon>
+          <IconsWrapper>
+            <LoadingSkeleton
+              circle={true}
+              width={32}
+              height={32}
+            />
+          </IconsWrapper>
+          <NameColumn>
+            <LoadingSkeleton
+              width={60}
+              height={18}
+            />
+            <Spacer />
+            <LoadingSkeleton
+              width={120}
+              height={18}
+            />
+          </NameColumn>
+        </NameAndIcon>
+        <BalanceColumn>
           <LoadingSkeleton
-            circle={true}
-            width={32}
-            height={32}
+            width={60}
+            height={18}
           />
-        </IconsWrapper>
-        <NameColumn>
-          <LoadingSkeleton width={60} height={18} />
           <Spacer />
-          <LoadingSkeleton width={120} height={18} />
-        </NameColumn>
-      </NameAndIcon>
-      <BalanceColumn>
-        <LoadingSkeleton width={60} height={18} />
-        <Spacer />
-        <LoadingSkeleton width={60} height={18} />
-      </BalanceColumn>
-      </ButtonArea>
-    </StyledWrapper>
+          <LoadingSkeleton
+            width={60}
+            height={18}
+          />
+        </BalanceColumn>
+      </Button>
+    </HoverArea>
   )
 }

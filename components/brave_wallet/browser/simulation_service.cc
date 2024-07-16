@@ -4,12 +4,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 
+#include <optional>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/simulation_request_helper.h"
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/load_flags.h"
@@ -45,11 +49,11 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 // Function to convert all numbers in JSON string to strings.
 //
 // For sample JSON response, refer to ParseJupiterQuote.
-absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
   auto converted_json =
       std::string(json::convert_all_numbers_to_string(json, ""));
   if (converted_json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return converted_json;
@@ -61,60 +65,79 @@ namespace brave_wallet {
 
 namespace {
 
-std::string GetRelativeScanPath(const std::string& chain_id,
-                                mojom::CoinType coin) {
-  if (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaMainnet) {
-    return "solana/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::SOL &&
-             chain_id == mojom::kSolanaTestnet) {
-    return "solana/v0/testnet/scan";
-  } else if (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaDevnet) {
-    return "solana/v0/devnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kMainnetChainId) {
-    return "ethereum/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kGoerliChainId) {
-    return "ethereum/v0/goerli/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kPolygonMainnetChainId) {
-    return "polygon/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kBinanceSmartChainMainnetChainId) {
-    return "bnb/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kArbitrumMainnetChainId) {
-    return "arbitrum/v0/one/scan";
+std::optional<std::string> GetRelativeScanPath(const std::string& chain_id,
+                                               mojom::CoinType coin) {
+  if (coin == mojom::CoinType::SOL) {
+    static base::NoDestructor<base::flat_map<std::string, std::string>>
+        chain_id_lookup(
+            {{brave_wallet::mojom::kSolanaMainnet, "solana/v0/mainnet/scan"},
+             {brave_wallet::mojom::kSolanaTestnet, "solana/v0/testnet/scan"},
+             {brave_wallet::mojom::kSolanaDevnet, "solana/v0/devnet/scan"}});
+
+    if (!chain_id_lookup->contains(chain_id)) {
+      return std::nullopt;
+    }
+
+    return chain_id_lookup->at(chain_id);
   }
 
-  return "";
+  if (coin == mojom::CoinType::ETH) {
+    static base::NoDestructor<base::flat_map<std::string, std::string>>
+        chain_id_lookup(
+            {{brave_wallet::mojom::kArbitrumMainnetChainId,
+              "arbitrum/v0/one/scan"},
+             {brave_wallet::mojom::kArbitrumSepoliaChainId,
+              "arbitrum/v0/sepolia/scan"},
+             {brave_wallet::mojom::kAvalancheFujiTestnetChainId,
+              "avalanche/v0/fuji/scan"},
+             {brave_wallet::mojom::kAvalancheMainnetChainId,
+              "avalanche/v0/mainnet/scan"},
+             {brave_wallet::mojom::kBaseMainnetChainId, "base/v0/mainnet/scan"},
+             {brave_wallet::mojom::kBaseSepoliaTestnetChainId,
+              "base/v0/sepolia/scan"},
+             {brave_wallet::mojom::kBlastMainnetChainId,
+              "blast/v0/mainnet/scan"},
+             {brave_wallet::mojom::kBlastSepoliaTestnetChainId,
+              "blast/v0/sepolia/scan"},
+             {brave_wallet::mojom::kBnbSmartChainMainnetChainId,
+              "bnb/v0/mainnet/scan"},
+             {brave_wallet::mojom::kDegenChainId, "degen/v0/mainnet/scan"},
+             {brave_wallet::mojom::kMainnetChainId, "ethereum/v0/mainnet/scan"},
+             {brave_wallet::mojom::kGnosisChainId, "gnosis/v0/mainnet/scan"},
+             {brave_wallet::mojom::kLineaChainId, "linea/v0/mainnet/scan"},
+             {brave_wallet::mojom::kOptimismMainnetChainId,
+              "optimism/v0/mainnet/scan"},
+             {brave_wallet::mojom::kOptimismSepoliaChainId,
+              "optimism/v0/sepolia/scan"},
+             {brave_wallet::mojom::kPolygonMainnetChainId,
+              "polygon/v0/mainnet/scan"},
+             {brave_wallet::mojom::kSepoliaChainId, "ethereum/v0/sepolia/scan"},
+             {brave_wallet::mojom::kZoraChainId, "zora/v0/mainnet/scan"}});
+
+    if (!chain_id_lookup->contains(chain_id)) {
+      return std::nullopt;
+    }
+
+    return chain_id_lookup->at(chain_id);
+  }
+
+  return std::nullopt;
 }
 
 bool HasTransactionScanSupportInternal(const std::string& chain_id,
                                        mojom::CoinType coin) {
-  return (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaMainnet) ||
-         (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaTestnet) ||
-         (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaDevnet) ||
-         (coin == mojom::CoinType::ETH && chain_id == mojom::kMainnetChainId) ||
-         (coin == mojom::CoinType::ETH && chain_id == mojom::kGoerliChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kPolygonMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBinanceSmartChainMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kArbitrumMainnetChainId);
+  return GetRelativeScanPath(chain_id, coin).has_value();
 }
 
 bool HasMessageScanSupportInternal(const std::string& chain_id,
                                    mojom::CoinType coin) {
-  return (coin == mojom::CoinType::ETH && chain_id == mojom::kMainnetChainId) ||
-         (coin == mojom::CoinType::ETH && chain_id == mojom::kGoerliChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kPolygonMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBinanceSmartChainMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kArbitrumMainnetChainId);
+  // Only EVM is supported
+  // SVM tx signature requests are handled by the scan-transactions endpoint
+  if (coin == mojom::CoinType::ETH) {
+    return GetRelativeScanPath(chain_id, coin).has_value();
+  }
+
+  return false;
 }
 
 const base::flat_map<std::string, std::string> GetHeaders() {
@@ -126,9 +149,12 @@ const base::flat_map<std::string, std::string> GetHeaders() {
 }  // namespace
 
 SimulationService::SimulationService(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(),
-                          url_loader_factory) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    JsonRpcService* json_rpc_service)
+    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      json_rpc_service_(json_rpc_service) {
+  DCHECK(json_rpc_service_);
+}
 
 SimulationService::~SimulationService() = default;
 
@@ -147,11 +173,17 @@ void SimulationService::Bind(
 GURL SimulationService::GetScanTransactionURL(const std::string& chain_id,
                                               mojom::CoinType coin,
                                               const std::string& language) {
-  std::string spec = base::StringPrintf(
-      "%s/%s/%s", kBlowfishBaseAPIURL,
-      GetRelativeScanPath(chain_id, coin).c_str(),
-      coin == mojom::CoinType::SOL ? "transactions" : "transaction");
+  DCHECK(coin == mojom::CoinType::SOL || coin == mojom::CoinType::ETH);
 
+  auto scan_path = GetRelativeScanPath(chain_id, coin);
+
+  if (!scan_path.has_value()) {
+    return GURL();
+  }
+
+  std::string spec =
+      base::StringPrintf("%s/%s/%s", kBlowfishBaseAPIURL,
+                         scan_path.value().c_str(), "transactions");
   return net::AppendQueryParameter(GURL(spec), "language", language);
 }
 
@@ -159,9 +191,9 @@ GURL SimulationService::GetScanTransactionURL(const std::string& chain_id,
 GURL SimulationService::GetScanMessageURL(const std::string& chain_id,
                                           mojom::CoinType coin,
                                           const std::string& language) {
-  std::string spec =
-      base::StringPrintf("%s/%s/message", kBlowfishBaseAPIURL,
-                         GetRelativeScanPath(chain_id, coin).c_str());
+  std::string spec = base::StringPrintf(
+      "%s/%s/message", kBlowfishBaseAPIURL,
+      GetRelativeScanPath(chain_id, coin).value_or("").c_str());
   return net::AppendQueryParameter(GURL(spec), "language", language);
 }
 
@@ -169,22 +201,29 @@ void SimulationService::HasTransactionScanSupport(
     const std::string& chain_id,
     mojom::CoinType coin,
     HasTransactionScanSupportCallback callback) {
-  bool result = HasTransactionScanSupportInternal(chain_id, coin);
-  std::move(callback).Run(result);
+  std::move(callback).Run(IsTransactionSimulationsEnabled() &&
+                          HasTransactionScanSupportInternal(chain_id, coin));
 }
 
 void SimulationService::HasMessageScanSupport(
     const std::string& chain_id,
     mojom::CoinType coin,
     HasMessageScanSupportCallback callback) {
-  bool result = HasMessageScanSupportInternal(chain_id, coin);
-  std::move(callback).Run(result);
+  std::move(callback).Run(IsTransactionSimulationsEnabled() &&
+                          HasMessageScanSupportInternal(chain_id, coin));
 }
 
 void SimulationService::ScanSolanaTransaction(
     mojom::SolanaTransactionRequestUnionPtr request,
     const std::string& language,
     ScanSolanaTransactionCallback callback) {
+  if (!IsTransactionSimulationsEnabled()) {
+    std::move(callback).Run(
+        nullptr, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+    return;
+  }
+
   if (!request) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -214,29 +253,72 @@ void SimulationService::ScanSolanaTransaction(
     return;
   }
 
-  const auto& encoded_params = solana::EncodeScanTransactionParams(request);
-  if (!encoded_params) {
+  auto has_empty_recent_blockhash =
+      solana::HasEmptyRecentBlockhash(request->Clone());
+  if (!has_empty_recent_blockhash) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&SimulationService::OnScanSolanaTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  if (*has_empty_recent_blockhash) {
+    json_rpc_service_->GetSolanaLatestBlockhash(
+        chain_id,
+        base::BindOnce(&SimulationService::OnGetLatestSolanaBlockhash,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(request),
+                       chain_id, language, std::move(callback)));
+  } else {
+    SimulationService::OnGetLatestSolanaBlockhash(
+        std::move(request), chain_id, language, std::move(callback), "", 0,
+        mojom::SolanaProviderError::kSuccess, "");
+  }
+}
+
+void SimulationService::OnGetLatestSolanaBlockhash(
+    mojom::SolanaTransactionRequestUnionPtr request,
+    const std::string& chain_id,
+    const std::string& language,
+    ScanSolanaTransactionCallback callback,
+    const std::string& latest_blockhash,
+    uint64_t last_valid_block_height,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  DCHECK(request);
+
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(
+        nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  if (!latest_blockhash.empty()) {
+    solana::PopulateRecentBlockhash(*request, latest_blockhash);
+  }
+
+  const auto& params = solana::EncodeScanTransactionParams(request);
+  if (!params) {
+    std::move(callback).Run(
+        nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto internal_callback = base::BindOnce(
+      &SimulationService::OnScanSolanaTransaction,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback), params->second);
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod,
       GetScanTransactionURL(chain_id, mojom::CoinType::SOL, language),
-      *encoded_params, "application/json", std::move(internal_callback),
+      params->first, "application/json", std::move(internal_callback),
       GetHeaders(), {.auto_retry_on_network_change = true},
       std::move(conversion_callback));
 }
 
 void SimulationService::OnScanSolanaTransaction(
     ScanSolanaTransactionCallback callback,
+    const std::string& user_account,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
@@ -250,8 +332,8 @@ void SimulationService::OnScanSolanaTransaction(
     return;
   }
 
-  if (auto simulation_response =
-          solana::ParseSimulationResponse(api_request_result.value_body())) {
+  if (auto simulation_response = solana::ParseSimulationResponse(
+          api_request_result.value_body(), user_account)) {
     std::move(callback).Run(std::move(simulation_response), "", "");
   } else {
     std::move(callback).Run(nullptr, "",
@@ -263,6 +345,13 @@ void SimulationService::ScanEVMTransaction(
     mojom::TransactionInfoPtr tx_info,
     const std::string& language,
     ScanEVMTransactionCallback callback) {
+  if (!IsTransactionSimulationsEnabled()) {
+    std::move(callback).Run(
+        nullptr, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+    return;
+  }
+
   if (!tx_info) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -278,29 +367,30 @@ void SimulationService::ScanEVMTransaction(
     return;
   }
 
-  const auto& encoded_params = evm::EncodeScanTransactionParams(tx_info);
-  if (!encoded_params) {
+  const auto& params = evm::EncodeScanTransactionParams(tx_info);
+  if (!params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&SimulationService::OnScanEVMTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  auto internal_callback = base::BindOnce(
+      &SimulationService::OnScanEVMTransaction, weak_ptr_factory_.GetWeakPtr(),
+      std::move(callback), params->second);
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod,
       GetScanTransactionURL(chain_id, mojom::CoinType::ETH, language),
-      *encoded_params, "application/json", std::move(internal_callback),
+      params->first, "application/json", std::move(internal_callback),
       GetHeaders(), {.auto_retry_on_network_change = true},
       std::move(conversion_callback));
 }
 
 void SimulationService::OnScanEVMTransaction(
     ScanEVMTransactionCallback callback,
+    const std::string& user_account,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
@@ -314,8 +404,8 @@ void SimulationService::OnScanEVMTransaction(
     return;
   }
 
-  if (auto simulation_response =
-          evm::ParseSimulationResponse(api_request_result.value_body())) {
+  if (auto simulation_response = evm::ParseSimulationResponse(
+          api_request_result.value_body(), user_account)) {
     std::move(callback).Run(std::move(simulation_response), "", "");
   } else {
     std::move(callback).Run(nullptr, "",

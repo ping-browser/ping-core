@@ -6,15 +6,14 @@
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
-#include "base/feature_list.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "build/buildflag.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
@@ -30,7 +29,7 @@ BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() = default;
 
 void BraveWalletRenderFrameObserver::DidStartNavigation(
     const GURL& url,
-    absl::optional<blink::WebNavigationType> navigation_type) {
+    std::optional<blink::WebNavigationType> navigation_type) {
   url_ = url;
 }
 
@@ -75,7 +74,9 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
     return;
   }
 
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(render_frame());
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   auto* web_frame = render_frame()->GetWebFrame();
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
@@ -106,11 +107,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
         render_frame());
   }
 
-  if (base::FeatureList::IsEnabled(
-          brave_wallet::features::kBraveWalletSolanaFeature) &&
-      base::FeatureList::IsEnabled(
-          brave_wallet::features::kBraveWalletSolanaProviderFeature) &&
-      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana") &&
+  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana") &&
       dynamic_params.brave_use_native_solana_wallet) {
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());

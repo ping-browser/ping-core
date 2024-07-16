@@ -6,6 +6,7 @@
 #include "brave/utility/importer/chrome_importer.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -24,21 +25,20 @@
 #include "chrome/common/importer/importer_url_row.h"
 #include "chrome/utility/importer/favicon_reencode.h"
 #include "components/os_crypt/sync/os_crypt.h"
-#include "components/password_manager/core/browser/login_database.h"
 #include "components/password_manager/core/browser/password_form.h"
+#include "components/password_manager/core/browser/password_store/login_database.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
 #include "components/webdata/common/webdata_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_LINUX)
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "components/os_crypt/sync/key_storage_config_linux.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
@@ -85,7 +85,7 @@ bool SetEncryptionKeyForPasswordImporting(
     const base::FilePath& local_state_path) {
   std::string local_state_content;
   base::ReadFileToString(local_state_path, &local_state_content);
-  absl::optional<base::Value> local_state =
+  std::optional<base::Value> local_state =
       base::JSONReader::Read(local_state_content);
   if (!local_state || !local_state->is_dict()) {
     return false;
@@ -149,26 +149,27 @@ std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {
 }
 
 bool PasswordFormToImportedPasswordForm(
-    const password_manager::PasswordForm* form,
-    importer::ImportedPasswordForm* imported_form) {
-  if (form->scheme != password_manager::PasswordForm::Scheme::kHtml &&
-      form->scheme != password_manager::PasswordForm::Scheme::kBasic)
+    const password_manager::PasswordForm& form,
+    importer::ImportedPasswordForm& imported_form) {
+  if (form.scheme != password_manager::PasswordForm::Scheme::kHtml &&
+      form.scheme != password_manager::PasswordForm::Scheme::kBasic) {
     return false;
-
-  if (form->scheme == password_manager::PasswordForm::Scheme::kHtml) {
-    imported_form->scheme = importer::ImportedPasswordForm::Scheme::kHtml;
-  } else {
-    imported_form->scheme = importer::ImportedPasswordForm::Scheme::kBasic;
   }
 
-  imported_form->signon_realm = form->signon_realm;
-  imported_form->url = form->url;
-  imported_form->action = form->action;
-  imported_form->username_element = form->username_element;
-  imported_form->username_value = form->username_value;
-  imported_form->password_element = form->password_element;
-  imported_form->password_value = form->password_value;
-  imported_form->blocked_by_user = form->blocked_by_user;
+  if (form.scheme == password_manager::PasswordForm::Scheme::kHtml) {
+    imported_form.scheme = importer::ImportedPasswordForm::Scheme::kHtml;
+  } else {
+    imported_form.scheme = importer::ImportedPasswordForm::Scheme::kBasic;
+  }
+
+  imported_form.signon_realm = form.signon_realm;
+  imported_form.url = form.url;
+  imported_form.action = form.action;
+  imported_form.username_element = form.username_element;
+  imported_form.username_value = form.username_value;
+  imported_form.password_element = form.password_element;
+  imported_form.password_value = form.password_value;
+  imported_form.blocked_by_user = form.blocked_by_user;
   return true;
 }
 
@@ -260,8 +261,8 @@ void ChromeImporter::ImportHistory() {
 
     ImporterURLRow row(url);
     row.title = s.ColumnString16(1);
-    row.last_visit =
-        base::Time::FromDoubleT(chromeTimeToDouble((s.ColumnInt64(2))));
+    row.last_visit = base::Time::FromSecondsSinceUnixEpoch(
+        chromeTimeToDouble((s.ColumnInt64(2))));
     row.hidden = false;
     row.typed_count = s.ColumnInt(3);
     row.visit_count = s.ColumnInt(4);
@@ -283,7 +284,7 @@ void ChromeImporter::ImportBookmarks() {
 
   base::ReadFileToString(copy_bookmark_file.copied_file_path(),
                          &bookmarks_content);
-  absl::optional<base::Value> bookmarks_json =
+  std::optional<base::Value> bookmarks_json =
       base::JSONReader::Read(bookmarks_content);
   if (!bookmarks_json)
     return;
@@ -422,7 +423,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
           entry.url = GURL();
           entry.path = parent_path;
           entry.title = name;
-          entry.creation_time = base::Time::FromDoubleT(
+          entry.creation_time = base::Time::FromSecondsSinceUnixEpoch(
               chromeTimeToDouble(std::stoll(*date_added)));
           bookmarks->push_back(entry);
         }
@@ -436,7 +437,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
         entry.url = GURL(*url);
         entry.path = parent_path;
         entry.title = name;
-        entry.creation_time = base::Time::FromDoubleT(
+        entry.creation_time = base::Time::FromSecondsSinceUnixEpoch(
             chromeTimeToDouble(std::stoll(*date_added)));
         bookmarks->push_back(entry);
       }
@@ -467,22 +468,24 @@ void ChromeImporter::ImportPasswords(
     return;
   }
 
-  std::vector<std::unique_ptr<password_manager::PasswordForm>> forms;
+  std::vector<password_manager::PasswordForm> forms;
   bool success = database.GetAutofillableLogins(&forms);
   if (success) {
     for (auto& entry : forms) {
       importer::ImportedPasswordForm form;
-      if (PasswordFormToImportedPasswordForm(entry.get(), &form))
+      if (PasswordFormToImportedPasswordForm(entry, form)) {
         bridge_->SetPasswordForm(form);
+      }
     }
   }
-  std::vector<std::unique_ptr<password_manager::PasswordForm>> blocklist;
+  std::vector<password_manager::PasswordForm> blocklist;
   success = database.GetBlocklistLogins(&blocklist);
   if (success) {
     for (auto& entry : blocklist) {
       importer::ImportedPasswordForm form;
-      if (PasswordFormToImportedPasswordForm(entry.get(), &form))
+      if (PasswordFormToImportedPasswordForm(entry, form)) {
         bridge_->SetPasswordForm(form);
+      }
     }
   }
 }

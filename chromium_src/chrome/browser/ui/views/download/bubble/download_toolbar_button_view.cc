@@ -8,6 +8,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "components/vector_icons/vector_icons.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 
 namespace gfx {
@@ -42,12 +43,10 @@ SkRect AdjustRingBounds(const gfx::RectF& ring_bounds) {
 }  // namespace gfx
 
 SkColor DownloadToolbarButtonView::GetIconColor() const {
-  const DownloadDisplayController::IconInfo icon_info = GetIconInfo();
-
   // Apply active color only when download is completed and user doesn't
   // interact with this button.
-  if (icon_info.icon_state == download::DownloadIconState::kComplete &&
-      icon_info.is_active) {
+  if (GetIconState() == DownloadDisplay::IconState::kComplete &&
+      active_ == DownloadDisplay::IconActive::kActive) {
     return GetColorProvider()->GetColor(kColorBraveDownloadToolbarButtonActive);
   }
 
@@ -112,3 +111,6 @@ bool DownloadToolbarButtonView::HasInsecureDownloads() {
                 download::DownloadItem::InsecureDownloadStatus::WARN);
   });
 }
+
+BEGIN_METADATA(DownloadToolbarButtonView)
+END_METADATA

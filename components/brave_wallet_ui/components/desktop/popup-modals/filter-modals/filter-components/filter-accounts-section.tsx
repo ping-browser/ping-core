@@ -7,21 +7,19 @@ import * as React from 'react'
 import Checkbox from '@brave/leo/react/checkbox'
 
 // Utils
-import {
-  getAccountTypeDescription
-} from '../../../../../utils/account-utils'
+import { getAccountTypeDescription } from '../../../../../utils/account-utils'
 import { getLocale } from '../../../../../../common/locale'
 
 import {
-  useGetAccountInfosRegistryQuery
+  useGetAccountInfosRegistryQuery //
 } from '../../../../../common/slices/api.slice'
 import {
-  selectAllAccountInfosFromQuery
+  selectAllAccountInfosFromQuery //
 } from '../../../../../common/slices/entities/account-info.entity'
 
 // Components
 import {
-  CreateAccountIcon
+  CreateAccountIcon //
 } from '../../../../shared/create-account-icon/create-account-icon'
 
 // Styled Components
@@ -34,61 +32,50 @@ import {
 import { Row, Column } from '../../../../shared/style'
 
 interface Props {
-  filteredOutAccountAddresses: string[]
-  setFilteredOutAccountAddresses: (addresses: string[]) => void
+  filteredOutAccountIds: string[]
+  setFilteredOutAccountIds: (addresses: string[]) => void
 }
 
 export const FilterAccountsSection = (props: Props) => {
-  const {
-    filteredOutAccountAddresses,
-    setFilteredOutAccountAddresses
-  } = props
+  const { filteredOutAccountIds, setFilteredOutAccountIds } = props
 
-  const { data: accountsList } =
-    useGetAccountInfosRegistryQuery(undefined,
-      {
-        selectFromResult: (res) => ({
-          isLoading: res.isLoading,
-          data: selectAllAccountInfosFromQuery(res)
-        })
-      })
+  const { data: accountsList } = useGetAccountInfosRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      data: selectAllAccountInfosFromQuery(res)
+    })
+  })
 
   // Methods
   const isAccountFilteredOut = React.useCallback(
-    (address: string) => {
-      return filteredOutAccountAddresses.includes(address)
-    }, [filteredOutAccountAddresses])
+    (uniqueKey: string) => {
+      return filteredOutAccountIds.includes(uniqueKey)
+    },
+    [filteredOutAccountIds]
+  )
 
-  const onCheckAccount = React.useCallback((address: string) => {
-    if (isAccountFilteredOut(address)) {
-      setFilteredOutAccountAddresses(
-        filteredOutAccountAddresses
-          .filter((addressKey) => addressKey !== address))
-      return
-    }
-    setFilteredOutAccountAddresses(
-      [...filteredOutAccountAddresses, address]
-    )
-  }, [
-    filteredOutAccountAddresses,
-    isAccountFilteredOut,
-    setFilteredOutAccountAddresses
-  ])
-
-  const onSelectOrDeselectAllAccounts = React.useCallback(
-    () => {
-      if (filteredOutAccountAddresses.length > 0) {
-        setFilteredOutAccountAddresses([])
+  const onCheckAccount = React.useCallback(
+    (uniqueKey: string) => {
+      if (isAccountFilteredOut(uniqueKey)) {
+        setFilteredOutAccountIds(
+          filteredOutAccountIds.filter((addressKey) => addressKey !== uniqueKey)
+        )
         return
       }
-      setFilteredOutAccountAddresses(
-        accountsList.map((account) => account.address)
-      )
-    }, [
-    accountsList,
-    filteredOutAccountAddresses,
-    setFilteredOutAccountAddresses
-  ])
+      setFilteredOutAccountIds([...filteredOutAccountIds, uniqueKey])
+    },
+    [filteredOutAccountIds, isAccountFilteredOut, setFilteredOutAccountIds]
+  )
+
+  const onSelectOrDeselectAllAccounts = React.useCallback(() => {
+    if (filteredOutAccountIds.length > 0) {
+      setFilteredOutAccountIds([])
+      return
+    }
+    setFilteredOutAccountIds(
+      accountsList.map((account) => account.accountId.uniqueKey)
+    )
+  }, [accountsList, filteredOutAccountIds, setFilteredOutAccountIds])
 
   return (
     <>
@@ -102,14 +89,10 @@ export const FilterAccountsSection = (props: Props) => {
         >
           {getLocale('braveWalletSelectAccounts')}
         </Title>
-        <SelectAllButton
-          onClick={onSelectOrDeselectAllAccounts}
-        >
-          {
-            filteredOutAccountAddresses.length > 0
-              ? getLocale('braveWalletSelectAll')
-              : getLocale('braveWalletDeselectAll')
-          }
+        <SelectAllButton onClick={onSelectOrDeselectAllAccounts}>
+          {filteredOutAccountIds.length > 0
+            ? getLocale('braveWalletSelectAll')
+            : getLocale('braveWalletDeselectAll')}
         </SelectAllButton>
       </Row>
       <Column
@@ -117,7 +100,7 @@ export const FilterAccountsSection = (props: Props) => {
         alignItems='flex-start'
         fullWidth={true}
       >
-        {accountsList.map((account) =>
+        {accountsList.map((account) => (
           <Row
             width='unset'
             justifyContent='flex-start'
@@ -125,20 +108,14 @@ export const FilterAccountsSection = (props: Props) => {
             key={account.accountId.uniqueKey}
           >
             <Checkbox
-              checked={
-                !isAccountFilteredOut(account.address)
-              }
-              onChanged={
-                () => onCheckAccount(account.address)
-              }
+              checked={!isAccountFilteredOut(account.accountId.uniqueKey)}
+              onChange={() => onCheckAccount(account.accountId.uniqueKey)}
             >
               <CreateAccountIcon
                 size='medium'
                 account={account}
               />
-              <Column
-                alignItems='flex-start'
-              >
+              <Column alignItems='flex-start'>
                 <CheckboxText
                   textSize='14px'
                   isBold={false}
@@ -149,14 +126,13 @@ export const FilterAccountsSection = (props: Props) => {
                   textSize='12px'
                   isBold={false}
                 >
-                  {getAccountTypeDescription(account.accountId.coin)}
+                  {getAccountTypeDescription(account.accountId)}
                 </Description>
               </Column>
             </Checkbox>
           </Row>
-        )}
+        ))}
       </Column>
     </>
-
   )
 }

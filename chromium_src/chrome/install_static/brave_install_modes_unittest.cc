@@ -1,14 +1,15 @@
-// Copyright 2016 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2016 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/install_static/install_modes.h"
 
 #include <windows.h>  // NOLINT
 
 #include <cguid.h>  // NOLINT
-#include <ctype.h>  // NOLINT
 
+#include "base/strings/string_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -30,10 +31,11 @@ namespace {
 // alpha-numeric nor a period.
 MATCHER(ContainsIllegalProgIdChar, "") {
   const wchar_t* scan = arg;
-  wint_t c;
+  wchar_t c;
   while ((c = *scan++) != 0) {
-    if (!iswalnum(c) && c != L'.')
+    if (!base::IsAsciiAlphaNumeric(c) && c != L'.') {
       return true;
+    }
   }
   return false;
 }
@@ -82,13 +84,13 @@ TEST(InstallModes, VerifyModes) {
     // The ProgID prefix must not be empty, must be no greater than 11
     // characters long, must contain no punctuation, and may not start with a
     // digit (https://msdn.microsoft.com/library/windows/desktop/dd542719.aspx).
-    ASSERT_THAT(mode.prog_id_prefix, StrNe(L""));
-    ASSERT_THAT(lstrlen(mode.prog_id_prefix), Le(11));
-    ASSERT_THAT(mode.prog_id_prefix, Not(ContainsIllegalProgIdChar()));
-    ASSERT_THAT(*mode.prog_id_prefix, ResultOf(iswdigit, Eq(0)));
+    ASSERT_THAT(mode.browser_prog_id_prefix, StrNe(L""));
+    ASSERT_THAT(lstrlen(mode.browser_prog_id_prefix), Le(11));
+    ASSERT_THAT(mode.browser_prog_id_prefix, Not(ContainsIllegalProgIdChar()));
+    ASSERT_THAT(*mode.browser_prog_id_prefix, ResultOf(iswdigit, Eq(0)));
 
     // The ProgID description must not be empty.
-    ASSERT_THAT(mode.prog_id_description, StrNe(L""));
+    ASSERT_THAT(mode.browser_prog_id_description, StrNe(L""));
 
     // Every mode must have an Active Setup GUID.
     ASSERT_THAT(mode.active_setup_guid, StrNe(L""));

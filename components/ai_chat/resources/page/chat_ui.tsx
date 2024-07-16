@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// import * as React from 'react'
+// import { createRoot } from 'react-dom/client'
+// import { initLocale } from 'brave-ui'
 import { setIconBasePath } from '@brave/leo/react/icon'
 // import { initLocale } from 'brave-ui'
 // import * as React from 'react'
@@ -20,19 +23,23 @@ import '$web-common/defaultTrustedTypesPolicy'
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 // function App () {
+//   React.useEffect(() => {
+//     document.getElementById('mountPoint')?.classList.add('loaded')
+//   }, [])
+//
 //   return (
 //     <DataContextProvider>
 //       <BraveCoreThemeProvider>
 //         <Main />
-//         <></>
 //       </BraveCoreThemeProvider>
 //     </DataContextProvider>
 //   )
 // }
-
+//
 // function initialize () {
-  // initLocale(loadTimeData.data_)
-  // render( <></>, document.getElementById('mountPoint'))
+//   initLocale(loadTimeData.data_)
+//   const root = createRoot(document.getElementById('mountPoint')!)
+//   root.render(<App />)
 // }
-
+//
 // document.addEventListener('DOMContentLoaded', initialize)

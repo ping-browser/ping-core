@@ -8,21 +8,30 @@
 #include <memory>
 #include <utility>
 
+#include "base/strings/string_number_conversions.h"
+#include "brave/browser/brave_browser_features.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/tts_player.h"
 #include "build/build_config.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "ui/color/color_provider.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#endif
 
 namespace {
 class TtsPlayerDelegate : public speedreader::TtsPlayer::Delegate {
@@ -31,14 +40,13 @@ class TtsPlayerDelegate : public speedreader::TtsPlayer::Delegate {
 
   void RequestReadingContent(
       content::WebContents* web_contents,
-      base::OnceCallback<void(bool success, std::string content)> result_cb)
-      override {
+      base::OnceCallback<void(base::Value content)> result_cb) override {
     auto* page_distiller =
         speedreader::SpeedreaderTabHelper::GetPageDistiller(web_contents);
     if (page_distiller) {
-      page_distiller->GetDistilledText(std::move(result_cb));
+      page_distiller->GetTextToSpeak(std::move(result_cb));
     } else {
-      std::move(result_cb).Run(false, {});
+      std::move(result_cb).Run(base::Value());
     }
   }
 };
@@ -64,33 +72,29 @@ SpeedreaderToolbarDataHandlerImpl::SpeedreaderToolbarDataHandlerImpl(
       browser->tab_strip_model()->GetActiveWebContents());
   speedreader_service_observation_.Observe(GetSpeedreaderService());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
-  host_content_settings_map_observation_.Observe(
-      HostContentSettingsMapFactory::GetForProfile(browser_->profile()));
+  tab_helper_observation_.Observe(active_tab_helper_);
 
   speedreader::TtsPlayer::GetInstance()->set_delegate(
       std::make_unique<TtsPlayerDelegate>());
-  SetTtsSettings(GetSpeedreaderService()->GetTtsSettings().Clone());
+
+  const auto& tts_settings = GetSpeedreaderService()->GetTtsSettings();
+  speedreader::TtsPlayer::GetInstance()->SetSpeed(
+      static_cast<double>(tts_settings.speed) / 100.0);
+  speedreader::TtsPlayer::GetInstance()->SetVoice(tts_settings.voice);
 }
 
 SpeedreaderToolbarDataHandlerImpl::~SpeedreaderToolbarDataHandlerImpl() =
     default;
 
-void SpeedreaderToolbarDataHandlerImpl::GetSiteSettings(
-    GetSiteSettingsCallback callback) {
-  if (active_tab_helper_) {
-    auto site_settings = speedreader::mojom::SiteSettings::New(
-        active_tab_helper_->IsEnabledForSite());
-    std::move(callback).Run(std::move(site_settings));
-  } else {
-    std::move(callback).Run(speedreader::mojom::SiteSettings::New());
+void SpeedreaderToolbarDataHandlerImpl::ShowTuneBubble(bool show) {
+  if (!active_tab_helper_) {
+    return;
   }
-}
-
-void SpeedreaderToolbarDataHandlerImpl::SetSiteSettings(
-    speedreader::mojom::SiteSettingsPtr settings) {
-  if (active_tab_helper_) {
-    active_tab_helper_->MaybeToggleEnabledForSite(false);
-    ViewOriginal();
+  if (show) {
+    active_tab_helper_->ShowSpeedreaderBubble(
+        speedreader::SpeedreaderBubbleLocation::kToolbar);
+  } else {
+    active_tab_helper_->HideSpeedreaderBubble();
   }
 }
 
@@ -143,11 +147,22 @@ void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
 }
 
 void SpeedreaderToolbarDataHandlerImpl::AiChat() {
-  if (!browser_ || !browser_->window()) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (!browser_ || !ai_chat::IsAIChatEnabled(browser_->profile()->GetPrefs()) ||
+      !brave::IsRegularProfile(browser_->profile())) {
     return;
   }
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  static_cast<BraveBrowserWindow*>(browser_->window())->OpenAiChatPanel();
+  auto* side_panel = SidePanelUI::GetSidePanelUIForBrowser(browser_.get());
+  if (!side_panel) {
+    return;
+  }
+
+  if (auto entry = side_panel->GetCurrentEntryId();
+      entry == SidePanelEntryId::kChatUI) {
+    side_panel->Close();
+  } else {
+    side_panel->Show(SidePanelEntryId::kChatUI);
+  }
 #endif
 }
 
@@ -186,10 +201,21 @@ void SpeedreaderToolbarDataHandlerImpl::Forward() {
   }
 }
 
+void SpeedreaderToolbarDataHandlerImpl::OnToolbarStateChanged(
+    speedreader::mojom::MainButtonType button) {
+  current_button_ = button;
+  if (current_button_ != speedreader::mojom::MainButtonType::TextToSpeech) {
+    Pause();
+  }
+  if (active_tab_helper_) {
+    active_tab_helper_->OnToolbarStateChanged(current_button_);
+  }
+}
+
 speedreader::SpeedreaderService*
 SpeedreaderToolbarDataHandlerImpl::GetSpeedreaderService() {
   DCHECK(browser_);
-  return speedreader::SpeedreaderServiceFactory::GetForProfile(
+  return speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
       browser_->profile());
 }
 
@@ -236,27 +262,20 @@ void SpeedreaderToolbarDataHandlerImpl::OnReadingStop(
   events_->SetPlaybackState(speedreader::mojom::PlaybackState::kStopped);
 }
 
-void SpeedreaderToolbarDataHandlerImpl::OnReadingProgress(
-    content::WebContents* web_contents,
-    const std::string& element_id,
-    int char_index,
-    int length) {}
-
 void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
+    tab_helper_observation_.Reset();
     active_tab_helper_ = nullptr;
 
     if (selection.new_contents) {
       active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
           selection.new_contents);
+      active_tab_helper_->OnToolbarStateChanged(current_button_);
+      tab_helper_observation_.Observe(active_tab_helper_);
       events_->SetPlaybackState(GetTabPlaybackState());
-
-      auto site_settings = speedreader::mojom::SiteSettings::New(
-          active_tab_helper_->IsEnabledForSite());
-      events_->OnSiteSettingsChanged(std::move(site_settings));
     }
   }
 }
@@ -277,10 +296,19 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
   colors->foreground =
       color_provider->GetColor(kColorSpeedreaderToolbarForeground);
   colors->border = color_provider->GetColor(kColorSpeedreaderToolbarBorder);
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
+    // The border is rendered in HTML. Hide the border by giving it the same
+    // color as the background. When this feature flag is removed, consider
+    // removing the border in HTML.
+    colors->border =
+        color_provider->GetColor(kColorSpeedreaderToolbarBackground);
+  }
   colors->button_hover =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonHover);
   colors->button_active =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonActive);
+  colors->button_active_text =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonActiveText);
   colors->button_border =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonBorder);
   events_->OnBrowserThemeChanged(std::move(colors));
@@ -299,16 +327,12 @@ void SpeedreaderToolbarDataHandlerImpl::OnNativeThemeUpdated(
   OnThemeChanged();
 }
 
-void SpeedreaderToolbarDataHandlerImpl::OnContentSettingChanged(
-    const ContentSettingsPattern& primary_pattern,
-    const ContentSettingsPattern& secondary_pattern,
-    ContentSettingsTypeSet content_type_set) {
-  if (!content_type_set.Contains(ContentSettingsType::BRAVE_SPEEDREADER)) {
-    return;
-  }
+void SpeedreaderToolbarDataHandlerImpl::OnTuneBubbleClosed() {
+  events_->OnTuneBubbleClosed();
+}
+
+void SpeedreaderToolbarDataHandlerImpl::OnContentsReady() {
   if (active_tab_helper_) {
-    auto site_settings = speedreader::mojom::SiteSettings::New(
-        active_tab_helper_->IsEnabledForSite());
-    events_->OnSiteSettingsChanged(std::move(site_settings));
+    active_tab_helper_->OnToolbarStateChanged(current_button_);
   }
 }

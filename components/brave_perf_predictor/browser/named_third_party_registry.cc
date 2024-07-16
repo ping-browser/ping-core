@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 
+#include <optional>
+#include <string_view>
 #include <tuple>
 
 #include "base/containers/flat_set.h"
@@ -12,14 +14,12 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg_parameters.h"
 #include "components/grit/brave_components_resources.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
 
@@ -29,12 +29,12 @@ namespace {
 
 std::tuple<base::flat_map<std::string, std::string>,
            base::flat_map<std::string, std::string>>
-ParseMappings(const base::StringPiece entities, bool discard_irrelevant) {
+ParseMappings(const std::string_view entities, bool discard_irrelevant) {
   base::flat_map<std::string, std::string> entity_by_domain;
   base::flat_map<std::string, std::string> entity_by_root_domain;
 
   // Parse the JSON
-  absl::optional<base::Value> document = base::JSONReader::Read(entities);
+  std::optional<base::Value> document = base::JSONReader::Read(entities);
   if (!document || !document->is_list()) {
     LOG(ERROR) << "Cannot parse the third-party entities list";
     return {};
@@ -59,7 +59,7 @@ ParseMappings(const base::StringPiece entities, bool discard_irrelevant) {
       if (!entity_domain_it.is_string()) {
         continue;
       }
-      const base::StringPiece entity_domain(entity_domain_it.GetString());
+      const std::string_view entity_domain(entity_domain_it.GetString());
 
       const auto inserted =
           entity_by_domain.emplace(entity_domain, *entity_name);
@@ -101,7 +101,7 @@ ParseFromResource(int resource_id) {
 
 }  // namespace
 
-bool NamedThirdPartyRegistry::LoadMappings(const base::StringPiece entities,
+bool NamedThirdPartyRegistry::LoadMappings(const std::string_view entities,
                                            bool discard_irrelevant) {
   // Reset previous mappings
   entity_by_domain_.clear();
@@ -126,16 +126,16 @@ void NamedThirdPartyRegistry::UpdateMappings(
   initialized_ = true;
 }
 
-absl::optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
-    const base::StringPiece request_url) const {
+std::optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
+    const std::string_view request_url) const {
   if (!IsInitialized()) {
     VLOG(2) << "Named Third Party Registry not initialized";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const GURL url(request_url);
   if (!url.is_valid())
-    return absl::nullopt;
+    return std::nullopt;
 
   if (url.has_host()) {
     auto domain_entry = entity_by_domain_.find(url.host());
@@ -150,7 +150,7 @@ absl::optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
       return root_domain_entry->second;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 NamedThirdPartyRegistry::NamedThirdPartyRegistry() = default;

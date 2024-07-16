@@ -23,8 +23,6 @@ OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultThrottled;
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
-    BraveSyncAPISyncProtocolErrorResultClearPending;
-OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultTransientError;
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultMigrationDone;
@@ -123,8 +121,6 @@ OBJC_EXPORT
 - (nullable UIImage*)getQRCodeImage:(CGSize)size;
 
 - (nullable NSString*)getDeviceListJSON;
-
-- (BraveSyncInternalsController*)createSyncInternalsController;
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged;
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged

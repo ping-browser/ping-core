@@ -5,8 +5,10 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
 
+#include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "brave/browser/ui/browser_dialogs.h"
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "chrome/browser/browser_process.h"
 
 namespace brave_vpn {
 
@@ -24,6 +26,13 @@ void BraveVpnWireguardObserverService::ShowFallbackDialog() {
 
 void BraveVpnWireguardObserverService::OnConnectionStateChanged(
     brave_vpn::mojom::ConnectionState state) {
+  // Check because WG settings could be changed in runtime.
+  if (!brave_vpn::IsBraveVPNWireguardEnabled(
+          g_browser_process->local_state())) {
+    return;
+  }
+
+  VLOG(2) << __func__ << state;
   if (state == brave_vpn::mojom::ConnectionState::DISCONNECTED ||
       state == brave_vpn::mojom::ConnectionState::CONNECT_FAILED) {
     if (ShouldShowFallbackDialog()) {
@@ -37,7 +46,7 @@ bool BraveVpnWireguardObserverService::ShouldShowFallbackDialog() const {
     return should_fallback_for_testing_.value();
   }
 
-  return wireguard::ShouldFallbackToIKEv2();
+  return ShouldFallbackToIKEv2();
 }
 
 }  // namespace brave_vpn

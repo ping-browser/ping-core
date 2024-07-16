@@ -5,17 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.h"
 
+#include <optional>
+#include <string_view>
 #include <vector>
 
 #include "base/check.h"
+#include "base/i18n/time_formatting.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "base/time/time_to_iso8601.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace brave_ads {
@@ -31,14 +32,14 @@ constexpr char kMinutesDeltaTimeTagValue[] = "minutes";
 constexpr char kHoursDeltaTimeTagValue[] = "hours";
 constexpr char kDaysDeltaTimeTagValue[] = "days";
 
-absl::optional<base::TimeDelta> ParseTimeDelta(const std::string& value) {
+std::optional<base::TimeDelta> ParseTimeDelta(const std::string& value) {
   const std::vector<std::string> components = base::SplitString(
       value, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-  CHECK(components.size() == 2) << "Invalid time tag: " << value;
+  CHECK_EQ(2U, components.size()) << "Invalid time tag: " << value;
 
   int n;
   if (!base::StringToInt(components.at(0), &n)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string& period = components.at(1);
@@ -58,33 +59,33 @@ absl::optional<base::TimeDelta> ParseTimeDelta(const std::string& value) {
     return base::Days(n);
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<std::string> ParseTimeTagValue(const std::string& value) {
+std::optional<std::string> ParseTimeTagValue(const std::string& value) {
   if (value == kNowTimeTagValue) {
-    return NowAsISO8601();
+    return NowAsIso8601();
   }
 
   if (value == kDistantPastTimeTagValue) {
-    return DistantPastAsISO8601();
+    return DistantPastAsIso8601();
   }
 
   if (value == kDistantFutureTimeTagValue) {
-    return DistantFutureAsISO8601();
+    return DistantFutureAsIso8601();
   }
 
   if (re2::RE2::FullMatch(value, "[-+]?[0-9]*.*(seconds|minutes|hours|days)")) {
-    const absl::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
+    const std::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
     CHECK(time_delta) << "Invalid time tag value: " << value;
-    return base::TimeToISO8601(Now() + *time_delta);
+    return base::TimeFormatAsIso8601(Now() + *time_delta);
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 std::vector<std::string> ParseTagsForText(const std::string& text) {
-  re2::StringPiece text_string_piece(text);
+  std::string_view text_string_piece(text);
   const RE2 r("<(.*)>");
 
   std::vector<std::string> tags;
@@ -102,13 +103,13 @@ void ReplaceTagsForText(const std::vector<std::string>& tags,
   for (const auto& tag : tags) {
     const std::vector<std::string> components = base::SplitString(
         tag, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-    CHECK(components.size() == 2) << "Invalid tag: " << tag;
+    CHECK_EQ(2U, components.size()) << "Invalid tag: " << tag;
 
     const std::string& key = components.at(0);
     std::string value = components.at(1);
 
     if (key == kTimeTagKey) {
-      const absl::optional<std::string> time_tag_value =
+      const std::optional<std::string> time_tag_value =
           ParseTimeTagValue(value);
       CHECK(time_tag_value) << "Invalid time tag value: " << value;
       value = *time_tag_value;

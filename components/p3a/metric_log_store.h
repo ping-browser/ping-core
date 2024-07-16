@@ -6,21 +6,23 @@
 #ifndef BRAVE_COMPONENTS_P3A_METRIC_LOG_STORE_H_
 #define BRAVE_COMPONENTS_P3A_METRIC_LOG_STORE_H_
 
+#include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ref.h"
-#include "base/strings/string_piece.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "components/metrics/log_store.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 class PrefRegistrySimple;
 
 namespace p3a {
+
+std::string GetUploadType(const std::string& histogram_name);
 
 // Stores all given values in memory and persists in prefs on the fly.
 // All logs (not only unsent are persistent), and all logs could be loaded
@@ -31,7 +33,7 @@ class MetricLogStore : public metrics::LogStore {
   class Delegate {
    public:
     // Prepares a string representaion of an entry.
-    virtual std::string SerializeLog(base::StringPiece histogram_name,
+    virtual std::string SerializeLog(std::string_view histogram_name,
                                      uint64_t value,
                                      MetricLogType log_type,
                                      bool is_constellation,
@@ -67,10 +69,11 @@ class MetricLogStore : public metrics::LogStore {
   const std::string& staged_log_key() const;
   const std::string& staged_log_hash() const override;
   const std::string& staged_log_signature() const override;
-  absl::optional<uint64_t> staged_log_user_id() const override;
+  std::optional<uint64_t> staged_log_user_id() const override;
   void StageNextLog() override;
-  void DiscardStagedLog(base::StringPiece reason = "") override;
+  void DiscardStagedLog(std::string_view reason = "") override;
   void MarkStagedLogAsSent() override;
+  const metrics::LogMetadata staged_log_metadata() const override;
 
   // |TrimAndPersistUnsentLogs| should not be used, since we persist everything
   // on the fly.
@@ -103,7 +106,7 @@ class MetricLogStore : public metrics::LogStore {
 
   MetricLogType type_;
 
-  // TODO(iefremov): Try to replace with base::StringPiece?
+  // TODO(iefremov): Try to replace with std::string_view?
   base::flat_map<std::string, LogEntry> log_;
   base::flat_set<std::string> unsent_entries_;
 

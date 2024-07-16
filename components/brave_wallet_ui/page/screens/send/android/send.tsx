@@ -17,37 +17,38 @@ import 'emptykit.css'
 
 // Utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
-import * as Lib from '../../../../common/async/lib'
 
 // actions
 import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
 import { store } from '../../../store'
-import BraveCoreThemeProvider
-  from '../../../../../common/BraveCoreThemeProvider'
-import { SendScreen } from '../send-page/send-screen'
-import { LibContext } from '../../../../common/context/lib.context'
+import {
+  // eslint-disable-next-line import/no-named-default
+  default as BraveCoreThemeProvider
+} from '../../../../../common/BraveCoreThemeProvider'
+import { SendScreen } from '../send_screen/send_screen'
 
 export function AndroidSendApp() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
-          <LibContext.Provider value={Lib}>
-            <Switch>
-              <Route>
-                <SendScreen isAndroid={true} />
-              </Route>
-            </Switch>
-          </LibContext.Provider>
+        <BraveCoreThemeProvider
+          dark={walletDarkTheme}
+          light={walletLightTheme}
+        >
+          <Switch>
+            <Route>
+              <SendScreen isAndroid={true} />
+            </Route>
+          </Switch>
         </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>
   )
 }
 
-function initialize () {
+function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
   render(AndroidSendApp(), document.getElementById('root'))

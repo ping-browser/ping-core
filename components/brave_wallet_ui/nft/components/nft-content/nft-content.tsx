@@ -5,9 +5,6 @@
 
 import * as React from 'react'
 
-// components
-import { Image, ImageWrapper } from './nft-content-styles'
-
 // types
 import { NFTMetadataReturnType } from '../../../constants/types'
 import { DisplayMode } from '../../nft-ui-messages'
@@ -16,6 +13,8 @@ import { DisplayMode } from '../../nft-ui-messages'
 import Placeholder from '../../../assets/svg-icons/nft-placeholder.svg'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
 import { stripChromeImageURL } from '../../../utils/string-utils'
+import { ImageWrapper } from './nft-content-styles'
+import { ImageLoader } from '../nft-image/image-loader'
 
 interface Props {
   isLoading?: boolean
@@ -25,28 +24,45 @@ interface Props {
 }
 
 export const NftContent = (props: Props) => {
-  const {
-    nftMetadata,
-    imageUrl,
-    displayMode
-  } = props
+  const { nftMetadata, imageUrl, displayMode } = props
+  const wrapperRef = React.useRef<HTMLDivElement>(null)
+  const [isInView, setIsInView] = React.useState<boolean>(false)
 
   const url = React.useMemo(() => {
     return stripChromeImageURL(imageUrl) ?? Placeholder
   }, [imageUrl])
 
+  const onIntersection = React.useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries
+      if (entry.isIntersecting) {
+        setIsInView(true)
+      }
+    },
+    []
+  )
+
+  React.useEffect(() => {
+    if (!wrapperRef?.current) return
+    const observer = new IntersectionObserver(onIntersection, {})
+    observer.observe(wrapperRef.current)
+
+    // Clean up the observer when the component unmounts
+    return () => observer.disconnect()
+  }, [onIntersection, wrapperRef])
+
   return (
     <>
-      {url && displayMode === 'icon' &&
-        <ImageWrapper>
-          <Image
-            src={url}
-          />
-        </ImageWrapper>
-      }
-      {displayMode === 'details' && nftMetadata &&
+      <div ref={wrapperRef}>
+        {url && displayMode === 'icon' && isInView ? (
+          <ImageWrapper>
+            <ImageLoader src={url} />
+          </ImageWrapper>
+        ) : null}
+      </div>
+      {displayMode === 'details' && nftMetadata ? (
         <NftMultimedia nftMetadata={nftMetadata} />
-      }
+      ) : null}
     </>
   )
 }

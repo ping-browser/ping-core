@@ -10,11 +10,11 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -25,8 +25,9 @@ namespace brave_ads {
 namespace {
 
 bool DoesRequireResourceForNewTabPageAds() {
-  return ShouldAlwaysRunService() && ShouldAlwaysTriggerNewTabPageAdEvents() &&
-         UserHasOptedInToNewTabPageAds();
+  return UserHasOptedInToNewTabPageAds() &&
+         (UserHasJoinedBraveRewards() ||
+          ShouldAlwaysTriggerNewTabPageAdEvents());
 }
 
 bool DoesRequireResource() {
@@ -38,12 +39,12 @@ bool DoesRequireResource() {
 }  // namespace
 
 Catalog::Catalog() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
   DatabaseManager::GetInstance().AddObserver(this);
 }
 
 Catalog::~Catalog() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
   DatabaseManager::GetInstance().RemoveObserver(this);
 }
 

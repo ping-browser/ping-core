@@ -5,18 +5,20 @@
 
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
 
+#include <cstddef>
 #include <memory>
-#include <vector>
 
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,9 +28,9 @@ namespace {
 
 void AddHistory(const size_t count) {
   const NotificationAdInfo ad = BuildNotificationAd(
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true));
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true));
 
-  for (size_t i = 0; i < count; i++) {
+  for (size_t i = 0; i < count; ++i) {
     HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
   }
 }
@@ -40,56 +42,41 @@ class BraveAdsReminderTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
+    ads_observer_mock_ = AddAdsObserverMock();
+
     reminder_ = std::make_unique<Reminder>();
   }
+
+  raw_ptr<AdsObserverMock> ads_observer_mock_;
 
   std::unique_ptr<Reminder> reminder_;
 };
 
 TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
-  // Arrange
-
-  // Assert
-  EXPECT_CALL(ads_client_mock_,
-              ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
-
-  // Act
-  AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
-
+  // Act & Assert
+  EXPECT_CALL(*ads_observer_mock_,
+              OnRemindUser(mojom::ReminderType::kClickedSameAdMultipleTimes));
+  AddHistory(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get());
   FastForwardClockBy(base::Seconds(1));
 }
 
 TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
-  // Arrange
-
-  // Assert
-  EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
-
-  // Act
-  AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1);
-
+  // Act & Assert
+  EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
+  AddHistory(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
   FastForwardClockBy(base::Seconds(1));
 }
 
 TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimesWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kReminderFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kReminderFeature);
 
-  // Assert
-  EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
-
-  // Act
-  AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
-
+  // Act & Assert
+  EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
+  AddHistory(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get());
   FastForwardClockBy(base::Seconds(1));
 }
 

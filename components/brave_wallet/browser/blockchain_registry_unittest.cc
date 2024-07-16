@@ -3,18 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
-#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#define FPL(x) FILE_PATH_LITERAL(x)
 
 using testing::ElementsAreArray;
 
@@ -667,7 +674,7 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
           }));
   run_loop->Run();
 
-  absl::optional<RampTokenListMaps> ramp_token_lists =
+  std::optional<RampTokenListMaps> ramp_token_lists =
       ParseRampTokenListMaps(ramp_token_lists_json);
   ASSERT_TRUE(ramp_token_lists);
   registry->UpdateOnRampTokenLists(std::move(*ramp_token_lists).first);
@@ -712,7 +719,7 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
-  absl::optional<RampTokenListMaps> ramp_token_lists =
+  std::optional<RampTokenListMaps> ramp_token_lists =
       ParseRampTokenListMaps(ramp_token_lists_json);
   ASSERT_TRUE(ramp_token_lists);
   registry->UpdateOnRampTokenLists(std::move(*ramp_token_lists).first);
@@ -774,7 +781,7 @@ TEST(BlockchainRegistryUnitTest, GetSellTokens) {
           }));
   run_loop->Run();
 
-  absl::optional<RampTokenListMaps> ramp_token_lists =
+  std::optional<RampTokenListMaps> ramp_token_lists =
       ParseRampTokenListMaps(ramp_token_lists_json);
   ASSERT_TRUE(ramp_token_lists);
   registry->UpdateOffRampTokenLists(std::move(*ramp_token_lists).second);
@@ -827,7 +834,7 @@ TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
       }));
   run_loop->Run();
 
-  absl::optional<std::vector<mojom::OnRampCurrency>> on_ramp_currency_lists =
+  std::optional<std::vector<mojom::OnRampCurrency>> on_ramp_currency_lists =
       ParseOnRampCurrencyLists(on_ramp_currency_lists_json);
   ASSERT_TRUE(on_ramp_currency_lists);
   registry->UpdateOnRampCurrenciesLists(std::move(*on_ramp_currency_lists));
@@ -844,6 +851,25 @@ TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
         run_loop->Quit();
       }));
   run_loop->Run();
+}
+
+TEST(BlockchainRegistryUnitTest, IsOfacAddress) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  // Before parsing the list, should return false.
+  EXPECT_FALSE(
+      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+
+  // After parsing the list, we should have some addresses;
+  std::vector<std::string> input_list;
+  input_list.push_back("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78");
+  registry->UpdateOfacAddressesList(input_list);
+  EXPECT_TRUE(
+      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  EXPECT_TRUE(
+      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  EXPECT_FALSE(registry->IsOfacAddress(""));
 }
 
 TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworks) {
@@ -875,7 +901,7 @@ TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
 TEST(BlockchainRegistryUnitTest, GetTopDapps) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
-  absl::optional<DappListMap> dapp_lists_map = ParseDappLists(dapp_lists_json);
+  std::optional<DappListMap> dapp_lists_map = ParseDappLists(dapp_lists_json);
   ASSERT_TRUE(dapp_lists_map);
   registry->UpdateDappList(std::move(*dapp_lists_map));
 
@@ -953,7 +979,7 @@ TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
 TEST(BlockchainRegistryUnitTest, GetCoingeckoId) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
-  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+  std::optional<CoingeckoIdsMap> coingecko_ids_map =
       ParseCoingeckoIdsMap(coingecko_ids_map_json);
   ASSERT_TRUE(coingecko_ids_map);
   registry->UpdateCoingeckoIdsMap(std::move(*coingecko_ids_map));
@@ -971,20 +997,19 @@ TEST(BlockchainRegistryUnitTest, GetCoingeckoId) {
   // Result: ❌
   EXPECT_EQ(
       registry->GetCoingeckoId(mojom::kOptimismMainnetChainId, "0xdeadbeef"),
-      absl::nullopt);
+      std::nullopt);
 
   // Chain: ❌
   // Contract: ✅
   // Result: ❌
   EXPECT_EQ(registry->GetCoingeckoId(
                 "0xdeadbeef", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
-            absl::nullopt);
+            std::nullopt);
 
   // Chain: ❌
   // Contract: ❌
   // Result: ❌
-  EXPECT_EQ(registry->GetCoingeckoId("0xdeadbeef", "0xcafebabe"),
-            absl::nullopt);
+  EXPECT_EQ(registry->GetCoingeckoId("0xdeadbeef", "0xcafebabe"), std::nullopt);
 
   // Chain: ✅ (wrong case)
   // Contract: ✅
@@ -1016,6 +1041,131 @@ TEST(BlockchainRegistryUnitTest, GetCoingeckoId) {
       registry->GetCoingeckoId(mojom::kSolanaMainnet,
                                "epjfwdd5aufqssqem2qn1xzybapc8g4weggkzwytdt1v"),
       "usd-coin");
+}
+
+TEST(BlockchainRegistryUnitTest, ParseLists) {
+  base::test::TaskEnvironment task_environment;
+  base::ScopedTempDir install_dir;
+  ASSERT_TRUE(install_dir.CreateUniqueTempDir());
+  const base::FilePath path = install_dir.GetPath();
+
+  ASSERT_TRUE(base::WriteFile(path.Append(FPL("coingecko-ids.json")),
+                              coingecko_ids_map_json));
+  ASSERT_TRUE(
+      base::WriteFile(path.Append(FPL("contract-map.json")), token_list_json));
+  ASSERT_TRUE(base::WriteFile(path.Append(FPL("evm-contract-map.json")), R"({
+      "0xc2132D05D31c914a87C6611C10748AEb04B58e8F": {
+          "name": "Tether USD - PoS",
+          "logo": "usdt.png",
+          "erc20": true,
+          "symbol": "USDT",
+          "decimals": 6,
+          "coingeckoId": "tether",
+          "chainId": "0x89"
+      }
+  })"));
+  ASSERT_TRUE(base::WriteFile(path.Append(FPL("solana-contract-map.json")),
+                              solana_token_list_json));
+  ASSERT_TRUE(
+      base::WriteFile(path.Append(FPL("chainlist.json")), chain_list_json));
+  ASSERT_TRUE(
+      base::WriteFile(path.Append(FPL("dapp-lists.json")), dapp_lists_json));
+  ASSERT_TRUE(base::WriteFile(path.Append(FPL("ramp-tokens.json")),
+                              ramp_token_lists_json));
+  ASSERT_TRUE(base::WriteFile(path.Append(FPL("on-ramp-currency-lists.json")),
+                              on_ramp_currency_lists_json));
+  ASSERT_TRUE(base::WriteFile(
+      path.Append(FPL("ofac-sanctioned-digital-currency-addresses.json")),
+      R"({"addresses": ["0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"]})"));
+
+  auto* registry = BlockchainRegistry::GetInstance();
+  auto run_loop = std::make_unique<base::RunLoop>();
+  registry->ParseLists(path,
+                       base::BindLambdaForTesting([&]() { run_loop->Quit(); }));
+  run_loop->Run();
+
+  // coingecko-ids.json
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kOptimismMainnetChainId,
+                               "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
+      "usd-coin");
+
+  // contract-map.json
+  EXPECT_EQ(
+      registry
+          ->GetTokenByAddress(mojom::kMainnetChainId, mojom::CoinType::ETH,
+                              "0x0D8775F648430679A709E98d2b0Cb6250d2887EF")
+          ->symbol,
+      "BAT");
+
+  // evm-contract-map.json
+  EXPECT_EQ(registry
+                ->GetTokenByAddress(
+                    mojom::kPolygonMainnetChainId, mojom::CoinType::ETH,
+                    "0xc2132D05D31c914a87C6611C10748AEb04B58e8F")
+                ->symbol,
+            "USDT");
+
+  // solana-contract-map.json
+  EXPECT_EQ(
+      registry
+          ->GetTokenByAddress(mojom::kSolanaMainnet, mojom::CoinType::SOL,
+                              "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")
+          ->symbol,
+      "USDC");
+
+  // chainlist.json
+  EXPECT_THAT(GetChainIds(registry->GetPrepopulatedNetworks()),
+              ElementsAreArray({"0x1", "0x89"}));
+
+  // dapp-lists.json
+  run_loop = std::make_unique<base::RunLoop>();
+
+  registry->GetTopDapps(
+      mojom::kMainnetChainId, mojom::CoinType::ETH,
+      base::BindLambdaForTesting([&](std::vector<mojom::DappPtr> dapp_list) {
+        ASSERT_EQ(dapp_list.size(), 1UL);
+        EXPECT_EQ(dapp_list[0]->name, "Uniswap V3");
+        run_loop->Quit();
+      }));
+  run_loop->Run();
+
+  // ramp-tokens.json
+  run_loop = std::make_unique<base::RunLoop>();
+  registry->GetBuyTokens(
+      mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Ethereum");
+            run_loop->Quit();
+          }));
+  run_loop->Run();
+
+  run_loop = std::make_unique<base::RunLoop>();
+  registry->GetSellTokens(
+      mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Ethereum");
+            run_loop->Quit();
+          }));
+  run_loop->Run();
+
+  // on-ramp-currency-lists.json
+  run_loop = std::make_unique<base::RunLoop>();
+  registry->GetOnRampCurrencies(base::BindLambdaForTesting(
+      [&](std::vector<mojom::OnRampCurrencyPtr> currency_list) {
+        EXPECT_NE(currency_list.size(), 0UL);
+        EXPECT_EQ(currency_list[0]->currency_code, "ARS");
+        run_loop->Quit();
+      }));
+  run_loop->Run();
+
+  // ofac-sanctioned-digital-currency-addresses.json
+  EXPECT_TRUE(
+      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
 }
 
 }  // namespace brave_wallet

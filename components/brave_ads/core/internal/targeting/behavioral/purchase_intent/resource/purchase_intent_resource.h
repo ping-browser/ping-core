@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_RESOURCE_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resource_parsing_error_or.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -28,9 +28,9 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
 
   ~PurchaseIntentResource() override;
 
-  bool IsInitialized() const { return static_cast<bool>(purchase_intent_); }
+  bool IsInitialized() const { return !!purchase_intent_; }
 
-  const absl::optional<PurchaseIntentInfo>& get() const {
+  const std::optional<PurchaseIntentInfo>& get() const {
     return purchase_intent_;
   }
 
@@ -50,11 +50,12 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                           const std::string& id) override;
+  void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
-  absl::optional<PurchaseIntentInfo> purchase_intent_;
+  std::optional<PurchaseIntentInfo> purchase_intent_;
 
   bool did_load_ = false;
-  absl::optional<std::string> manifest_version_;
+  std::optional<std::string> manifest_version_;
 
   base::WeakPtrFactory<PurchaseIntentResource> weak_factory_{this};
 };

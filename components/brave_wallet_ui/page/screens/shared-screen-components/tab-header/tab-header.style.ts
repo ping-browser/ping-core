@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // Assets
@@ -47,7 +47,7 @@ export const SettingsWrapper = styled(StyledDiv)`
 
 export const SettingsButton = styled(StyledButton)`
   background-color: ${leo.color.container.background};
-  border-radius: 100%;
+  border-radius: 12px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
   height: 40px;
   width: 40px;

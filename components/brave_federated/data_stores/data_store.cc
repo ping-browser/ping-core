@@ -23,14 +23,8 @@ void DatabaseErrorCallback(sql::Database* db,
                            const base::FilePath& db_file_path,
                            int extended_error,
                            sql::Statement* stmt) {
-  if (sql::Recovery::ShouldRecover(extended_error)) {
-    // Prevent reentrant calls.
-    db->reset_error_callback();
-
-    // After this call, the |db| handle is poisoned so that future calls will
-    // return errors until the handle is re-opened.
-    sql::Recovery::RecoverDatabase(db, db_file_path);
-
+  if (sql::Recovery::RecoverIfPossible(
+          db, extended_error, sql::Recovery::Strategy::kRecoverOrRaze)) {
     // The DLOG(FATAL) below is intended to draw immediate attention to errors
     // in newly-written code.  Database corruption is generally a result of OS
     // or hardware issues, not coding errors at the client level, so displaying
@@ -56,7 +50,7 @@ void BindCovariateToStatement(
   stmt->BindInt(1, static_cast<int>(covariate.type));
   stmt->BindInt(2, static_cast<int>(covariate.data_type));
   stmt->BindString(3, covariate.value);
-  stmt->BindDouble(4, created_at.ToDoubleT());
+  stmt->BindDouble(4, created_at.InSecondsFSinceUnixEpoch());
 }
 
 }  // namespace
@@ -175,7 +169,8 @@ void DataStore::PurgeTrainingDataAfterExpirationDate() {
           .c_str()));
   base::Time expiration_threshold =
       base::Time::Now() - data_store_task_.max_retention_days;
-  delete_statement.BindDouble(0, expiration_threshold.ToDoubleT());
+  delete_statement.BindDouble(0,
+                              expiration_threshold.InSecondsFSinceUnixEpoch());
   delete_statement.BindInt(1, data_store_task_.max_number_of_records);
   delete_statement.Run();
 }

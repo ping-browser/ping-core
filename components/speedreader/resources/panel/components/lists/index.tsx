@@ -5,21 +5,19 @@
 import * as React from 'react'
 
 import * as S from './style'
-import { FontFamily, FontSize, PlaybackSpeed, PlaybackState } from '../../api/browser'
+import { MainButtonType, FontFamily, FontSize, PlaybackSpeed, PlaybackState, ColumnWidth } from '../../api/browser'
 import classnames from '$web-common/classnames'
 import { loadTimeData } from '$web-common/loadTimeData'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 
-export enum MainButtonType {
-  None,
-  Appearance,
-  TextToSpeech,
-  Speedreader,
-  AI
-}
-
 const mainButtonsOptions = [
+  {
+    id: 'tune',
+    type: MainButtonType.Tune,
+    iconName: 'tune',
+    title: getLocale('braveReaderModeTune')
+  },
   {
     id: 'appearance',
     type: MainButtonType.Appearance,
@@ -30,19 +28,13 @@ const mainButtonsOptions = [
     id: 'tts',
     type: MainButtonType.TextToSpeech,
     iconName: 'headphones',
-    hidden: true,  // TODO(boocmp): Enable in future PR.
+    hidden: !loadTimeData.getBoolean('ttsEnabled'),
     title: getLocale('braveReaderModeTextToSpeech')
-  },
-  {
-    id: 'speedreader',
-    type: MainButtonType.Speedreader,
-    iconName: 'product-speedreader',
-    title: getLocale('braveReaderModeSpeedreader')
   },
   {
     id: 'ai',
     type: MainButtonType.AI,
-    iconName: 'product-brave-ai',
+    iconName: 'product-brave-leo',
     hidden: !loadTimeData.getBoolean('aiChatFeatureEnabled'),
     title: getLocale('braveReaderModeAI')
   }
@@ -72,6 +64,21 @@ const fontStyleOptions = [
     family: FontFamily.kDyslexic,
     iconName: 'readermode-dislexyc',
     title: getLocale('braveReaderModeAppearanceFontDyslexic')
+  }
+]
+
+const columnWidthOptions = [
+  {
+    id: 'column-width-narrow',
+    columnWidth: ColumnWidth.kNarrow,
+    iconName: 'readermode-column-default',
+    title: getLocale('braveReaderModeAppearanceColumnWidthNarrow')
+  },
+  {
+    id: 'column-width-wide',
+    columnWidth: ColumnWidth.kWide,
+    iconName: 'readermode-column-wide',
+    title: getLocale('braveReaderModeAppearanceColumnWidthWide')
   }
 ]
 
@@ -168,6 +175,35 @@ export function FontStyleList(props: FontStyleListProps) {
             isSelected={props.activeFontFamily === entry.family}
             inGroup={true}
             onClick={handleClick.bind(this, entry.family)}
+          >
+            <Icon name={entry.iconName} />
+          </ControlButton>
+        )
+      })}
+    </ListBox>
+  )
+}
+
+interface ColumnWidthListProps {
+  columnWidth: ColumnWidth
+  onClick?: Function
+}
+
+export function ColumnWidthList(props: ColumnWidthListProps) {
+  const handleClick = (columnWidth: ColumnWidth) => {
+    props.onClick?.(columnWidth)
+  }
+  return (
+    <ListBox>
+      {columnWidthOptions.map(entry => {
+        return (
+          <ControlButton
+            id={entry?.id}
+            key={entry.columnWidth}
+            title={entry.title}
+            isSelected={props.columnWidth === entry.columnWidth}
+            inGroup={true}
+            onClick={handleClick.bind(this, entry.columnWidth)}
           >
             <Icon name={entry.iconName} />
           </ControlButton>

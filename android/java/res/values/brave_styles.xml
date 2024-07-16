@@ -46,30 +46,10 @@
     </style>
 
     <!-- Brave Wallet -->
-    <style name="BraveChipTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="textAllCaps">false</item>
-    </style>
-
-    <style name="BraveWalletButton" parent="Widget.AppCompat.Button">
-        <item name="buttonStyle">?android:attr/borderlessButtonStyle</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/brave_white</item>
-        <item name="android:background">@drawable/crypto_wallet_blue_button</item>
-        <item name="android:foreground">?android:attr/selectableItemBackground</item>
-        <item name="android:paddingStart">16dp</item>
-        <item name="android:paddingEnd">16dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:gravity">center</item>
-    </style>
-
     <style name="BraveWalletTextView" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/brave_wallet_day_night_text_color</item>
+        <item name="android:textColor">@color/wallet_text_color</item>
         <item name="android:textColorLink">@color/brave_link</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -77,7 +57,7 @@
     <style name="BraveWalletTextViewTitle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/brave_wallet_day_night_text_color</item>
+        <item name="android:textColor">@color/wallet_text_color</item>
         <item name="android:textColorLink">@color/brave_link</item>
         <item name="android:textAppearance">?attr/textAppearanceListItem</item>
         <item name="android:textStyle">bold</item>
@@ -91,19 +71,52 @@
         <item name="android:textAppearance">?attr/textAppearanceListItem</item>
     </style>
 
-    <style name="BraveWalletButtonHollow" parent="Widget.AppCompat.Button">
+    <style name="BraveWalletCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/brave_wallet_checkbox_color</item>
+    </style>
+
+    <style name="BraveWalletInputLayoutTheme">
+        <!-- Text selection handle color. -->
+        <!-- It must be set as a theme at component level -->
+        <!-- as we don't want to change it for the whole app. -->
+        <item name="colorControlActivated">@color/icon_interactive</item>
+    </style>
+
+    <style name="BraveWalletInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!-- Border color. -->
+        <item name="boxStrokeColor">@color/wallet_onboarding_input_field_stroke_color</item>
+        <!-- Hint text color that translates to the top of the view. -->
+        <item name="hintTextColor">@color/text_primary</item>
+        <!-- Blinking cursor color. -->
+        <item name="cursorColor">@color/icon_interactive</item>
+        <!-- Blinking cursor color on error state. -->
+        <item name="cursorErrorColor">@color/system_feedback_error</item>
+    </style>
+
+    <style name="BraveWalletInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <!-- Text selection background color. -->
+        <item name="android:textColorHighlight">@color/primary_20</item>
+    </style>
+
+    <!--  Brave Wallet buttons  -->
+    <style name="BraveWalletButton" parent="Widget.AppCompat.Button">
         <item name="buttonStyle">?android:attr/borderlessButtonStyle</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/brave_wallet_day_night_text_color</item>
-        <item name="android:background">@drawable/crypto_wallet_hollow_button</item>
-        <item name="android:paddingStart">16dp</item>
-        <item name="android:paddingEnd">16dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textColor">@color/brave_white</item>
+        <item name="android:background">@drawable/crypto_wallet_blue_button</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingVertical">8dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="BraveWalletOnboardingButton" parent="BraveWalletButton">
+        <item name="android:background">@drawable/crypto_wallet_onboarding_blue_button</item>
+        <item name="android:textColor">@color/crypto_wallet_onboarding_button_text_color</item>
+        <item name="android:foreground">@null</item>
     </style>
 
     <style name="BraveWalletTextButton" parent="Widget.AppCompat.Button">
@@ -112,6 +125,21 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/brave_action_color</item>
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="BraveWalletButtonHollow" parent="Widget.AppCompat.Button">
+        <item name="buttonStyle">?android:attr/borderlessButtonStyle</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/wallet_text_color</item>
+        <item name="android:background">@drawable/crypto_wallet_hollow_button</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>
         <item name="android:gravity">center</item>
@@ -240,10 +268,19 @@
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
+    <style name="BraveLeoToolbar" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="android:background">@color/brave_leo_plans_bg</item>
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
     <style name="BraveProxyBillingActivityTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <!-- Wallet DApps -->
@@ -286,5 +323,54 @@
     <style name="WebNotificationTitle"
         parent="@android:style/TextAppearance.StatusBar.EventContent.Title">
         <item name="android:layout_marginStart">8dp</item>
+    </style>
+
+    <!-- Brave Leo preferences -->
+    <style name="BraveLeoResetTextColor" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/leo_reset_text_color</item>
+    </style>
+
+    <style name="TimerBottomSheetDialogTheme"
+           parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/TimerBottomSheetDialogStyle</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="TimerBottomSheetDialogStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/timer_rounded_bottomsheet</item>
+    </style>
+
+    <style name="BraveRewardsSecondaryTextColor" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/rewards_panel_secondary_text_color</item>
+    </style>
+
+    <style name="BraveRewardsActionColor" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/rewards_panel_action_color</item>
+    </style>
+
+    <!-- Nala tokens styles  -->
+
+    <style name="DefaultRegular">
+        <!-- Default Brave UI size -->
+        <item name="android:textSize">@dimen/default_regular</item>
+        <item name="lineHeight">20sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">400</item>
+    </style>
+
+    <style name="LargeRegular">
+        <!-- Default browser size for fonts -->
+        <item name="android:textSize">@dimen/large_regular</item>
+        <item name="lineHeight">24sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">400</item>
+    </style>
+
+    <style name="DefaultSemibold">
+        <!-- Default Brave UI size -->
+        <item name="android:textSize">@dimen/default_semibold</item>
+        <item name="lineHeight">20sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">600</item>
     </style>
 </resources>

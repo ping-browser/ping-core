@@ -4,10 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import Icon from '@brave/leo/react/icon'
-import { color } from '@brave/leo/tokens/css'
+import ButtonMenu from '@brave/leo/react/buttonMenu'
+import { color, spacing } from '@brave/leo/tokens/css/variables'
 
 interface MenuItemProps {
   name: string
@@ -16,125 +17,72 @@ interface MenuItemProps {
 }
 
 interface MenuProps {
-  items: MenuItemProps[]
+  items: Array<MenuItemProps | undefined>
+  visible: boolean
   onShowMenu?: () => void
   onDismissMenu?: () => void
 }
 
-const StyledRow = styled.button`
-  display: contents;
-  text-align: start;
-  white-space: nowrap;
-  cursor: pointer;
-  /* TODO(sko) Check if we need hovered background */
-`
-
-const StyledMenuIcon = styled(Icon)`
-  --leo-icon-size: 16px;
-`
-
-function ContextualMenuItem ({
-  name,
-  iconName,
-  onClick,
-  onClickOutside
-}: MenuItemProps & { onClickOutside: () => void }) {
-  return (
-    <StyledRow
-      onClick={e => {
-        e.stopPropagation()
-        onClick()
-        onClickOutside()
-      }}
-    >
-      <span>{name}</span>
-      <StyledMenuIcon name={iconName} />
-    </StyledRow>
-  )
-}
-
-const StyledContextualMenu = styled.div`
-  position: absolute;
-  right: 0;
-
-  display: grid;
-  grid-template-columns: 1fr 16px;
-  grid-auto-rows: 28px;
-  width: fit-content;
-  gap: 0px 8px;
+const StyledRow = styled.div`
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid ${color.gray[20]};
-  background: ${color.white};
+  gap: ${spacing.m};
 `
 
-function ContextualMenu ({
-  items,
-  onClickOutside
-}: MenuProps & { onClickOutside: () => void }) {
-  React.useEffect(() => {
-    document.addEventListener('click', onClickOutside)
-    // Playlist has an <iframe> that holds video player. When it's clicked,
-    // we should dismiss the menu but 'click' event won't be notified. Instead
-    // of it, uses 'blur' event while it could have a little side effect.
-    window.addEventListener('blur', onClickOutside)
-    return () => {
-      document.removeEventListener('click', onClickOutside)
-      window.removeEventListener('blur', onClickOutside)
-    }
-  }, [onClickOutside])
-
-  return (
-    <StyledContextualMenu>
-      {items.map(item => (
-        <ContextualMenuItem
-          {...item}
-          key={item.name}
-          onClickOutside={onClickOutside}
-        />
-      ))}
-    </StyledContextualMenu>
-  )
-}
-
-const StyledAnchorButton = styled.div`
-  position: relative;
-  cursor: pointer;
-`
-
-const StyledLeoButtonContainer = styled.button`
-  display: contents;
+const StyledButtonMenu = styled(ButtonMenu)<{ visible: boolean }>`
+  ${(p) =>
+    !p.visible &&
+    css`
+      visibility: hidden;
+    `}
+  --leo-icon-size: 20px;
   color: ${color.text.secondary};
 `
 
 export default function ContextualMenuAnchorButton ({
   items,
+  visible,
   onShowMenu,
   onDismissMenu
 }: MenuProps) {
-  const [showingMenu, setShowingMenu] = React.useState(false)
+  const [open, setOpen] = React.useState(false)
+
+  // When the anchor button isn't visible, hide the menu
+  React.useEffect(() => {
+    if (!visible) setOpen(false)
+  }, [visible])
+
   return (
-    <StyledAnchorButton>
-      <StyledLeoButtonContainer
-        onClick={e => {
-          e.stopPropagation()
-          setShowingMenu(true)
-          if (onShowMenu) onShowMenu()
-        }}
-      >
+    <StyledButtonMenu
+      tabIndex={0}
+      visible={visible}
+      onChange={({ isOpen }) => {
+        if (isOpen) onShowMenu?.()
+        setOpen(isOpen)
+      }}
+      onClose={() => onDismissMenu?.()}
+      isOpen={open}
+    >
+      <div slot='anchor-content'>
         <Icon name='more-horizontal' />
-      </StyledLeoButtonContainer>
-      {showingMenu && (
-        <ContextualMenu
-          items={items}
-          onClickOutside={() => {
-            setShowingMenu(false)
-            if (onDismissMenu) onDismissMenu()
-          }}
-        />
-      )}
-    </StyledAnchorButton>
+      </div>
+      {items
+        .filter((i) => i)
+        .map((i) => (
+          <leo-menu-item
+            key={i!.name}
+            onClick={(e) => {
+              e.stopPropagation()
+              i!.onClick()
+            }}
+          >
+            <StyledRow>
+              <span>{i!.name}</span>
+              <Icon name={i!.iconName} />
+            </StyledRow>
+          </leo-menu-item>
+        ))}
+    </StyledButtonMenu>
   )
 }

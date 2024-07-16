@@ -5,12 +5,12 @@
 
 import styled from 'styled-components'
 
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import defaultBackgroundURL from '../assets/default_background.svg'
 
 export const root = styled.div`
-  --creator-background-image-url: url(./${defaultBackgroundURL});
+  --creator-background-image-url: url(${defaultBackgroundURL});
 
   display: flex;
   flex-direction: column;

@@ -1,12 +1,12 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index 58f33fb56108f9d502054709a812594655401604..e37ef4982ffe3df111b3079e9c4b0f396b222de9 100644
+index 8ec6baaa49f19c1a419afeef774c35629f48a333..4b533dccbcbd91bde099a893391724fcbf44abbf 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
-@@ -516,6 +516,7 @@ base::Time CanonicalCookie::ValidateAndAdjustExpiryDate(
+@@ -324,6 +324,7 @@ base::Time CanonicalCookie::ValidateAndAdjustExpiryDate(
      // * network_handler.cc::MakeCookieFromProtocolValues
      fixed_creation_date = base::Time::Now();
    }
 +  BRAVE_CANONICAL_COOKIE_VALIDATE_AND_ADJUST_EXPIRY_DATE
-   if (base::FeatureList::IsEnabled(features::kClampCookieExpiryTo400Days)) {
-     base::Time maximum_expiry_date = fixed_creation_date + base::Days(400);
-     if (expiry_date > maximum_expiry_date)
+   base::Time maximum_expiry_date;
+   if (!cookie_util::IsTimeLimitedInsecureCookiesEnabled() ||
+       scheme == net::CookieSourceScheme::kSecure) {

@@ -38,7 +38,6 @@ export function AutoContributePanel () {
     contributionMinVisits: state.contributionMinVisits,
     contributionMonthly: state.contributionMonthly,
     parameters: state.parameters,
-    isAcSupported: state.isAcSupported,
     enabledContribute: state.enabledContribute,
     reconcileStamp: state.reconcileStamp,
     autoContributeList: state.autoContributeList,
@@ -340,7 +339,7 @@ export function AutoContributePanel () {
         name: publisher.name,
         verified,
         provider: (publisher.provider ? publisher.provider : undefined),
-        src: `chrome://favicon/size/64@1x/${favIcon}`
+        src: `chrome://favicon2/size=64&pageUrl=${encodeURIComponent(favIcon)}`
       }
     }
 
@@ -368,11 +367,6 @@ export function AutoContributePanel () {
         onClose={toggleModal}
       />
     )
-  }
-
-  // Don't show AC panel if AC is not supported.
-  if (!data.isAcSupported) {
-    return null
   }
 
   return (

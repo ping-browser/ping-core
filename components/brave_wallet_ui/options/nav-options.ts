@@ -3,12 +3,44 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Utils
+import { isPersistanceOfPanelProhibited } from '../utils/local-storage-utils'
+
 // Types
 import {
   NavOption,
   WalletRoutes,
-  AccountPageTabs
+  AccountPageTabs,
+  PanelTypes
 } from '../constants/types'
+
+const PANEL_TYPES: PanelTypes[] = [
+  'accounts',
+  'approveTransaction',
+  'assets',
+  'buy',
+  'connectHardwareWallet',
+  'connectWithSite',
+  'createAccount',
+  'expanded',
+  'main',
+  'networks',
+  'send',
+  'settings',
+  'sitePermissions',
+  'swap',
+  'activity', // Transactions
+  'transactionStatus'
+]
+
+export const isValidPanelNavigationOption = (
+  panelName: string
+): panelName is PanelTypes => {
+  return (
+    PANEL_TYPES.includes(panelName as PanelTypes) &&
+    !isPersistanceOfPanelProhibited(panelName as PanelTypes)
+  )
+}
 
 export const BuySendSwapDepositOptions: NavOption[] = [
   {
@@ -21,7 +53,7 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     id: 'send',
     name: 'braveWalletSend',
     icon: 'send',
-    route: WalletRoutes.SendPageStart
+    route: WalletRoutes.Send
   },
   {
     id: 'swap',
@@ -43,12 +75,6 @@ const ActivityNavOption: NavOption = {
   icon: 'activity',
   route: WalletRoutes.Activity
 }
-
-// We can remove this once we go live with Panel 2.0
-export const PanelNavOptionsOld: NavOption[] = [
-  ...BuySendSwapDepositOptions,
-  ActivityNavOption
-]
 
 export const PanelNavOptions: NavOption[] = [
   {
@@ -112,7 +138,7 @@ export const PortfolioNavOptions: NavOption[] = [
     name: 'braveWalletTopNavNFTS',
     icon: 'grid04',
     route: WalletRoutes.PortfolioNFTs
-  },
+  }
 ]
 
 export const PortfolioAssetOptions: NavOption[] = [
@@ -163,7 +189,7 @@ export const CreateAccountOptions: NavOption[] = [
     name: 'braveWalletConnectHardwareWallet',
     icon: 'flashdrive',
     route: WalletRoutes.AddHardwareAccountModalStart
-  },
+  }
 ]
 
 export const AccountDetailsOptions: NavOption[] = [
@@ -184,5 +210,27 @@ export const AccountDetailsOptions: NavOption[] = [
     name: 'braveWalletTransactions',
     icon: '',
     route: AccountPageTabs.AccountTransactionsSub
+  }
+]
+
+export const SendSwapBridgeOptions: NavOption[] = [
+  {
+    id: 'send',
+    name: 'braveWalletSend',
+    icon: 'send',
+    route: WalletRoutes.Send
   },
+  {
+    id: 'swap',
+    name: 'braveWalletSwap',
+    icon: 'currency-exchange',
+    route: WalletRoutes.Swap
+  }
+  // Bridge is not yet implemented
+  // {
+  //   id: 'bridge',
+  //   name: 'braveWalletBridge',
+  //   icon: 'bridge',
+  //   route: WalletRoutes.Bridge
+  // }
 ]

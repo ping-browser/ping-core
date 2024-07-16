@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -12,7 +13,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/components/sidebar/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/image_fetcher/image_fetcher_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -91,8 +92,9 @@ void SidebarModel::AddItem(const SidebarItem& item,
   }
 
   // Check this addition affects active index.
-  if (active_index_ >= index)
-    UpdateActiveIndexAndNotify(index);
+  if (active_index_ >= index) {
+    UpdateActiveIndexAndNotify(*active_index_ + 1);
+  }
 
   // Web type uses site favicon as button's image.
   if (sidebar::IsWebType(item))
@@ -119,7 +121,7 @@ void SidebarModel::OnItemMoved(const SidebarItem& item,
   if (active_index_is_unaffected) {
     return;
   }
-  absl::optional<size_t> new_active_index = absl::nullopt;
+  std::optional<size_t> new_active_index = std::nullopt;
   if (active_index_ == from) {
     new_active_index = to;
   } else {
@@ -141,7 +143,7 @@ void SidebarModel::OnItemUpdated(const SidebarItem& item,
 
 void SidebarModel::OnWillRemoveItem(const SidebarItem& item, size_t index) {
   if (index == active_index_)
-    UpdateActiveIndexAndNotify(absl::nullopt);
+    UpdateActiveIndexAndNotify(std::nullopt);
 }
 
 void SidebarModel::OnItemRemoved(const SidebarItem& item, size_t index) {
@@ -181,7 +183,7 @@ void SidebarModel::RemoveItemAt(size_t index) {
   }
 }
 
-void SidebarModel::SetActiveIndex(absl::optional<size_t> index, bool load) {
+void SidebarModel::SetActiveIndex(std::optional<size_t> index) {
   if (index == active_index_)
     return;
 
@@ -196,32 +198,33 @@ bool SidebarModel::IsSidebarHasAllBuiltInItems() const {
   return GetSidebarService(profile_)->GetHiddenDefaultSidebarItems().empty();
 }
 
-absl::optional<size_t> SidebarModel::GetIndexOf(const SidebarItem& item) const {
+std::optional<size_t> SidebarModel::GetIndexOf(const SidebarItem& item) const {
   const auto items = GetAllSidebarItems();
   const auto iter = base::ranges::find_if(items, [&item](const auto& i) {
     return (item.built_in_item_type == i.built_in_item_type &&
             item.url == i.url);
   });
   if (iter == items.end())
-    return absl::nullopt;
+    return std::nullopt;
 
   return std::distance(items.begin(), iter);
 }
 
-absl::optional<size_t> SidebarModel::GetIndexOf(
+std::optional<size_t> SidebarModel::GetIndexOf(
     SidebarItem::BuiltInItemType type) const {
   const auto items = GetAllSidebarItems();
-  const auto iter = base::ranges::find_if(
-      items, [&type](const auto& i) { return (type == i.built_in_item_type); });
+  const auto iter = base::ranges::find_if(items, [&type](const auto& i) {
+    return IsBuiltInType(i) && (type == i.built_in_item_type);
+  });
   if (iter == items.end()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::distance(items.begin(), iter);
 }
 
 void SidebarModel::UpdateActiveIndexAndNotify(
-    absl::optional<size_t> new_active_index) {
+    std::optional<size_t> new_active_index) {
   if (new_active_index == active_index_)
     return;
 

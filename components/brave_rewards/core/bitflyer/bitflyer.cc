@@ -8,26 +8,30 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/bitflyer_transfer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/connect_bitflyer_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/bitflyer/get_bitflyer_wallet.h"
 
 namespace brave_rewards::internal::bitflyer {
 
-Bitflyer::Bitflyer(RewardsEngineImpl& engine)
+Bitflyer::Bitflyer(RewardsEngine& engine)
     : WalletProvider(engine), server_(engine) {
   connect_wallet_ = std::make_unique<ConnectBitFlyerWallet>(engine);
-  get_wallet_ = std::make_unique<GetBitFlyerWallet>(engine);
   transfer_ = std::make_unique<BitFlyerTransfer>(engine);
 }
 
 const char* Bitflyer::WalletType() const {
   return constant::kWalletBitflyer;
+}
+
+void Bitflyer::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
+  auto url = engine_->Get<EnvironmentConfig>().bitflyer_url();
+  external_wallet.account_url = url.Resolve("/ex/Home?login=1").spec();
+  external_wallet.activity_url = url.Resolve("/ja-jp/ex/tradehistory").spec();
 }
 
 void Bitflyer::FetchBalance(
@@ -44,7 +48,7 @@ void Bitflyer::FetchBalance(
 }
 
 std::string Bitflyer::GetFeeAddress() const {
-  return bitflyer::GetFeeAddress();
+  return engine_->Get<EnvironmentConfig>().bitflyer_fee_address();
 }
 
 }  // namespace brave_rewards::internal::bitflyer

@@ -6,10 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_FRAME_FETCH_CONTEXT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_FRAME_FETCH_CONTEXT_H_
 
+#include "third_party/blink/renderer/core/loader/base_fetch_context.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_context.h"
 
-#define AddAdditionalRequestHeaders                              \
-  NotUsedOverride() {}                                           \
+#define DoesLCPPHaveAnyHintData                                  \
+  NotUsedOverride() {                                            \
+    return false;                                                \
+  }                                                              \
   String GetCacheIdentifierIfCrossSiteSubframe() const override; \
                                                                  \
  private:                                                        \
@@ -18,10 +21,12 @@
   mutable String cache_identifier_if_cross_site_subframe_;       \
                                                                  \
  public:                                                         \
-  void AddAdditionalRequestHeaders
+  bool DoesLCPPHaveAnyHintData
+
+#define AllowScript() AllowScript(const KURL& url)
 
 #include "src/third_party/blink/renderer/core/loader/frame_fetch_context.h"  // IWYU pragma: export
-
-#undef AddAdditionalRequestHeaders
+#undef AllowScript
+#undef DoesLCPPHaveAnyHintData
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_FRAME_FETCH_CONTEXT_H_

@@ -8,15 +8,15 @@
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/public/ad_type.h"
-#include "brave/components/brave_ads/core/public/ads/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_ads/core/internal/browser/browser_util.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
 namespace brave_ads {
@@ -40,20 +40,17 @@ NotificationAdManager& NotificationAdManager::GetInstance() {
   return GlobalState::GetInstance()->GetNotificationAdManager();
 }
 
-absl::optional<NotificationAdInfo>
-NotificationAdManager::MaybeGetForPlacementId(
+std::optional<NotificationAdInfo> NotificationAdManager::MaybeGetForPlacementId(
     const std::string& placement_id) const {
   CHECK(!placement_id.empty());
 
   const auto iter =
       base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
   if (iter == ads_.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  NotificationAdInfo ad = *iter;
-  ad.type = AdType::kNotificationAd;
-  return ad;
+  return *iter;
 }
 
 void NotificationAdManager::Add(const NotificationAdInfo& ad) {
@@ -61,49 +58,47 @@ void NotificationAdManager::Add(const NotificationAdInfo& ad) {
 
   ads_.push_back(ad);
 
+  ShowNotificationAd(ad);
+
 #if BUILDFLAG(IS_ANDROID)
   if (ads_.size() > kMaximumNotificationAds) {
-    AdsClientHelper::GetInstance()->CloseNotificationAd(
-        ads_.front().placement_id);
-
+    CloseNotificationAd(ads_.front().placement_id);
     ads_.pop_front();
   }
 #endif  // BUILDFLAG(IS_ANDROID)
 
-  AdsClientHelper::GetInstance()->SetListPref(prefs::kNotificationAds,
-                                              NotificationAdsToValue(ads_));
+  SetProfileListPref(prefs::kNotificationAds, NotificationAdsToValue(ads_));
 }
 
-bool NotificationAdManager::Remove(const std::string& placement_id) {
+void NotificationAdManager::Remove(const std::string& placement_id,
+                                   const bool should_close) {
   CHECK(!placement_id.empty());
+
+  if (should_close) {
+    CloseNotificationAd(placement_id);
+  }
 
   const auto iter =
       base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
   if (iter == ads_.cend()) {
-    return false;
+    return;
   }
 
   ads_.erase(iter);
 
-  AdsClientHelper::GetInstance()->SetListPref(prefs::kNotificationAds,
-                                              NotificationAdsToValue(ads_));
-
-  return true;
+  SetProfileListPref(prefs::kNotificationAds, NotificationAdsToValue(ads_));
 }
 
-void NotificationAdManager::RemoveAll() {
-  ads_.clear();
-
-  AdsClientHelper::GetInstance()->SetListPref(prefs::kNotificationAds,
-                                              NotificationAdsToValue(ads_));
-}
-
-void NotificationAdManager::CloseAll() {
-  for (const auto& ad : ads_) {
-    AdsClientHelper::GetInstance()->CloseNotificationAd(ad.placement_id);
+void NotificationAdManager::RemoveAll(bool should_close) {
+  if (should_close) {
+    for (const auto& ad : ads_) {
+      CloseNotificationAd(ad.placement_id);
+    }
   }
 
-  RemoveAll();
+  ads_.clear();
+
+  SetProfileListPref(prefs::kNotificationAds, NotificationAdsToValue(ads_));
 }
 
 bool NotificationAdManager::Exists(const std::string& placement_id) const {
@@ -116,8 +111,8 @@ bool NotificationAdManager::Exists(const std::string& placement_id) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationAdManager::Initialize() {
-  const absl::optional<base::Value::List> list =
-      AdsClientHelper::GetInstance()->GetListPref(prefs::kNotificationAds);
+  const std::optional<base::Value::List> list =
+      GetProfileListPref(prefs::kNotificationAds);
   if (!list) {
     return;
   }
@@ -131,7 +126,7 @@ void NotificationAdManager::MaybeRemoveAll() {
   if (WasBrowserUpgraded()) {
     // Android deletes notifications after upgrading an app, so we should remove
     // orphaned notification ads after a browser upgrade.
-    RemoveAll();
+    RemoveAll(/*should_close=*/false);
   }
 #endif  // BUILDFLAG(IS_ANDROID)
 }

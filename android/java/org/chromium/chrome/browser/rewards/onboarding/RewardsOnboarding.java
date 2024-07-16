@@ -7,12 +7,15 @@
 
 package org.chromium.chrome.browser.rewards.onboarding;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,11 +36,13 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.ui.permissions.PermissionConstants;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.TreeMap;
 
@@ -54,6 +59,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     private ViewGroup mAllSetLayout;
     private ViewGroup mErrorLayout;
 
+    private Spinner mCountrySpinner;
     private TextView mContinueButton;
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
@@ -96,6 +102,18 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         View howDoseItWorkMainButton = mMainLayout.findViewById(R.id.how_does_it_work_main);
         howDoseItWorkMainButton.setOnClickListener(v -> { showRewardsTour(); });
 
+        mCountrySpinner = mPopupView.findViewById(R.id.country_spinner);
+        BraveTouchUtils.ensureMinTouchTarget(mCountrySpinner);
+
+        String termsOfServiceText = String.format(
+                mPopupView.getContext().getString(R.string.brave_rewards_onboarding_tos_text),
+                mPopupView.getContext().getString(R.string.terms_of_service),
+                mPopupView.getContext().getString(R.string.privacy_policy));
+        TextView tosText = mMainLayout.findViewById(R.id.tos_text);
+        tosText.setMovementMethod(LinkMovementMethod.getInstance());
+        tosText.setText(BraveRewardsHelper.tosSpannableString(
+                termsOfServiceText, R.color.brave_rewards_modal_theme_color));
+
         // Location choose layout views
         mLocationChooseLayout =
                 mPopupView.findViewById(R.id.rewards_onboarding_location_choose_layout_id);
@@ -122,20 +140,21 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         View responseCloseButton = mErrorLayout.findViewById(R.id.response_modal_close);
         responseCloseButton.setOnClickListener(v -> { mPopupWindow.dismiss(); });
 
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                if (mBraveRewardsNativeWorker != null) {
-                    mBraveRewardsNativeWorker.RemoveObserver(RewardsOnboarding.this);
-                }
-            }
-        });
+        mPopupWindow.setOnDismissListener(
+                new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        if (mBraveRewardsNativeWorker != null) {
+                            mBraveRewardsNativeWorker.removeObserver(RewardsOnboarding.this);
+                        }
+                    }
+                });
 
         mPopupWindow.setWidth(deviceWidth);
         mPopupWindow.setContentView(mPopupView);
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        mBraveRewardsNativeWorker.AddObserver(this);
+        mBraveRewardsNativeWorker.addObserver(this);
     }
 
     public void showLikePopDownMenu() {
@@ -157,33 +176,40 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         updateCountryList(countries);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void updateCountryList(String[] countries) {
         shouldShowContinueProgress(false);
         mContinueButton.setText(mActivity.getResources().getString(R.string.continue_text));
-        TreeMap<String, String> sortedCountryMap = new TreeMap<String, String>();
-        for (String countryCode : countries) {
-            sortedCountryMap.put(new Locale("", countryCode).getDisplayCountry(), countryCode);
-        }
-
-        ArrayList<String> countryList = new ArrayList<String>();
-        countryList.add(mActivity.getResources().getString(R.string.select_your_country_title));
-        countryList.addAll(sortedCountryMap.keySet());
         String defaultCountry = mBraveRewardsNativeWorker.getCountryCode() != null
                 ? new Locale("", mBraveRewardsNativeWorker.getCountryCode()).getDisplayCountry()
                 : null;
-        if (defaultCountry != null && countryList.contains(defaultCountry)) {
-            countryList.remove(defaultCountry);
-            countryList.add(1, defaultCountry);
+
+        TreeMap<String, String> sortedCountryMap = new TreeMap<String, String>();
+        ArrayList<String> list = new ArrayList<>();
+        for (String countryCode : countries) {
+            sortedCountryMap.put(new Locale("", countryCode).getDisplayCountry(), countryCode);
+            list.add(new Locale("", countryCode).getDisplayCountry());
         }
+        Collections.sort(list, Collator.getInstance());
+        ArrayList<String> countryList = new ArrayList<>();
+        countryList.add(mActivity.getResources().getString(R.string.select_your_country_title));
+        countryList.addAll(list);
 
         String[] countryArray = countryList.toArray(new String[countryList.size()]);
-        Spinner countrySpinner;
-        countrySpinner = mPopupView.findViewById(R.id.country_spinner);
 
         CountrySelectionSpinnerAdapter countrySelectionSpinnerAdapter =
-                new CountrySelectionSpinnerAdapter(mActivity, countryList);
-        countrySpinner.setAdapter(countrySelectionSpinnerAdapter);
-        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                new CountrySelectionSpinnerAdapter(mActivity, countryArray);
+        countrySelectionSpinnerAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        mCountrySpinner.setAdapter(countrySelectionSpinnerAdapter);
+        mCountrySpinner.setOnTouchListener((view, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                mCountrySpinner.setSelection(
+                        countrySelectionSpinnerAdapter.getPosition(defaultCountry));
+            }
+            return false;
+        });
+        mCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 mContinueButton.setEnabled(pos != 0);
@@ -192,23 +218,26 @@ public class RewardsOnboarding implements BraveRewardsObserver {
             public void onNothingSelected(AdapterView<?> arg0) {}
         });
 
-        mContinueButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!BravePermissionUtils.hasPermission(
-                            mAnchorView.getContext(), PermissionConstants.NOTIFICATION_PERMISSION)
-                        || BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(
-                                mAnchorView.getContext())) {
-                    requestNotificationPermission();
-                }
-                if (countrySpinner != null) {
-                    mBraveRewardsNativeWorker.CreateRewardsWallet(
-                            sortedCountryMap.get(countrySpinner.getSelectedItem().toString()));
-                    shouldShowContinueProgress(true);
-                    mContinueButton.setText("");
-                }
-            }
-        }));
+        mContinueButton.setOnClickListener(
+                (new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!BravePermissionUtils.hasPermission(
+                                        mAnchorView.getContext(),
+                                        Manifest.permission.POST_NOTIFICATIONS)
+                                || BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(
+                                        mAnchorView.getContext())) {
+                            requestNotificationPermission();
+                        }
+                        if (mCountrySpinner != null) {
+                            mBraveRewardsNativeWorker.createRewardsWallet(
+                                    sortedCountryMap.get(
+                                            mCountrySpinner.getSelectedItem().toString()));
+                            shouldShowContinueProgress(true);
+                            mContinueButton.setText("");
+                        }
+                    }
+                }));
     }
 
     private void shouldShowContinueProgress(boolean shouldShow) {
@@ -272,8 +301,9 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     private void requestNotificationPermission() {
         if (BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(mAnchorView.getContext())
                 || mActivity.shouldShowRequestPermissionRationale(
-                        PermissionConstants.NOTIFICATION_PERMISSION)
-                || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
+                        Manifest.permission.POST_NOTIFICATIONS)
+                || (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                        || !BuildInfo.targetsAtLeastT())) {
             // other than android 13 redirect to
             // setting page and for android 13 Last time don't allow selected in permission
             // dialog, then enable through setting, this done through this dialog
@@ -281,7 +311,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         } else {
             // 1st time request permission
             ActivityCompat.requestPermissions(
-                    mActivity, new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
+                    mActivity, new String[] {Manifest.permission.POST_NOTIFICATIONS}, 1);
         }
     }
 

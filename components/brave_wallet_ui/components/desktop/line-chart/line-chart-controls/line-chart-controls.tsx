@@ -9,21 +9,22 @@ import * as React from 'react'
 import { BraveWallet } from '../../../../constants/types'
 
 // Hooks
-import {
-  useOnClickOutside
-} from '../../../../common/hooks/useOnClickOutside'
+import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 
 // Options
 import {
-  ChartTimelineOptions
+  ChartTimelineOptions //
 } from '../../../../options/chart-timeline-options'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
+import {
+  setStoredPortfolioTimeframe //
+} from '../../../../utils/local-storage-utils'
 
 // Components
 import {
-  LineChartControlsMenu
+  LineChartControlsMenu //
 } from '../../wallet-menus/line-chart-controls-menu'
 
 // Styled Components
@@ -59,31 +60,26 @@ export const LineChartControls = (props: Props) => {
   const handleOnSelectTimeline = React.useCallback(
     (id: BraveWallet.AssetPriceTimeframe) => {
       onSelectTimeline(id)
+      setStoredPortfolioTimeframe(id)
       setShowLineChartControlMenu(false)
-    }, [onSelectTimeline])
+    },
+    [onSelectTimeline]
+  )
 
   return (
-    <SelectTimelineClickArea
-      ref={lineChartControlMenuRef}
-    >
+    <SelectTimelineClickArea ref={lineChartControlMenuRef}>
       <SelectTimelinButton
-        onClick={
-          () => setShowLineChartControlMenu(prev => !prev)
-        }
+        onClick={() => setShowLineChartControlMenu((prev) => !prev)}
       >
-        {getLocale(
-          ChartTimelineOptions[selectedTimeline].name
-        )}
+        {getLocale(ChartTimelineOptions[selectedTimeline].name)}
         <SelectTimelinButtonIcon
           isOpen={showLineChartControlMenu}
           name='carat-down'
         />
       </SelectTimelinButton>
-      {showLineChartControlMenu &&
-        <LineChartControlsMenu
-          onClick={handleOnSelectTimeline}
-        />
-      }
+      {showLineChartControlMenu && (
+        <LineChartControlsMenu onClick={handleOnSelectTimeline} />
+      )}
     </SelectTimelineClickArea>
   )
 }

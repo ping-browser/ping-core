@@ -11,14 +11,14 @@ namespace brave_ads::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::VerificationSignature> Create(
+std::optional<challenge_bypass_ristretto::VerificationSignature> Create(
     const std::string& verification_signature_base64) {
   if (verification_signature_base64.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(
-      challenge_bypass_ristretto::VerificationSignature::decode_base64(
+      challenge_bypass_ristretto::VerificationSignature::DecodeBase64(
           verification_signature_base64));
 }
 
@@ -64,12 +64,12 @@ VerificationSignature VerificationSignature::DecodeBase64(
   return VerificationSignature(verification_signature_base64);
 }
 
-absl::optional<std::string> VerificationSignature::EncodeBase64() const {
+std::optional<std::string> VerificationSignature::EncodeBase64() const {
   if (!verification_signature_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  return ValueOrLogError(verification_signature_->encode_base64());
+  return verification_signature_->EncodeBase64();
 }
 
 std::ostream& operator<<(std::ostream& os,

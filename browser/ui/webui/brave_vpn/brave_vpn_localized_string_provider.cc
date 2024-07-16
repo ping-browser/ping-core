@@ -8,7 +8,7 @@
 #include "base/no_destructor.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "components/grit/brave_components_strings.h"
-#include "content/public/browser/url_data_source.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/webui/web_ui_util.h"
 
 namespace brave_vpn {
@@ -34,6 +34,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
       {"braveVpnStatus", IDS_BRAVE_VPN_STATUS},
       {"braveVpnExpires", IDS_BRAVE_VPN_EXPIRES},
       {"braveVpnManageSubscription", IDS_BRAVE_VPN_MANAGE_SUBSCRIPTION},
+      {"braveVpnReconnectAutomatically", IDS_BRAVE_VPN_RECONNECT_AUTOMATICALLY},
       {"braveVpnContactSupport", IDS_BRAVE_VPN_CONTACT_SUPPORT},
       {"braveVpnAbout", IDS_BRAVE_VPN_ABOUT},
       {"braveVpnFeature1", IDS_BRAVE_VPN_FEATURE_1},

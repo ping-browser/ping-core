@@ -12,6 +12,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -23,33 +24,35 @@
 namespace brave_news {
 
 using Signal = mojom::SignalPtr;
-using Signals = base::flat_map<std::string, Signal>;
+using Signals =
+    base::flat_map</*channel name or publisher_id*/ std::string, Signal>;
 using SignalsCallback = base::OnceCallback<void(Signals)>;
 
 class SignalCalculator {
  public:
   SignalCalculator(PublishersController& publishers_controller,
                    ChannelsController& channels_controller,
-                   PrefService& prefs,
                    history::HistoryService& history_service);
   SignalCalculator(const SignalCalculator&) = delete;
   SignalCalculator& operator=(const SignalCalculator&) = delete;
   ~SignalCalculator();
 
-  void GetSignals(const FeedItems& feed, SignalsCallback callback);
+  void GetSignals(const BraveNewsSubscriptions& subscriptions,
+                  const FeedItems& feed,
+                  SignalsCallback callback);
 
  private:
-  void OnGotHistory(std::vector<mojom::FeedItemMetadataPtr> articles,
+  void OnGotHistory(const BraveNewsSubscriptions& subscriptions,
+                    std::vector<mojom::FeedItemMetadataPtr> articles,
                     SignalsCallback callback,
                     history::QueryResults results);
 
-  bool IsPublisherSubscribed(const mojom::PublisherPtr& publisher);
+  double GetSubscribedWeight(const mojom::PublisherPtr& publisher);
 
   base::CancelableTaskTracker task_tracker_;
 
   raw_ref<PublishersController> publishers_controller_;
   raw_ref<ChannelsController> channels_controller_;
-  raw_ref<PrefService> prefs_;
   raw_ref<history::HistoryService> history_service_;
 
   base::WeakPtrFactory<SignalCalculator> weak_ptr_factory_{this};

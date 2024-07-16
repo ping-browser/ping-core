@@ -7,7 +7,7 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -24,7 +24,7 @@ constexpr char kInvalidJsonFilename[] = "invalid.json";
 class BraveAdsLegacyConfirmationMigrationTest : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
+    SetProfileBooleanPrefValue(prefs::kHasMigratedConfirmationState, false);
   }
 };
 
@@ -32,31 +32,25 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   // Arrange
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kConfirmationStateFilename));
 
-  // Assert
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(HasMigratedConfirmation());
-  });
-
-  // Act
+  EXPECT_CALL(callback, Run(/*success=*/true));
   MigrateConfirmationState(callback.Get());
+
+  EXPECT_TRUE(HasMigratedConfirmation());
 }
 
-TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
+TEST_F(BraveAdsLegacyConfirmationMigrationTest, ResetInvalidState) {
   // Arrange
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
                                              kConfirmationStateFilename));
 
-  // Assert
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
-    EXPECT_FALSE(success);
-    EXPECT_FALSE(HasMigratedConfirmation());
-  });
-
-  // Act
+  EXPECT_CALL(callback, Run(/*success=*/true));
   MigrateConfirmationState(callback.Get());
+
+  EXPECT_TRUE(HasMigratedConfirmation());
 }
 
 }  // namespace brave_ads

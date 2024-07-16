@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_unittest_util.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-std::string BuildRedeemPaymentTokensUrlResponseBodyForTesting() {
+std::string BuildRedeemPaymentTokensUrlResponseBody() {
   return R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
@@ -20,8 +20,7 @@ std::string BuildRedeemPaymentTokensUrlResponseBodyForTesting() {
                   "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
                 }
               ]
-            }
-          )";
+            })";
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

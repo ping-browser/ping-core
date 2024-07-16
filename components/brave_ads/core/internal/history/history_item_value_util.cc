@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
 
-#include <utility>
-
 #include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
@@ -37,17 +35,11 @@ base::Value::Dict HistoryItemToValue(const HistoryItemInfo& history_item) {
 
 base::Value::List HistoryItemToDetailRowsValue(
     const HistoryItemInfo& history_item) {
-  base::Value::List list;
-
-  auto dict =
+  return base::Value::List().Append(
       base::Value::Dict()
           .Set(kUIAdContentKey, AdContentToValue(history_item.ad_content))
           .Set(kUICategoryContentKey,
-               CategoryContentToValue(history_item.category_content));
-
-  list.Append(std::move(dict));
-
-  return list;
+               CategoryContentToValue(history_item.category_content)));
 }
 
 HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
@@ -57,12 +49,14 @@ HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
     history_item.created_at = base::ValueToTime(value).value_or(base::Time());
   } else if (const auto* const legacy_string_value =
                  dict.FindString(kLegacyCreatedAtKey)) {
-    double value_as_double = 0.0;
+    double value_as_double;
     if (base::StringToDouble(*legacy_string_value, &value_as_double)) {
-      history_item.created_at = base::Time::FromDoubleT(value_as_double);
+      history_item.created_at =
+          base::Time::FromSecondsSinceUnixEpoch(value_as_double);
     }
   } else if (const auto legacy_double_value = dict.FindDouble(kCreatedAtKey)) {
-    history_item.created_at = base::Time::FromDoubleT(*legacy_double_value);
+    history_item.created_at =
+        base::Time::FromSecondsSinceUnixEpoch(*legacy_double_value);
   }
 
   if (const auto* const value = dict.FindDict(kAdContentKey)) {
@@ -80,6 +74,7 @@ HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
 
 base::Value::List HistoryItemsToValue(const HistoryItemList& history_items) {
   base::Value::List list;
+  list.reserve(history_items.size());
 
   for (const auto& history_item : history_items) {
     list.Append(HistoryItemToValue(history_item));
@@ -90,18 +85,18 @@ base::Value::List HistoryItemsToValue(const HistoryItemList& history_items) {
 
 base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
   base::Value::List list;
+  list.reserve(history_items.size());
 
   int uuid = 0;
 
   for (const auto& history_item : history_items) {
-    auto dict =
+    list.Append(
         base::Value::Dict()
             .Set(kUIUuidKey, base::NumberToString(uuid++))
             .Set(kUIJavaScriptTimestampKey,
-                 history_item.created_at.ToJsTimeIgnoringNull())
-            .Set(kUIDetailRowsKey, HistoryItemToDetailRowsValue(history_item));
-
-    list.Append(std::move(dict));
+                 history_item.created_at
+                     .InMillisecondsFSinceUnixEpochIgnoringNull())
+            .Set(kUIDetailRowsKey, HistoryItemToDetailRowsValue(history_item)));
   }
 
   return list;
@@ -109,6 +104,7 @@ base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
 
 HistoryItemList HistoryItemsFromValue(const base::Value::List& list) {
   HistoryItemList history_items;
+  history_items.reserve(list.size());
 
   for (const auto& item : list) {
     if (const auto* const item_dict = item.GetIfDict()) {

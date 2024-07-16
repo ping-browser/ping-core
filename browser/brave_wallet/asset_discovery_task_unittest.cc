@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 
+#include <optional>
+#include <string_view>
+
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
@@ -16,6 +19,7 @@
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
@@ -155,8 +159,10 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(
-        features::kNativeBraveWalletFeature);
+    scoped_feature_list_.InitWithFeatures(
+        {features::kNativeBraveWalletFeature,
+         features::kBraveWalletAnkrBalancesFeature},
+        {});
 
     TestingProfile::Builder builder;
     auto prefs =
@@ -172,11 +178,12 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
         JsonRpcServiceFactory::GetServiceForContext(profile_.get());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
+    tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
     wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service, GetPrefs(), GetLocalState());
+        json_rpc_service_, tx_service_, nullptr, nullptr, GetPrefs(),
+        GetLocalState(), false);
 
     api_request_helper_ =
         std::make_unique<api_request_helper::APIRequestHelper>(
@@ -225,19 +232,19 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
         }));
   }
 
-  // SetInterceptorForDiscoverSolAssets takes a map of addresses to responses
-  // and adds the response if the address if found in the request string
-  void SetInterceptorForDiscoverSolAssets(
+  // SetInterceptorForDiscoverAnkrOrSolAssets takes a map of addresses to
+  // responses and adds the response if the address if found in the request
+  // string
+  void SetInterceptorForDiscoverAnkrOrSolAssets(
       const GURL& intended_url,
       const std::map<std::string, std::string>& requests) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, intended_url, requests](const network::ResourceRequest& request) {
           if (request.url.spec() == intended_url) {
-            base::StringPiece request_string(
-                request.request_body->elements()
-                    ->at(0)
-                    .As<network::DataElementBytes>()
-                    .AsStringPiece());
+            std::string_view request_string(request.request_body->elements()
+                                                ->at(0)
+                                                .As<network::DataElementBytes>()
+                                                .AsStringPiece());
             std::string response;
             for (auto const& [key, val] : requests) {
               if (request_string.find(key) != std::string::npos) {
@@ -262,7 +269,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
         [&, requests](const network::ResourceRequest& request) {
           for (auto const& [url, address_response_map] : requests) {
             if (request.url.spec() == url.spec()) {
-              base::StringPiece request_string;
+              std::string_view request_string;
               if (request.request_body) {
                 request_string = request.request_body->elements()
                                      ->at(0)
@@ -315,6 +322,25 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
             }
           })");
         }));
+  }
+
+  void TestDiscoverAnkrAssets(
+      const std::vector<std::string>& chain_ids,
+      const std::vector<std::string>& account_addresses,
+      const std::vector<std::string>& expected_token_contract_addresses) {
+    base::RunLoop run_loop;
+    asset_discovery_task_->DiscoverAnkrTokens(
+        chain_ids, account_addresses,
+        base::BindLambdaForTesting(
+            [&](const std::vector<mojom::BlockchainTokenPtr>
+                    discovered_assets) {
+              for (size_t i = 0; i < discovered_assets.size(); i++) {
+                EXPECT_EQ(discovered_assets[i]->contract_address,
+                          expected_token_contract_addresses[i]);
+              }
+              run_loop.Quit();
+            }));
+    run_loop.Run();
   }
 
   void TestDiscoverEthAssets(
@@ -405,14 +431,86 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveWalletService> wallet_service_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  std::unique_ptr<AssetDiscoveryTask> asset_discovery_task_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
+  std::unique_ptr<AssetDiscoveryTask> asset_discovery_task_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
-  raw_ptr<TxService> tx_service;
+  raw_ptr<TxService> tx_service_;
   base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
+
+TEST_F(AssetDiscoveryTaskUnitTest, DiscoverAnkrTokens) {
+  // Empty chain ids and account addresses
+  TestDiscoverAnkrAssets({}, {}, {});
+
+  // Empty chain ids
+  TestDiscoverAnkrAssets({}, {"0xa92d461a9a988a7f11ec285d39783a637fdd6ba4"},
+                         {});
+
+  // Empty account addresses
+  TestDiscoverAnkrAssets({mojom::kMainnetChainId}, {}, {});
+
+  std::map<std::string, std::string> requests = {
+      {"0xa92d461a9a988a7f11ec285d39783a637fdd6ba4", R"(
+        {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "result": {
+            "totalBalanceUsd": "4915134435857.581297310767673907",
+            "assets": [
+              {
+                "blockchain": "polygon",
+                "tokenName": "USD Coin",
+                "tokenSymbol": "USDC",
+                "tokenDecimals": "6",
+                "tokenType": "ERC20",
+                "contractAddress": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+                "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+                "balance": "8.202765",
+                "balanceRawInteger": "8202765",
+                "balanceUsd": "8.202765",
+                "tokenPrice": "1",
+                "thumbnail": "usdc.png"
+              }
+            ]
+          }
+        })"},
+      {"0xdac17f958d2ee523a2206206994597c13d831ec7", R"(
+        {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "result": {
+            "totalBalanceUsd": "4915134435857.581297310767673907",
+            "assets": [
+              {
+                "blockchain": "eth",
+                "tokenName": "Dai Stablecoin",
+                "tokenSymbol": "DAI",
+                "tokenDecimals": 18,
+                "tokenType": "ERC20",
+                "contractAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+                "holderAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+                "balance": "21.645537148041723435",
+                "balanceRawInteger": "21645537148041723435",
+                "balanceUsd": "21.64134170578332378",
+                "tokenPrice": "0.999806175183840184",
+                "thumbnail": "dai.png"
+              }
+            ]
+          }
+        })"},
+  };
+
+  SetInterceptorForDiscoverAnkrOrSolAssets(GURL(kAnkrAdvancedAPIBaseURL),
+                                           requests);
+  TestDiscoverAnkrAssets(
+      {mojom::kPolygonMainnetChainId, mojom::kMainnetChainId},
+      {"0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+       "0xdac17f958d2ee523a2206206994597c13d831ec7"},
+      {"0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+       "0x6b175474e89094c44da98b954eedeac495271d0f"});
+}
 
 TEST_F(AssetDiscoveryTaskUnitTest, DiscoverERC20sFromRegistry) {
   std::vector<std::string> chain_ids;
@@ -645,14 +743,14 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverERC20sFromRegistry) {
 
 TEST_F(AssetDiscoveryTaskUnitTest, DecodeMintAddress) {
   // Invalid (data too short)
-  absl::optional<std::vector<uint8_t>> data_short = base::Base64Decode("YQ==");
+  std::optional<std::vector<uint8_t>> data_short = base::Base64Decode("YQ==");
   ASSERT_TRUE(data_short);
-  absl::optional<SolanaAddress> mint_address =
+  std::optional<SolanaAddress> mint_address =
       asset_discovery_task_->DecodeMintAddress(*data_short);
   ASSERT_FALSE(mint_address);
 
   // Valid
-  absl::optional<std::vector<uint8_t>> data = base::Base64Decode(
+  std::optional<std::vector<uint8_t>> data = base::Base64Decode(
       "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+"
       "lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/"
       "qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
@@ -897,7 +995,7 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
       {"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF", response},
       {"8RFACUfst117ARQLezvK4cKVR8ZHvW2xUfdUoqWnTuEB", second_response},
   };
-  SetInterceptorForDiscoverSolAssets(expected_network_url, requests);
+  SetInterceptorForDiscoverAnkrOrSolAssets(expected_network_url, requests);
 
   // Add BEARs6toGY6fRGsmz2Se8NDuR2NVPRmJuLPpeF8YxCq2,
   // ADJqxHJRfFBpyxVQ2YS8nBhfW6dumdDYGU21B4AmYLZJ,

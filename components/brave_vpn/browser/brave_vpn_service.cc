@@ -6,7 +6,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 
 #include <algorithm>
-#include <utility>
+#include <optional>
 
 #include "base/base64.h"
 #include "base/check_is_test.h"
@@ -32,7 +32,6 @@
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
 
@@ -42,7 +41,7 @@ using ConnectionState = mojom::ConnectionState;
 using PurchasedState = mojom::PurchasedState;
 
 BraveVpnService::BraveVpnService(
-    BraveVPNOSConnectionAPI* connection_api,
+    BraveVPNConnectionManager* connection_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
     PrefService* profile_prefs,
@@ -54,9 +53,9 @@ BraveVpnService::BraveVpnService(
       api_request_(new BraveVpnAPIRequest(url_loader_factory)) {
   DCHECK(IsBraveVPNFeatureEnabled());
 #if !BUILDFLAG(IS_ANDROID)
-  DCHECK(connection_api);
-  connection_api_ = connection_api;
-  observed_.Observe(connection_api_);
+  DCHECK(connection_manager);
+  connection_manager_ = connection_manager;
+  observed_.Observe(connection_manager_);
 
   policy_pref_change_registrar_.Init(profile_prefs_);
   policy_pref_change_registrar_.Add(
@@ -84,7 +83,7 @@ void BraveVpnService::CheckInitialState() {
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
     // Android has its own region data managing logic.
 #else
-    if (connection_api_->GetRegionDataManager().IsRegionDataReady()) {
+    if (connection_manager_->GetRegionDataManager().IsRegionDataReady()) {
       SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
     } else {
       SetPurchasedState(GetCurrentEnvironment(), PurchasedState::LOADING);
@@ -93,7 +92,7 @@ void BraveVpnService::CheckInitialState() {
       // and then set as a purchased user after we get valid region data.
       wait_region_data_ready_ = true;
     }
-    connection_api_->GetRegionDataManager().FetchRegionDataIfNeeded();
+    connection_manager_->GetRegionDataManager().FetchRegionDataIfNeeded();
 #endif
   } else if (HasValidSkusCredential(local_prefs_)) {
     // If we have valid skus creds during the startup, we can try to get subs
@@ -131,7 +130,11 @@ void BraveVpnService::BindInterface(
 void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " " << state;
-
+#if BUILDFLAG(IS_WIN)
+  if (delegate_) {
+    delegate_->WriteConnectionState(state);
+  }
+#endif
   // Ignore connection state change request for non purchased user.
   // This can be happened when user controls vpn via os settings.
   if (!is_purchased_user())
@@ -141,9 +144,16 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
     // If user connected vpn from the system and launched the browser
     // we detected it was disabled by policies and disabling it.
     if (IsBraveVPNDisabledByPolicy(profile_prefs_)) {
-      connection_api_->Disconnect();
+      connection_manager_->Disconnect();
       return;
     }
+#if BUILDFLAG(IS_WIN)
+    // Run tray process each time we establish connection. System tray icon
+    // manages self state to be visible/hidden due to settings.
+    if (delegate_) {
+      delegate_->ShowBraveVpnStatusTrayIcon();
+    }
+#endif
     RecordP3A(true);
   }
 
@@ -172,7 +182,7 @@ void BraveVpnService::OnRegionDataReady(bool success) {
 
 void BraveVpnService::OnSelectedRegionChanged(const std::string& region_name) {
   const auto region_ptr = GetRegionPtrWithNameFromRegionList(
-      region_name, connection_api_->GetRegionDataManager().GetRegions());
+      region_name, connection_manager_->GetRegionDataManager().GetRegions());
   for (const auto& obs : observers_) {
     obs->OnSelectedRegionChanged(region_ptr.Clone());
   }
@@ -180,10 +190,14 @@ void BraveVpnService::OnSelectedRegionChanged(const std::string& region_name) {
 
 mojom::ConnectionState BraveVpnService::GetConnectionState() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return connection_api_->GetConnectionState();
+  return connection_manager_->GetConnectionState();
 }
 
 bool BraveVpnService::IsConnected() const {
+  if (!is_purchased_user()) {
+    return false;
+  }
+
   return GetConnectionState() == ConnectionState::CONNECTED;
 }
 
@@ -194,7 +208,7 @@ void BraveVpnService::Connect() {
     return;
   }
 
-  connection_api_->Connect();
+  connection_manager_->Connect();
 }
 
 void BraveVpnService::Disconnect() {
@@ -204,7 +218,7 @@ void BraveVpnService::Disconnect() {
     return;
   }
 
-  connection_api_->Disconnect();
+  connection_manager_->Disconnect();
 }
 
 void BraveVpnService::ToggleConnection() {
@@ -214,12 +228,12 @@ void BraveVpnService::ToggleConnection() {
     return;
   }
 
-  connection_api_->ToggleConnection();
+  connection_manager_->ToggleConnection();
 }
 
 void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  const auto state = connection_api_->GetConnectionState();
+  const auto state = connection_manager_->GetConnectionState();
   VLOG(2) << __func__ << " : " << state;
   std::move(callback).Run(state);
 }
@@ -228,7 +242,7 @@ void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::vector<mojom::RegionPtr> regions;
   for (const auto& region :
-       connection_api_->GetRegionDataManager().GetRegions()) {
+       connection_manager_->GetRegionDataManager().GetRegions()) {
     regions.push_back(region.Clone());
   }
   std::move(callback).Run(std::move(regions));
@@ -239,16 +253,16 @@ void BraveVpnService::GetSelectedRegion(GetSelectedRegionCallback callback) {
   VLOG(2) << __func__;
 
   auto region_name =
-      connection_api_->GetRegionDataManager().GetSelectedRegion();
+      connection_manager_->GetRegionDataManager().GetSelectedRegion();
   std::move(callback).Run(GetRegionPtrWithNameFromRegionList(
-      region_name, connection_api_->GetRegionDataManager().GetRegions()));
+      region_name, connection_manager_->GetRegionDataManager().GetRegions()));
 }
 
 void BraveVpnService::SetSelectedRegion(mojom::RegionPtr region_ptr) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   VLOG(2) << __func__ << " : " << region_ptr->name_pretty;
-  connection_api_->SetSelectedRegion(region_ptr->name);
+  connection_manager_->SetSelectedRegion(region_ptr->name);
 }
 
 void BraveVpnService::GetProductUrls(GetProductUrlsCallback callback) {
@@ -275,11 +289,37 @@ void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
   std::move(callback).Run(brave_version, std::string(version_info::GetOSType()),
-                          connection_api_->GetHostname(), GetTimeZoneName());
+                          connection_manager_->GetHostname(),
+                          GetTimeZoneName());
 }
 
 void BraveVpnService::ResetConnectionState() {
-  connection_api_->ResetConnectionState();
+  connection_manager_->ResetConnectionState();
+}
+
+void BraveVpnService::EnableOnDemand(bool enable) {
+#if BUILDFLAG(IS_MAC)
+  local_prefs_->SetBoolean(prefs::kBraveVPNOnDemandEnabled, enable);
+
+  // If not connected, do nothing because on-demand bit will
+  // be applied when new connection starts. Whenever new connection starts,
+  // we create os vpn entry.
+  if (IsConnected()) {
+    VLOG(2) << __func__ << " : reconnect to apply on-demand config(" << enable
+            << "> to current connection";
+    Connect();
+  }
+#endif
+}
+
+void BraveVpnService::GetOnDemandState(GetOnDemandStateCallback callback) {
+#if BUILDFLAG(IS_MAC)
+  std::move(callback).Run(
+      /*available*/ true,
+      /*enabled*/ local_prefs_->GetBoolean(prefs::kBraveVPNOnDemandEnabled));
+#else
+  std::move(callback).Run(false, false);
+#endif
 }
 
 // NOTE(bsclifton): Desktop uses API to create a ticket.
@@ -294,7 +334,7 @@ void BraveVpnService::OnCreateSupportTicket(
 void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == prefs::kManagedBraveVPNDisabled) {
     if (IsBraveVPNDisabledByPolicy(profile_prefs_)) {
-      connection_api_->Disconnect();
+      connection_manager_->Disconnect();
     }
     return;
   }
@@ -303,7 +343,7 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
 void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     const std::string& env) {
   // Double check that we don't set session expired state for fresh user.
-  if (!connection_api_->GetRegionDataManager().IsRegionDataReady()) {
+  if (!connection_manager_->GetRegionDataManager().IsRegionDataReady()) {
     VLOG(1) << __func__ << " : Treat it as not purchased state for fresh user.";
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;
@@ -378,11 +418,7 @@ void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
 
   std::string response_json;
   base::JSONWriter::Write(response, &response_json);
-
-  std::string encoded_response_json;
-  base::Base64Encode(response_json, &encoded_response_json);
-
-  std::move(callback).Run(encoded_response_json);
+  std::move(callback).Run(base::Base64Encode(response_json));
 }
 #endif  // BUILDFLAG(IS_ANDROID)
 
@@ -393,8 +429,8 @@ void BraveVpnService::AddObserver(
 }
 
 mojom::PurchasedInfo BraveVpnService::GetPurchasedInfoSync() const {
-  return purchased_state_.value_or(mojom::PurchasedInfo(
-      mojom::PurchasedState::NOT_PURCHASED, absl::nullopt));
+  return purchased_state_.value_or(
+      mojom::PurchasedInfo(mojom::PurchasedState::NOT_PURCHASED, std::nullopt));
 }
 
 void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
@@ -417,7 +453,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
 #if BUILDFLAG(IS_ANDROID)
     SetPurchasedState(requested_env, PurchasedState::PURCHASED);
 #else
-    if (connection_api_->GetRegionDataManager().IsRegionDataReady()) {
+    if (connection_manager_->GetRegionDataManager().IsRegionDataReady()) {
       VLOG(2) << __func__
               << ": Set as a purchased user as we have valid subscriber "
                  "credentials & region data";
@@ -427,7 +463,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
       // TODO(simonhong): Make purchases state independent from region data.
       wait_region_data_ready_ = true;
     }
-    connection_api_->GetRegionDataManager().FetchRegionDataIfNeeded();
+    connection_manager_->GetRegionDataManager().FetchRegionDataIfNeeded();
 #endif
     return;
   }
@@ -481,7 +517,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
     return;
   }
 
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
 
   // Early return when summary is invalid or it's empty dict.
@@ -534,7 +570,8 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   auto env = skus::GetEnvironmentForDomain(domain);
   // Credential is returned in cookie format.
   net::CookieInclusionStatus status;
-  net::ParsedCookie credential_cookie(credential_as_cookie, &status);
+  net::ParsedCookie credential_cookie(credential_as_cookie,
+                                      /*block_truncated=*/true, &status);
   // TODO(bsclifton): have a better check / logging.
   // should these failed states be considered NOT_PURCHASED?
   // or maybe it can be considered FAILED status?
@@ -564,8 +601,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
       net::cookie_util::ParseCookieExpirationTime(credential_cookie.Expires());
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(
-      encoded_credential.data(), encoded_credential.size(),
-      url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
+      encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
   std::string credential;
   base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
   if (credential.empty()) {
@@ -647,12 +683,12 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 #if BUILDFLAG(IS_ANDROID)
   SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
 #else
-  if (connection_api_->GetRegionDataManager().IsRegionDataReady()) {
+  if (connection_manager_->GetRegionDataManager().IsRegionDataReady()) {
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
   } else {
     wait_region_data_ready_ = true;
   }
-  connection_api_->GetRegionDataManager().FetchRegionDataIfNeeded();
+  connection_manager_->GetRegionDataManager().FetchRegionDataIfNeeded();
 #endif
 }
 
@@ -681,7 +717,7 @@ void BraveVpnService::RefreshSubscriberCredential() {
   ReloadPurchasedState();
 }
 
-// TODO(simonhong): Should move p3a to BraveVPNOSConnectionAPI?
+// TODO(simonhong): Should move p3a to BraveVPNConnectionManager?
 void BraveVpnService::InitP3A() {
   p3a_timer_.Start(FROM_HERE, base::Hours(kP3AIntervalHours), this,
                    &BraveVpnService::OnP3AInterval);
@@ -711,11 +747,12 @@ void BraveVpnService::RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
     return;
   }
   base::Time session_start_time =
-      base::Time::FromJsTime(static_cast<double>(session_start_time_ms))
+      base::Time::FromMillisecondsSinceUnixEpoch(
+          static_cast<double>(session_start_time_ms))
           .LocalMidnight();
-  base::Time session_end_time =
-      base::Time::FromJsTime(static_cast<double>(session_end_time_ms))
-          .LocalMidnight();
+  base::Time session_end_time = base::Time::FromMillisecondsSinceUnixEpoch(
+                                    static_cast<double>(session_end_time_ms))
+                                    .LocalMidnight();
   for (base::Time day = session_start_time; day <= session_end_time;
        day += base::Days(1)) {
     bool is_last_day = day == session_end_time;
@@ -744,7 +781,7 @@ void BraveVpnService::OnP3AInterval() {
 void BraveVpnService::SetPurchasedState(
     const std::string& env,
     PurchasedState state,
-    const absl::optional<std::string>& description) {
+    const std::optional<std::string>& description) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (GetPurchasedInfoSync().state == state || env != GetCurrentEnvironment()) {
     return;
@@ -757,8 +794,12 @@ void BraveVpnService::SetPurchasedState(
     obs->OnPurchasedStateChanged(state, description);
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (state == PurchasedState::PURCHASED)
-    connection_api_->CheckConnection();
+  if (state == PurchasedState::PURCHASED) {
+    connection_manager_->CheckConnection();
+
+    // Some platform needs to install services to run vpn.
+    connection_manager_->MaybeInstallSystemServices();
+  }
 #endif
 }
 

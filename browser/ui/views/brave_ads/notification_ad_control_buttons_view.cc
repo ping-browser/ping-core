@@ -55,7 +55,7 @@ void NotificationAdControlButtonsView::UpdateContent() {
   UpdateInfoButton();
   UpdateCloseButton();
 
-  Layout();
+  DeprecatedLayoutImmediately();
   SchedulePaint();
 }
 
@@ -107,16 +107,18 @@ void NotificationAdControlButtonsView::UpdateCloseButton() {
 
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 
-  const gfx::ImageSkia image_skia = gfx::CreateVectorIcon(
-      kBraveAdsCloseButtonIcon, kCloseButtonIconDipSize,
-      should_use_dark_colors ? kDarkModeCloseButtonIconColor
-                             : kLightModeCloseButtonIconColor);
-  close_button_->SetImage(views::Button::STATE_NORMAL, image_skia);
+  close_button_->SetImageModel(
+      views::Button::STATE_NORMAL,
+      ui::ImageModel::FromVectorIcon(kBraveAdsCloseButtonIcon,
+                                     should_use_dark_colors
+                                         ? kDarkModeCloseButtonIconColor
+                                         : kLightModeCloseButtonIconColor,
+                                     kCloseButtonIconDipSize));
 
   close_button_->AdjustBorderInsetToFitHeight(kMinimumButtonHeight);
 }
 
-BEGIN_METADATA(NotificationAdControlButtonsView, views::View)
+BEGIN_METADATA(NotificationAdControlButtonsView)
 END_METADATA
 
 }  // namespace brave_ads

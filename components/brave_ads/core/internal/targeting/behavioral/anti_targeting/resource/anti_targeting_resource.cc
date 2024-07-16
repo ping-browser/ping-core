@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resources_util_impl.h"
@@ -30,11 +30,27 @@ bool DoesRequireResource() {
 }  // namespace
 
 AntiTargetingResource::AntiTargetingResource() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 AntiTargetingResource::~AntiTargetingResource() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
+}
+
+AntiTargetingSiteList AntiTargetingResource::GetSites(
+    const std::string& creative_set_id) const {
+  if (!anti_targeting_) {
+    return {};
+  }
+
+  const auto iter = anti_targeting_->creative_sets.find(creative_set_id);
+  if (iter == anti_targeting_->creative_sets.cend()) {
+    return {};
+  }
+
+  const auto& [_, sites] = *iter;
+
+  return sites;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -121,6 +137,17 @@ void AntiTargetingResource::OnNotifyDidUpdateResourceComponent(
   manifest_version_ = manifest_version;
 
   MaybeLoad();
+}
+
+void AntiTargetingResource::OnNotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  if (!IsValidCountryComponentId(id)) {
+    return;
+  }
+
+  manifest_version_.reset();
+
+  Reset();
 }
 
 }  // namespace brave_ads

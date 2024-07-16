@@ -41,6 +41,7 @@
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 
 namespace {
 
@@ -299,7 +300,7 @@ void IpfsImportController::OnImportCompleted(const ipfs::ImportedData& data) {
     content::OpenURLParams params(url, content::Referrer(),
                                   WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                   ui::PAGE_TRANSITION_LINK, false);
-    web_contents_->OpenURL(params);
+    web_contents_->OpenURL(params, /*navigation_handle_callback=*/{});
   }
 }
 
@@ -315,15 +316,15 @@ void IpfsImportController::PushNotification(const std::u16string& title,
                            *notification, /*metadata=*/nullptr);
 }
 
-void IpfsImportController::FileSelected(const base::FilePath& path,
+void IpfsImportController::FileSelected(const ui::SelectedFileInfo& file,
                                         int index,
                                         void* params) {
   switch (dialog_type_) {
     case ui::SelectFileDialog::SELECT_OPEN_FILE:
-      ImportFileToIpfs(path, dialog_key_);
+      ImportFileToIpfs(file.path(), dialog_key_);
       break;
     case ui::SelectFileDialog::SELECT_EXISTING_FOLDER:
-      ImportDirectoryToIpfs(path, dialog_key_);
+      ImportDirectoryToIpfs(file.path(), dialog_key_);
       break;
     default:
       NOTREACHED() << "Only existing file or directory import supported";

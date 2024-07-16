@@ -13,7 +13,6 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
-#include "brave/browser/ui/views/bubble/brave_webui_bubble_manager.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -24,13 +23,17 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
+#include "ui/color/color_provider_manager.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/image/image.h"
@@ -65,8 +68,8 @@ class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
     auto* layout_provider = ChromeLayoutProvider::Get();
     DCHECK(layout_provider);
 
-    int radius = layout_provider->GetCornerRadiusMetric(
-        views::Emphasis::kMaximum, rect.size());
+    int radius = layout_provider->GetCornerRadiusMetric(views::Emphasis::kHigh,
+                                                        rect.size());
 
     SkPath path;
     path.addRoundRect(gfx::RectToSkRect(rect), radius, radius);
@@ -89,10 +92,11 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
  public:
   RewardsBadgeImageSource(const gfx::Size& size,
                           GetColorProviderCallback get_color_provider_callback)
-      : BraveIconWithBadgeImageSource(size,
-                                      std::move(get_color_provider_callback),
-                                      kBraveActionGraphicSize,
-                                      kBraveActionLeftMarginExtra) {}
+      : BraveIconWithBadgeImageSource(
+            size,
+            std::move(get_color_provider_callback),
+            GetLayoutConstant(LOCATION_BAR_TRAILING_ICON_SIZE),
+            kBraveActionLeftMarginExtra) {}
 
   void UseVerifiedIcon(bool verified_icon) {
     verified_icon_ = verified_icon;
@@ -112,13 +116,12 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
     // area. Expand the badge rectangle accordingly.
     gfx::Rect image_rect(badge_rect);
     gfx::Outsets outsets;
-    outsets.set_top(3);
     outsets.set_left(2);
-    outsets.set_right(1);
+    outsets.set_bottom(2);
     image_rect.Outset(outsets);
 
     gfx::RectF check_rect(image_rect);
-    check_rect.Inset(4);
+    check_rect.Inset(3);
     cc::PaintFlags check_flags;
     check_flags.setStyle(cc::PaintFlags::kFill_Style);
     check_flags.setColor(SK_ColorWHITE);
@@ -179,11 +182,12 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
           nullptr,
           false),
       browser_(browser),
-      bubble_manager_(std::make_unique<BraveWebUIBubbleManager<RewardsPanelUI>>(
+      bubble_manager_(WebUIBubbleManager::Create<RewardsPanelUI>(
           this,
           browser_->profile(),
           GURL(kBraveRewardsPanelURL),
-          IDS_BRAVE_UI_BRAVE_REWARDS)) {
+          IDS_BRAVE_UI_BRAVE_REWARDS,
+          /*force_load_on_create=*/false)) {
   DCHECK(browser_);
 
   SetButtonController(std::make_unique<views::MenuButtonController>(
@@ -191,14 +195,6 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
       base::BindRepeating(&BraveRewardsActionView::OnButtonPressed,
                           base::Unretained(this)),
       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this)));
-
-  views::HighlightPathGenerator::Install(
-      this, std::make_unique<ButtonHighlightPathGenerator>());
-
-  // The highlight opacity set by |ToolbarButton| is different that the default
-  // highlight opacity used by the other buttons in the actions container. Unset
-  // the highlight opacity to match.
-  views::InkDrop::Get(this)->SetHighlightOpacity({});
 
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   SetLayoutInsets(gfx::Insets(0));
@@ -214,6 +210,10 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       brave_rewards::prefs::kDeclaredGeo,
+      base::BindRepeating(&BraveRewardsActionView::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kTosVersion,
       base::BindRepeating(&BraveRewardsActionView::OnPreferencesChanged,
                           base::Unretained(this)));
 
@@ -253,8 +253,9 @@ void BraveRewardsActionView::Update() {
       text, brave::kBadgeTextColor, background_color));
   image_source->UseVerifiedIcon(background_color == kBadgeVerifiedBG);
 
-  SetImage(views::Button::STATE_NORMAL,
-           gfx::ImageSkia(std::move(image_source), preferred_size));
+  SetImageModel(views::Button::STATE_NORMAL,
+                ui::ImageModel::FromImageSkia(
+                    gfx::ImageSkia(std::move(image_source), preferred_size)));
 }
 
 void BraveRewardsActionView::ClosePanelForTesting() {
@@ -279,6 +280,26 @@ BraveRewardsActionView::CreateDefaultBorder() const {
   auto border = ToolbarButton::CreateDefaultBorder();
   border->set_insets(gfx::Insets::TLBR(0, 0, 0, 0));
   return border;
+}
+
+void BraveRewardsActionView::OnThemeChanged() {
+  ToolbarButton::OnThemeChanged();
+
+  // Replace toolbar button's ink drop effect as this button is not in toolbar.
+  const auto* const color_provider = GetColorProvider();
+  if (!color_provider) {
+    return;
+  }
+
+  // Apply same ink drop effect with location bar's other icon views.
+  auto* ink_drop = views::InkDrop::Get(this);
+  ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
+  ink_drop->SetVisibleOpacity(kOmniboxOpacitySelected);
+  ink_drop->SetHighlightOpacity(kOmniboxOpacityHovered);
+  ink_drop->SetBaseColor(color_provider->GetColor(kColorOmniboxText));
+
+  views::HighlightPathGenerator::Install(
+      this, std::make_unique<ButtonHighlightPathGenerator>());
 }
 
 void BraveRewardsActionView::OnWidgetDestroying(views::Widget* widget) {
@@ -337,11 +358,8 @@ void BraveRewardsActionView::OnNotificationDeleted(
 void BraveRewardsActionView::OnButtonPressed() {
   brave_rewards::RewardsService* rewards_service = GetRewardsService();
   if (rewards_service != nullptr) {
-    auto* prefs = browser_->profile()->GetPrefs();
-    if (!prefs->GetBoolean(brave_rewards::prefs::kEnabled)) {
-      rewards_service->GetP3AConversionMonitor()->RecordPanelTrigger(
-          ::brave_rewards::p3a::PanelTrigger::kToolbarButton);
-    }
+    rewards_service->GetP3AConversionMonitor()->RecordPanelTrigger(
+        ::brave_rewards::p3a::PanelTrigger::kToolbarButton);
   }
   // If we are opening the Rewards panel, use `RewardsPanelCoordinator` to open
   // it so that the panel arguments will be correctly set.
@@ -397,7 +415,8 @@ void BraveRewardsActionView::ToggleRewardsPanel() {
 gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
   // Since the BAT icon has color the actual color value here is not relevant,
   // but |CreateVectorIcon| requires one.
-  return gfx::CreateVectorIcon(kBatIcon, kBraveActionGraphicSize, kIconColor);
+  return gfx::CreateVectorIcon(
+      kBatIcon, GetLayoutConstant(LOCATION_BAR_TRAILING_ICON_SIZE), kIconColor);
 }
 
 std::pair<std::string, SkColor>
@@ -439,6 +458,14 @@ size_t BraveRewardsActionView::GetRewardsNotificationCount() {
   if (prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
       prefs->GetString(brave_rewards::prefs::kDeclaredGeo).empty()) {
     ++count;
+  }
+
+  // Increment the notification count if the user needs to accept an updated
+  // terms of service.
+  if (auto* service = GetRewardsService()) {
+    if (service->IsTermsOfServiceUpdateRequired()) {
+      ++count;
+    }
   }
 
   return count;
@@ -489,3 +516,6 @@ void BraveRewardsActionView::UpdateTabHelper(
   OnPublisherForTabUpdated(tab_helper_ ? tab_helper_->GetPublisherIdForTab()
                                        : "");
 }
+
+BEGIN_METADATA(BraveRewardsActionView)
+END_METADATA

@@ -1,8 +1,8 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index cece9b840483a8e8fae0ce57112226dd657e4132..8d8c7cad42d480a240df4df777ed3f40406b212f 100644
+index e889d5a42a3d0142837c1b3b30d9f03adafa937f..b03f0777022837c5dbfa30e3da38b781766cfe82 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
-@@ -50,6 +50,7 @@ grit("components_strings") {
+@@ -52,6 +52,7 @@ grit("components_strings") {
    if (is_android) {
      outputs += android_components_strings_java_resources
    }
@@ -10,12 +10,3 @@ index cece9b840483a8e8fae0ce57112226dd657e4132..8d8c7cad42d480a240df4df777ed3f40
  }
  
  if (is_android) {
-@@ -62,7 +63,7 @@ if (is_android) {
- }
- 
- grit("components_chromium_strings") {
--  source = "../components_chromium_strings.grd"
-+  source = "../components_${branding_path_component}_strings.grd"
-   outputs = [ "grit/components_chromium_strings.h" ]
-   foreach(locale, all_chrome_locales) {
-     outputs += [ "components_chromium_strings_$locale.pak" ]

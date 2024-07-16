@@ -9,7 +9,8 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 
 // POST /v1/orders/{order_id}/transactions/gemini
 //
@@ -42,17 +43,17 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace payment {
 
 using PostTransactionGeminiCallback =
-    std::function<void(const mojom::Result result)>;
+    base::OnceCallback<void(const mojom::Result result)>;
 
 class PostTransactionGemini {
  public:
-  explicit PostTransactionGemini(RewardsEngineImpl& engine);
+  explicit PostTransactionGemini(RewardsEngine& engine);
   ~PostTransactionGemini();
 
   void Request(const mojom::SKUTransaction& transaction,
@@ -65,10 +66,10 @@ class PostTransactionGemini {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 PostTransactionGeminiCallback callback);
+  void OnRequest(PostTransactionGeminiCallback callback,
+                 mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace payment

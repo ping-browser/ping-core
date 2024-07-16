@@ -15,20 +15,24 @@
 
 namespace component_updater {
 
+bool ComponentInstallerPolicy::IsBraveComponent() const {
+  return false;
+}
+
 void ComponentInstaller::Register(ComponentUpdateService* cus,
-                                  base::OnceClosure callback,
-                                  base::TaskPriority task_priority) {
+                                  base::OnceClosure callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(cus);
   Register(base::BindOnce(&ComponentUpdateService::RegisterComponent,
                           base::Unretained(cus)),
-           std::move(callback), task_priority);
+           std::move(callback));
 }
 
-void ComponentInstaller::Register(RegisterCallback register_callback,
-                                  base::OnceClosure callback,
-                                  base::TaskPriority task_priority,
-                                  const base::Version& registered_version) {
+void ComponentInstaller::Register(
+    RegisterCallback register_callback,
+    base::OnceClosure callback,
+    const base::Version& registered_version,
+    const base::Version& max_previous_product_version) {
   static std::string disallowed_components[] = {
     "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
     "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
@@ -56,7 +60,11 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
     }
   }
   Register_ChromiumImpl(std::move(register_callback), std::move(callback),
-                        task_priority, registered_version);
+                        registered_version, max_previous_product_version);
+}
+
+bool ComponentInstaller::IsBraveComponent() const {
+  return installer_policy_->IsBraveComponent();
 }
 
 }  // namespace component_updater

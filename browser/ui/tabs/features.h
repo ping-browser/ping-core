@@ -9,9 +9,6 @@
 #include "base/feature_list.h"
 namespace tabs::features {
 
-BASE_DECLARE_FEATURE(kBraveVerticalTabs);
-BASE_DECLARE_FEATURE(kBraveVerticalTabsStickyPinnedTabs);
-
 #if BUILDFLAG(IS_LINUX)
 // This flag controls the behavior of browser_default::kScrollEventChangesTab,
 // which is true only when it's Linux.
@@ -19,6 +16,14 @@ BASE_DECLARE_FEATURE(kBraveChangeActiveTabOnScrollEvent);
 #endif  // BUILDFLAG(IS_LINUX)
 
 BASE_DECLARE_FEATURE(kBraveSharedPinnedTabs);
+
+BASE_DECLARE_FEATURE(kBraveHorizontalTabsUpdate);
+
+BASE_DECLARE_FEATURE(kBraveVerticalTabScrollBar);
+
+BASE_DECLARE_FEATURE(kBraveSplitView);
+
+bool HorizontalTabsUpdateEnabled();
 
 }  // namespace tabs::features
 

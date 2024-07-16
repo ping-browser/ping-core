@@ -15,19 +15,31 @@
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-constexpr char kPrefName[] = "brave.weekly_test";
+constexpr char kListPrefName[] = "brave.weekly_test";
+constexpr char kDictPrefName[] = "brave.weekly_dict_test";
+constexpr char kDictKey1[] = "key1";
+constexpr char kDictKey2[] = "key2";
 
 class TimePeriodStorageTest : public ::testing::Test {
  public:
-  TimePeriodStorageTest() : clock_(new base::SimpleTestClock) {
-    pref_service_.registry()->RegisterListPref(kPrefName);
-
-    clock_->SetNow(base::Time::Now());
+  TimePeriodStorageTest() {
+    pref_service_.registry()->RegisterListPref(kListPrefName);
+    pref_service_.registry()->RegisterDictionaryPref(kDictPrefName);
   }
 
-  void InitStorage(size_t days) {
+  void InitStorage(size_t days, const char* dict_key = nullptr) {
+    std::unique_ptr<base::SimpleTestClock> clock =
+        std::make_unique<base::SimpleTestClock>();
+
+    base::Time future_mock_time;
+    // Set to fixed date to avoid DST related issues
+    CHECK(base::Time::FromString("2050-01-04", &future_mock_time));
+    clock->SetNow(future_mock_time.LocalMidnight() - base::Hours(4));
+    clock_ = clock.get();
+
+    const char* pref_name = dict_key ? kDictPrefName : kListPrefName;
     state_ = std::make_unique<TimePeriodStorage>(
-        &pref_service_, kPrefName, days, std::unique_ptr<base::Clock>(clock_));
+        &pref_service_, pref_name, dict_key, days, std::move(clock));
   }
 
  protected:
@@ -84,8 +96,6 @@ TEST_F(TimePeriodStorageTest, GetSumInCustomPeriod) {
   base::TimeDelta start_time_delta = base::Days(9) + base::Hours(1);
   base::TimeDelta end_time_delta = base::Days(4) - base::Hours(1);
   uint64_t saving = 10000;
-  // Move clock right before midnight daily cutoff
-  clock_->SetNow(base::Time::Now().LocalMidnight() - base::Hours(4));
 
   InitStorage(14);
   state_->AddDelta(saving);
@@ -285,4 +295,18 @@ TEST_F(TimePeriodStorageTest, ReplaceIfGreaterForDate) {
   // should store, but should not be in sum because it's too old
   state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(31), 10);
   EXPECT_EQ(state_->GetPeriodSum(), 11U);
+}
+
+TEST_F(TimePeriodStorageTest, SegregatedListsInDictionary) {
+  InitStorage(7, kDictKey1);
+  state_->AddDelta(55);
+
+  InitStorage(7, kDictKey2);
+  state_->AddDelta(33);
+
+  InitStorage(7, kDictKey1);
+  EXPECT_EQ(state_->GetPeriodSum(), 55U);
+
+  InitStorage(7, kDictKey2);
+  EXPECT_EQ(state_->GetPeriodSum(), 33U);
 }

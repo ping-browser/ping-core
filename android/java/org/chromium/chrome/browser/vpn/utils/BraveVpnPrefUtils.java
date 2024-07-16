@@ -7,11 +7,11 @@
 
 package org.chromium.chrome.browser.vpn.utils;
 
-import android.content.SharedPreferences;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -20,7 +20,6 @@ import java.util.Set;
 
 public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_CALLOUT = "brave_vpn_callout";
-    private static final String PREF_BRAVE_VPN_CALLOUT_SETTINGS = "brave_vpn_callout_settings";
     private static final String PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE =
             "brave_vpn_subscription_purchase";
     private static final String PREF_BRAVE_VPN_PAYMENT_STATE = "brave_vpn_payment_state";
@@ -31,12 +30,14 @@ public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_PURCHASE_EXPIRY = "brave_vpn_purchase_expiry";
     private static final String PREF_BRAVE_VPN_SERVER_REGIONS = "brave_vpn_server_regions";
     private static final String PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION = "server_change_location";
+    private static final String PREF_BRAVE_VPN_SERVER_ISO_CODE = "server_iso_code";
+    private static final String PREF_BRAVE_VPN_SERVER_NAME_PRETTY = "server_name_pretty";
+
     private static final String PREF_BRAVE_VPN_RESET_CONFIGURATION =
             "brave_vpn_reset_configuration";
     private static final String PREF_EXCLUDED_PACKAGES = "excluded_packages";
 
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
-    public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
     public static final String PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING =
             "brave_vpn_link_subscription_on_staging";
     public static final String PREF_BRAVE_VPN_START = "brave_vpn_start";
@@ -51,232 +52,209 @@ public class BraveVpnPrefUtils {
     public static final String PREF_SESSION_START_TIME = "brave_vpn_session_start_time";
     public static final String PREF_SESSION_END_TIME = "brave_vpn_session_end_time";
     private static final String PREF_LINK_SUBSCRIPTION_DIALOG = "link_subscription_dialog";
+    private static final String PREF_VPN_ISO_CODE_UPGRADE = "vpn_iso_code_upgrade";
 
-    private static final SharedPreferences mSharedPreferences =
-            ContextUtils.getAppSharedPreferences();
-
-    public static boolean isBraveVpnFeatureEnabled() {
-        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_FEATURE, false);
+    public static boolean isIsoCodeUpgradeDone() {
+        return ChromeSharedPreferences.getInstance().readBoolean(PREF_VPN_ISO_CODE_UPGRADE, false);
     }
 
-    public static void setBraveVpnFeatureEnabled(boolean newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_FEATURE, newValue);
-        sharedPreferencesEditor.apply();
+    public static void setIsoCodeUpgrade(boolean newValue) {
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_VPN_ISO_CODE_UPGRADE, newValue);
     }
 
     public static boolean isLinkSubscriptionOnStaging() {
-        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, false);
     }
 
     public static void setLinkSubscriptionOnStaging(boolean newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, newValue);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, newValue);
     }
 
     public static boolean isLinkSubscriptionDialogShown() {
-        return mSharedPreferences.getBoolean(PREF_LINK_SUBSCRIPTION_DIALOG, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_LINK_SUBSCRIPTION_DIALOG, false);
     }
 
     public static void setLinkSubscriptionDialogShown(boolean newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_LINK_SUBSCRIPTION_DIALOG, newValue);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_LINK_SUBSCRIPTION_DIALOG, newValue);
     }
 
     public static boolean shouldShowCallout() {
-        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_CALLOUT, true);
+        return ChromeSharedPreferences.getInstance().readBoolean(PREF_BRAVE_VPN_CALLOUT, true);
     }
 
     public static void setCallout(boolean newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_CALLOUT, newValue);
-        sharedPreferencesEditor.apply();
-    }
-
-    public static boolean shouldShowCalloutSettings() {
-        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, true);
-    }
-
-    public static void setCalloutSettings(boolean newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, newValue);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_BRAVE_VPN_CALLOUT, newValue);
     }
 
     public static boolean isSubscriptionPurchase() {
-        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false);
     }
 
     public static void setSubscriptionPurchase(boolean newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, newValue);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, newValue);
     }
 
     public static void setPaymentState(int newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putInt(PREF_BRAVE_VPN_PAYMENT_STATE, newValue);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeInt(PREF_BRAVE_VPN_PAYMENT_STATE, newValue);
     }
 
     public static boolean isTrialSubscription() {
-        return mSharedPreferences.getInt(PREF_BRAVE_VPN_PAYMENT_STATE, 0) == 2;
+        return ChromeSharedPreferences.getInstance().readInt(PREF_BRAVE_VPN_PAYMENT_STATE, 0) == 2;
     }
 
     public static boolean isResetConfiguration() {
-        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_RESET_CONFIGURATION, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(PREF_BRAVE_VPN_RESET_CONFIGURATION, false);
     }
 
     public static void setResetConfiguration(boolean newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_RESET_CONFIGURATION, newValue);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(PREF_BRAVE_VPN_RESET_CONFIGURATION, newValue);
     }
 
     public static void setHostname(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_HOSTNAME, value);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_HOSTNAME, value);
     }
 
     public static String getHostname() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_HOSTNAME, "");
+        return ChromeSharedPreferences.getInstance().readString(PREF_BRAVE_VPN_HOSTNAME, "");
     }
 
     public static void setHostnameDisplay(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_HOSTNAME_DISPLAY, value);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_HOSTNAME_DISPLAY, value);
     }
 
     public static String getHostnameDisplay() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_HOSTNAME_DISPLAY, "");
+        return ChromeSharedPreferences.getInstance()
+                .readString(PREF_BRAVE_VPN_HOSTNAME_DISPLAY, "");
     }
 
     public static void setPurchaseToken(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_PURCHASE_TOKEN, value);
-        sharedPreferencesEditor.apply();
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_PURCHASE_TOKEN, value);
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setString(BravePref.BRAVE_VPN_PURCHASE_TOKEN_ANDROID, value);
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
-                .setString(BravePref.BRAVE_VPN_PACKAGE_ANDROID,
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                .setString(
+                        BravePref.BRAVE_VPN_PACKAGE_ANDROID,
                         ContextUtils.getApplicationContext().getPackageName());
     }
 
     public static String getPurchaseToken() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_PURCHASE_TOKEN, "");
+        return ChromeSharedPreferences.getInstance().readString(PREF_BRAVE_VPN_PURCHASE_TOKEN, "");
     }
 
     public static void setProductId(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_PRODUCT_ID, value);
-        sharedPreferencesEditor.apply();
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_PRODUCT_ID, value);
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setString(BravePref.BRAVE_VPN_PRODUCT_ID_ANDROID, value);
     }
 
     public static String getProductId() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_PRODUCT_ID, "");
+        return ChromeSharedPreferences.getInstance().readString(PREF_BRAVE_VPN_PRODUCT_ID, "");
     }
 
     public static void setPurchaseExpiry(Long value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_BRAVE_VPN_PURCHASE_EXPIRY, value);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeLong(PREF_BRAVE_VPN_PURCHASE_EXPIRY, value);
     }
 
     public static Long getPurchaseExpiry() {
-        return mSharedPreferences.getLong(PREF_BRAVE_VPN_PURCHASE_EXPIRY, 0);
-    }
-
-    public static void setServerRegions(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_SERVER_REGIONS, value);
-        sharedPreferencesEditor.apply();
-    }
-
-    public static String getServerRegions() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_SERVER_REGIONS, "");
+        return ChromeSharedPreferences.getInstance().readLong(PREF_BRAVE_VPN_PURCHASE_EXPIRY, 0);
     }
 
     public static String getServerRegion() {
-        return mSharedPreferences.getString(
-                PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION, PREF_BRAVE_VPN_AUTOMATIC);
+        return ChromeSharedPreferences.getInstance()
+                .readString(PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION, PREF_BRAVE_VPN_AUTOMATIC);
     }
 
-    public static void setServerRegion(String newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION, newValue);
-        sharedPreferencesEditor.apply();
+    private static void setServerRegion(String newValue) {
+        ChromeSharedPreferences.getInstance()
+                .writeString(PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION, newValue);
+    }
+
+    public static String getServerIsoCode() {
+        String code =
+                ChromeSharedPreferences.getInstance()
+                        .readString(PREF_BRAVE_VPN_SERVER_ISO_CODE, "");
+        return code;
+    }
+
+    public static void setServerIsoCode(String newValue) {
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_SERVER_ISO_CODE, newValue);
+    }
+
+    public static String getServerNamePretty() {
+        return ChromeSharedPreferences.getInstance()
+                .readString(PREF_BRAVE_VPN_SERVER_NAME_PRETTY, "");
+    }
+
+    public static void setServerNamePretty(String newValue) {
+        ChromeSharedPreferences.getInstance()
+                .writeString(PREF_BRAVE_VPN_SERVER_NAME_PRETTY, newValue);
     }
 
     public static void setApiAuthToken(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_API_AUTH_TOKEN, value);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_API_AUTH_TOKEN, value);
     }
 
     public static String getApiAuthToken() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_API_AUTH_TOKEN, "");
+        return ChromeSharedPreferences.getInstance().readString(PREF_BRAVE_VPN_API_AUTH_TOKEN, "");
     }
 
     public static void setSubscriberCredential(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_SUBSCRIBER_CREDENTIAL, value);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeString(PREF_BRAVE_VPN_SUBSCRIBER_CREDENTIAL, value);
     }
 
     public static String getSubscriberCredential() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_SUBSCRIBER_CREDENTIAL, "");
+        return ChromeSharedPreferences.getInstance()
+                .readString(PREF_BRAVE_VPN_SUBSCRIBER_CREDENTIAL, "");
     }
 
     public static void setClientId(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_CLIENT_ID, value);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_CLIENT_ID, value);
     }
 
     public static String getClientId() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_CLIENT_ID, "");
+        return ChromeSharedPreferences.getInstance().readString(PREF_BRAVE_VPN_CLIENT_ID, "");
     }
 
     public static void setIpAddress(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_IP_ADDRESS, value);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_IP_ADDRESS, value);
     }
 
     public static String getIpAddress() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_IP_ADDRESS, "");
+        return ChromeSharedPreferences.getInstance().readString(PREF_BRAVE_VPN_IP_ADDRESS, "");
     }
 
     public static void setServerPublicKey(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_SERVER_PUBLIC_KEY, value);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_SERVER_PUBLIC_KEY, value);
     }
 
     public static String getServerPublicKey() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_SERVER_PUBLIC_KEY, "");
+        return ChromeSharedPreferences.getInstance()
+                .readString(PREF_BRAVE_VPN_SERVER_PUBLIC_KEY, "");
     }
 
     public static void setClientPrivateKey(String value) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY, value);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY, value);
     }
 
     public static String getClientPrivateKey() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY, "");
+        return ChromeSharedPreferences.getInstance()
+                .readString(PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY, "");
     }
 
     public static void setPrefModel(BraveVpnPrefModel braveVpnPrefModel) {
         setHostname(braveVpnPrefModel.getHostname());
         setHostnameDisplay(braveVpnPrefModel.getHostnameDisplay());
-        setServerRegion(braveVpnPrefModel.getServerRegion());
+        setServerRegion(braveVpnPrefModel.getServerRegion().getName());
+        setServerIsoCode(braveVpnPrefModel.getServerRegion().getCountryIsoCode());
+        setServerNamePretty(braveVpnPrefModel.getServerRegion().getNamePretty());
         setPurchaseToken(braveVpnPrefModel.getPurchaseToken());
         setProductId(braveVpnPrefModel.getProductId());
         setSubscriberCredential(braveVpnPrefModel.getSubscriberCredential());
@@ -286,32 +264,27 @@ public class BraveVpnPrefUtils {
     }
 
     public static Set<String> getExcludedPackages() {
-        return mSharedPreferences.getStringSet(PREF_EXCLUDED_PACKAGES, Collections.emptySet());
+        return ChromeSharedPreferences.getInstance()
+                .readStringSet(PREF_EXCLUDED_PACKAGES, Collections.emptySet());
     }
 
     public static void setExcludedPackages(Set<String> packages) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putStringSet(PREF_EXCLUDED_PACKAGES, packages);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeStringSet(PREF_EXCLUDED_PACKAGES, packages);
     }
 
     public static void setSessionEndTimeMs(long timeMs) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_SESSION_END_TIME, timeMs);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeLong(PREF_SESSION_END_TIME, timeMs);
     }
 
     public static long getSessionEndTimeMs() {
-        return mSharedPreferences.getLong(PREF_SESSION_END_TIME, -1);
+        return ChromeSharedPreferences.getInstance().readLong(PREF_SESSION_END_TIME, -1);
     }
 
     public static void setSessionStartTimeMs(long timeMs) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_SESSION_START_TIME, timeMs);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeLong(PREF_SESSION_START_TIME, timeMs);
     }
 
     public static long getSessionStartTimeMs() {
-        return mSharedPreferences.getLong(PREF_SESSION_START_TIME, -1);
+        return ChromeSharedPreferences.getInstance().readLong(PREF_SESSION_START_TIME, -1);
     }
 }

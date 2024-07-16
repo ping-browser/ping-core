@@ -12,13 +12,67 @@ const FlagIcon = styled(Icon)`
 `
 
 interface Props {
-  countryCode?: string
+  countryCode: string
 }
 
-const COUNTRIES = ['AU', 'BR', 'CA', 'CH', 'DE', 'ES', 'FR', 'GB', 'IT', 'JP', 'MX', 'NL', 'SG', 'US']
+// when adding a new entry here, please also add SVG for the entry into
+// `brave/ui/webui/resources/BUILD.gn` (under `enable_brave_vpn_panel`)
+const COUNTRIES = [
+    'AL',
+    'AR',
+    'AT',
+    'AU',
+    'BE',
+    'BG',
+    'BR',
+    'CA',
+    'CH',
+    'CL',
+    'CO',
+    'CR',
+    'CY',
+    'CZ',
+    'DE',
+    'DK',
+    'EE',
+    'ES',
+    'FI',
+    'FR',
+    'GB',
+    'GR',
+    'HK',
+    'HR',
+    'HU',
+    'ID',
+    'IE',
+    'IS',
+    'IT',
+    'JP',
+    'KR',
+    'LU',
+    'MX',
+    'MY',
+    'NL',
+    'NO',
+    'NZ',
+    'PA',
+    'PE',
+    'PL',
+    'PT',
+    'PY',
+    'RO',
+    'SE',
+    'SG',
+    'TH',
+    'TR',
+    'UA',
+    'US',
+    'UY',
+    'ZA'
+]
 
 function Flag(props: Props) {
-  return COUNTRIES.includes(props?.countryCode ?? '') ?
+  return COUNTRIES.includes(props.countryCode) ?
     <FlagIcon name={`country-${props.countryCode?.toLocaleLowerCase()}`} /> : null
 }
 

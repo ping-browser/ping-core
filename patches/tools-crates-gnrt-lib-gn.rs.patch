@@ -1,0 +1,23 @@
+diff --git a/tools/crates/gnrt/lib/gn.rs b/tools/crates/gnrt/lib/gn.rs
+index cc971d5e575565bc41c9a4c8d223ef3e99851b55..a8eecc2a07501194143ebfd990c3d586d6b90670 100644
+--- a/tools/crates/gnrt/lib/gn.rs
++++ b/tools/crates/gnrt/lib/gn.rs
+@@ -201,8 +201,9 @@ pub fn build_rule_from_std_dep(
+         let mut aliases = Vec::new();
+         for dep in &normal_deps {
+             let target_name = NormalizedName::from_crate_name(&dep.package_name).to_string();
++            let epoch = Epoch::from_version(&dep.version).to_string();
+             if target_name != dep.use_name {
+-                aliases.push((dep.use_name.clone(), format!(":{target_name}")));
++                aliases.push((dep.use_name.clone(), format!("{target_name}/{epoch}")));
+             }
+         }
+         aliases.sort_unstable();
+@@ -555,6 +556,7 @@ static TRIPLE_TO_GN_CONDITION: &[(&str, &str)] = &[
+ static TARGET_OS_TO_GN_CONDITION: &[(&str, &str)] = &[
+     ("android", "is_android"),
+     ("darwin", "is_mac"),
++    ("macos", "is_mac"),
+     ("fuchsia", "is_fuchsia"),
+     ("ios", "is_ios"),
+     ("linux", "is_linux || is_chromeos"),

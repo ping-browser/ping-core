@@ -10,6 +10,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "content/public/browser/browser_context.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "url/gurl.h"
@@ -20,12 +21,13 @@ struct ContextMenuParams;
 
 namespace {
 
-constexpr const gfx::Size kToolbarSize{870, 40};
+constexpr gfx::Size kToolbarSize{870, 40};
 
 class Toolbar : public views::WebView {
  public:
   explicit Toolbar(content::BrowserContext* browser_context)
       : views::WebView(browser_context) {
+    set_allow_accelerators(true);
     LoadInitialURL(GURL(kSpeedreaderPanelURL));
   }
 
@@ -43,9 +45,6 @@ class Toolbar : public views::WebView {
 ReaderModeToolbarView::ReaderModeToolbarView(
     content::BrowserContext* browser_context) {
   SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
-  SetBorder(views::CreateThemedSolidSidedBorder(
-      gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
-
   toolbar_ = std::make_unique<Toolbar>(browser_context);
   AddChildView(toolbar_.get());
 }
@@ -71,3 +70,6 @@ void ReaderModeToolbarView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
 #endif
   toolbar_->SetBoundsRect(toolbar_bounds);
 }
+
+BEGIN_METADATA(ReaderModeToolbarView)
+END_METADATA

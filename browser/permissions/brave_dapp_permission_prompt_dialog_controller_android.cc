@@ -52,11 +52,12 @@ void BraveDappPermissionPromptDialogController::ShowDialog() {
 
 void BraveDappPermissionPromptDialogController::OnPrimaryButtonClicked(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobjectArray>& accounts) {
+    const base::android::JavaParamRef<jobjectArray>& accounts,
+    int permission_lifetime_option) {
   std::vector<std::string> allowedAccounts;
   base::android::AppendJavaStringArrayToStringVector(env, accounts,
                                                      &allowedAccounts);
-  delegate_->ConnectToSite(allowedAccounts);
+  delegate_->ConnectToSite(allowedAccounts, permission_lifetime_option);
 }
 
 void BraveDappPermissionPromptDialogController::OnNegativeButtonClicked(
@@ -91,7 +92,6 @@ BraveDappPermissionPromptDialogController::GetOrCreateJavaObject() {
   return java_object_ = Java_BraveDappPermissionPromptDialog_create(
              env, reinterpret_cast<intptr_t>(this),
              view_android->GetWindowAndroid()->GetJavaObject(),
-             web_contents_->GetJavaWebContents(),
              base::android::ConvertUTF8ToJavaString(
                  env, fav_icon_url.is_valid() ? fav_icon_url.spec() : ""),
              static_cast<int32_t>(coin_type_));

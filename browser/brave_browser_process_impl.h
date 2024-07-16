@@ -33,7 +33,6 @@ class LocalDataFilesService;
 
 namespace brave_shields {
 class AdBlockService;
-class HTTPSEverywhereService;
 }  // namespace brave_shields
 
 namespace https_upgrade_exceptions {
@@ -126,7 +125,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;
-  brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
   brave_component_updater::LocalDataFilesService* local_data_files_service()
       override;
 #if BUILDFLAG(ENABLE_TOR)
@@ -149,7 +147,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       override;
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
+  brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
 #endif
   brave::BraveFarblingService* brave_farbling_service() override;
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
@@ -176,6 +174,10 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_component_updater::BraveComponent::Delegate*
   brave_component_updater_delegate();
 
+  // Sequence checker must stay on top to avoid UaF issues when data members use
+  // `g_browser_process->profile_manager()`.
+  SEQUENCE_CHECKER(sequence_checker_);
+
   // local_data_files_service_ should always be first because it needs
   // to be destroyed last
   std::unique_ptr<brave_component_updater::LocalDataFilesService>
@@ -199,9 +201,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   std::unique_ptr<brave::URLSanitizerComponentInstaller>
       url_sanitizer_component_installer_;
-  bool created_https_everywhere_service_ = false;
-  std::unique_ptr<brave_shields::HTTPSEverywhereService>
-      https_everywhere_service_;
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
 #if BUILDFLAG(ENABLE_TOR)
@@ -224,15 +223,13 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI>
-      brave_vpn_os_connection_api_;
+  std::unique_ptr<brave_vpn::BraveVPNConnectionManager>
+      brave_vpn_connection_manager_;
 #endif
 
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
   std::unique_ptr<misc_metrics::ProcessMiscMetrics> process_misc_metrics_;
   std::unique_ptr<brave_ads::BraveStatsHelper> brave_stats_helper_;
-
-  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_

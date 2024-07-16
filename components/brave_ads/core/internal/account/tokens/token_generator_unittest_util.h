@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_TOKEN_GENERATOR_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_TOKEN_GENERATOR_UNITTEST_UTIL_H_
 
+#include <cstddef>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
@@ -16,9 +17,13 @@ namespace cbr {
 class Token;
 }  // namespace cbr
 
+namespace test {
+
 void MockTokenGenerator(const TokenGeneratorMock& mock, size_t count);
 
-std::vector<cbr::Token> BuildTokensForTesting(size_t count);
+std::vector<cbr::Token> BuildTokens(size_t count);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

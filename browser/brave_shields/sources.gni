@@ -14,8 +14,6 @@ brave_browser_brave_shields_sources = [
   "//brave/browser/brave_shields/cookie_list_opt_in_service_factory.h",
   "//brave/browser/brave_shields/filter_list_service_factory.cc",
   "//brave/browser/brave_shields/filter_list_service_factory.h",
-  "//brave/browser/brave_shields/https_everywhere_component_installer.cc",
-  "//brave/browser/brave_shields/https_everywhere_component_installer.h",
 ]
 
 brave_browser_brave_shields_deps = [
@@ -23,8 +21,8 @@ brave_browser_brave_shields_deps = [
   "//brave/browser:browser_process",
   "//brave/common",
   "//brave/components/brave_perf_predictor/browser",
-  "//brave/components/brave_shields/browser",
-  "//brave/components/brave_shields/common",
+  "//brave/components/brave_shields/content/browser",
+  "//brave/components/brave_shields/core/common",
   "//brave/components/constants",
   "//chrome/browser/profiles:profile",
   "//chrome/common",
@@ -39,7 +37,6 @@ brave_browser_brave_shields_deps = [
 
 if (is_android) {
   brave_browser_brave_shields_sources += [
-    "//brave/browser/brave_shields/android/cookie_list_opt_in_service_factory_android.cc",
     "//brave/browser/brave_shields/android/filter_list_service_factory_android.cc",
     "//brave/browser/brave_shields/brave_shields_web_contents_observer_android.cc",
   ]

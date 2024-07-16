@@ -9,14 +9,14 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal::database {
 
 constexpr char kTableName[] = "external_transactions";
 
 DatabaseExternalTransactions::DatabaseExternalTransactions(
-    RewardsEngineImpl& engine)
+    RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseExternalTransactions::~DatabaseExternalTransactions() = default;
@@ -25,7 +25,7 @@ void DatabaseExternalTransactions::Insert(
     mojom::ExternalTransactionPtr external_transaction,
     ResultCallback callback) {
   if (!external_transaction) {
-    BLOG(0, "external_transaction is null!");
+    engine_->LogError(FROM_HERE) << "External_transaction is null";
     return std::move(callback).Run(mojom::Result::FAILED);
   }
 
@@ -45,7 +45,7 @@ void DatabaseExternalTransactions::Insert(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseExternalTransactions::OnInsert,
                      base::Unretained(this), std::move(callback)));
@@ -84,7 +84,7 @@ void DatabaseExternalTransactions::GetTransaction(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseExternalTransactions::OnGetTransaction,
                      base::Unretained(this), std::move(callback)));
@@ -95,7 +95,7 @@ void DatabaseExternalTransactions::OnGetTransaction(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Failed to get external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to get external transaction";
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
@@ -108,7 +108,7 @@ void DatabaseExternalTransactions::OnGetTransaction(
 
   DCHECK_EQ(records.size(), 1ull);
   if (records.size() != 1) {
-    BLOG(0, "Failed to get external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to get external transaction";
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
@@ -120,13 +120,13 @@ void DatabaseExternalTransactions::OnGetTransaction(
 
   if (transaction_id.empty() || contribution_id.empty() ||
       destination.empty() || amount.empty()) {
-    BLOG(0, "Failed to get external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to get external transaction";
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
 
   if (double value = 0.0; !base::StringToDouble(amount, &value)) {
-    BLOG(0, "Failed to get external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to get external transaction";
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kDatabaseError));
   }

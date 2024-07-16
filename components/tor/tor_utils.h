@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 #define BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 
+#include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -42,14 +44,16 @@ struct BridgesConfig {
   BridgesConfig& operator=(const BridgesConfig&) = delete;
 
   const std::vector<std::string>& GetBuiltinBridges() const;
+  void UpdateBuiltinBridges(const base::Value::Dict& dict);
 
-  static absl::optional<BridgesConfig> FromDict(const base::Value::Dict& dict);
-  static absl::optional<BridgesConfig> FromValue(const base::Value* v);
+  static std::optional<BridgesConfig> FromDict(const base::Value::Dict& dict);
+  static std::optional<BridgesConfig> FromValue(const base::Value* v);
   base::Value::Dict ToDict() const;
   base::Value ToValue() const;
 
   Usage use_bridges = Usage::kNotUsed;
   BuiltinType use_builtin = BuiltinType::kObfs4;
+  std::map<BuiltinType, std::vector<std::string>> builtin_bridges;
   std::vector<std::string> requested_bridges;
   std::vector<std::string> provided_bridges;
 };

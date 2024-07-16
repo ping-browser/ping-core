@@ -8,7 +8,10 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
+#include "build/build_config.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -19,18 +22,11 @@ namespace {
 
 // Stored as bip39 keywords (encrypted)
 const char kSyncV2Seed[] = "brave_sync_v2.seed";
-// Indicate whether migration has been done from v1 to v2
-const char kSyncV1Migrated[] = "brave_sync_v2.v1_migrated";
-// Indicate all meta info set in V1 has been stripped in
-// BraveBookmarkModelLoadedObserver
-const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
-// Has dismissed message about migration to sync v2
-const char kSyncV2MigrateNoticeDismissed[] =
-    "brave_sync_v2.migrate_notice_dismissed";
 const char kSyncFailedDecryptSeedNoticeDismissed[] =
     "brave_sync_v2.failed_decrypt_seed_notice_dismissed";
 const char kSyncAccountDeletedNoticePending[] =
     "brave_sync_v2.account_deleted_notice_pending";
+const char kSyncLeaveChainDetails[] = "brave_sync_v2.diag.leave_chain_details";
 
 // Deprecated
 // ============================================================================
@@ -61,24 +57,36 @@ const char kDuplicatedBookmarksRecovered[] =
     "brave_sync_duplicated_bookmarks_recovered";
 const char kDuplicatedBookmarksMigrateVersion[] =
     "brave_sync_duplicated_bookmarks_migrate_version";
+const char kSyncV1Migrated[] = "brave_sync_v2.v1_migrated";
+const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
+const char kSyncV2MigrateNoticeDismissed[] =
+    "brave_sync_v2.migrate_notice_dismissed";
 // ============================================================================
+
+constexpr size_t kLeaveChainDetailsMaxLen = 500;
+
 }  // namespace
 
-Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {}
+Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {
+#if BUILDFLAG(IS_IOS)
+  add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kAdd;
+#else
+  add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kIgnore;
+#endif
+}
 
 Prefs::~Prefs() = default;
 
 // static
 void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSyncV2Seed, std::string());
-  registry->RegisterBooleanPref(kSyncV1Migrated, false);
-  registry->RegisterBooleanPref(kSyncV1MetaInfoCleared, false);
-  registry->RegisterBooleanPref(kSyncV2MigrateNoticeDismissed, false);
   registry->RegisterBooleanPref(kSyncFailedDecryptSeedNoticeDismissed, false);
   registry->RegisterBooleanPref(kSyncAccountDeletedNoticePending, false);
+  registry->RegisterStringPref(kSyncLeaveChainDetails, std::string());
+}
 
-  // Deprecated
-  // ============================================================================
+// static
+void Prefs::RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSyncSeed, std::string());
   registry->RegisterBooleanPref(kSyncEnabled, false);
   registry->RegisterStringPref(kSyncDeviceId, std::string());
@@ -102,6 +110,9 @@ void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kSyncRecordsToResendMeta);
   registry->RegisterBooleanPref(kDuplicatedBookmarksRecovered, false);
   registry->RegisterIntegerPref(kDuplicatedBookmarksMigrateVersion, 0);
+  registry->RegisterBooleanPref(kSyncV1Migrated, false);
+  registry->RegisterBooleanPref(kSyncV1MetaInfoCleared, false);
+  registry->RegisterBooleanPref(kSyncV2MigrateNoticeDismissed, false);
 }
 
 // static
@@ -143,45 +154,9 @@ bool Prefs::SetSeed(const std::string& seed) {
     return false;
   }
   // String stored in prefs has to be UTF8 string so we use base64 to encode it.
-  std::string encoded_seed;
-  base::Base64Encode(encrypted_seed, &encoded_seed);
-  pref_service_->SetString(kSyncV2Seed, encoded_seed);
+  pref_service_->SetString(kSyncV2Seed, base::Base64Encode(encrypted_seed));
   SetSyncAccountDeletedNoticePending(false);
   return true;
-}
-
-bool Prefs::IsSyncV1Migrated() const {
-  return pref_service_->GetBoolean(kSyncV1Migrated);
-}
-
-void Prefs::SetSyncV1Migrated(bool is_migrated) {
-  pref_service_->SetBoolean(kSyncV1Migrated, is_migrated);
-}
-
-bool Prefs::IsSyncV1MetaInfoCleared() const {
-  return pref_service_->GetBoolean(kSyncV1MetaInfoCleared);
-}
-
-void Prefs::SetSyncV1MetaInfoCleared(bool is_cleared) {
-  pref_service_->SetBoolean(kSyncV1MetaInfoCleared, is_cleared);
-}
-
-bool Prefs::IsSyncV1Enabled() const {
-  return pref_service_->GetBoolean(kSyncEnabled);
-}
-
-#if BUILDFLAG(IS_ANDROID)
-void Prefs::SetSyncV1WasEnabled() const {
-  pref_service_->SetBoolean(kSyncEnabled, true);
-}
-#endif
-
-bool Prefs::IsSyncMigrateNoticeDismissed() const {
-  return pref_service_->GetBoolean(kSyncV2MigrateNoticeDismissed);
-}
-
-void Prefs::SetDismissSyncMigrateNotice(bool is_dismissed) {
-  pref_service_->SetBoolean(kSyncV2MigrateNoticeDismissed, is_dismissed);
 }
 
 bool Prefs::IsFailedDecryptSeedNoticeDismissed() const {
@@ -200,6 +175,52 @@ void Prefs::SetSyncAccountDeletedNoticePending(bool is_pending) {
   pref_service_->SetBoolean(kSyncAccountDeletedNoticePending, is_pending);
 }
 
+void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
+  if (add_leave_chain_detail_behaviour_ ==
+      AddLeaveChainDetailBehaviour::kIgnore) {
+    return;
+  }
+
+  std::string details = pref_service_->GetString(kSyncLeaveChainDetails);
+
+  std::ostringstream stream;
+  stream << base::Time::Now() << " "
+         << base::FilePath::FromASCII(file).BaseName() << "(" << line << ") "
+         << func << std::endl;
+
+  std::string updated_details = base::StrCat({details, stream.str()});
+
+  if (updated_details.size() > kLeaveChainDetailsMaxLen) {
+    updated_details.assign(updated_details.end() - kLeaveChainDetailsMaxLen,
+                           updated_details.end());
+  }
+
+  pref_service_->SetString(kSyncLeaveChainDetails, updated_details);
+}
+
+std::string Prefs::GetLeaveChainDetails() const {
+  return pref_service_->GetString(kSyncLeaveChainDetails);
+}
+
+void Prefs::ClearLeaveChainDetails() {
+  pref_service_->ClearPref(kSyncLeaveChainDetails);
+}
+
+// static
+size_t Prefs::GetLeaveChainDetailsMaxLenForTests() {
+  return kLeaveChainDetailsMaxLen;
+}
+
+// static
+std::string Prefs::GetLeaveChainDetailsPathForTests() {
+  return kSyncLeaveChainDetails;
+}
+
+void Prefs::SetAddLeaveChainDetailBehaviourForTests(
+    AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour) {
+  add_leave_chain_detail_behaviour_ = add_leave_chain_detail_behaviour;
+}
+
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncV2Seed);
   pref_service_->ClearPref(kSyncFailedDecryptSeedNoticeDismissed);
@@ -211,8 +232,9 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
 
   // Added 05/2020
   prefs->ClearPref(kSyncSeed);
-  // Clear this prefs after almost every users have migrated to sync v2
-  // prefs->ClearPref(kSyncEnabled);
+
+  // Added 11/2023
+  prefs->ClearPref(kSyncEnabled);
   prefs->ClearPref(kDuplicatedBookmarksRecovered);
   prefs->ClearPref(kSyncDeviceId);
   prefs->ClearPref(kSyncDeviceIdV2);
@@ -231,6 +253,14 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
   prefs->ClearPref(kSyncRecordsToResend);
   prefs->ClearPref(kSyncRecordsToResendMeta);
   prefs->ClearPref(kDuplicatedBookmarksMigrateVersion);
+  prefs->ClearPref(kSyncV1Migrated);
+  prefs->ClearPref(kSyncV1MetaInfoCleared);
+  prefs->ClearPref(kSyncV2MigrateNoticeDismissed);
+
+  // Added 03/2024
+#if !BUILDFLAG(IS_IOS)
+  prefs->ClearPref(kSyncLeaveChainDetails);
+#endif
 }
 
 }  // namespace brave_sync

@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/brave_component_updater/browser",
   "+components/component_updater",
+  "+components/grit",
   "+components/keyed_service/core",
   "+components/prefs",
   "+components/user_prefs",
@@ -10,4 +11,5 @@ include_rules = [
   "+services/preferences/public/cpp",
   "+third_party/blink/public/common",
   "+third_party/re2",
+  "+ui/gfx",
 ]

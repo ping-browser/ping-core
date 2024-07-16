@@ -1,12 +1,11 @@
 diff --git a/chrome/browser/resources/downloads/downloads.ts b/chrome/browser/resources/downloads/downloads.ts
-index 0b05e22165c61dcb57aeeb46f251f697a6514978..195dd8bd5e2ea55c911da2f8a02f113db294f438 100644
+index 97eead30e42e08ee438c6ddda5a703345a30a03f..53bff8cc83b70c175e8fd6e5b2c4f5ca752b97ab 100644
 --- a/chrome/browser/resources/downloads/downloads.ts
 +++ b/chrome/browser/resources/downloads/downloads.ts
-@@ -2,6 +2,8 @@
+@@ -2,6 +2,7 @@
  // Use of this source code is governed by a BSD-style license that can be
  // found in the LICENSE file.
  
-+import 'chrome://resources/brave/polymer_overriding.js'
 +import './brave_overrides/index.js';
  import './manager.js';
  

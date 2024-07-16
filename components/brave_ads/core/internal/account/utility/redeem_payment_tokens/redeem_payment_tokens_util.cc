@@ -6,7 +6,8 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_feature.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -15,13 +16,11 @@ namespace brave_ads {
 
 namespace {
 
-constexpr base::TimeDelta kNextTokenRedemptionAfter = base::Days(1);
-constexpr base::TimeDelta kDebugNextTokenRedemptionAfter = base::Minutes(2);
+constexpr base::TimeDelta kDebugRedeemPaymentTokensAfter = base::Minutes(2);
 constexpr base::TimeDelta kMinimumDelayBeforeRedeemingTokens = base::Minutes(1);
 
 base::Time NextTokenRedemptionAt() {
-  return AdsClientHelper::GetInstance()->GetTimePref(
-      prefs::kNextTokenRedemptionAt);
+  return GetProfileTimePref(prefs::kNextTokenRedemptionAt);
 }
 
 bool HasPreviouslyRedeemedTokens() {
@@ -39,14 +38,13 @@ bool ShouldHaveRedeemedTokensInThePast() {
 }  // namespace
 
 void SetNextTokenRedemptionAt(const base::Time next_token_redemption_at) {
-  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
-                                              next_token_redemption_at);
+  SetProfileTimePref(prefs::kNextTokenRedemptionAt, next_token_redemption_at);
 }
 
 base::Time ScheduleNextTokenRedemptionAt() {
-  return base::Time::Now() + (ShouldDebug()
-                                  ? kDebugNextTokenRedemptionAfter
-                                  : RandTimeDelta(kNextTokenRedemptionAfter));
+  return base::Time::Now() +
+         (ShouldDebug() ? kDebugRedeemPaymentTokensAfter
+                        : RandTimeDelta(kRedeemPaymentTokensAfter.Get()));
 }
 
 base::TimeDelta CalculateDelayBeforeRedeemingTokens() {

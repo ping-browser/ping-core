@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -51,7 +52,7 @@ void ClearWalletStoragePartition(content::BrowserContext* context,
 
 BraveWalletServiceDelegateImpl::BraveWalletServiceDelegateImpl(
     content::BrowserContext* context)
-    : context_(context),
+    : BraveWalletServiceDelegateBase(context),
       browser_tab_strip_tracker_(this, this),
       weak_ptr_factory_(this) {
   browser_tab_strip_tracker_.Init();
@@ -149,57 +150,6 @@ void BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet(
   }
 }
 
-bool BraveWalletServiceDelegateImpl::AddPermission(mojom::CoinType coin,
-                                                   const url::Origin& origin,
-                                                   const std::string& account) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
-    return false;
-  }
-
-  return permissions::BraveWalletPermissionContext::AddPermission(
-      *type, context_, origin, account);
-}
-
-bool BraveWalletServiceDelegateImpl::HasPermission(mojom::CoinType coin,
-                                                   const url::Origin& origin,
-                                                   const std::string& account) {
-  bool has_permission = false;
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
-    return false;
-  }
-
-  bool success = permissions::BraveWalletPermissionContext::HasPermission(
-      *type, context_, origin, account, &has_permission);
-  return success && has_permission;
-}
-
-bool BraveWalletServiceDelegateImpl::ResetPermission(
-    mojom::CoinType coin,
-    const url::Origin& origin,
-    const std::string& account) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
-    return false;
-  }
-
-  return permissions::BraveWalletPermissionContext::ResetPermission(
-      *type, context_, origin, account);
-}
-
-bool BraveWalletServiceDelegateImpl::IsPermissionDenied(
-    mojom::CoinType coin,
-    const url::Origin& origin) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
-    return false;
-  }
-
-  return permissions::BraveWalletPermissionContext::IsPermissionDenied(
-      *type, context_, origin);
-}
-
 void BraveWalletServiceDelegateImpl::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -226,14 +176,14 @@ void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
   }
 }
 
-absl::optional<url::Origin>
+std::optional<url::Origin>
 BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
   content::WebContents* contents = GetActiveWebContents();
   return contents ? contents->GetPrimaryMainFrame()->GetLastCommittedOrigin()
-                  : absl::optional<url::Origin>();
+                  : std::optional<url::Origin>();
 }
 
-absl::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
+std::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
   return GetActiveOriginInternal();
 }
 

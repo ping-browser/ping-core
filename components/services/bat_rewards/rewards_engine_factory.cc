@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
@@ -24,19 +24,8 @@ void RewardsEngineFactory::CreateRewardsEngine(
     mojom::RewardsEngineOptionsPtr options,
     CreateRewardsEngineCallback callback) {
   if (!engine_) {
-    // Set global options for the current process. This must be done before
-    // the `RewardsEngineImpl` constructor is invoked so that subobjects see the
-    // correct values.
-    _environment = options->environment;
-    is_testing = options->is_testing;
-    is_debug = options->is_debug;
-    state_migration_target_version_for_testing =
-        options->state_migration_target_version_for_testing;
-    reconcile_interval = options->reconcile_interval;
-    retry_interval = options->retry_interval;
-
     engine_ = mojo::MakeSelfOwnedAssociatedReceiver(
-        std::make_unique<RewardsEngineImpl>(std::move(client_remote)),
+        std::make_unique<RewardsEngine>(std::move(client_remote), *options),
         std::move(engine_receiver));
   }
 

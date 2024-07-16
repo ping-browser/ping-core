@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.components.search_engines.TemplateUrl;
@@ -52,12 +53,12 @@ public class SearchEngineOnboardingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProfile = Profile.getLastUsedRegularProfile();
+        mProfile = ProfileManager.getLastUsedRegularProfile();
     }
 
     @Override
     public View onCreateView(
-        LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_search_engine_onboarding, container, false);
 
@@ -118,8 +119,7 @@ public class SearchEngineOnboardingFragment extends Fragment {
                 rdBtn.setLayoutParams(params);
                 rdBtn.setButtonDrawable(null);
                 rdBtn.setPadding(dpToPx(getActivity(), 30), 0, 0, 0);
-                rdBtn.setTextColor(
-                        getActivity().getResources().getColor(R.color.onboarding_text_color));
+                rdBtn.setTextColor(getActivity().getColor(R.color.onboarding_text_color));
                 rdBtn.setBackgroundDrawable(
                         ResourcesCompat.getDrawable(getActivity().getResources(),
                                 R.drawable.radiobutton_background, /* theme= */ null));

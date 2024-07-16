@@ -10,31 +10,53 @@ namespace switches {
 
 // All switches in alphabetical order. The switches should be documented
 // alongside the definition of their values in the .cc file.
-extern const char kDisableBraveExtension[];
 
-extern const char kDisableBraveRewardsExtension[];
+// Use custom update interval in sec
+inline constexpr char kComponentUpdateIntervalInSec[] =
+    "component-update-interval-in-sec";
 
-extern const char kDisableBraveUpdate[];
+// Specifies overriding the built-in dark mode setting.
+// Valid values are: "dark" | "light".
+inline constexpr char kDarkMode[] = "dark-mode";
 
-extern const char kDisableWebTorrentExtension[];
+// Allows disabling the Brave extension.
+// This is commonly used for loading the extension manually to debug things
+// in debug mode with auto-reloading.
+inline constexpr char kDisableBraveExtension[] = "disable-brave-extension";
 
-extern const char kDisableBraveWaybackMachineExtension[];
+// This switch disables update module(Sparkle).
+inline constexpr char kDisableBraveUpdate[] = "disable-brave-update";
 
-extern const char kRewards[];
+// Allows disabling the WebTorrent extension.
+inline constexpr char kDisableWebTorrentExtension[] =
+    "disable-webtorrent-extension";
 
-extern const char kDarkMode[];
+// Allows disabling the Wayback Machine extension.
+inline constexpr char kDisableBraveWaybackMachineExtension[] =
+    "disable-brave-wayback-machine-extension";
 
-extern const char kDisableMachineId[];
+// Allows disabling encryption on Windows for cookies, passwords, settings...
+// WARNING! Use ONLY if your hard drive is encrypted or if you know
+// what you are doing.
+inline constexpr char kDisableEncryptionWin[] = "disable-encryption-win";
 
-extern const char kDisableEncryptionWin[];
+// Allows disabling the machine ID generation on Windows.
+inline constexpr char kDisableMachineId[] = "disable-machine-id";
 
-extern const char kComponentUpdateIntervalInSec[];
+// Disables DOH using a runtime flag mainly for network audit
+inline constexpr char kDisableDnsOverHttps[] = "disable-doh";
 
-extern const char kDisableDnsOverHttps[];
+// Starts Brave in Tor mode.
+inline constexpr char kTor[] = "tor";
 
-extern const char kUpdateFeedURL[];
+// Override update feed url. Only valid on macOS.
+inline constexpr char kUpdateFeedURL[] = "update-feed-url";
 
-extern const char kTor[];
+// Don't set kShowAlways for non-stable channel.
+// It's useful to test SidebarShowAlwaysOnStable w/o griffin.
+inline constexpr char kDontShowSidebarOnNonStable[] =
+    "dont-show-on-sidebar-non-stable";
+
 }  // namespace switches
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_BRAVE_SWITCHES_H_

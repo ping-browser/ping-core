@@ -15,6 +15,7 @@
 namespace brave_ads {
 
 class AdsClient;
+class AdsNotifierManager;
 class BrowserManager;
 class ClientStateManager;
 class ConfirmationStateManager;
@@ -23,7 +24,6 @@ class DiagnosticManager;
 class GlobalStateHolder;
 class HistoryManager;
 class NotificationAdManager;
-class PredictorsManager;
 class TabManager;
 class UserActivityManager;
 
@@ -45,6 +45,7 @@ class GlobalState final {
 
   AdsClient* GetAdsClient();
 
+  AdsNotifierManager& GetAdsNotifierManager();
   BrowserManager& GetBrowserManager();
   ClientStateManager& GetClientStateManager();
   ConfirmationStateManager& GetConfirmationStateManager();
@@ -52,7 +53,6 @@ class GlobalState final {
   DiagnosticManager& GetDiagnosticManager();
   HistoryManager& GetHistoryManager();
   NotificationAdManager& GetNotificationAdManager();
-  PredictorsManager& GetPredictorsManager();
   TabManager& GetTabManager();
   UserActivityManager& GetUserActivityManager();
 
@@ -69,6 +69,7 @@ class GlobalState final {
 
   const std::unique_ptr<GlobalStateHolder> global_state_holder_;
 
+  std::unique_ptr<AdsNotifierManager> ads_notifier_manager_;
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ClientStateManager> client_state_manager_;
   std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
@@ -76,7 +77,6 @@ class GlobalState final {
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
-  std::unique_ptr<PredictorsManager> predictors_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 

@@ -13,9 +13,14 @@
     </message>
   </if>
 
-  <if expr="is_android or is_ios">
-    <message name="IDS_AUTOFILL_CLEAR_LOCAL_COPY_BUTTON" desc="The label of the button that clears the local copy of a Wallet Credit Card." formatter_data="android_java">
-      Clear copy
+  <if expr="not is_ios">
+    <message name="IDS_AUTOFILL_UNDO_MENU_ITEM" desc="The entry in the suggestions dropdown that undoes the last filling operation on a field.">
+      Undo autofill
+    </message>
+  </if>
+  <if expr="is_ios">
+    <message name="IDS_AUTOFILL_UNDO_MENU_ITEM" desc="iOS: The entry in the suggestions keyboard accessory that undoes the last filling operation on a field. Title-cased.">
+      Undo Autofill
     </message>
   </if>
 
@@ -27,28 +32,31 @@
   </message>
   <if expr="_google_chrome">
     <message name="IDS_AUTOFILL_DELETE_AUTOCOMPLETE_SUGGESTION_CONFIRMATION_BODY" desc="Text in a dialog to confirm that the user wants to delete an autocomplete form history suggestion.">
-      Remove form suggestion from Brave?
+      Remove form suggestion from Ping?
     </message>
     <message name="IDS_AUTOFILL_DELETE_CREDIT_CARD_SUGGESTION_CONFIRMATION_BODY" desc="Text in a dialog to confirm that the user wants to delete a credit card from Autofill.">
-      Remove credit card from Brave?
+      Remove credit card from Ping?
     </message>
     <message name="IDS_AUTOFILL_DELETE_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Text in a dialog to confirm that the user wants to delete an address from Autofill.">
-      Remove address from Brave?
+      Remove address from Ping?
     </message>
   </if>
   <if expr="not _google_chrome">
     <message name="IDS_AUTOFILL_DELETE_AUTOCOMPLETE_SUGGESTION_CONFIRMATION_BODY" desc="Text in a dialog to confirm that the user wants to delete an autocomplete form history suggestion.">
-      Remove form suggestion from Brave?
+      Remove form suggestion from Ping?
     </message>
     <message name="IDS_AUTOFILL_DELETE_CREDIT_CARD_SUGGESTION_CONFIRMATION_BODY" desc="Text in a dialog to confirm that the user wants to delete a credit card from Autofill.">
-      Remove credit card from Brave?
+      Remove credit card from Ping?
     </message>
     <message name="IDS_AUTOFILL_DELETE_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Text in a dialog to confirm that the user wants to delete an address from Autofill.">
-      Remove address from Brave?
+      Remove address from Ping?
     </message>
   </if>
   <message name="IDS_AUTOFILL_DELETE_AUTOCOMPLETE_SUGGESTION_TOOLTIP" desc="Tooltip shown when hovering over a small button with a trash-can logo next to an Autocomplete entry in the Autofill popup.">
     Delete entry
+  </message>
+  <message name="IDS_AUTOFILL_AUTOCOMPLETE_ENTRY_DELETED_A11Y_HINT" desc="Voice over text that is read out when the delete button next to an Autocomplete entry is selected.">
+    Entry <ph name="ENTRY_VOICEOVER">$1<ex>Jane Doe</ex></ph> has been deleted
   </message>
   <message name="IDS_AUTOFILL_DELETE_AUTOCOMPLETE_SUGGESTION_A11Y_HINT" desc="Voice over text that is read out when the delete button next to an Autocomplete entry is selected.">
     Delete entry <ph name="ENTRY_VOICEOVER">$1<ex>Jane Doe</ex></ph>
@@ -68,7 +76,7 @@
   <message name="IDS_AUTOFILL_CC_ELO" desc="Elo credit card name.">
     Elo
   </message>
-  <message name="IDS_AUTOFILL_CC_GOOGLE_PAY" desc="Brave pay brand name">
+  <message name="IDS_AUTOFILL_CC_GOOGLE_PAY" desc="Ping pay brand name">
     Google Pay
   </message>
   <message name="IDS_AUTOFILL_CC_JCB" desc="JCB credit card name.">
@@ -96,20 +104,87 @@
     , '''
   </message>
 
+  <!-- TODO(crbug.com/40270486): Make translatable once strings are finalized. -->
+  <message name="IDS_AUTOFILL_ADDRESS_TEST_DATA" desc="The text displayed as a secondary label in the test addresses devtools suggestion." translateable="false">
+    Address test data
+  </message>
+
+  <message name="IDS_AUTOFILL_TEST_ADDRESS_SELECTED_A11Y_HINT" desc="Voice over text that is read out when a test address is accepted from the subpopup." translateable="false">
+    Test address from <ph name="ENTRY_VOICEOVER">$1<ex>United states</ex></ph> selected.
+  </message>
+
   <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_FILLED_FORM" desc="Screen reader announcement indicating that current form was autofilled.">
     The form was filled in
+  </message>
+  <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_EXPANDABLE_ONLY_ENTRY" desc="Screen reader announcement used for non-expandable Autofill popup entries.">
+    You are currently on a menu
+  </message>
+  <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_VIRTUAL_CARD_MANUAL_FALLBACK_ENTRY" desc="Screen reader announcement used for virtual credit card suggestions that do not fill the web form.">
+    Dialog with credit card details was shown
+  </message>
+
+  <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_EDIT_ADDRESS_PROFILE_POPUP_OPTION_SELECTED" desc="Screen reader announcement indicating that edit autofill profile option was selected.">
+    The edit address option was selected
+  </message>
+
+  <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_DELETE_ADDRESS_PROFILE_POPUP_OPTION_SELECTED" desc="Screen reader announcement indicating that delete autofill profile option was selected.">
+    The delete address option was selected
   </message>
 
   <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_CLEARED_FORM" desc="Screen reader announcement indicating that current form autofilled values were cleared.">
     The autofilled info was cleared from the form
   </message>
 
+  <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_FILL_ADDRESS_GROUP_POPUP_OPTION_SELECTED" desc="Screen reader announcement indicating that filling address fields option was selected.">
+    The fill address option was selected
+  </message>
+
+  <message name="IDS_AUTOFILL_FILL_ADDRESS_GROUP_POPUP_OPTION_SELECTED" desc="The text displayed at one of the autofill submenus options allowing the users to fill all address related fields at once." meaning="Fills all address related fields">
+    Fill address
+  </message>
+
+  <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_FILL_NAME_GROUP_POPUP_OPTION_SELECTED" desc="Screen reader announcement indicating that filling name fields option was selected.">
+    The fill full name option was selected
+  </message>
+
+  <message name="IDS_AUTOFILL_FILL_NAME_GROUP_POPUP_OPTION_SELECTED" desc="The text displayed at one of the autofill submenus options allowing the users to fill all name related fields at once." meaning="Fills all name related fields">
+    Fill full name
+  </message>
+
+  <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_FILL_EVERYTHING_FROM_ADDRESS_PROFILE_POPUP_OPTION_SELECTED" desc="Screen reader announcement indicating that the fill everything option was selected.">
+    The fill everything option was selected
+  </message>
+
   <message name="IDS_AUTOFILL_HIDE_SUGGESTIONS" desc="The text displayed at the Autofill popup to allow the user to hide the suggestions menu." meaning="Hides the suggestion list.">
     Hide suggestions
   </message>
 
-  <message name="IDS_AUTOFILL_MANAGE" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for addresses, credit cards, and passwords. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage addresses, credit cards and passwords in the user profile that can be used by Chrome Autofill.">
-    Manage...
+  <message name="IDS_AUTOFILL_EDIT_ADDRESS_PROFILE_POPUP_OPTION_SELECTED" desc="The text displayed at the bottom of the Autofill sub meny to open the edit address profile dialog." meaning="Entry point to address profile deletion.">
+    Edit address
+  </message>
+
+  <message name="IDS_AUTOFILL_DELETE_ADDRESS_PROFILE_POPUP_OPTION_SELECTED" desc="The text displayed at the bottom of the Autofill sub menu to open the delete address profile dialog." meaning="Entry point to address profile deletion.">
+    Delete address
+  </message>
+
+  <message name="IDS_AUTOFILL_HOUSE_NUMBER_SUGGESTION_SECONDARY_TEXT_OPTION_SELECTED" desc="The secondary text displayed on a house number suggestion was selected." meaning="The label for the house number field type store by autofill has been selected in the subpopup.">
+    House number option selected
+  </message>
+
+  <message name="IDS_AUTOFILL_STREET_NAME_SUGGESTION_SECONDARY_TEXT_OPTION_SELECTED" desc="The secondary text displayed on a street name suggestion was selected." meaning="The label for the street namefield type store by autofill has been selected in the subpopup.">
+    Street name option selected
+  </message>
+
+  <message name="IDS_AUTOFILL_HOUSE_NUMBER_SUGGESTION_SECONDARY_TEXT" desc="The secondary text displayed on a house number suggestion." meaning="The label for the house number field type store by autofill.">
+    House number
+  </message>
+
+  <message name="IDS_AUTOFILL_STREET_NAME_SUGGESTION_SECONDARY_TEXT" desc="The secondary text displayed on a street name suggestion." meaning="The label for the street namefield type store by autofill.">
+    Street name
+  </message>
+
+  <message name="IDS_AUTOFILL_FILL_EVERYTHING_FROM_ADDRESS_PROFILE_POPUP_OPTION_SELECTED" desc="The text displayed at the footer of the Autofill sub menu to fill everything from the address profile." meaning="Fill every available information from the address profile.">
+    Fill everything
   </message>
 
   <if expr="not use_titlecase">
@@ -121,7 +196,7 @@
       Manage payment methods...
     </message>
 
-    <message name="IDS_AUTOFILL_MANAGE_PASSWORDS" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage passwords that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Passwords section of the Settings page." meaning="Manage passwords in the user profile that can be used by Chrome Autofill.">
+    <message name="IDS_AUTOFILL_MANAGE_PASSWORDS" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage passwords that can be used by Ping Autofill. Imperative. When the user clicks on it, opens the Passwords section of the Settings page." meaning="Manage passwords in the user profile that can be used by Chrome Autofill.">
       Manage passwords...
     </message>
   </if>
@@ -134,7 +209,7 @@
       Manage Payment Methods...
     </message>
 
-    <message name="IDS_AUTOFILL_MANAGE_PASSWORDS" desc="In Title Case: The text displayed at the bottom of the Autofill popup to allow the user to manage passwords that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Passwords section of the Settings page." meaning="Manage passwords in the user profile that can be used by Chrome Autofill.">
+    <message name="IDS_AUTOFILL_MANAGE_PASSWORDS" desc="In Title Case: The text displayed at the bottom of the Autofill popup to allow the user to manage passwords that can be used by Ping Autofill. Imperative. When the user clicks on it, opens the Passwords section of the Settings page." meaning="Manage passwords in the user profile that can be used by Chrome Autofill.">
       Manage Passwords...
     </message>
   </if>
@@ -154,8 +229,8 @@
   </message>
   </if>
 
-  <message name="IDS_AUTOFILL_SHOW_ACCOUNT_CARDS" desc="Text shown as an option in the Autofill dropdown. Imperative. When clicked, additional payment cards (e.g., credit/debit cards) that were previously saved in the user's Brave sync chain will be added to the list of suggestions being displayed.">
-    Show cards from your Brave sync chain
+  <message name="IDS_AUTOFILL_SHOW_ACCOUNT_CARDS" desc="Text shown as an option in the Autofill dropdown. Imperative. When clicked, additional payment cards (e.g., credit/debit cards) that were previously saved in the user's Ping sync chain will be added to the list of suggestions being displayed.">
+    Show cards from your Ping sync chain
   </message>
 
   <if expr="not is_android">
@@ -164,8 +239,14 @@
     </message>
   </if>
 
-  <message name="IDS_AUTOFILL_IPH_EXTERNAL_ACCOUNT_PROFILE_SUGGESTION" desc="IPH bubble for a suggestion item with an account profile that was created somewhere outside Brave (e.g. Google Pay)." formatter_data="android_java">
-    You can now use addresses from your Brave sync chain
+  <message name="IDS_AUTOFILL_IPH_EXTERNAL_ACCOUNT_PROFILE_SUGGESTION" desc="IPH bubble for a suggestion item with an account profile that was created somewhere outside Ping (e.g. Google Pay)." formatter_data="android_java">
+    You can now use addresses from your Ping sync chain
+  </message>
+  <message name="IDS_AUTOFILL_IPH_MANUAL_FALLBACK" desc="IPH bubble for triggering autofill from the context menu.">
+    Right click to autofill saved info, like your name or address, on any form
+  </message>
+  <message name="IDS_AUTOFILL_IPH_MANUAL_FALLBACK_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text for the IPH bubble for triggering autofill from the context menu.">
+    Right click to autofill saved info, like your name or address, on any form
   </message>
 
   <!-- Autofill suggestion label separator -->
@@ -214,7 +295,7 @@
     Fills in payment forms with your saved payment methods
   </message>
   <message name="IDS_AUTOFILL_DELETE_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before the address deletion." formatter_data="android_java">
-    This address will be deleted from your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
+    This address will be deleted from your Ping sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_DELETE_SYNC_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before the address deletion (with syncing enabled)." formatter_data="android_java">
     This address will be deleted from this and your other signed-in devices
@@ -223,16 +304,16 @@
     This address will be deleted from this device
   </message>
   <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_MESSAGE_ADDRESS_SOURCE_NOTICE" desc="The notice/warning message for the user that this address is going to be stored in their account.">
-    In your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
+    In your Ping sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_MESSAGE_ADDRESS_MIGRATION_SOURCE_NOTICE" desc="The notice/warning message for the user that this address is going to be migrated in their account.">
-    You will be able to use it across Brave products
+    You will be able to use it across Ping products
   </message>
   <message name="IDS_AUTOFILL_ADDRESS_ALREADY_SAVED_IN_ACCOUNT_SOURCE_NOTICE" desc="The footer message used to notify user that their address is stored in their account." formatter_data="android_java">
-    You can use saved addresses across Brave products. This address is saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+    You can use saved addresses across Ping products. This address is saved in your Ping sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_ADDRESS_WILL_BE_SAVED_IN_ACCOUNT_SOURCE_NOTICE" desc="The footer message used to notify user that their address will be saved in their account." formatter_data="android_java">
-    You can use saved addresses across Brave products. This address will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+    You can use saved addresses across Ping products. This address will be saved in your Ping sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_EDIT_ADDRESS_REQUIRED_FIELD_FORM_ERROR" desc="The form error message shown to the user in case of a single required field missing.">
     A required field is empty. Fill it before saving.
@@ -242,6 +323,9 @@
   </message>
   <message name="IDS_AUTOFILL_LOCAL_ADDRESS_ICON_A11Y_LABEL" desc="The a11y label for the 'no-cloud' address icon in Settings.">
     Address is available only on this device
+  </message>
+  <message name="IDS_AUTOFILL_SYNC_TOGGLE_LABEL" desc="The Sync Autofill toggle label on the Autofill Settings page.">
+    Use and save Addresses from your Ping sync chain
   </message>
   <if expr="not is_ios">
     <then>
@@ -315,16 +399,34 @@
       </message>
     </else>
   </if>
+  <if expr="is_android">
+    <!-- TODO(crbug.com/1469795): Use finalized string.-->
+    <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_DEFAULT" desc="Title of the option to use the default Ping autofill experience." formatter_data="android_java">
+      Default
+    </message>
+    <!-- TODO(crbug.com/1469795): Use finalized string.-->
+    <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_OPT_IN" desc="Title of the option to use third-party autofill in Ping." formatter_data="android_java">
+      Use other providers
+    </message>
+    <!-- TODO(crbug.com/1469795): Use finalized string.-->
+    <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_DEFAULT_DESCRIPTION" desc="Description shown on the option to use the default Ping autofill experience." formatter_data="android_java">
+      Use Ping Password Manager and Ping Autofill to save and fill passwords, passkeys, payment methods, and addresses
+    </message>
+    <!-- TODO(crbug.com/1469795): Use finalized string.-->
+    <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_OPT_IN_DESCRIPTION" desc="Description shown on the option enabling the use of third-party autofill in Ping." formatter_data="android_java">
+      Use password managers and autofill services that are turned on in Android Settings
+    </message>
+  </if>
 
   <!-- Autofill/Wallet integration preferences -->
   <if expr="not is_ios">
     <then>
-      <message name="IDS_AUTOFILL_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home. 'Google Pay' should not be translated as it is the product name. Sentence-Cased.">
+      <message name="IDS_SYNC_DATATYPE_PAYMENTS" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home. 'Google Pay' should not be translated as it is the product name. Sentence-Cased.">
         Payment methods, offers, and addresses using Google Pay
       </message>
     </then>
     <else>
-      <message name="IDS_AUTOFILL_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home. 'Google Pay' should not be translated as it is the product name. Title-Cased.">
+      <message name="IDS_SYNC_DATATYPE_PAYMENTS" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home. 'Google Pay' should not be translated as it is the product name. Title-Cased.">
         Payment Methods, Offers, and Addresses Using Google Pay
       </message>
     </else>
@@ -354,7 +456,7 @@
   <message name="IDS_AUTOFILL_SAVE_ADDRESS_PROMPT_OK_BUTTON_LABEL" desc="Label of the OK button in the prompt that offers the user to save a new address.">
     Save
   </message>
-  <message name="IDS_AUTOFILL_SAVE_ADDRESS_PROMPT_MIGRATION_OK_BUTTON_LABEL" desc="Label of the OK button in the prompt that offers the user to migrate a new address to their Brave account.">
+  <message name="IDS_AUTOFILL_SAVE_ADDRESS_PROMPT_MIGRATION_OK_BUTTON_LABEL" desc="Label of the OK button in the prompt that offers the user to migrate a new address to their Ping account.">
     Save in account
   </message>
   <message name="IDS_AUTOFILL_ACCOUNT_MIGRATE_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to save existing address into account.">
@@ -375,20 +477,20 @@
   <message name="IDS_AUTOFILL_UPDATE_ADDRESS_PROMPT_OLD_VALUES_SECTION_LABEL" meaning="In the address update prompt" desc="Label shown next to the section that displays the old address values in the prompt that offers the user to update an existing address." formatter_data="android_java">
     Old
   </message>
-  <message name="IDS_AUTOFILL_MIGRATE_ADDRESS_PROMPT_CANCEL_BUTTON_LABEL" desc="Label of the Cancel button in the prompt that offers the user to migrate an existing address profile in their Brave account." meaning="Don't migrate this address">
+  <message name="IDS_AUTOFILL_MIGRATE_ADDRESS_PROMPT_CANCEL_BUTTON_LABEL" desc="Label of the Cancel button in the prompt that offers the user to migrate an existing address profile in their Ping account." meaning="Don't migrate this address">
     No thanks
   </message>
   <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_PROMPT_ADDRESS_SOURCE_NOTICE" desc="The footer message in the 'Save address' prompt informing the user that this address will be stored in their account.">
-    You can use saved addresses across Brave products. This address will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+    You can use saved addresses across Ping products. This address will be saved in your Ping sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_UPDATE_PROMPT_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The footer message in the 'Update address' prompt informing the user that this address is stored in their account.">
-    You can use saved addresses across Brave products. This address is saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+    You can use saved addresses across Ping products. This address is saved in your Ping sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_SYNCABLE_PROFILE_MIGRATION_PROMPT_NOTICE" desc="The syncable profile prompt body text.">
-    This address is currently saved to Brave. To use it across Brave products, save it in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+    This address is currently saved to Ping. To use it across Ping products, save it in your Ping sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_LOCAL_PROFILE_MIGRATION_PROMPT_NOTICE" desc="The local profile prompt body text.">
-    This address is currently saved to this device. To use it across Brave products, save it in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+    This address is currently saved to this device. To use it across Ping products, save it in your Ping sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_SAVE_PROMPT_ADDRESS_SECTION_A11Y_LABEL" desc="The 'Save address' prompt address summary section a11y announcement, accompanied with a label to make it clear that the content being read is an address.">
     Address: <ph name="ADDRESS">$1<ex>345 Spear street</ex></ph>.
@@ -404,7 +506,7 @@
     <message name="IDS_AUTOFILL_SAVE_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to save a new address.">
       Save address?
     </message>
-    <message name="IDS_AUTOFILL_SAVE_ADDRESS_MIGRATION_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to migrate a new address in their Brave sync chain.">
+    <message name="IDS_AUTOFILL_SAVE_ADDRESS_MIGRATION_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to migrate a new address in their Ping sync chain.">
       Save in account?
     </message>
     <message name="IDS_AUTOFILL_UPDATE_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to update an existing address.">
@@ -440,7 +542,7 @@
     <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_PROMPT_TITLE" desc="In Title Case: Title shown at the top of modal dialog that offers the user to save a new address." meaning="In Title Case for iOS">
       Save Address
     </message>
-   <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_PROMPT_TITLE" desc="In Title Case: Title shown at the top of modal dialog that offers the user to save a new address in Brave sync chain." meaning="In Title Case for iOS">
+   <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_PROMPT_TITLE" desc="In Title Case: Title shown at the top of modal dialog that offers the user to save a new address in Ping sync chain." meaning="In Title Case for iOS">
       Save in Account
     </message>
     <message name="IDS_IOS_AUTOFILL_UPDATE_ADDRESS_PROMPT_TITLE" desc="In Title Case: Title shown at the top of modal dialog that offers the user to update an existing address." meaning="In Title Case for iOS">
@@ -449,14 +551,14 @@
     <message name="IDS_IOS_AUTOFILL_ADDRESS_MIGRATION_TO_ACCOUNT_PROMPT_TITLE" desc="In Title Case: Title shown at the top of modal dialog that offers the user to migrate the profile to account." meaning="In Title Case for iOS">
       Save Address in Account
     </message>
-    <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_MESSAGE_SUBTITLE" desc="Subtitle shown in the messages UI view when a new profile is asked to be saved in the Brave sync chain">
-       In your Brave sync chain, <ph name="USER_EMAIL">$1<ex>janedoe@google.com</ex></ph>
+    <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_MESSAGE_SUBTITLE" desc="Subtitle shown in the messages UI view when a new profile is asked to be saved in the Ping sync chain">
+       In your Ping sync chain, <ph name="USER_EMAIL">$1<ex>janedoe@google.com</ex></ph>
     </message>
-    <message name="IDS_IOS_AUTOFILL_MIGRATE_ADDRESS_IN_ACCOUNT_MESSAGE_SUBTITLE" desc="Subtitle shown in the messages UI view when an existing profile is asked to be migrated to the Brave sync chain">
-       You can use it across Brave products
+    <message name="IDS_IOS_AUTOFILL_MIGRATE_ADDRESS_IN_ACCOUNT_MESSAGE_SUBTITLE" desc="Subtitle shown in the messages UI view when an existing profile is asked to be migrated to the Ping sync chain">
+       You can use it across Ping products
     </message>
-    <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_FOOTER" desc="Footer text shown in the save modal for saving a new address profile or migrating it in the Brave sync chain">
-      You can use saved addresses across Brave products. This address will be saved in your Brave sync chain, <ph name="USER_EMAIL">$1<ex>janedoe@google.com</ex></ph>.
+    <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_FOOTER" desc="Footer text shown in the save modal for saving a new address profile or migrating it in the Ping sync chain">
+      You can use saved addresses across Ping products. This address will be saved in your Ping sync chain, <ph name="USER_EMAIL">$1<ex>janedoe@google.com</ex></ph>.
     </message>
   </if>
   <!-- Used on Desktop: -->
@@ -473,6 +575,18 @@
     <message name="IDS_AUTOFILL_UPDATE_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to update an existing address.">
       Update address?
     </message>
+    <message name="IDS_AUTOFILL_ADD_NEW_ADDRESS_PROMPT_TITLE" desc="The 'Add new address' bubble title.">
+      Fill your address with less typing
+    </message>
+    <message name="IDS_AUTOFILL_ADD_NEW_ADDRESS_EDITOR_TITLE" desc="The title of the editor dialog called after the 'Add new address' prompt is accepted.">
+      Add address
+    </message>
+    <message name="IDS_AUTOFILL_ADD_NEW_ADDRESS_INTO_CHROME_PROMPT_BODY_TEXT" desc="The 'Add new address' bubble body text if the address will be saved in Ping (locally or syncable among Braves on different devices).">
+      You don't have any addresses saved. Add an address to use it in Ping.
+    </message>
+    <message name="IDS_AUTOFILL_ADD_NEW_ADDRESS_INTO_ACCOUNT_PROMPT_BODY_TEXT" desc="The 'Add new address' bubble body text if the address will be save in the user's Ping account.">
+      You don't have any addresses saved. Add an address to use it across Ping products.
+    </message>
     <message name="IDS_AUTOFILL_UPDATE_ADDRESS_PROMPT_CANCEL_BUTTON_LABEL" desc="Label of the Cancel button in the prompt that offers the user to update an existing address.">
       No thanks
     </message>
@@ -488,8 +602,29 @@
     <message name="IDS_AUTOFILL_EDIT_ADDRESS_DIALOG_OK_BUTTON_LABEL_UPDATE" desc="Label of the OK button in the dialog that edits the address before using it to update an existing address.">
       Update
     </message>
+    <message name="IDS_AUTOFILL_ADD_NEW_ADDRESS_DIALOG_OK_BUTTON_LABEL" desc="Label of the OK button in the dialog that promts the user to add a new address.">
+      Add address
+    </message>
     <message name="IDS_AUTOFILL_EDIT_ADDRESS_DIALOG_CANCEL_BUTTON_LABEL" desc="Label of the Cancel button in the dialog that edits an address before saving it.">
       Cancel
     </message>
+    <message name="IDS_AUTOFILL_EXPANDABLE_SUGGESTION_FILL_ADDRESS_A11Y_ADDON" desc="Autofill desktop popup: call to action message part for expandable address suggestions.">
+      Fill address
+    </message>
+    <message name="IDS_AUTOFILL_EXPANDABLE_SUGGESTION_EXPAND_SHORTCUT" desc="Autofill desktop popup: the shortcut used to focus the expanding control and effectively open the sub-menu, used in IDS_AUTOFILL_EXPANDABLE_SUGGESTION_SUBMENU_HINT.">
+      right key
+    </message>
+    <message name="IDS_AUTOFILL_EXPANDABLE_SUGGESTION_EXPAND_SHORTCUT_RTL" desc="Autofill desktop popup: the shortcut used to focus the expanding control and effectively open the sub-menu, used in IDS_AUTOFILL_EXPANDABLE_SUGGESTION_SUBMENU_HINT, for RTL languages.">
+      left key
+    </message>
+    <message name="IDS_AUTOFILL_EXPANDABLE_SUGGESTION_SUBMENU_HINT" desc="Autofill desktop popup: additional screen reader info to let the user know that the suggestion can be expanded into a sub-menu.">
+      Submenu available, use <ph name="SHORTCUT">$1<ex>right key</ex></ph> to navigate to additional options.
+    </message>
   </if>
+
+  <!-- Autofill Address Edit Dialog -->
+  <!-- Common on all platforms -->
+  <message name="IDS_AUTOFILL_ADDRESS_EDIT_DIALOG_HISPANIC_MUNICIPIO" desc="The label shown in address edit dialogs representing a municipio (Spanish) / município (Portuguese) in an address, see https://en.wikipedia.org/wiki/Municipio. This is a subdivision of a state and currently introduced for Mexico.">
+    Municipality
+  </message>
 </grit-part>

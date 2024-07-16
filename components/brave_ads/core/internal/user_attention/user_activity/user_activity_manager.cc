@@ -5,23 +5,24 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
-#include "base/ranges/algorithm.h"
+#include <cstddef>
+#include <iterator>
+#include <optional>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/page_transition_util.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_constants.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -44,13 +45,13 @@ void LogEvent(const UserActivityEventType event_type) {
 }  // namespace
 
 UserActivityManager::UserActivityManager() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
   BrowserManager::GetInstance().AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 UserActivityManager::~UserActivityManager() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
   BrowserManager::GetInstance().RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
@@ -65,14 +66,12 @@ void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
     return;
   }
 
-  UserActivityEventInfo user_activity_event;
-  user_activity_event.type = event_type;
-  user_activity_event.created_at = base::Time::Now();
+  user_activity_events_.push_back(UserActivityEventInfo{
+      .type = event_type, .created_at = base::Time::Now()});
 
-  history_.push_back(user_activity_event);
-
-  if (history_.size() > kMaximumHistoryItems) {
-    history_.pop_front();
+  if (user_activity_events_.size() >
+      static_cast<size_t>(kMaximumUserActivityEvents.Get())) {
+    user_activity_events_.pop_front();
   }
 
   LogEvent(event_type);
@@ -80,16 +79,15 @@ void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
 
 UserActivityEventList UserActivityManager::GetHistoryForTimeWindow(
     const base::TimeDelta time_window) const {
-  UserActivityEventList filtered_history = history_;
+  UserActivityEventList filtered_history;
 
   const base::Time time = base::Time::Now() - time_window;
 
-  filtered_history.erase(
-      base::ranges::remove_if(filtered_history,
-                              [time](const UserActivityEventInfo& event) {
-                                return event.created_at < time;
-                              }),
-      filtered_history.cend());
+  std::copy_if(user_activity_events_.cbegin(), user_activity_events_.cend(),
+               std::back_inserter(filtered_history),
+               [time](const UserActivityEventInfo& event) {
+                 return event.created_at >= time;
+               });
 
   return filtered_history;
 }
@@ -118,7 +116,7 @@ void UserActivityManager::RecordEventForPageTransition(
     RecordEvent(UserActivityEventType::kOpenedLinkFromExternalApplication);
   }
 
-  const absl::optional<UserActivityEventType> event_type =
+  const std::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(type);
   if (!event_type) {
     return;
@@ -154,7 +152,7 @@ void UserActivityManager::OnBrowserDidEnterBackground() {
   RecordEvent(UserActivityEventType::kBrowserDidEnterBackground);
 }
 
-void UserActivityManager::OnTabDidChangeFocus(const int32_t /*id*/) {
+void UserActivityManager::OnTabDidChangeFocus(const int32_t /*tab_id*/) {
   RecordEvent(UserActivityEventType::kTabChangedFocus);
 }
 
@@ -166,15 +164,15 @@ void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
   RecordEvent(UserActivityEventType::kOpenedNewTab);
 }
 
-void UserActivityManager::OnDidCloseTab(const int32_t /*id*/) {
+void UserActivityManager::OnDidCloseTab(const int32_t /*tab_id*/) {
   RecordEvent(UserActivityEventType::kClosedTab);
 }
 
-void UserActivityManager::OnTabDidStartPlayingMedia(const int32_t /*id*/) {
+void UserActivityManager::OnTabDidStartPlayingMedia(const int32_t /*tab_id*/) {
   RecordEvent(UserActivityEventType::kTabStartedPlayingMedia);
 }
 
-void UserActivityManager::OnTabDidStopPlayingMedia(const int32_t /*id*/) {
+void UserActivityManager::OnTabDidStopPlayingMedia(const int32_t /*tab_id*/) {
   RecordEvent(UserActivityEventType::kTabStoppedPlayingMedia);
 }
 

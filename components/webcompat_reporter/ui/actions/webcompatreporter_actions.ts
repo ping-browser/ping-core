@@ -8,16 +8,17 @@ import { action } from 'typesafe-actions'
 // Constants
 import { types } from '../constants/webcompatreporter_types'
 
-export const setSiteUrl = (siteUrl: string) => {
-  return action(types.WEBCOMPATREPORTER_SET_SITE_URL, {
-    siteUrl
+export const setDialogArgs = (dialogArgs: WebcompatReporter.DialogArgs) => {
+  return action(types.WEBCOMPATREPORTER_SET_DIALOG_ARGS, {
+    dialogArgs
   })
 }
 
-export const onSubmitReport = (details: string, contact: string) =>
+export const onSubmitReport = (details: string, contact: string, attachScreenshot: boolean) =>
   action(types.WEBCOMPATREPORTER_ON_SUBMIT_REPORT, {
     details,
-    contact
+    contact,
+    attachScreenshot
   })
 
 export const onClose = () =>

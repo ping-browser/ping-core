@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/content_settings/core/common/cookie_settings_base.h"
+#include <optional>
 
 #include "base/auto_reset.h"
 #include "base/compiler_specific.h"
@@ -12,12 +12,12 @@
 #include "base/types/optional_util.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/cookie_settings_base.h"
 #include "components/content_settings/core/common/features.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
 #include "third_party/abseil-cpp/absl/base/attributes.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -96,7 +96,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     net::CookieSettingOverrides overrides,
-    const absl::optional<url::Origin>& top_frame_origin) const {
+    const std::optional<url::Origin>& top_frame_origin) const {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
@@ -108,7 +108,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
 
   // Enable ephemeral storage for a first party URL if SESSION_ONLY cookie
   // setting is set and the feature is enabled.
-  absl::optional<CookieSettingWithBraveMetadata> first_party_setting;
+  std::optional<CookieSettingWithBraveMetadata> first_party_setting;
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
     first_party_setting = GetCookieSettingWithBraveMetadata(
@@ -123,8 +123,9 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return false;
 
-  bool allow_3p = IsCookieAccessAllowedImpl(url, site_for_cookies,
-                                            top_frame_origin, overrides);
+  bool allow_3p =
+      IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
+                                overrides, /*cookie_settings*/ nullptr);
   bool allow_1p = first_party_setting ? IsAllowed(first_party_setting->setting)
                                       : IsFirstPartyAccessAllowed(
                                             first_party_url, this, overrides);
@@ -136,7 +137,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
+    const std::optional<url::Origin>& top_frame_origin,
     net::CookieSettingOverrides overrides) const {
   if (ShouldUseEphemeralStorage(url, site_for_cookies, overrides,
                                 top_frame_origin)) {
@@ -144,25 +145,27 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
   }
 
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                   overrides);
+                                   overrides, /*cookie_settings*/ nullptr);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides) const {
+    const std::optional<url::Origin>& top_frame_origin,
+    net::CookieSettingOverrides overrides,
+    CookieSettingWithMetadata* cookie_settings) const {
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                   overrides);
+                                   overrides, cookie_settings);
 }
 
 bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides) const {
-  bool allow = IsChromiumFullCookieAccessAllowed(url, site_for_cookies,
-                                                 top_frame_origin, overrides);
+    const std::optional<url::Origin>& top_frame_origin,
+    net::CookieSettingOverrides overrides,
+    CookieSettingWithMetadata* cookie_settings) const {
+  bool allow = IsChromiumFullCookieAccessAllowed(
+      url, site_for_cookies, top_frame_origin, overrides, cookie_settings);
 
   const bool is_1p_ephemeral_feature_enabled = base::FeatureList::IsEnabled(
       net::features::kBraveFirstPartyEphemeralStorage);
@@ -283,6 +286,36 @@ CookieSettingsBase::GetCurrentCookieSettingWithBraveMetadata() {
 
 }  // namespace content_settings
 
+// Determines whether a 3p cookies block should be applied if a requesting URL
+// uses an explicit 1PES setting (CONTENT_SETTING_SESSION_ONLY). By default
+// Chromimum allows all 3p cookies if applied CookieSettingsPatterns for the URL
+// were explicit. We use explicit setting to enable 1PES mode, but in this mode
+// we still want to block 3p frames as usual and not fallback to "allow
+// everything" path.
+#define BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS                              \
+  const bool block_third =                                                    \
+      IsAllowed(setting) && !is_explicit_setting && is_third_party_request && \
+      ShouldBlockThirdPartyCookies() &&                                       \
+      !IsThirdPartyCookiesAllowedScheme(first_party_url.scheme());            \
+  if (!block_third && is_third_party_request &&                               \
+      ShouldBlockThirdPartyIfSettingIsExplicit(                               \
+          ShouldBlockThirdPartyCookies(), setting, is_explicit_setting,       \
+          IsThirdPartyCookiesAllowedScheme(first_party_url.scheme()))) {      \
+    return AllowPartitionedCookies{};                                         \
+  }
+
+#define BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL         \
+  /* Store patterns information to determine if Shields are disabled. */ \
+  if (auto* setting_with_brave_metadata =                                \
+          GetCurrentCookieSettingWithBraveMetadata()) {                  \
+    setting_with_brave_metadata->primary_pattern_matches_all_hosts =     \
+        setting_info.primary_pattern.MatchesAllHosts();                  \
+    setting_with_brave_metadata->secondary_pattern_matches_all_hosts =   \
+        setting_info.secondary_pattern.MatchesAllHosts();                \
+  }
+
 #define IsFullCookieAccessAllowed IsChromiumFullCookieAccessAllowed
 #include "src/components/content_settings/core/common/cookie_settings_base.cc"
 #undef IsFullCookieAccessAllowed
+#undef BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL
+#undef BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS

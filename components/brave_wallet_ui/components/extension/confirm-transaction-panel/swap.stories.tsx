@@ -5,12 +5,6 @@
 
 import * as React from 'react'
 
-// Mocks
-import {
-  mockBasicAttentionToken,
-  mockBinanceCoinErc20Token
-} from '../../../stories/mock-data/mock-asset-options'
-
 // Components
 import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { LongWrapper } from '../../../stories/style'
@@ -18,13 +12,11 @@ import { PanelWrapper } from '../../../panel/style'
 import { ConfirmSwapTransaction } from './swap'
 
 export const _ConfirmSwapTransaction = () => {
-
   return (
     <WalletPanelStory
       walletStateOverride={{
-        fullTokenList: [mockBasicAttentionToken, mockBinanceCoinErc20Token],
         hasInitialized: true,
-        isWalletCreated: true,
+        isWalletCreated: true
       }}
       panelStateOverride={{
         hasInitialized: true

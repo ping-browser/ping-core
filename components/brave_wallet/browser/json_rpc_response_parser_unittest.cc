@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -46,20 +48,20 @@ TEST(JsonRpcResponseParserUnitTest, ParseBoolResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000000000000000000000000000000000000000000001\"}";
-  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::make_optional(true));
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), std::make_optional(true));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000000000000000000000000000000000000000000000\"}";
-  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::make_optional(false));
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), std::make_optional(false));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x00000000000000000000000000000000000000000\"}";
-  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::nullopt);
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), std::nullopt);
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}";
-  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::nullopt);
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), std::nullopt);
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
@@ -350,10 +352,123 @@ TEST(JsonRpcResponseParserUnitTest, RPCResponse) {
   ASSERT_TRUE(response);
   EXPECT_EQ(response->jsonrpc, "2.0");
   EXPECT_EQ(response->id, base::Value(2));
-  EXPECT_EQ(response->result, absl::nullopt);
+  EXPECT_EQ(response->result, std::nullopt);
   ASSERT_TRUE(response->error);
   EXPECT_EQ(response->error->code, -32601);
   EXPECT_EQ(response->error->message, "method does not exist");
+}
+
+TEST(JsonRpcResponseParserUnitTest, AnkrParseGetAccountBalanceResponse) {
+  std::string json(R"(
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "totalBalanceUsd": "4915134435857.581297310767673907",
+        "assets": [
+          {
+            "blockchain": "polygon",
+            "tokenName": "Matic",
+            "tokenSymbol": "MATIC",
+            "tokenDecimals": "18",
+            "tokenType": "NATIVE",
+            "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+            "balance": "120.275036899888325666",
+            "balanceRawInteger": "120275036899888325666",
+            "balanceUsd": "66.534394147826631446",
+            "tokenPrice": "0.553185397924316979",
+            "thumbnail": "polygon.svg"
+          },
+          {
+            "blockchain": "polygon",
+            "tokenName": "Malformed USDC",
+            "tokenSymbol": "USDC",
+            "tokenDecimals": "-6",
+            "tokenType": "ERC20",
+            "contractAddress": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+            "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+            "balance": "8.202765",
+            "balanceRawInteger": "8202765",
+            "balanceUsd": "8.202765",
+            "tokenPrice": "1",
+            "thumbnail": "usdc.png"
+          },
+          {
+            "blockchain": "polygon",
+            "tokenName": "USD Coin",
+            "tokenSymbol": "USDC",
+            "tokenDecimals": "6",
+            "tokenType": "ERC20",
+            "contractAddress": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+            "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+            "balance": "8.202765",
+            "balanceRawInteger": "8202765",
+            "balanceUsd": "8.202765",
+            "tokenPrice": "1",
+            "thumbnail": "usdc.png"
+          },
+          {
+            "blockchain": "polygon",
+            "tokenName": "Malformed USDC",
+            "tokenSymbol": "USDC",
+            "tokenDecimals": "6",
+            "tokenType": "ERC20",
+            "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+            "balance": "8.202765",
+            "balanceRawInteger": "8202765",
+            "balanceUsd": "8.202765",
+            "tokenPrice": "1",
+            "thumbnail": "usdc.png"
+          }
+        ]
+      }
+    }
+  )");
+
+  auto response = ankr::ParseGetAccountBalanceResponse(ParseJson(json));
+  ASSERT_TRUE(response);
+  ASSERT_EQ(response->size(), 2u);
+
+  EXPECT_EQ(response->at(0)->asset->contract_address, "");
+  EXPECT_EQ(response->at(0)->asset->name, "Matic");
+  EXPECT_EQ(response->at(0)->asset->logo, "polygon.svg");
+  EXPECT_FALSE(response->at(0)->asset->is_erc20);
+  EXPECT_FALSE(response->at(0)->asset->is_erc721);
+  EXPECT_FALSE(response->at(0)->asset->is_erc1155);
+  EXPECT_FALSE(response->at(0)->asset->is_nft);
+  EXPECT_FALSE(response->at(0)->asset->is_spam);
+  EXPECT_EQ(response->at(0)->asset->symbol, "MATIC");
+  EXPECT_EQ(response->at(0)->asset->decimals, 18);
+  EXPECT_TRUE(response->at(0)->asset->visible);
+  EXPECT_EQ(response->at(0)->asset->token_id, "");
+  EXPECT_EQ(response->at(0)->asset->coingecko_id, "");
+  EXPECT_EQ(response->at(0)->asset->chain_id, mojom::kPolygonMainnetChainId);
+  EXPECT_EQ(response->at(0)->asset->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(response->at(0)->balance, "120275036899888325666");
+  EXPECT_EQ(response->at(0)->formatted_balance, "120.275036899888325666");
+  EXPECT_EQ(response->at(0)->balance_usd, "66.534394147826631446");
+  EXPECT_EQ(response->at(0)->price_usd, "0.553185397924316979");
+
+  EXPECT_EQ(response->at(1)->asset->contract_address,
+            "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");
+  EXPECT_EQ(response->at(1)->asset->name, "USD Coin");
+  EXPECT_EQ(response->at(1)->asset->logo, "usdc.png");
+  EXPECT_TRUE(response->at(1)->asset->is_erc20);
+  EXPECT_FALSE(response->at(1)->asset->is_erc721);
+  EXPECT_FALSE(response->at(1)->asset->is_erc1155);
+  EXPECT_FALSE(response->at(1)->asset->is_nft);
+  EXPECT_FALSE(response->at(1)->asset->is_spam);
+  EXPECT_EQ(response->at(1)->asset->symbol, "USDC");
+  EXPECT_EQ(response->at(1)->asset->decimals, 6);
+  EXPECT_TRUE(response->at(1)->asset->visible);
+  EXPECT_EQ(response->at(1)->asset->token_id, "");
+  EXPECT_EQ(response->at(1)->asset->coingecko_id, "");
+  EXPECT_EQ(response->at(1)->asset->chain_id, mojom::kPolygonMainnetChainId);
+  EXPECT_EQ(response->at(1)->asset->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(response->at(1)->balance, "8202765");
+  EXPECT_EQ(response->at(1)->formatted_balance, "8.202765");
+  EXPECT_EQ(response->at(1)->balance_usd, "8.202765");
+  EXPECT_EQ(response->at(1)->price_usd, "1");
 }
 
 }  // namespace brave_wallet

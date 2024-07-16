@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 62b97120d6c675ef5894b80748c2672802265caa..f26042a4cf78c0c816aed380965d2649236ecf5a 100644
+index 8637b68a9a21ad228a09ca121d4ab32ab398631c..9a0734cdb85bd34526ff2b89c09abc813b239b37 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -195,6 +195,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-      nullptr},
-     {ContentSettingsType::THIRD_PARTY_STORAGE_PARTITIONING, nullptr},
-     {ContentSettingsType::ALL_SCREEN_CAPTURE, nullptr},
+@@ -222,6 +222,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+     {ContentSettingsType::DIRECT_SOCKETS, nullptr},
+     {ContentSettingsType::REVOKED_ABUSIVE_NOTIFICATION_PERMISSIONS, nullptr},
+     {ContentSettingsType::TOP_LEVEL_TPCD_ORIGIN_TRIAL, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
- static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -485,6 +486,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+ static_assert(
+@@ -484,6 +485,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

@@ -12,9 +12,11 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
@@ -33,8 +35,9 @@
 #include "components/favicon_base/favicon_types.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/strings/grit/components_strings.h"
-#include "ios/chrome/browser/bookmarks/local_or_syncable_bookmark_model_factory.h"
-#include "ios/chrome/browser/favicon/favicon_service_factory.h"
+#include "ios/chrome/browser/bookmarks/model/legacy_bookmark_model.h"
+#include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
+#include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -163,6 +166,17 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         path_(path),
         favicons_map_(favicons_map),
         observer_(observer) {}
+
+  Writer(const bookmarks::BookmarkModel* model,
+         const base::FilePath& path,
+         BookmarkFaviconFetcher::URLFaviconMap* favicons_map,
+         BookmarksExportObserver* observer)
+      : path_(path), favicons_map_(favicons_map), observer_(observer) {
+    BookmarkCodec codec;
+    bookmarks_ =
+        codec.Encode(model->bookmark_bar_node(), model->other_node(),
+                     model->mobile_node(), /*sync_metadata_str=*/std::string());
+  }
 
   Writer(const Writer&) = delete;
 
@@ -331,11 +345,8 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
       auto itr = favicons_map_->find(*url_string);
       if (itr != favicons_map_->end()) {
         scoped_refptr<base::RefCountedMemory> data(itr->second.get());
-        std::string favicon_base64_encoded;
-        base::Base64Encode(
-            base::StringPiece(data->front_as<char>(), data->size()),
-            &favicon_base64_encoded);
-        GURL favicon_url("data:image/png;base64," + favicon_base64_encoded);
+        GURL favicon_url("data:image/png;base64," +
+                         base::Base64Encode(base::make_span(*data)));
         favicon_string = favicon_url.spec();
       }
 
@@ -492,10 +503,9 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
       base::BindOnce(
           &Writer::DoWrite,
           base::MakeRefCounted<Writer>(
-              codec.Encode(
-                  ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
+              ios::LocalOrSyncableBookmarkModelFactory::
+                  GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
                       browser_state_),
-                  /*sync_metadata_str=*/std::string()),
               path_, favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!

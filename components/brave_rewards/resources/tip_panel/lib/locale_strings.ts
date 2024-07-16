@@ -14,14 +14,15 @@ export const localeStrings = {
   termsOfService: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   sendFormTitle: 'Support this creator',
   sendButtonLabel: 'Send',
+  sendWithButtonLabel: 'Send with $1',
   web3ButtonLabel: 'Use Web3 Wallet',
   verifiedTooltipTitle: 'Verified Creator',
-  verifiedTooltipText: 'This Creator has registered with Brave and can receive contributions from Brave Rewards users.',
+  verifiedTooltipText: 'This creator has registered with Brave and can receive contributions from Brave Rewards users.',
   monthlyTooltipText: 'Make this a monthly recurring contribution. You can cancel it at any time.',
   learnMoreLabel: 'Learn more',
   customAmountLabel: 'Custom',
   monthlySetTitle: 'You\'re already sending monthly contributions to this creator',
-  monthlySetText: 'You can still send a contribution now, and you can cancel your monthly contributions to this Creator by removing them from $1Monthly Contributions$2.',
+  monthlySetText: 'You can still send a contribution now, and you can cancel your monthly contributions to this creator by removing them from $1Monthly Contributions$2.',
   providerMismatchTitle: 'Can\'t send your contribution',
   providerMismatchText: 'This creator is unable to receive contributions from $1.',
   providerMismatchWeb3Text: 'You can still send crypto contributions to this creator by using your Web3 wallet.',
@@ -42,7 +43,12 @@ export const localeStrings = {
   unexpectedErrorTitle: 'An unexpected error has occurred',
   unexpectedErrorText: 'Please reopen the contribution panel to try again.',
   defaultCreatorDescription: 'Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.',
-  platformPublisherTitle: '$1 on $2'
+  platformPublisherTitle: '$1 on $2',
+  selfCustodyTitle: 'Support your favorite creators',
+  selfCustodyHeader: 'Show your love and send a token of your gratitude',
+  selfCustodyText: 'Use your Web3 wallet to send a one time contribution to this creator and show them your appreciation',
+  selfCustodySendButtonLabel: 'Send with Web3 wallet',
+  selfCustodyNoWeb3Label: 'It looks like this creator isn\'t set up to receive contributions via Web3 wallets yet.'
 }
 
 export type StringKey = keyof typeof localeStrings

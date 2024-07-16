@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_WALLET_PERMISSION_CONTEXT_H_
 
 #include <map>
+#include <optional>
 #include <queue>
 #include <string>
 #include <vector>
@@ -17,8 +18,6 @@
 #include "components/permissions/request_type.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "url/origin.h"
-
-class GURL;
 
 namespace content {
 class BrowserContext;
@@ -46,9 +45,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
    * will then consume one address from the saved list and call
    * PermissionContextBase::RequestPermission with it.
    */
-  void RequestPermission(const PermissionRequestID& id,
-                         const GURL& requesting_frame,
-                         bool user_gesture,
+  void RequestPermission(PermissionRequestData request_data,
                          BrowserPermissionCallback callback) override;
 
   static void RequestPermissions(
@@ -65,7 +62,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
       content::WebContents* web_contents);
   static void Cancel(content::WebContents* web_contents);
 
-  static absl::optional<std::vector<std::string>> GetAllowedAccounts(
+  static std::optional<std::vector<std::string>> GetAllowedAccounts(
       blink::PermissionType permission,
       content::RenderFrameHost* rfh,
       const std::vector<std::string>& addresses);
@@ -89,6 +86,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
                               content::BrowserContext* context,
                               const url::Origin& origin,
                               const std::string& account);
+  static void ResetAllPermissions(content::BrowserContext* context);
 
   static std::vector<std::string> GetWebSitesWithPermission(
       blink::PermissionType permission,

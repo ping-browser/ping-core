@@ -7,6 +7,8 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
@@ -18,7 +20,7 @@
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "components/grit/brave_components_resources.h"
-#include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -186,6 +188,9 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
       case BraveWalletCoinTypeBtc:
         // Currently not supported
         return {std::make_pair(@"", 0)};
+      case BraveWalletCoinTypeZec:
+        // Currently not supported
+        return {std::make_pair(@"", 0)};
     }
     return {std::make_pair(@"", 0)};
   }
@@ -198,6 +203,16 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   }
   _providerScripts[@(coinType)] = [scripts copy];
   return scripts;
+}
+
+- (nullable id<BraveWalletBraveWalletP3A>)walletP3A {
+  auto* service = brave_wallet::BraveWalletServiceFactory::GetServiceForState(
+      _mainBrowserState);
+  if (!service) {
+    return nil;
+  }
+  return [[BraveWalletBraveWalletP3AMojoImpl alloc]
+      initWithBraveWalletP3A:service->GetBraveWalletP3A()->MakeRemote()];
 }
 
 @end

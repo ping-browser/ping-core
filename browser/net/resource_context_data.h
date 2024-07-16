@@ -1,13 +1,14 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_NET_RESOURCE_CONTEXT_DATA_H_
 #define BRAVE_BROWSER_NET_RESOURCE_CONTEXT_DATA_H_
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 
@@ -63,15 +64,14 @@ class ResourceContextData : public base::SupportsUserData::Data {
       content::BrowserContext* browser_context,
       int render_process_id,
       int frame_tree_node_id,
-      mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
-      mojo::PendingRemote<network::mojom::URLLoaderFactory> target_factory,
+      network::URLLoaderFactoryBuilder& factory_builder,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
   static BraveProxyingWebSocket* StartProxyingWebSocket(
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
-      const absl::optional<std::string>& user_agent,
+      const std::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
       content::BrowserContext* browser_context,

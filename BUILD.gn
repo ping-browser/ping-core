@@ -54,7 +54,6 @@ if (!is_ios) {
   group("browser_dependencies") {
     deps = [
       "browser",
-      "chromium_src:browser",
       "chromium_src/chrome/app",
       "common",
       "//components/omnibox/common",
@@ -193,7 +192,6 @@ if (is_android) {
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/privacy_protection.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/save_data_and_battery.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/website_loads_faster.json",
-      "//brave/android/java/org/chromium/chrome/browser/shields/disconnect_entitylist.json",
       "//brave/android/java/org/chromium/chrome/browser/vpn/brave_vpn_confirm.json",
     ]
     disable_compression = false
@@ -468,14 +466,7 @@ if (should_generate_symbols) {
     }
   }
 
-  if (is_win) {
-    create_dist_template("create_native_symbols_dist") {
-      output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.7z"
-      dir_inputs = [ "$brave_product_name.pdb.syms" ]
-
-      deps = [ "//brave/app/win:generate_symbols" ]
-    }
-  } else if (is_mac) {
+  if (is_mac) {
     copy("create_native_symbols_dist") {
       sources = [ "$root_out_dir/$chrome_product_full_name.dSYM.tar.bz2" ]
       outputs = [ "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.tar.bz2" ]
@@ -614,7 +605,7 @@ if (is_mac) {
 
 cargo_audit_target_dir = "$root_build_dir/cargo_audit"
 cargo_audit_exe = "$cargo_audit_target_dir/release/cargo-audit"
-cargo_audit_src = "//brave/tools/crates/cargo_audit/v0_17/crate"
+cargo_audit_src = "//brave/tools/crates/cargo_audit/v0_20/crate"
 if (host_os == "win") {
   cargo_audit_exe += ".exe"
 }

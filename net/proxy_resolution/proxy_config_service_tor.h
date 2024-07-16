@@ -6,14 +6,9 @@
 #ifndef BRAVE_NET_PROXY_RESOLUTION_PROXY_CONFIG_SERVICE_TOR_H_
 #define BRAVE_NET_PROXY_RESOLUTION_PROXY_CONFIG_SERVICE_TOR_H_
 
-#include <map>
-#include <queue>
 #include <string>
-#include <utility>
 
-#include "base/compiler_specific.h"
 #include "base/observer_list.h"
-#include "base/timer/timer.h"
 #include "net/base/net_export.h"
 #include "net/base/proxy_server.h"
 #include "net/proxy_resolution/proxy_config_service.h"
@@ -27,6 +22,7 @@ class Time;
 
 namespace net {
 
+class NetworkAnonymizationKey;
 class ProxyConfigWithAnnotation;
 class ProxyInfo;
 class ProxyResolutionService;
@@ -44,6 +40,7 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
   void SetNewTorCircuit(const GURL& url);
   static void SetProxyAuthorization(const ProxyConfigWithAnnotation& config,
                                     const GURL& url,
+                                    const NetworkAnonymizationKey& key,
                                     ProxyResolutionService* service,
                                     ProxyInfo* result);
 
@@ -56,6 +53,8 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
   // This is useful when we want to test mock requests/responses in tor context
   // with embedded test server.
   static void SetBypassTorProxyConfigForTesting(bool bypass);
+
+  static NetworkTrafficAnnotationTag GetTorAnnotationTagForTesting();
 
  private:
   static bool bypass_tor_proxy_config_for_testing_;

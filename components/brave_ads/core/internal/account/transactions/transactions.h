@@ -8,8 +8,10 @@
 
 #include <string>
 
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace base {
 class Time;
@@ -25,20 +27,17 @@ using GetTransactionsCallback =
 
 using RemoveAllTransactionsCallback = base::OnceCallback<void(bool success)>;
 
-class AdType;
-class ConfirmationType;
-
 TransactionInfo BuildTransaction(const std::string& creative_instance_id,
                                  const std::string& segment,
                                  double value,
-                                 const AdType& ad_type,
-                                 const ConfirmationType& confirmation_type);
+                                 AdType ad_type,
+                                 ConfirmationType confirmation_type);
 
 TransactionInfo AddTransaction(const std::string& creative_instance_id,
                                const std::string& segment,
                                double value,
-                               const AdType& ad_type,
-                               const ConfirmationType& confirmation_type,
+                               AdType ad_type,
+                               ConfirmationType confirmation_type,
                                AddTransactionCallback callback);
 
 void GetTransactionsForDateRange(base::Time from_time,

@@ -9,9 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_media_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -22,8 +20,7 @@ const char kTableName[] = "media_publisher_info";
 
 }  // namespace
 
-DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(
-    RewardsEngineImpl& engine)
+DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
@@ -31,10 +28,11 @@ DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
 void DatabaseMediaPublisherInfo::InsertOrUpdate(
     const std::string& media_key,
     const std::string& publisher_key,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (media_key.empty() || publisher_key.empty()) {
-    BLOG(1, "Data is empty " << media_key << "/" << publisher_key);
-    callback(mojom::Result::FAILED);
+    engine_->Log(FROM_HERE)
+        << "Data is empty " << media_key << "/" << publisher_key;
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -53,16 +51,16 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
                                            PublisherInfoCallback callback) {
   if (media_key.empty()) {
-    BLOG(1, "Media key is empty");
-    return callback(mojom::Result::FAILED, {});
+    engine_->Log(FROM_HERE) << "Media key is empty";
+    return std::move(callback).Run(mojom::Result::FAILED, {});
   }
 
   auto transaction = mojom::DBTransaction::New();
@@ -94,26 +92,26 @@ void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseMediaPublisherInfo::OnGetRecord, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseMediaPublisherInfo::OnGetRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseMediaPublisherInfo::OnGetRecord(
-    mojom::DBCommandResponsePtr response,
-    PublisherInfoCallback callback) {
+    PublisherInfoCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(1, "Response is wrong");
-    callback(mojom::Result::FAILED, {});
+    engine_->Log(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run(mojom::Result::FAILED, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
-    callback(mojom::Result::NOT_FOUND, {});
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
+    std::move(callback).Run(mojom::Result::NOT_FOUND, {});
     return;
   }
 
@@ -130,7 +128,7 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   info->excluded =
       static_cast<mojom::PublisherExclude>(GetIntColumn(record, 7));
 
-  callback(mojom::Result::OK, std::move(info));
+  std::move(callback).Run(mojom::Result::OK, std::move(info));
 }
 
 }  // namespace database

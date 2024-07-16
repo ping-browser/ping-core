@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 8fd6c6b955e7e170ee5c691e64e7cb24cad07749..7dfdde8ffd62de221aa967417e6ba75c72a7786c 100644
+index 5efb61e19bf3265f1d3e8f46c94b6b259480d724..2e9f57062bb92a67ab95261601c731484b7a1cd7 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -729,6 +729,7 @@ void LocationBarView::Layout() {
+@@ -710,6 +710,7 @@ void LocationBarView::Layout(PassKey) {
+   if (show_overriding_permission_chip)
+     text_left += text_overriding_permission_chip_indent;
+ 
++  BRAVE_LAYOUT_LEADING_DECORATIONS
+   LocationBarLayout leading_decorations(LocationBarLayout::Position::kLeftEdge,
+                                         text_left);
+   LocationBarLayout trailing_decorations(
+@@ -789,6 +790,7 @@ void LocationBarView::Layout(PassKey) {
      }
    };
  
 +  BRAVE_LAYOUT_TRAILING_DECORATIONS
-   add_trailing_decoration(page_action_icon_container_);
+   add_trailing_decoration(page_action_icon_container_,
+                           /*intra_item_padding=*/0);
    for (ContentSettingImageView* view : base::Reversed(content_setting_views_)) {
-     add_trailing_decoration(view);

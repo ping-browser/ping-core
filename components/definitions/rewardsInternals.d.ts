@@ -10,7 +10,7 @@ declare namespace RewardsInternals {
 
   export interface State {
     balance: import(
-      'gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m.js'
+      'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m.js'
     ).Balance
     info: {
       isKeyInfoSeedValid: boolean
@@ -20,10 +20,9 @@ declare namespace RewardsInternals {
       walletCreationEnvironment?: Environment
     }
     contributions: ContributionInfo[]
-    promotions: Promotion[]
     log: string
     fullLog: string
-    externalWallet: ExternalWallet
+    externalWallet?: ExternalWallet
     eventLogs: EventLog[]
     adDiagnostics: AdDiagnostics
     environment: Environment
@@ -45,18 +44,6 @@ declare namespace RewardsInternals {
     publisherKey: string
     totalAmount: number
     contributedAmount: number
-  }
-
-  export interface Promotion {
-    amount: number
-    promotionId: string
-    expiresAt: number
-    type: number
-    status: number
-    claimedAt: number
-    legacyClaimed: boolean
-    claimId: string
-    version: number
   }
 
   type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m.js').WalletStatus

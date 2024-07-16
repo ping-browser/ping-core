@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# pylint: disable=too-many-arguments,undefined-variable,unused-argument
-# pylint: disable=no-value-for-parameter
 
 import os
 import re
@@ -15,18 +13,18 @@ from os.path import join
 
 import override_utils
 
-from import_inline import get_src_dir
+from brave_chromium_utils import get_src_dir
 from sign_binaries import sign_binaries
 
 
 @override_utils.override_function(globals())
 def CopyAllFilesToStagingDir(original_function, config, distribution,
                              staging_dir, build_dir, enable_hidpi,
-                             include_snapshotblob, component_build,
+                             include_snapshotblob, include_dxc, component_build,
                              component_ffmpeg_build, verbose):
     original_function(config, distribution, staging_dir, build_dir,
-                      enable_hidpi, include_snapshotblob, component_build,
-                      component_ffmpeg_build, verbose)
+                      enable_hidpi, include_snapshotblob, include_dxc,
+                      component_build, component_ffmpeg_build, verbose)
     brave_extension_locales_src_dir_path = os.path.realpath(
         os.path.join(get_src_dir(), 'brave', 'components', 'brave_extension',
                      'extension', 'brave_extension', '_locales'))
@@ -36,7 +34,7 @@ def CopyAllFilesToStagingDir(original_function, config, distribution,
 
 
 @override_utils.override_function(globals())
-def GetPrevVersion(_, build_dir, temp_dir, last_chrome_installer, output_name):
+def GetPrevVersion(_, build_dir, _temp_dir, last_chrome_installer, output_name):
     # We override GetPrevVersion because it has an unwanted side effect. The
     # `temp_dir` it gets passed is actually the staging directory. The original
     # GetPrevVersion places the previous version's chrome.dll inside this
@@ -58,6 +56,7 @@ def GetPrevVersion(_, build_dir, temp_dir, last_chrome_installer, output_name):
                                          stderr=subprocess.STDOUT,
                                          text=True)
     except subprocess.CalledProcessError as e:
+        # pylint: disable=raise-missing-from
         raise Exception("Error while running cmd: %s\n"
                         "Exit code: %s\n"
                         "Command output:\n%s" % (e.cmd, e.returncode, e.output))
@@ -69,8 +68,8 @@ def GetPrevVersion(_, build_dir, temp_dir, last_chrome_installer, output_name):
 
 
 @override_utils.override_function(globals())
-def CreateArchiveFile(original_function, options, staging_dir, current_version,
-                      prev_version):
+def CreateArchiveFiles(original_function, options, staging_dir, current_version,
+                       prev_version):
     # At least as of this writing, `current_version` and `prev_version` are
     # actually two-tuple build numbers y.z, not four-tuple version numbers
     # w.x.y.z.

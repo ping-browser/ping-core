@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
+#include <optional>
+
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
@@ -40,7 +42,7 @@ TEST(EthCallDataBuilderTest, Transfer) {
       "0f0000000000000000000000000000000000000000000000000de0b6b3a7640000");
 }
 
-TEST(EthCallDataBuilderTest, BalanceOf) {
+TEST(EthCallDataBuilderTest, BalanceOf_erc20) {
   std::string data;
   BalanceOf("0x4e02f254184E904300e0775E4b8eeCB1", &data);
   ASSERT_EQ(data,
@@ -139,7 +141,7 @@ TEST(EthCallDataBuilderTest, SafeTransferFrom) {
             "0000000000000000000000000000000000000000000000000000000000000000");
 }
 
-TEST(EthCallDataBuilderTest, BalanceOf) {
+TEST(EthCallDataBuilderTest, BalanceOf_erc1155) {
   std::string data;
   uint256_t token_id;
   ASSERT_TRUE(HexValueToUint256("0x1", &token_id));
@@ -257,7 +259,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_ETH) {
   }
   {
     auto call = GetWalletAddr("test.crypto", mojom::CoinType::ETH, "USDT",
-                              mojom::kBinanceSmartChainMainnetChainId);
+                              mojom::kBnbSmartChainMainnetChainId);
 
     auto [selector, args] =
         eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
@@ -441,22 +443,6 @@ TEST(EthCallDataBuilderTest, Resolver) {
             "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
 }
 
-TEST(EthCallDataBuilderTest, ContentHash) {
-  std::string data;
-  EXPECT_TRUE(ContentHash("brantly.eth", &data));
-  EXPECT_EQ(data,
-            "0xbc1c58d1"
-            "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
-}
-
-TEST(EthCallDataBuilderTest, Addr) {
-  std::string data;
-  EXPECT_TRUE(Addr("brantly.eth", &data));
-  EXPECT_EQ(data,
-            "0x3b3b57de"
-            "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
-}
-
 TEST(EthCallDataBuilderTest, DnsEncode) {
   // Based on DNSUtilTest.DNSDomainFromDot test. But without total length limit
   // and support of terminal dot.
@@ -535,7 +521,7 @@ TEST(EthCallDataBuilderTest, TokensBalance) {
       TokensBalance("0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5", {"invalid"}));
 
   // Single token contract address supplied
-  absl::optional<std::string> data;
+  std::optional<std::string> data;
   data = TokensBalance("0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961",
                        {"0x0D8775F648430679A709E98d2b0Cb6250d2887EF"});
   ASSERT_TRUE(data);

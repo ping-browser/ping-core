@@ -5,11 +5,11 @@
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 
+#include <algorithm>
+
 #include "base/check.h"
-#include "base/logging.h"
 #include "base/rand_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace ntp_background_images {
@@ -17,8 +17,14 @@ namespace ntp_background_images {
 ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
   CHECK(prefs);
 
+  // When browser is restarted we reset to "initial" count. This will also get
+  // set again in the Reset() function, called e.g. when component is updated.
   count_to_branded_wallpaper_ =
-      prefs->GetInteger(prefs::kCountToBrandedWallpaper);
+      features::kInitialCountToBrandedWallpaper.Get() - 1;
+
+  // We also reset when a specific amount of time is elapsed when in SI mode
+  timer_counts_reset_.Start(FROM_HERE, features::kResetCounterAfter.Get(), this,
+                            &ViewCounterModel::OnTimerCountsResetExpired);
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
@@ -58,8 +64,11 @@ bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
 }
 
 void ViewCounterModel::RegisterPageView() {
-  RegisterPageViewForBrandedImages();
+  // Call BG images first to know this calling is after showing
+  // branded image or not. If this calling is from branded image
+  // showing, background image index should not be changed.
   RegisterPageViewForBackgroundImages();
+  RegisterPageViewForBrandedImages();
 }
 
 void ViewCounterModel::RegisterPageViewForBrandedImages() {
@@ -89,7 +98,7 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
   count_to_branded_wallpaper_--;
   if (count_to_branded_wallpaper_ < 0) {
     // Reset count and randomize image index for next time.
-    count_to_branded_wallpaper_ = features::kCountToBrandedWallpaper.Get();
+    count_to_branded_wallpaper_ = features::kCountToBrandedWallpaper.Get() - 1;
 
     // Randomize SI campaign branded image index for next time.
     campaigns_current_branded_image_index_[current_campaign_index_] =
@@ -100,19 +109,9 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
     // Randomize campaign index for next time.
     current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
   }
-
-  prefs_->SetInteger(prefs::kCountToBrandedWallpaper,
-                     count_to_branded_wallpaper_);
 }
 
 void ViewCounterModel::RegisterPageViewForBackgroundImages() {
-  // NTP BI component is not ready.
-  if (total_image_count_ == 0)
-    return;
-
-  if (!show_wallpaper_)
-    return;
-
   // We don't show NTP BI in SR mode.
   if (always_show_branded_wallpaper_)
     return;
@@ -123,12 +122,10 @@ void ViewCounterModel::RegisterPageViewForBackgroundImages() {
     return;
   }
 
-  // Increase background image index
-  current_wallpaper_image_index_++;
-  current_wallpaper_image_index_ %= total_image_count_;
+  RotateBackgroundWallpaperImageIndex();
 }
 
-void ViewCounterModel::IncreaseBackgroundWallpaperImageIndex() {
+void ViewCounterModel::RotateBackgroundWallpaperImageIndex() {
   // NTP BI component is not ready.
   if (total_image_count_ == 0)
     return;
@@ -136,9 +133,18 @@ void ViewCounterModel::IncreaseBackgroundWallpaperImageIndex() {
   if (!show_wallpaper_)
     return;
 
-  // Increase background image index
   current_wallpaper_image_index_++;
   current_wallpaper_image_index_ %= total_image_count_;
+}
+
+void ViewCounterModel::MaybeResetBrandedWallpaperCount() {
+  // Set count so that user is more likely to see new branded data at least once
+  // Only reset count for SI images
+  if (!always_show_branded_wallpaper_ && show_branded_wallpaper_) {
+    count_to_branded_wallpaper_ =
+        std::min(count_to_branded_wallpaper_,
+                 features::kInitialCountToBrandedWallpaper.Get() - 1);
+  }
 }
 
 void ViewCounterModel::Reset() {
@@ -149,6 +155,13 @@ void ViewCounterModel::Reset() {
   total_campaign_count_ = 0;
   campaigns_total_branded_image_count_.clear();
   campaigns_current_branded_image_index_.clear();
+  MaybeResetBrandedWallpaperCount();
+  // Restart timer with same parameters as set during this class' constructor
+  timer_counts_reset_.Reset();
+}
+
+void ViewCounterModel::OnTimerCountsResetExpired() {
+  MaybeResetBrandedWallpaperCount();
 }
 
 }  // namespace ntp_background_images

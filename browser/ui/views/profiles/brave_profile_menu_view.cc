@@ -1,11 +1,12 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/profiles/brave_profile_menu_view.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "brave/browser/profiles/profile_util.h"
@@ -16,7 +17,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/signin/profile_colors_util.h"
+#include "chrome/browser/ui/profiles/profile_colors_util.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/vector_icons/vector_icons.h"
@@ -35,8 +36,9 @@ void BraveProfileMenuView::BuildIdentity() {
   SetProfileIdentityInfo(
       /*profile_name=*/std::u16string(),
       profile_attributes->GetProfileThemeColors().profile_highlight_color,
-      /*edit_button_params=*/absl::nullopt,
+      /*edit_button_params=*/std::nullopt,
       ui::ImageModel::FromImage(profile_attributes->GetAvatarIcon()),
+      ui::ImageModel(),
       /*title=*/profile_attributes->GetName());
 }
 

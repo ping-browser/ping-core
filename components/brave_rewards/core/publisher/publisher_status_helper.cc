@@ -15,7 +15,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
@@ -29,26 +29,27 @@ struct PublisherStatusData {
 using PublisherStatusMap = std::map<std::string, PublisherStatusData>;
 
 struct RefreshTaskInfo {
-  RefreshTaskInfo(RewardsEngineImpl& engine,
+  RefreshTaskInfo(RewardsEngine& engine,
                   PublisherStatusMap&& status_map,
-                  std::function<void(PublisherStatusMap)> callback)
-      : engine(engine),
+                  base::OnceCallback<void(PublisherStatusMap)> callback)
+      : engine(engine.GetWeakPtr()),
         map(std::move(status_map)),
         current(map.begin()),
-        callback(callback) {}
+        callback(std::move(callback)) {}
 
-  const raw_ref<RewardsEngineImpl> engine;
+  base::WeakPtr<RewardsEngine> engine;
   PublisherStatusMap map;
   PublisherStatusMap::iterator current;
-  std::function<void(PublisherStatusMap)> callback;
+  base::OnceCallback<void(PublisherStatusMap)> callback;
 };
 
-void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
-  DCHECK(task_info);
-
+void RefreshNext(std::unique_ptr<RefreshTaskInfo> task_info) {
   // Find the first map element that has an expired status.
   task_info->current = std::find_if(
       task_info->current, task_info->map.end(), [&task_info](auto& key_value) {
+        if (!task_info->engine) {
+          return false;
+        }
         mojom::ServerPublisherInfo server_info;
         server_info.status = key_value.second.status;
         server_info.updated_at = key_value.second.updated_at;
@@ -58,63 +59,73 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
 
   // Execute the callback if no more expired elements are found.
   if (task_info->current == task_info->map.end()) {
-    task_info->callback(std::move(task_info->map));
+    std::move(task_info->callback).Run(std::move(task_info->map));
     return;
   }
+
+  auto on_prefix_searched = [](std::unique_ptr<RefreshTaskInfo> task_info,
+                               bool exists) {
+    // If the publisher key does not exist in the hash index look
+    // for next expired entry.
+    if (!exists || !task_info->engine) {
+      ++task_info->current;
+      RefreshNext(std::move(task_info));
+      return;
+    }
+
+    auto on_db_read = [](std::unique_ptr<RefreshTaskInfo> task_info,
+                         mojom::ServerPublisherInfoPtr server_info) {
+      // Update status map and continue looking for
+      // expired entries.
+      task_info->current->second.status = server_info->status;
+      ++task_info->current;
+      RefreshNext(std::move(task_info));
+    };
+
+    // Fetch current publisher info.
+    auto& key = task_info->current->first;
+    task_info->engine->publisher()->GetServerPublisherInfo(
+        key, base::BindOnce(on_db_read, std::move(task_info)));
+  };
 
   // Look for publisher key in hash index.
   auto& key = task_info->current->first;
   task_info->engine->database()->SearchPublisherPrefixList(
-      key, [task_info](bool exists) {
-        // If the publisher key does not exist in the hash index look for
-        // next expired entry.
-        if (!exists) {
-          ++task_info->current;
-          RefreshNext(task_info);
-          return;
-        }
-        // Fetch current publisher info.
-        auto& key = task_info->current->first;
-        task_info->engine->publisher()->GetServerPublisherInfo(
-            key, [task_info](mojom::ServerPublisherInfoPtr server_info) {
-              // Update status map and continue looking for expired entries.
-              task_info->current->second.status = server_info->status;
-              ++task_info->current;
-              RefreshNext(task_info);
-            });
-      });
+      key, base::BindOnce(on_prefix_searched, std::move(task_info)));
 }
 
 void RefreshPublisherStatusMap(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     PublisherStatusMap&& status_map,
-    std::function<void(PublisherStatusMap)> callback) {
-  RefreshNext(std::make_shared<RefreshTaskInfo>(engine, std::move(status_map),
-                                                callback));
+    base::OnceCallback<void(PublisherStatusMap)> callback) {
+  RefreshNext(std::make_unique<RefreshTaskInfo>(engine, std::move(status_map),
+                                                std::move(callback)));
 }
 
 }  // namespace
 
 namespace publisher {
 
-void RefreshPublisherStatus(RewardsEngineImpl& engine,
+void RefreshPublisherStatus(RewardsEngine& engine,
                             std::vector<mojom::PublisherInfoPtr>&& info_list,
-                            GetRecurringTipsCallback callback) {
+                            RefreshPublisherStatusCallback callback) {
   PublisherStatusMap map;
   for (const auto& info : info_list) {
     map[info->id] = {info->status, info->status_updated_at};
   }
 
-  auto shared_list = std::make_shared<std::vector<mojom::PublisherInfoPtr>>(
-      std::move(info_list));
+  auto on_refreshed = [](std::vector<mojom::PublisherInfoPtr> list,
+                         RefreshPublisherStatusCallback callback,
+                         PublisherStatusMap map) {
+    for (const auto& info : list) {
+      info->status = map[info->id].status;
+    }
+    std::move(callback).Run(std::move(list));
+  };
 
-  RefreshPublisherStatusMap(engine, std::move(map),
-                            [shared_list, callback](auto map) {
-                              for (const auto& info : *shared_list) {
-                                info->status = map[info->id].status;
-                              }
-                              callback(std::move(*shared_list));
-                            });
+  RefreshPublisherStatusMap(
+      engine, std::move(map),
+      base::BindOnce(on_refreshed, std::move(info_list), std::move(callback)));
 }
 
 }  // namespace publisher

@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
 #include <memory>
+#include <string>
 
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
@@ -18,8 +19,9 @@
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/brave_federated/features.h"
+#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -30,6 +32,8 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
+#include "components/optimization_guide/core/optimization_guide_features.h"
+#include "components/optimization_guide/optimization_guide_internals/webui/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_utils.h"
@@ -48,7 +52,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
-#include "brave/browser/ui/webui/webcompat_reporter_ui.h"
+#include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -84,6 +88,12 @@
 #include "brave/browser/ui/webui/tor_internals_ui.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+#include "brave/browser/ui/webui/brave_player_ui.h"
+#include "brave/components/brave_player/common/features.h"
+#include "brave/components/brave_player/common/url_constants.h"
+#endif
+
 using content::WebUI;
 using content::WebUIController;
 
@@ -106,8 +116,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new SkusInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWebcompatReporterHost) {
-    return new WebcompatReporterUI(web_ui, url.host());
-#endif
+    return new webcompat_reporter::WebcompatReporterUI(web_ui, url.host());
+#endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
   } else if (host == kIPFSWebUIHost &&
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
@@ -130,7 +140,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWalletPanelHost &&
              brave_wallet::IsAllowedForContext(profile)) {
     return new WalletPanelUI(web_ui);
-#endif  // BUILDFLAG(OS_ANDROID)
+#endif  // !BUILDFLAG(OS_ANDROID)
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
              // we want private windows to redirect to the regular profile.
@@ -156,8 +166,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
                  brave_news::features::kBraveNewsFeedUpdate) &&
              host == kBraveNewsInternalsHost) {
     return new BraveNewsInternalsUI(web_ui, url.host());
-#endif  // !BUILDFLAG(IS_ANDROID)
-#if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUISettingsHost) {
@@ -186,7 +194,12 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (url.is_valid() && url.host() == kWalletPageHost) {
     return new AndroidWalletPageUI(web_ui, url);
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+  } else if (host == brave_player::kBravePlayerHost) {
+    return new BravePlayerUI(web_ui);
+#endif  // BUILDFLAG(IS_ANDROID)
   }
+
   return nullptr;
 }
 
@@ -216,10 +229,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if BUILDFLAG(IS_ANDROID)
-      (url.is_valid() && url.host_piece() == kWalletPageHost &&
-       (url.path() == kWalletSwapPagePath ||
-        url.path() == kWalletSendPagePath || url.path() == kWalletBuyPagePath ||
-        url.path() == kWalletDepositPagePath)) ||
+      (url.is_valid() && url.host_piece() == kWalletPageHost) ||
 #else
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
@@ -244,6 +254,10 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+      (base::FeatureList::IsEnabled(brave_player::features::kBravePlayer) &&
+       url.host_piece() == brave_player::kBravePlayerHost) ||
 #endif
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost) {
@@ -294,7 +308,11 @@ bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,
   }
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(profile);
-  return keyring_service && keyring_service->IsLockedSync();
+  // Support to unlock Wallet has been extended also through WebUI,
+  // so we block only when Wallet hasn't been created yet, as onboarding
+  // is offered only via native Andrioid UI.
+  return !keyring_service ||
+         (keyring_service && !keyring_service->IsWalletCreatedSync());
 }
 #endif  // BUILDFLAG(IS_ANDROID)
 }  // namespace
@@ -315,6 +333,14 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
     return WebUI::kNoWebUI;
   }
 #endif
+
+  // Early return to prevent upstream create its WebUI.
+  if (url.host_piece() == optimization_guide_internals::
+                              kChromeUIOptimizationGuideInternalsHost &&
+      !optimization_guide::features::IsOptimizationHintsEnabled()) {
+    return WebUI::kNoWebUI;
+  }
+
   Profile* profile = Profile::FromBrowserContext(browser_context);
   WebUIFactoryFunction function =
       GetWebUIFactoryFunction(nullptr, profile, url);
