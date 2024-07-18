@@ -22,7 +22,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["./assets/content_copy.svg", "./assets/aiSummarizerIcon.svg"],
+      "resources": ["*.svg", "./assets/content_copy.svg", "./assets/aiSummarizerIcon.svg"],
       "matches": ["<all_urls>"]
     }
   ],
