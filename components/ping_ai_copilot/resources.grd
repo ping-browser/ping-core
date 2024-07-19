@@ -12,8 +12,8 @@
     <includes>
       <include name="IDR_PING_AI_COPILOT" file="extension/manifest.json" resource_path="ping_ai_copilot/extension/manifest.json" type="BINDATA" />
       <include name="IDR_BRAVE_PING_AI_COPILOT_CSS" file="extension/content/ui/style.css" resource_path="ping_ai_copilot/extension/content/ui/style.css" type="BINDATA" />
-      <include name="IDR_BRAVE_PING_AI_COPILOT_AI_ICON" file="extension/content/content_scripts/aiSummarizerIcon.svg" resource_path="ping_ai_copilot/extension/content/content_scripts/aiSummarizerIcon.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_PING_AI_COPILOT_POPUP_CONTENT_COPY" file="extension/content/content_scripts/content_copy.svg" resource_path="ping_ai_copilot/extension/content/content_scripts/content_copy.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_AI_ICON" file="extension/assets/aiSummarizerIcon.svg" resource_path="ping_ai_copilot/extension/assets/aiSummarizerIcon.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_POPUP_CONTENT_COPY" file="extension/assets/content_copy.svg" resource_path="ping_ai_copilot/extension/assets/content_copy.svg" type="BINDATA" />
     </includes>
   </release>
 </grit>

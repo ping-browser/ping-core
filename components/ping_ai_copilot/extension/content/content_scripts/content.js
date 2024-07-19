@@ -36,7 +36,7 @@ const showSummarizeIcon = (selectedText, event) => {
     summarizer.id = 'summarizer-icon';
     
     const iconImage = document.createElement('img');
-    iconImage.src = chrome.runtime.getURL('extension/content/content_scripts/aiSummarizerIcon.svg');
+    iconImage.src = chrome.runtime.getURL('extension/assets/aiSummarizerIcon.svg');
     iconImage.alt = 'Summarize Icon';
     iconImage.id = 'iconImage';
     
@@ -83,7 +83,7 @@ const showSummaryBox = (isLoading, summary = '', headerText = '') => {
   summaryBox.innerHTML = `
     <div class="summary-header">
       ${isLoading ? '' : `<h2 id="headingText">${headerText}</h2>`}
-      ${isLoading ? '' : `<button id="copy-button"><img id="copy-image" src="${chrome.runtime.getURL('extension/content/content_scripts/content_copy.svg')}" alt="Copy"/></button>`}
+      ${isLoading ? '' : `<button id="copy-button"><img id="copy-image" src="${chrome.runtime.getURL('extension/assets/content_copy.svg')}" alt="Copy"/></button>`}
     </div>
     ${isLoading ? `
       <div class="loading-placeholder">

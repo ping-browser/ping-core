@@ -12,7 +12,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
 
         const data = await response.json();
-        console.log(data.headerText, " ht")
         chrome.tabs.sendMessage(sender.tab.id, { action: 'displaySummary', summary: data.summary, headerText: data.headerText }, response => {
           if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError);
