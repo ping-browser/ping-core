@@ -17,12 +17,12 @@
     {
       "matches": ["<all_urls>"],
       "js": ["extension/out/ping_ai_copilot_content.bundle.js"],
-      "css": ["./content/ui/style.css"]
+      "css": ["extension/content/ui/style.css"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["*.svg", "./assets/content_copy.svg", "./assets/aiSummarizerIcon.svg"],
+      "resources": ["*.svg"],
       "matches": ["<all_urls>"]
     }
   ],

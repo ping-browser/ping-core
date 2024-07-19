@@ -21,21 +21,31 @@
 }
 
 #summarizer-icon {
-  position: fixed;
-  z-index: 1e5;
-  background-color: #007bff;
-  color: white;
-  padding: 5px;
+  position: fixed;  
+  z-index: 999999;
+  border-radius: 50%;
+}
+
+#iconImage {
+  z-index: 999999;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.26); 
+  transition: box-shadow 0.3s ease;
+}
+
+#iconImage:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.32);
 }
 
 #summary-box {
-  z-index: 1e5;
   position: fixed;
   bottom: 20px;
   right: 20px;
   width: 360px;
+  z-index: 999999;
   border-radius: 24px;
   border-top: 7px solid #2BB563;
   border-bottom: 7px solid #2BB563;
@@ -61,14 +71,6 @@
   font-weight: bold;
   color: #fff;
   text-decoration: none;
-}
-
-#copy-button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 20px;
 }
 
 .loading-placeholder {
@@ -110,6 +112,14 @@
   font-size: 20px;
 }
 
+#copy-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+
 #copy-message {
   position: fixed;
   top: 20px;
@@ -119,4 +129,15 @@
   padding: 8px 16px;
   border-radius: 4px;
   font-family: Arial, sans-serif;
+}
+
+#copy-image{
+  width: 20px;
+}
+
+#copiedMessage {
+  position: relative;
+  color: #fff;
+  display: block;
+  padding: 5.4px;
 }
