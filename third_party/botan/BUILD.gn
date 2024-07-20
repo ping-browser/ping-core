@@ -65,7 +65,7 @@ source_set("low-level") {
 }
 
 group("botan") {
-  if(!is_win) {
+  if(is_mac) {
     deps = [ ":build_botan" ]
     deps += [ ":copy_policy" ]
     public_configs = [ ":my_class_import" ]
