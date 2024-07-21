@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
       } catch (error) {
         console.error('Error:', error);
-        chrome.tabs.sendMessage(sender.tab.id, { action: 'displaySummary', summary: 'An error occurred while summarizing the text => '+ error }, response => {
+        chrome.tabs.sendMessage(sender.tab.id, { action: 'displaySummary', summary: 'An error occurred while summarizing the text' }, response => {
           if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError);
           }
