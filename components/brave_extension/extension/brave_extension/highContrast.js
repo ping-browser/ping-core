@@ -1,15 +1,11 @@
 const styleElement = document.createElement('style');
 document.head.appendChild(styleElement);
 
-const isGoogleSearchPage = () => {
-    return window.location.hostname === 'www.google.com' && window.location.pathname === '/search';
-}
 let contrastEnabled = false;
 
 // Function to apply contrast mode
 const applyContrast = () => {
     let css = '';
-    console.log("reached ya ")
     contrastEnabled ?
     css =
         `
@@ -18,20 +14,16 @@ const applyContrast = () => {
                 background: #12182B !important;
                 color: #fff
             }
-            input, textarea, select, button, main, nav, ul {
+            body{ background: #12182B !important;}
+            header, footer, input, textarea, select, button, main, nav, ul {
                 color: #BFBFBF !important;
                 background: #12182B !important;
                 border: 1px solid #BFBFBF !important;
             }
-            span, li, a, h2, p {
+            span, div li, a, h2, p {
                 color: #fff !important;
                 background: #12182B !important;
             }
-              ${isGoogleSearchPage() ? '' : `
-              div {
-                color: #fff !important;
-                background: #12182B !important;
-              }`}
             input[type="submit"], input[type="button"], button {
                 background: #4a4a4a !important;
                 color: #BFBFBF !important;
@@ -52,7 +44,6 @@ const applyContrast = () => {
                 background: none !important;
             }
         ` : css = ''
-        // Apply the CSS
         styleElement.textContent = css;
 }
 
