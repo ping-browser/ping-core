@@ -6,20 +6,20 @@ import * as React from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import pdfLogo from '../assets/pdfLogo.png';
-import pdfMain from '../assets/pdfMain.png';
 import styles from './ping-sign-pdf.module.css';
-import { verifyPDF } from './pdf_verify';
-import { signPdf } from './pdf_signer';
+import { verifyPDF } from './utils/pdf_verify';
+import { signPdf } from './utils/pdf_signer';
+import { DropZone } from './components/DropZone/DropZone';
+import { SignatureTypePopup } from './components/SignatureTypePopup/SignatureTypePopup';
+import { SignaturePopup } from './components/SignaturePopup/SignaturePopup';
+import { SignatureMethodPopup } from './components/SignatureMethodPopup/SignatureMethodPopup';
+import { SuccessPopup } from './components/SuccessPopup/SuccessPopup';
+import { AnimatedStatus } from './components/AnimatedStatus/AnimatedStatus';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  './pdfjs-dist-worker.js',
+  './utils/pdfjs-dist-worker.js',
   import.meta.url,
 ).toString();
-
-// interface TooltipProps {
-//   content: string;
-//   children: React.ReactNode;
-// }
 
 export interface SelectionCoords {
   startX: number;
@@ -28,194 +28,7 @@ export interface SelectionCoords {
   endY: number;
 }
 
-// const Tooltip: React.FC<TooltipProps> = ({ content, children }) => {
-//   return (
-//     <div className={styles.tooltipWrapper}>
-//       {children}
-//       <span className={styles.tooltipText}>{content}</span>
-//     </div>
-//   );
-// };
-
-interface SignatureTypePopupProps {
-  onClose: () => void;
-  onConfirm: (signatureName: string) => void;
-}
-
-const SignatureTypePopup: React.FC<SignatureTypePopupProps> = ({ onClose, onConfirm }) => {
-  const [signatureName, setSignatureName] = useState<string>("John Doe");
-
-  const handleConfirm = () => {
-    if (signatureName) {
-      onConfirm(signatureName);
-    }
-  };
-
-  return (
-    <div className={styles.popupOverlay}>
-      <div className={styles.popupTypeContent}>
-        <h2 className={styles.h2}>Choose a digital ID to sign with:</h2>
-        <button className={styles.closeButton} onClick={onClose}>×</button>
-
-        <div className={styles.typedSignature}>
-          <h3 className={styles.h3}>{signatureName}</h3>
-        </div>
-
-        <input
-          type="text"
-          placeholder="Type your name"
-          value={signatureName}
-          onChange={(e) => setSignatureName(e.target.value)}
-          className={styles.nameInput}
-        />
-
-        <div className={styles.typeButtons}>
-          <button
-            className={styles.confirmButton}
-            onClick={handleConfirm}
-          >
-            Confirm signature
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface SignaturePopupProps {
-  onClose: () => void;
-  onConfirm: (signature: string) => void;
-}
-
-const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfirm }) => {
-  const [selectedSignature, setSelectedSignature] = useState<string | null>(null);
-
-  const signatures = [
-    { id: '1', name: 'Presley Abernathy', issueDate: '05/07/2024 15:30' },
-    { id: '2', name: 'Harrison Wilderman', issueDate: '05/07/2024 15:30' },
-    { id: '3', name: 'Rudolf Wolf', issueDate: '05/07/2024 15:30' },
-  ];
-
-  const handleConfirm = () => {
-    if (selectedSignature) {
-      onConfirm(selectedSignature);
-    }
-  };
-
-  return (
-    <div className={styles.popupOverlay}>
-      <div className={`${styles.popupContent} ${selectedSignature ? styles.selected : ''}`}>
-        <h2 className={styles.h2}>Choose a digital ID to sign with:</h2>
-        <button className={styles.closeButton} onClick={onClose}>×</button>
-
-        {selectedSignature && (
-          <div className={styles.selectedSignature}>
-            <h3>{signatures.find(sig => sig.id === selectedSignature)?.name}</h3>
-            <p>Project manager, Apple</p>
-            <p>presleyabernathy@gmail.com</p>
-            <p>05/07/2024, IST 21:35</p>
-            <p className={styles.encKey}>Enc. Key: 87478632758654</p>
-            <div className={styles.browseImage}>Browse for Image</div>
-          </div>
-        )}
-
-        <div className={styles.signatureList}>
-          {signatures.map(sig => (
-            <label key={sig.id} className={styles.signatureOption}>
-              <input
-                type="radio"
-                name="signature"
-                value={sig.id}
-                checked={selectedSignature === sig.id}
-                onChange={() => setSelectedSignature(sig.id)}
-              />
-              <div className={styles.signatureName}>
-                <span className={styles.issueName}>{sig.name}</span>
-                <span className={styles.issueDate}>Issued: {sig.issueDate}</span>
-              </div>
-            </label>
-          ))}
-        </div>
-        <div className={styles.buttons}>
-          <button className={styles.addButton}>+ Add</button>
-          <button
-            className={styles.confirmButton}
-            onClick={handleConfirm}
-            disabled={!selectedSignature}
-          >
-            Confirm signature
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface SignatureMethodPopupProps {
-  onClose: () => void;
-  onSelectMethod: (method: 'digitalID' | 'imageUpload') => void;
-}
-
-const SignatureMethodPopup: React.FC<SignatureMethodPopupProps> = ({ onClose, onSelectMethod }) => (
-  <div className={styles.popupOverlay}>
-    <div className={styles.popupContent}>
-      <h2 className={styles.h2}>Choose Your Digital Signature Method</h2>
-      <button className={styles.closeButton} onClick={onClose}>×</button>
-      <div className={styles.methodOptions}>
-        <div className={styles.button} onClick={() => onSelectMethod('digitalID')}>
-          <div className={styles.buttonTitle}>Sign with digital ID (Recommended)</div>
-          <div className={styles.buttonDesc}>Sign documents quickly using your pre-uploaded signature data for a seamless and efficient signing process</div>
-        </div>
-        <div className={styles.button} onClick={() => onSelectMethod('imageUpload')}>
-          <div className={styles.buttonTitle}>Upload Image Signature</div>
-          <div className={styles.buttonDesc}>Select and upload an image of your signature from your device to sign documents easily and securely.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-interface SuccessPopupProps {
-  message: string;
-  onSave: () => void;
-  onContinue: () => void;
-  isVerification: boolean;
-}
-
-const SuccessPopup: React.FC<SuccessPopupProps> = ({ message, onSave, onContinue, isVerification }) => (
-  <div className={styles.successPopup}>
-    {isVerification ? (
-      <h2 className={`${styles.successTitle} ${styles.successVerificationTitle}`}>Verification Successful!</h2>
-    ) : (
-      <h2 className={styles.successTitle}>Signature complete!</h2>
-    )}
-    <p className={styles.successMessage}>{message}</p>
-    {!isVerification ? (
-      <p className={styles.successName}>Placeholder</p>
-    ) : (
-      <p></p>
-    )}
-    <div className={styles.successButtons}>
-      <button className={`${styles.confirmButton} ${styles.btn}`} onClick={onSave}>Save as</button>
-      <button className={`${styles.confirmButton} ${styles.continue}`} onClick={onContinue}>Continue</button>
-    </div>
-  </div>
-);
-
-interface AnimatedStatusProps {
-  message: string;
-  type: string;
-}
-
-const AnimatedStatus: React.FC<AnimatedStatusProps> = ({ message, type }) => (
-  <div className={`${styles.animatedStatus} ${styles[type]} ${styles.visible}`}>
-    <div className={styles.statusContent}>
-      Status: <span className={styles.tex}>{message}</span>
-    </div>
-  </div>
-);
-
-export function PdfRenderer() {
+export const PdfRenderer: React.FC = () => {
   const [pdfFile, setPdfFile] = useState<Blob | null>(null);
   const [pdfFileName, setPdfFileName] = useState<string>('');
   const [numPages, setNumPages] = useState<number | null>(null);
@@ -227,32 +40,32 @@ export function PdfRenderer() {
   const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null);
   const [hsmPath, setHsmPath] = useState<string>('');
   const [pin, setPin] = useState<string>('');
-  // const [selectedSignature, setSelectedSignature] = useState<string | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isEditingPageNumber, setIsEditingPageNumber] = useState<boolean>(false);
   const [tempPageNumber, setTempPageNumber] = useState<string>('');
-  const [isDragging, setIsDragging] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // TODO: ADD the setIsDragging state populator
+  const [isDragging] = useState<boolean>(false);
   const [showSignaturePopup, setShowSignaturePopup] = useState<boolean>(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [showSignatureMethodPopup, setShowSignatureMethodPopup] = useState<boolean>(false);
-  // const [selectedSignatureImage, setSelectedSignatureImage] = useState<string | null>(null);
   const [isVerification, setIsVerification] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [isVerificationFailed, setIsVerificationFailed] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string>('');
   const [isStatusVisible, setIsStatusVisible] = useState<boolean>(false);
   const [showTypeSignaturePopup, setShowTypeSignaturePopup] = useState<boolean>(false);
-  const [statusType, setStatusType] = useState<string>('checking');
-  const overlayCanvasRefs = useRef<HTMLCanvasElement[]>([]);
-  const pdfCanvasRefs = useRef<HTMLCanvasElement[]>([]);
-  const pdfContainerRef = useRef<HTMLDivElement>(null);
-  const pageRefs = useRef<HTMLDivElement[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [statusType, setStatusType] = useState<'checking' | 'success' | 'error'>('checking');
+
+  const overlayCanvasRefs = useRef<Array<HTMLCanvasElement | null>>([]);
+  const pdfCanvasRefs = useRef<Array<HTMLCanvasElement | null>>([]);
+  const pdfContainerRef = useRef<HTMLDivElement | null>(null);
+  const pageRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     const promptHsmPath = async () => {
-      // const path = prompt('Please enter the HSM path:');
       const path = "hardcoded-for-now";
       if (path) {
         setHsmPath(path);
@@ -284,14 +97,14 @@ export function PdfRenderer() {
     []
   );
 
-  const handleDrop = useCallback(
-    (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault();
-      setIsDragging(false);
-      handleFileInput(event);
-    },
-    [handleFileInput]
-  );
+  // const handleDrop = useCallback(
+  //   (event: React.DragEvent<HTMLDivElement>) => {
+  //     event.preventDefault();
+  //     setIsDragging(false);
+  //     handleFileInput(event);
+  //   },
+  //   [handleFileInput]
+  // );
 
   const handleLogoClick = () => {
     if (!pdfFile) {
@@ -601,51 +414,6 @@ export function PdfRenderer() {
     };
   }, [handlePreviousPage, handleNextPage]);
 
-  const DropZone: React.FC<{ onFileInput: (event: React.ChangeEvent<HTMLInputElement>) => void, isDragging: boolean }> = ({ onFileInput, isDragging }) => {
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const handleLogoClick = () => {
-      fileInputRef.current?.click();
-    };
-
-    return (
-      <div className={styles.dropZoneContainer}>
-        <div
-          className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
-          onDragOver={(e) => e.preventDefault()}
-          onDragEnter={() => setIsDragging(true)}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={handleDrop}
-        >
-          <img
-            src={pdfMain}
-            alt="PDF Logo"
-            className={styles.pdfLogo}
-            onClick={handleLogoClick}
-          />
-          <p className={styles.pdfText}>Choose a PDF file to add your digital signature</p>
-          <label htmlFor="fileInput" className={styles.addFileButton}>
-            + Add file
-          </label>
-          <input
-            id="fileInput"
-            ref={fileInputRef}
-            type="file"
-            accept=".pdf"
-            onChange={onFileInput}
-            style={{ display: 'none' }}
-          />
-          <p className={styles.legalText}>
-            By clicking on add file, you agree to Ping's <br />
-            <a href="#" style={{ color: '#2BB563', textDecoration: 'none' }}> Privacy policy </a>
-            &
-            <a href="#" style={{ color: '#2BB563', textDecoration: 'none' }}> Terms of use</a>
-          </p>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className={styles.app}>
       <header className={styles.header}>
@@ -660,7 +428,7 @@ export function PdfRenderer() {
           {pdfFile && !isSelectionEnabled ? (
             <div className={styles.headerControls}>
               {isStatusVisible ? (
-                <AnimatedStatus message={statusMessage} type={statusType} />
+                <AnimatedStatus message={statusMessage} type={statusType} visible={false} />
               ) : (
                 <div className={`${styles.fadeAway} ${isStatusVisible ? styles.fadeAnimation : ""}`}>
                   <button className={styles.headerButton} onClick={handleSignButtonClick}>Add signature</button>
@@ -737,7 +505,11 @@ export function PdfRenderer() {
       </header>
       <div className={styles.pdfContainer}>
         {!pdfFile ? (
-          <DropZone onFileInput={handleFileInput} isDragging={isDragging} />
+          <DropZone onFileInput={handleFileInput} isDragging={isDragging} handleDrop={function (event: React.DragEvent<HTMLDivElement>): void {
+            throw new Error('Function not implemented.');
+          }} setIsDragging={function (value: React.SetStateAction<boolean>): void {
+            throw new Error('Function not implemented.');
+          }} />
         ) : (
           <div className={styles.documentContainer} ref={pdfContainerRef}>
             <Document
@@ -747,18 +519,18 @@ export function PdfRenderer() {
             >
               {numPages &&
                 Array.from({ length: numPages }, (_, index) => (
-                  <div key={`page_${index + 1}`} style={{ position: 'relative', marginBottom: '20px' }} ref={(el) => (pageRefs.current[index] = el!)}>
+                  <div key={`page_${index + 1}`} style={{ position: 'relative', marginBottom: '20px' }} ref={(el) => (pageRefs.current[index] = el)}>
                     <Page
                       pageNumber={index + 1}
                       renderTextLayer={false}
                       renderMode="canvas"
                       onLoadSuccess={() => onPageLoadSuccess(index)}
-                      canvasRef={(el) => (pdfCanvasRefs.current[index] = el!)}
+                      canvasRef={(el) => (pdfCanvasRefs.current[index] = el)}
                       loading={<div>Loading page...</div>}
                     />
                     <canvas
                       id={`overlayCanvas_${index}`}
-                      ref={(el) => (overlayCanvasRefs.current[index] = el!)}
+                      ref={(el) => (overlayCanvasRefs.current[index] = el)}
                       style={{
                         position: 'absolute',
                         top: 0,
@@ -778,7 +550,7 @@ export function PdfRenderer() {
       {showSignatureMethodPopup && (
         <SignatureMethodPopup
           onClose={handleCloseSignatureMethodPopup}
-          onSelectMethod={(method) => {
+          onSelectMethod={(method: string) => {
             setShowSignatureMethodPopup(false);
             if (method === 'digitalID') {
               setShowSignaturePopup(true);
@@ -791,11 +563,6 @@ export function PdfRenderer() {
       {showSignaturePopup && (
         <SignaturePopup
           onClose={handleCloseSignaturePopup}
-          // onConfirm={(signature) => {
-          //   setSelectedSignature(signature);
-          //   setShowSignaturePopup(false);
-          //   setIsSelectionEnabled(true);
-          // }}
           onConfirm={() => {
             setShowSignaturePopup(false);
             setIsSelectionEnabled(true);
@@ -805,11 +572,6 @@ export function PdfRenderer() {
       {showTypeSignaturePopup && (
         <SignatureTypePopup
           onClose={handleCloseSignatureTypePopup}
-          // onConfirm={(signatureName) => {
-          //   setSelectedSignatureImage(signatureName);
-          //   setIsSelectionEnabled(true);
-          //   setShowTypeSignaturePopup(false);
-          // }}
           onConfirm={() => {
             setIsSelectionEnabled(true);
             setShowTypeSignaturePopup(false);
@@ -831,4 +593,6 @@ export function PdfRenderer() {
       )}
     </div>
   );
-}
+};
+
+export default PdfRenderer;

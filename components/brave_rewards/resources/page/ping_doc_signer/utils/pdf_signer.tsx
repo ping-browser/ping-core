@@ -7,7 +7,7 @@ import { pkcs7, pki, asn1, util } from 'node-forge';
 import SignPdfError from './SignPdfError';
 import { removeTrailingNewLine, plainAddPlaceholder, DEFAULT_BYTE_RANGE_PLACEHOLDER } from 'node-signpdf';
 import { PDFDocument, PDFPage, StandardFonts, rgb } from 'pdf-lib';
-import { SelectionCoords } from './pdf_renderer';
+import { SelectionCoords } from '../pdf_renderer';
 
 const certString = `-----BEGIN CERTIFICATE-----
 MIIF4zCCBMugAwIBAgIGdz2M2uUGMA0GCSqGSIb3DQEBCwUAMHsxCzAJBgNVBAYT
