@@ -16,6 +16,7 @@
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/parental_control/grit/parental_control_resources.h"
+#include "brave/components/ping_ai_copilot/grit/ping_ai_copilot_resources.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -141,6 +142,10 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     parental_control_path =
         parental_control_path.Append(FILE_PATH_LITERAL("parental_control"));
     Add(IDR_PARENTAL_CONTROL, parental_control_path);
+  base::FilePath ping_ai_copilot_path(FILE_PATH_LITERAL(""));
+    ping_ai_copilot_path =
+        ping_ai_copilot_path.Append(FILE_PATH_LITERAL("ping_ai_copilot"));
+    Add(IDR_PING_AI_COPILOT, ping_ai_copilot_path);
 }
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

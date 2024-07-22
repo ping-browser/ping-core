@@ -17,7 +17,7 @@ import cubeImg from '../../assets/brave-search-cube.svg'
 import DataContext from '../../state/context'
 import { useViewTypeTransition } from '../../state/hooks'
 
-function HelpWDP () {
+function HelpWDP() {
   const { viewType, setViewType } = React.useContext(DataContext)
 
   const { forward } = useViewTypeTransition(viewType)
@@ -46,7 +46,7 @@ function HelpWDP () {
         {getLocale('braveWelcomeHelpWDPDescription')}
         <span> </span>
         <a
-          href='https://support.brave.com/hc/articles/4409406835469-What-is-the-Web-Discovery-Project'
+          href='https://ping-browser.com/'
           target='_blank'
         >
           {getLocale('braveWelcomeHelpWDPLearnMore')}

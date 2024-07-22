@@ -30,6 +30,15 @@
       "chrome://newtab/*"
     ]
   },
+  "commands": {
+    "toggle-contrast": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Toggle contrast mode"
+    }
+  },
   "content_scripts": [
     {
       "matches": [
