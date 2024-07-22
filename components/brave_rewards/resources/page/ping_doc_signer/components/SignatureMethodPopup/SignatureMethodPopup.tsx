@@ -12,11 +12,7 @@ import {
   StyledButtonTitle,
   StyledButtonDesc
 } from './styles';
-
-interface SignatureMethodPopupProps {
-  onClose: () => void;
-  onSelectMethod: (method: 'digitalID' | 'imageUpload') => void;
-}
+import { SignatureMethodPopupProps } from '../../utils/types';
 
 export const SignatureMethodPopup: React.FC<SignatureMethodPopupProps> = ({ onClose, onSelectMethod }) => (
   <StyledPopupOverlay>

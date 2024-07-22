@@ -19,34 +19,15 @@ import {
     StyledFadeAway,
     StyledVerified,
     StyledNotVerified,
-    StyledInstructionText
+    StyledInstructionText,
+    StyledHeaderControlsBar,
+    StyledStatus,
+    StyledPDFLogo,
+    StyledPDFName
 } from './styles';
 import pdfLogo from '../../../assets/pdfLogo.png';
 import { AnimatedStatus } from '../AnimatedStatus/AnimatedStatus';
-
-interface HeaderProps {
-    pdfFileName: string;
-    pdfFile: Blob | null;
-    isSelectionEnabled: boolean;
-    handleSignButtonClick: () => void;
-    handleVerifyButtonClick: () => void;
-    handlePreviousPage: () => void;
-    handleNextPage: () => void;
-    handlePageNumberClick: () => void;
-    handlePageNumberChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handlePageNumberSubmit: (e: React.FormEvent) => void;
-    handleDownloadButtonClick: () => void;
-    pageNumber: number;
-    numPages: number | null;
-    isEditingPageNumber: boolean;
-    tempPageNumber: string;
-    isVerified: boolean;
-    isVerificationFailed: boolean;
-    isStatusVisible: boolean;
-    statusMessage: string;
-    statusType: 'checking' | 'success' | 'error';
-    handleLogoClick: () => void;
-}
+import { HeaderProps } from '../../utils/types';
 
 export const Header: React.FC<HeaderProps> = ({
     pdfFileName,
@@ -71,83 +52,72 @@ export const Header: React.FC<HeaderProps> = ({
     statusType,
     handleLogoClick,
 }) => {
+    const renderPageNumber = () => (
+        isEditingPageNumber ? (
+            <form onSubmit={handlePageNumberSubmit}>
+                <StyledPageNumberInput
+                    type="text"
+                    value={tempPageNumber}
+                    onChange={handlePageNumberChange}
+                    onBlur={handlePageNumberSubmit}
+                    autoFocus
+                />
+            </form>
+        ) : (
+            <>
+                <StyledCurrentPage onClick={handlePageNumberClick}>{pageNumber}</StyledCurrentPage>
+                <StyledSeparator>/</StyledSeparator>
+                <StyledTotalPages>{numPages || '-'}</StyledTotalPages>
+            </>
+        )
+    );
+
+    const renderHeaderControls = () => (
+        pdfFile && !isSelectionEnabled ? (
+            <>
+                <StyledStatus>
+                    <AnimatedStatus
+                        message={statusMessage}
+                        type={statusType}
+                        visible={isStatusVisible}
+                    />
+                </StyledStatus>
+                <StyledFadeAway fadeAnimation={isStatusVisible}>
+                    <StyledHeaderButton onClick={handleSignButtonClick}>Add signature</StyledHeaderButton>
+                    <StyledHeaderControlsBar />
+                    <StyledHeaderButton
+                        onClick={handleVerifyButtonClick}
+                        as={isVerified ? StyledVerified : isVerificationFailed ? StyledNotVerified : 'button'}
+                    >
+                        Verify document
+                    </StyledHeaderButton>
+                    <StyledHeaderControlsBar />
+                </StyledFadeAway>
+            </>
+        ) : (
+            <StyledInstructionText>Start by holding right click and drag</StyledInstructionText>
+        )
+    );
+
     return (
         <StyledHeader>
             <StyledNavBar onVerificationSuccess={isVerified}>
-                <img
+                <StyledPDFLogo
                     src={pdfLogo}
                     alt="PDF Logo"
                     onClick={handleLogoClick}
                 />
-                <div>{pdfFileName}</div>
-                {pdfFile && !isSelectionEnabled ? (
-                    <StyledHeaderControls>
-                        <AnimatedStatus
-                            message={statusMessage}
-                            type={statusType}
-                            visible={isStatusVisible}
-                        />
-                        <StyledFadeAway fadeAnimation={isStatusVisible}>
-                            <StyledHeaderButton onClick={handleSignButtonClick}>Add signature</StyledHeaderButton>
-                            <StyledHeaderButton
-                                onClick={handleVerifyButtonClick}
-                                as={isVerified ? StyledVerified : isVerificationFailed ? StyledNotVerified : 'button'}
-                            >
-                                Verify document
-                            </StyledHeaderButton>
-                        </StyledFadeAway>
-                        <StyledPageChangingControls>
-                            <StyledPageControl as="div" direction="previous" onClick={handlePreviousPage}>&lt;</StyledPageControl>
-                            <StyledPageNumber>
-                                {isEditingPageNumber ? (
-                                    <form onSubmit={handlePageNumberSubmit}>
-                                        <StyledPageNumberInput
-                                            type="text"
-                                            value={tempPageNumber}
-                                            onChange={handlePageNumberChange}
-                                            onBlur={handlePageNumberSubmit}
-                                            autoFocus
-                                        />
-                                    </form>
-                                ) : (
-                                    <>
-                                        <StyledCurrentPage onClick={handlePageNumberClick}>{pageNumber}</StyledCurrentPage>
-                                        <StyledSeparator>/</StyledSeparator>
-                                        <StyledTotalPages>{numPages || '-'}</StyledTotalPages>
-                                    </>
-                                )}
-                            </StyledPageNumber>
-                            <StyledPageControl as="div" direction="next" onClick={handleNextPage}>&gt;</StyledPageControl>
-                        </StyledPageChangingControls>
-                    </StyledHeaderControls>
-                ) : (
-                    <StyledHeaderControls>
-                        <StyledInstructionText>Start by holding right click and drag</StyledInstructionText>
-                        <StyledPageChangingControls>
-                            <StyledPageControl as="div" direction="previous" onClick={handlePreviousPage}>&lt;</StyledPageControl>
-                            <StyledPageNumber>
-                                {isEditingPageNumber ? (
-                                    <form onSubmit={handlePageNumberSubmit}>
-                                        <StyledPageNumberInput
-                                            type="text"
-                                            value={tempPageNumber}
-                                            onChange={handlePageNumberChange}
-                                            onBlur={handlePageNumberSubmit}
-                                            autoFocus
-                                        />
-                                    </form>
-                                ) : (
-                                    <>
-                                        <StyledCurrentPage onClick={handlePageNumberClick}>{pageNumber}</StyledCurrentPage>
-                                        <StyledSeparator>/</StyledSeparator>
-                                        <StyledTotalPages>{numPages || '-'}</StyledTotalPages>
-                                    </>
-                                )}
-                            </StyledPageNumber>
-                            <StyledPageControl as="div" direction="next" onClick={handleNextPage}>&gt;</StyledPageControl>
-                        </StyledPageChangingControls>
-                    </StyledHeaderControls>
-                )}
+                <StyledPDFName>{pdfFileName}</StyledPDFName>
+                <StyledHeaderControls>
+                    {renderHeaderControls()}
+                    <StyledPageChangingControls>
+                        <StyledPageControl as="div" direction="previous" onClick={handlePreviousPage}>&lt;</StyledPageControl>
+                        <StyledPageNumber>
+                            {renderPageNumber()}
+                        </StyledPageNumber>
+                        <StyledPageControl as="div" direction="next" onClick={handleNextPage}>&gt;</StyledPageControl>
+                    </StyledPageChangingControls>
+                </StyledHeaderControls>
                 <StyledSaveButton onClick={handleDownloadButtonClick}>Save</StyledSaveButton>
             </StyledNavBar>
             <StyledHelpButton>?</StyledHelpButton>

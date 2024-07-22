@@ -10,13 +10,7 @@ import {
   StyledSuccessButtons,
   StyledConfirmButton
 } from './styles';
-
-interface SuccessPopupProps {
-  message: string;
-  onSave: () => void;
-  onContinue: () => void;
-  isVerification: boolean;
-}
+import { SuccessPopupProps } from '../../utils/types';
 
 export const SuccessPopup: React.FC<SuccessPopupProps> = ({ message, onSave, onContinue, isVerification }) => (
   <StyledSuccessPopup>

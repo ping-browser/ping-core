@@ -34,7 +34,8 @@ export type HeaderProps = {
   isVerificationFailed: boolean;
   isStatusVisible: boolean;
   statusMessage: string;
-  statusType: string;
+  statusType: 'checking' | 'success' | 'error';
+  handleLogoClick: () => void;
 }
 
 export type SignatureMethodPopupProps = {
@@ -61,7 +62,8 @@ export type SuccessPopupProps = {
 
 export type AnimatedStatusProps = {
   message: string;
-  type: string;
+  type: 'checking' | 'success' | 'error';
+  visible: boolean;
 }
 
 export type PdfPageProps = {

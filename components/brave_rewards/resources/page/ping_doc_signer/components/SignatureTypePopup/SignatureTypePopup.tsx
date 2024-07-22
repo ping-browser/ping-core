@@ -4,10 +4,7 @@
 import { useState } from 'react';
 import * as React from 'react';
 import { StyledPopupOverlay, StyledH3, StyledPopupTypeContent, StyledPopupContentH2, StyledTypedSignature, StyledTypeButtons, StyledConfirmButton, StyledCloseButton, StyledNameInput } from './styles';
-interface SignatureTypePopupProps {
-  onClose: () => void;
-  onConfirm: (signatureName: string) => void;
-}
+import { SignatureTypePopupProps } from '../../utils/types';
 
 export const SignatureTypePopup: React.FC<SignatureTypePopupProps> = ({ onClose, onConfirm }) => {
   const [signatureName, setSignatureName] = useState<string>("John Doe");

@@ -24,10 +24,7 @@ import {
   StyledConfirmButton
 } from './styles';
 
-interface SignaturePopupProps {
-  onClose: () => void;
-  onConfirm: (signature: string) => void;
-}
+import { SignaturePopupProps } from '../../utils/types';
 
 export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfirm }) => {
   const [selectedSignature, setSelectedSignature] = useState<string | null>(null);

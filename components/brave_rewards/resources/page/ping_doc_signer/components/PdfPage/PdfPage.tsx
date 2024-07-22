@@ -4,18 +4,7 @@
 import * as React from 'react';
 import { Page } from 'react-pdf';
 import { PageContainer, OverlayCanvas } from './styles';
-
-interface PdfPageProps {
-    pageNumber: number;
-    onLoadSuccess: () => void;
-    isSelectionEnabled: boolean;
-    handleMouseDown: (e: React.MouseEvent<HTMLCanvasElement>) => void;
-    handleMouseMove: (e: React.MouseEvent<HTMLCanvasElement>) => void;
-    handleMouseUp: () => void;
-    pdfCanvasRef: React.Ref<HTMLCanvasElement>;
-    overlayCanvasRef: React.Ref<HTMLCanvasElement>;
-    pageRef: React.Ref<HTMLDivElement>;
-}
+import { PdfPageProps } from '../../utils/types';
 
 const PdfPage: React.FC<PdfPageProps> = ({
     pageNumber,

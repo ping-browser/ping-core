@@ -5,7 +5,7 @@
  import styled from 'styled-components';
 
  export const StyledDropZoneContainer = styled('div')`
-   width: 70%;
+   width: 100%;
    max-width: 1020px;
    flex-shrink: 0;
    height: 70vh;
@@ -22,8 +22,8 @@
  `
 
  export const StyledPdfLogo = styled('img')`
-   width: 50px;
-   height: 50px;
+   width: 80px;
+   height: 75px;
    cursor: pointer;
  `
 

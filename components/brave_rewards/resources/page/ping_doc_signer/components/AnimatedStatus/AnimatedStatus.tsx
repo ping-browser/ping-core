@@ -3,12 +3,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 import * as React from 'react';
 import { StyledAnimatedStatus, StyledStatusText, StyledStatusContent, StyledStatusIcon } from './styles';
-
-interface AnimatedStatusProps {
-    message: string;
-    type: 'checking' | 'success' | 'error';
-    visible: boolean;
-}
+import { AnimatedStatusProps } from '../../utils/types';
 
 export const AnimatedStatus: React.FC<AnimatedStatusProps> = ({ message, type, visible }) => (
     <StyledAnimatedStatus visible={visible}>

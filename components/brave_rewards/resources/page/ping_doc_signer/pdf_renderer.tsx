@@ -3,18 +3,21 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 import { useState, useCallback, useEffect, useRef } from 'react';
 import * as React from 'react';
-import { pdfjs, Document, Page } from 'react-pdf';
+import { pdfjs, Document } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import pdfLogo from '../assets/pdfLogo.png';
-import styles from './ping-sign-pdf.module.css';
 import { verifyPDF } from './utils/pdf_verify';
 import { signPdf } from './utils/pdf_signer';
+
+// Import existing components
+import { Header } from './components/Header/Header';
 import { DropZone } from './components/DropZone/DropZone';
-import { SignatureTypePopup } from './components/SignatureTypePopup/SignatureTypePopup';
-import { SignaturePopup } from './components/SignaturePopup/SignaturePopup';
+import PdfPage from './components/PdfPage/PdfPage';
 import { SignatureMethodPopup } from './components/SignatureMethodPopup/SignatureMethodPopup';
+import { SignaturePopup } from './components/SignaturePopup/SignaturePopup';
+import { SignatureTypePopup } from './components/SignatureTypePopup/SignatureTypePopup';
 import { SuccessPopup } from './components/SuccessPopup/SuccessPopup';
-import { AnimatedStatus } from './components/AnimatedStatus/AnimatedStatus';
+
+import * as S from './styles';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   './utils/pdfjs-dist-worker.js',
@@ -43,9 +46,7 @@ export const PdfRenderer: React.FC = () => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isEditingPageNumber, setIsEditingPageNumber] = useState<boolean>(false);
   const [tempPageNumber, setTempPageNumber] = useState<string>('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // TODO: ADD the setIsDragging state populator
-  const [isDragging] = useState<boolean>(false);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
   const [showSignaturePopup, setShowSignaturePopup] = useState<boolean>(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
@@ -96,15 +97,6 @@ export const PdfRenderer: React.FC = () => {
     },
     []
   );
-
-  // const handleDrop = useCallback(
-  //   (event: React.DragEvent<HTMLDivElement>) => {
-  //     event.preventDefault();
-  //     setIsDragging(false);
-  //     handleFileInput(event);
-  //   },
-  //   [handleFileInput]
-  // );
 
   const handleLogoClick = () => {
     if (!pdfFile) {
@@ -397,7 +389,6 @@ export const PdfRenderer: React.FC = () => {
   const handleContinue = () => {
     setShowSuccessPopup(false);
   };
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft') {
@@ -415,103 +406,44 @@ export const PdfRenderer: React.FC = () => {
   }, [handlePreviousPage, handleNextPage]);
 
   return (
-    <div className={styles.app}>
-      <header className={styles.header}>
-        <div className={styles.navBar}>
-          <img
-            src={pdfLogo}
-            alt="PDF Logo"
-            className={styles.logo}
-            onClick={handleLogoClick}
-          />
-          <div className={styles.pdfFileName}>{pdfFileName}</div>
-          {pdfFile && !isSelectionEnabled ? (
-            <div className={styles.headerControls}>
-              {isStatusVisible ? (
-                <AnimatedStatus message={statusMessage} type={statusType} visible={false} />
-              ) : (
-                <div className={`${styles.fadeAway} ${isStatusVisible ? styles.fadeAnimation : ""}`}>
-                  <button className={styles.headerButton} onClick={handleSignButtonClick}>Add signature</button>
-                  <div className={styles.headerControlsBar}></div>
-                  <button
-                    className={`${styles.headerButton} ${isVerified ? styles.verified : ""} ${isVerificationFailed ? styles.notVerified : ""}`}
-                    onClick={handleVerifyButtonClick}
-                  >
-                    Verify document
-                  </button>
-                </div>
-              )}
-              <div className={styles.headerControlsBar}></div>
-              <div className={styles.pageChangingControls}>
-                <div className={styles.previousPage} onClick={handlePreviousPage}>&lt;</div>
-                <div className={styles.pageNumber}>
-                  {isEditingPageNumber ? (
-                    <form onSubmit={handlePageNumberSubmit}>
-                      <input
-                        type="text"
-                        value={tempPageNumber}
-                        onChange={handlePageNumberChange}
-                        onBlur={handlePageNumberSubmit}
-                        autoFocus
-                        className={styles.pageNumberInput}
-                      />
-                    </form>
-                  ) : (
-                    <>
-                      <div className={styles.currentPage} onClick={handlePageNumberClick}>{pageNumber}</div>
-                      <div className={styles.separator}>/</div>
-                      <div className={styles.totalPages}>{numPages || '-'}</div>
-                    </>
-                  )}
-                </div>
-                <div className={styles.nextPage} onClick={handleNextPage}>&gt;</div>
-              </div>
-            </div>
-          ) : (
-            <div className={styles.headerControls}>
-              <div className={styles.instructionText}>Start by holding right click and drag</div>
-              <div className={styles.headerControlsBar}></div>
-              <div className={styles.pageChangingControls}>
-                <div className={styles.previousPage} onClick={handlePreviousPage}>&lt;</div>
-                <div className={styles.pageNumber}>
-                  {isEditingPageNumber ? (
-                    <form onSubmit={handlePageNumberSubmit}>
-                      <input
-                        type="text"
-                        value={tempPageNumber}
-                        onChange={handlePageNumberChange}
-                        onBlur={handlePageNumberSubmit}
-                        autoFocus
-                        className={styles.pageNumberInput}
-                      />
-                    </form>
-                  ) : (
-                    <>
-                      <div className={styles.currentPage} onClick={handlePageNumberClick}>{pageNumber}</div>
-                      <div className={styles.separator}>/</div>
-                      <div className={styles.totalPages}>{numPages || '-'}</div>
-                    </>
-                  )}
-                </div>
-                <div className={styles.nextPage} onClick={handleNextPage}>&gt;</div>
-              </div>
-            </div>
-          )}
-          <div className={styles.headerControlsSave}>
-            <button className={`${styles.headerButton} ${styles.saveButton}`} onClick={handleDownloadButtonClick}>Save</button>
-          </div>
-        </div>
-        <button className={`${styles.headerButton} ${styles.helpButton}`}>?</button>
-      </header>
-      <div className={styles.pdfContainer}>
+    <S.AppContainer>
+      <Header
+        pdfFileName={pdfFileName}
+        pdfFile={pdfFile}
+        isSelectionEnabled={isSelectionEnabled}
+        handleSignButtonClick={handleSignButtonClick}
+        handleVerifyButtonClick={handleVerifyButtonClick}
+        isStatusVisible={isStatusVisible}
+        statusMessage={statusMessage}
+        statusType={statusType}
+        isVerified={isVerified}
+        isVerificationFailed={isVerificationFailed}
+        pageNumber={pageNumber}
+        numPages={numPages}
+        handlePreviousPage={handlePreviousPage}
+        handleNextPage={handleNextPage}
+        handlePageNumberClick={handlePageNumberClick}
+        isEditingPageNumber={isEditingPageNumber}
+        tempPageNumber={tempPageNumber}
+        handlePageNumberChange={handlePageNumberChange}
+        handlePageNumberSubmit={handlePageNumberSubmit}
+        handleDownloadButtonClick={handleDownloadButtonClick}
+        handleLogoClick={handleLogoClick}
+      />
+      <S.PdfContainer>
         {!pdfFile ? (
-          <DropZone onFileInput={handleFileInput} isDragging={isDragging} handleDrop={function (event: React.DragEvent<HTMLDivElement>): void {
-            throw new Error('Function not implemented.');
-          }} setIsDragging={function (value: React.SetStateAction<boolean>): void {
-            throw new Error('Function not implemented.');
-          }} />
+          <DropZone
+            onFileInput={handleFileInput}
+            isDragging={isDragging}
+            handleDrop={(event) => {
+              event.preventDefault();
+              setIsDragging(false);
+              handleFileInput(event);
+            }}
+            setIsDragging={setIsDragging}
+          />
         ) : (
-          <div className={styles.documentContainer} ref={pdfContainerRef}>
+          <S.DocumentContainer ref={pdfContainerRef}>
             <Document
               file={pdfFile}
               onLoadSuccess={onDocumentLoadSuccess}
@@ -519,34 +451,23 @@ export const PdfRenderer: React.FC = () => {
             >
               {numPages &&
                 Array.from({ length: numPages }, (_, index) => (
-                  <div key={`page_${index + 1}`} style={{ position: 'relative', marginBottom: '20px' }} ref={(el) => (pageRefs.current[index] = el)}>
-                    <Page
-                      pageNumber={index + 1}
-                      renderTextLayer={false}
-                      renderMode="canvas"
-                      onLoadSuccess={() => onPageLoadSuccess(index)}
-                      canvasRef={(el) => (pdfCanvasRefs.current[index] = el)}
-                      loading={<div>Loading page...</div>}
-                    />
-                    <canvas
-                      id={`overlayCanvas_${index}`}
-                      ref={(el) => (overlayCanvasRefs.current[index] = el)}
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        pointerEvents: isSelectionEnabled ? 'auto' : 'none',
-                      }}
-                      onMouseDown={(e) => handleMouseDown(e, index)}
-                      onMouseMove={(e) => handleMouseMove(e, index)}
-                      onMouseUp={() => handleMouseUp(index)}
-                    />
-                  </div>
+                  <PdfPage
+                    key={`page_${index + 1}`}
+                    pageNumber={index + 1}
+                    onLoadSuccess={() => onPageLoadSuccess(index)}
+                    isSelectionEnabled={isSelectionEnabled}
+                    handleMouseDown={(e) => handleMouseDown(e, index)}
+                    handleMouseMove={(e) => handleMouseMove(e, index)}
+                    handleMouseUp={() => handleMouseUp(index)}
+                    pdfCanvasRef={(el) => (pdfCanvasRefs.current[index] = el)}
+                    overlayCanvasRef={(el) => (overlayCanvasRefs.current[index] = el)}
+                    pageRef={(el) => (pageRefs.current[index] = el)}
+                  />
                 ))}
             </Document>
-          </div>
+          </S.DocumentContainer>
         )}
-      </div>
+      </S.PdfContainer>
       {showSignatureMethodPopup && (
         <SignatureMethodPopup
           onClose={handleCloseSignatureMethodPopup}
@@ -587,11 +508,11 @@ export const PdfRenderer: React.FC = () => {
         />
       )}
       {isLoading && (
-        <div className={styles.loadingOverlay}>
-          <div className={styles.loadingSpinner}></div>
-        </div>
+        <S.LoadingOverlay>
+          <S.LoadingSpinner />
+        </S.LoadingOverlay>
       )}
-    </div>
+    </S.AppContainer>
   );
 };
 
