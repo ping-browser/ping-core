@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as React from 'react';
 import {
   StyledPopupOverlay,
@@ -11,7 +11,6 @@ import {
   StyledSelectedSignature,
   StyledSelectedSignatureH3,
   StyledSelectedSignatureP,
-  StyledEncKey,
   StyledBrowseImage,
   StyledSignatureList,
   StyledSignatureOption,
@@ -23,21 +22,43 @@ import {
   StyledAddButton,
   StyledConfirmButton
 } from './styles';
-
-import { SignaturePopupProps } from '../../utils/types';
+import { SignaturePopupProps, Signature } from '../../utils/types';
+import { addSignature, getSignatures } from '../../utils/pdf_signer';
 
 export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfirm }) => {
-  const [selectedSignature, setSelectedSignature] = useState<string | null>(null);
+  const [selectedSignature, setSelectedSignature] = useState<Signature | null>(null);
+  const [signatures, setSignatures] = useState<Signature[]>([]);
 
-  const signatures = [
-    { id: '1', name: 'Presley Abernathy', issueDate: '05/07/2024 15:30' },
-    { id: '2', name: 'Harrison Wilderman', issueDate: '05/07/2024 15:30' },
-    { id: '3', name: 'Rudolf Wolf', issueDate: '05/07/2024 15:30' },
-  ];
+  useEffect(() => {
+    const loadSignatures = async () => {
+      try {
+        const loadedSignatures = await getSignatures();
+        setSignatures(loadedSignatures);
+      } catch (error) {
+        console.error('Error loading signatures:', error);
+        alert('Failed to load signatures. Please try again.');
+      }
+    };
+    loadSignatures();
+  }, []);
 
   const handleConfirm = () => {
     if (selectedSignature) {
       onConfirm(selectedSignature);
+    }
+  };
+
+  const handleAddSignature = async () => {
+    const path = prompt('Please enter the path to PKCS #11 module:');
+    if (path) {
+      try {
+        await addSignature(path);
+        const updatedSignatures = await getSignatures();
+        setSignatures(updatedSignatures);
+      } catch (error) {
+        console.error('Error adding signature:', error);
+        alert('Failed to add signature. Please try again.');
+      }
     }
   };
 
@@ -47,37 +68,50 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
         <StyledPopupContentH2>Choose a digital ID to sign with:</StyledPopupContentH2>
         <StyledCloseButton onClick={onClose}>×</StyledCloseButton>
 
-        {selectedSignature && (
-          <StyledSelectedSignature>
-            <StyledSelectedSignatureH3>{signatures.find(sig => sig.id === selectedSignature)?.name}</StyledSelectedSignatureH3>
-            <StyledSelectedSignatureP>Project manager, Apple</StyledSelectedSignatureP>
-            <StyledSelectedSignatureP>presleyabernathy@gmail.com</StyledSelectedSignatureP>
-            <StyledSelectedSignatureP>05/07/2024, IST 21:35</StyledSelectedSignatureP>
-            <StyledEncKey>Enc. Key: 87478632758654</StyledEncKey>
-            <StyledBrowseImage>Browse for Image</StyledBrowseImage>
-          </StyledSelectedSignature>
-        )}
-
-        <StyledSignatureList>
-          {signatures.map(sig => (
-            <StyledSignatureOption key={sig.id}>
-              <StyledSignatureOptionInput
-                type="radio"
-                name="signature"
-                value={sig.id}
-                checked={selectedSignature === sig.id}
-                onChange={() => setSelectedSignature(sig.id)}
-              />
+        {signatures.length === 0 ? (
+          <StyledSignatureList>
+            <StyledSignatureOption>
               <StyledSignatureName>
-                <StyledIssueName>{sig.name}</StyledIssueName>
-                <StyledIssueDate>Issued: {sig.issueDate}</StyledIssueDate>
+                <StyledIssueName>No digital IDs found</StyledIssueName>
+                <StyledIssueDate>
+                  Click the "Add" button below to add a new digital ID.
+                </StyledIssueDate>
               </StyledSignatureName>
             </StyledSignatureOption>
-          ))}
-        </StyledSignatureList>
+          </StyledSignatureList>
+        ) : (
+          <>
+            {selectedSignature && (
+              <StyledSelectedSignature>
+                <StyledSelectedSignatureH3>{selectedSignature.name}</StyledSelectedSignatureH3>
+                <StyledSelectedSignatureP>Valid until: {selectedSignature.expiry.toLocaleString()}</StyledSelectedSignatureP>
+                <StyledBrowseImage>View Certificate Details</StyledBrowseImage>
+              </StyledSelectedSignature>
+            )}
+            <StyledSignatureList>
+              {signatures.map(sig => (
+                <StyledSignatureOption key={sig.id}>
+                  <StyledSignatureOptionInput
+                    type="radio"
+                    name="signature"
+                    value={sig.id}
+                    checked={selectedSignature?.id === sig.id}
+                    onChange={() => setSelectedSignature(sig)}
+                  />
+                  <StyledSignatureName>
+                    <StyledIssueName>{sig.name}</StyledIssueName>
+                    <StyledIssueDate>
+                      Expires: {sig.expiry.toLocaleDateString()}
+                    </StyledIssueDate>
+                  </StyledSignatureName>
+                </StyledSignatureOption>
+              ))}
+            </StyledSignatureList>
+          </>
+        )}
 
         <StyledButtons>
-          <StyledAddButton>+ Add</StyledAddButton>
+          <StyledAddButton onClick={handleAddSignature}>+ Add</StyledAddButton>
           <StyledConfirmButton
             onClick={handleConfirm}
             disabled={!selectedSignature}

@@ -86,6 +86,7 @@ export const StyledButtonTitle = styled('span')`
 `
 
 export const StyledButtonDesc = styled('span')`
+  text-align: left;
   font-size: 12px;
   color: #fff;
   opacity: 0.5;

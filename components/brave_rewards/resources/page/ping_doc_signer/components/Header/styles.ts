@@ -11,42 +11,36 @@
  };
  
  export const StyledHeader = styled('header')`
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   width: 100%;
-   height: 70px;
-   padding: 10px 20px;
-   background-color: #323639;
-   border-bottom: 1px solid #383535;
-   z-index: 10000;
-   gap: 30px;
- 
-   @media (max-width: ${breakpoints.medium}) {
-     height: 60px;
-     padding: 5px 10px;
-   }
- `;
- 
- export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
-   position: relative;
-   display: flex;
-   flex-direction: row;
-   width: 100%;
-   max-width: 1350px;
-   align-items: center;
-   justify-content: space-between;
-   gap: 50px;
- 
-   @media (max-width: 1385px) {
-     gap: 20px;
-     justify-content: center;
-   }
- 
-   @media (max-width: ${breakpoints.medium}) {
-     justify-content: center;
-   }
- `;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  padding: 10px 20px;
+  background-color: #323639;
+  border-bottom: 1px solid #383535;
+  z-index: 10000;
+  overflow: hidden;
+`;
+
+export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 1350px;
+  min-width: 1350px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+
+  @media (max-width: 1385px) {
+    gap: 20px;
+  }
+
+  @media (max-width: ${breakpoints.medium}) {
+    justify-content: flex-start;
+  }
+`;
  
  export const StyledHeaderControlsBar = styled.div`
    &::after {
@@ -74,17 +68,8 @@
    justify-content: center;
    gap: 20px;
    margin-right: 178px;
-
-   @media (max-width: 1475px) {
-     margin-right: 370px;
-   }
- 
-   @media (max-width: 1385px) {
-     margin-right: 150px;
-   }
  
    @media (max-width: ${breakpoints.medium}) {
-     margin-right: 0;
      order: 2;
    }
  `;
@@ -199,14 +184,11 @@
    font-weight: 400;
    line-height: normal;
  
-   @media (max-width: 1475px) {
-     display: none;
-   }
  `;
  
  export const StyledHelpButton = styled('button')`
    position: absolute;
-   top: 22px;
+   top: 18px;
    right: 10px;
    font-size: 18px;
    color: #fff;

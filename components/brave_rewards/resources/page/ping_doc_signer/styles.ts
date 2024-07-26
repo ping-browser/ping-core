@@ -183,11 +183,12 @@ export const HelpButton = styled.button`
 
 export const PdfContainer = styled.div`
   display: flex;
+  overflow-y: hidden;
   overflow-x: hidden;
 `;
 
 export const DocumentContainer = styled.div`
-  overflow-y: auto;
+  overflow-y: visible;
   overflow-x: hidden;
   height: calc(100vh - 60px);
   direction: ltr;

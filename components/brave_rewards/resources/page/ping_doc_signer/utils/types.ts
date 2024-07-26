@@ -1,6 +1,9 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+ import { pki } from "node-forge";
+
  export type SelectionCoords = {
   startX: number;
   startY: number;
@@ -36,6 +39,19 @@ export type HeaderProps = {
   statusMessage: string;
   statusType: 'checking' | 'success' | 'error';
   handleLogoClick: () => void;
+  fileInputRef: React.RefObject<HTMLInputElement>;
+}
+
+export type StoredSignature = {
+  hsmPath: string
+  certString: string
+}
+
+export type Signature = StoredSignature & {
+  id: string
+  certificate: pki.Certificate
+  name: string
+  expiry: Date
 }
 
 export type SignatureMethodPopupProps = {
@@ -45,7 +61,7 @@ export type SignatureMethodPopupProps = {
 
 export type SignaturePopupProps = {
   onClose: () => void;
-  onConfirm: (signature: string) => void;
+  onConfirm: (signature: Signature) => void;
 }
 
 export type SignatureTypePopupProps = {

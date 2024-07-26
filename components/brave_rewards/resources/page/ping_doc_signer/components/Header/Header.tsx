@@ -51,6 +51,7 @@ export const Header: React.FC<HeaderProps> = ({
     statusMessage,
     statusType,
     handleLogoClick,
+    fileInputRef,
 }) => {
     const renderPageNumber = () => (
         isEditingPageNumber ? (
@@ -106,6 +107,11 @@ export const Header: React.FC<HeaderProps> = ({
                     src={pdfLogo}
                     alt="PDF Logo"
                     onClick={handleLogoClick}
+                />
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
                 />
                 <StyledPDFName>{pdfFileName}</StyledPDFName>
                 <StyledHeaderControls>

@@ -12,15 +12,13 @@ import {
 } from './styles';
 import { SuccessPopupProps } from '../../utils/types';
 
-export const SuccessPopup: React.FC<SuccessPopupProps> = ({ message, onSave, onContinue, isVerification }) => (
+export const SuccessPopup: React.FC<SuccessPopupProps> = ({ message, onSave, onContinue }) => (
   <StyledSuccessPopup>
-    <StyledSuccessTitle verification={isVerification}>
-      {isVerification ? "Verification Successful!" : "Signature complete!"}
+    <StyledSuccessTitle>
+      Signature complete!
     </StyledSuccessTitle>
     <StyledSuccessMessage>{message}</StyledSuccessMessage>
-    {!isVerification && (
-      <StyledSuccessName>Placeholder</StyledSuccessName>
-    )}
+    <StyledSuccessName>Placeholder</StyledSuccessName>
     <StyledSuccessButtons>
       <StyledConfirmButton onClick={onSave}>Save as</StyledConfirmButton>
       <StyledConfirmButton onClick={onContinue} $continue>Continue</StyledConfirmButton>
