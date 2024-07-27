@@ -158,6 +158,7 @@ const Config = function () {
   this.googleApiEndpoint = getEnvConfig(['brave_google_api_endpoint']) || 'https://www.googleapis.com/geolocation/v1/geolocate?key='
   this.googleDefaultClientId = getEnvConfig(['google_default_client_id']) || ''
   this.googleDefaultClientSecret = getEnvConfig(['google_default_client_secret']) || ''
+  this.googleApiKey = getEnvConfig(['google_api_key']) || ''
   this.infuraProjectId = getEnvConfig(['brave_infura_project_id']) || ''
   this.sardineClientId = getEnvConfig(['sardine_client_id']) || ''
   this.sardineClientSecret = getEnvConfig(['sardine_client_secret']) || ''
@@ -362,6 +363,7 @@ Config.prototype.buildArgs = function () {
     brave_google_api_endpoint: this.googleApiEndpoint,
     google_default_client_id: this.googleDefaultClientId,
     google_default_client_secret: this.googleDefaultClientSecret,
+    google_api_key: this.googleApiKey,
     brave_infura_project_id: this.infuraProjectId,
     bitflyer_production_client_id: this.bitFlyerProductionClientId,
     bitflyer_production_client_secret: this.bitFlyerProductionClientSecret,
