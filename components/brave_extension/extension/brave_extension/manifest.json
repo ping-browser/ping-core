@@ -39,6 +39,7 @@
       "description": "Toggle contrast mode"
     }
   },
+  
   "content_scripts": [
     {
       "matches": [

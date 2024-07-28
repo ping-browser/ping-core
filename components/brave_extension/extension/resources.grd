@@ -17,6 +17,8 @@
       <include name="IDR_BRAVE_EXTENSION_ICON_64" file="brave_extension/assets/img/icon-64.png" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_ICON_128" file="brave_extension/assets/img/icon-128.png" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_ICON_256" file="brave_extension/assets/img/icon-256.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_AISUMMARISER" file="brave_extension/assets/img/aiSummarizerIcon.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_CONTENTCOPY" file="brave_extension/assets/img/content_copy.svg" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_EN_US_MESSAGES_JSON" file="brave_extension/_locales/en_US/messages.json" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_PICKER_HTML" file="brave_extension/elementPicker.html" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_PICKER_JS" file="brave_extension/elementPicker.js" type="BINDATA" />
