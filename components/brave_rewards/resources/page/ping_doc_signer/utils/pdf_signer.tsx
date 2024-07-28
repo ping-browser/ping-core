@@ -3,15 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 import { pki, asn1, util } from 'node-forge'
-import pkcs7 from './lib/pkcs7'
+import pkcs7 from '../lib/pkcs7'
 import SignPdfError from './SignPdfError'
-import { removeTrailingNewLine, plainAddPlaceholder } from './helpers'
-import { DEFAULT_BYTE_RANGE_PLACEHOLDER } from './helpers/const'
-import { SelectionCoords } from './pdf_renderer'
+import { removeTrailingNewLine, plainAddPlaceholder } from '../helpers'
+import { DEFAULT_BYTE_RANGE_PLACEHOLDER } from '../helpers/const'
+import { SelectionCoords } from '../pdf_renderer'
 
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import { Signature, StoredSignature } from './types'
 
+// Hardcoded certificate (this is a placeholder, replace with actual PEM-encoded certificate)
 const PLACEHOLDER_IMG_HEX =
   '89504e470d0a1a0a0000000d4948445200000092000000920806000000ae7b938e000000097048597300000b1300000b1301009a9c18000000017352474200aece1ce90000000467414d410000b18f0bfc610500000215494441547801eddd316e14411040d1b20d487644c4fd8f681210162b312307e4deef96b6f73da94f305f5351753fcccc8fe33c0d7cdce57144c4f59e1e07024222212412422221241242222124124222212412422221241242222124124222212412422221241242222124124222212412422221241242222124125f66adcb71fe0c2b3c1fe76116591dd2dfe3fc1c5638bfedb759c468232124124222212412422221241242222124124222212412422221241242222124124222212412422221241242222124124222212412abd7913edbf91ae6b2159c2bbdcdfb9edf16760be98ce8fbdc86d7e3fc9e4d186d2476fb23f1dfaf59b81e2fa47d2d1d9b461b09219110120921911012092191101209219110120921911012092191101209219110120921911012092191101209219110120921911012092191101209219110120921911012092191101209219110120921911012097748eeeb79deef1d5f4248fb7a998597d71b6d2476fb239dcf32bcce6d789b8dec16d2f9b6c736cf32dc12a38d8490480889849048088984904808898490480889849048088984904808898490480889849048088984904808898490480889849048dcdba6edb9c6fc32f7e1eb2c746f219dbbf0cbd698ef89d146424824844442482484444248248444424824844442482484444248248444424824844442482484444248248444424824844442482484444248248444e20ce932709dcb3ff70414419c1505c80000000049454e44ae426082'
 
@@ -168,8 +174,7 @@ const embedP7inPdf = (
   const raw = asn1.toDer(p7.toAsn1()).getBytes()
   if (raw.length * 2 > placeholderLength) {
     throw new SignPdfError(
-      `Signature exceeds placeholder length: ${
-        raw.length * 2
+      `Signature exceeds placeholder length: ${raw.length * 2
       } > ${placeholderLength}`,
       SignPdfError.TYPE_INPUT
     )
@@ -222,7 +227,7 @@ export const signPdf = async (
     const toSign = buf.toString('hex')
 
     return new Promise((resolve) => {
-      ;(chrome as any).pkcs11.getSignature(
+      ; (chrome as any).pkcs11.getSignature(
         hsmPath,
         pin,
         toSign,
@@ -309,18 +314,6 @@ export const getCertificate = async (hsmPath: string): Promise<string> => {
       resolve(cert)
     })
   )
-}
-
-type StoredSignature = {
-  hsmPath: string
-  certString: string
-}
-
-export type Signature = StoredSignature & {
-  id: string
-  certificate: pki.Certificate
-  name: string
-  expiry: Date
 }
 
 export const addSignature = async (hsmPath: string) => {
