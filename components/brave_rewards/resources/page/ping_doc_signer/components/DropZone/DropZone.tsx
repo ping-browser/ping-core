@@ -54,9 +54,9 @@ export const DropZone: React.FC<DropZoneProps> = ({ onFileInput, isDragging, han
         />
         <StyledLegalText>
           By clicking on add file, you agree to Ping's <br />
-          <a href="#" style={{ color: '#2BB563', textDecoration: 'none' }}> Privacy policy </a>
+          <a href="https://ping-browser.com/privacy-policy" style={{ color: '#2BB563', textDecoration: 'none' }}> Privacy policy </a>
           &
-          <a href="#" style={{ color: '#2BB563', textDecoration: 'none' }}> Terms of use</a>
+          <a href="https://ping-browser.com/terms-of-use-1" style={{ color: '#2BB563', textDecoration: 'none' }}> Terms of use</a>
         </StyledLegalText>
       </StyledDropZone>
     </StyledDropZoneContainer>

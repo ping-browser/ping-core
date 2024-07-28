@@ -126,7 +126,9 @@ export const Header: React.FC<HeaderProps> = ({
                 </StyledHeaderControls>
                 <StyledSaveButton onClick={handleDownloadButtonClick}>Save</StyledSaveButton>
             </StyledNavBar>
-            <StyledHelpButton>?</StyledHelpButton>
+            <a href="https://ping-browser.com/help-1" target="_blank" rel="noopener noreferrer">
+                <StyledHelpButton>?</StyledHelpButton>
+            </a>
         </StyledHeader>
     );
 };
