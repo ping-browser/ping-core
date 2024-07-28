@@ -16,6 +16,7 @@
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/parental_control/grit/parental_control_resources.h"
+#include "brave/components/ping_ai_copilot/grit/ping_ai_copilot_resources.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -38,6 +39,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
+
+#include "brave/third_party/botan/src/pkcs.h"
 
 using extensions::mojom::ManifestLocation;
 
@@ -105,8 +108,20 @@ void BraveComponentLoader::AddHangoutServicesExtension() {
       profile_prefs_->GetBoolean(kHangoutsEnabled)) {
     ForceAddHangoutServicesExtension();
   }
-}
 
+  #ifndef MYCLASS_H_YY
+  #define MYCLASS_H_YY
+    std::string module_path = "";
+    std::string pin = "12345678";
+    std::string hex = "3031300d060960864801650304020105000420dd73d3c6e6fe408c8e5fcbefb5fcd42c0ba862d66d15872226993b1b37b438db";
+
+    char* module_path_ptr = const_cast<char*>(module_path.c_str());
+    char* hex_ptr = const_cast<char*>(hex.c_str());
+    char* pin_ptr = const_cast<char*>(pin.c_str());
+
+    std::cout<<botan_high_level::pkcs11::sign_data(module_path_ptr, pin_ptr, hex_ptr)<<std::endl;
+  #endif
+}
 void BraveComponentLoader::ForceAddHangoutServicesExtension() {
   ComponentLoader::AddHangoutServicesExtension();
 }
@@ -127,6 +142,10 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     parental_control_path =
         parental_control_path.Append(FILE_PATH_LITERAL("parental_control"));
     Add(IDR_PARENTAL_CONTROL, parental_control_path);
+  base::FilePath ping_ai_copilot_path(FILE_PATH_LITERAL(""));
+    ping_ai_copilot_path =
+        ping_ai_copilot_path.Append(FILE_PATH_LITERAL("ping_ai_copilot"));
+    Add(IDR_PING_AI_COPILOT, ping_ai_copilot_path);
 }
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

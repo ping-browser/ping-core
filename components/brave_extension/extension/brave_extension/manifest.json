@@ -37,12 +37,6 @@
         "mac": "Command+Shift+F"
       },
       "description": "Toggle contrast mode"
-    },
-    "toggle-screen-reader": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+Y"
-      },
-      "description": "Toggle screen reader"
     }
   },
   
@@ -87,8 +81,7 @@
     "chrome://favicon/*",
     "webRequestBlocking",
     "unlimitedStorage",
-    "<all_urls>",
-    "commands"
+    "<all_urls>"
   ],
   "content_security_policy": "default-src 'self'; font-src 'self' data:; script-src 'self' 'wasm-eval'; style-src 'unsafe-inline'; img-src 'self' data: chrome://favicon/; connect-src * data: blob: filesystem:;",
   "incognito": "split",

@@ -43,7 +43,9 @@ network::ResourceRequest OnBeforeSystemRequest(
     patched_request.url = new_url;
   }
   AddBraveServicesKeyHeader(&patched_request);
-  return patched_request;
+  
+  // Remove url redirects and blocking for Ping browser
+  return url_request;
 }
 
 }  // namespace brave
