@@ -64,12 +64,24 @@ source_set("low-level") {
   include_dirs = ["//brave/third_party/botan/src"]
 }
 
+source_set("fake-api") {
+  sources = [
+    "src/fake_api.cc",
+    "src/pkcs.h"
+  ]
+
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [ "//build/config/compiler:no_chromium_code" ]
+    configs -= [ "//build/config/compiler:no_rtti" ]
+    configs += [ "//build/config/compiler:rtti" ]
+    configs -= [ "//build/config/compiler:no_exceptions" ]
+    configs += [ "//build/config/compiler:exceptions" ]
+}
+
 group("botan") {
-  if(is_mac) {
-    deps = [ ":build_botan" ]
-    deps += [ ":copy_policy" ]
-    public_configs = [ ":my_class_import" ]
-  } else {
+  if(is_mac || is_linux || is_win) {
     deps = [":low-level"]
+  } else {
+    deps = [":fake-api"]
   }
 }
