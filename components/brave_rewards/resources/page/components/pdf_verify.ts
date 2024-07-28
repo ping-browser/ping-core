@@ -6,7 +6,7 @@
 import { asn1, pkcs7, pki } from 'node-forge'
 import { createVerify, createHash } from 'crypto'
 
-export const verifyPDF = (pdf: Buffer) => {
+export const verifyPdf = (pdf: Buffer) => {
   const extractedData = getSignature(pdf)
 
   const p7Asn1 = asn1.fromDer(extractedData.signature)
