@@ -18,14 +18,6 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { Signature, StoredSignature } from './types'
 
 // Hardcoded certificate (this is a placeholder, replace with actual PEM-encoded certificate)
-const hardcodedCertificate = `-----BEGIN CERTIFICATE-----
-MIIDazCCAlOgAwIBAgIUMDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=
-...
------END CERTIFICATE-----`;
-
-// Hardcoded signature (this is a placeholder, replace with actual signature)
-const hardcodedSignature = 'abc123def456ghi789';
-
 const PLACEHOLDER_IMG_HEX =
   '89504e470d0a1a0a0000000d4948445200000092000000920806000000ae7b938e000000097048597300000b1300000b1301009a9c18000000017352474200aece1ce90000000467414d410000b18f0bfc610500000215494441547801eddd316e14411040d1b20d487644c4fd8f681210162b312307e4deef96b6f73da94f305f5351753fcccc8fe33c0d7cdce57144c4f59e1e07024222212412422221241242222124124222212412422221241242222124124222212412422221241242222124124222212412422221241242222124125f66adcb71fe0c2b3c1fe76116591dd2dfe3fc1c5638bfedb759c468232124124222212412422221241242222124124222212412422221241242222124124222212412422221241242222124124222212412abd7913edbf91ae6b2159c2bbdcdfb9edf16760be98ce8fbdc86d7e3fc9e4d186d2476fb23f1dfaf59b81e2fa47d2d1d9b461b09219110120921911012092191101209219110120921911012092191101209219110120921911012092191101209219110120921911012092191101209219110120921911012092191101209219110120921911012097748eeeb79deef1d5f4248fb7a998597d71b6d2476fb239dcf32bcce6d789b8dec16d2f9b6c736cf32dc12a38d8490480889849048088984904808898490480889849048088984904808898490480889849048088984904808898490480889849048dcdba6edb9c6fc32f7e1eb2c746f219dbbf0cbd698ef89d146424824844442482484444248248444424824844442482484444248248444424824844442482484444248248444424824844442482484444248248444e20ce932709dcb3ff70414419c1505c80000000049454e44ae426082'
 
@@ -75,6 +67,13 @@ const addPlaceholder = async (
 
     // Extract details from certificate
     const commonName = certificate.subject.getField('CN')?.value || 'Unknown'
+    // const organization = certificate.subject.getField('O')?.value || 'Unknown'
+    // const email =
+    //   certificate.subject.getField('E')?.value ||
+    //   `${commonName
+    //     .toLowerCase()
+    //     .replace(' ', '')}@${organization.toLowerCase()}.com`
+    // const encKey = certificate.serialNumber
 
     // Draw text
     const drawText = (
@@ -99,6 +98,9 @@ const addPlaceholder = async (
 
     drawText(`Digitally signed by ${commonName}`, 10, 25, 14)
     drawText(timestamp, 10, 45, 10, true)
+    // drawText(email, 10, 60, 10, true)
+    // drawText(timestamp, 10, 75, 10, true)
+    // drawText(`Enc. Key: ${encKey}`, 10, 90, 10, true)
 
     const modifiedPdfBytes = await pdfDoc.save({
       addDefaultPage: false,
@@ -172,7 +174,8 @@ const embedP7inPdf = (
   const raw = asn1.toDer(p7.toAsn1()).getBytes()
   if (raw.length * 2 > placeholderLength) {
     throw new SignPdfError(
-      `Signature exceeds placeholder length: ${raw.length * 2} > ${placeholderLength}`,
+      `Signature exceeds placeholder length: ${raw.length * 2
+      } > ${placeholderLength}`,
       SignPdfError.TYPE_INPUT
     )
   }
@@ -213,15 +216,36 @@ export const signPdf = async (
 
   // Create the signer object
   let signer: any = {}
-  signer.sign = async () => {
-    // Use hardcoded signature instead of calling Chrome API
-    return Buffer.from(hardcodedSignature, 'hex').toString('binary');
+  signer.sign = async (md: any) => {
+    // https://stackoverflow.com/a/47106124
+    const prefix = Buffer.from([
+      0x30, 0x31, 0x30, 0x0d, 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03,
+      0x04, 0x02, 0x01, 0x05, 0x00, 0x04, 0x20
+    ])
+    let buf = Buffer.concat([prefix, Buffer.from(md.digest().toHex(), 'hex')])
+
+    const toSign = buf.toString('hex')
+
+    return new Promise((resolve) => {
+      ; (chrome as any).pkcs11.getSignature(
+        hsmPath,
+        pin,
+        toSign,
+        (sig: string) => {
+          getPkcs11ErrorHandler(sig)
+          let signature = Buffer.from(sig, 'hex').toString('binary')
+          resolve(signature)
+        }
+      )
+    })
   }
 
   const p7 = pkcs7.createSignedData()
+  // Start off by setting the content.
   p7.content = util.createBuffer(pdf.toString('binary'))
 
   p7.addCertificate(certificate)
+  // Add a sha256 signer. That's what Adobe.PPKLite adbe.pkcs7.detached expects.
   p7.addSigner({
     key: signer,
     certificate,
@@ -233,9 +257,13 @@ export const signPdf = async (
       },
       {
         type: pki.oids.messageDigest
+        // value will be auto-populated at signing time
       },
       {
         type: pki.oids.signingTime,
+        // value can also be auto-populated at signing time
+        // We may also support passing this as an option to sign().
+        // Would be useful to match the creation time of the document for example.
         value: new Date().toString()
       }
     ]
@@ -249,9 +277,43 @@ export const signPdf = async (
   return signedPdf
 }
 
+const ERROR_MAP = {
+  ERROR_MODULE_NOT_FOUND: 'ERROR_MODULE_NOT_FOUND',
+  ERROR_SLOT_NOT_FOUND: 'ERROR_SLOT_NOT_FOUND',
+  ERROR_LOGIN_FAILED: 'ERROR_LOGIN_FAILED',
+  ERROR_SIGNING_FAILURE: 'ERROR_SIGNING_FAILURE',
+  ERROR_NO_OBJS_FOUND: 'ERROR_NO_OBJS_FOUND',
+  ERROR_GETTING_CERT: 'ERROR_GETTING_CERT'
+}
+
+const getPkcs11ErrorHandler = (response: string) => {
+  switch (response) {
+    case ERROR_MAP.ERROR_MODULE_NOT_FOUND:
+      throw new Error(
+        'Module not found. Entered PKCS #11 module path maybe incorrect'
+      )
+    case ERROR_MAP.ERROR_SLOT_NOT_FOUND:
+      throw new Error('No slots found. Module might be disconnected')
+    case ERROR_MAP.ERROR_LOGIN_FAILED:
+      throw new Error('Login failed, entered PIN is incorrect')
+    case ERROR_MAP.ERROR_SIGNING_FAILURE:
+      throw new Error('Signing failed, please try again')
+    case ERROR_MAP.ERROR_NO_OBJS_FOUND:
+      throw new Error('There might be an issue with your token')
+    case ERROR_MAP.ERROR_GETTING_CERT:
+      throw new Error('Error getting certificate')
+    default:
+      return response
+  }
+}
+
 export const getCertificate = async (hsmPath: string): Promise<string> => {
-  // Return hardcoded certificate instead of calling Chrome API
-  return hardcodedCertificate;
+  return new Promise((resolve) =>
+    (chrome as any).pkcs11.getCertificate(hsmPath, (cert: string) => {
+      getPkcs11ErrorHandler(cert)
+      resolve(cert)
+    })
+  )
 }
 
 export const addSignature = async (hsmPath: string) => {
