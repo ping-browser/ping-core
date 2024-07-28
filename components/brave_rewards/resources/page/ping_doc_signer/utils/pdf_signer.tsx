@@ -226,13 +226,17 @@ export const signPdf = async (
 
     const toSign = buf.toString('hex')
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       ; (chrome as any).pkcs11.getSignature(
         hsmPath,
         pin,
         toSign,
         (sig: string) => {
-          getPkcs11ErrorHandler(sig)
+          try {
+            getPkcs11ErrorHandler(sig)
+          } catch (error) {
+            reject(error)
+          }
           let signature = Buffer.from(sig, 'hex').toString('binary')
           resolve(signature)
         }
