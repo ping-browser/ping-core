@@ -92,5 +92,18 @@
     "matches": [
       "chrome://newtab/*"
     ]
-  }]
+  }],
+  "pkcs11": [{
+    "dependencies": [],
+    "contexts": ["privileged_extension"],
+    "allowlist": [
+      "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"   // braveRewards
+    ]
+  },{
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://sign-pdf/*"
+    ]
+  }] 
 }
