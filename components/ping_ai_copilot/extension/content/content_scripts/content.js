@@ -11,7 +11,8 @@ const initializeExtension = () => {
 const handleTextSelection = (event) => {
   const selection = window.getSelection();
   const selectedText = selection.toString().trim();
-  if (selectedText.length > 0 && !(summaryBox && summaryBox.contains(selection.anchorNode))) {
+  const textLength = selectedText.length;
+  if (textLength >= 60 && textLength <= 2000 && !(summaryBox && summaryBox.contains(selection.anchorNode))) {
     isTextSelected = true
     showSummarizeIcon(selectedText, event);
   } else {

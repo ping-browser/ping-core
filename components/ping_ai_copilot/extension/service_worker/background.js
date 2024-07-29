@@ -1,8 +1,14 @@
+import { translations } from "../constants/constants.js"
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'summarize') {
     (async () => {
       try {
         let ln = chrome.i18n.getUILanguage();
+        let headerText = 'Text summary';  
+        const translation = translations.find(t => t.code === ln);
+        if (translation) {
+          headerText = translation.translation;
+        }
         const response = await fetch('https://openai-text-summarizer.azurewebsites.net/summarize', {
           method: 'POST',
           headers: {
@@ -12,7 +18,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
 
         const data = await response.json();
-        chrome.tabs.sendMessage(sender.tab.id, { action: 'displaySummary', summary: data.summary, headerText: data.headerText }, response => {
+        chrome.tabs.sendMessage(sender.tab.id, { action: 'displaySummary', summary: data.summary, headerText: headerText }, response => {
           if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError);
           }
