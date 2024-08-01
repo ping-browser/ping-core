@@ -1,6 +1,6 @@
 let summarizer = null;
 let summaryBox = null;
-let isTextSelected = false;
+let lastSelectedText = '';
 
 const initializeExtension = () => {
   document.removeEventListener('mouseup', handleTextSelection);
@@ -11,10 +11,12 @@ const initializeExtension = () => {
 const handleTextSelection = (event) => {
   const selection = window.getSelection();
   const selectedText = selection.toString().trim();
-  const textLength = selectedText.length;
-  if (textLength >= 60 && textLength <= 2000 && !(summaryBox && summaryBox.contains(selection.anchorNode))) {
-    isTextSelected = true
-    showSummarizeIcon(selectedText, event);
+  const wordCount = selectedText.split(/\s+/).length;
+  if (wordCount >= 10 && wordCount <= 2000 && !(summaryBox && summaryBox.contains(selection.anchorNode))) {
+    if (selectedText !== lastSelectedText) {
+      showSummarizeIcon(selectedText, event);
+      lastSelectedText = selectedText;
+    }
   } else {
     hideSummarizeIcon();
   }
@@ -50,10 +52,8 @@ const showSummarizeIcon = (selectedText, event) => {
     document.body.appendChild(summarizer);
   }
 
-  if (isTextSelected) {
-    summarizer.style.top = `${event.clientY}px`;
-    summarizer.style.left = `${event.clientX}px`;
-  }
+  summarizer.style.top = `${event.clientY}px`;
+  summarizer.style.left = `${event.clientX}px`;
 
   summarizer.style.display = 'inline-block';
 }
