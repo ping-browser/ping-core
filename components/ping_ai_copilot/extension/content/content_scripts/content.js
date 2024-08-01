@@ -12,7 +12,7 @@ const handleTextSelection = (event) => {
   const selection = window.getSelection();
   const selectedText = selection.toString().trim();
   const wordCount = selectedText.split(/\s+/).length;
-  if (wordCount >= 10 && wordCount <= 2000 && !(summaryBox && summaryBox.contains(selection.anchorNode))) {
+  if (wordCount >= 10 && wordCount <= 1000 && !(summaryBox && summaryBox.contains(selection.anchorNode))) {
     if (selectedText !== lastSelectedText) {
       showSummarizeIcon(selectedText, event);
       lastSelectedText = selectedText;
