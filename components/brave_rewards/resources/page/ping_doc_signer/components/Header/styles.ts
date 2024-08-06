@@ -73,7 +73,7 @@ export const StyledNavBar = styled('nav')`
    align-items: center;
    width: 100%;
    justify-content: center;
-   margin-left: 62px;
+   margin-left: 60px;
 
    @media (max-width: 1385px) {
     margin-left: 138px;
@@ -294,7 +294,7 @@ export const StyledNavBar = styled('nav')`
    white-space: nowrap;
    overflow: hidden;
    text-overflow: ellipsis;
-   max-width: 200px;
+   width: 169px;
    font-size: 15px;
    margin-right: auto;
  
