@@ -3,6 +3,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
  import styled from 'styled-components';
 
+ interface StyledDisabledProps {
+   pdfFile?: Blob | null;
+ }
+
  const breakpoints = {
    small: '576px',
    medium: '768px',
@@ -20,25 +24,19 @@
   background-color: #323639;
   border-bottom: 1px solid #383535;
   z-index: 10000;
-  overflow: hidden;
 `;
 
-export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
+export const StyledNavBar = styled('nav')`
   position: relative;
   display: flex;
   flex-direction: row;
   width: 1350px;
-  min-width: 1350px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 50px;
 
   @media (max-width: 1385px) {
     gap: 20px;
-  }
-
-  @media (max-width: ${breakpoints.medium}) {
-    justify-content: flex-start;
   }
 `;
  
@@ -57,6 +55,7 @@ export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
  export const StyledHeaderControls = styled('div')`
    width: 100%;
    max-width: 610px;
+   min-width: 570px;
    height: 42px;
    display: flex;
    align-items: center;
@@ -67,26 +66,33 @@ export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
    background: rgba(255, 255, 255, 0.10);
    justify-content: center;
    gap: 20px;
-   margin-right: 178px;
- 
-   @media (max-width: ${breakpoints.medium}) {
-     order: 2;
-   }
  `;
+
+ export const StyledHeaderControlsContainer = styled.div`
+   display: flex;
+   align-items: center;
+   width: 100%;
+   justify-content: center;
+   margin-left: 60px;
+
+   @media (max-width: 1385px) {
+    margin-left: 138px;
+  }
+ `
  
- export const StyledHeaderButton = styled('button')`
+ export const StyledHeaderButton = styled('button')<StyledDisabledProps>`
    background-color: transparent;
+   color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
    border: none;
    padding: 5px 10px;
    margin-left: 10px;
    cursor: pointer;
-   color: #FFF;
    font-family: Poppins, sans-serif;
    font-size: 16px;
    font-style: normal;
    font-weight: 400;
    line-height: normal;
- 
+
    @media (max-width: ${breakpoints.small}) {
      font-size: 14px;
      padding: 3px 8px;
@@ -101,30 +107,24 @@ export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
    align-items: center;
    justify-content: center;
    gap: 20px;
- 
-   @media (max-width: ${breakpoints.medium}) {
-     position: static;
-     order: 3;
-     margin-top: 10px;
-   }
  `;
  
- export const StyledPageControl = styled('span')<{ direction?: 'previous' | 'next' }>`
+ export const StyledPageControl = styled('span')<{ direction?: 'previous' | 'next' } & StyledDisabledProps>`
    font-size: 13px;
-   color: white;
    font-weight: bold;
    cursor: pointer;
+   color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
  `;
  
- export const StyledSeparator = styled('span')`
+ export const StyledSeparator = styled('span')<StyledDisabledProps>`
    font-size: 13px;
-   color: white;
+   color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
    font-weight: bold;
  `;
  
- export const StyledTotalPages = styled('span')`
+ export const StyledTotalPages = styled('span')<StyledDisabledProps>`
    font-size: 13px;
-   color: white;
+   color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
    font-weight: bold;
  `;
  
@@ -137,7 +137,7 @@ export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
    padding: 0 5px;
  `;
  
- export const StyledCurrentPage = styled('div')`
+ export const StyledCurrentPage = styled('div')<StyledDisabledProps>`
    width: 29px;
    height: 28px;
    flex-shrink: 0;
@@ -146,7 +146,7 @@ export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
    display: flex;
    align-items: center;
    justify-content: center;
-   color: white;
+   color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
  `;
  
  export const StyledPageNumberInput = styled('input')`
@@ -161,43 +161,71 @@ export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
    color: white;
  `;
 
- export const StyledPDFLogo = styled.img`
+ export const StyledInputPDF = styled.img`
   cursor: pointer;
   max-width: 100px;
   height: auto;
+  margin-right: 8px;
 
-  @media (max-width: 1385px){
-    margin-right: 90px;
+ `;
+ export const StyledPDFLogo = styled.img`
+  cursor: pointer;
+  max-width: 33px;
+  height: auto;
+  margin-right: 8px;
+  border-radius: 12%;
+
+  &:hover {
+    background: #FFF;
   }
 `;
- 
- export const StyledSaveButton = styled('button')`
-   width: 142px;
+
+ export const StyledPDFLogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 210px;
+
+  @media (max-width: 1385px) {
+    width: auto;
+  }
+ `;
+
+ export const StyledSaveButton = styled('button')<StyledDisabledProps>`
+   width: 122px;
    height: 41px;
    flex-shrink: 0;
    border-radius: 35px;
-   background: #E6E9EB;
+   background: ${({ pdfFile }) => (pdfFile ? '#E6E9EB' : 'gray')};
    color: #000;
    font-family: Poppins, sans-serif;
    font-size: 16px;
    font-style: normal;
    font-weight: 400;
    line-height: normal;
- 
+   margin-right: 12px;
+   margin-left: 20px
  `;
  
- export const StyledHelpButton = styled('button')`
-   position: absolute;
-   top: 18px;
-   right: 10px;
+ export const StyledHelpButton = styled('button')<StyledDisabledProps>`
    font-size: 18px;
-   color: #fff;
+   color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
    width: 34px;
    height: 34px;
-   border: 2px solid white;
+   border: 2px solid ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
    border-radius: 20px;
    background: transparent;
  `;
+
+ export const StyledHelpButtonContainer = styled.div`
+  width: 210px;
+  display: flex;
+  justify-content: end;
+
+  @media (max-width: 1385px) {
+   width: auto;
+  }
+ `;
+ 
  
  export const StyledFadeAway = styled('div')<{ fadeAnimation: boolean }>`
    opacity: ${p => p.fadeAnimation ? 0 : 1};
@@ -248,7 +276,7 @@ export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
    line-height: normal;
  `;
  
- export const StyledStatus = styled('p')`
+ export const StyledStatus = styled('div')`
    position: absolute;
    left: 75px;
    font-family: Poppins, sans-serif;
@@ -266,7 +294,7 @@ export const StyledNavBar = styled('nav')<{ onVerificationSuccess?: boolean }>`
    white-space: nowrap;
    overflow: hidden;
    text-overflow: ellipsis;
-   max-width: 200px;
+   width: 169px;
    font-size: 15px;
    margin-right: auto;
  

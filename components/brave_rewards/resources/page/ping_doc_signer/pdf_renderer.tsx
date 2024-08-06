@@ -300,6 +300,7 @@ export const PdfRenderer: React.FC = () => {
         if (isVerified) {
           setIsVerification(true);
         }
+        setStatusMessage('');
       }, 3000);
     }
   }, [pdfBuff, isVerified]);
@@ -445,7 +446,7 @@ export const PdfRenderer: React.FC = () => {
             <Document
               file={pdfFile}
               onLoadSuccess={onDocumentLoadSuccess}
-              loading={<div>Loading PDF...</div>}
+              // loading={<div>Loading PDF...</div>}
             >
               {numPages &&
                 Array.from({ length: numPages }, (_, index) => (

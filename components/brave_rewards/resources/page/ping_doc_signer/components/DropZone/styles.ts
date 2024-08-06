@@ -5,10 +5,10 @@
  import styled from 'styled-components';
 
  export const StyledDropZoneContainer = styled('div')`
-   width: 100%;
-   max-width: 1020px;
+   width: 936px;
    flex-shrink: 0;
-   height: 70vh;
+   height: 500px;
+   min-height: 70vh;
    background-color: transparent;
    border: 3px dashed #888787;
    margin-top: 80px;
@@ -22,8 +22,8 @@
  `
 
  export const StyledPdfLogo = styled('img')`
-   width: 80px;
-   height: 75px;
+   width: 90px;
+   height: 85px;
    cursor: pointer;
  `
 
@@ -42,11 +42,12 @@ export const StyledPdfText = styled('p')`
    color: #FFF;
    text-align: center;
    font-family: Poppins;
-   font-size: 30px;
+   font-size: 26px;
    font-style: normal;
    font-weight: 400;
    line-height: normal;
-   margin-bottom: 20px;
+   margin-bottom: 12px;
+   margin-top: 12px;
  `
 
  export const StyledAddFileButton = styled('button')`
@@ -57,8 +58,8 @@ export const StyledPdfText = styled('p')`
    background: #0E4D87;
    color: white;
    border: none;
-   width: 273px;
-   height: 85px;
+   width: 263px;
+   height: 75px;
    text-align: center;
    font-family: Poppins;
    font-size: 25px;
