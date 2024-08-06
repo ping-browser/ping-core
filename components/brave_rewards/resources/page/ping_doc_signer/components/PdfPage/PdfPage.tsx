@@ -25,7 +25,6 @@ const PdfPage: React.FC<PdfPageProps> = ({
                 renderMode="canvas"
                 onLoadSuccess={onLoadSuccess}
                 canvasRef={pdfCanvasRef}
-                loading={<div>Loading page...</div>}
             />
             <OverlayCanvas
                 ref={overlayCanvasRef}

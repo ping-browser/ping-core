@@ -9,14 +9,14 @@ const spin = keyframes`
 `;
 
 export const AppContainer = styled.div`
-  padding-bottom: 20px;
   font-family: Arial, sans-serif;
   background-color: #525659;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
+  min-width: 1120px;
+  overflow: overlay;
 `;
 
 export const Header = styled.header`
@@ -183,13 +183,14 @@ export const HelpButton = styled.button`
 
 export const PdfContainer = styled.div`
   display: flex;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  min-height: 500px;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  overflow-y: overlay;
 `;
 
 export const DocumentContainer = styled.div`
-  overflow-y: visible;
-  overflow-x: hidden;
   height: calc(100vh - 60px);
   direction: ltr;
 `;

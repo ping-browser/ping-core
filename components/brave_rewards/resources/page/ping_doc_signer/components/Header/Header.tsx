@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 import * as React from 'react';
+import { useState } from 'react';
 import {
     StyledHeader,
     StyledNavBar,
@@ -23,9 +24,13 @@ import {
     StyledHeaderControlsBar,
     StyledStatus,
     StyledPDFLogo,
-    StyledPDFName
+    StyledPDFName,
+    StyledPDFLogoContainer,
+    StyledHeaderControlsContainer,
+    StyledHelpButtonContainer
 } from './styles';
-import pdfLogo from '../../../assets/pdfLogo.png';
+import uploadLogo from '../../../assets/upload.svg';
+import uploadHoverLogo from '../../../assets/uploadHover.svg';
 import { AnimatedStatus } from '../AnimatedStatus/AnimatedStatus';
 import { HeaderProps } from '../../utils/types';
 
@@ -53,6 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
     handleLogoClick,
     fileInputRef,
 }) => {
+    const [logoSrc, setLogoSrc] = useState(uploadLogo);
     const renderPageNumber = () => (
         isEditingPageNumber ? (
             <form onSubmit={handlePageNumberSubmit}>
@@ -66,15 +72,15 @@ export const Header: React.FC<HeaderProps> = ({
             </form>
         ) : (
             <>
-                <StyledCurrentPage onClick={handlePageNumberClick}>{pageNumber}</StyledCurrentPage>
-                <StyledSeparator>/</StyledSeparator>
-                <StyledTotalPages>{numPages || '-'}</StyledTotalPages>
+                <StyledCurrentPage pdfFile={pdfFile} onClick={handlePageNumberClick}>{pageNumber}</StyledCurrentPage>
+                <StyledSeparator pdfFile={pdfFile}>/</StyledSeparator>
+                <StyledTotalPages pdfFile={pdfFile}>{numPages || '-'}</StyledTotalPages>
             </>
         )
     );
 
     const renderHeaderControls = () => (
-        pdfFile && !isSelectionEnabled ? (
+        !isSelectionEnabled ? (
             <>
                 <StyledStatus>
                     <AnimatedStatus
@@ -84,9 +90,10 @@ export const Header: React.FC<HeaderProps> = ({
                     />
                 </StyledStatus>
                 <StyledFadeAway fadeAnimation={isStatusVisible}>
-                    <StyledHeaderButton onClick={handleSignButtonClick}>Add signature</StyledHeaderButton>
+                    <StyledHeaderButton pdfFile={pdfFile} onClick={handleSignButtonClick}>Add signature</StyledHeaderButton>
                     <StyledHeaderControlsBar />
                     <StyledHeaderButton
+                        pdfFile={pdfFile}
                         onClick={handleVerifyButtonClick}
                         as={isVerified ? StyledVerified : isVerificationFailed ? StyledNotVerified : 'button'}
                     >
@@ -102,11 +109,14 @@ export const Header: React.FC<HeaderProps> = ({
 
     return (
         <StyledHeader>
-            <StyledNavBar onVerificationSuccess={isVerified}>
+            <StyledNavBar>
+                <StyledPDFLogoContainer>
                 <StyledPDFLogo
-                    src={pdfLogo}
+                    src={logoSrc}
                     alt="PDF Logo"
                     onClick={handleLogoClick}
+                    onMouseEnter={() => setLogoSrc(uploadHoverLogo)}
+                    onMouseLeave={() => setLogoSrc(uploadLogo)}
                 />
                 <input
                     type="file"
@@ -114,21 +124,26 @@ export const Header: React.FC<HeaderProps> = ({
                     style={{ display: 'none' }}
                 />
                 <StyledPDFName>{pdfFileName}</StyledPDFName>
+                </StyledPDFLogoContainer>
+                <StyledHeaderControlsContainer>
                 <StyledHeaderControls>
                     {renderHeaderControls()}
                     <StyledPageChangingControls>
-                        <StyledPageControl as="div" direction="previous" onClick={handlePreviousPage}>&lt;</StyledPageControl>
+                        <StyledPageControl as="div" direction="previous" pdfFile={pdfFile} onClick={handlePreviousPage}>&lt;</StyledPageControl>
                         <StyledPageNumber>
                             {renderPageNumber()}
                         </StyledPageNumber>
-                        <StyledPageControl as="div" direction="next" onClick={handleNextPage}>&gt;</StyledPageControl>
+                        <StyledPageControl as="div" direction="next" pdfFile={pdfFile} onClick={handleNextPage}>&gt;</StyledPageControl>
                     </StyledPageChangingControls>
                 </StyledHeaderControls>
-                <StyledSaveButton onClick={handleDownloadButtonClick}>Save</StyledSaveButton>
-            </StyledNavBar>
-            <a href="https://ping-browser.com/help-1" target="_blank" rel="noopener noreferrer">
-                <StyledHelpButton>?</StyledHelpButton>
-            </a>
+                <StyledSaveButton onClick={handleDownloadButtonClick} disabled={!pdfFile} pdfFile={pdfFile}>Save</StyledSaveButton>
+                </StyledHeaderControlsContainer>
+                <StyledHelpButtonContainer>
+                <a href="https://ping-browser.com/help-1" target="_blank" rel="noopener noreferrer">
+                    <StyledHelpButton disabled={!pdfFile} pdfFile={pdfFile}>?</StyledHelpButton>
+                </a>
+                </StyledHelpButtonContainer>
+            </StyledNavBar>          
         </StyledHeader>
     );
 };
