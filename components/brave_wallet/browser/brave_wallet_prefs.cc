@@ -169,8 +169,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       kDefaultSolanaWallet,
       static_cast<int>(
           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
-  registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
-  registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
+  registry->RegisterStringPref(kDefaultBaseCurrency, "INR");
+  registry->RegisterStringPref(kDefaultBaseCryptocurrency, "SOL");
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
   registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);

@@ -4,6 +4,7 @@
 
 import './background/greaselion'
 import './background/webDiscoveryProject'
+import './background/highContrastBg'
 require('./background/events')
 
 if (chrome.test) {
