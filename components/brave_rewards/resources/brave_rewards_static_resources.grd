@@ -23,6 +23,7 @@
         <include name="IDR_BRAVE_REWARDS_UPLOAD_HOVER_LOGO" file="page/assets/uploadHover.svg" type="BINDATA" />
         <include name="IDR_BRAVE_REWARDS_PDFMAIN" file="page/assets/pdfMain.png" type="BINDATA" />
         <include name="IDR_BRAVE_REWARDS_PINGWATERMARK" file="page/assets/Frame.png" type="BINDATA" />
+        <include name="IDR_BRAVE_REWARDS_LOADER" file="page/assets/loader.png" type="BINDATA" />
       </if>
 
       <!-- WebUI Ping Rewards Internals resources -->
