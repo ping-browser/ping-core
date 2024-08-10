@@ -24,7 +24,8 @@
    display: flex;
    flex-direction: column;
    gap: 10px;
-   height: ${p => p.selected ? '656px' : '390px'};
+   min-height: 268px;
+   max-height: ${p => p.selected ? '656px' : '390px'};
    border: 1px solid #CACACA;
    background: #323639;
    position: relative;

@@ -23,7 +23,7 @@
  display: flex;
  flex-direction: column;
  gap: 10px;
- height: ${p => p.selected ? '656px' : '390px'};
+ height: ${p => p.selected ? 'fit-content' : 'fit-content'};
  border: 1px solid #CACACA;
  background: #323639;
  position: relative;
