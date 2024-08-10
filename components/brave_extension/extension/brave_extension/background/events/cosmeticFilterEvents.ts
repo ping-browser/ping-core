@@ -5,6 +5,7 @@
 import { getLocale } from '../api/localeAPI'
 import { addSiteCosmeticFilter } from '../api/cosmeticFilterAPI'
 import { signDocument } from '../docSigner'
+import { highContrast } from '../highContrastBg'
 
 export let rule = {
   host: '',
@@ -57,6 +58,13 @@ chrome.contextMenus.create({
   contexts: ['all']
 })
 
+chrome.contextMenus.create({
+  title: 'High contrast mode',
+  id: 'highContrast',
+  parentId: 'brave',
+  contexts: ['all']
+})
+
 chrome.contextMenus.onClicked.addListener((info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => {
   onContextMenuClicked(info, tab)
 })
@@ -93,6 +101,9 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
     }
     case 'documentSigner':
       signDocument();
+      break
+    case 'highContrast':
+      highContrast();
       break
     default: {
       console.warn(`[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}`)

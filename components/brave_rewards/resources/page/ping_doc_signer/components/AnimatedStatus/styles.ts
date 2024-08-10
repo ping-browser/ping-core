@@ -18,7 +18,7 @@ export const StyledAnimatedStatus = styled('div')<{ visible: boolean }>`
   margin-bottom: 2px;
   margin-right: 35px;
   transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform: ${p => p.visible ? 'translateY(0px)' : 'translateY(-50px)'};
+  transform: ${p => p.visible ? 'translateY(0px)' : 'translateY(-15px)'};
   z-index: 1000;
 `
 

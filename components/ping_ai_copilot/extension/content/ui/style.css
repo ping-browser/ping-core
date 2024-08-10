@@ -22,12 +22,11 @@
 
 #summarizer-icon {
   position: fixed;  
-  z-index: 999999;
+  z-index: 1000000000 !important;
   border-radius: 50%;
 }
 
 #iconImage {
-  z-index: 999999;
   width: 45px;
   height: 45px;
   border-radius: 50%;
@@ -45,7 +44,7 @@
   bottom: 20px;
   right: 20px;
   width: 360px;
-  z-index: 999999;
+  z-index: 1000000000 !important;
   border-radius: 24px;
   border-top: 7px solid #2BB563;
   border-bottom: 7px solid #2BB563;
