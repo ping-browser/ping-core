@@ -3,10 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// verifyPdf.ts
+
 import { asn1, pkcs7, pki } from 'node-forge'
 import { createVerify, createHash } from 'crypto'
+import { pdfVerifyErrorStates } from './errorTypes'
 
-export const verifyPdf = (pdf: Buffer) => {
+export const verifyPdf = (pdf: Buffer): boolean => {
   const extractedData = getSignature(pdf)
 
   const p7Asn1 = asn1.fromDer(extractedData.signature)
@@ -35,7 +38,7 @@ export const verifyPdf = (pdf: Buffer) => {
   const validAuthenticatedAttributes = verifier.verify(cert, sig, 'binary')
 
   if (!validAuthenticatedAttributes)
-    throw new Error('Wrong authenticated attributes')
+    throw new Error(pdfVerifyErrorStates.INVALID_AUTHENTICATED_ATTRIBUTES)
 
   const pdfHash = createHash(hashAlgorithm)
 
@@ -53,9 +56,9 @@ export const verifyPdf = (pdf: Buffer) => {
   const validContentDigest = dataDigest.toString('binary') === attrDigest
 
   if (validContentDigest) {
-    return true;
+    return true
   } else {
-    throw new Error('Wrong content digest')
+    throw new Error(pdfVerifyErrorStates.INVALID_CONTENT_DIGEST)
   }
 }
 
@@ -68,7 +71,7 @@ const getSignature = (pdf: Buffer) => {
   const byteRangeNumbers = /(\d+) +(\d+) +(\d+) +(\d+)/.exec(byteRange)
   const byteRangeArr = byteRangeNumbers?.[0].split(' ')
 
-  if (!byteRangeArr) throw new Error('Byte range is not found')
+  if (!byteRangeArr) throw new Error(pdfVerifyErrorStates.BYTE_RANGE_NOT_FOUND)
 
   const signedData = Buffer.concat([
     pdf.slice(parseInt(byteRangeArr[0]), parseInt(byteRangeArr[1])),

@@ -6,7 +6,6 @@ import {
   StyledSuccessPopup,
   StyledSuccessTitle,
   StyledSuccessMessage,
-  StyledSuccessName,
   StyledSuccessButtons,
   StyledConfirmButton
 } from './styles';
@@ -18,7 +17,6 @@ export const SuccessPopup: React.FC<SuccessPopupProps> = ({ message, onSave, onC
       Signature complete!
     </StyledSuccessTitle>
     <StyledSuccessMessage>{message}</StyledSuccessMessage>
-    <StyledSuccessName>Placeholder</StyledSuccessName>
     <StyledSuccessButtons>
       <StyledConfirmButton onClick={onSave}>Save as</StyledConfirmButton>
       <StyledConfirmButton onClick={onContinue} $continue>Continue</StyledConfirmButton>

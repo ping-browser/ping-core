@@ -203,7 +203,8 @@ export const StyledNavBar = styled('nav')`
    font-weight: 400;
    line-height: normal;
    margin-right: 12px;
-   margin-left: 20px
+   cursor: pointer;
+   margin-left: 20px;
  `;
  
  export const StyledHelpButton = styled('button')<StyledDisabledProps>`
@@ -214,6 +215,7 @@ export const StyledNavBar = styled('nav')`
    border: 2px solid ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
    border-radius: 20px;
    background: transparent;
+   cursor: pointer;
  `;
 
  export const StyledHelpButtonContainer = styled.div`
@@ -247,22 +249,6 @@ export const StyledNavBar = styled('nav')`
  
  export const StyledNotVerified = styled('span')`
    color: red;
- 
-   &::after {
-     display: flex;
-     position: absolute;
-     content: "i";
-     text-align: center;
-     font-size: 6px;
-     padding: 1px 0px 3px 4px;
-     width: 12px;
-     color: #ff7e00d4;
-     height: 12px;
-     border-radius: 10px;
-     border: 1px solid #ff5b00b3;
-     right: 8px;
-     top: 12px;
-   }
  `;
  
  export const StyledInstructionText = styled('p')`

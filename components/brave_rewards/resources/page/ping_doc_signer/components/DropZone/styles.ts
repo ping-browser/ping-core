@@ -78,3 +78,9 @@ export const StyledPdfText = styled('p')`
    line-height: normal;
    margin-top: 60px;
  `
+
+ export const StyledErrorMessage = styled.div`
+  color: #ff0000;
+  margin-top: 10px;
+  font-size: 14px;
+`;

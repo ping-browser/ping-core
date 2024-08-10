@@ -11,7 +11,6 @@ import {
   StyledSelectedSignature,
   StyledSelectedSignatureH3,
   StyledSelectedSignatureP,
-  StyledBrowseImage,
   StyledSignatureList,
   StyledSignatureOption,
   StyledSignatureOptionInput,
@@ -66,7 +65,7 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
     <StyledPopupOverlay>
       <StyledPopupContent selected={!!selectedSignature}>
         <StyledPopupContentH2>Choose a digital ID to sign with:</StyledPopupContentH2>
-        <StyledCloseButton onClick={onClose}>×</StyledCloseButton>
+        <StyledCloseButton onClick={onClose}>x</StyledCloseButton>
 
         {signatures.length === 0 ? (
           <StyledSignatureList>
@@ -85,7 +84,6 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
               <StyledSelectedSignature>
                 <StyledSelectedSignatureH3>{selectedSignature.name}</StyledSelectedSignatureH3>
                 <StyledSelectedSignatureP>Valid until: {selectedSignature.expiry.toLocaleString()}</StyledSelectedSignatureP>
-                <StyledBrowseImage>View Certificate Details</StyledBrowseImage>
               </StyledSelectedSignature>
             )}
             <StyledSignatureList>

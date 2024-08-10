@@ -14,7 +14,8 @@
 export type DropZoneProps = {
   onFileInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isDragging: boolean;
-
+  handleDrop: (event: React.DragEvent<HTMLDivElement>) => void;
+  setIsDragging: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type HeaderProps = {
@@ -92,4 +93,11 @@ export type PdfPageProps = {
   pdfCanvasRef: React.Ref<HTMLCanvasElement>;
   overlayCanvasRef: React.Ref<HTMLCanvasElement>;
   pageRef: React.Ref<HTMLDivElement>;
+}
+
+export type TooltipProps = {
+  text: string;
+  isVisible: boolean;
+  isVerificationFailed: boolean;
+  children: React.ReactNode;
 }

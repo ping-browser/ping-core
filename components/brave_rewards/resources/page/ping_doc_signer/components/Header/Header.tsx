@@ -111,39 +111,39 @@ export const Header: React.FC<HeaderProps> = ({
         <StyledHeader>
             <StyledNavBar>
                 <StyledPDFLogoContainer>
-                <StyledPDFLogo
-                    src={logoSrc}
-                    alt="PDF Logo"
-                    onClick={handleLogoClick}
-                    onMouseEnter={() => setLogoSrc(uploadHoverLogo)}
-                    onMouseLeave={() => setLogoSrc(uploadLogo)}
-                />
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                />
-                <StyledPDFName>{pdfFileName}</StyledPDFName>
+                    <StyledPDFLogo
+                        src={logoSrc}
+                        alt="PDF Logo"
+                        onClick={handleLogoClick}
+                        onMouseEnter={() => setLogoSrc(uploadHoverLogo)}
+                        onMouseLeave={() => setLogoSrc(uploadLogo)}
+                    />
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                    />
+                    <StyledPDFName>{pdfFileName}</StyledPDFName>
                 </StyledPDFLogoContainer>
                 <StyledHeaderControlsContainer>
-                <StyledHeaderControls>
-                    {renderHeaderControls()}
-                    <StyledPageChangingControls>
-                        <StyledPageControl as="div" direction="previous" pdfFile={pdfFile} onClick={handlePreviousPage}>&lt;</StyledPageControl>
-                        <StyledPageNumber>
-                            {renderPageNumber()}
-                        </StyledPageNumber>
-                        <StyledPageControl as="div" direction="next" pdfFile={pdfFile} onClick={handleNextPage}>&gt;</StyledPageControl>
-                    </StyledPageChangingControls>
-                </StyledHeaderControls>
-                <StyledSaveButton onClick={handleDownloadButtonClick} disabled={!pdfFile} pdfFile={pdfFile}>Save</StyledSaveButton>
+                    <StyledHeaderControls>
+                        {renderHeaderControls()}
+                        <StyledPageChangingControls>
+                            <StyledPageControl as="div" direction="previous" pdfFile={pdfFile} onClick={handlePreviousPage}>&lt;</StyledPageControl>
+                            <StyledPageNumber>
+                                {renderPageNumber()}
+                            </StyledPageNumber>
+                            <StyledPageControl as="div" direction="next" pdfFile={pdfFile} onClick={handleNextPage}>&gt;</StyledPageControl>
+                        </StyledPageChangingControls>
+                    </StyledHeaderControls>
+                    <StyledSaveButton onClick={handleDownloadButtonClick} disabled={!pdfFile} pdfFile={pdfFile}>Save</StyledSaveButton>
                 </StyledHeaderControlsContainer>
                 <StyledHelpButtonContainer>
-                <a href="https://ping-browser.com/help-1" target="_blank" rel="noopener noreferrer">
-                    <StyledHelpButton disabled={!pdfFile} pdfFile={pdfFile}>?</StyledHelpButton>
-                </a>
+                    <a href="https://ping-browser.com/help-1" target="_blank" rel="noopener noreferrer">
+                        <StyledHelpButton disabled={!pdfFile} pdfFile={pdfFile}>?</StyledHelpButton>
+                    </a>
                 </StyledHelpButtonContainer>
-            </StyledNavBar>          
+            </StyledNavBar>
         </StyledHeader>
     );
 };

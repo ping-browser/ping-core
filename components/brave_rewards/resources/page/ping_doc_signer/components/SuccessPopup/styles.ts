@@ -15,7 +15,7 @@
    display: flex;
    flex-direction: column;
    gap: 10px;
-   height: 350px;
+   height: fit-content;
    border: 1px solid #CACACA;
    transition: height 0.3s ease;
    overflow: hidden;

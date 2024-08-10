@@ -16,6 +16,7 @@ import { SelectionCoords } from '../pdf_renderer'
 
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { Signature, StoredSignature } from './types'
+import { PdfSignerErrorStates } from './errorTypes'
 
 // Hardcoded certificate (this is a placeholder, replace with actual PEM-encoded certificate)
 const PLACEHOLDER_IMG_HEX =
@@ -96,8 +97,9 @@ const addPlaceholder = async (
       }
     }
 
-    drawText(`Digitally signed by ${commonName}`, 10, 25, 14)
-    drawText(timestamp, 10, 45, 10, true)
+    drawText(`Digitally signed by`, 10, 35, 14)
+    drawText(`${commonName}`, 10, 55, 14)
+    drawText(timestamp, 10, 75, 10, true)
     // drawText(email, 10, 60, 10, true)
     // drawText(timestamp, 10, 75, 10, true)
     // drawText(`Enc. Key: ${encKey}`, 10, 90, 10, true)
@@ -280,31 +282,21 @@ export const signPdf = async (
 
   return signedPdf
 }
-
-const ERROR_MAP = {
-  ERROR_MODULE_NOT_FOUND: 'ERROR_MODULE_NOT_FOUND',
-  ERROR_SLOT_NOT_FOUND: 'ERROR_SLOT_NOT_FOUND',
-  ERROR_LOGIN_FAILED: 'ERROR_LOGIN_FAILED',
-  ERROR_SIGNING_FAILURE: 'ERROR_SIGNING_FAILURE',
-  ERROR_NO_OBJS_FOUND: 'ERROR_NO_OBJS_FOUND',
-  ERROR_GETTING_CERT: 'ERROR_GETTING_CERT'
-}
-
 const getPkcs11ErrorHandler = (response: string) => {
   switch (response) {
-    case ERROR_MAP.ERROR_MODULE_NOT_FOUND:
+    case PdfSignerErrorStates.MODULE_NOT_FOUND:
       throw new Error(
         'Module not found. Entered PKCS #11 module path maybe incorrect'
       )
-    case ERROR_MAP.ERROR_SLOT_NOT_FOUND:
+    case PdfSignerErrorStates.SLOT_NOT_FOUND:
       throw new Error('No slots found. Module might be disconnected')
-    case ERROR_MAP.ERROR_LOGIN_FAILED:
+    case PdfSignerErrorStates.LOGIN_FAILED:
       throw new Error('Login failed, entered PIN is incorrect')
-    case ERROR_MAP.ERROR_SIGNING_FAILURE:
+    case PdfSignerErrorStates.SIGNING_FAILURE:
       throw new Error('Signing failed, please try again')
-    case ERROR_MAP.ERROR_NO_OBJS_FOUND:
+    case PdfSignerErrorStates.NO_OBJS_FOUND:
       throw new Error('There might be an issue with your token')
-    case ERROR_MAP.ERROR_GETTING_CERT:
+    case PdfSignerErrorStates.GETTING_CERT:
       throw new Error('Error getting certificate')
     default:
       return response
