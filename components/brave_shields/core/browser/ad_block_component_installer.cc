@@ -28,10 +28,10 @@ namespace {
 
 constexpr size_t kHashSize = 32;
 const char kAdBlockResourceComponentName[] = "Brave Ad Block Resources Library";
-const char kAdBlockResourceComponentId[] = "cnlgkbaldncdcjfkbmamphikgkidhood";
+const char kAdBlockResourceComponentId[] = "blhkcadgbdffefgjpldgmejkjljinmle";
 const char kAdBlockResourceComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA152GwuyqqYS1iNwwyRaYOLfsNciTp4vPDctwVpY0VykIzJez58HunECVvCX2Uk3RLXWWkHwyHxEwPIuVZykk+WMuPQuK/FVrIzofe+jRoDehadNzu8gNl4E9uJkeC77LrVan4JEVtCf/NHJw29bo8AFt45WEgvrXLAeIn17+pcXvmxoL1Ahqkw9EOph/xruxduPpUwNR1C8kPtmm98hzvWuV12v6BaIgbIOGpG6SM7nMM17fxn9b9dlPclqlfgVml+wv26go2hdU5BypBXFJGjJ7rFLyegq4W/pbMqN3ZYsRLKFTE3rh7hO9kD8q4UYmzgBhVLGff2nIS3eDBxmd9QIDAQAB";
-
+       "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArZUCk8AVlgg5PKFweivKwThDmwfCdIPQ5fdoRBzoPKwjXHGSm9ZVglL5Y2S3v8vnI1pf55zANO/cW6pVze8SAuXmQh234UglhDaeJfzjkZemIBqKxdeWX004Im7CuPTXPk2Obb1k6jZz6YHFY/nl+Cg7bDbAkT/zCQc5mIPYpNlA/S5hSFR1vQ0TBLNUd2vR8E7wZmqggUYU7F1aMA2MWIVwqYkOvqjzj55UrKYIquqGKe2eih8Aoyqks00Yh8mSpmJs43PeuBO3Wv44Sz6GNUtB6wch4e1cQwccVoyB8YYLFy3LKrybtOL1mI2KB0UdAXGwGh0f9CgjTvh1M44rOQIDAQAB";
+       
 const char kAdBlockFilterListCatalogComponentName[] =
     "Brave Ad Block List Catalog";
 const char kAdBlockFilterListCatalogComponentId[] =
