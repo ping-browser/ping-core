@@ -140,7 +140,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </StyledHeaderControlsContainer>
                 <StyledHelpButtonContainer>
                 <a href="https://ping-browser.com/help-1" target="_blank" rel="noopener noreferrer">
-                    <StyledHelpButton disabled={!pdfFile} pdfFile={pdfFile}>?</StyledHelpButton>
+                    <StyledHelpButton>?</StyledHelpButton>
                 </a>
                 </StyledHelpButtonContainer>
             </StyledNavBar>          

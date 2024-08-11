@@ -206,12 +206,12 @@ export const StyledNavBar = styled('nav')`
    margin-left: 20px
  `;
  
- export const StyledHelpButton = styled('button')<StyledDisabledProps>`
+ export const StyledHelpButton = styled('button')`
    font-size: 18px;
-   color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
+   color: #FFF;
    width: 34px;
    height: 34px;
-   border: 2px solid ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
+   border: 2px solid #FFF;
    border-radius: 20px;
    background: transparent;
  `;

@@ -21,7 +21,7 @@
 }
 
 #summarizer-icon {
-  position: fixed;  
+  position: absolute;  
   z-index: 1000000000 !important;
   border-radius: 50%;
 }
@@ -50,7 +50,8 @@
   border-bottom: 7px solid #2BB563;
   border-left: 4px solid #2BB563; 
   border-right: 4px solid #2BB563; 
-  background: linear-gradient(153deg, #3674AD -39.05%, #112130 99.39%);   border-radius: 24px;
+  background: linear-gradient(153deg, #4D97DA, #112130);
+  border-radius: 24px;
   padding: 24px;
   color: white;
   font-family: Arial, sans-serif;
