@@ -131,11 +131,6 @@ const showSummaryBox = (isLoading, summary = '', headerText = '') => {
 
   summaryBox.style.animation = 'slideUp 0.3s ease-out';
   summaryBox.style.display = 'block';
-  setTimeout(() => {
-    const height = summaryBox.scrollHeight;
-    summaryBox.style.maxHeight = `${height}px`;
-    summaryBox.style.opacity = '1';
-  }, 10);
 }
 
 const hideSummaryBox = () => {
