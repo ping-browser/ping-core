@@ -1,4 +1,4 @@
-import { translations } from "../constants/constants.js"
+import { translations } from "../constants/constants.js";
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'summarize') {
     (async () => {

@@ -51,7 +51,7 @@ declare_args() {
 if (target_os == "win") {
   # Omaha 3 and its related arguments are available on Windows only.
   declare_args() {
-    build_omaha = true
+    build_omaha = false
     tag_ap = ""
     tag_installdataindex = ""
   }
