@@ -68,16 +68,42 @@ const showSummarizeIcon = (selectedText, event) => {
     document.body.appendChild(summarizer);
   }
 
-  // Calculate position relative to the document
+  const selection = window.getSelection();
+  const range = selection.getRangeAt(0);
+  const endRange = document.createRange();
+  endRange.setStart(range.endContainer, range.endOffset);
+  endRange.setEnd(range.endContainer, range.endOffset);
+
+  let rect;
+  if (range.endContainer.nodeType === Node.TEXT_NODE) {
+    const text = range.endContainer.textContent;
+    let wordStart = range.endOffset;
+
+    while (wordStart > 0 && /\S/.test(text[wordStart - 1])) {
+      wordStart--;
+    }
+    endRange.setStart(range.endContainer, wordStart);
+    rect = endRange.getBoundingClientRect();
+  } else {
+    rect = range.getBoundingClientRect();
+  }
+
   const scrollX = window.scrollX || document.documentElement.scrollLeft;
   const scrollY = window.scrollY || document.documentElement.scrollTop;
+ 
+  let top; let left;
+  if(event.detail === 3){
+    top = rect.bottom + scrollY + 1;
+    left = rect.right + scrollX + 1
+  }
+  top = rect.bottom + scrollY + 5;
+  left = rect.right + scrollX + 5;
 
-  summarizer.style.top = `${event.clientY + scrollY}px`;
-  summarizer.style.left = `${event.clientX + scrollX}px`;
-
+  summarizer.style.top = `${top}px`;
+  summarizer.style.left = `${left}px`;
   summarizer.style.display = 'inline-block';
-  isSummarizerVisible = true;  
-}
+  isSummarizerVisible = true;
+};
 
 const hideSummarizeIcon = () => {
   if (summarizer) {
