@@ -1,10 +1,19 @@
 let summarizer = null;
 let summaryBox = null;
-let lastSelectedText = '';
+let isSummarizerVisible = false;
+let isTextSelected = false;
+
+const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
+};
 
 const initializeExtension = () => {
   document.removeEventListener('mouseup', handleTextSelection);
-  document.addEventListener('mouseup', handleTextSelection);
+  document.addEventListener('mouseup', debounce(handleTextSelection, 190));
   document.addEventListener('click', handleDocumentClick);
 }
 
@@ -13,22 +22,29 @@ const handleTextSelection = (event) => {
   const selectedText = selection.toString().trim();
   const wordCount = selectedText.split(/\s+/).length;
   if (wordCount >= 10 && wordCount <= 1000 && !(summaryBox && summaryBox.contains(selection.anchorNode))) {
-    if (selectedText !== lastSelectedText) {
+    if (!isSummarizerVisible) {
       showSummarizeIcon(selectedText, event);
-      lastSelectedText = selectedText;
+      isTextSelected = true; 
     }
   } else {
     hideSummarizeIcon();
+    isTextSelected = false; 
   }
 }
 
 const handleDocumentClick = (event) => {
-  if (
-    summaryBox &&
-    !summaryBox.contains(event.target) &&
-    (!summarizer || !summarizer.contains(event.target))
-  ) {
+  if(summaryBox && !summaryBox.contains(event.target)){
     hideSummaryBox();
+  }
+  if(isTextSelected && summarizer){
+    if(summaryBox && !summaryBox.contains(event.target)){
+      hideSummarizeIcon()
+      hideSummaryBox();
+    }
+    else if(!summaryBox){
+      hideSummarizeIcon()
+      hideSummaryBox();
+    }    
   }
 }
 
@@ -52,15 +68,21 @@ const showSummarizeIcon = (selectedText, event) => {
     document.body.appendChild(summarizer);
   }
 
-  summarizer.style.top = `${event.clientY}px`;
-  summarizer.style.left = `${event.clientX}px`;
+  // Calculate position relative to the document
+  const scrollX = window.scrollX || document.documentElement.scrollLeft;
+  const scrollY = window.scrollY || document.documentElement.scrollTop;
+
+  summarizer.style.top = `${event.clientY + scrollY}px`;
+  summarizer.style.left = `${event.clientX + scrollX}px`;
 
   summarizer.style.display = 'inline-block';
+  isSummarizerVisible = true;  
 }
 
 const hideSummarizeIcon = () => {
   if (summarizer) {
     summarizer.style.display = 'none';
+    isSummarizerVisible = false;  
   }
 }
 
