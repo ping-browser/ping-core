@@ -446,7 +446,7 @@ export const PdfRenderer: React.FC = () => {
             <Document
               file={pdfFile}
               onLoadSuccess={onDocumentLoadSuccess}
-              // loading={<div>Loading PDF...</div>}
+              loading={<S.Loader>Loading PDF...</S.Loader>}
             >
               {numPages &&
                 Array.from({ length: numPages }, (_, index) => (

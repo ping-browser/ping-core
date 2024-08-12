@@ -216,3 +216,9 @@ export const LoadingSpinner = styled.div`
   height: 50px;
   animation: ${spin} 1s linear infinite;
 `;
+
+export const Loader = styled.div`
+  font-size: 20px;
+  color: #FFF;
+  top: 20px;
+`
