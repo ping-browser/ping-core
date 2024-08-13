@@ -10,7 +10,7 @@ export const TooltipContainer = styled.div`
 
 export const StyledTooltip = styled.div<{ isError?: boolean }>`
    position: absolute;
-   top: 100%;
+   top: 110%;
    left: 50%;
    transform: translateX(-50%);
    background-color: ${({ isError }) => (isError ? '#e74c3c' : '#333')};

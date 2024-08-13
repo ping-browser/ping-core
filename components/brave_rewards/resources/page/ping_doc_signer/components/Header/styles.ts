@@ -5,6 +5,7 @@
 
  interface StyledDisabledProps {
    pdfFile?: Blob | null;
+   isSigned?: boolean;
  }
 
  const breakpoints = {
@@ -205,6 +206,7 @@ export const StyledNavBar = styled('nav')`
    margin-right: 12px;
    cursor: pointer;
    margin-left: 20px;
+   visibility: ${({ isSigned }) => (isSigned ? 'visible' : 'hidden')};
  `;
  
  export const StyledHelpButton = styled('button')`

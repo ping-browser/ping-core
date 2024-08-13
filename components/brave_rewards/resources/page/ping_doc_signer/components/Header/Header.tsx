@@ -33,6 +33,7 @@ import uploadLogo from '../../../assets/upload.svg';
 import uploadHoverLogo from '../../../assets/uploadHover.svg';
 import { AnimatedStatus } from '../AnimatedStatus/AnimatedStatus';
 import { HeaderProps } from '../../utils/types';
+import { Tooltip } from '../ToolTip/ToolTip';
 
 export const Header: React.FC<HeaderProps> = ({
     pdfFileName,
@@ -57,8 +58,13 @@ export const Header: React.FC<HeaderProps> = ({
     statusType,
     handleLogoClick,
     fileInputRef,
+    isSigned,
 }) => {
     const [logoSrc, setLogoSrc] = useState(uploadLogo);
+    const [showPDFNameTooltip, setShowPDFNameTooltip] = useState(false);
+    const [showVerificationTooltip, setShowVerificationTooltip] = useState(false);
+    const [showHelpTooltip, setShowHelpTooltip] = useState(false);
+
     const renderPageNumber = () => (
         isEditingPageNumber ? (
             <form onSubmit={handlePageNumberSubmit}>
@@ -92,13 +98,21 @@ export const Header: React.FC<HeaderProps> = ({
                 <StyledFadeAway fadeAnimation={isStatusVisible}>
                     <StyledHeaderButton pdfFile={pdfFile} onClick={handleSignButtonClick}>Add signature</StyledHeaderButton>
                     <StyledHeaderControlsBar />
-                    <StyledHeaderButton
-                        pdfFile={pdfFile}
-                        onClick={handleVerifyButtonClick}
-                        as={isVerified ? StyledVerified : isVerificationFailed ? StyledNotVerified : 'button'}
+                    <Tooltip
+                        text="Verification failed. Please check the document."
+                        isVisible={showVerificationTooltip && isVerificationFailed}
+                        isError={true}
                     >
-                        Verify document
-                    </StyledHeaderButton>
+                        <StyledHeaderButton
+                            pdfFile={pdfFile}
+                            onClick={handleVerifyButtonClick}
+                            as={isVerified ? StyledVerified : isVerificationFailed ? StyledNotVerified : 'button'}
+                            onMouseEnter={() => setShowVerificationTooltip(true)}
+                            onMouseLeave={() => setShowVerificationTooltip(false)}
+                        >
+                            Verify document
+                        </StyledHeaderButton>
+                    </Tooltip>
                     <StyledHeaderControlsBar />
                 </StyledFadeAway>
             </>
@@ -111,39 +125,60 @@ export const Header: React.FC<HeaderProps> = ({
         <StyledHeader>
             <StyledNavBar>
                 <StyledPDFLogoContainer>
-                <StyledPDFLogo
-                    src={logoSrc}
-                    alt="PDF Logo"
-                    onClick={handleLogoClick}
-                    onMouseEnter={() => setLogoSrc(uploadHoverLogo)}
-                    onMouseLeave={() => setLogoSrc(uploadLogo)}
-                />
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                />
-                <StyledPDFName>{pdfFileName}</StyledPDFName>
+                    <StyledPDFLogo
+                        src={logoSrc}
+                        alt="PDF Logo"
+                        onClick={handleLogoClick}
+                        onMouseEnter={() => setLogoSrc(uploadHoverLogo)}
+                        onMouseLeave={() => setLogoSrc(uploadLogo)}
+                    />
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                    />
+                    <Tooltip
+                        text={pdfFileName}
+                        isVisible={showPDFNameTooltip}
+                    >
+                        <StyledPDFName
+                            onMouseEnter={() => setShowPDFNameTooltip(true)}
+                            onMouseLeave={() => setShowPDFNameTooltip(false)}
+                        >
+                            {pdfFileName}
+                        </StyledPDFName>
+                    </Tooltip>
                 </StyledPDFLogoContainer>
                 <StyledHeaderControlsContainer>
-                <StyledHeaderControls>
-                    {renderHeaderControls()}
-                    <StyledPageChangingControls>
-                        <StyledPageControl as="div" direction="previous" pdfFile={pdfFile} onClick={handlePreviousPage}>&lt;</StyledPageControl>
-                        <StyledPageNumber>
-                            {renderPageNumber()}
-                        </StyledPageNumber>
-                        <StyledPageControl as="div" direction="next" pdfFile={pdfFile} onClick={handleNextPage}>&gt;</StyledPageControl>
-                    </StyledPageChangingControls>
-                </StyledHeaderControls>
-                <StyledSaveButton onClick={handleDownloadButtonClick} disabled={!pdfFile} pdfFile={pdfFile}>Save</StyledSaveButton>
+                    <StyledHeaderControls>
+                        {renderHeaderControls()}
+                        <StyledPageChangingControls>
+                            <StyledPageControl as="div" direction="previous" pdfFile={pdfFile} onClick={handlePreviousPage}>&lt;</StyledPageControl>
+                            <StyledPageNumber>
+                                {renderPageNumber()}
+                            </StyledPageNumber>
+                            <StyledPageControl as="div" direction="next" pdfFile={pdfFile} onClick={handleNextPage}>&gt;</StyledPageControl>
+                        </StyledPageChangingControls>
+                    </StyledHeaderControls>
+                    <StyledSaveButton isSigned={isSigned} onClick={handleDownloadButtonClick} disabled={!pdfFile} pdfFile={pdfFile}>Save</StyledSaveButton>
                 </StyledHeaderControlsContainer>
                 <StyledHelpButtonContainer>
-                <a href="https://ping-browser.com/help-1" target="_blank" rel="noopener noreferrer">
-                    <StyledHelpButton>?</StyledHelpButton>
-                </a>
+                    <Tooltip
+                        text="Get help"
+                        isVisible={showHelpTooltip}
+                    >
+                        <a
+                            href="https://ping-browser.com/help-1"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onMouseEnter={() => setShowHelpTooltip(true)}
+                            onMouseLeave={() => setShowHelpTooltip(false)}
+                        >
+                            <StyledHelpButton>?</StyledHelpButton>
+                        </a>
+                    </Tooltip>
                 </StyledHelpButtonContainer>
-            </StyledNavBar>          
+            </StyledNavBar>
         </StyledHeader>
     );
 };

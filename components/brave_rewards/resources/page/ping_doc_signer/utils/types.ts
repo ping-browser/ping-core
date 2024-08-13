@@ -41,6 +41,7 @@ export type HeaderProps = {
   statusType: 'checking' | 'success' | 'error';
   handleLogoClick: () => void;
   fileInputRef: React.RefObject<HTMLInputElement>;
+  isSigned: boolean;
 }
 
 export type StoredSignature = {
@@ -75,6 +76,11 @@ export type SuccessPopupProps = {
   onSave: () => void;
   onContinue: () => void;
   isVerification: boolean;
+}
+
+export type ErrorPopupProps = {
+  message: string;
+  onContinue: () => void;
 }
 
 export type AnimatedStatusProps = {

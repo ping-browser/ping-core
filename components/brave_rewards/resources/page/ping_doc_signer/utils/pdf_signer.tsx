@@ -96,8 +96,9 @@ const addPlaceholder = async (
       }
     }
 
-    drawText(`Digitally signed by ${commonName}`, 10, 25, 14)
-    drawText(timestamp, 10, 45, 10, true)
+    drawText(`Digitally signed by`, 15, 35, 14)
+    drawText(`${commonName}`, 15, 55, 14)
+    drawText(timestamp, 15, 75, 10, true)
     // drawText(email, 10, 60, 10, true)
     // drawText(timestamp, 10, 75, 10, true)
     // drawText(`Enc. Key: ${encKey}`, 10, 90, 10, true)
