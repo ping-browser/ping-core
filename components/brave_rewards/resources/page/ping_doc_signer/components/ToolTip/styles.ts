@@ -8,29 +8,35 @@ export const TooltipContainer = styled.div`
    display: inline-block;
  `;
 
-export const StyledTooltip = styled.div<{ isError?: boolean }>`
-   position: absolute;
-   top: 110%;
-   left: 50%;
-   transform: translateX(-50%);
-   background-color: ${({ isError }) => (isError ? '#e74c3c' : '#333')};
-   color: #fff;
-   padding: 5px;
-   border-radius: 3px;
-   white-space: nowrap;
-   z-index: 1000;
-   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-   margin-top: 8px;
-   opacity: 0.9;
- 
-   &::after {
-     content: '';
-     position: absolute;
-     top: -5px;
-     left: 50%;
-     transform: translateX(-50%);
-     border-width: 5px;
-     border-style: solid;
-     border-color: transparent transparent ${({ isError }) => (isError ? '#e74c3c' : '#333')} transparent;
-   }
- `;
+export const TooltipText = styled.div<{ isVisible: boolean; isError: boolean }>`
+  visibility: hidden;
+  width: fit-content;
+  text-wrap: wrap;
+  background-color: ${props => props.isError ? '#ff4d4d' : '#555'};
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px;
+  transition: opacity 0.3s, visibility 0.3s;
+
+  ${TooltipContainer}:hover & {
+    visibility: ${props => props.isVisible ? 'visible' : 'hidden'};
+
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent ${props => props.isError ? '#ff4d4d' : '#555'} transparent;
+  }
+  `;

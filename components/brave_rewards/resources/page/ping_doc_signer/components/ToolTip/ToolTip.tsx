@@ -2,18 +2,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 import * as React from 'react';
-import { TooltipContainer, StyledTooltip } from './styles';
+import { TooltipContainer, TooltipText } from './styles';
 
 interface TooltipProps {
-  text: string;
-  isVisible: boolean;
-  isError?: boolean;
   children: React.ReactNode;
+  text: string;
+  isVisible?: boolean;
+  isError?: boolean;
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({ text, isVisible, isError, children }) => (
-  <TooltipContainer>
-    {children}
-    {isVisible && <StyledTooltip isError={isError}>{text}</StyledTooltip>}
-  </TooltipContainer>
-);
+export const Tooltip: React.FC<TooltipProps> = ({
+  children,
+  text,
+  isVisible = true,
+  isError = false
+}) => {
+  return (
+    <TooltipContainer>
+      {children}
+      <TooltipText isVisible={isVisible} isError={isError}>
+        {text}
+      </TooltipText>
+    </TooltipContainer>
+  );
+};

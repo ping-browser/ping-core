@@ -59,11 +59,9 @@ export const Header: React.FC<HeaderProps> = ({
     handleLogoClick,
     fileInputRef,
     isSigned,
+    message,
 }) => {
     const [logoSrc, setLogoSrc] = useState(uploadLogo);
-    const [showPDFNameTooltip, setShowPDFNameTooltip] = useState(false);
-    const [showVerificationTooltip, setShowVerificationTooltip] = useState(false);
-    const [showHelpTooltip, setShowHelpTooltip] = useState(false);
 
     const renderPageNumber = () => (
         isEditingPageNumber ? (
@@ -99,16 +97,14 @@ export const Header: React.FC<HeaderProps> = ({
                     <StyledHeaderButton pdfFile={pdfFile} onClick={handleSignButtonClick}>Add signature</StyledHeaderButton>
                     <StyledHeaderControlsBar />
                     <Tooltip
-                        text="Verification failed. Please check the document."
-                        isVisible={showVerificationTooltip && isVerificationFailed}
+                        text={message}
+                        isVisible={!isVerificationFailed}
                         isError={true}
                     >
                         <StyledHeaderButton
                             pdfFile={pdfFile}
                             onClick={handleVerifyButtonClick}
                             as={isVerified ? StyledVerified : isVerificationFailed ? StyledNotVerified : 'button'}
-                            onMouseEnter={() => setShowVerificationTooltip(true)}
-                            onMouseLeave={() => setShowVerificationTooltip(false)}
                         >
                             Verify document
                         </StyledHeaderButton>
@@ -137,14 +133,8 @@ export const Header: React.FC<HeaderProps> = ({
                         ref={fileInputRef}
                         style={{ display: 'none' }}
                     />
-                    <Tooltip
-                        text={pdfFileName}
-                        isVisible={showPDFNameTooltip}
-                    >
-                        <StyledPDFName
-                            onMouseEnter={() => setShowPDFNameTooltip(true)}
-                            onMouseLeave={() => setShowPDFNameTooltip(false)}
-                        >
+                    <Tooltip text={pdfFileName}>
+                        <StyledPDFName>
                             {pdfFileName}
                         </StyledPDFName>
                     </Tooltip>
@@ -163,16 +153,11 @@ export const Header: React.FC<HeaderProps> = ({
                     <StyledSaveButton isSigned={isSigned} onClick={handleDownloadButtonClick} disabled={!pdfFile} pdfFile={pdfFile}>Save</StyledSaveButton>
                 </StyledHeaderControlsContainer>
                 <StyledHelpButtonContainer>
-                    <Tooltip
-                        text="Get help"
-                        isVisible={showHelpTooltip}
-                    >
+                    <Tooltip text="Get help">
                         <a
                             href="https://ping-browser.com/help-1"
                             target="_blank"
                             rel="noopener noreferrer"
-                            onMouseEnter={() => setShowHelpTooltip(true)}
-                            onMouseLeave={() => setShowHelpTooltip(false)}
                         >
                             <StyledHelpButton>?</StyledHelpButton>
                         </a>

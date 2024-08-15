@@ -23,10 +23,12 @@ import {
 } from './styles';
 import { SignaturePopupProps, Signature } from '../../utils/types';
 import { addSignature, getSignatures } from '../../utils/pdf_signer';
+import InputPopup from '../InputPopup/InputPopup';  // Adjust the import path as necessary
 
 export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfirm }) => {
   const [selectedSignature, setSelectedSignature] = useState<Signature | null>(null);
   const [signatures, setSignatures] = useState<Signature[]>([]);
+  const [showInputPopup, setShowInputPopup] = useState(false);
 
   useEffect(() => {
     const loadSignatures = async () => {
@@ -47,8 +49,12 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
     }
   };
 
-  const handleAddSignature = async () => {
-    const path = prompt('Please enter the path to PKCS #11 module:');
+  const handleAddSignature = () => {
+    setShowInputPopup(true);
+  };
+
+  const handleInputComplete = async (path: string) => {
+    setShowInputPopup(false);
     if (path) {
       try {
         await addSignature(path);
@@ -59,6 +65,10 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
         alert('Failed to add signature. Please try again.');
       }
     }
+  };
+
+  const handleInputBack = () => {
+    setShowInputPopup(false);
   };
 
   return (
@@ -117,6 +127,15 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
             Confirm signature
           </StyledConfirmButton>
         </StyledButtons>
+
+        {showInputPopup && (
+          <InputPopup
+            userName="Add Digital ID"
+            onBack={handleInputBack}
+            onComplete={handleInputComplete}
+            popupType="path"
+          />
+        )}
       </StyledPopupContent>
     </StyledPopupOverlay>
   );

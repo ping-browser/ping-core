@@ -7,7 +7,7 @@
    pdfFile?: Blob | null;
    isSigned?: boolean;
  }
-
+ 
  const breakpoints = {
    small: '576px',
    medium: '768px',
@@ -16,30 +16,30 @@
  };
  
  export const StyledHeader = styled('header')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 70px;
-  padding: 10px 20px;
-  background-color: #323639;
-  border-bottom: 1px solid #383535;
-  z-index: 10000;
-`;
-
-export const StyledNavBar = styled('nav')`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  width: 1350px;
-  align-items: center;
-  justify-content: space-around;
-  gap: 50px;
-
-  @media (max-width: 1385px) {
-    gap: 20px;
-  }
-`;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
+   height: 70px;
+   padding: 10px 20px;
+   background-color: #323639;
+   border-bottom: 1px solid #383535;
+   z-index: 10000;
+ `;
+ 
+ export const StyledNavBar = styled('nav')`
+   position: relative;
+   display: flex;
+   flex-direction: row;
+   width: 1350px;
+   align-items: center;
+   justify-content: space-around;
+   gap: 50px;
+ 
+   @media (max-width: 1385px) {
+     gap: 20px;
+   }
+ `;
  
  export const StyledHeaderControlsBar = styled.div`
    &::after {
@@ -68,18 +68,18 @@ export const StyledNavBar = styled('nav')`
    justify-content: center;
    gap: 20px;
  `;
-
+ 
  export const StyledHeaderControlsContainer = styled.div`
    display: flex;
    align-items: center;
    width: 100%;
    justify-content: center;
    margin-left: 60px;
-
+ 
    @media (max-width: 1385px) {
-    margin-left: 138px;
-  }
- `
+     margin-left: 138px;
+   }
+ `;
  
  export const StyledHeaderButton = styled('button')<StyledDisabledProps>`
    background-color: transparent;
@@ -93,10 +93,35 @@ export const StyledNavBar = styled('nav')`
    font-style: normal;
    font-weight: 400;
    line-height: normal;
-
+ 
    @media (max-width: ${breakpoints.small}) {
      font-size: 14px;
      padding: 3px 8px;
+   }
+ 
+   &.verify-button {
+     position: relative;
+ 
+     .tooltip {
+       visibility: hidden;
+       position: absolute;
+       z-index: 1;
+       bottom: 125%;
+       left: 50%;
+       transform: translateX(-50%);
+       background-color: #ff4444;
+       color: #fff;
+       text-align: center;
+       padding: 5px;
+       border-radius: 6px;
+       opacity: 0;
+       transition: opacity 0.3s;
+     }
+ 
+     &.failed:hover .tooltip {
+       visibility: visible;
+       opacity: 1;
+     }
    }
  `;
  
@@ -161,36 +186,36 @@ export const StyledNavBar = styled('nav')`
    justify-content: center;
    color: white;
  `;
-
+ 
  export const StyledInputPDF = styled.img`
-  cursor: pointer;
-  max-width: 100px;
-  height: auto;
-  margin-right: 8px;
-
+   cursor: pointer;
+   max-width: 100px;
+   height: auto;
+   margin-right: 8px;
  `;
+ 
  export const StyledPDFLogo = styled.img`
-  cursor: pointer;
-  max-width: 33px;
-  height: auto;
-  margin-right: 8px;
-  border-radius: 12%;
-
-  &:hover {
-    background: #FFF;
-  }
-`;
-
- export const StyledPDFLogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 210px;
-
-  @media (max-width: 1385px) {
-    width: auto;
-  }
+   cursor: pointer;
+   max-width: 33px;
+   height: auto;
+   margin-right: 8px;
+   border-radius: 12%;
+ 
+   &:hover {
+     background: #FFF;
+   }
  `;
-
+ 
+ export const StyledPDFLogoContainer = styled.div`
+   display: flex;
+   align-items: center;
+   width: 210px;
+ 
+   @media (max-width: 1385px) {
+     width: auto;
+   }
+ `;
+ 
  export const StyledSaveButton = styled('button')<StyledDisabledProps>`
    width: 122px;
    height: 41px;
@@ -219,17 +244,40 @@ export const StyledNavBar = styled('nav')`
    background: transparent;
    cursor: pointer;
  `;
-
- export const StyledHelpButtonContainer = styled.div`
-  width: 210px;
-  display: flex;
-  justify-content: end;
-
-  @media (max-width: 1385px) {
-   width: auto;
-  }
- `;
  
+ export const StyledHelpButtonContainer = styled.div`
+   width: 210px;
+   display: flex;
+   justify-content: end;
+ 
+   @media (max-width: 1385px) {
+     width: auto;
+   }
+ 
+   .help-button {
+     position: relative;
+ 
+     .tooltip {
+       visibility: hidden;
+       position: absolute;
+       z-index: 1;
+       bottom: 125%;
+       right: 0;
+       background-color: #555;
+       color: #fff;
+       text-align: center;
+       padding: 5px;
+       border-radius: 6px;
+       opacity: 0;
+       transition: opacity 0.3s;
+     }
+ 
+     &:hover .tooltip {
+       visibility: visible;
+       opacity: 1;
+     }
+   }
+ `;
  
  export const StyledFadeAway = styled('div')<{ fadeAnimation: boolean }>`
    opacity: ${p => p.fadeAnimation ? 0 : 1};
@@ -285,6 +333,7 @@ export const StyledNavBar = styled('nav')`
    width: 169px;
    font-size: 15px;
    margin-right: auto;
+   position: relative;
  
    @media (max-width: 1385px) {
      max-width: 150px;
@@ -292,4 +341,24 @@ export const StyledNavBar = styled('nav')`
      display: none;
    }
  
+   .tooltip {
+     visibility: hidden;
+     position: absolute;
+     z-index: 1;
+     bottom: 125%;
+     left: 50%;
+     transform: translateX(-50%);
+     background-color: #555;
+     color: #fff;
+     text-align: center;
+     padding: 5px;
+     border-radius: 6px;
+     opacity: 0;
+     transition: opacity 0.3s;
+   }
+ 
+   &:hover .tooltip {
+     visibility: visible;
+     opacity: 1;
+   }
  `;

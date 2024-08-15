@@ -42,6 +42,7 @@ export type HeaderProps = {
   handleLogoClick: () => void;
   fileInputRef: React.RefObject<HTMLInputElement>;
   isSigned: boolean;
+  message: string;
 }
 
 export type StoredSignature = {

@@ -8,24 +8,27 @@ import { PopupContainer, PopupContent, Title, InputField, ButtonContainer, BackB
 interface InputPopupProps {
     userName: string;
     onBack: () => void;
-    onComplete: (pin: string) => void;
+    onComplete: (input: string) => void;
+    popupType: 'pin' | 'path';
 }
 
-const InputPopup: React.FC<InputPopupProps> = ({ userName, onBack, onComplete }) => {
-    const [pin, setPin] = useState('');
+const InputPopup: React.FC<InputPopupProps> = ({ userName, onBack, onComplete, popupType }) => {
+    const [input, setInput] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
-    const handlePinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPin(event.target.value);
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInput(event.target.value);
     };
 
     const handleComplete = () => {
-        onComplete(pin);
+        onComplete(input);
     };
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
+    const isPinPopup = popupType === 'pin';
 
     return (
         <PopupContainer>
@@ -33,18 +36,22 @@ const InputPopup: React.FC<InputPopupProps> = ({ userName, onBack, onComplete })
                 <Title>{userName}</Title>
                 <InputWrapper>
                     <InputField
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Please enter your signature pin"
-                        value={pin}
-                        onChange={handlePinChange}
+                        type={isPinPopup ? (showPassword ? "text" : "password") : "text"}
+                        placeholder={isPinPopup ? "Please enter your signature pin" : "Enter path to PKCS #11 module"}
+                        value={input}
+                        onChange={handleInputChange}
                     />
-                    <EyeButton onClick={togglePasswordVisibility}>
-                        {showPassword ? "👁️" : "👁️‍🗨️"}
-                    </EyeButton>
+                    {isPinPopup && (
+                        <EyeButton onClick={togglePasswordVisibility}>
+                            {showPassword ? "👁️" : "👁️‍🗨️"}
+                        </EyeButton>
+                    )}
                 </InputWrapper>
                 <ButtonContainer>
                     <BackButton onClick={onBack}>Back</BackButton>
-                    <CompleteButton onClick={handleComplete}>Complete signature</CompleteButton>
+                    <CompleteButton onClick={handleComplete}>
+                        {isPinPopup ? "Complete signature" : "Add Digital ID"}
+                    </CompleteButton>
                 </ButtonContainer>
             </PopupContent>
         </PopupContainer>
