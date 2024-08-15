@@ -282,6 +282,132 @@ export const signPdf = async (
   return signedPdf
 }
 
+export const signPdfWithName = async (
+  pdfBuffer: Buffer,
+  pageIndex: number,
+  selectionCoords: SelectionCoords,
+  userName: string
+): Promise<Buffer> => {
+  try {
+    const pdfDoc = await PDFDocument.load(pdfBuffer)
+    const page = pdfDoc.getPage(pageIndex)
+
+    const { startX, startY, endX, endY } = selectionCoords
+
+    const width = endX - startX
+    const height = endY - startY
+
+    // Draw border
+    page.drawRectangle({
+      x: startX,
+      y: page.getHeight() - endY,
+      width: width,
+      height: height,
+      borderColor: rgb(0, 0, 0),
+      borderWidth: 1
+    })
+
+    const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
+    const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+
+    const now = new Date()
+    const timestamp = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
+
+    // Draw text
+    const drawText = (
+      text: string,
+      x: number,
+      y: number,
+      size: number,
+      isRegular = false
+    ) => {
+      page.drawText(text, {
+        x: startX + x,
+        y: page.getHeight() - startY - y,
+        size: size,
+        font: isRegular ? regularFont : font,
+        color: rgb(0, 0, 0)
+      })
+    }
+
+    drawText(`Digitally signed by`, 15, 35, 14)
+    drawText(userName, 15, 55, 14)
+    drawText(timestamp, 15, 75, 10, true)
+
+    const signedPdfBytes = await pdfDoc.save({
+      addDefaultPage: false,
+      useObjectStreams: false
+    })
+
+    return Buffer.from(signedPdfBytes)
+  } catch (error) {
+    console.error('Error signing PDF with name:', error)
+    throw error
+  }
+}
+
+// Function to sign PDF with user's image
+export const signPdfWithImage = async (
+  pdfBuffer: Buffer,
+  pageIndex: number,
+  selectionCoords: SelectionCoords,
+  imageBuffer: Buffer
+): Promise<Buffer> => {
+  try {
+    const pdfDoc = await PDFDocument.load(pdfBuffer)
+    const page = pdfDoc.getPage(pageIndex)
+
+    const { startX, startY, endX, endY } = selectionCoords
+
+    const width = endX - startX
+    const height = endY - startY
+
+    // Draw border
+    page.drawRectangle({
+      x: startX,
+      y: page.getHeight() - endY,
+      width: width,
+      height: height,
+      borderColor: rgb(0, 0, 0),
+      borderWidth: 1
+    })
+
+    // Embed and draw the user's image
+    const image = await pdfDoc.embedPng(imageBuffer)
+    const scaleFactor = Math.min(width / image.width, height / image.height) * 0.8
+    page.drawImage(image, {
+      x: startX + (width - image.width * scaleFactor) / 2,
+      y: page.getHeight() - startY - (height + image.height * scaleFactor) / 2,
+      width: image.width * scaleFactor,
+      height: image.height * scaleFactor
+    })
+
+    const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+
+    const now = new Date()
+    const timestamp = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
+
+    // Draw timestamp
+    page.drawText(timestamp, {
+      x: startX + 15,
+      y: page.getHeight() - endY + 10,
+      size: 10,
+      font: regularFont,
+      color: rgb(0, 0, 0)
+    })
+
+    const signedPdfBytes = await pdfDoc.save({
+      addDefaultPage: false,
+      useObjectStreams: false
+    })
+
+    return Buffer.from(signedPdfBytes)
+  } catch (error) {
+    console.error('Error signing PDF with image:', error)
+    throw error
+  }
+}
+
 const ERROR_MAP = {
   ERROR_MODULE_NOT_FOUND: 'ERROR_MODULE_NOT_FOUND',
   ERROR_SLOT_NOT_FOUND: 'ERROR_SLOT_NOT_FOUND',
