@@ -103,8 +103,9 @@ export type PdfPageProps = {
 }
 
 export type TooltipProps = {
-  text: string;
-  isVisible: boolean;
-  isVerificationFailed: boolean;
   children: React.ReactNode;
+  text: string;
+  isVisible?: boolean;
+  isError?: boolean;
+  errorDelay?: number;
 }

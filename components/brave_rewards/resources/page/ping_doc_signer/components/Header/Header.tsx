@@ -98,7 +98,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <StyledHeaderControlsBar />
                     <Tooltip
                         text={message}
-                        isVisible={!isVerificationFailed}
+                        isVisible={isVerificationFailed}
                         isError={true}
                     >
                         <StyledHeaderButton

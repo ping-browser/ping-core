@@ -67,6 +67,7 @@ export const PdfRenderer: React.FC = () => {
   const pageRefs = useRef<Array<HTMLDivElement | null>>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isSigned, setIsSigned] = useState<boolean>(false);
+  const [verificationErrorMessage, setVerificationErrorMessage] = useState<string>('');
 
   const resetSignatureState = useCallback(() => {
     setIsSelectionEnabled(false);
@@ -313,6 +314,7 @@ export const PdfRenderer: React.FC = () => {
     } catch (error) {
       setStatusMessage('Verification Failed');
       setStatusType('error');
+      setVerificationErrorMessage(`${error}`);
       setIsVerified(false);
       setIsVerificationFailed(true);
     } finally {
@@ -451,7 +453,7 @@ export const PdfRenderer: React.FC = () => {
         handleLogoClick={handleLogoClick}
         fileInputRef={fileInputRef}
         isSigned={isSigned}
-        message={errorMessage}
+        message={verificationErrorMessage}
       />
       <S.PdfContainer>
         {!pdfFile ? (
