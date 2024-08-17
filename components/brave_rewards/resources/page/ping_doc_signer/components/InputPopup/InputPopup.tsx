@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { useState } from 'react';
+import { useState, KeyboardEvent } from 'react';
 import * as React from 'react';
 import { PopupContainer, PopupContent, Title, InputField, ButtonContainer, BackButton, CompleteButton, InputWrapper, EyeButton } from './styles';
 
@@ -30,6 +30,12 @@ const InputPopup: React.FC<InputPopupProps> = ({ userName, onBack, onComplete, p
 
     const isPinPopup = popupType === 'pin';
 
+    const handleKeyEvent = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            handleComplete();
+        }
+    }
+
     return (
         <PopupContainer>
             <PopupContent>
@@ -40,6 +46,7 @@ const InputPopup: React.FC<InputPopupProps> = ({ userName, onBack, onComplete, p
                         placeholder={isPinPopup ? "Please enter your signature pin" : "Enter path to PKCS #11 module"}
                         value={input}
                         onChange={handleInputChange}
+                        onKeyDown={handleKeyEvent}
                     />
                     {isPinPopup && (
                         <EyeButton onClick={togglePasswordVisibility}>

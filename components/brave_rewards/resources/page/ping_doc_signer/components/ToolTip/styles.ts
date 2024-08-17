@@ -14,7 +14,7 @@
    width: max-content;
    max-width: 200px;
    text-wrap: wrap;
-   background-color: ${props => props.isError ? '#ff4d4d' : '#555'};
+   background-color: ${props => props.isError ? '#ff4d4d' : 'rgba(17, 24, 16,0.5)'};
    color: #fff;
    text-align: center;
    border-radius: 6px;
@@ -35,6 +35,6 @@
      transform: translateX(-50%);
      border-width: 5px;
      border-style: solid;
-     border-color: transparent transparent ${props => props.isError ? '#ff4d4d' : '#555'} transparent;
+     border-color: transparent transparent ${props => props.isError ? '#ff4d4d' : 'rgba(17, 24, 16,0.5)'} transparent;
    }
  `;

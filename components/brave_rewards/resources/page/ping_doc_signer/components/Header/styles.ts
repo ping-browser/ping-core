@@ -87,7 +87,8 @@
    border: none;
    padding: 5px 10px;
    margin-left: 10px;
-   cursor: pointer;
+   cursor: ${({ pdfFile }) => (pdfFile ? 'pointer' : 'not-allowed')};
+   pointer-events: ${({ pdfFile }) => (pdfFile ? 'auto' : 'none')};
    font-family: Poppins, sans-serif;
    font-size: 16px;
    font-style: normal;
@@ -138,7 +139,8 @@
  export const StyledPageControl = styled('span')<{ direction?: 'previous' | 'next' } & StyledDisabledProps>`
    font-size: 13px;
    font-weight: bold;
-   cursor: pointer;
+   cursor: ${({ pdfFile }) => (pdfFile ? 'pointer' : 'not-allowed')};
+   pointer-events: ${({ pdfFile }) => (pdfFile ? 'auto' : 'none')};
    color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
  `;
  
@@ -150,6 +152,7 @@
  
  export const StyledTotalPages = styled('span')<StyledDisabledProps>`
    font-size: 13px;
+   pointer-events: ${({ pdfFile }) => (pdfFile ? 'auto' : 'none')};
    color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
    font-weight: bold;
  `;
@@ -172,6 +175,7 @@
    display: flex;
    align-items: center;
    justify-content: center;
+   pointer-events: ${({ pdfFile }) => (pdfFile ? 'auto' : 'none')};
    color: ${({ pdfFile }) => (pdfFile ? '#FFF' : 'gray')};
  `;
  
@@ -229,7 +233,8 @@
    font-weight: 400;
    line-height: normal;
    margin-right: 12px;
-   cursor: pointer;
+   cursor: ${({ pdfFile }) => (pdfFile ? 'pointer' : 'not-allowed')};
+   pointer-events: ${({ pdfFile }) => (pdfFile ? 'auto' : 'none')};
    margin-left: 20px;
    visibility: ${({ isSigned }) => (isSigned ? 'visible' : 'hidden')};
  `;
@@ -362,3 +367,4 @@
      opacity: 1;
    }
  `;
+ 

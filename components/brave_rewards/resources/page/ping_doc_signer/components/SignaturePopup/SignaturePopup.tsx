@@ -23,12 +23,15 @@ import {
 } from './styles';
 import { SignaturePopupProps, Signature } from '../../utils/types';
 import { addSignature, getSignatures } from '../../utils/pdf_signer';
-import InputPopup from '../InputPopup/InputPopup';  // Adjust the import path as necessary
+import InputPopup from '../InputPopup/InputPopup';
+import { ErrorPopup } from '../ErrorPopup/ErrorPopup';
 
 export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfirm }) => {
   const [selectedSignature, setSelectedSignature] = useState<Signature | null>(null);
   const [signatures, setSignatures] = useState<Signature[]>([]);
   const [showInputPopup, setShowInputPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [showErrorPopup, setShowErrorPopup] = useState<boolean>(false);
 
   useEffect(() => {
     const loadSignatures = async () => {
@@ -62,14 +65,22 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
         setSignatures(updatedSignatures);
       } catch (error) {
         console.error('Error adding signature:', error);
-        alert('Failed to add signature. Please try again.');
+        setErrorMessage('Failed to add signature. Please try again.');
+        setShowErrorPopup(true);
       }
+    } else {
+      setErrorMessage('Enter the Path, it can\'t be empty.');
+      setShowErrorPopup(true);
     }
   };
 
   const handleInputBack = () => {
     setShowInputPopup(false);
   };
+
+  const handleContinue = () => {
+    setShowErrorPopup(false);
+  }
 
   return (
     <StyledPopupOverlay>
@@ -136,6 +147,14 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
             popupType="path"
           />
         )}
+
+        {showErrorPopup && (
+          <ErrorPopup
+            message={errorMessage}
+            onContinue={handleContinue}
+          />
+        )
+        }
       </StyledPopupContent>
     </StyledPopupOverlay>
   );

@@ -52,6 +52,7 @@ export const PopupContent = styled.div`
     flex-direction: column;
     gap: 15px;
     height: fit-content;
+    border: 1px solid white;
 `;
 
 export const Title = styled.h2`

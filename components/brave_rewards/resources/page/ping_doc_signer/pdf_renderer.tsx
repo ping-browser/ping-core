@@ -25,6 +25,51 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url,
 ).toString();
 
+enum SigningError {
+  INVALID_PIN = 'INVALID_PIN',
+  SIGNATURE_TOO_LARGE = 'SIGNATURE_TOO_LARGE',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+  HSM_NOT_FOUND = 'HSM_NOT_FOUND'
+}
+
+enum VerificationError {
+  VERIFICATION_FAILED = 'VERIFICATION_FAILED',
+  NO_SIGNATURE_FOUND = 'NO_SIGNATURE_FOUND',
+  DOCUMENT_ALTERED = 'DOCUMENT_ALTERED',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR'
+}
+
+enum GeneralError {
+  NO_PDF_UPLOADED = 'NO_PDF_UPLOADED',
+  ALREADY_SIGNED = 'ALREADY_SIGNED',
+  NOT_SIGNED_YET = 'NOT_SIGNED_YET'
+}
+
+function getErrorMessage(error: SigningError | VerificationError | GeneralError): string {
+  switch (error) {
+    case SigningError.INVALID_PIN:
+      return 'Login failed, entered PIN is incorrect';
+    case SigningError.SIGNATURE_TOO_LARGE:
+      return 'The signature is too large for the selected area. Please select a larger area or use a smaller signature.';
+    case VerificationError.VERIFICATION_FAILED:
+      return 'The document signature could not be verified. This may indicate the document has been altered, or there are no signatures.';
+    case VerificationError.NO_SIGNATURE_FOUND:
+      return 'No digital signature was found in this document.';
+    case VerificationError.DOCUMENT_ALTERED:
+      return 'The document appears to have been altered since it was signed.';
+    case GeneralError.NO_PDF_UPLOADED:
+      return 'Please upload a PDF before proceeding.';
+    case GeneralError.ALREADY_SIGNED:
+      return 'This document has already been signed. Please upload a new document to sign.';
+    case GeneralError.NOT_SIGNED_YET:
+      return 'This document has not been signed yet. Please sign the document before verifying.';
+    case SigningError.HSM_NOT_FOUND:
+      return 'DSC is not attached to the device, make sure to attach the DSC to the device.';
+    default:
+      return 'An unexpected error occurred. Please try again.';
+  }
+}
+
 export interface SelectionCoords {
   startX: number;
   startY: number;
@@ -104,7 +149,8 @@ export const PdfRenderer: React.FC = () => {
           resetVerificationState();
         } catch (error) {
           console.error('Error reading PDF file:', error);
-          setErrorMessage('Error reading PDF file. Please try again.');
+          setErrorMessage(getErrorMessage(SigningError.UNKNOWN_ERROR));
+          setShowError(true);
         }
       } else {
         setErrorMessage('Please upload a valid PDF file.');
@@ -161,7 +207,7 @@ export const PdfRenderer: React.FC = () => {
     if (isSelectionValid()) {
       showEmbedSignConfirmation(pageIndex);
     } else {
-      setErrorMessage('Selected area is too small. Please select a larger area.');
+      setErrorMessage(getErrorMessage(SigningError.SIGNATURE_TOO_LARGE));
       setShowError(true);
       clearSelection(pageIndex);
     }
@@ -170,7 +216,6 @@ export const PdfRenderer: React.FC = () => {
   const handleErrorContinue = () => {
     setShowError(false);
     setIsSelectionEnabled(false);
-    // setStatusMessage('Error Signing PDF');
     setTimeout(() => {
       setIsStatusVisible(false);
       setStatusMessage('');
@@ -226,20 +271,27 @@ export const PdfRenderer: React.FC = () => {
 
   const sendSignRequest = async () => {
     if (!pdfBuff || currentPageIndex === null || selectedSignature === null) {
-      setErrorMessage('Missing required data for signing');
+      setErrorMessage(getErrorMessage(GeneralError.NO_PDF_UPLOADED));
       setShowError(true);
       return;
     }
-    setStatusMessage('Signing ...');
+    setStatusMessage('Enter the PIN');
     setStatusType('checking');
     setIsStatusVisible(true);
+    setIsSelectionEnabled(false);
     setShowPinPopup(true);
   };
 
   const handlePinSubmit = async (pin: string) => {
     setShowPinPopup(false);
     setIsLoading(true);
+    setStatusMessage('Applying signature...');
     try {
+      if (pin.length < 4) {
+        setStatusMessage('Signature Failed');
+        setStatusType('error');
+        throw new Error(SigningError.INVALID_PIN);
+      }
       const signedPdfBuffer = await signPdf(
         pdfBuff!,
         currentPageIndex!,
@@ -249,7 +301,7 @@ export const PdfRenderer: React.FC = () => {
       );
       setPdfFile(new Blob([signedPdfBuffer], { type: 'application/pdf' }));
       setPdfBuff(Buffer.from(signedPdfBuffer));
-      setStatusMessage('Signature Complete');
+      setStatusMessage('Signature applied');
       setStatusType('success');
       setIsStatusVisible(true);
       setIsVerified(true);
@@ -260,13 +312,16 @@ export const PdfRenderer: React.FC = () => {
       setIsSelectionEnabled(false);
       setShowSuccessPopup(true);
       setIsSigned(true);
-      setSuccessMessage(`Your document has been signed`);
+      setSuccessMessage(`Your document has been signed successfully`);
     } catch (error) {
       console.error('Signing error:', error);
+      console.log(error.message);
+      let errorEnum: SigningError;
+      errorEnum = error.message;
       setStatusType('error');
+      setStatusMessage('Signing Failed')
       setIsStatusVisible(true);
-
-      setErrorMessage(`${error}`);
+      setErrorMessage(errorEnum);
       setIsSelectionEnabled(false);
       setIsVerified(false);
       clearAllSelections();
@@ -279,42 +334,49 @@ export const PdfRenderer: React.FC = () => {
 
   const handleSignButtonClick = useCallback(() => {
     if (!pdfBuff) {
-      setErrorMessage('Please upload a PDF first');
+      setErrorMessage(getErrorMessage(GeneralError.NO_PDF_UPLOADED));
+      setShowError(true);
+      return;
+    }
+    if (isSigned) {
+      setErrorMessage(getErrorMessage(GeneralError.ALREADY_SIGNED));
       setShowError(true);
       return;
     }
 
-    setStatusMessage('Preparing to sign ...');
+    setStatusMessage('Preparing to sign...');
     setStatusType('checking');
     setIsStatusVisible(true);
     setShowSignatureMethodPopup(true);
 
-  }, [pdfBuff]);
+  }, [pdfBuff, isSigned]);
 
   const handleVerifyButtonClick = useCallback(async () => {
     if (!pdfBuff) {
-      setErrorMessage('Please upload a PDF first');
+      setErrorMessage(getErrorMessage(GeneralError.NO_PDF_UPLOADED));
       setShowError(true);
       return;
     }
-    setStatusMessage('Checking ...');
+    setStatusMessage('Verifying signature...');
     setStatusType('checking');
     setIsStatusVisible(true);
 
     try {
-      const verificationResult = verifyPdf(pdfBuff);
+      const verificationResult = await verifyPdf(pdfBuff);
       if (verificationResult) {
-        setStatusMessage('Verification Successful');
+        setStatusMessage('Signature verified');
         setStatusType('success');
         setIsVerified(true);
         setIsVerificationFailed(false);
       } else {
-        throw new Error('Verification failed');
+        throw new Error(VerificationError.VERIFICATION_FAILED);
       }
     } catch (error) {
+      let errorEnum: VerificationError;
+      errorEnum = VerificationError.VERIFICATION_FAILED;
       setStatusMessage('Verification Failed');
       setStatusType('error');
-      setVerificationErrorMessage(`${error}`);
+      setVerificationErrorMessage(getErrorMessage(errorEnum));
       setIsVerified(false);
       setIsVerificationFailed(true);
     } finally {
@@ -327,7 +389,7 @@ export const PdfRenderer: React.FC = () => {
         setStatusMessage('');
       }, 3000);
     }
-  }, [pdfBuff, isVerified]);
+  }, [pdfBuff, isSigned, isVerified]);
 
   const handleDownloadButtonClick = () => {
     if (pdfFile) {
