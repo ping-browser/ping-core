@@ -55,7 +55,9 @@ const InputPopup: React.FC<InputPopupProps> = ({ userName, onBack, onComplete, p
                     )}
                 </InputWrapper>
                 <ButtonContainer>
-                    <BackButton onClick={onBack}>Back</BackButton>
+                    <BackButton onClick={onBack}>
+                        <span className="arrow">🡐</span>&nbsp;&nbsp;Cancel
+                    </BackButton>
                     <CompleteButton onClick={handleComplete}>
                         {isPinPopup ? "Complete signature" : "Add Digital ID"}
                     </CompleteButton>

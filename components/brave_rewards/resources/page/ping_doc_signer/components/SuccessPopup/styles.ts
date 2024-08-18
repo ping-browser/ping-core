@@ -72,6 +72,7 @@
    border-radius: 40px;
    font-size: 16px;
    cursor: pointer;
+   transition: 0.3s background-color ease-out;
    &:hover {
      background-color: ${p => p.$continue ? '#2BB563' : '#2BB563'};
      color: white;

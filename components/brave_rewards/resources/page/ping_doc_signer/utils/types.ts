@@ -43,6 +43,7 @@ export type HeaderProps = {
   fileInputRef: React.RefObject<HTMLInputElement>;
   isSigned: boolean;
   message: string;
+  tempButtonState: string;
 }
 
 export type StoredSignature = {
@@ -108,4 +109,5 @@ export type TooltipProps = {
   isVisible?: boolean;
   isError?: boolean;
   errorDelay?: number;
+  isFileName?: boolean;
 }

@@ -11,10 +11,10 @@
    background-color: #323639;
    border-radius: 24px;
    padding: 20px 45px;
-   width: 595px;
+   width: 590px;
    display: flex;
    flex-direction: column;
-   gap: 10px;
+   gap: 12px;
    height: fit-content;
    border: 1px solid #CACACA;
    transition: height 0.3s ease;
@@ -23,9 +23,9 @@
  `
  
  export const StyledErrorTitle = styled('h2')<{ verification?: boolean }>`
-   color: Red;
+   color: #BE5656;
    font-family: Poppins;
-   font-size: ${p => p.verification ? '40px' : '45px'};
+   font-size: 30px;
    margin: 12px 0 0 0;
    padding: 0;
    font-style: normal;
@@ -33,7 +33,13 @@
    line-height: normal;
  `
  
- export const StyledErrorMessage = styled('p')`
+ export const StyledErrorHelpMessageContainer = styled('div')`
+ display: flex;
+ flex-direction: row;
+ gap: 8px;
+ `
+
+ export const StyledErrorMessage = styled('div')`
    color: #FFF;
    font-family: Poppins;
    font-size: 20px;
@@ -41,6 +47,26 @@
    font-weight: 400;
    line-height: normal;
    margin-top: -5px;
+ `
+ 
+ export const StyledErrorHelpLink = styled('div')`
+ color: #2BB563;
+ font-family: Poppins;
+ font-size: 16px;
+ font-weight: 400;
+ text-decoration: none;
+ transition: 0.3s color ease-out;
+
+ &:hover{
+  color: rgba(43, 181, 99,0.5);
+ }
+ `
+
+ export const StyledErrorHelpMessage = styled('div')`
+ color: white;
+ font-size: 16px;
+ font-family: Poppins;
+ font-weight: 400;
  `
  
  export const StyledErrorName = styled('p')`
@@ -66,14 +92,13 @@
    padding: 15px 35px;
    align-items: baseline;
    gap: 10px;
-   background-color: ${p => p.$continue ? '#2BB563' : 'white'};
-   color: ${p => p.$continue ? 'white' : 'black'};
+   background-color: white;
+   color: black;
    border: none;
    border-radius: 40px;
    font-size: 16px;
    cursor: pointer;
    &:hover {
-     background-color: ${p => p.$continue ? '#2BB563' : '#2BB563'};
-     color: white;
+     background-color: '#2BB563';
    }
  `

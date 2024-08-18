@@ -17,7 +17,7 @@ import { SignatureMethodPopupProps } from '../../utils/types';
 export const SignatureMethodPopup: React.FC<SignatureMethodPopupProps> = ({ onClose, onSelectMethod }) => (
   <StyledPopupOverlay>
     <StyledPopupContent>
-      <StyledPopupContentH2>Choose Your Digital Signature Method</StyledPopupContentH2>
+      <StyledPopupContentH2>Choose your digital signature method</StyledPopupContentH2>
       <StyledCloseButton onClick={onClose}>x</StyledCloseButton>
       <StyledMethodOptions>
         <StyledMethodOptionsButton onClick={() => onSelectMethod('digitalID')}>

@@ -60,8 +60,15 @@ export const Header: React.FC<HeaderProps> = ({
     fileInputRef,
     isSigned,
     message,
+    tempButtonState
 }) => {
     const [logoSrc, setLogoSrc] = useState(uploadLogo);
+
+    const getVerificationStatus = () => {
+        if (isVerified) return 'success';
+        if (isVerificationFailed) return 'failed';
+        return 'none';
+    };
 
     const renderPageNumber = () => (
         isEditingPageNumber ? (
@@ -100,11 +107,12 @@ export const Header: React.FC<HeaderProps> = ({
                         text={message}
                         isVisible={isVerificationFailed}
                         isError={true}
+                        isFileName={false}
                     >
                         <StyledHeaderButton
                             pdfFile={pdfFile}
                             onClick={handleVerifyButtonClick}
-                            as={isVerified ? StyledVerified : isVerificationFailed ? StyledNotVerified : 'button'}
+                            as={tempButtonState === 'verified' ? StyledVerified : tempButtonState === 'failed' ? StyledNotVerified : 'button'}
                         >
                             Verify document
                         </StyledHeaderButton>
@@ -133,14 +141,17 @@ export const Header: React.FC<HeaderProps> = ({
                         ref={fileInputRef}
                         style={{ display: 'none' }}
                     />
-                    <Tooltip text={pdfFileName}>
+                    <Tooltip
+                        text={pdfFileName}
+                        isFileName={true}
+                    >
                         <StyledPDFName>
                             {pdfFileName}
                         </StyledPDFName>
                     </Tooltip>
                 </StyledPDFLogoContainer>
-                <StyledHeaderControlsContainer>
-                    <StyledHeaderControls>
+                <StyledHeaderControlsContainer verificationStatus={getVerificationStatus()}>
+                    <StyledHeaderControls verificationStatus={getVerificationStatus()}>
                         {renderHeaderControls()}
                         <StyledPageChangingControls>
                             <StyledPageControl as="div" direction="previous" pdfFile={pdfFile} onClick={handlePreviousPage}>&lt;</StyledPageControl>
@@ -153,7 +164,10 @@ export const Header: React.FC<HeaderProps> = ({
                     <StyledSaveButton isSigned={isSigned} onClick={handleDownloadButtonClick} disabled={!pdfFile} pdfFile={pdfFile}>Save</StyledSaveButton>
                 </StyledHeaderControlsContainer>
                 <StyledHelpButtonContainer>
-                    <Tooltip text="Get help">
+                    <Tooltip
+                        text="Get help"
+                        isFileName={false}
+                    >
                         <a
                             href="https://ping-browser.com/help-1"
                             target="_blank"
@@ -164,6 +178,6 @@ export const Header: React.FC<HeaderProps> = ({
                     </Tooltip>
                 </StyledHelpButtonContainer>
             </StyledNavBar>
-        </StyledHeader>
+        </StyledHeader >
     );
 };

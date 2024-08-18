@@ -8,6 +8,14 @@
    isSigned?: boolean;
  }
  
+ interface HeaderControlsProps {
+   verificationStatus: 'success' | 'failed' | 'none';
+ }
+ 
+ interface HeaderControlsContainerProps {
+   verificationStatus: 'success' | 'failed' | 'none';
+ }
+ 
  const breakpoints = {
    small: '576px',
    medium: '768px',
@@ -53,7 +61,7 @@
    }
  `;
  
- export const StyledHeaderControls = styled('div')`
+ export const StyledHeaderControls = styled('div')<HeaderControlsProps>`
    width: 100%;
    max-width: 610px;
    min-width: 570px;
@@ -63,18 +71,23 @@
    position: relative;
    padding: 0 5px;
    border-radius: 55px;
-   border: 1px solid #717171;
+   border: 1px solid ${({ verificationStatus }) => 
+     verificationStatus === 'success' ? '#2BB563' : 
+     verificationStatus === 'failed' ? '#BE5656' : 
+     '#717171'};
    background: rgba(255, 255, 255, 0.10);
    justify-content: center;
    gap: 20px;
+   transition: border-color 0.3s ease;
  `;
  
- export const StyledHeaderControlsContainer = styled.div`
+ export const StyledHeaderControlsContainer = styled.div<HeaderControlsContainerProps>`
    display: flex;
    align-items: center;
    width: 100%;
    justify-content: center;
    margin-left: 60px;
+   position: relative;
  
    @media (max-width: 1385px) {
      margin-left: 138px;
@@ -94,10 +107,15 @@
    font-style: normal;
    font-weight: 400;
    line-height: normal;
+   transition: color 0.3s ease;
  
    @media (max-width: ${breakpoints.small}) {
      font-size: 14px;
      padding: 3px 8px;
+   }
+ 
+   &:hover {
+     color: #C3FFDB;
    }
  
    &.verify-button {
@@ -231,12 +249,18 @@
    font-size: 16px;
    font-style: normal;
    font-weight: 400;
+   border: none;
    line-height: normal;
    margin-right: 12px;
    cursor: ${({ pdfFile }) => (pdfFile ? 'pointer' : 'not-allowed')};
    pointer-events: ${({ pdfFile }) => (pdfFile ? 'auto' : 'none')};
    margin-left: 20px;
    visibility: ${({ isSigned }) => (isSigned ? 'visible' : 'hidden')};
+   transition: 0.3s background ease-in-out;
+
+   &:hover{
+    background: rgba(255,255,255,0.5);
+   }
  `;
  
  export const StyledHelpButton = styled('button')`
@@ -300,10 +324,12 @@
  
  export const StyledVerified = styled('span')`
    color: #2BB563;
+   transition: all 0.3s ease-in-out;
  `;
  
  export const StyledNotVerified = styled('span')`
-   color: red;
+   color: #BE5656;
+   transition: all 0.3s ease-in-out;
  `;
  
  export const StyledInstructionText = styled('p')`

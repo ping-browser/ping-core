@@ -44,14 +44,16 @@
  `
 
   export const StyledCloseButton = styled('button')`
-   position: absolute;
-   top: 10px;
-   right: 10px;
-   background: none;
-   border: none;
-   font-size: 20px;
-   cursor: pointer;
-   color: #999;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 25.001px;
+  height: 20px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
  `
 
  export const StyledMethodOptions = styled('div')`

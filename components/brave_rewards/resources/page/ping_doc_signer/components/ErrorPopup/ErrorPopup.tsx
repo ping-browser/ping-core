@@ -7,7 +7,10 @@ import {
     StyledErrorTitle,
     StyledErrorMessage,
     StyledErrorButtons,
-    StyledConfirmButton
+    StyledConfirmButton,
+    StyledErrorHelpLink,
+    StyledErrorHelpMessage,
+    StyledErrorHelpMessageContainer
 } from './styles';
 import { ErrorPopupProps } from '../../utils/types';
 
@@ -17,6 +20,19 @@ export const ErrorPopup: React.FC<ErrorPopupProps> = ({ message, onContinue }) =
             Action Incomplete!
         </StyledErrorTitle>
         <StyledErrorMessage>{message}</StyledErrorMessage>
+        <StyledErrorHelpMessageContainer>
+            <a
+                href="https://ping-browser.com/help-1"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+            >
+                <StyledErrorHelpLink>
+                    Click here
+                </StyledErrorHelpLink>
+            </a>
+            <StyledErrorHelpMessage>to look for solutions.</StyledErrorHelpMessage>
+        </StyledErrorHelpMessageContainer>
         <StyledErrorButtons>
             <StyledConfirmButton onClick={onContinue} $continue>Continue</StyledConfirmButton>
         </StyledErrorButtons>

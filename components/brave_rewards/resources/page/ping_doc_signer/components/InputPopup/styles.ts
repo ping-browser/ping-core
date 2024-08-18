@@ -74,16 +74,25 @@ export const Button = styled.button`
   cursor: pointer;
 `;
 
-export const BackButton = styled(Button)`
-    background-color: transparent;
-    color: white;
+export const BackButton = styled.button`
     display: flex;
-    padding: 15px 30px;
-    justify-content: center;
-    align-items: baseline;
-    gap: 10px;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
     border-radius: 58px;
-    border: 1px solid #FFF;
+
+    span.arrow {
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+
+    &:hover span.arrow {
+        transform: translateX(-5px);
+    }
 `;
 
 export const CompleteButton = styled(Button)`

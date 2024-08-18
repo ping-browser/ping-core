@@ -42,14 +42,16 @@ export const StyledPopupContentH2 = styled('h2')`
 `
 
 export const StyledCloseButton = styled('button')`
- position: absolute;
- top: 10px;
- right: 10px;
- background: none;
- border: none;
- font-size: 20px;
- cursor: pointer;
- color: #999;
+position: absolute;
+top: 20px;
+right: 20px;
+width: 25.001px;
+height: 20px;
+font-size: 20px;
+background: none;
+border: none;
+cursor: pointer;
+color: #999;
 `
 
 export const StyledSelectedSignature = styled('div')`
@@ -161,6 +163,7 @@ export const StyledConfirmButton = styled('button')<{ disabled?: boolean }>`
   border-radius: 40px;
   font-size: 16px;
   cursor: ${p => p.disabled ? 'not-allowed' : 'pointer'};
+  transition: 0.3s background-color ease-out;
 
   &:hover {
     background-color: ${p => p.disabled ? '#ccc' : '#2BB563'};
