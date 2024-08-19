@@ -19,12 +19,14 @@ import {
   StyledIssueDate,
   StyledButtons,
   StyledAddButton,
-  StyledConfirmButton
+  StyledConfirmButton,
+  StyledImage
 } from './styles';
 import { SignaturePopupProps, Signature } from '../../utils/types';
 import { addSignature, getSignatures } from '../../utils/pdf_signer';
 import InputPopup from '../InputPopup/InputPopup';
 import { ErrorPopup } from '../ErrorPopup/ErrorPopup';
+import cross from '../../../assets/cross.png';
 
 export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfirm }) => {
   const [selectedSignature, setSelectedSignature] = useState<Signature | null>(null);
@@ -86,7 +88,14 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
     <StyledPopupOverlay>
       <StyledPopupContent selected={!!selectedSignature}>
         <StyledPopupContentH2>Choose a digital ID to sign with:</StyledPopupContentH2>
-        <StyledCloseButton onClick={onClose}>x</StyledCloseButton>
+        <StyledCloseButton onClick={onClose}>
+          <StyledImage
+            src={cross}
+            alt="Cross"
+            width={15}
+            height={15}>
+          </StyledImage>
+        </StyledCloseButton>
 
         {signatures.length === 0 ? (
           <StyledSignatureList>

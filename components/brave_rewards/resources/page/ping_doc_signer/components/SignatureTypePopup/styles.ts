@@ -155,3 +155,9 @@ export const StyledTab = styled.button<{ active: boolean }>`
     background-color: ${props => props.active ? '#0056b3' : '#e0e0e0'};
   }
 `;
+
+export const StyledImage = styled.img`
+   cursor: pointer;
+   max-width: 33px;
+   height: auto;
+`;

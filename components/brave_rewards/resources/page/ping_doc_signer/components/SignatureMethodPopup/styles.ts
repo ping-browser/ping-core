@@ -97,3 +97,8 @@ export const StyledButtonDesc = styled('span')`
 
 
 
+export const StyledImage = styled.img`
+   cursor: pointer;
+   max-width: 33px;
+   height: auto;
+`;

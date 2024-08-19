@@ -12,7 +12,7 @@ export const EyeButton = styled.button`
   position: absolute;
   right: 10px;
   top: 50%;
-  transform: translateY(-82%);
+  transform: translateY(-75%);
   background: none;
   border: none;
   cursor: pointer;
@@ -107,4 +107,10 @@ export const CompleteButton = styled(Button)`
     font-size: 15px;
     gap: 10px;
 }
+`;
+
+export const StyledImage = styled.img`
+   cursor: pointer;
+   max-width: 33px;
+   height: auto;
 `;

@@ -170,3 +170,9 @@ export const StyledConfirmButton = styled('button')<{ disabled?: boolean }>`
     color: ${p => p.disabled ? '#666' : 'white'};
   }
 `
+
+export const StyledImage = styled.img`
+   cursor: pointer;
+   max-width: 33px;
+   height: auto;
+`;

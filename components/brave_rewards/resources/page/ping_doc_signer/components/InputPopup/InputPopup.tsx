@@ -3,7 +3,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 import { useState, KeyboardEvent } from 'react';
 import * as React from 'react';
-import { PopupContainer, PopupContent, Title, InputField, ButtonContainer, BackButton, CompleteButton, InputWrapper, EyeButton } from './styles';
+import { PopupContainer, PopupContent, Title, InputField, ButtonContainer, BackButton, CompleteButton, InputWrapper, EyeButton, StyledImage } from './styles';
+import eyeoff from '../../../assets/visibility_off.png';
+import arrow from '../../../assets/arrow_back.png';
+import eyeon from '../../../assets/eye.png';
 
 interface InputPopupProps {
     userName: string;
@@ -50,13 +53,32 @@ const InputPopup: React.FC<InputPopupProps> = ({ userName, onBack, onComplete, p
                     />
                     {isPinPopup && (
                         <EyeButton onClick={togglePasswordVisibility}>
-                            {showPassword ? "👁️" : "👁️‍🗨️"}
+                            {showPassword ?
+                                <StyledImage
+                                    src={eyeoff}
+                                    height={18}
+                                    width={18}
+                                />
+                                :
+                                <StyledImage
+                                    src={eyeon}
+                                    height={18}
+                                    width={18}
+                                />
+                            }
                         </EyeButton>
                     )}
                 </InputWrapper>
                 <ButtonContainer>
                     <BackButton onClick={onBack}>
-                        <span className="arrow">🡐</span>&nbsp;&nbsp;Cancel
+                        <span className="arrow">
+                            <StyledImage
+                                src={arrow}
+                                height={16}
+                                width={16}
+                            />
+                        </span>
+                        &nbsp;&nbsp;Cancel
                     </BackButton>
                     <CompleteButton onClick={handleComplete}>
                         {isPinPopup ? "Complete signature" : "Add Digital ID"}
