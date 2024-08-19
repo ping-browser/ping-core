@@ -31,7 +31,7 @@ export const StyledStatusText = styled('span')<{ status: 'checking' | 'success' 
       case 'success':
         return '#2bb563'
       case 'error':
-        return '#ff4d4f'
+        return '#BE5656'
       default:
         return '#fff'
     }
