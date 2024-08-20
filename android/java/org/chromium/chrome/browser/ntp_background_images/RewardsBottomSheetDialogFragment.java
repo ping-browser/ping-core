@@ -45,7 +45,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 
 public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private static final String TAG = "RewardsBottomSheet";
-    private static final String BRAVE_REWARDS_LEARN_MORE = "https://brave.com/faq-rewards";
+    private static final String BRAVE_REWARDS_LEARN_MORE = "https://ping-browser.com/faqs-and-help";
 
     private int ntpType;
     private NewTabPageListener newTabPageListener;
