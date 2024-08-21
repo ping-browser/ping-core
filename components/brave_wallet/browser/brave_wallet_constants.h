@@ -1516,7 +1516,7 @@ constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kSolanaBlockTrackerTimeInSeconds = 5;
 
 inline constexpr char kPolygonMainnetEndpoint[] =
-    "https://mainnet-polygon.brave.com/";
+    "https://polygon-mainnet.infura.io/v3/";
 
 // Ankr constants
 inline constexpr char kAnkrAdvancedAPIBaseURL[] =
