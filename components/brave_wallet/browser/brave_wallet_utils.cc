@@ -815,8 +815,15 @@ bool ValidateAndFixAssetAddress(mojom::BlockchainTokenPtr& token) {
 GURL AddInfuraProjectId(const GURL& url) {
   DCHECK(url.is_valid()) << url.possibly_invalid_spec();
   GURL::Replacements replacements;
-  auto path = GetInfuraProjectID();
-  replacements.SetPathStr(path);
+
+  // Adding RPC version and projectID for Infura urls in Ping
+  std::string current_path = url.path();
+  std::string infura_project_id = GetInfuraProjectID();
+  
+  // Append the new path to the existing path.
+  std::string new_path = current_path + "/" + infura_project_id;
+
+  replacements.SetPathStr(new_path);
   return url.ReplaceComponents(replacements);
 }
 
@@ -939,7 +946,7 @@ GURL GetInfuraURLForKnownChainId(const std::string& chain_id) {
     return GURL();
   }
   return GURL(
-      base::StringPrintf("https://%s-infura.brave.com/", subdomain.c_str()));
+      base::StringPrintf(" https://%s.infura.io/v3", subdomain.c_str()));
 }
 
 std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id) {
