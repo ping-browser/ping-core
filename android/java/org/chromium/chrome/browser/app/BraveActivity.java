@@ -233,23 +233,23 @@ public abstract class BraveActivity extends ChromeActivity
                    MiscAndroidMetricsConnectionErrorHandler
                            .MiscAndroidMetricsConnectionErrorHandlerDelegate {
     public static final String BRAVE_WALLET_HOST = "wallet";
-    public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
-    public static final String BRAVE_BUY_URL = "brave://wallet/crypto/fund-wallet";
-    public static final String BRAVE_SEND_URL = "brave://wallet/send";
-    public static final String BRAVE_SWAP_URL = "brave://wallet/swap";
-    public static final String BRAVE_DEPOSIT_URL = "brave://wallet/crypto/deposit-funds";
-    public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
+    public static final String BRAVE_WALLET_URL = "ping://wallet/crypto/portfolio/assets";
+    public static final String BRAVE_BUY_URL = "ping://wallet/crypto/fund-wallet";
+    public static final String BRAVE_SEND_URL = "ping://wallet/send";
+    public static final String BRAVE_SWAP_URL = "ping://wallet/swap";
+    public static final String BRAVE_DEPOSIT_URL = "ping://wallet/crypto/deposit-funds";
+    public static final String BRAVE_REWARDS_SETTINGS_URL = "ping://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
-            "brave://rewards/#verify";
-    public static final String BRAVE_REWARDS_WALLET_RECONNECT_URL = "brave://rewards/reconnect";
-    public static final String BRAVE_REWARDS_SETTINGS_MONTHLY_URL = "brave://rewards/#monthly";
-    public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
+            "ping://rewards/#verify";
+    public static final String BRAVE_REWARDS_WALLET_RECONNECT_URL = "ping://rewards/reconnect";
+    public static final String BRAVE_REWARDS_SETTINGS_MONTHLY_URL = "ping://rewards/#monthly";
+    public static final String REWARDS_AC_SETTINGS_URL = "ping://rewards/contribute";
     public static final String BRAVE_AI_CHAT_URL = "chrome-untrusted://chat";
     public static final String REWARDS_LEARN_MORE_URL =
             "https://ping-browser.com/faqs-and-help";
     public static final String BRAVE_TERMS_PAGE =
-            "https://ping-browser.com/faqs-and-help";
-    public static final String BRAVE_PRIVACY_POLICY = "https://ping-browser.com/faqs-and-help";
+            "https://ping-browser.com/terms-of-use-1";
+    public static final String BRAVE_PRIVACY_POLICY = "https://ping-browser.com/privacy-policy";
     public static final String OPEN_URL = "open_url";
 
     private static final int DAYS_1 = 1;

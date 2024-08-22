@@ -146,7 +146,7 @@ brave_java_resources = [
   "java/res/drawable-night/restore_wallet.xml",
   "java/res/drawable-night/tablet_recent_tab_empty_state_illustration.xml",
   "java/res/drawable-night/tipping_background_success.xml",
-  "java/res/drawable-nodpi/dylan_malval_sea_min.webp",
+  "java/res/drawable-nodpi/dylan_malval_sea_min.jpg",
   "java/res/drawable-nodpi/eth.png",
   "java/res/drawable-nodpi/ic_quick_action_search_and_bookmark_widget_preview.png",
   "java/res/drawable-nodpi/loader0_orange.png",
