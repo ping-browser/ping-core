@@ -49,11 +49,16 @@ export const StyledTypedSignature = styled('div')`
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   height: 227px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
   width: 500px;
+  text-wrap: wrap;
   font-size: 50px;
   font-family: "Great Vibes";
   margin-left: 20px;
-  padding: 23px 0px 58px 118px;
+  /* padding: 23px 0px 58px 118px; */
   margin-bottom: 20px;
 `
 
@@ -97,7 +102,7 @@ color: #999;
 `
 
 export const StyledH3 = styled('h3')`
-  font-size: 50px;
+  font-size: 3vw;
   color: #000;
 `
 

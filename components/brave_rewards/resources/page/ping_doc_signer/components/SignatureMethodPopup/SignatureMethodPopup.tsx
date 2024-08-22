@@ -33,10 +33,10 @@ export const SignatureMethodPopup: React.FC<SignatureMethodPopupProps> = ({ onCl
           <StyledButtonTitle>Sign with digital ID (Recommended)</StyledButtonTitle>
           <StyledButtonDesc>Sign documents quickly using your pre-uploaded signature data for a seamless and efficient signing process</StyledButtonDesc>
         </StyledMethodOptionsButton>
-        {/* <StyledMethodOptionsButton onClick={() => onSelectMethod('imageUpload')}>
+        <StyledMethodOptionsButton onClick={() => onSelectMethod('imageUpload')}>
           <StyledButtonTitle>Upload Image Signature</StyledButtonTitle>
           <StyledButtonDesc>Select and upload an image of your signature from your device to sign documents easily and securely.</StyledButtonDesc>
-        </StyledMethodOptionsButton> */}
+        </StyledMethodOptionsButton>
       </StyledMethodOptions>
     </StyledPopupContent>
   </StyledPopupOverlay>

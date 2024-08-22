@@ -289,62 +289,55 @@ export const signPdfWithName = async (
   userName: string
 ): Promise<Buffer> => {
   try {
-    const pdfDoc = await PDFDocument.load(pdfBuffer)
-    const page = pdfDoc.getPage(pageIndex)
+    const pdfDoc = await PDFDocument.load(pdfBuffer);
+    const page = pdfDoc.getPage(pageIndex);
+    const { startX, startY, endX, endY } = selectionCoords;
+    const width = endX - startX;
+    const height = endY - startY;
 
-    const { startX, startY, endX, endY } = selectionCoords
+    // Use TimesRomanItalic as a substitute for calligraphic font
+    const font = await pdfDoc.embedFont(StandardFonts.TimesRomanItalic);
 
-    const width = endX - startX
-    const height = endY - startY
+    // Function to measure text width
+    const measureTextWidth = (text: string, fontSize: number) => {
+      return font.widthOfTextAtSize(text, fontSize);
+    };
 
-    // Draw border
-    page.drawRectangle({
-      x: startX,
-      y: page.getHeight() - endY,
-      width: width,
-      height: height,
-      borderColor: rgb(0, 0, 0),
-      borderWidth: 1
-    })
+    // Function to find the largest font size that fits the box
+    const findFittingFontSize = (text: string, maxWidth: number, maxHeight: number) => {
+      let fontSize = 1;
+      while (
+        measureTextWidth(text, fontSize + 1) <= maxWidth &&
+        font.heightAtSize(fontSize + 1) <= maxHeight
+      ) {
+        fontSize++;
+      }
+      return fontSize;
+    };
 
-    const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
-    const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+    // Calculate the largest font size that fits
+    const fittingFontSize = findFittingFontSize(userName, width, height);
 
-    const now = new Date()
-    const timestamp = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
-
-    // Draw text
-    const drawText = (
-      text: string,
-      x: number,
-      y: number,
-      size: number,
-      isRegular = false
-    ) => {
-      page.drawText(text, {
-        x: startX + x,
-        y: page.getHeight() - startY - y,
-        size: size,
-        font: isRegular ? regularFont : font,
-        color: rgb(0, 0, 0)
-      })
-    }
-
-    drawText(`Digitally signed by`, 15, 35, 14)
-    drawText(userName, 15, 55, 14)
-    drawText(timestamp, 15, 75, 10, true)
+    // Draw the signature
+    page.drawText(userName, {
+      x: startX + (width - measureTextWidth(userName, fittingFontSize)) / 2,
+      y: page.getHeight() - startY - (height + font.heightAtSize(fittingFontSize)) / 2,
+      size: fittingFontSize,
+      font: font,
+      color: rgb(0, 0, 0)
+    });
 
     const signedPdfBytes = await pdfDoc.save({
       addDefaultPage: false,
       useObjectStreams: false
-    })
+    });
 
-    return Buffer.from(signedPdfBytes)
+    return Buffer.from(signedPdfBytes);
   } catch (error) {
-    console.error('Error signing PDF with name:', error)
-    throw error
+    console.error('Error signing PDF with name:', error);
+    throw error;
   }
-}
+};
 
 // Function to sign PDF with user's image
 export const signPdfWithImage = async (
