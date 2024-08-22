@@ -85,11 +85,13 @@ export const StyledConfirmButton = styled('button')<{ disabled?: boolean }>`
 
 export const StyledCloseButton = styled('button')`
 position: absolute;
-top: 10px;
-right: 10px;
+top: 20px;
+right: 20px;
+width: 25.001px;
+height: 20px;
+font-size: 20px;
 background: none;
 border: none;
-font-size: 20px;
 cursor: pointer;
 color: #999;
 `
@@ -111,3 +113,51 @@ export const StyledNameInput = styled('input')`
   border: none;
   border-radius: 10px;
 `
+
+export const StyledImageUpload = styled.div`
+  margin-bottom: 20px;
+
+  input[type="file"] {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+  }
+`;
+
+export const StyledTabContainer = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+`;
+
+export const StyledTab = styled.button<{ active: boolean }>`
+  flex: 1;
+  padding: 10px;
+  background-color: ${props => props.active ? '#007bff' : '#f0f0f0'};
+  color: ${props => props.active ? 'white' : '#333'};
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+  }
+
+  &:hover {
+    background-color: ${props => props.active ? '#0056b3' : '#e0e0e0'};
+  }
+`;
+
+export const StyledImage = styled.img`
+   cursor: pointer;
+   max-width: 33px;
+   height: auto;
+`;

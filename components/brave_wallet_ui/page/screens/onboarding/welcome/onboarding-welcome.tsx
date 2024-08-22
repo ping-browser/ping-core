@@ -27,7 +27,6 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import * as leo from '@brave/leo/tokens/css/variables'
 import { Row, VerticalSpace } from '../../../../components/shared/style'
 import {
-  BraveIcon,
   Content,
   WelcomePageBackground,
   WelcomePageWrapper,
@@ -77,7 +76,6 @@ export const OnboardingWelcome = () => {
             justifyContent='flex-start'
             marginBottom={leo.spacing['5Xl']}
           >
-            <BraveIcon />
             <Title>{getLocale('braveWalletTitle')}</Title>
           </Row>
           <Heading>{getLocale('braveWalletWelcomeTitle')}</Heading>

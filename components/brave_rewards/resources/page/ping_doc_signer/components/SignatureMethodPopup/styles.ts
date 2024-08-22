@@ -24,7 +24,8 @@
    display: flex;
    flex-direction: column;
    gap: 10px;
-   height: ${p => p.selected ? '656px' : '390px'};
+   min-height: 268px;
+   max-height: ${p => p.selected ? '656px' : '390px'};
    border: 1px solid #CACACA;
    background: #323639;
    position: relative;
@@ -43,14 +44,16 @@
  `
 
   export const StyledCloseButton = styled('button')`
-   position: absolute;
-   top: 10px;
-   right: 10px;
-   background: none;
-   border: none;
-   font-size: 20px;
-   cursor: pointer;
-   color: #999;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 25.001px;
+  height: 20px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
  `
 
  export const StyledMethodOptions = styled('div')`
@@ -94,3 +97,8 @@ export const StyledButtonDesc = styled('span')`
 
 
 
+export const StyledImage = styled.img`
+   cursor: pointer;
+   max-width: 33px;
+   height: auto;
+`;

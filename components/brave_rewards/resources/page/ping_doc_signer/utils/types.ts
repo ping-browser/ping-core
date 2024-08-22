@@ -14,7 +14,8 @@
 export type DropZoneProps = {
   onFileInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isDragging: boolean;
-
+  handleDrop: (event: React.DragEvent<HTMLDivElement>) => void;
+  setIsDragging: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type HeaderProps = {
@@ -40,6 +41,9 @@ export type HeaderProps = {
   statusType: 'checking' | 'success' | 'error';
   handleLogoClick: () => void;
   fileInputRef: React.RefObject<HTMLInputElement>;
+  isSigned: boolean;
+  message: string;
+  tempButtonState: string;
 }
 
 export type StoredSignature = {
@@ -76,6 +80,11 @@ export type SuccessPopupProps = {
   isVerification: boolean;
 }
 
+export type ErrorPopupProps = {
+  message: string;
+  onContinue: () => void;
+}
+
 export type AnimatedStatusProps = {
   message: string;
   type: 'checking' | 'success' | 'error';
@@ -92,4 +101,13 @@ export type PdfPageProps = {
   pdfCanvasRef: React.Ref<HTMLCanvasElement>;
   overlayCanvasRef: React.Ref<HTMLCanvasElement>;
   pageRef: React.Ref<HTMLDivElement>;
+}
+
+export type TooltipProps = {
+  children: React.ReactNode;
+  text: string;
+  isVisible?: boolean;
+  isError?: boolean;
+  errorDelay?: number;
+  isFileName?: boolean;
 }

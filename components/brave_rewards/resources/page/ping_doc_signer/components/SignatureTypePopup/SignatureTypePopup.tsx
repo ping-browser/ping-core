@@ -3,8 +3,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 import { useState } from 'react';
 import * as React from 'react';
-import { StyledPopupOverlay, StyledH3, StyledPopupTypeContent, StyledPopupContentH2, StyledTypedSignature, StyledTypeButtons, StyledConfirmButton, StyledCloseButton, StyledNameInput } from './styles';
+import { StyledPopupOverlay, StyledH3, StyledPopupTypeContent, StyledPopupContentH2, StyledTypedSignature, StyledTypeButtons, StyledConfirmButton, StyledCloseButton, StyledNameInput, StyledImage } from './styles';
 import { SignatureTypePopupProps } from '../../utils/types';
+import cross from '../../../assets/cross.png';
 
 export const SignatureTypePopup: React.FC<SignatureTypePopupProps> = ({ onClose, onConfirm }) => {
   const [signatureName, setSignatureName] = useState<string>("John Doe");
@@ -19,7 +20,14 @@ export const SignatureTypePopup: React.FC<SignatureTypePopupProps> = ({ onClose,
     <StyledPopupOverlay>
       <StyledPopupTypeContent>
         <StyledPopupContentH2>Choose a digital ID to sign with:</StyledPopupContentH2>
-        <StyledCloseButton onClick={onClose}>×</StyledCloseButton>
+        <StyledCloseButton onClick={onClose}>
+          <StyledImage
+            src={cross}
+            alt="Cross"
+            width={15}
+            height={15}>
+          </StyledImage>
+        </StyledCloseButton>
         <StyledTypedSignature>
           <StyledH3>{signatureName}</StyledH3>
         </StyledTypedSignature>

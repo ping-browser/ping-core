@@ -11,7 +11,6 @@ import {
   StyledSelectedSignature,
   StyledSelectedSignatureH3,
   StyledSelectedSignatureP,
-  StyledBrowseImage,
   StyledSignatureList,
   StyledSignatureOption,
   StyledSignatureOptionInput,
@@ -20,14 +19,21 @@ import {
   StyledIssueDate,
   StyledButtons,
   StyledAddButton,
-  StyledConfirmButton
+  StyledConfirmButton,
+  StyledImage
 } from './styles';
 import { SignaturePopupProps, Signature } from '../../utils/types';
 import { addSignature, getSignatures } from '../../utils/pdf_signer';
+import InputPopup from '../InputPopup/InputPopup';
+import { ErrorPopup } from '../ErrorPopup/ErrorPopup';
+import cross from '../../../assets/cross.png';
 
 export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfirm }) => {
   const [selectedSignature, setSelectedSignature] = useState<Signature | null>(null);
   const [signatures, setSignatures] = useState<Signature[]>([]);
+  const [showInputPopup, setShowInputPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [showErrorPopup, setShowErrorPopup] = useState<boolean>(false);
 
   useEffect(() => {
     const loadSignatures = async () => {
@@ -48,8 +54,12 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
     }
   };
 
-  const handleAddSignature = async () => {
-    const path = prompt('Please enter the path to PKCS #11 module:');
+  const handleAddSignature = () => {
+    setShowInputPopup(true);
+  };
+
+  const handleInputComplete = async (path: string) => {
+    setShowInputPopup(false);
     if (path) {
       try {
         await addSignature(path);
@@ -57,16 +67,35 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
         setSignatures(updatedSignatures);
       } catch (error) {
         console.error('Error adding signature:', error);
-        alert('Failed to add signature. Please try again.');
+        setErrorMessage('Failed to add signature. Please try again.');
+        setShowErrorPopup(true);
       }
+    } else {
+      setErrorMessage('Enter the Path, it can\'t be empty.');
+      setShowErrorPopup(true);
     }
   };
+
+  const handleInputBack = () => {
+    setShowInputPopup(false);
+  };
+
+  const handleContinue = () => {
+    setShowErrorPopup(false);
+  }
 
   return (
     <StyledPopupOverlay>
       <StyledPopupContent selected={!!selectedSignature}>
         <StyledPopupContentH2>Choose a digital ID to sign with:</StyledPopupContentH2>
-        <StyledCloseButton onClick={onClose}>×</StyledCloseButton>
+        <StyledCloseButton onClick={onClose}>
+          <StyledImage
+            src={cross}
+            alt="Cross"
+            width={15}
+            height={15}>
+          </StyledImage>
+        </StyledCloseButton>
 
         {signatures.length === 0 ? (
           <StyledSignatureList>
@@ -85,7 +114,6 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
               <StyledSelectedSignature>
                 <StyledSelectedSignatureH3>{selectedSignature.name}</StyledSelectedSignatureH3>
                 <StyledSelectedSignatureP>Valid until: {selectedSignature.expiry.toLocaleString()}</StyledSelectedSignatureP>
-                <StyledBrowseImage>View Certificate Details</StyledBrowseImage>
               </StyledSelectedSignature>
             )}
             <StyledSignatureList>
@@ -119,6 +147,23 @@ export const SignaturePopup: React.FC<SignaturePopupProps> = ({ onClose, onConfi
             Confirm signature
           </StyledConfirmButton>
         </StyledButtons>
+
+        {showInputPopup && (
+          <InputPopup
+            userName="Add Digital ID"
+            onBack={handleInputBack}
+            onComplete={handleInputComplete}
+            popupType="path"
+          />
+        )}
+
+        {showErrorPopup && (
+          <ErrorPopup
+            message={errorMessage}
+            onContinue={handleContinue}
+          />
+        )
+        }
       </StyledPopupContent>
     </StyledPopupOverlay>
   );

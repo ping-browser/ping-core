@@ -7,11 +7,11 @@
 
 import '../brave_icons.html.js'
 
-import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { RegisterPolymerTemplateModifications, RegisterStyleOverride } from 'chrome://resources/brave/polymer_overriding.js'
+import { html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {loadTimeData} from '../i18n_setup.js'
 import 'chrome://resources/brave/leo.bundle.js'
+import { loadTimeData } from '../i18n_setup.js'
 
 function createMenuElement(title, href, iconName, pageVisibilitySection) {
   const menuEl = document.createElement('a')
@@ -243,7 +243,7 @@ RegisterPolymerTemplateModifications({
       'content-big',
       'content',
     )
-    // appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
+    appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
 
     // Add Shields item
     const shieldsEl = createMenuElement(
