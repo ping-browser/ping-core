@@ -23,7 +23,7 @@ public class BraveIntentHandler {
     private static final String TAG = "BraveIntentHandler";
 
     public static final String CONNECTION_INFO_HELP_URL =
-            "https://support.google.com/chrome?p=android_connection_info";
+            "https://ping-browser.com/faqs-and-help";
     public static final String BRAVE_CONNECTION_INFO_HELP_URL =
             "https://ping-browser.com/faqs-and-help";
 

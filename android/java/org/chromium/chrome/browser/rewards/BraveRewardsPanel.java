@@ -111,7 +111,7 @@ public class BraveRewardsPanel
     private static final String SUPPORT_URL = "https://ping-browser.com/faqs-and-help";
     private static final String BRAVE_REWARDS_PAGE = "https://ping-browser.com/faqs-and-help";
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://ping-browser.com/faqs-and-help";
-    private static final String BRAVE_REWARDS_RESET_PAGE = "brave://rewards#reset";
+    private static final String BRAVE_REWARDS_RESET_PAGE = "ping://rewards#reset";
 
     private static final String TAG = "BraveRewards";
     private static final int UPDATE_BALANCE_INTERVAL = 60000; // In milliseconds
