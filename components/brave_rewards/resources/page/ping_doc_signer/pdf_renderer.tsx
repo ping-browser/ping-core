@@ -116,12 +116,14 @@ export const PdfRenderer: React.FC = () => {
   const [tempButtonState, setTempButtonState] = useState('normal');
   const [signatureMethod, setSignatureMethod] = useState<'digitalID' | 'imageUpload' | null>(null);
   const [typedSignatureName, setTypedSignatureName] = useState<string>('');
+  const [isImageUploadFlow, setIsImageUploadFlow] = useState<boolean>(false);
 
   const resetSignatureState = useCallback(() => {
     setIsSelectionEnabled(false);
     setStatusMessage('');
     setIsStatusVisible(false);
     setShowSignatureMethodPopup(false);
+    setIsImageUploadFlow(false);
     setShowSignaturePopup(false);
     setShowTypeSignaturePopup(false);
     setSelectedSignature(null);
@@ -286,8 +288,10 @@ export const PdfRenderer: React.FC = () => {
     setShowSignatureMethodPopup(false);
     if (method === 'digitalID') {
       setShowSignaturePopup(true);
+      setIsImageUploadFlow(false);
     } else {
       setShowTypeSignaturePopup(true);
+      setIsImageUploadFlow(true);
     }
   };
 
@@ -361,6 +365,7 @@ export const PdfRenderer: React.FC = () => {
     setStatusMessage('Signature applied');
     setStatusType('success');
     setIsStatusVisible(true);
+    // setIsImageUploadFlow(false);
     setIsVerified(true);
     setShowSuccessPopup(true);
     setIsSigned(true);
@@ -373,6 +378,7 @@ export const PdfRenderer: React.FC = () => {
     setStatusMessage('Signing Failed');
     setIsStatusVisible(true);
     setErrorMessage(error.message || 'An error occurred while signing the document');
+    setIsImageUploadFlow(false);
     setIsVerified(false);
     clearAllSelections();
     setShowError(true);
@@ -443,8 +449,10 @@ export const PdfRenderer: React.FC = () => {
     setNumPages(numPages);
     setIsVerified(false);
     setPageNumber(1);
-    setTimeout(() => handleVerifyButtonClick(), 2000);
-  }, [handleVerifyButtonClick]);
+    if (!isImageUploadFlow) {
+      setTimeout(() => handleVerifyButtonClick(), 2000);
+    }
+  }, [handleVerifyButtonClick, isImageUploadFlow]);
 
   const onPageLoadSuccess = useCallback((pageIndex: number) => {
     const pageCanvas = pdfCanvasRefs.current[pageIndex];
