@@ -45,6 +45,13 @@ enum GeneralError {
   NOT_SIGNED_YET = 'NOT_SIGNED_YET'
 }
 
+const SIGNATURE_METHODS = {
+  DIGITAL_ID: 'digitalID',
+  IMAGE_UPLOAD: 'imageUpload'
+} as const;
+
+type SignatureMethod = typeof SIGNATURE_METHODS[keyof typeof SIGNATURE_METHODS];
+
 function getErrorMessage(error: SigningError | VerificationError | GeneralError): string {
   switch (error) {
     case SigningError.INVALID_PIN:
@@ -114,7 +121,7 @@ export const PdfRenderer: React.FC = () => {
   const [isSigned, setIsSigned] = useState<boolean>(false);
   const [verificationErrorMessage, setVerificationErrorMessage] = useState<string>('');
   const [tempButtonState, setTempButtonState] = useState('normal');
-  const [signatureMethod, setSignatureMethod] = useState<'digitalID' | 'imageUpload' | null>(null);
+  const [signatureMethod, setSignatureMethod] = useState<SignatureMethod | null>(null);
   const [typedSignatureName, setTypedSignatureName] = useState<string>('');
   const [isImageUploadFlow, setIsImageUploadFlow] = useState<boolean>(false);
 
@@ -283,10 +290,10 @@ export const PdfRenderer: React.FC = () => {
     setShowSignatureMethodPopup(true);
   }, [pdfBuff, isSigned]);
 
-  const handleSignatureMethodSelect = (method: 'digitalID' | 'imageUpload') => {
+  const handleSignatureMethodSelect = (method: SignatureMethod) => {
     setSignatureMethod(method);
     setShowSignatureMethodPopup(false);
-    if (method === 'digitalID') {
+    if (method === SIGNATURE_METHODS.DIGITAL_ID) {
       setShowSignaturePopup(true);
       setIsImageUploadFlow(false);
     } else {
@@ -318,7 +325,7 @@ export const PdfRenderer: React.FC = () => {
     setIsStatusVisible(true);
     setIsSelectionEnabled(false);
 
-    if (signatureMethod === 'digitalID') {
+    if (signatureMethod === SIGNATURE_METHODS.DIGITAL_ID) {
       setShowPinPopup(true);
     } else {
       try {
@@ -333,7 +340,7 @@ export const PdfRenderer: React.FC = () => {
         handleSigningError(error);
       }
     }
-  };
+  }
 
   const handlePinSubmit = async (pin: string) => {
     setShowPinPopup(false);
@@ -365,7 +372,6 @@ export const PdfRenderer: React.FC = () => {
     setStatusMessage('Signature applied');
     setStatusType('success');
     setIsStatusVisible(true);
-    // setIsImageUploadFlow(false);
     setIsVerified(true);
     setShowSuccessPopup(true);
     setIsSigned(true);
@@ -430,7 +436,7 @@ export const PdfRenderer: React.FC = () => {
         setStatusMessage('');
       }, 3000);
     }
-  }, [pdfBuff, isSigned, isVerified]);
+  }, [pdfBuff, isVerified]);
 
   const handleDownloadButtonClick = () => {
     if (pdfFile) {
