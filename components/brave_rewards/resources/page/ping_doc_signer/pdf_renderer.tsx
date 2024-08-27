@@ -46,11 +46,9 @@ enum GeneralError {
 }
 
 const SIGNATURE_METHODS = {
-  DIGITAL_ID: 'digitalID',
-  IMAGE_UPLOAD: 'imageUpload'
-} as const;
-
-type SignatureMethod = typeof SIGNATURE_METHODS[keyof typeof SIGNATURE_METHODS];
+  DIGITAL_ID: 'DIGITAL_ID',
+  WITHOUT_DIGITAL_ID: 'WITHOUT_DIGITAL_ID'
+}
 
 function getErrorMessage(error: SigningError | VerificationError | GeneralError): string {
   switch (error) {
@@ -121,16 +119,16 @@ export const PdfRenderer: React.FC = () => {
   const [isSigned, setIsSigned] = useState<boolean>(false);
   const [verificationErrorMessage, setVerificationErrorMessage] = useState<string>('');
   const [tempButtonState, setTempButtonState] = useState('normal');
-  const [signatureMethod, setSignatureMethod] = useState<SignatureMethod | null>(null);
+  const [signatureMethod, setSignatureMethod] = useState<string | null>(null);
   const [typedSignatureName, setTypedSignatureName] = useState<string>('');
-  const [isImageUploadFlow, setIsImageUploadFlow] = useState<boolean>(false);
+  const [iswithoutDigitalIDFlow, setIswithoutDigitalIDFlow] = useState<boolean>(false);
 
   const resetSignatureState = useCallback(() => {
     setIsSelectionEnabled(false);
     setStatusMessage('');
     setIsStatusVisible(false);
     setShowSignatureMethodPopup(false);
-    setIsImageUploadFlow(false);
+    setIswithoutDigitalIDFlow(false);
     setShowSignaturePopup(false);
     setShowTypeSignaturePopup(false);
     setSelectedSignature(null);
@@ -290,15 +288,15 @@ export const PdfRenderer: React.FC = () => {
     setShowSignatureMethodPopup(true);
   }, [pdfBuff, isSigned]);
 
-  const handleSignatureMethodSelect = (method: SignatureMethod) => {
+  const handleSignatureMethodSelect = (method: string) => {
     setSignatureMethod(method);
     setShowSignatureMethodPopup(false);
     if (method === SIGNATURE_METHODS.DIGITAL_ID) {
       setShowSignaturePopup(true);
-      setIsImageUploadFlow(false);
+      setIswithoutDigitalIDFlow(false);
     } else {
       setShowTypeSignaturePopup(true);
-      setIsImageUploadFlow(true);
+      setIswithoutDigitalIDFlow(true);
     }
   };
 
@@ -384,7 +382,7 @@ export const PdfRenderer: React.FC = () => {
     setStatusMessage('Signing Failed');
     setIsStatusVisible(true);
     setErrorMessage(error.message || 'An error occurred while signing the document');
-    setIsImageUploadFlow(false);
+    setIswithoutDigitalIDFlow(false);
     setIsVerified(false);
     clearAllSelections();
     setShowError(true);
@@ -455,10 +453,10 @@ export const PdfRenderer: React.FC = () => {
     setNumPages(numPages);
     setIsVerified(false);
     setPageNumber(1);
-    if (!isImageUploadFlow) {
+    if (!iswithoutDigitalIDFlow) {
       setTimeout(() => handleVerifyButtonClick(), 2000);
     }
-  }, [handleVerifyButtonClick, isImageUploadFlow]);
+  }, [handleVerifyButtonClick, iswithoutDigitalIDFlow]);
 
   const onPageLoadSuccess = useCallback((pageIndex: number) => {
     const pageCanvas = pdfCanvasRefs.current[pageIndex];

@@ -60,7 +60,7 @@ export type Signature = StoredSignature & {
 
 export type SignatureMethodPopupProps = {
   onClose: () => void;
-  onSelectMethod: (method: 'digitalID' | 'imageUpload') => void;
+  onSelectMethod: (method: 'DIGITAL_ID' | 'WITHOUT_DIGITAL_ID') => void;
 }
 
 export type SignaturePopupProps = {
