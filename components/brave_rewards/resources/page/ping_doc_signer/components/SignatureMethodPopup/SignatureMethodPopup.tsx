@@ -34,8 +34,8 @@ export const SignatureMethodPopup: React.FC<SignatureMethodPopupProps> = ({ onCl
           <StyledButtonDesc>Sign documents quickly using your pre-uploaded signature data for a seamless and efficient signing process</StyledButtonDesc>
         </StyledMethodOptionsButton>
         <StyledMethodOptionsButton onClick={() => onSelectMethod('WITHOUT_DIGITAL_ID')}>
-          <StyledButtonTitle>Upload Image Signature</StyledButtonTitle>
-          <StyledButtonDesc>Select and upload an image of your signature from your device to sign documents easily and securely.</StyledButtonDesc>
+          <StyledButtonTitle>Sign without digital ID </StyledButtonTitle>
+          <StyledButtonDesc>Sign document quickly using yout name, without needing any digital signature.</StyledButtonDesc>
         </StyledMethodOptionsButton>
       </StyledMethodOptions>
     </StyledPopupContent>
