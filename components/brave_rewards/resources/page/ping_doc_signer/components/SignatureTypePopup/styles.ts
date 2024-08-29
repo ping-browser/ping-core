@@ -56,7 +56,7 @@ export const StyledTypedSignature = styled('div')`
   width: 500px;
   text-wrap: wrap;
   font-size: 50px;
-  font-family: "Great Vibes";
+  font-family: Scriptin;
   margin-left: 20px;
   /* padding: 23px 0px 58px 118px; */
   margin-bottom: 20px;
@@ -104,6 +104,7 @@ color: #999;
 export const StyledH3 = styled('h3')`
   font-size: 3vw;
   color: #000;
+  font-family: Scriptin;
 `
 
 export const StyledNameInput = styled('input')`

@@ -5,7 +5,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import * as React from 'react';
 import { pdfjs, Document } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import { verifyPdf } from './utils/pdf_verify';
+import { verifyPdf, VerificationResult } from './utils/pdf_verify';
 import { signPdf, signPdfWithName } from './utils/pdf_signer';
 import { Signature } from './utils/types';
 import { ErrorPopup } from './components/ErrorPopup/ErrorPopup';
@@ -394,14 +394,14 @@ export const PdfRenderer: React.FC = () => {
       setShowError(true);
       return;
     }
-    setStatusMessage('Verifying signature...');
+    setStatusMessage('Verifying signature(s)...');
     setStatusType('checking');
     setIsStatusVisible(true);
 
     try {
-      const verificationResult = await verifyPdf(pdfBuff);
-      if (verificationResult) {
-        setStatusMessage('Signature verified');
+      const verificationResults: VerificationResult[] = await verifyPdf(pdfBuff);
+      if (verificationResults.length > 0 && verificationResults.every(result => result.isValid)) {
+        setStatusMessage('All signatures verified');
         setStatusType('success');
         setIsVerified(true);
         setIsVerificationFailed(false);
@@ -409,12 +409,18 @@ export const PdfRenderer: React.FC = () => {
         setTimeout(() => {
           setTempButtonState('normal');
         }, 5000);
+      } else if (verificationResults.length === 0) {
+        throw new Error(VerificationError.NO_SIGNATURE_FOUND);
       } else {
         throw new Error(VerificationError.VERIFICATION_FAILED);
       }
     } catch (error) {
       let errorEnum: VerificationError;
-      errorEnum = VerificationError.VERIFICATION_FAILED;
+      if (error.message === VerificationError.NO_SIGNATURE_FOUND) {
+        errorEnum = VerificationError.NO_SIGNATURE_FOUND;
+      } else {
+        errorEnum = VerificationError.VERIFICATION_FAILED;
+      }
       setStatusMessage('Verification Failed');
       setStatusType('error');
       setVerificationErrorMessage(getErrorMessage(errorEnum));

@@ -35,7 +35,7 @@ export const SignatureMethodPopup: React.FC<SignatureMethodPopupProps> = ({ onCl
         </StyledMethodOptionsButton>
         <StyledMethodOptionsButton onClick={() => onSelectMethod('WITHOUT_DIGITAL_ID')}>
           <StyledButtonTitle>Sign without digital ID </StyledButtonTitle>
-          <StyledButtonDesc>Sign document quickly using yout name, without needing any digital signature.</StyledButtonDesc>
+          <StyledButtonDesc>Sign the document with just your name, no digital signature required. This method offers a fast, straightforward approval process without any extra steps.</StyledButtonDesc>
         </StyledMethodOptionsButton>
       </StyledMethodOptions>
     </StyledPopupContent>
