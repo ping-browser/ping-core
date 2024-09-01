@@ -105,12 +105,16 @@ const verifySingleSignature = (sigInfo: SignatureInfo): boolean => {
 const getAllSignatures = (pdf: Buffer): SignatureInfo[] => {
   const signatures: SignatureInfo[] = [];
   let startIndex = 0;
+  let continueLoop = true;
 
-  while (true) {
+  while (continueLoop) {
     try {
       let byteRangePos = pdf.indexOf('/ByteRange[', startIndex);
       if (byteRangePos === -1) byteRangePos = pdf.indexOf('/ByteRange [', startIndex);
-      if (byteRangePos === -1) break;
+      if (byteRangePos === -1) {
+        continueLoop = false;
+        break;
+      }
 
       const byteRangeEnd = pdf.indexOf(']', byteRangePos);
       const byteRange = pdf.slice(byteRangePos, byteRangeEnd + 1).toString();
