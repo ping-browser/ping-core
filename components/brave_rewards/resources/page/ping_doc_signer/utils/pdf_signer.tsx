@@ -7,7 +7,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-// @ts-nocheck
 import { pki, asn1, util } from 'node-forge'
 import pkcs7 from '../lib/pkcs7'
 import SignPdfError from './SignPdfError'
@@ -17,6 +16,7 @@ import { SelectionCoords } from '../pdf_renderer'
 
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { Signature, StoredSignature } from './types'
+// @ts-expect-error
 import * as fontkit from '@btielen/pdf-lib-fontkit'
 import { calligraphicFontHex } from './fontHex'
 
