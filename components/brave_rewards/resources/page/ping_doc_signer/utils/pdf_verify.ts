@@ -24,31 +24,61 @@ class PdfVerificationError extends Error {
   }
 }
 
-export const verifyPdf = (pdf: Buffer): boolean => {
+interface SignatureInfo {
+  signature: string;
+  signedData: Buffer;
+}
+
+export interface VerificationResult {
+  signatureIndex: number;
+  isValid: boolean;
+  error?: PdfVerificationError;
+}
+
+export const verifyPdf = (pdf: Buffer): VerificationResult[] => {
   try {
-    const extractedData = getSignature(pdf)
-    const p7Asn1 = asn1.fromDer(extractedData.signature)
+    const signatures = getAllSignatures(pdf);
+    return signatures.map((sigInfo, index) => {
+      try {
+        const isValid = verifySingleSignature(sigInfo);
+        return { signatureIndex: index + 1, isValid };
+      } catch (error) {
+        return {
+          signatureIndex: index + 1,
+          isValid: false,
+          error: error instanceof PdfVerificationError ? error : new PdfVerificationError(PdfVerificationErrorType.UNKNOWN_ERROR)
+        };
+      }
+    });
+  } catch (error) {
+    console.error('Error during PDF verification:', error);
+    throw new PdfVerificationError(PdfVerificationErrorType.PARSING_ERROR);
+  }
+}
+
+const verifySingleSignature = (sigInfo: SignatureInfo): boolean => {
+  try {
+    const p7Asn1 = asn1.fromDer(sigInfo.signature)
     const message = pkcs7.messageFromAsn1(p7Asn1) as pkcs7.Captured<pkcs7.PkcsSignedData>
     const { signature: sig, digestAlgorithm, authenticatedAttributes: attrs } = message.rawCapture
-    
+
     const set = asn1.create(asn1.Class.UNIVERSAL, asn1.Type.SET, true, attrs)
     const hashAlgorithmOid = asn1.derToOid(digestAlgorithm)
     const hashAlgorithm = pki.oids[hashAlgorithmOid].toUpperCase()
     const buf = Buffer.from(asn1.toDer(set).data, 'binary')
-    
+
     const verifier = createVerify(`RSA-${hashAlgorithm}`)
     verifier.update(buf)
     const cert = pki.certificateToPem(message.certificates[0])
     const validAuthenticatedAttributes = verifier.verify(cert, sig, 'binary')
-    
+
     if (!validAuthenticatedAttributes) {
       throw new PdfVerificationError(PdfVerificationErrorType.INVALID_SIGNATURE)
     }
-    
+
     const pdfHash = createHash(hashAlgorithm)
-    const data = extractedData.signedData
-    pdfHash.update(data)
-    
+    pdfHash.update(sigInfo.signedData)
+
     const oids = pki.oids
     const fullAttrDigest = attrs.find(
       (attr: any) => asn1.derToOid(attr.value[0].value) === oids.messageDigest
@@ -56,7 +86,7 @@ export const verifyPdf = (pdf: Buffer): boolean => {
     const attrDigest = fullAttrDigest.value[1].value[0].value
     const dataDigest = pdfHash.digest()
     const validContentDigest = dataDigest.toString('binary') === attrDigest
-    
+
     if (validContentDigest) {
       return true
     } else {
@@ -66,49 +96,63 @@ export const verifyPdf = (pdf: Buffer): boolean => {
     if (error instanceof PdfVerificationError) {
       throw error
     } else {
-      console.error('Unexpected error during PDF verification:', error)
+      console.error('Unexpected error during signature verification:', error)
       throw new PdfVerificationError(PdfVerificationErrorType.UNKNOWN_ERROR)
     }
   }
 }
 
-const getSignature = (pdf: Buffer): { signature: string; signedData: Buffer } => {
-  try {
-    let byteRangePos = pdf.lastIndexOf('/ByteRange[')
-    if (byteRangePos === -1) byteRangePos = pdf.lastIndexOf('/ByteRange [')
-    const byteRangeEnd = pdf.indexOf(']', byteRangePos)
-    const byteRange = pdf.slice(byteRangePos, byteRangeEnd + 1).toString()
-    const byteRangeNumbers = /(\d+) +(\d+) +(\d+) +(\d+)/.exec(byteRange)
-    const byteRangeArr = byteRangeNumbers?.[0].split(' ')
-    
-    if (!byteRangeArr) {
-      throw new PdfVerificationError(PdfVerificationErrorType.BYTE_RANGE_NOT_FOUND)
-    }
-    
-    const signedData = Buffer.concat([
-      pdf.slice(parseInt(byteRangeArr[0]), parseInt(byteRangeArr[1])),
-      pdf.slice(
-        parseInt(byteRangeArr[2]),
-        parseInt(byteRangeArr[2]) + parseInt(byteRangeArr[3])
-      )
-    ])
-    
-    let signatureHex = pdf
-      .slice(
-        parseInt(byteRangeArr[0]) + (parseInt(byteRangeArr[1]) + 1),
-        parseInt(byteRangeArr[2]) - 1
-      )
-      .toString('binary')
-    signatureHex = signatureHex.replace(/(?:00)*$/, '')
-    const signature = Buffer.from(signatureHex, 'hex').toString('binary')
-    
-    return { signature, signedData }
-  } catch (error) {
-    if (error instanceof PdfVerificationError) {
-      throw error
-    } else {
-      console.error('Error extracting signature from PDF:', error)
-      throw new PdfVerificationError(PdfVerificationErrorType.PARSING_ERROR)
+const getAllSignatures = (pdf: Buffer): SignatureInfo[] => {
+  const signatures: SignatureInfo[] = [];
+  let startIndex = 0;
+  let continueLoop = true;
+
+  while (continueLoop) {
+    try {
+      let byteRangePos = pdf.indexOf('/ByteRange[', startIndex);
+      if (byteRangePos === -1) byteRangePos = pdf.indexOf('/ByteRange [', startIndex);
+      if (byteRangePos === -1) {
+        continueLoop = false;
+        break;
+      }
+
+      const byteRangeEnd = pdf.indexOf(']', byteRangePos);
+      const byteRange = pdf.slice(byteRangePos, byteRangeEnd + 1).toString();
+      const byteRangeNumbers = /(\d+) +(\d+) +(\d+) +(\d+)/.exec(byteRange);
+      const byteRangeArr = byteRangeNumbers?.[0].split(' ');
+
+      if (!byteRangeArr) {
+        throw new PdfVerificationError(PdfVerificationErrorType.BYTE_RANGE_NOT_FOUND);
+      }
+
+      const signedData = Buffer.concat([
+        pdf.slice(parseInt(byteRangeArr[0]), parseInt(byteRangeArr[1])),
+        pdf.slice(
+          parseInt(byteRangeArr[2]),
+          parseInt(byteRangeArr[2]) + parseInt(byteRangeArr[3])
+        )
+      ]);
+
+      let signatureHex = pdf
+        .slice(
+          parseInt(byteRangeArr[0]) + (parseInt(byteRangeArr[1]) + 1),
+          parseInt(byteRangeArr[2]) - 1
+        )
+        .toString('binary');
+      signatureHex = signatureHex.replace(/(?:00)*$/, '');
+      const signature = Buffer.from(signatureHex, 'hex').toString('binary');
+
+      signatures.push({ signature, signedData });
+      startIndex = byteRangeEnd + 1;
+    } catch (error) {
+      if (error instanceof PdfVerificationError) {
+        throw error;
+      } else {
+        console.error('Error extracting signature from PDF:', error);
+        throw new PdfVerificationError(PdfVerificationErrorType.PARSING_ERROR);
+      }
     }
   }
+
+  return signatures;
 }

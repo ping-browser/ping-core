@@ -16,12 +16,17 @@ import { SelectionCoords } from '../pdf_renderer'
 
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { Signature, StoredSignature } from './types'
+// @ts-expect-error
+import * as fontkit from '@btielen/pdf-lib-fontkit'
+import { calligraphicFontHex } from './fontHex'
 
 // Hardcoded certificate (this is a placeholder, replace with actual PEM-encoded certificate)
 const PLACEHOLDER_IMG_HEX =
   '89504e470d0a1a0a0000000d4948445200000092000000920806000000ae7b938e000000097048597300000b1300000b1301009a9c18000000017352474200aece1ce90000000467414d410000b18f0bfc610500000215494441547801eddd316e14411040d1b20d487644c4fd8f681210162b312307e4deef96b6f73da94f305f5351753fcccc8fe33c0d7cdce57144c4f59e1e07024222212412422221241242222124124222212412422221241242222124124222212412422221241242222124124222212412422221241242222124125f66adcb71fe0c2b3c1fe76116591dd2dfe3fc1c5638bfedb759c468232124124222212412422221241242222124124222212412422221241242222124124222212412422221241242222124124222212412abd7913edbf91ae6b2159c2bbdcdfb9edf16760be98ce8fbdc86d7e3fc9e4d186d2476fb23f1dfaf59b81e2fa47d2d1d9b461b09219110120921911012092191101209219110120921911012092191101209219110120921911012092191101209219110120921911012092191101209219110120921911012092191101209219110120921911012097748eeeb79deef1d5f4248fb7a998597d71b6d2476fb239dcf32bcce6d789b8dec16d2f9b6c736cf32dc12a38d8490480889849048088984904808898490480889849048088984904808898490480889849048088984904808898490480889849048dcdba6edb9c6fc32f7e1eb2c746f219dbbf0cbd698ef89d146424824844442482484444248248444424824844442482484444248248444424824844442482484444248248444424824844442482484444248248444e20ce932709dcb3ff70414419c1505c80000000049454e44ae426082'
 
 const LOCAL_STORAGE_SIGNATURES_KEY = 'LOCAL_STORAGE_SIGNATURES_KEY'
+
+const calligrahicHex = calligraphicFontHex;
 
 const addPlaceholder = async (
   pdfBuffer: Buffer,
@@ -289,62 +294,54 @@ export const signPdfWithName = async (
   userName: string
 ): Promise<Buffer> => {
   try {
-    const pdfDoc = await PDFDocument.load(pdfBuffer)
-    const page = pdfDoc.getPage(pageIndex)
+    const pdfDoc = await PDFDocument.load(pdfBuffer);
+    pdfDoc.registerFontkit(fontkit);
 
-    const { startX, startY, endX, endY } = selectionCoords
+    const page = pdfDoc.getPage(pageIndex);
+    const { startX, startY, endX, endY } = selectionCoords;
+    const width = endX - startX;
+    const height = endY - startY;
 
-    const width = endX - startX
-    const height = endY - startY
+    const fontBytes = new Uint8Array(calligrahicHex.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16)));
 
-    // Draw border
-    page.drawRectangle({
-      x: startX,
-      y: page.getHeight() - endY,
-      width: width,
-      height: height,
-      borderColor: rgb(0, 0, 0),
-      borderWidth: 1
-    })
+    const customFont = await pdfDoc.embedFont(fontBytes);
 
-    const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
-    const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+    const measureTextWidth = (text: string, fontSize: number) => {
+      return customFont.widthOfTextAtSize(text, fontSize);
+    };
 
-    const now = new Date()
-    const timestamp = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
+    const findFittingFontSize = (text: string, maxWidth: number, maxHeight: number) => {
+      let fontSize = 1;
+      while (
+        measureTextWidth(text, fontSize + 1) <= maxWidth &&
+        customFont.heightAtSize(fontSize + 1) <= maxHeight
+      ) {
+        fontSize++;
+      }
+      return fontSize;
+    };
 
-    // Draw text
-    const drawText = (
-      text: string,
-      x: number,
-      y: number,
-      size: number,
-      isRegular = false
-    ) => {
-      page.drawText(text, {
-        x: startX + x,
-        y: page.getHeight() - startY - y,
-        size: size,
-        font: isRegular ? regularFont : font,
-        color: rgb(0, 0, 0)
-      })
-    }
+    const fittingFontSize = findFittingFontSize(userName, width, height);
 
-    drawText(`Digitally signed by`, 15, 35, 14)
-    drawText(userName, 15, 55, 14)
-    drawText(timestamp, 15, 75, 10, true)
+    page.drawText(userName, {
+      x: startX + (width - measureTextWidth(userName, fittingFontSize)) / 2,
+      y: page.getHeight() - startY - (height + customFont.heightAtSize(fittingFontSize)) / 2,
+      size: fittingFontSize,
+      font: customFont,
+      color: rgb(0, 0, 0)
+    });
 
     const signedPdfBytes = await pdfDoc.save({
       addDefaultPage: false,
       useObjectStreams: false
-    })
+    });
 
-    return Buffer.from(signedPdfBytes)
+    return Buffer.from(signedPdfBytes);
   } catch (error) {
-    console.error('Error signing PDF with name:', error)
-    throw error
+    console.error('Error signing PDF with name:', error);
+    throw error;
   }
-}
+};
 
 // Function to sign PDF with user's image
 export const signPdfWithImage = async (

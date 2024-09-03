@@ -19,7 +19,7 @@ export const SignatureTypePopup: React.FC<SignatureTypePopupProps> = ({ onClose,
   return (
     <StyledPopupOverlay>
       <StyledPopupTypeContent>
-        <StyledPopupContentH2>Choose a digital ID to sign with:</StyledPopupContentH2>
+        <StyledPopupContentH2>Type your name to sign with:</StyledPopupContentH2>
         <StyledCloseButton onClick={onClose}>
           <StyledImage
             src={cross}
