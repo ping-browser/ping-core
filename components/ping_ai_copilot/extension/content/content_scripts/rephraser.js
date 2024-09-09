@@ -9,12 +9,22 @@ let showRephraseButton = true;
 let isCanceled = false;
 
 const applyGradientAnimation = (textBox) => {
-    textBox.classList.add('gradient-animation');
-};
+    const gradient = 'linear-gradient(270deg, #F100C1, #00CED1, #F100C1)';
+    const animation = 'gradientAnimation 5s ease infinite';
+
+    textBox.style.backgroundImage = gradient;
+    textBox.style.backgroundSize = '200% 200%';
+    textBox.style.animation = animation;
+    textBox.style.WebkitBackgroundClip = 'text';
+    textBox.style.WebkitTextFillColor = 'transparent';
+}
 
 const removeGradientColor = (textBox) => {
-    textBox.classList.remove('gradient-animation');
-};
+    textBox.style.backgroundImage = 'none';
+    textBox.style.animation = 'none';
+    textBox.style.WebkitBackgroundClip = 'initial';
+    textBox.style.WebkitTextFillColor = 'initial';
+}
 
 const createPillContainer = (textBox) => {
     if (pillContainer) {
@@ -98,7 +108,12 @@ const createPillContainer = (textBox) => {
 const rephraseText = async (textBox, img) => {
     originalText = textBox.value || textBox.innerText;
     applyGradientAnimation(textBox);
-    if (img) img.src = chrome.runtime.getURL('extension/assets/cross.svg');
+    if (img) {
+        img.src = chrome.runtime.getURL('extension/assets/cross.svg');
+        img.alt = "stop"
+        img.style.width = '20px';
+        img.style.height = '20px';
+    }    
     isFetching = true;
     isCanceled = false;
 
