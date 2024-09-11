@@ -7,8 +7,10 @@
 
 #include <algorithm>
 #include <memory>
+#include <vector>
 #include <utility>
-
+#include "base/values.h"
+#include "components/prefs/pref_service.h"
 #include "base/functional/bind.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -225,7 +227,24 @@ void BraveToolbarView::Init() {
                                     ui::EF_MIDDLE_MOUSE_BUTTON);
   wallet_->UpdateImageAndText();
 
+  wallet_ = container_view->AddChildViewAt(
+      std::make_unique<WalletButton>(GetAppMenuButton(), profile),
+      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
+                                    ui::EF_MIDDLE_MOUSE_BUTTON);
+  wallet_->UpdateImageAndText();
+
   UpdateWalletButtonVisibility();
+
+  custom_button_ = container_view->AddChildViewAt(
+      std::make_unique<views::LabelButton>(
+          base::BindRepeating(&BraveToolbarView::ShowCustomPopup, base::Unretained(this)),
+          u"Custom Button"),
+      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+
+  custom_button_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
+  custom_button_->SetAccessibleName(u"Open Popup");
+  custom_button_->SetVisible(true);
 
 #if !BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(profile)) {
@@ -434,6 +453,67 @@ void BraveToolbarView::ResetButtonBounds() {
   }
 }
 
+void BraveToolbarView::OnAddNote() {
+  if (!text_field_->GetText().empty()) {
+    notes_.push_back(base::UTF16ToUTF8(text_field_->GetText()));
+    SaveNotesToLocalStorage();  // Save to persistent storage
+    text_field_->SetText(u"");  // Clear input field
+  }
+}
+
+// Method to delete all notes
+void BraveToolbarView::OnDeleteAllNotes() {
+  notes_.clear();
+  SaveNotesToLocalStorage();  // Update storage
+}
+
+// Save notes to preferences or a file (acting as local storage)
+void BraveToolbarView::SaveNotesToLocalStorage() {
+  base::Value::List note_list;
+
+  for (const auto& note : notes_) {
+    note_list.Append(base::Value(note));
+  }
+
+  if (pref_service_) {
+    pref_service_->Set("custom_notes", base::Value(std::move(note_list)));
+    pref_service_->CommitPendingWrite();
+  } else {
+    LOG(ERROR) << "PrefService is not initialized.";
+  }
+}
+
+// Load notes from local storage (preferences)
+void BraveToolbarView::LoadNotesFromLocalStorage() {
+  if (pref_service_) {
+    const base::Value* note_list_value = pref_service_->GetUserPrefValue("custom_notes");
+    if (note_list_value && note_list_value->is_list()) {
+      const base::Value::List& note_list = note_list_value->GetList();
+      notes_.clear();
+      for (const auto& note_value : note_list) {
+        if (note_value.is_string()) {
+          std::u16string u16_string = base::UTF8ToUTF16(note_value.GetString());
+          // Convert std::u16string to std::string
+          std::string str(u16_string.begin(), u16_string.end());
+          notes_.push_back(str);
+        }
+      }
+    }
+  } else {
+    LOG(ERROR) << "PrefService is not initialized.";
+  }
+}
+
+void BraveToolbarView::OnNoteAdded(const std::u16string& new_note) {
+ notes_.push_back(base::UTF16ToUTF8(new_note));
+  SaveNotesToLocalStorage();  // Save the updated notes list
+}
+
+// Handling text input changes
+void BraveToolbarView::ContentsChanged(views::Textfield* sender, const std::u16string& new_contents) {
+  note_input_ = new_contents;  // Update note content as it is typed
+}
+
 void BraveToolbarView::UpdateWalletButtonVisibility() {
   Profile* profile = browser()->profile();
   if (brave_wallet::IsNativeWalletEnabled() &&
@@ -455,6 +535,43 @@ void BraveToolbarView::UpdateWalletButtonVisibility() {
 
   wallet_->SetVisible(false);
 }
+
+views::View* BraveToolbarView::BuildNotesView() {
+  auto* container = new views::View();
+  container->SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kVertical));
+  
+  for (const auto& note : notes_) {
+    container->AddChildView(std::make_unique<views::Label>(base::UTF8ToUTF16(note)));
+  }
+
+  return container;
+}
+
+
+void BraveToolbarView::ShowCustomPopup() {
+  // Create a simple popup dialog (for demonstration purposes).
+  views::DialogDelegate::CreateDialogWidget(
+    views::Builder<views::DialogDelegateView>()
+        .SetTitle(u"Custom Note Popup")
+        .SetLayoutManager(std::make_unique<views::BoxLayout>(
+            views::BoxLayout::Orientation::kVertical))
+        .AddChildren(
+            views::Builder<views::Textfield>()  // Add text input for note
+                .SetController(&text_field_controller_), // Controller to handle input
+            views::Builder<views::LabelButton>()
+                .SetText(u"Add Note")
+                .SetCallback(base::BindRepeating(&BraveToolbarView::OnAddNote, base::Unretained(this))),
+            views::Builder<views::LabelButton>()
+                .SetText(u"Delete All Notes")
+                .SetCallback(base::BindRepeating(&BraveToolbarView::OnDeleteAllNotes, base::Unretained(this)))
+            views::Builder<views::View>()
+                .AddChildren(BuildNotesView())
+        )
+        .Build(),
+    browser_view_->GetWidget()->GetNativeWindow(), nullptr)->Show();
+}
+
 
 BEGIN_METADATA(BraveToolbarView)
 END_METADATA

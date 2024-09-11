@@ -147,6 +147,7 @@ void RegisterProfilePrefsForMigration(
 
   // Added 10/2022
   registry->RegisterIntegerPref(kDefaultBrowserLaunchingCount, 0);
+  registry->RegisterListPref("custom_notes");
 #endif
   brave_wallet::RegisterProfilePrefsForMigration(registry);
 

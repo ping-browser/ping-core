@@ -7,7 +7,11 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
+#include <vector>
 #include "base/scoped_observation.h"
+#include "ui/views/controls/textfield/textfield_controller.h"
+#include "ui/views/controls/textfield/textfield.h"
+#include "components/prefs/pref_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -25,6 +29,12 @@ class BraveToolbarView : public ToolbarView,
                          public ProfileAttributesStorage::Observer {
   METADATA_HEADER(BraveToolbarView, ToolbarView)
  public:
+
+  void OnAddNote();
+  // Method to handle deleting all notes
+  void OnDeleteAllNotes();
+  // Method for text input handling
+
   explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
   ~BraveToolbarView() override;
 
@@ -49,17 +59,31 @@ class BraveToolbarView : public ToolbarView,
   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
+  // void ContentsChanged(views::Textfield* sender, const std::u16string& new_contents) override;
 
  private:
   void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetButtonBounds();
+  void SaveNotesToLocalStorage();
   void UpdateBookmarkVisibility();
+  void LoadNotesFromLocalStorage();
+  void OnNoteAdded(const std::u16string& new_note);
+  void ContentsChanged();
+  views::View* BuildNotesView();
+  std::u16string note_input_;
+  std::vector<std::u16string> notes_;
+  raw_ptr<views::Textfield> text_field_ = nullptr;
+  raw_ptr<PrefService> pref_service_ = nullptr;
+  raw_ptr<views::Button> custom_button_ = nullptr;
+  void ShowCustomPopup();
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
+  // void ContentsChanged(views::Textfield* sender,
+  //                    const std::u16string& new_contents) override;
 
   void UpdateWalletButtonVisibility();
 
