@@ -463,8 +463,8 @@ void BraveToolbarView::OnAddNote() {
 
 // Method to delete all notes
 void BraveToolbarView::OnDeleteAllNotes() {
-  notes_.clear();
-  SaveNotesToLocalStorage();  // Update storage
+  // notes_.clear();
+  // SaveNotesToLocalStorage();  // Update storage
 }
 
 // Save notes to preferences or a file (acting as local storage)
@@ -492,10 +492,7 @@ void BraveToolbarView::LoadNotesFromLocalStorage() {
       notes_.clear();
       for (const auto& note_value : note_list) {
         if (note_value.is_string()) {
-          std::u16string u16_string = base::UTF8ToUTF16(note_value.GetString());
-          // Convert std::u16string to std::string
-          std::string str(u16_string.begin(), u16_string.end());
-          notes_.push_back(str);
+          notes_.push_back(note_value.GetString());
         }
       }
     }
@@ -505,13 +502,13 @@ void BraveToolbarView::LoadNotesFromLocalStorage() {
 }
 
 void BraveToolbarView::OnNoteAdded(const std::u16string& new_note) {
- notes_.push_back(base::UTF16ToUTF8(new_note));
+  notes_.push_back(base::UTF16ToUTF8(new_note));
   SaveNotesToLocalStorage();  // Save the updated notes list
 }
 
 // Handling text input changes
 void BraveToolbarView::ContentsChanged(views::Textfield* sender, const std::u16string& new_contents) {
-  note_input_ = new_contents;  // Update note content as it is typed
+  // note_input_ = new_contents;  // Update note content as it is typed
 }
 
 void BraveToolbarView::UpdateWalletButtonVisibility() {
@@ -540,38 +537,50 @@ views::View* BraveToolbarView::BuildNotesView() {
   auto* container = new views::View();
   container->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
-  
-  for (const auto& note : notes_) {
-    container->AddChildView(std::make_unique<views::Label>(base::UTF8ToUTF16(note)));
-  }
 
   return container;
 }
 
 
 void BraveToolbarView::ShowCustomPopup() {
-  // Create a simple popup dialog (for demonstration purposes).
-  views::DialogDelegate::CreateDialogWidget(
-    views::Builder<views::DialogDelegateView>()
-        .SetTitle(u"Custom Note Popup")
-        .SetLayoutManager(std::make_unique<views::BoxLayout>(
-            views::BoxLayout::Orientation::kVertical))
-        .AddChildren(
-            views::Builder<views::Textfield>()  // Add text input for note
-                .SetController(&text_field_controller_), // Controller to handle input
-            views::Builder<views::LabelButton>()
-                .SetText(u"Add Note")
-                .SetCallback(base::BindRepeating(&BraveToolbarView::OnAddNote, base::Unretained(this))),
-            views::Builder<views::LabelButton>()
-                .SetText(u"Delete All Notes")
-                .SetCallback(base::BindRepeating(&BraveToolbarView::OnDeleteAllNotes, base::Unretained(this)))
-            views::Builder<views::View>()
-                .AddChildren(BuildNotesView())
-        )
-        .Build(),
-    browser_view_->GetWidget()->GetNativeWindow(), nullptr)->Show();
-}
+  // Create a custom DialogDelegateView
+  class CustomDialogDelegate : public views::DialogDelegateView {
+   public:
+    CustomDialogDelegate(BraveToolbarView* toolbar_view)
+        : toolbar_view_(toolbar_view) {
+      SetTitle(u"Custom Note Popup");
+      SetLayoutManager(std::make_unique<views::BoxLayout>(
+          views::BoxLayout::Orientation::kVertical));
 
+      text_field_ = AddChildView(std::make_unique<views::Textfield>());
+      text_field_->SetText(u"Notes");
+
+      AddChildView(std::make_unique<views::LabelButton>(
+          base::BindRepeating(&BraveToolbarView::OnAddNote,
+                              base::Unretained(toolbar_view_)),
+          u"Add Note"));
+
+      AddChildView(std::make_unique<views::LabelButton>(
+          base::BindRepeating(&BraveToolbarView::OnDeleteAllNotes,
+                              base::Unretained(toolbar_view_)),
+          u"Delete All Notes"));
+
+      AddChildView(toolbar_view_->BuildNotesView());
+    }
+
+    bool ShouldShowCloseButton() const override { return true; }
+
+   private:
+    raw_ptr<BraveToolbarView> toolbar_view_;
+    raw_ptr<views::Textfield> text_field_;
+  };
+
+  // Create and show the dialog
+  views::Widget::CreateWindowWithContext(
+      new CustomDialogDelegate(this),
+      browser_view_->GetWidget()->GetNativeWindow(),
+      gfx::Rect(300, 300))->Show();
+}
 
 BEGIN_METADATA(BraveToolbarView)
 END_METADATA

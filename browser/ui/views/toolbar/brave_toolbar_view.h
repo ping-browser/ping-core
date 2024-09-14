@@ -71,8 +71,8 @@ class BraveToolbarView : public ToolbarView,
   void OnNoteAdded(const std::u16string& new_note);
   void ContentsChanged();
   views::View* BuildNotesView();
-  std::u16string note_input_;
-  std::vector<std::u16string> notes_;
+  std::string note_input_;
+  std::vector<std::string> notes_;
   raw_ptr<views::Textfield> text_field_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;
   raw_ptr<views::Button> custom_button_ = nullptr;
@@ -82,8 +82,8 @@ class BraveToolbarView : public ToolbarView,
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
-  // void ContentsChanged(views::Textfield* sender,
-  //                    const std::u16string& new_contents) override;
+  void ContentsChanged(views::Textfield* sender,
+                     const std::u16string& new_contents);
 
   void UpdateWalletButtonVisibility();
 
