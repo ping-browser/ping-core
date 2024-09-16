@@ -14,11 +14,15 @@
       <include name="IDR_BRAVE_PING_AI_COPILOT_CSS" file="extension/content/ui/style.css" resource_path="ping_ai_copilot/extension/content/ui/style.css" type="BINDATA" />
       <include name="IDR_BRAVE_PING_AI_COPILOT_AI_ICON" file="extension/assets/aiSummarizerIcon.svg" resource_path="ping_ai_copilot/extension/assets/aiSummarizerIcon.svg" type="BINDATA" />
       <include name="IDR_BRAVE_PING_AI_COPILOT_POPUP_CONTENT_COPY" file="extension/assets/content_copy.svg" resource_path="ping_ai_copilot/extension/assets/content_copy.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_PING_AI_COPILOT_BACK" file="extension/assets/back.svg" resource_path="ping_ai_copilot/extension/assets/back.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_PING_AI_COPILOT_REPHRASE" file="extension/assets/rephrase.svg" resource_path="ping_ai_copilot/extension/assets/rephrase.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_PING_AI_COPILOT_BLACK_REPHRASE" file="extension/assets/black-rephrase.svg" resource_path="ping_ai_copilot/extension/assets/black-rephrase.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_PING_AI_COPILOT_CROSS" file="extension/assets/cross.svg" resource_path="ping_ai_copilot/extension/assets/cross.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_PING_AI_COPILOT_REWRITE" file="extension/assets/rewrite.svg" resource_path="ping_ai_copilot/extension/assets/rewrite.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_BACK_DARK" file="extension/assets/back-dark.svg" resource_path="ping_ai_copilot/extension/assets/back-dark.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_BACK_LIGHT" file="extension/assets/back-light.svg" resource_path="ping_ai_copilot/extension/assets/back-light.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_REPHRASE_DARK" file="extension/assets/rephrase-dark.svg" resource_path="ping_ai_copilot/extension/assets/rephrase-dark.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_REPHRASE_DARK_HOVER" file="extension/assets/rephrase-dark-hover.svg" resource_path="ping_ai_copilot/extension/assets/rephrase-dark-hover.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_REPHRASE_LIGHT" file="extension/assets/rephrase-light.svg" resource_path="ping_ai_copilot/extension/assets/rephrase-light.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_REPHRASE_LIGHT_HOVER" file="extension/assets/rephrase-light-hover.svg" resource_path="ping_ai_copilot/extension/assets/rephrase-light-hover.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_CROSS_LIGHT" file="extension/assets/cross-light.svg" resource_path="ping_ai_copilot/extension/assets/cross-light.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_REWRITE_DARK" file="extension/assets/rewrite-dark.svg" resource_path="ping_ai_copilot/extension/assets/rewrite-dark.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PING_AI_COPILOT_REWRITE_LIGHT" file="extension/assets/rewrite-light.svg" resource_path="ping_ai_copilot/extension/assets/rewrite-light.svg" type="BINDATA" />
     </includes>
   </release>
 </grit>

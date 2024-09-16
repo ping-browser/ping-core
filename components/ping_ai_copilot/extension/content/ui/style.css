@@ -10,12 +10,18 @@
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  background-color: #000;
-  padding: 8px 14px;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  padding: 7px 16px;
+  border-radius: 94.42px;
+  backdrop-filter: blur(16.56488609313965px);  
   position: absolute;
   z-index: 10000000;
   transition: all 0.3s ease-in-out;
+}
+
+.pill-img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .icon {
@@ -27,7 +33,7 @@
 }
 
 .separator {
-  color: #fff;
+  color: #000;
   margin: 0 8px;
 }
 
@@ -35,7 +41,7 @@
   position: absolute;
   background-color: #333;
   color: #fff;
-  padding: 5px 8px;
+  padding: 5.5px 8px;
   border-radius: 4px;
   font-size: 12px;
   white-space: nowrap;
@@ -46,35 +52,61 @@
 }
 
 .left-tooltip {
-  bottom: 105%;
+  bottom: 106%;
   left: 30%;
   transform: translateX(-50%);
 }
 
 .right-tooltip {
-  bottom: 105%;
+  bottom: 106%;
   left: 70%;
   transform: translateX(-50%);
+}
+
+.tooltip-hover-light {
+  color: #000;
+  background-color: #fff;
+  box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.tooltip-hover-dark {
+  color: #fff;
+  background-color: #000;
+  box-shadow: 2px 4px 4px 0px rgba(255, 255, 255, 0.25);
 }
 
 .rephrase-button-container {
   position: absolute;
   z-index: 10000000;
   cursor: pointer;
-  background-color: #FFF;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 50%;
-  padding: 5px;
-  width: 34px;
-  height: 34px;
+  background-color: rgba(255, 255, 255, 0.10);
+  box-shadow: 6.16px 6.16px 14.784px rgba(0, 0, 0, 0.30);  border-radius: 50%;
+  padding: 4.5px;
+  width: 27px;
+  height: 27px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: box-shadow 0.2s ease;
 }
 
-.rephrase-button-container:hover {
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.18);
+.light-shadow {
+  background-color: rgba(255, 255, 255, 0.10);
+  box-shadow: 6.16px 6.16px 14.784px rgba(0, 0, 0, 0.30);  border-radius: 50%;
+}
+
+.dark-shadow {
+  background-color: rgba(0, 0, 0, 0.10);
+  box-shadow: 2px 2px 4.8px rgba(255, 255, 255, 0.30);  border-radius: 50%;
+}
+
+.pill-light-shadow {
+  background-color: rgba(255, 255, 255, 0.01);
+  box-shadow: 3.313px 4.969px 8.117px 0px rgba(0, 0, 0, 0.25);
+}
+.pill-dark-shadow {
+  background-color: #fff;
+  box-shadow: 3.313px 4.969px 8.117px 0px rgba(255, 255, 255, 0.25);
 }
 
 /* aiSummarizer */

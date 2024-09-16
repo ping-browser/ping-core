@@ -35,21 +35,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
   if (request.action === 'rephrase') {
     (async () => {
-        try {
-            let ln = chrome.i18n.getUILanguage();
-            const response = await fetch('https://openai-text-summarizer.azurewebsites.net/rephrase', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ text: request.text, lang: ln }),
-            });
+      try {
+        let ln = chrome.i18n.getUILanguage();
+        const response = await fetch('https://openai-text-summarizer.azurewebsites.net/rephrase', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: request.text, lang: ln }),
+        });
 
-            const data = await response.json();
-            sendResponse({rephrase: data.rText})
-        } catch (error) {
-            sendResponse({rephrase: "An error occurred while rephrasing the text"})
-        }
+        const data = await response.json();
+        sendResponse({ rephrase: data.rText })
+      } catch (error) {
+        sendResponse({ rephrase: "An error occurred while rephrasing the text" })
+      }
     })();
     return true;
   }
