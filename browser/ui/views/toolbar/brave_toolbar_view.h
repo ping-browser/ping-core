@@ -6,17 +6,18 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 
-#include "base/memory/raw_ptr.h"
 #include <vector>
+
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
-#include "ui/views/controls/textfield/textfield_controller.h"
-#include "ui/views/controls/textfield/textfield.h"
-#include "components/prefs/pref_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/prefs/pref_member.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/views/controls/textfield/textfield.h"
+#include "ui/views/controls/textfield/textfield_controller.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 class BraveVPNButton;
@@ -29,8 +30,8 @@ class BraveToolbarView : public ToolbarView,
                          public ProfileAttributesStorage::Observer {
   METADATA_HEADER(BraveToolbarView, ToolbarView)
  public:
+  void OnAddNote(const std::u16string& new_note);
 
-  void OnAddNote();
   // Method to handle deleting all notes
   void OnDeleteAllNotes();
   // Method for text input handling
@@ -59,7 +60,8 @@ class BraveToolbarView : public ToolbarView,
   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
-  // void ContentsChanged(views::Textfield* sender, const std::u16string& new_contents) override;
+  // void ContentsChanged(views::Textfield* sender, const std::u16string&
+  // new_contents) override;
 
  private:
   void LoadImages() override;
@@ -83,7 +85,7 @@ class BraveToolbarView : public ToolbarView,
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
   void ContentsChanged(views::Textfield* sender,
-                     const std::u16string& new_contents);
+                       const std::u16string& new_contents);
 
   void UpdateWalletButtonVisibility();
 
