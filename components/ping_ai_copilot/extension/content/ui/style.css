@@ -24,6 +24,11 @@
   justify-content: center;
 }
 
+.pill-img-container:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
 .icon {
   width: 20px;
   height: 20px;

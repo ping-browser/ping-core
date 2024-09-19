@@ -72,20 +72,9 @@ const createPillContainer = (textBox, img) => {
 
     const leftTooltip = document.createElement('span');
     leftTooltip.textContent = 'Back';
-    leftTooltip.classList.add('tooltip', 'left-tooltip');
+    leftTooltip.classList.add('tooltip', 'left-tooltip', `tooltip-hover-${iconColor}`);
     leftImg.appendChild(leftTooltip);
     pillContainer.appendChild(leftImg);
-
-    leftImg.addEventListener('mouseover', () => {
-        leftTooltip.style.visibility = 'visible';
-        leftTooltip.style.opacity = '1';
-        leftTooltip.classList.add(`tooltip-hover-${iconColor}`);
-    });
-
-    leftImg.addEventListener('mouseout', () => {
-        leftTooltip.style.visibility = 'hidden';
-        leftTooltip.style.opacity = '0';
-    });
 
     const separator = document.createElement('span');
     separator.textContent = '|';
@@ -103,27 +92,16 @@ const createPillContainer = (textBox, img) => {
 
     const rightTooltip = document.createElement('span');
     rightTooltip.textContent = 'Retry';
-    rightTooltip.classList.add('tooltip', 'right-tooltip');
+    rightTooltip.classList.add('tooltip', 'right-tooltip', `tooltip-hover-${iconColor}`);
     rightImg.appendChild(rightTooltip);
     pillContainer.appendChild(rightImg);
-
-    rightImg.addEventListener('mouseover', () => {
-        rightTooltip.style.visibility = 'visible';
-        rightTooltip.style.opacity = '1';
-        rightTooltip.classList.add(`tooltip-hover-${iconColor}`);
-    });
-
-    rightImg.addEventListener('mouseout', () => {
-        rightTooltip.style.visibility = 'hidden';
-        rightTooltip.style.opacity = '0';
-    });
 
     document.body.appendChild(pillContainer);
 
     // Adjust position based on scroll offsets
     const rect = textBox.getBoundingClientRect();
     pillContainer.style.left = `${rect.right - pillContainer.offsetWidth - 5 + window.scrollX}px`;
-    pillContainer.style.top = `${rect.bottom - pillContainer.offsetHeight - 5 + window.scrollY}px`;
+    pillContainer.style.top = `${rect.bottom - pillContainer.offsetHeight + window.scrollY}px`;
 
     leftImgIcon.addEventListener('click', () => {
         if (prevActiveElement) {
@@ -377,8 +355,8 @@ const addButtonToTextBox = (textBox) => {
     const containerHeight = img.style.height;
     const containerWidth = img.style.width;
 
-    buttonContainer.style.left = `${rect.right - parseInt(containerWidth) - 32 + window.scrollX}px`;
-    buttonContainer.style.top = `${rect.bottom - parseInt(containerHeight) - 20 + window.scrollY}px`;
+    buttonContainer.style.left = `${rect.right - parseInt(containerWidth) - 30 + window.scrollX}px`;
+    buttonContainer.style.top = `${rect.bottom - parseInt(containerHeight) - 10 + window.scrollY}px`;
 
     document.body.appendChild(buttonContainer);
 
