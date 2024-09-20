@@ -267,7 +267,7 @@ public class BraveMainPreferencesBase
 
         findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
 
-        // findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
+        findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
         // findPreference(PREF_BRAVE_NEWS_V2).setOrder(++firstSectionOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
@@ -421,7 +421,7 @@ public class BraveMainPreferencesBase
 
     private void overrideChromiumPreferences() {
         // Replace fragment.
-        // findPreference(PREF_SHIELDS_AND_PRIVACY).setFragment(BravePrivacySettings.class.getName());
+        findPreference(PREF_SHIELDS_AND_PRIVACY).setFragment(BravePrivacySettings.class.getName());
         Preference preference = findPreference(MainSettings.PREF_HOMEPAGE);
         if (preference != null) {
             preference.setFragment(BraveHomepageSettings.class.getName());

@@ -107,8 +107,8 @@ public class Utils {
     public static final int SOL_DEFAULT_DECIMALS = 9;
 
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
-    public static final String BRAVE_SUPPORT_URL = "https://support.brave.com";
-    public static final String BRAVE_TERMS_OF_USE_URL = "https://brave.com/terms-of-use/";
+    public static final String BRAVE_SUPPORT_URL = "https://ping-browser.com/faqs-and-help";
+    public static final String BRAVE_TERMS_OF_USE_URL = "https://ping-browser.com/terms-of-use-1";
     public static final String NAME = "name";
     public static final String COIN_TYPE = "coinType";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";

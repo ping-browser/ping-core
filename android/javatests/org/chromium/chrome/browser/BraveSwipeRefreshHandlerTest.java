@@ -92,7 +92,7 @@ public class BraveSwipeRefreshHandlerTest {
     @Test
     @SmallTest
     public void allowRefreshForNonLeo() throws Exception {
-        boolean refreshed = loadUrlAttemptRefresh("https://brave.com", PageTransition.TYPED);
+        boolean refreshed = loadUrlAttemptRefresh("https://ping-browser.com/faqs-and-help", PageTransition.TYPED);
         Assert.assertTrue(refreshed);
     }
 
