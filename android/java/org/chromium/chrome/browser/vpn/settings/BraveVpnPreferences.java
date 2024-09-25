@@ -77,7 +77,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private static final int INVALIDATE_CREDENTIAL_TIMER_COUNT = 5000;
 
     private static final String VPN_SUPPORT_PAGE =
-            "https://support.brave.com/hc/en-us/articles/4410838268429";
+            "https://ping-browser.com/faqs-and-help";
 
     private static final String DATE_FORMAT = "dd/MM/yyyy";
 

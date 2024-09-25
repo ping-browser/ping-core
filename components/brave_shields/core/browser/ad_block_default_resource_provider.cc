@@ -18,7 +18,7 @@
 
 namespace {
 constexpr char kAdBlockResourcesFilename[] = "resources.json";
-const char kAdBlockExceptionComponentId[] = "adcocjohghhfpidemphmcmlmhnfgikei";
+const char kAdBlockExceptionComponentId[] = "jengikaikeclalmjjfbfndkbhfkoaofe";
 
 BASE_DECLARE_FEATURE(kAdBlockDefaultResourceUpdateInterval);
 constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{

@@ -22,7 +22,6 @@ import {
   WalletTitle,
   StaticBackground,
   BackgroundGradientBottomLayer,
-  BraveIcon,
   HeaderWrapper,
   TitleSection,
   BackButtonWrapper
@@ -58,7 +57,6 @@ export const OnboardingContentLayout = ({
           gap='10px'
           justifyContent='flex-start'
         >
-          <BraveIcon />
           <WalletTitle>{getLocale('braveWalletTitle')}</WalletTitle>
         </Row>
       </TitleSection>

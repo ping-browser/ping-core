@@ -37,7 +37,7 @@ const std::string GetSardineNetworkName(const std::string& chain_id) {
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints() {
   static base::NoDestructor<base::flat_map<std::string, std::string>> endpoints(
       {{brave_wallet::mojom::kPolygonMainnetChainId,
-        "https://mainnet-polygon.brave.com/"},
+        "https://polygon-mainnet.infura.io/v3/"},
        {brave_wallet::mojom::kOptimismMainnetChainId,
         "https://mainnet-optimism.brave.com/"},
        {brave_wallet::mojom::kAuroraMainnetChainId,

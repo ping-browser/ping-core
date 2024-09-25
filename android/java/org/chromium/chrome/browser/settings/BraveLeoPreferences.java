@@ -34,9 +34,9 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private static final String PREF_SUBSCRIPTION_CATEGORY = "subscription_category";
     private static final String PREF_DEFAULT_MODEL = "default_model";
     private static final String LINK_SUBSCRIPTION_URL =
-            "https://account.brave.com?intent=link-order&product=leo";
+            "https://ping-browser.com/faqs-and-help";
     private static final String LINK_SUBSCRIPTION_URL_STAGING =
-            "https://account.bravesoftware.com?intent=link-order&product=leo";
+            "https://ping-browser.com/faqs-and-help";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
