@@ -34,7 +34,10 @@ class BraveToolbarView : public ToolbarView,
 
   // Method to handle deleting all notes
   void OnDeleteAllNotes();
-  // Method for text input handling
+  void DeleteNote(size_t index);
+  void RefreshNotesView();
+  void ShowCustomPopup();
+  void LoadNotesFromLocalStorage();
 
   explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
   ~BraveToolbarView() override;
@@ -69,7 +72,6 @@ class BraveToolbarView : public ToolbarView,
   void ResetButtonBounds();
   void SaveNotesToLocalStorage();
   void UpdateBookmarkVisibility();
-  void LoadNotesFromLocalStorage();
   void OnNoteAdded(const std::u16string& new_note);
   void ContentsChanged();
   views::View* BuildNotesView();
@@ -78,7 +80,8 @@ class BraveToolbarView : public ToolbarView,
   raw_ptr<views::Textfield> text_field_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;
   raw_ptr<views::Button> custom_button_ = nullptr;
-  void ShowCustomPopup();
+  static constexpr int kNotesViewID = 1001;  // Choose a unique ID
+  raw_ptr<views::DialogDelegateView> custom_dialog_ = nullptr;
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;

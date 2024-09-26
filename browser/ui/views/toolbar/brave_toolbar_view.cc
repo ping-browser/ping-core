@@ -37,6 +37,10 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
+#include "ui/views/controls/button/label_button.h"
+#include "ui/views/controls/label.h"
+#include "ui/views/controls/scroll_view.h"
+#include "ui/views/layout/box_layout.h"
 #include "ui/views/window/hit_test_utils.h"
 
 #if !BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -471,48 +475,79 @@ void BraveToolbarView::OnAddNote(const std::u16string& new_note) {
   if (!new_note.empty()) {
     notes_.push_back(base::UTF16ToUTF8(new_note));
     SaveNotesToLocalStorage();
+    LOG(INFO) << "Added new note: " << base::UTF16ToUTF8(new_note);
+    RefreshNotesView();
   }
 }
 
 void BraveToolbarView::OnDeleteAllNotes() {
   if (!notes_.empty()) {
+    LOG(INFO) << "Deleting all " << notes_.size() << " notes";
     notes_.clear();
     SaveNotesToLocalStorage();
+    RefreshNotesView();
   }
 }
 
 // Save notes to preferences or a file (acting as local storage)
 void BraveToolbarView::SaveNotesToLocalStorage() {
   base::Value::List note_list;
-
   for (const auto& note : notes_) {
-    LOG(ERROR) << note;
     note_list.Append(base::Value(note));
   }
 
   if (pref_service_) {
     pref_service_->Set("custom_notes", base::Value(std::move(note_list)));
     pref_service_->CommitPendingWrite();
-    LOG(ERROR) << "ADDED SUCCESSFULLY";
+    LOG(INFO) << "Saved " << notes_.size() << " notes to local storage";
   } else {
     LOG(ERROR) << "PrefService is not initialized.";
   }
 }
 
-// Load notes from local storage (preferences)
+void BraveToolbarView::DeleteNote(size_t index) {
+  if (index < notes_.size()) {
+    notes_.erase(notes_.begin() + index);
+    SaveNotesToLocalStorage();
+    RefreshNotesView();
+  }
+}
+
+void BraveToolbarView::RefreshNotesView() {
+  LoadNotesFromLocalStorage();
+  LOG(INFO) << "Refreshing notes view with " << notes_.size() << " notes";
+  if (custom_dialog_) {
+    views::View* old_notes_view =
+        custom_dialog_->GetContentsView()->GetViewByID(kNotesViewID);
+    if (old_notes_view) {
+      views::View* new_notes_view = BuildNotesView();
+      new_notes_view->SetID(kNotesViewID);
+      custom_dialog_->GetContentsView()->RemoveChildView(old_notes_view);
+      custom_dialog_->GetContentsView()->AddChildView(new_notes_view);
+      custom_dialog_->GetContentsView()->InvalidateLayout();
+      LOG(INFO) << "Notes view refreshed in custom dialog";
+    } else {
+      LOG(ERROR) << "Could not find old notes view to refresh";
+    }
+  } else {
+    LOG(ERROR) << "Custom dialog is null during refresh";
+  }
+}
+
 void BraveToolbarView::LoadNotesFromLocalStorage() {
+  notes_.clear();
   if (pref_service_) {
     const base::Value* note_list_value =
         pref_service_->GetUserPrefValue("custom_notes");
     if (note_list_value && note_list_value->is_list()) {
       const base::Value::List& note_list = note_list_value->GetList();
-      notes_.clear();
       for (const auto& note_value : note_list) {
         if (note_value.is_string()) {
           notes_.push_back(note_value.GetString());
         }
       }
     }
+    LOG(INFO) << "Loaded " << notes_.size() << " notes from local storage";
   } else {
     LOG(ERROR) << "PrefService is not initialized.";
   }
@@ -552,14 +587,46 @@ void BraveToolbarView::UpdateWalletButtonVisibility() {
 }
 
 views::View* BraveToolbarView::BuildNotesView() {
-  auto* container = new views::View();
+  auto container = std::make_unique<views::View>();
   container->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
 
-  return container;
+  auto scroll_view = std::make_unique<views::ScrollView>();
+  auto notes_container = std::make_unique<views::View>();
+  notes_container->SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kVertical));
+
+  LOG(INFO) << "Building notes view with " << notes_.size() << " notes";
+
+  for (size_t i = 0; i < notes_.size(); ++i) {
+    auto note_view = std::make_unique<views::View>();
+    note_view->SetLayoutManager(std::make_unique<views::BoxLayout>(
+        views::BoxLayout::Orientation::kHorizontal));
+
+    auto note_label =
+        std::make_unique<views::Label>(base::UTF8ToUTF16(notes_[i]));
+    note_view->AddChildView(std::move(note_label));
+
+    auto delete_button = std::make_unique<views::LabelButton>(
+        base::BindRepeating(&BraveToolbarView::DeleteNote,
+                            base::Unretained(this), i),
+        u"Delete");
+    note_view->AddChildView(std::move(delete_button));
+
+    notes_container->AddChildView(std::move(note_view));
+    LOG(INFO) << "Added note to view: " << notes_[i];
+  }
+
+  scroll_view->SetContents(std::move(notes_container));
+  container->AddChildView(std::move(scroll_view));
+
+  return container.release();
 }
 
 void BraveToolbarView::ShowCustomPopup() {
+  LoadNotesFromLocalStorage();
+  LOG(INFO) << "Showing custom popup with " << notes_.size() << " notes";
+
   class CustomDialogDelegate : public views::DialogDelegateView {
    public:
     CustomDialogDelegate(BraveToolbarView* toolbar_view)
@@ -569,22 +636,14 @@ void BraveToolbarView::ShowCustomPopup() {
           views::BoxLayout::Orientation::kVertical));
 
       auto text_field = std::make_unique<views::Textfield>();
-      auto* text_field_ptr = text_field.get();
+      text_field_ = text_field.get();
       AddChildView(std::move(text_field));
-      text_field_ptr->SetPlaceholderText(u"Enter your note here");
+      text_field_->SetPlaceholderText(u"Enter your note here");
 
       auto add_note_button = std::make_unique<views::LabelButton>(
-          base::BindRepeating(
-              [](views::Textfield* text_field, BraveToolbarView* toolbar_view) {
-                if (text_field && toolbar_view) {
-                  std::u16string note_text = text_field->GetText();
-                  toolbar_view->OnAddNote(note_text);
-                  text_field->SetText(u"");  // Clear the text field here
-                }
-              },
-              text_field_ptr, base::Unretained(toolbar_view_)),
+          base::BindRepeating(&CustomDialogDelegate::OnAddNote,
+                              base::Unretained(this)),
           u"Add Note");
-
       AddChildView(std::move(add_note_button));
 
       AddChildView(std::make_unique<views::LabelButton>(
@@ -592,19 +651,61 @@ void BraveToolbarView::ShowCustomPopup() {
                               base::Unretained(toolbar_view_)),
           u"Delete All Notes"));
 
-      AddChildView(toolbar_view_->BuildNotesView());
+      notes_container_ = AddChildView(std::make_unique<views::View>());
+      notes_container_->SetLayoutManager(std::make_unique<views::BoxLayout>(
+          views::BoxLayout::Orientation::kVertical));
+      notes_container_->SetID(kNotesViewID);
+
+      RefreshNotesView();
+
+      LOG(INFO) << "CustomDialogDelegate initialized with "
+                << toolbar_view_->notes_.size() << " notes";
     }
 
     bool ShouldShowCloseButton() const override { return true; }
 
    private:
+    void OnAddNote() {
+      if (text_field_ && toolbar_view_) {
+        std::u16string note_text = text_field_->GetText();
+        toolbar_view_->OnAddNote(note_text);
+        text_field_->SetText(u"");  // Clear the text field
+        RefreshNotesView();
+      }
+    }
+
+    void RefreshNotesView() {
+      notes_container_->RemoveAllChildViews();
+      for (size_t i = 0; i < toolbar_view_->notes_.size(); ++i) {
+        auto note_view = std::make_unique<views::View>();
+        note_view->SetLayoutManager(std::make_unique<views::BoxLayout>(
+            views::BoxLayout::Orientation::kHorizontal));
+
+        auto note_label = std::make_unique<views::Label>(
+            base::UTF8ToUTF16(toolbar_view_->notes_[i]));
+        note_view->AddChildView(std::move(note_label));
+
+        auto delete_button = std::make_unique<views::LabelButton>(
+            base::BindRepeating(&BraveToolbarView::DeleteNote,
+                                base::Unretained(toolbar_view_), i),
+            u"Delete");
+        note_view->AddChildView(std::move(delete_button));
+
+        notes_container_->AddChildView(std::move(note_view));
+      }
+      notes_container_->InvalidateLayout();
+      notes_container_->SchedulePaint();
+    }
+
     raw_ptr<BraveToolbarView> toolbar_view_;
     raw_ptr<views::Textfield> text_field_;
+    raw_ptr<views::View> notes_container_;
   };
 
+  custom_dialog_ = new CustomDialogDelegate(this);
   views::Widget::CreateWindowWithContext(
-      new CustomDialogDelegate(this),
-      browser_view_->GetWidget()->GetNativeWindow(), gfx::Rect(300, 300))
+      custom_dialog_, browser_view_->GetWidget()->GetNativeWindow(),
+      gfx::Rect(300, 300))
       ->Show();
 }
 
