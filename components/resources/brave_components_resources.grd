@@ -8,6 +8,7 @@
   </outputs>
   <release seq="1">
     <includes>
+    <include name="IDR_BRAVE_CUSTOM_NOTES_HTML" file="../brave_custom_notes/resources/page/brave_custom_notes.html" type="BINDATA" />
       <!-- DO NOT PUT RESOURCES FOR SPECIFIC COMPONENTS IN THIS FILE
            create a new grd file in components/component_name/resources/ -->
 

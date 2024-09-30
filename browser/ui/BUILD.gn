@@ -239,6 +239,8 @@ source_set("ui") {
       "webui/private_new_tab_page/brave_private_new_tab_page_handler.h",
       "webui/private_new_tab_page/brave_private_new_tab_ui.cc",
       "webui/private_new_tab_page/brave_private_new_tab_ui.h",
+      "webui/brave_custom_notes/brave_custom_notes_ui.cc",
+      "webui/brave_custom_notes/brave_custom_notes_ui.h",
       "webui/settings/brave_adblock_handler.cc",
       "webui/settings/brave_adblock_handler.h",
       "webui/settings/brave_appearance_handler.cc",

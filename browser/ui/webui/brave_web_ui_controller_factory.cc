@@ -15,6 +15,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
+#include "brave/browser/ui/webui/brave_custom_notes/brave_custom_notes_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
@@ -112,6 +113,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveAdblockUI(web_ui, url.host());
   } else if (host == kAdblockInternalsHost) {
     return new BraveAdblockInternalsUI(web_ui, url.host());
+  } else if (host == kBraveCustomNotesHost) {
+    return new BraveCustomNotesUI(web_ui);
   } else if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
@@ -260,7 +263,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        url.host_piece() == brave_player::kBravePlayerHost) ||
 #endif
       url.host_piece() == kRewardsPageHost ||
-      url.host_piece() == kRewardsInternalsHost) {
+      url.host_piece() == kRewardsInternalsHost ||
+      url.host_piece() == kBraveCustomNotesHost) {
     return &NewWebUI;
   }
 

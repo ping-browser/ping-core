@@ -1,0 +1,17 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("brave_custom_notes_ui") {
+    entry_points = [[
+        "brave_custom_notes",
+        rebase_path("brave_custom_notes.tsx"),
+    ]]
+    resource_name = "brave_custom_notes"
+    
+}
+
+pack_web_resources("generated_resources") {
+    resource_name = "brave_custom_notes"
+    output_dir = 
+        "$root_gen_dir/brave/components/brave_custom_notes/resources/page"
+    deps = [ ":brave_custom_notes" ]
+}
