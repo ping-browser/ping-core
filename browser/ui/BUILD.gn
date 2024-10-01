@@ -972,6 +972,7 @@ source_set("ui") {
       "//brave/components/brave_private_new_tab_ui/common",
       "//brave/components/brave_private_new_tab_ui/common:mojom",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
+      "//brave/components/brave_custom_notes/resources/page:generated_resources",
       "//brave/components/brave_rewards/browser",
       "//brave/components/brave_rewards/resources/rewards_panel:brave_rewards_panel_generated",
       "//brave/components/brave_rewards/resources/tip_panel:tip_panel_generated",
