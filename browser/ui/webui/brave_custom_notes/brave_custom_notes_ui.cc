@@ -18,8 +18,7 @@ BraveCustomNotesUI::BraveCustomNotesUI(content::WebUI* web_ui)
       Profile::FromWebUI(web_ui), chrome::kBraveCustomNotesHost);
 
   // Adding a simple HTML resource and default fallback
-  source->AddResourcePath("brave_custom_notes.html",
-                          IDR_BRAVE_CUSTOM_NOTES_HTML);
+  source->AddResourcePath("custom_notes.html", IDR_BRAVE_CUSTOM_NOTES_HTML);
   source->SetDefaultResource(IDR_BRAVE_CUSTOM_NOTES_HTML);
 
   // Adding a string to the source that can be used in the HTML
