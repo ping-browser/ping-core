@@ -5,7 +5,7 @@
 
 class BraveCustomNotesUI : public content::WebUIController {
  public:
-  explicit BraveCustomNotesUI(content::WebUI* web_ui);
+  explicit BraveCustomNotesUI(content::WebUI* web_ui, const std::string& name);
   ~BraveCustomNotesUI() override;
 
  private:

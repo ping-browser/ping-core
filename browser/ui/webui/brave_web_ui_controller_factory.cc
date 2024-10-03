@@ -114,7 +114,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kAdblockInternalsHost) {
     return new BraveAdblockInternalsUI(web_ui, url.host());
   } else if (host == kBraveCustomNotesHost) {
-    return new BraveCustomNotesUI(web_ui);
+    return new BraveCustomNotesUI(web_ui, url.host());
   } else if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
