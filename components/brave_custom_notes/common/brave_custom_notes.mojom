@@ -1,0 +1,50 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+module brave_custom_notes.mojom;
+
+// Browser-side handler for requests from the WebUI page related to custom notes.
+interface NotesPageHandler {
+  // Registers the webui page for managing notes.
+  SetClientPage(pending_remote<CustomNotesPage> page);
+
+  // Creates a new custom note with the provided content.
+  CreateNote(string title, string content) => (int32 note_id);
+
+  // Edits an existing note by note ID, updating its title and content.
+  EditNote(int32 note_id, string new_title, string new_content) => (bool success);
+
+  // Deletes a note based on the note ID.
+  DeleteNote(int32 note_id) => (bool success);
+
+  // Retrieves the content of a note by note ID.
+  GetNoteContent(int32 note_id) => (string title, string content);
+
+  // Retrieves all notes with their titles and IDs.
+  GetAllNotes() => (array<Note> notes);
+};
+
+// Struct that defines the properties of a note.
+struct Note {
+  int32 id;          // Unique identifier for the note.
+  string title;      // Title of the note.
+  string content;    // Content/body of the note.
+  string timestamp;  // Timestamp when the note was created or last edited.
+};
+
+// WebUI page that receives updates about the note-taking process.
+interface CustomNotesPage {
+  // Triggered when a note is successfully created.
+  OnNoteCreated(int32 note_id, string title);
+
+  // Triggered when a note is successfully edited.
+  OnNoteEdited(int32 note_id, string new_title);
+
+  // Triggered when a note is successfully deleted.
+  OnNoteDeleted(int32 note_id);
+
+  // Triggered when the list of notes is updated (e.g., on page load or after changes).
+  OnNotesUpdated(array<Note> notes);
+};

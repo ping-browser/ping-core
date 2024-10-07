@@ -6,7 +6,7 @@ transpile_web_ui("brave_custom_notes") {
         rebase_path("./custom_notes.tsx"),
     ]]
     resource_name = "brave_custom_notes"
-    
+    deps = [ "//brave/components/brave_custom_notes/common:mojom_js" ]
 }
 
 pack_web_resources("generated_resources") {
