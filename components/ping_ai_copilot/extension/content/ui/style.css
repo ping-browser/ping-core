@@ -56,13 +56,13 @@
   z-index: 10000001;
 }
 
-.left-tooltip {
+.back-tooltip {
   bottom: 106%;
   left: 30%;
   transform: translateX(-50%);
 }
 
-.right-tooltip {
+.retry-tooltip {
   bottom: 106%;
   left: 70%;
   transform: translateX(-50%);

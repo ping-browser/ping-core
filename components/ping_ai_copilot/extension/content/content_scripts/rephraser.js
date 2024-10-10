@@ -1,232 +1,437 @@
-let prevActiveElement = null;
-let originalText = '';
-let rephrasedText = '';
-let rephraseButton = null;
-let isFetching = false;
-let abortController = null;
-let pillContainer = null;
-let showRephraseButton = true;
-let isCanceled = false;
-let hasRephrasedBefore = false; 
+const TextRephraser = (() => {
 
-const isDarkBackground = (color) => {
-    const rgb = color.match(/\d+/g);
-    if (rgb) {
-        const [r, g, b] = rgb.map(Number);
-        return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
-    }
-    return false;
-};
+    const state = {
+        prevActiveElement: null,
+        originalText: '',
+        rephrasedText: '',
+        rephraseButton: null,
+        isFetching: false,
+        abortController: null,
+        pillContainer: null,
+        showRephraseButton: true,
+        isCanceled: false,
+        hasRephrasedBefore: false
+    };
 
-const getIconColor = (textBox) => {
-    const bgColor = window.getComputedStyle(textBox).backgroundColor;
-    return isDarkBackground(bgColor) ? 'dark' : 'light';
-};
+    // Constants
+    const MIN_WORDS = 10;
+    const MIN_WIDTH = 600;
+    const MIN_HEIGHT = 50;
+    const PILL_TIMEOUT = 1500;
 
-const applyGradientAnimation = (textBox) => {
-    const gradient = 'linear-gradient(270deg, #F100C1, #00CED1, #F100C1)';
-    const animation = 'gradientAnimation 5s ease infinite';
-
-    textBox.style.backgroundImage = gradient;
-    textBox.style.backgroundSize = '200% 200%';
-    textBox.style.animation = animation;
-    textBox.style.WebkitBackgroundClip = 'text';
-    textBox.style.WebkitTextFillColor = 'transparent';
-}
-
-const removeGradientColor = (textBox) => {
-    textBox.style.backgroundImage = 'none';
-    textBox.style.animation = 'none';
-    textBox.style.WebkitBackgroundClip = 'initial';
-    textBox.style.WebkitTextFillColor = 'initial';
-}
-
-const createPillContainer = (textBox, img) => {
-    if (pillContainer) {
-        pillContainer.remove();
-    }
-
-    const iconColor = getIconColor(textBox);
-    const pillBgColor = iconColor === 'light' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-    const textColor = iconColor === 'light' ? 'black' : 'white';
-
-    pillContainer = document.createElement('div');
-    pillContainer.classList.add('pill-container');
-    pillContainer.style.backgroundColor = pillBgColor;
-    if (iconColor === 'light') {
-        pillContainer.classList.remove('pill-dark-shadow')
-        pillContainer.classList.add('pill-light-shadow')
-    }
-    else {
-        pillContainer.classList.remove('pill-light-shadow');
-        pillContainer.classList.add('pill-dark-shadow');
-    }
-
-    const leftImg = document.createElement('div');
-    leftImg.classList.add('pill-img-container');
-    const leftImgIcon = document.createElement('img');
-    leftImgIcon.src = chrome.runtime.getURL(`extension/assets/back-${iconColor}.svg`);
-    leftImgIcon.alt = 'Back';
-    leftImgIcon.classList.add('icon');
-    leftImg.appendChild(leftImgIcon);
-
-    const leftTooltip = document.createElement('span');
-    leftTooltip.textContent = 'Back';
-    leftTooltip.classList.add('tooltip', 'left-tooltip', `tooltip-hover-${iconColor}`);
-    leftImg.appendChild(leftTooltip);
-    pillContainer.appendChild(leftImg);
-
-    const separator = document.createElement('span');
-    separator.textContent = '|';
-    separator.style.color = iconColor === 'light' ? 'black' : 'white';
-    separator.classList.add('separator');
-    pillContainer.appendChild(separator);
-
-    const rightImg = document.createElement('div');
-    rightImg.classList.add('pill-img-container');
-    const rightImgIcon = document.createElement('img');
-    rightImgIcon.src = chrome.runtime.getURL(`extension/assets/rewrite-${iconColor}.svg`);
-    rightImgIcon.alt = 'Retry';
-    rightImgIcon.classList.add('icon');
-    rightImg.appendChild(rightImgIcon);
-
-    const rightTooltip = document.createElement('span');
-    rightTooltip.textContent = 'Retry';
-    rightTooltip.classList.add('tooltip', 'right-tooltip', `tooltip-hover-${iconColor}`);
-    rightImg.appendChild(rightTooltip);
-    pillContainer.appendChild(rightImg);
-
-    document.body.appendChild(pillContainer);
-
-    // Adjust position based on scroll offsets
-    const rect = textBox.getBoundingClientRect();
-    pillContainer.style.left = `${rect.right - pillContainer.offsetWidth - 5 + window.scrollX}px`;
-    pillContainer.style.top = `${rect.bottom - pillContainer.offsetHeight + window.scrollY}px`;
-
-    leftImgIcon.addEventListener('click', () => {
-        if (prevActiveElement) {
-            undoRephraseText(textBox);
+    const isDarkBackground = (color) => {
+        const rgb = color.match(/\d+/g);
+        if (rgb) {
+            const [r, g, b] = rgb.map(Number);
+            return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
         }
-    });
+        return false;
+    };
 
-    rightImgIcon.addEventListener('click', () => {
-        if (prevActiveElement) {
-            rephraseText(textBox);
+    const getIconColor = (textBox) => {
+        const bgColor = window.getComputedStyle(textBox).backgroundColor;
+        return isDarkBackground(bgColor) ? 'dark' : 'light';
+    };
+
+    const getAssetUrl = (name, color, hover = false) => {
+        const hoverSuffix = hover ? '-hover' : '';
+        return chrome.runtime.getURL(`extension/assets/${name}-${color}${hoverSuffix}.svg`);
+    };
+
+    // Text styling functions
+    const applyGradientAnimation = (textBox) => {
+        const gradient = 'linear-gradient(270deg, #F100C1, #00CED1, #F100C1)';
+        Object.assign(textBox.style, {
+            backgroundImage: gradient,
+            backgroundSize: '200% 200%',
+            animation: 'gradientAnimation 5s ease infinite',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+        });
+    };
+
+    const removeGradientColor = (textBox) => {
+        Object.assign(textBox.style, {
+            backgroundImage: 'none',
+            animation: 'none',
+            WebkitBackgroundClip: 'initial',
+            WebkitTextFillColor: 'initial'
+        });
+    };
+
+    // Text manipulation functions
+    const typeText = async (textBox, text, delay = 16) => {
+        let index = 0;
+        while (index < text.length && !state.isCanceled) {
+            const char = text[index] === ' ' ? '\u00A0' : text[index];
+            if (textBox.tagName === 'INPUT' || textBox.tagName === 'TEXTAREA') {
+                textBox.value += char;
+            } else if (textBox.isContentEditable) {
+                textBox.innerText += char;
+            }
+            index++;
+            await new Promise(resolve => setTimeout(resolve, delay));
         }
-    });
+    };
 
-    pillContainer.addEventListener('mouseleave', (event) => {
-        // Check if the mouse is moving back to the rephrase button
-        const buttonRect = rephraseButton ? rephraseButton.getBoundingClientRect() : null;
-        if (!buttonRect || 
-            event.clientX < buttonRect.left || 
-            event.clientX > buttonRect.right || 
-            event.clientY < buttonRect.top || 
-            event.clientY > buttonRect.bottom) {
-            pillContainer.remove();
-            pillContainer = null;
-            if (isFetching && rephraseButton) {
-                img.src = chrome.runtime.getURL(`extension/assets/cross-light.svg`);
-                rephraseButton.style.display = 'flex';
-                rephraseButton.style.justifyContent = 'center';
-                rephraseButton.style.alignItems = 'center';
-                rephraseButton.onClick = () => {
-                    undoRephraseText(textBox, img);
+    const shouldShowRephraseButton = (text) => {
+        const words = text.trim().split(/\s+/);
+        return words.length >= MIN_WORDS;
+    };
+
+    // UI Component Creation
+    const createPillContainer = (textBox, img) => {
+        if (state.pillContainer) {
+            state.pillContainer.remove();
+        }
+
+        const iconColor = getIconColor(textBox);
+        const pillBgColor = iconColor === 'light' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
+        const container = document.createElement('div');
+        container.classList.add('pill-container');
+        container.style.backgroundColor = pillBgColor;
+        container.classList.add(`pill-${iconColor}-shadow`);
+
+        const leftButton = createPillButton('back', iconColor, 'Back', () => {
+            if (state.prevActiveElement) {
+                undoRephraseText(textBox);
+            }
+        });
+
+        const separator = document.createElement('span');
+        separator.textContent = '|';
+        separator.style.color = iconColor === 'light' ? 'black' : 'white';
+        separator.classList.add('separator');
+
+        const rightButton = createPillButton('rewrite', iconColor, 'Retry', () => {
+            if (state.prevActiveElement) {
+                rephraseText(textBox);
+            }
+        });
+
+        container.append(leftButton, separator, rightButton);
+        document.body.appendChild(container);
+
+        const rect = textBox.getBoundingClientRect();
+        Object.assign(container.style, {
+            left: `${rect.right - container.offsetWidth - 5 + window.scrollX}px`,
+            top: `${rect.bottom - container.offsetHeight + window.scrollY}px`
+        });
+
+        state.pillContainer = container;
+        setupPillContainerEvents(container, textBox, img);
+    };
+
+    const createPillButton = (iconName, iconColor, tooltipText, onClick) => {
+        const button = document.createElement('div');
+        button.classList.add('pill-img-container');
+
+        const icon = document.createElement('img');
+        icon.src = getAssetUrl(iconName, iconColor);
+        icon.alt = tooltipText;
+        icon.classList.add('icon');
+
+        const tooltip = document.createElement('span');
+        tooltip.textContent = tooltipText;
+        tooltip.classList.add('tooltip', `${tooltipText.toLowerCase()}-tooltip`, `tooltip-hover-${iconColor}`);
+
+        button.append(icon, tooltip);
+        button.addEventListener('click', onClick);
+
+        return button;
+    };
+
+    const setupPillContainerEvents = (container, textBox, img) => {
+        container.addEventListener('mouseleave', (event) => {
+            const buttonRect = state.rephraseButton?.getBoundingClientRect();
+            if (!buttonRect ||
+                event.clientX < buttonRect.left ||
+                event.clientX > buttonRect.right ||
+                event.clientY < buttonRect.top ||
+                event.clientY > buttonRect.bottom) {
+                container.remove();
+                state.pillContainer = null;
+
+                if (state.rephraseButton) {
+                    state.rephraseButton.style.display = 'flex';
+                    if (state.isFetching) {
+                        img.src = getAssetUrl('cross', 'light');
+                        state.rephraseButton.onClick = () => undoRephraseText(textBox, img);
+                    }
                 }
             }
-            else if (rephraseButton) {
-                rephraseButton.style.display = 'flex';
-                rephraseButton.style.justifyContent = 'center';
-                rephraseButton.style.alignItems = 'center';
+        });
+    };
+
+    const rephraseText = async (textBox, img) => {
+        state.originalText = textBox.value || textBox.innerText;
+        state.isFetching = true;
+        state.isCanceled = false;
+        applyGradientAnimation(textBox);
+
+        if (img) {
+            updateButtonForFetching(textBox, img);
+        }
+
+        try {
+            const response = await chrome.runtime.sendMessage({
+                action: 'rephrase',
+                text: state.originalText
+            });
+            console.log('Rephrase response:', response);
+
+            if (!state.isCanceled) {
+                await handleSuccessfulRephrase(textBox, response.rephrase, img);
+            }
+        } catch (error) {
+            console.error('Rephrase failed:', error);
+            handleRephraseFailed(textBox, img);
+        } finally {
+            focusTextBox(textBox);
+        }
+    };
+
+    const handleSuccessfulRephrase = async (textBox, rephrasedText, img) => {
+        clearTextBox(state.prevActiveElement);
+        removeGradientColor(textBox);
+        await typeText(state.prevActiveElement, rephrasedText);
+
+        state.isFetching = false;
+        removeGradientColor(state.prevActiveElement);
+
+        if (state.rephraseButton) {
+            state.rephraseButton.remove();
+            state.rephraseButton = null;
+        }
+
+        state.showRephraseButton = false;
+        state.hasRephrasedBefore = true;
+
+        createPillContainer(state.prevActiveElement, img);
+        setTimeout(() => {
+            if (state.pillContainer) {
+                state.pillContainer.remove();
+                state.pillContainer = null;
+            }
+            state.showRephraseButton = true;
+            addButtonToTextBox(state.prevActiveElement);
+        }, PILL_TIMEOUT);
+    };
+
+    const handleRephraseFailed = (textBox, img) => {
+        state.isFetching = false;
+        if (img) {
+            img.src = getAssetUrl('rephrase', getIconColor(textBox));
+        }
+        removeGradientColor(textBox);
+    };
+
+    const undoRephraseText = (textBox, img) => {
+        state.isFetching = false;
+        state.isCanceled = true;
+        removeGradientColor(textBox);
+
+        const iconColor = getIconColor(textBox);
+        img.src = getAssetUrl('rephrase', iconColor);
+        img.alt = 'Rephrase';
+        img.dataset.currentIcon = 'rephrase';
+        Object.assign(img.style, {
+            width: '17px',
+            height: '17px'
+        });
+
+        if (state.prevActiveElement) {
+            if (state.prevActiveElement.tagName === 'INPUT' || state.prevActiveElement.tagName === 'TEXTAREA') {
+                state.prevActiveElement.value = state.originalText;
+            } else if (state.prevActiveElement.isContentEditable) {
+                state.prevActiveElement.innerText = state.originalText;
             }
         }
-    });
-};
+    };
 
-const typeText = async (textBox, text, delay = 16) => {
-    let index = 0;
-    while (index < text.length) {
-        if (isCanceled) return;
-        if (textBox.tagName === 'INPUT' || textBox.tagName === 'TEXTAREA') {
-            text[index] == ' ' ? textBox.value += '\u00A0' : textBox.value += text[index];
-        } else if (textBox.isContentEditable) {
-            text[index] == ' ' ? textBox.innerText += '\u00A0' : textBox.innerText += text[index];
-        }
-        index++;
-        await new Promise(resolve => setTimeout(resolve, delay));
-    }
-}
-
-const rephraseText = async (textBox, img) => {
-    originalText = textBox.value || textBox.innerText;
-    applyGradientAnimation(textBox);
-    if (img) {
-        const iconColor = getIconColor(textBox);
-        img.src = chrome.runtime.getURL(`extension/assets/cross-light.svg`);
-        img.alt = "stop"
-        img.style.width = '20px';
-        img.style.height = '20px';
-        const buttonContainer = img.parentElement;
-
-        if (iconColor === 'light') {
-            buttonContainer.classList.remove('dark-shadow')
-            buttonContainer.classList.add('light-shadow')
-        }
-        else {
-            buttonContainer.classList.remove('light-shadow');
-            buttonContainer.classList.add('dark-shadow');
-        }
-    }
-    isFetching = true;
-    isCanceled = false;
-
-    try {
-        const response = await chrome.runtime.sendMessage({ action: 'rephrase', text: originalText });
-
-        if (isCanceled) {
+    const addButtonToTextBox = (textBox) => {
+        const rect = textBox.getBoundingClientRect();
+        if (rect.width < MIN_WIDTH && rect.height < MIN_HEIGHT) {
             return;
         }
 
-        // Clear the textBox before typing the new text
-        if (prevActiveElement.tagName === 'INPUT' || prevActiveElement.tagName === 'TEXTAREA') {
-            prevActiveElement.value = '';
-        } else if (prevActiveElement.isContentEditable) {
-            prevActiveElement.innerText = '';
-        }
-
-        removeGradientColor(textBox);
-        // Type the rephrased text with a smooth effect
-        await typeText(prevActiveElement, response.rephrase);
-
-        isFetching = false;
-        removeGradientColor(prevActiveElement);
-
-        if (rephraseButton) {
-            rephraseButton.remove();
-            rephraseButton = null;
-        }
-        showRephraseButton = false;
-        hasRephrasedBefore = true;
-
-        // Show pill for 3 seconds
-        createPillContainer(prevActiveElement, img);
-        setTimeout(() => {
-            if (pillContainer) {
-                pillContainer.remove();
-                pillContainer = null;
+        const text = textBox.value || textBox.innerText;
+        if (!shouldShowRephraseButton(text)) {
+            if (state.rephraseButton) {
+                state.rephraseButton.remove();
+                state.rephraseButton = null;
             }
-            showRephraseButton = true;
-            addButtonToTextBox(prevActiveElement);
-        }, 2000);
-    } catch (error) {
-        console.error('Failed to send message:', error);
-        isFetching = false;
-        if (img) {
-            const iconColor = getIconColor(textBox);
-            img.src = chrome.runtime.getURL(`extension/assets/rephrase-${iconColor}.svg`);
+            return;
         }
-        removeGradientColor(textBox);
-    } finally {
+
+        createRephraseButton(textBox, rect);
+    };
+
+    const createRephraseButton = (textBox, rect) => {
+        if (state.rephraseButton) {
+            state.rephraseButton.remove();
+        }
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('rephrase-button-container');
+
+        const iconColor = getIconColor(textBox);
+        buttonContainer.classList.add(`${iconColor}-shadow`);
+
+        const img = createButtonImage(iconColor);
+        buttonContainer.appendChild(img);
+
+        positionButton(buttonContainer, rect, img);
+        setupButtonEvents(buttonContainer, textBox, img, iconColor);
+
+        document.body.appendChild(buttonContainer);
+        state.rephraseButton = buttonContainer;
+        observeTextBox(textBox, buttonContainer);
+    };
+
+    const createButtonImage = (iconColor) => {
+        const img = document.createElement('img');
+        img.src = getAssetUrl('rephrase', iconColor);
+        img.alt = 'Rephrase';
+        img.dataset.currentIcon = 'rephrase'; 
+        Object.assign(img.style, {
+            width: '17px',
+            height: '17px',
+            objectFit: 'contain'
+        });
+        return img;
+    };
+
+    const positionButton = (buttonContainer, rect, img) => {
+        const containerHeight = img.style.height;
+        const containerWidth = img.style.width;
+        Object.assign(buttonContainer.style, {
+            left: `${rect.right - parseInt(containerWidth) - 30 + window.scrollX}px`,
+            top: `${rect.bottom - parseInt(containerHeight) - 10 + window.scrollY}px`,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        });
+    };
+
+    const setupButtonEvents = (buttonContainer, textBox, img, iconColor) => {
+        buttonContainer.addEventListener('mouseenter', () => {
+            if (!state.isFetching) {
+                if (state.hasRephrasedBefore) {
+                    showPill(buttonContainer, textBox, img);
+                } else {
+                    if (img.dataset.currentIcon === 'rephrase') {
+                        img.src = getAssetUrl('rephrase', iconColor, true);
+                    }
+                }
+            }
+        });
+
+        buttonContainer.addEventListener('mouseleave', (event) => {
+            if (!state.isFetching) {
+                if (state.hasRephrasedBefore) {
+                    handlePillMouseLeave(event, buttonContainer);
+                } else {
+                    if (img.dataset.currentIcon === 'rephrase') {
+                        img.src = getAssetUrl('rephrase', iconColor);
+                    }
+                }
+            }
+        });
+
+        buttonContainer.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (state.isFetching) {
+                undoRephraseText(textBox, img);
+            } else {
+                rephraseText(textBox, img);
+            }
+        });
+    };
+
+    const showPill = (buttonContainer, textBox, img) => {
+        buttonContainer.style.display = 'none';
+        createPillContainer(textBox, img);
+    };
+
+    const handlePillMouseLeave = (event, buttonContainer) => {
+        const pillRect = state.pillContainer ? state.pillContainer.getBoundingClientRect() : null;
+        if (!pillRect ||
+            event.clientX < pillRect.left ||
+            event.clientX > pillRect.right ||
+            event.clientY < pillRect.top ||
+            event.clientY > pillRect.bottom) {
+            hidePill(buttonContainer);
+        }
+    };
+
+    const hidePill = (buttonContainer) => {
+        if (state.pillContainer) {
+            state.pillContainer.remove();
+            state.pillContainer = null;
+        }
+        buttonContainer.style.display = 'flex';
+    };
+
+    const observeTextBox = (textBox, buttonContainer) => {
+        const observer = new MutationObserver((mutationsList) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList' || mutation.type === 'attributes') {
+                    if (!document.body.contains(textBox) || textBox.offsetParent === null) {
+                        buttonContainer.remove();
+                        observer.disconnect();
+                    }
+                }
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+    };
+
+    const handleTextBoxFocus = (activeElement) => {
+        if (state.showRephraseButton) {
+            if (state.pillContainer) {
+                state.pillContainer.remove();
+            }
+            addButtonToTextBox(activeElement);
+        } else {
+            createPillContainer(activeElement);
+        }
+
+        state.showRephraseButton = true;
+
+        if (state.prevActiveElement) {
+            removeGradientColor(state.prevActiveElement);
+        }
+        state.prevActiveElement = activeElement;
+    };
+
+    const updateButtonForFetching = (textBox, img) => {
+        img.src = getAssetUrl('cross', 'light');
+        img.alt = 'stop';
+        img.dataset.currentIcon = 'cross';
+        Object.assign(img.style, {
+            width: '20px',
+            height: '20px'
+        });
+
+        const buttonContainer = img.parentElement;
+        const iconColor = getIconColor(textBox);
+        buttonContainer.classList.remove('dark-shadow', 'light-shadow');
+        buttonContainer.classList.add(`${iconColor}-shadow`);
+    };
+
+    const clearTextBox = (element) => {
+        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+            element.value = '';
+        } else if (element.isContentEditable) {
+            element.innerText = '';
+        }
+    };
+
+    const focusTextBox = (textBox) => {
         textBox.focus();
         if (textBox.tagName === 'INPUT' || textBox.tagName === 'TEXTAREA') {
             const length = textBox.value.length;
@@ -239,180 +444,37 @@ const rephraseText = async (textBox, img) => {
             sel.removeAllRanges();
             sel.addRange(range);
         }
-    }
-}
+    };
 
-const undoRephraseText = (textBox, img) => {
-    isFetching = false;
-    isCanceled = true;
-    removeGradientColor(textBox);
-    if (img) {
-        const iconColor = getIconColor(textBox);
-        img.src = chrome.runtime.getURL(`extension/assets/rephrase-${iconColor}.svg`);
-    }
-    if (prevActiveElement) {
-        if (prevActiveElement.tagName === 'INPUT' || prevActiveElement.tagName === 'TEXTAREA') {
-            prevActiveElement.value = originalText;
-        } else if (prevActiveElement.isContentEditable) {
-            prevActiveElement.innerText = originalText;
-        }
-    }
-}
-
-const shouldShowRephraseButton = (text) => {
-    const words = text.trim().split(/\s+/);
-    return words.length >= 10;
-};
-
-const addButtonToTextBox = (textBox) => {
-
-    // Check if the input box is too small
-    const rect = textBox.getBoundingClientRect();
-    const minWidth = 600;
-    const minHeight = 50;
-
-    if (rect.width < minWidth && rect.height < minHeight) {
-        return;
-    }
-
-    const text = textBox.value || textBox.innerText;
-    if (!shouldShowRephraseButton(text)) {
-        if (rephraseButton) {
-            rephraseButton.remove();
-            rephraseButton = null;
-        }
-        return;
-    }
-    if (rephraseButton) {
-        rephraseButton.remove();
-    }
-
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('rephrase-button-container');
-    const iconColor = getIconColor(textBox);
-    if (iconColor === 'light') {
-        buttonContainer.classList.remove('dark-shadow')
-        buttonContainer.classList.add('light-shadow')
-    }
-    else {
-        buttonContainer.classList.remove('light-shadow');
-        buttonContainer.classList.add('dark-shadow');
-    }
-    const img = document.createElement('img');
-    img.src = chrome.runtime.getURL(`extension/assets/rephrase-${iconColor}.svg`);
-    img.alt = 'Rephrase';
-    img.style.width = '17px';
-    img.style.height = '17px';
-    img.style.objectFit = 'contain';
-
-    buttonContainer.appendChild(img);
-
-    const showPill = () => {
-        if (hasRephrasedBefore) {
-            buttonContainer.style.display = 'none';
-            createPillContainer(textBox, img);
+    // Event handlers
+    const focusinHandler = (event) => {
+        const activeElement = event.target;
+        if (isValidTextBox(activeElement)) {
+            handleTextBoxFocus(activeElement);
         }
     };
 
-    const hidePill = () => {
-        if (pillContainer) {
-            pillContainer.remove();
-            pillContainer = null;
-        }
-        buttonContainer.style.display = 'flex';
-        buttonContainer.style.justifyContent = 'center';
-        buttonContainer.style.alignItems = 'center';
-    };
-
-    buttonContainer.addEventListener('mouseenter', () => {
-        if (!isFetching) {
-            if (hasRephrasedBefore) {
-                showPill();
-            } else {
-                img.src = chrome.runtime.getURL(`extension/assets/rephrase-${iconColor}-hover.svg`);
-            }
-        }
-    });
-
-    buttonContainer.addEventListener('mouseleave', (event) => {
-        if (!isFetching) {
-            if (hasRephrasedBefore) {
-                // Check if the mouse is moving to the pill
-                const pillRect = pillContainer ? pillContainer.getBoundingClientRect() : null;
-                if (!pillRect || 
-                    event.clientX < pillRect.left || 
-                    event.clientX > pillRect.right || 
-                    event.clientY < pillRect.top || 
-                    event.clientY > pillRect.bottom) {
-                    hidePill();
-                }
-            } else {
-                img.src = chrome.runtime.getURL(`extension/assets/rephrase-${iconColor}.svg`);
-            }
-        }
-    });
-
-    const containerHeight = img.style.height;
-    const containerWidth = img.style.width;
-
-    buttonContainer.style.left = `${rect.right - parseInt(containerWidth) - 30 + window.scrollX}px`;
-    buttonContainer.style.top = `${rect.bottom - parseInt(containerHeight) - 10 + window.scrollY}px`;
-
-    document.body.appendChild(buttonContainer);
-
-    rephraseButton = buttonContainer;
-
-    buttonContainer.addEventListener('click', async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (isFetching) {
-            // If fetching, stop the process and revert to original text
-            undoRephraseText(textBox, img);
-        } else {
-            // Start rephrasing process
-            rephraseText(textBox, img);
-        }
-    });
-
-    // Observe changes to the DOM to detect when the text box is removed or hidden
-    const observer = new MutationObserver((mutationsList) => {
-        for (let mutation of mutationsList) {
-            if (mutation.type === 'childList' || mutation.type === 'attributes') {
-                if (!document.body.contains(textBox) || textBox.offsetParent === null) {
-                    buttonContainer.remove();
-                    observer.disconnect();
-                }
-            }
-        }
-    });
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-};
-
-document.addEventListener('focusin', (event) => {
-    const activeElement = event.target;
-
-    if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable) {
-
-        if (showRephraseButton) {
-            if (pillContainer) pillContainer.remove();
+    const inputHandler = (event) => {
+        const activeElement = event.target;
+        if (isValidTextBox(activeElement)) {
             addButtonToTextBox(activeElement);
         }
-        else
-            createPillContainer(activeElement);
+    };
 
-        showRephraseButton = true;
+    const isValidTextBox = (element) => {
+        return element.tagName === 'INPUT' ||
+            element.tagName === 'TEXTAREA' ||
+            element.isContentEditable;
+    };
 
-        if (prevActiveElement) {
-            removeGradientColor(prevActiveElement);
-        }
-        prevActiveElement = activeElement;
-    }
-});
+    const initialize = () => {
+        document.addEventListener('focusin', focusinHandler);
+        document.addEventListener('input', inputHandler);
+    };
 
-document.addEventListener('input', (event) => {
-    const activeElement = event.target;
-    if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable) {
-        addButtonToTextBox(activeElement);
-    }
-});
+    return {
+        initialize,
+    };
+})();
+
+TextRephraser.initialize();
