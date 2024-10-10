@@ -3,9 +3,6 @@ const API_ENDPOINT = "https://openai-text-summarizer.azurewebsites.net";
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
-    case 'reload':
-      handleReloadMessage(sendResponse);
-      break;
     case 'summarize':
       handleSummarizeMessage(request, sendResponse);
       break;
