@@ -78,7 +78,7 @@ const Notes: React.FC = () => {
 
     // Load existing notes on component mount (from backend)
     useEffect(() => {
-        customNotesAPI.pageHandler.getNotes().then((response: { notes: any; }) => {
+        customNotesAPI.pageHandler.getAllNotes().then((response: { notes: any; }) => {
             setNotesList(response.notes || []);
         });
     }, []);

@@ -21,7 +21,7 @@
  
    constructor () {
      // Initialize page handler to communicate with backend
-     this.pageHandler = BraveCustomNotes.PageHandler.getRemote()
+     this.pageHandler = BraveCustomNotes.NotesPageHandler.getRemote()
      // Initialize callback router to handle responses from backend
      this.callbackRouter = new BraveCustomNotes.CustomNotesPageCallbackRouter()
      // Set the callback router in the page handler to link it with the frontend
