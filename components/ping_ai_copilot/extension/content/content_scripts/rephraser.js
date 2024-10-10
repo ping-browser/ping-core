@@ -106,7 +106,17 @@ const TextRephraser = (() => {
 
         const rightButton = createPillButton('rewrite', iconColor, 'Retry', () => {
             if (state.prevActiveElement) {
-                rephraseText(textBox);
+                if (state.pillContainer) {
+                    state.pillContainer.remove();
+                    state.pillContainer = null;
+                }
+                
+                if (state.rephraseButton) {
+                    state.rephraseButton.style.display = 'flex';
+                    updateButtonForFetching(textBox, img);
+                }
+                
+                rephraseText(textBox, img);
             }
         });
 
