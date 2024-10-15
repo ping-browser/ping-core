@@ -17,7 +17,7 @@ const TextRephraser = (() => {
     const MIN_WORDS = 10;
     const MIN_WIDTH = 600;
     const MIN_HEIGHT = 50;
-    const PILL_TIMEOUT = 1500;
+    const PILL_TIMEOUT = 1800;
 
     const isDarkBackground = (color) => {
         const rgb = color.match(/\d+/g);
@@ -61,15 +61,21 @@ const TextRephraser = (() => {
 
     // Text manipulation functions
     const typeText = async (textBox, text, delay = 16) => {
-        let index = 0;
-        while (index < text.length && !state.isCanceled) {
-            const char = text[index] === ' ' ? '\u00A0' : text[index];
-            if (textBox.tagName === 'INPUT' || textBox.tagName === 'TEXTAREA') {
-                textBox.value += char;
-            } else if (textBox.isContentEditable) {
-                textBox.innerText += char;
+        let displayText = '';
+        let currentWordBuffer = '';
+
+        for (let i = 0; i < text.length && !state.isCanceled; i++) {
+            const char = text[i];
+            currentWordBuffer += char;
+            if (char === ' ' || i === text.length - 1) {
+                displayText += currentWordBuffer;
+                currentWordBuffer = '';
             }
-            index++;
+            if (textBox.tagName === 'INPUT' || textBox.tagName === 'TEXTAREA') {
+                textBox.value = displayText + currentWordBuffer;
+            } else if (textBox.isContentEditable) {
+                textBox.innerText = displayText + currentWordBuffer;
+            }
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     };
@@ -95,7 +101,7 @@ const TextRephraser = (() => {
 
         const leftButton = createPillButton('back', iconColor, 'Back', () => {
             if (state.prevActiveElement) {
-                undoRephraseText(textBox);
+                undoRephraseText(textBox, img);
             }
         });
 
@@ -106,24 +112,16 @@ const TextRephraser = (() => {
 
         const rightButton = createPillButton('rewrite', iconColor, 'Retry', () => {
             if (state.prevActiveElement) {
-                if (state.pillContainer) {
-                    state.pillContainer.remove();
-                    state.pillContainer = null;
-                }
-                
-                if (state.rephraseButton) {
-                    state.rephraseButton.style.display = 'flex';
-                    updateButtonForFetching(textBox, img);
-                }
-                
-                rephraseText(textBox, img);
+                rephraseText(textBox);
             }
         });
 
         container.append(leftButton, separator, rightButton);
         document.body.appendChild(container);
 
-        const rect = textBox.getBoundingClientRect();
+        let rect;
+        if(textBox.parentElement.querySelectorAll(':scope > div').length === 1) rect = textBox.parentElement.getBoundingClientRect();
+        else rect = textBox.getBoundingClientRect();
         Object.assign(container.style, {
             left: `${rect.right - container.offsetWidth - 5 + window.scrollX}px`,
             top: `${rect.bottom - container.offsetHeight + window.scrollY}px`
@@ -265,8 +263,13 @@ const TextRephraser = (() => {
         if (rect.width < MIN_WIDTH && rect.height < MIN_HEIGHT) {
             return;
         }
-
-        const text = textBox.value || textBox.innerText;
+        textBox.setAttribute('spellcheck', 'false');
+        let text;
+        if (textBox.tagName === 'INPUT' || textBox.tagName === 'TEXTAREA') {
+            text = textBox.value;
+        } else if (textBox.isContentEditable) {
+            text = textBox.textContent;
+        }
         if (!shouldShowRephraseButton(text)) {
             if (state.rephraseButton) {
                 state.rephraseButton.remove();
@@ -275,10 +278,10 @@ const TextRephraser = (() => {
             return;
         }
 
-        createRephraseButton(textBox, rect);
+        createRephraseButton(textBox);
     };
 
-    const createRephraseButton = (textBox, rect) => {
+    const createRephraseButton = (textBox) => {
         if (state.rephraseButton) {
             state.rephraseButton.remove();
         }
@@ -292,7 +295,7 @@ const TextRephraser = (() => {
         const img = createButtonImage(iconColor);
         buttonContainer.appendChild(img);
 
-        positionButton(buttonContainer, rect, img);
+        positionButton(buttonContainer, textBox, img);
         setupButtonEvents(buttonContainer, textBox, img, iconColor);
 
         document.body.appendChild(buttonContainer);
@@ -313,16 +316,22 @@ const TextRephraser = (() => {
         return img;
     };
 
-    const positionButton = (buttonContainer, rect, img) => {
-        const containerHeight = img.style.height;
-        const containerWidth = img.style.width;
-        Object.assign(buttonContainer.style, {
-            left: `${rect.right - parseInt(containerWidth) - 30 + window.scrollX}px`,
-            top: `${rect.bottom - parseInt(containerHeight) - 10 + window.scrollY}px`,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-        });
+    const positionButton = (buttonContainer, textBox, img) => {
+        const containerHeight = img.style?.height || '17px';
+        const containerWidth = img.style?.width || '17px';
+        
+        let rect = textBox.getBoundingClientRect();
+        if (textBox.parentElement.querySelectorAll(':scope > div').length === 1) {
+            rect = textBox.parentElement.getBoundingClientRect();
+            console.log('parent', textBox.parentElement, rect);
+        }
+    
+        buttonContainer.style.position = 'absolute';
+        buttonContainer.style.left = `${rect.right - parseInt(containerWidth) - 30 + window.scrollX}px`;
+        buttonContainer.style.top = `${rect.bottom - parseInt(containerHeight) - 10 + window.scrollY}px`;
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.justifyContent = 'center';
+        buttonContainer.style.alignItems = 'center';
     };
 
     const setupButtonEvents = (buttonContainer, textBox, img, iconColor) => {
@@ -391,7 +400,7 @@ const TextRephraser = (() => {
             for (let mutation of mutationsList) {
                 if (mutation.type === 'childList' || mutation.type === 'attributes') {
                     if (!document.body.contains(textBox) || textBox.offsetParent === null) {
-                        buttonContainer.remove();
+                        if (buttonContainer) buttonContainer.remove();
                         observer.disconnect();
                     }
                 }
@@ -471,15 +480,41 @@ const TextRephraser = (() => {
         }
     };
 
+    const pasteHandler = (event) => {
+        let activeElement = event.target.parentElement;
+        if (isValidTextBox(activeElement)) {
+            setTimeout(() => {
+                addButtonToTextBox(activeElement);
+            }, 0);
+        }
+    };
+
     const isValidTextBox = (element) => {
         return element.tagName === 'INPUT' ||
             element.tagName === 'TEXTAREA' ||
             element.isContentEditable;
     };
 
+    const handleTextChange = (event) => {
+        if (event.type === 'keydown') {
+            setTimeout(() => {
+                const textBox = event.target; 
+                const text = textBox.textContent;  
+
+                const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+                if (wordCount < 10) {
+                    addButtonToTextBox(textBox);
+                }
+            }, 0);
+        }
+    };
+
     const initialize = () => {
         document.addEventListener('focusin', focusinHandler);
         document.addEventListener('input', inputHandler);
+        document.addEventListener('paste', pasteHandler);
+        document.addEventListener('keydown', handleTextChange);
+        document.addEventListener('cut', handleTextChange);
     };
 
     return {

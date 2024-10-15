@@ -207,10 +207,25 @@ const TextSummarizer = (() => {
     }
   };
 
+  const handleTextChange = (event) => {
+    if (event.type === 'keydown') {
+      setTimeout(() => {
+        const selection = window.getSelection();
+        const selectedText = selection.toString().trim();
+        
+        if (selectedText.length === 0) {
+          hideSummarizeIcon();
+          state.isTextSelected = false;
+        }
+      }, 0);
+    }
+  };
+
   const initialize = () => {
-    document.removeEventListener('mouseup', handleTextSelection);
     document.addEventListener('mouseup', debounce(handleTextSelection, 190));
     document.addEventListener('click', handleDocumentClick);
+    document.addEventListener('keydown', handleTextChange);
+    document.addEventListener('cut', handleTextChange);
   };
 
   return {
