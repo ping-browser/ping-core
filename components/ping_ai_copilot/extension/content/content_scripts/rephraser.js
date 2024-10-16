@@ -187,7 +187,6 @@ const TextRephraser = (() => {
                 action: 'rephrase',
                 text: state.originalText
             });
-            console.log('Rephrase response:', response);
 
             if (!state.isCanceled) {
                 await handleSuccessfulRephrase(textBox, response.rephrase, img);
@@ -321,9 +320,8 @@ const TextRephraser = (() => {
         const containerWidth = img.style?.width || '17px';
         
         let rect = textBox.getBoundingClientRect();
-        if (textBox.parentElement.querySelectorAll(':scope > div').length === 1) {
+        if (textBox.parentElement.querySelectorAll(':scope > div').length === 1 && textBox.style.resize !== 'none') {
             rect = textBox.parentElement.getBoundingClientRect();
-            console.log('parent', textBox.parentElement, rect);
         }
     
         buttonContainer.style.position = 'absolute';
