@@ -122,7 +122,11 @@ const TextSummarizer = (() => {
     const scrollY = window.scrollY || document.documentElement.scrollTop;
 
     let top, left;
-    if (event.detail === 3) {
+    if (rect.width === 0 && rect.height === 0) {
+      // Fallback: Use mouse position if the bounding rectangle is invalid
+      top = event.clientY + scrollY + 20; 
+      left = event.clientX + scrollX + 20;
+    } else if (event.detail === 3) {
       top = rect.bottom + scrollY + 1;
       left = rect.right + scrollX + 1;
     } else {
