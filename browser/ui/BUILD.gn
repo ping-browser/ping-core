@@ -243,6 +243,8 @@ source_set("ui") {
       "webui/brave_custom_notes/brave_custom_notes_handler.h",
       "webui/brave_custom_notes/brave_custom_notes_ui.cc",
       "webui/brave_custom_notes/brave_custom_notes_ui.h",
+      "webui/brave_custom_notes/brave_custom_notes_api_handler.cc",
+      "webui/brave_custom_notes/brave_custom_notes_api_handler.h",
       "webui/settings/brave_adblock_handler.cc",
       "webui/settings/brave_adblock_handler.h",
       "webui/settings/brave_appearance_handler.cc",

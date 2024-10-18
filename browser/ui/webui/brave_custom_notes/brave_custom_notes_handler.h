@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
+
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_CUSTOM_NOTES_BRAVE_CUSTOM_NOTES_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_CUSTOM_NOTES_BRAVE_CUSTOM_NOTES_HANDLER_H_
 
@@ -16,7 +17,9 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "brave/browser/ui/webui/brave_custom_notes/brave_custom_notes_api_handler.h"
 
+// Forward declarations for dependencies
 class Profile;
 namespace content {
 class WebContents;
@@ -28,18 +31,19 @@ class BraveCustomNotesPageHandler
   BraveCustomNotesPageHandler(
       Profile* profile,
       content::WebContents* web_contents,
-      mojo::PendingReceiver<brave_custom_notes::mojom::NotesPageHandler>
-          receiver);
+      mojo::PendingReceiver<brave_custom_notes::mojom::NotesPageHandler> receiver,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BraveCustomNotesPageHandler() override;
 
+  // Disable copy and assignment
   BraveCustomNotesPageHandler(const BraveCustomNotesPageHandler&) = delete;
-  BraveCustomNotesPageHandler& operator=(const BraveCustomNotesPageHandler&) =
-      delete;
+  BraveCustomNotesPageHandler& operator=(const BraveCustomNotesPageHandler&) = delete;
 
-  // brave_custom_notes::mojom::NotesPageHandler:
+  // Implementations for brave_custom_notes::mojom::NotesPageHandler
   void SetClientPage(
-      mojo::PendingRemote<brave_custom_notes::mojom::CustomNotesPage> page)
-      override;
+      mojo::PendingRemote<brave_custom_notes::mojom::CustomNotesPage> page) override;
+  void SummarizeNoteContent(int32_t note_id, SummarizeNoteContentCallback callback) override;
+  void RephraseNoteContent(int32_t note_id, RephraseNoteContentCallback callback) override;
   void CreateNote(const std::string& title,
                   const std::string& content,
                   CreateNoteCallback callback) override;
@@ -58,14 +62,18 @@ class BraveCustomNotesPageHandler
   void SaveNotesToPrefs();
   void UpdatePageWithNotes();
 
+  // Pointer members
   raw_ptr<Profile> profile_;
   raw_ptr<content::WebContents> web_contents_;
   mojo::Receiver<brave_custom_notes::mojom::NotesPageHandler> receiver_;
   mojo::Remote<brave_custom_notes::mojom::CustomNotesPage> page_;
-
   std::vector<brave_custom_notes::mojom::NotePtr> notes_;
-
+  std::unique_ptr<BraveCustomNotesAPIHandler> api_handler_;
   base::WeakPtrFactory<BraveCustomNotesPageHandler> weak_ptr_factory_{this};
+
+  // Method declarations for API calls
+  void CallSummarizeAPI(const std::string& content, std::string* summary);
+  void CallRephraseAPI(const std::string& content, std::string* rephrased_content);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_CUSTOM_NOTES_BRAVE_CUSTOM_NOTES_HANDLER_H_

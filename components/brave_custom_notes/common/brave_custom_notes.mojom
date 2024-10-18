@@ -14,6 +14,8 @@ interface NotesPageHandler {
   GetNoteContent(int32 note_id) => (bool success, string content);
   GetAllNotes() => (array<Note> notes);
   AddNote(string content) => (bool success);
+  SummarizeNoteContent(int32 note_id) => (bool success, string summary);
+  RephraseNoteContent(int32 note_id) => (bool success, string rephrased_content);
 };
 
 // Struct that defines the properties of a note.

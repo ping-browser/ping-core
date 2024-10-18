@@ -1,7 +1,7 @@
-// Copyright(c) 2022 The Brave Authors.All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright(c) 2022 The Brave Authors.All rights reserved.
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ you can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_custom_notes/brave_custom_notes_handler.h"
 
@@ -21,6 +21,8 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 
+#include "brave/browser/ui/webui/brave_custom_notes/brave_custom_notes_api_handler.h"
+
 namespace {
 const char kCustomNotesKey[] = "custom_notes";
 }  // namespace
@@ -28,10 +30,12 @@ const char kCustomNotesKey[] = "custom_notes";
 BraveCustomNotesPageHandler::BraveCustomNotesPageHandler(
     Profile* profile,
     content::WebContents* web_contents,
-    mojo::PendingReceiver<brave_custom_notes::mojom::NotesPageHandler> receiver)
+    mojo::PendingReceiver<brave_custom_notes::mojom::NotesPageHandler> receiver,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : profile_(profile),
       web_contents_(web_contents),
-      receiver_(this, std::move(receiver)) {
+      receiver_(this, std::move(receiver)),
+      api_handler_(std::make_unique<BraveCustomNotesAPIHandler>(url_loader_factory)) {
   LoadNotesFromPrefs();
 }
 
@@ -96,6 +100,44 @@ void BraveCustomNotesPageHandler::EditNote(int32_t note_id,
     }
   } else {
     std::move(callback).Run(false);
+  }
+}
+
+void BraveCustomNotesPageHandler::CallSummarizeAPI(
+    const std::string& content, std::string* summary) {
+  api_handler_->CallSummarizeAPI(content, summary);
+}
+
+void BraveCustomNotesPageHandler::CallRephraseAPI(
+    const std::string& content, std::string* rephrased_content) {
+  api_handler_->CallRephraseAPI(content, rephrased_content);
+}
+
+void BraveCustomNotesPageHandler::SummarizeNoteContent(
+    int32_t note_id, SummarizeNoteContentCallback callback) {
+  // Find the note with the given ID
+  auto it = std::find_if(notes_.begin(), notes_.end(),
+                         [note_id](const auto& note) { return note->id == note_id; });
+  if (it != notes_.end()) {
+    std::string summary;
+    CallSummarizeAPI((*it)->content, &summary);
+    std::move(callback).Run(true,summary);
+  } else {
+    std::move(callback).Run(false,"Note not found");
+  }
+}
+
+void BraveCustomNotesPageHandler::RephraseNoteContent(
+    int32_t note_id, RephraseNoteContentCallback callback) {
+  // Find the note with the given ID
+  auto it = std::find_if(notes_.begin(), notes_.end(),
+                         [note_id](const auto& note) { return note->id == note_id; });
+  if (it != notes_.end()) {
+    std::string rephrased_content;
+    CallRephraseAPI((*it)->content, &rephrased_content);
+    std::move(callback).Run(true,rephrased_content);
+  } else {
+    std::move(callback).Run(false,"Note not found");
   }
 }
 
@@ -192,3 +234,4 @@ void BraveCustomNotesPageHandler::UpdatePageWithNotes() {
   }
   page_->OnNotesUpdated(std::move(notes_copy));
 }
+

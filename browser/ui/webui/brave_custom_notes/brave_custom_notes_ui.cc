@@ -14,11 +14,12 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 BraveCustomNotesUI::BraveCustomNotesUI(content::WebUI* web_ui,
-                                       const std::string& name)
+                                      const std::string& name)
     : ui::MojoWebUIController(web_ui, false) {
   Profile* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
@@ -30,6 +31,7 @@ BraveCustomNotesUI::BraveCustomNotesUI(content::WebUI* web_ui,
         brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
+
   source->AddBoolean("isWindowTor", profile->IsTor());
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
@@ -37,12 +39,12 @@ BraveCustomNotesUI::BraveCustomNotesUI(content::WebUI* web_ui,
 BraveCustomNotesUI::~BraveCustomNotesUI() = default;
 
 void BraveCustomNotesUI::BindInterface(
-    mojo::PendingReceiver<brave_custom_notes::mojom::NotesPageHandler>
-        receiver) {
+    mojo::PendingReceiver<brave_custom_notes::mojom::NotesPageHandler> receiver) {
   custom_notes_handler_ = std::make_unique<BraveCustomNotesPageHandler>(
-      Profile::FromWebUI(web_ui()), web_ui()->GetWebContents(),
-      std::move(receiver));
+      Profile::FromWebUI(web_ui()),
+      web_ui()->GetWebContents(),
+      std::move(receiver),  // Pass receiver first
+      Profile::FromWebUI(web_ui())->GetURLLoaderFactory());  // URL loader factory last
 }
 
-// Move WEB_UI_CONTROLLER_TYPE_IMPL outside any function or block
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveCustomNotesUI)
