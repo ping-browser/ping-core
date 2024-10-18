@@ -1,0 +1,35 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+module brave_custom_notes.mojom;
+
+// Browser-side handler for requests from the WebUI page related to custom notes.
+interface NotesPageHandler {
+  SetClientPage(pending_remote<CustomNotesPage> page);
+  CreateNote(string title, string content) => (int32 note_id);
+  EditNote(int32 note_id, string new_title, string new_content) => (bool success);
+  DeleteNote(int32 note_id) => (bool success);
+  GetNoteContent(int32 note_id) => (bool success, string content);
+  GetAllNotes() => (array<Note> notes);
+  AddNote(string content) => (bool success);
+  SummarizeNoteContent(int32 note_id) => (bool success, string summary);
+  RephraseNoteContent(int32 note_id) => (bool success, string rephrased_content);
+};
+
+// Struct that defines the properties of a note.
+struct Note {
+  int32 id;          
+  string title;     
+  string content;   
+  string timestamp;  
+};
+
+// WebUI page that receives updates about the note-taking process.
+interface CustomNotesPage {
+  OnNoteCreated(int32 note_id, string title);
+  OnNoteEdited(int32 note_id, string new_title);
+  OnNoteDeleted(int32 note_id);
+  OnNotesUpdated(array<Note> notes);
+};
