@@ -38,6 +38,14 @@ const TextRephraser = (() => {
         return chrome.runtime.getURL(`extension/assets/${name}-${color}${hoverSuffix}.svg`);
     };
 
+    const debounce = (func, delay) => {
+        let timeoutId;
+        return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func(...args), delay);
+        };
+    };
+
     // Text styling functions
     const applyGradientAnimation = (textBox) => {
         const gradient = 'linear-gradient(270deg, #F100C1, #00CED1, #F100C1)';
@@ -258,17 +266,13 @@ const TextRephraser = (() => {
     };
 
     const addButtonToTextBox = (textBox) => {
+        if (state.rephraseButton && textBox === state.prevActiveElement && shouldShowRephraseButton(textBox.value || textBox.textContent)) return;
         const rect = textBox.getBoundingClientRect();
         if (rect.width < MIN_WIDTH && rect.height < MIN_HEIGHT) {
             return;
         }
         textBox.setAttribute('spellcheck', 'false');
-        let text;
-        if (textBox.tagName === 'INPUT' || textBox.tagName === 'TEXTAREA') {
-            text = textBox.value;
-        } else if (textBox.isContentEditable) {
-            text = textBox.textContent;
-        }
+        let text = textBox.value || textBox.textContent;
         if (!shouldShowRephraseButton(text)) {
             if (state.rephraseButton) {
                 state.rephraseButton.remove();
@@ -277,8 +281,15 @@ const TextRephraser = (() => {
             return;
         }
 
-        createRephraseButton(textBox);
+        if (!state.rephraseButton) {
+            createRephraseButton(textBox);
+        } else {
+            requestAnimationFrame(() => {
+                positionButton(state.rephraseButton, textBox, state.rephraseButton.querySelector('img'));
+            });
+        }
     };
+    const debouncedAddButtonToTextBox = debounce(addButtonToTextBox, 200);
 
     const createRephraseButton = (textBox) => {
         if (state.rephraseButton) {
@@ -299,7 +310,6 @@ const TextRephraser = (() => {
 
         document.body.appendChild(buttonContainer);
         state.rephraseButton = buttonContainer;
-        observeTextBox(textBox, buttonContainer);
     };
 
     const createButtonImage = (iconColor) => {
@@ -393,20 +403,6 @@ const TextRephraser = (() => {
         buttonContainer.style.display = 'flex';
     };
 
-    const observeTextBox = (textBox, buttonContainer) => {
-        const observer = new MutationObserver((mutationsList) => {
-            for (let mutation of mutationsList) {
-                if (mutation.type === 'childList' || mutation.type === 'attributes') {
-                    if (!document.body.contains(textBox) || textBox.offsetParent === null) {
-                        if (buttonContainer) buttonContainer.remove();
-                        observer.disconnect();
-                    }
-                }
-            }
-        });
-        observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-    };
-
     const handleTextBoxFocus = (activeElement) => {
         if (state.showRephraseButton) {
             if (state.pillContainer) {
@@ -463,49 +459,66 @@ const TextRephraser = (() => {
         }
     };
 
+    const isValidTextBox = (element) => {
+        return element?.tagName === 'INPUT' ||
+            element?.tagName === 'TEXTAREA' ||
+            element?.isContentEditable;
+    };
+
+    const TextBoxAvalCheck = (textBox) => {
+        if (state.checkInterval) {
+            clearInterval(state.checkInterval);
+        }
+
+        state.checkInterval = setInterval(() => {
+            if (textBox && state.rephraseButton) {
+                const isVisible = textBox.offsetParent !== null;
+                const isInDOM = document.body.contains(textBox);
+
+                if (!isVisible || !isInDOM) {
+                    if (state.rephraseButton) {
+                        state.rephraseButton.remove();
+                        state.rephraseButton = null;
+                    }
+                }
+            }
+        }, 5000); // Check every second
+    };
+
     // Event handlers
     const focusinHandler = (event) => {
         const activeElement = event.target;
         if (isValidTextBox(activeElement)) {
             handleTextBoxFocus(activeElement);
         }
+        TextBoxAvalCheck(activeElement);
     };
 
-    const inputHandler = (event) => {
+    const inputHandler = debounce((event) => {
         const activeElement = event.target;
         if (isValidTextBox(activeElement)) {
-            addButtonToTextBox(activeElement);
+            debouncedAddButtonToTextBox(activeElement);
         }
-    };
+    }, 100);
 
     const pasteHandler = (event) => {
-        let activeElement = event.target.parentElement;
-        if (isValidTextBox(activeElement)) {
+        if (isValidTextBox(document.activeElement)) {
             setTimeout(() => {
-                addButtonToTextBox(activeElement);
+                debouncedAddButtonToTextBox(document.activeElement);
             }, 0);
         }
     };
 
-    const isValidTextBox = (element) => {
-        return element.tagName === 'INPUT' ||
-            element.tagName === 'TEXTAREA' ||
-            element.isContentEditable;
-    };
-
-    const handleTextChange = (event) => {
+    const handleTextChange = debounce((event) => {
         if (event.type === 'keydown') {
-            setTimeout(() => {
-                const textBox = event.target; 
-                const text = textBox.textContent;  
-
-                const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
-                if (wordCount < 10) {
-                    addButtonToTextBox(textBox);
-                }
-            }, 0);
+            const textBox = event.target;
+            const text = textBox.value || textBox.textContent;
+            const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+            if (wordCount < 10) {
+                debouncedAddButtonToTextBox(textBox);
+            }
         }
-    };
+    }, 100);
 
     const initialize = () => {
         document.addEventListener('focusin', focusinHandler);
