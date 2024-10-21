@@ -121,6 +121,17 @@ const TextRephraser = (() => {
         const rightButton = createPillButton('rewrite', iconColor, 'Retry', () => {
             if (state.prevActiveElement) {
                 rephraseText(textBox);
+                if (state.pillContainer) {
+                    state.pillContainer.remove();
+                    state.pillContainer = null;
+                }
+                
+                if (state.rephraseButton) {
+                    state.rephraseButton.style.display = 'flex';
+                    updateButtonForFetching(textBox, img);
+                }
+                
+                rephraseText(textBox, img);
             }
         });
 
@@ -346,7 +357,7 @@ const TextRephraser = (() => {
         buttonContainer.addEventListener('mouseenter', () => {
             if (!state.isFetching) {
                 if (state.hasRephrasedBefore) {
-                    showPill(buttonContainer, textBox, img);
+                    showPill(buttonContainer, document.activeElement, img);
                 } else {
                     if (img.dataset.currentIcon === 'rephrase') {
                         img.src = getAssetUrl('rephrase', iconColor, true);
