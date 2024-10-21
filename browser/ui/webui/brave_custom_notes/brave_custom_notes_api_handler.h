@@ -16,26 +16,43 @@
 
 class BraveCustomNotesAPIHandler {
  public:
+  // Constructor that initializes the URL loader factory
   explicit BraveCustomNotesAPIHandler(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  
+  // Destructor
   ~BraveCustomNotesAPIHandler();
 
+  // Delete copy constructor and assignment operator to avoid object copying
   BraveCustomNotesAPIHandler(const BraveCustomNotesAPIHandler&) = delete;
   BraveCustomNotesAPIHandler& operator=(const BraveCustomNotesAPIHandler&) = delete;
 
+  // Public methods to call the Summarize and Rephrase API endpoints
   void CallSummarizeAPI(const std::string& content, std::string* summary);
   void CallRephraseAPI(const std::string& content, std::string* rephrased_content);
 
  private:
-  void OnSummarizeAPISuccess(network::SimpleURLLoader* loader,
+  // Private method to handle the success response from Summarize API
+  void OnSummarizeAPIResponse(network::SimpleURLLoader* loader,
                              std::string* summary,
                              std::unique_ptr<std::string> response_body);
-  void OnRephraseAPISuccess(network::SimpleURLLoader* loader,
+
+  void OnAPIResponse(network::SimpleURLLoader* loader,
+                     std::string* output_content,
+                     std::unique_ptr<std::string> response_body);
+
+  // Private method to handle the success response from Rephrase API
+  void OnRephraseAPIResponse(network::SimpleURLLoader* loader,
                             std::string* rephrased_content,
                             std::unique_ptr<std::string> response_body);
 
+  // URL loader factory to handle network requests
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
+  // A vector to hold all active URL loaders to manage their lifetimes
   std::vector<std::unique_ptr<network::SimpleURLLoader>> loaders_;
+
+  // Weak pointer factory to safely manage asynchronous callbacks
   base::WeakPtrFactory<BraveCustomNotesAPIHandler> weak_ptr_factory_{this};
 };
 

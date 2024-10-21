@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import getCustomNotesHandlerInstance from './api/brave_custom_notes_handler';
 
+// Styled Components
 const NotesContainer = styled.div`
      display: flex;
      flex-direction: column;
@@ -46,7 +47,7 @@ const Button = styled.button`
      cursor: pointer;
      margin-right: 10px;
      &:hover {
-       background-color: #0056b3;
+         background-color: #0056b3;
      }
  `;
 
@@ -65,6 +66,7 @@ const NoteItem = styled.li`
      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
  `;
 
+// Note interface
 interface Note {
     id: number;
     title: string;
@@ -77,27 +79,42 @@ const Notes: React.FC = () => {
     const [note, setNote] = useState('');
     const [notesList, setNotesList] = useState<Note[]>([]);
     const [editingNote, setEditingNote] = useState<Note | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Fetch mojom instance
     const customNotesAPI = getCustomNotesHandlerInstance();
 
-    // Load existing notes on component mount (from backend)
+    // Load existing notes on component mount
     useEffect(() => {
         loadNotes();
     }, []);
 
     const loadNotes = () => {
-        customNotesAPI.pageHandler.getAllNotes().then((response: { notes: Note[] }) => {
-            setNotesList(response.notes || []);
-        });
+        customNotesAPI.pageHandler.getAllNotes()
+            .then((response: { notes: Note[] }) => {
+                setNotesList(response.notes || []);
+            })
+            .catch((err: Error) => {
+                console.error(err);
+                alert('Failed to load notes. Please try again.');
+            });
     };
 
     const handleAddNote = () => {
         if (note.trim()) {
-            customNotesAPI.pageHandler.addNote(note).then(() => {
-                loadNotes();
-                setNote('');
-            });
+            setIsLoading(true);
+            customNotesAPI.pageHandler.addNote(note)
+                .then(() => {
+                    loadNotes();
+                    setNote('');
+                })
+                .catch((err: Error) => {
+                    console.error(err);
+                    alert('Failed to add note. Please try again.');
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         }
     };
 
@@ -108,47 +125,107 @@ const Notes: React.FC = () => {
 
     const handleUpdateNote = () => {
         if (editingNote && note.trim()) {
-            customNotesAPI.pageHandler.editNote(editingNote.id, editingNote.title, note).then(() => {
-                loadNotes();
-                setNote('');
-                setEditingNote(null);
-            });
+            setIsLoading(true);
+            customNotesAPI.pageHandler.editNote(editingNote.id, editingNote.title, note)
+                .then(() => {
+                    loadNotes();
+                    setNote('');
+                    setEditingNote(null);
+                })
+                .catch((err: Error) => {
+                    console.error(err);
+                    alert('Failed to update note. Please try again.');
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         }
     };
 
     const handleDeleteNote = (noteId: number) => {
-        customNotesAPI.pageHandler.deleteNote(noteId).then(() => {
-            loadNotes();
-        });
+        setIsLoading(true);
+        customNotesAPI.pageHandler.deleteNote(noteId)
+            .then(() => {
+                loadNotes();
+            })
+            .catch((err: Error) => {
+                console.error(err);
+                alert('Failed to delete note. Please try again.');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     // Summarize the selected note
     const handleSummarizeNote = (noteId: number) => {
+        setIsLoading(true);
         customNotesAPI.pageHandler.summarizeNoteContent(noteId)
             .then((response: { success: boolean, summary: string }) => {
                 if (response.success) {
                     setNotesList(prevNotes =>
                         prevNotes.map(note =>
-                            note.id === noteId ? { ...note, summary: response.summary } : note
+                            note.id === noteId
+                                ? {
+                                    ...note,
+                                    summary: response.summary, // Store summary in note object
+                                    content: note.content // Preserve original content
+                                }
+                                : note
                         )
                     );
+                } else {
+                    alert('Failed to summarize note. Please try again.');
                 }
             })
             .catch((err: Error) => {
                 console.error(err);
+                alert('Failed to summarize note. Please try again.');
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     // Rephrase the currently typed note
     const handleRephraseNote = () => {
-        customNotesAPI.pageHandler.rephraseNoteContent(note)
+        if (!note.trim()) {
+            alert('Please enter some text to rephrase.');
+            return;
+        }
+
+        setIsLoading(true);
+        // If editing a note, use its ID, otherwise use a temporary ID
+        const noteId = editingNote ? editingNote.id : -1;
+
+        customNotesAPI.pageHandler.rephraseNoteContent(noteId)
             .then((response: { success: boolean, rephrased_content: string }) => {
                 if (response.success) {
-                    setNote(response.rephrased_content);  // Replace the note content with the rephrased version
+                    if (editingNote) {
+                        // If editing an existing note, update it in the list
+                        setNotesList(prevNotes =>
+                            prevNotes.map(note =>
+                                note.id === editingNote.id
+                                    ? {
+                                        ...note,
+                                        content: response.rephrased_content
+                                    }
+                                    : note
+                            )
+                        );
+                    }
+                    // Update the note input field
+                    setNote(response.rephrased_content);
+                } else {
+                    alert('Failed to rephrase note. Please try again.');
                 }
             })
             .catch((err: Error) => {
                 console.error(err);
+                alert('Failed to rephrase note. Please try again.');
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
@@ -160,13 +237,24 @@ const Notes: React.FC = () => {
                 onChange={(e) => setNote(e.target.value)}
                 placeholder={editingNote ? "Edit note..." : "Write a new note..."}
             />
-            <Button onClick={editingNote ? handleUpdateNote : handleAddNote}>
-                {editingNote ? "Update Note" : "Add Note"}
-            </Button>
-            {editingNote && (
-                <Button onClick={() => setEditingNote(null)}>Cancel</Button>
-            )}
-            <Button onClick={handleRephraseNote}>Rephrase Note</Button>
+            <div>
+                <Button
+                    onClick={editingNote ? handleUpdateNote : handleAddNote}
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Loading..." : (editingNote ? "Update Note" : "Add Note")}
+                </Button>
+                {editingNote && (
+                    <Button onClick={() => setEditingNote(null)}>Cancel</Button>
+                )}
+                <Button
+                    onClick={handleRephraseNote}
+                    disabled={isLoading || !note.trim()}
+                >
+                    Rephrase Note
+                </Button>
+            </div>
+
             {notesList.length === 0 ? (
                 <p>No notes added yet!</p>
             ) : (
@@ -177,15 +265,30 @@ const Notes: React.FC = () => {
                             <p>{note.content}</p>
                             <small>{new Date(note.timestamp).toLocaleString()}</small>
                             {note.summary && (
-                                <>
+                                <div className="summary-section">
                                     <h4>Summary:</h4>
                                     <p>{note.summary}</p>
-                                </>
+                                </div>
                             )}
-                            <div>
-                                <Button onClick={() => handleEditNote(note)}>Edit</Button>
-                                <Button onClick={() => handleSummarizeNote(note.id)}>Summarize</Button>
-                                <Button onClick={() => handleDeleteNote(note.id)}>Delete</Button>
+                            <div className="note-actions">
+                                <Button
+                                    onClick={() => handleEditNote(note)}
+                                    disabled={isLoading}
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    onClick={() => handleSummarizeNote(note.id)}
+                                    disabled={isLoading}
+                                >
+                                    Summarize
+                                </Button>
+                                <Button
+                                    onClick={() => handleDeleteNote(note.id)}
+                                    disabled={isLoading}
+                                >
+                                    Delete
+                                </Button>
                             </div>
                         </NoteItem>
                     ))}

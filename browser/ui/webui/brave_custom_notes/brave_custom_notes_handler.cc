@@ -1,7 +1,7 @@
-/* Copyright(c) 2022 The Brave Authors.All rights reserved.
- This Source Code Form is subject to the terms of the Mozilla Public
- License, v. 2.0. If a copy of the MPL was not distributed with this file,
- you can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright(c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_custom_notes/brave_custom_notes_handler.h"
 
@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <map>
 
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
@@ -27,6 +28,28 @@ namespace {
 const char kCustomNotesKey[] = "custom_notes";
 }  // namespace
 
+class BraveCustomNotesPageHandler::APICallbackHelper {
+ public:
+  explicit APICallbackHelper(base::WeakPtr<BraveCustomNotesPageHandler> handler,
+                           int32_t note_id)
+      : handler_(handler),
+        note_id_(note_id) {}
+
+  void OnSummarizeComplete(const std::string& summary) {
+    if (handler_)
+      handler_->OnSummarizeComplete(note_id_, summary);
+  }
+
+  void OnRephraseComplete(const std::string& rephrased) {
+    if (handler_)
+      handler_->OnRephraseComplete(note_id_, rephrased);
+  }
+
+ private:
+  base::WeakPtr<BraveCustomNotesPageHandler> handler_;
+  int32_t note_id_;
+};
+
 BraveCustomNotesPageHandler::BraveCustomNotesPageHandler(
     Profile* profile,
     content::WebContents* web_contents,
@@ -35,7 +58,8 @@ BraveCustomNotesPageHandler::BraveCustomNotesPageHandler(
     : profile_(profile),
       web_contents_(web_contents),
       receiver_(this, std::move(receiver)),
-      api_handler_(std::make_unique<BraveCustomNotesAPIHandler>(url_loader_factory)) {
+      api_handler_(std::make_unique<BraveCustomNotesAPIHandler>(url_loader_factory)),
+      weak_ptr_factory_(this) {
   LoadNotesFromPrefs();
 }
 
@@ -47,8 +71,8 @@ void BraveCustomNotesPageHandler::SetClientPage(
 }
 
 void BraveCustomNotesPageHandler::CreateNote(const std::string& title,
-                                             const std::string& content,
-                                             CreateNoteCallback callback) {
+                                           const std::string& content,
+                                           CreateNoteCallback callback) {
   auto new_note = brave_custom_notes::mojom::Note::New();
   new_note->id = notes_.empty() ? 1 : notes_.back()->id + 1;
   new_note->title = title;
@@ -65,7 +89,7 @@ void BraveCustomNotesPageHandler::CreateNote(const std::string& title,
 }
 
 void BraveCustomNotesPageHandler::AddNote(const std::string& content,
-                                          AddNoteCallback callback) {
+                                        AddNoteCallback callback) {
   auto new_note = brave_custom_notes::mojom::Note::New();
   new_note->id = notes_.empty() ? 1 : notes_.back()->id + 1;
   new_note->title = "New Note";
@@ -82,12 +106,11 @@ void BraveCustomNotesPageHandler::AddNote(const std::string& content,
 }
 
 void BraveCustomNotesPageHandler::EditNote(int32_t note_id,
-                                           const std::string& new_title,
-                                           const std::string& new_content,
-                                           EditNoteCallback callback) {
-  auto it =
-      std::find_if(notes_.begin(), notes_.end(),
-                   [note_id](const auto& note) { return note->id == note_id; });
+                                         const std::string& new_title,
+                                         const std::string& new_content,
+                                         EditNoteCallback callback) {
+  auto it = std::find_if(notes_.begin(), notes_.end(),
+                        [note_id](const auto& note) { return note->id == note_id; });
 
   if (it != notes_.end()) {
     (*it)->title = new_title;
@@ -103,46 +126,118 @@ void BraveCustomNotesPageHandler::EditNote(int32_t note_id,
   }
 }
 
-void BraveCustomNotesPageHandler::CallSummarizeAPI(
-    const std::string& content, std::string* summary) {
-  api_handler_->CallSummarizeAPI(content, summary);
-}
-
-void BraveCustomNotesPageHandler::CallRephraseAPI(
-    const std::string& content, std::string* rephrased_content) {
-  api_handler_->CallRephraseAPI(content, rephrased_content);
-}
-
 void BraveCustomNotesPageHandler::SummarizeNoteContent(
     int32_t note_id, SummarizeNoteContentCallback callback) {
-  // Find the note with the given ID
   auto it = std::find_if(notes_.begin(), notes_.end(),
-                         [note_id](const auto& note) { return note->id == note_id; });
+                        [note_id](const auto& note) { return note->id == note_id; });
+
   if (it != notes_.end()) {
-    std::string summary;
-    CallSummarizeAPI((*it)->content, &summary);
-    std::move(callback).Run(true,summary);
+    // Log the start of the summarization process
+    LOG(INFO) << "Starting to summarize note with ID: " << note_id;
+
+    // Store the callback for later use
+    pending_summarize_callbacks_[note_id] = std::move(callback);
+    
+    // Create a string to store the summary
+    auto summary = std::make_unique<std::string>();
+    
+    // Create a helper to handle the API callback
+    auto helper = std::make_unique<APICallbackHelper>(
+        weak_ptr_factory_.GetWeakPtr(), note_id);
+    
+    // Log the note content being passed to the summarization API
+    LOG(INFO) << "Note content being summarized: " << (*it)->content;
+
+    // Call the API with the note content
+    api_handler_->CallSummarizeAPI((*it)->content, summary.get());
+    
+    // Store the output string
+    pending_summaries_[note_id] = std::move(summary);
+
   } else {
-    std::move(callback).Run(false,"Note not found");
+    LOG(WARNING) << "Failed to find note with ID: " << note_id;
+    std::move(callback).Run(false, "Note not found");
   }
 }
 
+// Inside the RephraseNoteContent function
 void BraveCustomNotesPageHandler::RephraseNoteContent(
     int32_t note_id, RephraseNoteContentCallback callback) {
-  // Find the note with the given ID
   auto it = std::find_if(notes_.begin(), notes_.end(),
-                         [note_id](const auto& note) { return note->id == note_id; });
+                        [note_id](const auto& note) { return note->id == note_id; });
+
   if (it != notes_.end()) {
-    std::string rephrased_content;
-    CallRephraseAPI((*it)->content, &rephrased_content);
-    std::move(callback).Run(true,rephrased_content);
+    // Log the start of the rephrasing process
+    LOG(INFO) << "Starting to rephrase note with ID: " << note_id;
+
+    // Store the callback for later use
+    pending_rephrase_callbacks_[note_id] = std::move(callback);
+    
+    // Create a string to store the rephrased content
+    auto rephrased = std::make_unique<std::string>();
+    
+    // Create a helper to handle the API callback
+    auto helper = std::make_unique<APICallbackHelper>(
+        weak_ptr_factory_.GetWeakPtr(), note_id);
+    
+    // Log the note content being passed to the rephrasing API
+    LOG(INFO) << "Note content being rephrased: " << (*it)->content;
+
+    // Call the API with the note content
+    api_handler_->CallRephraseAPI((*it)->content, rephrased.get());
+    
+    // Store the output string
+    pending_rephrased_[note_id] = std::move(rephrased);
   } else {
-    std::move(callback).Run(false,"Note not found");
+    LOG(WARNING) << "Failed to find note with ID: " << note_id;
+    std::move(callback).Run(false, "Note not found");
+  }
+}
+
+// Inside the OnSummarizeComplete function
+void BraveCustomNotesPageHandler::OnSummarizeComplete(
+    int32_t note_id,
+    const std::string& summary) {
+  auto callback_it = pending_summarize_callbacks_.find(note_id);
+  auto summary_it = pending_summaries_.find(note_id);
+  
+  if (callback_it != pending_summarize_callbacks_.end() &&
+      summary_it != pending_summaries_.end()) {
+    // Log the completion of the summarization process
+    LOG(INFO) << "Summarization complete for note with ID: " << note_id;
+    LOG(INFO) << "Summary: " << summary;
+
+    std::move(callback_it->second).Run(true, summary);
+    pending_summarize_callbacks_.erase(callback_it);
+    pending_summaries_.erase(summary_it);
+  } else {
+    LOG(WARNING) << "Summarization callback or summary not found for note with ID: " << note_id;
+  }
+}
+
+// Inside the OnRephraseComplete function
+void BraveCustomNotesPageHandler::OnRephraseComplete(
+    int32_t note_id,
+    const std::string& rephrased) {
+  auto callback_it = pending_rephrase_callbacks_.find(note_id);
+  auto rephrased_it = pending_rephrased_.find(note_id);
+  
+  if (callback_it != pending_rephrase_callbacks_.end() &&
+      rephrased_it != pending_rephrased_.end()) {
+    // Log the completion of the rephrasing process
+    LOG(INFO) << "Rephrasing complete for note with ID: " << note_id;
+    LOG(INFO) << "Rephrased content: " << rephrased;
+
+    std::move(callback_it->second).Run(true, rephrased);
+    pending_rephrase_callbacks_.erase(callback_it);
+    pending_rephrased_.erase(rephrased_it);
+  } else {
+    LOG(WARNING) << "Rephrasing callback or rephrased content not found for note with ID: " << note_id;
   }
 }
 
 void BraveCustomNotesPageHandler::DeleteNote(int32_t note_id,
-                                             DeleteNoteCallback callback) {
+                                           DeleteNoteCallback callback) {
   auto it = std::remove_if(
       notes_.begin(), notes_.end(),
       [note_id](const auto& note) { return note->id == note_id; });
@@ -163,9 +258,8 @@ void BraveCustomNotesPageHandler::DeleteNote(int32_t note_id,
 void BraveCustomNotesPageHandler::GetNoteContent(
     int32_t note_id,
     GetNoteContentCallback callback) {
-  auto it =
-      std::find_if(notes_.begin(), notes_.end(),
-                   [note_id](const auto& note) { return note->id == note_id; });
+  auto it = std::find_if(notes_.begin(), notes_.end(),
+                        [note_id](const auto& note) { return note->id == note_id; });
 
   if (it != notes_.end()) {
     std::move(callback).Run(true, (*it)->content);
@@ -234,4 +328,3 @@ void BraveCustomNotesPageHandler::UpdatePageWithNotes() {
   }
   page_->OnNotesUpdated(std::move(notes_copy));
 }
-

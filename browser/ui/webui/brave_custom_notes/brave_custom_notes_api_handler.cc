@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "base/logging.h"
 
 // Traffic annotation for the network requests
 constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation = net::DefineNetworkTrafficAnnotation(
@@ -31,36 +32,78 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation = net::DefineNetwo
     })");
 
 // API Endpoints
-const char kSummarizeAPIEndpoint[] = "https://openai-text-summarizer.azurewebsites.net/summarize";
-const char kRephraseAPIEndpoint[] = "https://openai-text-summarizer.azurewebsites.net/rephrase";
+const char kSummarizeAPIEndpoint[] = "https://ping.openai.azure.com/openai/deployments/ai-summariser-gpt-35-turbo/chat/completions?api-version=2024-02-15-preview";
+const char kRephraseAPIEndpoint[] = "https://ping.openai.azure.com/openai/deployments/ai-summariser-gpt-35-turbo/chat/completions?api-version=2024-02-15-preview";
+const char kAPIKey[] = "b487c4dc0bc1490e801cb6220cf04039";
+
+// Constructor implementation
+BraveCustomNotesAPIHandler::BraveCustomNotesAPIHandler(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : url_loader_factory_(std::move(url_loader_factory)) {}
+
+// Destructor implementation
+BraveCustomNotesAPIHandler::~BraveCustomNotesAPIHandler() = default;
 
 namespace {
 
+// Create network request loader
 std::unique_ptr<network::SimpleURLLoader> CreateLoader(
     const GURL& api_url, 
-    const std::string& content) {
-  VLOG(1) << "Creating loader for URL: " << api_url.spec();
-  LOG(INFO) << "Request content length: " << content.length();
+    const std::string& content, 
+    const std::string& mode) {
+  
+  LOG(INFO) << "Creating loader for URL: " << api_url.spec();
+  LOG(INFO) << "Request content to send: " << content;
 
+  // Create the resource request
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = api_url;
   resource_request->method = "POST";
   resource_request->headers.SetHeader("Content-Type", "application/json");
+  
+  // Add API key header (as provided in the CURL command)
+  resource_request->headers.SetHeader("api-key", kAPIKey);
 
+  // Create the URL loader
   auto loader = network::SimpleURLLoader::Create(
       std::move(resource_request), 
       kTrafficAnnotation);
-  
+
+  // Building JSON body for the request
+  base::Value::Dict system_message;
+  if (mode == "summarize") {
+    system_message.Set("role", "system");
+    system_message.Set("content", "You are a Ping AI summariser whose job is to create a summary of the text in a webpage. You help the user by creating bullet points which make it easier to get a gist of the webpage he is viewing. You also add emojis in the bullet points to make it more engaging. You create short to the point summaries for the user. Each point must not be more than a short sentence.");
+  } else if (mode == "rephrase") {
+    system_message.Set("role", "system");
+    system_message.Set("content", "You are an AI designed to rephrase text. Please rephrase the provided content to make it clearer and more concise.");
+  }
+
+  base::Value::Dict user_message;
+  user_message.Set("role", "user");
+  user_message.Set("content", content);
+
+  base::Value::List messages;
+  messages.Append(std::move(system_message));
+  messages.Append(std::move(user_message));
+
   base::Value::Dict request_dict;
-  request_dict.Set("content", content);
+  request_dict.Set("messages", std::move(messages));
+  request_dict.Set("max_tokens", 800);
+  request_dict.Set("temperature", 0.5);
+  request_dict.Set("frequency_penalty", 0);
+  request_dict.Set("presence_penalty", 0);
+  request_dict.Set("top_p", 0.95);
+
   std::string request_body;
   base::JSONWriter::Write(request_dict, &request_body);
 
-  VLOG(2) << "Request body: " << request_body;
+  LOG(INFO) << "JSON request body: " << request_body;
   
+  // Attach the JSON body to the loader
   loader->AttachStringForUpload(request_body, "application/json");
-  
-  // Set retry options
+
+  // Set retry options in case of network errors
   loader->SetRetryOptions(
       3,  // max retries
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
@@ -70,109 +113,133 @@ std::unique_ptr<network::SimpleURLLoader> CreateLoader(
 
 }  // namespace
 
-BraveCustomNotesAPIHandler::BraveCustomNotesAPIHandler(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(std::move(url_loader_factory)) {
-      LOG(INFO) << "BraveCustomNotesAPIHandler initialized";
+// Handle API response for both Summarize and Rephrase
+void BraveCustomNotesAPIHandler::OnAPIResponse(
+    network::SimpleURLLoader* loader,
+    std::string* output_content,
+    std::unique_ptr<std::string> response_body) {
+  LOG(INFO) << "Processing API response";
+
+  if (response_body) {
+    LOG(INFO) << "API response body: " << *response_body;
+
+    // Attempt to read and parse the JSON response
+    auto json_result = base::JSONReader::Read(*response_body);
+    
+    if (!json_result) {
+      LOG(ERROR) << "Failed to parse JSON response.";
+      *output_content = "Failed to parse JSON response.";
+      return;
+    }
+    
+    if (!json_result->is_dict()) {
+      LOG(ERROR) << "Parsed JSON is not a dictionary.";
+      *output_content = "Parsed JSON is not a dictionary.";
+      return;
     }
 
-BraveCustomNotesAPIHandler::~BraveCustomNotesAPIHandler(){
-  LOG(INFO) << "BraveCustomNotesAPIHandler destroyed";
-  if (!loaders_.empty()) {
-    LOG(WARNING) << "Destroying handler with " << loaders_.size() 
-                << " pending requests";
+    // Get the list of choices
+    const base::Value::List* choices = json_result->GetDict().FindList("choices");
+    if (!choices) {
+      LOG(ERROR) << "'choices' not found in the response.";
+      *output_content = "'choices' not found in the response.";
+      return;
+    }
+
+    if (choices->empty()) {
+      LOG(ERROR) << "No choices found in the response.";
+      *output_content = "No choices found in the response.";
+      return;
+    }
+
+    // Access the first choice
+    const base::Value::Dict& first_choice = choices->front().GetDict();
+
+    // Log the entire first choice for debugging
+    LOG(INFO) << "First choice: " << first_choice.DebugString();
+
+    // Extract the message content
+    const base::Value::Dict* message = first_choice.FindDict("message");
+    if (!message) {
+      LOG(ERROR) << "'message' not found in the first choice.";
+      *output_content = "'message' not found in the first choice.";
+      return;
+    }
+
+    const std::string* api_result = message->FindString("content");
+    if (api_result) {
+      *output_content = *api_result; // Set output_content to the extracted message
+    } else {
+      LOG(ERROR) << "'content' not found in 'message'.";
+      *output_content = "'content' not found in 'message'.";
+    }
+
+    // Optionally log content filter results
+    const base::Value::Dict* content_filter_results = first_choice.FindDict("content_filter_results");
+    if (content_filter_results) {
+      LOG(INFO) << "Content filter results: " << content_filter_results->DebugString();
+    } else {
+      LOG(INFO) << "No content filter results found.";
+    }
+  } else {
+    LOG(ERROR) << "Failed to get a response.";
+    *output_content = "Failed to get a response.";
+  }
+
+  // Log the output content for debugging
+  LOG(INFO) << "Output content: " << *output_content;
+
+  // Remove completed loader from the active loaders list
+  auto it = std::find_if(loaders_.begin(), loaders_.end(),
+                         [loader](const std::unique_ptr<network::SimpleURLLoader>& l) {
+                           return l.get() == loader;
+                         });
+  if (it != loaders_.end()) {
+    loaders_.erase(it);
   }
 }
 
+
+// Function to call the Summarize API
 void BraveCustomNotesAPIHandler::CallSummarizeAPI(
     const std::string& content, std::string* summary) {
-       VLOG(1) << "Calling summarize API";
+  
   GURL api_url(kSummarizeAPIEndpoint);
-  auto loader = CreateLoader(api_url, content);
+  LOG(INFO) << "Attempting to call Summarize API at: " << api_url.spec();
+  auto loader = CreateLoader(api_url, content, "summarize");
 
-  loader->DownloadToString(
+  // Check if loader was created successfully
+  if (!loader) {
+    LOG(ERROR) << "Failed to create loader for Summarize API.";
+    return;
+  }
+
+  loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&BraveCustomNotesAPIHandler::OnSummarizeAPISuccess,
-                     weak_ptr_factory_.GetWeakPtr(), loader.get(), summary),
-      1024 * 1024 /* 1MB max size */);
+      base::BindOnce(&BraveCustomNotesAPIHandler::OnAPIResponse,
+                     base::Unretained(this), loader.get(), summary));
 
   loaders_.push_back(std::move(loader));
-  VLOG(1) << "Summarize request sent. Active loaders: " << loaders_.size();
 }
 
+// Function to call the Rephrase API
 void BraveCustomNotesAPIHandler::CallRephraseAPI(
     const std::string& content, std::string* rephrased_content) {
-      VLOG(1) << "Calling rephrase API";
+  
   GURL api_url(kRephraseAPIEndpoint);
-  auto loader = CreateLoader(api_url, content);
+  LOG(INFO) << "Attempting to call Rephrase API at: " << api_url.spec();
+  auto loader = CreateLoader(api_url, content, "rephrase");
 
-  loader->DownloadToString(
+  // Check if loader was created successfully
+  if (!loader) {
+    LOG(ERROR) << "Failed to create loader for Rephrase API.";
+    return;
+  }
+
+  loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&BraveCustomNotesAPIHandler::OnRephraseAPISuccess,
-                     weak_ptr_factory_.GetWeakPtr(), loader.get(), rephrased_content),
-      1024 * 1024 /* 1MB max size */);
+      base::BindOnce(&BraveCustomNotesAPIHandler::OnAPIResponse,
+                     base::Unretained(this), loader.get(), rephrased_content));
 
   loaders_.push_back(std::move(loader));
-  VLOG(1) << "Rephrase request sent. Active loaders: " << loaders_.size();
-}
-
-void BraveCustomNotesAPIHandler::OnSummarizeAPISuccess(
-    network::SimpleURLLoader* loader,
-    std::string* summary,
-    std::unique_ptr<std::string> response_body) {
-      VLOG(1) << "Processing summarize API response";
-  if (response_body) {
-    auto json_result = base::JSONReader::Read(*response_body);
-    if (json_result && json_result->is_dict()) {
-      const std::string* api_result = json_result->GetDict().FindString("summary");
-      if (api_result) {
-        *summary = *api_result;
-      } else {
-        *summary = "Key 'summary' not found in the response.";
-      }
-    } else {
-      *summary = "Invalid JSON response.";
-    }
-  } else {
-    *summary = "Failed to get a response.";
-  }
-
-  // Cleanup completed loader
-  auto it = std::find_if(loaders_.begin(), loaders_.end(),
-                         [loader](const std::unique_ptr<network::SimpleURLLoader>& l) {
-                           return l.get() == loader;
-                         });
-  if (it != loaders_.end()) {
-    loaders_.erase(it);
-  }
-}
-
-void BraveCustomNotesAPIHandler::OnRephraseAPISuccess(
-    network::SimpleURLLoader* loader,
-    std::string* rephrased_content,
-    std::unique_ptr<std::string> response_body) {
-  if (response_body) {
-    auto json_result = base::JSONReader::Read(*response_body);
-    if (json_result && json_result->is_dict()) {
-      const std::string* api_result = json_result->GetDict().FindString("rephrased_content");
-      if (api_result) {
-        *rephrased_content = *api_result;
-      } else {
-        *rephrased_content = "Key 'rephrased_content' not found in the response.";
-      }
-    } else {
-      *rephrased_content = "Invalid JSON response.";
-    }
-  } else {
-    *rephrased_content = "Failed to get a response.";
-  }
-
-  // Cleanup completed loader
-  auto it = std::find_if(loaders_.begin(), loaders_.end(),
-                         [loader](const std::unique_ptr<network::SimpleURLLoader>& l) {
-                           return l.get() == loader;
-                         });
-  if (it != loaders_.end()) {
-    loaders_.erase(it);
-  }
 }
