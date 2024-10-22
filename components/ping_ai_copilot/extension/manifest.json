@@ -4,6 +4,8 @@
   "version": "1.0",
   "description": "Ai copilot - by Ping.",
   "permissions": [
+    "storage",
+    "tabs",
     "activeTab",
     "scripting",
     "declarativeNetRequest",
