@@ -8,22 +8,22 @@ import UIKit
 extension URL {
   public enum Brave {
     public static let community = URL(string: "https://ping-browser.com/faqs-and-help")!
-    public static let account = URL(string: "https://account.brave.com")!
+    public static let account = URL(string: "https://account.ping-browser.com")!
     public static let privacy = URL(string: "https://ping-browser.com/privacy-policy")!
-    public static let braveNews = URL(string: "https://brave.com/brave-news/")!
-    public static let braveNewsPrivacy = URL(string: "https://brave.com/privacy/#brave-news")!
-    public static let braveOffers = URL(string: "https://offers.brave.com/")!
+    public static let braveNews = URL(string: "https://ping-browser.com/brave-news/")!
+    public static let braveNewsPrivacy = URL(string: "https://ping-browser.com/privacy/#brave-news")!
+    public static let braveOffers = URL(string: "https://offers.ping-browser.com/")!
     public static let playlist = URL(string: "https://ping-browser.com/faqs-and-help")!
-    public static let rewardsOniOS = URL(string: "https://brave.com/rewards-ios/")!
+    public static let rewardsOniOS = URL(string: "https://ping-browser.com/rewards-ios/")!
     public static let rewardsUnverifiedPublisherLearnMoreURL = URL(
-      string: "https://brave.com/faq-rewards/#unclaimed-funds"
+      string: "https://ping-browser.com/faq-rewards/#unclaimed-funds"
     )!
     public static let termsOfUse = URL(string: "https://ping-browser.com/terms-of-use-1")!
     public static let batTermsOfUse = URL(
       string: "https://basicattentiontoken.org/user-terms-of-service/"
     )!
-    public static let ntpTutorialPage = URL(string: "https://brave.com/ja/ntp-tutorial")!
-    public static let privacyFeatures = URL(string: "https://brave.com/privacy-features/")!
+    public static let ntpTutorialPage = URL(string: "https://ping-browser.com/ja/ntp-tutorial")!
+    public static let privacyFeatures = URL(string: "https://ping-browser.com/privacy-features/")!
     public static let support = URL(string: "https://ping-browser.com/faqs-and-help")!
     public static let p3aHelpArticle = URL(
       string: "https://ping-browser.com/faqs-and-help"
@@ -32,7 +32,7 @@ extension URL {
       string: "https://ping-browser.com/faqs-and-help"
     )!
     public static let braveVPNLinkReceiptProd = URL(
-      string: "https://account.brave.com/?intent=connect-receipt&product=vpn"
+      string: "https://account.ping-browser.com/?intent=connect-receipt&product=vpn"
     )!
     public static let braveVPNLinkReceiptStaging = URL(
       string: "https://account.bravesoftware.com/?intent=connect-receipt&product=vpn"
@@ -47,7 +47,7 @@ extension URL {
       string: "https://support.apple.com/guide/security/secd8831e732/web"
     )!
     public static let braveLeoManageSubscriptionProd = URL(
-      string: "https://account.brave.com/plans"
+      string: "https://account.ping-browser.com/plans"
     )!
     public static let braveLeoManageSubscriptionStaging = URL(
       string: "https://account.bravesoftware.com/plans"
@@ -56,7 +56,7 @@ extension URL {
       string: "https://account.brave.software/plans"
     )!
     public static let braveLeoLinkReceiptProd = URL(
-      string: "https://account.brave.com/?intent=link-order&product=leo"
+      string: "https://account.ping-browser.com/?intent=link-order&product=leo"
     )!
     public static let braveLeoLinkReceiptStaging = URL(
       string: "https://account.bravesoftware.com/?intent=link-order&product=leo"

@@ -10,11 +10,11 @@ import WidgetKit
 struct BraveWidgets: WidgetBundle {
   var body: some Widget {
     ShortcutsWidget()
-    // FavoritesWidget()
+    FavoritesWidget()
     // TopNewsWidget()
     // TopNewsListWidget()
-    // SingleStatWidget()
-    // StatsWidget()
+    SingleStatWidget()
+    StatsWidget()
     LockScreenShortcutWidget()
     // LockScreenFavoriteWidget()
   }
