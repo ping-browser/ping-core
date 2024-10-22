@@ -52,9 +52,9 @@ public class BraveVpnUtils {
     public static final String DESKTOP_CREDENTIAL = "desktop_credential";
 
     private static final String BRAVE_ACCOUNT_PROD_PAGE_URL =
-            "https://account.brave.com?intent=connect-receipt&product=vpn";
+            "https://ping-browser.com/faqs-and-help";
     private static final String BRAVE_ACCOUNT_STAGING_PAGE_URL =
-            "https://account.bravesoftware.com?intent=connect-receipt&product=vpn";
+            "https://ping-browser.com/faqs-and-help";
 
     public static boolean mUpdateProfileAfterSplitTunnel;
     public static BraveVpnServerRegion selectedServerRegion;

@@ -221,5 +221,19 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_player/brave_player.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [61010],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-parental_control/parental_control.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [62000],
+  },
+  "brave/components/parental_control/resources.grd": {
+    "includes": [62100],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ping_ai_copilot/ping_ai_copilot.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [63000],
+  },
+  "brave/components/ping_ai_copilot/resources.grd": {
+    "includes": [63100],
   }
 }

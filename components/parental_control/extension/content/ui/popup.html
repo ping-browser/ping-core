@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ping Kids Mode extension</title>
+  <link rel="stylesheet" href="../../../extension/content/ui/popup.css">
+</head>
+
+<body>
+  <div id="container" style="display: flex; flex-direction: column;">
+    <div id="popupContainers">
+      <div id="signUpContainer">
+        <div id="centerContainer">
+          <div id="headingText" style="margin-top: 75px; font-size: 17px; width: 210px;">We keep an eye to provide your kid a safe browsing experience</div>
+        </div>
+        <form id="registerForm">
+          <div id="centerContainer">
+            <input style="margin-top: 26px;" type="password" id="password" placeholder="Password">
+            <input style="margin-top: 12px; margin-bottom: 21px;" type="password" id="cpassword" placeholder="Confirm password">
+            <div>
+              <button type="submit" id="loginBtn">Set password</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div id="signInContainer">
+        <div id="centerContainer">
+          <div id="headingText" style="font-size: 15px; margin-top: 35px;">We ensure your kid a safe browsing experience</div>
+        </div>
+        <form id="loginForm" style="margin-top: 18px;">
+          <div id="centerContainer">
+            <input type="password" id="loginPassword" placeholder="Password">
+          </div>
+          <div style="display: flex; justify-content: start; margin-top: 7px; margin-left: 32px; cursor: pointer;">
+            <span id="resetPasswordLink">Reset password</span>
+          </div>
+          <div style="display: flex; flex-direction: column; margin-bottom: 10px; margin-top: 15px;">
+            <div class="checkbox-container checkboxTooltip">
+              <input type="checkbox" id="blockGamesCheckbox" style="margin: 5px;">
+              <label class="checkbox-label" for="blockGamesCheckbox">Block games</label>
+              <span class="tooltiptext">Foster productivity and creativity by minimizing gaming</span>
+            </div>
+            <div class="checkbox-container checkboxTooltip">
+              <input type="checkbox" id="blockSocialMediaCheckbox" style="margin: 5px;">
+              <label class="checkbox-label" for="blockSocialMediaCheckbox">Block social media</label>
+              <span class="tooltiptext">Encourage productive screen time by blocking social media sites.</span>
+            </div>
+            <div class="session-time-container">
+              <label for="sessionTime" class="timerLabel">Set timer for</label>
+              <input id="sessionTime" type="number" value="1" min="1" max="24" name="sessionTime">
+              <span id="sessionTimeSpan" style="display: flex; align-items: center; margin-left: 4px; font-weight: bold; color: #fff;">Hr</span>
+            </div>
+          </div>
+          <div id="centerContainer">
+            <button type="submit" id="loginBtn">Turn on</button>
+          </div>
+        </form>
+      </div>
+      <div id="kidsContent">
+        <div id="centerContainer">
+          <div id="headingText" style="width: 222px;">Make sure you make the most of today</div>
+        </div>
+        <form id="logoutForm">
+          <div id="centerContainer" style="align-items: self-start; justify-content: center;
+          margin-left: 8px;">
+            <div id="timerDisplay">
+              <div id="timeText">Time left</div>
+              <div style="display: flex; flex-direction: row;">
+                <div id="timeHours" style="margin-right: 3px;"></div>
+                <div id="timeMinutes"></div>
+              </div>
+            </div>
+            <div style="color: #fff; font-size: 14px; margin-bottom: 13px; margin-top: 8px;">
+              Exit kids mode
+            </div>
+          </div>
+          <div id="centerContainer">
+            <input type="password" id="logoutPassword" placeholder="Password" style="margin-bottom: 10px;">
+            <button type="submit" style="padding: 10px; margin-bottom: 10px;" id="logoutBtn">Turn of</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="successStatus" style="display: block;"></div>
+    <div id="errorStatus" style="display: block; height: 10px;"></div>
+  </div>
+  <script src="../../../extension/out/parental_control.bundle.js" type="module"></script>
+</body>
+
+</html>

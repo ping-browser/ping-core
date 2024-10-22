@@ -19,7 +19,7 @@ import org.chromium.ui.base.WindowAndroid;
 
 /** Launches Brave Leo settings page or subscription. */
 public class BraveLeoSettingsLauncherHelper {
-    private static final String ACCOUNT_PAGE_URL = "https://account.brave.com/";
+    private static final String ACCOUNT_PAGE_URL = "https://ping-browser.com/faqs-and-help";
     private static SettingsLauncher sLauncher;
 
     @CalledByNative

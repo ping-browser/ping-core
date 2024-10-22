@@ -31,7 +31,7 @@ import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 public class TippingVerifiedCreatorToolTip {
     private static final String NEW_SIGNUP_DISABLED_URL =
-            "https://support.brave.com/hc/en-us/articles/9312922941069";
+            "https://ping-browser.com/faqs-and-help";
 
     private PopupWindow mPopupWindow;
     public TippingVerifiedCreatorToolTip(@NonNull Context context) {

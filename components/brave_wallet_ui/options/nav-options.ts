@@ -43,24 +43,24 @@ export const isValidPanelNavigationOption = (
 }
 
 export const BuySendSwapDepositOptions: NavOption[] = [
-  {
-    id: 'buy',
-    name: 'braveWalletBuy',
-    icon: 'coins-alt1',
-    route: WalletRoutes.FundWalletPageStart
-  },
+  // {
+  //   id: 'buy',
+  //   name: 'braveWalletBuy',
+  //   icon: 'coins-alt1',
+  //   route: WalletRoutes.FundWalletPageStart
+  // },
   {
     id: 'send',
     name: 'braveWalletSend',
     icon: 'send',
     route: WalletRoutes.Send
   },
-  {
-    id: 'swap',
-    name: 'braveWalletSwap',
-    icon: 'currency-exchange',
-    route: WalletRoutes.Swap
-  },
+  // {
+  //   id: 'swap',
+  //   name: 'braveWalletSwap',
+  //   icon: 'currency-exchange',
+  //   route: WalletRoutes.Swap
+  // },
   {
     id: 'deposit',
     name: 'braveWalletDepositCryptoButton',
@@ -112,12 +112,12 @@ export const NavOptions: NavOption[] = [
     icon: 'user-accounts',
     route: WalletRoutes.Accounts
   },
-  {
-    id: 'market',
-    name: 'braveWalletTopNavMarket',
-    icon: 'discover',
-    route: WalletRoutes.Market
-  }
+  // {
+  //   id: 'market',
+  //   name: 'braveWalletTopNavMarket',
+  //   icon: 'discover',
+  //   route: WalletRoutes.Market
+  // }
 ]
 
 export const AllNavOptions: NavOption[] = [

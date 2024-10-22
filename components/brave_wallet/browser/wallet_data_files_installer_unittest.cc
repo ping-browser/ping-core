@@ -41,7 +41,7 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
+constexpr char kComponentId[] = "knpelcmpghdmgodfegongjplocbiijmh";
 
 class MockWalletDataFilesInstallerDelegateImpl
     : public WalletDataFilesInstallerDelegate {

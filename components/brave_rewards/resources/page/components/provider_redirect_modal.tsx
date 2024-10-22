@@ -12,7 +12,7 @@ import { contactSupportURL } from '../../shared/lib/rewards_urls'
 import { ModalRedirect } from '../../ui/components'
 import * as mojom from '../../shared/lib/mojom'
 
-export function ProviderRedirectModal () {
+export function ProviderRedirectModal() {
   const { getString } = React.useContext(LocaleContext)
   const actions = useActions()
   const { modalRedirectProvider, modalRedirect } = useRewardsData((data) => ({
@@ -44,7 +44,7 @@ export function ProviderRedirectModal () {
           id={'redirect-modal-device-limit-reached'}
           errorText={[getString('redirectModalDeviceLimitReachedText')]}
           titleText={getString('redirectModalDeviceLimitReachedTitle')}
-          learnMore={'https://support.brave.com/hc/en-us/articles/360056508071'}
+          learnMore={'https://ping-browser.com/faqs-and-help'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}
@@ -59,7 +59,7 @@ export function ProviderRedirectModal () {
             getString('redirectModalFlaggedWalletText2'),
             getString('redirectModalFlaggedWalletText3'),
             getString('redirectModalFlaggedWalletText4')]}
-          errorTextLink={'https://support.brave.com/hc/en-us/articles/4494596374925'}
+          errorTextLink={'https://ping-browser.com/faqs-and-help'}
           titleText={getString('redirectModalFlaggedWalletTitle')}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
@@ -83,7 +83,7 @@ export function ProviderRedirectModal () {
           id={'redirect-modal-mismatched-countries'}
           errorText={[getString('redirectModalMismatchedCountriesText').replace('$1', providerName)]}
           titleText={getString('redirectModalMismatchedCountriesTitle')}
-          learnMore={'https://support.brave.com/hc/en-us/articles/9809690466061'}
+          learnMore={'https://ping-browser.com/faqs-and-help'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}
@@ -95,7 +95,7 @@ export function ProviderRedirectModal () {
           id={'redirect-modal-mismatched-provider-accounts'}
           errorText={[getString('redirectModalMismatchedProviderAccountsText').replace('$1', providerName)]}
           titleText={getString('redirectModalMismatchedProviderAccountsTitle')}
-          learnMore={'https://support.brave.com/hc/en-us/articles/360034841711-What-is-a-verified-wallet-'}
+          learnMore={'https://ping-browser.com/faqs-and-help'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}
@@ -109,7 +109,7 @@ export function ProviderRedirectModal () {
             getString('redirectModalProviderUnavailableText1').replaceAll('$1', providerName),
             getString('redirectModalProviderUnavailableText2')]}
           titleText={getString('redirectModalProviderUnavailableTitle')}
-          errorTextLink={'https://status.brave.com/'}
+          errorTextLink={'https://ping-browser.com/faqs-and-help'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}
@@ -123,7 +123,7 @@ export function ProviderRedirectModal () {
             getString('redirectModalRegionNotSupportedText1').replaceAll('$1', providerName),
             getString('redirectModalRegionNotSupportedText2')]}
           titleText={getString('redirectModalRegionNotSupportedTitle')}
-          errorTextLink={'https://support.brave.com/hc/en-us/articles/6539887971469'}
+          errorTextLink={'https://ping-browser.com/faqs-and-help'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}
@@ -147,7 +147,7 @@ export function ProviderRedirectModal () {
           id={'redirect-modal-uphold-bat-not-allowed'}
           errorText={[getString('redirectModalUpholdBATNotAllowedText')]}
           titleText={getString('redirectModalUpholdBATNotAllowedTitle')}
-          learnMore={'https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability'}
+          learnMore={'https://ping-browser.com/faqs-and-help'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}
