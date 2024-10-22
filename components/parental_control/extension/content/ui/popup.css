@@ -193,12 +193,12 @@ button {
   cursor: pointer;
 }
 
-.tooltip {
+.checkboxTooltip {
   position: relative;
   display: inline-block;
 }
 
-.tooltip .tooltiptext {
+.checkboxTooltip .tooltiptext {
   width: 195px;
   height: 56px;
   min-height: fit-content;
@@ -213,14 +213,14 @@ button {
   padding: 8px;
   position: absolute;
   z-index: 1;
-  top: 115%; /* Position the tooltip above the element */
+  top: 115%;
   left: 35%;
   margin-left: -50px;
   opacity: 0;
   transition: opacity 0.3s;
 }
 
-.tooltip:hover .tooltiptext {
+.checkboxTooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
 }

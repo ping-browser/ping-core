@@ -3751,7 +3751,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Ping Panel",
-    comment: "Button to show the brave panel"
+    comment: "Button to show the ping panel"
   )
   public static let rewardsPanel = NSLocalizedString(
     "RewardsPanel",
@@ -4293,21 +4293,21 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Ping Ads is here!",
-    comment: "Title when opting into brave Ads when region becomes available"
+    comment: "Title when opting into ping Ads when region becomes available"
   )
   public static let OBAdsOptInMessage = NSLocalizedString(
     "OBAdsOptInMessage",
     tableName: "BraveShared",
     bundle: .module,
     value: "Earn tokens and reward creators for great content while you browse.",
-    comment: "Message when opting into brave Ads when region becomes available"
+    comment: "Message when opting into ping Ads when region becomes available"
   )
   public static let OBAdsOptInMessageJapan = NSLocalizedString(
     "OBAdsOptInMessageJapan",
     tableName: "BraveShared",
     bundle: .module,
     value: "Earn points and reward creators for great content while you browse.",
-    comment: "Message when opting into brave Ads when region becomes available"
+    comment: "Message when opting into ping Ads when region becomes available"
   )
   public static let OBRewardsDetailInAdRegion = NSLocalizedString(
     "OBRewardsDetailInAdRegion",

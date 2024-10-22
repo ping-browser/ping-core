@@ -293,7 +293,7 @@ extension Strings {
     "ScanQRCodePermissionErrorMessage",
     bundle: .module,
     value:
-      "Please allow Brave to access your device’s camera in ‘Settings’ -> ‘Privacy’ -> ‘Camera’.",
+      "Please allow Ping to access your device’s camera in ‘Settings’ -> ‘Privacy’ -> ‘Camera’.",
     comment: "Text of the prompt user to setup the camera authorization."
   )
   public static let scanQRCodeErrorOKButton = NSLocalizedString(

@@ -81,7 +81,7 @@ class NTPTableViewController: TableViewController {
       ]
     )
 
-    dataSource.sections = [imageSection, widgetSection]
+    dataSource.sections = [widgetSection]
   }
 
   private func selectedItem() -> BackgroundImageType {

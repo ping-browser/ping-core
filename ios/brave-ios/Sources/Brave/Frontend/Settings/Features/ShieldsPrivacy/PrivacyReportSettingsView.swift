@@ -23,11 +23,11 @@ struct PrivacyReportSettingsView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
-      Section(footer: Text(Strings.PrivacyHub.settingsEnableVPNAlertsFooter)) {
-        Toggle(Strings.PrivacyHub.settingsEnableVPNAlertsTitle, isOn: $vpnAlertsEnabled.value)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-      }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      // Section(footer: Text(Strings.PrivacyHub.settingsEnableVPNAlertsFooter)) {
+      //   Toggle(Strings.PrivacyHub.settingsEnableVPNAlertsTitle, isOn: $vpnAlertsEnabled.value)
+      //     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+      // }
+      // .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       Section(footer: Text(Strings.PrivacyHub.settingsSlearDataFooter)) {
         HStack {
