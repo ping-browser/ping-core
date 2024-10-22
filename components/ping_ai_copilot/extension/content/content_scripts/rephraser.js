@@ -1,6 +1,7 @@
 const TextRephraser = (() => {
 
     const state = {
+        currActiveElement: null,
         prevActiveElement: null,
         originalText: '',
         rephrasedText: '',
@@ -17,7 +18,7 @@ const TextRephraser = (() => {
     const MIN_WORDS = 10;
     const MIN_WIDTH = 600;
     const MIN_HEIGHT = 50;
-    const PILL_TIMEOUT = 1800;
+    const PILL_TIMEOUT = 800;
 
     const isDarkBackground = (color) => {
         const rgb = color.match(/\d+/g);
@@ -120,7 +121,6 @@ const TextRephraser = (() => {
 
         const rightButton = createPillButton('rewrite', iconColor, 'Retry', () => {
             if (state.prevActiveElement) {
-                rephraseText(textBox);
                 if (state.pillContainer) {
                     state.pillContainer.remove();
                     state.pillContainer = null;
@@ -357,7 +357,7 @@ const TextRephraser = (() => {
         buttonContainer.addEventListener('mouseenter', () => {
             if (!state.isFetching) {
                 if (state.hasRephrasedBefore) {
-                    showPill(buttonContainer, document.activeElement, img);
+                    showPill(buttonContainer, textBox, img);
                 } else {
                     if (img.dataset.currentIcon === 'rephrase') {
                         img.src = getAssetUrl('rephrase', iconColor, true);
@@ -383,9 +383,9 @@ const TextRephraser = (() => {
             e.stopPropagation();
 
             if (state.isFetching) {
-                undoRephraseText(textBox, img);
+                undoRephraseText(state.currActiveElement, img);
             } else {
-                rephraseText(textBox, img);
+                rephraseText(state.currActiveElement, img);
             }
         });
     };
@@ -498,11 +498,11 @@ const TextRephraser = (() => {
 
     // Event handlers
     const focusinHandler = (event) => {
-        const activeElement = event.target;
-        if (isValidTextBox(activeElement)) {
-            handleTextBoxFocus(activeElement);
+        state.currActiveElement = event.target;
+        if (isValidTextBox(state.currActiveElement)) {
+            handleTextBoxFocus(state.currActiveElement);
         }
-        TextBoxAvalCheck(activeElement);
+        TextBoxAvalCheck(state.currActiveElement);
     };
 
     const inputHandler = debounce((event) => {
