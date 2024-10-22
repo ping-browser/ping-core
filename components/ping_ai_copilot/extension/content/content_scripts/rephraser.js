@@ -493,7 +493,7 @@ const TextRephraser = (() => {
                     }
                 }
             }
-        }, 5000); // Check every second
+        }, 200);
     };
 
     // Event handlers
