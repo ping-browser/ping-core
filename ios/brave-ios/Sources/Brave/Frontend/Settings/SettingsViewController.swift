@@ -667,17 +667,17 @@ class SettingsViewController: TableViewController {
       self.navigationController?.pushViewController(optionsViewController, animated: true)
     }
     display.rows.append(row)
-    // display.rows.append(
-    //   Row(
-    //     text: Strings.NTP.settingsTitle,
-    //     selection: { [unowned self] in
-    //       self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
-    //     },
-    //     image: UIImage(braveSystemNamed: "leo.window.tab-new"),
-    //     accessory: .disclosureIndicator,
-    //     cellClass: MultilineValue1Cell.self
-    //   )
-    // )
+    display.rows.append(
+      Row(
+        text: Strings.NTP.settingsTitle,
+        selection: { [unowned self] in
+          self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
+        },
+        image: UIImage(braveSystemNamed: "leo.window.tab-new"),
+        accessory: .disclosureIndicator,
+        cellClass: MultilineValue1Cell.self
+      )
+    )
 
     // We do NOT persistently save page-zoom settings in Private Browsing
     if !tabManager.privateBrowsingManager.isPrivateBrowsing {
