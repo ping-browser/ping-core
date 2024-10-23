@@ -39,15 +39,17 @@ BravePrivateNewTabPageHandler::BravePrivateNewTabPageHandler(
       receiver_(this, std::move(receiver)) {
 #if BUILDFLAG(ENABLE_TOR)
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
-  if (tor_launcher_factory_)
+  if (tor_launcher_factory_) {
     tor_launcher_factory_->AddObserver(this);
+  }
 #endif
 }
 
 BravePrivateNewTabPageHandler::~BravePrivateNewTabPageHandler() {
 #if BUILDFLAG(ENABLE_TOR)
-  if (tor_launcher_factory_)
+  if (tor_launcher_factory_) {
     tor_launcher_factory_->RemoveObserver(this);
+  }
 #endif
 }
 
@@ -83,11 +85,13 @@ void BravePrivateNewTabPageHandler::GetIsTorConnected(
     GetIsTorConnectedCallback callback) {
   bool is_connected = false;
 #if BUILDFLAG(ENABLE_TOR)
-  if (tor_launcher_factory_)
+  if (tor_launcher_factory_) {
     is_connected = tor_launcher_factory_->IsTorConnected();
+  }
 #endif
-  else
+  else {
     is_connected = false;
+  }
 
   std::move(callback).Run(is_connected);
 }
@@ -134,8 +138,9 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
     web_contents = browser->tab_strip_model()->GetActiveWebContents();
   }
 
-  if (!web_contents)
+  if (!web_contents) {
     web_contents = web_contents_;
+  }
 
   web_contents->OpenURL(
       content::OpenURLParams(GURL("https://ping-browser.com/faqs-and-help"),
@@ -170,8 +175,9 @@ void BravePrivateNewTabPageHandler::OnTorInitializing(
 }
 
 void BravePrivateNewTabPageHandler::OnTorCircuitTimer(ConnectionStatus status) {
-  if (!page_)
+  if (!page_) {
     return;
+  }
 
   if (status == ConnectionStatus::kConnectionSlow) {
     // First time shot of stuck_timer_  means that 'connection is slow' we
