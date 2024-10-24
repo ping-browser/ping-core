@@ -12,6 +12,8 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/parental_control/grit/parental_control_resources.h"
+#include "brave/components/ping_ai_copilot/grit/ping_ai_copilot_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/common/constants.h"
 
@@ -24,6 +26,8 @@ namespace extensions {
   bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
     const char* const kAllowed[] = {
       brave_extension_id,
+      parental_control_id,
+      ping_ai_copilot_id,
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
       kEthereumRemoteClientExtensionId,
 #endif
@@ -44,6 +48,8 @@ namespace extensions {
       // Please keep the list in alphabetical order.
       case IDR_BRAVE_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:
+      case IDR_PARENTAL_CONTROL:
+      case IDR_PING_AI_COPILOT:
         return true;
     }
 

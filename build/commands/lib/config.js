@@ -156,6 +156,7 @@ const Config = function () {
   this.googleApiEndpoint = getEnvConfig(['brave_google_api_endpoint']) || 'https://www.googleapis.com/geolocation/v1/geolocate?key='
   this.googleDefaultClientId = getEnvConfig(['google_default_client_id']) || ''
   this.googleDefaultClientSecret = getEnvConfig(['google_default_client_secret']) || ''
+  this.googleApiKey = getEnvConfig(['google_api_key']) || ''
   this.infuraProjectId = getEnvConfig(['brave_infura_project_id']) || ''
   this.sardineClientId = getEnvConfig(['sardine_client_id']) || ''
   this.sardineClientSecret = getEnvConfig(['sardine_client_secret']) || ''
@@ -328,6 +329,7 @@ Config.prototype.buildArgs = function () {
   const chrome_version_parts = this.chromeVersion.split('.')
 
   let args = {
+    enable_brave_vpn : true,
     sardine_client_id: this.sardineClientId,
     sardine_client_secret: this.sardineClientSecret,
     is_asan: this.isAsan(),
@@ -359,6 +361,7 @@ Config.prototype.buildArgs = function () {
     brave_google_api_endpoint: this.googleApiEndpoint,
     google_default_client_id: this.googleDefaultClientId,
     google_default_client_secret: this.googleDefaultClientSecret,
+    google_api_key: this.googleApiKey,
     brave_infura_project_id: this.infuraProjectId,
     bitflyer_production_client_id: this.bitFlyerProductionClientId,
     bitflyer_production_client_secret: this.bitFlyerProductionClientSecret,
@@ -589,17 +592,17 @@ Config.prototype.buildArgs = function () {
     args.android_channel = this.channel
     if (!this.isReleaseBuild()) {
       args.android_channel = 'default'
-      args.chrome_public_manifest_package = 'com.brave.browser_default'
+      args.chrome_public_manifest_package = 'com.ping.browser_default'
     } else if (this.channel === '') {
       args.android_channel = 'stable'
-      args.chrome_public_manifest_package = 'com.brave.browser'
+      args.chrome_public_manifest_package = 'com.ping.browser'
     } else if (this.channel === 'beta') {
-      args.chrome_public_manifest_package = 'com.brave.browser_beta'
+      args.chrome_public_manifest_package = 'com.ping.browser_beta'
     } else if (this.channel === 'dev') {
-      args.chrome_public_manifest_package = 'com.brave.browser_dev'
+      args.chrome_public_manifest_package = 'com.ping.browser_dev'
     } else if (this.channel === 'nightly') {
       args.android_channel = 'canary'
-      args.chrome_public_manifest_package = 'com.brave.browser_nightly'
+      args.chrome_public_manifest_package = 'com.ping.browser_nightly'
     }
     // exclude_unwind_tables is inherited form upstream and is false for any
     // Android build

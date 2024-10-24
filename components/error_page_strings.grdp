@@ -43,7 +43,7 @@
       Load page later
     </message>
     <message name="IDS_ERRORPAGES_CANCEL_SAVE_PAGE_BUTTON" desc="Label for the button that will cancel the request to save the page for later. 'Cancel' is colored blue with the 'a' tag.">
-      Brave will let you know when this page is ready. &lt;a&gt;Cancel&lt;/a&gt;
+      Ping will let you know when this page is ready. &lt;a&gt;Cancel&lt;/a&gt;
     </message>
   </if>
 
@@ -400,7 +400,7 @@
     <message name="IDS_ERRORPAGES_GAME_INSTRUCTIONS" desc="Mobile: Instructions on how to start playing the offline game. 'dino' is an acceptable English nickname that refers to 'dinosaur'">
       Tap the dino to play
     </message>
-    <message name="IDS_ERRORPAGE_DINO_GAME_DESCRIPTION" desc="Message to be spoken by a screen reader to give the user context and instructions for playing the net error dino game. Tapping the screen activates the game and causes the dinosaur to jump. Mobile platforms only.">
+    <message name="IDS_ERRORPAGE_DINO_GAME_DESCRIPTION" desc="Message to be spoken by a screen reader to give the user context and instructions for playing the net error dino game. Tapbrave the screen activates the game and causes the dinosaur to jump. Mobile platforms only.">
       Dino game. A pixelated dinosaur dodges cacti and pterodactyls as it runs across a desolate landscape. When you hear an audio cue, tap to jump over obstacles.
     </message>
     <message name="IDS_ERRORPAGE_DINO_ARIA_LABEL" desc="Message to be spoken by a screen reader for the dino button element used to start the net error dino game.">

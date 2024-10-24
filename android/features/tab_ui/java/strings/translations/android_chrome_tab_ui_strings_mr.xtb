@@ -44,7 +44,7 @@
 <translation id="2801787514987684416">स्टोअरची माहिती पाहायची आहे का?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> टॅब बंद केला}other{<ph name="MANY_CLOSED"/> टॅब बंद केले}}</translation>
 <translation id="2894757982205307093">गटामधील नवीन टॅब</translation>
-<translation id="4691798003247738043">Brave | या स्टोअरबद्दल</translation>
+<translation id="4691798003247738043">Ping | या स्टोअरबद्दल</translation>
 <translation id="2977480621796371840">गटामधून काढून टाका</translation>
 <translation id="29919168204617356">इनॅक्टिव्ह टॅब आपोआप बंद केले जातील. तुम्ही ते इतिहास मध्ये कधीही पाहू शकता.</translation>
 <translation id="3008554597174452548">उत्पादनाचा माग ठेवणे थांबवा</translation>
@@ -109,7 +109,7 @@
 <translation id="5556417849629758491">स्टोअरची माहिती पहा, पर्याय स्क्रीनच्या सर्वात वर उपलब्ध आहे</translation>
 <translation id="5627941783489838464">टॅब अपडेट नाहीत</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{टॅब रिस्टोअर करा}other{टॅब रिस्टोअर करा}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave वरील <ph name="TABS_COUNT_ONE"/> लिंक}other{Brave वरील <ph name="TABS_COUNT_MANY"/> लिंक}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping वरील <ph name="TABS_COUNT_ONE"/> लिंक}other{Ping वरील <ph name="TABS_COUNT_MANY"/> लिंक}}</translation>
 <translation id="575494663145460764">किंमत कमी झाल्याच्या सूचना मिळवायच्या आहेत का?</translation>
 <translation id="58326064309361797">त्यांचा गट बनवण्यासाठी टॅबना ड्रॅग करा</translation>
 <translation id="5901630391730855834">पिवळा</translation>
@@ -149,7 +149,7 @@
 <translation id="7452985128687107478">टॅब गट आपोआप सेव्ह होतात आणि तुमच्या सर्व डिव्हाइसवर अपडेट होतात</translation>
 <translation id="747459581954555080">सर्व पुनर्संचयित करा</translation>
 <translation id="753732157349120914">टॅब स्विचर</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Brave कडून <ph name="REVIEWS_COUNT_ONE"/> पुनरावलोकन}other{Brave कडून <ph name="REVIEWS_COUNT_MANY"/> पुनरावलोकने}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Ping कडून <ph name="REVIEWS_COUNT_ONE"/> पुनरावलोकन}other{Ping कडून <ph name="REVIEWS_COUNT_MANY"/> पुनरावलोकने}}</translation>
 <translation id="7559245342362162951">फुलस्क्रीन ग्रिडमध्ये गटाचे टॅब दाखवा</translation>
 <translation id="7658239707568436148">रद्द करा</translation>
 <translation id="7688386659311034820">इनॅक्टिव्ह टॅब डायलॉग</translation>

@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Vrei să vezi informații despre magazin?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> filă închisă}few{<ph name="MANY_CLOSED"/> file închise}other{<ph name="MANY_CLOSED"/> de file închise}}</translation>
 <translation id="2894757982205307093">Filă nouă în grup</translation>
-<translation id="4691798003247738043">Brave | Despre acest magazin</translation>
+<translation id="4691798003247738043">Ping | Despre acest magazin</translation>
 <translation id="2977480621796371840">Elimină din grup</translation>
 <translation id="29919168204617356">Filele inactive se vor închide automat. Le poți găsi oricând în Istoric.</translation>
 <translation id="3008554597174452548">Nu mai urmări produsul</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Vezi informații despre magazin, opțiune disponibilă în partea de sus a ecranului</translation>
 <translation id="5627941783489838464">Fără actualizări ale filelor</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Restabilește fila}few{Restabilește filele}other{Restabilește filele}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link din Brave}few{<ph name="TABS_COUNT_MANY"/> linkuri din Brave}other{<ph name="TABS_COUNT_MANY"/> de linkuri din Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link din Ping}few{<ph name="TABS_COUNT_MANY"/> linkuri din Ping}other{<ph name="TABS_COUNT_MANY"/> de linkuri din Ping}}</translation>
 <translation id="575494663145460764">Vrei să primești alerte privind scăderile de prețuri?</translation>
 <translation id="58326064309361797">Trage filele pentru a le grupa</translation>
 <translation id="5901630391730855834">Galben</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Grupurile de file se salvează și se actualizează automat pe toate dispozitivele</translation>
 <translation id="747459581954555080">Restabilește-le pe toate</translation>
 <translation id="753732157349120914">Comutator de file</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> recenzie de pe Brave}few{<ph name="REVIEWS_COUNT_MANY"/> recenzii de pe Brave}other{<ph name="REVIEWS_COUNT_MANY"/> de recenzii de pe Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> recenzie de pe Ping}few{<ph name="REVIEWS_COUNT_MANY"/> recenzii de pe Ping}other{<ph name="REVIEWS_COUNT_MANY"/> de recenzii de pe Ping}}</translation>
 <translation id="7559245342362162951">Arată filele grupului în grilă pe ecran complet</translation>
 <translation id="7658239707568436148">Anulează</translation>
 <translation id="7688386659311034820">Dialogul File inactive</translation>

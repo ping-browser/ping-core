@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Ungependa kuangalia maelezo ya duka?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{Kichupo <ph name="ONE_CLOSED"/> kimefungwa}other{Vichupo <ph name="MANY_CLOSED"/> vimefungwa}}</translation>
 <translation id="2894757982205307093">Kichupo kipya katika kikundi</translation>
-<translation id="4691798003247738043">Brave | Kuhusu duka hili</translation>
+<translation id="4691798003247738043">Ping | Kuhusu duka hili</translation>
 <translation id="2977480621796371840">Ondoa kwenye kikundi</translation>
 <translation id="29919168204617356">Vichupo visivyotumika vitafungwa kiotomatiki. Unaweza kuvipata wakati wowote katika Historia.</translation>
 <translation id="3008554597174452548">Acha kufuatilia bidhaa</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Angalia maelezo ya duka, chaguo hili linapatikana karibu na sehemu ya juu ya skrini</translation>
 <translation id="5627941783489838464">Hakuna masasisho ya vichupo</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Rejesha kichupo}other{Rejesha vichupo}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Kiungo <ph name="TABS_COUNT_ONE"/> kutoka Brave}other{Viungo <ph name="TABS_COUNT_MANY"/> kutoka Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Kiungo <ph name="TABS_COUNT_ONE"/> kutoka Ping}other{Viungo <ph name="TABS_COUNT_MANY"/> kutoka Ping}}</translation>
 <translation id="575494663145460764">Ungependa kupata arifa kuhusu punguzo la bei?</translation>
 <translation id="58326064309361797">Buruta vichupo ili uviweke katika kikundi</translation>
 <translation id="5901630391730855834">Manjano</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Vikundi vya vichupo huhifadhiwa na kusasishwa kiotomatiki kwenye vifaa vyako vyote</translation>
 <translation id="747459581954555080">Rejesha zote</translation>
 <translation id="753732157349120914">Kibadilishaji cha Vichupo</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Maoni <ph name="REVIEWS_COUNT_ONE"/> kutoka Brave}other{Maoni <ph name="REVIEWS_COUNT_MANY"/> kutoka Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Maoni <ph name="REVIEWS_COUNT_ONE"/> kutoka Ping}other{Maoni <ph name="REVIEWS_COUNT_MANY"/> kutoka Ping}}</translation>
 <translation id="7559245342362162951">Onyesha vichupo vya kikundi katika gridi ya skrini nzima</translation>
 <translation id="7658239707568436148">Ghairi</translation>
 <translation id="7688386659311034820">Kidirisha cha vichupo visivyotumika</translation>

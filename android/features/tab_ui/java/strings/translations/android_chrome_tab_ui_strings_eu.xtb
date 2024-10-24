@@ -43,7 +43,7 @@
 <translation id="2801787514987684416">Dendari buruzko informazioa ikusi nahi duzu?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> fitxa itxi da}other{<ph name="MANY_CLOSED"/> fitxa itxi dira}}</translation>
 <translation id="2894757982205307093">Gehitu fitxa bat taldean</translation>
-<translation id="4691798003247738043">Brave | Denda honi buruz</translation>
+<translation id="4691798003247738043">Ping | Denda honi buruz</translation>
 <translation id="2977480621796371840">Kendu taldetik</translation>
 <translation id="29919168204617356">Automatikoki itxiko dira fitxa inaktiboak. Historian aurkituko dituzu.</translation>
 <translation id="3008554597174452548">Utzi produktuaren jarraipena egiteari</translation>
@@ -108,7 +108,7 @@
 <translation id="5556417849629758491">Ikusi dendari buruzko informazioa, pantailaren goialdean dago erabilgarri</translation>
 <translation id="5627941783489838464">Ez dago fitxei buruzko berritasunik</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Leheneratu fitxa}other{Leheneratu fitxak}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave-ko <ph name="TABS_COUNT_ONE"/> esteka}other{Brave-ko <ph name="TABS_COUNT_MANY"/> esteka}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping-ko <ph name="TABS_COUNT_ONE"/> esteka}other{Ping-ko <ph name="TABS_COUNT_MANY"/> esteka}}</translation>
 <translation id="575494663145460764">Prezio-jaitsierei buruzko alertak jaso nahi dituzu?</translation>
 <translation id="58326064309361797">Fitxak taldekatzeko, arrasta itzazu</translation>
 <translation id="5901630391730855834">Horia</translation>
@@ -148,7 +148,7 @@
 <translation id="7452985128687107478">Fitxa taldeak automatikoki gordetzen eta eguneratzen dira zure gailu guztietan</translation>
 <translation id="747459581954555080">Leheneratu guztiak</translation>
 <translation id="753732157349120914">Fitxa-aldatzailea</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Brave-tik datorren <ph name="REVIEWS_COUNT_ONE"/> iritzi}other{Brave-tik datozen <ph name="REVIEWS_COUNT_MANY"/> iritzi}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Ping-tik datorren <ph name="REVIEWS_COUNT_ONE"/> iritzi}other{Ping-tik datozen <ph name="REVIEWS_COUNT_MANY"/> iritzi}}</translation>
 <translation id="7559245342362162951">Erakutsi taldearen fitxak pantaila osoko saretan</translation>
 <translation id="7658239707568436148">Utzi</translation>
 <translation id="7688386659311034820">Fitxa inaktiboen leihoa</translation>

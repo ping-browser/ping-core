@@ -230,8 +230,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kBraveAutofillPrivateWindows, true);
   // appearance
   registry->RegisterBooleanPref(kShowBookmarksButton, true);
-  registry->RegisterBooleanPref(kShowSidePanelButton, true);
-  registry->RegisterBooleanPref(kLocationBarIsWide, false);
+  registry->RegisterBooleanPref(kShowSidePanelButton, false);
+  registry->RegisterBooleanPref(kLocationBarIsWide, true);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
   registry->RegisterBooleanPref(kTabsSearchShow, true);
   registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);
@@ -367,7 +367,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // New Tab Page
   registry->RegisterBooleanPref(kNewTabPageShowClock, false);
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
-  registry->RegisterBooleanPref(kNewTabPageShowStats, true);
+  registry->RegisterBooleanPref(kNewTabPageShowStats, false);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, true);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);

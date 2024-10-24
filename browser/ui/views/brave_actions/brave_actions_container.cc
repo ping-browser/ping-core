@@ -54,7 +54,7 @@ void BraveActionsContainer::Init() {
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);
   AddActionViewForShields();
-  AddActionViewForRewards();
+  // AddActionViewForRewards();
 
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(

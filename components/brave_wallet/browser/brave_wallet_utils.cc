@@ -172,6 +172,22 @@ bool IsEndpointUsingBraveWalletProxy(const GURL& url) {
          url.DomainIs("wallet.s.brave.io");
 }
 
+// TODO: PING
+//GURL AddInfuraProjectId(const GURL& url) {
+//  DCHECK(url.is_valid()) << url.possibly_invalid_spec();
+//  GURL::Replacements replacements;
+//
+//  // Adding RPC version and projectID for Infura urls in Ping
+//  std::string current_path = url.path();
+//  std::string infura_project_id = GetInfuraProjectID();
+//
+//  // Append the new path to the existing path.
+//  std::string new_path = current_path + "/" + infura_project_id;
+//
+//  replacements.SetPathStr(new_path);
+//  return url.ReplaceComponents(replacements);
+//}
+
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders() {
   return {
       {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)},

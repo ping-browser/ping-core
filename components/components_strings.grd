@@ -468,7 +468,7 @@
           Your Devices
         </message>
       </if>
-      <message name="IDS_CHOOSE" desc="Label for a button to choose something, like a shipping address for a payment request. [CHAR_LIMIT=20]" formatter_data="android_java">
+      <message name="IDS_CHOOSE" desc="Label for a button to choose something, like a shipbrave address for a payment request. [CHAR_LIMIT=20]" formatter_data="android_java">
         Choose
       </message>
 
@@ -540,7 +540,7 @@
       <message name="IDS_PASSWORD_MANAGER_CSV_PASSWORD_PARSER_SERVICE_DISPLAY_NAME" desc="The display name (in the system task manager, etc) of the service process used for parsing a csv passwords file.">
         CSV Password Parser Service
       </message>
-      <message name="IDS_UNZIP_SERVICE_DISPLAY_NAME" desc="The display name (in the system task manager, etc) of the service process used for unzipping files.">
+      <message name="IDS_UNZIP_SERVICE_DISPLAY_NAME" desc="The display name (in the system task manager, etc) of the service process used for unzipbrave files.">
         Unzip Service
       </message>
     </messages>

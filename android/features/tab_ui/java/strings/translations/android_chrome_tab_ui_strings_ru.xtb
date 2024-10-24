@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Посмотреть сведения о магазине?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{Закрыта <ph name="ONE_CLOSED"/> вкладка.}one{Закрыта <ph name="MANY_CLOSED"/> вкладка.}few{Закрыты <ph name="MANY_CLOSED"/> вкладки.}many{Закрыто <ph name="MANY_CLOSED"/> вкладок.}other{Закрыто <ph name="MANY_CLOSED"/> вкладки.}}</translation>
 <translation id="2894757982205307093">Добавить новую вкладку в группу</translation>
-<translation id="4691798003247738043">Brave | О магазине</translation>
+<translation id="4691798003247738043">Ping | О магазине</translation>
 <translation id="2977480621796371840">Удалить из группы</translation>
 <translation id="29919168204617356">Неактивные вкладки будут закрываться автоматически. Их всегда можно найти в разделе "История".</translation>
 <translation id="3008554597174452548">Не отслеживать товар</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Просмотр сведений о магазине, параметр вверху экрана</translation>
 <translation id="5627941783489838464">Нет изменений вкладок.</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Восстановить вкладку}one{Восстановить вкладки}few{Восстановить вкладки}many{Восстановить вкладки}other{Восстановить вкладки}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ссылка из Brave}one{<ph name="TABS_COUNT_MANY"/> ссылка из Brave}few{<ph name="TABS_COUNT_MANY"/> ссылки из Brave}many{<ph name="TABS_COUNT_MANY"/> ссылок из Brave}other{<ph name="TABS_COUNT_MANY"/> ссылки из Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ссылка из Ping}one{<ph name="TABS_COUNT_MANY"/> ссылка из Ping}few{<ph name="TABS_COUNT_MANY"/> ссылки из Ping}many{<ph name="TABS_COUNT_MANY"/> ссылок из Ping}other{<ph name="TABS_COUNT_MANY"/> ссылки из Ping}}</translation>
 <translation id="575494663145460764">Получать оповещения о скидках?</translation>
 <translation id="58326064309361797">Перетаскивайте вкладки, чтобы группировать их</translation>
 <translation id="5901630391730855834">Желтый</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Группы вкладок автоматически сохраняются и обновляются на всех ваших устройствах.</translation>
 <translation id="747459581954555080">Восстановить все</translation>
 <translation id="753732157349120914">Переключатель вкладок</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> отзыв из Brave}one{<ph name="REVIEWS_COUNT_MANY"/> отзыв из Brave}few{<ph name="REVIEWS_COUNT_MANY"/> отзыва из Brave}many{<ph name="REVIEWS_COUNT_MANY"/> отзывов из Brave}other{<ph name="REVIEWS_COUNT_MANY"/> отзыва из Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> отзыв из Ping}one{<ph name="REVIEWS_COUNT_MANY"/> отзыв из Ping}few{<ph name="REVIEWS_COUNT_MANY"/> отзыва из Ping}many{<ph name="REVIEWS_COUNT_MANY"/> отзывов из Ping}other{<ph name="REVIEWS_COUNT_MANY"/> отзыва из Ping}}</translation>
 <translation id="7559245342362162951">Показать сетку с вкладками группы на весь экран</translation>
 <translation id="7658239707568436148">Отмена</translation>
 <translation id="7688386659311034820">Диалоговое окно неактивных вкладок</translation>
@@ -196,6 +196,6 @@
 <translation id="3228718275011575753">Закрыть все приватные вкладки?</translation>
 <translation id="6687920250729800417">История действий на вкладках инкогнито будет удалена с устройства.</translation>
 <translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
-        =1 {Закрытые вкладки и их группы можно восстановить в разделах главного меню Brave «Недавние вкладки» и «Группы вкладок». Вкладка инкогнито будет недоступна.}
-        other {Закрытые вкладки и их группы можно восстановить в разделах главного меню Brave «Недавние вкладки» и «Группы вкладок». Вкладки инкогнито (#) будут недоступны.}}</translation>
+        =1 {Закрытые вкладки и их группы можно восстановить в разделах главного меню Ping «Недавние вкладки» и «Группы вкладок». Вкладка инкогнито будет недоступна.}
+        other {Закрытые вкладки и их группы можно восстановить в разделах главного меню Ping «Недавние вкладки» и «Группы вкладок». Вкладки инкогнито (#) будут недоступны.}}</translation>
 </translationbundle>

@@ -43,7 +43,7 @@
 <translation id="2801787514987684416">Gweld gwybodaeth siop?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> tab wedi cau}zero{<ph name="MANY_CLOSED"/> tabiau wedi cau}two{<ph name="MANY_CLOSED"/> dab wedi cau}few{<ph name="MANY_CLOSED"/> thab wedi cau}many{<ph name="MANY_CLOSED"/> thab wedi cau}other{<ph name="MANY_CLOSED"/> tab wedi cau}}</translation>
 <translation id="2894757982205307093">Mae tab newydd yn y grŵp</translation>
-<translation id="4691798003247738043">Brave | Ynghylch y siop hon</translation>
+<translation id="4691798003247738043">Ping | Ynghylch y siop hon</translation>
 <translation id="2977480621796371840">Tynnu o'r grŵp</translation>
 <translation id="29919168204617356">Bydd tabiau anweithredol yn cael eu cau'n awtomatig. Gallwch bob amser ddod o hyd iddynt yn Hanes.</translation>
 <translation id="3008554597174452548">Stopio olrhain y cynnyrch</translation>
@@ -108,7 +108,7 @@
 <translation id="5556417849629758491">Gweld gwybodaeth siop, opsiwn ar gael yn agos at frig y sgrîn</translation>
 <translation id="5627941783489838464">Dim diweddariadau tab</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Adfer y tab}zero{Adfer y tabiau}two{Adfer y tabiau}few{Adfer y tabiau}many{Adfer y tabiau}other{Adfer y tabiau}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> dolen o Brave}zero{<ph name="TABS_COUNT_MANY"/> dolen o Brave}two{<ph name="TABS_COUNT_MANY"/> ddolen o Brave}few{<ph name="TABS_COUNT_MANY"/> dolen o Brave}many{<ph name="TABS_COUNT_MANY"/> dolen o Brave}other{<ph name="TABS_COUNT_MANY"/> dolen o Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> dolen o Ping}zero{<ph name="TABS_COUNT_MANY"/> dolen o Ping}two{<ph name="TABS_COUNT_MANY"/> ddolen o Ping}few{<ph name="TABS_COUNT_MANY"/> dolen o Ping}many{<ph name="TABS_COUNT_MANY"/> dolen o Ping}other{<ph name="TABS_COUNT_MANY"/> dolen o Ping}}</translation>
 <translation id="575494663145460764">Cael hysbysiadau am ostyngiadau prisiau?</translation>
 <translation id="58326064309361797">Llusgwch dabiau i'w grwpio</translation>
 <translation id="5901630391730855834">Melyn</translation>
@@ -148,7 +148,7 @@
 <translation id="7452985128687107478">Mae grwpiau tabiau yn cael eu cadw a'u diweddaru'n awtomatig ar draws eich holl ddyfeisiau</translation>
 <translation id="747459581954555080">Adfer popeth</translation>
 <translation id="753732157349120914">Newidiwr Tabiau</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> adolygiad gan Brave}zero{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Brave}two{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Brave}few{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Brave}many{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Brave}other{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> adolygiad gan Ping}zero{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Ping}two{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Ping}few{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Ping}many{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Ping}other{<ph name="REVIEWS_COUNT_MANY"/> adolygiad gan Ping}}</translation>
 <translation id="7559245342362162951">Dangos tabiau'r grŵp mewn grid sgrîn lawn</translation>
 <translation id="7658239707568436148">Canslo</translation>
 <translation id="7688386659311034820">Deialog tabiau anweithredol</translation>

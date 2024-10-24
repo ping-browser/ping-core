@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">스토어 정보를 확인하시겠습니까?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{탭 <ph name="ONE_CLOSED"/>개 닫힘}other{탭 <ph name="MANY_CLOSED"/>개 닫힘}}</translation>
 <translation id="2894757982205307093">그룹에 새 탭 추가</translation>
-<translation id="4691798003247738043">Brave | 매장 정보</translation>
+<translation id="4691798003247738043">Ping | 매장 정보</translation>
 <translation id="2977480621796371840">그룹에서 삭제</translation>
 <translation id="29919168204617356">비활성 탭이 자동으로 닫힙니다. 방문 기록에서 언제든지 비활성 탭을 확인할 수 있습니다.</translation>
 <translation id="3008554597174452548">제품 추적 중지</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">스토어 정보 보기, 화면 상단에 옵션 있음</translation>
 <translation id="5627941783489838464">탭 업데이트 없음</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{탭 복원}other{탭 복원}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave 링크 <ph name="TABS_COUNT_ONE"/>개}other{Brave 링크 <ph name="TABS_COUNT_MANY"/>개}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping 링크 <ph name="TABS_COUNT_ONE"/>개}other{Ping 링크 <ph name="TABS_COUNT_MANY"/>개}}</translation>
 <translation id="575494663145460764">가격 인하 알림을 받으시겠습니까?</translation>
 <translation id="58326064309361797">탭을 드래그하여 그룹화하세요.</translation>
 <translation id="5901630391730855834">노란색</translation>

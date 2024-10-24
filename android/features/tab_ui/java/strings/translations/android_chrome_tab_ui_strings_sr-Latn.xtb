@@ -44,7 +44,7 @@
 <translation id="2801787514987684416">Želite da pregledate informacije o prodavnici?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> kartica je zatvorena}one{<ph name="MANY_CLOSED"/> kartica je zatvorena}few{<ph name="MANY_CLOSED"/> kartice su zatvorene}other{<ph name="MANY_CLOSED"/> kartica je zatvoreno}}</translation>
 <translation id="2894757982205307093">Nova kartica u grupi</translation>
-<translation id="4691798003247738043">Brave | O ovoj prodavnici</translation>
+<translation id="4691798003247738043">Ping | O ovoj prodavnici</translation>
 <translation id="2977480621796371840">Ukloni iz grupe</translation>
 <translation id="29919168204617356">Neaktivne kartice se automatski zatvaraju. Uvek možete da ih pronađete u Istoriji.</translation>
 <translation id="3008554597174452548">Zaustavi praćenje proizvoda</translation>
@@ -109,7 +109,7 @@
 <translation id="5556417849629758491">Pregledajte informacije o prodavnici, opciju koja je dostupna u vrhu ekrana</translation>
 <translation id="5627941783489838464">Nema ažuriranja kartica</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Vrati karticu}one{Vrati kartice}few{Vrati kartice}other{Vrati kartice}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link iz Brave-a}one{<ph name="TABS_COUNT_MANY"/> link iz Brave-a}few{<ph name="TABS_COUNT_MANY"/> linka iz Brave-a}other{<ph name="TABS_COUNT_MANY"/> linkova iz Brave-a}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link iz Ping-a}one{<ph name="TABS_COUNT_MANY"/> link iz Ping-a}few{<ph name="TABS_COUNT_MANY"/> linka iz Ping-a}other{<ph name="TABS_COUNT_MANY"/> linkova iz Ping-a}}</translation>
 <translation id="575494663145460764">Želite da dobijate obaveštenja za sniženja?</translation>
 <translation id="58326064309361797">Prevucite kartice da biste ih grupisali</translation>
 <translation id="5901630391730855834">Žuta</translation>
@@ -149,7 +149,7 @@
 <translation id="7452985128687107478">Grupe kartica se automatski čuvaju i ažuriraju na svim uređajima</translation>
 <translation id="747459581954555080">Vrati sve</translation>
 <translation id="753732157349120914">Prebacivač kartica</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> recenzija iz Brave-a}one{<ph name="REVIEWS_COUNT_MANY"/> recenzija iz Brave-a}few{<ph name="REVIEWS_COUNT_MANY"/> recenzije iz Brave-a}other{<ph name="REVIEWS_COUNT_MANY"/> recenzija iz Brave-a}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> recenzija iz Ping-a}one{<ph name="REVIEWS_COUNT_MANY"/> recenzija iz Ping-a}few{<ph name="REVIEWS_COUNT_MANY"/> recenzije iz Ping-a}other{<ph name="REVIEWS_COUNT_MANY"/> recenzija iz Ping-a}}</translation>
 <translation id="7559245342362162951">Prikazuje kartice grupe u mreži na celom ekranu</translation>
 <translation id="7658239707568436148">Otkaži</translation>
 <translation id="7688386659311034820">Dijalog sa neaktivnim karticama</translation>

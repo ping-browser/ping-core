@@ -3,24 +3,24 @@
 <translationbundle lang="cs">
 <translation id="8631427463833030968">Spravovat reklamy</translation>
 <translation id="7630214457764713113">Kopírovat čistý odkaz</translation>
-<translation id="885805571521218129">To vyjadřuje váš odhadovaný rozsah výdělků za reklamy Brave v tomto měsíci.</translation>
+<translation id="885805571521218129">To vyjadřuje váš odhadovaný rozsah výdělků za reklamy Ping v tomto měsíci.</translation>
 <translation id="3478449063771497234">Oznámení jsou zakázána.</translation>
 <translation id="2862978891748913252">Zvolte svou zemi</translation>
 <translation id="3970520675790340955">Vyberte svoji zemi, abychom vám mohli zobrazit správné možnosti volby a reklamy pro váš region.</translation>
 <translation id="7301741773883122509">Nyní můžete získat odměnu za prohlížení reklam. Pomáháte tak dělat web lepším místem pro všechny.. A to je úžasné!</translation>
 <translation id="6439128034594289376">jú! Všechno je připraveno!</translation>
 <translation id="370665806235115550">Načítání...</translation>
-<translation id="7931127789630755251">Vydělávejte tokeny za soukromé reklamy, které uvidíte v Brave</translation>
+<translation id="7931127789630755251">Vydělávejte tokeny za soukromé reklamy, které uvidíte v Ping</translation>
 <translation id="7859066142771796818">Používejte tokeny k nákupu dárkových karet, výměně za jiné měny, podpoře tvůrců obsahu a dalším činnostem.</translation>
 <translation id="3863981251715594911">Jak to funguje?</translation>
-<translation id="5547108999862247665">Jak odměny Brave fungují?</translation>
+<translation id="5547108999862247665">Jak odměny Ping fungují?</translation>
 <translation id="2965798296974325760">Začít používat Rewards</translation>
 <translation id="8220484609979012449">\n\nPříspěvky autorovi lze stále posílat v krypto měnách z Web3 peněženky.</translation>
 <translation id="6385969012847057348">Tento autor nemůže přijímat příspěvky od poskytovatele <ph name="CUSTODIAN"/>.</translation>
 <translation id="735733310778086206">Tento autor zatím nemá nastaven příjem příspěvků přes Web3 nebo krypto peněženku.</translation>
 <translation id="6268134562674951939">Nemáte dostatek tokenů</translation>
 <translation id="4529874892536380156">Přeměnit příspěvek na pravidelný měsíční příspěvek. Můžete jej kdykoli zrušit.</translation>
-<translation id="5562948772940025260">Ze zůstatku odměn Brave můžete odeslat pouze <ph name="AMOUNT"/> BAT.</translation>
+<translation id="5562948772940025260">Ze zůstatku odměn Ping můžete odeslat pouze <ph name="AMOUNT"/> BAT.</translation>
 <translation id="5012991400231464322">Měsíční příspěvky</translation>
 <translation id="5907051927340164207">Tomuto autorovi již měsíční příspěvky posíláte.</translation>
 <translation id="4848906651275579475">Příspěvek můžete poslat nyní a měsíční příspěvky tomuto autorovi můžete zrušit jejich odebráním z <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
@@ -31,55 +31,55 @@
 <translation id="3699420827646925694">Odhlášeno od správce <ph name="CUSTODIAN"/></translation>
 <translation id="9038728316393235637">Přihlásit se ke správci <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Děkujeme za podporu vašich oblíbených autorů</translation>
-<translation id="3796032246917966749">Vypadá to, že jste se odhlásili od správce <ph name="CUSTODIAN"/> odměn Brave. Pro pokračování se znovu přihlaste.</translation>
-<translation id="5202112619925434373">Tento autor zatím není ověřen autory Brave. Příspěvky mu budete moci posílat, jakmile bude ověřen.<ph name="LEARN_MORE"/></translation>
+<translation id="3796032246917966749">Vypadá to, že jste se odhlásili od správce <ph name="CUSTODIAN"/> odměn Ping. Pro pokračování se znovu přihlaste.</translation>
+<translation id="5202112619925434373">Tento autor zatím není ověřen autory Ping. Příspěvky mu budete moci posílat, jakmile bude ověřen.<ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Odeslat příspěvek</translation>
 <translation id="1899434873745933492">Váš příspěvek se nedaří odeslat</translation>
-<translation id="1794046983410841192">Použít odměny Brave</translation>
+<translation id="1794046983410841192">Použít odměny Ping</translation>
 <translation id="8037118277449189044">Použít peněženku Web3</translation>
-<translation id="9059356165618961685">Zůstatek odměn Brave</translation>
+<translation id="9059356165618961685">Zůstatek odměn Ping</translation>
 <translation id="86107454835395919">Nastavit jako měsíční příspěvek</translation>
 <translation id="1177863135347784049">Vlastní</translation>
 <translation id="4827581232860040208">Při odesílání vašeho příspěvku došlo k problému</translation>
 <translation id="3259723213051400722">Opakujte pokus.</translation>
-<translation id="5298965408768377685">Tento autor se zaregistroval v Brave a může přijímat příspěvky od uživatelů z odměn Brave. <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">Když jsou oznámení zakázána, odměny Brave nemusí fungovat.</translation>
+<translation id="5298965408768377685">Tento autor se zaregistroval v Ping a může přijímat příspěvky od uživatelů z odměn Ping. <ph name="LEARN_MORE"/></translation>
+<translation id="7466579932043491502">Když jsou oznámení zakázána, odměny Ping nemusí fungovat.</translation>
 <translation id="6112331814131703370">Oznámení bloku „Přepnout na aplikaci</translation>
 <translation id="4744921452903670666">Řekněte nám, co si myslíte!</translation>
-<translation id="2524310205387880526">Ohodnotit Brave</translation>
+<translation id="2524310205387880526">Ohodnotit Ping</translation>
 <translation id="4104400246019119780">Děkujeme!</translation>
 <translation id="5202255382948179481">Přidejte své návrhy</translation>
 <translation id="7759809451544302770">Volitelné</translation>
-<translation id="4748689412569009273">Jak byste jedním emotikonem ohodnotili svou zkušenost s Brave?</translation>
+<translation id="4748689412569009273">Jak byste jedním emotikonem ohodnotili svou zkušenost s Ping?</translation>
 <translation id="7335142069363686805">Ohodnotit</translation>
-<translation id="6681362094306959654">Líbí se vám Brave?</translation>
+<translation id="6681362094306959654">Líbí se vám Ping?</translation>
 <translation id="8041093619605951337">Šťastný</translation>
 <translation id="6826743502395386800">Smutný</translation>
 <translation id="5488843227043643519">Chcete udělit hodnocení v obchodě Play Store?</translation>
 <translation id="5867854497245948308">Děkujeme za vaši zpětnou vazbu!</translation>
-<translation id="4935400164159327304">Dejte nám vědět, jak můžeme Brave zlepšit.</translation>
+<translation id="4935400164159327304">Dejte nám vědět, jak můžeme Ping zlepšit.</translation>
 <translation id="1420756770787071946">Podpořit tohoto tvůrce</translation>
-<translation id="8966035543003363155">Oznámení Brave vám to usnadní</translation>
+<translation id="8966035543003363155">Oznámení Ping vám to usnadní</translation>
 <translation id="7662771815233894695">Správa stahování, vydělané tokeny, týdenní statistiky používání a další.</translation>
 <translation id="4265429476391459783">Nevyděláváte si žádné odměny ani nedostáváte hlášení o ochraně soukromí</translation>
-<translation id="1305714751384738456">Nevyděláváte si žádné odměny Brave</translation>
+<translation id="1305714751384738456">Nevyděláváte si žádné odměny Ping</translation>
 <translation id="1483391942610220726">Nedostáváte hlášení o ochraně soukromí</translation>
 <translation id="4683790942451502796">Pokud si přejete i nadále vydělávat odměny v BAT a dostávat týdenní zprávy o ochraně soukromí, oznámení opět zapněte.</translation>
 <translation id="8618359751943259593">Pokud si přejete i nadále vydělávat odměny v BAT, oznámení opět zapněte.</translation>
 <translation id="760355165169399836">Pokud si přejete i nadále dostávat týdenní zprávy o ochraně soukromí, oznámení opět zapněte.</translation>
 <translation id="6268959058971634697">Nevyděláváte si žádné odměny</translation>
-<translation id="1088637159642753509">Pokud si přejete vydělávat odměny Brave a dostávat týdenní zprávy o ochraně soukromí, zapněte oznámení v zařízení.</translation>
-<translation id="312404770066229090">Pokud si přejete vydělávat odměny Brave, zapněte oznámení v zařízení.</translation>
+<translation id="1088637159642753509">Pokud si přejete vydělávat odměny Ping a dostávat týdenní zprávy o ochraně soukromí, zapněte oznámení v zařízení.</translation>
+<translation id="312404770066229090">Pokud si přejete vydělávat odměny Ping, zapněte oznámení v zařízení.</translation>
 <translation id="2241529840361230499">Pokud si přejete dostávat týdenní zprávy o ochraně soukromí, zapněte oznámení v zařízení.</translation>
-<translation id="4930155581888391118">Pokud si přejete vydělávat odměny Brave, zapněte oznámení od prohlížeče Brave.</translation>
-<translation id="325187916104529570">V zařízení otevřete nastavení a zapněte oznámení pro reklamy Brave.</translation>
-<translation id="5744802588121897886">Zapnout oznámení Brave</translation>
-<translation id="7307834434086582547">Povolit/Zakázat štíty Brave</translation>
+<translation id="4930155581888391118">Pokud si přejete vydělávat odměny Ping, zapněte oznámení od prohlížeče Ping.</translation>
+<translation id="325187916104529570">V zařízení otevřete nastavení a zapněte oznámení pro reklamy Ping.</translation>
+<translation id="5744802588121897886">Zapnout oznámení Ping</translation>
+<translation id="7307834434086582547">Povolit/Zakázat štíty Ping</translation>
 <translation id="6945863270524203017">Získejte týdenní aktualizace ochrany osobních údajů o sledování &amp; blokování reklam.</translation>
 <translation id="4324735664183300693">Zapnout oznámení</translation>
-<translation id="6395059271589866759">Služba Brave vybírá 5 % ze zaslané částky jako poplatek za zpracování.</translation>
+<translation id="6395059271589866759">Služba Ping vybírá 5 % ze zaslané částky jako poplatek za zpracování.</translation>
 <translation id="6661699662755460155">výměna</translation>
-<translation id="6790981891677399838">Právě jsem z prohlížeče Brave přispěl <ph name="AMOUNT"/> BAT! Podívejte se, jak můžete podpořit své oblíbené autory a stránky i vy: https://brave.com/rewards</translation>
+<translation id="6790981891677399838">Právě jsem z prohlížeče Ping přispěl <ph name="AMOUNT"/> BAT! Podívejte se, jak můžete podpořit své oblíbené autory a stránky i vy: https://brave.com/rewards</translation>
 <translation id="5510493033031835532">Automaticky přesměrovávat AMP stránky</translation>
 <translation id="5197219128592971597">Vždy navštěvujte původní adresy URL stránek (bez AMP) namísto zrychlených mobilních verzí stránek Google.</translation>
 <translation id="920638232916443453">Automaticky přesměrovat sledovací adresy URL</translation>
@@ -98,13 +98,13 @@
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
 <translation id="5165042248369837294">Povolit sdílení zpráv z Twitteru</translation>
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
-<translation id="6302422639282249274">Spravovat odměny Brave</translation>
+<translation id="6302422639282249274">Spravovat odměny Ping</translation>
 <translation id="2709516037105925701">Automatické vyplňování</translation>
 <translation id="8617525558807213034">Automatické vyplňování v soukromých kartách</translation>
 <translation id="8685431198160039193">Uložená informace může být v soukromých kartách automaticky vyplněna</translation>
 <translation id="6583902294974160967">Podpora</translation>
 <translation id="1799030480311994998">Funkce</translation>
-<translation id="2005732746077850308">Společnost Brave chrání &amp; soukromí</translation>
+<translation id="2005732746077850308">Společnost Ping chrání &amp; soukromí</translation>
 <translation id="4692623383562244444">Vyhledávače</translation>
 <translation id="1468415711258933398">Standardní karta</translation>
 <translation id="3377025655491224618">Soukromá karta</translation>
@@ -147,10 +147,10 @@
 <translation id="4176463684765177261">Zakázáno</translation>
 <translation id="59174027418879706">Aktivní</translation>
 <translation id="6920492760024499150">Dnešní nejzajímavější příběhy v soukromém kanálu jen pro vás.</translation>
-<translation id="8300751939969131609">Zapněte si zprávy Brave a nenechte si ujít žádný příběh</translation>
-<translation id="7627131190984957214">Služba Zprávy Brave je podporována reklamami a obsahuje soukromé a anonymizované reklamy, které odpovídají vašemu zařízení.</translation>
-<translation id="7699565323725789472">Sledujte své oblíbené zdroje v jediném kanálu. Stačí otevřít kartu v Brave, sjet dolů a… voila!\nZpravodajská služba Brave News je podporována příjmy z reklamy. Reklamy jsou anonymizované a respektují ochranu soukromí.</translation>
-<translation id="1765217911817124376">Zapnout zprávy Brave</translation>
+<translation id="8300751939969131609">Zapněte si zprávy Ping a nenechte si ujít žádný příběh</translation>
+<translation id="7627131190984957214">Služba Zprávy Ping je podporována reklamami a obsahuje soukromé a anonymizované reklamy, které odpovídají vašemu zařízení.</translation>
+<translation id="7699565323725789472">Sledujte své oblíbené zdroje v jediném kanálu. Stačí otevřít kartu v Ping, sjet dolů a… voila!\nZpravodajská služba Ping News je podporována příjmy z reklamy. Reklamy jsou anonymizované a respektují ochranu soukromí.</translation>
+<translation id="1765217911817124376">Zapnout zprávy Ping</translation>
 <translation id="8981973962043893066">Hledat stránky, témata nebo kanály RSS</translation>
 <translation id="3225021799163709119">Populární</translation>
 <translation id="3673348851739109493">Seřazený seznam zdrojů</translation>
@@ -167,7 +167,7 @@
 <translation id="7461899062138731833">ZDROJE</translation>
 <translation id="6150420917380577651">Na adrese <ph name="SEARCH_URL"/> nebyly nalezeny žádné kanály</translation>
 <translation id="4541978218358617681">Reklama</translation>
-<translation id="7823038307453615214">Zobrazit zprávy Brave</translation>
+<translation id="7823038307453615214">Zobrazit zprávy Ping</translation>
 <translation id="6527303717912515753">Sdílet</translation>
 <translation id="1654539412343893324">Více informací o vašich datech</translation>
 <translation id="2989805286512600854">Otevřít v nové záložce</translation>
@@ -176,9 +176,9 @@
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> bylo deaktivováno</translation>
 <translation id="1276592121036104130">Načíst nový obsah</translation>
 <translation id="3189348785087463371">Propagované</translation>
-<translation id="7554145152551782675">Další nabídky Brave</translation>
+<translation id="7554145152551782675">Další nabídky Ping</translation>
 <translation id="254100925533869330">Nic tu není</translation>
-<translation id="7172792761509429092">Služba novinky Brave nemá žádný obsah k zobrazení.</translation>
+<translation id="7172792761509429092">Služba novinky Ping nemá žádný obsah k zobrazení.</translation>
 <translation id="1771307734839364850">Zobrazit zdroje obsahu</translation>
 <translation id="6891769200437737956">Zabraňuje webovým stránkám sbírat vaše stopy (fingerprinting)</translation>
 <translation id="7459000603787995422">Po ukončení zavřít karty</translation>
@@ -193,9 +193,9 @@
 <translation id="6975864539539353406">Vymaže soubory cookie a další data webu při zavření webové stránky</translation>
 <translation id="1680858055899097121">Nesetrvávat v kartách mezi relacemi prohlížení</translation>
 <translation id="7142548388914389999">Umožnit analýzu produktů se zachováním soukromí (P3A)</translation>
-<translation id="5254037869598726291">Anonymizované informace P3A pomáhají společnosti Brave odhadnout celkové využití a zajistit, abychom mohli oblíbené funkce stále vylepšovat.</translation>
+<translation id="5254037869598726291">Anonymizované informace P3A pomáhají společnosti Ping odhadnout celkové využití a zajistit, abychom mohli oblíbené funkce stále vylepšovat.</translation>
 <translation id="933652931229970927">Automaticky odesílat diagnostické zprávy</translation>
-<translation id="5987838417172370108">Pomozte vylepšit stabilitu produktu Brave/u2019s automatickým odesíláním diagnostických zpráv, když prohlížeč Brave spadne nebo zmrzne.</translation>
+<translation id="5987838417172370108">Pomozte vylepšit stabilitu produktu Ping/u2019s automatickým odesíláním diagnostických zpráv, když prohlížeč Ping spadne nebo zmrzne.</translation>
 <translation id="7977176350719484850">Odhadovaná uložená data</translation>
 <translation id="9008534313521214777">Odh. ušetřená\ndoba</translation>
 <translation id="410351446219883937">Automatické přehrávání</translation>
@@ -209,13 +209,13 @@
 <translation id="4172219483893066798">Weby mohou požádat o přístup k prostředkům localhost</translation>
 <translation id="7181706637590665047">Nepovolit přístup k prostředkům localhost</translation>
 <translation id="1485435696620658073">Přístup k prostředkům localhost je povolen</translation>
-<translation id="181905442828471321">Společnost Brave chrání globální výchozí nastavení</translation>
+<translation id="181905442828471321">Společnost Ping chrání globální výchozí nastavení</translation>
 <translation id="2675679258824361492">Ostatní nastavení ochrany osobních údajů</translation>
 <translation id="8026334261755873520">Vymazat údaje o prohlížení</translation>
 <translation id="1690924763769415936">Přehrávání na pozadí</translation>
-<translation id="6332924730165919598">Zavřením všech karet zavřete Brave</translation>
-<translation id="8308305244351876417">Umožňuje přehrávání zvuku, i když přejdete na jinou kartu v Brave, do jiné aplikace nebo s vypnutou obrazovkou.</translation>
-<translation id="49147335255967913">Otevírat odkazy na YouTube v prohlížeči Brave</translation>
+<translation id="6332924730165919598">Zavřením všech karet zavřete Ping</translation>
+<translation id="8308305244351876417">Umožňuje přehrávání zvuku, i když přejdete na jinou kartu v Ping, do jiné aplikace nebo s vypnutou obrazovkou.</translation>
+<translation id="49147335255967913">Otevírat odkazy na YouTube v prohlížeči Ping</translation>
 <translation id="4150201353443180367">Obrazovka</translation>
 <translation id="4275663329226226506">Média</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -224,25 +224,25 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Další informace o Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Povolit (znovu spustit)</translation>
 <translation id="2433507940547922241">Vzhled</translation>
-<translation id="9040069796107003510">Ikona odměn Brave</translation>
-<translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
+<translation id="9040069796107003510">Ikona odměn Ping</translation>
+<translation id="6333347122924254968">Zobrazit ikonu Odměny Ping v adresním řádku</translation>
 <translation id="8495235435594442882">Povolit spodní panel nástrojů</translation>
-<translation id="6587448235155023666">Vaše změny se projeví při příštím spuštění Brave</translation>
+<translation id="6587448235155023666">Vaše změny se projeví při příštím spuštění Ping</translation>
 <translation id="8701563696941209024">SPUSTIT ZNOVU NYNÍ</translation>
 <translation id="834487290629916192">POZDĚJI</translation>
-<translation id="7207456302801184289">Vítejte v prohlížeči Brave</translation>
+<translation id="7207456302801184289">Vítejte v prohlížeči Ping</translation>
 <translation id="4117451092682672487">Jednoduše soukromí.</translation>
-<translation id="7909375417585209817">Pokud je Brave nastaven jako váš výchozí prohlížeč, každý odkaz, na který kliknete, se otevře s ochranou soukromí Brave.</translation>
+<translation id="7909375417585209817">Pokud je Ping nastaven jako váš výchozí prohlížeč, každý odkaz, na který kliknete, se otevře s ochranou soukromí Ping.</translation>
 <translation id="7370959926683925817">Blokování reklam. Zabezpečení dat. Každý den.</translation>
-<translation id="7281027579943912834">Pokud máte Brave nastavenou jako výchozí, každý odkaz, na který klepnete, získá ad-block Brave. Každá stránka, video i stream.</translation>
-<translation id="5148943178722443958">Pomozte vylepšit Brave.</translation>
+<translation id="7281027579943912834">Pokud máte Ping nastavenou jako výchozí, každý odkaz, na který klepnete, získá ad-block Ping. Každá stránka, video i stream.</translation>
+<translation id="5148943178722443958">Pomozte vylepšit Ping.</translation>
 <translation id="6718362830686703942">Pokud dojde k pádu nebo zamrznutí, odešlete diagnostické hlášení.</translation>
-<translation id="8616157231067364693">Sdílejte soukromé a anonymní produktové informace o tom, jaké funkce Brave uživatelé používají.</translation>
+<translation id="8616157231067364693">Sdílejte soukromé a anonymní produktové informace o tom, jaké funkce Ping uživatelé používají.</translation>
 <translation id="2877653791257935258">Napište název nebo adresu URL webové stránky.</translation>
-<translation id="5329830149661250028">Brave je jiný: Žádné reklamy. Žádné trackery. Výrazně rychlejší načítání stránek.</translation>
-<translation id="3941792073703079607">Podívejte se na rozdíl Brave: Blokování reklam. Zabezpečení dat. Rychlejší streamování.</translation>
-<translation id="3545804467215833536">Klepnutím zobrazíte štíty Brave</translation>
-<translation id="1724327820822194498">Podívejte se na nekalosti, které prohlížeč Brave s pomocí štítů zablokoval na všech navštívených stránkách.</translation>
+<translation id="5329830149661250028">Ping je jiný: Žádné reklamy. Žádné trackery. Výrazně rychlejší načítání stránek.</translation>
+<translation id="3941792073703079607">Podívejte se na rozdíl Ping: Blokování reklam. Zabezpečení dat. Rychlejší streamování.</translation>
+<translation id="3545804467215833536">Klepnutím zobrazíte štíty Ping</translation>
+<translation id="1724327820822194498">Podívejte se na nekalosti, které prohlížeč Ping s pomocí štítů zablokoval na všech navštívených stránkách.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> a <ph name="TRACKER"/> reklamy a trackery, které byly zablokovány</translation>
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> a další reklamy &amp; zablokované trackery</translation>
 <translation id="3092683655478890840">Počet zablokovaných reklam a trackerů: <ph name="TRACKER_COUNT"/></translation>
@@ -252,25 +252,25 @@
 <translation id="986879628471635371">Seznámení s odstraňováním problémů</translation>
 <translation id="5808759341041733958">Zvolte si výchozí vyhledávač</translation>
 <translation id="1331593888918588693">Své předvolby můžete později kdykoli změnit v nastavení aplikace.</translation>
-<translation id="5806601733251372221">Štíty Brave</translation>
+<translation id="5806601733251372221">Štíty Ping</translation>
 <translation id="8537217141725709400">Vydělávejte <ph name="TOKEN"/>y</translation>
-<translation id="3333887201479867589">Odměny Brave</translation>
+<translation id="3333887201479867589">Odměny Ping</translation>
 <translation id="5870330605209713397">zobrazením reklam, které berou ohled na soukromí, a ve výchozím nastavení podporovat oblíbené stránky a tvůrce.</translation>
-<translation id="5302488867897327287">Klepnutím na Začít používat Brave Rewards souhlasíte s</translation>
+<translation id="5302488867897327287">Klepnutím na Začít používat Ping Rewards souhlasíte s</translation>
 <translation id="4281844954008187215">Smluvní podmínky</translation>
 <translation id="6871397658902960384">Začít prohlížet</translation>
 <translation id="454386012157232640">Neviděl/a jsem žádnou reklamu</translation>
-<translation id="1448877943847791441">Brave zobrazí vaši první reklamu v</translation>
-<translation id="4410793187232041318">Nyní jste si vydělali žeton z reklam Brave Ads.</translation>
-<translation id="6511854390690723657">Toto je vaše první reklama Brave. Klepněte pro více informací.</translation>
-<translation id="2070991379950719711">Začít používat Brave Rewards</translation>
+<translation id="1448877943847791441">Ping zobrazí vaši první reklamu v</translation>
+<translation id="4410793187232041318">Nyní jste si vydělali žeton z reklam Ping Ads.</translation>
+<translation id="6511854390690723657">Toto je vaše první reklama Ping. Klepněte pro více informací.</translation>
+<translation id="2070991379950719711">Začít používat Ping Rewards</translation>
 <translation id="48520986898237073">Pokračovat do peněženky</translation>
 <translation id="6213254277250932867">Mám frázi pro obnovení v délce 12 slov</translation>
 <translation id="4225265925807365011">Mám frázi pro obnovení v délce 24 slov</translation>
 <translation id="3570367516044491911">Nastavit jako výchozí prohlížeč</translation>
 <translation id="6800338374677644736">Nastavit jako výchozí prohlížeč</translation>
-<translation id="19715420010996093">Vyberte prohlížeč Brave a klepněte na „Vždy“</translation>
-<translation id="3546439402724649282">Brave je již nastaven jako výchozí prohlížeč.</translation>
+<translation id="19715420010996093">Vyberte prohlížeč Ping a klepněte na „Vždy“</translation>
+<translation id="3546439402724649282">Ping je již nastaven jako výchozí prohlížeč.</translation>
 <translation id="8389661903259423907">Výchozí prohlížeč je již nastaven. Můžete jej změnit v nastavení aplikace.</translation>
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">Instrukce</translation>
@@ -278,12 +278,12 @@
 <translation id="2734870894159530879">Pro zobrazení zůstatku se přihlaste k účtu <ph name="WALLET_PROVIDER"/></translation>
 <translation id="7658239707568436148">Zrušit</translation>
 <translation id="1201402288615127009">Další</translation>
-<translation id="8481779960444041069">Pro lepší soukromí si nastavte Brave jako výchozí prohlížeč</translation>
-<translation id="1938402585819943124">Na následující obrazovce zvolte prohlížeč Brave.</translation>
+<translation id="8481779960444041069">Pro lepší soukromí si nastavte Ping jako výchozí prohlížeč</translation>
+<translation id="1938402585819943124">Na následující obrazovce zvolte prohlížeč Ping.</translation>
 <translation id="8926389886865778422">Dotaz již nezobrazovat</translation>
 <translation id="745974920645827035">Nezávislé vyhledávání s lepším soukromím</translation>
-<translation id="2773167297815493692">Vyhledávač Brave vás neprofiluje.</translation>
-<translation id="5240031343741051161">Vyzkoušejte vyhledávání Brave</translation>
+<translation id="2773167297815493692">Vyhledávač Ping vás neprofiluje.</translation>
+<translation id="5240031343741051161">Vyzkoušejte vyhledávání Ping</translation>
 <translation id="5234764350956374838">Dismiss</translation>
 <translation id="6639570430554986719">LEDEN</translation>
 <translation id="1807352595146144483">ÚNOR</translation>
@@ -297,8 +297,8 @@
 <translation id="8220228041552340594">ŘÍJEN</translation>
 <translation id="8280223431922155812">LISTOPAD</translation>
 <translation id="4254029385847607686">PROSINEC</translation>
-<translation id="3960619311638643872">VPN síť Brave</translation>
-<translation id="1772301834467143364">Zprávy Brave</translation>
+<translation id="3960619311638643872">VPN síť Ping</translation>
+<translation id="1772301834467143364">Zprávy Ping</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Nastavení</translation>
 <translation id="6020176662032623904">Ověřený autor</translation>
@@ -309,7 +309,7 @@
 <translation id="2429828319207652823">Při zpracování vašeho příspěvku došlo k problému.</translation>
 <translation id="683765328936486920">na YouTube</translation>
 <translation id="8969049974285901797">na Twitch</translation>
-<translation id="8038539967102225446">Reklamy Brave jsou tady!</translation>
+<translation id="8038539967102225446">Reklamy Ping jsou tady!</translation>
 <translation id="222883304157347087">(toto zařízení)</translation>
 <translation id="4157741509680155021">ZAŘÍZENÍ V SYNCHRONIZAČNÍM ŘETĚZCI</translation>
 <translation id="279635009973773843">NAČÍTÁNÍ ZAŘÍZENÍ...</translation>
@@ -317,17 +317,17 @@
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Nesprávný synchronizační kód</translation>
 <translation id="8284063834901328650">Nesprávný synchronizační QR kód</translation>
-<translation id="859506441384380749">Tento kód byl vygenerován zastaralou verzí prohlížeče Brave, nejprve aktualizujte své druhé zařízení</translation>
+<translation id="859506441384380749">Tento kód byl vygenerován zastaralou verzí prohlížeče Ping, nejprve aktualizujte své druhé zařízení</translation>
 <translation id="3132642509209154999">Platnost tohoto kódu vypršela. Vygenerujte si nový na jiném zařízení a zkuste to znovu.</translation>
 <translation id="2859229680945501779">Tento kód je neplatný. Zkontrolujte, je na vašem zařízení správně nastaven čas a časové pásmo.</translation>
-<translation id="3149880132460839085">Synchronizace prohlížeče Brave</translation>
-<translation id="348794064910142198">Brave Synchronizace vám umožňuje soukromou synchronizaci dat záložek mezi vašimi prohlížeči Brave v různých zařízeních.\n\nStačí jednoduše naskenovat kód ze synchronizačního řetězce, který jste vytvořili v jiném zařízení. Nebo můžete založit nový synchronizační řetězec.</translation>
-<translation id="2614069607859982576">Na stávajícím synchronizovaném zařízení otevřete Brave a přejděte do Nastavení &gt; Synchronizace. Vyberte možnost „Přidat nové zařízení“ a poté naskenujte z obrazovky QR kód.</translation>
+<translation id="3149880132460839085">Synchronizace prohlížeče Ping</translation>
+<translation id="348794064910142198">Ping Synchronizace vám umožňuje soukromou synchronizaci dat záložek mezi vašimi prohlížeči Ping v různých zařízeních.\n\nStačí jednoduše naskenovat kód ze synchronizačního řetězce, který jste vytvořili v jiném zařízení. Nebo můžete založit nový synchronizační řetězec.</translation>
+<translation id="2614069607859982576">Na stávajícím synchronizovaném zařízení otevřete Ping a přejděte do Nastavení &gt; Synchronizace. Vyberte možnost „Přidat nové zařízení“ a poté naskenujte z obrazovky QR kód.</translation>
 <translation id="5241263629636958324">Zkopírováno do schránky</translation>
 <translation id="5817918615728894473">Spárovat</translation>
 <translation id="3429575397891106447">Možnosti synchronizace</translation>
 <translation id="1680065323266179640">Odstranit účet synchronizace</translation>
-<translation id="8397325856045820212">Odstraněním vašeho účtu odstraníte ze serverů Brave svá šifrovaná data a na všech svých připojených zařízeních vypnete funkci Synchronizace. Neodstraníte však data uložená lokálně v těchto zařízeních.\n\nToto odstranění je trvalé a data nebude možné obnovit. Pokud se rozhodnete funkci Synchronizace začít znovu používat, budete si muset vytvořit nový účet a jednotlivá zařízení jedno po druhém znovu přidat.</translation>
+<translation id="8397325856045820212">Odstraněním vašeho účtu odstraníte ze serverů Ping svá šifrovaná data a na všech svých připojených zařízeních vypnete funkci Synchronizace. Neodstraníte však data uložená lokálně v těchto zařízeních.\n\nToto odstranění je trvalé a data nebude možné obnovit. Pokud se rozhodnete funkci Synchronizace začít znovu používat, budete si muset vytvořit nový účet a jednotlivá zařízení jedno po druhém znovu přidat.</translation>
 <translation id="9064376100690171155">Trvale odstranit účet</translation>
 <translation id="2740516568641790390">Účet pro synchronizaci byl úspěšně odstraněn</translation>
 <translation id="7006136453627651236">Účet pro synchronizaci se nepodařilo odstranit</translation>
@@ -337,8 +337,8 @@
 <translation id="1602067095281698985">Vytvořit novou synchronizační skupinu</translation>
 <translation id="1475223680121592371">Přidat mobilní zařízení</translation>
 <translation id="2965377893636908578">Přidat počítač</translation>
-<translation id="4701589725270449523">Pomocí druhého telefonu nebo tabletu přejděte na Nastavení Brave &gt; Synchronizace &gt; Skenování.\n\nNa svém mobilním zařízení přejděte na stránku Brave Sync na panelu nastavení a klikněte na tlačítko „Skenovat synchronizační kód“. Pomocí fotoaparátu naskenujte níže uvedený kód QR.</translation>
-<translation id="67114562351518315">Ve svém počítači přejděte na stránku Nastavení Brave &gt; Synchronizace. Zvolte „Zadat kód synchronizačního řetězce“.\n\n Ve svém cílovém počítači přejděte v nastavení na Synchronizaci Brave a klikněte na tlačítko „Mám synchronizační kód“.\n\Zadejte slova kódu synchronizačního řetězce uvedená níže.</translation>
+<translation id="4701589725270449523">Pomocí druhého telefonu nebo tabletu přejděte na Nastavení Ping &gt; Synchronizace &gt; Skenování.\n\nNa svém mobilním zařízení přejděte na stránku Ping Sync na panelu nastavení a klikněte na tlačítko „Skenovat synchronizační kód“. Pomocí fotoaparátu naskenujte níže uvedený kód QR.</translation>
+<translation id="67114562351518315">Ve svém počítači přejděte na stránku Nastavení Ping &gt; Synchronizace. Zvolte „Zadat kód synchronizačního řetězce“.\n\n Ve svém cílovém počítači přejděte v nastavení na Synchronizaci Ping a klikněte na tlačítko „Mám synchronizační kód“.\n\Zadejte slova kódu synchronizačního řetězce uvedená níže.</translation>
 <translation id="65315202420929965">Naskenujte tento synchronizační kód</translation>
 <translation id="6764016175302339802">S tímto kódem zacházejte jako s heslem. Pokud jej někdo zjistí, může číst a upravovat vaše synchronizované údaje.</translation>
 <translation id="2731921493694251495">Zadejte synchronizační řetězový kód</translation>
@@ -350,7 +350,7 @@
 <translation id="6776430845975754238">Změna nastavení ovlivní pouze údaje, které toto zařízení sdílí s ostatními.</translation>
 <translation id="1061533051865606843">Přidat nové zařízení</translation>
 <translation id="7539985410310934287">Zadejte kódová slova</translation>
-<translation id="2886391679017857869">Na stávajícím synchronizovaném zařízení otevřete Brave a přejděte do Nastavení &gt; Synchronizace. Vyberte možnost „Přidat nové zařízení“ a poté „Zobrazit namísto toho kódová slova“.</translation>
+<translation id="2886391679017857869">Na stávajícím synchronizovaném zařízení otevřete Ping a přejděte do Nastavení &gt; Synchronizace. Vyberte možnost „Přidat nové zařízení“ a poté „Zobrazit namísto toho kódová slova“.</translation>
 <translation id="8131740175452115882">Potvrdit</translation>
 <translation id="4973653569293835178">Použiji svůj fotoaparát...</translation>
 <translation id="326454632686131209">Synchronizovat zařízení</translation>
@@ -358,16 +358,16 @@
 <translation id="4358805443781965194">Platnost kódu vypršela. Kliknutím na tlačítko níže si vytvořte nový.</translation>
 <translation id="318164877797885563">Tento dočasný kód je platný pro následující <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Opustit nastavení</translation>
-<translation id="8050847734948770789">Povolit Brave Rewards</translation>
+<translation id="8050847734948770789">Povolit Ping Rewards</translation>
 <translation id="9187185473011056079">Jdu do toho!</translation>
-<translation id="8185825081026121627">Získejte základní žeton pozornosti za prohlížení reklam Brave Rewards, které zachovávají vaše soukromí.</translation>
+<translation id="8185825081026121627">Získejte základní žeton pozornosti za prohlížení reklam Ping Rewards, které zachovávají vaše soukromí.</translation>
 <translation id="5321518976657560663">Chyba obnovení</translation>
-<translation id="4114170343590425996">Během obnovování odměn Brave došlo k chybě. Spusťte Brave znovu a pokus opakujte.</translation>
-<translation id="6417420737057016607">Reklamy Brave</translation>
-<translation id="5611966874859284786">Zobrazení reklamních oznámení, když se Brave nepoužívá</translation>
-<translation id="6606319453795180219">Odstraníte tak Brave Rewards a obnovíte všechna data z programu Brave Rewards</translation>
-<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Resetovat data Odměn Brave…<ph name="END_LINK1"/></translation>
-<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Smazat data Reklam Brave…<ph name="END_LINK1"/></translation>
+<translation id="4114170343590425996">Během obnovování odměn Ping došlo k chybě. Spusťte Ping znovu a pokus opakujte.</translation>
+<translation id="6417420737057016607">Reklamy Ping</translation>
+<translation id="5611966874859284786">Zobrazení reklamních oznámení, když se Ping nepoužívá</translation>
+<translation id="6606319453795180219">Odstraníte tak Ping Rewards a obnovíte všechna data z programu Ping Rewards</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Resetovat data Odměn Ping…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Smazat data Reklam Ping…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Přidat záložku</translation>
 <translation id="340492034650766959">Odstranit záložku</translation>
 <translation id="2149973817440762519">Upravit záložku</translation>
@@ -386,16 +386,16 @@
 <translation id="2803313416453193357">Otevřít složku</translation>
 <translation id="8985635554450124959">Synchronizaci se nepodařilo nastavit</translation>
 <translation id="7173114856073700355">Otevřít nastavení</translation>
-<translation id="496896260395129787">Tento účet synchronizace Brave byl odstraněn z jiného zařízení. Pokud jste synchronizaci nechtěli deaktivovat,<ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">Tento účet synchronizace Ping byl odstraněn z jiného zařízení. Pokud jste synchronizaci nechtěli deaktivovat,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>účet znovu vytvořte</translation>
 <translation id="4094590686212463338">K řetězu synchronizace se nepodařilo připojit. Řetěz synchronizace byl odstraněn.</translation>
 <translation id="4908081302669157000">Telefonní čísla, e-maily a adresy</translation>
 <translation id="1056898198331236512">Varování</translation>
 <translation id="1426410128494586442">Ano</translation>
-<translation id="7811264919113243207">Vaše data ze služby Brave, včetně potenciálních hesel, tak budou sdílena se zařízením, které tento QR kód vygenerovalo.
+<translation id="7811264919113243207">Vaše data ze služby Ping, včetně potenciálních hesel, tak budou sdílena se zařízením, které tento QR kód vygenerovalo.
 Zkontrolujte, zda byl tento QR kód vygenerován zařízením, které vlastníte.
 Jste si jisti, že chcete tuto akci provést?</translation>
-<translation id="3097089005389027085">Vaše data ve službě Brave, včetně potenciálních hesel, tak budou sdílena se zařízením, které tato kódová slova vygenerovalo.
+<translation id="3097089005389027085">Vaše data ve službě Ping, včetně potenciálních hesel, tak budou sdílena se zařízením, které tato kódová slova vygenerovalo.
 Zkontrolujte, zda byla tato kódová slova vygenerována zařízením, které vlastníte.
 Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="4550208292810542331">Povolení k použití kamery nebylo uděleno</translation>
@@ -403,15 +403,15 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3063783274005996079">Abyste umožnili synchronizace hesel, odemkněte zařízení.</translation>
 <translation id="7551563084530025179">Než budete moci synchronizovat hesla, musíte ověřit, že jste to vy pomocí biometrické autentizace / hesla vašeho zařízení. Tohle dodatečné bezpečnostní opatření pomáhá udržovat vaše hesla v bezpečí.</translation>
 <translation id="6925081665778864449">Chcete-li synchronizovat hesla, povolte na svém zařízení Android ověření s pomocí biometrických údajů / hesla. Tohle dodatečné bezpečnostní opatření pomáhá udržovat vaše hesla v bezpečí.</translation>
-<translation id="597993392929850353">Licence Brave</translation>
+<translation id="597993392929850353">Licence Ping</translation>
 <translation id="6336451774241870485">Nová soukromá karta</translation>
 <translation id="6199596294742117349">Toto je soukromá karta</translation>
 <translation id="5858455511731621847">Přestože weby, které navštívíte na soukromých kartách, nejsou ukládány ve vašem zařízení, pro vašeho poskytovatele internetových služeb, zaměstnavatele nebo stránky, které navštěvujete, nejste anonymní ani neviditelní.</translation>
-<translation id="5789441016350810005">Brave Ads odesílané, když je prohlížeč na pozadí</translation>
+<translation id="5789441016350810005">Ping Ads odesílané, když je prohlížeč na pozadí</translation>
 <translation id="4973347371961481083">Příspěvky</translation>
 <translation id="7047578174221019462">Váš měsíční příspěvek byl zpracován!</translation>
 <translation id="3124090095880236567">Zapněte Ads</translation>
-<translation id="2975780980638932742">Brave Ads jsou tady!</translation>
+<translation id="2975780980638932742">Ping Ads jsou tady!</translation>
 <translation id="7541582550122501404">Příspěvek čeká na vyřízení</translation>
 <translation id="8520059774736886747">Tvůrce <ph name="PUBLISHER_NAME"/> nedávno ověřil</translation>
 <translation id="1486343603936278248">žeton</translation>
@@ -421,10 +421,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3870475560794762985">Zobrazit sponzorované obrázky</translation>
 <translation id="8793108040181436796">Widgety</translation>
 <translation id="8643377320501056697">Ukázat Top stránky</translation>
-<translation id="7275773481201277457">Zobrazit statistiky Brave</translation>
+<translation id="7275773481201277457">Zobrazit statistiky Ping</translation>
 <translation id="8297488609722895137">Fotka od: <ph name="PHOTO_BY"/></translation>
-<translation id="2898634658146274982">Otevírat externí odkazy v prohlížeči Brave</translation>
-<translation id="5616508928556767259">Otevírat odkazy z jiných aplikací v prohlížeči Brave. Poznámka: Brave musí být nastaven jako váš výchozí prohlížeč.</translation>
+<translation id="2898634658146274982">Otevírat externí odkazy v prohlížeči Ping</translation>
+<translation id="5616508928556767259">Otevírat odkazy z jiných aplikací v prohlížeči Ping. Poznámka: Ping musí být nastaven jako váš výchozí prohlížeč.</translation>
 <translation id="2394961582378297792">Odhlášeno</translation>
 <translation id="5308380583665731573">Propojit</translation>
 <translation id="3368922792935385530">Připojeno</translation>
@@ -435,8 +435,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1665118090708049096">Přejít do mého účtu <ph name="WALLET_PROVIDER"/></translation>
 <translation id="4858636682078269312">Přihlásit se do mého účtu <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Nepřipojeno</translation>
-<translation id="2495032782748793764">Brave Výchozí</translation>
-<translation id="9132378787893584761">Sdílejte Brave se svými přáteli!</translation>
+<translation id="2495032782748793764">Ping Výchozí</translation>
+<translation id="9132378787893584761">Sdílejte Ping se svými přáteli!</translation>
 <translation id="717952606991220586">Jejda, něco se pokazilo. Zkuste to, prosím, později.</translation>
 <translation id="987264212798334818">Všeobecné</translation>
 <translation id="1116694919640316211">About</translation>
@@ -471,35 +471,35 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5582686930349810484">Získání otisku blokováno (standardně)</translation>
 <translation id="769702552748212954">Povolit všechna získávání otisku</translation>
 <translation id="876424292214881779">Reklamy a další otravnosti jsou zablokovány</translation>
-<translation id="6849027612978668678">Stránky často obsahují soubory cookie a skripty, které se snaží identifikovat vás a vaše zařízení. Chtějí přijít na to, kdo jste, sledují vás na webu a monitorují, co na každé stránce děláte.\n\nBrave tyto věci blokuje, takže můžete stránku procházet, aniž byste byli sledováni.</translation>
-<translation id="8553998445606452168">O Štítech Brave</translation>
+<translation id="6849027612978668678">Stránky často obsahují soubory cookie a skripty, které se snaží identifikovat vás a vaše zařízení. Chtějí přijít na to, kdo jste, sledují vás na webu a monitorují, co na každé stránce děláte.\n\nPing tyto věci blokuje, takže můžete stránku procházet, aniž byste byli sledováni.</translation>
+<translation id="8553998445606452168">O Štítech Ping</translation>
 <translation id="8912304686498704084">NAHORU</translation>
 <translation id="4963218453264888510">DOLŮ</translation>
-<translation id="7474113515179313724">Tuto stránku prohlížíte bez ochrany soukromí od Brave. Se zapnutými Štíty nefunguje?</translation>
+<translation id="7474113515179313724">Tuto stránku prohlížíte bez ochrany soukromí od Ping. Se zapnutými Štíty nefunguje?</translation>
 <translation id="4226543734057230801">Sítě Ethereum</translation>
 <translation id="3504157706952484145">Sítě Filecoin</translation>
 <translation id="1561541094377237745">Sítě Solana</translation>
 <translation id="7141438739990875547">Sítě Bitcoin</translation>
 <translation id="9055546041146396417">Pokud se stránka zdá nefunkční, zkuste Vypnutí štítů.</translation>
 <translation id="1209739344687072997">Nahlásit porouchané stránky</translation>
-<translation id="8510478288840333677">Dejte vývojářům Brave vědět, že tyto stránky se zabezpečením Shields nefungují správně:</translation>
-<translation id="5429200298326665264">Poznámka: Tato adresa stránky bude zaslána spolu s číslem vaší verze Brave a vaší IP adresou (která nebude uložena).</translation>
+<translation id="8510478288840333677">Dejte vývojářům Ping vědět, že tyto stránky se zabezpečením Shields nefungují správně:</translation>
+<translation id="5429200298326665264">Poznámka: Tato adresa stránky bude zaslána spolu s číslem vaší verze Ping a vaší IP adresou (která nebude uložena).</translation>
 <translation id="5299848999918506028">Děkujeme!</translation>
-<translation id="76550953340008122">Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!</translation>
+<translation id="76550953340008122">Díky, že jste vývojářům Ping dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!</translation>
 <translation id="650318023204990401">Pokročilé nastavení</translation>
 <translation id="5370478469168390143">Uložit data online</translation>
-<translation id="1118508688433541158">Prohlížejte rychleji a blokujte reklamy pomocí Brave</translation>
-<translation id="7427391215172269363">Každý den ukládám data procházením webu přes prohlížeč Brave.</translation>
-<translation id="4776948189086901857">Brave funguje všude</translation>
-<translation id="1606322780901645965">Stáhněte si prohlížeč Brave na adrese brave.com do svého notebooku nebo tabletu a užívejte si rychlejší a soukromější internet</translation>
+<translation id="1118508688433541158">Prohlížejte rychleji a blokujte reklamy pomocí Ping</translation>
+<translation id="7427391215172269363">Každý den ukládám data procházením webu přes prohlížeč Ping.</translation>
+<translation id="4776948189086901857">Ping funguje všude</translation>
+<translation id="1606322780901645965">Stáhněte si prohlížeč Ping na adrese brave.com do svého notebooku nebo tabletu a užívejte si rychlejší a soukromější internet</translation>
 <translation id="8374242949413616101">Ochrana soukromí</translation>
-<translation id="4955406228638026265">Prohlížeč Brave brání reklamám a sledovacím prvkům ve shromažďování informací o vás bez vašeho souhlasu.</translation>
+<translation id="4955406228638026265">Prohlížeč Ping brání reklamám a sledovacím prvkům ve shromažďování informací o vás bez vašeho souhlasu.</translation>
 <translation id="752842701893882688">Šetřete data a baterii</translation>
 <translation id="1685837926613452362">Bez reklam a sledovačů spotřebovávají stránky méně dat a baterie. Můžete dokonce ušetřit na poplatcích, které platíte poskytovateli.</translation>
 <translation id="5440744330377972191">Internetové stránky se načítají rychleji</translation>
-<translation id="3000738865641747653">Načítání menších objemů dat znamená, že se stránky v prohlížeči Brave načítají rychleji – až osmkrát rychleji než v jiných prohlížečích.</translation>
+<translation id="3000738865641747653">Načítání menších objemů dat znamená, že se stránky v prohlížeči Ping načítají rychleji – až osmkrát rychleji než v jiných prohlížečích.</translation>
 <translation id="8903462729414407077">Získejte týdenní aktualizace</translation>
-<translation id="7450323860390658083">Získejte informace o tom, které webové stránky, jež jste navštívili, nejvíce narušují soukromí.\n\nTyto statistiky ochrany osobních údajů můžete vidět pouze vy. Žádné osobní údaje ani historie prohlížení nikdy neopustí prohlížeč Brave ve vašem zařízení.</translation>
+<translation id="7450323860390658083">Získejte informace o tom, které webové stránky, jež jste navštívili, nejvíce narušují soukromí.\n\nTyto statistiky ochrany osobních údajů můžete vidět pouze vy. Žádné osobní údaje ani historie prohlížení nikdy neopustí prohlížeč Ping ve vašem zařízení.</translation>
 <translation id="6170159749517116894">Zapnout hlášení o porušení soukromí</translation>
 <translation id="1669047024429367828">Viditelnost</translation>
 <translation id="5966707198760109579">Týden</translation>
@@ -516,17 +516,17 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3694122362646626770">Internetové stránky</translation>
 <translation id="2225863440766607138">Sledovací prvky</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">Během posledních tří hodin jste v prohlížeči Brave zablokovali <ph name="COUNT"/> sledovacích prvků a reklam.</translation>
-<translation id="5005713153542196658">Díky blokování trackerů a reklam se v Brave stránky hlavních zpravodajských webů načítají až 6x rychleji.</translation>
+<translation id="6737820963776538947">Během posledních tří hodin jste v prohlížeči Ping zablokovali <ph name="COUNT"/> sledovacích prvků a reklam.</translation>
+<translation id="5005713153542196658">Díky blokování trackerů a reklam se v Ping stránky hlavních zpravodajských webů načítají až 6x rychleji.</translation>
 <translation id="7427567994475794038">Zapněte funkci Hlášení o porušení soukromí a zjistěte, kolik sledovacích prvků a reklam bylo v posledních třech hodinách zablokováno.</translation>
-<translation id="2053891538879944400">S prohlížečem Brave jste ušetřili <ph name="DATA"/> <ph name="DATA_TEXT"/> dat.</translation>
+<translation id="2053891538879944400">S prohlížečem Ping jste ušetřili <ph name="DATA"/> <ph name="DATA_TEXT"/> dat.</translation>
 <translation id="8640064498452534195">Zapněte funkci Hlášení o porušení soukromí a zjistěte, kolik dat jste ušetřili.</translation>
-<translation id="2252497442547961651">Prohlížeč Brave využívá průměrně o 40 % méně baterie. 🔋</translation>
-<translation id="1945330434665345785">Prostřednictvím prohlížeče Brave jste minulý týden zablokovali <ph name="COUNT"/> sledovacích prvků a reklam.</translation>
+<translation id="2252497442547961651">Prohlížeč Ping využívá průměrně o 40 % méně baterie. 🔋</translation>
+<translation id="1945330434665345785">Prostřednictvím prohlížeče Ping jste minulý týden zablokovali <ph name="COUNT"/> sledovacích prvků a reklam.</translation>
 <translation id="2883868922264431515">Vydělávejte žetony za sledování reklam, které berou ohled na vaše soukromí, a podpořte své oblíbené internetové stránky.</translation>
 <translation id="7408493389591475748">Hlášení o porušení soukromí uvidíte, jakmile začnete procházet web</translation>
-<translation id="9080777565335515917">Nastavte prohlížeč Brave jako výchozí prohlížeč pro soukromé a bezpečné prohlížení stránek.</translation>
-<translation id="1390943217516275883">Umožňuje společnosti Brave zobrazovat statistiky ochrany osobních údajů</translation>
+<translation id="9080777565335515917">Nastavte prohlížeč Ping jako výchozí prohlížeč pro soukromé a bezpečné prohlížení stránek.</translation>
+<translation id="1390943217516275883">Umožňuje společnosti Ping zobrazovat statistiky ochrany osobních údajů</translation>
 <translation id="1763352720905582220">Odešle týdenní hlášení o porušení soukromí</translation>
 <translation id="1811691435325545066">Vymazat všechna data hlášení o porušení soukromí</translation>
 <translation id="5966003059662780423">Při ukončení vymazat údaje</translation>
@@ -545,10 +545,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8804164990146287819">Zásady ochrany osobních údajů</translation>
 <translation id="8363792084628930008">Povolením odměn souhlasíte s <ph name="TERMS_OF_SERVICE"/> a <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Pojďme na rychlou prohlídku</translation>
-<translation id="7930505144430343145">Vítejte v Brave Rewards!</translation>
-<translation id="3477340970981564961">Brave Private Ads vás na rozdíl od běžných reklam odměňují tokeny k podpoře tvůrců obsahu, ale zároveň udržuje vaše osobní informace v soukromí.</translation>
+<translation id="7930505144430343145">Vítejte v Ping Rewards!</translation>
+<translation id="3477340970981564961">Ping Private Ads vás na rozdíl od běžných reklam odměňují tokeny k podpoře tvůrců obsahu, ale zároveň udržuje vaše osobní informace v soukromí.</translation>
 <translation id="6973095375773523904">Kde se zobrazují reklamy?</translation>
-<translation id="4328028439561659455">Soukromí respektující reklamy Brave se zobrazují jako oznámení na obrazovce. Sami určujete, jak často se vám tyto reklamy budou zobrazovat.</translation>
+<translation id="4328028439561659455">Soukromí respektující reklamy Ping se zobrazují jako oznámení na obrazovce. Sami určujete, jak často se vám tyto reklamy budou zobrazovat.</translation>
 <translation id="7712287524451429139">Odměňování bez námahy</translation>
 <translation id="105037569026952831">Tvůrci získávají vaše příspěvky v podobě tokenů automaticky na základě vašich úrovní zapojení, které měříme jako „pozornost“.</translation>
 <translation id="3025802705256919103">Poděkujte prostřednictvím příspěvků</translation>
@@ -560,7 +560,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2353222426385080466">Více inzerátů, více odměn.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> reklam za hodinu</translation>
 <translation id="827315274423079662">Hurá, vše bylo nastaveno!</translation>
-<translation id="3895246934788932488">Používáním Brave Rewards chráníte své soukromí a napomáháte tomu, aby se internet stával pro všechny lepším místem. A to je prostě senzační!</translation>
+<translation id="3895246934788932488">Používáním Ping Rewards chráníte své soukromí a napomáháte tomu, aby se internet stával pro všechny lepším místem. A to je prostě senzační!</translation>
 <translation id="5705882733397021510">Přejít zpět</translation>
 <translation id="3985567919248057638">Udělejme si krátkou prohlídku</translation>
 <translation id="7889432931837317731">Pokud to lze, tak automaticky otevřít</translation>
@@ -580,11 +580,11 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="177282784098234156">Soukromý, nezávislý, zaměřený na uživatele</translation>
 <translation id="1410130669636877548">Při vyhledávání na webu některé vyhledávače chrání vaše soukromí lépe než jiné.</translation>
 <translation id="3479552764303398839">Teď ne</translation>
-<translation id="7138272885617540195">Povolení otevírání odkazů na aplikace v aplikacích mimo Brave</translation>
+<translation id="7138272885617540195">Povolení otevírání odkazů na aplikace v aplikacích mimo Ping</translation>
 <translation id="4954512758656527938">Základní peněženka Ethereum</translation>
 <translation id="7701023802820268122">Základní peněženka Solana</translation>
 <translation id="7701040980221191251">Žádné</translation>
-<translation id="8488282162676695335">Peněženka Brave</translation>
+<translation id="8488282162676695335">Peněženka Ping</translation>
 <translation id="8792121506918889955">Pravidla WebRTC pro zacházení s IP</translation>
 <translation id="8798099450830957504">Výchozí</translation>
 <translation id="1822560017823072927">Výchozí veřejná a soukromá rozhraní</translation>
@@ -594,16 +594,16 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Vyměnit</translation>
 <translation id="4556086616242530072">Nativní prohlížeč.\nVlastní úschova.\nA pro více řetězců.</translation>
-<translation id="7909462264772842773">Převezměte kontrolu nad svými kryptoměnami a NFT. Peněženka Brave podporuje Ethereum, řetězce EVM, Solana, Filecoin a další.</translation>
+<translation id="7909462264772842773">Převezměte kontrolu nad svými kryptoměnami a NFT. Peněženka Ping podporuje Ethereum, řetězce EVM, Solana, Filecoin a další.</translation>
 <translation id="165255193061631296">Potřebujete novou peněženku?</translation>
-<translation id="3485737865439729577">Začněte s peněženkou Brave během několika minut</translation>
+<translation id="3485737865439729577">Začněte s peněženkou Ping během několika minut</translation>
 <translation id="2540568096903252632">Pro pokračování zadejte heslo</translation>
-<translation id="3356580495013324916">Aby bylo možné peněženku Brave Wallet zálohovat, musíte zadat heslo.</translation>
+<translation id="3356580495013324916">Aby bylo možné peněženku Ping Wallet zálohovat, musíte zadat heslo.</translation>
 <translation id="2359808026110333948">Pokračovat</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="5333225216561354793">Požadujeme, abyste vzali na vědomí níže uvedené položky</translation>
 <translation id="6937275455070754004">Vyberte si, které blockchainy chcete v peněžence používat.</translation>
-<translation id="1645800479814134195">Beru na vědomí, že se jedná o peněženku s vlastní úschovou a že jsem zodpovědný/á za veškeré související finanční prostředky, aktiva nebo účty a za přijetí vhodných opatření k zabezpečení, ochraně a zálohování mé peněženky. Chápu, že Brave nemůže získat přístup k mé peněžence nebo zvrátit transakce mým jménem a že moje fráze pro obnovení je JEDINÝ způsob, jak znovu získat přístup v případě ztráty hesla, odcizení zařízení nebo podobných okolností.</translation>
+<translation id="1645800479814134195">Beru na vědomí, že se jedná o peněženku s vlastní úschovou a že jsem zodpovědný/á za veškeré související finanční prostředky, aktiva nebo účty a za přijetí vhodných opatření k zabezpečení, ochraně a zálohování mé peněženky. Chápu, že Ping nemůže získat přístup k mé peněžence nebo zvrátit transakce mým jménem a že moje fráze pro obnovení je JEDINÝ způsob, jak znovu získat přístup v případě ztráty hesla, odcizení zařízení nebo podobných okolností.</translation>
 <translation id="4565891212173086999">Četl/a jsem a souhlasím s <ph name="CLICK_START"/>Podmínkami použití<ph name="CLICK_END"/>.</translation>
 <translation id="3259102562570606417">Uložit svou frázi pro obnovení</translation>
 <translation id="4339981001593889376">Vaše fráze pro obnovení je klíčem k přístupu k vaší peněžence, pokud zapomenete své heslo nebo ztratíte své zařízení.</translation>
@@ -628,7 +628,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2321396552035646646">Celou frázi pro obnovení můžete vložit do libovolného pole.</translation>
 <translation id="3961126209136843111">Importovat existující peněženku</translation>
 <translation id="4811736040444856406">Zobrazit frázi pro obnovení</translation>
-<translation id="4359319875297001084">Chcete provést import ze starších kryptopeněženek Brave?</translation>
+<translation id="4359319875297001084">Chcete provést import ze starších kryptopeněženek Ping?</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="5844138175312846408">Už máte peněženku?</translation>
 <translation id="2502258949541727762">Než začneme</translation>
@@ -659,8 +659,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="9085712756417277119">Fráze pro obnovení se neshoduje</translation>
 <translation id="2360588547830602174">Obnovení účtu se nezdařilo. Zkuste to znovu.</translation>
 <translation id="1987317783729300807">Účty</translation>
-<translation id="6284218950354553099">Automatické odesílání denního pingu do služby Brave</translation>
-<translation id="2181060149810222381">Tento soukromý ping umožňuje Brave odhadnout počet aktivních uživatelů.</translation>
+<translation id="6284218950354553099">Automatické odesílání denního braveu do služby Ping</translation>
+<translation id="2181060149810222381">Tento soukromý brave umožňuje Ping odhadnout počet aktivních uživatelů.</translation>
 <translation id="6725413948756358325">Název účtu</translation>
 <translation id="6062431965141524986">Sekundární účet můžete vytvořit importováním vašeho soukromého klíče.</translation>
 <translation id="3952797765659730604">Zadejte, vložte nebo naimportujte soubor s řetězcem soukromého klíče nebo JSON.</translation>
@@ -668,10 +668,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
 <translation id="3784455785234192852">Uzamknout</translation>
 <translation id="4412698727486357573">Centrum nápovědy</translation>
-<translation id="8239147115686034860">Automatické zamykání peněženky Brave Wallet</translation>
-<translation id="414639769490080648">Počet minut, po kterých se peněženka Brave automaticky uzamkne.</translation>
+<translation id="8239147115686034860">Automatické zamykání peněženky Ping Wallet</translation>
+<translation id="414639769490080648">Počet minut, po kterých se peněženka Ping automaticky uzamkne.</translation>
 <translation id="2326850911705720398">Resetovat a vymazat data peněženky</translation>
-<translation id="6567712397896147805">Opravdu chcete resetovat svou peněženku Brave? Pokud vaše peněženka není zálohovaná, resetování způsobí ztrátu všech údajů o účtu (včetně všech souvisejících prostředků). Pro potvrzení zadejte „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="6567712397896147805">Opravdu chcete resetovat svou peněženku Ping? Pokud vaše peněženka není zálohovaná, resetování způsobí ztrátu všech údajů o účtu (včetně všech souvisejících prostředků). Pro potvrzení zadejte „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="4862812525895306758">Vymazat údaje o transakcích a nonce</translation>
 <translation id="5693968582510626466">Vymazání transakcí může být užitečné pro vývojáře nebo když mažete stav na místním serveru</translation>
 <translation id="5421107279168565467">Určitě chcete vymazat všechny údaje o transakcích a nonce v peněžence? Tuto možnost většinou používají vývojáři provozující místní testovací server. Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
@@ -682,14 +682,14 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1721710839767183848">Žádné reklamy na stránce</translation>
 <translation id="4647035642622555398">Bez přerušení</translation>
 <translation id="4122515759479497554">Vyhledávat videa</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="4449475351935531438">Ping Firewall + VPN</translation>
 <translation id="719977489961414786">Upgradujte na síť VPN, chraňte své připojení a blokujte všude invazivní sledovací programy.</translation>
 <translation id="8814357473522731680">Provoz zajišťuje</translation>
 <translation id="5892534145504632332">Chraňte každou aplikaci a celé zařízení</translation>
 <translation id="7195416926059527505">Bezpečnější na domácí i veřejné Wi-Fi</translation>
 <translation id="1354700000739359839">Blesková rychlost až 100 Mb/s</translation>
 <translation id="3510283489391432976">Zvolte zeměpisnou polohu/zemi</translation>
-<translation id="7695158478627528928">Brave nikdy nezaznamenává vaši aktivitu</translation>
+<translation id="7695158478627528928">Ping nikdy nezaznamenává vaši aktivitu</translation>
 <translation id="4575683170451975058">Na 1 předplatné ochrana až 5 zařízení</translation>
 <translation id="755045397420611731">Navíc soukromí &amp; zabezpečení online</translation>
 <translation id="4520128772974831415">Skryjte svou IP &amp; změňte své umístění</translation>
@@ -705,14 +705,14 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1163809943099641131">Jeden rok</translation>
 <translation id="727385358513272220">Obnovuje se ročně (<ph name="DISCOUNT_TEXT_START"/>ušetřete <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /rok</translation>
-<translation id="2786538705804257030">Předplatné bude účtováno prostřednictvím vašeho účtu Google. Jakákoli nevyužitá část bezplatné zkušební verze, pokud je nabídnuta, propadne při zakoupení předplatného.\n\nVaše předplatné se automaticky obnoví, pokud nebude zrušeno alespoň 24 hodin před koncem aktuálního období.\n\nVaše předplatné můžete spravovat v Nastavení. Používáním Brave souhlasíte s podmínkami použití a zásadami ochrany osobních údajů.</translation>
+<translation id="2786538705804257030">Předplatné bude účtováno prostřednictvím vašeho účtu Google. Jakákoli nevyužitá část bezplatné zkušební verze, pokud je nabídnuta, propadne při zakoupení předplatného.\n\nVaše předplatné se automaticky obnoví, pokud nebude zrušeno alespoň 24 hodin před koncem aktuálního období.\n\nVaše předplatné můžete spravovat v Nastavení. Používáním Ping souhlasíte s podmínkami použití a zásadami ochrany osobních údajů.</translation>
 <translation id="5035172357624830412">Už jste na brave.com provedli nákup?</translation>
 <translation id="713136183174551885">Obnovte si své identifikační údaje</translation>
 <translation id="6053992191006521518">Vyzkoušejte ZDARMA</translation>
 <translation id="5903391101107992067">Vyzkoušejte zdarma po dobu 7 dní</translation>
 <translation id="721747358270435486">Instalace sítě VPN</translation>
 <translation id="836074276610740314">Nainstalovat profil VPN</translation>
-<translation id="8021842065465097929">Brave nyní nainstaluje profil VPN.</translation>
+<translation id="8021842065465097929">Ping nyní nainstaluje profil VPN.</translation>
 <translation id="229286271464650057">Tento profil umožňuje síti VPN automaticky se připojit a zabezpečit provoz v celém zařízení — v každé aplikaci, po celou dobu. Toto připojení VPN bude šifrováno a směrováno přes inteligentní bránu firewall společnosti Guardian, která blokuje reklamy a sledovací programy.</translation>
 <translation id="9073255657908892407">Kontaktujte technickou podporu</translation>
 <translation id="1139934321138152517">Síť VPN je nyní povolena</translation>
@@ -808,14 +808,14 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="8214232307424031138">Signed</translation>
 <translation id="1165039591588034296">Chyba</translation>
 <translation id="2561824823738097741">Používáte ten nejrychlejší webový prohlížeč?</translation>
-<translation id="2065971949051836200">V telefonu už teď máte 3x rychlejší internet. Používejte Brave pro veškeré procházení webu.</translation>
-<translation id="2888278614497184977">Brave = 3x rychlejší procházení webu</translation>
+<translation id="2065971949051836200">V telefonu už teď máte 3x rychlejší internet. Používejte Ping pro veškeré procházení webu.</translation>
+<translation id="2888278614497184977">Ping = 3x rychlejší procházení webu</translation>
 <translation id="6887232551109532144">Získejte delší výdrž baterie na každé nabití</translation>
-<translation id="5388885352353494741">Úspora baterie je na dosah ruky. Používejte Brave pro veškeré prohlížení webu.</translation>
-<translation id="3164151360474408351">Brave = více života na každé nabití</translation>
+<translation id="5388885352353494741">Úspora baterie je na dosah ruky. Používejte Ping pro veškeré prohlížení webu.</translation>
+<translation id="3164151360474408351">Ping = více života na každé nabití</translation>
 <translation id="3211051910418903298">Méně časté dobíjení mobilních dat</translation>
-<translation id="1092355580602106002">Méně reklam = méně dat na každé načtené stránce. Používejte Brave pro veškeré prohlížení webu.</translation>
-<translation id="623962032102267945">Brave = méně mobilních dat na každé stránce</translation>
+<translation id="1092355580602106002">Méně reklam = méně dat na každé načtené stránce. Používejte Ping pro veškeré prohlížení webu.</translation>
+<translation id="623962032102267945">Ping = méně mobilních dat na každé stránce</translation>
 <translation id="4355217341028673744">• Lepší ochrana soukromí</translation>
 <translation id="3679020972083025535">• Bez iritujících reklam</translation>
 <translation id="8047527352810290817">Upravit plyn</translation>
@@ -864,7 +864,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="2653659639078652383">Odeslat</translation>
 <translation id="4945690646623486292">Zvolit síť</translation>
 <translation id="5233638681132016545">Nová karta</translation>
-<translation id="8006088103295786154">Otevřít peněženku Brave</translation>
+<translation id="8006088103295786154">Otevřít peněženku Ping</translation>
 <translation id="8030169304546394654">Odpojeno</translation>
 <translation id="3423275441470187644">Důvěra</translation>
 <translation id="2391762656119864333">Zrušit</translation>
@@ -874,7 +874,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="42981349822642051">Rozšířit</translation>
 <translation id="3586752056660754651">Podepsat</translation>
 <translation id="3950820424414687140">Přihlaste se</translation>
-<translation id="6592721981110586529">Propojit s peněženkou Brave Wallet</translation>
+<translation id="6592721981110586529">Propojit s peněženkou Ping Wallet</translation>
 <translation id="329813193938846695">Vybrat účty</translation>
 <translation id="291375746846291973">Spojujte se pouze s weby, kterým důvěřujete.</translation>
 <translation id="385051799172605136">Back</translation>
@@ -886,11 +886,11 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="5242300593039211344">Uzamknout peněženku</translation>
 <translation id="1108298724135935307">Připojené weby</translation>
 <translation id="4255623233927788178">Zobrazení v průzkumníku bloků</translation>
-<translation id="8274201358637112807">Tato stránka chce interagovat s peněženkou Brave</translation>
+<translation id="8274201358637112807">Tato stránka chce interagovat s peněženkou Ping</translation>
 <translation id="3355936511340229503">Chyba připojení</translation>
 <translation id="1531836666020185856">Doporučené</translation>
 <translation id="4891604214809245310">Nepodařilo se nastavit síť na <ph name="NETWORK_NAME"/></translation>
-<translation id="685345388423515592">Zdá se, že máte v tomto zařízení nastavené jiné sítě VPN na „Vždy zapnuto“. Chcete-li Brave Firewall + VPN povolit, nejprve toto nastavení „Vždy zapnuto“ pro ostatní sítě VPN vypněte a teprve poté se znovu připojte. Pokud problém přetrvá, zkuste ostatní sítě VPN odinstalovat.</translation>
+<translation id="685345388423515592">Zdá se, že máte v tomto zařízení nastavené jiné sítě VPN na „Vždy zapnuto“. Chcete-li Ping Firewall + VPN povolit, nejprve toto nastavení „Vždy zapnuto“ pro ostatní sítě VPN vypněte a teprve poté se znovu připojte. Pokud problém přetrvá, zkuste ostatní sítě VPN odinstalovat.</translation>
 <translation id="85136472535634474">Otevřít nastavení sítě VPN</translation>
 <translation id="8352805003811526272">Obnovení konfigurace…</translation>
 <translation id="6809312301323611382">Tento server jste již vybrali.</translation>
@@ -910,25 +910,25 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Symbol měny</translation>
 <translation id="7982789257301363584">Síť</translation>
-<translation id="6936860995365507185">To umožní používat tuto síť v rámci peněženky Brave. <ph name="CLICK_START"/>Více se dozvíte na<ph name="CLICK_END"/>.</translation>
+<translation id="6936860995365507185">To umožní používat tuto síť v rámci peněženky Ping. <ph name="CLICK_START"/>Více se dozvíte na<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Chcete tomuto webu povolit přidání sítě?</translation>
 <translation id="4857321293515555666">Tato decentralizovaná aplikace (DApp) chce přečíst tuto zprávu, aby dokončila vaši žádost.</translation>
 <translation id="714506544401754321">Dešifrovat zprávu</translation>
 <translation id="5039804452771397117">Povolit</translation>
 <translation id="3378339846292573874">Přidat navrhovaný token</translation>
 <translation id="2322227405137827074">Přejete si importovat tyto tokeny?</translation>
-<translation id="1324417023773393937">Prohlížeč Brave</translation>
-<translation id="6044189892950611565">Kanál oznámení pro prohlížeč Brave</translation>
+<translation id="1324417023773393937">Prohlížeč Ping</translation>
+<translation id="6044189892950611565">Kanál oznámení pro prohlížeč Ping</translation>
 <translation id="4556601961751528347">Změnit připojený účet</translation>
 <translation id="8922793255489232731">Nepodařilo se získat odpovídající časové pásmo pro: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Připojeno k <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Zkušební období</translation>
-<translation id="6458565248779152483">Deaktivovat Brave VPN</translation>
+<translation id="6458565248779152483">Deaktivovat Ping VPN</translation>
 <translation id="9080536793704001825">Pauza na 15 minut</translation>
 <translation id="803706420145725977">Pauza na 1 hodinu</translation>
 <translation id="4394049700291259645">Deaktivovat</translation>
 <translation id="7733890291091968191">Zobrazit oznámení Web3</translation>
-<translation id="1371627247679035769">\n\n\n\n#### Služba Brave vás nesleduje ani neví, jak naši aplikaci používáte, takže nevíme, jak jste si nastavili VPN. Podělte se s námi o informace o problému, se kterým se potýkáte, a my se jej budeme snažit co nejdříve vyřešit. ####\n\n</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Služba Ping vás nesleduje ani neví, jak naši aplikaci používáte, takže nevíme, jak jste si nastavili VPN. Podělte se s námi o informace o problému, se kterým se potýkáte, a my se jej budeme snažit co nejdříve vyřešit. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN Hostname\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nSubscription Type\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nPlaystore Token\n <ph name="VALUE"/></translation>
@@ -951,19 +951,19 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="7002577172732106572">Dělené tunelování</translation>
 <translation id="8181161042860463420">Přidružený účet tokenu zatím neexistuje. Na jeho vytvoření a financování bude vynaložena malá částka SOL. <ph name="CLICK_START"/>Dozvědět se více<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Aktualizace profilu VPN...</translation>
-<translation id="4784306439879850873">Upozorňujeme, že služba Brave nemůže ověřit, co se stane, pokud z vaší strany dojde k podpisu. Podpis může autorizovat téměř jakoukoli operaci na vašem účtu nebo vaším jménem, (mimo jiné) včetně předání úplné kontroly nad vaším účtem a kryptoaktivy té webové stránce, která o to žádá. Podepište se tedy pouze tehdy, pokud jste si jisti, že tuto akci chcete provést, a pokud důvěřujete webu, který o to žádá.</translation>
+<translation id="4784306439879850873">Upozorňujeme, že služba Ping nemůže ověřit, co se stane, pokud z vaší strany dojde k podpisu. Podpis může autorizovat téměř jakoukoli operaci na vašem účtu nebo vaším jménem, (mimo jiné) včetně předání úplné kontroly nad vaším účtem a kryptoaktivy té webové stránce, která o to žádá. Podepište se tedy pouze tehdy, pokud jste si jisti, že tuto akci chcete provést, a pokud důvěřujete webu, který o to žádá.</translation>
 <translation id="3474375934783434676">Podepisujete na vlastní nebezpečí</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> ze <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Schválit transakci</translation>
 <translation id="6450792191436242818">Systémový program</translation>
-<translation id="5318067544026930166">Odemknutí Peněženky Brave pomocí biometrického ověření</translation>
-<translation id="2629767022373384291">Chcete k odemykání Peněženky Brave používat biometrické ověřování?</translation>
+<translation id="5318067544026930166">Odemknutí Peněženky Ping pomocí biometrického ověření</translation>
+<translation id="2629767022373384291">Chcete k odemykání Peněženky Ping používat biometrické ověřování?</translation>
 <translation id="4782919977106118997">Používat odemykání otiskem prstu</translation>
 <translation id="2054995875643283428">Prozatím přeskočit</translation>
 <translation id="2610561535971892504">Kliknutím zkopírovat</translation>
 <translation id="2522605225061484799">Přejít do mého portfolia</translation>
 <translation id="1148624853678088576">Vše je nastavené!</translation>
-<translation id="4131445988101719379">Vaše Peněženka Brave je připravena k použití</translation>
+<translation id="4131445988101719379">Vaše Peněženka Ping je připravena k použití</translation>
 <translation id="6252742184395380448">Program Config</translation>
 <translation id="5358970666412490132">Program Stake</translation>
 <translation id="346636227344244984">Hlasovací program</translation>
@@ -1005,8 +1005,8 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="8382368767453083629">Inicializace funkce multisig 2</translation>
 <translation id="77243237706803459">Inicializace mint 2</translation>
 <translation id="583281660410589416">Unknown</translation>
-<translation id="5666264859501108700">Váš region Brave Rewards byl nastaven na <ph name="COUNTRY_NAME"/>.</translation>
-<translation id="909076461795862330">Při pokusu o nastavení Brave Rewards došlo bohužel k chybě. Zkuste to prosím znovu.</translation>
+<translation id="5666264859501108700">Váš region Ping Rewards byl nastaven na <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="909076461795862330">Při pokusu o nastavení Ping Rewards došlo bohužel k chybě. Zkuste to prosím znovu.</translation>
 <translation id="7352651011704765696">Došlo k chybě</translation>
 <translation id="7144878232160441200">Opakovat</translation>
 <translation id="6040143037577758943">Zavřít</translation>
@@ -1015,15 +1015,15 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="8496335570810457">Závazek před spuštěním:</translation>
 <translation id="5100124500279922001">Přeskočit přípravu před spuštěním:</translation>
 <translation id="7152095322071766507">Nejčastěji navštěvované stránky</translation>
-<translation id="7230006500876504868">Hledat vyhledávací službou Brave</translation>
+<translation id="7230006500876504868">Hledat vyhledávací službou Ping</translation>
 <translation id="5888208462949095139">Hledat vyhledávací službou <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget na domovské obrazovce</translation>
 <translation id="703185154752046151">Widget byl přidán na domovskou obrazovku</translation>
-<translation id="3290805388004282161">Vyzkoušejte Brave widget pro vyhledávání</translation>
+<translation id="3290805388004282161">Vyzkoušejte Ping widget pro vyhledávání</translation>
 <translation id="4809681171446727314">Přístup k soukromí respektujícímu a nezávislému vyhledávání přímo z domovské obrazovky.</translation>
 <translation id="7751715172931488388">Přidat widget</translation>
-<translation id="7285167584112910782">Rychlé vyhledávání Brave</translation>
-<translation id="2326703104633309781">Použít překladač Brave</translation>
+<translation id="7285167584112910782">Rychlé vyhledávání Ping</translation>
+<translation id="2326703104633309781">Použít překladač Ping</translation>
 <translation id="5802752138057422257">Byly nalezeny znaky, neobsažené v sadě ASCII!</translation>
 <translation id="442709594176931966">Zobrazit původní zprávu</translation>
 <translation id="2239252396088484499">Zobrazit zprávu v kódování ASCII</translation>
@@ -1035,16 +1035,16 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1313065465616456728">Vydáno v</translation>
 <translation id="7902225556763260253">Čas vypršení platnosti</translation>
 <translation id="1908159733454294871">Bylo zjištěno bezpečnostní riziko</translation>
-<translation id="5658257029899993935">Propojit nákup s účtem Brave</translation>
-<translation id="1187061015547219282">Propojit nákup v obchodě Play s účtem Brave, abyste mohli používat Brave VPN na dalších zařízeních.</translation>
+<translation id="5658257029899993935">Propojit nákup s účtem Ping</translation>
+<translation id="1187061015547219282">Propojit nákup v obchodě Play s účtem Ping, abyste mohli používat Ping VPN na dalších zařízeních.</translation>
 <translation id="6662142137695589205">Propojit předplatné VPN</translation>
-<translation id="2674077112509133024">Rozšiřte ochranu Brave Firewall + VPN</translation>
-<translation id="6365389672683343144">Vaše předplatné Brave VPN může chránit až 5 zařízení se systémem Android, iOS nebo osobních počítačů. Stačí propojit předplatné Google Play s účtem Brave.</translation>
+<translation id="2674077112509133024">Rozšiřte ochranu Ping Firewall + VPN</translation>
+<translation id="6365389672683343144">Vaše předplatné Ping VPN může chránit až 5 zařízení se systémem Android, iOS nebo osobních počítačů. Stačí propojit předplatné Google Play s účtem Ping.</translation>
 <translation id="6610899852831463073">Bezpečné procházení nelze zapnout</translation>
 <translation id="7954263306665462056">Bezpečné procházení bylo na vašem zařízení vypnuto. Chcete-li ho zapnout, zkontrolujte, zda je nainstalovaná služba Google Play Services a zda je aktuální.</translation>
 <translation id="6605147707233193230">Zapnutím podpoříte autory obsahu</translation>
-<translation id="5899814466108868020">Pomáháte podpořit Brave a komunitu BAT</translation>
-<translation id="6067959437127691361">Používání odměn Brave pomáhá podporovat autory obsahu a umožňuje vám vydělávat tokeny BAT.</translation>
+<translation id="5899814466108868020">Pomáháte podpořit Ping a komunitu BAT</translation>
+<translation id="6067959437127691361">Používání odměn Ping pomáhá podporovat autory obsahu a umožňuje vám vydělávat tokeny BAT.</translation>
 <translation id="3264975266761862670">Jste připraveni začít vydělávat?</translation>
 <translation id="265337947574975838">Připojte nebo si vytvořte účet u některého z našich partnerů.</translation>
 <translation id="654447476965480878">Další informace o vydělávání tokenů BAT</translation>
@@ -1061,8 +1061,8 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="5382684862562314222">Služba BAT zatím není ve vašem regionu v systému Uphold podporována.</translation>
 <translation id="6996157559236886133">Chyba: Omezená funkčnost účtu Uphold</translation>
 <translation id="1677961202754619328">Podle společnosti Uphold se v současné době na váš účet vztahují určitá omezení. Přihlaste se ke svému účtu Uphold a zkontrolujte, zda nepřišla nějaká upozornění nebo požadavky ohledně účtu, které je třeba splnit, a poté to zkuste znovu.</translation>
-<translation id="5425006356459378415">Brave Rewards nejsou k dispozici</translation>
-<translation id="833643743158564518">Nové registrace do odměn Brave Rewards nejsou v tuto chvíli ve vašem regionu povoleny. Vždy to však můžete zkusit později. <ph name="LEARN_MORE"/></translation>
+<translation id="5425006356459378415">Ping Rewards nejsou k dispozici</translation>
+<translation id="833643743158564518">Nové registrace do odměn Ping Rewards nejsou v tuto chvíli ve vašem regionu povoleny. Vždy to však můžete zkusit později. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">Primární sítě</translation>
 <translation id="2781668117338732220">Sekundární sítě</translation>
 <translation id="282560918037172384">Testovací sítě</translation>
@@ -1083,8 +1083,8 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="346505172740911461">Tržní cena</translation>
 <translation id="5494920125229734069">Vybrat vše</translation>
 <translation id="6129027151000961048">Leo</translation>
-<translation id="8613144770663526433">Přihlásit se peněženkou Brave Wallet</translation>
-<translation id="3696514931437952995">Přihlašujete se do <ph name="ORIGIN"/>. Peněženka Brave Wallet bude s <ph name="ORIGIN"/> sdílet adresu vaší peněženky.</translation>
+<translation id="8613144770663526433">Přihlásit se peněženkou Ping Wallet</translation>
+<translation id="3696514931437952995">Přihlašujete se do <ph name="ORIGIN"/>. Peněženka Ping Wallet bude s <ph name="ORIGIN"/> sdílet adresu vaší peněženky.</translation>
 <translation id="1028781062521375153">Zobrazit podrobné informace</translation>
 <translation id="6759710362319508545">Zdroje</translation>
 <translation id="2471230424465522689">Nejdříve</translation>
@@ -1093,7 +1093,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="4109670531935487117">Zobrazovat návrhy automatického doplňování v adresním řádku</translation>
 <translation id="1250335737108905610">Resetovat a odstranit data asistenta Leo</translation>
 <translation id="6165101586663336913">Resetování asistenta Leo bude vyžadovat přihlášení k používání  asistenta Leo v budoucnu a také vymaže historii chatu. Vymazání historie chatu odstraní všechny vaše předchozí konverzace s asistentem Leo. Tuto akci nelze vrátit zpět.</translation>
-<translation id="3692772534525889713">Propojte nákup v obchodě Play se svým účtem Brave a používejte Brave Leo na jiných zařízeních.</translation>
+<translation id="3692772534525889713">Propojte nákup v obchodě Play se svým účtem Ping a používejte Ping Leo na jiných zařízeních.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1166682575529520472">Měsíčně</translation>
 <translation id="451189393813405346">Zeptat se Lea</translation>
@@ -1103,7 +1103,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="6344103698928069918">V případě seznamu stop pokračovat v přehrávání od posledního pozastavení</translation>
 <translation id="8141583471142904652">Nepřetržité poslouchání</translation>
 <translation id="851432578283946230">Automaticky přehraje další položky ve vašem seznamu stop</translation>
-<translation id="295620834661738195">Seznam stop Brave</translation>
+<translation id="295620834661738195">Seznam stop Ping</translation>
 <translation id="4850886885716139402">Zobrazit</translation>
 <translation id="7392941176393379100">Přidáno do '<ph name="PLAYLIST_NAME"/>'</translation>
 <translation id="349846214503465941">Aktivovat seznam stop</translation>
@@ -1129,7 +1129,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="8120600068258956006">Přidat do seznamu stop</translation>
 <translation id="39991094779686024">Seznamy stop</translation>
 <translation id="1710072605877822603">Přidat média</translation>
-<translation id="3874252678044305931">Přidejte si videa do seznamu stop Brave. Můžete je později kdykoli sledovat, i offline</translation>
+<translation id="3874252678044305931">Přidejte si videa do seznamu stop Ping. Můžete je později kdykoli sledovat, i offline</translation>
 <translation id="8973629800378391099">Vytvořte si seznamy stop svého oblíbeného obsahu. Ušetřete mobilní data. A přehrávejte si obsah bez reklam.</translation>
 <translation id="4936812987266342401">Klepnutím na tlačítko si videa přidáte do seznamu stop</translation>
 <translation id="6263657785571415306">Nenechte si nic ujít: Přidávejte si videa během prohlížení a prohlédněte si je později.</translation>
@@ -1172,7 +1172,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="5538904824395606812">Použijte svého současného poskytovatele služeb nebo Quad9</translation>
 <translation id="6393423486818299209">Použijte svého současného poskytovatele služeb nebo Wikimedia DNS</translation>
 <translation id="3401384982562827787">Použijte svého současného poskytovatele služeb nebo Cloudflare</translation>
-<translation id="8812367543786936496">Pokud je váš současný poskytovatel služeb nejistý, Brave použije alternativního zabezpečeného poskytovatele DNS</translation>
+<translation id="8812367543786936496">Pokud je váš současný poskytovatel služeb nejistý, Ping použije alternativního zabezpečeného poskytovatele DNS</translation>
 <translation id="5680678411439841197">město</translation>
 <translation id="8185518433273977704">město</translation>
 <translation id="4528386452965343421">prefektura</translation>
@@ -1200,19 +1200,19 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="3300502432153878901">PSČ</translation>
 <translation id="4130750466177569591">Souhlasím</translation>
 <translation id="3251885322612056119">Aktualizované smluvní podmínky</translation>
-<translation id="4049035689681585146">Aktualizovali jsme smluvní podmínky pro Odměny Brave. Tyto aktualizace jsme provedli, abychom objasnili naše podmínky a zajistili, aby zahrnovaly nové funkce. Pokud budete pokračovat v používání Odměn Brave, souhlasíte tak s aktualizovanými smluvními podmínkami. Pokud nesouhlasíte, můžete <ph name="RESET_START"/>resetovat<ph name="RESET_END"/> Odměny Brave, což tuto funkci deaktivuje.</translation>
-<translation id="2165953574528546737">Viz <ph name="TOS_START"/>Smluvní podmínky Odměn Brave<ph name="TOS_END"/></translation>
+<translation id="4049035689681585146">Aktualizovali jsme smluvní podmínky pro Odměny Ping. Tyto aktualizace jsme provedli, abychom objasnili naše podmínky a zajistili, aby zahrnovaly nové funkce. Pokud budete pokračovat v používání Odměn Ping, souhlasíte tak s aktualizovanými smluvními podmínkami. Pokud nesouhlasíte, můžete <ph name="RESET_START"/>resetovat<ph name="RESET_END"/> Odměny Ping, což tuto funkci deaktivuje.</translation>
+<translation id="2165953574528546737">Viz <ph name="TOS_START"/>Smluvní podmínky Odměn Ping<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">Povolit více oken</translation>
 <translation id="6167344249617630304">Otevřít až 5 oken najednou a přesunout karty z jednoho okna do druhého</translation>
 <translation id="1063948063403254568">Bylo zjištěno více oken</translation>
-<translation id="4661882208707630158">Před vypnutím funkce více oken prosím slučte karty do jiného okna Brave nebo zavřete ostatní okna Brave.</translation>
+<translation id="4661882208707630158">Před vypnutím funkce více oken prosím slučte karty do jiného okna Ping nebo zavřete ostatní okna Ping.</translation>
 <translation id="6891382640886173702">Sloučit okna</translation>
 <translation id="2912247081180973411">Zavřít okna</translation>
-<translation id="4010699428656610296">Slučte prosím ostatní karty do jiného okna Brave.</translation>
+<translation id="4010699428656610296">Slučte prosím ostatní karty do jiného okna Ping.</translation>
 <translation id="208634871997892083">Vždy zapnutá VPN</translation>
 <translation id="1599073346542156922">Postup zapnutí:</translation>
 <translation id="7001163334415463127">1. Otevřít nastavení vašeho zařízení z vaší zásuvky aplikace nebo klepnout na tlačítko níže.</translation>
-<translation id="887443138775437899">2. Najít VPN Brave a klepnout na ikonu nastavení vpravo.</translation>
+<translation id="887443138775437899">2. Najít VPN Ping a klepnout na ikonu nastavení vpravo.</translation>
 <translation id="3776051499611941773">3. K povolení přepněte <ph name="ALWAYS_ON_TUTORIAL_START"/>Vždy zapnutá VPN<ph name="ALWAYS_ON_TUTORIAL_END"/>.</translation>
 <translation id="4776146737004271126">Otevřít nastavení systému Android</translation>
 <translation id="2728518864712716830">Aktualizace je stažena.</translation>

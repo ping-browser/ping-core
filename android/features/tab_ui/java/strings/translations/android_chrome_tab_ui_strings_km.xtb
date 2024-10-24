@@ -44,7 +44,7 @@
 <translation id="2801787514987684416">មើលព័ត៌មានអំពីហាងឬ?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{បានបិទ <ph name="ONE_CLOSED"/> ផ្ទាំង}other{បានបិទ <ph name="MANY_CLOSED"/> ផ្ទាំង}}</translation>
 <translation id="2894757982205307093">ផ្ទាំងថ្មី​នៅក្នុងក្រុម</translation>
-<translation id="4691798003247738043">Brave | អំពី​ហាងនេះ</translation>
+<translation id="4691798003247738043">Ping | អំពី​ហាងនេះ</translation>
 <translation id="2977480621796371840">លុបចេញ​ពីក្រុម</translation>
 <translation id="29919168204617356">ផ្ទាំងអសកម្មនឹងត្រូវបានបិទដោយស្វ័យប្រវត្តិ។ អ្នកអាចស្វែងរកផ្ទាំងទាំងនោះនៅក្នុង "ប្រវត្តិ" បានជានិច្ច។</translation>
 <translation id="3008554597174452548">បញ្ឈប់ការតាមដានផលិតផល</translation>
@@ -109,7 +109,7 @@
 <translation id="5556417849629758491">មើលព័ត៌មានអំពីហាង ជម្រើសមាននៅជិតផ្នែកខាងលើអេក្រង់</translation>
 <translation id="5627941783489838464">មិនមានការធ្វើបច្ចុប្បន្នភាពផ្ទាំងទេ</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{ស្ដារផ្ទាំង}other{ស្ដារផ្ទាំង}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{តំណ <ph name="TABS_COUNT_ONE"/> ពី Brave}other{តំណ <ph name="TABS_COUNT_MANY"/> ពី Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{តំណ <ph name="TABS_COUNT_ONE"/> ពី Ping}other{តំណ <ph name="TABS_COUNT_MANY"/> ពី Ping}}</translation>
 <translation id="575494663145460764">ទទួលបានការជូនដំណឹងអំពីការធ្លាក់ថ្លៃឬ?</translation>
 <translation id="58326064309361797">អូសផ្ទាំង​នានា ដើម្បី​ដាក់ផ្ទាំង​ទាំងនោះ​ជាក្រុម</translation>
 <translation id="5901630391730855834">លឿង</translation>
@@ -149,7 +149,7 @@
 <translation id="7452985128687107478">ក្រុមផ្ទាំងរក្សាទុក និងធ្វើបច្ចុប្បន្នភាពដោយស្វ័យប្រវត្តិនៅលើគ្រប់ឧបករណ៍របស់អ្នក</translation>
 <translation id="747459581954555080">ស្តារទាំងអស់</translation>
 <translation id="753732157349120914">មុខងារប្ដូរផ្ទាំង</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{ការវាយតម្លៃ <ph name="REVIEWS_COUNT_ONE"/> ពី Brave}other{ការវាយតម្លៃ <ph name="REVIEWS_COUNT_MANY"/> ពី Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{ការវាយតម្លៃ <ph name="REVIEWS_COUNT_ONE"/> ពី Ping}other{ការវាយតម្លៃ <ph name="REVIEWS_COUNT_MANY"/> ពី Ping}}</translation>
 <translation id="7559245342362162951">បង្ហាញផ្ទាំង​របស់ក្រុមនៅក្នុងក្រឡា​ពេញ​អេក្រង់</translation>
 <translation id="7658239707568436148">បដិសេធ</translation>
 <translation id="7688386659311034820">ប្រអប់ "ផ្ទាំងអសកម្ម"</translation>

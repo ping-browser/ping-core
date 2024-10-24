@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Vil du se informasjon om butikken?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> fane er lukket}other{<ph name="MANY_CLOSED"/> faner er lukket}}</translation>
 <translation id="2894757982205307093">Ny fane i gruppen</translation>
-<translation id="4691798003247738043">Brave | Om denne butikken</translation>
+<translation id="4691798003247738043">Ping | Om denne butikken</translation>
 <translation id="2977480621796371840">Fjern fra gruppen</translation>
 <translation id="29919168204617356">Inaktive faner lukkes automatisk. Du kan alltid finne dem i loggen.</translation>
 <translation id="3008554597174452548">Slutt å spore produktet</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Vis butikkinformasjon – alternativet er tilgjengelig nær toppen av skjermen</translation>
 <translation id="5627941783489838464">Ingen faneoppdateringer</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Gjenopprett fanen}other{Gjenopprett fanene}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link fra Brave}other{<ph name="TABS_COUNT_MANY"/> linker fra Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link fra Ping}other{<ph name="TABS_COUNT_MANY"/> linker fra Ping}}</translation>
 <translation id="575494663145460764">Vil du ha varsler om avslag?</translation>
 <translation id="58326064309361797">Dra faner for å gruppere dem</translation>
 <translation id="5901630391730855834">Gul</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Fanegrupper lagres og oppdateres automatisk på alle enhetene dine</translation>
 <translation id="747459581954555080">Gjenopprett alt</translation>
 <translation id="753732157349120914">Fanevelger</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> anmeldelse fra Brave}other{<ph name="REVIEWS_COUNT_MANY"/> anmeldelser fra Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> anmeldelse fra Ping}other{<ph name="REVIEWS_COUNT_MANY"/> anmeldelser fra Ping}}</translation>
 <translation id="7559245342362162951">Vis gruppens faner i fullskjermrutenett</translation>
 <translation id="7658239707568436148">Avbryt</translation>
 <translation id="7688386659311034820">Dialogboks for inaktive faner</translation>

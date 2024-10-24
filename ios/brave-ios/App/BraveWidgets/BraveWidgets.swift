@@ -11,11 +11,11 @@ struct BraveWidgets: WidgetBundle {
   var body: some Widget {
     ShortcutsWidget()
     FavoritesWidget()
-    TopNewsWidget()
-    TopNewsListWidget()
+    // TopNewsWidget()
+    // TopNewsListWidget()
     SingleStatWidget()
     StatsWidget()
     LockScreenShortcutWidget()
-    LockScreenFavoriteWidget()
+    // LockScreenFavoriteWidget()
   }
 }

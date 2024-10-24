@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Megtekinti az üzlet adatait?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> lap bezárva}other{<ph name="MANY_CLOSED"/> lap bezárva}}</translation>
 <translation id="2894757982205307093">Új lap a csoportban</translation>
-<translation id="4691798003247738043">Brave | Az üzletről</translation>
+<translation id="4691798003247738043">Ping | Az üzletről</translation>
 <translation id="2977480621796371840">Eltávolítás a csoportból</translation>
 <translation id="29919168204617356">Az inaktív lapok automatikusan bezáródnak. Az Előzményekben bármikor megtalálhatja őket.</translation>
 <translation id="3008554597174452548">Termék nyomon követésének leállítása</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Az üzlet adatainak megtekintése; a lehetőség a képernyő tetején található</translation>
 <translation id="5627941783489838464">Nincsenek lapfrissítések</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Lap visszaállítása}other{Lapok visszaállítása}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link a Brave-ból}other{<ph name="TABS_COUNT_MANY"/> link a Brave-ból}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link a Ping-ból}other{<ph name="TABS_COUNT_MANY"/> link a Ping-ból}}</translation>
 <translation id="575494663145460764">Szeretne értesítéseket kapni az árcsökkenésekről?</translation>
 <translation id="58326064309361797">A lapokat húzással csoportosíthatja</translation>
 <translation id="5901630391730855834">Sárga</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">A rendszer automatikusan menti a lapcsoportokat, és frissíti őket az összes eszközén</translation>
 <translation id="747459581954555080">Összes visszaállítása</translation>
 <translation id="753732157349120914">Lapváltó</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> vélemény a Brave-on}other{<ph name="REVIEWS_COUNT_MANY"/> vélemény a Brave-on}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> vélemény a Ping-on}other{<ph name="REVIEWS_COUNT_MANY"/> vélemény a Ping-on}}</translation>
 <translation id="7559245342362162951">A csoportban lévő lapok teljes képernyős rácsszerkezetben való megjelenítése</translation>
 <translation id="7658239707568436148">Mégse</translation>
 <translation id="7688386659311034820">Inaktív lapok párbeszédpanel</translation>

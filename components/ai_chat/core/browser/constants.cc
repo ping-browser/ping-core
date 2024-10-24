@@ -305,6 +305,5 @@ const base::fixed_flat_set<std::string_view, 1> kPrintPreviewRetrievalHosts =
                                              });
 
 constexpr char kLeoModelSupportUrl[] =
-    "https://support.brave.com/hc/en-us/categories/"
-    "20990938292237-Brave-Leo";
+    "https://ping-browser.com/faqs-and-help";
 }  // namespace ai_chat

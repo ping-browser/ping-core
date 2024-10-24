@@ -104,7 +104,7 @@ import {
   BalanceAndLineChartWrapper,
   ActivityWrapper
 } from './style'
-import { Column, Row, HorizontalSpace } from '../../../shared/style'
+import { Column, Row } from '../../../shared/style'
 
 // Queries
 import {
@@ -552,7 +552,7 @@ export const PortfolioOverview = () => {
                   justifyContent='center'
                   width='unset'
                 >
-                  {fiatValueChange !== '' ? (
+                  {true || fiatValueChange !== '' ? (
                     <>
                       <FiatChange isDown={isPortfolioDown}>
                         {hidePortfolioBalances
@@ -571,7 +571,7 @@ export const PortfolioOverview = () => {
                         width={55}
                         height={24}
                       />
-                      <HorizontalSpace space='8px' />
+                      {/* <HorizontalSpace space='8px' /> */}
                       <LoadingSkeleton
                         width={55}
                         height={24}

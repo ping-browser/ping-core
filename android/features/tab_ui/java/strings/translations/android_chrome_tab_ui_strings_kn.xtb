@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">ಸ್ಟೋರ್ ಮಾಹಿತಿಯನ್ನು ನೋಡುವುದೇ?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> ಟ್ಯಾಬ್ ಅನ್ನು ಮುಚ್ಚಲಾಗಿದೆ}one{<ph name="MANY_CLOSED"/> ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಲಾಗಿದೆ}other{<ph name="MANY_CLOSED"/> ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಲಾಗಿದೆ}}</translation>
 <translation id="2894757982205307093">ಗುಂಪಿನಲ್ಲಿ ಹೊಸ ಟ್ಯಾಬ್</translation>
-<translation id="4691798003247738043">Brave | ಈ ಸ್ಟೋರ್ ಕುರಿತು</translation>
+<translation id="4691798003247738043">Ping | ಈ ಸ್ಟೋರ್ ಕುರಿತು</translation>
 <translation id="2977480621796371840">ಗುಂಪಿನಿಂದ ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="29919168204617356">ನಿಷ್ಕ್ರಿಯ ಟ್ಯಾಬ್‌ಗಳು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮುಚ್ಚಲಾಗುತ್ತದೆ. ನೀವು ಅವುಗಳನ್ನು ಯಾವಾಗಲೂ ಇತಿಹಾಸದಲ್ಲಿ ಕಾಣಬಹುದು.</translation>
 <translation id="3008554597174452548">ಉತ್ಪನ್ನವನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡುವುದನ್ನು ನಿಲ್ಲಿಸಿ</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">ಸ್ಟೋರ್ ಮಾಹಿತಿ ವೀಕ್ಷಿಸಿ, ಆಯ್ಕೆಯು ಸ್ಕ್ರೀನ್ ಮೇಲ್ಭಾಗದಲ್ಲಿ ಲಭ್ಯವಿದೆ</translation>
 <translation id="5627941783489838464">ಯಾವುದೇ ಟ್ಯಾಬ್ ಅಪ್‌ಡೇಟ್‌ಗಳಿಲ್ಲ</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{ಟ್ಯಾಬ್ ಅನ್ನು ಮರುಸ್ಥಾಪಿಸಿ}one{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮರುಸ್ಥಾಪಿಸಿ}other{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮರುಸ್ಥಾಪಿಸಿ}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave ನಿಂದ <ph name="TABS_COUNT_ONE"/> ಲಿಂಕ್}one{Brave ನಿಂದ <ph name="TABS_COUNT_MANY"/> ಲಿಂಕ್‌ಗಳು}other{Brave ನಿಂದ <ph name="TABS_COUNT_MANY"/> ಲಿಂಕ್‌ಗಳು}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping ನಿಂದ <ph name="TABS_COUNT_ONE"/> ಲಿಂಕ್}one{Ping ನಿಂದ <ph name="TABS_COUNT_MANY"/> ಲಿಂಕ್‌ಗಳು}other{Ping ನಿಂದ <ph name="TABS_COUNT_MANY"/> ಲಿಂಕ್‌ಗಳು}}</translation>
 <translation id="575494663145460764">ಬೆಲೆ ಕುಸಿತಗಳಿಗೆ ಸಂಬಂಧಿಸಿದ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಪಡೆಯಬೇಕೆ?</translation>
 <translation id="58326064309361797">ಟ್ಯಾಬ್‍‍ಗಳನ್ನು ಗುಂಪುಗೂಡಿಸಲು ಅವುಗಳನ್ನು ಡ್ರ್ಯಾಗ್ ಮಾಡಿ</translation>
 <translation id="5901630391730855834">ಹಳದಿ</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">ಟ್ಯಾಬ್ ಗುಂಪುಗಳು ನಿಮ್ಮ ಎಲ್ಲಾ ಸಾಧನಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸೇವ್‌ ಆಗುತ್ತವೆ ಮತ್ತು ಅಪ್‌ಡೇಟ್‌ ಆಗುತ್ತವೆ</translation>
 <translation id="747459581954555080">ಎಲ್ಲವನ್ನು ಮರುಸಂಗ್ರಹಿಸಿ</translation>
 <translation id="753732157349120914">ಟ್ಯಾಬ್ ಸ್ವಿಚರ್</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Brave ನಿಂದ <ph name="REVIEWS_COUNT_ONE"/> ವಿಮರ್ಶೆ}one{Brave ನಿಂದ <ph name="REVIEWS_COUNT_MANY"/> ವಿಮರ್ಶೆಗಳು}other{Brave ನಿಂದ <ph name="REVIEWS_COUNT_MANY"/> ವಿಮರ್ಶೆಗಳು}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Ping ನಿಂದ <ph name="REVIEWS_COUNT_ONE"/> ವಿಮರ್ಶೆ}one{Ping ನಿಂದ <ph name="REVIEWS_COUNT_MANY"/> ವಿಮರ್ಶೆಗಳು}other{Ping ನಿಂದ <ph name="REVIEWS_COUNT_MANY"/> ವಿಮರ್ಶೆಗಳು}}</translation>
 <translation id="7559245342362162951">ಗುಂಪಿನ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಪೂರ್ಣ ಸ್ಕ್ರೀನ್‌ ಗ್ರಿಡ್‌ನಲ್ಲಿ ತೋರಿಸಿ</translation>
 <translation id="7658239707568436148">ರದ್ದುಮಾಡಿ</translation>
 <translation id="7688386659311034820">ನಿಷ್ಕ್ರಿಯ ಟ್ಯಾಬ್‌ಗಳ ಡೈಲಾಗ್</translation>

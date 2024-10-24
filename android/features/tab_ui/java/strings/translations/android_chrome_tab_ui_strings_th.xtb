@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">ดูข้อมูลร้านค้าไหม</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{ปิดแล้ว <ph name="ONE_CLOSED"/> แท็บ}other{ปิดแล้ว <ph name="MANY_CLOSED"/> แท็บ}}</translation>
 <translation id="2894757982205307093">แท็บใหม่ในกลุ่ม</translation>
-<translation id="4691798003247738043">Brave | เกี่ยวกับร้านนี้</translation>
+<translation id="4691798003247738043">Ping | เกี่ยวกับร้านนี้</translation>
 <translation id="2977480621796371840">นำออกจากกลุ่ม</translation>
 <translation id="29919168204617356">แท็บที่ไม่ได้ใช้งานจะปิดโดยอัตโนมัติ คุณดูแท็บเหล่านี้ได้ในประวัติการเข้าชมเสมอ</translation>
 <translation id="3008554597174452548">หยุดติดตามผลิตภัณฑ์</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">ดูข้อมูลร้านค้า ตัวเลือกจะอยู่ตรงบริเวณด้านบนของหน้าจอ</translation>
 <translation id="5627941783489838464">ไม่มีการอัปเดตแท็บ</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{กู้คืนแท็บ}other{กู้คืนแท็บ}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ลิงก์จาก Brave}other{<ph name="TABS_COUNT_MANY"/> ลิงก์จาก Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ลิงก์จาก Ping}other{<ph name="TABS_COUNT_MANY"/> ลิงก์จาก Ping}}</translation>
 <translation id="575494663145460764">รับการแจ้งเตือนการลดราคาไหม</translation>
 <translation id="58326064309361797">ลากแท็บเพื่อจัดกลุ่ม</translation>
 <translation id="5901630391730855834">สีเหลือง</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">กลุ่มแท็บจะบันทึกและอัปเดตโดยอัตโนมัติในอุปกรณ์ทั้งหมด</translation>
 <translation id="747459581954555080">คืนค่าทั้งหมด</translation>
 <translation id="753732157349120914">ตัวสลับแท็บ</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{รีวิวจาก Brave <ph name="REVIEWS_COUNT_ONE"/> รายการ}other{รีวิวจาก Brave <ph name="REVIEWS_COUNT_MANY"/> รายการ}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{รีวิวจาก Ping <ph name="REVIEWS_COUNT_ONE"/> รายการ}other{รีวิวจาก Ping <ph name="REVIEWS_COUNT_MANY"/> รายการ}}</translation>
 <translation id="7559245342362162951">แสดงแท็บของกลุ่มในตารางกริดแบบเต็มหน้าจอ</translation>
 <translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="7688386659311034820">กล่องโต้ตอบ "แท็บที่ไม่ได้ใช้งาน"</translation>

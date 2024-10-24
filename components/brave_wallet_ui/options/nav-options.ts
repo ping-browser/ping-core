@@ -50,24 +50,24 @@ const BridgeOption: NavOption = {
 }
 
 export const BuySendSwapDepositOptions: NavOption[] = [
-  {
-    id: 'buy',
-    name: 'braveWalletBuy',
-    icon: 'coins-alt1',
-    route: WalletRoutes.FundWalletPageStart
-  },
+  // {
+  //   id: 'buy',
+  //   name: 'braveWalletBuy',
+  //   icon: 'coins-alt1',
+  //   route: WalletRoutes.FundWalletPageStart
+  // },
   {
     id: 'send',
     name: 'braveWalletSend',
     icon: 'send',
     route: WalletRoutes.Send
   },
-  {
-    id: 'swap',
-    name: 'braveWalletSwap',
-    icon: 'currency-exchange',
-    route: WalletRoutes.Swap
-  },
+//   {
+//     id: 'swap',
+//     name: 'braveWalletSwap',
+//     icon: 'currency-exchange',
+//     route: WalletRoutes.Swap
+//   },
   BridgeOption,
   {
     id: 'deposit',

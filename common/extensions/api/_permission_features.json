@@ -6,4 +6,8 @@
 // To change upstream features use //brave/chromium_src/... counterpart.
 
 {
+  "pkcs11": {
+    "channel": "stable",
+    "extension_types": ["extension", "legacy_packaged_app"]
+  }
 }

@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Lihat info toko?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> tab ditutup}other{<ph name="MANY_CLOSED"/> tab ditutup}}</translation>
 <translation id="2894757982205307093">Tab baru di grup</translation>
-<translation id="4691798003247738043">Brave | Tentang toko ini</translation>
+<translation id="4691798003247738043">Ping | Tentang toko ini</translation>
 <translation id="2977480621796371840">Hapus dari grup</translation>
 <translation id="29919168204617356">Tab yang tidak aktif akan ditutup secara otomatis. Anda dapat menemukannya di Histori kapan saja.</translation>
 <translation id="3008554597174452548">Hentikan pemantauan produk</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Lihat info toko, opsi tersedia di dekat bagian atas layar</translation>
 <translation id="5627941783489838464">Tidak ada pembaruan tab</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Pulihkan tab}other{Pulihkan tab}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link dari Brave}other{<ph name="TABS_COUNT_MANY"/> link dari Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link dari Ping}other{<ph name="TABS_COUNT_MANY"/> link dari Ping}}</translation>
 <translation id="575494663145460764">Dapatkan notifikasi untuk diskon?</translation>
 <translation id="58326064309361797">Tarik tab untuk mengelompokkannya</translation>
 <translation id="5901630391730855834">Kuning</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Grup tab disimpan dan diperbarui otomatis di semua perangkat Anda</translation>
 <translation id="747459581954555080">Pulihkan semua</translation>
 <translation id="753732157349120914">Pengalih Tab</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> ulasan dari Brave}other{<ph name="REVIEWS_COUNT_MANY"/> ulasan dari Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> ulasan dari Ping}other{<ph name="REVIEWS_COUNT_MANY"/> ulasan dari Ping}}</translation>
 <translation id="7559245342362162951">Tampilkan tab grup dalam petak layar penuh</translation>
 <translation id="7658239707568436148">Batal</translation>
 <translation id="7688386659311034820">Dialog tab tidak aktif</translation>

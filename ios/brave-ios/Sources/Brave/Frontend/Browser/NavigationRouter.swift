@@ -158,16 +158,16 @@ public enum NavigationPath: Equatable {
       bvc.navigationHelper.openWallet()
     case .scanQRCode:
       bvc.scanQRCode()
-    case .braveNews:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
-      bvc.popToBVC()
-      guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else {
-        return
-      }
-      newTabPageController.scrollToBraveNews()
-    case .braveLeo:
-      bvc.popToBVC()
-      bvc.openBraveLeo()
+//     case .braveNews:
+//       bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
+//       bvc.popToBVC()
+//       guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else {
+//         return
+//       }
+//       newTabPageController.scrollToBraveNews()
+//     case .braveLeo:
+//       bvc.popToBVC()
+//       bvc.openBraveLeo()
     @unknown default:
       assertionFailure()
       break

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "name": "Brave",
+  "name": "Ping",
   "manifest_version": 2,
   "description": "__MSG_appName__",
   "default_locale": "en_US",
@@ -17,6 +17,15 @@
       "out/brave_extension_background.bundle.js"
     ],
     "persistent": true
+  },
+  "commands": {
+    "toggle-contrast": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Toggle contrast mode"
+    }
   },
   "content_scripts": [
     {

@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">查看商店信息？</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{已关闭 <ph name="ONE_CLOSED"/> 个标签页}other{已关闭 <ph name="MANY_CLOSED"/> 个标签页}}</translation>
 <translation id="2894757982205307093">在组内添加新标签页</translation>
-<translation id="4691798003247738043">Brave | 关于此商店</translation>
+<translation id="4691798003247738043">Ping | 关于此商店</translation>
 <translation id="2977480621796371840">从组中移除</translation>
 <translation id="29919168204617356">系统会自动关闭闲置标签页。您随时可以在“历史记录”中找到它们。</translation>
 <translation id="3008554597174452548">停止跟踪产品</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">查看商店信息，屏幕顶部附近有可用选项</translation>
 <translation id="5627941783489838464">无标签页更新</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{恢复标签页}other{恢复标签页}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave 中的 <ph name="TABS_COUNT_ONE"/> 个链接}other{Brave 中的 <ph name="TABS_COUNT_MANY"/> 个链接}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping 中的 <ph name="TABS_COUNT_ONE"/> 个链接}other{Ping 中的 <ph name="TABS_COUNT_MANY"/> 个链接}}</translation>
 <translation id="575494663145460764">接收降价提醒？</translation>
 <translation id="58326064309361797">拖动标签可进行分组</translation>
 <translation id="5901630391730855834">黄色</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">标签页分组会自动保存并在您的所有设备上更新</translation>
 <translation id="747459581954555080">全部恢复</translation>
 <translation id="753732157349120914">标签页切换器</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> 条来自 Brave 的评价}other{<ph name="REVIEWS_COUNT_MANY"/> 条来自 Brave 的评价}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> 条来自 Ping 的评价}other{<ph name="REVIEWS_COUNT_MANY"/> 条来自 Ping 的评价}}</translation>
 <translation id="7559245342362162951">以全屏网格状视图显示组中的标签页</translation>
 <translation id="7658239707568436148">取消</translation>
 <translation id="7688386659311034820">“闲置标签页”对话框</translation>

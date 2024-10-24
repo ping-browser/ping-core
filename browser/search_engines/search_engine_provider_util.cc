@@ -35,7 +35,7 @@ void SetBraveAsDefaultPrivateSearchProvider(Profile* profile) {
 
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
       prefs, search_engine_choice_service,
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE);
   DCHECK(data);
   prefs->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
                    data->sync_guid);

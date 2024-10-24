@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">להציג את פרטי החנות?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{כרטיסייה אחת (<ph name="ONE_CLOSED"/>) נסגרה}one{‫<ph name="MANY_CLOSED"/> כרטיסיות נסגרו}two{‫<ph name="MANY_CLOSED"/> כרטיסיות נסגרו}other{‫<ph name="MANY_CLOSED"/> כרטיסיות נסגרו}}</translation>
 <translation id="2894757982205307093">כרטיסייה חדשה בקבוצה</translation>
-<translation id="4691798003247738043">‏Brave | מידע על החנות הזו</translation>
+<translation id="4691798003247738043">‏Ping | מידע על החנות הזו</translation>
 <translation id="2977480621796371840">הסרה מהקבוצה</translation>
 <translation id="29919168204617356">הכרטיסיות הלא פעילות ייסגרו אוטומטית. תמיד אפשר למצוא אותן בהיסטוריה.</translation>
 <translation id="3008554597174452548">הפסקת המעקב אחר המוצר הזה</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">ניתן להציג את פרטי החנות. האפשרות זמינה בחלק העליון של המסך</translation>
 <translation id="5627941783489838464">אף כרטיסייה לא התעדכנה</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{שחזור הכרטיסייה}one{שחזור הכרטיסיות}two{שחזור הכרטיסיות}other{שחזור הכרטיסיות}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{‏קישור אחד (<ph name="TABS_COUNT_ONE"/>) מ-Brave}one{‏<ph name="TABS_COUNT_MANY"/> קישורים מ-Brave}two{‏<ph name="TABS_COUNT_MANY"/> קישורים מ-Brave}other{‏<ph name="TABS_COUNT_MANY"/> קישורים מ-Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{‏קישור אחד (<ph name="TABS_COUNT_ONE"/>) מ-Ping}one{‏<ph name="TABS_COUNT_MANY"/> קישורים מ-Ping}two{‏<ph name="TABS_COUNT_MANY"/> קישורים מ-Ping}other{‏<ph name="TABS_COUNT_MANY"/> קישורים מ-Ping}}</translation>
 <translation id="575494663145460764">רוצה לקבל התראות על הנחות?</translation>
 <translation id="58326064309361797">ניתן לגרור כרטיסיות כדי לקבץ אותן</translation>
 <translation id="5901630391730855834">צהוב</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">קבוצות של כרטיסיות נשמרות באופן אוטומטי ומתעדכנות בכל המכשירים</translation>
 <translation id="747459581954555080">שחזור הכול</translation>
 <translation id="753732157349120914">מחליף הכרטיסיות</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{‏ביקורת אחת (<ph name="REVIEWS_COUNT_ONE"/>) מ-Brave}one{‏<ph name="REVIEWS_COUNT_MANY"/> ביקורות מ-Brave}two{‏<ph name="REVIEWS_COUNT_MANY"/> ביקורות מ-Brave}other{‏<ph name="REVIEWS_COUNT_MANY"/> ביקורות מ-Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{‏ביקורת אחת (<ph name="REVIEWS_COUNT_ONE"/>) מ-Ping}one{‏<ph name="REVIEWS_COUNT_MANY"/> ביקורות מ-Ping}two{‏<ph name="REVIEWS_COUNT_MANY"/> ביקורות מ-Ping}other{‏<ph name="REVIEWS_COUNT_MANY"/> ביקורות מ-Ping}}</translation>
 <translation id="7559245342362162951">הצגת כרטיסיות הקבוצה ברשת מסך מלא</translation>
 <translation id="7658239707568436148">ביטול</translation>
 <translation id="7688386659311034820">תיבת דו-שיח של הכרטיסיות הלא פעילות</translation>

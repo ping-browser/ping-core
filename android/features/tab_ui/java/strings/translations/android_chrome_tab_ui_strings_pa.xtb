@@ -44,7 +44,7 @@
 <translation id="2801787514987684416">ਕੀ ਸਟੋਰ ਦੀ ਜਾਣਕਾਰੀ ਦੇਖਣੀ ਹੈ?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> ਟੈਬ ਨੂੰ ਬੰਦ ਕੀਤਾ ਗਿਆ}one{<ph name="MANY_CLOSED"/> ਟੈਬ ਨੂੰ ਬੰਦ ਕੀਤਾ ਗਿਆ}other{<ph name="MANY_CLOSED"/> ਟੈਬਾਂ ਨੂੰ ਬੰਦ ਕੀਤਾ ਗਿਆ}}</translation>
 <translation id="2894757982205307093">ਗਰੁੱਪ ਵਿੱਚ ਨਵੀਂ ਟੈਬ</translation>
-<translation id="4691798003247738043">Brave | ਇਸ ਸਟੋਰ ਬਾਰੇ</translation>
+<translation id="4691798003247738043">Ping | ਇਸ ਸਟੋਰ ਬਾਰੇ</translation>
 <translation id="2977480621796371840">ਗਰੁੱਪ ਵਿੱਚੋਂ ਹਟਾਓ</translation>
 <translation id="29919168204617356">ਅਕਿਰਿਆਸ਼ੀਲ ਟੈਬਾਂ ਸਵੈਚਲਿਤ ਤੌਰ 'ਤੇ ਬੰਦ ਹੋ ਜਾਣਗੀਆਂ। ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਨੂੰ ਕਿਸੇ ਵੀ ਵੇਲੇ ਇਤਿਹਾਸ ਵਿੱਚ ਲੱਭ ਸਕਦੇ ਹੋ।</translation>
 <translation id="3008554597174452548">ਉਤਪਾਦ ਨੂੰ ਟਰੈਕ ਕਰਨਾ ਬੰਦ ਕਰੋ</translation>
@@ -109,7 +109,7 @@
 <translation id="5556417849629758491">ਸਟੋਰ ਦੀ ਜਾਣਕਾਰੀ ਦੇਖੋ, ਇਹ ਵਿਕਲਪ ਸਕ੍ਰੀਨ ਦੇ ਸਿਖਰ ਦੇ ਨੇੜੇ ਉਪਲਬਧ ਹੈ</translation>
 <translation id="5627941783489838464">ਕੋਈ ਟੈਬ ਅੱਪਡੇਟ ਨਹੀਂ</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{ਟੈਬ ਮੁੜ-ਬਹਾਲ ਕਰੋ}one{ਟੈਬ ਮੁੜ-ਬਹਾਲ ਕਰੋ}other{ਟੈਬਾਂ ਮੁੜ-ਬਹਾਲ ਕਰੋ}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave ਤੋਂ <ph name="TABS_COUNT_ONE"/> ਲਿੰਕ}one{Brave ਤੋਂ <ph name="TABS_COUNT_MANY"/> ਲਿੰਕ}other{Brave ਤੋਂ <ph name="TABS_COUNT_MANY"/> ਲਿੰਕ}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping ਤੋਂ <ph name="TABS_COUNT_ONE"/> ਲਿੰਕ}one{Ping ਤੋਂ <ph name="TABS_COUNT_MANY"/> ਲਿੰਕ}other{Ping ਤੋਂ <ph name="TABS_COUNT_MANY"/> ਲਿੰਕ}}</translation>
 <translation id="575494663145460764">ਕੀਮਤ ਘਟਣ 'ਤੇ ਅਲਰਟ ਪ੍ਰਾਪਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
 <translation id="58326064309361797">ਟੈਬਾਂ ਨੂੰ ਇਕੱਠਾ ਕਰਨ ਲਈ ਉਹਨਾਂ ਨੂੰ ਘਸੀਟੋ</translation>
 <translation id="5901630391730855834">ਪੀਲਾ</translation>
@@ -149,7 +149,7 @@
 <translation id="7452985128687107478">ਟੈਬ ਗਰੁੱਪ ਸਵੈਚਲਿਤ ਤੌਰ 'ਤੇ ਤੁਹਾਡੇ ਸਾਰੇ ਡੀਵਾਈਸਾਂ 'ਤੇ ਰੱਖਿਅਤ ਅਤੇ ਅੱਪਡੇਟ ਹੁੰਦੇ ਹਨ</translation>
 <translation id="747459581954555080">ਸਾਰੇ ਰੀਸਟੋਰ ਕਰੋ</translation>
 <translation id="753732157349120914">ਟੈਬ ਸਵਿੱਚਰ</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Brave ਤੋਂ <ph name="REVIEWS_COUNT_ONE"/> ਸਮੀਖਿਆ}one{Brave ਤੋਂ <ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆ}other{Brave ਤੋਂ <ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆਵਾਂ}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Ping ਤੋਂ <ph name="REVIEWS_COUNT_ONE"/> ਸਮੀਖਿਆ}one{Ping ਤੋਂ <ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆ}other{Ping ਤੋਂ <ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆਵਾਂ}}</translation>
 <translation id="7559245342362162951">ਪੂਰੀ-ਸਕ੍ਰੀਨ ਗ੍ਰਿਡ ਵਿੱਚ ਗਰੁੱਪ ਦੀਆਂ ਟੈਬਾਂ ਦਿਖਾਓ</translation>
 <translation id="7658239707568436148">ਰੱਦ ਕਰੋ</translation>
 <translation id="7688386659311034820">ਅਕਿਰਿਆਸ਼ੀਲ ਟੈਬਾਂ ਦੀ ਵਿੰਡੋ</translation>

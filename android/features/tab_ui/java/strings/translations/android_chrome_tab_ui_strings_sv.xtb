@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Vill du visa butiksinformation?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> flik har stängts}other{<ph name="MANY_CLOSED"/> flikar har stängts}}</translation>
 <translation id="2894757982205307093">Ny flik i grupp</translation>
-<translation id="4691798003247738043">Brave | Om den här butiken</translation>
+<translation id="4691798003247738043">Ping | Om den här butiken</translation>
 <translation id="2977480621796371840">Ta bort från gruppen</translation>
 <translation id="29919168204617356">Inaktiva flikar stängs automatiskt. Du kan alltid hitta dem i historiken.</translation>
 <translation id="3008554597174452548">Sluta spåra produkten</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Visa butiksinformation. Alternativet visas högt upp på skärmen</translation>
 <translation id="5627941783489838464">Inga flikuppdateringar</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Återställ flik}other{Återställ flikar}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> länk från Brave}other{<ph name="TABS_COUNT_MANY"/> länkar från Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> länk från Ping}other{<ph name="TABS_COUNT_MANY"/> länkar från Ping}}</translation>
 <translation id="575494663145460764">Vill du få aviseringar om sänkt pris?</translation>
 <translation id="58326064309361797">Gruppera flikar genom att dra dem</translation>
 <translation id="5901630391730855834">Gul</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Flikgrupper sparas och uppdateras automatiskt på alla dina enheter</translation>
 <translation id="747459581954555080">Återställ alla</translation>
 <translation id="753732157349120914">Flikbyte</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> recension från Brave}other{<ph name="REVIEWS_COUNT_MANY"/> recensioner från Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> recension från Ping}other{<ph name="REVIEWS_COUNT_MANY"/> recensioner från Ping}}</translation>
 <translation id="7559245342362162951">Visa gruppens flikar i helskärmsrutnät</translation>
 <translation id="7658239707568436148">Avbryt</translation>
 <translation id="7688386659311034820">Dialogruta för inaktiva flikar</translation>

@@ -963,8 +963,8 @@ extension BrowserViewController: ToolbarDelegate {
             featuresMenuSection(menuController)
           } else {
             privacyFeaturesMenuSection(menuController)
+            Divider()
           }
-          Divider()
           destinationMenuSection(menuController, isShownOnWebPage: isShownOnWebPage)
           if let tabURL = selectedTabURL {
             Divider()

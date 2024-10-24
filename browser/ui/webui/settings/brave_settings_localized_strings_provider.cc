@@ -49,29 +49,29 @@ namespace settings {
 namespace {
 
 constexpr char16_t kWebRTCLearnMoreURL[] =
-    u"https://support.brave.com/hc/en-us/articles/"
+    u"https://ping-browser.com/faqs-and-help"
     u"360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
 constexpr char16_t kBraveBuildInstructionsUrl[] =
-    u"https://github.com/brave/brave-browser/wiki";
+    u"https://github.com/ping-browser/ping-core";
 constexpr char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
 constexpr char16_t kBraveReleaseTagPrefix[] =
-    u"https://github.com/brave/brave-browser/releases/tag/v";
+    u"https://github.com/ping-browser/ping-core/releases/";
 constexpr char16_t kGoogleLoginLearnMoreURL[] =
-    u"https://github.com/brave/brave-browser/wiki/"
+    u"https://github.com/ping-browser/ping-core"
     u"Allow-Google-login---Third-Parties-and-Extensions";
 constexpr char16_t kUnstoppableDomainsLearnMoreURL[] =
-    u"https://github.com/brave/brave-browser/wiki/"
+    u"https://github.com/ping-browser/ping-core"
     u"Resolve-Methods-for-Unstoppable-Domains";
 constexpr char16_t kEnsOffchainLookupLearnMoreURL[] =
-    u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
+    u"https://github.com/ping-browser/ping-core";
 constexpr char16_t kBraveSyncGuideUrl[] =
-    u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
+    u"https://ping-browser.com/faqs-and-help";
 constexpr char16_t kDeAmpLearnMoreUrl[] =
-    u"https://support.brave.com/hc/en-us/articles/8611298579981";
+    u"https://ping-browser.com/faqs-and-help";
 constexpr char16_t kDebounceLearnMoreUrl[] =
-    u"https://brave.com/privacy-updates/11-debouncing/";
+    u"https://ping-browser.com/faqs-and-help";
 constexpr char16_t kEnableNftDiscoveryLearnMoreUrl[] =
-    u"https://github.com/brave/brave-browser/wiki/"
+    u"https://github.com/ping-browser/ping-core"
     u"NFT-Discovery";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,

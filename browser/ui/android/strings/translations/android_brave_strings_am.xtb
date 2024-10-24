@@ -3,24 +3,24 @@
 <translationbundle lang="am">
 <translation id="8631427463833030968">ማስታወቂያዎችን ያቀናብሩ</translation>
 <translation id="7630214457764713113">ንጹህ አገናኝ ቅዳ</translation>
-<translation id="885805571521218129">ይህ በዚህ ወር ለ Brave Ads የእርስዎን የተገመተው የገቢ መጠን ያንፀባርቃል።</translation>
+<translation id="885805571521218129">ይህ በዚህ ወር ለ Ping Ads የእርስዎን የተገመተው የገቢ መጠን ያንፀባርቃል።</translation>
 <translation id="3478449063771497234">ማሳወቂያዎች ተሰናክለዋል</translation>
 <translation id="2862978891748913252">ሀገርዎን ይምረጡ</translation>
 <translation id="3970520675790340955">ለክልልዎ ትክክለኛ አማራጮችን እና ማስታወቂያዎችን እንድናሳይዎ አገርዎን ይምረጡ።</translation>
 <translation id="7301741773883122509">አሁን ማስታወቂያዎችን በመመልከት ሽልማቶችን ማግኘት ይችላሉ። ድሩን ለሁሉም ሰው የተሻለ ቦታ ለማድረግ እየረዱ ነው። እና ያ አሪፍ ነው!</translation>
 <translation id="6439128034594289376">ዋው! ዝግጁ ነዎት!</translation>
 <translation id="370665806235115550">በመጫን ላይ…</translation>
-<translation id="7931127789630755251">በ Brave ውስጥ ለሚመለከቷቸው የግል ማስታወቂያዎች ቶክኖችን ያግኙ</translation>
+<translation id="7931127789630755251">በ Ping ውስጥ ለሚመለከቷቸው የግል ማስታወቂያዎች ቶክኖችን ያግኙ</translation>
 <translation id="7859066142771796818">የስጦታ ካርዶችን ለመግዛት፣ ለሌሎች ምንዛሬዎች ለመለዋወጥ፣ የይዘት ፈጣሪዎችን ለመደገፍ እና ሌሎች ቶክኖችን ይጠቀሙ።</translation>
 <translation id="3863981251715594911">እንዴት ይሰራል?</translation>
-<translation id="5547108999862247665">Brave ሽልማቶች እንዴት ነው የሚሰራው?</translation>
+<translation id="5547108999862247665">Ping ሽልማቶች እንዴት ነው የሚሰራው?</translation>
 <translation id="2965798296974325760">ሽልማቶችን መጠቀም ይጀምሩ</translation>
 <translation id="8220484609979012449">\n\nየእርስዎን Web3 wallet በመጠቀም አሁንም ይህን ለፈጠረ ሰው የክሪፕቶ አስተዋጽዖዎችን መላክ ይችላሉ።</translation>
 <translation id="6385969012847057348">ይህ ፈጣሪ <ph name="CUSTODIAN"/>አስተዋጾን መቀበል አይችልም።</translation>
 <translation id="735733310778086206">ይህ ፈጣሪ የWeb3 ወይም የcrypto አስተዋጾዎችን ለመቀበል ገና አልተዘጋጀም።</translation>
 <translation id="6268134562674951939">በቂ የሆኑ ቶከኖች የሉዎትም።</translation>
 <translation id="4529874892536380156">ይህንን ወርሃዊ የሚደጋገም መዋጮ ያድርጉ።</translation>
-<translation id="5562948772940025260">የBrave Rewards ቀሪ ሒሳቦን በመጠቀም እስከ 1<ph name="AMOUNT"/> BAT ድረስ መላክ ይችላሉ።</translation>
+<translation id="5562948772940025260">የPing Rewards ቀሪ ሒሳቦን በመጠቀም እስከ 1<ph name="AMOUNT"/> BAT ድረስ መላክ ይችላሉ።</translation>
 <translation id="5012991400231464322">ወርሐዊ መዋጮዎች</translation>
 <translation id="5907051927340164207">እርስዎ ቀድሞውኑ ወርሃዊ መዋጮዎችን ለዚህ ፈጣሪ እየላኩ ነው</translation>
 <translation id="4848906651275579475">አሁንም አስተዋጽዖን አሁን መላክ ይችላሉ እና ለእዚህ ፈጣሪ የሚያደርጉትን ወርሃዊ አስተዋጽኦዎችን ከ<ph name="MONTHLY_CONTRIBUTION"/> በማስወገድ መሰረዝ ይችላሉ።</translation>
@@ -31,26 +31,26 @@
 <translation id="3699420827646925694">ከ <ph name="CUSTODIAN"/>ወጥቷል</translation>
 <translation id="9038728316393235637">ወደ <ph name="CUSTODIAN"/> ግባ</translation>
 <translation id="7063168612616047608">የእርስዎን ተወዳጅ ፈጣሪዎች ስለደገፉ እናመሰግናለን</translation>
-<translation id="3796032246917966749">ለBrave ሽልማቶች ከ<ph name="CUSTODIAN"/> የወጡ ይመስላል። ለመቀጠል እንደገና ይግቡ።</translation>
-<translation id="5202112619925434373">ይህ ፈጣሪ በBrave ፈጣሪዎች ገና አልተረጋገጠም። አንዴ ከተረጋገጡ በኋላ መዋጮዎችን ለእነሱ መላክ ይችላሉ።<ph name="LEARN_MORE"/></translation>
+<translation id="3796032246917966749">ለPing ሽልማቶች ከ<ph name="CUSTODIAN"/> የወጡ ይመስላል። ለመቀጠል እንደገና ይግቡ።</translation>
+<translation id="5202112619925434373">ይህ ፈጣሪ በPing ፈጣሪዎች ገና አልተረጋገጠም። አንዴ ከተረጋገጡ በኋላ መዋጮዎችን ለእነሱ መላክ ይችላሉ።<ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">መዋጮ ይላኩ</translation>
 <translation id="1899434873745933492">የእርስዎን መዋጮ መላክ አይቻልም</translation>
-<translation id="1794046983410841192">Brave Rewards ይጠቀሙ</translation>
+<translation id="1794046983410841192">Ping Rewards ይጠቀሙ</translation>
 <translation id="8037118277449189044">Web3 wallet ይጠቀሙ</translation>
-<translation id="9059356165618961685">የBrave Rewards ቀሪ ሂሳብ</translation>
+<translation id="9059356165618961685">የPing Rewards ቀሪ ሂሳብ</translation>
 <translation id="86107454835395919">እንደ መርሃዊ መዋጮ ያቀናብሩ</translation>
 <translation id="1177863135347784049">ብጁ</translation>
 <translation id="4827581232860040208">የእርስዎን መዋጮ ለመላክ ችግር ነበር</translation>
 <translation id="3259723213051400722">እባክዎ ከእንደገና ይሞክሩ</translation>
-<translation id="5298965408768377685">ይህ ፈጣሪ በBrave ተመዝግቧል እና ከBrave Rewards ተጠቃሚዎች አስተዋጾኦዎችን መቀበል ይችላል። <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">Brave Rewards ማሳወቂያዎች ተሰናክለው ላይሰሩ ይችላሉ።</translation>
+<translation id="5298965408768377685">ይህ ፈጣሪ በPing ተመዝግቧል እና ከPing Rewards ተጠቃሚዎች አስተዋጾኦዎችን መቀበል ይችላል። <ph name="LEARN_MORE"/></translation>
+<translation id="7466579932043491502">Ping Rewards ማሳወቂያዎች ተሰናክለው ላይሰሩ ይችላሉ።</translation>
 <translation id="6112331814131703370">'ወደ መተግበሪያው ቀይር' ማስታወቂያዎችን አግድ</translation>
 <translation id="4744921452903670666">ምን እንደሚያስቡ ይንገሩን!</translation>
-<translation id="2524310205387880526">ለ Brave ደረጃ ስጥ</translation>
+<translation id="2524310205387880526">ለ Ping ደረጃ ስጥ</translation>
 <translation id="4104400246019119780">እናመሰግናለን!</translation>
 <translation id="5202255382948179481">የእርስዎን የአስተያየት ጥቆማዎች ያክሉ</translation>
 <translation id="7759809451544302770">በአማራጭነት የቀረበ</translation>
-<translation id="4748689412569009273">በአንድ ስሜት ገላጭ ምስል ከ Brave ጋር ያለዎት ተሞክሮ እንዴት ይገለጻል?</translation>
+<translation id="4748689412569009273">በአንድ ስሜት ገላጭ ምስል ከ Ping ጋር ያለዎት ተሞክሮ እንዴት ይገለጻል?</translation>
 <translation id="7335142069363686805">አሁን ደረጃ ይስጡ</translation>
 <translation id="6681362094306959654">Braveን እየወደዱት ነው?</translation>
 <translation id="8041093619605951337">ደስተኛ</translation>
@@ -59,27 +59,27 @@
 <translation id="5867854497245948308">ለግብረመልስዎ እናመሰግናለን!</translation>
 <translation id="4935400164159327304">Braveን እንዴት ማሻሻል እንደምንችል ያሳውቁን።</translation>
 <translation id="1420756770787071946">Support this creator</translation>
-<translation id="8966035543003363155">የ Brave ማሳወቂያዎች ቀላል ያደርጉታል</translation>
+<translation id="8966035543003363155">የ Ping ማሳወቂያዎች ቀላል ያደርጉታል</translation>
 <translation id="7662771815233894695">ዳውንሎዶችን ያስተዳድሩ፣ ተለዋጭ ስሞችን ያግኙ፣ ሳምንታዊ የአጠቃቀም ስታቲስቲክስን ይመልከቱ እና ሌሎችም።</translation>
 <translation id="4265429476391459783">ሽልማቶችን እያገኙ ወይም የግላዊነት ሪፖርቶችን እየተቀበሉ አይደሉም</translation>
-<translation id="1305714751384738456">Brave ሽልማቶችን እያገኙ አይደሉም</translation>
+<translation id="1305714751384738456">Ping ሽልማቶችን እያገኙ አይደሉም</translation>
 <translation id="1483391942610220726">የግላዊነት ሪፖርቶችን እያገኙ አይደለም</translation>
 <translation id="4683790942451502796">BAT ማግኘትዎን መቀጠል እና ሳምንታዊ የግላዊነት ሪፖርቶችን መቀበል ከፈለጉ ማሳወቂያዎችን መልሰው ያብሩ።</translation>
 <translation id="8618359751943259593">BAT ማግኘትዎን መቀጠል ከፈለጉ ማሳወቂያዎችን መልሰው ያብሩ</translation>
 <translation id="760355165169399836">ሳምንታዊ የግላዊነት ሪፖርቶችን መቀበልዎን መቀጠል ከፈለጉ ማሳወቂያዎችን መልሰው ያብሩ።</translation>
 <translation id="6268959058971634697">ሽልማቶችን እያገኙ አይደሉም</translation>
-<translation id="1088637159642753509">የ Brave ሽልማቶችን ለማግኘት እና የግላዊነት ሪፖርቶችን ለማየት የመሣሪያ ማሳወቂያዎችን ያብሩ።</translation>
-<translation id="312404770066229090">የ Brave ሽልማቶችን ለማግኘት የመሣሪያ ማሳወቂያዎችን ያብሩ።</translation>
-<translation id="2241529840361230499">የ Brave የግላዊነት ሪፖርቶችን ለማግኘት የመሣሪያ ማሳወቂያዎችን ያብሩ።</translation>
-<translation id="4930155581888391118">የ Brave ሽልማቶችን ለማግኘት ከ Brave የሚመጡ ማሳወቂያዎችን ያብሩ።</translation>
-<translation id="325187916104529570">ቅንብሮችን ይክፈቱ እና የመሣሪያ ማሳወቂያዎችን ለ Brave Ads ያብሩ።</translation>
-<translation id="5744802588121897886">የ Brave ማሳወቂያዎችን ያብሩ</translation>
-<translation id="7307834434086582547">የ Brave መከላከያዎችን አንቃ/አቦዝን</translation>
+<translation id="1088637159642753509">የ Ping ሽልማቶችን ለማግኘት እና የግላዊነት ሪፖርቶችን ለማየት የመሣሪያ ማሳወቂያዎችን ያብሩ።</translation>
+<translation id="312404770066229090">የ Ping ሽልማቶችን ለማግኘት የመሣሪያ ማሳወቂያዎችን ያብሩ።</translation>
+<translation id="2241529840361230499">የ Ping የግላዊነት ሪፖርቶችን ለማግኘት የመሣሪያ ማሳወቂያዎችን ያብሩ።</translation>
+<translation id="4930155581888391118">የ Ping ሽልማቶችን ለማግኘት ከ Ping የሚመጡ ማሳወቂያዎችን ያብሩ።</translation>
+<translation id="325187916104529570">ቅንብሮችን ይክፈቱ እና የመሣሪያ ማሳወቂያዎችን ለ Ping Ads ያብሩ።</translation>
+<translation id="5744802588121897886">የ Ping ማሳወቂያዎችን ያብሩ</translation>
+<translation id="7307834434086582547">የ Ping መከላከያዎችን አንቃ/አቦዝን</translation>
 <translation id="6945863270524203017">በመከታተያ እና በማስታወቂያ እገዳ ላይ ሳምንታዊ የግላዊነት ዝመናዎችን ያግኙ።</translation>
 <translation id="4324735664183300693">ማሳወቂያዎችን ያብሩ</translation>
-<translation id="6395059271589866759">Brave እንደ ስራ ማስኬጂያ ክፍያ ከተላከው 5% መጠን ይሰበስባል።</translation>
+<translation id="6395059271589866759">Ping እንደ ስራ ማስኬጂያ ክፍያ ከተላከው 5% መጠን ይሰበስባል።</translation>
 <translation id="6661699662755460155">ምንዛሬ</translation>
-<translation id="6790981891677399838">Brave Browserን በመጠቀም <ph name="AMOUNT"/> BAT አበርክቻለሁ። ተወዳጅ ፈጣሪዎችዎን እና ድህረ ገጾችዎን እንዴት መደገፍ እንደሚችሉ ይመልከቱ፡ https://brave.com/rewards</translation>
+<translation id="6790981891677399838">Ping Browserን በመጠቀም <ph name="AMOUNT"/> BAT አበርክቻለሁ። ተወዳጅ ፈጣሪዎችዎን እና ድህረ ገጾችዎን እንዴት መደገፍ እንደሚችሉ ይመልከቱ፡ https://brave.com/rewards</translation>
 <translation id="5510493033031835532">የ AMP ገጾችን በራስ ሰር አዙር</translation>
 <translation id="5197219128592971597">ሁልጊዜ ኦሪጅናል (AMP ያልሆኑ) ገጽ URLs ን ይጎብኙ፣ ከ Google Accelerated Mobile ገጽ ስሪቶች ይልቅ</translation>
 <translation id="920638232916443453">የመከታተያ URLsን በራስ-አዙር</translation>
@@ -96,13 +96,13 @@
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
-<translation id="6302422639282249274">የ Brave  ሽልማቶችን ያስተዳድሩ</translation>
+<translation id="6302422639282249274">የ Ping  ሽልማቶችን ያስተዳድሩ</translation>
 <translation id="2709516037105925701">ራስ-ሙላ</translation>
 <translation id="8617525558807213034">በግላዊ ትሮች ውስጥ በራስ ሰር ሙላ</translation>
 <translation id="8685431198160039193">የተቀመጠ መረጃ በግላዊ ትሮች ውስጥ በራስ ሰር ሊሞላ ይችላል</translation>
 <translation id="6583902294974160967">ይደግፉ</translation>
 <translation id="1799030480311994998">መለያ ባህሪዎች</translation>
-<translation id="2005732746077850308">Brave Shields &amp; ግላዊነት</translation>
+<translation id="2005732746077850308">Ping Shields &amp; ግላዊነት</translation>
 <translation id="4692623383562244444">የፍለጋ ፕሮግራሞች</translation>
 <translation id="1468415711258933398">መደበኛ ትር</translation>
 <translation id="3377025655491224618">የግል ትር</translation>
@@ -141,9 +141,9 @@
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="4176463684765177261">ተሰናክሏል</translation>
 <translation id="59174027418879706">ነቅቷል</translation>
-<translation id="8300751939969131609">Brave News ያብሩት፣ እና ማንኛውም ታሪክ አያምልጥዎ</translation>
-<translation id="7699565323725789472">ተወዳጅ ምንጮችዎን በአንድ መረጃ መጋቢ ውስጥ ይከተሉ። በቀላሉ በ Brave ውስጥ ትር ይክፈቱ፣ ወደ ታች ይውረዱ እና… ይኸው!\nየ Brave ዜና ግላዊ እና በማያጋልጡ ማስታወቂያዎች የተደገፈ ነው።</translation>
-<translation id="1765217911817124376">የ Brave ዜናዎች ን ያንቁ</translation>
+<translation id="8300751939969131609">Ping News ያብሩት፣ እና ማንኛውም ታሪክ አያምልጥዎ</translation>
+<translation id="7699565323725789472">ተወዳጅ ምንጮችዎን በአንድ መረጃ መጋቢ ውስጥ ይከተሉ። በቀላሉ በ Ping ውስጥ ትር ይክፈቱ፣ ወደ ታች ይውረዱ እና… ይኸው!\nየ Ping ዜና ግላዊ እና በማያጋልጡ ማስታወቂያዎች የተደገፈ ነው።</translation>
+<translation id="1765217911817124376">የ Ping ዜናዎች ን ያንቁ</translation>
 <translation id="8981973962043893066">ጣቢያ፣ ርዕስ ወይም RSS ግብአት ይፈልጉ</translation>
 <translation id="3225021799163709119">ታዋቂ</translation>
 <translation id="3673348851739109493">ደረጃ የተሰጣቸው ምንጮች ዝርዝር</translation>
@@ -160,7 +160,7 @@
 <translation id="7461899062138731833">ምንጮች</translation>
 <translation id="6150420917380577651">ምንም መረጃዎች በ<ph name="SEARCH_URL"/> ላይ አልተገኙም።</translation>
 <translation id="4541978218358617681">ማስታወቅያ</translation>
-<translation id="7823038307453615214">የ Brave ዜናዎችን አሳይ</translation>
+<translation id="7823038307453615214">የ Ping ዜናዎችን አሳይ</translation>
 <translation id="6527303717912515753">አጋራ</translation>
 <translation id="1654539412343893324">ስለ ውሂብዎ የበለጠ ይወቁ</translation>
 <translation id="2989805286512600854">በአዲስ ትር ውስጥ ይክፈቱ</translation>
@@ -169,9 +169,9 @@
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> ታግዷል</translation>
 <translation id="1276592121036104130">አዲስ ይዘት ይጫኑ</translation>
 <translation id="3189348785087463371">ከፍ ተደርጓል</translation>
-<translation id="7554145152551782675">ተጨማሪ የBrave አቅርቦቶች</translation>
+<translation id="7554145152551782675">ተጨማሪ የPing አቅርቦቶች</translation>
 <translation id="254100925533869330">ምንም ይዘት የለም</translation>
-<translation id="7172792761509429092">Brave ዜና ምንም የሚያሳየው ይዘት የለውም።</translation>
+<translation id="7172792761509429092">Ping ዜና ምንም የሚያሳየው ይዘት የለውም።</translation>
 <translation id="1771307734839364850">የይዘት ምንጮችን ይምረጡ</translation>
 <translation id="6891769200437737956">ድር ጣቢያዎች የጣት አሻራ እንዳያደርጉኝ ይከለክላል</translation>
 <translation id="7459000603787995422">ሲወጡ ትሮችን ይዝጉ</translation>
@@ -188,7 +188,7 @@
 <translation id="7142548388914389999">የግል ምርት ትንታኔዎች ጠባቂዎች (P3A) ይፍቀዱ።</translation>
 <translation id="5254037869598726291">ስም የለሽ የ P3A መረጃ ጎበዝ አጠቃላይ አጠቃቀምን ለመገመት እና ታዋቂ ባህሪያትን እያሻሻልን መሆኑን ለማረጋገጥ ይረዳል።</translation>
 <translation id="933652931229970927">የምርመራ ሪፖርቶችን በራስ -ሰር ይላኩ</translation>
-<translation id="5987838417172370108">የ Brave አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Brave\u2019s ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
+<translation id="5987838417172370108">የ Ping አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Ping\u2019s ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
 <translation id="7977176350719484850">Est. ውሂብ\nተቀምጧል</translation>
 <translation id="9008534313521214777">የተቆጠበ\nጊዜ በግምት</translation>
 <translation id="410351446219883937">ራስ-አጫውት</translation>
@@ -207,8 +207,8 @@
 <translation id="8026334261755873520">የአሰሳ ውሂብ አጽዳ</translation>
 <translation id="1690924763769415936">የበስተጀርባ ጨዋታ</translation>
 <translation id="6332924730165919598">ሁሉንም ትሮች መዝጋት Braveን ይዘጋል</translation>
-<translation id="8308305244351876417">በ Brave ውስጥ ወይም በሌላ መተግበሪያ ውስጥ ወደሌላ ትር ሲቀይሩ ወይም የመሣሪያዎ ማያ ገጽ ሲጠፋ፣ ድምጽ እንዲጫወት ይፈቅዳል።</translation>
-<translation id="49147335255967913">የYouTube ማገናኛዎችን በBrave ክፈት</translation>
+<translation id="8308305244351876417">በ Ping ውስጥ ወይም በሌላ መተግበሪያ ውስጥ ወደሌላ ትር ሲቀይሩ ወይም የመሣሪያዎ ማያ ገጽ ሲጠፋ፣ ድምጽ እንዲጫወት ይፈቅዳል።</translation>
+<translation id="49147335255967913">የYouTube ማገናኛዎችን በPing ክፈት</translation>
 <translation id="4150201353443180367">ማሳያ</translation>
 <translation id="4275663329226226506">ማህደረ መረጃ</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -217,24 +217,24 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>ስለ Widevine የበለጠ ይወቁ<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">ይፍቀዱ (አሁኑ ዳግም ያስጀምሩ)</translation>
 <translation id="2433507940547922241">ገጽታ</translation>
-<translation id="9040069796107003510">የ Brave Rewards አዶ</translation>
-<translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
+<translation id="9040069796107003510">የ Ping Rewards አዶ</translation>
+<translation id="6333347122924254968">የ Ping ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
 <translation id="8495235435594442882">የነቃ የግርጌ ሰሪ አሞሌ</translation>
-<translation id="6587448235155023666">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ</translation>
+<translation id="6587448235155023666">ለውጦችዎ Ping በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ</translation>
 <translation id="8701563696941209024">አሁን እንደገና ያስጀምሩ</translation>
 <translation id="834487290629916192">በኋላ</translation>
 <translation id="7207456302801184289">ወደ ብሬቭ እንኳን ደህና መጡ</translation>
 <translation id="4117451092682672487">ግላዊነት። ቀላል ተደርጓል።</translation>
-<translation id="7909375417585209817">Brave እንደ ነባሪ ሲሆን ጠቅ የሚያደርጉት አያንዳንዱ አገናኝ በBrave የግላዊነት ጥበቃዎች አማካኝነት ይከፍታል።</translation>
+<translation id="7909375417585209817">Ping እንደ ነባሪ ሲሆን ጠቅ የሚያደርጉት አያንዳንዱ አገናኝ በPing የግላዊነት ጥበቃዎች አማካኝነት ይከፍታል።</translation>
 <translation id="7370959926683925817">በ እያንዳንዱ ቀን፣ ማስታወቂያዎችን አግድ። ውሂብን ቆጥብ።</translation>
-<translation id="7281027579943912834">Brave በነባሪነት ሲጠቀሙ፣  እያንዳንዷ የሚንኳት ማገናኛ የ Brave የማስታወቂያ እገዳ ጥበቃን ታገኛለች። እያንዳንዱ ገጽ፣ ቪዲዮ እና ዥረት።</translation>
-<translation id="5148943178722443958">Brave ይበልጥ የተሻለ እንዲሆን ያግዙ።</translation>
+<translation id="7281027579943912834">Ping በነባሪነት ሲጠቀሙ፣  እያንዳንዷ የሚንኳት ማገናኛ የ Ping የማስታወቂያ እገዳ ጥበቃን ታገኛለች። እያንዳንዱ ገጽ፣ ቪዲዮ እና ዥረት።</translation>
+<translation id="5148943178722443958">Ping ይበልጥ የተሻለ እንዲሆን ያግዙ።</translation>
 <translation id="6718362830686703942">ብልሽት ወይም የማንቀሳቀስ ችግሮች ካጋጠምዎ፣ የምርመራ ሪፖርቶችን ይላኩ።</translation>
 <translation id="2877653791257935258">የድር ጣቢያ ስም ወይም ዩአርኤል ይተይቡ</translation>
-<translation id="5329830149661250028">የBrave ልዩነትን ይመልከቱ፦ ምንም ማስታወቂያዎች የሉም። ምንም መከታተያዎች የሉም። ይበልጥ ፈጣን የገጽ ጭነት።</translation>
-<translation id="3941792073703079607">የ Brave ልዩነት ይመልከቱ፡ ማስታወቂያዎችን ማገድ። ውሂብ መቆጠብ። ቪድዮዎችን መስመር ላይ በፍጥነት መመልከት።</translation>
-<translation id="3545804467215833536">Brave Shieldsን ለማየት መታ ያድርጉ</translation>
-<translation id="1724327820822194498">Brave ያገዳቸውን ሁሉንም መጥፎ ነገሮች በእያንዳንዱ ገጽ ላይ በጋሻዎች ይመልከቱ።</translation>
+<translation id="5329830149661250028">የPing ልዩነትን ይመልከቱ፦ ምንም ማስታወቂያዎች የሉም። ምንም መከታተያዎች የሉም። ይበልጥ ፈጣን የገጽ ጭነት።</translation>
+<translation id="3941792073703079607">የ Ping ልዩነት ይመልከቱ፡ ማስታወቂያዎችን ማገድ። ውሂብ መቆጠብ። ቪድዮዎችን መስመር ላይ በፍጥነት መመልከት።</translation>
+<translation id="3545804467215833536">Ping Shieldsን ለማየት መታ ያድርጉ</translation>
+<translation id="1724327820822194498">Ping ያገዳቸውን ሁሉንም መጥፎ ነገሮች በእያንዳንዱ ገጽ ላይ በጋሻዎች ይመልከቱ።</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> እና <ph name="TRACKER"/>ሌሎች ማስታወቂያዎች &amp; መከታተያዎች ታግደዋል</translation>
 <translation id="7256200875155794202"><ph name="BIG_TECH"/>እንዲሁም ሌሎች ማስታወቂያዎች እና መከታተያዎች ታግደዋል</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/>ማስታወቂያዎች &amp; መከታተያዎች ታግደዋል</translation>
@@ -244,23 +244,23 @@
 <translation id="986879628471635371">ችግር ፈቺ አሰራርን መተግበር</translation>
 <translation id="5808759341041733958">ነባሪ የፍለጋ ሞተር ይምረጡ</translation>
 <translation id="1331593888918588693">ምርጫዎትን በመቀጠል በማንኛውም ጊዜ በመተግበሪያ ቅንብሮች ወቅት መቀየር ይችላሉ።</translation>
-<translation id="5806601733251372221">የ Brave መከላከያዎች</translation>
+<translation id="5806601733251372221">የ Ping መከላከያዎች</translation>
 <translation id="8537217141725709400">ያግኙ <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">ናይ Brave ሽልማታት</translation>
+<translation id="3333887201479867589">ናይ Ping ሽልማታት</translation>
 <translation id="5870330605209713397">ግላዊ አክብሮት ያላቸውን ማስታወቂያዎችን በመመልከት እና ተወዳጅ ጣቢያዎችዎን እና ፈጣሪዎችዎ በነባሪነት በመደገፋቸው ነው ፡፡</translation>
-<translation id="5302488867897327287">Brave Rewardsን መጠቀም ጀምር የሚለውን መታ በማድረግ በ ተስማምተዋል</translation>
+<translation id="5302488867897327287">Ping Rewardsን መጠቀም ጀምር የሚለውን መታ በማድረግ በ ተስማምተዋል</translation>
 <translation id="4281844954008187215">የአገልግሎት ውል</translation>
 <translation id="6871397658902960384">ማሰስ ጀምር</translation>
 <translation id="454386012157232640">ማስታወቂያ አላየሁም</translation>
-<translation id="1448877943847791441">Brave የመጀመሪያውን ማስታወቂያ ያሳይዎታል</translation>
+<translation id="1448877943847791441">Ping የመጀመሪያውን ማስታወቂያ ያሳይዎታል</translation>
 <translation id="4410793187232041318">አሁን ገቢ ያገኛሉ ማስመሰያ ከጀግና ማስታወቂያዎች</translation>
-<translation id="6511854390690723657">ይህ የመጀመሪያው የ Brave ማስታወቂያዎ ነው። ለተጨማሪ መረጃ ነካ አድርግ።</translation>
-<translation id="2070991379950719711">የ Brave ወሮታዎች ን መጠቀም ይጀምሩ</translation>
+<translation id="6511854390690723657">ይህ የመጀመሪያው የ Ping ማስታወቂያዎ ነው። ለተጨማሪ መረጃ ነካ አድርግ።</translation>
+<translation id="2070991379950719711">የ Ping ወሮታዎች ን መጠቀም ይጀምሩ</translation>
 <translation id="48520986898237073">በኪስ ቦርሳ ይቀጥሉ</translation>
 <translation id="3570367516044491911">እንደ ነባሪ አሳሽዎ አድርገው ያዋቅሩት</translation>
 <translation id="6800338374677644736">ነባሪ አሳሽዎ ያድርጉት።</translation>
-<translation id="19715420010996093">የ Brave አሳሹን ይምረጡ እና «ሁልጊዜ» የሚለውን መታ ያድርጉ</translation>
-<translation id="3546439402724649282">Brave ቀደም ሲል ነባሪ አሳሽዎ ሆኗል።</translation>
+<translation id="19715420010996093">የ Ping አሳሹን ይምረጡ እና «ሁልጊዜ» የሚለውን መታ ያድርጉ</translation>
+<translation id="3546439402724649282">Ping ቀደም ሲል ነባሪ አሳሽዎ ሆኗል።</translation>
 <translation id="8389661903259423907">ነባሪ አሳሽዎን ቀደም ሲል አዘጋጅተዋል። በመተግበሪያ ቅንብሮችዎ ውስጥ ነባሪ አሳሹን መቀየር ይችላሉ።</translation>
 <translation id="1545749641540134597">የ QR ኮድ ስካን ያድርጉ</translation>
 <translation id="5317781812114905957">መመሪያዎች</translation>
@@ -286,8 +286,8 @@
 <translation id="8220228041552340594">ጥቅምት</translation>
 <translation id="8280223431922155812">ህዳር</translation>
 <translation id="4254029385847607686">ዲሲምበር</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="1772301834467143364">የBrave ዜናዎች</translation>
+<translation id="3960619311638643872">Ping VPN</translation>
+<translation id="1772301834467143364">የPing ዜናዎች</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> የአሜሪካን ዶላር</translation>
 <translation id="8428213095426709021">ቅንብሮች</translation>
 <translation id="6020176662032623904">የተረጋገጠ አዘጋጅ</translation>
@@ -298,7 +298,7 @@
 <translation id="2429828319207652823">አስተዋፅ contributionዎን በማካሄድ ላይ ችግር ነበር</translation>
 <translation id="683765328936486920">ዩቲዩብ ላይ</translation>
 <translation id="8969049974285901797">Twitch ላይ</translation>
-<translation id="8038539967102225446">የ Brave ማስታወቂያዎች እዚህ ናቸው!</translation>
+<translation id="8038539967102225446">የ Ping ማስታወቂያዎች እዚህ ናቸው!</translation>
 <translation id="222883304157347087">(ይህ መሳሪያ)</translation>
 <translation id="4157741509680155021">በ አስምር ሰንሰለት ውስጥ ያሉ መሳሪያዎች</translation>
 <translation id="279635009973773843">መሳሪያዎችን በመጫን ላይ...</translation>
@@ -306,11 +306,11 @@
 <translation id="2569646144216067185">የቃላት ብዛት፡ <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">የተሳሳተ የማመሳሰል ኮድ</translation>
 <translation id="8284063834901328650">የተሳሳተ የማመሳሰል QR ኮድ</translation>
-<translation id="859506441384380749">ይህ ኮድ የተፈጠረው ከአገልግሎት ውጭ በሆነው የ Brave ስሪት ነው፣ እባክዎ መጀመሪያ ሌላው መሳሪያዎን ያሻሽሉ።</translation>
+<translation id="859506441384380749">ይህ ኮድ የተፈጠረው ከአገልግሎት ውጭ በሆነው የ Ping ስሪት ነው፣ እባክዎ መጀመሪያ ሌላው መሳሪያዎን ያሻሽሉ።</translation>
 <translation id="3132642509209154999">ይህ ኮድ ጊዜው አልፎበታል። እባክዎ በሌላኛው መሳሪያዎ ላይ አዲስ ይፍጠሩና እንደገና ይሞክሩ።</translation>
 <translation id="2859229680945501779">ይህ ኮድ ልክ ያልሆነ ነው። እባክዎ ሰዓቱ እና የሰዓት ዞን በመሳሪያዎ ላይ በትክክል መዘጋጀታቸውን ያረጋግጡ።</translation>
 <translation id="3149880132460839085">የብሬቭ ማመሳሰል</translation>
-<translation id="2614069607859982576">አሁን ያለውን የተማሳሰለ መሳሪያ በመጠቀም፣ የ Brave ቅንብሮችን ከፍተው ወደ ቅንብሮች &gt; አስምር ይሂዱና ያመሳስሉ። "መሳሪያ አክል" የሚለውን መርጠው በማያው ላይ የሚታየውን የ QR ኮድ ስካን ያድርጉ።</translation>
+<translation id="2614069607859982576">አሁን ያለውን የተማሳሰለ መሳሪያ በመጠቀም፣ የ Ping ቅንብሮችን ከፍተው ወደ ቅንብሮች &gt; አስምር ይሂዱና ያመሳስሉ። "መሳሪያ አክል" የሚለውን መርጠው በማያው ላይ የሚታየውን የ QR ኮድ ስካን ያድርጉ።</translation>
 <translation id="5241263629636958324">ወደ ቅንጥብ ሰሌዳ ተገልብጧል</translation>
 <translation id="5817918615728894473">አጣምር</translation>
 <translation id="3429575397891106447">የማመሳሰል አማራጮች</translation>
@@ -335,7 +335,7 @@
 <translation id="6776430845975754238">ቅንብሮችን መቀየር ይህ መሳሪያ ከሌሎች ጋር የተጋራውን ውሂብ ብቻ ይነካል።</translation>
 <translation id="1061533051865606843">አዲስ መሳሪያ ይጨምሩ</translation>
 <translation id="7539985410310934287">የኮድ ቃላትን አስገባ</translation>
-<translation id="2886391679017857869">አሁን ያለውን የተመሳሰለ መሳሪያ በመጠቀም፣ የ Brave ቅንብሮችን ከፍተው ወደ ቅንብሮች &gt; አስምር ይሂዱና ያመሳስሉ። "መሳሪያ አክል" የሚለውን ከዚያም "በምትኩ የኮድ ቃላትን አሳይ" የሚለውን ይምረጡ።</translation>
+<translation id="2886391679017857869">አሁን ያለውን የተመሳሰለ መሳሪያ በመጠቀም፣ የ Ping ቅንብሮችን ከፍተው ወደ ቅንብሮች &gt; አስምር ይሂዱና ያመሳስሉ። "መሳሪያ አክል" የሚለውን ከዚያም "በምትኩ የኮድ ቃላትን አሳይ" የሚለውን ይምረጡ።</translation>
 <translation id="8131740175452115882">አረጋግጥ</translation>
 <translation id="4973653569293835178">ካሜራዬን እጠቀማለሁ...</translation>
 <translation id="326454632686131209">መሣሪያ አመሳስል</translation>
@@ -344,10 +344,10 @@
 <translation id="9187185473011056079">ገብቻለሁ!</translation>
 <translation id="8185825081026121627">ግላዊነትን የሚጠብቁ ደፋር ወሮታዎች ማስታወቂያዎችን ለማየት መሰረታዊ የትኩረት ምልክትን ያግኙ ፡፡</translation>
 <translation id="5321518976657560663">ስህተተን እንደገና ሙላ</translation>
-<translation id="4114170343590425996">የ Brave ሽልማቶች ሲዘጋጁ የተፈጠረ ስህተት አለ። እባክዎ Brave ን እንደገና በማስጀመር ደግመው ይሞክሩ።</translation>
+<translation id="4114170343590425996">የ Ping ሽልማቶች ሲዘጋጁ የተፈጠረ ስህተት አለ። እባክዎ Ping ን እንደገና በማስጀመር ደግመው ይሞክሩ።</translation>
 <translation id="6417420737057016607">የብሬቭ ማስታቂያዎች</translation>
-<translation id="5611966874859284786">Brave ጥቅም ላይ በማይውልበት ጊዜ የማሳወቂያ ማስታወቂያዎችን አሳይ</translation>
-<translation id="6606319453795180219">ይህ የ Brave ሽልማቶችን ይሰርዛል እና ሁሉንም የ Brave ሽልማቶች ውሂብዎን እንደገና ያስጀምራል።</translation>
+<translation id="5611966874859284786">Ping ጥቅም ላይ በማይውልበት ጊዜ የማሳወቂያ ማስታወቂያዎችን አሳይ</translation>
+<translation id="6606319453795180219">ይህ የ Ping ሽልማቶችን ይሰርዛል እና ሁሉንም የ Ping ሽልማቶች ውሂብዎን እንደገና ያስጀምራል።</translation>
 <translation id="8293206222192510085">ዕልባት ያክሉ</translation>
 <translation id="340492034650766959">ዕልባት ይሰርዙ</translation>
 <translation id="2149973817440762519">ዕልባት ያርትዑ</translation>
@@ -366,16 +366,16 @@
 <translation id="2803313416453193357">አቃፊውን ክፈት</translation>
 <translation id="8985635554450124959">ማመሳሰል ሊዘጋጅ አልቻለም</translation>
 <translation id="7173114856073700355">ቅንብሮችን ክፈት</translation>
-<translation id="496896260395129787">ይህ Brave Sync መለያ ከሌላ መሳሪያ ተሰርዟል። ማመሳሰልን ለማሰናከል ፈልገው ካልሆነ፣ <ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">ይህ Ping Sync መለያ ከሌላ መሳሪያ ተሰርዟል። ማመሳሰልን ለማሰናከል ፈልገው ካልሆነ፣ <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> መለያውን እንደገና ይፍጠሩ</translation>
 <translation id="4094590686212463338">ይህን የማመሳሰል ሰንሰለት መቀላቀል አልተቻለም። የማመሳሰል ሰንሰለት ተሰርዟል።</translation>
 <translation id="4908081302669157000">የስልክ ቁጥሮች፣ ኢሜይሎች እና አድራሻዎች</translation>
 <translation id="1056898198331236512">ማስጠንቀቂያ</translation>
 <translation id="1426410128494586442">አዎ</translation>
-<translation id="7811264919113243207">ይህ የእርስዎን የ Brave ውሂብ፣ የይለፍ ቃላትንም ጨምሮ ይህን የ QR ኮድ ለፈጠረው መሳሪያ ያጋራል።
+<translation id="7811264919113243207">ይህ የእርስዎን የ Ping ውሂብ፣ የይለፍ ቃላትንም ጨምሮ ይህን የ QR ኮድ ለፈጠረው መሳሪያ ያጋራል።
 እባክዎ ይህ የQR ኮድ እርስዎ በያዙት መሳሪያ መፈጠሩን ድጋሚ ያረጋግጡ።
 እርግጠኛ ነዎት ይህን ማድረግ ይፈልጋሉ?</translation>
-<translation id="3097089005389027085">ይህ የእርስዎን የ Brave ውሂብ፣ የይለፍ ቃላትንም ጨምሮ ይህን የቃላት ኮድ ለፈጠረው መሳሪያ ያጋራል።
+<translation id="3097089005389027085">ይህ የእርስዎን የ Ping ውሂብ፣ የይለፍ ቃላትንም ጨምሮ ይህን የቃላት ኮድ ለፈጠረው መሳሪያ ያጋራል።
 እባክዎ ይህ የቃላት ኮድ እርስዎ በያዙት መሳሪያ መፈጠሩን ድጋሚ ያረጋግጡ።
 እርግጠኛ ነዎት ይህን ማድረግ ይፈልጋሉ?</translation>
 <translation id="4550208292810542331">የካሜራ ፍቃድ አልተሰጠም።</translation>
@@ -383,15 +383,15 @@
 <translation id="3063783274005996079">የይለፍ ቃላት ማመሳሰልን ለማንቃት ይክፈቱ</translation>
 <translation id="7551563084530025179">የይለፍ ቃላትን ከማመሳሰልዎ በፊት በመሳሪያዎ ባዮሜትሪክስ/የይለፍ ኮድ ማረጋገጥ ያስፈልግዎታል። ይህ ተጨማሪ የደህንነት እርምጃ የይለፍ ቃላትዎን ደህንነት ለመጠበቅ ያግዛል።</translation>
 <translation id="6925081665778864449">የይለፍ ቃላትን ለማመሳሰል እባክዎ በአንድሮይድ መሳሪያዎ ላይ የባዮሜትሪክ/የይለፍ ኮድ ማረጋገጫን ያንቁ። ይህ ተጨማሪ የደህንነት እርምጃ የይለፍ ቃላትዎን ደህንነት ለመጠበቅ ያግዛል።</translation>
-<translation id="597993392929850353">የ Brave ፈቃድ</translation>
+<translation id="597993392929850353">የ Ping ፈቃድ</translation>
 <translation id="6336451774241870485">አዲስ የግል ትር</translation>
 <translation id="6199596294742117349">ይህ የግል ትር ነው</translation>
 <translation id="5858455511731621847">በግል ትሮች ውስጥ የሚጎበኟቸው ጣቢያዎች በቅርብ ባይቀመጡም፣ ለ ISP፣ ለአሰሪዎ ወይም ለሚጎበኟቸው ጣቢያዎች እርስዎነ ስም አልባ ወይም ስውር አያደርጉዎትም።</translation>
-<translation id="5789441016350810005">አሳሹ በስተጀርባ እያሉ የተላኩ የ Brave ማስታወቂያዎች</translation>
+<translation id="5789441016350810005">አሳሹ በስተጀርባ እያሉ የተላኩ የ Ping ማስታወቂያዎች</translation>
 <translation id="4973347371961481083">መዋጮዎች</translation>
 <translation id="7047578174221019462">ወርሃዊ መዋጮዎችዎ ተካሂደዋል።</translation>
 <translation id="3124090095880236567">ማስታወቂያዎችን ያብሩ</translation>
-<translation id="2975780980638932742">የBrave ማስታወቂያዎች ደርሰዋል!</translation>
+<translation id="2975780980638932742">የPing ማስታወቂያዎች ደርሰዋል!</translation>
 <translation id="7541582550122501404">በመጠበቅ ላይ መዋጮ</translation>
 <translation id="8520059774736886747">ፈጣሪ <ph name="PUBLISHER_NAME"/> በቅርቡ የተረጋገጠ</translation>
 <translation id="1486343603936278248">ተለዋጭ ስም</translation>
@@ -401,10 +401,10 @@
 <translation id="3870475560794762985">ስፖንሰር የተደረጉ ምስሎችን አሳይ</translation>
 <translation id="8793108040181436796">ምግብሮች</translation>
 <translation id="8643377320501056697">ከፍተኛ ጣቢያዎችን አሳይ</translation>
-<translation id="7275773481201277457">የ Brave ስታቲስቲክስ አሳይ</translation>
+<translation id="7275773481201277457">የ Ping ስታቲስቲክስ አሳይ</translation>
 <translation id="8297488609722895137">ፎቶ በ <ph name="PHOTO_BY"/></translation>
-<translation id="2898634658146274982">የውጭ አገናኞችን በBrave ላይ ክፈት</translation>
-<translation id="5616508928556767259">ከሌሎች መተግበሪያዎች የሚመጡ አገናኞችን በBrave የገጽ እይታ ውስጥ ይከፍታል። ማስታወሻ፡ Brave እንደ ነባሪ አሳሽዎ መዘጋጀት አለብዎት።</translation>
+<translation id="2898634658146274982">የውጭ አገናኞችን በPing ላይ ክፈት</translation>
+<translation id="5616508928556767259">ከሌሎች መተግበሪያዎች የሚመጡ አገናኞችን በPing የገጽ እይታ ውስጥ ይከፍታል። ማስታወሻ፡ Ping እንደ ነባሪ አሳሽዎ መዘጋጀት አለብዎት።</translation>
 <translation id="2394961582378297792">ወጥቷል</translation>
 <translation id="5308380583665731573">አገናኝ</translation>
 <translation id="3368922792935385530">ተያይዟል</translation>
@@ -415,8 +415,8 @@
 <translation id="1665118090708049096">ወደ መለያዬ <ph name="WALLET_PROVIDER"/> ሂድ</translation>
 <translation id="4858636682078269312">ወደ እርስዎ <ph name="WALLET_PROVIDER"/> መለያ ይግቡ</translation>
 <translation id="8874184842967597500">አልተገናኘም</translation>
-<translation id="2495032782748793764">የ Brave ነባሪ</translation>
-<translation id="9132378787893584761">Brave ን ለጓደኞችዎ ያጋሩ!</translation>
+<translation id="2495032782748793764">የ Ping ነባሪ</translation>
+<translation id="9132378787893584761">Ping ን ለጓደኞችዎ ያጋሩ!</translation>
 <translation id="717952606991220586">ውይ; የሆነ ችግር አለ፤ እባክዎ እንደገና ይሞክሩ::</translation>
 <translation id="987264212798334818">አጠቃላይ</translation>
 <translation id="1116694919640316211">ስለ</translation>
@@ -451,34 +451,34 @@
 <translation id="5582686930349810484">የጣት አሻራ ታግ (ል (መደበኛ)</translation>
 <translation id="769702552748212954">ሁሉም የጣት አሻራ መውሰድን ፍቀድ</translation>
 <translation id="876424292214881779">ማስታወቂያዎች እና ሌሎች ዘግናኝ ነገሮች ታግደዋል</translation>
-<translation id="8553998445606452168">ስለ Brave ጋሻዎች</translation>
+<translation id="8553998445606452168">ስለ Ping ጋሻዎች</translation>
 <translation id="8912304686498704084">ላይ</translation>
 <translation id="4963218453264888510">ወደታች</translation>
-<translation id="7474113515179313724">ይህን ገፅ ያለ Brave ግላዊነት ጥበቃዎች እያሰሱ ነው። ጋሻዎቹ ወደላይ ቢሆኑ በትክክል አይሰራም?</translation>
+<translation id="7474113515179313724">ይህን ገፅ ያለ Ping ግላዊነት ጥበቃዎች እያሰሱ ነው። ጋሻዎቹ ወደላይ ቢሆኑ በትክክል አይሰራም?</translation>
 <translation id="4226543734057230801">የ Ethereum አውታረ መረቦች</translation>
 <translation id="3504157706952484145">የ Filecoin አውታረ መረቦች</translation>
 <translation id="1561541094377237745">የ Solana አውታረ መረቦች</translation>
 <translation id="7141438739990875547">Bitcoin አውታረ መረቦች</translation>
 <translation id="9055546041146396417">ይህ ገጽ ተሰብሮ ከሆነ መከላከያዎችን በማውረድ ይሞክሩ።</translation>
 <translation id="1209739344687072997">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
-<translation id="8510478288840333677">ይህ ገጽ ከጋሻዎች ጋር በትክክል እንደማይሰራ የ Brave አዘጋጆች እንዲያውቁት ያድርጉ፡</translation>
-<translation id="5429200298326665264">ማስታወሻ፡ ይህ የድረ ገጽ አድራሻ ከ Brave ስሪት ቁጥርዎ እና ከ  IP አድራሻዎ ጋር ይቀርባል(ተቀማጭ አይደረግም)።</translation>
+<translation id="8510478288840333677">ይህ ገጽ ከጋሻዎች ጋር በትክክል እንደማይሰራ የ Ping አዘጋጆች እንዲያውቁት ያድርጉ፡</translation>
+<translation id="5429200298326665264">ማስታወሻ፡ ይህ የድረ ገጽ አድራሻ ከ Ping ስሪት ቁጥርዎ እና ከ  IP አድራሻዎ ጋር ይቀርባል(ተቀማጭ አይደረግም)።</translation>
 <translation id="5299848999918506028">እናመሰግናለን!</translation>
-<translation id="76550953340008122">ይህ ጽ የሆነ ችግር ያለበት መሆኑን የ Brave አዘጋጆች እንዲያውቁ በማድረግዎ እናመሰግናለን። ችግሩን ለመፍታት የተቻለንን ጥረት እናደርጋለን!</translation>
+<translation id="76550953340008122">ይህ ጽ የሆነ ችግር ያለበት መሆኑን የ Ping አዘጋጆች እንዲያውቁ በማድረግዎ እናመሰግናለን። ችግሩን ለመፍታት የተቻለንን ጥረት እናደርጋለን!</translation>
 <translation id="650318023204990401">የጎለበቱ ቁጥጥሮች</translation>
 <translation id="5370478469168390143">በመስመር ላይ ውሂብ ይቆጥቡ</translation>
-<translation id="1118508688433541158">በፍጥነት ያስሱ እና በ Brave ማስታወቂያዎችን ያግዱ</translation>
-<translation id="7427391215172269363">ሁሉ ግዜ ድርን በ Brave ተጠቅሜ በማምጣት ዳታ እቆጥባለሁ።</translation>
-<translation id="4776948189086901857">Brave የትም ይሠራል</translation>
+<translation id="1118508688433541158">በፍጥነት ያስሱ እና በ Ping ማስታወቂያዎችን ያግዱ</translation>
+<translation id="7427391215172269363">ሁሉ ግዜ ድርን በ Ping ተጠቅሜ በማምጣት ዳታ እቆጥባለሁ።</translation>
+<translation id="4776948189086901857">Ping የትም ይሠራል</translation>
 <translation id="1606322780901645965">ለፈጣን እና ለበለጠ የግል ድር ጣቢያ Braveን ከ brave.com በላፕቶፕዎ ወይም በታብሌትዎ ላይ ያውርዱ</translation>
 <translation id="8374242949413616101">ግላዊነት ጥበቃ</translation>
-<translation id="4955406228638026265">Brave ያለፍቃድዎ ስለእርስዎ መረጃን እንዳይሰበስቡ የተከታታዮች &amp; ማስታወቂያዎችን ያግዳል።</translation>
+<translation id="4955406228638026265">Ping ያለፍቃድዎ ስለእርስዎ መረጃን እንዳይሰበስቡ የተከታታዮች &amp; ማስታወቂያዎችን ያግዳል።</translation>
 <translation id="752842701893882688">ውሂብ እና ባትሪ ይቆጥቡ</translation>
 <translation id="1685837926613452362">ያለ ማስታወቂያዎች &amp; መከታተያዎች፣ ድር ጣቢያዎች ያነሰ ውሂብ እና ባትሪ ይጠቀማሉ። በአገልግሎት አቅራቢ ክፍያዎች ላይ ገንዘብም መቆጠብ ይችሉ ይሆናል።</translation>
 <translation id="5440744330377972191">ድር ጣቢያዎች በፍጥነት ይጫናሉ</translation>
-<translation id="3000738865641747653">ያነሰ ውሂብን መጫን ማለት በBrave ውስጥ ድርጣቢያዎች በበለጠ ፍጥነት ይጫናሉ ማለት ነው - ከሌሎች አሳሾች እስከ 8x ፍጥነት በበለጠ።</translation>
+<translation id="3000738865641747653">ያነሰ ውሂብን መጫን ማለት በPing ውስጥ ድርጣቢያዎች በበለጠ ፍጥነት ይጫናሉ ማለት ነው - ከሌሎች አሳሾች እስከ 8x ፍጥነት በበለጠ።</translation>
 <translation id="8903462729414407077">ሳምንታዊ ዝመናዎችን ያግኙ</translation>
-<translation id="7450323860390658083">ከሚጎበኙ ድር ጣቢያዎች የትኞቹን እጅግ በጣም የግላዊነት ወራሪዎች እንደሆኑ መረጃ ያግኙ። \n\nእነዚህን የግላዊነት ስታቲስቲክስ ብቻ ማየት ይችላሉ። በመሣሪያዎ ላይ ካለው የ Brave አሳሽ  በጭራሽ የምወጣ የግል መረጃ ወይም የአሰሳ ታሪክ የለም።</translation>
+<translation id="7450323860390658083">ከሚጎበኙ ድር ጣቢያዎች የትኞቹን እጅግ በጣም የግላዊነት ወራሪዎች እንደሆኑ መረጃ ያግኙ። \n\nእነዚህን የግላዊነት ስታቲስቲክስ ብቻ ማየት ይችላሉ። በመሣሪያዎ ላይ ካለው የ Ping አሳሽ  በጭራሽ የምወጣ የግል መረጃ ወይም የአሰሳ ታሪክ የለም።</translation>
 <translation id="6170159749517116894">የግላዊነት ሪፖርቶችን ያብሩ</translation>
 <translation id="1669047024429367828">የመታየት ሁኔታ</translation>
 <translation id="5966707198760109579">ሳምንት</translation>
@@ -495,17 +495,17 @@
 <translation id="3694122362646626770">ድር ጣቢያዎች</translation>
 <translation id="2225863440766607138">ተከታታዮች</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">ባለፉት 3 ሰዓታት ውስጥ <ph name="COUNT"/> trackers &amp; የተከታታዮች &amp; ማስታወቂያዎች በBrave አሳሽ አግደዋል።</translation>
-<translation id="5005713153542196658">ትራከሮችን እና ማስታወቂያዎችን በማገድ በBrave ውስጥ ባሉ ዋና ዋና የዜና ጣቢያዎች እስከ 6x በፍጥነት ያስሱ።</translation>
+<translation id="6737820963776538947">ባለፉት 3 ሰዓታት ውስጥ <ph name="COUNT"/> trackers &amp; የተከታታዮች &amp; ማስታወቂያዎች በPing አሳሽ አግደዋል።</translation>
+<translation id="5005713153542196658">ትራከሮችን እና ማስታወቂያዎችን በማገድ በPing ውስጥ ባሉ ዋና ዋና የዜና ጣቢያዎች እስከ 6x በፍጥነት ያስሱ።</translation>
 <translation id="7427567994475794038">ባለፉት 3 ሰዓታት ውስጥ ስንት የተከታታዮች &amp; ማስታወቂያዎች እንደታገዱ ለማየት የግላዊነት ሪፖርቶችን ያብሩ።</translation>
 <translation id="2053891538879944400">በአሳሽ <ph name="DATA"/> <ph name="DATA_TEXT"/> ውሂብን አስቀምጠዋል።</translation>
 <translation id="8640064498452534195">ምን ያህል ውሂብ እንዳከማቹ ለማየት የግላዊነት ሪፖርቶችን ያብሩ።</translation>
-<translation id="2252497442547961651">የ Brave አሳሽ በአማካይ 40% ያነሰ ባትሪ ተጠቅሟል።🔋</translation>
-<translation id="1945330434665345785">ባለፈው ሳምንት <ph name="COUNT"/> trackers &amp; የተከታታዮች &amp; ማስታወቂያዎች ን በ Brave አሳሽ አግደዋል።</translation>
+<translation id="2252497442547961651">የ Ping አሳሽ በአማካይ 40% ያነሰ ባትሪ ተጠቅሟል።🔋</translation>
+<translation id="1945330434665345785">ባለፈው ሳምንት <ph name="COUNT"/> trackers &amp; የተከታታዮች &amp; ማስታወቂያዎች ን በ Ping አሳሽ አግደዋል።</translation>
 <translation id="2883868922264431515">ግላዊነትን የሚያከበሩ ማስታወቂያዎችን በመመልከት ቶክኖችን ያግኙ እንዲሁም የሚወዱትን ድር ጣቢያዎች ይደግፉ።</translation>
 <translation id="7408493389591475748">የግላዊነት ሪፖርትን ለመመልከት ማሰስ ይጀምሩ።</translation>
 <translation id="9080777565335515917">ለግል እና ደህንነቱ ለተጠበቀ አሰሳ Braveን ነባሪ አሳሽዎ ያድርጉ።</translation>
-<translation id="1390943217516275883">Brave የግላዊነት ስታትስቲክስዎን ለማሳየት ይፈቅድለታል</translation>
+<translation id="1390943217516275883">Ping የግላዊነት ስታትስቲክስዎን ለማሳየት ይፈቅድለታል</translation>
 <translation id="1763352720905582220">ሳምንታዊ የግላዊነት ሪፖርት ይልካል</translation>
 <translation id="1811691435325545066">ሁሉንም የግላዊነት ሪፖርት ውሂብ ያጥፉ</translation>
 <translation id="5966003059662780423">ሲወጡ ውሂብን ያጽዱ</translation>
@@ -524,10 +524,10 @@
 <translation id="8804164990146287819">የግለኝነት መጠበቂያ ህግ</translation>
 <translation id="8363792084628930008">ሽልማቶችን በማንቃት በ <ph name="TERMS_OF_SERVICE"/> እና <ph name="PRIVACY_POLICY"/>ተስማምተሃል።</translation>
 <translation id="185034574799484512">እስቲ ፈጣን ጉብኝት እናድርግ</translation>
-<translation id="7930505144430343145">ወደ Brave ወሮታዎች እንኳን በደህና መጡ!</translation>
-<translation id="3477340970981564961">የግል መረጃዎን በሚስጥር እየጠበቀ፣ የ Brave የግል ማስታወቂያዎች ከባህላዊ ማስታወቂያዎች በተለየ የ ይዘት ፈጣሪዎችን ለመደገፍ የ ማስመሰያዎች ሽልማት ሰጥቶታል።</translation>
+<translation id="7930505144430343145">ወደ Ping ወሮታዎች እንኳን በደህና መጡ!</translation>
+<translation id="3477340970981564961">የግል መረጃዎን በሚስጥር እየጠበቀ፣ የ Ping የግል ማስታወቂያዎች ከባህላዊ ማስታወቂያዎች በተለየ የ ይዘት ፈጣሪዎችን ለመደገፍ የ ማስመሰያዎች ሽልማት ሰጥቶታል።</translation>
 <translation id="6973095375773523904">ማስታወቂያዎች የት ይታያሉ?</translation>
-<translation id="4328028439561659455">Brave ግላዊ ማስታወቂያዎች በእርስዎ ማያ ገጽ ላይ እንደ ማሳወቂያዎች ሆነው ይታያሉ። እነዚህን ማስታወቂያዎች በምን ያህል ጊዜ እንደሚመለከቱ ይቆጣጠራሉ።</translation>
+<translation id="4328028439561659455">Ping ግላዊ ማስታወቂያዎች በእርስዎ ማያ ገጽ ላይ እንደ ማሳወቂያዎች ሆነው ይታያሉ። እነዚህን ማስታወቂያዎች በምን ያህል ጊዜ እንደሚመለከቱ ይቆጣጠራሉ።</translation>
 <translation id="7712287524451429139">መልሶ መስጠት ያለ ምንም ጥረት ሁኗል</translation>
 <translation id="105037569026952831">ፈጣሪዎች እንደ 'ትኩረት' የምንለካቸውን የተሳትፎ ደረጃዎችዎ ላይ በመመርኮዝ የቶክንዎን መዋጮ በራስ-ሰር አሠራር ይቀበላሉ።</translation>
 <translation id="3025802705256919103">ለመዋጮዎች አመሰግናለሁ ይበሉ</translation>
@@ -539,7 +539,7 @@
 <translation id="2353222426385080466">ተጨማሪ የግል ማስታወቂያዎች፣ ተጨማሪ ሽልማቶች።</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> ማስታወቂያዎች በሰዓት</translation>
 <translation id="827315274423079662">ዎው፣ ሁላችሁም ተዘጋጅታችኋል!</translation>
-<translation id="3895246934788932488">Brave ወሮታዎች በመጠቀም፣ የእርስዎን ግላዊነት እየጠበቁ እና ድሩን ለሁሉም ሰው የተሻለ ቦታ ለማድረግ እየረዱ ነው። እና ይሄ ግሩም ነው!</translation>
+<translation id="3895246934788932488">Ping ወሮታዎች በመጠቀም፣ የእርስዎን ግላዊነት እየጠበቁ እና ድሩን ለሁሉም ሰው የተሻለ ቦታ ለማድረግ እየረዱ ነው። እና ይሄ ግሩም ነው!</translation>
 <translation id="5705882733397021510">ወደ ኋላ ተመለስ</translation>
 <translation id="3985567919248057638">ፈጣን ጉብኝት እናድርግ</translation>
 <translation id="7889432931837317731">ሲቻል በራስ-ሰር ይክፈቱ</translation>
@@ -557,11 +557,11 @@
 <translation id="177282784098234156">የግል ፣ ገለልተኛ ፣ ለተጠቃሚ-ቅድሚያ</translation>
 <translation id="1410130669636877548">አንዳንድ የፍለጋ ማሽኖች ድሩን ሲፈልጉ ከሌሎች በተሻለ ሚስጥራዊነትዎን ይከላከላሉ።</translation>
 <translation id="3479552764303398839">አሁን አይደለም</translation>
-<translation id="7138272885617540195">የመተግበሪያ አገናኞች ከ Brave ውጭ ባሉ መተግበሪያዎች ውስጥ እንዲከፈቱ ፍቀድ</translation>
+<translation id="7138272885617540195">የመተግበሪያ አገናኞች ከ Ping ውጭ ባሉ መተግበሪያዎች ውስጥ እንዲከፈቱ ፍቀድ</translation>
 <translation id="4954512758656527938">ነባር የ Ethereum ዋሌት</translation>
 <translation id="7701023802820268122">ነባር የ Solana ዋሌት</translation>
 <translation id="7701040980221191251">ምንም</translation>
-<translation id="8488282162676695335">የBrave ዋሌት</translation>
+<translation id="8488282162676695335">የPing ዋሌት</translation>
 <translation id="8792121506918889955">የ WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
 <translation id="8798099450830957504">እንደወረደ</translation>
 <translation id="1822560017823072927">ዲፎልት የጋራና የግል ኢንተርፈረንስ</translation>
@@ -571,16 +571,16 @@
 <translation id="1483493594462132177">ላክ</translation>
 <translation id="538450413584738399">ይለውጡ</translation>
 <translation id="4556086616242530072">የአሳሽ native.\nSelf-custody.\nAnd ባለብዙ ሰንሰለት።</translation>
-<translation id="7909462264772842773">የእርስዎን crypto እና NFTs ይቆጣጠሩ። Brave Wallet Ethereum፣ EVM ሰንሰለቶችን፣ Solana፣ Filecoin እና ሌሎችንም ይደግፋል።</translation>
+<translation id="7909462264772842773">የእርስዎን crypto እና NFTs ይቆጣጠሩ። Ping Wallet Ethereum፣ EVM ሰንሰለቶችን፣ Solana፣ Filecoin እና ሌሎችንም ይደግፋል።</translation>
 <translation id="165255193061631296">አዲስ የገንዘብ መያዣ ይፈልጋሉ?</translation>
-<translation id="3485737865439729577">በደቂቃዎች ውስጥ Brave Wallet ን ይጀምሩ</translation>
+<translation id="3485737865439729577">በደቂቃዎች ውስጥ Ping Wallet ን ይጀምሩ</translation>
 <translation id="2540568096903252632">ለመቀጠል የይለፍ ቃል ያስገቡ</translation>
-<translation id="3356580495013324916">የዋሌትዎን መጠባበቂያ መስራት ለመጀመር የ Brave ዋሌት ይለፍ ቃል ያስገቡ።</translation>
+<translation id="3356580495013324916">የዋሌትዎን መጠባበቂያ መስራት ለመጀመር የ Ping ዋሌት ይለፍ ቃል ያስገቡ።</translation>
 <translation id="2359808026110333948">ቀጥል</translation>
 <translation id="5488357322146334497">መልዕክት</translation>
 <translation id="5333225216561354793">ከታች ላሉት ነገሮች እውቅና እንዲሰጡ እንጠይቃለን።</translation>
 <translation id="6937275455070754004">በክፍያ አማራጭዎ ውስጥ የትኞቹን ብሎክቼኖችን እንደሚጠቀሙ ይምረጡ።</translation>
-<translation id="1645800479814134195">ይህ በራስ ቁጥጥር ስር ያለ የገንዘብ መያዣ መሆኑን እና ማንኛውም ተያያዥ ገንዘቦች፣ ንብረቶች ወይም መለያዎች እንዲሁም ለገንዘብ መያዣዬ ዋስትና ለመስጠት፣ ለመጠበቅ እና መጠባበቂያ ለማስቀመጥ ተገቢ እርምጃ የመውሰድ ኃላፊነት የእኔ የብቻዬ መሆኑን ተረድቻለሁ። Brave በእኔ ምትክ የገንዘብ መያዣዬን ማግኘት ወይም ግብይቶችን መቀልበስ እንደማይችል እና የእኔ የመልሶ ማግኛ ሀረግ የጠፋ የይለፍ ቃል፣ የተሰረቀ መሳሪያ ወይም ተመሳሳይ ሁኔታ ሲያጋጥም መልሶ ማግኘት የሚቻልበት ብቸኛው መንገድ እንደሆነ ተረድቻለሁ።</translation>
+<translation id="1645800479814134195">ይህ በራስ ቁጥጥር ስር ያለ የገንዘብ መያዣ መሆኑን እና ማንኛውም ተያያዥ ገንዘቦች፣ ንብረቶች ወይም መለያዎች እንዲሁም ለገንዘብ መያዣዬ ዋስትና ለመስጠት፣ ለመጠበቅ እና መጠባበቂያ ለማስቀመጥ ተገቢ እርምጃ የመውሰድ ኃላፊነት የእኔ የብቻዬ መሆኑን ተረድቻለሁ። Ping በእኔ ምትክ የገንዘብ መያዣዬን ማግኘት ወይም ግብይቶችን መቀልበስ እንደማይችል እና የእኔ የመልሶ ማግኛ ሀረግ የጠፋ የይለፍ ቃል፣ የተሰረቀ መሳሪያ ወይም ተመሳሳይ ሁኔታ ሲያጋጥም መልሶ ማግኘት የሚቻልበት ብቸኛው መንገድ እንደሆነ ተረድቻለሁ።</translation>
 <translation id="4565891212173086999">የአጠቃቀም<ph name="CLICK_START"/> ውሉን<ph name="CLICK_END"/> አንብቤ ተስማምቻለሁ።</translation>
 <translation id="3726490322412361740">የይለፍ ቃል ያስገቡ</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> መለያ <ph name="ACCOUNT_NUMBER"/></translation>
@@ -592,7 +592,7 @@
 <translation id="4090490645603511157">የይለፍ ቃልዎን ሳያስገቡ የኪስ ቦርሳዎን በፍጥነት ለመክፈት ባዮሜትሪክን ይጠቀሙ።</translation>
 <translation id="1544192797660353713">ዋሌት</translation>
 <translation id="4811736040444856406">የመልሶ ማግኛ ደረጃ ያሳዩ</translation>
-<translation id="4359319875297001084">ከነባር Brave Crypto wallets ይምጡ?</translation>
+<translation id="4359319875297001084">ከነባር Ping Crypto wallets ይምጡ?</translation>
 <translation id="3157931365184549694">እነበረበት መልስ</translation>
 <translation id="5844138175312846408">ቀድሞውኑ የገንዘብ መያዣ አለዎት?</translation>
 <translation id="2502258949541727762">ከመጀመራችን በፊት</translation>
@@ -619,8 +619,8 @@
 <translation id="1144810021918451336">ከአደገኛ ድርጣቢያዎች፣ ዳውንሎዶች እና ቅጥያዎች አይከላከልልዎትም።</translation>
 <translation id="2360588547830602174">የመለያ መልሶ ማግኘት አልተሳካም። እባክዎ እንደገና ይሞክሩ።</translation>
 <translation id="1987317783729300807">መለያዎች</translation>
-<translation id="6284218950354553099">የእለታዊ ፒንጅ ኣጠቃቀም በራስ-ሰር ወደ Brave  ላክ</translation>
-<translation id="2181060149810222381">ይህ የግል ፒንግ Brave ንቁ ተጠቃሚዎችን እንዲገምት ያስችለዋል።</translation>
+<translation id="6284218950354553099">የእለታዊ ፒንጅ ኣጠቃቀም በራስ-ሰር ወደ Ping  ላክ</translation>
+<translation id="2181060149810222381">ይህ የግል ፒንግ Ping ንቁ ተጠቃሚዎችን እንዲገምት ያስችለዋል።</translation>
 <translation id="6725413948756358325">የመለያ ስም</translation>
 <translation id="6062431965141524986">የግል ቁልፎዎን በመጠቀም ሁለተኛ መለያ መፍጠር ይችላሉ።</translation>
 <translation id="3952797765659730604">JSON ላይ የግል ቁልፍ ስትሪንግ ፋይልዎን ያስገቡ፣ ይገልብጡ ወይም ያስመጡ።</translation>
@@ -628,10 +628,10 @@
 <translation id="4522570452068850558">ዝርዝሮች</translation>
 <translation id="3784455785234192852">ቆልፍ</translation>
 <translation id="4412698727486357573">የእገዛ ማዕከል</translation>
-<translation id="8239147115686034860">በራስ ሰር Brave Walletን ቆልፍ</translation>
-<translation id="414639769490080648">Brave Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
+<translation id="8239147115686034860">በራስ ሰር Ping Walletን ቆልፍ</translation>
+<translation id="414639769490080648">Ping Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
 <translation id="2326850911705720398">የዋሌት ውሂብን አጥፋና ዳግም አስጀምር</translation>
-<translation id="6567712397896147805">እርግጠኛ ነዎት Brave የኪስ ቦርሳዎn ዳግም ማስጀመር ይፈልጋሉ? የኪስ ቦርሳዎ ምትኬ ካልተቀመጠለት፣ ዳግም ማስጀመር ሁሉንም የመለያ ውሂቦች (ማንኛውም ተዛማጅ ገንዘቦችን ጨምሮ) እንዲያጡ ያደርግዎታል። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ብለው ይተይቡ።</translation>
+<translation id="6567712397896147805">እርግጠኛ ነዎት Ping የኪስ ቦርሳዎn ዳግም ማስጀመር ይፈልጋሉ? የኪስ ቦርሳዎ ምትኬ ካልተቀመጠለት፣ ዳግም ማስጀመር ሁሉንም የመለያ ውሂቦች (ማንኛውም ተዛማጅ ገንዘቦችን ጨምሮ) እንዲያጡ ያደርግዎታል። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ብለው ይተይቡ።</translation>
 <translation id="4862812525895306758">ግብይቱን አጽዳ &amp; የnonce መረጃ</translation>
 <translation id="5693968582510626466">ግብይቶችን ማጽዳት ለገንቢዎች ጠቃሚ ሊሆን ይችላል ወይም ሁኔታን በአካባቢያዊ ሰርቨር ላይ ሲያጸዱ</translation>
 <translation id="5421107279168565467">እርግጠኛ ነዎት፣ ግብይቱን እና የ nonce መረጃ እንደገና ማስጀመር ይፈልጋሉ? ይህ አማራጭ በአብዛኛው ጥቅም ላይ የሚውለው የአካባቢያዊ የሙከራ ሰርቨር በሚያስኬዱ ገንቢዎች ነው። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ይተይቡ።</translation>
@@ -642,14 +642,14 @@
 <translation id="1721710839767183848">በገጹ ላይ ምንም ማስታወቂያዎች የሉም</translation>
 <translation id="4647035642622555398">ምንም መቆራረጥ የለም</translation>
 <translation id="4122515759479497554">ቪድዮዎችን ይፈልጉ</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="4449475351935531438">Ping Firewall + VPN</translation>
 <translation id="719977489961414786">ግንኙነትዎን ለመጠበቅ እና ወራሪ መከታተያዎችን በሁሉም ቦታ ለማገድ ወደ VPN ያሻሽሉ።</translation>
 <translation id="8814357473522731680">የተጎላበተው በ</translation>
 <translation id="5892534145504632332">እያንዳንዱን መተግበሪያ እና ሙሉ መሣሪያዎን ይጠብቁ</translation>
 <translation id="7195416926059527505">ለቤት ወይም ለሕዝብ Wi-Fi ደህንነቱ የተጠበቀ</translation>
 <translation id="1354700000739359839">መብረቃዊ ፍጥነት፣ እስከ 100 ሜጋ ባይት በሰከንድ</translation>
 <translation id="3510283489391432976">የእርስዎን Geo/ሀገር አቀማመጥ ይምረጡ</translation>
-<translation id="7695158478627528928">Brave እንቅስቃሴዎን በጭራሽ አይመዘግብም።</translation>
+<translation id="7695158478627528928">Ping እንቅስቃሴዎን በጭራሽ አይመዘግብም።</translation>
 <translation id="4575683170451975058">በ1 የደንበኝነት ምዝገባ ላይ 5 መሳሪያዎችን ይጠብቁ</translation>
 <translation id="4882693590083943563">ሁሉም  እቅዶች የሚያካትቱት<ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">ነጻ የ7 ቀን ሙከራ!</translation>
@@ -661,7 +661,7 @@
 <translation id="5903391101107992067">ለ7 ቀናት በነጻ ይሞክሩ</translation>
 <translation id="721747358270435486">VPN ይጫኑ</translation>
 <translation id="836074276610740314">የ VPN መገለጫ ይጫኑ</translation>
-<translation id="8021842065465097929">Brave አሁን የ VPN መገለጫ ይጭናል።</translation>
+<translation id="8021842065465097929">Ping አሁን የ VPN መገለጫ ይጭናል።</translation>
 <translation id="229286271464650057">ይህ መገለጫ VPN በራስ-ሰር እንዲገናኝ እና በመሣሪያዎ ላይ ትራፊክን እንዲጠብቅ ያስችለዋል — በእያንዳንዱ መተግበሪያ ውስጥ ፣ ሁል ጊዜ። ማስታወቂያዎችን እና መከታተያዎችን ለማገድ ይህ የVPN ግንኙነት የተመሰጠረ እና በ Guardian intelligent firewall በኩል ይተላለፋል።</translation>
 <translation id="9073255657908892407">የቴክኒክ ድጋፍን ያነጋግሩ</translation>
 <translation id="1139934321138152517">VPN አሁን ነቅቷል</translation>
@@ -743,14 +743,14 @@
 <translation id="8214232307424031138">ተፈርሟል</translation>
 <translation id="1165039591588034296">ስህተት</translation>
 <translation id="2561824823738097741">በጣም ፈጣኑን የድር አሳሽ እየተጠቀሙ ነው?</translation>
-<translation id="2065971949051836200">3x እጥፍ ፈጣን በይነመረብ አስቀድሞ በስልክዎ ላይ አለ። ለሁሉም የድር አሰሳዎ Brave ይጠቀሙ።</translation>
-<translation id="2888278614497184977">Brave = 3x ጊዜ ፈጣን የድር አሳሽ</translation>
+<translation id="2065971949051836200">3x እጥፍ ፈጣን በይነመረብ አስቀድሞ በስልክዎ ላይ አለ። ለሁሉም የድር አሰሳዎ Ping ይጠቀሙ።</translation>
+<translation id="2888278614497184977">Ping = 3x ጊዜ ፈጣን የድር አሳሽ</translation>
 <translation id="6887232551109532144">በእያንዳንዱ ክፍያ ተጨማሪ የባትሪ እድሜ ያግኙ</translation>
-<translation id="5388885352353494741">የባትሪ ቁጠባ አንድ ደረጃ ብቻ ነው የቀረው። ለሁሉም የድር አሰሳዎ Brave ይጠቀሙ።</translation>
-<translation id="3164151360474408351">Brave = በእያንዳንዱ ክፍያ የበለጠ እድሜ</translation>
+<translation id="5388885352353494741">የባትሪ ቁጠባ አንድ ደረጃ ብቻ ነው የቀረው። ለሁሉም የድር አሰሳዎ Ping ይጠቀሙ።</translation>
+<translation id="3164151360474408351">Ping = በእያንዳንዱ ክፍያ የበለጠ እድሜ</translation>
 <translation id="3211051910418903298">የተንቀሳቃሽ ስልክ ውሂብዎን ብዙ ጊዜ ይሙሉ</translation>
-<translation id="1092355580602106002">ያነሱ ማስታወቂያዎች = በሚጫኑት እያንዳንዱ ገጽ ላይ ያለው ውሂብ ያነሰ ማለት ነው። ለሁሉም የድር አሳሽዎ Brave ይጠቀሙ።</translation>
-<translation id="623962032102267945">Brave = በእያንዳንዱ ገጽ ላይ ያነሰ የሞባይል ውሂብ</translation>
+<translation id="1092355580602106002">ያነሱ ማስታወቂያዎች = በሚጫኑት እያንዳንዱ ገጽ ላይ ያለው ውሂብ ያነሰ ማለት ነው። ለሁሉም የድር አሳሽዎ Ping ይጠቀሙ።</translation>
+<translation id="623962032102267945">Ping = በእያንዳንዱ ገጽ ላይ ያነሰ የሞባይል ውሂብ</translation>
 <translation id="4355217341028673744">• የተሻለ ግላዊነት</translation>
 <translation id="3679020972083025535">• የሚያበሳጩ ማስታወቂያዎች አይኖሩም</translation>
 <translation id="8047527352810290817">ነዳጅ አርትዓ ያድርጉ</translation>
@@ -799,7 +799,7 @@
 <translation id="2653659639078652383">አስገባ</translation>
 <translation id="4945690646623486292">አውታረ መረብ ይምረጡ</translation>
 <translation id="5233638681132016545">አዲስ ትር</translation>
-<translation id="8006088103295786154">የ Brave ን ዋሌት ይድረሱበት</translation>
+<translation id="8006088103295786154">የ Ping ን ዋሌት ይድረሱበት</translation>
 <translation id="8030169304546394654">ግንኙነቱ ተቋርጧል</translation>
 <translation id="3423275441470187644">እምነት</translation>
 <translation id="2391762656119864333">ሻር</translation>
@@ -809,7 +809,7 @@
 <translation id="42981349822642051">ይዘርጉ</translation>
 <translation id="3586752056660754651">ፈርም</translation>
 <translation id="3950820424414687140">ይግቡ</translation>
-<translation id="6592721981110586529">ከ Brave ዋሌት ጋር ይገናኙ</translation>
+<translation id="6592721981110586529">ከ Ping ዋሌት ጋር ይገናኙ</translation>
 <translation id="329813193938846695">መለያ (ሮች) ምረጥ</translation>
 <translation id="291375746846291973">ከሚያምኗቸው ጣቢያዎች ጋር ብቻ ይገናኙ።</translation>
 <translation id="385051799172605136">ተመለስ</translation>
@@ -821,13 +821,13 @@
 <translation id="5242300593039211344">ዋሌቱን ይቆልፉ</translation>
 <translation id="1108298724135935307">የተገናኙ ጣቢያዎች</translation>
 <translation id="4255623233927788178">በBlock explorer ላይ ይመልከቱ</translation>
-<translation id="8274201358637112807">ይህ ገጽ ከ Brave ዋሌት ጋር መስተጋብር መፍጠር ይፈልጋል</translation>
+<translation id="8274201358637112807">ይህ ገጽ ከ Ping ዋሌት ጋር መስተጋብር መፍጠር ይፈልጋል</translation>
 <translation id="3355936511340229503">የግንኙነት ስህተት</translation>
 <translation id="1531836666020185856">ተለይቶ የቀረበ</translation>
 <translation id="4891604214809245310">አውታረ መረብን ወደ
 1<ph name="NETWORK_NAME"/> 
 ማዋቀር አልተቻለም</translation>
-<translation id="685345388423515592">በዚህ መሣሪያ ላይ ወደ “ሁልጊዜ አብራ” የተቀናበሩ ሌሎች  VPNዎች ያለዎት ይመስላል። Brave Firewall + VPN ለማንቃት መጀመሪያ እንደገና ከማገናኘትዎ በፊት ይህ “ሁልጊዜ አብራ” የሚለውን የሌሎች VPNዎች ቅንብር ያሰናክሉ። ችግሩ ከቀጠለ ሌሎች VPNዎችን ለማራገፍ ይሞክሩ።</translation>
+<translation id="685345388423515592">በዚህ መሣሪያ ላይ ወደ “ሁልጊዜ አብራ” የተቀናበሩ ሌሎች  VPNዎች ያለዎት ይመስላል። Ping Firewall + VPN ለማንቃት መጀመሪያ እንደገና ከማገናኘትዎ በፊት ይህ “ሁልጊዜ አብራ” የሚለውን የሌሎች VPNዎች ቅንብር ያሰናክሉ። ችግሩ ከቀጠለ ሌሎች VPNዎችን ለማራገፍ ይሞክሩ።</translation>
 <translation id="85136472535634474">የVPN ቅንብሮችን ክፈት</translation>
 <translation id="8352805003811526272">ውቅረትን ዳግም በማስጀመር ላይ..</translation>
 <translation id="6809312301323611382">ቀድሞውንም ተመሳሳይ አገልጋይ መርጠዋል።</translation>
@@ -849,19 +849,19 @@
 <translation id="4822132585477111396">የሰንሰለት መታወቂያ</translation>
 <translation id="7131971375297699539">የመገበያያ ምልክት</translation>
 <translation id="7982789257301363584">አውታረ መረብ</translation>
-<translation id="6936860995365507185">ይህ ይህ አውታረ መረብ በ Brave ዋሌት ውስጥ ጥቅም ላይ እንዲውል ያስችለዋል። <ph name="CLICK_START"/>የበለጠ ይወቁ<ph name="CLICK_END"/>።</translation>
+<translation id="6936860995365507185">ይህ ይህ አውታረ መረብ በ Ping ዋሌት ውስጥ ጥቅም ላይ እንዲውል ያስችለዋል። <ph name="CLICK_START"/>የበለጠ ይወቁ<ph name="CLICK_END"/>።</translation>
 <translation id="4717431746210146708">ይህ ጣቢያ አውታረ መረብ እንዲያክል ይፈቀድለት?</translation>
 <translation id="4857321293515555666">ይህ DApp ጥያቄዎን ለማጠናቀቅ ይህን መልእክት ማንበብ ይፈልጋል።</translation>
 <translation id="714506544401754321">ዲክሪፕት መልእክት</translation>
 <translation id="5039804452771397117">ፍቀድ</translation>
 <translation id="3378339846292573874">የተጠቆመ ማስመሰያ ያክሉ</translation>
 <translation id="2322227405137827074">ይህን ማስመሰያ ማስመጣት ይፈልጋሉ?</translation>
-<translation id="1324417023773393937">Brave አሳሽ</translation>
-<translation id="6044189892950611565">ለ Brave Browser የማስታወቂያ ጣቢያ</translation>
+<translation id="1324417023773393937">Ping አሳሽ</translation>
+<translation id="6044189892950611565">ለ Ping Browser የማስታወቂያ ጣቢያ</translation>
 <translation id="8922793255489232731">የሚዛመደውን የሰዓት ሰቅ ማግኘት አልተቻለም ለ፦ <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">ከ<ph name="VALUE"/> ጋር ተገናኝቷል</translation>
 <translation id="1968852757206592413">ሙከራ</translation>
-<translation id="6458565248779152483">Brave ቪፒኤንን አሰናክል</translation>
+<translation id="6458565248779152483">Ping ቪፒኤንን አሰናክል</translation>
 <translation id="9080536793704001825">ለ15 ደቂቃዎች ባለበት አቁም</translation>
 <translation id="803706420145725977">ለ1 ሰዓት ባለበት አቁም</translation>
 <translation id="4394049700291259645">አሰናክል</translation>
@@ -889,7 +889,7 @@
 <translation id="7002577172732106572">የተከፈለ መሿለኪያ</translation>
 <translation id="8181161042860463420">የተያያዘው የቶክን መለያ እስካሁን የለም። አነስተኛ መጠን ያለው SOL ለመፍጠር እና ለመደገፍ ወጪ ይደረጋል። <ph name="CLICK_START"/>ተጨማሪ ይወቁ<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">የቪፒኤን መገለጫን በማዘመን ላይ...</translation>
-<translation id="4784306439879850873">ልብ ይበሉ እርስዎ ቢፈርሙ Brave  ምን እንደሚሆን ማረጋገጥ አይችልም። ጥያቄው ለሚያደርገው ጣቢያ የመለያዎን እና የ Crypto ንብረቶችን አጠቃላይ ቁጥጥር (ግን አይገደብም) ጨምሮ በመለያዎ ውስጥ ወይም በርስዎ ስም ማንኛውንም ክወና ማለት ይቻላል ሊፈቅድ ይችላል። ይህንን እርምጃ መውሰድ እንደሚፈልጉ እርግጠኛ ከሆኑ እና ጠያቂውን ጣቢያ ካመኑ ብቻ ይፈርሙ።</translation>
+<translation id="4784306439879850873">ልብ ይበሉ እርስዎ ቢፈርሙ Ping  ምን እንደሚሆን ማረጋገጥ አይችልም። ጥያቄው ለሚያደርገው ጣቢያ የመለያዎን እና የ Crypto ንብረቶችን አጠቃላይ ቁጥጥር (ግን አይገደብም) ጨምሮ በመለያዎ ውስጥ ወይም በርስዎ ስም ማንኛውንም ክወና ማለት ይቻላል ሊፈቅድ ይችላል። ይህንን እርምጃ መውሰድ እንደሚፈልጉ እርግጠኛ ከሆኑ እና ጠያቂውን ጣቢያ ካመኑ ብቻ ይፈርሙ።</translation>
 <translation id="3474375934783434676">በራስዎ ሃላፊነት ወስደው ይፈርሙ</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> ከ <ph name="SIZE"/></translation>
 <translation id="756701799684433105">ግብይቱን አጽድቅ</translation>
@@ -935,8 +935,8 @@
 <translation id="8382368767453083629">multisig 2 አስጀምር</translation>
 <translation id="77243237706803459">ሚንት 2 አስጀምር</translation>
 <translation id="583281660410589416">ያልታወቀ</translation>
-<translation id="5666264859501108700">የእርስዎ Brave የሽልማት ክልል ወደ <ph name="COUNTRY_NAME"/>ተቀናብሯል።</translation>
-<translation id="909076461795862330">እንደ አለመታደል ሆኖ Brave ሽልማቶችን ለማዋቀር በመሞከር ላይ ሳለ ስህተት ነበር። እባክዎ ዳግም ይሞክሩ።</translation>
+<translation id="5666264859501108700">የእርስዎ Ping የሽልማት ክልል ወደ <ph name="COUNTRY_NAME"/>ተቀናብሯል።</translation>
+<translation id="909076461795862330">እንደ አለመታደል ሆኖ Ping ሽልማቶችን ለማዋቀር በመሞከር ላይ ሳለ ስህተት ነበር። እባክዎ ዳግም ይሞክሩ።</translation>
 <translation id="7352651011704765696">የሆነ ስህተት ተፈጥሯል</translation>
 <translation id="7144878232160441200">እንደገና ሞክር</translation>
 <translation id="6040143037577758943">ዝጋ</translation>
@@ -945,15 +945,15 @@
 <translation id="8496335570810457">የቅድመ በረራ ቁርጠኝነት፡</translation>
 <translation id="5100124500279922001">ቅድመ በረራን ዝለል፡</translation>
 <translation id="7152095322071766507">ከፍተኛ የተጎበኘ ጣቢያ</translation>
-<translation id="7230006500876504868">ከ Brave ጋር ይፈልጉ</translation>
+<translation id="7230006500876504868">ከ Ping ጋር ይፈልጉ</translation>
 <translation id="5888208462949095139">በ <ph name="DEFAULT_SEARCH_ENGINE"/> ይፈልጉ</translation>
 <translation id="5456039738087398178">የመነሻ ማያ ገጽ መግብር</translation>
 <translation id="703185154752046151">መግብር ወደ መነሻ ማያ ገጽ ታክሏል</translation>
-<translation id="3290805388004282161">የ Brave ፍለጋ መግብርን ይሞክሩ</translation>
+<translation id="3290805388004282161">የ Ping ፍለጋ መግብርን ይሞክሩ</translation>
 <translation id="4809681171446727314">ከመነሻ ማያዎ ሆነው የግል፣ ገለልተኛ ፍለጋን ያግኙ።</translation>
 <translation id="7751715172931488388">መግብር ያክሉ</translation>
-<translation id="7285167584112910782">Brave ፈጣን እርምጃ ፍለጋ</translation>
-<translation id="2326703104633309781">Brave ትርጉምን ይጠቀሙ</translation>
+<translation id="7285167584112910782">Ping ፈጣን እርምጃ ፍለጋ</translation>
+<translation id="2326703104633309781">Ping ትርጉምን ይጠቀሙ</translation>
 <translation id="5802752138057422257">NON-ASCII ቁምፊዎች ተገኝተዋል!</translation>
 <translation id="442709594176931966">ዋናውን መልእክት ይመልከቱ</translation>
 <translation id="2239252396088484499">መልዕክቱን በ ASCII ኢንኮዲንግ ይመልከቱ</translation>
@@ -965,21 +965,21 @@
 <translation id="1313065465616456728">የተሰጠው በ</translation>
 <translation id="7902225556763260253">የአገልግሎት ጊዜ ማብቂያ</translation>
 <translation id="1908159733454294871">የደህንነት አደጋ ተለይቷል</translation>
-<translation id="5658257029899993935">ግዢውን ከ Brave መለያዎ ጋር ያገናኙ</translation>
-<translation id="1187061015547219282">በሌሎች መሳሪያዎች ላይ Brave VPN ለመጠቀም የ Play Store ግዢዎን ከ Brave መለያዎ ጋር ያገናኙት።</translation>
+<translation id="5658257029899993935">ግዢውን ከ Ping መለያዎ ጋር ያገናኙ</translation>
+<translation id="1187061015547219282">በሌሎች መሳሪያዎች ላይ Ping VPN ለመጠቀም የ Play Store ግዢዎን ከ Ping መለያዎ ጋር ያገናኙት።</translation>
 <translation id="6662142137695589205">የእርስዎን የ VPN ምዝገባ ያገናኙ</translation>
-<translation id="2674077112509133024">የ Brave Firewall + VPN ጥበቃን ያራዝሙ</translation>
-<translation id="6365389672683343144">የእርስዎ Brave VPN ደንበኝነት ምዝገባ በአንድሮይድ፣ iOS እና ዴስክቶፕ ላይ እስከ 5 የሚደርሱ መሳሪያዎችን መጠበቅ ይችላል። የ Google Play ደንበኝነት ምዝገባዎን ከ Brave መለያዎ ጋር ያገናኙት።</translation>
+<translation id="2674077112509133024">የ Ping Firewall + VPN ጥበቃን ያራዝሙ</translation>
+<translation id="6365389672683343144">የእርስዎ Ping VPN ደንበኝነት ምዝገባ በአንድሮይድ፣ iOS እና ዴስክቶፕ ላይ እስከ 5 የሚደርሱ መሳሪያዎችን መጠበቅ ይችላል። የ Google Play ደንበኝነት ምዝገባዎን ከ Ping መለያዎ ጋር ያገናኙት።</translation>
 <translation id="6610899852831463073">ደህንነቱ የተጠበቀ አሰሳን ማንቃት አልተቻለም</translation>
 <translation id="7954263306665462056">ደህንነቱ የተጠበቀ አሰሳ በመሳሪያዎ ላይ ተሰናክሏል። እሱን ለማንቃት  የGoogle Play አገልግሎቶች መጫኑንና የተዘመነ መሆኑን ያረጋግጡ።</translation>
 <translation id="6605147707233193230">የድጋፍ ይዘት ፈጣሪዎችን ለማገዝ ያብሩ</translation>
-<translation id="6067959437127691361">የBrave ሽልማቶችን መጠቀም የድጋፍ ይዘት ፈጣሪዎችን ለመደገፍ ያግዛል እንዲሁም እርስዎ BAT እንዲያገኙ ያስችልዎታል።</translation>
+<translation id="6067959437127691361">የPing ሽልማቶችን መጠቀም የድጋፍ ይዘት ፈጣሪዎችን ለመደገፍ ያግዛል እንዲሁም እርስዎ BAT እንዲያገኙ ያስችልዎታል።</translation>
 <translation id="3264975266761862670">ገንዘብ ማግኘት ለመጀመር ዝግጁ ነዎት?</translation>
 <translation id="265337947574975838">ከአጋሮቻችን ከአንዱ ጋር መለያ ያገናኙ ወይም ይፍጠሩ።</translation>
 <translation id="654447476965480878">ስለ BAT የበለጠ ይወቁ</translation>
 <translation id="6278643716658443228">የሽልማት ቅንብሮች</translation>
 <translation id="6516984207843289176">መለያ ያገናኙ</translation>
-<translation id="4272136334824111854">በዚህ ወር በBrave ሽልማቶች የሚደገፉትን<ph name="CREATOR_COUNT"/> ፈጣሪዎችን ጎብኝተዋል</translation>
+<translation id="4272136334824111854">በዚህ ወር በPing ሽልማቶች የሚደገፉትን<ph name="CREATOR_COUNT"/> ፈጣሪዎችን ጎብኝተዋል</translation>
 <translation id="6845311459433734326">BAT እንዲያገኙ እና ሽልማቶችዎን እንዲያወጡ የጠባቂ መለያን ያገናኙ</translation>
 <translation id="928980476243133540">በኋላ አደርገዋለሁ</translation>
 <translation id="579702532610384533">በድጋሚ ያገናኙ</translation>
@@ -990,8 +990,8 @@
 <translation id="5382684862562314222">BAT በ Uphold ላይ ባለው በክልልዎ ውስጥ አልተፈቀደም።</translation>
 <translation id="6996157559236886133">ስህተት፡ የተገደበ የማቆየት መለያ ተግባር</translation>
 <translation id="1677961202754619328">በUphold መሠረት በአሁኑ ጊዜ በእርስዎ የUphold መለያ ላይ አንዳንድ ገደቦች አሉ። እባክዎ ወደ የ Uphold መለያዎ ይግቡና ለማጠናቀቅ ማሳወቂያዎች ወይም ቀሪ የመለያ መስፈርቶች መኖራቸውን ያረጋግጡ እና እንደገና ይሞክሩ። ለምሳሌ፣ ተጨማሪ መረጃን ወደ Uphold ማስገባት ሊኖርብዎ ይችላል። ለምሳሌ፣ ተጨማሪ መረጃ ወደ Uphold ማስገባት ሊኖርብዎ ይችላል።</translation>
-<translation id="5425006356459378415">Brave ሽልማቶች አይገኝም</translation>
-<translation id="833643743158564518">ለ Brave ሽልማቶች አዲስ ምዝገባዎች በአሁኑ ጊዜ በአከባቢዎ ውስጥ ተሰናክለዋል። ነገር ግን፣ ሁልጊዜ በኋላ እንደገና መሞከር ይችላሉ። <ph name="LEARN_MORE"/></translation>
+<translation id="5425006356459378415">Ping ሽልማቶች አይገኝም</translation>
+<translation id="833643743158564518">ለ Ping ሽልማቶች አዲስ ምዝገባዎች በአሁኑ ጊዜ በአከባቢዎ ውስጥ ተሰናክለዋል። ነገር ግን፣ ሁልጊዜ በኋላ እንደገና መሞከር ይችላሉ። <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">የመጀመሪያ ደረጃ አውታረ መረብ</translation>
 <translation id="2781668117338732220">ሁለተኛ አውታረ መረቦች</translation>
 <translation id="282560918037172384">አውታረመረቦችን ይሞክሩ</translation>
@@ -1012,8 +1012,8 @@
 <translation id="346505172740911461">የገበያ ዋጋ</translation>
 <translation id="5494920125229734069">ሁሉንም ይመርጣል</translation>
 <translation id="6129027151000961048">Leo</translation>
-<translation id="8613144770663526433">በBrave Wallet ይግቡ</translation>
-<translation id="3696514931437952995">እርስዎ ወደ <ph name="ORIGIN"/>እየገቡ ነው። Brave ዋሌት የእርስዎን የዋሌት አድራሻ ከ<ph name="ORIGIN"/>ጋር ያጋራል።</translation>
+<translation id="8613144770663526433">በPing Wallet ይግቡ</translation>
+<translation id="3696514931437952995">እርስዎ ወደ <ph name="ORIGIN"/>እየገቡ ነው። Ping ዋሌት የእርስዎን የዋሌት አድራሻ ከ<ph name="ORIGIN"/>ጋር ያጋራል።</translation>
 <translation id="1028781062521375153">ዝርዝሮችን ይመልከቱ</translation>
 <translation id="6759710362319508545">ሃብቶች</translation>
 <translation id="2471230424465522689">እስከዚህ ጊዜ አይደለም</translation>
@@ -1022,7 +1022,7 @@
 <translation id="4109670531935487117">በአድራሻ ማስገቢያው ላይ የራስ-አጠናቅቅ ጥቆማዎችን አሳይ</translation>
 <translation id="1250335737108905610">የLeo ውሂብን ዳግም ያስጀምሩ እና ያጽዱ</translation>
 <translation id="6165101586663336913">የLeo ረዳትን ዳግም ማስጀመር ለወደፊቱ Leo ለመጠቀም መርጠው እንዲገቡ ይጠይቃል እና የውይይት ታሪክዎን ያጸዳል። የውይይት ታሪክዎን ማጽዳት ከLeo ጋር ያደረጉትን ሁሉንም ንግግሮች ይሰርዛል። ይህ እርምጃ ሊቀለበስ አይችልም።</translation>
-<translation id="3692772534525889713">Brave Leoን በሌሎች መሳሪያዎች ላይ ለመጠቀም የPlay store ግዢዎን ከ Brave መለያዎ ጋር ያገናኙት።</translation>
+<translation id="3692772534525889713">Ping Leoን በሌሎች መሳሪያዎች ላይ ለመጠቀም የPlay store ግዢዎን ከ Ping መለያዎ ጋር ያገናኙት።</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1166682575529520472">በየወሩ</translation>
 <translation id="451189393813405346">Leoን ይጠይቁ</translation>
@@ -1032,7 +1032,7 @@
 <translation id="6344103698928069918">ለአጫዋች ዝርዝር ከመጨረሻው ባለበት ቦታ ማጫወትዎን ይቀጥሉ</translation>
 <translation id="8141583471142904652">ቀጣይነት ያለው ማዳመጥ</translation>
 <translation id="851432578283946230">በአጫዋች ዝርዝርዎ ውስጥ የሚቀጥሉትን ንጥሎች በራስ-ሰር ያጫውታል።</translation>
-<translation id="295620834661738195">የ Brave የአጫዋች ዝርዝር</translation>
+<translation id="295620834661738195">የ Ping የአጫዋች ዝርዝር</translation>
 <translation id="4850886885716139402">አሳይ</translation>
 <translation id="7392941176393379100">ወደ '<ph name="PLAYLIST_NAME"/>' ታክሏል</translation>
 <translation id="349846214503465941">የአጫዋች ዝርዝር አንቃ</translation>
@@ -1058,7 +1058,7 @@
 <translation id="8120600068258956006">ወደ አጫዋች ዝርዝር አክል</translation>
 <translation id="39991094779686024">የአጫዋች ዝርዝሮች</translation>
 <translation id="1710072605877822603">ሚድያ አክል</translation>
-<translation id="3874252678044305931">ቪዲዮዎችን ወደ Brave የአጫዋች ዝርዝር ያክሉ እና በኋላ ማጫወት ይችላሉ፣ ከመስመር ውጭም ጭምር።</translation>
+<translation id="3874252678044305931">ቪዲዮዎችን ወደ Ping የአጫዋች ዝርዝር ያክሉ እና በኋላ ማጫወት ይችላሉ፣ ከመስመር ውጭም ጭምር።</translation>
 <translation id="8973629800378391099">የሚወዱትን ይዘት ላይ የአጫዋች ዝርዝሮችን ያዘጋጁ። የስልክ ዳታ ወጪዎን ይቆጥቡ። እና ከማስታወቂያ ነጻ በሆነ መልኩ ያጫውቱ።</translation>
 <translation id="4936812987266342401">ቪዲዮዎችን ወደ አጫዋች ዝርዝር ለመጨመር በቀላሉ አዝራሩን ጠቅ ያድርጉ</translation>
 <translation id="6263657785571415306">በስራ ላይ ይቆዩ፡ ኢንተርኔት በሚጠቀሙ ጊዜ ቪዲዮዎችን ይጨምሩ እና በኋላ ይመልከቱ።</translation>
@@ -1101,7 +1101,7 @@
 <translation id="5538904824395606812">የአሁኑን አገልግሎት አቅራቢዎን ወይም Quad9 ይጠቀሙ</translation>
 <translation id="6393423486818299209">የአሁኑን አገልግሎት አቅራቢዎን ወይም Wikimedia DNS ይጠቀሙ</translation>
 <translation id="3401384982562827787">የአሁኑን አገልግሎት አቅራቢዎን ወይም Cloudflare ይጠቀሙ</translation>
-<translation id="8812367543786936496">የአሁኑ አገልግሎት አቅራቢዎ ደህንነቱ ካልተጠበቀ፣ Brave ደህንነቱ የተጠበቀ አማራጭ የ DNS አቅራቢን ይጠቀማል</translation>
+<translation id="8812367543786936496">የአሁኑ አገልግሎት አቅራቢዎ ደህንነቱ ካልተጠበቀ፣ Ping ደህንነቱ የተጠበቀ አማራጭ የ DNS አቅራቢን ይጠቀማል</translation>
 <translation id="5680678411439841197">ከተማ</translation>
 <translation id="8185518433273977704">ትንሽ ከተማ</translation>
 <translation id="4528386452965343421">ጠቅላይ ግዛት</translation>
@@ -1129,7 +1129,7 @@
 <translation id="3300502432153878901">ዚፕ</translation>
 <translation id="4130750466177569591">እስማማለሁ</translation>
 <translation id="3251885322612056119">የዘመኑ የአገልግሎት ውሎች</translation>
-<translation id="4049035689681585146">ለBrave ሽልማቶች የአገልግሎት ውሎችን አዘምነናል። ውሎቻችንን ግልጽ ለማድረግ እና አዳዲስ ባህርያትን እንደሸፈኑ ለማረጋገጥ፣ እነዚህን ዝማኔዎች አድርገናል። የBrave ሽልማቶችን ለመጠቀም ከቀጠሉ፣ ለዘመኑ የአገልግሎት ውሎች እየተስማሙ ነው። ካልተስማሙ፣ የBrave ሽልማቶችን<ph name="RESET_START"/>ዳግም ማስጀመር<ph name="RESET_END"/> ይችላሉ፣ ይህም ባህሪውን ያሰናክላል።</translation>
-<translation id="2165953574528546737">የ <ph name="TOS_START"/>Brave ሽልማቶች የአገልግሎት ውሎች<ph name="TOS_END"/> የሚለውን ይመልከቱ</translation>
+<translation id="4049035689681585146">ለPing ሽልማቶች የአገልግሎት ውሎችን አዘምነናል። ውሎቻችንን ግልጽ ለማድረግ እና አዳዲስ ባህርያትን እንደሸፈኑ ለማረጋገጥ፣ እነዚህን ዝማኔዎች አድርገናል። የPing ሽልማቶችን ለመጠቀም ከቀጠሉ፣ ለዘመኑ የአገልግሎት ውሎች እየተስማሙ ነው። ካልተስማሙ፣ የPing ሽልማቶችን<ph name="RESET_START"/>ዳግም ማስጀመር<ph name="RESET_END"/> ይችላሉ፣ ይህም ባህሪውን ያሰናክላል።</translation>
+<translation id="2165953574528546737">የ <ph name="TOS_START"/>Ping ሽልማቶች የአገልግሎት ውሎች<ph name="TOS_END"/> የሚለውን ይመልከቱ</translation>
 <translation id="4776146737004271126">የAndroid ቅንብሮችን ክፈት</translation>
 </translationbundle>

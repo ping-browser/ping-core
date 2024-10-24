@@ -5,6 +5,7 @@
 
 import './background/greaselion'
 import './background/webDiscoveryProject'
+import './background/highContrastBg'
 
 if (chrome.test) {
   chrome.test.sendMessage('brave-extension-enabled')
