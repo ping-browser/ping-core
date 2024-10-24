@@ -7,25 +7,25 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "KÄYTETTÄVISSÄ OLEVAT PALVELIMET";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Osta";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Suojaa 5:tä laitetta 1:ssä tilauksessa";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Valitse sijainti tai maa";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave ei koskaan kirjaa toimintaasi";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping ei koskaan kirjaa toimintaasi";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Suojaa sovellukset ja koko laite";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Turvallinen kotona tai julkisessa Wi-Fi:ssä";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Valonnopea, jopa 100 Mb/s";
 
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
@@ -44,7 +44,7 @@
 "vpn.contactFormCarrier" = "Mobiilipalveluntarjoaja";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave ei seuraa sinua eikä tiedä, kuinka käytät sovellustamme, joten emme tiedä VPN-asetuksiasi. Jaa tietoja kohtaamastasi ongelmasta, niin teemme parhaamme ratkaistaksemme sen mahdollisimman pian.";
+"vpn.contactFormDoNotEditText" = "Ping ei seuraa sinua eikä tiedä, kuinka käytät sovellustamme, joten emme tiedä VPN-asetuksiasi. Jaa tietoja kohtaamastasi ongelmasta, niin teemme parhaamme ratkaistaksemme sen mahdollisimman pian.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Sähköpostia ei voi lähettää. Tarkista sähköpostiasetukset.";
@@ -101,9 +101,9 @@
 "vpn.contactFormTimezone" = "iOS-aikavyöhyke";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave-palomuuri ja -VPN -ongelma";
+"vpn.contactFormTitle" = "Ping-palomuuri ja -VPN -ongelma";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Ota käyttöön";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -125,7 +125,7 @@
 "vpn.installProfileButtonText" = "Asenna VPN-profiili";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave asentaa nyt VPN-profiilin.";
+"vpn.installProfileTitle" = "Ping asentaa nyt VPN-profiilin.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "VPN on nyt käytössä";
@@ -133,7 +133,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Asenna VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Kokeile ILMAISEKSI";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -222,10 +222,10 @@
 "vpn.settingsFAQ" = "VPN-tuki";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Linkitä ostos Brave-tiliisi";
+"vpn.settingsLinkReceipt" = "Linkitä ostos Ping-tiliisi";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Linkitä App Storen ostos Brave-tiliisi, jotta voit käyttää Brave VPN:ää muissa laitteissa.";
+"vpn.settingsLinkReceiptFooter" = "Linkitä App Storen ostos Ping-tiliisi, jotta voit käyttää Ping VPN:ää muissa laitteissa.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Hallitse tilausta";
@@ -261,10 +261,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Päivitä maksutapa";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Brave jatkaa suojaamistasi jopa taustalla toimiessaan.";
+"vpn.vpnBackgroundNotificationBody" = "Ping jatkaa suojaamistasi jopa taustalla toimiessaan.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave-palomuuri ja -VPN on kytketty PÄÄLLE";
+"vpn.vpnBackgroundNotificationTitle" = "Ping-palomuuri ja -VPN on kytketty PÄÄLLE";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Käytä parasta käytettävissä olevaa palvelinta";
@@ -279,7 +279,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Virhe";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave-palomuurin ja -VPN:n toiminta edellyttää, että laitteellesi on asennettu VPN-profiili.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Ping-palomuurin ja -VPN:n toiminta edellyttää, että laitteellesi on asennettu VPN-profiili.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Lupa kielletty";
@@ -300,7 +300,7 @@
 "vpn.vpnRedeemCodeButtonActionTitle" = "Lunasta koodi";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Tämä nollaa Brave-palomuurin ja -VPN:n määritykset ja korjaa mahdolliset virheet. Tämä prosessi voi kestää minuutin.";
+"vpn.vpnResetAlertBody" = "Tämä nollaa Ping-palomuurin ja -VPN:n määritykset ja korjaa mahdolliset virheet. Tämä prosessi voi kestää minuutin.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Nollaa määritykset";

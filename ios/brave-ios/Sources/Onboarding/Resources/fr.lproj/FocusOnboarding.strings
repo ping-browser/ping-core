@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Continuer";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Ouvrez tous les liens sur lesquels vous appuyez avec les protections de confidentialité de Brave";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Ouvrez tous les liens sur lesquels vous appuyez avec les protections de confidentialité de Ping";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Définir Brave comme navigateur par défaut";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Définir Ping comme navigateur par défaut";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Naviguez plus rapidement et consommez moins de données.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Indiquez-nous les fonctionnalités que vous préférez.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Améliorez Brave.";
+"focusOnboarding.p3aScreenTitle" = "Améliorez Ping.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Vous pouvez modifier ceci à tout moment dans les paramètres Brave, section \"Boucliers Brave et confidentialité\".";
+"focusOnboarding.p3aToggleDescription" = "Vous pouvez modifier ceci à tout moment dans les paramètres Ping, section \"Boucliers Ping et confidentialité\".";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Partagez des données de produits privées et anonymes.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Saisissez une URL pour apprécier d'avoir moins de publicités et de traqueurs";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Constatez la différence avec Brave";
+"focusOnboarding.urlBarIndicatorTitle" = "Constatez la différence avec Ping";
 

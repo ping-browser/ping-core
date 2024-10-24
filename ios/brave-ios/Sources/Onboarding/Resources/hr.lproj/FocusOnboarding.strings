@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Nastavite";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Svaka poveznica koju dodirnite otvara se putem zaštita privatnosti preglednika Brave";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Svaka poveznica koju dodirnite otvara se putem zaštita privatnosti preglednika Ping";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Postavljanje preglednika Brave kao zadanog preglednika";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Postavljanje preglednika Ping kao zadanog preglednika";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Pregledavajte brže i upotrebljavajte manje podataka.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Recite nam u kojim značajkama najviše uživate.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Neka preglednik Brave postane bolji.";
+"focusOnboarding.p3aScreenTitle" = "Neka preglednik Ping postane bolji.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Možete to promijeniti u okviru stavke Postavke preglednika Brave pod „Štitovi i privatnost preglednika Brave”.";
+"focusOnboarding.p3aToggleDescription" = "Možete to promijeniti u okviru stavke Postavke preglednika Ping pod „Štitovi i privatnost preglednika Ping”.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Dijelite privatne i anonimne uvide u proizvode.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Upišite URL kako biste uživali u smanjenju broja oglasā i elemenata za praćenje";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Razlika preglednika Brave";
+"focusOnboarding.urlBarIndicatorTitle" = "Razlika preglednika Ping";
 

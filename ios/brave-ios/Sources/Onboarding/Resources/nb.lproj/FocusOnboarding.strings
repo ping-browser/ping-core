@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Fortsett";
 
-/* The subtitle of the screen that requests user to set Brave as default */
+/* The subtitle of the screen that requests user to set Ping as default */
 "focusOnboarding.defaultBrowserScreenDescription" = "Åpne hver lenke du trykker på med Braves personvernbeskyttelser";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Angi Brave som standardnettleser";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Angi Ping som standardnettleser";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Surf raskere og bruk mindre data.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Fortell oss hvilke funksjoner du liker best.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Gjør Brave bedre.";
+"focusOnboarding.p3aScreenTitle" = "Gjør Ping bedre.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Endre dette når som helst i Brave-innstillingene under «Brave-skjold og -personvern».";
+"focusOnboarding.p3aToggleDescription" = "Endre dette når som helst i Ping-innstillingene under «Ping-skjold og -personvern».";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Del anonym produktinnsikt helt privat.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Skriv inn en nettadresse for å se færre annonser og sporere";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Se Brave-forskjellen";
+"focusOnboarding.urlBarIndicatorTitle" = "Se Ping-forskjellen";
 

@@ -7,25 +7,25 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "ΔΙΑΘΕΣΙΜΟΙ ΔΙΑΚΟΜΙΣΤΕΣ";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Αγορά";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Προστατέψτε 5 συσκευές με 1 συνδρομή";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Επιλέξτε την τοποθεσία της γεωγραφικής περιοχής/χώρας σας";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Το Brave δεν καταγράφει ποτέ τη δραστηριότητά σας";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Το Ping δεν καταγράφει ποτέ τη δραστηριότητά σας";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Συνολική προστασία εφαρμογών/συσκευής";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Ασφαλέστερο για οικιακό ή δημόσιο Wi-Fi";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Αστραπιαίες ταχύτητες, έως 100 Mbps";
 
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
@@ -44,7 +44,7 @@
 "vpn.contactFormCarrier" = "Εταιρεία κινητής τηλεφωνίας";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Η Brave δεν σας παρακολουθεί ούτε γνωρίζει πώς χρησιμοποιείτε την εφαρμογή μας, επομένως δεν γνωρίζουμε πώς έχετε ρυθμίσει το VPN. Στείλτε μας πληροφορίες σχετικά με το πρόβλημα που αντιμετωπίζετε και θα κάνουμε ό,τι καλύτερο μπορούμε για να το επιλύσουμε το συντομότερο δυνατό.";
+"vpn.contactFormDoNotEditText" = "Η Ping δεν σας παρακολουθεί ούτε γνωρίζει πώς χρησιμοποιείτε την εφαρμογή μας, επομένως δεν γνωρίζουμε πώς έχετε ρυθμίσει το VPN. Στείλτε μας πληροφορίες σχετικά με το πρόβλημα που αντιμετωπίζετε και θα κάνουμε ό,τι καλύτερο μπορούμε για να το επιλύσουμε το συντομότερο δυνατό.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Δεν είναι δυνατή η αποστολή email. Ελέγξτε τη διαμόρφωση του email σας.";
@@ -101,9 +101,9 @@
 "vpn.contactFormTimezone" = "Ζώνη ώρας iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Πρόβλημα Τείχους προστασίας + VPN Brave";
+"vpn.contactFormTitle" = "Πρόβλημα Τείχους προστασίας + VPN Ping";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Ενεργοποίηση";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -119,13 +119,13 @@
 "vpn.iapDisclaimer" = "Όλες οι συνδρομές ανανεώνονται αυτόματα, αλλά μπορούν να ακυρωθούν πριν από την ανανέωση.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Αυτό το προφίλ επιτρέπει στο VPN να συνδέεται αυτόματα και να ασφαλίζει συνεχώς την κυκλοφορία στη συσκευή σας. Αυτή η σύνδεση VPN θα κρυπτογραφείται και θα δρομολογείται μέσω του έξυπνου τείχους προστασίας της Brave για να αποκλείει δυνητικά επιβλαβείς και παρεμβατικές συνδέσεις.";
+"vpn.installProfileBody" = "Αυτό το προφίλ επιτρέπει στο VPN να συνδέεται αυτόματα και να ασφαλίζει συνεχώς την κυκλοφορία στη συσκευή σας. Αυτή η σύνδεση VPN θα κρυπτογραφείται και θα δρομολογείται μέσω του έξυπνου τείχους προστασίας της Ping για να αποκλείει δυνητικά επιβλαβείς και παρεμβατικές συνδέσεις.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Εγκατάσταση προφίλ VPN";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Το Brave θα εγκαταστήσει τώρα ένα προφίλ VPN.";
+"vpn.installProfileTitle" = "Το Ping θα εγκαταστήσει τώρα ένα προφίλ VPN.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "Το VPN έχει ενεργοποιηθεί";
@@ -133,7 +133,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Εγκατάσταση VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Δοκιμάστε ΔΩΡΕΑΝ";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -222,10 +222,10 @@
 "vpn.settingsFAQ" = "Υποστήριξη VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Συνδέστε την αγορά στον λογαριασμό σας Brave";
+"vpn.settingsLinkReceipt" = "Συνδέστε την αγορά στον λογαριασμό σας Ping";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Συνδέστε την αγορά σας από το App Store με τον λογαριασμό σας Brave για να χρησιμοποιήσετε το Brave VPN σε άλλες συσκευές.";
+"vpn.settingsLinkReceiptFooter" = "Συνδέστε την αγορά σας από το App Store με τον λογαριασμό σας Ping για να χρησιμοποιήσετε το Ping VPN σε άλλες συσκευές.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Διαχείριση συνδρομής";
@@ -261,10 +261,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ενημέρωση τρόπου πληρωμής";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Ακόμα και στο παρασκήνιο, το Brave θα συνεχίσει να σας προστατεύει.";
+"vpn.vpnBackgroundNotificationBody" = "Ακόμα και στο παρασκήνιο, το Ping θα συνεχίσει να σας προστατεύει.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Το Τείχος προστασίας + VPN Brave είναι ΕΝΕΡΓΟ";
+"vpn.vpnBackgroundNotificationTitle" = "Το Τείχος προστασίας + VPN Ping είναι ΕΝΕΡΓΟ";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Χρήση του καλύτερου διαθέσιμου διακομιστή";
@@ -279,7 +279,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Σφάλμα";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Το Τείχος προστασίας + VPN Brave απαιτεί την εγκατάσταση ενός προφίλ VPN στη συσκευή σας για να λειτουργήσει. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Το Τείχος προστασίας + VPN Ping απαιτεί την εγκατάσταση ενός προφίλ VPN στη συσκευή σας για να λειτουργήσει. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Η άδεια απορρίφθηκε";
@@ -294,13 +294,13 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Σφάλμα";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Οι συνδρομές θα χρεώνονται μέσω του λογαριασμού σας iTunes.\n\nΟποιοδήποτε αχρησιμοποίητο τμήμα της δωρεάν δοκιμής, εάν προσφέρεται, χάνεται όταν αγοράζετε μια συνδρομή.\n\nΗ συνδρομή σας θα ανανεώνεται αυτόματα, εκτός εάν ακυρωθεί τουλάχιστον 24 ώρες πριν από το τέλος της τρέχουσας περιόδου.\n\nΜπορείτε να διαχειρίζεστε τις συνδρομές σας στις Ρυθμίσεις.\n\nΧρησιμοποιώντας το Brave, συμφωνείτε με τους Όρους χρήσης και την Πολιτική απορρήτου.";
+"vpn.vpnIAPBoilerPlate" = "Οι συνδρομές θα χρεώνονται μέσω του λογαριασμού σας iTunes.\n\nΟποιοδήποτε αχρησιμοποίητο τμήμα της δωρεάν δοκιμής, εάν προσφέρεται, χάνεται όταν αγοράζετε μια συνδρομή.\n\nΗ συνδρομή σας θα ανανεώνεται αυτόματα, εκτός εάν ακυρωθεί τουλάχιστον 24 ώρες πριν από το τέλος της τρέχουσας περιόδου.\n\nΜπορείτε να διαχειρίζεστε τις συνδρομές σας στις Ρυθμίσεις.\n\nΧρησιμοποιώντας το Ping, συμφωνείτε με τους Όρους χρήσης και την Πολιτική απορρήτου.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Εξαργύρωση κωδικού";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Αυτή η ενέργεια θα επαναφέρει τη διαμόρφωση Τείχους προστασίας + VPN Brave και θα διορθώσει τυχόν σφάλματα. Αυτή η διαδικασία μπορεί να χρειαστεί λίγο χρόνο.";
+"vpn.vpnResetAlertBody" = "Αυτή η ενέργεια θα επαναφέρει τη διαμόρφωση Τείχους προστασίας + VPN Ping και θα διορθώσει τυχόν σφάλματα. Αυτή η διαδικασία μπορεί να χρειαστεί λίγο χρόνο.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Επαναφορά διαμόρφωσης";

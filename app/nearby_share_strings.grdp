@@ -24,7 +24,7 @@
     Only devices signed into <ph name="USER_EMAIL">$1<ex>example@gmail.com</ex></ph>
   </message>
   <message name="IDS_QUICK_SHARE_V2_VISIBILITY_CONTACTS_SUBLABEL" desc="Contacts visibility radio button sublabel.">
-    Only your contacts with a Brave sync chain. <ph name="LINK_BEGIN">&lt;a&gt;</ph>View contacts<ph name="LINK_END">&lt;/a&gt;</ph>
+    Only your contacts with a Ping sync chain. <ph name="LINK_BEGIN">&lt;a&gt;</ph>View contacts<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_QUICK_SHARE_V2_VISIBILITY_EVERYONE_LABEL" desc="Everyone visibility radio button label.">
     Everyone

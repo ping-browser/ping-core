@@ -1,5 +1,5 @@
 /* The description for the error message when the user's session has expired */
-"aichat.accountSessionExpiredDescription" = "您的 Brave 帳戶工作階段已過期。請前往您的帳戶頁面，重新整理頁面，再回來使用進階功能。";
+"aichat.accountSessionExpiredDescription" = "您的 Ping 帳戶工作階段已過期。請前往您的帳戶頁面，重新整理頁面，再回來使用進階功能。";
 
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "新增意見回饋";
@@ -16,11 +16,11 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo 是採用 AI 技術的智慧助理，內建於瀏覽器中。";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "將您的 App Store 購買項目連結至 Brave 帳戶，以便在其他裝置上使用 Leo。";
+/* The subtitle for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "將您的 App Store 購買項目連結至 Ping 帳戶，以便在其他裝置上使用 Leo。";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "將購買交易連結至您的 Brave 帳戶";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "將購買交易連結至您的 Ping 帳戶";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "到期日";
@@ -50,7 +50,7 @@
 "aichat.chatIntroJustTalkTitle" = "只想聊天嗎？";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "內建於 Brave，由人工智慧驅動的智能助理。";
+"aichat.chatIntroSubTitle" = "內建於 Ping，由人工智慧驅動的智能助理。";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "您好，我是 Leo！";
@@ -122,7 +122,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "已表達喜歡此回答";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "提供 Brave 人工智慧意見反應";
+"aichat.feedbackViewMainTitle" = "提供 Ping 人工智慧意見反應";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "訂閱 Premium";
@@ -131,7 +131,7 @@
 "aichat.infoAboutPageContext" = "根據頁面内容產生回答";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "您好，我是 Leo。我是由 Brave 代理，並使用 Anthropic 建立的 Claude 3 Haiku 模型來處理對話與文字處理工作。";
+"aichat.introMessageClaudeHaikuMessageDescription" = "您好，我是 Leo。我是由 Ping 代理，並使用 Anthropic 建立的 Claude 3 Haiku 模型來處理對話與文字處理工作。";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "由 Anthropic 建置的 Claude Haiku";
@@ -146,13 +146,13 @@
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "兼顧速度與智慧";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "您好，我是 Leo。我是 Brave 的 AI 助理，由 %@ 提供技術支援。歡迎詢問我任何問題，我會盡力回答。";
+"aichat.introMessageGenericMessageDescription" = "您好，我是 Leo。我是 Ping 的 AI 助理，由 %@ 提供技術支援。歡迎詢問我任何問題，我會盡力回答。";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "一般目的聊天";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "您好，我是 Leo。我是完全託管於 Brave 的 AI 助理，由 Mixtral 8x7B 提供技術支援，這是 Mistral AI 建立的模型，可用於處理進階工作。";
+"aichat.introMessageMixtralMessageDescription" = "您好，我是 Leo。我是完全託管於 Ping 的 AI 助理，由 Mixtral 8x7B 提供技術支援，這是 Mistral AI 建立的模型，可用於處理進階工作。";
 
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "由 Mistral AI 建置的 Mixtral";
@@ -173,13 +173,13 @@
 "aichat.leoImprovedAnswerBraveSearch" = "改善以下的搜尋結果：";
 
 /* The text displayed on the loading screen when searching for a user query */
-"aichat.leoImprovingAnswerBraveSearch" = "正在改善 Brave Search 的搜尋結果…";
+"aichat.leoImprovingAnswerBraveSearch" = "正在改善 Ping Search 的搜尋結果…";
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo 人工智能";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "切換到開以詢問此頁面。其內容將與您的訊息一起傳送給 Brave Leo。";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "切換到開以詢問此頁面。其內容將與您的訊息一起傳送給 Ping Leo。";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "頁面內容資訊";
@@ -200,7 +200,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "管理訂閱";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "請在 iOS 系統設定中賦予麥克風存取權限，允許 Brave 使用匿名語音輸入。";
+"aichat.microphonePermissionAlertDescription" = "請在 iOS 系統設定中賦予麥克風存取權限，允許 Ping 使用匿名語音輸入。";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "需要麥克風存取權限";
@@ -317,7 +317,7 @@
 "aichat.resetLeoDataAlertButtonTitle" = "重設";
 
 /* The description for the error whre leo data reset */
-"aichat.resetLeoDataErrorDescription" = "確定要重設並清除 Brave 資料嗎？";
+"aichat.resetLeoDataErrorDescription" = "確定要重設並清除 Ping 資料嗎？";
 
 /* The title for the error whre leo data reset */
 "aichat.resetLeoDataErrorTitle" = "重設 Leo 資料";
@@ -341,7 +341,7 @@
 "aichat.retryActionTitle" = "重試";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave 不會儲存或分享您的語音搜尋。";
+"aichat.speechRecognizerDisclaimer" = "Ping 不會儲存或分享您的語音搜尋。";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "建議問題…";
@@ -349,14 +349,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "總結此頁面";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "我瞭解";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo 是私人 AI 智慧助理，可提升您的網路使用體驗。您可以免費使用 Leo，但存取權限會受到限制。Brave Leo Premium 提供更多模型、提高上限，訂閱者還能搶先使用新功能。目前所有使用者的預設模型為 Mixtral 8x7B。如需瞭解詳細資訊，請瀏覽 Brave **[說明中心](%1$@)**。\n\n根據預設，當您向 Leo 提問，系統可能會傳送並使用您正在瀏覽的網頁內容，或將您在頁面上醒目標示的任何文字傳送給 Brave Leo，以便為您提供回應。某些情況下，Leo 會將您輸入內容所衍生的查詢傳送到 Brave Search，並使用搜尋結果為您提供更好的答案。我們無法保證回應的準確度，且其中可能含有不準確、誤導或錯誤的資訊。請勿送出敏感資料或私人資訊，並請審慎使用任何有關健康、財務、個人安全或類似主題的答案。您可以隨時前往「設定」調整 Leo 的選項。如要調整，請依序前往「設定」和「Leo」。\n\nLeo 不會收集識別碼，例如可連結到您所在位置的 IP 位址等。我們不會使用資料來訓練 AI 模型，AI 模型也不會保留任何個人資料 (除了 Anthropic 會保留資料 30 天後再予以刪除)。如需瞭解詳細資訊，請參閱**[隱私權政策](%2$@)**。";
+"aichat.termsConditionsDescription" = "Ping Leo 是私人 AI 智慧助理，可提升您的網路使用體驗。您可以免費使用 Leo，但存取權限會受到限制。Ping Leo Premium 提供更多模型、提高上限，訂閱者還能搶先使用新功能。目前所有使用者的預設模型為 Mixtral 8x7B。如需瞭解詳細資訊，請瀏覽 Ping **[說明中心](%1$@)**。\n\n根據預設，當您向 Leo 提問，系統可能會傳送並使用您正在瀏覽的網頁內容，或將您在頁面上醒目標示的任何文字傳送給 Ping Leo，以便為您提供回應。某些情況下，Leo 會將您輸入內容所衍生的查詢傳送到 Ping Search，並使用搜尋結果為您提供更好的答案。我們無法保證回應的準確度，且其中可能含有不準確、誤導或錯誤的資訊。請勿送出敏感資料或私人資訊，並請審慎使用任何有關健康、財務、個人安全或類似主題的答案。您可以隨時前往「設定」調整 Leo 的選項。如要調整，請依序前往「設定」和「Leo」。\n\nLeo 不會收集識別碼，例如可連結到您所在位置的 IP 位址等。我們不會使用資料來訓練 AI 模型，AI 模型也不會保留任何個人資料 (除了 Anthropic 會保留資料 30 天後再予以刪除)。如需瞭解詳細資訊，請參閱**[隱私權政策](%2$@)**。";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "與 Brave Leo 對話時保障隱私";
+"aichat.termsConditionsTitle" = "與 Ping Leo 對話時保障隱私";
 
 /* The title of the badge where a model which can be used unlimited */
 "aichat.unlimitedModelStatusTitle" = "無上限";

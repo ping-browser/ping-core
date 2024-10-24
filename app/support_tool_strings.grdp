@@ -139,7 +139,7 @@
         <message name="IDS_SUPPORT_TOOL_DBUS_DETAILS" desc="DBus memory details. DBus is a message-oriented middleware mechanism that allows communication between multiple processes running concurrently on the same machine.">
             DBus Details
         </message>
-        <message name="IDS_SUPPORT_TOOL_CHROMEOS_NETWORK_ROUTES" desc="Network routes information for ChromeOS. Network routing is the process of selecting a path for a packet to travel between networks. An IP route consists of simply a mapping of a destination IP address or network to a next hop and interface.">
+        <message name="IDS_SUPPORT_TOOL_CHROMEOS_NETWORK_ROUTES" desc="Network routes information for ChromeOS. Network routing is the process of selecting a path for a packet to travel between networks. An IP route consists of simply a mapbrave of a destination IP address or network to a next hop and interface.">
             ChromeOS Network Routes
         </message>
         <message name="IDS_SUPPORT_TOOL_CHROMEOS_SHILL_LOGS" desc="Logs from ChromeOS connection manager, Shill.">

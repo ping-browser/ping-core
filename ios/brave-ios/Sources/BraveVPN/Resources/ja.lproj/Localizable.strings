@@ -7,25 +7,25 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "利用可能なサービス";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "購入する";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "1つのサブスクリプションで5台のデバイスを保護";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "あなたの位置/国を選択する";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxNoIPLog" = "Braveはブラウザ上のアクティビティを記録しません";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "各アプリとデバイス全体を保護";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "ご自宅や公共Wi-Fiでの安全確保に";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "最高100 Mbps、超高速のパフォーマンス";
 
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
@@ -101,9 +101,9 @@
 "vpn.contactFormTimezone" = "タイムゾーン";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + VPNに関わる問題";
+"vpn.contactFormTitle" = "Ping Firewall + VPNに関わる問題";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "有効にする";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -125,7 +125,7 @@
 "vpn.installProfileButtonText" = "VPNプロファイルをインストール";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave は VPN プロファイルをインストールしています。";
+"vpn.installProfileTitle" = "Ping は VPN プロファイルをインストールしています。";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "VPNが有効化されました";
@@ -133,7 +133,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "VPNをインストール";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "無料で試してみる";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -225,7 +225,7 @@
 "vpn.settingsLinkReceipt" = "Braveアカウントに購入情報をリンク";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでBrave VPNを利用できます。";
+"vpn.settingsLinkReceiptFooter" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでPing VPNを利用できます。";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "購読の管理";
@@ -264,7 +264,7 @@
 "vpn.vpnBackgroundNotificationBody" = "バックグラウンドでもBraveはあなたを保護します";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPNは有効です";
+"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPNは有効です";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "利用できる最適なサーバーを使用";
@@ -279,7 +279,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "エラー";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPNを使用するには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Ping Firewall + VPNを使用するには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "パーミッションが拒否されました";
@@ -300,7 +300,7 @@
 "vpn.vpnRedeemCodeButtonActionTitle" = "コードを使用";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "この操作を実行するとBrave Firewall + VPNの構成はリセットされ、発生しているエラーが修正されます。プロセス完了までに約1分かかる場合があります。";
+"vpn.vpnResetAlertBody" = "この操作を実行するとPing Firewall + VPNの構成はリセットされ、発生しているエラーが修正されます。プロセス完了までに約1分かかる場合があります。";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "設定リセット";

@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Folytatás";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Minden megnyitott hivatkozás a Brave adatvédelmi beállításaival fog megnyílni";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Minden megnyitott hivatkozás a Ping adatvédelmi beállításaival fog megnyílni";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "A Brave beállítása alapértelmezett böngészőként";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "A Ping beállítása alapértelmezett böngészőként";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Gyorsabb böngészés és kevesebb adatfelhasználás.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Tudassa velünk, mely funkciókat élvezi leginkább.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Segítsen a Brave továbbfejlesztésében.";
+"focusOnboarding.p3aScreenTitle" = "Segítsen a Ping továbbfejlesztésében.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Ezt bármikor módosíthatja a Brave beállításokban, a „Brave pajzsok és adatvédelem” alatt.";
+"focusOnboarding.p3aToggleDescription" = "Ezt bármikor módosíthatja a Ping beállításokban, a „Ping pajzsok és adatvédelem” alatt.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Privát és névtelen termékelemzések megosztása.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Adjon meg egy URL-t, és élvezze a kevesebb hirdetést és nyomkövetőt";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Tapasztalja meg a Brave élményt";
+"focusOnboarding.urlBarIndicatorTitle" = "Tapasztalja meg a Ping élményt";
 

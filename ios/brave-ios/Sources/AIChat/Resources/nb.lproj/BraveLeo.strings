@@ -1,5 +1,5 @@
 /* The description for the error message when the user's session has expired */
-"aichat.accountSessionExpiredDescription" = "Brave-kontoøkten har utløpt. Gå til kontosiden din for å oppdatere, og kom deretter tilbake for å benytte deg av premiumfunksjoner.";
+"aichat.accountSessionExpiredDescription" = "Ping-kontoøkten har utløpt. Gå til kontosiden din for å oppdatere, og kom deretter tilbake for å benytte deg av premiumfunksjoner.";
 
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Send inn tilbakemelding";
@@ -16,11 +16,11 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo er en AI-basert smart assistent – bygget inn i nettleseren.";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Koble App Store-kjøpet ditt til Brave-kontoen din for å bruke Leo på andre enheter.";
+/* The subtitle for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Koble App Store-kjøpet ditt til Ping-kontoen din for å bruke Leo på andre enheter.";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "Koble kjøpet til Brave-kontoen din";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Koble kjøpet til Ping-kontoen din";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Utløper";
@@ -50,7 +50,7 @@
 "aichat.chatIntroJustTalkTitle" = "Vil du bare prate litt?";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "EN AI-basert digital assistent – innebygd i Brave.";
+"aichat.chatIntroSubTitle" = "EN AI-basert digital assistent – innebygd i Ping.";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "Hei! Jeg heter Leo.";
@@ -122,7 +122,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Tommel opp til svaret";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Gi en tilbakemelding om Brave AI";
+"aichat.feedbackViewMainTitle" = "Gi en tilbakemelding om Ping AI";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Prøv Premium";
@@ -131,7 +131,7 @@
 "aichat.infoAboutPageContext" = "Baser svarene på innholdet på nettsiden";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hei! Jeg heter Leo. Jeg er tilgjengelig gjennom Brave og driftes av Claude 3 Haiku – en modell laget av Anthropic for å kunne ha samtaler og behandle tekst.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hei! Jeg heter Leo. Jeg er tilgjengelig gjennom Ping og driftes av Claude 3 Haiku – en modell laget av Anthropic for å kunne ha samtaler og behandle tekst.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku av Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Balansert hastighet og intelligens";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "Hei! Jeg heter Leo, og er en AI-assistent fra %@ som du kan snakke med gjennom Brave. Spør meg om hva som helst, så skal jeg svare deg så godt jeg kan!";
+"aichat.introMessageGenericMessageDescription" = "Hei! Jeg heter Leo, og er en AI-assistent fra %@ som du kan snakke med gjennom Ping. Spør meg om hva som helst, så skal jeg svare deg så godt jeg kan!";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Generell chat";
@@ -173,13 +173,13 @@
 "aichat.leoImprovedAnswerBraveSearch" = "Forbedrede svar ved søk etter";
 
 /* The text displayed on the loading screen when searching for a user query */
-"aichat.leoImprovingAnswerBraveSearch" = "Forbedrer svaret med Brave Søk …";
+"aichat.leoImprovingAnswerBraveSearch" = "Forbedrer svaret med Ping Søk …";
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo AI";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Slå på for å spørre om denne siden. Innholdet sendes til Brave Leo sammen med meldingene dine.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Slå på for å spørre om denne siden. Innholdet sendes til Ping Leo sammen med meldingene dine.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Sidekontekst-informasjon";
@@ -200,7 +200,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Administrer abonnementer";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Gi mikrofontilgang i iOS-systeminnstillingene for Brave for å bruke anonyme taleinnlegg.";
+"aichat.microphonePermissionAlertDescription" = "Gi mikrofontilgang i iOS-systeminnstillingene for Ping for å bruke anonyme taleinnlegg.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Mikrofontilgang kreves";
@@ -341,7 +341,7 @@
 "aichat.retryActionTitle" = "Prøv på nytt";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave verken lagrer eller deler talesøkene dine.";
+"aichat.speechRecognizerDisclaimer" = "Ping verken lagrer eller deler talesøkene dine.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Foreslå spørsmål …";
@@ -349,14 +349,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Oppsummer denne siden";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "OK";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo er en privat KI-basert smart assistent som forbedrer måtene du bruker nettet på. Leo kan brukes gratis, med begrenset tilgang. Brave Leo Premium har flere modeller og høyere bruksgrenser, og gir abonnenter tidlig tilgang til nye funksjoner. Standardmodellen for alle brukere er per nå Mixtral 8x7B. Se Brave **[Hjelpesenter](%1$@)** for mer informasjon.\n\nNår du stiller Leo spørsmål, vil Leo som standard sende og bruke innholdet på nettsiden du ser på, eller tekst du har markert på siden, til Brave Leo for å generere svar. I noen tilfeller vil Leo sende spørringer avledet av det du har skrevet, til Brave Søk, og bruke søkeresultatene derfra for å kunne gi deg bedre svar. Vi garanterer ikke for at svarene du får, er riktige eller nøyaktige. De kan inneholde uriktig, falsk og villedende informasjon. Ikke send inn privat eller sensitiv informasjon, og vær forsiktig med alle svar som handler om helse, økonomi, personlig sikkerhet og lignende. Du kan justere innstillingene for Leo når du vil, i Innstillinger > Leo.\n\nLeo samler ikke inn identifikatorer som IP-adresse og lignende som kan knyttes til deg. Ingen opplysninger brukes til å trene opp KI-modellene, og ingen personopplysninger lagres av KI-modellene (unntatt Anthropic, som lagrer data i 30 dager før de slettes). Les **[personvernerklæringen](%2$@)** for mer informasjon.";
+"aichat.termsConditionsDescription" = "Ping Leo er en privat KI-basert smart assistent som forbedrer måtene du bruker nettet på. Leo kan brukes gratis, med begrenset tilgang. Ping Leo Premium har flere modeller og høyere bruksgrenser, og gir abonnenter tidlig tilgang til nye funksjoner. Standardmodellen for alle brukere er per nå Mixtral 8x7B. Se Ping **[Hjelpesenter](%1$@)** for mer informasjon.\n\nNår du stiller Leo spørsmål, vil Leo som standard sende og bruke innholdet på nettsiden du ser på, eller tekst du har markert på siden, til Ping Leo for å generere svar. I noen tilfeller vil Leo sende spørringer avledet av det du har skrevet, til Ping Søk, og bruke søkeresultatene derfra for å kunne gi deg bedre svar. Vi garanterer ikke for at svarene du får, er riktige eller nøyaktige. De kan inneholde uriktig, falsk og villedende informasjon. Ikke send inn privat eller sensitiv informasjon, og vær forsiktig med alle svar som handler om helse, økonomi, personlig sikkerhet og lignende. Du kan justere innstillingene for Leo når du vil, i Innstillinger > Leo.\n\nLeo samler ikke inn identifikatorer som IP-adresse og lignende som kan knyttes til deg. Ingen opplysninger brukes til å trene opp KI-modellene, og ingen personopplysninger lagres av KI-modellene (unntatt Anthropic, som lagrer data i 30 dager før de slettes). Les **[personvernerklæringen](%2$@)** for mer informasjon.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Chat privat med Brave Leo";
+"aichat.termsConditionsTitle" = "Chat privat med Ping Leo";
 
 /* The title of the badge where a model which can be used unlimited */
 "aichat.unlimitedModelStatusTitle" = "Ubgrenset";

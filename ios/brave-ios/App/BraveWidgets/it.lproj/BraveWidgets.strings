@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Solo per conferma, volevi “Playlist Brave”?";
+"e13lS3-FGO5qW" = "Solo per conferma, volevi “Playlist Ping”?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Solo per conferma, volevi “Portafoglio Brave”?";
+"e13lS3-jXiFQY" = "Solo per conferma, volevi “Portafoglio Ping”?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Solo per conferma, volevi “Download”?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Solo per conferma, volevi “News Brave”?";
+"e13lS3-XCyA8c" = "Solo per conferma, volevi “News Ping”?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Solo per conferma, volevi “Ricerca”?";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Ci sono ${count} opzioni per “Playlist Brave”.";
+"L1fziM-FGO5qW" = "Ci sono ${count} opzioni per “Playlist Ping”.";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Ci sono ${count} opzioni per “Portafoglio Brave”.";
+"L1fziM-jXiFQY" = "Ci sono ${count} opzioni per “Portafoglio Ping”.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Ci sono ${count} opzioni che corrispondono a “Download”.";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Ci sono ${count} opzioni per “News Brave”.";
+"L1fziM-XCyA8c" = "Ci sono ${count} opzioni per “News Ping”.";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Ci sono ${count} opzioni per “Ricerca”.";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Solo per conferma, volevi “Playlist Brave”?";
+"r2EI05-FGO5qW" = "Solo per conferma, volevi “Playlist Ping”?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Solo per conferma, volevi “Portafoglio Brave”?";
+"r2EI05-jXiFQY" = "Solo per conferma, volevi “Portafoglio Ping”?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Solo per conferma, volevi “Download”?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Solo per conferma, volevi “News Brave”?";
+"r2EI05-XCyA8c" = "Solo per conferma, volevi “News Ping”?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Solo per conferma, volevi “Ricerca”?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Ci sono ${count} opzioni per “Playlist di Brave”.";
+"tNCrcE-FGO5qW" = "Ci sono ${count} opzioni per “Playlist di Ping”.";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Ci sono ${count} opzioni per “Portafoglio di Brave”.";
+"tNCrcE-jXiFQY" = "Ci sono ${count} opzioni per “Portafoglio di Ping”.";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "Ci sono ${count} opzioni che corrispondono a “Download”.";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Ci sono ${count} opzioni per “News Brave”.";
+"tNCrcE-XCyA8c" = "Ci sono ${count} opzioni per “News Ping”.";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Ci sono ${count} opzioni per “Ricerca”.";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Ci sono ${count} opzioni per “Playlist Brave”.";
+"TxuMja-FGO5qW" = "Ci sono ${count} opzioni per “Playlist Ping”.";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Ci sono ${count} opzioni per “Portafoglio di Brave”.";
+"TxuMja-jXiFQY" = "Ci sono ${count} opzioni per “Portafoglio di Ping”.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Ci sono ${count} opzioni che corrispondono a “Download”.";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Ci sono ${count} opzioni per “News Brave”.";
+"TxuMja-XCyA8c" = "Ci sono ${count} opzioni per “News Ping”.";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Ci sono ${count} opzioni per “Ricerca”.";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Solo per conferma, volevi “Playlist Brave”?";
+"YQiQuz-FGO5qW" = "Solo per conferma, volevi “Playlist Ping”?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Solo per conferma, volevi “Portafoglio Brave”?";
+"YQiQuz-jXiFQY" = "Solo per conferma, volevi “Portafoglio Ping”?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Solo per conferma, volevi “Download”?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Solo per conferma, volevi “News Brave”?";
+"YQiQuz-XCyA8c" = "Solo per conferma, volevi “News Ping”?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Solo per conferma, volevi “Ricerca”?";

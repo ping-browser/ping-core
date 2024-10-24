@@ -1,5 +1,5 @@
 /* The description for the error message when the user's session has expired */
-"aichat.accountSessionExpiredDescription" = "A Brave-fiókja bejelentkezési munkamenete lejárt. A frissítéshez látogasson el a fiókja oldalára, majd térjen vissza ide a prémium funkciók használatához.";
+"aichat.accountSessionExpiredDescription" = "A Ping-fiókja bejelentkezési munkamenete lejárt. A frissítéshez látogasson el a fiókja oldalára, majd térjen vissza ide a prémium funkciók használatához.";
 
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Visszajelzés hozzáadása";
@@ -16,11 +16,11 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "A Leo egy mesterséges intelligencián alapuló, intelligens asszisztens, közvetlenül a böngészőbe építve.";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Kapcsolja össze App Store-vásárlását a Brave-fiókjával, hogy más eszközökön is használni tudja a Leót.";
+/* The subtitle for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Kapcsolja össze App Store-vásárlását a Ping-fiókjával, hogy más eszközökön is használni tudja a Leót.";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "Kapcsolja a vásárlást a Brave-fiókjához";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Kapcsolja a vásárlást a Ping-fiókjához";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Lejár";
@@ -50,7 +50,7 @@
 "aichat.chatIntroJustTalkTitle" = "Csak csevegni szeretne?";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "Egy MI-alapú intelligens asszisztens, amely közvetlenül a Brave-ből elérhető.";
+"aichat.chatIntroSubTitle" = "Egy MI-alapú intelligens asszisztens, amely közvetlenül a Ping-ből elérhető.";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "Üdv, Leo vagyok!";
@@ -122,7 +122,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "A válasz tetszett";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Visszajelzés küldése a Brave MI-vel kapcsolatban";
+"aichat.feedbackViewMainTitle" = "Visszajelzés küldése a Ping MI-vel kapcsolatban";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Váltás Premiumra";
@@ -131,7 +131,7 @@
 "aichat.infoAboutPageContext" = "Alakítsa a válaszokat az oldal tartalma alapján";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude 3 Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Üdv, Leo vagyok. A Ping proxyval üzemeltetnek, a működésem pedig a Claude 3 Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Anthropic - Claude Haiku";
@@ -146,13 +146,13 @@
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Kiegyensúlyozott sebesség és intelligencia";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "Szia, Leo vagyok, a Brave MI-asszisztense. Engem a(z) %@ üzemeltet. Kérdezz bármit, és legjobb tudásom szerint igyekszem válaszolni.";
+"aichat.introMessageGenericMessageDescription" = "Szia, Leo vagyok, a Ping MI-asszisztense. Engem a(z) %@ üzemeltet. Kérdezz bármit, és legjobb tudásom szerint igyekszem válaszolni.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Általános célú csevegés";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Üdvözlöm, Leo vagyok! A Brave MI-asszisztense vagyok. Mixtral 8x7B motorral működöm, ami egy, a Mistral AI által kifejezetten az összetett feladatok végrehajtására kifejlesztett modell.";
+"aichat.introMessageMixtralMessageDescription" = "Üdvözlöm, Leo vagyok! A Ping MI-asszisztense vagyok. Mixtral 8x7B motorral működöm, ami egy, a Mistral AI által kifejezetten az összetett feladatok végrehajtására kifejlesztett modell.";
 
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral a Mistral AI-tól";
@@ -173,13 +173,13 @@
 "aichat.leoImprovedAnswerBraveSearch" = "Továbbfejlesztett válaszkeresés:";
 
 /* The text displayed on the loading screen when searching for a user query */
-"aichat.leoImprovingAnswerBraveSearch" = "Jobb válasz a Brave kereső használatával...";
+"aichat.leoImprovingAnswerBraveSearch" = "Jobb válasz a Ping kereső használatával...";
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo MI";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Kapcsolja be az oldallal kapcsolatos kérdésekhez. A tartalom továbbítva lesz a Brave Leónak az Ön üzeneteivel együtt.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Kapcsolja be az oldallal kapcsolatos kérdésekhez. A tartalom továbbítva lesz a Ping Leónak az Ön üzeneteivel együtt.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Oldalkörnyezeti információ";
@@ -200,7 +200,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Követések kezelése";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Kérjük, engedélyezze a mikrofonhoz való hozzáférést az iOS rendszerbeállításaiban, hogy a Brave névtelen hangbevitelt használhasson.";
+"aichat.microphonePermissionAlertDescription" = "Kérjük, engedélyezze a mikrofonhoz való hozzáférést az iOS rendszerbeállításaiban, hogy a Ping névtelen hangbevitelt használhasson.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Mikrofon-hozzáférés szükséges";
@@ -341,7 +341,7 @@
 "aichat.retryActionTitle" = "Újra";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "A Brave nem tárolja és nem osztja meg hangbemeneteit.";
+"aichat.speechRecognizerDisclaimer" = "A Ping nem tárolja és nem osztja meg hangbemeneteit.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Kérdések javasolása...";
@@ -349,14 +349,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Lap összefoglalása";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Megértettem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "A Brave Leo egy privát mesterséges intelligens asszisztens, amely javítja az internethasználatot. A Leo korlátozott hozzáféréssel ingyenesen használható. A Brave Leo Premium több modellt, magasabb korlátokat kínál, és korai hozzáférést biztosít az előfizetőknek az új funkciókhoz. Az összes felhasználó alapértelmezett modellje jelenleg a Mixtral 8x7B. A további részleteket lásd: Brave **[Súgó] (%1$ @)**.\n\nAlapértelmezetten, amikor feltesz egy kérdést Leónak, elküldheti a Brave Leo számára és a válaszadáshoz felhasználhatja az éppen megtekintett weboldal tartalmát vagy az Ön által kiemelt szöveget. Bizonyos esetekben a Leo az Ön által megadott adatokból származó lekérdezéseket küld a Brave keresőnek, és a keresési eredményeket felhasználja az Ön kérdésének jobb megválaszolására. A válaszok pontossága nem garantált, és tartalmazhat pontatlan, félrevezető vagy hamis információkat. Ne adjon meg bizalmas vagy magánjellegű információkat, és legyen körültekintő az egészséggel, pénzügyekkel, személyes biztonsággal vagy hasonlókkal kapcsolatos válaszokkal. A Leo beállításait bármikor módosíthatja a Beállításokban. Ehhez lépjen a Beállítások > Leo lehetőségre.\n\nA Leo nem gyűjt olyan azonosítókat, mint például az Ön IP-címe, amely összekapcsolható Önnel. Az MI-modellek betanításához nem kerülnek felhasználásra adatok, és az MI-modellek nem tárolnak személyes adatokat (az Anthropic kivételével, amely 30 napig tárolja az adatokat törlés előtt). További információkat lásd: **[adatvédelmi szabályzat](%2$ @)**.";
+"aichat.termsConditionsDescription" = "A Ping Leo egy privát mesterséges intelligens asszisztens, amely javítja az internethasználatot. A Leo korlátozott hozzáféréssel ingyenesen használható. A Ping Leo Premium több modellt, magasabb korlátokat kínál, és korai hozzáférést biztosít az előfizetőknek az új funkciókhoz. Az összes felhasználó alapértelmezett modellje jelenleg a Mixtral 8x7B. A további részleteket lásd: Ping **[Súgó] (%1$ @)**.\n\nAlapértelmezetten, amikor feltesz egy kérdést Leónak, elküldheti a Ping Leo számára és a válaszadáshoz felhasználhatja az éppen megtekintett weboldal tartalmát vagy az Ön által kiemelt szöveget. Bizonyos esetekben a Leo az Ön által megadott adatokból származó lekérdezéseket küld a Ping keresőnek, és a keresési eredményeket felhasználja az Ön kérdésének jobb megválaszolására. A válaszok pontossága nem garantált, és tartalmazhat pontatlan, félrevezető vagy hamis információkat. Ne adjon meg bizalmas vagy magánjellegű információkat, és legyen körültekintő az egészséggel, pénzügyekkel, személyes biztonsággal vagy hasonlókkal kapcsolatos válaszokkal. A Leo beállításait bármikor módosíthatja a Beállításokban. Ehhez lépjen a Beállítások > Leo lehetőségre.\n\nA Leo nem gyűjt olyan azonosítókat, mint például az Ön IP-címe, amely összekapcsolható Önnel. Az MI-modellek betanításához nem kerülnek felhasználásra adatok, és az MI-modellek nem tárolnak személyes adatokat (az Anthropic kivételével, amely 30 napig tárolja az adatokat törlés előtt). További információkat lásd: **[adatvédelmi szabályzat](%2$ @)**.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Csevegjen privátban a Brave Leóval";
+"aichat.termsConditionsTitle" = "Csevegjen privátban a Ping Leóval";
 
 /* The title of the badge where a model which can be used unlimited */
 "aichat.unlimitedModelStatusTitle" = "Korlátlan";

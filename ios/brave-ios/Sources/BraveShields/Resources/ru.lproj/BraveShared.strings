@@ -7,8 +7,8 @@
 /* A title within a cell where a user can navigate to an add screen. */
 "AddFilterByURL" = "Добавить фильтр по URL";
 
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "Смотрите видео без рекламы и помех с **Brave Проигрывателем**.";
+/* A discription of the Ping Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "Смотрите видео без рекламы и помех с **Ping Проигрывателем**.";
 
 /* A button that disables ad-blocking and uses brave player. */
 "AntiAdBlockWarningConfirmationButton" = "Изменить настройки щитов";
@@ -17,7 +17,7 @@
 "AntiAdBlockWarningDescription" = "Этот сайт начал запрещать некоторые блокировщики рекламы. Часть его функций могут не работать.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Чтобы решить проблему, Brave может изменить настройки щитов. После этого попробуйте воспользоваться Brave Проигрывателем.";
+"AntiAdBlockWarningDescription2" = "Чтобы решить проблему, Ping может изменить настройки щитов. После этого попробуйте воспользоваться Ping Проигрывателем.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Оставить без изменений";
@@ -44,10 +44,10 @@
 "blockMobileAnnoyances" = "Блокировать всплывающие окна и не переходить в приложения";
 
 /* Title for the brave player feature */
-"BravePlayer" = "Brave Проигрыватель";
+"BravePlayer" = "Ping Проигрыватель";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Всегда открывать видео с этого сайта в Brave Проигрывателе";
+"BravePlayerAlwaysOpenYouTubeLinks" = "Всегда открывать видео с этого сайта в Ping Проигрывателе";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "Попробовать";
@@ -56,10 +56,10 @@
 "BravePlayerDismissButton" = "Не сейчас";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Смотрите видео без помех с Brave Проигрывателем.";
+"BravePlayerInfoMessage" = "Смотрите видео без помех с Ping Проигрывателем.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Перейдите в Brave Проигрыватель";
+"BravePlayerInfoTitle" = "Перейдите в Ping Проигрыватель";
 
 /* A title to the content filtering page under global shield settings and the title on the Content filtering page */
 "ContentFiltering" = "Фильтры контента";
@@ -95,10 +95,10 @@
 "DomainBlockedGoBackAction" = "Назад";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Браузер Brave заблокировал этот сайт перед первым подключением, потому что вы настроили полную блокировку трекеров и рекламы.";
+"DomainBlockedPageDescription" = "Браузер Ping заблокировал этот сайт перед первым подключением, потому что вы настроили полную блокировку трекеров и рекламы.";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "Brave предотвратил загрузку следующего сайта:";
+"DomainBlockedPageMessage" = "Ping предотвратил загрузку следующего сайта:";
 
 /* A title in the warning page that appears when a page was blocked */
 "DomainBlockedPageTitle" = "Этот сайт может отслеживать ваши действия в сети";

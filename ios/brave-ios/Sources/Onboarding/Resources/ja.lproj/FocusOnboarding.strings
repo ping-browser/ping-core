@@ -1,10 +1,10 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "続ける";
 
-/* The subtitle of the screen that requests user to set Brave as default */
+/* The subtitle of the screen that requests user to set Ping as default */
 "focusOnboarding.defaultBrowserScreenDescription" = "タップしたリンクをプライバシー保護のBraveで開きます";
 
-/* The title of the screen that requests user to set Brave as default */
+/* The title of the screen that requests user to set Ping as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Braveをデフォルトブラウザに設定しましょう";
 
 /* The subtitle of the screen that shows ads are blocked */
@@ -29,7 +29,7 @@
 "focusOnboarding.p3aScreenTitle" = "Braveは進化を続けます";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "この設定は \"Brave Shields & プライバシー\" でいつでも変更できます";
+"focusOnboarding.p3aToggleDescription" = "この設定は \"Ping Shields & プライバシー\" でいつでも変更できます";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "プライバシーを保護した匿名のプロダクト分析を共有します。";

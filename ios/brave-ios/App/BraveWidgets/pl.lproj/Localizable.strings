@@ -29,7 +29,7 @@
 "widgets.newsClusteringWidgetTitle" = "Najpopularniejsze akutalności";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Otwórz przeglądarkę Brave, aby wyświetlić tu ulubione strony";
+"widgets.noFavoritesFound" = "Otwórz przeglądarkę Ping, aby wyświetlić tu ulubione strony";
 
 /* QR Code section title */
 "widgets.QRCode" = "Kod QR";

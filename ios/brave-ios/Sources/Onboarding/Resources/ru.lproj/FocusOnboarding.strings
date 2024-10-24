@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Продолжить";
 
-/* The subtitle of the screen that requests user to set Brave as default */
+/* The subtitle of the screen that requests user to set Ping as default */
 "focusOnboarding.defaultBrowserScreenDescription" = "Это позволит нам защищать вашу конфиденциальность на всех вкладках, которые вы открываете.";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Сделайте Brave браузером по умолчанию";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Сделайте Ping браузером по умолчанию";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Быстрая загрузка страниц и экономия трафика.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Какие функции вам нравятся больше всего?";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Помогите нам сделать Brave лучше";
+"focusOnboarding.p3aScreenTitle" = "Помогите нам сделать Ping лучше";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Отключить эту опцию можно в любой момент в разделе настроек «Brave Щит и конфиденциальность».";
+"focusOnboarding.p3aToggleDescription" = "Отключить эту опцию можно в любой момент в разделе настроек «Ping Щит и конфиденциальность».";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Делиться конфиденциальными и анонимными сведениями о продукте";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Чтобы уменьшить количество трекеров и рекламы, введите URL.";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Ощутите разницу с Brave";
+"focusOnboarding.urlBarIndicatorTitle" = "Ощутите разницу с Ping";
 

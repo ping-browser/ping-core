@@ -7,25 +7,25 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "DOSTUPNÉ SERVERY";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Koupit";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Na 1 předplatné ochrana až 5 zařízení";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Zvolte zeměpisnou polohu/zemi";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave nikdy nezaznamenává vaši aktivitu";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping nikdy nezaznamenává vaši aktivitu";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Chraňte každou aplikaci a vaše zaříz.";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Bezpečnější na domácí i veřejné Wi-Fi";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Blesková rychlost až 100 Mb/s";
 
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
@@ -44,7 +44,7 @@
 "vpn.contactFormCarrier" = "Mobilní operátor";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave vás nesleduje a ani neví, jak používáte naši aplikaci, takže nevíme, jak jste nastavili VPN. Sdílejte prosím informace o problému, se kterým se potýkáte, a my se budeme snažit jej vyřešit, jakmile to bude možné.";
+"vpn.contactFormDoNotEditText" = "Ping vás nesleduje a ani neví, jak používáte naši aplikaci, takže nevíme, jak jste nastavili VPN. Sdílejte prosím informace o problému, se kterým se potýkáte, a my se budeme snažit jej vyřešit, jakmile to bude možné.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Nelze odeslat e-mail. Zkontrolujte prosím vaši konfiguraci e-mailu.";
@@ -101,9 +101,9 @@
 "vpn.contactFormTimezone" = "Časové pásmo iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + problém VPN";
+"vpn.contactFormTitle" = "Ping Firewall + problém VPN";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Aktivovat";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -119,13 +119,13 @@
 "vpn.iapDisclaimer" = "Všechna předplatná jsou automaticky obnovena, ale lze je před obnovením zrušit.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Tento profil umožňuje VPN se kdykoliv automaticky připojovat a zabezpečovat provoz napříč vaším zařízením. Toto připojení VPN bude šifrováno a směrováno přes inteligentní firewall Brave, aby blokovalo potenciálně škodlivá a invazivní připojení.";
+"vpn.installProfileBody" = "Tento profil umožňuje VPN se kdykoliv automaticky připojovat a zabezpečovat provoz napříč vaším zařízením. Toto připojení VPN bude šifrováno a směrováno přes inteligentní firewall Ping, aby blokovalo potenciálně škodlivá a invazivní připojení.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Nainstalovat profil VPN";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave nyní nainstaluje profil VPN.";
+"vpn.installProfileTitle" = "Ping nyní nainstaluje profil VPN.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "Síť VPN je nyní povolena";
@@ -133,7 +133,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Instalace sítě VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Vyzkoušejte ZDARMA";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -222,10 +222,10 @@
 "vpn.settingsFAQ" = "Podpora sítě VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Propojit nákup s účtem Brave";
+"vpn.settingsLinkReceipt" = "Propojit nákup s účtem Ping";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Propojte váš nákup v App Store se svým účtem Brave a používejte tak VPN Brave na jiných zařízeních.";
+"vpn.settingsLinkReceiptFooter" = "Propojte váš nákup v App Store se svým účtem Ping a používejte tak VPN Ping na jiných zařízeních.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Správa předplatného";
@@ -261,10 +261,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Aktualizovat způsob platby";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Dokonce i na pozadí vás Brave bude i nadále chránit.";
+"vpn.vpnBackgroundNotificationBody" = "Dokonce i na pozadí vás Ping bude i nadále chránit.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN jsou ZAPNUTY";
+"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN jsou ZAPNUTY";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Používejte nejlepší dostupný server";
@@ -279,7 +279,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Chyba";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN od Brave vyžadují pro správnou funkčnost, aby byl v zařízení nainstalován profil VPN.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN od Ping vyžadují pro správnou funkčnost, aby byl v zařízení nainstalován profil VPN.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Povolení zamítnuto";
@@ -294,13 +294,13 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Chyba";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Předplatné bude účtováno prostřednictvím vašeho účtu iTunes.\n\nJakákoli nevyužitá část bezplatné zkušební verze, pokud je nabídnuta, propadne při zakoupení předplatného.\n\nVaše předplatné se automaticky obnoví, pokud nebude zrušeno alespoň 24 hodin před koncem aktuálního období.\n\nVaše předplatné můžete spravovat v Nastavení.\n\nPoužíváním Brave souhlasíte s podmínkami použití a zásadami ochrany osobních údajů.";
+"vpn.vpnIAPBoilerPlate" = "Předplatné bude účtováno prostřednictvím vašeho účtu iTunes.\n\nJakákoli nevyužitá část bezplatné zkušební verze, pokud je nabídnuta, propadne při zakoupení předplatného.\n\nVaše předplatné se automaticky obnoví, pokud nebude zrušeno alespoň 24 hodin před koncem aktuálního období.\n\nVaše předplatné můžete spravovat v Nastavení.\n\nPoužíváním Ping souhlasíte s podmínkami použití a zásadami ochrany osobních údajů.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Uplatnit kód";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Tímto resetujete konfiguraci Firewall + VPN od Brave a opravíte všechny chyby. Tento proces může trvat minutu.";
+"vpn.vpnResetAlertBody" = "Tímto resetujete konfiguraci Firewall + VPN od Ping a opravíte všechny chyby. Tento proces může trvat minutu.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Obnovit konfiguraci";

@@ -2,7 +2,7 @@
 "widgets.BookmarksMenuItem" = "Kirjanmerkkipalkki";
 
 /* The name of the feature */
-"widgets.braveNews" = "Brave-uutiset";
+"widgets.braveNews" = "Ping-uutiset";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Lataukset";
@@ -29,7 +29,7 @@
 "widgets.newsClusteringWidgetTitle" = "Tärkeimmät uutiset";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Avaa Brave, niin näet suosikkisi täällä";
+"widgets.noFavoritesFound" = "Avaa Ping, niin näet suosikkisi täällä";
 
 /* QR Code section title */
 "widgets.QRCode" = "Viivakoodi";
@@ -71,5 +71,5 @@
 "widgets.singleStatTitle" = "Tietosuojatilasto";
 
 /* Description for the Ping Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave-lompakko";
+"widgets.walletShortcutTitle" = "Ping-lompakko";
 

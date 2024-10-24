@@ -1,5 +1,5 @@
 /* The description for the error message when the user's session has expired */
-"aichat.accountSessionExpiredDescription" = "Brave-tilisi istunto on vanhentunut. Käy tilisivullasi päivittääksesi ja palaa sitten käyttämään premium-ominaisuuksia.";
+"aichat.accountSessionExpiredDescription" = "Ping-tilisi istunto on vanhentunut. Käy tilisivullasi päivittääksesi ja palaa sitten käyttämään premium-ominaisuuksia.";
 
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Lisää palautetta";
@@ -16,11 +16,11 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo on tekoälyllä toimiva älykäs avustaja, joka on rakennettu suoraan selaimeen.";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Linkitä App Store -ostoksesi Brave-tiliisi, jotta voit käyttää Leoa muilla laitteilla.";
+/* The subtitle for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Linkitä App Store -ostoksesi Ping-tiliisi, jotta voit käyttää Leoa muilla laitteilla.";
 
 /* The title for the button which links purchase to Ping Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "Linkitä ostos Brave-tiliisi";
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Linkitä ostos Ping-tiliisi";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Vanhenee";
@@ -131,7 +131,7 @@
 "aichat.infoAboutPageContext" = "Muotoile vastauksia sivun sisällön perusteella";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3 Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Ping, ja palvelun tarjoaa Claude 3 Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Anthropicin Claude Haiku";
@@ -173,7 +173,7 @@
 "aichat.leoImprovedAnswerBraveSearch" = "Paranneltu vastaus haulle";
 
 /* The text displayed on the loading screen when searching for a user query */
-"aichat.leoImprovingAnswerBraveSearch" = "Parannellaan vastausta Brave-haun avulla...";
+"aichat.leoImprovingAnswerBraveSearch" = "Parannellaan vastausta Ping-haun avulla...";
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo-tekoäly";
@@ -353,7 +353,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Ymmärrän";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo on yksityinen tekoälyavustaja, joka kehittää verkon käyttöäsi. Leon käyttö on ilmaista rajoitetulla käyttöoikeudella. Brave Leo Premium tarjoaa enemmän malleja, laajemmat käyttöoikeudet ja antaa tilaajille pääsyn uusiin ominaisuuksiin muita aikaisemmin. Tällä hetkellä oletusmalli kaikille käyttäjille on Mixtral 8x7B. Katso lisätiedot Braven **[Ohjekeskuksesta](%1$@)**.\n\nOletuksena, kun kysyt Leolta kysymyksen, se voi käyttää katselemasi verkkosivun tietoja tai sivulla korostamaasi tekstiä tai lähettää niitä Brave Leolle tarjotakseen vastauksen. Joissakin tapauksissa Leo voi lähettää kysymyksestäsi johdettuja hakuja Brave-hakuun ja käyttää hakutuloksia vastauksen parantamiseen. Vastausten tarkkuudesta ei anneta takeita, ja vastaukset voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisa tai yksityisiä tietoja, ja ole varovainen vastausten kanssa, jotka liittyvät terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai muuhun vastaavaan. Voit mukauttaa Leon asetuksia milloin tahansa Asetuksissa. Siirry kohtaan Asetukset > Leo.\n\nLeo ei kerää yksilöiviä tietoja, kuten IP-osoitettasi, jotka voidaan liittää sinuun. Mitään tietoja ei käytetä tekoälymallien kouluttamiseen, eivätkä tekoälymallit säilytä henkilötietoja (paitsi Anthropic, joka säilyttää tietoja 30 päivää ennen niiden poistamista). Katso lisätiedot **[tietosuojakäytännöstä](%2$@)**.";
+"aichat.termsConditionsDescription" = "Ping Leo on yksityinen tekoälyavustaja, joka kehittää verkon käyttöäsi. Leon käyttö on ilmaista rajoitetulla käyttöoikeudella. Ping Leo Premium tarjoaa enemmän malleja, laajemmat käyttöoikeudet ja antaa tilaajille pääsyn uusiin ominaisuuksiin muita aikaisemmin. Tällä hetkellä oletusmalli kaikille käyttäjille on Mixtral 8x7B. Katso lisätiedot Braven **[Ohjekeskuksesta](%1$@)**.\n\nOletuksena, kun kysyt Leolta kysymyksen, se voi käyttää katselemasi verkkosivun tietoja tai sivulla korostamaasi tekstiä tai lähettää niitä Ping Leolle tarjotakseen vastauksen. Joissakin tapauksissa Leo voi lähettää kysymyksestäsi johdettuja hakuja Ping-hakuun ja käyttää hakutuloksia vastauksen parantamiseen. Vastausten tarkkuudesta ei anneta takeita, ja vastaukset voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisa tai yksityisiä tietoja, ja ole varovainen vastausten kanssa, jotka liittyvät terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai muuhun vastaavaan. Voit mukauttaa Leon asetuksia milloin tahansa Asetuksissa. Siirry kohtaan Asetukset > Leo.\n\nLeo ei kerää yksilöiviä tietoja, kuten IP-osoitettasi, jotka voidaan liittää sinuun. Mitään tietoja ei käytetä tekoälymallien kouluttamiseen, eivätkä tekoälymallit säilytä henkilötietoja (paitsi Anthropic, joka säilyttää tietoja 30 päivää ennen niiden poistamista). Katso lisätiedot **[tietosuojakäytännöstä](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Juttele Ping Leon kanssa yksityisesti ";

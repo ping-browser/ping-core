@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Continuă";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Orice link pe care îl accesezi va beneficia de setările de confidențialitate ale lui Brave";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Orice link pe care îl accesezi va beneficia de setările de confidențialitate ale lui Ping";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Setează Brave ca browser implicit";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Setează Ping ca browser implicit";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Navighează mai rapid și folosește mai puține date.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Spune-ne ce funcționalități apreciezi cel mai mult.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Îmbunătățește Brave.";
+"focusOnboarding.p3aScreenTitle" = "Îmbunătățește Ping.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Modifică acest lucru oricând în Setările Brave, secțiunea „Brave Shields și Confidențialitate”.";
+"focusOnboarding.p3aToggleDescription" = "Modifică acest lucru oricând în Setările Ping, secțiunea „Ping Shields și Confidențialitate”.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Începe navigarea";
@@ -41,5 +41,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Introdu un URL pentru a te bucura de mai puține reclame și urmăritori";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Vezi diferența Brave";
+"focusOnboarding.urlBarIndicatorTitle" = "Vezi diferența Ping";
 

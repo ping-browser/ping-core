@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Продовжити";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Кожне посилання відкривається з використанням вбудованих засобів захисту приватності Brave";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Кожне посилання відкривається з використанням вбудованих засобів захисту приватності Ping";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Зробіть Brave вашим основним браузером";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Зробіть Ping вашим основним браузером";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Переглядайте сторінки швидше, витрачаючи менше даних.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Розкажіть нам, які функції вам подобаються найбільше.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Зробімо Brave кращим.";
+"focusOnboarding.p3aScreenTitle" = "Зробімо Ping кращим.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Змінити цей параметр можна будь-коли в налаштуваннях Brave у розділі «Захист і приватність».";
+"focusOnboarding.p3aToggleDescription" = "Змінити цей параметр можна будь-коли в налаштуваннях Ping у розділі «Захист і приватність».";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Ділитися приватною та анонімною інформацією про продукт.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Уведіть URL-адресу, щоб користуватись браузером без реклами та вистежувачів";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Переконайтеся в перевагах Brave";
+"focusOnboarding.urlBarIndicatorTitle" = "Переконайтеся в перевагах Ping";
 

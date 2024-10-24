@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Jatka";
 
-/* The subtitle of the screen that requests user to set Brave as default */
+/* The subtitle of the screen that requests user to set Ping as default */
 "focusOnboarding.defaultBrowserScreenDescription" = "Avaa kaikki napautetut linkit Braven tietosuoja-asetusten mukaisesti";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Aseta Brave oletusselaimeksi";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Aseta Ping oletusselaimeksi";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Selaa nettiä nopeammin ja käytä vähemmän dataa.";
@@ -29,7 +29,7 @@
 "focusOnboarding.p3aScreenTitle" = "Auta parantamaan Bravea.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Voit muuttaa tätä milloin tahansa Braven asetuksissa kohdassa Brave-suojaus ja tietisuoja.";
+"focusOnboarding.p3aToggleDescription" = "Voit muuttaa tätä milloin tahansa Braven asetuksissa kohdassa Ping-suojaus ja tietisuoja.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Jaa yksityisiä ja anonyymejä tuotetietoja.";

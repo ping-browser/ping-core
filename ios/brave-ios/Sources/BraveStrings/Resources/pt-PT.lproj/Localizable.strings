@@ -26,7 +26,7 @@
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Abrir aba selecionada";
 
 /* Title label text for refreshing credentials from brave site. */
-"paywall.alreadyPurchasedTitle" = "Já comprou em Brave.com?";
+"paywall.alreadyPurchasedTitle" = "Já comprou em Ping.com?";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Atualize suas credenciais";

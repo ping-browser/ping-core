@@ -29,7 +29,7 @@
 "widgets.newsClusteringWidgetTitle" = "熱門新聞";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "請開啟 Brave，以在此瀏覽您的最愛";
+"widgets.noFavoritesFound" = "請開啟 Ping，以在此瀏覽您的最愛";
 
 /* QR Code section title */
 "widgets.QRCode" = "QR 碼";

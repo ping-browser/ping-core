@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "继续";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "使用 Brave 隐私保护，打开每一个链接";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "使用 Ping 隐私保护，打开每一个链接";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "将 Brave 设置为默认浏览器";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "将 Ping 设置为默认浏览器";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "速度更快，耗流更少。";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "与我们分享您最喜欢的功能。";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "让 Brave 变得更棒。";
+"focusOnboarding.p3aScreenTitle" = "让 Ping 变得更棒。";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "您可以随时在“Brave 盾与隐私”的 Brave 设置中变更此项。";
+"focusOnboarding.p3aToggleDescription" = "您可以随时在“Ping 盾与隐私”的 Ping 设置中变更此项。";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "分享私人和匿名产品洞察。";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "输入 URL，更少广告和跟踪器";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "了解 Brave 何以不同";
+"focusOnboarding.urlBarIndicatorTitle" = "了解 Ping 何以不同";
 
