@@ -6,10 +6,24 @@ const LOCAL_STORAGE_UPDATE_INTERVAL = 2e4;
 
 let timerId;
 // Function to restart the timer with the remaining time when the first window is opened again
+const clearAllTimers = () => {
+    if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+    }
+    if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+    }
+}
+
 const startTimer = async () => {
     try {
         const data = await chrome.storage.local.get(['timeLeft', 'loggedIn', 'sessionTimeout'])
         if (!data.loggedIn || data.sessionTimeout) return;
+        
+        clearAllTimers();
+        
         if (data.timeLeft) {
             timerId = setTimeout(sessionTimeout, data.timeLeft);
             updateTimeInLocalStorage(data.timeLeft);
@@ -25,7 +39,7 @@ chrome.tabs.onCreated.addListener(async (tab) => {
         chrome.action.setIcon({ path: "../assets/Logo_active.png" });
     }
     if (data.loggedIn && data.sessionTimeout) {
-        chrome.tabs.update(tab.id, { url: '../content/ui/sessionTimeout.html' });
+        chrome.tabs.update(tab.id, { url: 'extension/content/ui/sessionTimeout.html' });
     }
     else if (data.loggedIn && !data.sessionTimeout) {
         startTimer();
@@ -35,19 +49,24 @@ chrome.tabs.onCreated.addListener(async (tab) => {
 // Function to update time in local storage every minute
 let intervalId;
 const updateTimeInLocalStorage = async (timeLeft) => {
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+    
     intervalId = setInterval(async () => {
         timeLeft -= LOCAL_STORAGE_UPDATE_INTERVAL;
         await chrome.storage.local.set({ timeLeft: timeLeft })
         if (timeLeft < 0) {
-            clearInterval(intervalId)
+            clearInterval(intervalId);
+            intervalId = null;
         }
-    }, LOCAL_STORAGE_UPDATE_INTERVAL); // 20000 milliseconds = 20 sec
+    }, LOCAL_STORAGE_UPDATE_INTERVAL);
 }
 
 const sessionTimeout = async () => {
     await blockHttpsSearch();
     await chrome.storage.local.set({ sessionTimeout: true });
-    const url = '../content/ui/sessionTimeout.html';
+    const url = 'extension/content/ui/sessionTimeout.html';
     await handleBrowserWindows(url);
 }
 
@@ -146,9 +165,12 @@ const logoutUser = async (password, sendResponse) => {
         try {
             chrome.action.setIcon({ path: "../assets/Logo_inactive.png" });
             removeServiceWorker();
-            clearTimeout(timerId);
-            clearInterval(intervalId)
-            await chrome.storage.local.set({ loggedIn: false, sessionTimeout: false })
+            clearAllTimers();
+            await chrome.storage.local.set({ 
+                loggedIn: false, 
+                sessionTimeout: false,
+                timeLeft: 0  // Reset timeLeft to prevent any lingering timer state
+            })
             sendResponse({ status: true });
             await allowHttpsSearchAsync();
             await handleBrowserWindows();
@@ -160,14 +182,20 @@ const logoutUser = async (password, sendResponse) => {
     }
 }
 
-const handleBrowserWindows = async (url) => {
-    const windows = await chrome.windows.getAll({ populate: true })
-    windows.forEach((window) => {
-        chrome.windows.remove(window.id);
-    });
-    if (!url) await chrome.windows.create({ type: 'normal' });
-    else chrome.windows.create({ url: url, type: 'normal' });
-}
+const handleBrowserWindows = async (url) => {    
+    let newWindow;
+    if(url === 'extension/content/ui/sessionTimeout.html')
+        newWindow = await chrome.windows.create({ url: url, type: 'normal' });
+    else
+        newWindow = await chrome.windows.create({ type: 'normal' });
+    
+    const windows = await chrome.windows.getAll({ populate: true });
+    for (const window of windows) {
+        if (window.id !== newWindow.id) {
+            chrome.windows.remove(window.id);
+        }
+    }
+};
 
 const updateBlockingRules = async (rulesToInject) => {
     const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
