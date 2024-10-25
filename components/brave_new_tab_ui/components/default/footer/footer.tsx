@@ -38,7 +38,7 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
 
     return (
       <>
-        { showPhotoInfo && backgroundImageInfo?.type === 'brave' &&
+        { !true && showPhotoInfo && backgroundImageInfo?.type === 'brave' &&
           <S.GridItemCredits>
             <PhotoName>
               {`${getLocale('photoBy')} `}

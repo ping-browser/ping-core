@@ -26,7 +26,7 @@ namespace {
 
 constexpr size_t kHashSize = 32;
 
-// TODO: PING
+// TODO: PING: updated
 // const char kAdBlockResourceComponentName[] = "Brave Ad Block Resources Library";
 // const char kAdBlockResourceComponentId[] = "blhkcadgbdffefgjpldgmejkjljinmle";
 // const char kAdBlockResourceComponentBase64PublicKey[] =

@@ -52,28 +52,16 @@ inline constexpr char kExperimentalListUuid[] =
 inline constexpr char kAdBlockResourceComponentName[] =
     "Brave Ad Block Resources Library";
 inline constexpr char kAdBlockResourceComponentId[] =
-    "mfddibmblmbccpadfndgakiopmmhebop";
+    "blhkcadgbdffefgjpldgmejkjljinmle";
 inline constexpr char kAdBlockResourceComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Qk6xtml8Siq8RD6cCbd"
-    "JpArt0kMci82W/KYw3KR96y67MZAsKJa8rOV2WC1BIpW539Qgl5b5lMS04cjw+sS"
-    "B7f2ZKM1WOqKNij24nvEKVubunP32u8tbjtzQk9VYNcM2MZMs330eqk7iuBRTvRV"
-    "iSMSeE3ymqp03HFpUGsdtjEBh1A5lroCg41eVnMn1I4GKPvuhT/Qc9Yem5gzXT/3"
-    "n7H6vOGQ2dVBHz44mhgwtiDcsduh+Det6lCE2TgHOhHPdCewklgcoiNXP4zfXxfp"
-    "Py1jbwb4w5KUnHSRelhfDnt+jI3jgHsD4IXdVNE5H5ZAnmcOJttbkRiT8kOVS0rJ"
-    "XwIDAQAB";
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArZUCk8AVlgg5PKFweivKwThDmwfCdIPQ5fdoRBzoPKwjXHGSm9ZVglL5Y2S3v8vnI1pf55zANO";
 
 inline constexpr char kAdBlockFilterListCatalogComponentName[] =
     "Brave Ad Block List Catalog";
 inline constexpr char kAdBlockFilterListCatalogComponentId[] =
-    "gkboaolpopklhgplhaaiboijnklogmbc";
+    "bjneejakfglnppfnebmlgaolhghnplaa";
 inline constexpr char kAdBlockFilterListCatalogComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsAnb1lw5UA1Ww4JIVE8P"
-    "jKNlPogAdFoie+Aczk6ppQ4OrHANxz6oAk1xFuT2W3uhGOc3b/1ydIUMqOIdRFvM"
-    "dEDUvKVeFyNAVXNSouFF7EBLEzcZfFtqoxeIbwEplVISUm+WUbsdVB9MInY3a4O3"
-    "kNNuUijY7bmHzAqWMTrBfenw0Lqv38OfREXCiNq/+Jm/gt7FhyBd2oviXWEGp6as"
-    "UwNavFnj8gQDGVvCf+dse8HRMJn00QH0MOypsZSWFZRmF08ybOu/jTiUo/TuIaHL"
-    "1H8y9SR970LqsUMozu3ioSHtFh/IVgq7Nqy4TljaKsTE+3AdtjiOyHpW9ZaOkA7j"
-    "2QIDAQAB";
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiO2W67NWAbLMfHvBkFreLc6ulCFv509BL4nmK6Tmpd0wNJwMYtjHDkAjOaCZoQrcMGf";
 
 inline constexpr char kCookieListEnabledHistogram[] =
     "Brave.Shields.CookieListEnabled";

@@ -112,6 +112,7 @@ const tabTranslationKeys: TabMap<string> = {
 const featureFlagSearchWidget = loadTimeData.getBoolean('featureFlagSearchWidget')
 export default function Settings(props: Props) {
   const allowedTabTypes = React.useMemo(() => tabTypes.filter(t =>
+    (t !== TabType.BraveNews && t !== TabType.BraveStats && t !== TabType.Cards) &&
     (props.allowBackgroundCustomization || t !== TabType.BackgroundImage) &&
     (featureFlagSearchWidget || t !== TabType.Search)), [props.allowBackgroundCustomization])
   const [activeTab, setActiveTab] = React.useState(props.allowBackgroundCustomization

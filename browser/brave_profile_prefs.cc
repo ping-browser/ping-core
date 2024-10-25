@@ -365,7 +365,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kImportDialogPayments, true);
 
   // New Tab Page
-  registry->RegisterBooleanPref(kNewTabPageShowClock, false);
+  registry->RegisterBooleanPref(kNewTabPageShowClock, true);
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, false);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
