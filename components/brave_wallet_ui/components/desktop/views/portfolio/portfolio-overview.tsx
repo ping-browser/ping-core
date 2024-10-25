@@ -552,7 +552,7 @@ export const PortfolioOverview = () => {
                   justifyContent='center'
                   width='unset'
                 >
-                  {true || fiatValueChange !== '' ? (
+                  {fiatValueChange !== '' ? (
                     <>
                       <FiatChange isDown={isPortfolioDown}>
                         {hidePortfolioBalances
@@ -567,15 +567,15 @@ export const PortfolioOverview = () => {
                     </>
                   ) : (
                     <>
-                      <LoadingSkeleton
+                      {/* <LoadingSkeleton
                         width={55}
                         height={24}
                       />
-                      {/* <HorizontalSpace space='8px' /> */}
+                      <HorizontalSpace space='8px' />
                       <LoadingSkeleton
                         width={55}
                         height={24}
-                      />
+                      /> */}
                     </>
                   )}
                 </Row>
