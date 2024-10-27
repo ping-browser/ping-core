@@ -15,6 +15,10 @@ transpile_web_ui("brave_extension") {
       rebase_path("background.ts"),
     ],
     [
+      "high_contrast",
+      rebase_path("highContrast.js"),
+    ],
+    [
       "webstore",
       rebase_path("webstore.ts"),
     ],
