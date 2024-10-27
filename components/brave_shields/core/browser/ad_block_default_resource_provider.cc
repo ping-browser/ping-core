@@ -15,8 +15,6 @@
 namespace {
 
 constexpr char kAdBlockResourcesFilename[] = "resources.json";
-// TODO: PING
-//const char kAdBlockExceptionComponentId[] = "jengikaikeclalmjjfbfndkbhfkoaofe";
 }  // namespace
 
 namespace brave_shields {
