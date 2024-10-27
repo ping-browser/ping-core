@@ -3,6 +3,7 @@ import { socialMediaBlockRules } from "../assets/rules/socialMediaBlockRules.js"
 import { gamingSiteRules } from "../assets/rules/gamesBlockRules.js";
 
 const LOCAL_STORAGE_UPDATE_INTERVAL = 2e4;
+const sessionTimeoutUrl = 'extension/content/ui/sessionTimeout.html';
 
 let timerId;
 // Function to restart the timer with the remaining time when the first window is opened again
@@ -39,7 +40,7 @@ chrome.tabs.onCreated.addListener(async (tab) => {
         chrome.action.setIcon({ path: "../assets/Logo_active.png" });
     }
     if (data.loggedIn && data.sessionTimeout) {
-        chrome.tabs.update(tab.id, { url: 'extension/content/ui/sessionTimeout.html' });
+        chrome.tabs.update(tab.id, { url: sessionTimeoutUrl });
     }
     else if (data.loggedIn && !data.sessionTimeout) {
         startTimer();
@@ -66,8 +67,7 @@ const updateTimeInLocalStorage = async (timeLeft) => {
 const sessionTimeout = async () => {
     await blockHttpsSearch();
     await chrome.storage.local.set({ sessionTimeout: true });
-    const url = 'extension/content/ui/sessionTimeout.html';
-    await handleBrowserWindows(url);
+    await handleBrowserWindows(sessionTimeoutUrl);
 }
 
 // Function to block Google search URLs
@@ -182,10 +182,10 @@ const logoutUser = async (password, sendResponse) => {
     }
 }
 
-const handleBrowserWindows = async (url) => {    
+const handleBrowserWindows = async (isSessionTimeout) => {    
     let newWindow;
-    if(url === 'extension/content/ui/sessionTimeout.html')
-        newWindow = await chrome.windows.create({ url: url, type: 'normal' });
+    if(isSessionTimeout)
+        newWindow = await chrome.windows.create({ url: sessionTimeoutUrl, type: 'normal' });
     else
         newWindow = await chrome.windows.create({ type: 'normal' });
     
