@@ -10,7 +10,7 @@ namespace brave {
 
 // Before adding to this list, get approval from the security team.
 inline constexpr const char* kAllowedUrlProtocols[] = {
-    "chrome-extension", "chrome", "brave", "file", "data", "blob",
+    "chrome-extension", "chrome", "brave", "ping", "file", "data", "blob",
 };
 
 // Before adding to this list, get approval from the security team.

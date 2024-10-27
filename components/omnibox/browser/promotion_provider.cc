@@ -63,7 +63,7 @@ void PromotionProvider::AddMatchForBraveSearchPromotion(
   match.fill_into_edit = contents;
   match.destination_url = promo_url;
   match.contents = contents;
-  match.keyword = u"brave";
+  match.keyword = u"ping";
   ACMatchClassifications styles;
   styles.push_back(ACMatchClassification(0, ACMatchClassification::URL));
   match.contents_class = styles;

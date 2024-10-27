@@ -20,7 +20,7 @@ std::u16string GetFailedUrlString(GURL failed_url);
 
 namespace error_page {
 namespace {
-constexpr char kBraveUIScheme[] = "brave";
+constexpr char kBraveUIScheme[] = "ping";
 }
 
 std::u16string GetFailedUrlString(GURL failed_url) {
