@@ -14,7 +14,7 @@
 namespace {
 
 constexpr auto kComponentIds = base::MakeFixedFlatSet<std::string_view>({
-    "adcocjohghhfpidemphmcmlmhnfgikei",  // Brave Ad Block First Party
+    "jengikaikeclalmjjfbfndkbhfkoaofe",  // Brave Ad Block First Party
                                          // Filters (plaintext)
     "bfpgedeaaibpoidldhjcknekahbikncb",  // Fanboy's Mobile Notifications
                                          // (plaintext)
