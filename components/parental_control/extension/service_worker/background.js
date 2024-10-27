@@ -67,7 +67,7 @@ const updateTimeInLocalStorage = async (timeLeft) => {
 const sessionTimeout = async () => {
     await blockHttpsSearch();
     await chrome.storage.local.set({ sessionTimeout: true });
-    await handleBrowserWindows(sessionTimeoutUrl);
+    await handleBrowserWindows(true);
 }
 
 // Function to block Google search URLs
