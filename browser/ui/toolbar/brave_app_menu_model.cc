@@ -174,7 +174,7 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-  if (sidebar::CanUseSidebar(browser())) {
+  if ((false) && sidebar::CanUseSidebar(browser())) {
     sidebar_show_option_model_ = std::make_unique<ui::ButtonMenuItemModel>(
         IDS_APP_MENU_SIDEBAR_TITLE, this);
 
