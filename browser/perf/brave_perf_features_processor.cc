@@ -87,7 +87,7 @@ void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
   profile->GetPrefs()->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
                                base::Time::Now());
   profile->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveChatAutocompleteProviderEnabled, true);
+      ai_chat::prefs::kBraveChatAutocompleteProviderEnabled, false);
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
   // Adblock
