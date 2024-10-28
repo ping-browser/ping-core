@@ -247,7 +247,7 @@ void BraveToolbarView::Init() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Don't check policy status since we're going to
   // setup a watcher for policy pref.
-  if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
+  if ((false) && ai_chat::IsAllowedForContext(browser_->profile(), false)) {
     ai_chat_button_ = container_view->AddChildViewAt(
         std::make_unique<AIChatButton>(browser()),
         *container_view->GetIndexOf(GetAppMenuButton()) - 1);

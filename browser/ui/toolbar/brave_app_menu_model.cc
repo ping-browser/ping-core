@@ -146,7 +146,7 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
   // Needs to add separator as this section is brave specific section.
   bool need_separator = false;
 
-  if (IsCommandIdEnabled(IDC_TOGGLE_AI_CHAT)) {
+  if ((false) && IsCommandIdEnabled(IDC_TOGGLE_AI_CHAT)) {
     InsertItemWithStringIdAt(GetNextIndexOfBraveProductsSection(),
                              IDC_TOGGLE_AI_CHAT, IDS_TOGGLE_AI_CHAT);
     need_separator = true;
