@@ -1089,7 +1089,7 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineValue1Cell.self
         ),
         Row(
-          text: "View Brave Wallet Debug Menu",
+          text: "View Ping Wallet Debug Menu",
           selection: { [unowned self] in
             self.displayBraveWalletDebugMenu()
           },

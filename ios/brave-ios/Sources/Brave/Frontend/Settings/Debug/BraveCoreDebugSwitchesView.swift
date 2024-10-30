@@ -36,11 +36,11 @@ extension BraveCoreSwitchKey {
     case .enableFeatures:
       return "Enable Features"
     case .p3aWalletCountTestNetworks:
-      return "Brave Wallet Count Test Networks"
+      return "Ping Wallet Count Test Networks"
     case .useDevGoUpdater:
       return "Use staging CRX components"
     case .servicesEnvironment:
-      return "Brave Services Environment"
+      return "Ping Services Environment"
     default:
       return ""
     }

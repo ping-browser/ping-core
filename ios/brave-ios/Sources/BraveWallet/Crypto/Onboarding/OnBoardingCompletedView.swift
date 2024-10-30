@@ -25,7 +25,7 @@ struct OnboardingCompletedView: View {
       GeometryReader { geometry in
         ScrollView {
           VStack {
-            Image("wallet-onboarding-complete", bundle: .module)
+            // Image("wallet-onboarding-complete", bundle: .module)
             Text(Strings.Wallet.onboardingCompletedTitle)
               .font(.title)
               .foregroundColor(.primary)

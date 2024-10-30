@@ -169,7 +169,7 @@ extension Strings.Shields {
     "AntiAdBlockWarningBravePlayerDescription",
     tableName: "BraveShared",
     bundle: .module,
-    value: "**Brave Player** is your ticket to an ad-free and uninterrupted video experience.",
+    value: "**Ping Player** is your ticket to an ad-free and uninterrupted video experience.",
     comment: "A discription of the Ping Player."
   )
 }
@@ -182,7 +182,7 @@ extension Strings.Shields {
     "BravePlayer",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Player",
+    value: "Ping Player",
     comment: "Title for the ping player feature"
   )
 
@@ -201,7 +201,7 @@ extension Strings.Shields {
     "BravePlayerInfoMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Player lets you watch videos without interruptions.",
+    value: "Ping Player lets you watch videos without interruptions.",
     comment:
       "A description of the ping player that is presented on the info panel when clicing on the ping player icon for the first time."
   )
@@ -393,7 +393,7 @@ extension Strings.Shields {
     "DomainBlockedPageMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave has prevented the following site from loading:",
+    value: "Ping has prevented the following site from loading:",
     comment: "A message in the warning page that appears when a page was blocked"
   )
 

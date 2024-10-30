@@ -5409,7 +5409,7 @@ extension Strings {
       "wallet.btcOrdinalsUnsupportedWarning",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.",
+      value: "Ping Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.",
       comment: "A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected."
     )
     public static let inputLabel = NSLocalizedString(
