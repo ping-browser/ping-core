@@ -200,10 +200,14 @@ const updateTimeLeftUI = async () => {
       if (timeLeft <= 0) {
         clearInterval(intervalId);
         timeText.textContent = "Time's up";
+        timeHours.textContent = "00";
+        timeMinutes.textContent = "00";
       }
     } else {
       clearInterval(intervalId);
       timeText.textContent = "Time's up";
+      timeHours.textContent = "00";
+      timeMinutes.textContent = "00";
     }
   };
   await updateTimer();
