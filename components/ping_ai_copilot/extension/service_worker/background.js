@@ -1,5 +1,5 @@
 import { translations } from "../constants/constants.js";
-const API_ENDPOINT = "https://openai-text-summarizer.azurewebsites.net";
+const API_ENDPOINT = "https://ping-backend.azurewebsites.net";
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
