@@ -120,7 +120,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mIsNewsLoading = isNewsLoading;
         mRecyclerViewHeight = recyclerViewHeight;
         mIsTopSitesEnabled = isTopSitesEnabled;
-        mIsBraveStatsEnabled = isBraveStatsEnabled;
+        mIsBraveStatsEnabled = false;
         mIsDisplayNewsFeed = false;
         mIsDisplayNewsOptin = false;
     }

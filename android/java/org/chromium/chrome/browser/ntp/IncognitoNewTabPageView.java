@@ -85,21 +85,21 @@ public class IncognitoNewTabPageView extends FrameLayout {
         // any shortcut causes the UrlBar to be focused. See ViewRootImpl.leaveTouchMode().
         mScrollView.setDescendantFocusability(FOCUS_BEFORE_DESCENDANTS);
 
-        mVpnCta = findViewById(R.id.tv_try_vpn);
-        if (BraveVpnUtils.isVpnFeatureSupported(getContext())
-                && !BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-            mVpnCta.setOnClickListener(
-                    v -> {
-                        if (!InternetConnection.isNetworkAvailable(getContext())) {
-                            Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT)
-                                    .show();
-                        } else {
-                            BraveVpnUtils.openBraveVpnPlansActivity(getContext());
-                        }
-                    });
-        } else {
-            mVpnCta.setVisibility(View.GONE);
-        }
+        // mVpnCta = findViewById(R.id.tv_try_vpn);
+        // if (BraveVpnUtils.isVpnFeatureSupported(getContext())
+        //         && !BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+        //     mVpnCta.setOnClickListener(
+        //             v -> {
+        //                 if (!InternetConnection.isNetworkAvailable(getContext())) {
+        //                     Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT)
+        //                             .show();
+        //                 } else {
+        //                     BraveVpnUtils.openBraveVpnPlansActivity(getContext());
+        //                 }
+        //             });
+        // } else {
+        //     mVpnCta.setVisibility(View.GONE);
+        // }
     }
 
     /**

@@ -43,7 +43,7 @@
                 app:layout_constraintGuide_end="32dp" />
 
             <!-- Keep the ID below as it's been tested in Chromium code by IncognitoNewTabPageStation. -->
-            <ImageView
+            <!-- <ImageView
                 android:id="@+id/new_tab_incognito_icon"
                 android:layout_width="@dimen/new_tab_page_incognito_logo_size"
                 android:layout_height="@dimen/new_tab_page_incognito_logo_size"
@@ -54,7 +54,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@id/guideline_begin"
                 app:layout_constraintEnd_toStartOf="@+id/title"
-                />
+                /> -->
 
             <TextView
                 android:id="@+id/title"
@@ -160,7 +160,7 @@
                 app:layout_constraintEnd_toEndOf="@id/tv_second_title"
                 />
 
-            <ImageView
+            <!-- <ImageView
                 android:id="@+id/iv_third_icon"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 android:layout_width="@dimen/new_tab_page_incognito_icon_size"
@@ -171,9 +171,9 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_third_title"
                 app:layout_constraintStart_toStartOf="@+id/guideline_begin"
                 app:layout_constraintEnd_toStartOf="@+id/tv_third_title"
-                />
+                /> -->
 
-            <TextView
+            <!-- <TextView
                 android:id="@+id/tv_third_title"
                 style="@style/DefaultSemibold"
                 app:layout_constraintWidth_max="460dp"
@@ -186,9 +186,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/tv_third_description"
                 app:layout_constraintStart_toEndOf="@id/iv_third_icon"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                />
+                /> -->
 
-            <TextView
+            <!-- <TextView
                 android:id="@+id/tv_third_description"
                 style="@style/DefaultRegular"
                 android:layout_width="0dp"
@@ -200,9 +200,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/tv_try_vpn"
                 app:layout_constraintStart_toStartOf="@id/tv_third_title"
                 app:layout_constraintEnd_toEndOf="@id/tv_third_title"
-                />
+                /> -->
 
-            <TextView
+            <!-- <TextView
                 android:id="@+id/tv_try_vpn"
                 style="@style/DefaultSemibold"
                 android:layout_width="0dp"
@@ -213,7 +213,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_third_title"
                 app:layout_constraintEnd_toEndOf="@id/tv_third_title"
-                />
+                /> -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
