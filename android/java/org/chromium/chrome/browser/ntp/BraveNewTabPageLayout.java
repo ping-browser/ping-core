@@ -372,7 +372,8 @@ public class BraveNewTabPageLayout
 
     private void setNtpRecyclerView(LinearLayoutManager linearLayoutManager) {
         mIsTopSitesEnabled = NtpUtil.shouldDisplayTopSites();
-        mIsBraveStatsEnabled = NtpUtil.shouldDisplayBraveStats();
+        // mIsBraveStatsEnabled = NtpUtil.shouldDisplayBraveStats();
+        mIsBraveStatsEnabled = false;
 
         if (mNtpAdapter == null) {
             if (mActivity != null && !mActivity.isDestroyed() && !mActivity.isFinishing()) {
@@ -883,7 +884,8 @@ public class BraveNewTabPageLayout
                         mNtpAdapter.setTopSitesEnabled(mIsTopSitesEnabled);
                     } else if (TextUtils.equals(
                             key, BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS)) {
-                        mIsBraveStatsEnabled = NtpUtil.shouldDisplayBraveStats();
+                        // mIsBraveStatsEnabled = NtpUtil.shouldDisplayBraveStats();
+                        mIsBraveStatsEnabled = false;
                         mNtpAdapter.setBraveStatsEnabled(mIsBraveStatsEnabled);
                     }
                 };
