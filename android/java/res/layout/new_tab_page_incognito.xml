@@ -64,14 +64,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/brave_new_tab_private_header"
                 android:textColor="@color/brave_white"
-                android:layout_marginStart="14dp"
-                android:layout_marginBottom="64dp"
-                app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/tv_first_title"
-                app:layout_constraintStart_toEndOf="@+id/new_tab_incognito_icon"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5" 
+                android:layout_marginBottom="24dp"
+            />
 
             <ImageView
                 android:id="@+id/iv_first_icon"
