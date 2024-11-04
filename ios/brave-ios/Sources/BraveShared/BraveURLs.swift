@@ -86,6 +86,6 @@ extension URL {
 public struct AppURLScheme {
   /// The apps URL scheme for the current build channel
   public static var appURLScheme: String {
-    Bundle.main.infoDictionary?["BRAVE_URL_SCHEME"] as? String ?? "brave"
+    Bundle.main.infoDictionary?["BRAVE_URL_SCHEME"] as? String ?? "ping"
   }
 }

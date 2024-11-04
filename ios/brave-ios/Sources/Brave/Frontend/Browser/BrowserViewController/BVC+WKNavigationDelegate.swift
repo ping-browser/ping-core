@@ -600,7 +600,7 @@ extension BrowserViewController: WKNavigationDelegate {
     // Standard schemes are handled in previous if-case.
     // This check handles custom app schemes to open external apps.
     // Our own 'brave' scheme does not require the switch-app prompt.
-    if requestURL.scheme?.contains("brave") == false {
+    if requestURL.scheme?.contains("ping") == false {
       // Do not allow opening external URLs from child tabs
       let shouldOpen = await handleExternalURL(
         requestURL,

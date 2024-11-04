@@ -28,7 +28,5 @@
 	<array>
 		<string>group.com.ping.ios.browser</string>
 	</array>
-	<key>com.apple.developer.carplay-audio</key>
-	<true/>
 </dict>
 </plist>
