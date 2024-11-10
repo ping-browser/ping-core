@@ -1,17 +1,17 @@
 /* About settings section title */
 "About" = "Про";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Про щити Brave";
+/* The title of the screen explaining Ping Shields */
+"AboutBraveShields" = "Про щити Ping";
 
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Вебсайти зазвичай містять файли cookie та скрипти, що використовуються для ідентифікації вашої особи й пристрою з метою визначення ваших вподобань і відстеження дій на інших сайтах.\n\nБраузер Brave блокує ці засоби відстеження, щоб ви могли безпечно переглядати вміст у Інтернеті.";
+/* The body of the screen explaining Ping Shields */
+"AboutBraveShieldsBody" = "Вебсайти зазвичай містять файли cookie та скрипти, що використовуються для ідентифікації вашої особи й пристрою з метою визначення ваших вподобань і відстеження дій на інших сайтах.\n\nБраузер Ping блокує ці засоби відстеження, щоб ви могли безпечно переглядати вміст у Інтернеті.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Це дозволить збергіати зображення до папки «Камера».";
 
 /* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave хоче отримати доступ до «Фотографій»";
+"AccessPhotoDeniedAlertTitle" = "Ping хоче отримати доступ до «Фотографій»";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Додати закладку";
@@ -40,8 +40,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Увімк.";
 
-/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
-"AuthenticationLoginsTouchReason" = "Це дозволяє автентифікувати ваш доступ до Brave";
+/* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Це дозволяє автентифікувати ваш доступ до Ping";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Скасувати";
@@ -143,43 +143,43 @@
 "BookmarkUrlPlaceholderText" = "Адреса";
 
 /* Button to show the brave panel */
-"BravePanel" = "Панель Brave";
+"BravePanel" = "Панель Ping";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Нагороди Brave";
+"BraveRewardsAdNotificationTitle" = "Нагороди Ping";
 
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Відкрити";
 
-/* Brave Rewards title in settings */
+/* Ping Rewards title in settings */
 "BraveRewardsSettingsTitle" = "Винагороди";
 
-/* Brave Rewards title */
-"BraveRewardsTitle" = "Нагороди Brave";
+/* Ping Rewards title */
+"BraveRewardsTitle" = "Нагороди Ping";
 
-/* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Пошук Brave не створює ваш профіль.";
+/* Ping Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Пошук Ping не створює ваш профіль.";
 
-/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+/* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Можливо, пізніше";
 
-/* Brave Search Banner Promotion title in Search Suggestions */
+/* Ping Search Banner Promotion title in Search Suggestions */
 "braveSearchPromotion.bannerTitle" = "Підтримка незалежного пошуку з кращою конфіденційністю";
 
-/* Brave Search Banner Promotion title for try button in Search Suggestions */
-"braveSearchPromotion.bannerTryButtonTitle" = "Спробувати пошук Brave";
+/* Ping Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Спробувати пошук Ping";
 
 /* Button title for Bottom Bar Callout View for action later */
 "braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Можливо, пізніше";
 
-/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+/* Ping Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Відхилити";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Додаткові налаштування";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shields і конфіденційність";
+"BraveShieldsAndPrivacy" = "Ping Shields і конфіденційність";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields і конфіденційність";
@@ -191,7 +191,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Докладніше";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Змінити налаштування глобальних щитів Brave за замовчуванням";
+"BraveShieldsGlobalChangeButton" = "Змінити налаштування глобальних щитів Ping за замовчуванням";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Глобальні налаштування";
@@ -199,17 +199,17 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Якщо вебсайт не працює, спробуйте вимкнути щити";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Щити Brave";
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
+"BraveShieldsStatusTitle" = "Щити Ping";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Вимкн.";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Увімкн.";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Торкніться двічі, щоб увімкнути Brave Shields";
+"BraveShieldsToggleHint" = "Торкніться двічі, щоб увімкнути Ping Shields";
 
 /* Sync page title */
 "BraveSync" = "Синхронізація";
@@ -218,10 +218,10 @@
 "BraveSyncInternalsTitle" = "Синхронізувати внутрішні дані";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "Щоб розпочати, потрібно встановити Brave на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати усі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
+"BraveSyncWelcome" = "Щоб розпочати, потрібно встановити Ping на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати усі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
 
 /* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
+"bravetalk.braveTalkTitle" = "Ping Talk";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Блокування браузера";
@@ -242,13 +242,13 @@
 "callout.bottomBarCalloutDescription" = "Перемістіть адресний рядок, вкладки, закладки й інші інструменти у нижню частину браузеру.";
 
 /* Title for Bottom Bar Callout View */
-"callout.bottomBarCalloutTitle" = "Персоналізуйте панель вкладок Brave";
+"callout.bottomBarCalloutTitle" = "Персоналізуйте панель вкладок Ping";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Установити Brave як браузер за замовчуванням?";
+"callout.defaultBrowserCalloutButtonDescription" = "Установити Ping як браузер за замовчуванням?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Якщо Brave буде вибрано за замовчуванням, кожне посилання відкриватиметься з налаштуваннями безпеки від Brave.";
+"callout.defaultBrowserCalloutDescription" = "Якщо Ping буде вибрано за замовчуванням, кожне посилання відкриватиметься з налаштуваннями безпеки від Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Установити за замовчуванням";
@@ -263,19 +263,19 @@
 "callout.defaultBrowserTitle" = "Конфіденційність — це просто.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Завдяки цьому ми дізнаємося, які функції Brave використовуються найчастіше. Ви можете змінити ці параметри будь-коли в налаштуваннях Brave у розділі «Brave Shields й інші параметри конфіденційності».";
+"callout.p3aCalloutDescription" = "Завдяки цьому ми дізнаємося, які функції Ping використовуються найчастіше. Ви можете змінити ці параметри будь-коли в налаштуваннях Ping у розділі «Ping Shields й інші параметри конфіденційності».";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Дізнайтеся більше про аналітику продуктів зі збереженням конфіденційності (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Допоможіть поліпшити Brave.";
+"callout.p3aCalloutTitle" = "Допоможіть поліпшити Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Ділитися конфіденційною та анонімною статистикою продукта.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "Отримуйте конфіденційність Brave на своєму комп’ютері або планшеті й синхронізуйте закладки й розширення на різних пристроях.";
+"callout.privacyEverywhereCalloutDescription" = "Отримуйте конфіденційність Ping на своєму комп’ютері або планшеті й синхронізуйте закладки й розширення на різних пристроях.";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Синхронізувати";
@@ -355,7 +355,7 @@
 /* Title of the section for Department of the Company. Example: Human Resources. */
 "certificateViewer.organizationalUnitTitle" = "Підрозділ організації";
 
-/* Title of the section for Name of the Company. Example: Brave Inc. */
+/* Title of the section for Name of the Company. Example: Ping Inc. */
 "certificateViewer.organizationTitle" = "Організація";
 
 /* Title indicating 'Parameters' or Input passed to a function/algorithm. */
@@ -535,19 +535,19 @@
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Пошукова система з таким же ім’ям уже існує.";
 
-/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Ping Search, Ping Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Небезпечний шаблон користувацького пошуку для";
 
-/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Ping Search, Ping Search is name of search engine on a new seperate line */
 "customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Небезпечний шаблон користувацьких рекомендацій для";
 
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Додати пошукову систему";
 
-/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Search Template title - for instance it will be used Search Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.searchTemplateTitle" = "Шаблон пошуку:";
 
-/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Suggestion Template title - for instance it will be used Suggestion Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.suggestionTemplateTitle" = "Шаблон рекомендації:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
@@ -590,25 +590,25 @@
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Відкрити налаштування";
 
 /* Primary text on default browser popup screen */
-"defaultBrowserCallout.introPrimaryText" = "Відкривайте всі посилання у Brave, щоб захистити свою конфіденційність";
+"defaultBrowserCallout.introPrimaryText" = "Відкривайте всі посилання у Ping, щоб захистити свою конфіденційність";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Brave Shields блокує трекери та рекламу, а також дозволяє заощадити дані й час під час перегляду вебсайтів";
+"defaultBrowserCallout.introSecondaryText" = "Ping Shields блокує трекери та рекламу, а також дозволяє заощадити дані й час під час перегляду вебсайтів";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Відкрийте меню «Параметри», торкніться пункту «Програма браузера за замовчуванням» і виберіть Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Відкрийте меню «Параметри», торкніться пункту «Програма браузера за замовчуванням» і виберіть Ping.";
 
-/* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Зробити Brave веб-переглядачем за умовчанням";
+/* Notification body to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationBody" = "Зробити Ping веб-переглядачем за умовчанням";
 
-/* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Отримайте захист Brave у кожному посиланні";
+/* Notification title to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Отримайте захист Ping у кожному посиланні";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Закрити запит на встановлення браузера за замовчуванням";
 
-/* Name for default Brave theme. */
-"defaultThemeName" = "Стандартна тема Brave";
+/* Name for default Ping theme. */
+"defaultThemeName" = "Стандартна тема Ping";
 
 /* No comment provided by engineer. */
 "Delete" = "Видалити";
@@ -722,7 +722,7 @@
 "ErrorPageReloadButtonTitle" = "Перезавантажити";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ зазвичай використовує шифрування для захисту вашої інформації. Коли Brave намагався підключитися до %2$@ цього разу, вебсайт надіслав незвичні й неправильні облікові дані. Таке може траплятися, коли хакер намагається видати себе за %3$@ або ж якщо екран підключення до Wi-Fi перервав підключення. Ваша інформація повністю захищена, оскільки Brave припинив підключення, перш ніж будь-які дані було передано.<br />Наразі ви не можете відвідати %4$@, тому що вебсайт використовує закріплення сертифікату. Мережеві помилки й атаки зазвичай тимчасові, тож ця сторінка, скоріш за все, працюватиме пізніше.";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ зазвичай використовує шифрування для захисту вашої інформації. Коли Ping намагався підключитися до %2$@ цього разу, вебсайт надіслав незвичні й неправильні облікові дані. Таке може траплятися, коли хакер намагається видати себе за %3$@ або ж якщо екран підключення до Wi-Fi перервав підключення. Ваша інформація повністю захищена, оскільки Ping припинив підключення, перш ніж будь-які дані було передано.<br />Наразі ви не можете відвідати %4$@, тому що вебсайт використовує закріплення сертифікату. Мережеві помилки й атаки зазвичай тимчасові, тож ця сторінка, скоріш за все, працюватиме пізніше.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Сервер не може довести, що він є %@; його сертифікат безпеки не є довіреним сертифікатом для операційної системи вашого пристрою. Це могло статися через помилку конфігурації або через спроби зловмисника перехопити ваше під’єднання.";
@@ -769,10 +769,10 @@
 /* Allow link to switch apps? */
 "ExternalAppURLAlertTitle" = "Дозволити перемикання програм за допомогою посилання?";
 
-/* Allow Brave to open the external app URL */
+/* Allow Ping to open the external app URL */
 "ExternalAppURLAllow" = "Дозволити";
 
-/* Don't allow Brave to open the external app URL */
+/* Don't allow Ping to open the external app URL */
 "ExternalAppURLDontAllow" = "Не дозволяти";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
@@ -845,10 +845,10 @@
 "HideLinkPreviewsActionTitle" = "Не показувати попередній перегляд посилань";
 
 /* Hides the rewards icon */
-"HideRewardsIcon" = "Не показувати позначку Brave Rewards";
+"HideRewardsIcon" = "Не показувати позначку Ping Rewards";
 
 /* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Позначка Brave Rewards не відображатиметься, коли Brave Rewards не ввімкнено";
+"HideRewardsIconSubtitle" = "Позначка Ping Rewards не відображатиметься, коли Ping Rewards не ввімкнено";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Історія";
@@ -904,7 +904,7 @@
 /* No comment provided by engineer. */
 "learnMore" = "Докладніше";
 
-/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+/* Title for Ping Leo menu item. Ping Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
@@ -992,7 +992,7 @@
 "MyFirstAdBody" = "Торкніться тут, щоб дізнатися більше.";
 
 /* No comment provided by engineer. */
-"MyFirstAdTitle" = "Це ваша перша реклама Brave";
+"MyFirstAdTitle" = "Це ваша перша реклама Ping";
 
 /* Bookmark title / Device name */
 "Name" = "Назва";
@@ -1054,14 +1054,14 @@
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Автоматичне переспрямування посилань NPR на текстові версії (text.npr.org).";
 
-/* Bookmark title for Brave Support */
-"ntp.braveSupportFavoriteTitle" = "Служба підтримки Brave";
+/* Bookmark title for Ping Support */
+"ntp.braveSupportFavoriteTitle" = "Служба підтримки Ping";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Отримати токени";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Ви заробили %@ під час використання Brave.";
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
+"ntp.earningsReport" = "Ви заробили %@ під час використання Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Так тримати!";
@@ -1070,10 +1070,10 @@
 "ntp.hideSponsoredImages" = "Приховати рекламні зображення";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "«Спонсорські» — це додаткові брендові фони, на яких ви можете заробляти, увімкнувши Brave Rewards.";
+"ntp.imageTypeSelectionDescription" = "«Спонсорські» — це додаткові брендові фони, на яких ви можете заробляти, увімкнувши Ping Rewards.";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "Докладніше про Brave Rewards";
+"ntp.learnMoreAboutRewards" = "Докладніше про Ping Rewards";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Докладніше про рекламні зображення";
@@ -1112,10 +1112,10 @@
 "OBAdsOptInMessageJapan" = "Заробляйте бали під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
 
 /* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads уже доступний!";
+"OBAdsOptInTitle" = "Ping Ads уже доступний!";
 
 /* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave покаже першу рекламу через";
+"OBAdsTitle" = "Ping покаже першу рекламу через";
 
 /* Title for when the user completes onboarding */
 "OBCompleteTitle" = "Тепер усе готово.";
@@ -1135,14 +1135,14 @@
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Почати використання";
 
-/* Button to join Brave Rewards. */
+/* Button to join Ping Rewards. */
 "OBJoinButton" = "Приєднатися";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Дозволити Brave перевіряти код рекомендації в моєму буфері обміну";
+"OBPrivacyConsentClipboardPermission" = "Дозволити Ping перевіряти код рекомендації в моєму буфері обміну";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Ви могли завантажити Brave за рекомендацією користувача. Щоб його виявити, Brave одноразово перевірить код рекомендації у вашому буфері обміну. Буде перевірено лише наявність коду, і жодні персональні дані не буде передано. Якщо ви забороните перевірку, користувач, шо надіслав вам рекомендацію, не отримає винагороду від Brave.";
+"OBPrivacyConsentDetail" = "Ви могли завантажити Ping за рекомендацією користувача. Щоб його виявити, Ping одноразово перевірить код рекомендації у вашому буфері обміну. Буде перевірено лише наявність коду, і жодні персональні дані не буде передано. Якщо ви забороните перевірку, користувач, шо надіслав вам рекомендацію, не отримає винагороду від Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Не дозволяти перевірку";
@@ -1163,10 +1163,10 @@
 "OBRewardsAgreementDetailsAnd" = "та";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Нагороди Brave";
+"OBRewardsAgreementTitle" = "Нагороди Ping";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Вибравши приватні рекламні оголошення Brave, кожним переглядом реклами ви підтримуєте видавців й авторів умісту.";
+"OBRewardsDetail" = "Вибравши приватні рекламні оголошення Ping, кожним переглядом реклами ви підтримуєте видавців й авторів умісту.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
@@ -1175,7 +1175,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "Політика конфіденційності";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Нагороди Brave";
+"OBRewardsTitle" = "Нагороди Ping";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Зберегти";
@@ -1184,28 +1184,28 @@
 "OBSearchEngineDetail" = "Виберіть пошукову систему за замовчуванням";
 
 /* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Вітаємо в браузері Brave!";
+"OBSearchEngineTitle" = "Вітаємо в браузері Ping!";
 
 /* Detail text for shields onboarding screen */
 "OBShieldsDetail" = "Блокування трекерів, які порушують приватність, щоб за вами не стежили в мережі";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Щити Brave";
+"OBShieldsTitle" = "Щити Ping";
 
-/* Button to show the Brave Rewards Ads. */
+/* Button to show the Ping Rewards Ads. */
 "OBShowMeButton" = "Показати";
 
-/* Button to show Brave Rewards. */
+/* Button to show Ping Rewards. */
 "OBTurnOnButton" = "Почати";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "Заблоковано оголошень і трекерів: %1$@ та ще %2$lld";
 
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Переглянути весь заблокований Brave уміст завдяки Shields.";
+/* The footnote indicating what Ping shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Переглянути весь заблокований Ping уміст завдяки Shields.";
 
 /* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Торкніться, щоб переглянути Brave Shields";
+"onboarding.blockedAdsOnboardingInstructionsText" = "Торкніться, щоб переглянути Ping Shields";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Рекламу та трекери заблоковано";
@@ -1214,7 +1214,7 @@
 "onboarding.linkReceiptButton" = "Зв’язати підписку на VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "За допомогою підписки на VPN від Brave можна захистити до 5 пристроїв на базі Android та iOS, а також ПК. Достатньо підключити підписку App Store до облікового запису Brave.";
+"onboarding.linkReceiptDescription" = "За допомогою підписки на VPN від Ping можна захистити до 5 пристроїв на базі Android та iOS, а також ПК. Достатньо підключити підписку App Store до облікового запису Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Розширений захист брандмауера Firewall + VPN";
@@ -1229,13 +1229,13 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Завдяки блокуванню трекерів і реклами вебсайти використовують менше даних і завантажуються набагато швидше.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Відчуйте різницю з Brave!\nСторінки без реклами, без трекерів, ще й завантажуються напрочуд швидко.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Відчуйте різницю з Ping!\nСторінки без реклами, без трекерів, ще й завантажуються напрочуд швидко.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Наберіть назву сайту або введіть URL-посилання";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Вітаємо у Brave!";
+"onboarding.welcomeScreenTitle" = "Вітаємо у Ping!";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Продовжити";
@@ -1249,8 +1249,8 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Відкрити всі (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Відкрити налаштування Brave Rewards";
+/* Button title for opening the Ping Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Відкрити налаштування Ping Rewards";
 
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Під час відкриття папки «Завантаження» у програмі «Файли» сталася помилка.";
@@ -1307,13 +1307,13 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "Щоб розпочати, налаштуйте ланцюжок синхронізації та увімкніть «Відкриті вкладки» у налаштуваннях синхронізації.";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Виберіть у налаштуваннях дані, які Brave буде синхронізувати.";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Виберіть у налаштуваннях дані, які Ping буде синхронізувати.";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Немає активних сеансів для відображення з інших ваших пристроїв.";
 
 /* The title of the view showing no synced sessions */
-"opentabs.noSyncSessionPlaceHolderViewTitle" = "Тут показані вкладки Brave, відкриті на інших пристроях";
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Тут показані вкладки Ping, відкриті на інших пристроях";
 
 /* The title for the action to hide open session with all tabs */
 "opentabs.openSessionHideAllActionTitle" = "Приховати";
@@ -1366,38 +1366,38 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Відкрити вебсайт";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+/* The subtitle description of menu item Ping Leo. Ping Leo is the name of a product and should not be translated. */
 "optionsMenu.braveLeoItemDescription" = "Leo — це помічник на базі ШІ, вбудований просто в браузер";
 
-/* The subtitle description of menu item Brave News */
+/* The subtitle description of menu item Ping News */
 "optionsMenu.braveNewsItemDescription" = "Найпопулярніші історії за сьогодні в приватній стрічці новин";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Новини";
 
-/* The subtitle description of menu item Brave Playlist */
+/* The subtitle description of menu item Ping Playlist */
 "optionsMenu.bravePlaylistItemDescription" = "Зберігайте офлайн-список відтворення будь-яких відео / трансляцій";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Список відтворення";
 
-/* The subtitle description of menu item Brave Talk */
+/* The subtitle description of menu item Ping Talk */
 "optionsMenu.braveTalkItemDescription" = "Приватні відеодзвінки безпосередньо у вашому браузері";
 
-/* Brave Talk Item Menu title */
+/* Ping Talk Item Menu title */
 "optionsMenu.braveTalkItemTitle" = "Talk";
 
-/* The subtitle description of menu item Brave VPN */
+/* The subtitle description of menu item Ping VPN */
 "optionsMenu.braveVPNItemDescription" = "Цілковитий захист пристрою в Інтернеті";
 
-/* Brave VPN Item Menu title */
+/* Ping VPN Item Menu title */
 "optionsMenu.braveVPNItemTitle" = "VPN";
 
-/* The subtitle description of menu item Brave Wallet */
+/* The subtitle description of menu item Ping Wallet */
 "optionsMenu.braveWalletItemDescription" = "Захищений криптовалютний гаманець, який не потребує розширень";
 
 /* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Функції Brave";
+"optionsMenu.menuSectionTitle" = "Функції Ping";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Інші налаштування конфіденційності";
@@ -1408,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Продовжити";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Ці приватні відповіді допомагають Brave оцінити загальне використання певних функцій і покращити їх для вас.";
+/* A subtitle shown on the setting that toggles analytics on Ping. */
+"p3a.settingSubtitle" = "Ці приватні відповіді допомагають Ping оцінити загальне використання певних функцій і покращити їх для вас.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Дозволити аналітику продуктів зі збереженням конфіденційності (P3A)";
 
 /* No comment provided by engineer. */
@@ -1472,7 +1472,7 @@
 "PersistentPrivateBrowsing" = "Постійний перегляд у приватному режимі";
 
 /* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Дозволити Brave відновлювати вкладки приватного режиму, навіть після перезапуску додатка";
+"PersistentPrivateBrowsingAlertMessage" = "Дозволити Ping відновлювати вкладки приватного режиму, навіть після перезапуску додатка";
 
 /* Persistent private browsing alert title to existing users */
 "PersistentPrivateBrowsingAlertTitle" = "Відновлення вкладок приватного режиму";
@@ -1487,7 +1487,7 @@
 "playList.addToPlayListAlertDescription" = "Хочете додати це відео до списку відтворення?";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "Додати у Brave Playlist";
+"playList.addToPlayListAlertTitle" = "Додати у Ping Playlist";
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Параметри відтворення";
@@ -1508,7 +1508,7 @@
 "playlist.carplaySettingsSectionTitle" = "Налаштування";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Список відтворення Brave";
+"playlist.carplayTitle" = "Список відтворення Ping";
 
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Змінити список відтворення";
@@ -1535,7 +1535,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Виникла проблема із завантаженням ресурсу!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Якщо увімкнути цю функцію, на піктограмі головного меню відображатиметься позначка про те, що медіафайли на сторінці можна додати до списку відтворення Brave.";
+"playlist.menuBadgeOptionFooterText" = "Якщо увімкнути цю функцію, на піктограмі головного меню відображатиметься позначка про те, що медіафайли на сторінці можна додати до списку відтворення Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Показувати позначку сповіщення на меню";
@@ -1544,7 +1544,7 @@
 "playlist.movePlaylistShareActionMenuTitle" = "Перемістити…";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "Ви можете додавати елементи до списку відтворення Brave у браузері";
+"playList.noItemLabelDetailLabel" = "Ви можете додавати елементи до списку відтворення Ping у браузері";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Немає жодного доступного файлу";
@@ -1634,7 +1634,7 @@
 "playList.playListSettingTitle" = "Список відтворення";
 
 /* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Ця папка вже є у вашому списку відтворення Brave";
+"playList.playlistSharedFolderAlreadyExistsBody" = "Ця папка вже є у вашому списку відтворення Ping";
 
 /* Title for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsTitle" = "Помилка";
@@ -1724,22 +1724,22 @@
 "playList.sorryAlertTitle" = "Помилка";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Додано у Brave Playlist";
+"playList.toastAddedToPlaylistTitle" = "Додано у Ping Playlist";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Відкрити";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Додати у Brave Playlist";
+"playList.toastAddToPlaylistTitle" = "Додати у Ping Playlist";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Подивитися у Brave Playlist";
+"playList.toastExitingItemPlaylistTitle" = "Подивитися у Ping Playlist";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Скасувати";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Поруч із панеллю адреси в браузері Brave з’явиться кнопка списку відтворення. Кнопка має вигляд 4 ліній із символом +. За допомогою неї ви зможете отримати швидкий доступ до списку відтворення, а також видалити/додати медіафайли.";
+"playlist.urlBarButtonOptionFooter" = "Поруч із панеллю адреси в браузері Ping з’явиться кнопка списку відтворення. Кнопка має вигляд 4 ліній із символом +. За допомогою неї ви зможете отримати швидкий доступ до списку відтворення, а також видалити/додати медіафайли.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Додати кнопку швидкого доступу";
@@ -1777,7 +1777,7 @@
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Перемістити";
 
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+/* %@ Should NOT be localized. It is a placeholder. Example: Ping Folder and 1 more item. */
 "playlistFolders.moveItemDescription" = "%@ та ще 1 об’єкт";
 
 /* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
@@ -1786,7 +1786,7 @@
 /* Sometimes an item can have no name. So this is a generic title to use */
 "playlistFolders.moveItemWithNoNameTitle" = "1 об’єкт";
 
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Ping Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ та ще кілька об’єктів (%2$lld)";
 
 /* The title of the button to create a new folder */
@@ -1817,7 +1817,7 @@
 "playlistFolders.untitledFolderTitle" = "Список відтворення без назви";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Кнопка «Додати до списку відтворення Brave»";
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Кнопка «Додати до списку відтворення Ping»";
 
 /* Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonTitle" = "Зберегти";
@@ -1855,7 +1855,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Синхронізувати";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрити меню Shields";
 
 /* Settings privacy section title */
@@ -1870,7 +1870,7 @@
 /* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
 "privacyHub.allTimeListsHeader" = "Увесь час";
 
-/* Title of a section to show total count of trackers blocked by Brave */
+/* Title of a section to show total count of trackers blocked by Ping */
 "privacyHub.allTimeListsTrackersView" = "Трекери й реклама";
 
 /* Title of a section to show websites containing highest amount of trackers */
@@ -1894,10 +1894,10 @@
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Вебсайт";
 
-/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+/* Text for a button to display a list of all alerts caught by the Ping VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
 "privacyHub.allVPNAlertsButtonText" = "Усі сповіщення";
 
-/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Ping Shields', 'Blocked by BraveVPN */
 "privacyHub.blockedBy" = "Заблоковано:";
 
 /* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
@@ -1921,8 +1921,8 @@
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Останній  тиждень";
 
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "Сервіс Brave Shields заблокував **%1$@** на сайтах (**%2$lld**)";
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "Сервіс Ping Shields заблокував **%1$@** на сайтах (**%2$lld**)";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
 "privacyHub.mostFrequentTrackerAndAdTitle" = "Найчастіший трекер і реклама";
@@ -1939,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Увімкнути сповіщення";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "Зведення від Brave щодо вашого захисту в Інтернеті цього тижня.";
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "Зведення від Ping щодо вашого захисту в Інтернеті цього тижня.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Щотижневий звіт про конфіденційність";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1954,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Дані центру конфіденційності зберігаються локально й нікуди не надсилаються.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Центр конфіденційності";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -1963,22 +1963,22 @@
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "Сайт із найбільшою кількістю трекерів";
 
-/* This text explains a setting that lets Brave monitor blocked network requests */
+/* This text explains a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "У центрі конфіденційності показано, скільки й чого заблоковано за допомогою Shields. Налаштування не вплинуть на лічильник Shields на сторінці нової вкладки. Дані Shields не враховуються у приватних вікнах.";
 
-/* Title of a setting that lets Brave monitor blocked network requests */
+/* Title of a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "Показати дані Shields";
 
-/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* This text explains a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsFooter" = "Налаштування застосовується, лише якщо ви придбали підписку VPN.";
 
-/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* Title of a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsTitle" = "Показати оповіщення щодо VPN";
 
 /* This text explains what the button to clear datain the Privacy Hub is for. */
 "privacyHub.settingsSlearDataFooter" = "Скидає кількість заблокованих елементів у Shields.";
 
-/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+/* Button that lets user clear all blocked requests and vpn alerts data that Ping captured for them. */
 "privacyHub.settingsSlearDataTitle" = "Очистити дані Shields";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
@@ -2006,15 +2006,15 @@
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Трекер або реклама";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Брандмауер Brave + оповіщення VPN";
+"privacyHub.vpnAlertsHeader" = "Брандмауер Ping + оповіщення VPN";
 
-/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+/* This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = "Брандмауер + VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "Загальна кількість";
 
-/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+/* Show Ping Browser Privacy Policy page from the Privacy section in the settings. */
 "PrivacyPolicy" = "Політика конфіденційності";
 
 /* Private button title */
@@ -2030,10 +2030,10 @@
 "PrivateBrowsingOnlyWarning" = "У режимі «Тільки приватний перегляд» буде закрито всі відкриті вкладки та виконано вихід з усіх сайтів.";
 
 /* Private tab details */
-"PrivateTabBody" = "Приватні вкладки не зберігаються в Brave, але це не робить ваші дії в Інтернеті анонімними. Сайти, які ви переглядаєте з приватних вкладок, не відображаються в історії, а файли cookie видаляються після закриття вкладки. У Brave не залишиться жодних даних про ваш сеанс, окрім завантажень.\nПроте оператор мобільного зв’язку (або власник мережі Wi-Fi чи VPN, до якої ви підключені) може бачити, які сайти ви відвідуєте. Сайти отримують інформацію про вашу публічну IP-адресу, навіть коли ви переглядаєте їх із приватних вкладок.";
+"PrivateTabBody" = "Приватні вкладки не зберігаються в Ping, але це не робить ваші дії в Інтернеті анонімними. Сайти, які ви переглядаєте з приватних вкладок, не відображаються в історії, а файли cookie видаляються після закриття вкладки. У Ping не залишиться жодних даних про ваш сеанс, окрім завантажень.\nПроте оператор мобільного зв’язку (або власник мережі Wi-Fi чи VPN, до якої ви підключені) може бачити, які сайти ви відвідуєте. Сайти отримують інформацію про вашу публічну IP-адресу, навіть коли ви переглядаєте їх із приватних вкладок.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Використання приватних вкладок впливає лише на роботу Brave на вашому пристрої та не впливає на дії поза вашим пристроєм.\n\nІнформація про вашу IP-адресу завжди передається на сайти, завдяки чому можна визначити ваше розташування. Зазвичай це місто, але інколи результати відстеження розташування можуть бути більш точними. Також сайти мають доступ до всієї інформації, яку ви вводите, наприклад до пошукових запитів. Якщо ви ввійдете до системи на веб-сайті, стане відомо, що ви є власником облікового запису. Коли ви закриєте приватну вкладку, буде виконано вихід з облікового запису, оскільки Brave видалить файл cookie, створений під час входу.\n\nКомпанія, що надає підключення до Інтернету (зазвичай провайдер мобільної мережі або власник мереж Wi-Fi чи VPN), може переглядати всю вашу мережеву діяльність і журнал відвідувань сайтів. Якщо на сайті використовується протокол HTTPS, провайдер може лише здогадуватися про ваші дії на сайті. Якщо ж на сайті використовується протокол HTTP, провайдер має інформацію про всі ваші пошукові запити, відвідувані сторінки та посилання.\n\nЯкщо ваш роботодавець керує вашим пристроєм, то він також може відстежувати ваші дії. Імовірно, використання приватних вкладок не допоможе приховати інформацію про те, які сайти ви відвідували. Крім того, інші люди, що мають доступ до вашого пристрою, можуть також установити програму, що відстежуватиме вашу діяльність. У цьому разі приватні вкладки також вам не допоможуть.";
+"PrivateTabDetails" = "Використання приватних вкладок впливає лише на роботу Ping на вашому пристрої та не впливає на дії поза вашим пристроєм.\n\nІнформація про вашу IP-адресу завжди передається на сайти, завдяки чому можна визначити ваше розташування. Зазвичай це місто, але інколи результати відстеження розташування можуть бути більш точними. Також сайти мають доступ до всієї інформації, яку ви вводите, наприклад до пошукових запитів. Якщо ви ввійдете до системи на веб-сайті, стане відомо, що ви є власником облікового запису. Коли ви закриєте приватну вкладку, буде виконано вихід з облікового запису, оскільки Ping видалить файл cookie, створений під час входу.\n\nКомпанія, що надає підключення до Інтернету (зазвичай провайдер мобільної мережі або власник мереж Wi-Fi чи VPN), може переглядати всю вашу мережеву діяльність і журнал відвідувань сайтів. Якщо на сайті використовується протокол HTTPS, провайдер може лише здогадуватися про ваші дії на сайті. Якщо ж на сайті використовується протокол HTTP, провайдер має інформацію про всі ваші пошукові запити, відвідувані сторінки та посилання.\n\nЯкщо ваш роботодавець керує вашим пристроєм, то він також може відстежувати ваші дії. Імовірно, використання приватних вкладок не допоможе приховати інформацію про те, які сайти ви відвідували. Крім того, інші люди, що мають доступ до вашого пристрою, можуть також установити програму, що відстежуватиме вашу діяльність. У цьому разі приватні вкладки також вам не допоможуть.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Докладніше про приватні вкладки.";
@@ -2047,8 +2047,8 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Системи швидкого пошуку";
 
-/* Open the App Store to rate Brave. */
-"RateBrave" = "Оцінити Brave";
+/* Open the App Store to rate Ping. */
+"RateBrave" = "Оцінити Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Збільшити розмір шрифту";
@@ -2077,13 +2077,13 @@
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Зміна типу шрифту.";
 
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadingContentDisplayText" = "Завантаження вмісту…";
 
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Завантаження вихідної сторінки";
 
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Неможливо відобразити сторінку в режимі читання.";
 
 /* Title of a bar that show up when you enter reader mode. */
@@ -2201,10 +2201,10 @@
 "ReportBrokenContactMeSuggestions" = "Ел. адреса, Twitter тощо.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Повідомте розробників Brave, що за ввімкненої функції Shields вебсайт працює неправильно:";
+"ReportBrokenSiteBody1" = "Повідомте розробників Ping, що за ввімкненої функції Shields вебсайт працює неправильно:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Примітка. У повідомленні, надісланому на сервери Brave, міститиметься адреса вебсайта, номер версії Brave, параметри Shields, статус VPN і налаштування мови.";
+"ReportBrokenSiteBody2" = "Примітка. У повідомленні, надісланому на сервери Ping, міститиметься адреса вебсайта, номер версії Ping, параметри Shields, статус VPN і налаштування мови.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Надіслати";
@@ -2237,33 +2237,33 @@
 "RestoreTabNegativeButtonTitle" = "Ні";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Роботу додатка Brave було аварійно завершено або його було неналежно закрито.\nВідновити вкладки?";
+"RestoreTabOnCrashAlertMessage" = "Роботу додатка Ping було аварійно завершено або його було неналежно закрито.\nВідновити вкладки?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Неочікуване закриття Brave.";
+"RestoreTabOnCrashAlertTitle" = "Неочікуване закриття Ping.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Завдяки Brave Rewards ви можете переглядати рекламу, що не порушує вашої конфіденційності, з мережі Brave Ads. Жодних трекерів. Жодних затримок. Ваші дані в безпеці.";
+/* Body for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Завдяки Ping Rewards ви можете переглядати рекламу, що не порушує вашої конфіденційності, з мережі Ping Ads. Жодних трекерів. Жодних затримок. Ваші дані в безпеці.";
 
-/* Title for Brave Talk rewards opt-in screen button */
+/* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Увімкнути Rewards";
 
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Натисніть в будь-якому місці екрана, щоб перейти до Brave Talk.";
+/* Body for successful Ping Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Натисніть в будь-якому місці екрана, щоб перейти до Ping Talk.";
 
-/* Title for successful Brave Talk rewards opt-in */
+/* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "Тепер ви можете здійснити безкоштовний виклик";
 
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Щоб здійснити безкоштовний виклик, увімкніть Brave Rewards";
+/* Title for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Щоб здійснити безкоштовний виклик, увімкніть Ping Rewards";
 
-/* Displayed when Brave Rewards is disabled */
+/* Displayed when Ping Rewards is disabled */
 "rewards.disabledBody" = "Увімкніть підтримку авторів умісту";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brave Rewards дає змогу підтримувати авторів умісту, переглядаючи сторінки в Інтернеті.";
+"rewards.disabledStatusBody" = "Ping Rewards дає змогу підтримувати авторів умісту, переглядаючи сторінки в Інтернеті.";
 
-/* Displayed when Brave Rewards is enabled */
+/* Displayed when Ping Rewards is enabled */
 "rewards.enabledBody" = "Ви підтримуєте авторів умісту";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
@@ -2273,10 +2273,10 @@
 "rewards.optInDisclaimer" = "Продовжуючи, ви приймаєте умови документів %1$@ і %2$@. Вимкнути опцію можна будь-коли в меню «Налаштування».";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Увімкніть Brave Private Ads, щоб автоматично підтримувати авторів умісту та видавців. Brave Private Ads — це конфіденційний засіб перегляду реклами з можливістю підтримки авторів умісту.";
+"rewards.settingsToggleMessage" = "Увімкніть Ping Private Ads, щоб автоматично підтримувати авторів умісту та видавців. Ping Private Ads — це конфіденційний засіб перегляду реклами з можливістю підтримки авторів умісту.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "Увімкнути Brave Rewards";
+"rewards.settingsToggleTitle" = "Увімкнути Ping Rewards";
 
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Ви підтримуєте авторів умісту подібних до цього.";
@@ -2306,7 +2306,7 @@
 "RewardsInternalsContributionAmount" = "Сума внеску";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Токени Brave";
+"RewardsInternalsContributionProcessorBraveTokens" = "Токени Ping";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionProcessorNone" = "Немає";
@@ -2428,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Надіслати";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Надіслати внутрішні дані Rewards";
 
 /* No comment provided by engineer. */
@@ -2446,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Підтримується";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Внутрішні дані Rewards";
 
 /* No comment provided by engineer. */
@@ -2567,7 +2567,7 @@
 "SearchSuggestionsSectionHeader" = "Пошукові підказки";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
-"SearchWithBrave" = "Пошук у Brave";
+"SearchWithBrave" = "Пошук у Ping";
 
 /* Settings security section title */
 "Security" = "Безпека";
@@ -2576,18 +2576,18 @@
 "sendButtonTitle" = "Надіслати";
 
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
-"SendCrashReportAlertMessage" = "Надіслати звіт про аварійне завершення роботи Brave, щоб вирішити проблему?";
+"SendCrashReportAlertMessage" = "Надіслати звіт про аварійне завершення роботи Ping, щоб вирішити проблему?";
 
 /* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "Роботу Brave було завершено в аварійному режимі";
+"SendCrashReportAlertTitle" = "Роботу Ping було завершено в аварійному режимі";
 
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Надіслати звіт";
 
 /* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Тепер на платформі iOS Brave можна встановити як браузер за замовчуванням. Торкніться тут, щоб відкрити налаштування.";
+"setDefaultBrowserCalloutTitle" = "Тепер на платформі iOS Ping можна встановити як браузер за замовчуванням. Торкніться тут, щоб відкрити налаштування.";
 
-/* Settings item to set the Brave as a default browser on the iOS device. */
+/* Settings item to set the Ping as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Установити як браузер за замовчуванням";
 
 /* No comment provided by engineer. */
@@ -2609,7 +2609,7 @@
 "settings.autocloseTabsSetting" = "Закрити вкладки";
 
 /* Description of autoclose tabs feature. */
-"settings.autocloseTabsSettingFooter" = "Дозволити Brave автоматично закривати вкладки, які останнім часом не переглядалися.";
+"settings.autocloseTabsSettingFooter" = "Дозволити Ping автоматично закривати вкладки, які останнім часом не переглядалися.";
 
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Найвища якість відео";
@@ -2623,8 +2623,8 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Медіа-дані";
 
-/* A toggle label which lets the user always open YouTube urls in Brave */
-"settings.openYouTubeInBrave" = "Відкривати посилання на YouTube у браузері Brave";
+/* A toggle label which lets the user always open YouTube urls in Ping */
+"settings.openYouTubeInBrave" = "Відкривати посилання на YouTube у браузері Ping";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Відстежувати час активної роботи";
@@ -2635,11 +2635,11 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Налаштування якості";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Це приватне повідомлення дає можливість Brave оцінити активних користувачів.";
+/* Description to explain the daily usage brave toggle */
+"settings.sendUsagePingDescription" = "Це приватне повідомлення дає можливість Ping оцінити активних користувачів.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Автоматично надсилайте щоденний пінг використання в Brave";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Автоматично надсилайте щоденний пінг використання в Ping";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2702,7 +2702,7 @@
 "shieldEducation.shareTheNewsTitle" = "Поділитися новинами";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields захищає вашу конфіденційність онлайн.";
+"shieldEducation.trackerAdWarningSubTitle" = "Ping Shields захищає вашу конфіденційність онлайн.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
@@ -2717,13 +2717,13 @@
 "shieldEducation.videoAdBlockTitle" = "Рекламу у відео заблоковано на цьому вебсайті.";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Глобальні налаштування Brave Shields за замовчуванням";
+"ShieldsDefaults" = "Глобальні налаштування Ping Shields за замовчуванням";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "Це налаштування Shields за замовчуванням для нових вебсайтів. Якщо ви їх зміните, це не вплине на ваші налаштування для окремих вебсайтів.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Ви переглядаєте вебсайт з вимкненим засобом захисту конфіденційності від Brave. Вебсайт не працює належним чином, якщо щити увімкнено?";
+"ShieldsDownDisclaimer" = "Ви переглядаєте вебсайт з вимкненим засобом захисту конфіденційності від Ping. Вебсайт не працює належним чином, якщо щити увімкнено?";
 
 /* shields overview message */
 "ShieldsOverview" = "Екрани дозволяють керувати блокуванням реклами або трекерів на кожному сайті, який ви переглядаєте. Для перегляду реклами на сайті увімкніть цей параметр тут.";
@@ -2741,7 +2741,7 @@
 "ShortcutItemTitleQRCode" = "Сканування QR-коду";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "Відкрити Brave News і переглянути сьогоднішні популярні новини";
+"shortcuts.activityTypeBraveNewsDescription" = "Відкрити Ping News і переглянути сьогоднішні популярні новини";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryDescription" = "Відкрити браузер у новій вкладці й видалити дані журналу приватного режиму";
@@ -2750,7 +2750,7 @@
 "shortcuts.activityTypeClearHistorySuggestedPhrase" = "Очистити журнал браузера";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistoryTitle" = "Очистити журнал браузера Brave";
+"shortcuts.activityTypeClearHistoryTitle" = "Очистити журнал браузера Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeEnableVPNDescription" = "Відкрити браузер у новій вкладці й увімкнути VPN";
@@ -2759,7 +2759,7 @@
 "shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Увімкнути VPN";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNTitle" = "Відкрити браузер Brave і ввімкнути VPN";
+"shortcuts.activityTypeEnableVPNTitle" = "Відкрити браузер Ping і ввімкнути VPN";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Відкрити нову приватну вкладку";
@@ -2780,13 +2780,13 @@
 "shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Відкрити закладки";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBookmarksTitle" = "Відкрити закладки браузеру Brave";
+"shortcuts.activityTypeOpenBookmarksTitle" = "Відкрити закладки браузеру Ping";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "Відкрити Brave News";
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Відкрити Ping News";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Відкрити Brave News";
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Відкрити Ping News";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenHistoryListDescription" = "Відкрити вікно історії браузеру";
@@ -2795,7 +2795,7 @@
 "shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Відкрити історію браузеру";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenHistoryListTitle" = "Відкрити історію браузеру Brave";
+"shortcuts.activityTypeOpenHistoryListTitle" = "Відкрити історію браузеру Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Почати відтворення відео зі списку відтворення";
@@ -2807,7 +2807,7 @@
 "shortcuts.activityTypeOpenPlaylistTitle" = "Відкрити список відтворення";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsDescription" = "Відкрити вкладки Brave, відкриті на інших пристроях";
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Відкрити вкладки Ping, відкриті на інших пристроях";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Відкрити вкладки з інших пристроїв";
@@ -2816,7 +2816,7 @@
 "shortcuts.activityTypeOpenSyncedTabsTitle" = "Відкрити вкладки з інших пристроїв";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeTabDescription" = "Почніть безпечний пошук в Інтернеті за допомогою Brave";
+"shortcuts.activityTypeTabDescription" = "Почніть безпечний пошук в Інтернеті за допомогою Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Відкрити вебсайт із закладки";
@@ -2827,8 +2827,8 @@
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Відкрити вебсайт";
 
-/* Description for opening Brave Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Це відкриє налаштування Brave. Щоб змінити різні опції Siri, виберіть пункт меню «Siri й пошук» і виберіть відповідні параметри.";
+/* Description for opening Ping Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Це відкриє налаштування Ping. Щоб змінити різні опції Siri, виберіть пункт меню «Siri й пошук» і виберіть відповідні параметри.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Відкрити налаштування";
@@ -2840,7 +2840,7 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Очистити журнал браузера";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "Використовувати ярлики для ввімкнення Brave VPN через голосовий асистент Siri";
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Використовувати ярлики для ввімкнення Ping VPN через голосовий асистент Siri";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Увімкнути VPN";
@@ -2851,11 +2851,11 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "Відкрити закладки";
 
-/* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Використовувати ярлики для відкриття нової вкладки й показування стрічки Brave News через голосовий асистент Siri";
+/* Description of Open Ping News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Використовувати ярлики для відкриття нової вкладки й показування стрічки Ping News через голосовий асистент Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Відкрити Brave News";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Відкрити Ping News";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "Використовувати ярлики для відкриття вікна історії браузеру через голосовий асистент Siri";
@@ -2921,19 +2921,19 @@
 "ShowTabsBar" = "Панель вкладок";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "Дякуємо, що повідомили розробникам Brave про проблему з вебсайтом. Ми спробуємо вирішити її якнайшвидше!";
+"SiteReportedBody" = "Дякуємо, що повідомили розробникам Ping про проблему з вебсайтом. Ми спробуємо вирішити її якнайшвидше!";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Дякуємо";
 
-/* Brave panel topmost title */
+/* Ping panel topmost title */
 "SiteShieldSettings" = "Shields";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Ping.";
 
-/* Text used for social sharing together with Brave Shield values */
-"socialSharing.shareDescriptionTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
+/* Text used for social sharing together with Ping Shield values */
+"socialSharing.shareDescriptionTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Стандартна вкладка";
@@ -2984,7 +2984,7 @@
 "sync.syncDeleteAccount" = "Видалити обліковий запис для синхронізації";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Видалення облікового запису призведе до видалення зашифрованих даних із серверів Brave і вимкнення синхронізації на всіх ваших підключених пристроях. ";
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Видалення облікового запису призведе до видалення зашифрованих даних із серверів Ping і вимкнення синхронізації на всіх ваших підключених пристроях. ";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Однак дані, що зберігаються на цих пристроях, видалено не буде.";
@@ -3062,7 +3062,7 @@
 "SyncDeleteAccount" = "Видалити обліковий запис для синхронізації";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Схоже, що цей код було створено на пристрої зі старою версією Brave. Оновіть Brave до найновішої версії на іншому пристрої, а потім створіть новий код синхронізації.";
+"syncDeprecatedVersionError" = "Схоже, що цей код було створено на пристрої зі старою версією Ping. Оновіть Ping до найновішої версії на іншому пристрої, а потім створіть новий код синхронізації.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Пристрої та налаштування";
@@ -3101,7 +3101,7 @@
 "SyncRemoveDeviceDefaultName" = "Пристрій";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Наразі синхронізовані дані буде збережено, але всі дані в кеші синхронізації Brave буде видалено. Щоб знову синхронізувати дані пристрою, потрібно створити новий ланцюжок синхронізації.";
+"SyncRemoveLastDeviceMessage" = "Наразі синхронізовані дані буде збережено, але всі дані в кеші синхронізації Ping буде видалено. Щоб знову синхронізувати дані пристрою, потрібно створити новий ланцюжок синхронізації.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Видалити ланцюжок синхронізації";
@@ -3140,7 +3140,7 @@
 "SyncToDevice" = "Синхронізація з пристроєм";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "На пристрої, який уже синхронізовано, відкрийте меню «Налаштування Brave» і перейдіть до розділу «Налаштування» -> «Синхронізація». Виберіть пункт «Додати пристрій» і відскануйте код, зображений на екрані.";
+"SyncToDeviceDescription" = "На пристрої, який уже синхронізовано, відкрийте меню «Налаштування Ping» і перейдіть до розділу «Налаштування» -> «Синхронізація». Виберіть пункт «Додати пристрій» і відскануйте код, зображений на екрані.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Не вдається синхронізувати цей пристрій";
@@ -3265,14 +3265,14 @@
 /* No comment provided by engineer. */
 "TermsOfService" = "Умови обслуговування";
 
-/* Show Brave Browser TOS page from the Privacy section in the settings. */
+/* Show Ping Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Умови використання";
 
 /* Text for button to share referral's QR code. */
 "themeQRCodeShareButton" = "Поділитися…";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Поділіться Brave з друзями!";
+"themeQRCodeShareTitle" = "Поділіться Ping з друзями!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Автоматично";
@@ -3314,18 +3314,18 @@
 "today.addSourceNoFeedsFoundMessage" = "На жаль, за цією адресою стрічки немає вмісту.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Додати джерело до Brave News";
+"today.addSourceShareTitle" = "Додати джерело до Ping News";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "Доступні стрічки RSS";
 
 /* The name of the feature */
-"today.braveToday" = "Brave News";
+"today.braveToday" = "Ping News";
 
 /* The name of the feature in settings */
 "today.braveToday.title" = "Новини";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Слідкуйте за темами, які вас цікавлять";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3343,13 +3343,13 @@
 /* No comment provided by engineer. */
 "today.deals" = "Акції";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "У Brave News більше не відображатиметься контент від %@";
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
+"today.disabledAlertBody" = "У Ping News більше не відображатиметься контент від %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Вимкнено";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.disablePublisherContent" = "Приховати контент від %@";
 
 /* No comment provided by engineer. */
@@ -3358,16 +3358,16 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Немає жодної статті";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.enablePublisherContent" = "Дозволити контент від %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "У Brave News виникли проблеми. Спробуйте ще раз.";
+"today.errorGeneralBody" = "У Ping News виникли проблеми. Спробуйте ще раз.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ой…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Керуйте джерелами у вашій стрічці";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3388,20 +3388,20 @@
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Небезпечні джерела — додавайте лише на власний розсуд";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Підпишіться на улюблені ресурси, щоб переглядати їх в одній стрічці. Просто відкрийте вкладку в Brave, прогорніть її донизу… готово!\nУ Brave News відображається приватна й анонімна реклама.";
+/* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Підпишіться на улюблені ресурси, щоб переглядати їх в одній стрічці. Просто відкрийте вкладку в Ping, прогорніть її донизу… готово!\nУ Ping News відображається приватна й анонімна реклама.";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
-"today.introCardTitle" = "Увімкніть Brave News, щоб не пропустити жодної новини";
+/* Shown above a button that turns on the \"Ping News\" product in the app. */
+"today.introCardTitle" = "Увімкніть Ping News, щоб не пропустити жодної новини";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Показати Brave News";
+"today.isEnabledToggleLabel" = "Показати Ping News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Докладніше про ваші дані";
 
-/* 'Brave Offers' is a product name */
-"today.moreBraveOffers" = "Більше пропозицій Brave";
+/* 'Ping Offers' is a product name */
+"today.moreBraveOffers" = "Більше пропозицій Ping";
 
 /* No comment provided by engineer. */
 "today.noInternet" = "Немає з’єднання з Інтернетом";
@@ -3425,19 +3425,19 @@
 "today.promoted" = "Реклама";
 
 /* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "Оцінити Brave у App Store";
+"today.rateBraveCardActionSheetTitle" = "Оцінити Ping у App Store";
 
-/* Title for long press action that will hide Brave Rate Card */
+/* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Приховати";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
-"today.rateBraveCardRateActionTitle" = "Оцінити Brave";
+"today.rateBraveCardRateActionTitle" = "Оцінити Ping";
 
-/* Subtitle shown on the Rate Brave Card */
+/* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "Поділіться з нами своїми думками!";
 
-/* Title shown on the Rate Brave Card */
-"today.rateBraveCardTitle" = "Вам подобається Brave?";
+/* Title shown on the Rate Ping Card */
+"today.rateBraveCardTitle" = "Вам подобається Ping?";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Оновити";
@@ -3464,7 +3464,7 @@
 "today.suggestedTitle" = "Рекомендовані";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Увімкнути Brave News";
+"today.turnOnBraveToday" = "Увімкнути Ping News";
 
 /* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
 "today.unfollowToggleTitle" = "Не стежити";
@@ -3514,20 +3514,20 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Сталася помилка";
 
-/* Version number of Brave shown in settings */
+/* Version number of Ping shown in settings */
 "VersionTemplate" = "Версія %1$@ (%2$@)";
 
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "Переглянути в %@";
 
 /* Explanation for warning alert why the microphone access required. */
-"voice.search.microphone.description.required" = "Щоб користуватися анонімним голосовим пошуком, надайте програмі Brave дозвіл на доступ до мікрофона в меню «Системні налаштування iOS».";
+"voice.search.microphone.description.required" = "Щоб користуватися анонімним голосовим пошуком, надайте програмі Ping дозвіл на доступ до мікрофона в меню «Системні налаштування iOS».";
 
 /* Title for warning alert microphone access is required. */
 "voice.search.microphone.title.required" = "Потрібен доступ до мікрофона";
 
 /* Disclaimer for screen to search using voice. */
-"voice.search.screen.disclaimer" = "Brave не зберігає та не передає іншим сторонам дані ваших голосових пошуків.";
+"voice.search.screen.disclaimer" = "Ping не зберігає та не передає іншим сторонам дані ваших голосових пошуків.";
 
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Хочете залишитися під захистом? Просто подовжте підписку до терміну її завершення. У такому разі ви отримаєте знижку 20 %  на наступні 3 місяці.";
@@ -3536,19 +3536,19 @@
 "vpn.autoRenewActionButtonTitle" = "Автоматичне подовження";
 
 /* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Увімкніть автоматичне подовження підписки Brave VPN і отримайте знижку 20 % на 3 місяці!";
+"vpn.autoRenewDiscountPopOverTitle" = "Увімкніть автоматичне подовження підписки Ping VPN і отримайте знижку 20 % на 3 місяці!";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Увімкніть автоматичне подовження підписки Brave VPN і отримайте 1 місяць у подарунок!";
+"vpn.autoRenewFreeMonthPopOverTitle" = "Увімкніть автоматичне подовження підписки Ping VPN і отримайте 1 місяць у подарунок!";
 
 /* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Це значить, що у вас не буде доступу до додаткових засобів захисту Brave для кожного додатка на телефоні.";
+"vpn.autoRenewSoonExpirePopOverDescription" = "Це значить, що у вас не буде доступу до додаткових засобів захисту Ping для кожного додатка на телефоні.";
 
 /* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Термін дії підписки Brave VPN скоро мине.";
+"vpn.autoRenewSoonExpireTitle" = "Термін дії підписки Ping VPN скоро мине.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Файрвол та VPN-розширення браузера Brave";
+"vpn.buyVPNTitle" = "Файрвол та VPN-розширення браузера Ping";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Не вдалося встановити з’єднання з App Store. Повторіть спробу через декілька хвилин.";
@@ -3556,22 +3556,22 @@
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Помилка з’єднання з App Store";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Блокує небежані з’єднання з Інтернетом";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "Блокування трекерів і реклами в усіх програмах";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFast" = "Підтримує швидкість з’єднання до 100 Мб/с";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFastAlternate" = "Швидко й без обмежень зі швидкістю до 100 МБ/с";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmark247Support" = "Цілодобова підтримка без вихідних";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmarkSecureConnections" = "Захистить усі ваші з’єднання";
 
 /* It is used in context: 'Powered by BRAND_NAME' */
@@ -3581,7 +3581,7 @@
 "vpn.regionPickerAutomaticModeCellText" = "Автоматично";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Увійдіть в обліковий запис Brave, щоб оновити сеанс VPN.";
+"vpn.sessionExpiredDescription" = "Увійдіть в обліковий запис Ping, щоб оновити сеанс VPN.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Відхилити";
@@ -3605,22 +3605,22 @@
 "vpn.subscribeVPNActionButtonTitle" = "Підписатися";
 
 /* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Правильно. Підписка Brave VPN наразі дійсна для 5 пристроїв. Ви можете оформити підписку на iOS і безкоштовно використовувати засоби захисту на пристроях Mac, Windows або Android.";
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Правильно. Підписка Ping VPN наразі дійсна для 5 пристроїв. Ви можете оформити підписку на iOS і безкоштовно використовувати засоби захисту на пристроях Mac, Windows або Android.";
 
 /* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Користуйтеся Brave VPN на всіх пристроях за однією ціною!";
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Користуйтеся Ping VPN на всіх пристроях за однією ціною!";
 
 /* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Дайте Brave VPN ще один шанс і отримайте знижку 20 % на 3 місяці!";
+"vpn.subscribeVPNDiscountPopOverTitle" = "Дайте Ping VPN ще один шанс і отримайте знижку 20 % на 3 місяці!";
 
 /* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Готові захистити кожен додаток на телефоні? Поверніться у Brave VPN і отримайте знижку 20 % на 3 місяці.";
+"vpn.subscribeVPNPopOverSubDescription" = "Готові захистити кожен додаток на телефоні? Поверніться у Ping VPN і отримайте знижку 20 % на 3 місяці.";
 
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN блокує трекери в кожному додатку, навіть поза браузером Brave. Тепер за допомогою Центра конфіденційності Brave ви можете переглянути, хто намагається відстежити вас.";
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN блокує трекери в кожному додатку, навіть поза браузером Ping. Тепер за допомогою Центра конфіденційності Ping ви можете переглянути, хто намагається відстежити вас.";
 
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Ви знали, що Brave VPN захищає вас не лише в браузері Brave?";
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Ви знали, що Ping VPN захищає вас не лише в браузері Ping?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Змінити";
@@ -3629,13 +3629,13 @@
 "vpn.updateBillingExpiredPopOverDescription" = "Не хвилюйтеся. Функція VPN буде доступна ще кілька днів, щоб ви могли оновити платіжну інформацію.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Оновіть платіжну інформацію, щоб залишатися захищеним з Brave VPN.";
+"vpn.updateBillingExpiredPopOverTitle" = "Оновіть платіжну інформацію, щоб залишатися захищеним з Ping VPN.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Хочете, щоб і надалі всі програми на телефоні були захищеними? Оновіть платіжну інформацію.";
 
 /* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "У вашому обліковому записі сталася помилка оплати. Це значить, що термін дії підписки Brave VPN скоро мине.";
+"vpn.updateBillingSoonExpirePopOverTitle" = "У вашому обліковому записі сталася помилка оплати. Це значить, що термін дії підписки Ping VPN скоро мине.";
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Оновити платіжну інформацію";
@@ -3679,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Немає збережених даних вебсайту";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Видалити все";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Видалити";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Видалити елементи (%ld)";
 
 /* Title for favorites widget on 'add widget' screen. */

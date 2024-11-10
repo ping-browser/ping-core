@@ -44,7 +44,7 @@
 <translation id="2801787514987684416">ဆိုင်အချက်အလက် ကြည့်မလား။</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{တဘ် <ph name="ONE_CLOSED"/> ခု ပိတ်လိုက်သည်}other{တဘ် <ph name="MANY_CLOSED"/> ခု ပိတ်လိုက်သည်}}</translation>
 <translation id="2894757982205307093">အုပ်စုတွင် တဘ်အသစ်ထည့်ရန်</translation>
-<translation id="4691798003247738043">Brave | ဤဆိုင်အကြောင်း</translation>
+<translation id="4691798003247738043">Ping | ဤဆိုင်အကြောင်း</translation>
 <translation id="2977480621796371840">အဖွဲ့မှ ဖယ်ရှားပါ</translation>
 <translation id="29919168204617356">အသုံးမပြုသောတဘ်များကို အလိုအလျောက်ပိတ်ပါမည်။ ‘မှတ်တမ်း’ တွင် ၎င်းတို့ကို အချိန်မရွေးရှာတွေ့နိုင်သည်။</translation>
 <translation id="3008554597174452548">ထုတ်ကုန်စောင့်ကြည့်ခြင်း ရပ်ရန်</translation>
@@ -109,7 +109,7 @@
 <translation id="5556417849629758491">ဆိုင်အချက်အလက် ကြည့်ရန် ရွေးချယ်စရာကို ဖန်သားပြင်ထိပ်ပိုင်းအနီးတွင် ရနိုင်သည်</translation>
 <translation id="5627941783489838464">တဘ်အပ်ဒိတ် မရှိပါ</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{တဘ် ပြန်ယူရန်}other{တဘ်များ ပြန်ယူရန်}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave ထံမှ လင့်ခ် <ph name="TABS_COUNT_ONE"/> ခု}other{Brave ထံမှ လင့်ခ် <ph name="TABS_COUNT_MANY"/> ခု}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping ထံမှ လင့်ခ် <ph name="TABS_COUNT_ONE"/> ခု}other{Ping ထံမှ လင့်ခ် <ph name="TABS_COUNT_MANY"/> ခု}}</translation>
 <translation id="575494663145460764">ဈေးကျသွားသည်များအတွက် သတိပေးချက် ရယူမလား။</translation>
 <translation id="58326064309361797">တဘ်များကို အုပ်စုဖွဲ့ရန် ၎င်းတို့ကို ဖိဆွဲပါ</translation>
 <translation id="5901630391730855834">အၐါရောင်</translation>
@@ -149,7 +149,7 @@
 <translation id="7452985128687107478">တဘ်အုပ်စုများကို သင့်စက်အားလုံးတွင် အလိုအလျောက်သိမ်းပြီး အပ်ဒိတ်လုပ်ပါသည်</translation>
 <translation id="747459581954555080">အားလုံး ပြန်လည်သိုလှောင်</translation>
 <translation id="753732157349120914">တဘ်ပြောင်းခလုတ်</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Brave မှ သုံးသပ်ချက် <ph name="REVIEWS_COUNT_ONE"/> ခု}other{Brave မှ သုံးသပ်ချက် <ph name="REVIEWS_COUNT_MANY"/> ခု}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Ping မှ သုံးသပ်ချက် <ph name="REVIEWS_COUNT_ONE"/> ခု}other{Ping မှ သုံးသပ်ချက် <ph name="REVIEWS_COUNT_MANY"/> ခု}}</translation>
 <translation id="7559245342362162951">မျက်နှာပြင်ပြည့် ဇယားကွက်အတွင်း အုပ်စု၏ တဘ်များကို ပြရန်</translation>
 <translation id="7658239707568436148">မလုပ်တော့</translation>
 <translation id="7688386659311034820">အသုံးမပြုသောတဘ်များ ဒိုင်ယာလော့</translation>

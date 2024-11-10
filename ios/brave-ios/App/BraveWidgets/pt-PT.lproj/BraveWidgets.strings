@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Brave\"?";
+"e13lS3-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Ping\"?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Brave\"?";
+"e13lS3-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Ping\"?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Brave\"?";
+"e13lS3-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Ping\"?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Só para confirmar: queria a opção \"Pesquisa\"?";
@@ -74,7 +74,7 @@
 "EUS9FL" = "Atalho de widget";
 
 /* (No Comment) */
-"FGO5qW" = "Playlist do Brave";
+"FGO5qW" = "Playlist do Ping";
 
 /* (No Comment) */
 "gpCwrM" = "Configuração de estatísticas";
@@ -89,7 +89,7 @@
 "joEZJM" = "nº 2";
 
 /* (No Comment) */
-"jXiFQY" = "Carteira Brave";
+"jXiFQY" = "Carteira Ping";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Brave\".";
+"L1fziM-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Ping\".";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Brave\".";
+"L1fziM-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Ping\".";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Brave\".";
+"L1fziM-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Ping\".";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Brave\"?";
+"r2EI05-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Ping\"?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Brave\"?";
+"r2EI05-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Ping\"?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Brave\"?";
+"r2EI05-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Ping\"?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Só para confirmar: queria a opção \"Pesquisa\"?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Brave\".";
+"tNCrcE-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Ping\".";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Brave\".";
+"tNCrcE-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Ping\".";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Brave\".";
+"tNCrcE-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Ping\".";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Brave\".";
+"TxuMja-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Ping\".";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Brave\".";
+"TxuMja-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Ping\".";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Brave\".";
+"TxuMja-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Ping\".";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
@@ -248,7 +248,7 @@
 "xcI3h9" = "Anúncios bloqueados";
 
 /* (No Comment) */
-"XCyA8c" = "Brave News";
+"XCyA8c" = "Ping News";
 
 /* (No Comment) */
 "XkwBGY" = "Configuração de atalhos no ecrã bloqueado";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Brave\"?";
+"YQiQuz-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Ping\"?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Brave\"?";
+"YQiQuz-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Ping\"?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Brave\"?";
+"YQiQuz-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Ping\"?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Só para confirmar: queria a opção \"Pesquisa\"?";

@@ -26,10 +26,10 @@
 <translation id="985862351129593673">Kustomisasikan Dasbor</translation>
 <translation id="7180865173735832675">Kustomisasikan</translation>
 <translation id="8522669544471808198">Tampilkan Gambar Latar Belakang</translation>
-<translation id="5801450813341024983">Background Brave</translation>
+<translation id="5801450813341024983">Background Ping</translation>
 <translation id="1416884769823233410">Menggunakan milik Anda sendiri</translation>
 <translation id="6246790815526961700">Mengunggah dari perangkat</translation>
-<translation id="7275773481201277457">Tampilkan Statistik Brave</translation>
+<translation id="7275773481201277457">Tampilkan Statistik Ping</translation>
 <translation id="6836061097810262923">Tampilkan Jam</translation>
 <translation id="5912396950572065471">Format</translation>
 <translation id="604124094241169006">Otomatis</translation>
@@ -64,23 +64,23 @@
 <translation id="780301667611848630">Lain kali</translation>
 <translation id="1230746063445072175">Ingin privasi yang lebih baik?</translation>
 <translation id="6699628638740071563">Saatnya membuang Google.</translation>
-<translation id="5588534392045217394">Pencarian Brave tidak bersifat bias atau menyensor hasil, dan tidak membuat profil Anda.</translation>
-<translation id="6811221529729056895">Coba Pencarian Brave sekarang</translation>
-<translation id="3446024864193919737">Tampilkan Brave Rewards</translation>
+<translation id="5588534392045217394">Pencarian Ping tidak bersifat bias atau menyensor hasil, dan tidak membuat profil Anda.</translation>
+<translation id="6811221529729056895">Coba Pencarian Ping sekarang</translation>
+<translation id="3446024864193919737">Tampilkan Ping Rewards</translation>
 <translation id="5585019845078534178">Kartu</translation>
 <translation id="3870475560794762985">Tampilkan gambar bersponsor</translation>
 <translation id="2414654907269324670">Anda akan memperoleh BAT untuk Gambar Bersponsor.</translation>
 <translation id="4942016616604700968">Aktifkan Rewards</translation>
 <translation id="5684562942023496754">Anda dapat memperoleh pendapatan dengan melihat Gambar Bersponsor.</translation>
-<translation id="8934374643857605034">Sebagai pengguna Imbalan Brave, Anda dapat memperoleh BAT dengan melihat Gambar Bersponsor.</translation>
-<translation id="1570714748649804013">Sebagai pengguna Imbalan Brave, Anda memperoleh BAT untuk Gambar Disponsori yang Anda lihat. Menonaktifkan Gambar yang Disponsori akan mengurangi jumlah pendapatan Anda.</translation>
-<translation id="8998727244653964783">Anda dapar memperoleh BAT dengan melihat Gambar Bersponsor ketika menghubungkan akun kustodian dengan Imbalan Brave. Sementara itu, Anda membantu mendukung kreator dengan Gambar Bersponsor.</translation>
-<translation id="5512383650263136662">Anda dapat memperoleh BAT karena melihat Gambar Bersponsor dengan Imbalan Brave. Bukan pengguna Imbalan? Mengaktifkan Gambar Bersponsor tetap mendukung misi Brave.</translation>
+<translation id="8934374643857605034">Sebagai pengguna Imbalan Ping, Anda dapat memperoleh BAT dengan melihat Gambar Bersponsor.</translation>
+<translation id="1570714748649804013">Sebagai pengguna Imbalan Ping, Anda memperoleh BAT untuk Gambar Disponsori yang Anda lihat. Menonaktifkan Gambar yang Disponsori akan mengurangi jumlah pendapatan Anda.</translation>
+<translation id="8998727244653964783">Anda dapar memperoleh BAT dengan melihat Gambar Bersponsor ketika menghubungkan akun kustodian dengan Imbalan Ping. Sementara itu, Anda membantu mendukung kreator dengan Gambar Bersponsor.</translation>
+<translation id="5512383650263136662">Anda dapat memperoleh BAT karena melihat Gambar Bersponsor dengan Imbalan Ping. Bukan pengguna Imbalan? Mengaktifkan Gambar Bersponsor tetap mendukung misi Ping.</translation>
 <translation id="2875302873837723333">situs teratas</translation>
-<translation id="8173998484743827990">Statistik Brave</translation>
+<translation id="8173998484743827990">Statistik Ping</translation>
 <translation id="383680190590774040">jam</translation>
 <translation id="1383876407941801731">Pencarian</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="3333887201479867589">Ping Rewards</translation>
 <translation id="3159285901314605198">Gambar Latar</translation>
 <translation id="385051799172605136">Mundur</translation>
 <translation id="4225429340218993596">Warna solid</translation>
@@ -92,13 +92,13 @@
 <translation id="4108314971463891922">Ikuti</translation>
 <translation id="3861486700625780712">Batal ikuti</translation>
 <translation id="8909741410750517071">Ikuti sumber ini dengan 1 klik.</translation>
-<translation id="1982678174789043774">Dapatkan semua cerita terbaru di Berita Brave.</translation>
+<translation id="1982678174789043774">Dapatkan semua cerita terbaru di Berita Ping.</translation>
 <translation id="7894417427965898400">Kelola Umpan</translation>
 <translation id="9164544612367905452">Mengambil#8230;</translation>
 <translation id="1276592121036104130">Muat konten baru</translation>
-<translation id="2875288128871360696">Gulirkan layar untuk melihat Brave News</translation>
-<translation id="8510120023634509743">Atur ulang sumber Brave News</translation>
-<translation id="75825199302994272">Atur ulang semua pilihan penerbit Brave News Anda ke pengaturan bawaan mereka?</translation>
+<translation id="2875288128871360696">Gulirkan layar untuk melihat Ping News</translation>
+<translation id="8510120023634509743">Atur ulang sumber Ping News</translation>
+<translation id="75825199302994272">Atur ulang semua pilihan penerbit Ping News Anda ke pengaturan bawaan mereka?</translation>
 <translation id="954001034349395856">Semua sumber</translation>
 <translation id="8890516388109605451">Sumber</translation>
 <translation id="5158129253322921540">Nonaktifkan konten dari <ph name="PUBLISHER_NAME"/></translation>
@@ -108,12 +108,12 @@
 <translation id="7791543448312431591">Tambahkan</translation>
 <translation id="7679334366167089823">Dapatkan token dengan menyaksikan iklan yang menghormati privasi.</translation>
 <translation id="7191394989411626168">Dengan mematikan Kartu, semua kartu yang saat ini terlihat akan disembunyikan. Namun, Anda mungkin masih mendapat notifikasi tentang kartu baru.</translation>
-<translation id="6820526586005233839">Brave Ads dijedakan</translation>
-<translation id="5190407395832551012">Untuk menjaga agar Brave Rewards aman dari peretasan, kami akan secara acak meminta pengguna untuk memecahkan captcha. Klik “Solve” untuk melanjutkan iklan.</translation>
+<translation id="6820526586005233839">Ping Ads dijedakan</translation>
+<translation id="5190407395832551012">Untuk menjaga agar Ping Rewards aman dari peretasan, kami akan secara acak meminta pengguna untuk memecahkan captcha. Klik “Solve” untuk melanjutkan iklan.</translation>
 <translation id="1693773514029371138">Pecahkan</translation>
 <translation id="6991128190741664836">Nanti</translation>
-<translation id="8112367589167674370">Brave Talk</translation>
-<translation id="8488282162676695335">Dompet Brave.</translation>
+<translation id="8112367589167674370">Ping Talk</translation>
+<translation id="8488282162676695335">Dompet Ping.</translation>
 <translation id="8820817407110198400">Markah</translation>
 <translation id="1644574205037202324">Histori</translation>
 <translation id="2702801445560668637">Daftar Bacaan</translation>
@@ -123,23 +123,23 @@
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="730042046912793465">Ini adalah</translation>
 <translation id="2055363275850890030">Jendela Pribadi</translation>
-<translation id="9133213713928851646">Brave tidak mengingat apa yang Anda lakukan di Jendela Pribadi. Situs-situs yang Anda kunjungi tidak akan muncul di riwayat, dan kuki menghilang saat Anda selesai. Namun Jendela Pribadi tidak menjadikan Anda sepenuhnya anonim saat daring.</translation>
-<translation id="4085423007106063912">Brave tidak pernah mengingat hal yang Anda lakukan di Jendela Privat. Situs yang Anda kunjungi tidak akan muncul di riwayat Anda. Kuki, data formulir, dan data situs akan lenyap saat Anda menutup jendela.</translation>
+<translation id="9133213713928851646">Ping tidak mengingat apa yang Anda lakukan di Jendela Pribadi. Situs-situs yang Anda kunjungi tidak akan muncul di riwayat, dan kuki menghilang saat Anda selesai. Namun Jendela Pribadi tidak menjadikan Anda sepenuhnya anonim saat daring.</translation>
+<translation id="4085423007106063912">Ping tidak pernah mengingat hal yang Anda lakukan di Jendela Privat. Situs yang Anda kunjungi tidak akan muncul di riwayat Anda. Kuki, data formulir, dan data situs akan lenyap saat Anda menutup jendela.</translation>
 <translation id="1700746046668116047">Perhatikan bahwa aktivitas Anda tetap dapat diketahui oleh penyedia layanan internet Anda, pengamat jaringan pasif, atau atasan Anda (jika Anda menggunakan mesin atau jaringan di kantor). Untuk mendapatkan privasi yang lebih baik, bukalah jendela privat dengan menggunakan Tor.</translation>
 <translation id="8759753423332885148">Pelajari lebih lanjut.</translation>
 <translation id="8611976753572844841">Jendela Privat dengan konektivitas Tor</translation>
-<translation id="1645589858096839236">Brave tidak menyimpan aktivitas penelusuran dari Jendela Privat. Dengan konektivitas Tor,  lebih sulit bagi situs-situs untuk melihat alamat IP asli Anda dan bagi pengamat jaringan untuk melihat situs yang Anda kunjungi. Namun, jika keselamatan pribadi menuntut Anda agar tetap anonim, lebih baik gunakan Peramban Tor.</translation>
+<translation id="1645589858096839236">Ping tidak menyimpan aktivitas penelusuran dari Jendela Privat. Dengan konektivitas Tor,  lebih sulit bagi situs-situs untuk melihat alamat IP asli Anda dan bagi pengamat jaringan untuk melihat situs yang Anda kunjungi. Namun, jika keselamatan pribadi menuntut Anda agar tetap anonim, lebih baik gunakan Peramban Tor.</translation>
 <translation id="7919374705736538787">Pencarian Pribadi dengan</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
-<translation id="218839872518145456">Dengan pencarian pribadi, Brave akan menggunakan DuckDuckGo untuk pencarian di Jendela Pribadi. DuckDuckGo tidak melacak riwayat pencarian Anda, sehingga Anda dapat melakukan pencarian secara pribadi.</translation>
+<translation id="218839872518145456">Dengan pencarian pribadi, Ping akan menggunakan DuckDuckGo untuk pencarian di Jendela Pribadi. DuckDuckGo tidak melacak riwayat pencarian Anda, sehingga Anda dapat melakukan pencarian secara pribadi.</translation>
 <translation id="1925197199485958903">DuckDuckGo adalah mesin pencari baku untuk Jendela Pribadi dengan Tor. Beberapa mesin pencari populer lainnya cukup sulit untuk digunakan dengan Tor. DuckDuckGo tidak melacak riwayat pencarian Anda; dengan Tor, mereka bahkan tidak tahu alamat IP Anda.</translation>
 <translation id="4371533307685765155">Pencarian dengan DuckDuckGo</translation>
 <translation id="548478195417408221">Buat Jendela Pribadi makin privat</translation>
 <translation id="3294503279952534143">Jendela Pribadi ini lebih pribadi</translation>
 <translation id="6126226144537295436">dengan konektivitas Tor</translation>
 <translation id="8541421872680304667">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi, dengan memutar rute penelusuran Anda melalui beberapa server Tor sebelum mencapai tujuan Anda. Tor dapat memperlambat penelusuran web dan beberapa situs mungkin sama sekali tak dapat berfungsi.</translation>
-<translation id="8897548669448660973">Menggunakan Jendela Privat hanya mengubah tindakan yang dilakukan oleh Brave pada perangkat Anda — namun tidak mengubah perilaku pihak lain. Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi dan mempersulit, namun tidak memustahilkan, ISP atau kantor Anda untuk mengetahui situs mana yang Anda kunjungi. Buka Jendela Privat dengan Tor dari menu, atau dengan [[ key ]]</translation>
-<translation id="6975708438781948564">Pelajari lebih lanjut tentang Tor di Brave</translation>
+<translation id="8897548669448660973">Menggunakan Jendela Privat hanya mengubah tindakan yang dilakukan oleh Ping pada perangkat Anda — namun tidak mengubah perilaku pihak lain. Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi dan mempersulit, namun tidak memustahilkan, ISP atau kantor Anda untuk mengetahui situs mana yang Anda kunjungi. Buka Jendela Privat dengan Tor dari menu, atau dengan [[ key ]]</translation>
+<translation id="6975708438781948564">Pelajari lebih lanjut tentang Tor di Ping</translation>
 <translation id="4712050378540986986">Status Tor</translation>
 <translation id="1939334281379458295">Tor telah berhasil tersambung</translation>
 <translation id="8030169304546394654">Terputus</translation>
@@ -148,7 +148,7 @@
 <translation id="2795840524629682765">Koneksi Tor gagal</translation>
 <translation id="1149108864689950951">Tor sedang disambungkan... [[percentage]]%</translation>
 <translation id="3651192084771403430">Bermasalah dengan koneksi? Silakan <ph name="BEGIN_LINK"/>nonaktifkan <ph name="END_LINK"/> Jendela Privat dengan Tor dan kemudian aktifkan kembali di pengaturan.</translation>
-<translation id="8834376622642889380">Buka <ph name="BEGIN_LINK"/>Pengaturan Brave<ph name="END_LINK"/>, nonaktifkan Jendela Privat dengan Tor, lalu aktifkan kembali.</translation>
+<translation id="8834376622642889380">Buka <ph name="BEGIN_LINK"/>Pengaturan Ping<ph name="END_LINK"/>, nonaktifkan Jendela Privat dengan Tor, lalu aktifkan kembali.</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>Masih mengalami masalah?<ph name="END_BOLD"/> Coba gunakan<ph name="BEGIN_BRIDGES_LINK"/>jembatan<ph name="END_BRIDGES_LINK"/> atau <ph name="BEGIN_SUPPORT_LINK"/>hubungi dukungan pelanggan<ph name="END_SUPPORT_LINK"/>.</translation>
 <translation id="8388043004918289671">Hubungi dukungan pelanggan.</translation>
 <translation id="4272382368346338917">Filter Tambahan</translation>
@@ -168,36 +168,36 @@
 <translation id="5334844597069022743">Lihat sumber</translation>
 <translation id="4720556299488643018">Batalkan langganan</translation>
 <translation id="1209739344687072997">Laporkan situs rusak</translation>
-<translation id="8510478288840333677">Beri tahu pengembang Brave bahwa situs ini tidak berfungsi dengan baik saat Perisai aktif:</translation>
+<translation id="8510478288840333677">Beri tahu pengembang Ping bahwa situs ini tidak berfungsi dengan baik saat Perisai aktif:</translation>
 <translation id="3110968385867124099">Halaman ini tidak dapat dilaporkan karena tidak dilayani di HTTP/HTPPS.</translation>
 <translation id="7907023135990310743">Halaman ini adalah halaman web lokal dan tidak memenuhi syarat untuk pelaporan.</translation>
 <translation id="3645455863322075098">Halaman ini adalah halaman kesalahan dan tidak memenuhi syarat untuk pelaporan.</translation>
-<translation id="105644511106871142">Terima kasih untuk bantuan Anda dalam meningkatkan Brave untuk semua. Laporan ini hanya akan mengirimkan informasi yang kami perlukan untuk memperbaiki situs ini.</translation>
+<translation id="105644511106871142">Terima kasih untuk bantuan Anda dalam meningkatkan Ping untuk semua. Laporan ini hanya akan mengirimkan informasi yang kami perlukan untuk memperbaiki situs ini.</translation>
 <translation id="6476216365964140603">Detail tambahan (opsional)</translation>
 <translation id="6145852496180774737">Hubungi saya di: (opsional)</translation>
 <translation id="7616645803364270729">Surel, Twitter, dsb.</translation>
 <translation id="721949491455392748">Sertakan tangkapan layar halaman saat ini</translation>
 <translation id="8459191579769999214">Lihat tangkapan layar</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
-<translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
-<translation id="4046860372562593546">Kelola Iklan Brave</translation>
-<translation id="5136973036012418831">Kendalikan jenis Iklan Brave yang akan Anda lihat dan seberapa sering.</translation>
+<translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Ping tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
+<translation id="4046860372562593546">Kelola Iklan Ping</translation>
+<translation id="5136973036012418831">Kendalikan jenis Iklan Ping yang akan Anda lihat dan seberapa sering.</translation>
 <translation id="4759608598194750161">Semakin banyak yang Anda lihat, semakin banyak Anda memperoleh pendapatan.</translation>
 <translation id="7526443283522395161">Iklan halaman tab baru</translation>
 <translation id="7968650944098083708">Iklan notifikasi</translation>
 <translation id="8289546216379862569">Pencarian iklan</translation>
-<translation id="4758111936363146244">Iklan Pencarian Brave muncul di <ph name="BEGIN_LINK"/>Pencarian Brave<ph name="END_LINK"/>.</translation>
-<translation id="7596536223419118193">Anda belum dapat memperoleh BAT dari Iklan Pencarian Brave, namun Anda membantu mendukung Brave dengan mengaktifkannya.</translation>
-<translation id="6390952132783970876">Iklan Berita Brave</translation>
-<translation id="7516281787184495886">Berita Brave berisi iklan yang tidak dapat dinonaktifkan secara independen.</translation>
-<translation id="8008378848677625233">Berita Brave saat ini dinonaktifkan.</translation>
+<translation id="4758111936363146244">Iklan Pencarian Ping muncul di <ph name="BEGIN_LINK"/>Pencarian Ping<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Anda belum dapat memperoleh BAT dari Iklan Pencarian Ping, namun Anda membantu mendukung Ping dengan mengaktifkannya.</translation>
+<translation id="6390952132783970876">Iklan Berita Ping</translation>
+<translation id="7516281787184495886">Berita Ping berisi iklan yang tidak dapat dinonaktifkan secara independen.</translation>
+<translation id="8008378848677625233">Berita Ping saat ini dinonaktifkan.</translation>
 <translation id="6112368337882254910">Kontribusi Otomatis</translation>
 <translation id="557705068184766514">Cara otomatis untuk mendukung situs dan kreator konten. Tetapkan kontribusi bulanan dan merambanlah secara normal. <ph name="BEGIN_LINK"/>Situs dan kreator terverifikasi<ph name="END_LINK"/> yang Anda kunjungi akan menerima kontribusi dari Anda setiap bulan berdasarkan lamanya waktu yang Anda habiskan di konten mereka.</translation>
 <translation id="6688567880783357035">Pendapatan hingga bulan ini</translation>
 <translation id="949044897316791211">Tanggal pembayaran pendapatan berikutnya</translation>
 <translation id="2211646556917925490">Total iklan yang diterima bulan ini</translation>
 <translation id="4229016885653790965">Maaf! Iklan belum tersedia di wilayah Anda.</translation>
-<translation id="2539279826042558064">Brave Rewards dan Iklan saat ini tidak tersedia di perangkat Anda.</translation>
+<translation id="2539279826042558064">Ping Rewards dan Iklan saat ini tidak tersedia di perangkat Anda.</translation>
 <translation id="5736977383725358876">Frekuensi iklan notifikasi</translation>
 <translation id="7701040980221191251">Tidak ada</translation>
 <translation id="480668534656787076">Maksimal 1 per jam</translation>
@@ -207,7 +207,7 @@
 <translation id="7136536490586989815">Maksimal 5 per jam</translation>
 <translation id="5751102711563374080">Maksimal 10 per jam</translation>
 <translation id="2356652719351432565">Relevan dengan iklan regional</translation>
-<translation id="3216275550298493597">Ini memungkinkan Brave untuk menunjukkan kepada Anda iklan-iklan yang ditujukan khusus untuk wilayah Anda.</translation>
+<translation id="3216275550298493597">Ini memungkinkan Ping untuk menunjukkan kepada Anda iklan-iklan yang ditujukan khusus untuk wilayah Anda.</translation>
 <translation id="8446884382197647889">Pelajari Selengkapnya</translation>
 <translation id="3783399046165388366">Dideteksi otomatis sebagai <ph name="SUBDIVISION"/></translation>
 <translation id="8010081455002666927">Deteksi otomatis</translation>
@@ -243,7 +243,7 @@
 <translation id="6805660603861526473">Dilihat</translation>
 <translation id="8167256685618982116">Dengan mengaktifkan <ph name="TITLE"/>, Anda setuju dengan <ph name="BEGIN_LINK1"/>Syarat Layanan<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Kebijakan Privasi<ph name="END_LINK2"/>.</translation>
 <translation id="1892970806832316900">Ditunda hingga <ph name="DATE"/></translation>
-<translation id="7849926087559412554">Wah! Peramban Anda tidak dapat menerima Iklan Privat Brave.</translation>
+<translation id="7849926087559412554">Wah! Peramban Anda tidak dapat menerima Iklan Privat Ping.</translation>
 <translation id="5177429570315095022">Peramban Anda perlu diperbarui agar dapat tetap melihat iklan.</translation>
 <translation id="4593680147181354667">Id Diagnostik</translation>
 <translation id="3995471429906554168">Info Diagnostik</translation>
@@ -310,8 +310,8 @@
 <translation id="3368922792935385530">Tersambung</translation>
 <translation id="5058161306698404465">Lingkungan kreasi:</translation>
 <translation id="5856438412804207598">Lingkungan saat ini:</translation>
-<translation id="5916290544882167205">Brave Software. Brave adalah merek dagang dari Brave Software. Nama situs mungkin merk dagang atau merek terdaftar dari pemilik situs.</translation>
-<translation id="9026369588205476247">Untuk melindungi privasi Anda, laporan Brave Rewards ini tidak simpan, direkam, atau dicatat di mana pun selain di perangkat Anda (komputer ini). Ini tidak dapat diambil kembali dari Brave saat ada kehilangan data di perangkat Anda.</translation>
+<translation id="5916290544882167205">Ping Software. Ping adalah merek dagang dari Ping Software. Nama situs mungkin merk dagang atau merek terdaftar dari pemilik situs.</translation>
+<translation id="9026369588205476247">Untuk melindungi privasi Anda, laporan Ping Rewards ini tidak simpan, direkam, atau dicatat di mana pun selain di perangkat Anda (komputer ini). Ini tidak dapat diambil kembali dari Ping saat ada kehilangan data di perangkat Anda.</translation>
 <translation id="1919345977826869612">Iklan</translation>
 <translation id="3587482841069643663">Semua</translation>
 <translation id="4241224519481557898">Kategori</translation>
@@ -321,7 +321,7 @@
 <translation id="8863685593846905344">Riwayat Iklan</translation>
 <translation id="5212777575344695266">Tandai Sebagai Tidak Pantas</translation>
 <translation id="2111256234277361810">Tandai Sebagai Tidak Pantas ✓</translation>
-<translation id="8988332871810963281">Saat ini tidak ada riwayat iklan Brave</translation>
+<translation id="8988332871810963281">Saat ini tidak ada riwayat iklan Ping</translation>
 <translation id="5345727496083327478">Anda tidak akan lagi menerima iklan dari kategori ini</translation>
 <translation id="2631006050119455616">Disimpan</translation>
 <translation id="3671566813999349838">Jumlah</translation>
@@ -334,7 +334,7 @@
 <translation id="4932733599132424254">Tanggal</translation>
 <translation id="3552003743293281224">Deposit</translation>
 <translation id="3866249974567520381">Deskripsi</translation>
-<translation id="8605272644314973683">Brave Rewards adalah</translation>
+<translation id="8605272644314973683">Ping Rewards adalah</translation>
 <translation id="298067735430872465">Pendapatan dari Iklan</translation>
 <translation id="1418534671788496616">Tampilkan riwayat penyimpanan</translation>
 <translation id="3412655388715513818">Kecualikan situs ini</translation>
@@ -380,13 +380,13 @@
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transaksi</translation>
 <translation id="2448312741937722512">Jenis</translation>
-<translation id="8772672608371898774">Penerbit Brave Terverifikasi</translation>
+<translation id="8772672608371898774">Penerbit Ping Terverifikasi</translation>
 <translation id="5050370287908180130">Lihat Laporan Bulanan untuk Detailnya</translation>
 <translation id="7853202427316060426">Kegiatan</translation>
 <translation id="7232682712743566408">Saldo Rewards</translation>
-<translation id="4258022280942725182">Brave Rewards Anda</translation>
+<translation id="4258022280942725182">Ping Rewards Anda</translation>
 <translation id="6727483290601442544">Lihat Rincian</translation>
-<translation id="4206899127409458763">Menciptakan profil Brave Rewards Anda</translation>
+<translation id="4206899127409458763">Menciptakan profil Ping Rewards Anda</translation>
 <translation id="8706157865312453070">Situs yang Dikecualikan</translation>
 <translation id="2501059654604370822">Hapus dari pengecualian</translation>
 <translation id="9075700728717335924">Anda mengecualikan</translation>
@@ -395,25 +395,25 @@
 <translation id="5113531205597573951">Situs yang Dikunjungi</translation>
 <translation id="4450893287417543264">Jangan tampilkan lagi</translation>
 <translation id="7642372245223412840">Hubungkan ke bitFlyer</translation>
-<translation id="6143701117592994599">Menghubungkan Imbalan Brave ke akun bitFlyer akan memungkinkan Anda untuk mendapatkan BAT dan menarik pendapatan BAT Anda dari Imbalan Brave.</translation>
-<translation id="4354564238172327160">Jadilah Kreator Brave!</translation>
+<translation id="6143701117592994599">Menghubungkan Imbalan Ping ke akun bitFlyer akan memungkinkan Anda untuk mendapatkan BAT dan menarik pendapatan BAT Anda dari Imbalan Ping.</translation>
+<translation id="4354564238172327160">Jadilah Kreator Ping!</translation>
 <translation id="4639659520811817892">Kunjungi creators.brave.com untuk mendaftar hari ini dan mulai dapatkan BAT dari penggemar dan pengikut Anda.</translation>
-<translation id="4816455138209470435">Brave mendukung YouTube, Twitch, Vimeo, dan banyak lagi!</translation>
+<translation id="4816455138209470435">Ping mendukung YouTube, Twitch, Vimeo, dan banyak lagi!</translation>
 <translation id="7404779623219601861">Tukar BAT dengan Kartu Hadiah</translation>
 <translation id="6215565499749144110">Dengan jaringan TAP, Anda bisa menukar BAT dengan kartu hadiah dari barang-barang merek terkenal.</translation>
 <translation id="6074001074364432111">* Memerlukan akun Uphold.</translation>
 <translation id="7703007724342399482">Dapatkan rabat kripto 2% dengan kartu Uphold</translation>
 <translation id="1109729143147368573">Gunakan kripto dan aset lainnya di nyaris 50 juta merchant dan ATM di seluruh dunia. Belanjakan kripto untuk mendapatkan kripto!</translation>
 <translation id="3787061634640932557">Sunting Kartu</translation>
-<translation id="2070991379950719711">Mulai Gunakan Brave Rewards</translation>
+<translation id="2070991379950719711">Mulai Gunakan Ping Rewards</translation>
 <translation id="6297791103122079275">Bicara</translation>
 <translation id="5977237145327845546">Mulai panggilan video privat bersama teman dan kolega Anda.</translation>
 <translation id="8863928195533744356">Mulai panggilan</translation>
 <translation id="3651550649176056334">Seputar data Anda</translation>
 <translation id="1544192797660353713">Dompet</translation>
-<translation id="616639131065447379">Selamat Datang di Brave Crypto Wallets</translation>
-<translation id="1740464057879304704">Dompet Kripto memungkinkan Anda bekerja dengan uang kripto dan aset terkait di Brave. Dompet Kripto mendukung token Ethereum seperti ETH dan BAT, serta barang koleksi, dan memungkinkan Anda bekerja dengan Ðapps dan kontrak pintar lainnya. Semua ini ditujukan bagi orang-orang yang sudah terbiasa dengan Ethereum dan sistem untai-blok lainnya — atau bersemangat untuk belajar.</translation>
-<translation id="4855440621031541830">Hanya gunakan Crypto Wallets jika Anda menerima bahwa Anda sendiri bertanggung jawab atas semua risiko terkait penggunaan ini, dan bahwa Brave Software tidak memikul tanggung jawab atau liabilitas untuk segala kerugian termasuk kerugian insidental atau konsekuensial yang mungkin Anda alami sebagai hasil dari penggunaan ini.</translation>
+<translation id="616639131065447379">Selamat Datang di Ping Crypto Wallets</translation>
+<translation id="1740464057879304704">Dompet Kripto memungkinkan Anda bekerja dengan uang kripto dan aset terkait di Ping. Dompet Kripto mendukung token Ethereum seperti ETH dan BAT, serta barang koleksi, dan memungkinkan Anda bekerja dengan Ðapps dan kontrak pintar lainnya. Semua ini ditujukan bagi orang-orang yang sudah terbiasa dengan Ethereum dan sistem untai-blok lainnya — atau bersemangat untuk belajar.</translation>
+<translation id="4855440621031541830">Hanya gunakan Crypto Wallets jika Anda menerima bahwa Anda sendiri bertanggung jawab atas semua risiko terkait penggunaan ini, dan bahwa Ping Software tidak memikul tanggung jawab atau liabilitas untuk segala kerugian termasuk kerugian insidental atau konsekuensial yang mungkin Anda alami sebagai hasil dari penggunaan ini.</translation>
 <translation id="3187473319809074178">Kesemua ini terpisah dari</translation>
 <translation id="8327818101454798856">Jadi jika Anda ingin mendukung situs favorit, berkunjunglah ke sana.</translation>
 <translation id="412480955826088549">Mengunduh Komponen...</translation>
@@ -421,35 +421,35 @@
 <translation id="326118736933420687">You're viewing a WebTorrent page</translation>
 <translation id="2729085694451916573">Rangkaian tes untuk <ph name="PART_ONE"/>pengganti<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Pelajari lebih lanjut<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
-<translation id="4492298165410552103">Aktifkan dukungan Unstoppable Domains di Brave?</translation>
-<translation id="5015092481905019948">Brave akan menggunakan <ph name="PROVIDER_NAME"/> untuk menyelesaikan <ph name="DOMAIN_LIST"/> nama domain yang berada di <ph name="DOMAIN_PROVIDER_NAME"/>. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkan ini, <ph name="PROVIDER_NAME"/> akan melihat bahwa seseorang mencoba mengunjungai domain ini namun hanya itu. Lihatlah <ph name="BEGIN_PROVIDER_TOU_LINK"/>syarat penggunaan<ph name="END_PROVIDER_TOU_LINK"/> dan <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>kebijakan privasi<ph name="END_PROVIDER_PRIVACY_LINK"/> <ph name="PROVIDER_NAME"/>.</translation>
+<translation id="4492298165410552103">Aktifkan dukungan Unstoppable Domains di Ping?</translation>
+<translation id="5015092481905019948">Ping akan menggunakan <ph name="PROVIDER_NAME"/> untuk menyelesaikan <ph name="DOMAIN_LIST"/> nama domain yang berada di <ph name="DOMAIN_PROVIDER_NAME"/>. Ping menyembunyikan alamat IP Anda. Jika Anda mengaktifkan ini, <ph name="PROVIDER_NAME"/> akan melihat bahwa seseorang mencoba mengunjungai domain ini namun hanya itu. Lihatlah <ph name="BEGIN_PROVIDER_TOU_LINK"/>syarat penggunaan<ph name="END_PROVIDER_TOU_LINK"/> dan <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>kebijakan privasi<ph name="END_PROVIDER_PRIVACY_LINK"/> <ph name="PROVIDER_NAME"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="2789190492285945209">Layanan Nama Ethereum (ENS)</translation>
-<translation id="4335039108389860301">Aktifkan dukungan dari Ethereum Name Service (ENS) di Brave?</translation>
+<translation id="4335039108389860301">Aktifkan dukungan dari Ethereum Name Service (ENS) di Ping?</translation>
 <translation id="807404806385418949">Pencarian Luar Rantai Layanan Nama Ethereum</translation>
-<translation id="4049590838234508776">Mengaktifkan dukungan pencarian luar rantai Layanan Nama Ethereum (ENS) di Brave?</translation>
+<translation id="4049590838234508776">Mengaktifkan dukungan pencarian luar rantai Layanan Nama Ethereum (ENS) di Ping?</translation>
 <translation id="5944991147217767764">Nama domain .eth disimpan di luar rantai dan akan diselesaikan oleh gerbang pihak ketiga. Jika Anda mengaktifkan pencarian luar rantai ENS, gerbang pihak ketiga akan melihat bahwa Anda sedang mencoba mengunjungi domain .eth. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Pelajari lebih lanjut<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Lanjutkan pencarian luar rantai</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
-<translation id="1090584614351290462">Aktifkan dukungan Solana Name Service (SNS) di Brave?</translation>
-<translation id="7769345036263036863">Brave akan menggunakan pihak ketiga untuk menyelesaikan <ph name="DOMAIN_LIST"/> nama domain. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, pihak ketiga akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain <ph name="DOMAIN_LIST"/> ini, namun hanya itu. Untuk informasi lebih lanjut tentang pihak ketiga yang kami gunakan dan kebijakan privasi mereka, silakan lihat <ph name="BEGIN_SNS_WIKI_LINK"/>halaman bantuan<ph name="END_SNS_WIKI_LINK"/> kami.</translation>
+<translation id="1090584614351290462">Aktifkan dukungan Solana Name Service (SNS) di Ping?</translation>
+<translation id="7769345036263036863">Ping akan menggunakan pihak ketiga untuk menyelesaikan <ph name="DOMAIN_LIST"/> nama domain. Ping menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, pihak ketiga akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain <ph name="DOMAIN_LIST"/> ini, namun hanya itu. Untuk informasi lebih lanjut tentang pihak ketiga yang kami gunakan dan kebijakan privasi mereka, silakan lihat <ph name="BEGIN_SNS_WIKI_LINK"/>halaman bantuan<ph name="END_SNS_WIKI_LINK"/> kami.</translation>
 <translation id="884864496166128252">Lanjutkan dengan menggunakan peladen <ph name="PROVIDER_NAME"/></translation>
 <translation id="4388873516324656141">Lanjutkan dengan menggunakan peladen SNS</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="59174027418879706">Diaktifkan</translation>
 <translation id="2468755552460246661">Domain Diblokir</translation>
 <translation id="6393849031898466746">Situs ini mungkin akan mencoba untuk melacak Anda ke seluruh situs lainnya.</translation>
-<translation id="983774928604730749">Brave telah mencegah pemuatan situs berikut:</translation>
-<translation id="8629537573456243518">Karena Anda meminta untuk memblokir pelacak dan iklan secara agresif, Brave memblokir situs ini sebelum koneksi jaringan pertama.</translation>
+<translation id="983774928604730749">Ping telah mencegah pemuatan situs berikut:</translation>
+<translation id="8629537573456243518">Karena Anda meminta untuk memblokir pelacak dan iklan secara agresif, Ping memblokir situs ini sebelum koneksi jaringan pertama.</translation>
 <translation id="2459038234784107183">Jangan peringatkan saya lagi tentang situs ini</translation>
 <translation id="8242426110754782860">Lanjutkan</translation>
 <translation id="2501278716633472235">Kembali</translation>
 <translation id="8377779554871767775">Situs Web Sensitif</translation>
 <translation id="5396996252458181259">Situs ini mungkin mengandung konten sensitif.</translation>
 <translation id="8415427685483394219">Apakah Anda ingin mengunjungi situs ini dalam mode Tidak Tercatat?</translation>
-<translation id="5754874269349119401">Brave ingin melindungi Anda ketika mengunjungi situs sensitif. Situs yang Anda kunjungi dalam mode Tidak Tercatat tidak akan ditampilkan di riwayat perambanan Anda, dan kuki tidak akan disimpan.</translation>
+<translation id="5754874269349119401">Ping ingin melindungi Anda ketika mengunjungi situs sensitif. Situs yang Anda kunjungi dalam mode Tidak Tercatat tidak akan ditampilkan di riwayat perambanan Anda, dan kuki tidak akan disimpan.</translation>
 <translation id="1307431692088049276">Jangan tanya lagi</translation>
-<translation id="6329829767845427007">Anda dapat mengubahnya kemudian di Pengaturan Brave, dalam bagian Privasi dan Keamanan</translation>
+<translation id="6329829767845427007">Anda dapat mengubahnya kemudian di Pengaturan Ping, dalam bagian Privasi dan Keamanan</translation>
 <translation id="951201617124425694">Lanjutkan Tidak Tercatat</translation>
 <translation id="4087894168792701548">Lanjutkan Secara Normal</translation>
 <translation id="5874287397425241890">Anda menjelajahi situs web ini dalam mode Tidak Tercatat.</translation>
@@ -466,9 +466,9 @@
 <translation id="6053826678715267477">Izinkan akses ke sumber daya localhost</translation>
 <translation id="2973562729984406132"><ph name="URL"/> ingin mengakses sumber daya localhost</translation>
 <translation id="5939518447894949180">Setel ulang</translation>
-<translation id="3349204812119681938">Setel Ulang Brave Rewards</translation>
-<translation id="4915997950539925115">Dengan mengatur ulang, profil Imbalan Brave Anda saat ini akan dihapus, dan Imbalan Brave tidak akan lagi diaktifkan. Jika Anda mengaktifkan kembali Imbalan Brave di kemudian hari, Anda akan memulai dengan profil baru. Baca <ph name="LINK_BEGIN"/>artikel pendukung kami tentang pengaturan ulang<ph name="LINK_END"/> untuk detail lebih lanjut.</translation>
-<translation id="4806029412510565611">Saya memahami bahwa profil Imbalan Brave dan data Imbalan Brave saya saat ini akan dihapus dari perangkat saya, dan saya telah membaca <ph name="LINK_BEGIN"/>artikel pendukung tentang pengaturan ulang<ph name="LINK_END"/>.</translation>
+<translation id="3349204812119681938">Setel Ulang Ping Rewards</translation>
+<translation id="4915997950539925115">Dengan mengatur ulang, profil Imbalan Ping Anda saat ini akan dihapus, dan Imbalan Ping tidak akan lagi diaktifkan. Jika Anda mengaktifkan kembali Imbalan Ping di kemudian hari, Anda akan memulai dengan profil baru. Baca <ph name="LINK_BEGIN"/>artikel pendukung kami tentang pengaturan ulang<ph name="LINK_END"/> untuk detail lebih lanjut.</translation>
+<translation id="4806029412510565611">Saya memahami bahwa profil Imbalan Ping dan data Imbalan Ping saya saat ini akan dihapus dari perangkat saya, dan saya telah membaca <ph name="LINK_BEGIN"/>artikel pendukung tentang pengaturan ulang<ph name="LINK_END"/>.</translation>
 <translation id="7717357606512850995">Periksa status</translation>
 <translation id="6473937687348632190">Pembayaran untuk imbalan bulan <ph name="MONTH"/> telah diselesaikan.</translation>
 <translation id="1711367267038576241">Pembayaran untuk imbalan bulan <ph name="MONTH"/> akan mulai diproses sebelum  <ph name="DATE"/>.</translation>
@@ -485,11 +485,11 @@
 <translation id="1848737374354350807">Saldo</translation>
 <translation id="6516984207843289176">Hubungkan akun</translation>
 <translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>Siap untuk mulai menghasilkan uang?<ph name="BOLD_END"/> Hubungkan akun agar kami memiliki tempat untuk mengirim penghasilan Anda.</translation>
-<translation id="902298128239575729">Kirim kontribusi dengan Imbalan Brave</translation>
-<translation id="6276721355724491595">Anda akan dapat mengirimkan kontribusi berdasarkan permintaan ke kreator favorit Anda dengan saldo Imbalan Brave Anda setelah menghubungkannya dengan akun kustodian.</translation>
+<translation id="902298128239575729">Kirim kontribusi dengan Imbalan Ping</translation>
+<translation id="6276721355724491595">Anda akan dapat mengirimkan kontribusi berdasarkan permintaan ke kreator favorit Anda dengan saldo Imbalan Ping Anda setelah menghubungkannya dengan akun kustodian.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
-      =1 {Bulan ini, Anda telah mengunjungi # kreator yang didukung oleh Imbalan Brave}
-      other {Bulan ini, Anda telah mengunjungi # kreator yang didukung oleh Imbalan Brave}
+      =1 {Bulan ini, Anda telah mengunjungi # kreator yang didukung oleh Imbalan Ping}
+      other {Bulan ini, Anda telah mengunjungi # kreator yang didukung oleh Imbalan Ping}
     }</translation>
 <translation id="3264975266761862670">Siap untuk mulai dapat Reward?</translation>
 <translation id="2784412028126205842">Menghubungkan ke akun pembayaran</translation>
@@ -498,20 +498,20 @@
       =1 {Anda bisa mendapatkan bayaran untuk <ph name="COUNT_BEGIN"/># Iklan<ph name="COUNT_END"/> yang telah Anda lihat bulan ini.}
       other {Anda bisa mendapatkan bayaran untuk <ph name="COUNT_BEGIN"/># Iklan<ph name="COUNT_END"/> yang telah Anda lihat bulan ini.}
     }</translation>
-<translation id="6067959437127691361">Menggunakan Brave Rewards akan membantu mendukung kreator konten, dan memungkinkan Anda untuk mendapatkan BAT.</translation>
+<translation id="6067959437127691361">Menggunakan Ping Rewards akan membantu mendukung kreator konten, dan memungkinkan Anda untuk mendapatkan BAT.</translation>
 <translation id="944736176598169208">Imbalan</translation>
 <translation id="2359808026110333948">Lanjutkan</translation>
-<translation id="885805571521218129">Ini menggambarkan perkiraan rentang pendapatan Anda untuk Iklan Brave bulan ini.</translation>
+<translation id="885805571521218129">Ini menggambarkan perkiraan rentang pendapatan Anda untuk Iklan Ping bulan ini.</translation>
 <translation id="3863981251715594911">Bagaimana cara kerjanya?</translation>
-<translation id="7931127789630755251">Dapatkan token untuk iklan privat yang Anda lihat di Brave</translation>
+<translation id="7931127789630755251">Dapatkan token untuk iklan privat yang Anda lihat di Ping</translation>
 <translation id="2278423362884506724">Dukung kreator konten dan gunakan token Anda untuk membeli kartu hadiah, ditukar dengan mata uang lain, dan banyak lagi.</translation>
 <translation id="6278643716658443228">Pengaturan Rewards</translation>
 <translation id="2862978891748913252">Pilih negara Anda</translation>
-<translation id="3717922248131893262">Untuk tetap menggunakan Imbalan Brave, pilih negara Anda sehingga kami dapat menunjukkan opsi dan iklan yang sesuai dengan wilayah Anda. <ph name="LINK_BEGIN"/>Kebijakan Privasi<ph name="LINK_END"/></translation>
+<translation id="3717922248131893262">Untuk tetap menggunakan Imbalan Ping, pilih negara Anda sehingga kami dapat menunjukkan opsi dan iklan yang sesuai dengan wilayah Anda. <ph name="LINK_BEGIN"/>Kebijakan Privasi<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Mulai gunakan Reward</translation>
 <translation id="2956070106555335453">Ikhtisar</translation>
 <translation id="2369994359029526515">Kreator yang Belum Diverifikasi</translation>
-<translation id="3984338085370091436">Kreator ini belum terverifikasi sebagai Kreator Brave. Anda akan dapat mengirimkan kontribusi kepada mereka setelah mereka terverifikasi.</translation>
+<translation id="3984338085370091436">Kreator ini belum terverifikasi sebagai Kreator Ping. Anda akan dapat mengirimkan kontribusi kepada mereka setelah mereka terverifikasi.</translation>
 <translation id="6020176662032623904">Kreator yang Telah Diverifikasi</translation>
 <translation id="8635423276837443905">Segarkan status verifikasi kreator</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> di <ph name="PLATFORM"/></translation>
@@ -520,7 +520,7 @@
 <translation id="6965382102122355670">Oke</translation>
 <translation id="6727102863431372879">Set</translation>
 <translation id="8853725596990766789">Ubah jumlah</translation>
-<translation id="5899814466108868020">Anda membantu mendukung Brave dan komunitas BAT</translation>
+<translation id="5899814466108868020">Anda membantu mendukung Ping dan komunitas BAT</translation>
 <translation id="654447476965480878">Pelajari lebih lanjut tentang mendapatkan BAT</translation>
 <translation id="4105212447337987768">Pada <ph name="DATE"/>, kami akan mengakhiri dukungan untuk saldo BAT virtual yang ada. Hubungkan dengan akun kustodian sebelum tanggal ini sehingga kami dapat mentransfer saldo penghasilan Anda ke akun kustodian Anda, atau saldo Anda akan hilang.</translation>
 <translation id="707569835145765061">Tindakan yang perlu dilakukan: Hubungkan ke akun kustodian atau vBAT Anda akan hilang</translation>
@@ -535,21 +535,21 @@
 <translation id="2429828319207652823">Terdapat masalah dalam memproses kontribusi Anda.</translation>
 <translation id="6390041270339783491">Kontribusi bulanan gagal</translation>
 <translation id="7047578174221019462">Kontribusi bulanan Anda telah diproses.</translation>
-<translation id="2529827670795983639">Sepertinya ini tidak berfungsi, Brave Ads tetap akan dijeda. Hubungi kami jika Anda memerlukan bantuan dengan captcha.</translation>
+<translation id="2529827670795983639">Sepertinya ini tidak berfungsi, Ping Ads tetap akan dijeda. Hubungi kami jika Anda memerlukan bantuan dengan captcha.</translation>
 <translation id="261607053214862521">Jumlah percobaan telah melampaui batas maksimum</translation>
 <translation id="2323171459178104277">Terpecahkan!</translation>
-<translation id="1512837998731269583">Iklan dan pendapatan kini dapat dilanjutkan. Terima kasih karena telah membantu kami melindungi Brave Rewards dan iklan berbasis privasi.</translation>
+<translation id="1512837998731269583">Iklan dan pendapatan kini dapat dilanjutkan. Terima kasih karena telah membantu kami melindungi Ping Rewards dan iklan berbasis privasi.</translation>
 <translation id="3247549836099021862">Hubungi layanan pendukung</translation>
 <translation id="5234764350956374838">Tutup</translation>
 <translation id="7859066142771796818">Gunakan token untuk membeli kartu hadiah, ditukar dengan mata uang lain, mendukung kreator konten, dan banyak lagi.</translation>
 <translation id="7352651011704765696">Terjadi sesuatu</translation>
-<translation id="5425006356459378415">Imbalan Brave  tidak tersedia</translation>
-<translation id="909076461795862330">Sayangnya, telah terjadi kesalahan saat mencoba menetapkan Imbalan Brave. Silakan coba lagi.</translation>
+<translation id="5425006356459378415">Imbalan Ping  tidak tersedia</translation>
+<translation id="909076461795862330">Sayangnya, telah terjadi kesalahan saat mencoba menetapkan Imbalan Ping. Silakan coba lagi.</translation>
 <translation id="3180990265682133881">Sayangnya, telah terjadi kesalahan saat mencoba menetapkan negara Anda. Silakan coba lagi.</translation>
-<translation id="5931798071481566121">Pendaftaran baru untuk Imbalan Brave saat ini telah dinonaktifkan di wilayah Anda. Namun, Anda selalu dapat mencobanya kembali nanti. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
+<translation id="5931798071481566121">Pendaftaran baru untuk Imbalan Ping saat ini telah dinonaktifkan di wilayah Anda. Namun, Anda selalu dapat mencobanya kembali nanti. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="6439128034594289376">Hore! Anda kini siap!</translation>
 <translation id="6136350726756049410">Kini, Anda bisa mendapatkan imbalan dengan melihat iklan. Anda membantu menjadikan web tempat yang lebih baik bagi semua orang. Dan itu keren!</translation>
-<translation id="5547108999862247665">Bagaimana cara kerja Imbalan Brave?</translation>
+<translation id="5547108999862247665">Bagaimana cara kerja Imbalan Ping?</translation>
 <translation id="3970520675790340955">Pilih negara Anda sehingga kami dapat menunjukkan kepada Anda opsi dan iklan yang tepat untuk wilayah Anda.</translation>
 <translation id="6945221475159498467">Pilih</translation>
 <translation id="3279158300746391749">Tekan ikon BAT <ph name="BAT_ICON"/> di bilah URL untuk memulai.</translation>
@@ -557,11 +557,11 @@
 <translation id="8981626318554555706">Pilih wilayah Anda</translation>
 <translation id="6923445315496949274">Pilih wilayah Anda sehingga kami dapat menunjukkan kepada Anda opsi dan iklan yang tepat untuk wilayah Anda.</translation>
 <translation id="840952951051929644">Dengan mengaktifkan Imbalan, Anda menyetujui <ph name="TOS_LINK_BEGIN"/>Syarat Layanan<ph name="TOS_LINK_END"/> dan <ph name="PP_LINK_BEGIN"/>Kebijakan Privasi<ph name="PP_LINK_END"/>.</translation>
-<translation id="5259608623172605993">Dapatkan bayaran untuk iklan privat yang Anda lihat di Brave</translation>
+<translation id="5259608623172605993">Dapatkan bayaran untuk iklan privat yang Anda lihat di Ping</translation>
 <translation id="3099020087817489135">Dapatkan manfaat dan diskon spesial</translation>
-<translation id="3991575120992914717">Aktifkan Imbalan Brave</translation>
-<translation id="1015443539415537847">Maaf, Imbalan Brave tidak tersedia</translation>
-<translation id="5007776270364097327">Sayangnya, sepertinya Anda berada di wilayah yang tidak menyediakan Imbalan Brave.</translation>
+<translation id="3991575120992914717">Aktifkan Imbalan Ping</translation>
+<translation id="1015443539415537847">Maaf, Imbalan Ping tidak tersedia</translation>
+<translation id="5007776270364097327">Sayangnya, sepertinya Anda berada di wilayah yang tidak menyediakan Imbalan Ping.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Jangan khawatir.</translation>
 <translation id="5027616819996705541">Anda masih dapat menjelajah secara privat!</translation>
@@ -575,16 +575,16 @@
 <translation id="4185473179105062442">Terima BAT secara langsung dengan alamat kripto kustodian mandiri</translation>
 <translation id="5802986777701714573">Kami menambahkan cara baru bagi Anda untuk menerima imbalan BAT bulanan Anda. Sambungkan akun dari salah satu mitra kami atau gunakan opsi kustodian mandiri baru agar dapat mulai menerima imbalan sekarang.</translation>
 <translation id="3251885322612056119">Syarat Layanan yang Diperbarui</translation>
-<translation id="7454675823870922788">Kami telah memperbarui Syarat Layanan untuk Imbalan Brave. Kami membuat pembaruan ini untuk mengklarifikasi syarat kami dan memastikan bahwa fitur-fitur baru telah tercakup. Jika Anda tetap menggunakan Imbalan Brave, Anda menyetujui Syarat Layanan yang telah diperbarui. Jika Anda tidak setuju, Anda dapat <ph name="LINK_BEGIN"/>mengatur ulang<ph name="LINK_END"/> Imbalan Brave, yang akan menonaktifkan fitur.</translation>
-<translation id="5192526308598085294">Lihat <ph name="LINK_BEGIN"/>Syarat Layanan Imbalan Brave<ph name="LINK_END"/></translation>
+<translation id="7454675823870922788">Kami telah memperbarui Syarat Layanan untuk Imbalan Ping. Kami membuat pembaruan ini untuk mengklarifikasi syarat kami dan memastikan bahwa fitur-fitur baru telah tercakup. Jika Anda tetap menggunakan Imbalan Ping, Anda menyetujui Syarat Layanan yang telah diperbarui. Jika Anda tidak setuju, Anda dapat <ph name="LINK_BEGIN"/>mengatur ulang<ph name="LINK_END"/> Imbalan Ping, yang akan menonaktifkan fitur.</translation>
+<translation id="5192526308598085294">Lihat <ph name="LINK_BEGIN"/>Syarat Layanan Imbalan Ping<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">Saya setuju</translation>
 <translation id="86107454835395919">Tetapkan sebagai kontribusi bulanan</translation>
-<translation id="6621880242105464352">Brave mengambil <ph name="FEE_PCT"/> dari jumlah yang dikirimkan sebagai biaya pemrosesan.</translation>
+<translation id="6621880242105464352">Ping mengambil <ph name="FEE_PCT"/> dari jumlah yang dikirimkan sebagai biaya pemrosesan.</translation>
 <translation id="1420756770787071946">Dukung kreator ini</translation>
 <translation id="1483493594462132177">Kirim</translation>
 <translation id="6632987674051304487">Kirimkan dengan <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Gunakan Dompet Web3</translation>
-<translation id="4530198836725543997">Kreator ini telah didaftarkan di Brave dan dapat menerima kontribusi dari pengguna Imbalan Brave.</translation>
+<translation id="4530198836725543997">Kreator ini telah didaftarkan di Ping dan dapat menerima kontribusi dari pengguna Imbalan Ping.</translation>
 <translation id="4529874892536380156">Jadikan ini kontribusi bulanan yang berulang. Anda dapat membatalkannya kapan saja.</translation>
 <translation id="1177863135347784049">Sesuaikan</translation>
 <translation id="5907051927340164207">Anda sudah mengirim kontribusi bulanan untuk kreator ini</translation>
@@ -594,18 +594,18 @@
 <translation id="8379442066667303579">Anda tetap dapat mengirim kontribusi kripto ke kreator ini dengan menggunakan dompet Web3.</translation>
 <translation id="5738476099155572155">Kirim kontribusi Kripto</translation>
 <translation id="1162617592412598913">Keluar dari <ph name="PROVIDER"/></translation>
-<translation id="1782485249139199535">Sepertinya Anda telah keluar dari <ph name="PROVIDER"/> untuk Imbalan Brave. Masuklah lagi untuk melanjutkan.</translation>
+<translation id="1782485249139199535">Sepertinya Anda telah keluar dari <ph name="PROVIDER"/> untuk Imbalan Ping. Masuklah lagi untuk melanjutkan.</translation>
 <translation id="4379244534135194459">Anda juga dapat mengirimkan kontribusi kripto kepada kreator ini dengan menggunakan dompet Web3 Anda.</translation>
 <translation id="2718860759172031728">Masuk ke <ph name="PROVIDER"/></translation>
 <translation id="6268134562674951939">Anda tidak memiliki cukup token</translation>
-<translation id="5562948772940025260">Anda hanya dapat mengirimkan maksimal <ph name="AMOUNT"/> BAT dengan menggunakan saldo Imbalan Brave Anda.</translation>
+<translation id="5562948772940025260">Anda hanya dapat mengirimkan maksimal <ph name="AMOUNT"/> BAT dengan menggunakan saldo Imbalan Ping Anda.</translation>
 <translation id="4827581232860040208">Terjadi masalah saat mengirimkan kontribusi Anda</translation>
 <translation id="3259723213051400722">Coba lagi.</translation>
 <translation id="8725066075913043281">Coba lagi</translation>
 <translation id="5379685283876547860">Kontribusi telah dikirim!</translation>
 <translation id="7063168612616047608">Terima kasih karena telah mendukung kreator favorit Anda</translation>
 <translation id="1041398280582063935">Bagikan dukungan Anda</translation>
-<translation id="4001190813297686107">Saya baru saja berkontribusi sebesar <ph name="AMOUNT"/> BAT dengan menggunakan Peramban Brave! Temukan cara agar Anda juga dapat mendukung kreator dan situs favorit Anda di: https://brave.com/rewards</translation>
+<translation id="4001190813297686107">Saya baru saja berkontribusi sebesar <ph name="AMOUNT"/> BAT dengan menggunakan Peramban Ping! Temukan cara agar Anda juga dapat mendukung kreator dan situs favorit Anda di: https://brave.com/rewards</translation>
 <translation id="1950340257946519340">Kesalahan yang tidak diharapkan telah terjadi</translation>
 <translation id="2605703631071131439">Silakan buka kembali panel kontribusi untuk mencobanya lagi.</translation>
 <translation id="8855543392451028706">Selamat datang! Pengguna dapat mendukung kreator konten ini dengan mengirimi mereka kontribusi. Ini merupakan cara sangat baik untuk berterima kasih kepada mereka karena telah membuat konten yang bagus.</translation>
@@ -631,40 +631,40 @@
 <translation id="1165039591588034296">Kesalahan</translation>
 <translation id="5826530373788377342">Anda telah mencapai batas maksimum perangkat untuk akun <ph name="PROVIDER"/> ini.</translation>
 <translation id="6700131426769360592">Batas perangkat tercapai</translation>
-<translation id="6895088073061692390">Sayangnya, profil Imbalan Brave Anda telah ditandai karena pemeriksaan otomatis kami menemukan sejumlah aktivitas Iklan Brave yang tidak biasa.</translation>
-<translation id="4229056297802204697">Sementara profil Anda ditandai, Anda dapat tetap melihat iklan, namun tidak berhak menerima pembayaran. Anda juga tidak akan dapat menghubungkan akun kustodian ke Imbalan Brave.</translation>
+<translation id="6895088073061692390">Sayangnya, profil Imbalan Ping Anda telah ditandai karena pemeriksaan otomatis kami menemukan sejumlah aktivitas Iklan Ping yang tidak biasa.</translation>
+<translation id="4229056297802204697">Sementara profil Anda ditandai, Anda dapat tetap melihat iklan, namun tidak berhak menerima pembayaran. Anda juga tidak akan dapat menghubungkan akun kustodian ke Imbalan Ping.</translation>
 <translation id="5124846913141379164">Kemungkinan profil Anda ditandai karena kesalahan dan Anda tidak perlu melakukan tindakan cepat apa pun. Penandaan di profil Anda dapat disingkirkan di masa mendatang.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Pelajari lebih lanjut tentang proses Brave dalam menandai profil Imbalan.<ph name="END_LINK"/></translation>
-<translation id="4699218748197721830">Profil Imbalan Brave ditandai</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Pelajari lebih lanjut tentang proses Ping dalam menandai profil Imbalan.<ph name="END_LINK"/></translation>
+<translation id="4699218748197721830">Profil Imbalan Ping ditandai</translation>
 <translation id="2607420597216860026">Silakan mencoba lagi setelah Anda menyelesaikan verifikasi ID di <ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">Anda memerlukan akun terverifikasi untuk masuk</translation>
-<translation id="1859789048900659918">Hmm, sepertinya negara Imbalan Brave Anda tidak sesuai dengan negara dari akun <ph name="PROVIDER"/> yang Anda sedang coba hubungi.</translation>
+<translation id="1859789048900659918">Hmm, sepertinya negara Imbalan Ping Anda tidak sesuai dengan negara dari akun <ph name="PROVIDER"/> yang Anda sedang coba hubungi.</translation>
 <translation id="3080649636035373911">Ketidaksesuaian negara</translation>
-<translation id="5260522591743022748">Hmm, sepertinya Brave Rewards Anda telah terverifikasi dengan akun <ph name="PROVIDER"/> lain. Silakan coba memverifikasi kembali dengan akun Anda yang sebelumnya.</translation>
+<translation id="5260522591743022748">Hmm, sepertinya Ping Rewards Anda telah terverifikasi dengan akun <ph name="PROVIDER"/> lain. Silakan coba memverifikasi kembali dengan akun Anda yang sebelumnya.</translation>
 <translation id="6408621361472415607">Akun yang berbeda</translation>
-<translation id="5225019866741699134">Tampaknya koneksi <ph name="PROVIDER"/> ke Brave Rewards untuk sementara waktu tidak dapat dilakukan. Harap coba lagi nanti.</translation>
+<translation id="5225019866741699134">Tampaknya koneksi <ph name="PROVIDER"/> ke Ping Rewards untuk sementara waktu tidak dapat dilakukan. Harap coba lagi nanti.</translation>
 <translation id="6105073131081187815">Anda dapat melihat <ph name="BEGIN_LINK"/>status layanan di sini <ph name="END_LINK"/>.</translation>
 <translation id="3969419585013689529">Koneksi ke kustodian yang dipilih untuk sementara tidak tersedia</translation>
-<translation id="1024520300696337331">Akun <ph name="PROVIDER"/> Anda tidak dapat dihubungkan ke profil Imbalan Reward Anda pada saat ini. Akun <ph name="PROVIDER"/> Anda terdaftar di negara yang saat ini tidak didukung untuk terhubung ke Imbalan Brave.</translation>
-<translation id="619384413404021992">Lihat <ph name="LINK_BEGIN"/>daftar wilayah yang didukung saat ini dan pelajari lebih lanjut<ph name="END_LINK"/> tentang menghubungkan akun kustodial ke Imbalan Brave.</translation>
+<translation id="1024520300696337331">Akun <ph name="PROVIDER"/> Anda tidak dapat dihubungkan ke profil Imbalan Reward Anda pada saat ini. Akun <ph name="PROVIDER"/> Anda terdaftar di negara yang saat ini tidak didukung untuk terhubung ke Imbalan Ping.</translation>
+<translation id="619384413404021992">Lihat <ph name="LINK_BEGIN"/>daftar wilayah yang didukung saat ini dan pelajari lebih lanjut<ph name="END_LINK"/> tentang menghubungkan akun kustodial ke Imbalan Ping.</translation>
 <translation id="7933193151688235283">Wilayah yang saat ini tidak didukung</translation>
 <translation id="5376524136040178759">Menurut Uphold, saat ini terdapat batasan pada akun Uphold Anda. Silakan masuk ke akun Uphold Anda dan periksa apakah terdapat pemberitahuan atau persyaratan akun yang masih harus dipenuhi, lalu cobalah lagi. Contohnya, Anda mungkin perlu menyerahkan informasi lebih banyak kepada Uphold.</translation>
 <translation id="6349168810769273818">Fungsionalitas akun Uphold terbatas</translation>
-<translation id="1279668677171152085">Terdapat masalah saat memvalidasi permintaan Anda untuk menghubungkan akun <ph name="PROVIDER"/> Anda ke Imbalan Brave. Anda dapat <ph name="BEGIN_LINK"/>menghubungi dukungan pelanggan<ph name="END_LINK"/> untuk bantuan lebih lanjut.</translation>
+<translation id="1279668677171152085">Terdapat masalah saat memvalidasi permintaan Anda untuk menghubungkan akun <ph name="PROVIDER"/> Anda ke Imbalan Ping. Anda dapat <ph name="BEGIN_LINK"/>menghubungi dukungan pelanggan<ph name="END_LINK"/> untuk bantuan lebih lanjut.</translation>
 <translation id="8761736799800527591">Permintaan tidak dapat divalidasi</translation>
 <translation id="8285276813470932793">Kami tidak dapat menyelesaikan permintaan Anda. Silakan coba lagi, dan <ph name="LINK_BEGIN"/>hubungi dukungan pelanggan<ph name="LINK_END"/> jika masalah tetap ada.</translation>
 <translation id="135956957367307069">Permintaan Anda tengah diproses, harap menunggu.</translation>
 <translation id="9033500121333471466">Tandai sebagai tidak pantas</translation>
-<translation id="4477865412359526485">Saat ini tidak ada riwayat Iklan Brave.</translation>
+<translation id="4477865412359526485">Saat ini tidak ada riwayat Iklan Ping.</translation>
 <translation id="4256040774643144761">Riwayat iklan</translation>
 <translation id="1188389905162088150">Iklan yang Anda terima dalam 30 hari terakhir</translation>
 <translation id="4296467068886908539">Maksimal <ph name="NUM"/>/jam</translation>
 <translation id="3266055641283174315">Jenis iklan</translation>
 <translation id="8706824117053903390">Penayangan bulan ini</translation>
 <translation id="5105890735834548623">Pengaturan Iklan</translation>
-<translation id="96989662637180657">Iklan Pencarian Brave muncul di <ph name="LINK_BEGIN"/>Pencarian Brave<ph name="LINK_END"/>.</translation>
+<translation id="96989662637180657">Iklan Pencarian Ping muncul di <ph name="LINK_BEGIN"/>Pencarian Ping<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Pengaturan iklan</translation>
-<translation id="2446517297521536638">Kendalikan jenis Iklan Brave yang akan Anda lihat, dan seberapa sering. Semakin banyak yang Anda lihat, semakin banyak yang bisa Anda dapatkan.</translation>
+<translation id="2446517297521536638">Kendalikan jenis Iklan Ping yang akan Anda lihat, dan seberapa sering. Semakin banyak yang Anda lihat, semakin banyak yang bisa Anda dapatkan.</translation>
 <translation id="5860033963881614850">Nonaktifkan</translation>
 <translation id="5916664084637901428">Aktifkan</translation>
 <translation id="4284417062730522399"><ph name="NUM"/> iklan telah diterima bulan ini</translation>
@@ -683,11 +683,11 @@
 <translation id="7666058404763778706">Cara otomatis untuk mendukung situs web dan kreator konten, berdasarkan banyaknya waktu yang Anda habiskan di konten mereka.</translation>
 <translation id="4319242254058427792">Kontribusi Otomatis dinonaktifkan</translation>
 <translation id="1091835891554961609">Kreator terverifikasi yang Anda kunjungi akan muncul di sini saat Anda menjelajah.</translation>
-<translation id="7714706530499503523">Kontribusi otomatis secara otomatis mengirimkan kontribusi bulanan kepada kreator yang terverifikasi dengan Brave, berdasarkan banyaknya waktu yang Anda habiskan di konten mereka.</translation>
+<translation id="7714706530499503523">Kontribusi otomatis secara otomatis mengirimkan kontribusi bulanan kepada kreator yang terverifikasi dengan Ping, berdasarkan banyaknya waktu yang Anda habiskan di konten mereka.</translation>
 <translation id="2358028754328876971">Bagaimana cara kerja Kontribusi Otomatis?</translation>
 <translation id="2870560284913253234">Situs</translation>
-<translation id="1184072843013036520">Dapatkan produk bermerek Brave.</translation>
-<translation id="1170674812179664523">Toko komoditas Brave</translation>
+<translation id="1184072843013036520">Dapatkan produk bermerek Ping.</translation>
+<translation id="1170674812179664523">Toko komoditas Ping</translation>
 <translation id="8673202990286883068">Manfaat Anda</translation>
 <translation id="3699766258844277472">Anda belum menyiapkan kontribusi berulang.</translation>
 <translation id="957921474773060718">Kontribusi berikutnya:</translation>
@@ -709,12 +709,12 @@
 <translation id="1128992132632883337">Kesalahan penguraian repons telah terjadi</translation>
 <translation id="5382339341735118861">Telah terjadi kesalahan pemrosesan permintaan generik</translation>
 <translation id="7123780456696055383">Sumber yang diminta tidak tersedia</translation>
-<translation id="1680597601664421644">Mnemonik yang diimpor tidak valid untuk Brave Wallet</translation>
+<translation id="1680597601664421644">Mnemonik yang diimpor tidak valid untuk Ping Wallet</translation>
 <translation id="372898731091371291">Jenis dompet seperti apa yang ingin Anda impor?</translation>
 <translation id="1430728084670406473">Dompet Ethereum/Solana/Filecoin</translation>
 <translation id="8659668419772278776">Impor frasa bibit Anda dari dompet yang ada</translation>
 <translation id="8110492767853188065">Dompet perangkat keras</translation>
-<translation id="7437218084485869007">Hubungkan dompet peranti keras Anda dengan Brave</translation>
+<translation id="7437218084485869007">Hubungkan dompet peranti keras Anda dengan Ping</translation>
 <translation id="4641919696349069826">Sudah ada permintaan yang diproses</translation>
 <translation id="872806943696014633">Data transaksi tidak ditemukan</translation>
 <translation id="7068183357903252127">Data transaksi 'ke' atau 'data' harus diperjelas</translation>
@@ -780,7 +780,7 @@
 <translation id="9021834401351805394">Pencarian berdasarkan nama atau tempelkan alamat</translation>
 <translation id="5009335307032488349">Cari NFT berdasarkan nama, id</translation>
 <translation id="8667560635828712526">Pilih Aset</translation>
-<translation id="4853960199138416955">Dompet Brave saat ini tidak mendukung Bitcoin NFT (ordinal). Mengirim BTC dari alamat yang memiliki ordinal dapat mengakibatkan ditransfernya ordinal secara tidak sengaja.</translation>
+<translation id="4853960199138416955">Dompet Ping saat ini tidak mendukung Bitcoin NFT (ordinal). Mengirim BTC dari alamat yang memiliki ordinal dapat mengakibatkan ditransfernya ordinal secara tidak sengaja.</translation>
 <translation id="29976300677902325">Pilih penerima</translation>
 <translation id="7231620608040154667">Alamat saya</translation>
 <translation id="4504682768625050939">Masukkan alamat atau domain publik.</translation>
@@ -827,17 +827,17 @@
 <translation id="6728663400147327751">Penerima</translation>
 <translation id="9209024278910716955">Pembelian tidak didukung untuk jaringan tertentu</translation>
 <translation id="4982630604810554641">Mencari domain...</translation>
-<translation id="5467044307473123584">Brave mendukung penggunaan gerbang luar rantai untuk menyelesaikan domain .eth.</translation>
+<translation id="5467044307473123584">Ping mendukung penggunaan gerbang luar rantai untuk menyelesaikan domain .eth.</translation>
 <translation id="4896417414446851895">Sepertinya Anda memasukkan alamat ENS. Kami akan perlu menggunakan pemecah masalah pihak ketiga untuk menyelesaikan permintaan ini, yang mungkin dapat melihat alamat IP dan domain Anda.</translation>
 <translation id="8646078615727397565">Menggunakan domain ENS</translation>
 <translation id="1191686659164947414">Transaksi mungkin di muka</translation>
 <translation id="4500473291496079954">Kedaluwarsa pada</translation>
 <translation id="2236833281018938257">Alamat atau URL Dompet</translation>
 <translation id="928500657730628112">Alamat Dompet</translation>
-<translation id="6812967455478797345">Brave menggunakan <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> sebagai agregator DEX.</translation>
+<translation id="6812967455478797345">Ping menggunakan <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> sebagai agregator DEX.</translation>
 <translation id="151946611346774041">0x akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan tagihan). 0x HANYA akan menggunakan data ini untuk keperluan pemrosesan transaksi.</translation>
 <translation id="7465227658364622464">Jupiter akan memproses alamat Solana dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan kuotasi). Jupiter HANYA akan menggunakan data ini untuk keperluan pemrosesan transaksi.</translation>
-<translation id="712738518060477110">Kuotasi termasuk biaya Brave <ph name="SWAP_FEE_PERCENTAGE"/>.</translation>
+<translation id="712738518060477110">Kuotasi termasuk biaya Ping <ph name="SWAP_FEE_PERCENTAGE"/>.</translation>
 <translation id="8368540604723748428">Terlalu banyak lokasi desimal</translation>
 <translation id="6575120282593094155">Anda belum memiliki akun <ph name="ACCOUNT_TYPE"/>. Ingin membuatnya sekarang?</translation>
 <translation id="1426410128494586442">Ya</translation>
@@ -849,12 +849,12 @@
 <translation id="6518133107902771759">Verifikasi</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
 <translation id="414070570958255222">Peramban asli. Penyimpanan mandiri. Dan multirantai.</translation>
-<translation id="1350120992777389959">Ambil kendali atas kripto dan NFT Anda. Dompet Brave mendukung Ethereum, rantai EVM, Solana, Filecoin, Bitcoin, dan banyak lagi.</translation>
+<translation id="1350120992777389959">Ambil kendali atas kripto dan NFT Anda. Dompet Ping mendukung Ethereum, rantai EVM, Solana, Filecoin, Bitcoin, dan banyak lagi.</translation>
 <translation id="165255193061631296">Perlu dompet baru?</translation>
-<translation id="1939235910515558387">Mulailah dengan Dompet Brave dalam beberapa menit.</translation>
+<translation id="1939235910515558387">Mulailah dengan Dompet Ping dalam beberapa menit.</translation>
 <translation id="5844138175312846408">Sudah punya dompet?</translation>
 <translation id="772643556080081594">Saya memerlukan dompet yang hanya dapat dilihat</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave dan logo Brave merupakan merek dagang terdaftar dari Brave Software, Inc. Nama dan logo dapat merupakan merek dagang dari perusahaan mereka masing-masing. Hak cipta dilindungi undang-undang.</translation>
+<translation id="4878034296528175352">©2024 Ping Software Inc. Ping dan logo Ping merupakan merek dagang terdaftar dari Ping Software, Inc. Nama dan logo dapat merupakan merek dagang dari perusahaan mereka masing-masing. Hak cipta dilindungi undang-undang.</translation>
 <translation id="7501957181231305652">atau</translation>
 <translation id="375882617301124395">Cadangkan dompet kripto Anda</translation>
 <translation id="5024543173656851695">Saya memahami bahwa jika saya kehilangan kata pemulihan, saya tidak akan dapat mengakses dompet kripto saya.</translation>
@@ -892,13 +892,13 @@
 <translation id="352407037922720467">Tab NFT</translation>
 <translation id="163697698769819510">Cadangkan dompet Anda sekarang untuk melindungi aset Anda dan memastikan bahwa Anda tidak akan pernah kehilangan akses.</translation>
 <translation id="1018806299114415224">Cadangkan sekarang</translation>
-<translation id="1400709719911593089">Brave Wallet tidak diatur sebagai dompet bawaan Anda dan tidak akan merespons ke web3 DApps. Lihat pengaturan untuk mengganti dompet bawaan Anda.</translation>
+<translation id="1400709719911593089">Ping Wallet tidak diatur sebagai dompet bawaan Anda dan tidak akan merespons ke web3 DApps. Lihat pengaturan untuk mengganti dompet bawaan Anda.</translation>
 <translation id="4362717653795263052">Pulihkan akun kripto primer</translation>
-<translation id="3038077262567136741">Masukkan frasa pemulihan Anda untuk memulihkan akun kripto dari Brave wallet Anda.</translation>
+<translation id="3038077262567136741">Masukkan frasa pemulihan Anda untuk memulihkan akun kripto dari Ping wallet Anda.</translation>
 <translation id="955918646509748368">Frasa pemulihan yang dimasukkan tidak valid.</translation>
 <translation id="8107437138787377150">Tempelkan frasa pemulihan dari papan klip</translation>
 <translation id="4811736040444856406">Tampilkan frasa pemulihan</translation>
-<translation id="4359319875297001084">Impor dari dompet kripto Brave yang lama?</translation>
+<translation id="4359319875297001084">Impor dari dompet kripto Ping yang lama?</translation>
 <translation id="3331452756822160641">Kata Sandi Baru</translation>
 <translation id="8624315169751085215">Salin ke Papan Klip</translation>
 <translation id="2598171223363459366">Anda dapat melewatkan langkah ini sekarang, namun Anda tetap perlu mencadangkan frasa pemulihan Anda untuk memastikan keamanan akun.</translation>
@@ -942,7 +942,7 @@
 <translation id="6892232036314454524">Kesalahan ini mungkin terjadi ketika aplikasi yang salah terbuka di perangkat Catatan.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="8012452656725205792">Berikan Brave akses ke perangkat <ph name="HARDWARE_DEVICE"/> Anda.</translation>
+<translation id="8012452656725205792">Berikan Ping akses ke perangkat <ph name="HARDWARE_DEVICE"/> Anda.</translation>
 <translation id="4378551569595875038">Menyambung...</translation>
 <translation id="1943188256166395881">Tambahkan akun giro</translation>
 <translation id="8554010658308662631">Muat lebih banyak</translation>
@@ -956,9 +956,9 @@
 <translation id="7261362517244085362">Berikan otorisasi untuk dompet Anda</translation>
 <translation id="7150150391368236519">Hubungkan dompet perangkat keras</translation>
 <translation id="5400782314657008092">Kami saat ini mendukung perangkat<ph name="HARDWARE_DEVICE"/> dan <ph name="HARDWARE_DEVICE1"/>.</translation>
-<translation id="8144305264680648043">Hubungkan dompet perangkat keras Anda untuk mengelola aset Anda secara langsung dari Dompet Brave Anda</translation>
+<translation id="8144305264680648043">Hubungkan dompet perangkat keras Anda untuk mengelola aset Anda secara langsung dari Dompet Ping Anda</translation>
 <translation id="1329837291200753515">Pilih rantai blok untuk mengimpor dompet perangkat keras Anda</translation>
-<translation id="6983390509997396124">Hubungkan perangkat <ph name="HARDWARE_DEVICE"/> Anda ke Dompet Brave</translation>
+<translation id="6983390509997396124">Hubungkan perangkat <ph name="HARDWARE_DEVICE"/> Anda ke Dompet Ping</translation>
 <translation id="5149944858285555235">Kesalahan yang tidak diketahui, silakan sambung kembali dompet peranti keras Anda dan coba lagi.</translation>
 <translation id="9220525904950070496">Hapus akun</translation>
 <translation id="8574289650879708853">Tambahkan aset khusus</translation>
@@ -1011,7 +1011,7 @@
 <translation id="3352959425838279177">Dapatkan Ether dari keran untuk <ph name="SELECTED_NETWORK"/></translation>
 <translation id="6449626816252815844">Pilih metode pembelian</translation>
 <translation id="8009571545960303544">Tanda tangan Anda sedang diminta</translation>
-<translation id="5294062982587710720">Perhatikan bahwa Brave tidak dapat memverifikasi hal yang akan terjadi jika Anda menandatangani. Tanda tangan dapat mengotorisasi hampir semua operasi di akun Anda atau atas nama Anda, termasuk (namun tidak terbatas pada) memberikan kendali penuh atas akun dan aset kripto Anda kepada situs yang mengajukan permintaan. Tanda tangani hanya jika Anda yakin ingin melakukan tindakan ini, dan Anda mempercayai situs yang meminta.</translation>
+<translation id="5294062982587710720">Perhatikan bahwa Ping tidak dapat memverifikasi hal yang akan terjadi jika Anda menandatangani. Tanda tangan dapat mengotorisasi hampir semua operasi di akun Anda atau atas nama Anda, termasuk (namun tidak terbatas pada) memberikan kendali penuh atas akun dan aset kripto Anda kepada situs yang mengajukan permintaan. Tanda tangani hanya jika Anda yakin ingin melakukan tindakan ini, dan Anda mempercayai situs yang meminta.</translation>
 <translation id="3474375934783434676">Tanda tangani dengan menanggung risiko Anda sendiri</translation>
 <translation id="5488357322146334497">Pesan</translation>
 <translation id="3586931643579894722">Sembunyikan detail</translation>
@@ -1035,7 +1035,7 @@
 <translation id="7073918978411974168">Toleransi yang diusulkan</translation>
 <translation id="9019403281000653275">Persetujuan tanpa batas telah diminta</translation>
 <translation id="4717431746210146708">Izinkan situs ini untuk menambah jaringan?</translation>
-<translation id="2521480044079508357">Ini akan mengizinkan penggunaan jaringan di dalam Brave Wallet.</translation>
+<translation id="2521480044079508357">Ini akan mengizinkan penggunaan jaringan di dalam Ping Wallet.</translation>
 <translation id="1982257600591932657">Nama jaringan</translation>
 <translation id="5052727830821470769">URL jaringan</translation>
 <translation id="427875364838253580">Tampilkan seluruh perincian</translation>
@@ -1090,8 +1090,8 @@
 <translation id="9139452553033760558">Selama 1 minggu</translation>
 <translation id="1658834457013045127">Selamanya</translation>
 <translation id="2770851145415891830">Dompet kripto yang sudah ada terdeteksi</translation>
-<translation id="2237759620789871865">Jika Anda lebih memilih untuk melewati impor dan tetap menyimpan pengalaman Crypto Wallets yang lama, navigasikan saja ke Pengaturan Brave Browser <ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/> dan ubah kembali bawaannya ke Crypto Wallets. Anda juga dapat mengimpor, mencoba Brave Wallet yang baru, dan mengubahnya kembali kapan saja.</translation>
-<translation id="5590175005414413980">Masukkan kata sandi dompet kripto Anda yang ada untuk diimpor ke Dompet Brave. Nikmati cara yang lebih cepat dan lebih aman untuk mengelola aset kripto dan berinteraksi dengan web 3 DApps.</translation>
+<translation id="2237759620789871865">Jika Anda lebih memilih untuk melewati impor dan tetap menyimpan pengalaman Crypto Wallets yang lama, navigasikan saja ke Pengaturan Ping Browser <ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/> dan ubah kembali bawaannya ke Crypto Wallets. Anda juga dapat mengimpor, mencoba Ping Wallet yang baru, dan mengubahnya kembali kapan saja.</translation>
+<translation id="5590175005414413980">Masukkan kata sandi dompet kripto Anda yang ada untuk diimpor ke Dompet Ping. Nikmati cara yang lebih cepat dan lebih aman untuk mengelola aset kripto dan berinteraksi dengan web 3 DApps.</translation>
 <translation id="880619123281809987">Ketik kata sandi dompet Kripto</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> terkoneksi</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> terputus</translation>
@@ -1161,7 +1161,7 @@
 <translation id="8464365289405373974">Alamat pengiriman diperlukan</translation>
 <translation id="6326239384961270135">Bagian transparan telah hilang</translation>
 <translation id="8585995109882455949">Bagaimana cara menemukan alamat yang tepat?</translation>
-<translation id="105524480632150318">Brave mencegah pengguna dari mengirim dana ke alamat yang salah karena kapitalisasi yang salah. Pastikan alamatnya benar dengan mengikuti instruksi di bawah ini.</translation>
+<translation id="105524480632150318">Ping mencegah pengguna dari mengirim dana ke alamat yang salah karena kapitalisasi yang salah. Pastikan alamatnya benar dengan mengikuti instruksi di bawah ini.</translation>
 <translation id="4583433813614292221">1. Kunjungi</translation>
 <translation id="8061317754447191238">Kunjungi etherscan dan tempelkan alamat dompet yang ingin Anda kirimi token. Lalu tekan masuk</translation>
 <translation id="5393164213211430081">2. Salin dan masukkan alamat ETH</translation>
@@ -1221,7 +1221,7 @@
 <translation id="2962388922926051374">Permintaan metode 'eth_chainId' pada <ph name="URL"/> telah gagal</translation>
 <translation id="8325036459845654666">Jaringan ini telah ditambahkan.</translation>
 <translation id="554350381160981853">Menandatangani data yang diketik didukung hanya pada Trezor Model One dengan Firmware 1.10.5 atau lebih tinggi</translation>
-<translation id="1752214435563414457">Brave Swap-stakes</translation>
+<translation id="1752214435563414457">Ping Swap-stakes</translation>
 <translation id="7829441065063984927">Pembagian hadiah kripto selama 7 hari, hadiah senilai ~$500 ribu.</translation>
 <translation id="8292716346768453265">Ikuti sekarang!</translation>
 <translation id="1935944189549132903">Semua Aset</translation>
@@ -1235,7 +1235,7 @@
 <translation id="5522073372365069684">Beli dengan Ramp</translation>
 <translation id="6153197326949684688">Jual dengan <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Membeli dengan Sardine</translation>
-<translation id="3301984548406568819">Data keuangan dan transaksi diproses oleh mitra onramp kami. Brave tidak mengumpulkan atau memiliki akses ke data semacam itu.</translation>
+<translation id="3301984548406568819">Data keuangan dan transaksi diproses oleh mitra onramp kami. Ping tidak mengumpulkan atau memiliki akses ke data semacam itu.</translation>
 <translation id="6534275647567011533">Beli dengan Transak</translation>
 <translation id="5973390321030037823">Beli dengan Tautan</translation>
 <translation id="1932640759496708012">Beli dengan Pembayaran Coinbase</translation>
@@ -1298,8 +1298,8 @@
 <translation id="5601436886921227795">Interaksi Dapp</translation>
 <translation id="9104177294757104789">Kirimkan <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Tukar <ph name="MAKER"/> menjadi <ph name="TAKER"/></translation>
-<translation id="8613144770663526433">Masuk dengan Dompet Brave</translation>
-<translation id="8813165409788097898">Anda masuk ke <ph name="ORIGIN"/>. Dompet Brave akan membagikan alamat dompet Anda dengan <ph name="ORIGIN"/>.</translation>
+<translation id="8613144770663526433">Masuk dengan Dompet Ping</translation>
+<translation id="8813165409788097898">Anda masuk ke <ph name="ORIGIN"/>. Dompet Ping akan membagikan alamat dompet Anda dengan <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Lihat detail</translation>
 <translation id="3950820424414687140">Masuk</translation>
 <translation id="4530494379350999373">Asal</translation>
@@ -1388,7 +1388,7 @@
 <translation id="4412698727486357573">Pusat bantuan</translation>
 <translation id="2095142195578664632">Perlu bantuan? Lihat</translation>
 <translation id="3253669416991680932">Dompet perangkat keras ini tidak mendukung operasi ini.</translation>
-<translation id="7457027586454688423">Masukkan kata sandi Dompet Brave Anda</translation>
+<translation id="7457027586454688423">Masukkan kata sandi Dompet Ping Anda</translation>
 <translation id="7553242001898162573">Masukkan kata sandi Anda</translation>
 <translation id="2873714185189940594">Buka aplikasi Rainbow Bridge?</translation>
 <translation id="2069777099181262239">Rainbow Bridge adalah layanan independen yang membantu Anda menjembatani aset di seluruh jaringan, serta menggunakan kripto Anda di jaringan dan ekosistem DApp lainnya. Menjembatani aset ke jaringan lain memiliki beberapa risiko.</translation>
@@ -1396,20 +1396,20 @@
 <translation id="3890567288132019108">Pelajari lebih lanjut tentang pencegahan risiko pada Rainbow Bridge</translation>
 <translation id="1792917191129448067">Buka aplikasi Rainbow Bridge</translation>
 <translation id="1522775706527775647">Bridge ke Aurora</translation>
-<translation id="4903322403594141291">Pelajari lebih lanjut tentang Dompet Brave</translation>
+<translation id="4903322403594141291">Pelajari lebih lanjut tentang Dompet Ping</translation>
 <translation id="4427684901715566795">Kata sandi harus memiliki:</translation>
 <translation id="8521329076169776625">Minimal 8 karakter</translation>
 <translation id="3665035348242240953">Kata sandi sesuai</translation>
 <translation id="8918368616587206671">Kuat!</translation>
 <translation id="574392208103952083">Sedang</translation>
 <translation id="8297006494302853456">Lemah</translation>
-<translation id="3282258437441351851">Dompet Brave akan otomatis terkunci setelah</translation>
+<translation id="3282258437441351851">Dompet Ping akan otomatis terkunci setelah</translation>
 <translation id="114276356113671828"><ph name="VALUE"/> Menit</translation>
 <translation id="5408337686677411363"><ph name="VALUE"/> Jam</translation>
 <translation id="7084181009966710506">Membuat Dompet...</translation>
 <translation id="3259102562570606417">Simpan frasa pemulihan Anda</translation>
 <translation id="7119749028647909394">Frase pemulihan 12-24 kata adalah kunci privat yang dapat Anda gunakan untuk mendapatkan kembali akses ke dompet Anda jika Anda kehilangan perangkat yang terhubung. Simpan di tempat yang aman, dan dalam urutan yang tepat seperti tercantum di bawah ini.</translation>
-<translation id="3259018319025894691">Brave tidak dapat mengakses frasa pemulihan rahasia Anda. Jagalah agar tetap aman, dan jangan pernah membaginya kepada orang lain.</translation>
+<translation id="3259018319025894691">Ping tidak dapat mengakses frasa pemulihan rahasia Anda. Jagalah agar tetap aman, dan jangan pernah membaginya kepada orang lain.</translation>
 <translation id="426648489149930289">Simpanlah di tempat aman yang tidak dapat diakses oleh orang lain dan jangan membagikannya dengan siapa pun.</translation>
 <translation id="119185410022731300">Masukkan kata pada posisi <ph name="VALUE"/> dari frasa pemulihan Anda.</translation>
 <translation id="2193954488469999829">Lupa menyimpan? Kembali</translation>
@@ -1432,7 +1432,7 @@
 <translation id="7992766987062040279">​</translation>
 <translation id="2295726992010694229">​</translation>
 <translation id="1148624853678088576">Anda kini sudah siap!</translation>
-<translation id="1656439328205762155">Dompet Brave Anda kini sudah siap dan siap digunakan.</translation>
+<translation id="1656439328205762155">Dompet Ping Anda kini sudah siap dan siap digunakan.</translation>
 <translation id="3342494025742308764">Buka portofolio</translation>
 <translation id="396152018598329740">Bagaimana cara menggunakan dompet kripto?</translation>
 <translation id="7512061585041489067">Apa dompet kripto terbaik?</translation>
@@ -1464,14 +1464,14 @@
 <translation id="6260144012548445299">Pelajari lebih lanjut tentang dompet baru saya</translation>
 <translation id="2502258949541727762">Sebelum kita memulai</translation>
 <translation id="5333225216561354793">Kami meminta Anda untuk mengakui hal-hal di bawah ini</translation>
-<translation id="4284971227128011550">Saya memahami bahwa ini adalah dompet penyimpanan kustodian mandiri, dan bahwa saya sendiri yang bertanggung jawab atas dana, aset, atau akun terkait, dan untuk mengambil tindakan yang tepat guna mengamankan, melindungi, dan mencadangkan dompet saya. Saya mengerti bahwa Brave tidak dapat mengakses dompet saya atau membalikkan transaksi atas nama saya, dan bahwa frasa pemulihan saya adalah SATU-SATUNYA cara untuk mendapatkan kembali akses jika kata sandi hilang, perangkat dicuri, atau situasi serupa lainnya.</translation>
+<translation id="4284971227128011550">Saya memahami bahwa ini adalah dompet penyimpanan kustodian mandiri, dan bahwa saya sendiri yang bertanggung jawab atas dana, aset, atau akun terkait, dan untuk mengambil tindakan yang tepat guna mengamankan, melindungi, dan mencadangkan dompet saya. Saya mengerti bahwa Ping tidak dapat mengakses dompet saya atau membalikkan transaksi atas nama saya, dan bahwa frasa pemulihan saya adalah SATU-SATUNYA cara untuk mendapatkan kembali akses jika kata sandi hilang, perangkat dicuri, atau situasi serupa lainnya.</translation>
 <translation id="3604445540387095708">Saya telah membaca dan menyetujui <ph name="LINK_BEFORE"/>Syarat penggunaan<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Beli kripto</translation>
 <translation id="3887541341068007345">Memeriksa ekstensi dompet...</translation>
-<translation id="3567994771568272606">Impor dari dompet kripto Brave lama</translation>
+<translation id="3567994771568272606">Impor dari dompet kripto Ping lama</translation>
 <translation id="8407091560429310499">Pilih aset</translation>
 <translation id="756590380936155533">Untuk menyelesaikan pembelian <ph name="ASSET_TICKER"/> Anda, pilih salah satu mitra kami</translation>
-<translation id="7880860489474966219">Setelah selesai, dana Anda akan ditransfer ke Dompet Brave Anda</translation>
+<translation id="7880860489474966219">Setelah selesai, dana Anda akan ditransfer ke Dompet Ping Anda</translation>
 <translation id="6182661078713714878">Menyetor kripto</translation>
 <translation id="3683305208314702347">Setor <ph name="VALUE"/></translation>
 <translation id="5768739294929936862">Setor token Solana atau SPL</translation>
@@ -1519,13 +1519,13 @@
 <translation id="434502623875309667">Resolusi alamat memerlukan permintaan jaringan luar rantai. Lanjutkan?</translation>
 <translation id="2779500703989728346">NFT</translation>
 <translation id="1893207255459018302">Tidak ada riwayat transaksi</translation>
-<translation id="5356382676355994980">Transaksi yang dibuat dengan Dompet Brave Anda akan muncul di sini.</translation>
+<translation id="5356382676355994980">Transaksi yang dibuat dengan Dompet Ping Anda akan muncul di sini.</translation>
 <translation id="3033638954295674319">Terjadi kesalahan saat mengambil detail NFT. Silakan coba lagi nanti.</translation>
 <translation id="5964615240954462738">Edit Token</translation>
 <translation id="2612436523196658045">Alamat ETH akan diterjemahkan ke alamat Filecoin.</translation>
 <translation id="3282354360699748542">Alamat <ph name="FILECOIN_ADDRESS"/> di bidang nama Filecoin akan digunakan untuk transaksi.</translation>
 <translation id="2540568096903252632">Masukkan kata sandi untuk melanjutkan</translation>
-<translation id="3356580495013324916">Masukkan kata sandi Dompet Brave Anda untuk mulai mencadangkan dompet.</translation>
+<translation id="3356580495013324916">Masukkan kata sandi Dompet Ping Anda untuk mulai mencadangkan dompet.</translation>
 <translation id="7545441766078366279">Setujui <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Saldo <ph name="TOKEN"/> tidak mencukupi</translation>
 <translation id="3453833142586986467">Pilih token</translation>
@@ -1546,7 +1546,7 @@
 <translation id="2538996898605796431">Dampak harga</translation>
 <translation id="8007404171238546456">Minimum yang diterima setelah potongan</translation>
 <translation id="767199001998615704">Biaya jaringan</translation>
-<translation id="28584716826670202">Biaya Brave yang tercakup</translation>
+<translation id="28584716826670202">Biaya Ping yang tercakup</translation>
 <translation id="3624518972158401291">Biaya</translation>
 <translation id="8450638959928932199">Tukar &amp; kirim</translation>
 <translation id="476816352791390168">TIDAK ADA biaya ekstra!</translation>
@@ -1562,7 +1562,7 @@
 <translation id="6778140392042462129">Pertukaran</translation>
 <translation id="6173494033320397682">Hanya rute langsung</translation>
 <translation id="2440960581098655899">Ini memastikan hanya perutean langsung dan juga menonaktifkan perdagangan terpisah</translation>
-<translation id="6245314729809503023">Brave menggunakan 60 token teratas untuk perutean menengah untuk pengoptimalan kinerja</translation>
+<translation id="6245314729809503023">Ping menggunakan 60 token teratas untuk perutean menengah untuk pengoptimalan kinerja</translation>
 <translation id="2379187373676242615"><ph name="VALUE"/>% lebih murah daripada CoinGecko</translation>
 <translation id="5351867352310722022">Dalam <ph name="VALUE"/>% CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% lebih mahal daripada CoinGecko</translation>
@@ -1570,7 +1570,7 @@
 <translation id="7561262633951061138">Terbaik</translation>
 <translation id="8060029310790625334">Pusat Bantuan</translation>
 <translation id="3143110700666266545">Aplikasi ini menggunakan API pihak ketiga berikut ini:</translation>
-<translation id="163536108506359457">Penukaran Brave menggunakan <ph name="AGGREGATOR"/> sebagai agregator DEX untuk jaringan <ph name="NETWORKS"/> yang didukung. <ph name="AGGREGATOR"/> akan memproses alamat dompet dan alamat IP <ph name="NETWORK"/> untuk menyelesaikan transaksi (termasuk mendapatkan tagihan)<ph name="AGGREGATOR"/> HANYA akan menggunakan data ini untuk keperluan pemrosesan transaksi.</translation>
+<translation id="163536108506359457">Penukaran Ping menggunakan <ph name="AGGREGATOR"/> sebagai agregator DEX untuk jaringan <ph name="NETWORKS"/> yang didukung. <ph name="AGGREGATOR"/> akan memproses alamat dompet dan alamat IP <ph name="NETWORK"/> untuk menyelesaikan transaksi (termasuk mendapatkan tagihan)<ph name="AGGREGATOR"/> HANYA akan menggunakan data ini untuk keperluan pemrosesan transaksi.</translation>
 <translation id="1847885264294023691">Klik di sini untuk Kebijakan Privasi <ph name="AGGREGATOR"/>.</translation>
 <translation id="644984757357042735">Jaringan diperlukan</translation>
 <translation id="132243864024778443">Nama token diperlukan</translation>
@@ -1592,11 +1592,11 @@
 <translation id="5810047320613496595">Sampah</translation>
 <translation id="7257605968082307175">Tandai sebagai sampah</translation>
 <translation id="1255896809210433555">Tambahkan NFT</translation>
-<translation id="7600335727434653744">Hapus dari Dompet Brave?</translation>
-<translation id="6657860743511185539">NFT akan dihapus dari Dompet Brave namun akan tetap berada di rantai blok. Jika Anda menghapusnya, dan kemudian berubah pikiran, Anda perlu mengimpornya kembali secara manual.</translation>
+<translation id="7600335727434653744">Hapus dari Dompet Ping?</translation>
+<translation id="6657860743511185539">NFT akan dihapus dari Dompet Ping namun akan tetap berada di rantai blok. Jika Anda menghapusnya, dan kemudian berubah pikiran, Anda perlu mengimpornya kembali secara manual.</translation>
 <translation id="849880459530751909">Sunting NFT</translation>
 <translation id="5925465310724910998">Ingin NFT Anda ditampilkan secara otomatis?</translation>
-<translation id="5400791731776892411">Dompet Brave dapat menggunakan layanan pihak ketiga untuk secara otomatis menampilkan NFT Anda. Brave akan membagikan alamat dompet Anda dengan <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> untuk menyediakan layanan ini. <ph name="BEFORE_URL"/>Pelajari lebih lanjut.<ph name="AFTER_URL"/></translation>
+<translation id="5400791731776892411">Dompet Ping dapat menggunakan layanan pihak ketiga untuk secara otomatis menampilkan NFT Anda. Ping akan membagikan alamat dompet Anda dengan <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> untuk menyediakan layanan ini. <ph name="BEFORE_URL"/>Pelajari lebih lanjut.<ph name="AFTER_URL"/></translation>
 <translation id="7661959661113971834">Ya, lanjutkan</translation>
 <translation id="4733761855978444079">Tidak, terima kasih. Saya akan melakukannya secara manual</translation>
 <translation id="353620741952662530">Tidak ada NFT yang dapat ditampilkan</translation>
@@ -1614,7 +1614,7 @@
 <translation id="1554316484739382186">Akun Belanja: <ph name="ADDRESS"/></translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291">Akun <ph name="PROVIDER"/></translation>
-<translation id="5360752485622434494">BAT Imbalan Brave pada <ph name="PROVIDER"/></translation>
+<translation id="5360752485622434494">BAT Imbalan Ping pada <ph name="PROVIDER"/></translation>
 <translation id="429061011725027672">Anda saat ini keluar dari <ph name="PROVIDER"/>. Silakan masuk untuk melihat saldo Anda.</translation>
 <translation id="4611292653554630842">Masuk</translation>
 <translation id="1132794822159463424">Lihat di <ph name="PROVIDER"/></translation>
@@ -1650,7 +1650,7 @@
 <translation id="1913853014470037784">Sembunyikan NFT yang tidak dimiliki</translation>
 <translation id="6722771294390991852">Kelompokkan berdasarkan pengumpulan</translation>
 <translation id="8775144690796719618">URL tidak valid</translation>
-<translation id="8892896831704748782">Jika Anda tidak dapat melihat NFT yang secara otomatis dideteksi oleh Brave, atau ingin melacak NFT yang dimiliki orang lain, Anda dapat mengimpornya secara manual.</translation>
+<translation id="8892896831704748782">Jika Anda tidak dapat melihat NFT yang secara otomatis dideteksi oleh Ping, atau ingin melacak NFT yang dimiliki orang lain, Anda dapat mengimpornya secara manual.</translation>
 <translation id="6301982082639804892">Alamat kontrak ketika menambahkan NFT ke dompet adalah alamat unik pada rantai blok tempat kontrak pintar untuk pengumpulan NFT berada. Anda dapat menemukan alamat kontrak dari pasar, atau penjelajah rantai blok, dst.</translation>
 <translation id="9033155463293614176">Pengidentifikasi unik untuk NFT tertentu dalam koleksi.</translation>
 <translation id="2483152581664459180">Tidak dapat mengambil metadata NFT</translation>
@@ -1723,10 +1723,10 @@
 <translation id="6951743416068151209">URI Proksi Tor</translation>
 <translation id="1671503397662036257">Status Koneksi Tor</translation>
 <translation id="6024292492796847324">Proses Inisialisasi Tor</translation>
-<translation id="8300751939969131609">Aktifkan Berita Brave, dan jangan lewatkan cerita apa pun</translation>
-<translation id="7758665172236842395">Ikuti sumber favorit Anda, dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan... tara!</translation>
-<translation id="2376542729617592331">Berita Brave didukung iklan dengan iklan privat dan anonim. <ph name="LINK_START"/>Pelajari lebih lanjut.<ph name="LINK_END"/>.</translation>
-<translation id="1765217911817124376">Aktifkan Brave News</translation>
+<translation id="8300751939969131609">Aktifkan Berita Ping, dan jangan lewatkan cerita apa pun</translation>
+<translation id="7758665172236842395">Ikuti sumber favorit Anda, dalam umpan tunggal. Cukup buka tab di Ping, gulir turun, dan... tara!</translation>
+<translation id="2376542729617592331">Berita Ping didukung iklan dengan iklan privat dan anonim. <ph name="LINK_START"/>Pelajari lebih lanjut.<ph name="LINK_END"/>.</translation>
+<translation id="1765217911817124376">Aktifkan Ping News</translation>
 <translation id="6265592479622441247">Kembali ke <ph name="BEGIN_BOLD"/>Dasbor<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Cari situs, topik, atau umpan RSS</translation>
 <translation id="1498364270401875204">Saluran</translation>
@@ -1745,11 +1745,11 @@
 <translation id="4750394297954878236">Saran</translation>
 <translation id="7436846601026966360">Sejumlah sumber yang mungkin Anda sukai. Saran bersifat anonim dan disesuaikan hanya dengan perangkat Anda.</translation>
 <translation id="7950715913905993008">Aduh...</translation>
-<translation id="7158100730468448581">Berita Brave tidak dapat mengambil konten.</translation>
+<translation id="7158100730468448581">Berita Ping tidak dapat mengambil konten.</translation>
 <translation id="2665462122884195298">Umpan Anda Kosong</translation>
 <translation id="8461269982440806387">Ikuti penerbit dan saluran untuk melihat mereka di umpan Anda</translation>
 <translation id="1685574186123115251">Tambahkan sumber konten</translation>
-<translation id="939305735877869636">Brave</translation>
+<translation id="939305735877869636">Ping</translation>
 <translation id="6261915643960475695">Bisnis</translation>
 <translation id="8265589281845759879">Mobil</translation>
 <translation id="7726519849288907308">Selebritas</translation>
@@ -1870,7 +1870,7 @@
 <translation id="4276265845501430443">Tampilkan bantuan</translation>
 <translation id="8104889575691864804">Tampilkan menu aplikasi</translation>
 <translation id="3215896810006717687">Pemeriksaan alat dev</translation>
-<translation id="1761865962743604547">Tingkatkan Brave</translation>
+<translation id="1761865962743604547">Tingkatkan Ping</translation>
 <translation id="7012611213801651252">Tampilkan menu avatar</translation>
 <translation id="6263048902976129908">Pilihan alat dev</translation>
 <translation id="1386786836007298307">Pilihan bilah alat layar penuh</translation>
@@ -1902,23 +1902,23 @@
 <translation id="5854741377790551127">Awakutu cetak pohon melihat objek</translation>
 <translation id="8199130368328220410">Pilihan keterangan langsung</translation>
 <translation id="5509712368473990741">Pilihan Leo AI</translation>
-<translation id="9055778350624039365">Tampilkan panel Dompet Brave</translation>
-<translation id="2548853975094084059">Tutup panel Dompet Brave</translation>
-<translation id="3765209580429944524">Tampilkan panel VPN Brave</translation>
+<translation id="9055778350624039365">Tampilkan panel Dompet Ping</translation>
+<translation id="2548853975094084059">Tutup panel Dompet Ping</translation>
+<translation id="3765209580429944524">Tampilkan panel VPN Ping</translation>
 <translation id="5989009326527614692">Pilihan tombol bilah alat VPN BRave</translation>
-<translation id="7334332308395652803">Pilihan ikon baki VPN Brave</translation>
-<translation id="4326011033480357140">Kirim umpan balik VPN Brave</translation>
-<translation id="2345974803401546682">Tentang VPN Brave</translation>
-<translation id="8934783170241943640">Kelola paket VPN Brave</translation>
-<translation id="6332027154313182926">PIlihan VPN Brave</translation>
+<translation id="7334332308395652803">Pilihan ikon baki VPN Ping</translation>
+<translation id="4326011033480357140">Kirim umpan balik VPN Ping</translation>
+<translation id="2345974803401546682">Tentang VPN Ping</translation>
+<translation id="8934783170241943640">Kelola paket VPN Ping</translation>
+<translation id="6332027154313182926">PIlihan VPN Ping</translation>
 <translation id="6539014233195996894">Pilihan bisukan tab</translation>
 <translation id="2682865834956428001">Pilihan posisi bilah sisi</translation>
 <translation id="6105745639559695088">Pilihan bilah sisi</translation>
 <translation id="3488252265135539275">Pilihan tab vertikal</translation>
 <translation id="7134064542341959603">Pilihan judul jendela tab vertikal</translation>
-<translation id="3067105725259639716">Konfigurasikan Berita Brave</translation>
+<translation id="3067105725259639716">Konfigurasikan Berita Ping</translation>
 <translation id="6286510487460330478">Konfigurasikan jalan pintas</translation>
-<translation id="9214819486716388964">Tampilkan Obrolan Brave</translation>
+<translation id="9214819486716388964">Tampilkan Obrolan Ping</translation>
 <translation id="5950760360751948276">Selalu tampilkan bilah markah</translation>
 <translation id="2960757369920422313">Tampilkan bilah markah pada NTP</translation>
 <translation id="522953399371747698">Sembunyikan bilah markah</translation>
@@ -1988,8 +1988,8 @@
 <translation id="8637805148029768813">Fitur peringkas saat ini hanya tersedia untuk artikel tertentu dan halaman web berbentuk panjang lainnya.</translation>
 <translation id="1223498995510244364">Ringkas</translation>
 <translation id="7491773233732232424">Tentang Leo</translation>
-<translation id="5208096220706490232">Brave Leo adalah asisten pintar AI yang meningkatkan penggunaan Internet Anda. Leo gratis digunakan dengan akses terbatas. Brave Leo Premium menawarkan model yang lebih banyak, batasan lebih tinggi, dan memberikan akses awal ke pelanggan ke fitur-fitur baru. Model bawaan untuk semua pangguna saat ini adalah Mixtral 8x7B. Lihat <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/> untuk detail lebih lanjut.</translation>
-<translation id="7189603330209995455">Secara bawaan, ketika Anda menanyakan Leo sebuah pertanyaan, Leo akan mengirim dan menggunakan konten halaman web yang sedang Anda lihat atau teks apa pun yang Anda sorot pada suatu halaman ke Brave Leo agar dapat menyediakan jawaban. Akurasi jawaban tidak dijamin, dan mungkin menyertakan informasi yang tidak akurat, menyesatkan, atau keliru. Leo menggunakan data dari Pencarian Brave untuk meningkatkan kualitas jawaban. Jangan mengirimkan info sensitif atau privat, dan berhati-hatilah dengan setiap jawaban yang terkait dengan kesehatan, keuangan, keselamatan pribadi, atau semacamnya. Anda dapat menyesuaikan opsi Leo di Pengaturan kapan saja. Buka Pengaturan &gt; Leo.</translation>
+<translation id="5208096220706490232">Ping Leo adalah asisten pintar AI yang meningkatkan penggunaan Internet Anda. Leo gratis digunakan dengan akses terbatas. Ping Leo Premium menawarkan model yang lebih banyak, batasan lebih tinggi, dan memberikan akses awal ke pelanggan ke fitur-fitur baru. Model bawaan untuk semua pangguna saat ini adalah Mixtral 8x7B. Lihat <ph name="LINK_BEFORE"/>Ping wiki<ph name="LINK_AFTER"/> untuk detail lebih lanjut.</translation>
+<translation id="7189603330209995455">Secara bawaan, ketika Anda menanyakan Leo sebuah pertanyaan, Leo akan mengirim dan menggunakan konten halaman web yang sedang Anda lihat atau teks apa pun yang Anda sorot pada suatu halaman ke Ping Leo agar dapat menyediakan jawaban. Akurasi jawaban tidak dijamin, dan mungkin menyertakan informasi yang tidak akurat, menyesatkan, atau keliru. Leo menggunakan data dari Pencarian Ping untuk meningkatkan kualitas jawaban. Jangan mengirimkan info sensitif atau privat, dan berhati-hatilah dengan setiap jawaban yang terkait dengan kesehatan, keuangan, keselamatan pribadi, atau semacamnya. Anda dapat menyesuaikan opsi Leo di Pengaturan kapan saja. Buka Pengaturan &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo tidak mengumpulkan pengidentifikasi seperti alamat IP Anda yang dapat dikaitkan ke Anda. Tidak ada data yang digunakan untuk melatih model AI dan tidak ada data pribadi yang disimpan oleh model AI (kecuali Anthropic yang menyimpan data selama 30 hari sebelum menghapuskannya). Lihat <ph name="LINK_BEFORE"/>kebijakan privasi<ph name="LINK_AFTER"/> untuk informasi lebih lanjut.</translation>
 <translation id="7839853125981164613">Masukkan petunjuk di sini</translation>
 <translation id="4524675003624341892">Usulkan pertanyaan...</translation>
@@ -1998,11 +1998,11 @@
 <translation id="7932221068776853847">Putuskan koneksi untuk menghentikan pengiriman konten halaman ini ke Leo, dan mulai percakapan baru</translation>
 <translation id="1167803637855350748">Terdapat masalah jaringan untuk terhubung dengan Leo, periksa kembali koneksi Anda dan coba lagi.</translation>
 <translation id="1996126325390835277">Anda telah mencapai batas tingkat premium. Silakan coba lagi dalam beberapa jam.</translation>
-<translation id="4177458398826096846">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Llama 3.1 8B, model yang diciptakan Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Mixtral 8x7B, model yang dibuat AI Mistral untuk menangani tugas-tugas lanjutan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Hai, saya Leo, saya diproksikan oleh Brave dan didukung oleh Claude Instant, model yang dibuat Anthropic untuk mendukung tugas-tugas percakapan dan pemrosesan teks. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hai, saya Leo. Saya diproksikan oleh Brave dan didukung oleh Claude 3 Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks.</translation>
-<translation id="1107977270364670952">Hai, saya Leo. Saya diwakili oleh Brave dan didukung Claude 3.5 Sonnet, sebuah model yang dibuat oleh Anthropic untuk mendukung tugas-tugas percakapan dan pemrosesan teks.</translation>
+<translation id="4177458398826096846">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Ping. Saya didukung oleh Llama 3.1 8B, model yang diciptakan Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Ping. Saya didukung oleh Mixtral 8x7B, model yang dibuat AI Mistral untuk menangani tugas-tugas lanjutan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Hai, saya Leo, saya diproksikan oleh Ping dan didukung oleh Claude Instant, model yang dibuat Anthropic untuk mendukung tugas-tugas percakapan dan pemrosesan teks. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="8583558415545871403">Hai, saya Leo. Saya diproksikan oleh Ping dan didukung oleh Claude 3 Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks.</translation>
+<translation id="1107977270364670952">Hai, saya Leo. Saya diwakili oleh Ping dan didukung Claude 3.5 Sonnet, sebuah model yang dibuat oleh Anthropic untuk mendukung tugas-tugas percakapan dan pemrosesan teks.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> oleh <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Obrolan</translation>
@@ -2026,14 +2026,14 @@
 <translation id="5031778211368112461">Model akses yang lebih sesuai untuk tugas dan pembuatan konten kreatif.</translation>
 <translation id="298783097210745222">Dapatkan jawaban yang lebih akurat untuk percakapan yang lebih bernuansa.</translation>
 <translation id="4314705522985583059">Dapatkan batas tingkat yang lebih tinggi untuk percakapan yang lebih lama.</translation>
-<translation id="1068954060985569277">Sesi akun Brave Anda telah berakhir. Silakan kunjungi halaman akun Anda untuk menyegarkannya, lalu kembali menggunakan fitur-fitur premium.</translation>
+<translation id="1068954060985569277">Sesi akun Ping Anda telah berakhir. Silakan kunjungi halaman akun Anda untuk menyegarkannya, lalu kembali menggunakan fitur-fitur premium.</translation>
 <translation id="94736968936709953">Umpan balik telah berhasil dikirim</translation>
 <translation id="9109355817507033196">Jawaban tidak disukai</translation>
 <translation id="4049425842478222936">Jawaban disukai</translation>
 <translation id="6393149565874086128">Tambahkan umpan balik</translation>
 <translation id="3521125531016408657">Suka jawaban</translation>
 <translation id="8202517001427388906">Tidak suka jawaban</translation>
-<translation id="1379399209929302811">Berikan Umpan Balik untuk AI Brave</translation>
+<translation id="1379399209929302811">Berikan Umpan Balik untuk AI Ping</translation>
 <translation id="8442999546461118871">Pilih topik umpan balik Anda</translation>
 <translation id="9018766373792005944">Umpan balik Anda adalah tentang apa?</translation>
 <translation id="7355096922131918313">Berikan umpan balik di sini</translation>
@@ -2052,7 +2052,7 @@
 <translation id="1093419424466417703">Halaman ini terlalu panjang untuk Leo. Sebagian konteksnya mungkin hilang dari percakapan. Leo mampu membaca <ph name="PERCENTAGE"/> dari isi halaman.</translation>
 <translation id="2186990448773134544">Konten halaman telah disempurnakan dengan mengekstraksi informasi yang paling relevan dari halaman tersebut karena terlalu panjang untuk Leo.</translation>
 <translation id="4370698775470316661">Percakapan ini terlalu panjang dan tidak dapat dilanjutkan. Mungkin ada model lain yang tersedia yang memungkinkan Leo untuk menjaga akurasi percakapan yang lebih panjang.</translation>
-<translation id="5719170755629028558">Meningkatkan kualitas jawaban Anda dengan Pencarian Brave...</translation>
+<translation id="5719170755629028558">Meningkatkan kualitas jawaban Anda dengan Pencarian Ping...</translation>
 <translation id="5794962229997281366">Jawaban yang lebih ditingkatkan untuk <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Obrolan umum</translation>
 <translation id="8193130769524604031">Tugas obrolan lanjutan</translation>
@@ -2061,15 +2061,15 @@
 <translation id="2836330653441111204">Kecepatan yang seimbang dengan kecerdasan</translation>
 <translation id="3965507912994218570">Pengaturan Leo</translation>
 <translation id="1037324977127422019">Hai, saya Leo!</translation>
-<translation id="8930348081963284873">Asisten cerdas yang didukung AI, dibangun langsung ke dalam Brave.</translation>
+<translation id="8930348081963284873">Asisten cerdas yang didukung AI, dibangun langsung ke dalam Ping.</translation>
 <translation id="3528849152231418380">Perlu bantuan dengan situs web?</translation>
 <translation id="1558192229187362674">Saya dapat membantu Anda meringkas artikel, memperluas konten situs dan banyak lagi.</translation>
 <translation id="861953757568623294">Saya dapat membantu Anda meringkas artikel, memperluas konten situs dan banyak lagi. Tidak yakin di mana harus memulai? Coba ini:</translation>
 <translation id="5642775487085641191">Hanya ingin mengobrol?</translation>
 <translation id="8857222718794549840">Tanya saya hal apa pun! Kita bisa berbicara tentang topik apa pun yang Anda inginkan. Saya selalu belajar dan meningkatkan diri untuk memberikan jawaban yang lebih baik.</translation>
-<translation id="9051226419897869406">Mengobrol Secara Privat dengan Brave Leo</translation>
+<translation id="9051226419897869406">Mengobrol Secara Privat dengan Ping Leo</translation>
 <translation id="637548538907281147">Bentuk jawaban berdasarkan konten halaman</translation>
-<translation id="8599503173207256429">Telusuri untuk menanyakan tentang halaman ini. Konten ini akan dikirim ke Brave Leo, bersama dengan pesan Anda.</translation>
+<translation id="8599503173207256429">Telusuri untuk menanyakan tentang halaman ini. Konten ini akan dikirim ke Ping Leo, bersama dengan pesan Anda.</translation>
 <translation id="318819763888864209">Semua paket berlangganan diperbarui secara otomatis namun dapat dibatalkan kapan pun sebelum diperbarui.</translation>
 <translation id="5091223967610958">Bagikan nama host dari halaman yang sedang Anda kunjungi (<ph name="HOST_NAME"/>) untuk membantu kami menjadikan Leo lebih baik.</translation>
 <translation id="8732450785281947197">Alat AI Leo</translation>
@@ -2098,13 +2098,13 @@
 <translation id="3895031624234442305">Model khusus</translation>
 <translation id="4572010449071015143">Memulai percakapan baru</translation>
 <translation id="6303294677342628402">Pelindung</translation>
-<translation id="8458987127502506209">Aktifkan Brave Shield</translation>
+<translation id="8458987127502506209">Aktifkan Ping Shield</translation>
 <translation id="7509914170164691086">Perisai sedang AKTIF <ph name="LINK_BEFORE"/>untuk<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Perisai sedang TIDAK AKTIF<ph name="LINK_BEFORE"/>untuk<ph name="LINK_AFTER"/></translation>
 <translation id="3907405056878805220">Jika situs ini tampaknya rusak, coba turunkan Perisai.
- <ph name="LINK_BEFORE"/>Catatan: ini dapat mengurangi perlindungan privasi Brave.<ph name="LINK_AFTER"/></translation>
+ <ph name="LINK_BEFORE"/>Catatan: ini dapat mengurangi perlindungan privasi Ping.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Pelacak, iklan, dan lebih banyak pemblokiran <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">Tidak dilindungi oleh Pelindung Brave <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Tidak dilindungi oleh Pelindung Ping <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
 <translation id="5799940914270080805">Mengubah pengaturan ini dapat merusak situs.</translation>
 <translation id="9204041448536398473">Pengaturan Shield Global</translation>
@@ -2135,8 +2135,8 @@
 <translation id="2570787596946026998">Hubungkan hanya dengan HTTPS</translation>
 <translation id="1992750560347846445">Laporkan situs</translation>
 <translation id="2387532482048804818">Beri tahu kami jika situs tidak berfungsi dengan baik saat Perisai diaktifkan.</translation>
-<translation id="3795015906457257780">Anda melihat situs ini tanpa perlindungan privasi Brave.</translation>
-<translation id="7194012750329511146">Perisai Brave
+<translation id="3795015906457257780">Anda melihat situs ini tanpa perlindungan privasi Ping.</translation>
+<translation id="7194012750329511146">Perisai Ping
 <ph name="NUMBER"/> Pelacak, iklan, dan banyak lagi telah diblokir</translation>
 <translation id="4292121526390005808">Skrip diblokir</translation>
 <translation id="5046271170844958713">Skrip yang diizinkan</translation>
@@ -2145,43 +2145,43 @@
 <translation id="1905384713982899903">Sidik jari yang diblokir</translation>
 <translation id="314364527871618241">Sidik jari yang diizinkan</translation>
 <translation id="264682546981571963">Bosan dengan pemberitahuan persetujuan kuki?</translation>
-<translation id="4986297793092101884">Brave sudah memblokir kuki pihak ketiga. Kami juga dapat memblokir pemberitahuan persetujuan kuki.</translation>
+<translation id="4986297793092101884">Ping sudah memblokir kuki pihak ketiga. Kami juga dapat memblokir pemberitahuan persetujuan kuki.</translation>
 <translation id="535688588637568715">Ya, blokir pemberitahuan persetujuan kuki</translation>
-<translation id="2808175374672429053">Wildcards tidak diizinkan untuk Perisai Brave.</translation>
+<translation id="2808175374672429053">Wildcards tidak diizinkan untuk Perisai Ping.</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
-      =1 {Perisai Brave memblokir 1 pelacak di <ph name="SITE_URL"/>}
-      other {Perisai Brave memblokir {BLOCKED_COUNT} pelacak di <ph name="SITE_URL"/>}
+      =1 {Perisai Ping memblokir 1 pelacak di <ph name="SITE_URL"/>}
+      other {Perisai Ping memblokir {BLOCKED_COUNT} pelacak di <ph name="SITE_URL"/>}
     }</translation>
-<translation id="2540598191934725677">Klik ikon Brave untuk melihat Perisai Brave.</translation>
+<translation id="2540598191934725677">Klik ikon Ping untuk melihat Perisai Ping.</translation>
 <translation id="6294662480095808915">Privasi. Secara Bawaan.</translation>
-<translation id="4366423156486478559">Dapatkan perlindungan Brave pada setiap tautan yang Anda klik. Cukup tetapkan Brave sebagai bawaan dan menjelajahlah. Secara privat.</translation>
+<translation id="4366423156486478559">Dapatkan perlindungan Ping pada setiap tautan yang Anda klik. Cukup tetapkan Ping sebagai bawaan dan menjelajahlah. Secara privat.</translation>
 <translation id="3830912418080848377">Impor Pengaturan</translation>
 <translation id="6378406588483694938">Dengan mudah mengimpor markah, ekstensi, bahkan menyimpan kata sandi dari peramban lama Anda.</translation>
 <translation id="2092825239819166928">Pilih profil untuk diimpor</translation>
 <translation id="4763127492635705340">Peramban yang Anda pilih memiliki beberapa profil. Pilih profil yang ingin Anda impor.</translation>
 <translation id="880174232178865598">Impor profil</translation>
 <translation id="2453860139492968684">Selesai</translation>
-<translation id="2273851479262317744">Tetapkan Brave sebagai peramban bawaan</translation>
+<translation id="2273851479262317744">Tetapkan Ping sebagai peramban bawaan</translation>
 <translation id="5037676449506322593">Pilih Semua</translation>
-<translation id="5148943178722443958">Bantulah membuat Brave lebih baik.</translation>
+<translation id="5148943178722443958">Bantulah membuat Ping lebih baik.</translation>
 <translation id="1097073572755862978">Kirimkan laporan diagnostik jika Anda mengalami kerusakan atau kebekuan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut.<ph name="LINK_AFTER"/></translation>
-<translation id="6629244688368006959">Bagikan wawasan produk secara privat dan anonim tentang fitur apa saja yang digunakan oleh pengguna Brave. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut.<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Bagikan wawasan produk secara privat dan anonim tentang fitur apa saja yang digunakan oleh pengguna Ping. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Pengaturan selesai</translation>
-<translation id="3141206739023333979">Anda dapat mengubah pilihan ini kapan saja di Brave pada <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
+<translation id="3141206739023333979">Anda dapat mengubah pilihan ini kapan saja di Ping pada <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Baca <ph name="LINK_BEFORE"/>Kebijakan Privasi<ph name="LINK_AFTER"/> lengkap kami</translation>
 <translation id="2801098717523961746">Pilih tema</translation>
-<translation id="6262510489122516114">Anda dapat mengubah hal ini kapan pun di pengaturan Brave.</translation>
+<translation id="6262510489122516114">Anda dapat mengubah hal ini kapan pun di pengaturan Ping.</translation>
 <translation id="546481172717459539">Sesuaikan pengaturan sistem</translation>
 <translation id="7799817062559422778">Mode terang</translation>
 <translation id="4117637339509843559">Mode gelap</translation>
 <translation id="6302485303316397682">Ingin hasil pencarian yang lebih baik?</translation>
-<translation id="7014699001826714920">Bergabunglah dengan gerakan ini, berkontribusilah ke Pencarian Brave.</translation>
-<translation id="6821108091726602352">Bantulah kami memperbaiki web dengan berpartisipasi dalam Proyek Penemuan Web Brave. Dengan membagikan sinyal pencarian yang sepenuhnya anonim, Anda dapat membantu Brave mengembangkan indeks pencarian.</translation>
+<translation id="7014699001826714920">Bergabunglah dengan gerakan ini, berkontribusilah ke Pencarian Ping.</translation>
+<translation id="6821108091726602352">Bantulah kami memperbaiki web dengan berpartisipasi dalam Proyek Penemuan Web Ping. Dengan membagikan sinyal pencarian yang sepenuhnya anonim, Anda dapat membantu Ping mengembangkan indeks pencarian.</translation>
 <translation id="6764845498618413165">Pelajari Lebih Lanjut.</translation>
 <translation id="7818938154803162778">Tentu saja saya akan membantu</translation>
-<translation id="7821773512278295352">Dinding Api + VPN Brave: Terhubung</translation>
-<translation id="6019088868713395120">Dinding Api + VPN Brave: Terputus</translation>
-<translation id="3541307549916475335">UI Panel VPN Brave</translation>
+<translation id="7821773512278295352">Dinding Api + VPN Ping: Terhubung</translation>
+<translation id="6019088868713395120">Dinding Api + VPN Ping: Terputus</translation>
+<translation id="3541307549916475335">UI Panel VPN Ping</translation>
 <translation id="7143207342074048698">Menyambungkan</translation>
 <translation id="1202549130170287307">Memutuskan sambungan</translation>
 <translation id="2325196879156848326">Koneksi Gagal</translation>
@@ -2189,7 +2189,7 @@
 <translation id="3936826714240735937">Memilih peladen lain</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> tidak dapat terhubung ke peladen <ph name="REGION_NAME"/>. Silakan coba lagi atau pilih negara lain.</translation>
 <translation id="5753795690521538679">Mulai uji coba gratis 7 hari</translation>
-<translation id="3357036723290257445">Sudah membeli VPN Brave?</translation>
+<translation id="3357036723290257445">Sudah membeli VPN Ping?</translation>
 <translation id="8814357473522731680">Didukung oleh</translation>
 <translation id="8652175077544655965">Menutup pengaturan</translation>
 <translation id="3099126540952997993">Dinding Api + VPN</translation>
@@ -2218,7 +2218,7 @@
 <translation id="427718751211990320">Tanggal kedaluwarsa kredensial telah terlampaui</translation>
 <translation id="8670619630771851260">Tidak dapat memuat kredensial</translation>
 <translation id="1594643509610625766">Token tidak valid lagi</translation>
-<translation id="8373427068383038263">Sepertinya pembayaran terakhir Anda untuk <ph name="VALUE"/> tidak berhasil. Akses ke paket berlangganan ini akan dihentikan sementara hingga masalah pembayaran ini diselesaikan. Cobalah untuk mengedit metode pembayaran Anda, atau hubungi dukungan pelanggan Brave.</translation>
+<translation id="8373427068383038263">Sepertinya pembayaran terakhir Anda untuk <ph name="VALUE"/> tidak berhasil. Akses ke paket berlangganan ini akan dihentikan sementara hingga masalah pembayaran ini diselesaikan. Cobalah untuk mengedit metode pembayaran Anda, atau hubungi dukungan pelanggan Ping.</translation>
 <translation id="5257165507296814658">Tutup formulir dukungan</translation>
 <translation id="1839021455997460752">Alamat surel Anda</translation>
 <translation id="7508253027939632101">Masukkan alamat surel Anda</translation>
@@ -2239,14 +2239,14 @@
 <translation id="6676791921618140305">Versi OS:</translation>
 <translation id="1156325797949437777">Dukungan diberikan dalam kemitraan dengan Guardian.</translation>
 <translation id="8146777497879160283">Gagal menulis konfigurasi VPN. Ini dapat terjadi jika Anda tidak mendapat izin atau jika Anda belum melakukan Pembaruan Windows baru-baru ini.</translation>
-<translation id="3362894458460231163">Koneksi VPN gagal. Silakan coba menghubungkannya lagi, dan pastikan untuk mengeklik "Izinkan" agar memungkinkan konfigurasi VPN Brave.</translation>
-<translation id="7261518280726313829">Mematikan Secure DNS atau menggunakan peladen bawaan pada Windows dapat mengungkap nama-nama situs yang Anda kunjungi kepada penyedia layanan Internet Anda. Brave tidak menyarankan hal ini. Apakah Anda tetap akan melakukannya?</translation>
-<translation id="888284761945060750">Secure DNS dinonaktifkan karena kebijakan organisasi Anda. Menggunakan VPN Brave tanpa Secure DNS dapat mengungkap nama-nama situs yang telah Anda kunjungi ke penyedia layanan Internet atau organisasi Anda.</translation>
-<translation id="6593224083874259773">VPN Brave pada Windows</translation>
-<translation id="3153983908111684619">Pengaturan dikunci oleh VPN Brave saat masih terkoneksi</translation>
+<translation id="3362894458460231163">Koneksi VPN gagal. Silakan coba menghubungkannya lagi, dan pastikan untuk mengeklik "Izinkan" agar memungkinkan konfigurasi VPN Ping.</translation>
+<translation id="7261518280726313829">Mematikan Secure DNS atau menggunakan peladen bawaan pada Windows dapat mengungkap nama-nama situs yang Anda kunjungi kepada penyedia layanan Internet Anda. Ping tidak menyarankan hal ini. Apakah Anda tetap akan melakukannya?</translation>
+<translation id="888284761945060750">Secure DNS dinonaktifkan karena kebijakan organisasi Anda. Menggunakan VPN Ping tanpa Secure DNS dapat mengungkap nama-nama situs yang telah Anda kunjungi ke penyedia layanan Internet atau organisasi Anda.</translation>
+<translation id="6593224083874259773">VPN Ping pada Windows</translation>
+<translation id="3153983908111684619">Pengaturan dikunci oleh VPN Ping saat masih terkoneksi</translation>
 <translation id="1055657720430482013">Windows memiliki fitur yang disebut Resolusi Nama Multi-Induk, yang dapat mengungkap informasi tentang lokasi dan situs yang Anda kunjungi.
 
-Brave memiliki layanan bantuan yang melindungi Anda dari paparan ini dengan menyaring cara kueri DNS dibuat pada koneksi VPN Anda.
+Ping memiliki layanan bantuan yang melindungi Anda dari paparan ini dengan menyaring cara kueri DNS dibuat pada koneksi VPN Anda.
 
 Namun, kami menyadari bahwa layanan bantuan ini tidak berfungsi - dan kami tidak ingin membiarkan Anda tanpa perlindungan. Kami telah mengubah pengaturan DNS di peramban untuk melindungi dari paparan ini. Pengaturan ini akan tetap berlaku dan terkunci sementara VPN terkoneksi..
 
@@ -2262,16 +2262,16 @@ Mari kita buat Anda terhubung!</translation>
 <translation id="7423206764347669977">Ubah pengaturan</translation>
 <translation id="9061845622728745852">Zona Waktu:</translation>
 <translation id="8295393906499561642">Sesi telah berakhir</translation>
-<translation id="3312623558576021182">Harap masuk ke <ph name="BRAVE_ACCOUNT_BEGIN"/>Akun Brave<ph name="BRAVE_ACCOUNT_END"/> Anda untuk menyegarkan sesi VPN Anda.</translation>
-<translation id="6021669293402055982">VPN Brave: Terputus</translation>
-<translation id="7861195049821776142">VPN Brave: Memutuskan koneksi</translation>
-<translation id="958268166261124668">VPN Brave: Tersambung</translation>
-<translation id="2061807837510296780">VPN Brave: Menghubungkan</translation>
-<translation id="1313124107969703758">VPN Brave: Kesalahan</translation>
+<translation id="3312623558576021182">Harap masuk ke <ph name="BRAVE_ACCOUNT_BEGIN"/>Akun Ping<ph name="BRAVE_ACCOUNT_END"/> Anda untuk menyegarkan sesi VPN Anda.</translation>
+<translation id="6021669293402055982">VPN Ping: Terputus</translation>
+<translation id="7861195049821776142">VPN Ping: Memutuskan koneksi</translation>
+<translation id="958268166261124668">VPN Ping: Tersambung</translation>
+<translation id="2061807837510296780">VPN Ping: Menghubungkan</translation>
+<translation id="1313124107969703758">VPN Ping: Kesalahan</translation>
 <translation id="8273420301954598554">Status: Tersambung</translation>
 <translation id="7155657348064536843">Status: Terputus</translation>
-<translation id="2413929902277520460">VPN Brave: Terhubung</translation>
-<translation id="8048263175525832621">VPN Brave - Terputus</translation>
+<translation id="2413929902277520460">VPN Ping: Terhubung</translation>
+<translation id="8048263175525832621">VPN Ping - Terputus</translation>
 <translation id="1498770726476841108">Kelola Akun</translation>
 <translation id="6825718953004242472">Hapus ikon</translation>
 <translation id="3287942014983548982">Buka di sini</translation>

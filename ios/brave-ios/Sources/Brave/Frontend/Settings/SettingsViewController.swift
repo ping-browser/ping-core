@@ -321,7 +321,7 @@ class SettingsViewController: TableViewController {
       uuid: featureSectionUUID.uuidString
     )
 
-    if BraveRewards.isAvailable, let rewards = rewards {
+    if false && BraveRewards.isAvailable, let rewards = rewards {
       section.rows += [
         Row(
           text: Strings.braveRewardsSettingsTitle,
@@ -343,36 +343,36 @@ class SettingsViewController: TableViewController {
       ]
     }
 
-    section.rows.append(
-      Row(
-        text: Strings.BraveNews.braveNewsTitle,
-        selection: { [unowned self] in
-          let controller = NewsSettingsViewController(
-            dataSource: self.feedDataSource,
-            openURL: { [weak self] url in
-              guard let self else { return }
-              self.dismiss(animated: true)
-              self.settingsDelegate?.settingsOpenURLs([url], loadImmediately: true)
-            }
-          )
-          controller.viewDidDisappear = {
-            if Preferences.Review.braveNewsCriteriaPassed.value {
-              AppReviewManager.shared.isRevisedReviewRequired = true
-              Preferences.Review.braveNewsCriteriaPassed.value = false
-            }
-          }
-          self.navigationController?.pushViewController(controller, animated: true)
-        },
-        image: UIImage(braveSystemNamed: "leo.product.brave-news"),
-        accessory: .disclosureIndicator
-      )
-    )
+    // section.rows.append(
+    //   Row(
+    //     text: Strings.BraveNews.braveNewsTitle,
+    //     selection: { [unowned self] in
+    //       let controller = NewsSettingsViewController(
+    //         dataSource: self.feedDataSource,
+    //         openURL: { [weak self] url in
+    //           guard let self else { return }
+    //           self.dismiss(animated: true)
+    //           self.settingsDelegate?.settingsOpenURLs([url], loadImmediately: true)
+    //         }
+    //       )
+    //       controller.viewDidDisappear = {
+    //         if Preferences.Review.braveNewsCriteriaPassed.value {
+    //           AppReviewManager.shared.isRevisedReviewRequired = true
+    //           Preferences.Review.braveNewsCriteriaPassed.value = false
+    //         }
+    //       }
+    //       self.navigationController?.pushViewController(controller, animated: true)
+    //     },
+    //     image: UIImage(braveSystemNamed: "leo.product.brave-news"),
+    //     accessory: .disclosureIndicator
+    //   )
+    // )
 
-    if !tabManager.privateBrowsingManager.isPrivateBrowsing {
+    if false && !tabManager.privateBrowsingManager.isPrivateBrowsing {
       section.rows.append(leoSettingsRow)
     }
 
-    section.rows.append(vpnSettingsRow)
+    // section.rows.append(vpnSettingsRow)
 
     section.rows.append(
       Row(
@@ -711,11 +711,11 @@ class SettingsViewController: TableViewController {
         accessory: .disclosureIndicator,
         cellClass: MultilineValue1Cell.self
       ),
-      .boolRow(
-        title: Strings.hideRewardsIcon,
-        option: Preferences.Rewards.hideRewardsIcon,
-        image: UIImage(braveSystemNamed: "leo.product.bat-outline")
-      ),
+      // .boolRow(
+      //   title: Strings.hideRewardsIcon,
+      //   option: Preferences.Rewards.hideRewardsIcon,
+      //   image: UIImage(braveSystemNamed: "leo.product.bat-outline")
+      // ),
     ])
 
     return display
@@ -892,21 +892,21 @@ class SettingsViewController: TableViewController {
           image: UIImage(braveSystemNamed: "leo.bug"),
           cellClass: MultilineValue1Cell.self
         ),
-        Row(
-          text: Strings.rateBrave,
-          selection: { [unowned self] in
-            // Rate Brave
-            guard
-              let writeReviewURL = URL(
-                string: "https://itunes.apple.com/app/id1052879175?action=write-review"
-              )
-            else { return }
-            UIApplication.shared.open(writeReviewURL)
-            self.dismiss(animated: true)
-          },
-          image: UIImage(braveSystemNamed: "leo.message.bubble-smile"),
-          cellClass: MultilineValue1Cell.self
-        ),
+        // Row(
+        //   text: Strings.rateBrave,
+        //   selection: { [unowned self] in
+        //     // Rate Brave
+        //     guard
+        //       let writeReviewURL = URL(
+        //         string: "https://itunes.apple.com/app/id1052879175?action=write-review"
+        //       )
+        //     else { return }
+        //     UIApplication.shared.open(writeReviewURL)
+        //     self.dismiss(animated: true)
+        //   },
+        //   image: UIImage(braveSystemNamed: "leo.message.bubble-smile"),
+        //   cellClass: MultilineValue1Cell.self
+        // ),
       ]
     )
   }()
@@ -1089,7 +1089,7 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineValue1Cell.self
         ),
         Row(
-          text: "View Brave Wallet Debug Menu",
+          text: "View Ping Wallet Debug Menu",
           selection: { [unowned self] in
             self.displayBraveWalletDebugMenu()
           },

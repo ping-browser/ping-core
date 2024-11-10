@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">要查看商店資訊嗎？</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{已關閉 <ph name="ONE_CLOSED"/> 個分頁}other{已關閉 <ph name="MANY_CLOSED"/> 個分頁}}</translation>
 <translation id="2894757982205307093">在群組中新增分頁</translation>
-<translation id="4691798003247738043">Brave | 關於這間商店</translation>
+<translation id="4691798003247738043">Ping | 關於這間商店</translation>
 <translation id="2977480621796371840">從群組中移除</translation>
 <translation id="29919168204617356">閒置分頁將自動關閉。你隨時可以前往「歷史記錄」查看這些分頁。</translation>
 <translation id="3008554597174452548">停止追蹤產品</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">商店資訊和可用選項位於靠近畫面頂端的地方</translation>
 <translation id="5627941783489838464">沒有更新的分頁</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{還原分頁}other{要還原分頁嗎？}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 個來自 Brave 的連結}other{<ph name="TABS_COUNT_MANY"/> 個來自 Brave 的連結}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 個來自 Ping 的連結}other{<ph name="TABS_COUNT_MANY"/> 個來自 Ping 的連結}}</translation>
 <translation id="575494663145460764">要接收降價快訊嗎？</translation>
 <translation id="58326064309361797">拖曳分頁即可進行分組</translation>
 <translation id="5901630391730855834">黃色</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">分頁群組會自動儲存並同步至所有裝置</translation>
 <translation id="747459581954555080">全部還原</translation>
 <translation id="753732157349120914">分頁切換工具</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> 則來自 Brave 的評論}other{<ph name="REVIEWS_COUNT_MANY"/> 則來自 Brave 的評論}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> 則來自 Ping 的評論}other{<ph name="REVIEWS_COUNT_MANY"/> 則來自 Ping 的評論}}</translation>
 <translation id="7559245342362162951">以全螢幕格狀檢視顯示群組的分頁</translation>
 <translation id="7658239707568436148">取消</translation>
 <translation id="7688386659311034820">「閒置分頁」對話方塊</translation>

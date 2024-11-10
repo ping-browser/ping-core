@@ -785,10 +785,11 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
   std::unique_ptr<TemplateURLData> brave_engine;
   for (auto& engine : prepopulated_engines) {
     if (engine->prepopulate_id == static_cast<int>(default_id)) {
-      return std::move(engine);
-    } else if (engine->prepopulate_id ==
-               TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE) {
       brave_engine = std::move(engine);
+    } else if (engine->prepopulate_id ==
+               TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE) {
+      // Setting google as default search for Ping
+      return std::move(engine);
     }
   }
 

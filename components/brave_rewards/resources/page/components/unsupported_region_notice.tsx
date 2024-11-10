@@ -10,7 +10,7 @@ import { BatCrossedIcon } from './icons/bat_crossed_icon'
 
 import * as style from './unsupported_region_notice.style'
 
-export function UnsupportedRegionNotice () {
+export function UnsupportedRegionNotice() {
   const { getString } = React.useContext(LocaleContext)
 
   return (
@@ -28,7 +28,7 @@ export function UnsupportedRegionNotice () {
             formatMessage(getString('unsupportedRegionNoticeLearnMore'), {
               tags: {
                 $1: (content) => (
-                  <NewTabLink key='learn' href='https://support.brave.com/hc/en-us/articles/9053832354957'>
+                  <NewTabLink key='learn' href='https://ping-browser.com/faqs-and-help'>
                     {content}
                   </NewTabLink>
                 )

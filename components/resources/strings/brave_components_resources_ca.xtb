@@ -26,10 +26,10 @@
 <translation id="985862351129593673">Personalitzar el Panell</translation>
 <translation id="7180865173735832675">Personalitzar</translation>
 <translation id="8522669544471808198">Mostra imatges de fons</translation>
-<translation id="5801450813341024983">Fons de pantalla de Brave</translation>
+<translation id="5801450813341024983">Fons de pantalla de Ping</translation>
 <translation id="1416884769823233410">Utilitza el teu</translation>
 <translation id="6246790815526961700">Puja des del dispositiu</translation>
-<translation id="7275773481201277457">Mostrar Estrelles Brave</translation>
+<translation id="7275773481201277457">Mostrar Estrelles Ping</translation>
 <translation id="6836061097810262923">Mostrar el rellotge</translation>
 <translation id="5912396950572065471">Format</translation>
 <translation id="604124094241169006">Automàtic</translation>
@@ -64,23 +64,23 @@
 <translation id="780301667611848630">No, gràcies</translation>
 <translation id="1230746063445072175">Vols una privadesa encara millor?</translation>
 <translation id="6699628638740071563">És hora de deixar plantat a Google.</translation>
-<translation id="5588534392045217394">El cercador de Brave no presenta resultats esbiaixats ni en censura, i no crea un perfil vostre.</translation>
-<translation id="6811221529729056895">Prova ara el cercador de Brave</translation>
-<translation id="3446024864193919737">Mostra les recompenses de Brave</translation>
+<translation id="5588534392045217394">El cercador de Ping no presenta resultats esbiaixats ni en censura, i no crea un perfil vostre.</translation>
+<translation id="6811221529729056895">Prova ara el cercador de Ping</translation>
+<translation id="3446024864193919737">Mostra les recompenses de Ping</translation>
 <translation id="5585019845078534178">Cartes</translation>
 <translation id="3870475560794762985">Mostra Imatges Patrocinades</translation>
 <translation id="2414654907269324670">Guanyes BAT per les imatges patrocinades que veus.</translation>
 <translation id="4942016616604700968">Activa Recompenses</translation>
 <translation id="5684562942023496754">Pots guanyar BAT veient les imatges patrocinades.</translation>
-<translation id="8934374643857605034">Com a usuari de Brave Rewards, guanyes BAT per les imatges patrocinades que veus.</translation>
-<translation id="1570714748649804013">Com a usuari de Brave Rewards, guanyes BAT per les imatges patrocinades que veus. Si desactives les imatges patrocinades, tindràs menys beneficis.</translation>
-<translation id="8998727244653964783">Si connectes un compte privat amb Brave Rewards, pots guanyar BAT per veure imatges patrocinades. Mentrestant, contribueixes a donar suport a creadors amb les imatges patrocinades.</translation>
-<translation id="5512383650263136662">Pots guanyar BAT per veure imatges patrocinades amb Brave Rewards. No ets usuari de Rewards? Si actives les imatges patrocinades també dones suport a la missió de Brave.</translation>
+<translation id="8934374643857605034">Com a usuari de Ping Rewards, guanyes BAT per les imatges patrocinades que veus.</translation>
+<translation id="1570714748649804013">Com a usuari de Ping Rewards, guanyes BAT per les imatges patrocinades que veus. Si desactives les imatges patrocinades, tindràs menys beneficis.</translation>
+<translation id="8998727244653964783">Si connectes un compte privat amb Ping Rewards, pots guanyar BAT per veure imatges patrocinades. Mentrestant, contribueixes a donar suport a creadors amb les imatges patrocinades.</translation>
+<translation id="5512383650263136662">Pots guanyar BAT per veure imatges patrocinades amb Ping Rewards. No ets usuari de Rewards? Si actives les imatges patrocinades també dones suport a la missió de Ping.</translation>
 <translation id="2875302873837723333">llocs  principals</translation>
-<translation id="8173998484743827990">Estadístiques de Brave</translation>
+<translation id="8173998484743827990">Estadístiques de Ping</translation>
 <translation id="383680190590774040">rellotge</translation>
 <translation id="1383876407941801731">Cerca</translation>
-<translation id="3333887201479867589">Premis de Brave</translation>
+<translation id="3333887201479867589">Premis de Ping</translation>
 <translation id="3159285901314605198">Imatge de Fons</translation>
 <translation id="385051799172605136">Enrere</translation>
 <translation id="4225429340218993596">Colors sòlids</translation>
@@ -92,13 +92,13 @@
 <translation id="4108314971463891922">Seguir</translation>
 <translation id="3861486700625780712">Deixar de seguir</translation>
 <translation id="8909741410750517071">Segueix aquesta font amb 1 clic.</translation>
-<translation id="1982678174789043774">Obté totes les últimes històries a Brave News.</translation>
+<translation id="1982678174789043774">Obté totes les últimes històries a Ping News.</translation>
 <translation id="7894417427965898400">Gestiona els canals</translation>
 <translation id="9164544612367905452">Buscant…</translation>
 <translation id="1276592121036104130">Carrega contingut nou</translation>
-<translation id="2875288128871360696">Desplaça la barra per a Notícies de Brave</translation>
-<translation id="8510120023634509743">Restableix les fonts de Notícies de Brave</translation>
-<translation id="75825199302994272">Vols restablir totes les opcions editades de Notícies de Brave als seus valors predeterminats?</translation>
+<translation id="2875288128871360696">Desplaça la barra per a Notícies de Ping</translation>
+<translation id="8510120023634509743">Restableix les fonts de Notícies de Ping</translation>
+<translation id="75825199302994272">Vols restablir totes les opcions editades de Notícies de Ping als seus valors predeterminats?</translation>
 <translation id="954001034349395856">Totes les fonts</translation>
 <translation id="8890516388109605451">Fonts</translation>
 <translation id="5158129253322921540">Deshabilita el contingut de <ph name="PUBLISHER_NAME"/></translation>
@@ -108,12 +108,12 @@
 <translation id="7791543448312431591">Afegeix</translation>
 <translation id="7679334366167089823">Guanyeu tokens per veure anuncis que respectin la privadesa.</translation>
 <translation id="7191394989411626168">Si apagueu les Cartes, totes les cartes que ara es veuen s'amagaran. Tot i així, igualment se us notificarà de cartes noves.</translation>
-<translation id="6820526586005233839">Brave Ads s'ha posat en pausa</translation>
-<translation id="5190407395832551012">Per protegir Brave Rewards de qualsevol abús, demanarem als usuaris aleatòriament que resolguin un captcha. Fes clic a “Resol” per reprendre Brave Ads.</translation>
+<translation id="6820526586005233839">Ping Ads s'ha posat en pausa</translation>
+<translation id="5190407395832551012">Per protegir Ping Rewards de qualsevol abús, demanarem als usuaris aleatòriament que resolguin un captcha. Fes clic a “Resol” per reprendre Ping Ads.</translation>
 <translation id="1693773514029371138">Resol</translation>
 <translation id="6991128190741664836">Més tard</translation>
-<translation id="8112367589167674370">Brave Talk</translation>
-<translation id="8488282162676695335">Cartera Brave</translation>
+<translation id="8112367589167674370">Ping Talk</translation>
+<translation id="8488282162676695335">Cartera Ping</translation>
 <translation id="8820817407110198400">Adreces d'interès</translation>
 <translation id="1644574205037202324">Historial</translation>
 <translation id="2702801445560668637">Llista de lectura</translation>
@@ -123,23 +123,23 @@
 <translation id="8730621377337864115">Fet</translation>
 <translation id="730042046912793465">Això és un</translation>
 <translation id="2055363275850890030">Finestra privada</translation>
-<translation id="9133213713928851646">Brave no recorda el que fas en una Finestra Privada. Els llocs que visites no es mostraran al teu historial i les galetes desapareixeran quan hagis acabat. Les Finestres Privades no et fan completament anònim en línia.</translation>
-<translation id="4085423007106063912">Brave mai no recorda la vostra activitat en una finestra d'incògnit. Els llocs web que visiteu no es mostraran a l'historial. Les galetes, les dades de formularis i les dades de llocs web desapareixen quan tanqueu la finestra.</translation>
+<translation id="9133213713928851646">Ping no recorda el que fas en una Finestra Privada. Els llocs que visites no es mostraran al teu historial i les galetes desapareixeran quan hagis acabat. Les Finestres Privades no et fan completament anònim en línia.</translation>
+<translation id="4085423007106063912">Ping mai no recorda la vostra activitat en una finestra d'incògnit. Els llocs web que visiteu no es mostraran a l'historial. Les galetes, les dades de formularis i les dades de llocs web desapareixen quan tanqueu la finestra.</translation>
 <translation id="1700746046668116047">Tingueu en compte que la vostra activitat encara podria ser visible per al vostre proveïdor de serveis d’Internet, observadors passius de la xarxa o el vostre ocupador (si utilitzeu un ordinador o una xarxa de la feina). Per obtenir més privadesa, obriu una finestra d'incògnit amb Tor.</translation>
 <translation id="8759753423332885148">Més informació.</translation>
 <translation id="8611976753572844841">Finestra privada amb connectivitat Tor</translation>
-<translation id="1645589858096839236">Brave no emmagatzema l'activitat de navegació d'una finestra privada. Amb la connectivitat Tor, és més difícil per als llocs veure la teva adreça IP veritable i per als observadors de xarxa veure quins llocs visites. Tot i això, si la teva seguretat personal depèn de mantenir l'anonimat, utilitza el navegador Tor.</translation>
+<translation id="1645589858096839236">Ping no emmagatzema l'activitat de navegació d'una finestra privada. Amb la connectivitat Tor, és més difícil per als llocs veure la teva adreça IP veritable i per als observadors de xarxa veure quins llocs visites. Tot i això, si la teva seguretat personal depèn de mantenir l'anonimat, utilitza el navegador Tor.</translation>
 <translation id="7919374705736538787">Cerca Privadament amb</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
-<translation id="218839872518145456">Amb la cerca privada, Brave utilitzarà DuckDuckGo per a cerques en Finestres Privades. DuckDuckGo no fa un seguiment del teu historial de cerca, de manera que pots cercar de manera privada.</translation>
+<translation id="218839872518145456">Amb la cerca privada, Ping utilitzarà DuckDuckGo per a cerques en Finestres Privades. DuckDuckGo no fa un seguiment del teu historial de cerca, de manera que pots cercar de manera privada.</translation>
 <translation id="1925197199485958903">En finestres privades amb Tor, DuckDuckGo és el motor de cerca predeterminat. Alguns dels altres cercadors populars són més difícils d'utilitzar amb Tor. DuckDuckGo no fa un seguiment de l'historial de cerca; amb Tor, ni tan sols saben la teva adreça IP.</translation>
 <translation id="4371533307685765155">Cerca amb DuckDuckGo</translation>
 <translation id="548478195417408221">Fes que les finestres privades siguin més privades</translation>
 <translation id="3294503279952534143">Aquesta finestra privada és més privada</translation>
 <translation id="6126226144537295436">amb Connectivitat Tor</translation>
 <translation id="8541421872680304667">Tor amaga la teva adreça IP dels llocs que visites, encaminant la teva navegació per diversos servidors Tor abans d'arribar a la teva destinació. Tor pot frenar la navegació i és possible que alguns llocs web no funcionin gens.</translation>
-<translation id="8897548669448660973">L'ús de finestres privades només canvia el que Brave fa al teu dispositiu; no canvia el comportament de ningú més. Tor amaga la teva adreça IP dels llocs que visites i fa que sigui més difícil, però no impossible, que el teu proveïdor d'Internet o el teu cap pugui veure els llocs que visites. Obre una finestra privada amb Tor des del menú o amb [[ key ]].</translation>
-<translation id="6975708438781948564">Saber més sobre Tor a Brave</translation>
+<translation id="8897548669448660973">L'ús de finestres privades només canvia el que Ping fa al teu dispositiu; no canvia el comportament de ningú més. Tor amaga la teva adreça IP dels llocs que visites i fa que sigui més difícil, però no impossible, que el teu proveïdor d'Internet o el teu cap pugui veure els llocs que visites. Obre una finestra privada amb Tor des del menú o amb [[ key ]].</translation>
+<translation id="6975708438781948564">Saber més sobre Tor a Ping</translation>
 <translation id="4712050378540986986">Estat de Tor</translation>
 <translation id="1939334281379458295">Tor s'ha connectat correctament</translation>
 <translation id="8030169304546394654">Sense connexió</translation>
@@ -148,7 +148,7 @@
 <translation id="2795840524629682765">La connexió Tor ha fallat</translation>
 <translation id="1149108864689950951">Tor s'està connectant... [[percentage]] %</translation>
 <translation id="3651192084771403430">Tens problemes per connectar-t'hi? Prova de <ph name="BEGIN_LINK"/>deshabilitar<ph name="END_LINK"/> la finestra d'incògnit a Tor i tornar-la a obrir a la configuració.</translation>
-<translation id="8834376622642889380">Obriu <ph name="BEGIN_LINK"/>Configuració Brave<ph name="END_LINK"/>, desactiveu la finestra privada amb Tor i torneu a activar-la.</translation>
+<translation id="8834376622642889380">Obriu <ph name="BEGIN_LINK"/>Configuració Ping<ph name="END_LINK"/>, desactiveu la finestra privada amb Tor i torneu a activar-la.</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>Encara teniu problemes?<ph name="END_BOLD"/> Probeu d'utilitzar <ph name="BEGIN_BRIDGES_LINK"/>ponts<ph name="END_BRIDGES_LINK"/> o <ph name="BEGIN_SUPPORT_LINK"/>contacteu amb el servei d'assistència<ph name="END_SUPPORT_LINK"/>.</translation>
 <translation id="8388043004918289671">Contacta amb l'equip de suport.</translation>
 <translation id="4272382368346338917">Filtres addicionals</translation>
@@ -172,32 +172,32 @@
 <translation id="3110968385867124099">No es pot informar d'aquesta pàgina perquè no s'ha distribuït a través de HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Aquesta pàgina és una pàgina web local i no és elegible per informar.</translation>
 <translation id="3645455863322075098">Aquesta pàgina és una pàgina d'error i no és elegible per informar.</translation>
-<translation id="105644511106871142">Gràcies per ajudar a fer Brave millor per a tothom. Aquest informe només enviarà la informació necessària perquè puguem corregir aquest lloc.</translation>
+<translation id="105644511106871142">Gràcies per ajudar a fer Ping millor per a tothom. Aquest informe només enviarà la informació necessària perquè puguem corregir aquest lloc.</translation>
 <translation id="6476216365964140603">Informació addicional (opcional)</translation>
 <translation id="6145852496180774737">Contacta amb mi a través de: (opcional)</translation>
 <translation id="7616645803364270729">Correu electrònic, Twitter, etc.</translation>
 <translation id="721949491455392748">Incloure una captura de pantalla de la pàgina actual</translation>
 <translation id="8459191579769999214">Veure la captura de pantalla</translation>
 <translation id="5299848999918506028">Gràcies!</translation>
-<translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Brave que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
-<translation id="4046860372562593546">Gestioneu els anuncis de Brave</translation>
-<translation id="5136973036012418831">Controleu els tipus d'anuncis de Brave que veieu i amb quina freqüència els veieu</translation>
+<translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Ping que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
+<translation id="4046860372562593546">Gestioneu els anuncis de Ping</translation>
+<translation id="5136973036012418831">Controleu els tipus d'anuncis de Ping que veieu i amb quina freqüència els veieu</translation>
 <translation id="4759608598194750161">Com més en veieu, més podreu guanyar.</translation>
 <translation id="7526443283522395161">Anuncis de pàgina Pestanya nova</translation>
 <translation id="7968650944098083708">Anuncis de notificació</translation>
 <translation id="8289546216379862569">Anuncis de cerca</translation>
-<translation id="4758111936363146244">Els anuncis del Cercador de Brave apareixen al <ph name="BEGIN_LINK"/>Cercador de Brave<ph name="END_LINK"/>.</translation>
-<translation id="7596536223419118193">Encara no podeu guanyar BAT amb els anuncis del Cercador de Brave, però en tenir-los activats, ajudeu Brave.</translation>
-<translation id="6390952132783970876">Anuncis de Brave News</translation>
-<translation id="7516281787184495886">Brave News conté anuncis que no es poden desactivar per separat.</translation>
-<translation id="8008378848677625233">Brave News està desactivat actualment.</translation>
+<translation id="4758111936363146244">Els anuncis del Cercador de Ping apareixen al <ph name="BEGIN_LINK"/>Cercador de Ping<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Encara no podeu guanyar BAT amb els anuncis del Cercador de Ping, però en tenir-los activats, ajudeu Ping.</translation>
+<translation id="6390952132783970876">Anuncis de Ping News</translation>
+<translation id="7516281787184495886">Ping News conté anuncis que no es poden desactivar per separat.</translation>
+<translation id="8008378848677625233">Ping News està desactivat actualment.</translation>
 <translation id="6112368337882254910">Auto-Contribució</translation>
 <translation id="557705068184766514">Una manera automàtica de donar suport als llocs i als creadors de contingut. Establiu una contribució mensual i navegueu normalment. <ph name="BEGIN_LINK"/>Els llocs i creadors verificats<ph name="END_LINK"/> que visiteu rebran la vostra contribució cada mes en funció de la quantitat de temps que passeu consultant el seu contingut.</translation>
 <translation id="6688567880783357035">Guanys d'aquest mes fins ara</translation>
 <translation id="949044897316791211">Propera data de pagament de guanys</translation>
 <translation id="2211646556917925490">Total d'anuncis rebuts aquest mes</translation>
 <translation id="4229016885653790965">Vaja! Els anuncis encara no estan disponibles a la teva regió.</translation>
-<translation id="2539279826042558064">Els anuncis i les recompenses de Brave no estan disponibles en el teu dispositiu ara mateix.</translation>
+<translation id="2539279826042558064">Els anuncis i les recompenses de Ping no estan disponibles en el teu dispositiu ara mateix.</translation>
 <translation id="5736977383725358876">Freqüència de notificació d'anuncis</translation>
 <translation id="7701040980221191251">Cap</translation>
 <translation id="480668534656787076">Màx. 1 per hora</translation>
@@ -207,7 +207,7 @@
 <translation id="7136536490586989815">Màx. 5 per hora</translation>
 <translation id="5751102711563374080">Màx. 10 per hora</translation>
 <translation id="2356652719351432565">Rellevància dels anuncis regionals</translation>
-<translation id="3216275550298493597">Això permet que el Brave us ensenyi anuncis especialment significatius per a la vostra regió.</translation>
+<translation id="3216275550298493597">Això permet que el Ping us ensenyi anuncis especialment significatius per a la vostra regió.</translation>
 <translation id="8446884382197647889">Més informació</translation>
 <translation id="3783399046165388366">Detectat automàticament com a <ph name="SUBDIVISION"/></translation>
 <translation id="8010081455002666927">Detecta automaticament</translation>
@@ -243,11 +243,11 @@
 <translation id="6805660603861526473">Vist</translation>
 <translation id="8167256685618982116">En activar <ph name="TITLE"/>, accepteu les <ph name="BEGIN_LINK1"/>Condicions del servei<ph name="END_LINK1"/> i la <ph name="BEGIN_LINK2"/>Política de privacitat<ph name="END_LINK2"/>.</translation>
 <translation id="1892970806832316900">Pendent fins al <ph name="DATE"/></translation>
-<translation id="7849926087559412554">Ups! El teu navegador no pot rebre anuncis privats de Brave.</translation>
+<translation id="7849926087559412554">Ups! El teu navegador no pot rebre anuncis privats de Ping.</translation>
 <translation id="5177429570315095022">S'ha d'actualitzar el teu navegador per continuar veient anuncis.</translation>
 <translation id="4593680147181354667">ID de diagnòstic</translation>
 <translation id="3995471429906554168">Info de diagnòstic</translation>
-<translation id="752216563428219524">Brave Ads no s'ha inicialitzat. Actualitza la pàgina.</translation>
+<translation id="752216563428219524">Ping Ads no s'ha inicialitzat. Actualitza la pàgina.</translation>
 <translation id="7422678632904904341">Quantitat:</translation>
 <translation id="6969783933307596818">Actualitzeu automaticament cada 5 segons</translation>
 <translation id="5025866799968038247">Informació del Saldo</translation>
@@ -310,8 +310,8 @@
 <translation id="3368922792935385530">Connectat</translation>
 <translation id="5058161306698404465">Entorn de creació:</translation>
 <translation id="5856438412804207598">Entorn actual:</translation>
-<translation id="5916290544882167205">Brave Software. Brave és una marca registrada de Brave Software. Els noms del lloc poden ser marques comercials o marques registrades del propietari del lloc</translation>
-<translation id="9026369588205476247">Per protegir la teva intimitat, aquesta declaració de Premis Brave no es guardarà, ni es registrarà a cap altra banda diferent del teu dispositiu (aquest ordinador). No es podrà recuperar de Brave en cas de pèrdua de dades al teu dispositiu.</translation>
+<translation id="5916290544882167205">Ping Software. Ping és una marca registrada de Ping Software. Els noms del lloc poden ser marques comercials o marques registrades del propietari del lloc</translation>
+<translation id="9026369588205476247">Per protegir la teva intimitat, aquesta declaració de Premis Ping no es guardarà, ni es registrarà a cap altra banda diferent del teu dispositiu (aquest ordinador). No es podrà recuperar de Ping en cas de pèrdua de dades al teu dispositiu.</translation>
 <translation id="1919345977826869612">Anuncis</translation>
 <translation id="3587482841069643663">Tots</translation>
 <translation id="4241224519481557898">Categoria</translation>
@@ -321,7 +321,7 @@
 <translation id="8863685593846905344">Historial d'anuncis</translation>
 <translation id="5212777575344695266">Marcar Com a Inapropiat</translation>
 <translation id="2111256234277361810">Marcar com a inapropiat ✓</translation>
-<translation id="8988332871810963281">En aquest moment no hi ha historial d'Anuncis Brave</translation>
+<translation id="8988332871810963281">En aquest moment no hi ha historial d'Anuncis Ping</translation>
 <translation id="5345727496083327478">Ja no rebràs anuncis d'aquesta categoria</translation>
 <translation id="2631006050119455616">S'ha desat</translation>
 <translation id="3671566813999349838">Quantitat</translation>
@@ -334,7 +334,7 @@
 <translation id="4932733599132424254">Data</translation>
 <translation id="3552003743293281224">Depòsits</translation>
 <translation id="3866249974567520381">Descripció</translation>
-<translation id="8605272644314973683">Recompenses de Brave és</translation>
+<translation id="8605272644314973683">Recompenses de Ping és</translation>
 <translation id="298067735430872465">Guanys dels anuncis</translation>
 <translation id="1418534671788496616">Veure l'historial de dipòsits</translation>
 <translation id="3412655388715513818">Exclou aquest lloc</translation>
@@ -380,13 +380,13 @@
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transaccions</translation>
 <translation id="2448312741937722512">Tipus</translation>
-<translation id="8772672608371898774">Editor verificat per Brave</translation>
+<translation id="8772672608371898774">Editor verificat per Ping</translation>
 <translation id="5050370287908180130">Veure la declaració mensual per obtenir detalls</translation>
 <translation id="7853202427316060426">Activitat</translation>
 <translation id="7232682712743566408">Saldo de Recompenses</translation>
-<translation id="4258022280942725182">Les teves Recompenses de Brave</translation>
+<translation id="4258022280942725182">Les teves Recompenses de Ping</translation>
 <translation id="6727483290601442544">Veure detalls</translation>
-<translation id="4206899127409458763">Crear el teu perfil de Recompenses de Brave</translation>
+<translation id="4206899127409458763">Crear el teu perfil de Recompenses de Ping</translation>
 <translation id="8706157865312453070">Llocs Exclosos</translation>
 <translation id="2501059654604370822">Suprimeix de l'exclusió</translation>
 <translation id="9075700728717335924">Has estat exclòs</translation>
@@ -395,25 +395,25 @@
 <translation id="5113531205597573951">Llocs visitats</translation>
 <translation id="4450893287417543264">No ho tornis a mostrar</translation>
 <translation id="7642372245223412840">Connecta a bitFlyer</translation>
-<translation id="6143701117592994599">Vincular Recompenses de Brave a un compte de bitFlyer et permetrà guanyar BAT i retirar els teus guanys de BAT de Recompenses de Brave.</translation>
-<translation id="4354564238172327160">Converteix-te en un Creador de Brave!</translation>
+<translation id="6143701117592994599">Vincular Recompenses de Ping a un compte de bitFlyer et permetrà guanyar BAT i retirar els teus guanys de BAT de Recompenses de Ping.</translation>
+<translation id="4354564238172327160">Converteix-te en un Creador de Ping!</translation>
 <translation id="4639659520811817892">Visita creators.brave.com per registrar-t'hi avui i començar a guanyar BAT dels teus fans i seguidors.</translation>
-<translation id="4816455138209470435">Brave accepta YouTube, Twitch, Vimeo i d'altres!</translation>
+<translation id="4816455138209470435">Ping accepta YouTube, Twitch, Vimeo i d'altres!</translation>
 <translation id="7404779623219601861">Bescanvia BAT per targetes regal</translation>
 <translation id="6215565499749144110">Amb TAP Network, pots bescanviar els teus BAT per targetes regal de marques populars.</translation>
 <translation id="6074001074364432111">* Requereix un compte Uphold.</translation>
 <translation id="7703007724342399482">Aconsegueix un 2% de cryptoback amb la targeta Uphold</translation>
 <translation id="1109729143147368573">Gasta les teves criptomonedes i altres actius amb gairebé 50 milions de comerciants i caixers automàtics d'arreu del món. Gasta criptomonedes per guanyar criptomonedes!</translation>
 <translation id="3787061634640932557">Edita targetes</translation>
-<translation id="2070991379950719711">Comença a utilitzar Recompenses de Brave</translation>
+<translation id="2070991379950719711">Comença a utilitzar Recompenses de Ping</translation>
 <translation id="6297791103122079275">Conversa</translation>
 <translation id="5977237145327845546">Comença una videotrucada privada amb els teus amics i companys.</translation>
 <translation id="8863928195533744356">Comença videotrucada</translation>
 <translation id="3651550649176056334">Sobre les teves dades</translation>
 <translation id="1544192797660353713">Cartera</translation>
-<translation id="616639131065447379">Benvinguts a Crypto Carteres de Brave</translation>
-<translation id="1740464057879304704">Les Carteres Crypto et permeten treballar amb la criptografia i els actius relacionats amb Brave. Les Carteres Crypto suporten tokens d'Ethereum com ETH i BAT, així com col·leccionables, i et permeten treballar amb Dapps i altres contractes intel·ligents. Tot això és per a persones familiaritzades amb Ethereum i altres sistemes de cadenes de bloqueig - o són entusiastes per aprendre'n.</translation>
-<translation id="4855440621031541830">Utilitza Crypto Carteres només si acceptes que ets l'únic responsable per a tots els riscos associats amb aquest ús, i que el Programari de Brave no assumeix cap responsabilitat per a cap pèrdua incloses les accidentals o conseqüents que puguis patir com a resultat del seu ús.</translation>
+<translation id="616639131065447379">Benvinguts a Crypto Carteres de Ping</translation>
+<translation id="1740464057879304704">Les Carteres Crypto et permeten treballar amb la criptografia i els actius relacionats amb Ping. Les Carteres Crypto suporten tokens d'Ethereum com ETH i BAT, així com col·leccionables, i et permeten treballar amb Dapps i altres contractes intel·ligents. Tot això és per a persones familiaritzades amb Ethereum i altres sistemes de cadenes de bloqueig - o són entusiastes per aprendre'n.</translation>
+<translation id="4855440621031541830">Utilitza Crypto Carteres només si acceptes que ets l'únic responsable per a tots els riscos associats amb aquest ús, i que el Programari de Ping no assumeix cap responsabilitat per a cap pèrdua incloses les accidentals o conseqüents que puguis patir com a resultat del seu ús.</translation>
 <translation id="3187473319809074178">Tot això està completament separat de</translation>
 <translation id="8327818101454798856">Així, si estaves buscant la manera de donar suport als teus llocs preferits, millor ves-hi.</translation>
 <translation id="412480955826088549">Baixant component...</translation>
@@ -421,36 +421,36 @@
 <translation id="326118736933420687">Estàs veient una pàgina de WebTorrent</translation>
 <translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
-<translation id="4492298165410552103">Vols activar el suport d'Unstoppable Domains a Brave?</translation>
-<translation id="5015092481905019948">Brave utilitzarà <ph name="PROVIDER_NAME"/> per resoldre els noms de domini <ph name="DOMAIN_LIST"/> que estan a <ph name="DOMAIN_PROVIDER_NAME"/>. Brave amaga la teva adreça IP. Si ho actives, <ph name="PROVIDER_NAME"/> veurà que algú està provant de visitar aquests dominis, però res més. Consulta les <ph name="BEGIN_PROVIDER_TOU_LINK"/> 
+<translation id="4492298165410552103">Vols activar el suport d'Unstoppable Domains a Ping?</translation>
+<translation id="5015092481905019948">Ping utilitzarà <ph name="PROVIDER_NAME"/> per resoldre els noms de domini <ph name="DOMAIN_LIST"/> que estan a <ph name="DOMAIN_PROVIDER_NAME"/>. Ping amaga la teva adreça IP. Si ho actives, <ph name="PROVIDER_NAME"/> veurà que algú està provant de visitar aquests dominis, però res més. Consulta les <ph name="BEGIN_PROVIDER_TOU_LINK"/> 
 condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>la política de privacitat<ph name="END_PROVIDER_PRIVACY_LINK"/> de <ph name="PROVIDER_NAME"/>.</translation>
 <translation id="6513892817556267573">Servei de Noms d'Ethereum</translation>
 <translation id="2789190492285945209">Servei de Noms d'Ethereum (ENS)</translation>
-<translation id="4335039108389860301">Vols activar el suport del Servei de Noms d'Ethereum (ENS) a Brave?</translation>
+<translation id="4335039108389860301">Vols activar el suport del Servei de Noms d'Ethereum (ENS) a Ping?</translation>
 <translation id="807404806385418949">Cerca fora de la cadena del Servei de Noms d'Ethereum</translation>
-<translation id="4049590838234508776">Vols habilitar l'assistència de la cerca fora de cadena del Servei de Noms d'Ethereum (ENS) a Brave?</translation>
+<translation id="4049590838234508776">Vols habilitar l'assistència de la cerca fora de cadena del Servei de Noms d'Ethereum (ENS) a Ping?</translation>
 <translation id="5944991147217767764">Aquest nom de domini .eth s'emmagatzema fora de la cadena i es resoldrà amb una passarel·la de tercers. Si habilites la cerca fora de cadena de l'ENS, la passarel·la de tercers veurà que estàs intentant visitar el domini .eth. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Més informació <ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Procedeix amb la cerca fora de la cadena</translation>
 <translation id="531747189990625622">Servei de Noms de Solana</translation>
-<translation id="1090584614351290462">Voleu activar el suport del servei de noms Solana (SNS) a Brave?</translation>
-<translation id="7769345036263036863">Brave farà servir un tercer per resoldre els noms dels dominis <ph name="DOMAIN_LIST"/>. Brave amaga la vostra adreça IP. Si ho activeu, el tercer podrà veure que algú està provant de visitar aquests dominis <ph name="DOMAIN_LIST"/>, però res més. Si voleu informació sobre quins tercers fem servir i les seves polítiques de privacitat, consulteu la nostra <ph name="BEGIN_SNS_WIKI_LINK"/>pàgina d'ajuda<ph name="END_SNS_WIKI_LINK"/>.</translation>
+<translation id="1090584614351290462">Voleu activar el suport del servei de noms Solana (SNS) a Ping?</translation>
+<translation id="7769345036263036863">Ping farà servir un tercer per resoldre els noms dels dominis <ph name="DOMAIN_LIST"/>. Ping amaga la vostra adreça IP. Si ho activeu, el tercer podrà veure que algú està provant de visitar aquests dominis <ph name="DOMAIN_LIST"/>, però res més. Si voleu informació sobre quins tercers fem servir i les seves polítiques de privacitat, consulteu la nostra <ph name="BEGIN_SNS_WIKI_LINK"/>pàgina d'ajuda<ph name="END_SNS_WIKI_LINK"/>.</translation>
 <translation id="884864496166128252">Continua amb el servidor <ph name="PROVIDER_NAME"/></translation>
 <translation id="4388873516324656141">Continua utilitzant un servidor SNS</translation>
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="59174027418879706">Activat</translation>
 <translation id="2468755552460246661">Domini bloquejat</translation>
 <translation id="6393849031898466746">Aquesta pàgina web pot intentar seguir-vos a altres pàgines</translation>
-<translation id="983774928604730749">Brave ha impedit que es carregui el lloc següent:</translation>
-<translation id="8629537573456243518">Com que has demanat bloquejar agressivament els elements de rastrejament i anuncis, Brave està bloquejant aquest lloc abans de la primera connexió de xarxa.</translation>
+<translation id="983774928604730749">Ping ha impedit que es carregui el lloc següent:</translation>
+<translation id="8629537573456243518">Com que has demanat bloquejar agressivament els elements de rastrejament i anuncis, Ping està bloquejant aquest lloc abans de la primera connexió de xarxa.</translation>
 <translation id="2459038234784107183">No em tornis a avisar sobre aquest lloc</translation>
 <translation id="8242426110754782860">Continua</translation>
 <translation id="2501278716633472235">Torna</translation>
 <translation id="8377779554871767775">Lloc web sensible</translation>
 <translation id="5396996252458181259">Aquest lloc pot contenir contingut sensible.</translation>
 <translation id="8415427685483394219">Vols visitar aquest lloc en el mode off-the-record?</translation>
-<translation id="5754874269349119401">Brave vol protegir-te quan visitis llocs sensibles. Els llocs que visites en el mode off-the-record no es mostraran a l'historial de navegació, i les galetes no es desaran.</translation>
+<translation id="5754874269349119401">Ping vol protegir-te quan visitis llocs sensibles. Els llocs que visites en el mode off-the-record no es mostraran a l'historial de navegació, i les galetes no es desaran.</translation>
 <translation id="1307431692088049276">No m'ho tornis a demanar</translation>
-<translation id="6329829767845427007">Pots canviar-ho més tard a Configuració de Brave a la secció Privadesa i Seguretat</translation>
+<translation id="6329829767845427007">Pots canviar-ho més tard a Configuració de Ping a la secció Privadesa i Seguretat</translation>
 <translation id="951201617124425694">Continua en mode off-the-record</translation>
 <translation id="4087894168792701548">Continua amb normalitat</translation>
 <translation id="5874287397425241890">Estàs navegant per aquest lloc web en mode off-the-record.</translation>
@@ -467,9 +467,9 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6053826678715267477">Permetre l'accés als recursos del host local</translation>
 <translation id="2973562729984406132"><ph name="URL"/> vol accedir als recursos del localhost</translation>
 <translation id="5939518447894949180">Restableix</translation>
-<translation id="3349204812119681938">Reinicia Recompenses de Brave</translation>
-<translation id="4915997950539925115">Si reinicies, se suprimirà el perfil actual de Recompenses de Brave i ja no s'habilitaran. Si tornes a habilitar les Recompenses de Brave més tard, començaràs amb un nou perfil. Llegeix el nostre <ph name="LINK_BEGIN"/>article de suport sobre restabliment<ph name="LINK_END"/> per a més detalls.</translation>
-<translation id="4806029412510565611">Entenc que el meu perfil actual de Recompenses de Brave i les dades de Recompenses de Brave s'eliminaran del meu dispositiu, i he llegit <ph name="LINK_BEGIN"/>l'article de suport sobre el restabliment<ph name="LINK_END"/>.</translation>
+<translation id="3349204812119681938">Reinicia Recompenses de Ping</translation>
+<translation id="4915997950539925115">Si reinicies, se suprimirà el perfil actual de Recompenses de Ping i ja no s'habilitaran. Si tornes a habilitar les Recompenses de Ping més tard, començaràs amb un nou perfil. Llegeix el nostre <ph name="LINK_BEGIN"/>article de suport sobre restabliment<ph name="LINK_END"/> per a més detalls.</translation>
+<translation id="4806029412510565611">Entenc que el meu perfil actual de Recompenses de Ping i les dades de Recompenses de Ping s'eliminaran del meu dispositiu, i he llegit <ph name="LINK_BEGIN"/>l'article de suport sobre el restabliment<ph name="LINK_END"/>.</translation>
 <translation id="7717357606512850995">Comprova l'estat</translation>
 <translation id="6473937687348632190">S'ha completat el pagament de les recompeneses de l'<ph name="MONTH"/>.</translation>
 <translation id="1711367267038576241">El pagament de les recompenses de l'<ph name="MONTH"/> es començarà a processar el dia <ph name="DATE"/>.</translation>
@@ -480,17 +480,17 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2394961582378297792">Sessió tancada</translation>
 <translation id="7934950257968365573">Inicia sessió al teu compte <ph name="PROVIDER"/></translation>
 <translation id="8631427463833030968">Gestiona els anuncis</translation>
-<translation id="590733288489975971">Recompenses de Brave d'Anuncis de Brave</translation>
+<translation id="590733288489975971">Recompenses de Ping d'Anuncis de Ping</translation>
 <translation id="5308380583665731573">Connecta</translation>
 <translation id="3026978804849658576">Visualitza l'extracte</translation>
 <translation id="1848737374354350807">Balanç</translation>
 <translation id="6516984207843289176">Connecta un compte</translation>
 <translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>Preparat per començar a guanyar?<ph name="BOLD_END"/> Connecta un compte perquè tinguem un lloc on enviar els teus guanys.</translation>
-<translation id="902298128239575729">Envia contribucions amb Recompenses de Brave</translation>
-<translation id="6276721355724491595">Podràs enviar contribucions sota demanda als teus creadors favorits amb el saldo de Recompenses de Brave un cop hi hagis connectat un compte de custòdia.</translation>
+<translation id="902298128239575729">Envia contribucions amb Recompenses de Ping</translation>
+<translation id="6276721355724491595">Podràs enviar contribucions sota demanda als teus creadors favorits amb el saldo de Recompenses de Ping un cop hi hagis connectat un compte de custòdia.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
-      =1 {Aquest mes, has visitat # creador amb el suport de Recompenses de Brave}
-      other {Aquest mes, has visitat # creadors amb el suport de Recompenses de Brave}
+      =1 {Aquest mes, has visitat # creador amb el suport de Recompenses de Ping}
+      other {Aquest mes, has visitat # creadors amb el suport de Recompenses de Ping}
     }</translation>
 <translation id="3264975266761862670">Preparat per començar a guanyar?</translation>
 <translation id="2784412028126205842">Connecta un compte de pagament</translation>
@@ -499,20 +499,20 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
       =1 {Podríeu cobrar per <ph name="COUNT_BEGIN"/>l'anunci<ph name="COUNT_END"/> que heu vist aquest mes.}
       other {Podríeu cobrar pels <ph name="COUNT_BEGIN"/># anuncis<ph name="COUNT_END"/> que heu vist aquest mes.}
     }</translation>
-<translation id="6067959437127691361">L'ús de Recompenses de Brave ajuda a donar suport als creadors de contingut, i permet guanyar BAT.</translation>
+<translation id="6067959437127691361">L'ús de Recompenses de Ping ajuda a donar suport als creadors de contingut, i permet guanyar BAT.</translation>
 <translation id="944736176598169208">Recompenses</translation>
 <translation id="2359808026110333948">Continua</translation>
-<translation id="885805571521218129">Això reflecteix l'interval estimat de guanys per als anuncis de Brave d'aquest mes.</translation>
+<translation id="885805571521218129">Això reflecteix l'interval estimat de guanys per als anuncis de Ping d'aquest mes.</translation>
 <translation id="3863981251715594911">Com funciona?</translation>
-<translation id="7931127789630755251">Guanya tokens pels anuncis privats que veus a Brave</translation>
+<translation id="7931127789630755251">Guanya tokens pels anuncis privats que veus a Ping</translation>
 <translation id="2278423362884506724">Dona suport als creadors de contingut i utilitza els teus tokens per comprar targetes de regal, canviar per altres monedes i més.</translation>
 <translation id="6278643716658443228">Configuració de recompenses</translation>
 <translation id="2862978891748913252">Selecciona el teu país</translation>
-<translation id="3717922248131893262">Per a continuar utilitzant Recompenses de Brave, selecciona el teu país per a mostrar-te les opcions i anuncis correctes per a la teva regió. <ph name="LINK_BEGIN"/>Política de privadesa<ph name="LINK_END"/></translation>
+<translation id="3717922248131893262">Per a continuar utilitzant Recompenses de Ping, selecciona el teu país per a mostrar-te les opcions i anuncis correctes per a la teva regió. <ph name="LINK_BEGIN"/>Política de privadesa<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Comença a fer servir Recompenses</translation>
 <translation id="2956070106555335453">Resum</translation>
 <translation id="2369994359029526515">Creador no verificat</translation>
-<translation id="3984338085370091436">Aquest creador encara no està verificat amb Creadors de Brave. Podràs enviar-los contribucions un cop estiguin verificats.</translation>
+<translation id="3984338085370091436">Aquest creador encara no està verificat amb Creadors de Ping. Podràs enviar-los contribucions un cop estiguin verificats.</translation>
 <translation id="6020176662032623904">Creador verificat</translation>
 <translation id="8635423276837443905">Actualitza l'estat de verificació del creador</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> a <ph name="PLATFORM"/></translation>
@@ -521,7 +521,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6965382102122355670">D'acord</translation>
 <translation id="6727102863431372879">Configura</translation>
 <translation id="8853725596990766789">Canvia la quantitat</translation>
-<translation id="5899814466108868020">Estàs ajudant Brave i la comunitat de BAT</translation>
+<translation id="5899814466108868020">Estàs ajudant Ping i la comunitat de BAT</translation>
 <translation id="654447476965480878">Més informació sobre com guanyar BAT</translation>
 <translation id="4105212447337987768">A data de <ph name="DATE"/>, interromprem el suport per als saldos virtuals existents de BAT. Connecta un compte de custòdia abans d'aquesta data perquè puguem transferir el saldo que has guanyat al teu compte de custòdia, si no ho fas així, es perdrà el saldo.</translation>
 <translation id="707569835145765061">Acció requerida: connecta un compte de custòdia o es perdrà el teu saldo de vBAT</translation>
@@ -536,21 +536,21 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2429828319207652823">S'ha produït un problema en processar la teva contribució.</translation>
 <translation id="6390041270339783491">S'ha produït un error en la contribució mensual</translation>
 <translation id="7047578174221019462">S'han processat les teves contribucions mensuals.</translation>
-<translation id="2529827670795983639">Sembla que no funciona. Anuncis de Brave romandrà en pausa. Contacta amb nosaltres si necessites ajuda amb el captcha.</translation>
+<translation id="2529827670795983639">Sembla que no funciona. Anuncis de Ping romandrà en pausa. Contacta amb nosaltres si necessites ajuda amb el captcha.</translation>
 <translation id="261607053214862521">Has superat el nombre màxim d'intents</translation>
 <translation id="2323171459178104277">Solucionat!</translation>
-<translation id="1512837998731269583">Ara, els anuncis i els guanys es reprendran. Gràcies per ajudar-nos a protegir Recompenses de Brave i els anuncis basats en la privadesa.</translation>
+<translation id="1512837998731269583">Ara, els anuncis i els guanys es reprendran. Gràcies per ajudar-nos a protegir Recompenses de Ping i els anuncis basats en la privadesa.</translation>
 <translation id="3247549836099021862">Contacta amb l'equip de suport</translation>
 <translation id="5234764350956374838">Omet</translation>
 <translation id="7859066142771796818">Utilitza tokens per comprar targetes de regal, canviar per altres monedes, donar suport a creadors de contingut i més.</translation>
 <translation id="7352651011704765696">Quelcom ha anat malament</translation>
-<translation id="5425006356459378415">Les Recompenses de Brave no estan disponibles</translation>
-<translation id="909076461795862330">Malauradament, s'ha produït un error en intentar configurar Recompenses de Brave. Torna-ho a provar.</translation>
+<translation id="5425006356459378415">Les Recompenses de Ping no estan disponibles</translation>
+<translation id="909076461795862330">Malauradament, s'ha produït un error en intentar configurar Recompenses de Ping. Torna-ho a provar.</translation>
 <translation id="3180990265682133881">Malauradament, s'ha produït un error en intentar establir el país. Torna-ho a provar.</translation>
-<translation id="5931798071481566121">Els nous registres per a reenviaments de Brave estan desactivats actualment a la teva regió. No obstant això, sempre ho pots tornar a provar més tard. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
+<translation id="5931798071481566121">Els nous registres per a reenviaments de Ping estan desactivats actualment a la teva regió. No obstant això, sempre ho pots tornar a provar més tard. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
 <translation id="6439128034594289376">Molt bé! Ja estàs llest!</translation>
 <translation id="6136350726756049410">Ara et poden recompensar per veure anuncis. Estàs ajudant a fer de la web un lloc millor per a tothom. I això és increïble!</translation>
-<translation id="5547108999862247665">Com funciona Recompenses de Brave?</translation>
+<translation id="5547108999862247665">Com funciona Recompenses de Ping?</translation>
 <translation id="3970520675790340955">Selecciona el teu país perquè puguem mostrar-te les opcions i anuncis correctes per a la teva regió.</translation>
 <translation id="6945221475159498467">Selecciona</translation>
 <translation id="3279158300746391749">Prem la icona de <ph name="BAT_ICON"/> BAT a la barra d'URL per començar.</translation>
@@ -558,11 +558,11 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8981626318554555706">Seleccioneu la vostra regió</translation>
 <translation id="6923445315496949274">Seleccioneu la vostra regió perquè pugueu veure les opcions i anuncis adequats per a la vostra regió.</translation>
 <translation id="840952951051929644">En habilitar Recompenses, accepteu les <ph name="TOS_LINK_BEGIN"/>Condicions de servei<ph name="TOS_LINK_END"/> i la <ph name="PP_LINK_BEGIN"/>Política de privadesa<ph name="PP_LINK_END"/>.</translation>
-<translation id="5259608623172605993">Cobreu pels anuncis que veieu a Brave</translation>
+<translation id="5259608623172605993">Cobreu pels anuncis que veieu a Ping</translation>
 <translation id="3099020087817489135">Obtingueu beneficis i descomptes especials</translation>
-<translation id="3991575120992914717">Activa Recompenses de Brave</translation>
-<translation id="1015443539415537847">Ho sentim, Recompenses de Brave no està disponible</translation>
-<translation id="5007776270364097327">Malauradament, sembla que estàs en una regió on Recompenses de Brave no està disponible.</translation>
+<translation id="3991575120992914717">Activa Recompenses de Ping</translation>
+<translation id="1015443539415537847">Ho sentim, Recompenses de Ping no està disponible</translation>
+<translation id="5007776270364097327">Malauradament, sembla que estàs en una regió on Recompenses de Ping no està disponible.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">No et preocupis.</translation>
 <translation id="5027616819996705541">Encara pots navegar d'incògnit!</translation>
@@ -576,16 +576,16 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4185473179105062442">Rep BAT directament a una adreça de criptomoneda d'autocustòdia</translation>
 <translation id="5802986777701714573">Hem afegit una nova manera de rebre les recompenses mensuals de BAT. Connecta un compte d'un dels nostres socis o utilitza la nova opció d'autocustòdia per a començar a guanyar ara mateix.</translation>
 <translation id="3251885322612056119">Condicions de servei actualitzades</translation>
-<translation id="7454675823870922788">Hem actualitzat les condicions de servei per a les Recompenses de Brave. Hem fet aquestes actualitzacions per aclarir els nostres termes i assegurar-nos que cobreixen noves funcionalitats. Si continues utilitzant aquest lloc, assumirem que hi estàs d'acord. Si no hi estàs d'acord, pots <ph name="LINK_BEGIN"/>restablir<ph name="LINK_END"/>les Recompenses de Brave, que desactivarà la característica.</translation>
-<translation id="5192526308598085294">Consulta les <ph name="LINK_BEGIN"/>condicions de servei de les Recompenses de Brave<ph name="LINK_END"/></translation>
+<translation id="7454675823870922788">Hem actualitzat les condicions de servei per a les Recompenses de Ping. Hem fet aquestes actualitzacions per aclarir els nostres termes i assegurar-nos que cobreixen noves funcionalitats. Si continues utilitzant aquest lloc, assumirem que hi estàs d'acord. Si no hi estàs d'acord, pots <ph name="LINK_BEGIN"/>restablir<ph name="LINK_END"/>les Recompenses de Ping, que desactivarà la característica.</translation>
+<translation id="5192526308598085294">Consulta les <ph name="LINK_BEGIN"/>condicions de servei de les Recompenses de Ping<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">Hi estic d'acord</translation>
 <translation id="86107454835395919">Estableix com a contribució mensual</translation>
-<translation id="6621880242105464352">Brave recull el <ph name="FEE_PCT"/>de l'import enviat com a comissió de processament.</translation>
+<translation id="6621880242105464352">Ping recull el <ph name="FEE_PCT"/>de l'import enviat com a comissió de processament.</translation>
 <translation id="1420756770787071946">Dona suport a aquest creador</translation>
 <translation id="1483493594462132177">Envia</translation>
 <translation id="6632987674051304487">Envia amb <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Utilitza la Cartera Web3</translation>
-<translation id="4530198836725543997">Aquest creador s'ha registrat amb Brave i pot rebre contribucions dels usuaris de Recompenses de Brave.</translation>
+<translation id="4530198836725543997">Aquest creador s'ha registrat amb Ping i pot rebre contribucions dels usuaris de Recompenses de Ping.</translation>
 <translation id="4529874892536380156">Fes que aquesta sigui una contribució periòdica mensual. Pots cancel·lar-la en qualsevol moment.</translation>
 <translation id="1177863135347784049">Personalitzat</translation>
 <translation id="5907051927340164207">Ja estàs enviant contribucions mensuals a aquest creador</translation>
@@ -595,18 +595,18 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8379442066667303579">Encara pots enviar contribucions de criptomonedes a aquest creador utilitzant la Cartera Web3.</translation>
 <translation id="5738476099155572155">Envia contribucions de criptomonedes</translation>
 <translation id="1162617592412598913">S'ha tancat la sessió de <ph name="PROVIDER"/></translation>
-<translation id="1782485249139199535">Sembla que has tancat la sessió de <ph name="PROVIDER"/> per Recompenses de Brave. Torna a iniciar la sessió per continuar.</translation>
+<translation id="1782485249139199535">Sembla que has tancat la sessió de <ph name="PROVIDER"/> per Recompenses de Ping. Torna a iniciar la sessió per continuar.</translation>
 <translation id="4379244534135194459">També pots enviar contribucions de criptomonedes a aquest creador utilitzant la Cartera Web3.</translation>
 <translation id="2718860759172031728">Inicia la sessió a <ph name="PROVIDER"/></translation>
 <translation id="6268134562674951939">No tens prou tokens</translation>
-<translation id="5562948772940025260">Només pots enviar fins a <ph name="AMOUNT"/> BAT utilitzant el teu saldo de Recompenses de Brave.</translation>
+<translation id="5562948772940025260">Només pots enviar fins a <ph name="AMOUNT"/> BAT utilitzant el teu saldo de Recompenses de Ping.</translation>
 <translation id="4827581232860040208">S'ha produït un problema en enviar la teva contribució.</translation>
 <translation id="3259723213051400722">Torna-ho a provar.</translation>
 <translation id="8725066075913043281">Torna-ho a provar</translation>
 <translation id="5379685283876547860">Contribució enviada!</translation>
 <translation id="7063168612616047608">Gràcies per donar suport als teus creadors preferits</translation>
 <translation id="1041398280582063935">Comparteix el teu suport</translation>
-<translation id="4001190813297686107">Acabo de contribuir amb <ph name="AMOUNT"/> BAT utilitzant el navegador de Brave! Mira com pots donar suport als teus creadors i llocs preferits: https://brave.com/rewards</translation>
+<translation id="4001190813297686107">Acabo de contribuir amb <ph name="AMOUNT"/> BAT utilitzant el navegador de Ping! Mira com pots donar suport als teus creadors i llocs preferits: https://brave.com/rewards</translation>
 <translation id="1950340257946519340">S'ha produït un error inesperat</translation>
 <translation id="2605703631071131439">Torna a obrir el panell de contribució per tornar-ho a provar.</translation>
 <translation id="8855543392451028706">Benvingut/da! Els usuaris poden donar suport a aquest creador de contingut enviant-los contribucions. És una manera d'agrair-los que fan un gran contingut.</translation>
@@ -632,40 +632,40 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1165039591588034296">Error</translation>
 <translation id="5826530373788377342">Has assolit el límit màxim d'aparells per a aquest compte <ph name="PROVIDER"/>.</translation>
 <translation id="6700131426769360592">S'ha assolit el límit d'aparells</translation>
-<translation id="6895088073061692390">Malauradament, el vostre perfil de Premis de Brave s'ha marcat perquè hem trobat activitat inesperada als anuncis de Brave en fer les comprovacions automatitzades.</translation>
-<translation id="4229056297802204697">Mentre el vostre perfil estigui marcat, pot ser que continueu veient anuncis, però no podreu rebre pagaments. Tampoc podreu connectar un compte privat als Premis de Brave.</translation>
+<translation id="6895088073061692390">Malauradament, el vostre perfil de Premis de Ping s'ha marcat perquè hem trobat activitat inesperada als anuncis de Ping en fer les comprovacions automatitzades.</translation>
+<translation id="4229056297802204697">Mentre el vostre perfil estigui marcat, pot ser que continueu veient anuncis, però no podreu rebre pagaments. Tampoc podreu connectar un compte privat als Premis de Ping.</translation>
 <translation id="5124846913141379164">És possible que el vostre perfil s'hagi marcat per error i no cal que feu res ara mateix. És possible que la marca del perfil desapareixi en el futur.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Obteniu més detalls sobre el procés del Brave per marcar els perfils de Recompenses.<ph name="END_LINK"/></translation>
-<translation id="4699218748197721830">El perfil de Recompenses de Brave està marcat</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Obteniu més detalls sobre el procés del Ping per marcar els perfils de Recompenses.<ph name="END_LINK"/></translation>
+<translation id="4699218748197721830">El perfil de Recompenses de Ping està marcat</translation>
 <translation id="2607420597216860026">Torna a provar-ho després de completar la verificació d'ID a <ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">Necessites un compte verificat per iniciar la sessió</translation>
-<translation id="1859789048900659918">Mmm, sembla que el país de Brave Rewards no coincideix amb el país del compte de<ph name="PROVIDER"/> que estàs intentant connectar</translation>
+<translation id="1859789048900659918">Mmm, sembla que el país de Ping Rewards no coincideix amb el país del compte de<ph name="PROVIDER"/> que estàs intentant connectar</translation>
 <translation id="3080649636035373911">No coincideix el país</translation>
-<translation id="5260522591743022748">Mmm, sembla que el teu compte de Recompenses de Brave ja s'ha verificat amb un altre compte d'<ph name="PROVIDER"/>. Prova de verificar-lo novament utilizant el teu compte anterior.</translation>
+<translation id="5260522591743022748">Mmm, sembla que el teu compte de Recompenses de Ping ja s'ha verificat amb un altre compte d'<ph name="PROVIDER"/>. Prova de verificar-lo novament utilizant el teu compte anterior.</translation>
 <translation id="6408621361472415607">Compte diferent</translation>
-<translation id="5225019866741699134">Sembla que connectar-se <ph name="PROVIDER"/> als Premis de Brave no està disponible temporalment. Torneu-ho a provar més tard.</translation>
+<translation id="5225019866741699134">Sembla que connectar-se <ph name="PROVIDER"/> als Premis de Ping no està disponible temporalment. Torneu-ho a provar més tard.</translation>
 <translation id="6105073131081187815">Podeu veure <ph name="BEGIN_LINK"/>l'estat del servei aquí<ph name="END_LINK"/>.</translation>
 <translation id="3969419585013689529">No està disponible temporalment la connexió amb el custodi seleccionat</translation>
-<translation id="1024520300696337331">El teu compte d'<ph name="PROVIDER"/> no es pot connectar al teu perfil de reenviament de la clau en aquest moment. El teu compte <ph name="PROVIDER"/> està registrat en un país que no s'admet per connectar-se a Recompenses de Brave.</translation>
-<translation id="619384413404021992">Consulta la llista actual de <ph name="LINK_BEGIN"/>de regions admeses i obtingues més informació<ph name="END_LINK"/>sobre com connectar un compte de custòdia a Recompenses de Brave.</translation>
+<translation id="1024520300696337331">El teu compte d'<ph name="PROVIDER"/> no es pot connectar al teu perfil de reenviament de la clau en aquest moment. El teu compte <ph name="PROVIDER"/> està registrat en un país que no s'admet per connectar-se a Recompenses de Ping.</translation>
+<translation id="619384413404021992">Consulta la llista actual de <ph name="LINK_BEGIN"/>de regions admeses i obtingues més informació<ph name="END_LINK"/>sobre com connectar un compte de custòdia a Recompenses de Ping.</translation>
 <translation id="7933193151688235283">Actualment, no és compatible amb aquesta regió</translation>
 <translation id="5376524136040178759">Segons Uphold, actualment hi ha algunes limitacions en el teu compte d'Uphold. Accedeix al teu compte d'Uphold, comprova si hi ha alguna notificació o requisits del compte que falti completar i torna-ho a provar. Per exemple, potser has d'introduir més informació a Uphold.</translation>
 <translation id="6349168810769273818">Funcionalitat limitada del compte d'Uphold</translation>
-<translation id="1279668677171152085">Hi ha hagut un problema en validar la sol·licitud per connectar el compte de Recompenses de Brave al teu compte <ph name="PROVIDER"/>. Pots <ph name="BEGIN_LINK"/>posar-te en contacte amb l'equip de suport<ph name="END_LINK"/> per obtenir més ajuda.</translation>
+<translation id="1279668677171152085">Hi ha hagut un problema en validar la sol·licitud per connectar el compte de Recompenses de Ping al teu compte <ph name="PROVIDER"/>. Pots <ph name="BEGIN_LINK"/>posar-te en contacte amb l'equip de suport<ph name="END_LINK"/> per obtenir més ajuda.</translation>
 <translation id="8761736799800527591">La sol·licitud no s'ha pogut validar</translation>
 <translation id="8285276813470932793">No hem pogut completar la vostra sol·licitud. Torneu-ho a provar i <ph name="LINK_BEGIN"/>poseu-vos en contacte amb el servei d'assistència<ph name="LINK_END"/> si no s'ha solucionat el problema.</translation>
 <translation id="135956957367307069">La teva petició encara s'està processant, si us plau, espera.</translation>
 <translation id="9033500121333471466">Marca com a inapropiat</translation>
-<translation id="4477865412359526485">En aquest moment no hi ha historial d'Anuncis de Brave.</translation>
+<translation id="4477865412359526485">En aquest moment no hi ha historial d'Anuncis de Ping.</translation>
 <translation id="4256040774643144761">Historial d'anuncis</translation>
 <translation id="1188389905162088150">Anuncis que has rebut en els últims 30 dies</translation>
 <translation id="4296467068886908539">Màx. <ph name="NUM"/>/h</translation>
 <translation id="3266055641283174315">Tipus d'anunci</translation>
 <translation id="8706824117053903390">Vistes aquest mes</translation>
 <translation id="5105890735834548623">Configuració d'anuncis</translation>
-<translation id="96989662637180657">Els anuncis del Cercador de Brave apareixen al <ph name="LINK_BEGIN"/>Cercador de Brave<ph name="LINK_END"/>.</translation>
+<translation id="96989662637180657">Els anuncis del Cercador de Ping apareixen al <ph name="LINK_BEGIN"/>Cercador de Ping<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Configuració d'anuncis</translation>
-<translation id="2446517297521536638">Controla els tipus d'anuncis de Brave que veus i amb quina freqüència els veus. Com més els vegis, més pots guanyar.</translation>
+<translation id="2446517297521536638">Controla els tipus d'anuncis de Ping que veus i amb quina freqüència els veus. Com més els vegis, més pots guanyar.</translation>
 <translation id="5860033963881614850">Desactivat</translation>
 <translation id="5916664084637901428">Activat</translation>
 <translation id="4284417062730522399">Has rebut <ph name="NUM"/> anuncis aquest mes</translation>
@@ -684,11 +684,11 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7666058404763778706">Una manera automàtica de donar suport a llocs web i creadors de contingut, en funció del temps que dediquis al seu contingut.</translation>
 <translation id="4319242254058427792">La contribució automàtica està desactivada.</translation>
 <translation id="1091835891554961609">Els creadors verificats que visitis apareixeran aquí mentre navegues</translation>
-<translation id="7714706530499503523">La contribució automàtica envia automàticament contribucions mensuals als creadors verificats a Brave, en funció del temps que dediquis al seu contingut.</translation>
+<translation id="7714706530499503523">La contribució automàtica envia automàticament contribucions mensuals als creadors verificats a Ping, en funció del temps que dediquis al seu contingut.</translation>
 <translation id="2358028754328876971">Com funciona la contribució automàtica?</translation>
 <translation id="2870560284913253234">Lloc</translation>
-<translation id="1184072843013036520">Aconsegueix productes de marca Brave.</translation>
-<translation id="1170674812179664523">Botiga de marxandatge de Brave</translation>
+<translation id="1184072843013036520">Aconsegueix productes de marca Ping.</translation>
+<translation id="1170674812179664523">Botiga de marxandatge de Ping</translation>
 <translation id="8673202990286883068">Els teus beneficis</translation>
 <translation id="3699766258844277472">Encara no tens cap contribució recurrent configurada.</translation>
 <translation id="957921474773060718">Propera contribució:</translation>
@@ -710,12 +710,12 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1128992132632883337">Hi ha hagut un error en analitzar la resposta</translation>
 <translation id="5382339341735118861">Hi ha hagut un error en el processament de la petició genèrica</translation>
 <translation id="7123780456696055383">El recurs sol·licitat no està disponible</translation>
-<translation id="1680597601664421644">El mnemotècnic que s'està important no és vàlid per a la Cartera de Brave</translation>
+<translation id="1680597601664421644">El mnemotècnic que s'està important no és vàlid per a la Cartera de Ping</translation>
 <translation id="372898731091371291">Quin tipus de cartera voleu importar?</translation>
 <translation id="1430728084670406473">Cartera Ethereum/Solana/Filecoin</translation>
 <translation id="8659668419772278776">Importeu la frase de recuperació des d'una cartera existent</translation>
 <translation id="8110492767853188065">Cartera del maquinari</translation>
-<translation id="7437218084485869007">Connecteu la cartera del maquinari amb Brave</translation>
+<translation id="7437218084485869007">Connecteu la cartera del maquinari amb Ping</translation>
 <translation id="4641919696349069826">Ja hi ha una sol·licitud en curs</translation>
 <translation id="872806943696014633">Manquen dades de la transacció</translation>
 <translation id="7068183357903252127">S'han d'especificar les dades de transacció 'to' o 'data'</translation>
@@ -781,7 +781,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="9021834401351805394">Cerca per nom o enganxa una adreça</translation>
 <translation id="5009335307032488349">Cerca un NFT per nom, ID</translation>
 <translation id="8667560635828712526">Tria l'actiu</translation>
-<translation id="4853960199138416955">La Cartera de Brave no és compatible actualment amb bitcoin NFT (ordinals). Enviar BTC des d'una adreça que té ordinals pot provocar que els teus ordinals es transfereixin de manera involuntària.</translation>
+<translation id="4853960199138416955">La Cartera de Ping no és compatible actualment amb bitcoin NFT (ordinals). Enviar BTC des d'una adreça que té ordinals pot provocar que els teus ordinals es transfereixin de manera involuntària.</translation>
 <translation id="29976300677902325">Tria el destinatari</translation>
 <translation id="7231620608040154667">Les meves adreces</translation>
 <translation id="4504682768625050939">Introdueix una adreça pública o domini.</translation>
@@ -828,17 +828,17 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6728663400147327751">Destinatari</translation>
 <translation id="9209024278910716955">No s'admet la compra per a la xarxa seleccionada</translation>
 <translation id="4982630604810554641">S'està cercant el domini...</translation>
-<translation id="5467044307473123584">Brave permet utilitzar passarel·les fora de la cadena per resoldre dominis .eth.</translation>
+<translation id="5467044307473123584">Ping permet utilitzar passarel·les fora de la cadena per resoldre dominis .eth.</translation>
 <translation id="4896417414446851895">Sembla que has introduït una adreça ENS. Haurem d'utilitzar un solucionador de tercers per resoldre aquesta sol·licitud, que pot ser que pugui veure la teva adreça IP i el teu domini.</translation>
 <translation id="8646078615727397565">Utilitza el domini ENS</translation>
 <translation id="1191686659164947414">La transacció pot estar al capdavant</translation>
 <translation id="4500473291496079954">Caduca en</translation>
 <translation id="2236833281018938257">Adreça o URL de la cartera</translation>
 <translation id="928500657730628112">Adreça de la cartera</translation>
-<translation id="6812967455478797345">Brave utilitza <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> com a agregador DEX.</translation>
+<translation id="6812967455478797345">Ping utilitza <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> com a agregador DEX.</translation>
 <translation id="151946611346774041">0x processarà l'adreça Ethereum i l'adreça IP per complir una transacció (incloent-hi les cotitzacions). 0x NOMÉS utilitzarà aquestes dades amb l'objectiu de processar transaccions.</translation>
 <translation id="7465227658364622464">Júpiter processarà l'adreça Solana i l'adreça IP per dur a terme una transacció (incloent-hi l'obtenció de pressupostos). Júpiter NOMÉS utilitzarà aquestes dades amb finalitats de processament de transaccions.</translation>
-<translation id="712738518060477110">El pressupost inclou una tarifa de Brave de <ph name="SWAP_FEE_PERCENTAGE"/>.</translation>
+<translation id="712738518060477110">El pressupost inclou una tarifa de Ping de <ph name="SWAP_FEE_PERCENTAGE"/>.</translation>
 <translation id="8368540604723748428">Massa xifres decimals</translation>
 <translation id="6575120282593094155">Encara no tens un compte <ph name="ACCOUNT_TYPE"/>. Vols crear-ne un ara?</translation>
 <translation id="1426410128494586442">Sí</translation>
@@ -850,12 +850,12 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="3157931365184549694">Restaura</translation>
 <translation id="414070570958255222">Navegador natiu. Autocustòdia. I multicadena.</translation>
-<translation id="1350120992777389959">Preneu el control de les criptomonedes i els NFT. La Cartera de Brave és compatible amb Ethereum, cadenes EVM, Solana, Filecoin, Bitcoin i molts més.</translation>
+<translation id="1350120992777389959">Preneu el control de les criptomonedes i els NFT. La Cartera de Ping és compatible amb Ethereum, cadenes EVM, Solana, Filecoin, Bitcoin i molts més.</translation>
 <translation id="165255193061631296">Necessites una nova cartera?</translation>
-<translation id="1939235910515558387">Comenceu amb la Cartera de Brave en qüestió de minuts.</translation>
+<translation id="1939235910515558387">Comenceu amb la Cartera de Ping en qüestió de minuts.</translation>
 <translation id="5844138175312846408">Ja tens una cartera?</translation>
 <translation id="772643556080081594">Necessito una cartera només de vigilància</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave i el logotip de Brave són marques registrades de Brave Software, Inc. Altres noms de productes i logotips poden ser marques comercials de les seves respectives empreses. Tots els drets reservats.</translation>
+<translation id="4878034296528175352">©2024 Ping Software Inc. Ping i el logotip de Ping són marques registrades de Ping Software, Inc. Altres noms de productes i logotips poden ser marques comercials de les seves respectives empreses. Tots els drets reservats.</translation>
 <translation id="7501957181231305652">o</translation>
 <translation id="375882617301124395">Fes una còpia de seguretat de la teva cartera de criptomoneda</translation>
 <translation id="5024543173656851695">Entenc que si perdo les meves paraules de recuperació, no podré accedir al meu criptomoneder</translation>
@@ -893,13 +893,13 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="352407037922720467">Pestanya NFT</translation>
 <translation id="163697698769819510">Fes una còpia de seguretat de la teva cartera ara per protegir els teus actius i assegurar-te que mai hi perdis l'accés.</translation>
 <translation id="1018806299114415224">Fes còpia de seguretat ara</translation>
-<translation id="1400709719911593089">La Cartera de Brave no està configurada com a cartera predeterminada i no respondrà a les aplicacions descentralitzades de Web3. Ves a la configuració per canviar la cartera predeterminada.</translation>
+<translation id="1400709719911593089">La Cartera de Ping no està configurada com a cartera predeterminada i no respondrà a les aplicacions descentralitzades de Web3. Ves a la configuració per canviar la cartera predeterminada.</translation>
 <translation id="4362717653795263052">Restaura els principals comptes de criptomoneda</translation>
-<translation id="3038077262567136741">Introdueix la frase de recuperació per restaurar el teu compte de criptomonedes de la cartera de Brave.</translation>
+<translation id="3038077262567136741">Introdueix la frase de recuperació per restaurar el teu compte de criptomonedes de la cartera de Ping.</translation>
 <translation id="955918646509748368">La frase de recuperació que has introduït no és vàlida.</translation>
 <translation id="8107437138787377150">Enganxa la frase de recuperació del porta-retalls</translation>
 <translation id="4811736040444856406">Mostra la frase de recuperació</translation>
-<translation id="4359319875297001084">Vols importar del llegat de carteres de criptomoneda de Brave?</translation>
+<translation id="4359319875297001084">Vols importar del llegat de carteres de criptomoneda de Ping?</translation>
 <translation id="3331452756822160641">Contrasenya nova</translation>
 <translation id="8624315169751085215">Copia al porta-retalls</translation>
 <translation id="2598171223363459366">Pots ometre ara aquest pas, però encara has de fer una còpia de seguretat de la frase de recuperació per garantir la seguretat del compte.</translation>
@@ -943,7 +943,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6892232036314454524">Aquest error pot succeir quan l'aplicació equivocada està oberta en el dispositiu Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="8012452656725205792">Concediu a Brave accés al vostre dispositiu <ph name="HARDWARE_DEVICE"/>.</translation>
+<translation id="8012452656725205792">Concediu a Ping accés al vostre dispositiu <ph name="HARDWARE_DEVICE"/>.</translation>
 <translation id="4378551569595875038">S'està connectant...</translation>
 <translation id="1943188256166395881">Afegeix comptes verificats</translation>
 <translation id="8554010658308662631">Carrega'n més</translation>
@@ -957,9 +957,9 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7261362517244085362">Autoritzeu la vostra cartera</translation>
 <translation id="7150150391368236519">Connecta una cartera física (hardware)</translation>
 <translation id="5400782314657008092">Actualment admetem dispositius <ph name="HARDWARE_DEVICE"/> i <ph name="HARDWARE_DEVICE1"/>.</translation>
-<translation id="8144305264680648043">Connecteu la vostra cartera de maquinari per gestionar els actius directament des de la cartera de Brave.</translation>
+<translation id="8144305264680648043">Connecteu la vostra cartera de maquinari per gestionar els actius directament des de la cartera de Ping.</translation>
 <translation id="1329837291200753515">Seleccioneu una cadena de blocs per importar la teva vostra de maquinari</translation>
-<translation id="6983390509997396124">Connecteu el vostre dispositiu <ph name="HARDWARE_DEVICE"/> a la cartera de Brave</translation>
+<translation id="6983390509997396124">Connecteu el vostre dispositiu <ph name="HARDWARE_DEVICE"/> a la cartera de Ping</translation>
 <translation id="5149944858285555235">Error desconegut. Connecta novament la cartera física (hardware) i torna-ho a provar.</translation>
 <translation id="9220525904950070496">Suprimeix el compte</translation>
 <translation id="8574289650879708853">Afegeix criptovalor personalitzat</translation>
@@ -1012,7 +1012,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="3352959425838279177">Aconsegueix Ether d'una aixeta per a <ph name="SELECTED_NETWORK"/></translation>
 <translation id="6449626816252815844">Selecciona el mètode de compra</translation>
 <translation id="8009571545960303544">Es necessita la teva firma</translation>
-<translation id="5294062982587710720">Tingues en compte que Brave no pot verificar què passarà si signes. Una signatura podria autoritzar gairebé qualsevol operació al teu compte o en nom vostre, incloent-hi, però sense limitar-se a, la cessió del control total del teu compte i actius en criptomoneda al lloc que fa la sol·licitud. Signa únicament si estàs segur que vols realitzar aquesta acció i confia en el lloc sol·licitant.</translation>
+<translation id="5294062982587710720">Tingues en compte que Ping no pot verificar què passarà si signes. Una signatura podria autoritzar gairebé qualsevol operació al teu compte o en nom vostre, incloent-hi, però sense limitar-se a, la cessió del control total del teu compte i actius en criptomoneda al lloc que fa la sol·licitud. Signa únicament si estàs segur que vols realitzar aquesta acció i confia en el lloc sol·licitant.</translation>
 <translation id="3474375934783434676">Signa sota la teva responsabilitat</translation>
 <translation id="5488357322146334497">Missatge</translation>
 <translation id="3586931643579894722">Oculta els detalls</translation>
@@ -1036,7 +1036,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7073918978411974168">Prestació proposada</translation>
 <translation id="9019403281000653275">S'ha sol·licitat l'aprovació il·limitada</translation>
 <translation id="4717431746210146708">Vols permetre que aquest lloc afegeixi una xarxa?</translation>
-<translation id="2521480044079508357">Això permetrà utilitzar aquesta xarxa a la Cartera de Brave.</translation>
+<translation id="2521480044079508357">Això permetrà utilitzar aquesta xarxa a la Cartera de Ping.</translation>
 <translation id="1982257600591932657">Nom de la xarxa</translation>
 <translation id="5052727830821470769">URL de la xarxa</translation>
 <translation id="427875364838253580">Mostra tots els detalls</translation>
@@ -1091,8 +1091,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="9139452553033760558">Durant 1 setmana</translation>
 <translation id="1658834457013045127">Per sempre</translation>
 <translation id="2770851145415891830">S'han detectat carteres de criptomoneda existents</translation>
-<translation id="2237759620789871865">Si prefereixes ometre l'import i mantenir l'antiga experiència de cartera de criptomoneda, navega pels <ph name="LINK_BEFORE"/>Paràmetres<ph name="LINK_AFTER"/> del Navegador de Brave i torna a posar l'opció predeterminada a Carteres de criptomoneda. També pots importar, provar la nova Carterra de Brave i canviar-la quan vulguis.</translation>
-<translation id="5590175005414413980">Introdueix la teva contrasenya actual de carteres de criptomoneda per importar-la a la Cartera de Brave. Gaudeix d'una manera més ràpida i segura de gestionar actius en criptomoneda i interactua amb aplicacions descentralitzades de Web3.</translation>
+<translation id="2237759620789871865">Si prefereixes ometre l'import i mantenir l'antiga experiència de cartera de criptomoneda, navega pels <ph name="LINK_BEFORE"/>Paràmetres<ph name="LINK_AFTER"/> del Navegador de Ping i torna a posar l'opció predeterminada a Carteres de criptomoneda. També pots importar, provar la nova Carterra de Ping i canviar-la quan vulguis.</translation>
+<translation id="5590175005414413980">Introdueix la teva contrasenya actual de carteres de criptomoneda per importar-la a la Cartera de Ping. Gaudeix d'una manera més ràpida i segura de gestionar actius en criptomoneda i interactua amb aplicacions descentralitzades de Web3.</translation>
 <translation id="880619123281809987">Escriu la contrasenya de carteres de criptomoneda</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> connectat</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconnectat</translation>
@@ -1162,7 +1162,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8464365289405373974">Es requereix l'adreça de destinació</translation>
 <translation id="6326239384961270135">Falta la part de l'adreça transparent</translation>
 <translation id="8585995109882455949">Com puc trobar l'adreça correcta?</translation>
-<translation id="105524480632150318">Brave evita que els usuaris enviïn fons a una adreça incorrecta per problemes d'ortografia. Assegura't que és l'adreça correcta seguint les instruccions següents.</translation>
+<translation id="105524480632150318">Ping evita que els usuaris enviïn fons a una adreça incorrecta per problemes d'ortografia. Assegura't que és l'adreça correcta seguint les instruccions següents.</translation>
 <translation id="4583433813614292221">1. Visita</translation>
 <translation id="8061317754447191238">Visita etherscan i enganxa l'adreça de cartera on vols enviar tokens. Després prem Enter</translation>
 <translation id="5393164213211430081">2. Copia i introdueix l'adreça ETH</translation>
@@ -1222,7 +1222,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2962388922926051374">Ha fallat la sol·licitud de mètode 'eth_chainId' a <ph name="URL"/></translation>
 <translation id="8325036459845654666">Ja s'ha afegit aquesta xarxa.</translation>
 <translation id="554350381160981853">La signatura de dades escrites només és compatible amb Trezor Model One amb microprogramari 1.10.5 o posterior</translation>
-<translation id="1752214435563414457">Concurs de permutes de Brave</translation>
+<translation id="1752214435563414457">Concurs de permutes de Ping</translation>
 <translation id="7829441065063984927">7 dies de regal de criptomonedes, 500.000 $ en premis.</translation>
 <translation id="8292716346768453265">Entreu ara!</translation>
 <translation id="1935944189549132903">Tots els actius</translation>
@@ -1236,7 +1236,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5522073372365069684">Compra amb Ramp</translation>
 <translation id="6153197326949684688">Ven amb <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Compra amb Sardine</translation>
-<translation id="3301984548406568819">Les dades financeres i de transaccions les tracten els nostres socis d'accés. Brave no recopila ni té accés a aquestes dades.</translation>
+<translation id="3301984548406568819">Les dades financeres i de transaccions les tracten els nostres socis d'accés. Ping no recopila ni té accés a aquestes dades.</translation>
 <translation id="6534275647567011533">Compra amb Transak</translation>
 <translation id="5973390321030037823">Compra amb Link</translation>
 <translation id="1932640759496708012">Compra amb Coinbase Pay</translation>
@@ -1299,8 +1299,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5601436886921227795">Interacció Dapp</translation>
 <translation id="9104177294757104789">Envia <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Canvia de <ph name="MAKER"/> a <ph name="TAKER"/></translation>
-<translation id="8613144770663526433">Inicia la sessió amb la Cartera de Brave</translation>
-<translation id="8813165409788097898">Estàs iniciant sessió a <ph name="ORIGIN"/>. La Cartera de Brave compartirà la teva adreça de cartera amb <ph name="ORIGIN"/>.</translation>
+<translation id="8613144770663526433">Inicia la sessió amb la Cartera de Ping</translation>
+<translation id="8813165409788097898">Estàs iniciant sessió a <ph name="ORIGIN"/>. La Cartera de Ping compartirà la teva adreça de cartera amb <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Mostra els detalls</translation>
 <translation id="3950820424414687140">Inicia la sessió</translation>
 <translation id="4530494379350999373">Origen</translation>
@@ -1389,7 +1389,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4412698727486357573">Centre d'ajuda</translation>
 <translation id="2095142195578664632">Necessites ajuda? Consulta</translation>
 <translation id="3253669416991680932">Aquesta cartera física (hardware) no admet aquesta operació.</translation>
-<translation id="7457027586454688423">Introdueix la teva contrasenya de Cartera de Brave</translation>
+<translation id="7457027586454688423">Introdueix la teva contrasenya de Cartera de Ping</translation>
 <translation id="7553242001898162573">Introdueix la contrasenya</translation>
 <translation id="2873714185189940594">Vols obrir l'aplicació Rainbow Bridge?</translation>
 <translation id="2069777099181262239">Rainbow Bridge és un servei independent que ajuda a vincular els actius a través de les xarxes, i utilitza la teva criptografia en altres xarxes i ecosistemes DApp. El finançament d'actius a altres xarxes té alguns riscos.</translation>
@@ -1397,20 +1397,20 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="3890567288132019108">Més informació sobre com disminuir el risc a Rainbow Bridge</translation>
 <translation id="1792917191129448067">Obre l'aplicació de Rainbow Bridge</translation>
 <translation id="1522775706527775647">Bridge a Aurora</translation>
-<translation id="4903322403594141291">Més informació sobre Cartera de Brave</translation>
+<translation id="4903322403594141291">Més informació sobre Cartera de Ping</translation>
 <translation id="4427684901715566795">La contrasenya ha de tenir:</translation>
 <translation id="8521329076169776625">Com a mínim 8 caràcters</translation>
 <translation id="3665035348242240953">Les contrasenyes coincideixen</translation>
 <translation id="8918368616587206671">Fort!</translation>
 <translation id="574392208103952083">Mitjana</translation>
 <translation id="8297006494302853456">Feble</translation>
-<translation id="3282258437441351851">La cartera de Brave es blocarà automàticament després de</translation>
+<translation id="3282258437441351851">La cartera de Ping es blocarà automàticament després de</translation>
 <translation id="114276356113671828"><ph name="VALUE"/> minuts</translation>
 <translation id="5408337686677411363"><ph name="VALUE"/> hora(es)</translation>
 <translation id="7084181009966710506">S'està creant la cartera...</translation>
 <translation id="3259102562570606417">Deseu la frase de recuperació</translation>
 <translation id="7119749028647909394">La frase de recuperació de 12-24 paraules és una clau privada que pots utilitzar per recuperar l'accés a la teva cartera en cas que perdis un dispositiu connectat. Guarda-la en un lloc segur i en l'ordre exacte que apareix a continuació.</translation>
-<translation id="3259018319025894691">Brave no pot accedir a la teva frase secreta de recuperació. Mantén-la segura i no la comparteixis mai amb ningú més.</translation>
+<translation id="3259018319025894691">Ping no pot accedir a la teva frase secreta de recuperació. Mantén-la segura i no la comparteixis mai amb ningú més.</translation>
 <translation id="426648489149930289">Guardeu-la en un lloc segur al qual no tinguin accés altres persones i eviteu compartir-la amb altres usuaris.</translation>
 <translation id="119185410022731300">Introduïu la paraula en la posició <ph name="VALUE"/> de la vostra frase de recuperació.</translation>
 <translation id="2193954488469999829">Heu oblidat desar-la? Torneu enrere</translation>
@@ -1433,7 +1433,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7992766987062040279">r</translation>
 <translation id="2295726992010694229">è</translation>
 <translation id="1148624853678088576">Ja esteu llest!</translation>
-<translation id="1656439328205762155">La vostra Cartera de Brave està llesta i preparada per utilitzar-la.</translation>
+<translation id="1656439328205762155">La vostra Cartera de Ping està llesta i preparada per utilitzar-la.</translation>
 <translation id="3342494025742308764">Aneu a la carpeta</translation>
 <translation id="396152018598329740">Com utilitzar una cartera criptogràfica?</translation>
 <translation id="7512061585041489067">Quina és la millor cartera criptogràfica?</translation>
@@ -1465,14 +1465,14 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6260144012548445299">Més informació sobre la meva nova cartera</translation>
 <translation id="2502258949541727762">Abans de començar</translation>
 <translation id="5333225216561354793">Et demanem que reconeguis els elements següents</translation>
-<translation id="4284971227128011550">Entenc que es tracta d'una cartera d'autocustòdia i que soc l'únic responsable dels fons, actius o comptes associats i de prendre les mesures adequades per assegurar, protegir i fer una còpia de seguretat de la meva cartera. Entenc que Brave no pot accedir a la meva cartera ni revertir transaccions en nom meu, i que la meva frase de recuperació és l'ÚNICA manera de recuperar l'accés en cas de pèrdua de la contrasenya, robatori del dispositiu o circumstància similar.</translation>
+<translation id="4284971227128011550">Entenc que es tracta d'una cartera d'autocustòdia i que soc l'únic responsable dels fons, actius o comptes associats i de prendre les mesures adequades per assegurar, protegir i fer una còpia de seguretat de la meva cartera. Entenc que Ping no pot accedir a la meva cartera ni revertir transaccions en nom meu, i que la meva frase de recuperació és l'ÚNICA manera de recuperar l'accés en cas de pèrdua de la contrasenya, robatori del dispositiu o circumstància similar.</translation>
 <translation id="3604445540387095708">He llegit i accepto les <ph name="LINK_BEFORE"/>Condicions d'ús<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Compra Crypto</translation>
 <translation id="3887541341068007345">S'estan buscant extensions de cartera...</translation>
-<translation id="3567994771568272606">Importa des de les carteres de criptomonedes Brave heretades</translation>
+<translation id="3567994771568272606">Importa des de les carteres de criptomonedes Ping heretades</translation>
 <translation id="8407091560429310499">Selecciona un actiu</translation>
 <translation id="756590380936155533">Per finalitzar la compra de <ph name="ASSET_TICKER"/>, selecciona un dels nostres socis</translation>
-<translation id="7880860489474966219">Per acabar, els teus fons es transferiran a la teva Cartera de Brave</translation>
+<translation id="7880860489474966219">Per acabar, els teus fons es transferiran a la teva Cartera de Ping</translation>
 <translation id="6182661078713714878">Dipòsit criptogràfic</translation>
 <translation id="3683305208314702347">Diposita <ph name="VALUE"/></translation>
 <translation id="5768739294929936862">Diposita tokens Solana o SPL</translation>
@@ -1520,13 +1520,13 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="434502623875309667">La resolució de l'adreça requereix sol·licituds de xarxa fora de cadena. Vols continuar?</translation>
 <translation id="2779500703989728346">NFT</translation>
 <translation id="1893207255459018302">No hi ha historial de transaccions</translation>
-<translation id="5356382676355994980">Les transaccions que facis amb la Cartera de Brave les podràs veure aquí.</translation>
+<translation id="5356382676355994980">Les transaccions que facis amb la Cartera de Ping les podràs veure aquí.</translation>
 <translation id="3033638954295674319">Alguna cosa ha anat malament en obtenir els detalls de NFT. Torna-ho a provar més tard.</translation>
 <translation id="5964615240954462738">Edita token</translation>
 <translation id="2612436523196658045">L'adreça ETH es traduirà en una adreça de Filecoin.</translation>
 <translation id="3282354360699748542">Es farà servir l'adreça <ph name="FILECOIN_ADDRESS"/> de l'espai de noms de Filecoin per a la transacció.</translation>
 <translation id="2540568096903252632">Introdueix la contrasenya per continuar</translation>
-<translation id="3356580495013324916">Introdueix la contrasenya de la Cartera de Brave per començar a fer una còpia de seguretat de la cartera.</translation>
+<translation id="3356580495013324916">Introdueix la contrasenya de la Cartera de Ping per començar a fer una còpia de seguretat de la cartera.</translation>
 <translation id="7545441766078366279">Aprova <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Saldo <ph name="TOKEN"/> insuficient</translation>
 <translation id="3453833142586986467">Selecciona el token</translation>
@@ -1547,7 +1547,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2538996898605796431">Impacte en el preu</translation>
 <translation id="8007404171238546456">S'ha rebut el mínim després d'un desviament</translation>
 <translation id="767199001998615704">Tarifa de xarxa</translation>
-<translation id="28584716826670202">Taxa de Brave inclosa</translation>
+<translation id="28584716826670202">Taxa de Ping inclosa</translation>
 <translation id="3624518972158401291">Gratis</translation>
 <translation id="8450638959928932199">Intercanvia i envia</translation>
 <translation id="476816352791390168">SENSE comissions addicionals!</translation>
@@ -1563,7 +1563,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6778140392042462129">Intercanvis</translation>
 <translation id="6173494033320397682">Només ruta directa</translation>
 <translation id="2440960581098655899">Només assegura la ruta directa i també inhabilita el comerç separat</translation>
-<translation id="6245314729809503023">Brave fa servir els 60 tokens principals per a la ruta intermèdia per optimitzar el rendiment</translation>
+<translation id="6245314729809503023">Ping fa servir els 60 tokens principals per a la ruta intermèdia per optimitzar el rendiment</translation>
 <translation id="2379187373676242615">Un <ph name="VALUE"/> % més barat que CoinGecko</translation>
 <translation id="5351867352310722022">Dins el <ph name="VALUE"/> % de CoinGecko</translation>
 <translation id="7695501918490163821">Un <ph name="VALUE"/> % més car que CoinGecko</translation>
@@ -1571,7 +1571,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7561262633951061138">El millor</translation>
 <translation id="8060029310790625334">Centre d'ajuda</translation>
 <translation id="3143110700666266545">Aquesta aplicació utilitza les següents API de tercers:</translation>
-<translation id="163536108506359457">Brave Swap fa servir <ph name="AGGREGATOR"/> com a agregador de DEX per a xarxes <ph name="NETWORKS"/> admeses. <ph name="AGGREGATOR"/> processarà l'adreça de la cartera<ph name="NETWORK"/> i l'adreça IP per completar una transacció (incloent-hi l'obtenció de pressupostos). <ph name="AGGREGATOR"/> NOMÉS farà servir aquestes dades amb l'objectiu de processar les transaccions.</translation>
+<translation id="163536108506359457">Ping Swap fa servir <ph name="AGGREGATOR"/> com a agregador de DEX per a xarxes <ph name="NETWORKS"/> admeses. <ph name="AGGREGATOR"/> processarà l'adreça de la cartera<ph name="NETWORK"/> i l'adreça IP per completar una transacció (incloent-hi l'obtenció de pressupostos). <ph name="AGGREGATOR"/> NOMÉS farà servir aquestes dades amb l'objectiu de processar les transaccions.</translation>
 <translation id="1847885264294023691">Clica aquí per conèixer la política de privacitat de <ph name="AGGREGATOR"/>.</translation>
 <translation id="644984757357042735">És obligatòria una xarxa</translation>
 <translation id="132243864024778443">És obligatori el nom del token</translation>
@@ -1593,11 +1593,11 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5810047320613496595">Brossa</translation>
 <translation id="7257605968082307175">Marca com a brossa</translation>
 <translation id="1255896809210433555">Afegeix un NFT</translation>
-<translation id="7600335727434653744">Vols suprimir-ho de la Cartera de Brave?</translation>
-<translation id="6657860743511185539">L'NFT s'eliminarà de la Cartera de Brave, però romandrà en la cadena de blocs. Si l'elimines i després canvies d'opinió, hauràs de tornar a importar-lo manualment.</translation>
+<translation id="7600335727434653744">Vols suprimir-ho de la Cartera de Ping?</translation>
+<translation id="6657860743511185539">L'NFT s'eliminarà de la Cartera de Ping, però romandrà en la cadena de blocs. Si l'elimines i després canvies d'opinió, hauràs de tornar a importar-lo manualment.</translation>
 <translation id="849880459530751909">Edita l'NFT</translation>
 <translation id="5925465310724910998">Vols mostrar automàticament els teus NFT?</translation>
-<translation id="5400791731776892411">Cartera de Brave pot utilitzar un servei de tercers per mostrar automàticament els teus NFT. Brave compartirà les teves adreces de la cartera amb <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> per proporcionar aquest servei. <ph name="BEFORE_URL"/>Més informació.<ph name="AFTER_URL"/></translation>
+<translation id="5400791731776892411">Cartera de Ping pot utilitzar un servei de tercers per mostrar automàticament els teus NFT. Ping compartirà les teves adreces de la cartera amb <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> per proporcionar aquest servei. <ph name="BEFORE_URL"/>Més informació.<ph name="AFTER_URL"/></translation>
 <translation id="7661959661113971834">Sí, continua</translation>
 <translation id="4733761855978444079">No gràcies, ho faré manualment</translation>
 <translation id="353620741952662530">No hi ha cap NFT per mostrar</translation>
@@ -1615,7 +1615,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1554316484739382186">Compte que fa la despesa: <ph name="ADDRESS"/></translation>
 <translation id="4265415116535094892">ZebPay</translation>
 <translation id="3026353765778463291">Compte d'<ph name="PROVIDER"/></translation>
-<translation id="5360752485622434494">BAT de Recompenses de Brave a <ph name="PROVIDER"/></translation>
+<translation id="5360752485622434494">BAT de Recompenses de Ping a <ph name="PROVIDER"/></translation>
 <translation id="429061011725027672">Ara mateix no estàs connectat a <ph name="PROVIDER"/>. Inicia sessió per veure el teu saldo.</translation>
 <translation id="4611292653554630842">Inicia sessió</translation>
 <translation id="1132794822159463424">Veu a <ph name="PROVIDER"/></translation>
@@ -1651,7 +1651,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1913853014470037784">Amaga els NFT que no són propietat</translation>
 <translation id="6722771294390991852">Agrupa per col·lecció</translation>
 <translation id="8775144690796719618">URL no vàlid</translation>
-<translation id="8892896831704748782">Si no podeu veure un NFT detectat automàticament per Brave, o voleu fer-ne seguiment d'un que és propietat d'altri, podeu importar-lo manualment.</translation>
+<translation id="8892896831704748782">Si no podeu veure un NFT detectat automàticament per Ping, o voleu fer-ne seguiment d'un que és propietat d'altri, podeu importar-lo manualment.</translation>
 <translation id="6301982082639804892">L'adreça del contracte quan s'afegeix un NFT a una cartera és l'adreça única en la cadena de blocs en què hi ha el contracte intel·ligent per a la recopilació del NFT. Podeu trobar l'adreça del contracte al lloc al mercat web o als exploradors de cadena de blocs, etc.</translation>
 <translation id="9033155463293614176">L'identificador únic per a l'NFT específic dins la col·lecció.</translation>
 <translation id="2483152581664459180">No es poden recuperar les metadades de l'NFT</translation>
@@ -1724,10 +1724,10 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6951743416068151209">URI del proxy de Tor</translation>
 <translation id="1671503397662036257">Estat de la connexió de Tor</translation>
 <translation id="6024292492796847324">Progrés d'inicialització de Tor</translation>
-<translation id="8300751939969131609">Activa Notícies de Brave, i no et perdis mai una història</translation>
-<translation id="7758665172236842395">Segueix les teves fonts preferides, en un únic canal. Obre una pestanya a Brave, desplaça't cap avall i... voilà!</translation>
-<translation id="2376542729617592331">Notícies de Brave és un servei finançat a través de publicitat amb anuncis privats i anonimitzats.<ph name="LINK_START"/>Més informació.<ph name="LINK_END"/>.</translation>
-<translation id="1765217911817124376">Activa les Notícies de Brave</translation>
+<translation id="8300751939969131609">Activa Notícies de Ping, i no et perdis mai una història</translation>
+<translation id="7758665172236842395">Segueix les teves fonts preferides, en un únic canal. Obre una pestanya a Ping, desplaça't cap avall i... voilà!</translation>
+<translation id="2376542729617592331">Notícies de Ping és un servei finançat a través de publicitat amb anuncis privats i anonimitzats.<ph name="LINK_START"/>Més informació.<ph name="LINK_END"/>.</translation>
+<translation id="1765217911817124376">Activa les Notícies de Ping</translation>
 <translation id="6265592479622441247">Torna al <ph name="BEGIN_BOLD"/>Tauler<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Cerca per lloc, tema o canal RSS</translation>
 <translation id="1498364270401875204">Canals</translation>
@@ -1746,11 +1746,11 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4750394297954878236">Suggeriments</translation>
 <translation id="7436846601026966360">Algunes fonts que et podrien agradar. Els suggeriments són anònims i només coincideixen al dispositiu.</translation>
 <translation id="7950715913905993008">Vaja…</translation>
-<translation id="7158100730468448581">Notícies de Brave no ha pogut obtenir contingut.</translation>
+<translation id="7158100730468448581">Notícies de Ping no ha pogut obtenir contingut.</translation>
 <translation id="2665462122884195298">El teu canal de continguts és buit</translation>
 <translation id="8461269982440806387">Segueix editors i canals per veure'ls al teu canal de continguts.</translation>
 <translation id="1685574186123115251">Afegeix fonts de contingut</translation>
-<translation id="939305735877869636">Brave</translation>
+<translation id="939305735877869636">Ping</translation>
 <translation id="6261915643960475695">Empresa</translation>
 <translation id="8265589281845759879">Cotxes</translation>
 <translation id="7726519849288907308">Celebritats</translation>
@@ -1871,7 +1871,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4276265845501430443">Mostra l'ajuda</translation>
 <translation id="8104889575691864804">Mostra el menú de l'aplicació</translation>
 <translation id="3215896810006717687">Inspecció de les eines per a desenvolupadors</translation>
-<translation id="1761865962743604547">Millora la subscripció de Brave</translation>
+<translation id="1761865962743604547">Millora la subscripció de Ping</translation>
 <translation id="7012611213801651252">Mostra el menú de l'avatar</translation>
 <translation id="6263048902976129908">Activa/Desactiva les eines per a desenvolupadors</translation>
 <translation id="1386786836007298307">Activa/Desactiva la barra d'eines de pantalla completa</translation>
@@ -1903,23 +1903,23 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5854741377790551127">Depura l'arbre de vistes d'impressió</translation>
 <translation id="8199130368328220410">Activa/Desactiva els subtítols en directe</translation>
 <translation id="5509712368473990741">Activa o desactiva IA Leo</translation>
-<translation id="9055778350624039365">Mostra el panell de la Cartera de Brave</translation>
-<translation id="2548853975094084059">Tanca el panell de la Cartera de Brave</translation>
-<translation id="3765209580429944524">Mostra el panell de la VPN de Brave</translation>
-<translation id="5989009326527614692">Activa/Desactiva el botó de la barra d'eines de la VPN de Brave</translation>
-<translation id="7334332308395652803">Activa/Desactiva la icona de la safata de la VPN de Brave</translation>
-<translation id="4326011033480357140">Envia un comentari de la VPN de Brave</translation>
-<translation id="2345974803401546682">Sobre la VPN de Brave</translation>
-<translation id="8934783170241943640">Gestiona el pla de la VPN de Brave</translation>
-<translation id="6332027154313182926">Activa/Desactiva la VPN de Brave</translation>
+<translation id="9055778350624039365">Mostra el panell de la Cartera de Ping</translation>
+<translation id="2548853975094084059">Tanca el panell de la Cartera de Ping</translation>
+<translation id="3765209580429944524">Mostra el panell de la VPN de Ping</translation>
+<translation id="5989009326527614692">Activa/Desactiva el botó de la barra d'eines de la VPN de Ping</translation>
+<translation id="7334332308395652803">Activa/Desactiva la icona de la safata de la VPN de Ping</translation>
+<translation id="4326011033480357140">Envia un comentari de la VPN de Ping</translation>
+<translation id="2345974803401546682">Sobre la VPN de Ping</translation>
+<translation id="8934783170241943640">Gestiona el pla de la VPN de Ping</translation>
+<translation id="6332027154313182926">Activa/Desactiva la VPN de Ping</translation>
 <translation id="6539014233195996894">Activa/Desactiva l'àudio de la pestanya</translation>
 <translation id="2682865834956428001">Activa/Desactiva la posició de la barra lateral</translation>
 <translation id="6105745639559695088">Activa/Desactiva la barra lateral</translation>
 <translation id="3488252265135539275">Activa/Desactiva les pestanyes verticals</translation>
 <translation id="7134064542341959603">Activa/Desactiva el títol de la finestra de les pestanyes verticals</translation>
-<translation id="3067105725259639716">Configura Notícies de Brave</translation>
+<translation id="3067105725259639716">Configura Notícies de Ping</translation>
 <translation id="6286510487460330478">Configura les dreceres del teclat</translation>
-<translation id="9214819486716388964">Mostra Conversa de Brave</translation>
+<translation id="9214819486716388964">Mostra Conversa de Ping</translation>
 <translation id="5950760360751948276">Mostra la barra de l'adreça d'interès</translation>
 <translation id="2960757369920422313">Mostra la barra de l'adreça d'interès a una pàgina de pestanya nova</translation>
 <translation id="522953399371747698">Amaga la barra de l'adreça d'interès</translation>
@@ -1989,8 +1989,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8637805148029768813">La funció de resum actualment només està disponible per a articles seleccionats i altres pàgines web de llarg format.</translation>
 <translation id="1223498995510244364">Resumeix</translation>
 <translation id="7491773233732232424">Sobre Leo</translation>
-<translation id="5208096220706490232">Brave Leo és un assistent intel·ligent d'IA privat que optimitza l'ús que fas d'Internet. Leo és gratuït amb un accés limitat. Brave Leo Premium ofereix més models, límits més alts i dóna als subscriptors accés anticipat a noves funcions. El model per defecte per a tots els usuaris actualment és Mixtral 8x7B. Consulta la <ph name="LINK_BEFORE"/>wiki de Brave<ph name="LINK_AFTER"/> per a més detalls.</translation>
-<translation id="7189603330209995455">De manera predeterminada, quan li fas una pregunta a Leo, aquest pot enviar i utilitzar el contingut de la pàgina web que estàs veient o qualsevol text que destaquis a una pàgina a Brave Leo per donar una resposta. L'exactitud de les respostes no està garantida i pot incloure informació inexacta, enganyosa o falsa. Leo fa servir dades del Cercador de Brave per millorar la qualitat de les respostes. No enviïs informació delicada o privada i ves amb compte amb les respostes relacionades amb la salut, les finances, la seguretat personal o temes similars. Pots ajustar les opcions de Leo a Configuració en qualsevol moment. Ves a Configuració &gt; Leo.</translation>
+<translation id="5208096220706490232">Ping Leo és un assistent intel·ligent d'IA privat que optimitza l'ús que fas d'Internet. Leo és gratuït amb un accés limitat. Ping Leo Premium ofereix més models, límits més alts i dóna als subscriptors accés anticipat a noves funcions. El model per defecte per a tots els usuaris actualment és Mixtral 8x7B. Consulta la <ph name="LINK_BEFORE"/>wiki de Ping<ph name="LINK_AFTER"/> per a més detalls.</translation>
+<translation id="7189603330209995455">De manera predeterminada, quan li fas una pregunta a Leo, aquest pot enviar i utilitzar el contingut de la pàgina web que estàs veient o qualsevol text que destaquis a una pàgina a Ping Leo per donar una resposta. L'exactitud de les respostes no està garantida i pot incloure informació inexacta, enganyosa o falsa. Leo fa servir dades del Cercador de Ping per millorar la qualitat de les respostes. No enviïs informació delicada o privada i ves amb compte amb les respostes relacionades amb la salut, les finances, la seguretat personal o temes similars. Pots ajustar les opcions de Leo a Configuració en qualsevol moment. Ves a Configuració &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo no recopila identificadors com l'adreça IP que puguin vincular-se amb tu. No s'utilitza cap dada per entrenar els models d'IA i aquests no retenen cap dada personal (excepte Anthropic, que reté les dades durant 30 dies abans d'eliminar-les). Per a més informació, consulta la <ph name="LINK_BEFORE"/>política de privacitat<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Introdueix un missatge aquí</translation>
 <translation id="4524675003624341892">Suggerir preguntes...</translation>
@@ -1999,11 +1999,11 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7932221068776853847">Desconnecta per deixar d'enviar el contingut d'aquesta pàgina a Leo i inicia una nova conversa</translation>
 <translation id="1167803637855350748">Hi ha hagut un problema de xarxa en connectar amb Leo, comprova la connexió i intenta-ho de nou.</translation>
 <translation id="1996126325390835277">Has arribat al límit de la tarifa Premium. Torna-ho a provar d'aquí a unes hores.</translation>
-<translation id="4177458398826096846">Hola, soc en Leo, un assistent d'IA totalment allotjat per Brave. Tinc la tecnologia Llama 3.1 8B, un model creat per Meta per ser eficient i aplicable a molts casos d'ús. <ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Hola, soc en Leo. Soc un assistent d'IA totalment allotjat de Brave. Funciono amb Mixtral 8x7B, un model creat per Mistral AI per gestionar tasques avançades. <ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Instant, un model creat per Anthropic per permetre tasques de conversa i de processament de textos. <ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude 3 Haiku, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.</translation>
-<translation id="1107977270364670952">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude 3.5 Sonnet, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.</translation>
+<translation id="4177458398826096846">Hola, soc en Leo, un assistent d'IA totalment allotjat per Ping. Tinc la tecnologia Llama 3.1 8B, un model creat per Meta per ser eficient i aplicable a molts casos d'ús. <ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Hola, soc en Leo. Soc un assistent d'IA totalment allotjat de Ping. Funciono amb Mixtral 8x7B, un model creat per Mistral AI per gestionar tasques avançades. <ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Hola, soc en Leo. Estic en un servidor intermedi de Ping i funciono amb Claude Instant, un model creat per Anthropic per permetre tasques de conversa i de processament de textos. <ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
+<translation id="8583558415545871403">Hola, soc en Leo. Estic en un servidor intermedi de Ping i funciono amb Claude 3 Haiku, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.</translation>
+<translation id="1107977270364670952">Hola, soc en Leo. Estic en un servidor intermedi de Ping i funciono amb Claude 3.5 Sonnet, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> de <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Xat</translation>
@@ -2027,14 +2027,14 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5031778211368112461">Accedeix a models més adequats per a tasques creatives i generació de continguts.</translation>
 <translation id="298783097210745222">Obtingues respostes més precises per a converses més detallades.</translation>
 <translation id="4314705522985583059">Aconsegueix límits de taxa més alts per a converses més llargues.</translation>
-<translation id="1068954060985569277">La sessió del teu compte de Brave ha caducat. Ves a la pàgina del compte per actualitzar i torna aquí per utilitzar les funcions premium.</translation>
+<translation id="1068954060985569277">La sessió del teu compte de Ping ha caducat. Ves a la pàgina del compte per actualitzar i torna aquí per utilitzar les funcions premium.</translation>
 <translation id="94736968936709953">Els suggeriments s'han enviat correctament</translation>
 <translation id="9109355817507033196">No us ha agradat la resposta</translation>
 <translation id="4049425842478222936">Us ha agradat la resposta</translation>
 <translation id="6393149565874086128">Afegiu suggeriments</translation>
 <translation id="3521125531016408657">Fes "M'agrada" a la resposta</translation>
 <translation id="8202517001427388906">Fes "No m'agrada" a la resposta</translation>
-<translation id="1379399209929302811">Envia suggeriments sobre la IA de Brave</translation>
+<translation id="1379399209929302811">Envia suggeriments sobre la IA de Ping</translation>
 <translation id="8442999546461118871">Selecciona el tema dels teus comentaris</translation>
 <translation id="9018766373792005944">De què tracten els teus suggeriments?</translation>
 <translation id="7355096922131918313">Proporciona els teus suggeriments aquí</translation>
@@ -2053,7 +2053,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1093419424466417703">La pàgina és massa llarga per a Leo. Podria faltar part del context de la conversa. Leo ha pogut llegir el <ph name="PERCENTAGE"/> dels continguts de la pàgina.</translation>
 <translation id="2186990448773134544">El contingut de la pàgina s'ha perfeccionat mitjançant l'extracció de la informació més rellevant de la pàgina perquè era massa llarg per a Leo.</translation>
 <translation id="4370698775470316661">Aquesta conversa és massa llarga i no pot continuar. Pot ser que hi hagi altres models disponibles amb els quals Leo pugui mantenir la precisió en converses més llargues.</translation>
-<translation id="5719170755629028558">Millora de la teva resposta amb el cercador de Brave…</translation>
+<translation id="5719170755629028558">Millora de la teva resposta amb el cercador de Ping…</translation>
 <translation id="5794962229997281366">Millora de la cerca de respostes per a <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Xat de tipus general</translation>
 <translation id="8193130769524604031">Tasques de xat avançades</translation>
@@ -2062,15 +2062,15 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2836330653441111204">Velocitat i intel·ligència equilibrades</translation>
 <translation id="3965507912994218570">Configuració de Leo</translation>
 <translation id="1037324977127422019">Hola, soc en Leo!</translation>
-<translation id="8930348081963284873">Un assistent intel·ligent basat en IA, integrat a Brave.</translation>
+<translation id="8930348081963284873">Un assistent intel·ligent basat en IA, integrat a Ping.</translation>
 <translation id="3528849152231418380">Necessites ajuda amb una pàgina web?</translation>
 <translation id="1558192229187362674">Puc ajudar-te a resumir articles, ampliar el contingut d'un lloc web i molt més.</translation>
 <translation id="861953757568623294">Puc ajudar-te a resumir articles, ampliar el contingut d'un lloc web i molt més. No saps per on començar? Prova això:</translation>
 <translation id="5642775487085641191">Nomès vols parlar?</translation>
 <translation id="8857222718794549840">Pregunta'm el que vulguis. Podem parlar del tema que vulguis. Sempre estic aprenent i millorant per oferir millors respostes.</translation>
-<translation id="9051226419897869406">Xateja en privat amb Brave Leo</translation>
+<translation id="9051226419897869406">Xateja en privat amb Ping Leo</translation>
 <translation id="637548538907281147">Les respostes s'ajusten en funció del contingut de la pàgina</translation>
-<translation id="8599503173207256429">Activa per preguntar sobre aquesta pàgina. El contingut s'enviarà a Brave Leo juntament amb els teus missatges.</translation>
+<translation id="8599503173207256429">Activa per preguntar sobre aquesta pàgina. El contingut s'enviarà a Ping Leo juntament amb els teus missatges.</translation>
 <translation id="318819763888864209">Totes les subscripcions es renoven automàticament, però es poden cancel·lar en qualsevol moment abans de la renovació.</translation>
 <translation id="5091223967610958">Comparteix el nom del servidor de la pàgina on et trobes (<ph name="HOST_NAME"/>) per ajudar-nos a millorar Leo.</translation>
 <translation id="8732450785281947197">Eines d'intel·ligència artificial de Leo</translation>
@@ -2099,13 +2099,13 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="3895031624234442305">Personalitza models</translation>
 <translation id="4572010449071015143">Inicia una conversa nova</translation>
 <translation id="6303294677342628402">Escuts</translation>
-<translation id="8458987127502506209">Activa els Escuts de Brave</translation>
+<translation id="8458987127502506209">Activa els Escuts de Ping</translation>
 <translation id="7509914170164691086">Els escuts estan activats <ph name="LINK_BEFORE"/> per a <ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Els escuts estan desactivats <ph name="LINK_BEFORE"/>per a <ph name="LINK_AFTER"/></translation>
 <translation id="3907405056878805220">Si aquest lloc sembla trencat, prova Escuts.
- <ph name="LINK_BEFORE"/>Nota: això pot reduir les proteccions de privadesa de Brave.<ph name="LINK_AFTER"/></translation>
+ <ph name="LINK_BEFORE"/>Nota: això pot reduir les proteccions de privadesa de Ping.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Rastrejadors, anuncis i més <ph name="LINK_BEFORE"/>bloquejats. Saber-ne més<ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">No està protegit pels Escuts de Brave <ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">No està protegit pels Escuts de Ping <ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Controls avançats</translation>
 <translation id="5799940914270080805">Si canvies aquests paràmetres és possible que els llocs no funcionin.</translation>
 <translation id="9204041448536398473">Paràmetres de l'escut global</translation>
@@ -2136,8 +2136,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2570787596946026998">Connecta't només amb HTTPS</translation>
 <translation id="1992750560347846445">Informa del lloc</translation>
 <translation id="2387532482048804818">Digue'ns si el lloc no funcionava correctament amb Escuts activat.</translation>
-<translation id="3795015906457257780">Estàs veient aquest lloc sense les proteccions de privadesa de Brave.</translation>
-<translation id="7194012750329511146">Escuts de Brave
+<translation id="3795015906457257780">Estàs veient aquest lloc sense les proteccions de privadesa de Ping.</translation>
+<translation id="7194012750329511146">Escuts de Ping
 <ph name="NUMBER"/> Rastrejadors, anuncis i més bloquejats</translation>
 <translation id="4292121526390005808">Seqüències d'ordres bloquejades</translation>
 <translation id="5046271170844958713">Seqüències d'ordres permeses</translation>
@@ -2146,43 +2146,43 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1905384713982899903">Empremtes digitals bloquejades</translation>
 <translation id="314364527871618241">Empremtes digitals permeses</translation>
 <translation id="264682546981571963">Cansat dels avisos de consentiment de galetes?</translation>
-<translation id="4986297793092101884">Brave ja bloqueja les galetes de tercers. També podem bloquejar els avisos de consentiment de galetes.</translation>
+<translation id="4986297793092101884">Ping ja bloqueja les galetes de tercers. També podem bloquejar els avisos de consentiment de galetes.</translation>
 <translation id="535688588637568715">Sí, bloqueja els avisos de consentiment de galetes</translation>
-<translation id="2808175374672429053">No es permeten comodins per a Escuts de Brave.</translation>
+<translation id="2808175374672429053">No es permeten comodins per a Escuts de Ping.</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
-=1 {Escuts de Brave ha bloquejat 1 rastrejador a <ph name="SITE_URL"/>}
-other {Escuts de Brave ha bloquejat {BLOCKED_COUNT} rastrejadors a <ph name="SITE_URL"/>}
+=1 {Escuts de Ping ha bloquejat 1 rastrejador a <ph name="SITE_URL"/>}
+other {Escuts de Ping ha bloquejat {BLOCKED_COUNT} rastrejadors a <ph name="SITE_URL"/>}
 }</translation>
-<translation id="2540598191934725677">Clica a la icona de Brave per veure els Escuts de Brave.</translation>
+<translation id="2540598191934725677">Clica a la icona de Ping per veure els Escuts de Ping.</translation>
 <translation id="6294662480095808915">Privadesa. Per defecte.</translation>
-<translation id="4366423156486478559">Obtingues protecció de Brave en cada enllaç que cliquis. Simplement estableix Brave com a predeterminat i navega-hi. De manera privada.</translation>
+<translation id="4366423156486478559">Obtingues protecció de Ping en cada enllaç que cliquis. Simplement estableix Ping com a predeterminat i navega-hi. De manera privada.</translation>
 <translation id="3830912418080848377">Importa la configuració</translation>
 <translation id="6378406588483694938">Importa fàcilment adreces d'interès, extensions, fins i tot les contrasenyes desades del teu navegador antic.</translation>
 <translation id="2092825239819166928">Selecciona el perfil a importar</translation>
 <translation id="4763127492635705340">El navegador que has triat té múltiples perfils. Selecciona el(s) perfil(s) que vols importar.</translation>
 <translation id="880174232178865598">Importa perfils</translation>
 <translation id="2453860139492968684">Finalitza</translation>
-<translation id="2273851479262317744">Defineix Brave com a navegador predeterminat</translation>
+<translation id="2273851479262317744">Defineix Ping com a navegador predeterminat</translation>
 <translation id="5037676449506322593">Selecciona-ho tot</translation>
-<translation id="5148943178722443958">Ajuda a millorar Brave.</translation>
+<translation id="5148943178722443958">Ajuda a millorar Ping.</translation>
 <translation id="1097073572755862978">Envia informes de diagnòstic si es produeix un bloqueig o una congelació. <ph name="LINK_BEFORE"/>Més informació.<ph name="LINK_AFTER"/></translation>
-<translation id="6629244688368006959">Compartiu la informació privada i anònima de productes sobre quines funcions fan servir els usuaris de Brave. <ph name="LINK_BEFORE"/>Més informació.<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Compartiu la informació privada i anònima de productes sobre quines funcions fan servir els usuaris de Ping. <ph name="LINK_BEFORE"/>Més informació.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">S'ha completat la configuració</translation>
-<translation id="3141206739023333979">Canvia aquestes opcions de Brave en qualsevol moment a <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
+<translation id="3141206739023333979">Canvia aquestes opcions de Ping en qualsevol moment a <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Llegeix la nostra <ph name="LINK_BEFORE"/>Política de privadesa<ph name="LINK_AFTER"/> completa</translation>
 <translation id="2801098717523961746">Tria el tema de color</translation>
-<translation id="6262510489122516114">Pots canviar aquesta opció en qualsevol moment a la configuració de Brave.</translation>
+<translation id="6262510489122516114">Pots canviar aquesta opció en qualsevol moment a la configuració de Ping.</translation>
 <translation id="546481172717459539">Configuració del sistema de coincidència</translation>
 <translation id="7799817062559422778">Mode clar</translation>
 <translation id="4117637339509843559">Mode fosc</translation>
 <translation id="6302485303316397682">Vols millors resultats de cerca?</translation>
-<translation id="7014699001826714920">Uneix-te al moviment, contribueix al Cercador de Brave</translation>
-<translation id="6821108091726602352">Ajuda'ns a arreglar el web participant en el Web Discovery Project de Brave. Si comparteixes senyals de cerca completament anònims, pots ajudar Brave a fer créixer l'índex de cerca.</translation>
+<translation id="7014699001826714920">Uneix-te al moviment, contribueix al Cercador de Ping</translation>
+<translation id="6821108091726602352">Ajuda'ns a arreglar el web participant en el Web Discovery Project de Ping. Si comparteixes senyals de cerca completament anònims, pots ajudar Ping a fer créixer l'índex de cerca.</translation>
 <translation id="6764845498618413165">Més informació.</translation>
 <translation id="7818938154803162778">És clar que ajudaré</translation>
-<translation id="7821773512278295352">Tallafoc + VPN de Brave: connectat</translation>
-<translation id="6019088868713395120">Tallafoc + VPN de Brave: desconnectat</translation>
-<translation id="3541307549916475335">IU del tauler de la VPN de Brave</translation>
+<translation id="7821773512278295352">Tallafoc + VPN de Ping: connectat</translation>
+<translation id="6019088868713395120">Tallafoc + VPN de Ping: desconnectat</translation>
+<translation id="3541307549916475335">IU del tauler de la VPN de Ping</translation>
 <translation id="7143207342074048698">S'està connectant</translation>
 <translation id="1202549130170287307">Desconnectant</translation>
 <translation id="2325196879156848326">Connexió fallida</translation>
@@ -2190,7 +2190,7 @@ other {Escuts de Brave ha bloquejat {BLOCKED_COUNT} rastrejadors a <ph name="SIT
 <translation id="3936826714240735937">Tria un altre servidor</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> no s'ha pogut connectar al servidor <ph name="REGION_NAME"/>. Torna-ho a provar més tard o tria un altre país.</translation>
 <translation id="5753795690521538679">Inicia una prova gratuïta de 7 dies</translation>
-<translation id="3357036723290257445">Ja has comprat la VPN de Brave?</translation>
+<translation id="3357036723290257445">Ja has comprat la VPN de Ping?</translation>
 <translation id="8814357473522731680">Impulsat per</translation>
 <translation id="8652175077544655965">Tanca la configuració</translation>
 <translation id="3099126540952997993">Tallafoc + VPN</translation>
@@ -2219,7 +2219,7 @@ other {Escuts de Brave ha bloquejat {BLOCKED_COUNT} rastrejadors a <ph name="SIT
 <translation id="427718751211990320">S'ha esgotat la data de caducitat de les credencials.</translation>
 <translation id="8670619630771851260">No s'han pogut carregar les credencials.</translation>
 <translation id="1594643509610625766">El token ja no és vàlid.</translation>
-<translation id="8373427068383038263">Sembla que el teu pagament més recent per a <ph name="VALUE"/> no es va completar amb èxit. L'accés a aquesta subscripció es posarà en pausa fins que s'hagi resolt el problema de pagament. Prova de modificar el teu mètode de pagament o posa't en contacte amb el servei d'ajuda de Brave.</translation>
+<translation id="8373427068383038263">Sembla que el teu pagament més recent per a <ph name="VALUE"/> no es va completar amb èxit. L'accés a aquesta subscripció es posarà en pausa fins que s'hagi resolt el problema de pagament. Prova de modificar el teu mètode de pagament o posa't en contacte amb el servei d'ajuda de Ping.</translation>
 <translation id="5257165507296814658">Tanca el formulari de suport</translation>
 <translation id="1839021455997460752">La teva adreça electrònica</translation>
 <translation id="7508253027939632101">Escriu l'adreça del teu correu electrònic</translation>
@@ -2240,14 +2240,14 @@ other {Escuts de Brave ha bloquejat {BLOCKED_COUNT} rastrejadors a <ph name="SIT
 <translation id="6676791921618140305">Versió del SO:</translation>
 <translation id="1156325797949437777">Assistència proporcionada en col·laboració amb Guardian.</translation>
 <translation id="8146777497879160283">No s'ha pogut escriure la configuració VPN. Això pot passar si no tens permís o si no has executat Windows Update recentment.</translation>
-<translation id="3362894458460231163">Ha fallat la connexió de la VPN. Intenta la connexió de nou i assegura't de fer clic a "Permet" per habilitar la configuració de la VPN de Brave.</translation>
-<translation id="7261518280726313829">Desactivar el DNS segur o utilitzar els servidors per defecte de Windows podria revelar els noms dels llocs que visites al teu proveïdor de serveis d'internet. Brave no recomana que ho facis. Vols fer-ho igualment?</translation>
-<translation id="888284761945060750">El DNS segur està desactivat per les polítiques de la teva organització. Utilitzar la VPN de Brave sense el DNS segur podria revelar els noms dels llocs que visites al teu proveïdor de serveis d'internet o a la teva organització.</translation>
-<translation id="6593224083874259773">VPN de Brave a Windows</translation>
-<translation id="3153983908111684619">La VPN de Brave bloqueja la configuració mentre està connectada</translation>
+<translation id="3362894458460231163">Ha fallat la connexió de la VPN. Intenta la connexió de nou i assegura't de fer clic a "Permet" per habilitar la configuració de la VPN de Ping.</translation>
+<translation id="7261518280726313829">Desactivar el DNS segur o utilitzar els servidors per defecte de Windows podria revelar els noms dels llocs que visites al teu proveïdor de serveis d'internet. Ping no recomana que ho facis. Vols fer-ho igualment?</translation>
+<translation id="888284761945060750">El DNS segur està desactivat per les polítiques de la teva organització. Utilitzar la VPN de Ping sense el DNS segur podria revelar els noms dels llocs que visites al teu proveïdor de serveis d'internet o a la teva organització.</translation>
+<translation id="6593224083874259773">VPN de Ping a Windows</translation>
+<translation id="3153983908111684619">La VPN de Ping bloqueja la configuració mentre està connectada</translation>
 <translation id="1055657720430482013">Windows té una funció anomenada Smart Multi-Homed Name Resolution, que pot revelar informació sobre la teva ubicació i els llocs que visites.
 
-Brave té un servei d'ajuda que et protegeix d'aquesta divulgació filtrant la forma en què es fan les consultes DNS a la teva connexió VPN.
+Ping té un servei d'ajuda que et protegeix d'aquesta divulgació filtrant la forma en què es fan les consultes DNS a la teva connexió VPN.
 
 Hem canviat la configuració de DNS al navegador per protegir-te d'aquesta divulgació. La configuració romandrà vigent i bloquejada mentre la VPN estigui connectada.
 
@@ -2263,16 +2263,16 @@ Connecteu-vos-hi ara mateix!</translation>
 <translation id="7423206764347669977">Canvia la configuració</translation>
 <translation id="9061845622728745852">Fus horari</translation>
 <translation id="8295393906499561642">La sessió ha caducat</translation>
-<translation id="3312623558576021182">Inicia sessió al teu <ph name="BRAVE_ACCOUNT_BEGIN"/>compte de Brave<ph name="BRAVE_ACCOUNT_END"/> per actualitzar la sessió VPN.</translation>
-<translation id="6021669293402055982">VPN de Brave: desconnectada</translation>
-<translation id="7861195049821776142">VPN de Brave: desconnectant-se</translation>
-<translation id="958268166261124668">VPN de Brave: connectada</translation>
-<translation id="2061807837510296780">VPN de Brave: connectant-se</translation>
-<translation id="1313124107969703758">VPN de Brave: error</translation>
+<translation id="3312623558576021182">Inicia sessió al teu <ph name="BRAVE_ACCOUNT_BEGIN"/>compte de Ping<ph name="BRAVE_ACCOUNT_END"/> per actualitzar la sessió VPN.</translation>
+<translation id="6021669293402055982">VPN de Ping: desconnectada</translation>
+<translation id="7861195049821776142">VPN de Ping: desconnectant-se</translation>
+<translation id="958268166261124668">VPN de Ping: connectada</translation>
+<translation id="2061807837510296780">VPN de Ping: connectant-se</translation>
+<translation id="1313124107969703758">VPN de Ping: error</translation>
 <translation id="8273420301954598554">Estat: connectat</translation>
 <translation id="7155657348064536843">Estat: desconnectat</translation>
-<translation id="2413929902277520460">VPN de Brave - Connectada</translation>
-<translation id="8048263175525832621">VPN de Brave - Desconnectada</translation>
+<translation id="2413929902277520460">VPN de Ping - Connectada</translation>
+<translation id="8048263175525832621">VPN de Ping - Desconnectada</translation>
 <translation id="1498770726476841108">Gestiona el compte</translation>
 <translation id="6825718953004242472">Treu la icona</translation>
 <translation id="3287942014983548982">Obre-ho aquí</translation>

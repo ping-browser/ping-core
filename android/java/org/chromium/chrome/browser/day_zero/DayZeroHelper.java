@@ -31,6 +31,6 @@ public class DayZeroHelper {
 
     public static boolean getDayZeroExptFlag() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.DAY_ZERO_EXPT_FLAG, true);
+                .readBoolean(BravePreferenceKeys.DAY_ZERO_EXPT_FLAG, false);
     }
 }

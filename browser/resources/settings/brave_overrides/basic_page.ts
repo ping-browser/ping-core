@@ -388,7 +388,7 @@ RegisterPolymerTemplateModifications({
       // Insert nested Toolbar, Tabs, Sidebar under 'Appearance' menu
       last = last.insertAdjacentElement('afterend', sectionToolbar)
       last = last.insertAdjacentElement('afterend', sectionTabs)
-      last = last.insertAdjacentElement('afterend', sectionSidebar)
+      // last = last.insertAdjacentElement('afterend', sectionSidebar)
       // Insert nested Content, Playlist, Speedreader under 'Content' menu
       last = last.insertAdjacentElement('afterend', sectionContent)
       last = last.insertAdjacentElement('afterend', sectionPlaylist)
@@ -414,13 +414,13 @@ RegisterPolymerTemplateModifications({
       // Insert Web3 Domains
       last = last.insertAdjacentElement('afterend', sectionWeb3Domains)
       // Insert Tor
-      last = last.insertAdjacentElement('afterend', sectionTor)
+      // last = last.insertAdjacentElement('afterend', sectionTor)
       // Insert Data collection
       last = last.insertAdjacentElement('afterend', sectionDataCollection)
       // Insert Leo Assistant
-      last = last.insertAdjacentElement('afterend', sectionLeoAssist)
+      // last = last.insertAdjacentElement('afterend', sectionLeoAssist)
       // Insert Custom Models List
-      last.insertAdjacentElement('afterend', sectionLeoCustomModels)
+      // last.insertAdjacentElement('afterend', sectionLeoCustomModels)
 
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')

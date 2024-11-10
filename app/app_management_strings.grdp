@@ -67,10 +67,10 @@
     Opening <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>supported links<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_APP_OPEN" desc="Label for the intent sharing option to open in a specified app.">
-    Open in <ph name="APP_NAME">$1<ex>Brave browser</ex></ph>
+    Open in <ph name="APP_NAME">$1<ex>Ping browser</ex></ph>
   </message>
   <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_BROWSER_OPEN" desc="Label for the intent sharing option to open in the browser.">
-    Open in Brave browser
+    Open in Ping browser
   </message>
   <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_TAB_EXPLANATION" desc="Label for the intent sharing description for when the app is set to open in tab mode.">
     <ph name="APP_NAME">$1<ex>Gmail</ex></ph> is set to open in a new browser tab, supported links will also open in the browser. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="https://support.google.com/chromebook?p=app_intent" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
@@ -99,26 +99,38 @@
   <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_DIALOG_TEXT_5_OR_MORE_APPS" desc="Text to explain to the user that 5 or more preferred apps will be replaced, and the text states the first 3 apps that will be replaced.">
     Other apps are set to open the same links as <ph name="APP_NAME">$1<ex>Gmail</ex></ph>. This will disable <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>, <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph>, <ph name="APP_NAME_4">$4<ex>Photos</ex></ph> and <ph name="NUMBER_OF_OTHER_APPS">$5<ex>2</ex></ph> other apps from opening supported links.
   </message>
-  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_1_APP" desc="Text to explain to the user that an overlapping app will still open some supported links, and the text states which app will open links.">
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_1_APP" desc="Text to explain to the user that an overlapbrave app will still open some supported links, and the text states which app will open links.">
     Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph>.
   </message>
-  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_2_APPS" desc="Text to explain to the user that 2 overlapping apps will still open some supported links, and the text states which apps will open links.">
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_2_APPS" desc="Text to explain to the user that 2 overlapbrave apps will still open some supported links, and the text states which apps will open links.">
     Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph> or  <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>.
   </message>
-  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_3_APPS" desc="Text to explain to the user that 3 overlapping apps will still open some supported links, and the text states which apps will open links.">
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_3_APPS" desc="Text to explain to the user that 3 overlapbrave apps will still open some supported links, and the text states which apps will open links.">
     Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph>, <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph> or <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph>.
   </message>
-  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_4_APPS" desc="Text to explain to the user that 4 overlapping apps will still open some supported links, and the text states the first 3 apps that will open links.">
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_4_APPS" desc="Text to explain to the user that 4 overlapbrave apps will still open some supported links, and the text states the first 3 apps that will open links.">
     Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph>, <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>, <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph> and 1 other app.
   </message>
-  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_5_OR_MORE_APPS" desc="Text to explain to the user that 5 or more overlapping apps will still open some supported links, and the text states the first 3 apps that will open links.">
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_5_OR_MORE_APPS" desc="Text to explain to the user that 5 or more overlapbrave apps will still open some supported links, and the text states the first 3 apps that will open links.">
     Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph>, <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>, <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph> and <ph name="NUMBER_OF_OTHER_APPS">$4<ex>2</ex></ph> other apps.
   </message>
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TITLE" desc="Title for App Details Section">
     App details
   </message>
-  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TOOLTIP_WEB_A11Y" desc="Text to be read out by ChromeVox, when highlighting an info icon for Web Apps downloaded from the Brave browser, stating the source URL of the app">
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TOOLTIP_WEB_A11Y" desc="Text to be read out by ChromeVox, when highlighting an info icon for Web Apps downloaded from the Ping browser, stating the source URL of the app">
     From <ph name="APP_URL">$1<ex>https://google.com</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_ANDROID" desc="Text for Android app type">
+    Android App
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_CHROME" desc="Text for Ping app type">
+    Ping App
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_WEB" desc="Text for Web app type">
+    Web App
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_CROS_SYSTEM" desc="Text for ChromeOS System app type">
+    ChromeOS System App
   </message>
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_WEB_STORE" desc="Text for Web Store installation source">
     Web Store
@@ -126,8 +138,8 @@
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_PLAY_STORE" desc="Text for Google Play Store installation source">
     Google Play Store
   </message>
-  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_BROWSER" desc="Text for Brave browser installation source for Web App">
-    Web App installed from Brave browser
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_BROWSER" desc="Text for Ping browser installation source for Web App">
+    Web App installed from Ping browser
   </message>
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_AND_SOURCE_COMBINED" desc="Full text for installation source and app type line">
     <ph name="APP_TYPE">$1<ex>Web App</ex></ph> installed from <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph><ph name="INSTALL_SOURCE">$2<ex>Google Play Store</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>

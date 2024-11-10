@@ -14,16 +14,16 @@ extension Strings {
       "wallet.module",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave Wallet",
+      value: "Ping Wallet",
       comment:
-        "The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings."
+        "The title shown on the wallet settings page, and the value shown when selecting the default wallet as Ping Wallet in wallet settings."
     )
     public static let wallet = NSLocalizedString(
       "wallet.wallet",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Wallet",
-      comment: "The title shown on the menu to access Brave Wallet"
+      comment: "The title shown on the menu to access Ping Wallet"
     )
     public static let web3 = NSLocalizedString(
       "wallet.web3",
@@ -482,13 +482,13 @@ extension Strings {
       bundle: .module,
       value: "Restore",
       comment:
-        "The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave"
+        "The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Ping"
     )
     public static let cryptoTitle = NSLocalizedString(
       "wallet.cryptoTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave Wallet",
+      value: "Ping Wallet",
       comment: "The title of the crypto tab"
     )
     public static let backupWalletWarningMessage = NSLocalizedString(
@@ -650,7 +650,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana and more.",
+        "Take control of your crypto and NFTs. Ping Wallet supports Ethereum, EVM chains, Solana and more.",
       comment: "The subtitle displayed on the 'setup crypto' onboarding screen"
     )
     public static let setupCryptoCreateNewTitle = NSLocalizedString(
@@ -664,7 +664,7 @@ extension Strings {
       "wallet.setupCryptoCreateNewSubTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Get started with Brave Wallet within minutes.",
+      value: "Get started with Ping Wallet within minutes.",
       comment:
         "The subtitle displayed in the section for user that need to create a brand new wallet"
     )
@@ -688,7 +688,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "©2023 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave. Other product names and logos may be trademarks of their respective companies. All rights reserved.",
+        "©2023 Ping Software Inc. Ping and the Ping logo are registered trademarks of Ping. Other product names and logos may be trademarks of their respective companies. All rights reserved.",
       comment: "The disclaimer text at the bottom of the first step of onboarding flow."
     )
     public static let setupCryptoButtonTitle = NSLocalizedString(
@@ -728,7 +728,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.",
+        "I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Ping cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.",
       comment:
         "The responsibility explained in screen for users to check indicates they understand before setting up a wallet."
     )
@@ -819,7 +819,7 @@ extension Strings {
       "wallet.onbordingCompletedSubTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Your Brave Wallet is ready to use.",
+      value: "Your Ping Wallet is ready to use.",
       comment: "The subtitle of the last step of creating a new wallet."
     )
     public static let onboardingCompletedButtonTitle = NSLocalizedString(
@@ -918,8 +918,8 @@ extension Strings {
       "wallet.restoreLegacyBraveWalletToggleTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Import from legacy Brave crypto wallets?",
-      comment: "A label for toggle for user to use to indicate importing a legacy brave wallet or not"
+      value: "Import from legacy Ping crypto wallets?",
+      comment: "A label for toggle for user to use to indicate importing a legacy ping wallet or not"
     )
     public static let createWalletBackButtonTitle = NSLocalizedString(
       "wallet.createWalletBackButtonTitle",
@@ -1002,7 +1002,7 @@ extension Strings {
       "wallet.settingsResetWalletAlertTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Are you sure you want to reset Brave Wallet?",
+      value: "Are you sure you want to reset Ping Wallet?",
       comment:
         "The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device"
     )
@@ -1201,7 +1201,7 @@ extension Strings {
       "wallet.biometricsSetupTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Unlock Brave Wallet with %@",
+      value: "Unlock Ping Wallet with %@",
       comment:
         "The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device."
     )
@@ -1209,7 +1209,7 @@ extension Strings {
       "wallet.biometricsSetupSubTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Would you like to use %@ to unlock Brave Wallet?",
+      value: "Would you like to use %@ to unlock Ping Wallet?",
       comment:
         "The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device."
     )
@@ -1255,7 +1255,7 @@ extension Strings {
       "wallet.autoLockFooter",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "The number of minutes to wait until the Brave Wallet is automatically locked",
+      value: "The number of minutes to wait until the Ping Wallet is automatically locked",
       comment: "The footer beneath the auto-lock title and interval duration"
     )
     public static let enterAmount = NSLocalizedString(
@@ -1348,7 +1348,7 @@ extension Strings {
       "wallet.swapCryptoUnsupportNetworkBody",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave doesn't currently support swap on the %@. Please switch to a supported chain.",
+      value: "Ping doesn't currently support swap on the %@. Please switch to a supported chain.",
       comment:
         "The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network'"
     )
@@ -1396,9 +1396,9 @@ extension Strings {
       "wallet.braveFeeLabel",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave Fee: %@",
+      value: "Ping Fee: %@",
       comment:
-        "The title for Brave Fee label in Swap. The fee percentage is displayed beside the label."
+        "The title for Ping Fee label in Swap. The fee percentage is displayed beside the label."
     )
     public static let protocolFeeLabel = NSLocalizedString(
       "wallet.protocolFeeLabel",
@@ -1414,7 +1414,7 @@ extension Strings {
       bundle: .module,
       value: "Free",
       comment:
-        "The text beside the striked-through percentage Brave would normally charge for a swap."
+        "The text beside the striked-through percentage Ping would normally charge for a swap."
     )
     public static let transactionCount = NSLocalizedString(
       "wallet.transactionCount",
@@ -2167,7 +2167,7 @@ extension Strings {
       "wallet.swapDexAggrigatorNote",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave uses %@ as a DEX aggregator.",
+      value: "Ping uses %@ as a DEX aggregator.",
       comment:
         "A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange)"
     )
@@ -2178,7 +2178,7 @@ extension Strings {
       value:
         "%@ will process the %@ address and IP address to fulfill a transaction (including getting quotes). %@ will ONLY use this data for the purposes of processing transactions.",
       comment:
-        "A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage."
+        "A longer disclaimer about the DEX aggrigator used by Ping for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage."
     )
     public static let chartAxisDateLabel = NSLocalizedString(
       "wallet.chartAxisDateLabel",
@@ -2208,9 +2208,9 @@ extension Strings {
       "wallet.braveSwapFeeDisclaimer",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Quote includes a %@ Brave fee.",
+      value: "Quote includes a %@ Ping fee.",
       comment:
-        "A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee'"
+        "A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee'"
     )
     public static let screenshotDetectedTitle = NSLocalizedString(
       "wallet.screenshotDetectedTitle",
@@ -2224,7 +2224,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Warning: A screenshot of your recovery phrase may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
+        "Warning: A screenshot of your recovery phrase may get backed up to a cloud file service, and be readable by any application with photos access. Ping recommends that you not save this screenshot, and delete it as soon as possible.",
       comment: "The message displayed when the user takes a screenshot of their recovery phrase"
     )
     public static let privateKeyScreenshotDetectedMessage = NSLocalizedString(
@@ -2232,7 +2232,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Warning: A screenshot of your private key may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
+        "Warning: A screenshot of your private key may get backed up to a cloud file service, and be readable by any application with photos access. Ping recommends that you not save this screenshot, and delete it as soon as possible.",
       comment: "The message displayed when the user takes a screenshot of their private key"
     )
     public static let sendWarningAddressIsOwn = NSLocalizedString(
@@ -2790,17 +2790,17 @@ extension Strings {
       "wallet.dappsConnectionNotificationTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "This page wants to interact with Brave Wallet",
+      value: "This page wants to interact with Ping Wallet",
       comment:
-        "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet."
+        "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet."
     )
     public static let dappsConnectionNotificationOriginTitle = NSLocalizedString(
       "wallet.dappsConnectionNotificationOriginTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "%@ wants to interact with Brave Wallet",
+      value: "%@ wants to interact with Ping Wallet",
       comment:
-        "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\""
+        "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Ping Wallet\""
     )
     public static let editPermissionsTitle = NSLocalizedString(
       "wallet.editPermissionsTitle",
@@ -2859,7 +2859,7 @@ extension Strings {
       "wallet.newSiteConnectMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Connect to Brave Wallet",
+      value: "Connect to Ping Wallet",
       comment: "The message displayed below the dapp's origin url in new site connection screen."
     )
     public static let newSiteConnectFooter = NSLocalizedString(
@@ -2960,7 +2960,7 @@ extension Strings {
       "wallet.addNetworkDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "This will allow this network to be used within Brave Wallet.",
+      value: "This will allow this network to be used within Ping Wallet.",
       comment:
         "The description of the view shown over a dapps website that describes what adding a new network will do."
     )
@@ -3205,7 +3205,7 @@ extension Strings {
       bundle: .module,
       value: "Connections",
       comment:
-        "The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts."
+        "The navigation title of the screen for users to edit dapps site connection with users' Ping Wallet accounts."
     )
     public static let editSiteConnectionConnectedAccount = NSLocalizedString(
       "wallet.editSiteConnectionConnectedAccount",
@@ -3370,7 +3370,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Warning: A screenshot of your message may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
+        "Warning: A screenshot of your message may get backed up to a cloud file service, and be readable by any application with photos access. Ping recommends that you not save this screenshot, and delete it as soon as possible.",
       comment:
         "The message displayed when the user takes a screenshot of their dapp decrypt request."
     )
@@ -3504,7 +3504,7 @@ extension Strings {
       bundle: .module,
       value: "Buy not supported for selected network",
       comment:
-        "A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing."
+        "A placeholder in Buy Screen, when user switched to a network that Ping currently doesn't support token purchasing."
     )
     public static let auroraBridgeAlertTitle = NSLocalizedString(
       "wallet.auroraBridgeAlertTitle",
@@ -3603,7 +3603,7 @@ extension Strings {
       "wallet.dappsSettingsConnectedSitesSectionEmpty",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "DApps you connect to Brave Wallet will appear here",
+      value: "DApps you connect to Ping Wallet will appear here",
       comment:
         "A message that will be displayed under the section header when there is no dapps have been granted wallet connection."
     )
@@ -4112,9 +4112,9 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.",
+        "Note that Ping can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.",
       comment:
-        "The warning message to let users understand the risk of using Brave Wallet to sign any transaction."
+        "The warning message to let users understand the risk of using Ping Wallet to sign any transaction."
     )
     public static let solanaSignTransactionDetails = NSLocalizedString(
       "wallet.solanaSignTransactionDetails",
@@ -4318,7 +4318,7 @@ extension Strings {
       bundle: .module,
       value: "Ask",
       comment:
-        "One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url."
+        "One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Ping will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url."
     )
     public static let web3DomainOptionEnabled = NSLocalizedString(
       "wallet.web3DomainOptionEnabled",
@@ -4326,7 +4326,7 @@ extension Strings {
       bundle: .module,
       value: "Enabled",
       comment:
-        "One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url."
+        "One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Ping will enable resolving ENS/SNS domain name and IPFS scheme url."
     )
     public static let web3DomainOptionDisabled = NSLocalizedString(
       "wallet.web3DomainOptionDisabled",
@@ -4334,7 +4334,7 @@ extension Strings {
       bundle: .module,
       value: "Disabled",
       comment:
-        "One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url."
+        "One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Ping will disable resolving ENS/SNS domain name and IPFS scheme url."
     )
     public static let ensResolveMethodTitle = NSLocalizedString(
       "wallet.ensResolveMethodTitle",
@@ -4491,7 +4491,7 @@ extension Strings {
       "wallet.ensOffchainGatewayTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave supports using offchain gateways to resolve .eth domains.",
+      value: "Ping supports using offchain gateways to resolve .eth domains.",
       comment:
         "Title shown send address / ENS domain when requesting to do an ENS off chain lookup."
     )
@@ -4517,7 +4517,7 @@ extension Strings {
       bundle: .module,
       value: "terms of use",
       comment:
-        "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain."
+        "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Ping uses to resolve SNS domain."
     )
     public static let web3DomainInterstitialPagePrivacyPolicy = NSLocalizedString(
       "wallet.web3DomainInterstitialPagePrivacyPolicy",
@@ -4525,7 +4525,7 @@ extension Strings {
       bundle: .module,
       value: "privacy policy",
       comment:
-        "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain."
+        "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Ping uses to resolve SNS domain."
     )
     public static let web3DomainInterstitialPageButtonDisable = NSLocalizedString(
       "wallet.web3DomainInterstitialPageButtonDisable",
@@ -4533,25 +4533,25 @@ extension Strings {
       bundle: .module,
       value: "Disable",
       comment:
-        "Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered."
+        "Title on the button that users can click to disable Ping to resolve the ENS/SNS domain they entered."
     )
     // SNS
     public static let snsDomainInterstitialPageTitle = NSLocalizedString(
       "wallet.snsDomainInterstitialPageTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enable Support of Solana Name Service (SNS) in Brave?",
+      value: "Enable Support of Solana Name Service (SNS) in Ping?",
       comment:
-        "Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one."
+        "Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one."
     )
     public static let snsDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.snsDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Brave will use a third-party to resolve .sol domain names. Brave hides your IP address. If you enable this, the third-party will see that someone is trying to visit these .sol domains, but nothing else. For more information about which third-parties we use and their privacy policies, please see our <a href=%@>help page</a>.",
+        "Ping will use a third-party to resolve .sol domain names. Ping hides your IP address. If you enable this, the third-party will see that someone is trying to visit these .sol domains, but nothing else. For more information about which third-parties we use and their privacy policies, please see our <a href=%@>help page</a>.",
       comment:
-        "Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'."
+        "Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'."
     )
     public static let snsDomainInterstitialPageButtonProceed = NSLocalizedString(
       "wallet.snsDomainInterstitialPageButtonProceed",
@@ -4559,25 +4559,25 @@ extension Strings {
       bundle: .module,
       value: "Proceed using an SNS server",
       comment:
-        "Title on the button that users can click to enable Brave to resolve the SNS domain they entered."
+        "Title on the button that users can click to enable Ping to resolve the SNS domain they entered."
     )
     // ENS
     public static let ensDomainInterstitialPageTitle = NSLocalizedString(
       "wallet.ensDomainInterstitialPageTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enable Support of Ethereum Name Service (ENS) in Brave?",
+      value: "Enable Support of Ethereum Name Service (ENS) in Ping?",
       comment:
-        "Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one."
+        "Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one."
     )
     public static let ensDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.ensDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Brave will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these .eth domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+        "Ping will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). Ping hides your IP address. If you enable this, Infura will see that someone is trying to visit these .eth domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
       comment:
-        "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
+        "Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
     )
     public static let ensDomainInterstitialPageButtonProceed = NSLocalizedString(
       "wallet.ensDomainInterstitialPageButtonProceed",
@@ -4585,16 +4585,16 @@ extension Strings {
       bundle: .module,
       value: "Proceed using Infura server",
       comment:
-        "Title on the button that users can click to enable Brave to resolve the ENS domain they entered."
+        "Title on the button that users can click to enable Ping to resolve the ENS domain they entered."
     )
     // ENS offchain
     public static let ensOffchainDomainInterstitialPageTitle = NSLocalizedString(
       "wallet.ensOffchainDomainInterstitialPageTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enable support of Ethereum Name Service (ENS) offchain lookup in Brave?",
+      value: "Enable support of Ethereum Name Service (ENS) offchain lookup in Ping?",
       comment:
-        "Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one."
+        "Title displayed when users chose Ping to ask them if they want the ENS Offchain domain to be resolved every time they enter one."
     )
     public static let ensOffchainDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.ensOffchainDomainInterstitialPageDescription",
@@ -4603,7 +4603,7 @@ extension Strings {
       value:
         "This .eth domain name is stored offchain and will be resolved by a third party gateway. If you enable ENS offchain lookup, the third party gateway will see that you're trying to visit the .eth domain. <a href=%@>%@</a>.",
       comment:
-        "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'."
+        "Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'."
     )
     public static let ensOffchainDomainInterstitialPageButtonProceed = NSLocalizedString(
       "wallet.ensOffchainDomainInterstitialPageButtonProceed",
@@ -4611,25 +4611,25 @@ extension Strings {
       bundle: .module,
       value: "Proceed with offchain lookup",
       comment:
-        "Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered."
+        "Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered."
     )
     // Unstoppable Domains
     public static let udDomainInterstitialPageTitle = NSLocalizedString(
       "wallet.udDomainInterstitialPageTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enable support of Unstoppable Domains in Brave?",
+      value: "Enable support of Unstoppable Domains in Ping?",
       comment:
-        "Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one."
+        "Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one."
     )
     public static let udDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.udDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Brave will be using Infura to resolve .crypto (and also %@) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+        "Ping will be using Infura to resolve .crypto (and also %@) domain names that are on Unstoppable Domains. Ping hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
       comment:
-        "Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
+        "Description displayed when users chose Ping to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
     )
     public static let activityPageTitle = NSLocalizedString(
       "wallet.activityPageTitle",
@@ -4754,7 +4754,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with SimpleHash to provide this service. Learn more.",
+        "Ping Wallet can use a third-party service to automatically display your NFTs. Ping will share your wallet addresses with SimpleHash to provide this service. Learn more.",
       comment:
         "The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated."
     )
@@ -4835,7 +4835,7 @@ extension Strings {
       "wallet.nftRemoveFromWalletAlertTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Remove from Brave Wallet?",
+      value: "Remove from Ping Wallet?",
       comment: "The title of the alert when user attempts to remove an NFT from wallet."
     )
     public static let nftRemoveFromWalletAlertDescription = NSLocalizedString(
@@ -4843,7 +4843,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "NFT will be removed from Brave Wallet but will remain on the blockchain. If you remove it, then change your mind, you'll need to import it again manually.",
+        "NFT will be removed from Ping Wallet but will remain on the blockchain. If you remove it, then change your mind, you'll need to import it again manually.",
       comment: "The description of the alert when user attempts to remove an NFT from wallet."
     )
     public static let selectTokenToSendTitle = NSLocalizedString(
@@ -5115,7 +5115,7 @@ extension Strings {
       "wallet.signInWithBraveWallet",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Sign in with Brave Wallet",
+      value: "Sign in with Ping Wallet",
       comment: "The title of the view shown above a Sign In With Ethereum request."
     )
     public static let securityRiskDetectedTitle = NSLocalizedString(
@@ -5130,7 +5130,7 @@ extension Strings {
       "wallet.signInWithBraveWalletMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "You are signing into %@. Brave Wallet will share your wallet address with %@.",
+      value: "You are signing into %@. Ping Wallet will share your wallet address with %@.",
       comment:
         "The title of the view shown when a security issue is detected with a Sign In With Ethereum request."
     )
@@ -5161,7 +5161,7 @@ extension Strings {
       bundle: .module,
       value: "Sign In",
       comment:
-        "The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests."
+        "The label displayed on the button to sign in for Sign In With Ethereum/Ping Wallet requests."
     )
     public static let siweOriginLabel = NSLocalizedString(
       "wallet.siweOriginLabel",
@@ -5169,7 +5169,7 @@ extension Strings {
       bundle: .module,
       value: "Origin",
       comment:
-        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin."
+        "The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the origin."
     )
     public static let siweAddressLabel = NSLocalizedString(
       "wallet.siweAddressLabel",
@@ -5177,7 +5177,7 @@ extension Strings {
       bundle: .module,
       value: "Address",
       comment:
-        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address."
+        "The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the address."
     )
     public static let siweURILabel = NSLocalizedString(
       "wallet.siweURILabel",
@@ -5185,7 +5185,7 @@ extension Strings {
       bundle: .module,
       value: "URI",
       comment:
-        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI."
+        "The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the URI."
     )
     public static let siweVersionLabel = NSLocalizedString(
       "wallet.siweVersionLabel",
@@ -5193,7 +5193,7 @@ extension Strings {
       bundle: .module,
       value: "Version",
       comment:
-        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version."
+        "The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the version."
     )
     public static let siweChainIDLabel = NSLocalizedString(
       "wallet.siweChainIDLabel",
@@ -5201,7 +5201,7 @@ extension Strings {
       bundle: .module,
       value: "Chain ID",
       comment:
-        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID."
+        "The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the chain ID."
     )
     public static let siweIssuedAtLabel = NSLocalizedString(
       "wallet.siweIssuedAtLabel",
@@ -5209,7 +5209,7 @@ extension Strings {
       bundle: .module,
       value: "Issued At",
       comment:
-        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date."
+        "The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the issued at date."
     )
     public static let siweExpirationTimeLabel = NSLocalizedString(
       "wallet.siweExpirationTimeLabel",
@@ -5217,7 +5217,7 @@ extension Strings {
       bundle: .module,
       value: "Expiration Time",
       comment:
-        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time."
+        "The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the expiration time."
     )
     public static let siweNonceLabel = NSLocalizedString(
       "wallet.siweNonceLabel",
@@ -5225,7 +5225,7 @@ extension Strings {
       bundle: .module,
       value: "Nonce",
       comment:
-        "The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce."
+        "The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the nonce."
     )
     public static let siweStatementLabel = NSLocalizedString(
       "wallet.siweStatementLabel",
@@ -5233,14 +5233,14 @@ extension Strings {
       bundle: .module,
       value: "Statement",
       comment:
-        "The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement."
+        "The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the statement."
     )
     public static let siweDetailsTitle = NSLocalizedString(
       "wallet.siweDetailsTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Details",
-      comment: "The title of the details view for Sign In With Ethereum/Brave Wallet requests."
+      comment: "The title of the details view for Sign In With Ethereum/Ping Wallet requests."
     )
     public static let transactionSummaryIntentLabel = NSLocalizedString(
       "wallet.transactionSummaryIntentLabel",
@@ -5409,7 +5409,7 @@ extension Strings {
       "wallet.btcOrdinalsUnsupportedWarning",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.",
+      value: "Ping Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.",
       comment: "A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected."
     )
     public static let inputLabel = NSLocalizedString(

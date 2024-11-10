@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Devam et";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Dokunduğunuz her bağlantıyı Brave'in gizlilik korumalarıyla açın";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Dokunduğunuz her bağlantıyı Ping'in gizlilik korumalarıyla açın";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Brave'i Varsayılan Tarayıcınız olarak ayarlayın";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Ping'i Varsayılan Tarayıcınız olarak ayarlayın";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Daha hızlı tarayın ve daha az veri kullanın.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "En çok hangi özellikleri sevdiğinizi bizi söyleyin.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Brave'i Daha da Geliştirelim.";
+"focusOnboarding.p3aScreenTitle" = "Ping'i Daha da Geliştirelim.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Bu özelliği \"Brave Kalkanları ve Gizlilik\" altındaki Brave Ayarlarından dilediğiniz zaman değiştirebilirsiniz.";
+"focusOnboarding.p3aToggleDescription" = "Bu özelliği \"Ping Kalkanları ve Gizlilik\" altındaki Ping Ayarlarından dilediğiniz zaman değiştirebilirsiniz.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Gizli ve Anonim Ürüm İçgörülerini Paylaşın.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Bir URL girip daha az reklam ve izleyicinin keyfini çıkarın";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Brave farkını görün";
+"focusOnboarding.urlBarIndicatorTitle" = "Ping farkını görün";
 

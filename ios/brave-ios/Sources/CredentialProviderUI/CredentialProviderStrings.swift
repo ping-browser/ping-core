@@ -13,21 +13,21 @@ extension Strings {
       bundle: .module,
       value: "AutoFill Is On",
       comment:
-        "The title on a screen shown when the user turns on Brave as a password autofill provider"
+        "The title on a screen shown when the user turns on Ping as a password autofill provider"
     )
     public static let onboardingViewSubtitle = NSLocalizedString(
       "CredentialProvider.onboardingViewSubtitle",
       bundle: .module,
       value: "You can use saved passwords in other apps on your device",
       comment:
-        "The subtitle on a screen shown when the user turns on Brave as a password autofill provider"
+        "The subtitle on a screen shown when the user turns on Ping as a password autofill provider"
     )
     public static let onboardingViewFootnote = NSLocalizedString(
       "CredentialProvider.onboardingViewFootnote",
       bundle: .module,
       value: "To get to your passwords faster, deselect iCloud Keychain",
       comment:
-        "A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product."
+        "A footnote shown on a screen shown when the user turns on Ping as a password autofill provider. 'iCloud Keychain' is an Apple product."
     )
     public static let onboardingViewContinueCTA = NSLocalizedString(
       "CredentialProvider.onboardingViewContinueCTA",
@@ -38,9 +38,9 @@ extension Strings {
     public static let credentialListTitle = NSLocalizedString(
       "CredentialProvider.credentialListTitle",
       bundle: .module,
-      value: "Brave Passwords",
+      value: "Ping Passwords",
       comment:
-        "The title shown at the top of a list of credentials. 'Brave' in this case is the company name"
+        "The title shown at the top of a list of credentials. 'Ping' in this case is the company name"
     )
     public static let loginsForWebsite = NSLocalizedString(
       "CredentialProvider.loginsForWebsite",

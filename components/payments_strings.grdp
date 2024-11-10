@@ -26,16 +26,16 @@
     <message name="IDS_PAYMENTS_EDIT_CONTACT_DETAILS_LABEL" desc="The title of the dialog for user to edit their contact information, such as the user's full name, an email address or a phone number. Sentence-cased." formatter_data="android_java">
       Edit contact info
     </message>
-    <message name="IDS_PAYMENTS_ADD_MORE_INFORMATION" desc="The title in the Android app title bar for user to add more information to payment card or shipping address or contact info. Sentence-cased." formatter_data="android_java">
+    <message name="IDS_PAYMENTS_ADD_MORE_INFORMATION" desc="The title in the Android app title bar for user to add more information to payment card or shipbrave address or contact info. Sentence-cased." formatter_data="android_java">
       Add more information
     </message>
-    <message name="IDS_PAYMENTS_ADD_PHONE_NUMBER" desc="The title of the dialog for user to add phone number to the shipping address or contact info. This phone number can be used, for example, if there's a problem with shipping a package to its destination. Sentence-cased." formatter_data="android_java">
+    <message name="IDS_PAYMENTS_ADD_PHONE_NUMBER" desc="The title of the dialog for user to add phone number to the shipbrave address or contact info. This phone number can be used, for example, if there's a problem with shipbrave a package to its destination. Sentence-cased." formatter_data="android_java">
       Add phone number
     </message>
-    <message name="IDS_PAYMENTS_ADD_RECIPIENT" desc="The title of the dialog for user to add the name in the shipping address. This name identifies the profile that will receive the shipped package. Sentence-cased." formatter_data="android_java">
+    <message name="IDS_PAYMENTS_ADD_RECIPIENT" desc="The title of the dialog for user to add the name in the shipbrave address. This name identifies the profile that will receive the shipped package. Sentence-cased." formatter_data="android_java">
       Add name
     </message>
-    <message name="IDS_PAYMENTS_ADD_VALID_ADDRESS" desc="The title of the dialog for user to add valid shipping address. For example, missing state or city name. Sentence-cased." formatter_data="android_java">
+    <message name="IDS_PAYMENTS_ADD_VALID_ADDRESS" desc="The title of the dialog for user to add valid shipbrave address. For example, missing state or city name. Sentence-cased." formatter_data="android_java">
       Add valid address
     </message>
     <message name="IDS_PAYMENTS_ADD_EMAIL" desc="The title of the dialog for user to add email to the contact details. This email can be used to contact the payer. Sentence-cased." formatter_data="android_java">
@@ -53,14 +53,14 @@
     <message name="IDS_PAYMENT_REQUEST_CONTACT_INFO_SECTION_NAME" desc="The name of the Contact Info section in the Payment Sheet of the Payment Request dialog. Sentence-cased.">
       Contact info
     </message>
-    <message name="IDS_PAYMENTS_SHIPPING_SUMMARY_LABEL" desc="The title for the section of shipping information. Shipping is used for packages and things that are mailed. In American English, 'shipping' is differentiated from 'delivery'. 'Delivery' is used, for example, for food delivery. Sentence-cased." formatter_data="android_java">
+    <message name="IDS_PAYMENTS_SHIPPING_SUMMARY_LABEL" desc="The title for the section of shipbrave information. Shipbrave is used for packages and things that are mailed. In American English, 'shipping' is differentiated from 'delivery'. 'Delivery' is used, for example, for food delivery. Sentence-cased." formatter_data="android_java">
       Shipping
     </message>
-    <message name="IDS_PAYMENTS_SHIPPING_ADDRESS_LABEL" desc="The title for the section that lets the user select the address where the product should be shipped. Shipping is typically used for packages. Sentence-cased." formatter_data="android_java">
-      Shipping address
+    <message name="IDS_PAYMENTS_SHIPPING_ADDRESS_LABEL" desc="The title for the section that lets the user select the address where the product should be shipped. Shipbrave is typically used for packages. Sentence-cased." formatter_data="android_java">
+      Shipbrave address
     </message>
-    <message name="IDS_PAYMENTS_SHIPPING_OPTION_LABEL" desc="The title for the section that lets the user select how the product should be shipped. Shipping is typically used for packages. Sentence-cased." formatter_data="android_java">
-      Shipping method
+    <message name="IDS_PAYMENTS_SHIPPING_OPTION_LABEL" desc="The title for the section that lets the user select how the product should be shipped. Shipbrave is typically used for packages. Sentence-cased." formatter_data="android_java">
+      Shipbrave method
     </message>
   </if>  <!-- not use_titlecase -->
   <!-- General Titles, Title-Cased -->
@@ -77,16 +77,16 @@
     <message name="IDS_PAYMENTS_EDIT_CONTACT_DETAILS_LABEL" desc="The title of the dialog for user to edit their contact information, such as the user's full name, an email address or a phone number. Title-Cased.">
       Edit Contact Info
     </message>
-    <message name="IDS_PAYMENTS_ADD_MORE_INFORMATION" desc="The title in the Android app title bar for user to add more information to payment card or shipping address or contact info. Title-Cased.">
+    <message name="IDS_PAYMENTS_ADD_MORE_INFORMATION" desc="The title in the Android app title bar for user to add more information to payment card or shipbrave address or contact info. Title-Cased.">
       Add More Information
     </message>
-    <message name="IDS_PAYMENTS_ADD_PHONE_NUMBER" desc="The title of the dialog for user to add phone number to the shipping address or contact info. This phone number can be used, for example, if there's a problem with shipping a package to its destination. Title-Cased.">
+    <message name="IDS_PAYMENTS_ADD_PHONE_NUMBER" desc="The title of the dialog for user to add phone number to the shipbrave address or contact info. This phone number can be used, for example, if there's a problem with shipbrave a package to its destination. Title-Cased.">
       Add Phone Number
     </message>
-    <message name="IDS_PAYMENTS_ADD_RECIPIENT" desc="The title of the dialog for user to add the name in the shipping address. This name identifies the profile that will receive the shipped package. Title-Cased.">
+    <message name="IDS_PAYMENTS_ADD_RECIPIENT" desc="The title of the dialog for user to add the name in the shipbrave address. This name identifies the profile that will receive the shipped package. Title-Cased.">
       Add Name
     </message>
-    <message name="IDS_PAYMENTS_ADD_VALID_ADDRESS" desc="The title of the dialog for user to add valid shipping address. For example, missing state or city name. Title-Cased.">
+    <message name="IDS_PAYMENTS_ADD_VALID_ADDRESS" desc="The title of the dialog for user to add valid shipbrave address. For example, missing state or city name. Title-Cased.">
       Add Valid Address
     </message>
     <message name="IDS_PAYMENTS_ADD_EMAIL" desc="The title of the dialog for user to add email to the contact details. This email can be used to contact the payer. Title-Cased.">
@@ -104,14 +104,14 @@
     <message name="IDS_PAYMENT_REQUEST_CONTACT_INFO_SECTION_NAME" desc="The name of the Contact Info section in the Payment Sheet of the Payment Request dialog. Title-Cased.">
       Contact Info
     </message>
-    <message name="IDS_PAYMENTS_SHIPPING_SUMMARY_LABEL" desc="The title for the section of shipping information. Shipping is used for packages and things that are mailed. In American English, 'shipping' is differentiated from 'delivery'. 'Delivery' is used, for example, for food delivery. Title-Cased.">
+    <message name="IDS_PAYMENTS_SHIPPING_SUMMARY_LABEL" desc="The title for the section of shipbrave information. Shipbrave is used for packages and things that are mailed. In American English, 'shipping' is differentiated from 'delivery'. 'Delivery' is used, for example, for food delivery. Title-Cased.">
       Shipping
     </message>
-    <message name="IDS_PAYMENTS_SHIPPING_ADDRESS_LABEL" desc="The title for the section that lets the user select the address where the product should be shipped. Shipping is typically used for packages. Title-Cased.">
-      Shipping Address
+    <message name="IDS_PAYMENTS_SHIPPING_ADDRESS_LABEL" desc="The title for the section that lets the user select the address where the product should be shipped. Shipbrave is typically used for packages. Title-Cased.">
+      Shipbrave Address
     </message>
-    <message name="IDS_PAYMENTS_SHIPPING_OPTION_LABEL" desc="The title for the section that lets the user select how the product should be shipped. Shipping is typically used for packages. Title-Cased.">
-      Shipping Method
+    <message name="IDS_PAYMENTS_SHIPPING_OPTION_LABEL" desc="The title for the section that lets the user select how the product should be shipped. Shipbrave is typically used for packages. Title-Cased.">
+      Shipbrave Method
     </message>
   </if>  <!-- use_titlecase -->
 
@@ -278,16 +278,16 @@
   </message>
   <if expr="is_android">
     <message name="IDS_PAYMENTS_CARD_AND_ADDRESS_SETTINGS_SIGNED_IN" desc="Label of the section containing the origin description and the link to go to the settings page for card and address options. This label is used when the user is signed in." formatter_data="android_java">
-      Cards and addresses are from Brave and your Brave sync chain (<ph name="ACCOUNT_EMAIL">%1$s<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
+      Cards and addresses are from Ping and your Ping sync chain (<ph name="ACCOUNT_EMAIL">%1$s<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
     </message>
   </if>
   <if expr="not is_android">
     <message name="IDS_PAYMENTS_CARD_AND_ADDRESS_SETTINGS_SIGNED_IN" desc="Label of the section containing the origin description and the link to go to the settings page for card and address options. This label is used when the user is signed in.">
-      Cards and addresses are from Brave and your Brave sync chain (<ph name="ACCOUNT_EMAIL">$1<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
+      Cards and addresses are from Ping and your Ping sync chain (<ph name="ACCOUNT_EMAIL">$1<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
     </message>
   </if>
   <message name="IDS_PAYMENTS_CARD_AND_ADDRESS_SETTINGS_SIGNED_OUT" desc="Label of the section containing the origin description and the link to go to the settings page for card and address options. This label is used when the user is not signed in." formatter_data="android_java">
-    Cards and addresses are from Brave. You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
+    Cards and addresses are from Ping. You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
   </message>
   <message name="IDS_SETTINGS_CAN_MAKE_PAYMENT_TOGGLE_LABEL" desc="Label of the toggle which disables canMakePayment and hasEnrolledInstrument" formatter_data="android_java">
     Allow sites to check if you have payment methods saved
@@ -312,19 +312,19 @@
   <message name="IDS_PAYMENTS_CARD_NUMBER_INVALID_VALIDATION_MESSAGE" desc="The text that informs the user that the credit card number they have entered is not valid." formatter_data="android_java">
     Enter a valid card number
   </message>
-  <message name="IDS_PAYMENTS_INVALID_ADDRESS" desc="The label to indicate the shipping address is invalid. For example, missing state or city name." formatter_data="android_java">
+  <message name="IDS_PAYMENTS_INVALID_ADDRESS" desc="The label to indicate the shipbrave address is invalid. For example, missing state or city name." formatter_data="android_java">
     Enter a valid address
   </message>
   <message name="IDS_PAYMENTS_BILLING_ADDRESS_REQUIRED" desc="The label to indicate billing address is required for payment card.">
     Billing address required
   </message>
-  <message name="IDS_PAYMENTS_MORE_INFORMATION_REQUIRED" desc="The label to indicate more information is required for payment card or shipping address or contact info." formatter_data="android_java">
+  <message name="IDS_PAYMENTS_MORE_INFORMATION_REQUIRED" desc="The label to indicate more information is required for payment card or shipbrave address or contact info." formatter_data="android_java">
     More information required
   </message>
-  <message name="IDS_PAYMENTS_PHONE_NUMBER_REQUIRED" desc="The label to indicate phone number is required in the shipping address or contact info. This phone number can be used, for example, if there's a problem with shipping a package to its destination." formatter_data="android_java">
+  <message name="IDS_PAYMENTS_PHONE_NUMBER_REQUIRED" desc="The label to indicate phone number is required in the shipbrave address or contact info. This phone number can be used, for example, if there's a problem with shipbrave a package to its destination." formatter_data="android_java">
     Phone number required
   </message>
-  <message name="IDS_PAYMENTS_RECIPIENT_REQUIRED" desc="The label to indicate recipient name is required in the shipping address. This name identifies the profile that will receive the shipped package." formatter_data="android_java">
+  <message name="IDS_PAYMENTS_RECIPIENT_REQUIRED" desc="The label to indicate recipient name is required in the shipbrave address. This name identifies the profile that will receive the shipped package." formatter_data="android_java">
     Name required
   </message>
   <message name="IDS_PAYMENTS_EMAIL_REQUIRED" desc="The label to indicate email is required for the contact details. This email can be used to contact the payer." formatter_data="android_java">
@@ -363,15 +363,15 @@
     Multiple
   </message>
 
-  <!-- Shipping address descriptive strings -->
-  <message name="IDS_PAYMENTS_SELECT_SHIPPING_ADDRESS_FOR_SHIPPING_METHODS" desc="Text implying that a user needs to pick a shipping address to see the shipping methods. Shipping is typically used for packages." formatter_data="android_java">
-    To see shipping methods and requirements, select an address
+  <!-- Shipbrave address descriptive strings -->
+  <message name="IDS_PAYMENTS_SELECT_SHIPPING_ADDRESS_FOR_SHIPPING_METHODS" desc="Text implying that a user needs to pick a shipbrave address to see the shipbrave methods. Shipbrave is typically used for packages." formatter_data="android_java">
+    To see shipbrave methods and requirements, select an address
   </message>
-  <message name="IDS_PAYMENTS_UNSUPPORTED_SHIPPING_ADDRESS" desc="Text implying that a user needs to pick a different shipping address, because the currently selected address is not supported. 'Ship' is typically used for packages and items that are sent through the mail. In American English, we differentiate 'ship' from 'deliver." formatter_data="android_java">
+  <message name="IDS_PAYMENTS_UNSUPPORTED_SHIPPING_ADDRESS" desc="Text implying that a user needs to pick a different shipbrave address, because the currently selected address is not supported. 'Ship' is typically used for packages and items that are sent through the mail. In American English, we differentiate 'ship' from 'deliver." formatter_data="android_java">
     Can’t ship to this address. Select a different address.
   </message>
-  <message name="IDS_PAYMENTS_UNSUPPORTED_SHIPPING_OPTION" desc="Text implying that a user needs to pick a different shipping option, because the currently selected option is not supported. 'Ship' is typically used for packages and items that are sent through the mail. In American English, we differentiate 'ship' from deliver.">
-    This shipping method isn’t available. Try a different method.
+  <message name="IDS_PAYMENTS_UNSUPPORTED_SHIPPING_OPTION" desc="Text implying that a user needs to pick a different shipbrave option, because the currently selected option is not supported. 'Ship' is typically used for packages and items that are sent through the mail. In American English, we differentiate 'ship' from deliver.">
+    This shipbrave method isn’t available. Try a different method.
   </message>
 
   <!-- Delivery address descriptive strings -->
@@ -402,25 +402,25 @@
 
   <!-- Payment Request section preview strings. They are slightly different on desktop and android because the pluralization and formatting code behaves differently. -->
   <if expr="not is_android">
-    <message name="IDS_PAYMENT_REQUEST_PAYMENT_METHODS_PREVIEW" desc="This is a snippet of a payment method a user has saved to Brave, plus an indication of the number of additional payment methods the user has saved. Its function is to show the user has payment methods that can be used to complete a payment, and thus doesn't have to type the entire payment method. [ICU Syntax]">
+    <message name="IDS_PAYMENT_REQUEST_PAYMENT_METHODS_PREVIEW" desc="This is a snippet of a payment method a user has saved to Ping, plus an indication of the number of additional payment methods the user has saved. Its function is to show the user has payment methods that can be used to complete a payment, and thus doesn't have to type the entire payment method. [ICU Syntax]">
     {PAYMENT_METHOD, plural,
        =0 {<ph name="PAYMENT_METHOD_PREVIEW">{1}<ex>VISA ....1234</ex></ph>}
        =1 {<ph name="PAYMENT_METHOD_PREVIEW">{1}<ex>VISA ....1234</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS">{2}<ex>1</ex></ph> more}
        other {<ph name="PAYMENT_METHOD_PREVIEW">{1}<ex>VISA ....1234</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS">{2}<ex>2</ex></ph> more}}
     </message>
-    <message name="IDS_PAYMENT_REQUEST_SHIPPING_ADDRESSES_PREVIEW" desc="This is a snippet of a shipping address a user has saved to Brave, plus an indication of the number of additional shipping addresses the user has saved. Its function is to show the user has shipping addresses that can be used to complete a purchase, and thus doesn't have to type the entire address. [ICU Syntax]">
+    <message name="IDS_PAYMENT_REQUEST_SHIPPING_ADDRESSES_PREVIEW" desc="This is a snippet of a shipbrave address a user has saved to Ping, plus an indication of the number of additional shipbrave addresses the user has saved. Its function is to show the user has shipbrave addresses that can be used to complete a purchase, and thus doesn't have to type the entire address. [ICU Syntax]">
     {SHIPPING_ADDRESS, plural,
       =0 {<ph name="SHIPPING_ADDRESS_PREVIEW">{1}<ex>Jerry, 1253 Mcgill college</ex></ph>}
       =1 {<ph name="SHIPPING_ADDRESS_PREVIEW">{1}<ex>Jerry, 1253 Mcgill college</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES">{2}<ex>1</ex></ph> more}
       other {<ph name="SHIPPING_ADDRESS_PREVIEW">{1}<ex>Jerry, 1253 Mcgill college</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES">{2}<ex>2</ex></ph> more}}
     </message>
-    <message name="IDS_PAYMENT_REQUEST_SHIPPING_OPTIONS_PREVIEW" desc="This is a snippet of a shipping option a merchant supports, plus an indication of the number of additional shipping options the merchant supports. Its function is to show the user can choose different shipping options to complete a purchase. [ICU Syntax]">
+    <message name="IDS_PAYMENT_REQUEST_SHIPPING_OPTIONS_PREVIEW" desc="This is a snippet of a shipbrave option a merchant supports, plus an indication of the number of additional shipbrave options the merchant supports. Its function is to show the user can choose different shipbrave options to complete a purchase. [ICU Syntax]">
     {SHIPPING_OPTIONS, plural,
        =0 {<ph name="SHIPPING_OPTION_PREVIEW">{1}<ex>standard shipping</ex></ph>}
        =1 {<ph name="SHIPPING_OPTION_PREVIEW">{1}<ex>standard shipping</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS">{2}<ex>1</ex></ph> more}
        other {<ph name="SHIPPING_OPTION_PREVIEW">{1}<ex>standard shipping</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS">{2}<ex>2</ex></ph> more}}
     </message>
-    <message name="IDS_PAYMENT_REQUEST_CONTACTS_PREVIEW" desc="This is a snippet of a contact a user has saved to Brave, plus an indication of the number of additional contacts the user has saved. Its function is to show the user has contacts that can be used to complete a purchase, and thus doesn't have to type the entire contact info. [ICU Syntax]">
+    <message name="IDS_PAYMENT_REQUEST_CONTACTS_PREVIEW" desc="This is a snippet of a contact a user has saved to Ping, plus an indication of the number of additional contacts the user has saved. Its function is to show the user has contacts that can be used to complete a purchase, and thus doesn't have to type the entire contact info. [ICU Syntax]">
      {CONTACT, plural,
        =0 {<ph name="CONTACT_PREVIEW">{1}<ex>Jerry, 438-123-1922</ex></ph>}
        =1 {<ph name="CONTACT_PREVIEW">{1}<ex>Jerry, 438-123-1922</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_CONTACTS">{2}<ex>1</ex></ph> more}

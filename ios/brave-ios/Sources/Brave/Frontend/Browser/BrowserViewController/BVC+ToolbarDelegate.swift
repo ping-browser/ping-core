@@ -265,7 +265,7 @@ extension BrowserViewController: TopToolbarDelegate {
     isUserDefinedURLNavigation: Bool
   ) async -> Bool {
 
-    if let url = URL(string: text), url.scheme == "brave" || url.scheme == "chrome" {
+    if let url = URL(string: text), url.scheme == "ping" || url.scheme == "brave" || url.scheme == "chrome" {
       topToolbar.leaveOverlayMode()
       return handleChromiumWebUIURL(url)
     }
@@ -274,7 +274,7 @@ extension BrowserViewController: TopToolbarDelegate {
       return false
     }
 
-    if fixupURL.scheme == "brave" || fixupURL.scheme == "chrome" {
+    if fixupURL.scheme == "ping" || fixupURL.scheme == "brave" || fixupURL.scheme == "chrome" {
       topToolbar.leaveOverlayMode()
       return handleChromiumWebUIURL(fixupURL)
     }
@@ -963,8 +963,8 @@ extension BrowserViewController: ToolbarDelegate {
             featuresMenuSection(menuController)
           } else {
             privacyFeaturesMenuSection(menuController)
+            Divider()
           }
-          Divider()
           destinationMenuSection(menuController, isShownOnWebPage: isShownOnWebPage)
           if let tabURL = selectedTabURL {
             Divider()

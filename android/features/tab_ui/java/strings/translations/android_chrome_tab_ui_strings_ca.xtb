@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Vols consultar la informació de la botiga?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{S'ha tancat <ph name="ONE_CLOSED"/> pestanya}other{S'han tancat <ph name="MANY_CLOSED"/> pestanyes}}</translation>
 <translation id="2894757982205307093">Pestanya nova al grup</translation>
-<translation id="4691798003247738043">Brave | Sobre aquesta botiga</translation>
+<translation id="4691798003247738043">Ping | Sobre aquesta botiga</translation>
 <translation id="2977480621796371840">Suprimeix del grup</translation>
 <translation id="29919168204617356">Les pestanyes inactives es tancaran automàticament. Sempre les pots trobar a Historial.</translation>
 <translation id="3008554597174452548">Atura el seguiment del producte</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Consulta la informació de la botiga, opció disponible a prop de la part superior de la pantalla</translation>
 <translation id="5627941783489838464">Cap actualització de pestanyes</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Restaura la pestanya}other{Restaura les pestanyes}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> enllaç de Brave}other{<ph name="TABS_COUNT_MANY"/> enllaços de Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> enllaç de Ping}other{<ph name="TABS_COUNT_MANY"/> enllaços de Ping}}</translation>
 <translation id="575494663145460764">Vols rebre alertes de baixades de preu?</translation>
 <translation id="58326064309361797">Arrossega les pestanyes per agrupar-les</translation>
 <translation id="5901630391730855834">Groc</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Els grups de pestanyes es desen i s'actualitzen automàticament en tots els dispositius</translation>
 <translation id="747459581954555080">Restaura'ls tots</translation>
 <translation id="753732157349120914">Selector de pestanyes</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> ressenya de Brave}other{<ph name="REVIEWS_COUNT_MANY"/> ressenyes de Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> ressenya de Ping}other{<ph name="REVIEWS_COUNT_MANY"/> ressenyes de Ping}}</translation>
 <translation id="7559245342362162951">Mostra les pestanyes del grup en una quadrícula en pantalla completa</translation>
 <translation id="7658239707568436148">Cancel·la</translation>
 <translation id="7688386659311034820">Quadre de diàleg Pestanyes inactives</translation>

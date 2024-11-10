@@ -146,7 +146,7 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
   // Needs to add separator as this section is brave specific section.
   bool need_separator = false;
 
-  if (IsCommandIdEnabled(IDC_TOGGLE_AI_CHAT)) {
+  if ((false) && IsCommandIdEnabled(IDC_TOGGLE_AI_CHAT)) {
     InsertItemWithStringIdAt(GetNextIndexOfBraveProductsSection(),
                              IDC_TOGGLE_AI_CHAT, IDS_TOGGLE_AI_CHAT);
     need_separator = true;
@@ -158,7 +158,7 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
     need_separator = true;
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if !BUILDFLAG(ENABLE_BRAVE_VPN)
   if (IsCommandIdEnabled(IDC_BRAVE_VPN_MENU)) {
     sub_menus().push_back(std::make_unique<BraveVPNMenuModel>(
         browser(), browser()->profile()->GetPrefs()));
@@ -174,7 +174,7 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-  if (sidebar::CanUseSidebar(browser())) {
+  if ((false) && sidebar::CanUseSidebar(browser())) {
     sidebar_show_option_model_ = std::make_unique<ui::ButtonMenuItemModel>(
         IDS_APP_MENU_SIDEBAR_TITLE, this);
 

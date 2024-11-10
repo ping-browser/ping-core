@@ -156,9 +156,9 @@ extension Strings {
   public static let unableToOpenURLError = NSLocalizedString(
     "UnableToOpenURLError",
     bundle: .module,
-    value: "Brave cannot open the page because it has an invalid address.",
+    value: "Ping cannot open the page because it has an invalid address.",
     comment:
-      "The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app."
+      "The message displayed to a user when they try to open a URL that cannot be handled by Ping, or any external app."
   )
   public static let unableToOpenURLErrorTitle = NSLocalizedString(
     "UnableToOpenURLErrorTitle",
@@ -293,7 +293,7 @@ extension Strings {
     "ScanQRCodePermissionErrorMessage",
     bundle: .module,
     value:
-      "Please allow Brave to access your device’s camera in ‘Settings’ -> ‘Privacy’ -> ‘Camera’.",
+      "Please allow Ping to access your device’s camera in ‘Settings’ -> ‘Privacy’ -> ‘Camera’.",
     comment: "Text of the prompt user to setup the camera authorization."
   )
   public static let scanQRCodeErrorOKButton = NSLocalizedString(

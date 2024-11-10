@@ -44,7 +44,7 @@
 <translation id="2801787514987684416">స్టోర్ సమాచారాన్ని చూడాలా?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> ట్యాబ్ మూసివేయబడింది}other{<ph name="MANY_CLOSED"/> ట్యాబ్‌లు మూసివేయబడ్డాయి}}</translation>
 <translation id="2894757982205307093">గ్రూప్‌లో కొత్త ట్యాబ్</translation>
-<translation id="4691798003247738043">Brave | ఈ స్టోర్ గురించి</translation>
+<translation id="4691798003247738043">Ping | ఈ స్టోర్ గురించి</translation>
 <translation id="2977480621796371840">గుంపు నుండి తీసివేయండి</translation>
 <translation id="29919168204617356">ఇన్‌యాక్టివ్ ట్యాబ్‌లు ఆటోమేటిక్‌గా మూసివేయబడతాయి. మీరు వాటిని ఎప్పుడు కావాలంటే అప్పుడు హిస్టరీలో చూడవచ్చు.</translation>
 <translation id="3008554597174452548">ప్రోడక్ట్‌ను ట్రాక్ చేయడాన్ని ఆపివేయండి</translation>
@@ -109,7 +109,7 @@
 <translation id="5556417849629758491">స్టోర్ సమాచారాన్ని చూడండి, ఆప్షన్ స్క్రీన్ పైభాగంలో అందుబాటులో ఉంది</translation>
 <translation id="5627941783489838464">ట్యాబ్ అప్‌డేట్‌లు ఏవీ లేవు</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{ట్యాబ్ రీస్టోర్ చేయండి}other{ట్యాబ్‌లను రీస్టోర్ చేయండి}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave నుండి <ph name="TABS_COUNT_ONE"/> లింక్}other{Brave నుండి <ph name="TABS_COUNT_MANY"/> లింక్‌లు}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping నుండి <ph name="TABS_COUNT_ONE"/> లింక్}other{Ping నుండి <ph name="TABS_COUNT_MANY"/> లింక్‌లు}}</translation>
 <translation id="575494663145460764">ధర తగ్గింపు అలర్ట్‌లను పొందాలనుకుంటున్నారా?</translation>
 <translation id="58326064309361797">గ్రూప్‌గా చేయడానికి ట్యాబ్‌లను లాగండి</translation>
 <translation id="5901630391730855834">పసుపు</translation>
@@ -149,7 +149,7 @@
 <translation id="7452985128687107478">ట్యాబ్ గ్రూప్‌లు మీ అన్ని పరికరాలలో ఆటోమేటిక్‌గా సేవ్ చేయడం, అప్‌డేట్ చేయడం జరుగుతుంది</translation>
 <translation id="747459581954555080">అన్నీ పునరుద్ధరించు</translation>
 <translation id="753732157349120914">ట్యాబ్ స్విచర్</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Brave నుండి <ph name="REVIEWS_COUNT_ONE"/> రివ్యూ}other{Brave నుండి <ph name="REVIEWS_COUNT_MANY"/> రివ్యూలు}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Ping నుండి <ph name="REVIEWS_COUNT_ONE"/> రివ్యూ}other{Ping నుండి <ph name="REVIEWS_COUNT_MANY"/> రివ్యూలు}}</translation>
 <translation id="7559245342362162951">సమూహంలోని ట్యాబ్‌లను ఫుల్-స్క్రీన్‌ గ్రిడ్‌లో చూపు</translation>
 <translation id="7658239707568436148">రద్దు చేయండి</translation>
 <translation id="7688386659311034820">ఇన్‌యాక్టివ్ ట్యాబ్‌ల డైలాగ్</translation>

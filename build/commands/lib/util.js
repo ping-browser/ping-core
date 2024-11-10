@@ -24,6 +24,19 @@ const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
 }
 
+const replaceFile = (soureFile, destFile) => {
+  // Read the content from the source file
+  fs.readFile(soureFile, (err, data) => {
+    if (err) throw err;
+
+    // Write the content to the destination file, replacing it
+    fs.writeFile(destFile, data, (err) => {
+      if (err) throw err;
+      console.log('The destination file has been replaced with the source file content!');
+    });
+  });
+}
+
 async function applyPatches(printPatchFailuresInJson) {
   const GitPatcher = require('./gitPatcher')
   Log.progressStart('apply patches')
@@ -81,8 +94,17 @@ async function applyPatches(printPatchFailuresInJson) {
 
   await updateUnsafeBuffersPaths()
 
+  // Adding CCA India Root Certificates
+  const sourceFilePathCerts = path.join(__dirname, './certs/root_store.certs');
+  const destinationFilePathCerts = path.join(__dirname, '../../../../net/data/ssl/chrome_root_store/root_store.certs');
+  replaceFile(sourceFilePathCerts, destinationFilePathCerts)
+
+  const sourceFilePathProto = path.join(__dirname, './certs/root_store.textproto');
+  const destinationFilePathProto = path.join(__dirname, '../../../../net/data/ssl/chrome_root_store/root_store.textproto');
+  replaceFile(sourceFilePathProto, destinationFilePathProto)
+
   updateChromeVersion()
-  Log.progressFinish('apply patches')
+  Log.progressFinish('apply patches!! Added CCA india Root certs')
 }
 
 const isOverrideNewer = (original, override) => {
@@ -340,7 +362,7 @@ const util = {
                  path.join(config.srcDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css')])
     // Replace chrome dark logo with channel specific brave logo.
     fileMap.add([
-      path.join(config.braveCoreDir, 'node_modules', '@brave', 'leo', 'icons',
+      path.join(config.braveCoreDir, 'browser', 'resources', 'settings', 'images',
           config.getBraveLogoIconName()),
       path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
           'chrome_logo_dark.svg')])

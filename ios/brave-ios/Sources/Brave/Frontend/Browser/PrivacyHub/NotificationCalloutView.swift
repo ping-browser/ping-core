@@ -79,7 +79,7 @@ extension PrivacyReportsView {
           {
             HStack(alignment: .top) {
               HStack {
-                if !sizeCategory.isAccessibilityCategory {
+                if false && !sizeCategory.isAccessibilityCategory {
                   Image("brave_document", bundle: .module)
                 }
                 Text(Strings.PrivacyHub.notificationCalloutBody)

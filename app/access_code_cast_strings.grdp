@@ -11,7 +11,7 @@
   <message name="IDS_ACCESS_CODE_CAST_CAST" desc="Label for the button to start casting">
     Cast
   </message>
-  <message name="IDS_ACCESS_CODE_CAST_CONNECT" desc="Button text to connect to a cast device by typing an access code which is a string consisting of letters, or by scanning a qr code">
+  <message name="IDS_ACCESS_CODE_CAST_CONNECT" desc="Button text to connect to a cast device by tybrave an access code which is a string consisting of letters, or by scanning a qr code">
     Connect with a code
   </message>
   <message name="IDS_ACCESS_CODE_CAST_DIALOG_TITLE" desc="Title for access code cast dialog, for casting to a display that is controlled with a typed code">
@@ -39,7 +39,7 @@
     Something went wrong. Try again later
   </message>
   <message name="IDS_ACCESS_CODE_CAST_ERROR_PROFILE_SYNC" desc="Error message for profile sync error">
-    To cast with a code, turn on Brave browser sync settings
+    To cast with a code, turn on Ping browser sync settings
   </message>
   <message name="IDS_ACCESS_CODE_CAST_INPUT_ARIA_LABEL" is_accessibility_with_no_ui="true" desc="Label for the text box where users type the access code to start casting to a Chromecast device">
     Type the access code to start casting

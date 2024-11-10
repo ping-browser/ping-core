@@ -2,14 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
 <translation id="130631256467250065">Endringene trer i kraft neste gang du starter enheten på nytt.</translation>
-<translation id="7999989146447764333">Krasjrapportering er ikke tilgjengelig i Brave.</translation>
-<translation id="1953231710324290369">Du ser på en sikker Brave-side</translation>
-<translation id="907470742420136113">Brave prøver å endre innstillingene for utfylling av betalingsmåter.</translation>
-<translation id="4847979153841887006">Brave-logo</translation>
-<translation id="336808635693308470">Brave prøver å redigere betalingsmåter.</translation>
-<translation id="7932149101545999102">Brave er gjort mulig av åpen kilde-prosjektet <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> og annen <ph name="BEGIN_LINK_OSS"/>åpen kilde-programvare<ph name="END_LINK_OSS"/>.</translation>
+<translation id="7999989146447764333">Krasjrapportering er ikke tilgjengelig i Ping.</translation>
+<translation id="1953231710324290369">Du ser på en sikker Ping-side</translation>
+<translation id="907470742420136113">Ping prøver å endre innstillingene for utfylling av betalingsmåter.</translation>
+<translation id="4847979153841887006">Ping-logo</translation>
+<translation id="336808635693308470">Ping prøver å redigere betalingsmåter.</translation>
+<translation id="7932149101545999102">Ping er gjort mulig av åpen kilde-prosjektet <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> og annen <ph name="BEGIN_LINK_OSS"/>åpen kilde-programvare<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Gå til
-          Brave-menyen &gt;
+          Ping-menyen &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -18,23 +18,23 @@
           &gt;          
           LAN-innstillinger
           og fjern avmerkingen for «Bruk en proxy-tjener for LAN-nettverket».</translation>
-<translation id="303960458633076466">Denne siden er blokkert av Brave</translation>
-<translation id="2017237562285586622">Tillat at Brave bruker nettverket, i brannmur- eller
+<translation id="303960458633076466">Denne siden er blokkert av Ping</translation>
+<translation id="2017237562285586622">Tillat at Ping bruker nettverket, i brannmur- eller
           antivirusinnstillingene dine.</translation>
 <translation id="8619622797841001082">Gå til
-          Brave-menyen &gt;
+          Ping-menyen &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
           og sørg for at konfigurasjonen din er angitt til «ingen proxy-tjener» eller «direkte».</translation>
-<translation id="2765022094254723779">Brave er også gjort mulig av annen <ph name="BEGIN_LINK_OSS"/>programvare med åpen kildekode<ph name="END_LINK_OSS"/>.</translation>
-<translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
-<translation id="8828443087767259398">Brave trenger Bluetooth-tilgang for å fortsette tilkoblingen. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
-<translation id="6477625882876869143">Brave er gjort mulig av åpen kilde-prosjektet <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
+<translation id="2765022094254723779">Ping er også gjort mulig av annen <ph name="BEGIN_LINK_OSS"/>programvare med åpen kildekode<ph name="END_LINK_OSS"/>.</translation>
+<translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Ping.</translation>
+<translation id="8828443087767259398">Ping trenger Bluetooth-tilgang for å fortsette tilkoblingen. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
+<translation id="6477625882876869143">Ping er gjort mulig av åpen kilde-prosjektet <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Gå til
-        Brave-menyen &gt;
+        Ping-menyen &gt;
         <ph name="SETTINGS_TITLE"/>
         &gt;
         <ph name="ADVANCED_TITLE"/>
@@ -42,6 +42,6 @@
         Hvis dette ikke løser problemet, bør du aktivere dette alternativet
         på nytt for bedre ytelse.</translation>
 <translation id="8187289872471304532">Gå til Programmer &gt; Systeminnstillinger &gt; Nettverk &gt; Avansert &gt; Proxy-tjenere og fjern avmerkingen for alle valgte proxy-tjenere.</translation>
-<translation id="4159376633403260073">Du ser på en sikker side for Brave for testing</translation>
-<translation id="88187049159266777">Brave ble ikke avsluttet på riktig måte.</translation>
+<translation id="4159376633403260073">Du ser på en sikker side for Ping for testing</translation>
+<translation id="88187049159266777">Ping ble ikke avsluttet på riktig måte.</translation>
 </translationbundle>

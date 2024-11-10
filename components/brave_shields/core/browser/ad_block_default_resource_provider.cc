@@ -15,7 +15,6 @@
 namespace {
 
 constexpr char kAdBlockResourcesFilename[] = "resources.json";
-
 }  // namespace
 
 namespace brave_shields {

@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Fortsæt";
 
-/* The subtitle of the screen that requests user to set Brave as default */
+/* The subtitle of the screen that requests user to set Ping as default */
 "focusOnboarding.defaultBrowserScreenDescription" = "Åbn alle links, du trykker på, med Braves privatlivsbeskyttelse";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Vælg Brave som din standardbrowser";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Vælg Ping som din standardbrowser";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Få hurtigere browsing, og brug mindre data.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Fortæl os, hvad du bedst kan lide.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Gør Brave bedre.";
+"focusOnboarding.p3aScreenTitle" = "Gør Ping bedre.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Dette kan du ændre når som helst i Brave-indstillingerne under \"Brave Shields og fortrolighed\".";
+"focusOnboarding.p3aToggleDescription" = "Dette kan du ændre når som helst i Ping-indstillingerne under \"Ping Shields og fortrolighed\".";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Del private og anonyme produktindsigter.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Indtast en url, der skal have færre reklamer og trackere.";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Se Brave-forskellen";
+"focusOnboarding.urlBarIndicatorTitle" = "Se Ping-forskellen";
 

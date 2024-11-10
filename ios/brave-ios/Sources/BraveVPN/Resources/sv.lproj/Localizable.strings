@@ -7,25 +7,25 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "TILLGÄNGLIGA SERVRAR";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Köp";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Skydda 5 enheter med 1 prenumeration";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Välj din geografiska plats/land";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave loggar aldrig din aktivitet";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping loggar aldrig din aktivitet";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Skydda alla appar och hela din enhet";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Säkrare Wi-Fi i hemmet eller offentligt";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Blixtsnabbt, upp till 100 Mbps";
 
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
@@ -44,7 +44,7 @@
 "vpn.contactFormCarrier" = "Mobilleverantör";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave spårar inte dig och vet inte hur du använder vår app, så vi vet inte hur du har konfigurerat VPN. Dela gärna med dig av information om problemet du upplever så ska vi göra vårt bästa för att lösa det så fort vi kan.";
+"vpn.contactFormDoNotEditText" = "Ping spårar inte dig och vet inte hur du använder vår app, så vi vet inte hur du har konfigurerat VPN. Dela gärna med dig av information om problemet du upplever så ska vi göra vårt bästa för att lösa det så fort vi kan.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Det går inte att skicka e-post. Kontrollera din e-postkonfiguration.";
@@ -101,9 +101,9 @@
 "vpn.contactFormTimezone" = "iOS tidszon";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave brandvägg + VPN-problem";
+"vpn.contactFormTitle" = "Ping brandvägg + VPN-problem";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Aktivera";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -125,7 +125,7 @@
 "vpn.installProfileButtonText" = "Installera VPN-profil";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave kommer nu att installera en VPN-profil.";
+"vpn.installProfileTitle" = "Ping kommer nu att installera en VPN-profil.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "VPN är nu aktiverad";
@@ -133,7 +133,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Installera VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Prova kostnadsfritt";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -222,10 +222,10 @@
 "vpn.settingsFAQ" = "VPN-support";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Länka köp till ditt Brave-konto";
+"vpn.settingsLinkReceipt" = "Länka köp till ditt Ping-konto";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Länka App Store-köp till ditt Brave-konto för att använda Brave VPN på andra enheter.";
+"vpn.settingsLinkReceiptFooter" = "Länka App Store-köp till ditt Ping-konto för att använda Ping VPN på andra enheter.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Hantera prenumeration";
@@ -261,10 +261,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Uppdatera betalningsmetod";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Till och med i bakgrunden kommer Brave att skydda dig.";
+"vpn.vpnBackgroundNotificationBody" = "Till och med i bakgrunden kommer Ping att skydda dig.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave brandvägg + VPN är PÅ";
+"vpn.vpnBackgroundNotificationTitle" = "Ping brandvägg + VPN är PÅ";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Använd den bästa tillgängliga servern";
@@ -279,7 +279,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Fel";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave brandvägg + VPN kräver att en VPN-profil installeras på din enhet för att fungera.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Ping brandvägg + VPN kräver att en VPN-profil installeras på din enhet för att fungera.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Åtkomst nekad";
@@ -294,13 +294,13 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Fel";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Prenumerationer debiteras via ditt iTunes-konto.\n\nEventuell oanvänd del av den kostnadsfria provperioden, om den erbjuds, förverkas när du köper en prenumeration.\n\nDin prenumeration förnyas automatiskt såvida den inte sägs upp minst 24 timmar före slutet av den aktuella perioden.\n\nDu kan hantera dina prenumerationer i Inställningar.\n\nGenom att använda Brave godkänner du användarvillkoren och sekretesspolicyn.";
+"vpn.vpnIAPBoilerPlate" = "Prenumerationer debiteras via ditt iTunes-konto.\n\nEventuell oanvänd del av den kostnadsfria provperioden, om den erbjuds, förverkas när du köper en prenumeration.\n\nDin prenumeration förnyas automatiskt såvida den inte sägs upp minst 24 timmar före slutet av den aktuella perioden.\n\nDu kan hantera dina prenumerationer i Inställningar.\n\nGenom att använda Ping godkänner du användarvillkoren och sekretesspolicyn.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Lös in kod";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Detta kommer återställa din Brave brandvägg + VPN-konfiguration och fixa alla problem. Den här processen kan ta en minut.";
+"vpn.vpnResetAlertBody" = "Detta kommer återställa din Ping brandvägg + VPN-konfiguration och fixa alla problem. Den här processen kan ta en minut.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Återställ konfiguration";

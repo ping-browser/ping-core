@@ -44,7 +44,7 @@
 <translation id="2801787514987684416">ஸ்டோர் தகவலைப் பார்க்க வேண்டுமா?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> பக்கம் மூடப்பட்டது}other{<ph name="MANY_CLOSED"/> பக்கங்கள் மூடப்பட்டன}}</translation>
 <translation id="2894757982205307093">குழுவில் புதிய தாவல்</translation>
-<translation id="4691798003247738043">Brave | இந்த ஸ்டோரைப் பற்றி</translation>
+<translation id="4691798003247738043">Ping | இந்த ஸ்டோரைப் பற்றி</translation>
 <translation id="2977480621796371840">குழுவிலிருந்து அகற்று</translation>
 <translation id="29919168204617356">செயலில் இல்லாத பக்கங்கள் தானாகவே மூடப்படும். அவற்றை எப்போது வேண்டுமானாலும் பதிவில் பார்க்கலாம்.</translation>
 <translation id="3008554597174452548">தயாரிப்பைக் கண்காணிப்பதை நிறுத்து</translation>
@@ -109,7 +109,7 @@
 <translation id="5556417849629758491">ஸ்டோர் தகவலைப் பார்ப்பதற்கான விருப்பம் திரையின் மேற்பகுதிக்கு அருகில் உள்ளது</translation>
 <translation id="5627941783489838464">பக்க மாற்றங்கள் இல்லை</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{பக்கத்தை மீட்டெடு}other{பக்கங்களை மீட்டெடு}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave இணைப்பு: <ph name="TABS_COUNT_ONE"/>}other{Brave இணைப்புகள்: <ph name="TABS_COUNT_MANY"/>}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping இணைப்பு: <ph name="TABS_COUNT_ONE"/>}other{Ping இணைப்புகள்: <ph name="TABS_COUNT_MANY"/>}}</translation>
 <translation id="575494663145460764">விலைச் சரிவு குறித்து விழிப்பூட்டல்களைப் பெற வேண்டுமா?</translation>
 <translation id="58326064309361797">தாவல்களை இழுப்பதன் மூலம் அவற்றைக் குழுவாக்கலாம்</translation>
 <translation id="5901630391730855834">மஞ்சள்</translation>

@@ -3,24 +3,24 @@
 <translationbundle lang="nl">
 <translation id="8631427463833030968">Advertenties beheren</translation>
 <translation id="7630214457764713113">Clean link kopiëren</translation>
-<translation id="885805571521218129">Dit toont uw geschatte inkomstenvoor Brave-advertenties deze maand.</translation>
+<translation id="885805571521218129">Dit toont uw geschatte inkomstenvoor Ping-advertenties deze maand.</translation>
 <translation id="3478449063771497234">Meldingen zijn uitgeschakeld</translation>
 <translation id="2862978891748913252">Uw land selecteren</translation>
 <translation id="3970520675790340955">Selecteer uw land, zodat we u de juiste opties en advertenties kunnen laten zien voor uw regio.</translation>
 <translation id="7301741773883122509">Nu kunt u worden beloond voor het bekijken van advertenties. U helpt van het internet een betere plek te maken voor iedereen. Goed bezig!</translation>
 <translation id="6439128034594289376">U bent er helemaal klaar voor!</translation>
 <translation id="370665806235115550">Bezig met laden...</translation>
-<translation id="7931127789630755251">Verdien tokens voor privéadvertenties die u ziet in Brave</translation>
+<translation id="7931127789630755251">Verdien tokens voor privéadvertenties die u ziet in Ping</translation>
 <translation id="7859066142771796818">Gebruik tokens om onder andere cadeaubonnen te kopen, om voor andere valuta in te wisselen en om content creators te ondersteunen.</translation>
 <translation id="3863981251715594911">Hoe werkt het?</translation>
-<translation id="5547108999862247665">Hoe werkt Brave Beloningen?</translation>
+<translation id="5547108999862247665">Hoe werkt Ping Beloningen?</translation>
 <translation id="2965798296974325760">Start met het gebruik van Rewards</translation>
 <translation id="8220484609979012449">\n\nU kunt nog steeds crypto-bijdragen sturen aan deze maker door uw Web3-wallet te gebruiken.</translation>
 <translation id="6385969012847057348">Deze maker kan geen bijdragen ontvangen van <ph name="CUSTODIAN"/>.</translation>
 <translation id="735733310778086206">Deze gebruiker heeft zich nog niet aangemeld om bijdragen via Web3-wallets of cryptobijdragen te ontvangen.</translation>
 <translation id="6268134562674951939">U hebt niet genoeg tokens</translation>
 <translation id="4529874892536380156">Maak dit een maandelijks herhalende bijdrage. U kunt dit elk moment annuleren.</translation>
-<translation id="5562948772940025260">U kunt met het saldo van uw Brave Beloningen tot <ph name="AMOUNT"/> BAT versturen.</translation>
+<translation id="5562948772940025260">U kunt met het saldo van uw Ping Beloningen tot <ph name="AMOUNT"/> BAT versturen.</translation>
 <translation id="5012991400231464322">Maandelijkse bijdragen</translation>
 <translation id="5907051927340164207">U stuurt deze maker al maandelijkse bijdragen</translation>
 <translation id="4848906651275579475">U kunt nu een bijdrage sturen en uw maandelijkse bijdrage aan deze maker annuleren door deze te verwijderen uit <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
@@ -31,55 +31,55 @@
 <translation id="3699420827646925694">Uitgelogd bij <ph name="CUSTODIAN"/></translation>
 <translation id="9038728316393235637">Inloggen bij <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Bedankt dat u uw favoriete makers steunt</translation>
-<translation id="3796032246917966749">Het lijkt erop dat u voor Brave Beloningen bent uitgelogd bij <ph name="CUSTODIAN"/>. Log opnieuw in om door te gaan.</translation>
-<translation id="5202112619925434373">Deze maker is nog niet geverifieerd als Brave Maker. U kunt deze maker bijdragen sturen zodra deze is geverifieerd. <ph name="LEARN_MORE"/></translation>
+<translation id="3796032246917966749">Het lijkt erop dat u voor Ping Beloningen bent uitgelogd bij <ph name="CUSTODIAN"/>. Log opnieuw in om door te gaan.</translation>
+<translation id="5202112619925434373">Deze maker is nog niet geverifieerd als Ping Maker. U kunt deze maker bijdragen sturen zodra deze is geverifieerd. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Bijdrage verzenden</translation>
 <translation id="1899434873745933492">Uw bijdragen kon niet verzonden worden</translation>
-<translation id="1794046983410841192">Brave Beloningen gebruiken</translation>
+<translation id="1794046983410841192">Ping Beloningen gebruiken</translation>
 <translation id="8037118277449189044">Web3-wallet gebruiken</translation>
-<translation id="9059356165618961685">Saldo Brave Beloningen</translation>
+<translation id="9059356165618961685">Saldo Ping Beloningen</translation>
 <translation id="86107454835395919">Instellen als maandelijkse bijdrage</translation>
 <translation id="1177863135347784049">Aangepast</translation>
 <translation id="4827581232860040208">Er is een probleem opgetreden bij het versturen van uw bijdrage</translation>
 <translation id="3259723213051400722">Probeer het opnieuw.</translation>
-<translation id="5298965408768377685">Deze maker is geregistreerd bij Brave en kan bijdragen ontvangen van gebruikers van Brave Beloningen-gebruikers. <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">Brave Rewards kunnen mogelijk niet werken als meldingen zijn uitgeschakeld.</translation>
+<translation id="5298965408768377685">Deze maker is geregistreerd bij Ping en kan bijdragen ontvangen van gebruikers van Ping Beloningen-gebruikers. <ph name="LEARN_MORE"/></translation>
+<translation id="7466579932043491502">Ping Rewards kunnen mogelijk niet werken als meldingen zijn uitgeschakeld.</translation>
 <translation id="6112331814131703370">Blokkeer "Naar app overschakelen"-meldingen</translation>
 <translation id="4744921452903670666">Geef ons uw mening!</translation>
-<translation id="2524310205387880526">Beoordeel Brave</translation>
+<translation id="2524310205387880526">Beoordeel Ping</translation>
 <translation id="4104400246019119780">Bedankt!</translation>
 <translation id="5202255382948179481">Voeg uw suggesties toe</translation>
 <translation id="7759809451544302770">Optioneel</translation>
-<translation id="4748689412569009273">Geef in één emoji weer wat u van Brave vindt</translation>
+<translation id="4748689412569009273">Geef in één emoji weer wat u van Ping vindt</translation>
 <translation id="7335142069363686805">Nu beoordelen</translation>
-<translation id="6681362094306959654">Bevalt Brave?</translation>
+<translation id="6681362094306959654">Bevalt Ping?</translation>
 <translation id="8041093619605951337">Blij</translation>
 <translation id="6826743502395386800">Verdrietig</translation>
 <translation id="5488843227043643519">Wilt u een beoordeling in de Play Store geven?</translation>
 <translation id="5867854497245948308">Bedankt voor uw feedback!</translation>
-<translation id="4935400164159327304">Laat ons weten hoe we Brave kunnen verbeteren.</translation>
+<translation id="4935400164159327304">Laat ons weten hoe we Ping kunnen verbeteren.</translation>
 <translation id="1420756770787071946">Steun deze maker</translation>
-<translation id="8966035543003363155">Meer gemak met Brave-meldingen</translation>
+<translation id="8966035543003363155">Meer gemak met Ping-meldingen</translation>
 <translation id="7662771815233894695">Beheer downloads, verdien tokens, bekijk wekelijkse gebruiksstatistieken en meer.</translation>
 <translation id="4265429476391459783">U ontvangt geen Rewards of privacyrapporten</translation>
-<translation id="1305714751384738456">U ontvangt geen Brave Rewards</translation>
+<translation id="1305714751384738456">U ontvangt geen Ping Rewards</translation>
 <translation id="1483391942610220726">U ontvangt geen privacyrapporten</translation>
 <translation id="4683790942451502796">Zet meldingen weer aan als u BAT en wekelijke privacyrapporten wilt blijven ontvangen.</translation>
 <translation id="8618359751943259593">Zet meldingen weer aan als u BAT wilt blijven ontvangen.</translation>
 <translation id="760355165169399836">Zet meldingen weer aan als u wekelijkse privacyrapporten wilt blijven ontvangen.</translation>
 <translation id="6268959058971634697">U ontvangt geen Rewards</translation>
-<translation id="1088637159642753509">Schakel apparaatmeldingen in om Brave Rewards te ontvangen en privacyrapporten in te zien.</translation>
-<translation id="312404770066229090">Schakel apparaatmeldingen in om Brave Rewards te ontvangen.</translation>
-<translation id="2241529840361230499">Schakel apparaatmeldingen in om Brave-privacyrapporten te ontvangen.</translation>
-<translation id="4930155581888391118">Schakel meldingen van Brave in om Brave Rewards te ontvangen.</translation>
-<translation id="325187916104529570">Open Instellingen en zet de apparaatmeldingen voor Brave Ads aan.</translation>
-<translation id="5744802588121897886">Zet Brave-meldingen aan</translation>
-<translation id="7307834434086582547">Schakel Brave Shields in/uit</translation>
+<translation id="1088637159642753509">Schakel apparaatmeldingen in om Ping Rewards te ontvangen en privacyrapporten in te zien.</translation>
+<translation id="312404770066229090">Schakel apparaatmeldingen in om Ping Rewards te ontvangen.</translation>
+<translation id="2241529840361230499">Schakel apparaatmeldingen in om Ping-privacyrapporten te ontvangen.</translation>
+<translation id="4930155581888391118">Schakel meldingen van Ping in om Ping Rewards te ontvangen.</translation>
+<translation id="325187916104529570">Open Instellingen en zet de apparaatmeldingen voor Ping Ads aan.</translation>
+<translation id="5744802588121897886">Zet Ping-meldingen aan</translation>
+<translation id="7307834434086582547">Schakel Ping Shields in/uit</translation>
 <translation id="6945863270524203017">Ontvang wekelijks privacy-updates voor tracker- en advertentieblokkering.</translation>
 <translation id="4324735664183300693">Meldingen aanzetten</translation>
-<translation id="6395059271589866759">Brave brengt 5% van het verzonden bedrag in rekening als verwerkingskosten.</translation>
+<translation id="6395059271589866759">Ping brengt 5% van het verzonden bedrag in rekening als verwerkingskosten.</translation>
 <translation id="6661699662755460155">uitwisselen</translation>
-<translation id="6790981891677399838">Ik heb zojuist <ph name="AMOUNT"/> BAT bijgedragen met de Brave Browser! Ontdek hoe jij ook je favoriete makers en websites kan steunen: https://brave.com/rewards</translation>
+<translation id="6790981891677399838">Ik heb zojuist <ph name="AMOUNT"/> BAT bijgedragen met de Ping Browser! Ontdek hoe jij ook je favoriete makers en websites kan steunen: https://brave.com/rewards</translation>
 <translation id="5510493033031835532">AMP-pagina's automatisch omleiden</translation>
 <translation id="5197219128592971597">Bezoek altijd originele (niet-AMP) pagina-URL's in plaats van mobiele paginaversies van Google Accelerated</translation>
 <translation id="920638232916443453">Automatisch tracerings-URL's omleiden</translation>
@@ -98,13 +98,13 @@
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
 <translation id="5165042248369837294">Embedded tweets van Twitter toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
-<translation id="6302422639282249274">Beheer Brave Rewards</translation>
+<translation id="6302422639282249274">Beheer Ping Rewards</translation>
 <translation id="2709516037105925701">Automatisch aanvullen</translation>
 <translation id="8617525558807213034">Automatisch invullen in privétabbladen</translation>
 <translation id="8685431198160039193">Opgeslagen informatie kan automatisch worden ingevuld in privétabbladen</translation>
 <translation id="6583902294974160967">Ondersteuning</translation>
 <translation id="1799030480311994998">Functies</translation>
-<translation id="2005732746077850308">Brave Shields en privacy</translation>
+<translation id="2005732746077850308">Ping Shields en privacy</translation>
 <translation id="4692623383562244444">Zoekmachines</translation>
 <translation id="1468415711258933398">Standaard Tab</translation>
 <translation id="3377025655491224618">Privétabblad</translation>
@@ -143,9 +143,9 @@
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="4176463684765177261">Uitgeschakeld</translation>
 <translation id="59174027418879706">Ingeschakeld</translation>
-<translation id="8300751939969131609">Schakel Brave Nieuws in en mis nooit een verhaal</translation>
-<translation id="7699565323725789472">Volg uw favoriete bronnen in één feed. Open een tabblad in Brave, scrol omlaag en… voilà!\nBrave News maakt gebruik van privé- en geanonimiseerde advertenties.</translation>
-<translation id="1765217911817124376">Brave-nieuws inschakelen</translation>
+<translation id="8300751939969131609">Schakel Ping Nieuws in en mis nooit een verhaal</translation>
+<translation id="7699565323725789472">Volg uw favoriete bronnen in één feed. Open een tabblad in Ping, scrol omlaag en… voilà!\nPing News maakt gebruik van privé- en geanonimiseerde advertenties.</translation>
+<translation id="1765217911817124376">Ping-nieuws inschakelen</translation>
 <translation id="8981973962043893066">Zoek naar sites, onderwerpen of RSS-feeds</translation>
 <translation id="3225021799163709119">Populair</translation>
 <translation id="3673348851739109493">Gerangschikte lijst met bronnen</translation>
@@ -162,7 +162,7 @@
 <translation id="7461899062138731833">BRONNEN</translation>
 <translation id="6150420917380577651">Geen feeds gevonden op <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Advertentie</translation>
-<translation id="7823038307453615214">Brave News tonen</translation>
+<translation id="7823038307453615214">Ping News tonen</translation>
 <translation id="6527303717912515753">Delen</translation>
 <translation id="1654539412343893324">Meer informatie over je gegevens</translation>
 <translation id="2989805286512600854">Openen op nieuw tabblad</translation>
@@ -171,9 +171,9 @@
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> uitgeschakeld</translation>
 <translation id="1276592121036104130">Nieuwe inhoud laden</translation>
 <translation id="3189348785087463371">Gepromote inhoud</translation>
-<translation id="7554145152551782675">Meer Brave-aanbiedingen</translation>
+<translation id="7554145152551782675">Meer Ping-aanbiedingen</translation>
 <translation id="254100925533869330">Geen content</translation>
-<translation id="7172792761509429092">Er is geen content weer te geven voor Brave News.</translation>
+<translation id="7172792761509429092">Er is geen content weer te geven voor Ping News.</translation>
 <translation id="1771307734839364850">Kies contentbronnen</translation>
 <translation id="6891769200437737956">Voorkom dat websites vingerafdrukken van me nemen</translation>
 <translation id="7459000603787995422">Tabbladen sluiten bij afsluiten</translation>
@@ -188,9 +188,9 @@
 <translation id="6975864539539353406">Verwijdert cookies en andere sitegegevens wanneer u een site afsluit</translation>
 <translation id="1680858055899097121">Blijf niet tussen tabbladen doorbladeren.</translation>
 <translation id="7142548388914389999">Productanalyse met privacybescherming (P3A) toestaan</translation>
-<translation id="5254037869598726291">Op basis van geanonimiseerde P3A-gegevens kan Brave het algemene gebruik schatten en kunnen we populaire functies verbeteren.</translation>
+<translation id="5254037869598726291">Op basis van geanonimiseerde P3A-gegevens kan Ping het algemene gebruik schatten en kunnen we populaire functies verbeteren.</translation>
 <translation id="933652931229970927">Diagnostische rapporten automatisch verzenden</translation>
-<translation id="5987838417172370108">Help de productstabiliteit van Brave te verbeteren door automatisch diagnostische rapporten te verzenden wanneer de Brave-browser crasht of vastloopt.</translation>
+<translation id="5987838417172370108">Help de productstabiliteit van Ping te verbeteren door automatisch diagnostische rapporten te verzenden wanneer de Ping-browser crasht of vastloopt.</translation>
 <translation id="7977176350719484850">Geschatte hoeveelheid\ndata bespaard</translation>
 <translation id="9008534313521214777">Gem. bespaarde\ntijd</translation>
 <translation id="410351446219883937">Automatisch afspelen</translation>
@@ -204,13 +204,13 @@
 <translation id="4172219483893066798">Sites kunnen toegang vragen tot localhost-resources</translation>
 <translation id="7181706637590665047">Geen toegang verlenen tot localhost-resources</translation>
 <translation id="1485435696620658073">Toegang tot localhost-resources toegestaan</translation>
-<translation id="181905442828471321">Standaardinstellingen van Brave Shields</translation>
+<translation id="181905442828471321">Standaardinstellingen van Ping Shields</translation>
 <translation id="2675679258824361492">Andere privacy-instellingen</translation>
 <translation id="8026334261755873520">Browsegegevens wissen</translation>
 <translation id="1690924763769415936">Op achtergrond afspelen</translation>
-<translation id="6332924730165919598">Als je alle tabbladen sluit, wordt Brave gesloten</translation>
-<translation id="8308305244351876417">Maakt audio afspelen mogelijk wanneer u naar een ander tabblad in Brave of naar een andere app gaat of wanneer het scherm van uw apparaat uit is.</translation>
-<translation id="49147335255967913">YouTube-links in Brave openen</translation>
+<translation id="6332924730165919598">Als je alle tabbladen sluit, wordt Ping gesloten</translation>
+<translation id="8308305244351876417">Maakt audio afspelen mogelijk wanneer u naar een ander tabblad in Ping of naar een andere app gaat of wanneer het scherm van uw apparaat uit is.</translation>
+<translation id="49147335255967913">YouTube-links in Ping openen</translation>
 <translation id="4150201353443180367">Weergave</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -219,24 +219,24 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Meer informatie over Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Toestaan (opnieuw starten)</translation>
 <translation id="2433507940547922241">Vormgeving</translation>
-<translation id="9040069796107003510">Brave Beloningen-pictogram</translation>
-<translation id="6333347122924254968">Het Brave Beloningen-pictogram tonen in de adresbalk</translation>
+<translation id="9040069796107003510">Ping Beloningen-pictogram</translation>
+<translation id="6333347122924254968">Het Ping Beloningen-pictogram tonen in de adresbalk</translation>
 <translation id="8495235435594442882">Schakel de onderste werkbalk in</translation>
-<translation id="6587448235155023666">Je veranderingen zullen de volgende keer dat je Brave opstart in effect gaan</translation>
+<translation id="6587448235155023666">Je veranderingen zullen de volgende keer dat je Ping opstart in effect gaan</translation>
 <translation id="8701563696941209024">HERSTART NU</translation>
 <translation id="834487290629916192">LATER</translation>
-<translation id="7207456302801184289">Welkom bij Brave</translation>
+<translation id="7207456302801184289">Welkom bij Ping</translation>
 <translation id="4117451092682672487">Privacy, eenvoudig geregeld.</translation>
-<translation id="7909375417585209817">Met Brave als standaardbrowser worden de privacyfuncties van Brave geopend voor elke koppeling waar u op tikt.</translation>
+<translation id="7909375417585209817">Met Ping als standaardbrowser worden de privacyfuncties van Ping geopend voor elke koppeling waar u op tikt.</translation>
 <translation id="7370959926683925817">Blokkeer advertenties. Bespaar data. Elke dag.</translation>
-<translation id="7281027579943912834">Met Brave als standaardbrowser, krijgt elke link die u aanklikt ad block-bescherming. Elke pagina, video en stream.</translation>
-<translation id="5148943178722443958">Help ons Brave beter te maken.</translation>
+<translation id="7281027579943912834">Met Ping als standaardbrowser, krijgt elke link die u aanklikt ad block-bescherming. Elke pagina, video en stream.</translation>
+<translation id="5148943178722443958">Help ons Ping beter te maken.</translation>
 <translation id="6718362830686703942">Verzend diagnostische rapporten als uw systeem crasht of vastloopt.</translation>
 <translation id="2877653791257935258">Typ de naam of URL van een website</translation>
-<translation id="5329830149661250028">Brave maakt het verschil: geen advertenties, geen trackers, veel kortere laadtijden.</translation>
+<translation id="5329830149661250028">Ping maakt het verschil: geen advertenties, geen trackers, veel kortere laadtijden.</translation>
 <translation id="3941792073703079607">Zie het verschil met Brava: Blokkeer advertenties. Bespaar data. Stream sneller.</translation>
-<translation id="3545804467215833536">Tik om Brave Shields te bekijken</translation>
-<translation id="1724327820822194498">Bekijk alles wat Brave heeft geblokkeerd op alle pagina's met Shields.</translation>
+<translation id="3545804467215833536">Tik om Ping Shields te bekijken</translation>
+<translation id="1724327820822194498">Bekijk alles wat Ping heeft geblokkeerd op alle pagina's met Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> en nog <ph name="TRACKER"/> advertenties en trackers geblokkeerd</translation>
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> en andere advertenties en trackers geblokkeerd</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> advertenties en trackers geblokkeerd</translation>
@@ -246,25 +246,25 @@
 <translation id="986879628471635371">Problemen met onboarding oplossingen</translation>
 <translation id="5808759341041733958">Kies standaard zoekmachine</translation>
 <translation id="1331593888918588693">U kunt uw voorkeur altijd later wijzigen in de instellingen van de app.</translation>
-<translation id="5806601733251372221">Brave Shields</translation>
+<translation id="5806601733251372221">Ping Shields</translation>
 <translation id="8537217141725709400">Verdien <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="3333887201479867589">Ping Rewards</translation>
 <translation id="5870330605209713397">door advertenties te bekijken die privacy in acht nemen en uw favoriete sites en makers bij standaard ondersteunen.</translation>
-<translation id="5302488867897327287">Door te tikken op 'Starten met het gebruik van Brave Rewards', gaat u akkoord met</translation>
+<translation id="5302488867897327287">Door te tikken op 'Starten met het gebruik van Ping Rewards', gaat u akkoord met</translation>
 <translation id="4281844954008187215">Servicevoorwaarden</translation>
 <translation id="6871397658902960384">Begin met bladeren</translation>
 <translation id="454386012157232640">Ik zag geen advertentie</translation>
-<translation id="1448877943847791441">Brave toont je eerste advertentie in</translation>
-<translation id="4410793187232041318">Nu verdien je token van Brave Ads.</translation>
-<translation id="6511854390690723657">Dit is je eerste Brave advertentie. Tik om meer te leren.</translation>
-<translation id="2070991379950719711">Starten met het gebruik van Brave Rewards</translation>
+<translation id="1448877943847791441">Ping toont je eerste advertentie in</translation>
+<translation id="4410793187232041318">Nu verdien je token van Ping Ads.</translation>
+<translation id="6511854390690723657">Dit is je eerste Ping advertentie. Tik om meer te leren.</translation>
+<translation id="2070991379950719711">Starten met het gebruik van Ping Rewards</translation>
 <translation id="48520986898237073">Doorgaan naar wallet</translation>
 <translation id="6213254277250932867">Ik heb een herstelzin van 12 woorden</translation>
 <translation id="4225265925807365011">Ik heb een herstelzin van 24 woorden</translation>
 <translation id="3570367516044491911">Stel in als standaard browser</translation>
 <translation id="6800338374677644736">Instellen als standaardbrowser</translation>
-<translation id="19715420010996093">Selecteer de Brave Browser en druk op 'Altijd'</translation>
-<translation id="3546439402724649282">Brave is al ingesteld als je standaardbrowser.</translation>
+<translation id="19715420010996093">Selecteer de Ping Browser en druk op 'Altijd'</translation>
+<translation id="3546439402724649282">Ping is al ingesteld als je standaardbrowser.</translation>
 <translation id="8389661903259423907">Je hebt al een standaardbrowser ingesteld. Je kunt de standaardbrowser wijzigen in de instellingen van je app.</translation>
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">Instructies</translation>
@@ -272,11 +272,11 @@
 <translation id="2734870894159530879">Log in bij <ph name="WALLET_PROVIDER"/> om uw saldo te bekijken</translation>
 <translation id="7658239707568436148">Annuleren</translation>
 <translation id="1201402288615127009">Volgende</translation>
-<translation id="8481779960444041069">Stel Brave in als standaardbrowser om uw privacy te verbeteren</translation>
-<translation id="1938402585819943124">Kies Brave op het volgende scherm</translation>
+<translation id="8481779960444041069">Stel Ping in als standaardbrowser om uw privacy te verbeteren</translation>
+<translation id="1938402585819943124">Kies Ping op het volgende scherm</translation>
 <translation id="8926389886865778422">Niet meer vragen</translation>
 <translation id="745974920645827035">Onafhankelijk zoeken met betere privacy</translation>
-<translation id="5240031343741051161">Brave Zoeken proberen</translation>
+<translation id="5240031343741051161">Ping Zoeken proberen</translation>
 <translation id="5234764350956374838">Sluiten</translation>
 <translation id="6639570430554986719">JANUARI</translation>
 <translation id="1807352595146144483">FEBRUARI</translation>
@@ -290,8 +290,8 @@
 <translation id="8220228041552340594">OKTOBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
-<translation id="3960619311638643872">Brave-VPN</translation>
-<translation id="1772301834467143364">Brave-nieuws</translation>
+<translation id="3960619311638643872">Ping-VPN</translation>
+<translation id="1772301834467143364">Ping-nieuws</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">instellingen</translation>
 <translation id="6020176662032623904">Geverifieerde ontwikkelaar</translation>
@@ -302,7 +302,7 @@
 <translation id="2429828319207652823">Er is een probleem opgetreden bij het verwerken van je bijdrage.</translation>
 <translation id="683765328936486920">op Youtube</translation>
 <translation id="8969049974285901797">op Twitch</translation>
-<translation id="8038539967102225446">Brave Ads zijn hier!</translation>
+<translation id="8038539967102225446">Ping Ads zijn hier!</translation>
 <translation id="222883304157347087">(dit apparaat)</translation>
 <translation id="4157741509680155021">APPARATEN IN SYNCHRONISATIEKETEN</translation>
 <translation id="279635009973773843">APPARATEN LADEN...</translation>
@@ -310,11 +310,11 @@
 <translation id="2569646144216067185">Aantal woorden: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Verkeerde synchronisatiecode</translation>
 <translation id="8284063834901328650">Verkeerde synchronisatie QR-code</translation>
-<translation id="859506441384380749">Deze code is gegenereerd door een verouderde versie van Brave; upgrade eerst je andere apparaat</translation>
+<translation id="859506441384380749">Deze code is gegenereerd door een verouderde versie van Ping; upgrade eerst je andere apparaat</translation>
 <translation id="3132642509209154999">Deze code is verlopen. Genereer een nieuwe code op je andere apparaat en probeer het opnieuw.</translation>
 <translation id="2859229680945501779">Deze code is ongeldig. Controleer of de tijd en tijdzone correct zijn ingesteld op uw apparaat.</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
-<translation id="2614069607859982576">Open met een bestaand gesynchroniseerd apparaat de Brave-instellingen en nafigeer naar Instellingen &gt; Sync. Kies 'Nieuw apparaat toevoegen' en scan de QR-code die op het scherm verschijnt.</translation>
+<translation id="3149880132460839085">Ping Sync</translation>
+<translation id="2614069607859982576">Open met een bestaand gesynchroniseerd apparaat de Ping-instellingen en nafigeer naar Instellingen &gt; Sync. Kies 'Nieuw apparaat toevoegen' en scan de QR-code die op het scherm verschijnt.</translation>
 <translation id="5241263629636958324">Gekopieerd naar het klembord</translation>
 <translation id="5817918615728894473">Koppelen</translation>
 <translation id="3429575397891106447">Synchronisatieopties</translation>
@@ -339,19 +339,19 @@
 <translation id="6776430845975754238">Het wijzigen van instellingen heeft alleen invloed op gegevens die dit apparaat deelt met anderen.</translation>
 <translation id="1061533051865606843">Nieuw apparaat toevoegen</translation>
 <translation id="7539985410310934287">Voer codewoorden in</translation>
-<translation id="2886391679017857869">Open met een bestaand gesynchroniseerd apparaat de Brave-instellingen en nafigeer naar Instellingen &gt; Sync. Kies 'Nieuw apparaat toevoegen' en dam pp 'Toon in plaats daarvan codewoorden'</translation>
+<translation id="2886391679017857869">Open met een bestaand gesynchroniseerd apparaat de Ping-instellingen en nafigeer naar Instellingen &gt; Sync. Kies 'Nieuw apparaat toevoegen' en dam pp 'Toon in plaats daarvan codewoorden'</translation>
 <translation id="8131740175452115882">Bevestigen</translation>
 <translation id="4973653569293835178">Ik gebruik mijn camera...</translation>
 <translation id="326454632686131209">Synchroniseer apparaat</translation>
 <translation id="327726072512457161">Instellingen afsluiten</translation>
-<translation id="8050847734948770789">Brave Beloningen inschakelen</translation>
+<translation id="8050847734948770789">Ping Beloningen inschakelen</translation>
 <translation id="9187185473011056079">Ik doe mee!</translation>
-<translation id="8185825081026121627">Verdien Basic Attention Token door privacyvriendelijke Brave Rewards advertenties te bekijken.</translation>
+<translation id="8185825081026121627">Verdien Basic Attention Token door privacyvriendelijke Ping Rewards advertenties te bekijken.</translation>
 <translation id="5321518976657560663">Resetfout</translation>
-<translation id="4114170343590425996">Er is een fout opgetreden bij het opnieuw instellen van Brave Rewards. Start Brave opnieuw en probeer het opnieuw.</translation>
-<translation id="6417420737057016607">Brave Advertenties</translation>
-<translation id="5611966874859284786">Melding van advertenties weergeven wanneer Brave niet in gebruik is</translation>
-<translation id="6606319453795180219">Hierdoor worden uw Brave-beloningen verwijderd en al uw gegevens van Brave-beloningen gereset</translation>
+<translation id="4114170343590425996">Er is een fout opgetreden bij het opnieuw instellen van Ping Rewards. Start Ping opnieuw en probeer het opnieuw.</translation>
+<translation id="6417420737057016607">Ping Advertenties</translation>
+<translation id="5611966874859284786">Melding van advertenties weergeven wanneer Ping niet in gebruik is</translation>
+<translation id="6606319453795180219">Hierdoor worden uw Ping-beloningen verwijderd en al uw gegevens van Ping-beloningen gereset</translation>
 <translation id="8293206222192510085">Voeg Bladwijzer toe</translation>
 <translation id="340492034650766959">Bladwijzer verwijderen</translation>
 <translation id="2149973817440762519">Bladwijzer bewerken</translation>
@@ -370,16 +370,16 @@
 <translation id="2803313416453193357">Map openen</translation>
 <translation id="8985635554450124959">Synchronisatie kon niet worden opgezet</translation>
 <translation id="7173114856073700355">Instellingen openen</translation>
-<translation id="496896260395129787">Dit Brave Sync-acocunt is verwijderd van een ander apparaat. Als u Sync niet wilde uitschakelen, <ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">Dit Ping Sync-acocunt is verwijderd van een ander apparaat. Als u Sync niet wilde uitschakelen, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>maak het account dan opnieuw aan</translation>
 <translation id="4094590686212463338">Kan niet aan deze synchronisatieketen deelnemen. De synchronisatieketen is verwijderd.</translation>
 <translation id="4908081302669157000">Telefoonnummers, e-mails en adressen</translation>
 <translation id="1056898198331236512">Waarschuwing</translation>
 <translation id="1426410128494586442">Ja</translation>
-<translation id="7811264919113243207">Hiermee deel je je Brave-gegevens, inclusief mogelijke wachtwoorden, met het apparaat dat deze QR-code heeft gegenereerd.
+<translation id="7811264919113243207">Hiermee deel je je Ping-gegevens, inclusief mogelijke wachtwoorden, met het apparaat dat deze QR-code heeft gegenereerd.
 Controleer of deze QR-code is gegenereerd door een apparaat dat jouw eigendom is.
 Weet je zeker dat je dit wilt doen?</translation>
-<translation id="3097089005389027085">Hiermee deel je je Brave-gegevens, inclusief mogelijke wachtwoorden, met het apparaat dat deze codewoorden heeft gegenereerd.
+<translation id="3097089005389027085">Hiermee deel je je Ping-gegevens, inclusief mogelijke wachtwoorden, met het apparaat dat deze codewoorden heeft gegenereerd.
 Controleer of deze codewoorden zijn gegenereerd door een apparaat dat jouw eigendom is.
 Weet je zeker dat je dit wilt doen?</translation>
 <translation id="4550208292810542331">Er is geen toegang tot de camera gegeven</translation>
@@ -387,15 +387,15 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3063783274005996079">Ontgrendel om wachtwoorden synchronisatie in te schakelen</translation>
 <translation id="7551563084530025179">Voordat u wachtwoorden kunt synchroniseren, moet u uw biometrische gegevens/wachtwoord verifiëren. Deze extra beveiligingsmaatregel helpt u uw wachtwoorden veilig te houden.</translation>
 <translation id="6925081665778864449">Voor de synchronisatie van wachtwoorden, moet u biometrische gegevens/wachtwoorden op uw Android-apparaat inschakelen. Met deze extra beveiligingsmaatregel kunt u uw wachtwoorden veilig bewaren.</translation>
-<translation id="597993392929850353">Brave Licentie</translation>
+<translation id="597993392929850353">Ping Licentie</translation>
 <translation id="6336451774241870485">Nieuw privétabblad</translation>
 <translation id="6199596294742117349">Dit is een privaat tabblad</translation>
 <translation id="5858455511731621847">Ook al worden websites die je bezoekt in privétabbladen niet lokaal opgeslagen, ze maken je niet anoniem of onzichtbaar voor je ISP, je werkgever of de websites die je bezoekt.</translation>
-<translation id="5789441016350810005">Brave Ads die worden verzonden wanneer de browser op de achtergrond draait</translation>
+<translation id="5789441016350810005">Ping Ads die worden verzonden wanneer de browser op de achtergrond draait</translation>
 <translation id="4973347371961481083">Bijdragen</translation>
 <translation id="7047578174221019462">Je maandelijkse bijdragen zijn verwerkt.</translation>
 <translation id="3124090095880236567">Advertenties inschakelen</translation>
-<translation id="2975780980638932742">Brave Ads is er!</translation>
+<translation id="2975780980638932742">Ping Ads is er!</translation>
 <translation id="7541582550122501404">In afwachting van bijdrage</translation>
 <translation id="8520059774736886747">Ontwikkelaar <ph name="PUBLISHER_NAME"/> onlangs geverifieerd</translation>
 <translation id="1486343603936278248">token</translation>
@@ -405,10 +405,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3870475560794762985">Gesponsorde afbeeldingen tonen</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Topsites Weergeven</translation>
-<translation id="7275773481201277457">Brave Statistieken Weergeven</translation>
+<translation id="7275773481201277457">Ping Statistieken Weergeven</translation>
 <translation id="8297488609722895137">Foto gemaakt door <ph name="PHOTO_BY"/></translation>
-<translation id="2898634658146274982">Externe links in Brave openen</translation>
-<translation id="5616508928556767259">Opent links van andere apps in een Brave-webweergave. Let op: Brave moet ingesteld zijn als uw standaardbrowser.</translation>
+<translation id="2898634658146274982">Externe links in Ping openen</translation>
+<translation id="5616508928556767259">Opent links van andere apps in een Ping-webweergave. Let op: Ping moet ingesteld zijn als uw standaardbrowser.</translation>
 <translation id="2394961582378297792">Uitgelogd</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="3368922792935385530">Verbonden</translation>
@@ -419,8 +419,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1665118090708049096">Ga naar mijn <ph name="WALLET_PROVIDER"/>-account</translation>
 <translation id="4858636682078269312">Log in op uw <ph name="WALLET_PROVIDER"/>-account</translation>
 <translation id="8874184842967597500">Niet verbonden</translation>
-<translation id="2495032782748793764">Brave Default</translation>
-<translation id="9132378787893584761">Deel Brave met je vrienden!</translation>
+<translation id="2495032782748793764">Ping Default</translation>
+<translation id="9132378787893584761">Deel Ping met je vrienden!</translation>
 <translation id="717952606991220586">Oeps, er is iets misgegaan. Probeer het later opnieuw.</translation>
 <translation id="987264212798334818">Algemeen</translation>
 <translation id="1116694919640316211">Over</translation>
@@ -455,34 +455,34 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5582686930349810484">Vingerafdrukken geblokkeerd (standaard)</translation>
 <translation id="769702552748212954">Sta alle vingerafdrukken toe</translation>
 <translation id="876424292214881779">Advertenties en andere griezelige dingen zijn geblokkeerd</translation>
-<translation id="8553998445606452168">Over Brave Shields</translation>
+<translation id="8553998445606452168">Over Ping Shields</translation>
 <translation id="8912304686498704084">BOVEN</translation>
 <translation id="4963218453264888510">BENEDEN</translation>
-<translation id="7474113515179313724">Je surft op deze site zonder de privacybescherming van Brave. Werkt het niet goed als Shields aan staat?</translation>
+<translation id="7474113515179313724">Je surft op deze site zonder de privacybescherming van Ping. Werkt het niet goed als Shields aan staat?</translation>
 <translation id="4226543734057230801">Ethereum-netwerken</translation>
 <translation id="3504157706952484145">Filecoin-netwerken</translation>
 <translation id="1561541094377237745">Solana-netwerken</translation>
 <translation id="7141438739990875547">Bitcoin-netwerken</translation>
 <translation id="9055546041146396417">Als deze site niet lijkt te werken, probeer dan Shields uit te zetten.</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
-<translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
-<translation id="5429200298326665264">Opmerking: Dit webadres wordt ingediend met je Brave versienummer en je IP-adres (dat niet wordt opgeslagen).</translation>
+<translation id="8510478288840333677">Laat de ontwikkelaars van Ping weten dat deze site niet goed werkt met Shields:</translation>
+<translation id="5429200298326665264">Opmerking: Dit webadres wordt ingediend met je Ping versienummer en je IP-adres (dat niet wordt opgeslagen).</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
-<translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
+<translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Ping heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
 <translation id="650318023204990401">Geavanceerde instellingen</translation>
 <translation id="5370478469168390143">Sla gegevens online op</translation>
-<translation id="1118508688433541158">Browse sneller en blokkeer advertenties met Brave</translation>
-<translation id="7427391215172269363">Ik bespaar dagelijks data door online te browsen met Brave.</translation>
-<translation id="4776948189086901857">Brave werkt overal</translation>
-<translation id="1606322780901645965">Download Brave op brave.com op uw laptop of tablet voor sneller internet met meer privacy.</translation>
+<translation id="1118508688433541158">Browse sneller en blokkeer advertenties met Ping</translation>
+<translation id="7427391215172269363">Ik bespaar dagelijks data door online te browsen met Ping.</translation>
+<translation id="4776948189086901857">Ping werkt overal</translation>
+<translation id="1606322780901645965">Download Ping op brave.com op uw laptop of tablet voor sneller internet met meer privacy.</translation>
 <translation id="8374242949413616101">Privacybescherming</translation>
-<translation id="4955406228638026265">Brave stopt advertenties en trackers die zonder uw toestemming informatie over u verzamelen.</translation>
+<translation id="4955406228638026265">Ping stopt advertenties en trackers die zonder uw toestemming informatie over u verzamelen.</translation>
 <translation id="752842701893882688">Bespaar data en batterij</translation>
 <translation id="1685837926613452362">Zonder reclames &amp; trackers gebruiken websites minder data en energie. U kunt zelfs geld besparen op uw mobiele telefoonrekening.</translation>
 <translation id="5440744330377972191">Websites laden sneller</translation>
-<translation id="3000738865641747653">Minder gegevens laden betekent dat websites in Brave sneller laden - tot wel 8x sneller dan andere browsers.</translation>
+<translation id="3000738865641747653">Minder gegevens laden betekent dat websites in Ping sneller laden - tot wel 8x sneller dan andere browsers.</translation>
 <translation id="8903462729414407077">Ontvang wekelijks updates</translation>
-<translation id="7450323860390658083">Wees op de hoogte van welke websites de grootste bedreiging vormen voor je privacy.\n\nAlleen jij kunt deze privacystatistieken zien. Je persoonlijke gegevens en browsergeschiedenis verlaten nooit de Brave-browser op je apparaat.</translation>
+<translation id="7450323860390658083">Wees op de hoogte van welke websites de grootste bedreiging vormen voor je privacy.\n\nAlleen jij kunt deze privacystatistieken zien. Je persoonlijke gegevens en browsergeschiedenis verlaten nooit de Ping-browser op je apparaat.</translation>
 <translation id="6170159749517116894">Zet privacyrapporten aan</translation>
 <translation id="1669047024429367828">Zichtbaarheid</translation>
 <translation id="5966707198760109579">Week</translation>
@@ -499,17 +499,17 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3694122362646626770">Websites</translation>
 <translation id="2225863440766607138">Trackers</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">U hebt in de afgelopen 3 uur You blocked <ph name="COUNT"/> trackers en advertenties geblokkeerd met Brave browser.</translation>
-<translation id="5005713153542196658">Blader tot wel 6 keer sneller op grote nieuwssites in Brave door trackers en advertenties te blokkeren.</translation>
+<translation id="6737820963776538947">U hebt in de afgelopen 3 uur You blocked <ph name="COUNT"/> trackers en advertenties geblokkeerd met Ping browser.</translation>
+<translation id="5005713153542196658">Blader tot wel 6 keer sneller op grote nieuwssites in Ping door trackers en advertenties te blokkeren.</translation>
 <translation id="7427567994475794038">Schakel Privacyrapporten in om te zien hoeveel trackers &amp; advertenties er in de afgelopen 3 uur zijn geblokkeerd.</translation>
-<translation id="2053891538879944400">U hebt <ph name="DATA"/> <ph name="DATA_TEXT"/> data bespaard met Brave browser.</translation>
+<translation id="2053891538879944400">U hebt <ph name="DATA"/> <ph name="DATA_TEXT"/> data bespaard met Ping browser.</translation>
 <translation id="8640064498452534195">Schakel Privacyrapporten in om te zien hoeveel data u hebt bespaard.</translation>
-<translation id="2252497442547961651">Brave browser gebruikt gemiddeld 40% minder energie.🔋</translation>
-<translation id="1945330434665345785">U hebt vorige week <ph name="COUNT"/> trackers en advertenties geblokkeerd met Brave browser.</translation>
+<translation id="2252497442547961651">Ping browser gebruikt gemiddeld 40% minder energie.🔋</translation>
+<translation id="1945330434665345785">U hebt vorige week <ph name="COUNT"/> trackers en advertenties geblokkeerd met Ping browser.</translation>
 <translation id="2883868922264431515">Verdien tokens door privacy-vriendelijke advertenties te bekijken en steun uw favoriete websites.</translation>
 <translation id="7408493389591475748">Begin met browsen om uw privacyrapport te zien</translation>
-<translation id="9080777565335515917">Stel Brave in als uw standaardbrowser om privé en veilig te kunnen surfen.</translation>
-<translation id="1390943217516275883">Staat Brave toe om uw privacystatistieken weer te geven</translation>
+<translation id="9080777565335515917">Stel Ping in als uw standaardbrowser om privé en veilig te kunnen surfen.</translation>
+<translation id="1390943217516275883">Staat Ping toe om uw privacystatistieken weer te geven</translation>
 <translation id="1763352720905582220">Verzend een wekelijks privacyrapport</translation>
 <translation id="1811691435325545066">Wis alle gegevens van privacyrapporten</translation>
 <translation id="5966003059662780423">Gegevens wissen bij het verlaten</translation>
@@ -528,10 +528,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8804164990146287819">Privacybeleid</translation>
 <translation id="8363792084628930008">Door beloningen in te schakelen, gaat u akkoord met de <ph name="TERMS_OF_SERVICE"/> en het <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Laten we een snelle tour nemen</translation>
-<translation id="7930505144430343145">Welkom bij Brave Rewards!</translation>
-<translation id="3477340970981564961">Brave Private Ads belonen je met tokens om de makers van content te ondersteunen, in tegenstelling tot traditionele advertenties, terwijl je persoonlijke informatie privé blijft.</translation>
+<translation id="7930505144430343145">Welkom bij Ping Rewards!</translation>
+<translation id="3477340970981564961">Ping Private Ads belonen je met tokens om de makers van content te ondersteunen, in tegenstelling tot traditionele advertenties, terwijl je persoonlijke informatie privé blijft.</translation>
 <translation id="6973095375773523904">Waar verschijnen de advertenties?</translation>
-<translation id="4328028439561659455">Brave-privéadvertenties worden als meldingen op uw scherm weergegeven. U bepaalt hoe vaak u deze advertenties wilt zien.</translation>
+<translation id="4328028439561659455">Ping-privéadvertenties worden als meldingen op uw scherm weergegeven. U bepaalt hoe vaak u deze advertenties wilt zien.</translation>
 <translation id="7712287524451429139">Moeiteloos terugschenken</translation>
 <translation id="105037569026952831">De makers ontvangen uw contributies automatisch op basis van uw engagementniveau's die we meten als 'Attention'.</translation>
 <translation id="3025802705256919103">Zeg bedankt met bijdragen</translation>
@@ -543,7 +543,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2353222426385080466">Meer privéadvertenties, meer beloningen.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> advertenties per uur</translation>
 <translation id="827315274423079662">Woehoe, u bent er helemaal klaar voor!</translation>
-<translation id="3895246934788932488">Door Brave Rewards te gebruiken, beschermt u uw privacy en helpt u internet te verbeteren voor iedereen. Is dat niet geweldig!</translation>
+<translation id="3895246934788932488">Door Ping Rewards te gebruiken, beschermt u uw privacy en helpt u internet te verbeteren voor iedereen. Is dat niet geweldig!</translation>
 <translation id="5705882733397021510">Terugkeren</translation>
 <translation id="3985567919248057638">Een korte rondleiding</translation>
 <translation id="7889432931837317731">Indien mogelijk automatisch openen</translation>
@@ -561,11 +561,11 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="177282784098234156">Privé, onafhankelijk, klantgericht</translation>
 <translation id="1410130669636877548">Sommige zoekmachines beschermen uw privacy beter dan anderen wanneer u op het web zoekt.</translation>
 <translation id="3479552764303398839">Niet nu</translation>
-<translation id="7138272885617540195">Sta app-links toe om apps buiten Brave te openen</translation>
+<translation id="7138272885617540195">Sta app-links toe om apps buiten Ping te openen</translation>
 <translation id="4954512758656527938">Standaard Ethereum-wallet</translation>
 <translation id="7701023802820268122">Standaard Solana-wallet</translation>
 <translation id="7701040980221191251">Geen</translation>
-<translation id="8488282162676695335">Brave-wallet</translation>
+<translation id="8488282162676695335">Ping-wallet</translation>
 <translation id="8792121506918889955">WebRTC IP-verwerkingsbeleid</translation>
 <translation id="8798099450830957504">Standaard</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
@@ -575,16 +575,16 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1483493594462132177">Sturen</translation>
 <translation id="538450413584738399">Wisselen</translation>
 <translation id="4556086616242530072">Direct in de browser.\nEigen beheer.\nEn multi-chain.</translation>
-<translation id="7909462264772842773">Neem de controle over uw crypto en NFT's. Brave Wallet ondersteunt Ethereum, EVM-chains, Solana, Filecoin en meer.</translation>
+<translation id="7909462264772842773">Neem de controle over uw crypto en NFT's. Ping Wallet ondersteunt Ethereum, EVM-chains, Solana, Filecoin en meer.</translation>
 <translation id="165255193061631296">Nieuwe wallet nodig?</translation>
-<translation id="3485737865439729577">Aan de slag met Brave Wallet binnen enkele minuten</translation>
+<translation id="3485737865439729577">Aan de slag met Ping Wallet binnen enkele minuten</translation>
 <translation id="2540568096903252632">Voer het wachtwoord in om verder te gaan</translation>
-<translation id="3356580495013324916">Voer het wachtwoord van uw Brave Wallet in om een back-up te maken van uw wallet.</translation>
+<translation id="3356580495013324916">Voer het wachtwoord van uw Ping Wallet in om een back-up te maken van uw wallet.</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="5333225216561354793">We vereisen dat u onderstaande items bevestigt</translation>
 <translation id="6937275455070754004">Kies welke blockchains u wilt gebruiken in uw wallet.</translation>
-<translation id="1645800479814134195">Ik begrijp dat dit een eigen wallet is, en dat ik persoonlijk verantwoordelijk ben voor alle bijbehorende fondsen, activa of rekeningen, en voor het nemen van gepaste maatregelen om mijn wallet te beveiligen, beschermen en back-uppen. Ik begrijp dat Brave geen toegang heeft tot mijn wallet of transacties namens mij kan terugdraaien, en dat mijn herstelzin de ENIGE manier is om weer toegang te krijgen in het geval van een verloren wachtwoord, gestolen apparaat, of soortgelijke omstandigheden.</translation>
+<translation id="1645800479814134195">Ik begrijp dat dit een eigen wallet is, en dat ik persoonlijk verantwoordelijk ben voor alle bijbehorende fondsen, activa of rekeningen, en voor het nemen van gepaste maatregelen om mijn wallet te beveiligen, beschermen en back-uppen. Ik begrijp dat Ping geen toegang heeft tot mijn wallet of transacties namens mij kan terugdraaien, en dat mijn herstelzin de ENIGE manier is om weer toegang te krijgen in het geval van een verloren wachtwoord, gestolen apparaat, of soortgelijke omstandigheden.</translation>
 <translation id="4565891212173086999">Ik heb de <ph name="CLICK_START"/>gebruiksvoorwaarden<ph name="CLICK_END"/> gelezen en ga hiermee akkoord.</translation>
 <translation id="3259102562570606417">Bewaar uw herstelzin</translation>
 <translation id="426648489149930289">Bewaar het op een veilige plek waar anderen geen toegang toe hebben en deel het niet met anderen.</translation>
@@ -606,7 +606,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2321396552035646646">Je kunt de volledige herstelzin in een veld plakken.</translation>
 <translation id="3961126209136843111">Importeer een bestaande wallet</translation>
 <translation id="4811736040444856406">Herstelwoorden tonen</translation>
-<translation id="4359319875297001084">Importeren vanuit verouderde Brave-cryptowallets?</translation>
+<translation id="4359319875297001084">Importeren vanuit verouderde Ping-cryptowallets?</translation>
 <translation id="3157931365184549694">Herstel</translation>
 <translation id="5844138175312846408">Hebt u al een wallet?</translation>
 <translation id="2502258949541727762">Voordat we beginnen</translation>
@@ -635,8 +635,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
 <translation id="2360588547830602174">Accountherstel mislukt; probeer het opnieuw.</translation>
 <translation id="1987317783729300807">Accounts</translation>
-<translation id="6284218950354553099">Dagelijks automatisch gebruiksping verzenden naar Brave</translation>
-<translation id="2181060149810222381">Met deze privéping kan Brave het aantal actieve gebruikers inschatten.</translation>
+<translation id="6284218950354553099">Dagelijks automatisch gebruiksbrave verzenden naar Ping</translation>
+<translation id="2181060149810222381">Met deze privébrave kan Ping het aantal actieve gebruikers inschatten.</translation>
 <translation id="6725413948756358325">Accountnaam</translation>
 <translation id="6062431965141524986">Je kunt een tweede account aanmaken door je privésleutel te importeren.</translation>
 <translation id="3952797765659730604">Typ, plak of importeer je stringbestand met privésleutel of JSON-bestand.</translation>
@@ -644,10 +644,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="3784455785234192852">Vergrendelen</translation>
 <translation id="4412698727486357573">Helpcentrum</translation>
-<translation id="8239147115686034860">Brave-wallet automatisch vergrendelen</translation>
-<translation id="414639769490080648">Het aantal minuten dat je moet wachten voordat de Brave-wallet automatisch wordt vergrendeld</translation>
+<translation id="8239147115686034860">Ping-wallet automatisch vergrendelen</translation>
+<translation id="414639769490080648">Het aantal minuten dat je moet wachten voordat de Ping-wallet automatisch wordt vergrendeld</translation>
 <translation id="2326850911705720398">Walletgegevens resetten en wissen</translation>
-<translation id="6567712397896147805">Weet u zeker dat u uw Brave Wallet opnieuw wilt instellen? Indien er geen back-up van uw wallet is gemaakt, gaan al uw accountgegevens (inclusief gekoppeld saldo) verloren. Typ '<ph name="CONFIRMATION_PHRASE"/>' om te bevestigen.</translation>
+<translation id="6567712397896147805">Weet u zeker dat u uw Ping Wallet opnieuw wilt instellen? Indien er geen back-up van uw wallet is gemaakt, gaan al uw accountgegevens (inclusief gekoppeld saldo) verloren. Typ '<ph name="CONFIRMATION_PHRASE"/>' om te bevestigen.</translation>
 <translation id="4862812525895306758">Transactie wissen en nonce-info</translation>
 <translation id="5693968582510626466">Transacties wissen kan nuttig zijn voor ontwikkelaars of wanneer een lokale server wordt opgeschoond</translation>
 <translation id="5421107279168565467">Weet u zeker dat u uw transactie en nonce-informatie opnieuw wilt instellen? Deze optie wordt voornamelijk gebruikt door ontwikkelaars die een lokale testserver uitvoeren. Typ "<ph name="CONFIRMATION_PHRASE"/>" om te bevestigen.</translation>
@@ -658,14 +658,14 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1721710839767183848">Geen advertenties op de pagina</translation>
 <translation id="4647035642622555398">Geen onderbrekingen</translation>
 <translation id="4122515759479497554">Zoeken naar video's</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="4449475351935531438">Ping Firewall + VPN</translation>
 <translation id="719977489961414786">Upgrade naar een VPN om je verbinding te beschermen en invasieve trackers overal te blokkeren.</translation>
 <translation id="8814357473522731680">Mogelijk gemaakt door</translation>
 <translation id="5892534145504632332">Bescherm elke app en uw hele apparaat</translation>
 <translation id="7195416926059527505">Veiliger voor thuis of openbare wifi</translation>
 <translation id="1354700000739359839">Razendsnel, tot 100 Mbps</translation>
 <translation id="3510283489391432976">Kies je geo-locatie of land</translation>
-<translation id="7695158478627528928">Brave legt uw activiteit nooit vast</translation>
+<translation id="7695158478627528928">Ping legt uw activiteit nooit vast</translation>
 <translation id="4575683170451975058">Bescherm 5 apparaten met 1 abonnement</translation>
 <translation id="4882693590083943563">Alle abonnementen zijn inclusief een <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">gratis proefperiode van 7 dagen!</translation>
@@ -677,7 +677,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5903391101107992067">Probeer 7 dagen gratis</translation>
 <translation id="721747358270435486">VPN installeren</translation>
 <translation id="836074276610740314">VPN-profiel installeren</translation>
-<translation id="8021842065465097929">Brave installeert nu een VPN-profiel.</translation>
+<translation id="8021842065465097929">Ping installeert nu een VPN-profiel.</translation>
 <translation id="229286271464650057">Met dit profiel kan de VPN automatisch verbinding maken en het verkeer op je apparaat beveiligen — in elke app en op elk moment. De VPN-verbinding is versleuteld en wordt door de intelligente firewall van Guardian geleid om advertenties en trackers te blokkeren.</translation>
 <translation id="9073255657908892407">Neem contact op met de technische ondersteuning</translation>
 <translation id="1139934321138152517">VPN is nu ingeschakeld</translation>
@@ -761,14 +761,14 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8214232307424031138">Signed</translation>
 <translation id="1165039591588034296">Fout</translation>
 <translation id="2561824823738097741">Gebruik jij de snelste webbrowser?</translation>
-<translation id="2065971949051836200">3x sneller internet is al beschikbaar op je telefoon. Gebruik Brave om te browsen op internet.</translation>
-<translation id="2888278614497184977">Brave = 3x sneller browsen op internet</translation>
+<translation id="2065971949051836200">3x sneller internet is al beschikbaar op je telefoon. Gebruik Ping om te browsen op internet.</translation>
+<translation id="2888278614497184977">Ping = 3x sneller browsen op internet</translation>
 <translation id="6887232551109532144">Langer je batterij gebruiken na elke keer opladen</translation>
-<translation id="5388885352353494741">Beperk met één stap je batterijverbruik. Gebruik Brave om te browsen op internet.</translation>
-<translation id="3164151360474408351">Brave = langer je batterij gebruiken na elke keer opladen</translation>
+<translation id="5388885352353494741">Beperk met één stap je batterijverbruik. Gebruik Ping om te browsen op internet.</translation>
+<translation id="3164151360474408351">Ping = langer je batterij gebruiken na elke keer opladen</translation>
 <translation id="3211051910418903298">Beperk het verbruik van mobiele data</translation>
-<translation id="1092355580602106002">Minder reclame = minder gegevens op elke pagina die je laadt. Gebruik Brave om te browsen op internet.</translation>
-<translation id="623962032102267945">Brave = minder mobiele data per pagina</translation>
+<translation id="1092355580602106002">Minder reclame = minder gegevens op elke pagina die je laadt. Gebruik Ping om te browsen op internet.</translation>
+<translation id="623962032102267945">Ping = minder mobiele data per pagina</translation>
 <translation id="4355217341028673744">• Betere bescherming van uw privacy</translation>
 <translation id="3679020972083025535">• Geen irritante advertenties</translation>
 <translation id="8047527352810290817">Gas bewerken</translation>
@@ -817,7 +817,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2653659639078652383">Verzenden</translation>
 <translation id="4945690646623486292">Netwerk selecteren</translation>
 <translation id="5233638681132016545">Nieuw tabblad</translation>
-<translation id="8006088103295786154">Toegang tot Brave Wallet</translation>
+<translation id="8006088103295786154">Toegang tot Ping Wallet</translation>
 <translation id="8030169304546394654">Verbinding verbroken</translation>
 <translation id="3423275441470187644">Vertrouwen</translation>
 <translation id="2391762656119864333">Intrekken</translation>
@@ -827,7 +827,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="42981349822642051">Uitvouwen</translation>
 <translation id="3586752056660754651">Sign</translation>
 <translation id="3950820424414687140">Inloggen</translation>
-<translation id="6592721981110586529">Verbinden met Brave Wallet</translation>
+<translation id="6592721981110586529">Verbinden met Ping Wallet</translation>
 <translation id="329813193938846695">Selecteer account(s)</translation>
 <translation id="291375746846291973">Maak alleen verbinding met sites die u vertrouwt.</translation>
 <translation id="385051799172605136">Back</translation>
@@ -839,11 +839,11 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5242300593039211344">Wallet vergrendelen</translation>
 <translation id="1108298724135935307">Gekoppelde sites</translation>
 <translation id="4255623233927788178">Weergeven op Blokkering Explorer</translation>
-<translation id="8274201358637112807">Deze pagina wil communiceren met Brave Wallet</translation>
+<translation id="8274201358637112807">Deze pagina wil communiceren met Ping Wallet</translation>
 <translation id="3355936511340229503">Verbindingsfout</translation>
 <translation id="1531836666020185856">Uitgelicht</translation>
 <translation id="4891604214809245310">Kan netwerk niet instellen op <ph name="NETWORK_NAME"/></translation>
-<translation id="685345388423515592">Het lijkt erop dat u andere VPN's op dit apparaat hebt ingeschakeld op 'Altijd aan'. Om Brave Firewall + VPN in te schakelen, schakelt u eerst de 'Altijd aan'-instelling uit voor andere VPN's voordat u opnieuw verbinding maakt. Als het probleem zich blijft voordoen, probeer dan andere VPN's te verwijderen.</translation>
+<translation id="685345388423515592">Het lijkt erop dat u andere VPN's op dit apparaat hebt ingeschakeld op 'Altijd aan'. Om Ping Firewall + VPN in te schakelen, schakelt u eerst de 'Altijd aan'-instelling uit voor andere VPN's voordat u opnieuw verbinding maakt. Als het probleem zich blijft voordoen, probeer dan andere VPN's te verwijderen.</translation>
 <translation id="85136472535634474">VPN-instellingen openen</translation>
 <translation id="8352805003811526272">Configuratie aan het resetten ...</translation>
 <translation id="6809312301323611382">U hebt dezelfde server al geselecteerd.</translation>
@@ -863,25 +863,25 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Valutasymbool</translation>
 <translation id="7982789257301363584">Netwerk</translation>
-<translation id="6936860995365507185">Hierdoor kan dit netwerk binnen Brave-wallet worden gebruikt. <ph name="CLICK_START"/>Meer informatie<ph name="CLICK_END"/>.</translation>
+<translation id="6936860995365507185">Hierdoor kan dit netwerk binnen Ping-wallet worden gebruikt. <ph name="CLICK_START"/>Meer informatie<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Deze website toestaan om een netwerk toe te voegen?</translation>
 <translation id="4857321293515555666">Deze DApp wil dit bericht lezen om uw verzoek af te ronden.</translation>
 <translation id="714506544401754321">Bericht decoderen</translation>
 <translation id="5039804452771397117">Toestaan</translation>
 <translation id="3378339846292573874">Voorgestelde token toevoegen</translation>
 <translation id="2322227405137827074">Wil je deze token importeren?</translation>
-<translation id="1324417023773393937">Brave-browser</translation>
-<translation id="6044189892950611565">Meldingkanaal voor Brave Browser</translation>
+<translation id="1324417023773393937">Ping-browser</translation>
+<translation id="6044189892950611565">Meldingkanaal voor Ping Browser</translation>
 <translation id="4556601961751528347">Gekoppeld account wijzigen</translation>
 <translation id="8922793255489232731">Geen overeenkomstige tijdzone gevonden voor: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Verbonden met <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Proefperiode</translation>
-<translation id="6458565248779152483">Brave VPN uitschakelen</translation>
+<translation id="6458565248779152483">Ping VPN uitschakelen</translation>
 <translation id="9080536793704001825">15 minuten pauzeren</translation>
 <translation id="803706420145725977">1 uur pauzeren</translation>
 <translation id="4394049700291259645">Uitschakelen</translation>
 <translation id="7733890291091968191">Web3-meldingen weergeven</translation>
-<translation id="1371627247679035769">\n\n\n\n#### Brave volgt u niet en weet niet hoe u uw app gebruikt, dus we weten niet hoe u uw VPN hebt ingesteld. Deel informatie over het probleem dat u ervaart en dan doen wij ons best om het zo snel mogelijk op te lossen. ####\n\n</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Ping volgt u niet en weet niet hoe u uw app gebruikt, dus we weten niet hoe u uw VPN hebt ingesteld. Deel informatie over het probleem dat u ervaart en dan doen wij ons best om het zo snel mogelijk op te lossen. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-hostnaam\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nType abonnement\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nPlaystore-token\n <ph name="VALUE"/></translation>
@@ -904,7 +904,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7002577172732106572">Split-tunneling</translation>
 <translation id="8181161042860463420">Het bijbehorende tokenaccount bestaat nog niet. Er zal een klein bedrag aan SOL worden besteed om het aan te maken en er tegoed op te zetten. <ph name="CLICK_START"/>Meer informatie<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN-profiel bijwerken ...</translation>
-<translation id="4784306439879850873">Houd er rekening mee dat Brave niet kan controleren wat er gebeurt als u tekent. Een ondertekening kan bijna elke bewerking in uw account of namens uw account autoriseren, waaronder (maar niet beperkt tot) het geven van volledige controle over uw account en cryptoassets aan de website die het verzoek doet. Teken alleen als u deze actie wilt uitvoeren en de aanvragende website vertrouwt.</translation>
+<translation id="4784306439879850873">Houd er rekening mee dat Ping niet kan controleren wat er gebeurt als u tekent. Een ondertekening kan bijna elke bewerking in uw account of namens uw account autoriseren, waaronder (maar niet beperkt tot) het geven van volledige controle over uw account en cryptoassets aan de website die het verzoek doet. Teken alleen als u deze actie wilt uitvoeren en de aanvragende website vertrouwt.</translation>
 <translation id="3474375934783434676">Tekenen op eigen risico</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> of <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Transactie goedkeuren</translation>
@@ -953,8 +953,8 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8382368767453083629">Multisig 2 initialiseren</translation>
 <translation id="77243237706803459">Mint 2 initialiseren</translation>
 <translation id="583281660410589416">Unknown</translation>
-<translation id="5666264859501108700">Uw Brave Rewards-regio is ingesteld op <ph name="COUNTRY_NAME"/>.</translation>
-<translation id="909076461795862330">Er heeft zich een probleem voorgedaan tijdens het instellen van Brave Rewards. Probeer het opnieuw.</translation>
+<translation id="5666264859501108700">Uw Ping Rewards-regio is ingesteld op <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="909076461795862330">Er heeft zich een probleem voorgedaan tijdens het instellen van Ping Rewards. Probeer het opnieuw.</translation>
 <translation id="7352651011704765696">Er ging iets fout</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
 <translation id="6040143037577758943">Sluit</translation>
@@ -963,15 +963,15 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8496335570810457">Preflight-toezegging:</translation>
 <translation id="5100124500279922001">Preflight overslaan:</translation>
 <translation id="7152095322071766507">Meest bezochte site</translation>
-<translation id="7230006500876504868">Zoeken met Brave</translation>
+<translation id="7230006500876504868">Zoeken met Ping</translation>
 <translation id="5888208462949095139">Zoeken met <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Startscherm-widget</translation>
 <translation id="703185154752046151">Widget toegevoegd aan het startscherm</translation>
-<translation id="3290805388004282161">Probeer de widget 'Zoeken met Brave'</translation>
+<translation id="3290805388004282161">Probeer de widget 'Zoeken met Ping'</translation>
 <translation id="4809681171446727314">Krijg toegang tot privé- en onafhankelijk zoeken rechtstreeks vanaf het startscherm.</translation>
 <translation id="7751715172931488388">Widget toevoegen</translation>
-<translation id="7285167584112910782">Snel zoeken met Brave</translation>
-<translation id="2326703104633309781">Gebruik Brave Translate</translation>
+<translation id="7285167584112910782">Snel zoeken met Ping</translation>
+<translation id="2326703104633309781">Gebruik Ping Translate</translation>
 <translation id="5802752138057422257">Niet-ASCII-tekens gedetecteerd!</translation>
 <translation id="442709594176931966">Oorspronkelijk bericht weergeven</translation>
 <translation id="2239252396088484499">Bericht in ASCII-codering weergeven</translation>
@@ -983,21 +983,21 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1313065465616456728">Verleend om</translation>
 <translation id="7902225556763260253">Vervaltijd</translation>
 <translation id="1908159733454294871">Beveiligingsrisico gedetecteerd</translation>
-<translation id="5658257029899993935">Aankoop koppelen aan uw Brave-account</translation>
-<translation id="1187061015547219282">Koppel uw Play Store-aankoop aan uw Brave-account om Brave VPN op andere apparaten te gebruiken.</translation>
+<translation id="5658257029899993935">Aankoop koppelen aan uw Ping-account</translation>
+<translation id="1187061015547219282">Koppel uw Play Store-aankoop aan uw Ping-account om Ping VPN op andere apparaten te gebruiken.</translation>
 <translation id="6662142137695589205">Koppel uw VPN-abonnement</translation>
-<translation id="2674077112509133024">Breid uw Brave Firewall + VPN-bescherming uit</translation>
-<translation id="6365389672683343144">Uw Brave VPN-abonnement kan tot 5 apparaten beschermen op Android, iOS en desktop. U hoeft alleen uw Google Play-abonnement te koppelen aan uw Brave-account.</translation>
+<translation id="2674077112509133024">Breid uw Ping Firewall + VPN-bescherming uit</translation>
+<translation id="6365389672683343144">Uw Ping VPN-abonnement kan tot 5 apparaten beschermen op Android, iOS en desktop. U hoeft alleen uw Google Play-abonnement te koppelen aan uw Ping-account.</translation>
 <translation id="6610899852831463073">Kan veilig browsen niet inschakelen</translation>
 <translation id="7954263306665462056">Veilig browsen is uitgeschakeld op uw apparaat. Zorg ervoor dat Google Play Services is geïnstalleerd om veilig browsen in te schakelen en houd het up-to-date.</translation>
 <translation id="6605147707233193230">Inschakelen om contentontwikkelaars te helpen ondersteunen</translation>
-<translation id="6067959437127691361">Brave Rewards helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
+<translation id="6067959437127691361">Ping Rewards helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
 <translation id="3264975266761862670">Klaar om te beginnen met verdienen?</translation>
 <translation id="265337947574975838">Koppel uw bestaande account of maak een nieuwe aan bij een van onze partners.</translation>
 <translation id="654447476965480878">Meer informatie over BAT verdienen</translation>
 <translation id="6278643716658443228">Instellingen voor beloningen</translation>
 <translation id="6516984207843289176">Koppel rekening</translation>
-<translation id="4272136334824111854">U hebt deze maand <ph name="CREATOR_COUNT"/> ontwikkelaars bezocht die worden ondersteund door Brave Rewards</translation>
+<translation id="4272136334824111854">U hebt deze maand <ph name="CREATOR_COUNT"/> ontwikkelaars bezocht die worden ondersteund door Ping Rewards</translation>
 <translation id="6845311459433734326">Koppel een beheerrekening zodat u BAT kunt verdienen en neem uw beloningen op</translation>
 <translation id="928980476243133540">Ik doe het een andere keer</translation>
 <translation id="579702532610384533">Opnieuw verbinding maken</translation>
@@ -1008,8 +1008,8 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5382684862562314222">BAT wordt nog niet ondersteund in jouw regio voor Uphold.</translation>
 <translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
 <translation id="1677961202754619328">Volgens Uphold gelden er momenteel enkele beperkingen voor uw Uphold-account. Log in bij uw Uphold-account en controleer of er meldingen zijn en of er gegevens ontbreken. Probeer het vervolgens opnieuw.</translation>
-<translation id="5425006356459378415">Brave Rewards is niet beschikbaar</translation>
-<translation id="833643743158564518">Nieuwe aanmeldingen voor Brave Rewards zijn momenteel uitgeschakeld in uw regio. U kunt het later echter altijd opnieuw proberen. <ph name="LEARN_MORE"/></translation>
+<translation id="5425006356459378415">Ping Rewards is niet beschikbaar</translation>
+<translation id="833643743158564518">Nieuwe aanmeldingen voor Ping Rewards zijn momenteel uitgeschakeld in uw regio. U kunt het later echter altijd opnieuw proberen. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">Primaire netwerken</translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
 <translation id="282560918037172384">Testnetwerken</translation>
@@ -1030,8 +1030,8 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="346505172740911461">Marktprijs</translation>
 <translation id="5494920125229734069">Alles selecteren</translation>
 <translation id="6129027151000961048">Leo</translation>
-<translation id="8613144770663526433">Inloggen bij Brave Wallet</translation>
-<translation id="3696514931437952995">U logt in bij <ph name="ORIGIN"/>. Brave-wallet deelt uw wallet-adres met <ph name="ORIGIN"/>.</translation>
+<translation id="8613144770663526433">Inloggen bij Ping Wallet</translation>
+<translation id="3696514931437952995">U logt in bij <ph name="ORIGIN"/>. Ping-wallet deelt uw wallet-adres met <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Gegevens bekijken</translation>
 <translation id="6759710362319508545">Resources</translation>
 <translation id="2471230424465522689">Niet voor</translation>
@@ -1040,7 +1040,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4109670531935487117">Suggesties voor automatisch aanvullen in de adresbalk weergeven</translation>
 <translation id="1250335737108905610">Opnieuw instellen en gegevens wissen van Leo</translation>
 <translation id="6165101586663336913">Als u Leo (assistent) opnieuw instelt, moet u zich in de toekomst aanmelden om Leo te kunnen gebruiken. Ook wordt uw chatgeschiedenis gewist. Als u uw chatgeschiedenis wist, worden al uw eerdere gesprekken met Leo verwijderd. Deze actie kan niet ongedaan worden gemaakt.</translation>
-<translation id="3692772534525889713">Koppel uw Play Store-aankoop aan uw Brave-account om Brave Leo op andere apparaten te gebruiken.</translation>
+<translation id="3692772534525889713">Koppel uw Play Store-aankoop aan uw Ping-account om Ping Leo op andere apparaten te gebruiken.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1166682575529520472">Maandelijks</translation>
 <translation id="451189393813405346">Vraag het Leo</translation>
@@ -1050,7 +1050,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6344103698928069918">Bij playlists het afspelen hervatten vanaf het punt waar u het laatst gestopt bent</translation>
 <translation id="8141583471142904652">Zonder onderbreking afspelen</translation>
 <translation id="851432578283946230">Speelt automatisch de volgende items op uw playlist af</translation>
-<translation id="295620834661738195">Brave-playlist</translation>
+<translation id="295620834661738195">Ping-playlist</translation>
 <translation id="4850886885716139402">Weergave</translation>
 <translation id="7392941176393379100">Toegevoegd aan '<ph name="PLAYLIST_NAME"/>'</translation>
 <translation id="349846214503465941">Playlist inschakelen</translation>
@@ -1076,7 +1076,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8120600068258956006">Toevoegen aan playlist</translation>
 <translation id="39991094779686024">Playlists</translation>
 <translation id="1710072605877822603">Media toevoegen</translation>
-<translation id="3874252678044305931">Voeg video's toe aan Brave Playlist. Speel ze af wanneer je maar wilt, zelfs als je offline bent.</translation>
+<translation id="3874252678044305931">Voeg video's toe aan Ping Playlist. Speel ze af wanneer je maar wilt, zelfs als je offline bent.</translation>
 <translation id="8973629800378391099">Maak playlists van je favoriete content. Bespaar mobiele data. Speel  je playlists af zonder reclame tussendoor.</translation>
 <translation id="4936812987266342401">Tik op de knop en voeg in een handomdraai video's toe aan een playlist</translation>
 <translation id="6263657785571415306">Blijf in je flow: voeg tijdens het browsen video's toe en bekijk ze later.</translation>
@@ -1119,7 +1119,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5538904824395606812">Uw huidige serviceprovider of Quad9 gebruiken</translation>
 <translation id="6393423486818299209">Uw huidige serviceprovider of Wikimedia DNS gebruiken</translation>
 <translation id="3401384982562827787">Uw huidige serviceprovider of Cloudflare gebruiken</translation>
-<translation id="8812367543786936496">Als uw huidige serviceprovider onbeveiligd is, gebruikt Brave een beveiligde alternatieve DNS-provider</translation>
+<translation id="8812367543786936496">Als uw huidige serviceprovider onbeveiligd is, gebruikt Ping een beveiligde alternatieve DNS-provider</translation>
 <translation id="5680678411439841197">stad</translation>
 <translation id="8185518433273977704">dorp</translation>
 <translation id="4528386452965343421">prefectuur</translation>
@@ -1147,19 +1147,19 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="3300502432153878901">postcode</translation>
 <translation id="4130750466177569591">Ik ga akkoord</translation>
 <translation id="3251885322612056119">Bijgewerkte Servicevoorwaarden</translation>
-<translation id="4049035689681585146">We hebben de Servicevoorwaarden voor Brave Rewards bijgewerkt. We hebben deze updates doorgevoerd om onze voorwaarden te verduidelijken en om ervoor te zorgen dat ze nieuwe functies dekken. Als u Brave Rewards blijft gebruiken, gaat u akkoord met de bijgewerkte Servicevoorwaarden. Als u niet akkoord gaat, kunt u Brave Rewards <ph name="RESET_START"/>opnieuw instellen<ph name="RESET_END"/>, waardoor de functie wordt uitgeschakeld.</translation>
-<translation id="2165953574528546737">Raadpleeg de <ph name="TOS_START"/>Servicevoorwaarden van Brave Rewards<ph name="TOS_END"/></translation>
+<translation id="4049035689681585146">We hebben de Servicevoorwaarden voor Ping Rewards bijgewerkt. We hebben deze updates doorgevoerd om onze voorwaarden te verduidelijken en om ervoor te zorgen dat ze nieuwe functies dekken. Als u Ping Rewards blijft gebruiken, gaat u akkoord met de bijgewerkte Servicevoorwaarden. Als u niet akkoord gaat, kunt u Ping Rewards <ph name="RESET_START"/>opnieuw instellen<ph name="RESET_END"/>, waardoor de functie wordt uitgeschakeld.</translation>
+<translation id="2165953574528546737">Raadpleeg de <ph name="TOS_START"/>Servicevoorwaarden van Ping Rewards<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">Meerdere vensters inschakelen</translation>
 <translation id="6167344249617630304">Open maximaal vijf vensters tegelijk en verplaats tabbladen van het ene venster naar het andere</translation>
 <translation id="1063948063403254568">Meerdere vensters gedetecteerd</translation>
-<translation id="4661882208707630158">Voeg tabbladen samen in een ander Brave-venster of sluit andere Brave-vensters voordat u de functie voor meerdere vensters uitschakelt.</translation>
+<translation id="4661882208707630158">Voeg tabbladen samen in een ander Ping-venster of sluit andere Ping-vensters voordat u de functie voor meerdere vensters uitschakelt.</translation>
 <translation id="6891382640886173702">Vensters samenvoegen</translation>
 <translation id="2912247081180973411">Vensters sluiten</translation>
-<translation id="4010699428656610296">Voeg andere tabbladen samen in een ander Brave-venster.</translation>
+<translation id="4010699428656610296">Voeg andere tabbladen samen in een ander Ping-venster.</translation>
 <translation id="208634871997892083">VPN altijd aan</translation>
 <translation id="1599073346542156922">Hoe u deze aanzet:</translation>
 <translation id="7001163334415463127">1. Open uw apparaatinstellingen in uw applade of door op de onderstaande knop te tikken.</translation>
-<translation id="887443138775437899">2. Zoek naar Brave VPN en tik op de instellingenpictogram aan de rechterkant.</translation>
+<translation id="887443138775437899">2. Zoek naar Ping VPN en tik op de instellingenpictogram aan de rechterkant.</translation>
 <translation id="3776051499611941773">3. Zet <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN altijd aan<ph name="ALWAYS_ON_TUTORIAL_END"/> aan.</translation>
 <translation id="4776146737004271126">Android-instellingen openen</translation>
 <translation id="2728518864712716830">Update is gedownload.</translation>

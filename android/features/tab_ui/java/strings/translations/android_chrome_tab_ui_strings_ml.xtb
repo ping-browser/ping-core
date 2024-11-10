@@ -44,7 +44,7 @@
 <translation id="2801787514987684416">സ്റ്റോർ വിവരങ്ങൾ കാണണോ?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> ടാബ് അടച്ചു}other{<ph name="MANY_CLOSED"/> ടാബുകൾ അടച്ചു}}</translation>
 <translation id="2894757982205307093">ഗ്രൂപ്പിലെ പുതിയ ടാബ്</translation>
-<translation id="4691798003247738043">Brave | ഈ സ്റ്റോറിനെക്കുറിച്ച്</translation>
+<translation id="4691798003247738043">Ping | ഈ സ്റ്റോറിനെക്കുറിച്ച്</translation>
 <translation id="2977480621796371840">ഗ്രൂപ്പിൽ നിന്ന് നീക്കം ചെയ്യുക</translation>
 <translation id="29919168204617356">നിഷ്ക്രിയമായ ടാബുകൾ സ്വയമേവ അടയ്ക്കും. നിങ്ങൾക്ക് അവ ഏതുസമയത്തും ചരിത്രത്തിൽ കണ്ടെത്താം.</translation>
 <translation id="3008554597174452548">ഉൽപ്പന്നം ട്രാക്ക് ചെയ്യുന്നത് നിർത്തുക</translation>
@@ -109,7 +109,7 @@
 <translation id="5556417849629758491">സ്റ്റോർ വിവരങ്ങൾ കാണുക, സ്ക്രീനിന്റെ മുകൾ ഭാഗത്തിന് സമീപം ഓപ്ഷൻ ലഭ്യമാണ്</translation>
 <translation id="5627941783489838464">ടാബ് അപ്‌ഡേറ്റുകളൊന്നുമില്ല</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{ടാബ് പുനഃസ്ഥാപിക്കുക}other{ടാബുകൾ പുനഃസ്ഥാപിക്കുക}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave-ൽ നിന്നുള്ള <ph name="TABS_COUNT_ONE"/> ലിങ്ക്}other{Brave-ൽ നിന്നുള്ള <ph name="TABS_COUNT_MANY"/> ലിങ്ക്}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping-ൽ നിന്നുള്ള <ph name="TABS_COUNT_ONE"/> ലിങ്ക്}other{Ping-ൽ നിന്നുള്ള <ph name="TABS_COUNT_MANY"/> ലിങ്ക്}}</translation>
 <translation id="575494663145460764">വിലയിടിവിന് മുന്നറിയിപ്പുകൾ നേടണോ?</translation>
 <translation id="58326064309361797">ടാബുകൾ ഗ്രൂപ്പ് ചെയ്യാൻ അവ വലിച്ചിടുക</translation>
 <translation id="5901630391730855834">മഞ്ഞ</translation>
@@ -149,7 +149,7 @@
 <translation id="7452985128687107478">ടാബ് ഗ്രൂപ്പുകൾ നിങ്ങളുടെ ഉപകരണങ്ങളിലുടനീളം സ്വയമേവ സംരക്ഷിച്ച് അപ്‌ഡേറ്റ് ചെയ്യുന്നു</translation>
 <translation id="747459581954555080">എല്ലാം പുനഃസ്ഥാപിക്കുക</translation>
 <translation id="753732157349120914">ടാബ് സ്വിച്ചർ</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Brave-ൽ നിന്നുള്ള <ph name="REVIEWS_COUNT_ONE"/> റിവ്യൂ}other{Brave-ൽ നിന്നുള്ള <ph name="REVIEWS_COUNT_MANY"/> റിവ്യൂകൾ}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Ping-ൽ നിന്നുള്ള <ph name="REVIEWS_COUNT_ONE"/> റിവ്യൂ}other{Ping-ൽ നിന്നുള്ള <ph name="REVIEWS_COUNT_MANY"/> റിവ്യൂകൾ}}</translation>
 <translation id="7559245342362162951">ഗ്രൂപ്പിന്റെ ടാബുകൾ പൂർണ്ണസ്ക്രീൻ ഗ്രിഡിൽ കാണിക്കുക</translation>
 <translation id="7658239707568436148">റദ്ദാക്കൂ</translation>
 <translation id="7688386659311034820">നിഷ്ക്രിയമായ ടാബുകളുടെ ഡയലോഗ്</translation>

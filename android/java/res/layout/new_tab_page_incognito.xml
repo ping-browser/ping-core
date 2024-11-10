@@ -44,6 +44,7 @@
 
             <!-- Keep the ID below as it's been tested in Chromium code by IncognitoNewTabPageStation. -->
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/new_tab_incognito_icon"
                 android:layout_width="@dimen/new_tab_page_incognito_logo_size"
                 android:layout_height="@dimen/new_tab_page_incognito_logo_size"
@@ -64,14 +65,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/brave_new_tab_private_header"
                 android:textColor="@color/brave_white"
-                android:layout_marginStart="14dp"
-                android:layout_marginBottom="64dp"
-                app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/tv_first_title"
-                app:layout_constraintStart_toEndOf="@+id/new_tab_incognito_icon"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5" 
+                android:layout_marginBottom="24dp"
+            />
 
             <ImageView
                 android:id="@+id/iv_first_icon"
@@ -161,6 +161,7 @@
                 />
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/iv_third_icon"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 android:layout_width="@dimen/new_tab_page_incognito_icon_size"
@@ -174,6 +175,7 @@
                 />
 
             <TextView
+                android:visibility="invisible"
                 android:id="@+id/tv_third_title"
                 style="@style/DefaultSemibold"
                 app:layout_constraintWidth_max="460dp"
@@ -189,6 +191,7 @@
                 />
 
             <TextView
+                android:visibility="invisible"
                 android:id="@+id/tv_third_description"
                 style="@style/DefaultRegular"
                 android:layout_width="0dp"
@@ -203,6 +206,7 @@
                 />
 
             <TextView
+                android:visibility="invisible"
                 android:id="@+id/tv_try_vpn"
                 style="@style/DefaultSemibold"
                 android:layout_width="0dp"

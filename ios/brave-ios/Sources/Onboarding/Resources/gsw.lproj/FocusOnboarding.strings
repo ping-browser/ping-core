@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Weiter";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Öffnen Sie jeden Link, den Sie antippen, mit den Datenschutzmechanismen von Brave";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Öffnen Sie jeden Link, den Sie antippen, mit den Datenschutzmechanismen von Ping";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Brave als Standardbrowser festlegen";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Ping als Standardbrowser festlegen";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Schneller surfen und weniger Daten verbrauchen.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Lassen Sie uns wissen, welche Funktionen Ihnen am besten gefallen.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Machen Sie Brave noch besser.";
+"focusOnboarding.p3aScreenTitle" = "Machen Sie Ping noch besser.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Sie können dies jederzeit in den Brave-Einstellungen unter „Brave Shields und Datenschutz“ ändern.";
+"focusOnboarding.p3aToggleDescription" = "Sie können dies jederzeit in den Ping-Einstellungen unter „Ping Shields und Datenschutz“ ändern.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Private und anonyme Produkteinblicke teilen.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Geben Sie eine URL ein, die Sie mit weniger Werbung und Trackern öffnen möchten";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Erleben Sie den Brave-Unterschied";
+"focusOnboarding.urlBarIndicatorTitle" = "Erleben Sie den Ping-Unterschied";
 

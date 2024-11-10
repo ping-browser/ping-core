@@ -45,7 +45,9 @@ network::ResourceRequest OnBeforeSystemRequest(
   }
   stt::OnBeforeURLRequest_SpoofSpeechToText(&patched_request);
   AddBraveServicesKeyHeader(&patched_request);
-  return patched_request;
+  
+  // Remove url redirects and blocking for Ping browser
+  return url_request;
 }
 
 }  // namespace brave

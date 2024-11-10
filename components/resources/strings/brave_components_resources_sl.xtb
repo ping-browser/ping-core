@@ -26,10 +26,10 @@
 <translation id="985862351129593673">Ozadje po meri</translation>
 <translation id="7180865173735832675">Prilagodi</translation>
 <translation id="8522669544471808198">Prikaži slike ozadja</translation>
-<translation id="5801450813341024983">Ozadja za Brave</translation>
+<translation id="5801450813341024983">Ozadja za Ping</translation>
 <translation id="1416884769823233410">Uporabite svoje</translation>
 <translation id="6246790815526961700">Naložite iz naprave</translation>
-<translation id="7275773481201277457">Pokaži Braveove statistike</translation>
+<translation id="7275773481201277457">Pokaži Pingove statistike</translation>
 <translation id="6836061097810262923">Pokaži uro</translation>
 <translation id="5912396950572065471">Format</translation>
 <translation id="604124094241169006">Samodejno</translation>
@@ -64,23 +64,23 @@
 <translation id="780301667611848630">Ne, hvala</translation>
 <translation id="1230746063445072175">Želite še več zasebnosti?</translation>
 <translation id="6699628638740071563">Čas je, da se odpoveste Googlu.</translation>
-<translation id="5588534392045217394">Iskanje Brave ne spreminja ali cenzurira in vam ne sledi.</translation>
-<translation id="6811221529729056895">Preizkusite iskanje na Brave zdaj</translation>
-<translation id="3446024864193919737">Pokaži nagrade Brave Rewards</translation>
+<translation id="5588534392045217394">Iskanje Ping ne spreminja ali cenzurira in vam ne sledi.</translation>
+<translation id="6811221529729056895">Preizkusite iskanje na Ping zdaj</translation>
+<translation id="3446024864193919737">Pokaži nagrade Ping Rewards</translation>
 <translation id="5585019845078534178">Kartice</translation>
 <translation id="3870475560794762985">Prikaži sponzorirano sliko</translation>
 <translation id="2414654907269324670">Z ogledovanjem sponzoriranih slik služite žetone.</translation>
 <translation id="4942016616604700968">Omogoči nagrade</translation>
 <translation id="5684562942023496754">Zaslužite lahko z obiski sponzoriranih slik.</translation>
-<translation id="8934374643857605034">Kot uporabnik storitve nagrajevanja Brave lahko z ogledovanjem sponzoriranih slik služite žetone.</translation>
-<translation id="1570714748649804013">Kot uporabnik storitve nagrajevanja Brave lahko z ogledom sponzoriranih slik služite žetone. Če storitev sponzoriranih slik izključite, bo to znižalo vaš zaslužek.</translation>
-<translation id="8998727244653964783">Ko skrbniški račun povežete s storitvijo nagrajevanja Brave, lahko z ogledovanjem sponzoriranih slik služite žetone. Medtem s sponzoriranimi slikami pomagate podpirati ustvarjalce.</translation>
-<translation id="5512383650263136662">Kot uporabnik storitve nagrajevanja Brave lahko z ogledovanjem sponzoriranih slik služite žetone. Ne uporabljate storitve nagrajevanja? Vklop sponzoriranih slik še vedno podpira vizijo podjetja Brave.</translation>
+<translation id="8934374643857605034">Kot uporabnik storitve nagrajevanja Ping lahko z ogledovanjem sponzoriranih slik služite žetone.</translation>
+<translation id="1570714748649804013">Kot uporabnik storitve nagrajevanja Ping lahko z ogledom sponzoriranih slik služite žetone. Če storitev sponzoriranih slik izključite, bo to znižalo vaš zaslužek.</translation>
+<translation id="8998727244653964783">Ko skrbniški račun povežete s storitvijo nagrajevanja Ping, lahko z ogledovanjem sponzoriranih slik služite žetone. Medtem s sponzoriranimi slikami pomagate podpirati ustvarjalce.</translation>
+<translation id="5512383650263136662">Kot uporabnik storitve nagrajevanja Ping lahko z ogledovanjem sponzoriranih slik služite žetone. Ne uporabljate storitve nagrajevanja? Vklop sponzoriranih slik še vedno podpira vizijo podjetja Ping.</translation>
 <translation id="2875302873837723333">Najb. prilj.</translation>
-<translation id="8173998484743827990">Brave statistika</translation>
+<translation id="8173998484743827990">Ping statistika</translation>
 <translation id="383680190590774040">ura</translation>
 <translation id="1383876407941801731">Išči</translation>
-<translation id="3333887201479867589">Storitev Brave Rewards</translation>
+<translation id="3333887201479867589">Storitev Ping Rewards</translation>
 <translation id="3159285901314605198">Slika ozadja</translation>
 <translation id="385051799172605136">Nazaj</translation>
 <translation id="4225429340218993596">Enobarvne</translation>
@@ -92,13 +92,13 @@
 <translation id="4108314971463891922">Sledite</translation>
 <translation id="3861486700625780712">Prenehajte slediti</translation>
 <translation id="8909741410750517071">Sledite temu viru z 1 klikom.</translation>
-<translation id="1982678174789043774">Izvedite vse o najnovejših dogodkih v novicah Brave.</translation>
+<translation id="1982678174789043774">Izvedite vse o najnovejših dogodkih v novicah Ping.</translation>
 <translation id="7894417427965898400">Upravljajte vire</translation>
 <translation id="9164544612367905452">Pridobivanje…</translation>
 <translation id="1276592121036104130">Naloži novo vsebino</translation>
-<translation id="2875288128871360696">Pomaknite se na Brave News</translation>
-<translation id="8510120023634509743">Ponastavi vire Brave News</translation>
-<translation id="75825199302994272">Želite ponastaviti vse izbire založnika Brave News na privzete?</translation>
+<translation id="2875288128871360696">Pomaknite se na Ping News</translation>
+<translation id="8510120023634509743">Ponastavi vire Ping News</translation>
+<translation id="75825199302994272">Želite ponastaviti vse izbire založnika Ping News na privzete?</translation>
 <translation id="954001034349395856">Vsi viri</translation>
 <translation id="8890516388109605451">Viri</translation>
 <translation id="5158129253322921540">Onemogoči vsebino od<ph name="PUBLISHER_NAME"/></translation>
@@ -108,12 +108,12 @@
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="7679334366167089823">Zaslužite z ogledom oglasov, ki spoštujejo zasebnost.</translation>
 <translation id="7191394989411626168">Če izklopite Kartice, bodo vse trenutno vidne kartice skrite. Lahko se zgodi, da boste še naprej prejemali obvestila o novih karticah.</translation>
-<translation id="6820526586005233839">Oglasi Brave so zaustavljeni</translation>
-<translation id="5190407395832551012">Če želite Brave Rewards zaščititi pred zlorabo, bomo naključno prosili uporabnike, da rešijo preskus captcha. Za nadaljevanje oglasov kliknite “Reši”.</translation>
+<translation id="6820526586005233839">Oglasi Ping so zaustavljeni</translation>
+<translation id="5190407395832551012">Če želite Ping Rewards zaščititi pred zlorabo, bomo naključno prosili uporabnike, da rešijo preskus captcha. Za nadaljevanje oglasov kliknite “Reši”.</translation>
 <translation id="1693773514029371138">Reši</translation>
 <translation id="6991128190741664836">Pozneje</translation>
-<translation id="8112367589167674370">Brave Talk</translation>
-<translation id="8488282162676695335">Denarnica Brave</translation>
+<translation id="8112367589167674370">Ping Talk</translation>
+<translation id="8488282162676695335">Denarnica Ping</translation>
 <translation id="8820817407110198400">Zaznamki</translation>
 <translation id="1644574205037202324">Zgodovina</translation>
 <translation id="2702801445560668637">Bralni seznam</translation>
@@ -123,23 +123,23 @@
 <translation id="8730621377337864115">Končano</translation>
 <translation id="730042046912793465">To je</translation>
 <translation id="2055363275850890030">Zasebno okno</translation>
-<translation id="9133213713928851646">Brave nikoli ne beleži, kaj počnete v zasebnem oknu. Strani, ki jih obiščete, ne bodo prikazane v vaši zgodovini, piškotki pa bodo izginili, ko boste zapustili stran. Vseeno pa zasebna okna ne zagotavljajo popolne anonimnosti na spletu.</translation>
-<translation id="4085423007106063912">Brave si nikoli ne zapomni, kaj počnete v zasebnem oknu. Spletna mesta, ki jih obiščete, ne bodo prikazana v vaši zgodovini. Piškotki, podatki obrazcev in podatki spletnega mesta izginejjo, ko zaprete okno.</translation>
+<translation id="9133213713928851646">Ping nikoli ne beleži, kaj počnete v zasebnem oknu. Strani, ki jih obiščete, ne bodo prikazane v vaši zgodovini, piškotki pa bodo izginili, ko boste zapustili stran. Vseeno pa zasebna okna ne zagotavljajo popolne anonimnosti na spletu.</translation>
+<translation id="4085423007106063912">Ping si nikoli ne zapomni, kaj počnete v zasebnem oknu. Spletna mesta, ki jih obiščete, ne bodo prikazana v vaši zgodovini. Piškotki, podatki obrazcev in podatki spletnega mesta izginejjo, ko zaprete okno.</translation>
 <translation id="1700746046668116047">Upoštevati je treba, da je vaša dejavnost ponudniku internetnih storitev, opazovalcem pasivnega omrežja ali delodajalcu (če uporabljate delovni računalnik ali omrežje) še vedno lahko vidna. Za več zasebnosti odprite zasebno okno s Torom.</translation>
 <translation id="8759753423332885148">Več o tem</translation>
 <translation id="8611976753572844841">Zasebno okno s povezljivostjo Tor</translation>
-<translation id="1645589858096839236">Brave ne shranjuje dejavnosti brskanja iz zasebnega okna. S povezavo Tor spletna mesta težje vidijo vaš pravi naslov IP in opazovalci omrežja katera spletna mesta ste obiskali. Če pa je vaša osebna varnost odvisna od tega, da ostanete anonimni, namesto tega uporabite brskalnik Tor.</translation>
+<translation id="1645589858096839236">Ping ne shranjuje dejavnosti brskanja iz zasebnega okna. S povezavo Tor spletna mesta težje vidijo vaš pravi naslov IP in opazovalci omrežja katera spletna mesta ste obiskali. Če pa je vaša osebna varnost odvisna od tega, da ostanete anonimni, namesto tega uporabite brskalnik Tor.</translation>
 <translation id="7919374705736538787">Išči zasebno z</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
-<translation id="218839872518145456">V primeru zasebnega iskanja bo Brave za iskanje v zasebnih oknih uporabil DuckDuckGo. DuckDuckGo ne sledi zgodovini iskanja, zato je vaše iskanje zasebno.</translation>
+<translation id="218839872518145456">V primeru zasebnega iskanja bo Ping za iskanje v zasebnih oknih uporabil DuckDuckGo. DuckDuckGo ne sledi zgodovini iskanja, zato je vaše iskanje zasebno.</translation>
 <translation id="1925197199485958903">V brskalniku Tor v zasebnem oknu najdete privzeti iskalnik DuckDuckGo. Nekatere druge priljubljene iskalnike je težje uporabljati z brskalnikom Tor. DuckDuckGo ne sledi vaši zgodovini iskanja; če uporabljate Tor, vaš naslov IP sploh ni viden.</translation>
 <translation id="4371533307685765155">Išči z DuckDuckGo</translation>
 <translation id="548478195417408221">Naj bo zasebni Windows še bolj zaseben</translation>
 <translation id="3294503279952534143">To zasebno okno je bolj zasebno</translation>
 <translation id="6126226144537295436">s povezljivostjo Tor</translation>
 <translation id="8541421872680304667">Tor skriva vaš naslov IP pred spletnimi mesti, ki jih obiščete, tako da brska po več strežnikih Tor, preden doseže vaš cilj. Tor lahko upočasni brskanje in nekatera spletna mesta morda sploh ne bodo delovala.</translation>
-<translation id="8897548669448660973">Uporaba zasebnega sistema Windows spremeni samo tisto, kar Brave počne v vaši napravi ne spremeni vedenja nikogar drugega. Tor skriva vaš naslov IP pred spletnimi mesti, ki jih obiščete, in nekoliko otežuje, a ne nemogoče, da vaš ponudnik internetnih storitev ali delodajalec vidi, katera spletna mesta obiskujete. Odprite zasebno okno z menijem Tor ali z [[key]].</translation>
-<translation id="6975708438781948564">Več o brskalnikih Tor in Brave</translation>
+<translation id="8897548669448660973">Uporaba zasebnega sistema Windows spremeni samo tisto, kar Ping počne v vaši napravi ne spremeni vedenja nikogar drugega. Tor skriva vaš naslov IP pred spletnimi mesti, ki jih obiščete, in nekoliko otežuje, a ne nemogoče, da vaš ponudnik internetnih storitev ali delodajalec vidi, katera spletna mesta obiskujete. Odprite zasebno okno z menijem Tor ali z [[key]].</translation>
+<translation id="6975708438781948564">Več o brskalnikih Tor in Ping</translation>
 <translation id="4712050378540986986">Stanje brskalnika Tor</translation>
 <translation id="1939334281379458295">Tor se je uspešno povezal</translation>
 <translation id="8030169304546394654">Prekinjeno</translation>
@@ -148,7 +148,7 @@
 <translation id="2795840524629682765">Povezava s Torom ni uspela</translation>
 <translation id="1149108864689950951">Tor se povezuje... [[percentage]]%</translation>
 <translation id="3651192084771403430">Imate težave pri povezovanju? Poskusite <ph name="BEGIN_LINK"/>izklopiti<ph name="END_LINK"/> zasebno okno s Torom in ga znova vklopiti v nastavitvah.</translation>
-<translation id="8834376622642889380">Odprite <ph name="BEGIN_LINK"/>nastavitve Brave <ph name="END_LINK"/>, onemogočite zasebno okno s Torom in ga nato znova omogočite.</translation>
+<translation id="8834376622642889380">Odprite <ph name="BEGIN_LINK"/>nastavitve Ping <ph name="END_LINK"/>, onemogočite zasebno okno s Torom in ga nato znova omogočite.</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>Imate še vedno težave?<ph name="END_BOLD"/> Poskusite uporabiti <ph name="BEGIN_BRIDGES_LINK"/>mostove<ph name="END_BRIDGES_LINK"/> ali <ph name="BEGIN_SUPPORT_LINK"/>se obrnite na podporo<ph name="END_SUPPORT_LINK"/>.</translation>
 <translation id="8388043004918289671">Obrnite se na podporo.</translation>
 <translation id="4272382368346338917">Dodatni filtri</translation>
@@ -168,36 +168,36 @@
 <translation id="5334844597069022743">Ogled vira</translation>
 <translation id="4720556299488643018">Preklic naročnine</translation>
 <translation id="1209739344687072997">Prijavite nedelujočo spletno stran</translation>
-<translation id="8510478288840333677">Obvestite razvijalce Brave o tem, da spletna stran ne deluje pravilno s ščiti:</translation>
+<translation id="8510478288840333677">Obvestite razvijalce Ping o tem, da spletna stran ne deluje pravilno s ščiti:</translation>
 <translation id="3110968385867124099">O tej strani ni mogoče poročati, ker ni bila prikazana prek protokola HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Ta stran je lokalna spletna stran in ni upravičena do poročanja.</translation>
 <translation id="3645455863322075098">Ta stran je stran z napako in ni primerna za poročanje.</translation>
-<translation id="105644511106871142">Zahvaljujemo se vam, da ste pomagali izboljšati Brave za vse. S tem poročilom boste poslali le informacije, ki jih potrebujemo za popravljanje tega spletnega mesta.</translation>
+<translation id="105644511106871142">Zahvaljujemo se vam, da ste pomagali izboljšati Ping za vse. S tem poročilom boste poslali le informacije, ki jih potrebujemo za popravljanje tega spletnega mesta.</translation>
 <translation id="6476216365964140603">Dodatne podrobnosti (neobvezno)</translation>
 <translation id="6145852496180774737">Kontaktirajte me na: (neobvezno)</translation>
 <translation id="7616645803364270729">E-pošta, Twitter itd.</translation>
 <translation id="721949491455392748">Vključite posnetek zaslona trenutne strani</translation>
 <translation id="8459191579769999214">Oglejte si posnetek zaslona</translation>
 <translation id="5299848999918506028">Hvala!</translation>
-<translation id="76550953340008122">Hvala, ker ste obvestili razvijalce Brave, da je s to spletno stranjo nekaj narobe. Potrudili se bomo, da to popravimo!</translation>
-<translation id="4046860372562593546">Upravljanje oglasov Brave Ads</translation>
-<translation id="5136973036012418831">Nadzirajte, katere vrste oglasov Brave ads vidite in kako pogosto.</translation>
+<translation id="76550953340008122">Hvala, ker ste obvestili razvijalce Ping, da je s to spletno stranjo nekaj narobe. Potrudili se bomo, da to popravimo!</translation>
+<translation id="4046860372562593546">Upravljanje oglasov Ping Ads</translation>
+<translation id="5136973036012418831">Nadzirajte, katere vrste oglasov Ping ads vidite in kako pogosto.</translation>
 <translation id="4759608598194750161">Več kot vidite, več lahko zaslužite.</translation>
 <translation id="7526443283522395161">Oglasi na strani z novim zavihkom</translation>
 <translation id="7968650944098083708">Obvestilni oglasi</translation>
 <translation id="8289546216379862569">Iskanje oglasov</translation>
-<translation id="4758111936363146244">Oglasi Iskanja na Brave se pojavljajo v okviru <ph name="BEGIN_LINK"/>Iskanja na Brave<ph name="END_LINK"/>.</translation>
-<translation id="7596536223419118193">Z oglasi na Iskanju z Brave še ne morete zaslužiti žetonov BAT, vendar z vključenimi oglasi pomagate podpirati Brave.</translation>
-<translation id="6390952132783970876">Oglasi Brave News</translation>
-<translation id="7516281787184495886">Brave News vsebuje oglase, ki jih ni mogoče samostojno onemogočiti.</translation>
-<translation id="8008378848677625233">Brave News je trenutno onemogočen.</translation>
+<translation id="4758111936363146244">Oglasi Iskanja na Ping se pojavljajo v okviru <ph name="BEGIN_LINK"/>Iskanja na Ping<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Z oglasi na Iskanju z Ping še ne morete zaslužiti žetonov BAT, vendar z vključenimi oglasi pomagate podpirati Ping.</translation>
+<translation id="6390952132783970876">Oglasi Ping News</translation>
+<translation id="7516281787184495886">Ping News vsebuje oglase, ki jih ni mogoče samostojno onemogočiti.</translation>
+<translation id="8008378848677625233">Ping News je trenutno onemogočen.</translation>
 <translation id="6112368337882254910">Samodejni prispevek</translation>
 <translation id="557705068184766514">Samodejni način za podporo ustvarjalcem spletnih mest in vsebine. Nastavite mesečni prispevek in brskajte normalno. <ph name="BEGIN_LINK"/>Preverjena spletna mesta in ustvarjalci<ph name="END_LINK"/>, ki jih obiščete, bodo prejeli vaše prispevke vsak mesec glede na količino časa, ki ga porabite za njihovo vsebino.</translation>
 <translation id="6688567880783357035">Dosedanji zaslužek tega meseca</translation>
 <translation id="949044897316791211">Naslednji datum izplačila zaslužka</translation>
 <translation id="2211646556917925490">Skupno število prejetih oglasov ta mesec</translation>
 <translation id="4229016885653790965">Oprostite! Oglasi v vaši regiji še niso na voljo.</translation>
-<translation id="2539279826042558064">Nagrade Brave Rewards in oglasi trenutno niso na voljo v vaši napravi.</translation>
+<translation id="2539279826042558064">Nagrade Ping Rewards in oglasi trenutno niso na voljo v vaši napravi.</translation>
 <translation id="5736977383725358876">Pogostost oglaševanja obvestil</translation>
 <translation id="7701040980221191251">Brez</translation>
 <translation id="480668534656787076">Največ 1 na uro</translation>
@@ -207,7 +207,7 @@
 <translation id="7136536490586989815">Največ 5 na uro</translation>
 <translation id="5751102711563374080">Največ 10 na uro</translation>
 <translation id="2356652719351432565">Relevantnost regionalnih oglasov</translation>
-<translation id="3216275550298493597">Tako vam lahko Brave prikazuje oglase, namenjene posebej za vašo regijo.</translation>
+<translation id="3216275550298493597">Tako vam lahko Ping prikazuje oglase, namenjene posebej za vašo regijo.</translation>
 <translation id="8446884382197647889">Več informacij</translation>
 <translation id="3783399046165388366">Samodejno zaznano kot <ph name="SUBDIVISION"/></translation>
 <translation id="8010081455002666927">Samodejno zaznano</translation>
@@ -243,7 +243,7 @@
 <translation id="6805660603861526473">Ogledano</translation>
 <translation id="8167256685618982116">Če vklopite <ph name="TITLE"/>, se strinjate s <ph name="BEGIN_LINK1"/>pogoji storitve<ph name="END_LINK1"/> in <ph name="BEGIN_LINK2"/>s politiko zasebnosti<ph name="END_LINK2"/>.</translation>
 <translation id="1892970806832316900">V obravnavi do <ph name="DATE"/></translation>
-<translation id="7849926087559412554">Ups! Vaš brskalnik ne more sprejemati zasebnih oglasov Brave.</translation>
+<translation id="7849926087559412554">Ups! Vaš brskalnik ne more sprejemati zasebnih oglasov Ping.</translation>
 <translation id="5177429570315095022">Če želite še naprej prikazovati oglase, morate posodobiti brskalnik.</translation>
 <translation id="4593680147181354667">Diagnostika Id</translation>
 <translation id="3995471429906554168">Diagnostika informacij</translation>
@@ -310,8 +310,8 @@
 <translation id="3368922792935385530">Povezano</translation>
 <translation id="5058161306698404465">Ustvarjalno okolje:</translation>
 <translation id="5856438412804207598">Trenutno okolje:</translation>
-<translation id="5916290544882167205">Brave Software. Brave je zaščitena blagovna znamka podjetja Brave Software. Imena spletnih mest so lahko blagovne znamke ali registrirane blagovne znamke lastnika spletnega mesta.</translation>
-<translation id="9026369588205476247">Za varstvo vaše zasebnosti poročilo storitve Brave Rewards ni shranjeno, posneto ali zabeleženo drugje kot na vaši napravi (ta računalnik). V primeru izgube podatkov na napravi ga ni mogoče pridobiti pri družbi Brave.</translation>
+<translation id="5916290544882167205">Ping Software. Ping je zaščitena blagovna znamka podjetja Ping Software. Imena spletnih mest so lahko blagovne znamke ali registrirane blagovne znamke lastnika spletnega mesta.</translation>
+<translation id="9026369588205476247">Za varstvo vaše zasebnosti poročilo storitve Ping Rewards ni shranjeno, posneto ali zabeleženo drugje kot na vaši napravi (ta računalnik). V primeru izgube podatkov na napravi ga ni mogoče pridobiti pri družbi Ping.</translation>
 <translation id="1919345977826869612">Oglasi</translation>
 <translation id="3587482841069643663">Vse</translation>
 <translation id="4241224519481557898">Kategorija</translation>
@@ -321,7 +321,7 @@
 <translation id="8863685593846905344">Zgodovina oglasov</translation>
 <translation id="5212777575344695266">Označi kot neprimerno</translation>
 <translation id="2111256234277361810">Označi kot neprimerno ✓</translation>
-<translation id="8988332871810963281">Trenutno ni zgodovine Brave Ads</translation>
+<translation id="8988332871810963281">Trenutno ni zgodovine Ping Ads</translation>
 <translation id="5345727496083327478">Ne boste več prejemali oglasov iz te kategorije</translation>
 <translation id="2631006050119455616">Shranjeno</translation>
 <translation id="3671566813999349838">Znesek</translation>
@@ -334,7 +334,7 @@
 <translation id="4932733599132424254">Datum</translation>
 <translation id="3552003743293281224">Pologi</translation>
 <translation id="3866249974567520381">Opis</translation>
-<translation id="8605272644314973683">Nagrade Brave</translation>
+<translation id="8605272644314973683">Nagrade Ping</translation>
 <translation id="298067735430872465">Zaslužek z ogledom oglasov</translation>
 <translation id="1418534671788496616">Oglejte si zgodovino depozitov</translation>
 <translation id="3412655388715513818">Izključi to spletno stran</translation>
@@ -380,13 +380,13 @@
 <translation id="1634828734222219955">Skupno</translation>
 <translation id="3535654229833214438">Transakcije</translation>
 <translation id="2448312741937722512">Vrsta</translation>
-<translation id="8772672608371898774">Preverjena oseba Brave, ki objavlja vsebino</translation>
+<translation id="8772672608371898774">Preverjena oseba Ping, ki objavlja vsebino</translation>
 <translation id="5050370287908180130">Ogled mesečnega poročila za več podrobnosti</translation>
 <translation id="7853202427316060426">Dejavnost</translation>
 <translation id="7232682712743566408">Stanje nagrad</translation>
-<translation id="4258022280942725182">Vaše nagrade Brave Rewards</translation>
+<translation id="4258022280942725182">Vaše nagrade Ping Rewards</translation>
 <translation id="6727483290601442544">Ogled podrobnosti</translation>
-<translation id="4206899127409458763">Ustvarjanje vašega profila Brave Rewards</translation>
+<translation id="4206899127409458763">Ustvarjanje vašega profila Ping Rewards</translation>
 <translation id="8706157865312453070">Izključene strani</translation>
 <translation id="2501059654604370822">Odstrani iz izključenih</translation>
 <translation id="9075700728717335924">Vi ste izključili</translation>
@@ -395,25 +395,25 @@
 <translation id="5113531205597573951">Ogledane strani</translation>
 <translation id="4450893287417543264">Ne prikazuj več</translation>
 <translation id="7642372245223412840">Poveži se z bitFlyer</translation>
-<translation id="6143701117592994599">Povezovanje Brave Rewards z računom bitFlyer vam bo omogočilo, da zaslužite BAT in dvignete svoj BAT zaslužek iz Brave Rewards.</translation>
-<translation id="4354564238172327160">Postanite avtor Brave!</translation>
+<translation id="6143701117592994599">Povezovanje Ping Rewards z računom bitFlyer vam bo omogočilo, da zaslužite BAT in dvignete svoj BAT zaslužek iz Ping Rewards.</translation>
+<translation id="4354564238172327160">Postanite avtor Ping!</translation>
 <translation id="4639659520811817892">Obiščite creators.brave.com, da se prijavite še danes in začnite pridobivati sredstva BAT od svojih navdušencev in sledilcev.</translation>
-<translation id="4816455138209470435">Brave podpira YouTube, Twitch, Vimeo in več!</translation>
+<translation id="4816455138209470435">Ping podpira YouTube, Twitch, Vimeo in več!</translation>
 <translation id="7404779623219601861">Unovčite BAT za darilne kartice</translation>
 <translation id="6215565499749144110">Z omrežjem TAP Network lahko svoj BAT unovčite za darilne kartice priljubljene blagovne znamke.</translation>
 <translation id="6074001074364432111">* Zahteva račun Uphold.</translation>
 <translation id="7703007724342399482">Prislužite si 2% Cryptoback-a s kartico Uphold</translation>
 <translation id="1109729143147368573">Svoje kriptovalute in druga sredstva lahko porabite pri skoraj 50 milijonih trgovcev in bankomatov po vsem svetu. Porabite kriptovalute, da jih dobite še več!</translation>
 <translation id="3787061634640932557">Uredi Karte</translation>
-<translation id="2070991379950719711">Začnite uporabljati Brave Rewards</translation>
+<translation id="2070991379950719711">Začnite uporabljati Ping Rewards</translation>
 <translation id="6297791103122079275">Govor</translation>
 <translation id="5977237145327845546">Začnite videoklic s prijatelji ali sodelavci.</translation>
 <translation id="8863928195533744356">Začni klic</translation>
 <translation id="3651550649176056334">O vaših podatkih</translation>
 <translation id="1544192797660353713">Denarnica</translation>
-<translation id="616639131065447379">Dobrodošli v kripto denarnicah Brave</translation>
-<translation id="1740464057879304704">Kripto denarnice vam omogočajo delo s kriptovalutami in povezanimi sredstvi v podjetju Brave. Crypto Wallets podpira žetone Ethereum, kot sta ETH in BAT, pa tudi zbirateljske predmete in vam omogoča delo z Ðapps in drugimi pametnimi pogodbami. Vse to je namenjeno ljudem, ki poznajo Ethereum in druge blockchain sisteme - ali pa se veselijo učenja.</translation>
-<translation id="4855440621031541830">Kripto denarnice uporabljajte samo, če sprejemate, da ste izključno sami odgovorni za vsa tveganja, povezana s tovrstno uporabo, in da podejetje Brave Software ne prevzema pravne ali škodne odgovornosti za morebite izgube, vključno z naključnimi in posledičnimi izgubami, do katerih pride pri uporabi.</translation>
+<translation id="616639131065447379">Dobrodošli v kripto denarnicah Ping</translation>
+<translation id="1740464057879304704">Kripto denarnice vam omogočajo delo s kriptovalutami in povezanimi sredstvi v podjetju Ping. Crypto Wallets podpira žetone Ethereum, kot sta ETH in BAT, pa tudi zbirateljske predmete in vam omogoča delo z Ðapps in drugimi pametnimi pogodbami. Vse to je namenjeno ljudem, ki poznajo Ethereum in druge blockchain sisteme - ali pa se veselijo učenja.</translation>
+<translation id="4855440621031541830">Kripto denarnice uporabljajte samo, če sprejemate, da ste izključno sami odgovorni za vsa tveganja, povezana s tovrstno uporabo, in da podejetje Ping Software ne prevzema pravne ali škodne odgovornosti za morebite izgube, vključno z naključnimi in posledičnimi izgubami, do katerih pride pri uporabi.</translation>
 <translation id="3187473319809074178">Vse to je povsem ločeno od</translation>
 <translation id="8327818101454798856">Če želite podpreti svoja priljubljena spletna mesta, pojdite raje tja.</translation>
 <translation id="412480955826088549">Prenos komponent ...</translation>
@@ -421,35 +421,35 @@
 <translation id="326118736933420687">Ogledujete si stran WebTorrent</translation>
 <translation id="2729085694451916573">Testni niz za <ph name="PART_ONE"/>nadomestne znake<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Več o tem<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Neustavljive domene</translation>
-<translation id="4492298165410552103">Omogočim podporo neustavljivih domen v Brave-u?</translation>
-<translation id="5015092481905019948">Brave bo uporabljal <ph name="PROVIDER_NAME"/> za reševanje <ph name="DOMAIN_LIST"/> domen, ki so na <ph name="DOMAIN_PROVIDER_NAME"/>. Brave skriva vaš naslov IP naslov. Če to omogočite, bo <ph name="PROVIDER_NAME"/> videla, da nekdo poskuša obiskati te domene, vendar nič drugega. Oglejte si <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>pogoje uporabe<ph name="END_PROVIDER_TOU_LINK"/> in <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>politiko zasebnosti<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
+<translation id="4492298165410552103">Omogočim podporo neustavljivih domen v Ping-u?</translation>
+<translation id="5015092481905019948">Ping bo uporabljal <ph name="PROVIDER_NAME"/> za reševanje <ph name="DOMAIN_LIST"/> domen, ki so na <ph name="DOMAIN_PROVIDER_NAME"/>. Ping skriva vaš naslov IP naslov. Če to omogočite, bo <ph name="PROVIDER_NAME"/> videla, da nekdo poskuša obiskati te domene, vendar nič drugega. Oglejte si <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>pogoje uporabe<ph name="END_PROVIDER_TOU_LINK"/> in <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>politiko zasebnosti<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Imenske storitve Ethereum</translation>
 <translation id="2789190492285945209">Imenske storitve Ethereum (ENS)</translation>
-<translation id="4335039108389860301">Omogočiti podporo imensko storitev Ethereum (ENS) v Brave-u?</translation>
+<translation id="4335039108389860301">Omogočiti podporo imensko storitev Ethereum (ENS) v Ping-u?</translation>
 <translation id="807404806385418949">Iskanje izven verige imenske storitve Ethereum</translation>
-<translation id="4049590838234508776">Omogočiti podporo za iskanje izven verige imenske storitve Ethereum (ENS) v Brave?</translation>
+<translation id="4049590838234508776">Omogočiti podporo za iskanje izven verige imenske storitve Ethereum (ENS) v Ping?</translation>
 <translation id="5944991147217767764">Ime domene .eth je shranjeno izven verige in bo razrešeno s strani prehoda tretje osebe. Če omogočite iskanje ENS izven verige, bodo prehodi tretjih oseb videli, da poskušate obiskati domeno .eth.<ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Več o tem<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Nadaljujte z iskanjem izven verige</translation>
 <translation id="531747189990625622">Imenske storitve Solana</translation>
-<translation id="1090584614351290462">Omogočiti podporo imenski storitvi Solana (SNS) v Brave-u?</translation>
-<translation id="7769345036263036863">Brave bo za reševanje <ph name="DOMAIN_LIST"/> domenskih imen uporabljal tretjo stranko. Brave skriva vaš naslov IP. Če to omogočite, bo tretja oseba videla, da nekdo poskuša obiskati te <ph name="DOMAIN_LIST"/> domene, vendar nič drugega. Za več informacij o tem, katere tretje osebe uporabljamo in njihove politike zasebnosti, si oglejte našo <ph name="BEGIN_SNS_WIKI_LINK"/>stran za pomoč<ph name="END_SNS_WIKI_LINK"/>.</translation>
+<translation id="1090584614351290462">Omogočiti podporo imenski storitvi Solana (SNS) v Ping-u?</translation>
+<translation id="7769345036263036863">Ping bo za reševanje <ph name="DOMAIN_LIST"/> domenskih imen uporabljal tretjo stranko. Ping skriva vaš naslov IP. Če to omogočite, bo tretja oseba videla, da nekdo poskuša obiskati te <ph name="DOMAIN_LIST"/> domene, vendar nič drugega. Za več informacij o tem, katere tretje osebe uporabljamo in njihove politike zasebnosti, si oglejte našo <ph name="BEGIN_SNS_WIKI_LINK"/>stran za pomoč<ph name="END_SNS_WIKI_LINK"/>.</translation>
 <translation id="884864496166128252">Nadaljujte z uporabo strežnika <ph name="PROVIDER_NAME"/></translation>
 <translation id="4388873516324656141">Nadaljujte z uporabo strežnika SNS</translation>
 <translation id="2356070529366658676">Vprašaj</translation>
 <translation id="59174027418879706">Omogočeno</translation>
 <translation id="2468755552460246661">Domena blokirana</translation>
 <translation id="6393849031898466746">To spletno mesto vam bo morda poskušalo slediti na drugih spletnih mestih</translation>
-<translation id="983774928604730749">Brave je preprečil nalaganje naslednje strani:</translation>
-<translation id="8629537573456243518">Ker ste zahtevali agresivno blokiranje sledilcev in oglasov, Brave blokira to spletno mesto pred prvo omrežno povezavo.</translation>
+<translation id="983774928604730749">Ping je preprečil nalaganje naslednje strani:</translation>
+<translation id="8629537573456243518">Ker ste zahtevali agresivno blokiranje sledilcev in oglasov, Ping blokira to spletno mesto pred prvo omrežno povezavo.</translation>
 <translation id="2459038234784107183">Ne opozarjaj me več o tej strani</translation>
 <translation id="8242426110754782860">Nadaljuj</translation>
 <translation id="2501278716633472235">Nazaj</translation>
 <translation id="8377779554871767775">Občutljivo spletno mesto</translation>
 <translation id="5396996252458181259">To spletno mesto morda vsebuje občutljivo vsebino.</translation>
 <translation id="8415427685483394219">Ali želite obiskati to spletno mesto v Nebeleženem načinu?</translation>
-<translation id="5754874269349119401">Brave vas želi zaščititi pri obisku občutljivih spletnih mest. Spletna mesta, ki jih obiščete v Nebeleženem načinu, ne bodo prikazana v vaši zgodovini brskanja in piškotki ne bodo shranjeni.</translation>
+<translation id="5754874269349119401">Ping vas želi zaščititi pri obisku občutljivih spletnih mest. Spletna mesta, ki jih obiščete v Nebeleženem načinu, ne bodo prikazana v vaši zgodovini brskanja in piškotki ne bodo shranjeni.</translation>
 <translation id="1307431692088049276">Ne sprašuj več</translation>
-<translation id="6329829767845427007">To lahko spremenite pozneje v nastavitvah Brave v razdelku Zasebnost in varnost</translation>
+<translation id="6329829767845427007">To lahko spremenite pozneje v nastavitvah Ping v razdelku Zasebnost in varnost</translation>
 <translation id="951201617124425694">Nadaljuj v Nebeleženem načinu</translation>
 <translation id="4087894168792701548">Nadaljuj v normalnem načinu</translation>
 <translation id="5874287397425241890">Brskate po tem spletnem mestu v nebeleženem načinu.</translation>
@@ -466,9 +466,9 @@
 <translation id="6053826678715267477">Dovoli dostop do virov lokalnega gostitelja</translation>
 <translation id="2973562729984406132"><ph name="URL"/> želi dostop do virov lokalnega gostitelja</translation>
 <translation id="5939518447894949180">Ponastavi</translation>
-<translation id="3349204812119681938">Ponastavi storitev Brave Rewards</translation>
-<translation id="4915997950539925115">S ponastavitvijo bo vaš trenutni profil Brave nagrajevanje izbrisan in Brave nagrajevanje ne bo več omogočeno. Če kasneje ponovno omogočite Brave nagrajevanje, boste začeli z novim profilom. Za več <ph name="LINK_BEGIN"/>podrobnosti preberite članek podpore<ph name="LINK_END"/> o ponastavitvi.</translation>
-<translation id="4806029412510565611">Razumem, da bo moj trenutni profil Brave Rewards vključno s podatki o Brave Rewards izbrisan iz moje naprave, hkrati pa sem prebral(a) <ph name="LINK_BEGIN"/>članek s koristnimi informacijami o ponastavitvi<ph name="LINK_END"/>.</translation>
+<translation id="3349204812119681938">Ponastavi storitev Ping Rewards</translation>
+<translation id="4915997950539925115">S ponastavitvijo bo vaš trenutni profil Ping nagrajevanje izbrisan in Ping nagrajevanje ne bo več omogočeno. Če kasneje ponovno omogočite Ping nagrajevanje, boste začeli z novim profilom. Za več <ph name="LINK_BEGIN"/>podrobnosti preberite članek podpore<ph name="LINK_END"/> o ponastavitvi.</translation>
+<translation id="4806029412510565611">Razumem, da bo moj trenutni profil Ping Rewards vključno s podatki o Ping Rewards izbrisan iz moje naprave, hkrati pa sem prebral(a) <ph name="LINK_BEGIN"/>članek s koristnimi informacijami o ponastavitvi<ph name="LINK_END"/>.</translation>
 <translation id="7717357606512850995">Preverite stanje</translation>
 <translation id="6473937687348632190">Izplačilo nagrad za mesec <ph name="MONTH"/>  je zaključeno.</translation>
 <translation id="1711367267038576241">Izplačilo nagrad za mesec  <ph name="MONTH"/> se bo začelo v času do<ph name="DATE"/>.</translation>
@@ -485,11 +485,11 @@
 <translation id="1848737374354350807">Znesek</translation>
 <translation id="6516984207843289176">Povežite račun</translation>
 <translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>Ste pripravljeni začeti služiti?<ph name="BOLD_END"/>Povežite račun, da bomo nanj lahko nakazali vaše zaslužke.</translation>
-<translation id="902298128239575729">Pošljite prispevke z Brave Rewards</translation>
-<translation id="6276721355724491595">Ko boste imeli povezan skrbniški račun, boste lahko pošiljali prispevke na zahtevo svojim najljubšim ustvarjalcem z dobroimetjem v programu Brave Rewards.</translation>
+<translation id="902298128239575729">Pošljite prispevke z Ping Rewards</translation>
+<translation id="6276721355724491595">Ko boste imeli povezan skrbniški račun, boste lahko pošiljali prispevke na zahtevo svojim najljubšim ustvarjalcem z dobroimetjem v programu Ping Rewards.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
-      =1 {Ta mesec ste obiskali ustvarjalca # , ki ga podpira Brave Rewards}
-      other {Ta mesec ste obiskali ustvarjalce # , ki jih podpira Brave Rewards}
+      =1 {Ta mesec ste obiskali ustvarjalca # , ki ga podpira Ping Rewards}
+      other {Ta mesec ste obiskali ustvarjalce # , ki jih podpira Ping Rewards}
     }</translation>
 <translation id="3264975266761862670">Ste pripravljeni, da začnete služiti?</translation>
 <translation id="2784412028126205842">Povežite račun za izplačilo</translation>
@@ -498,20 +498,20 @@
       =1 {Lahko bi prejeli plačilo za <ph name="COUNT_BEGIN"/># oglas,<ph name="COUNT_END"/> ki ste ga videli ta mesec.}
       other {Lahko bi prejeli plačilo za <ph name="COUNT_BEGIN"/># oglasov,<ph name="COUNT_END"/> ki ste jih videli ta mesec.}
     }</translation>
-<translation id="6067959437127691361">Uporaba storitve Brave Rewards pomaga podpirati ustvarjalce vsebine in vam omogoča, da zaslužite žetone BAT.</translation>
+<translation id="6067959437127691361">Uporaba storitve Ping Rewards pomaga podpirati ustvarjalce vsebine in vam omogoča, da zaslužite žetone BAT.</translation>
 <translation id="944736176598169208">Nagrade</translation>
 <translation id="2359808026110333948">Naprej</translation>
-<translation id="885805571521218129">To odraža vaš predvideni razpon zaslužka za Brave Oglase ta mesec.</translation>
+<translation id="885805571521218129">To odraža vaš predvideni razpon zaslužka za Ping Oglase ta mesec.</translation>
 <translation id="3863981251715594911">Kako deluje?</translation>
-<translation id="7931127789630755251">Zaslužite žetone za zasebne oglase, ki jih vidite v Brave</translation>
+<translation id="7931127789630755251">Zaslužite žetone za zasebne oglase, ki jih vidite v Ping</translation>
 <translation id="2278423362884506724">Podprite ustvarjalce vsebine in uporabite svoje žetone za nakup darilnih kartic, menjavo za druge valute in še več.</translation>
 <translation id="6278643716658443228">Nastavitve za nagrade Rewards</translation>
 <translation id="2862978891748913252">Izberite svojo državo</translation>
-<translation id="3717922248131893262">Če želite še naprej uporabljati nagrade Brave, izberite svojo državo, da vam bomo lahko prikazali prave možnosti in oglase za vašo regijo. <ph name="LINK_BEGIN"/>Politika zasebnosti<ph name="LINK_END"/></translation>
+<translation id="3717922248131893262">Če želite še naprej uporabljati nagrade Ping, izberite svojo državo, da vam bomo lahko prikazali prave možnosti in oglase za vašo regijo. <ph name="LINK_BEGIN"/>Politika zasebnosti<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Začnite uporabljati Rewards</translation>
 <translation id="2956070106555335453">Povzetek</translation>
 <translation id="2369994359029526515">Nepreverjen avtor</translation>
-<translation id="3984338085370091436">Ta ustvarjalec še ni preverjen pri Brave Creators. Ko bodo preverjeni, jim boste lahko poslali prispevke.</translation>
+<translation id="3984338085370091436">Ta ustvarjalec še ni preverjen pri Ping Creators. Ko bodo preverjeni, jim boste lahko poslali prispevke.</translation>
 <translation id="6020176662032623904">Preverjen avtor</translation>
 <translation id="8635423276837443905">Osveži stanje preverjanja ustvarjalca</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> na <ph name="PLATFORM"/></translation>
@@ -520,7 +520,7 @@
 <translation id="6965382102122355670">V redu</translation>
 <translation id="6727102863431372879">Nastavi</translation>
 <translation id="8853725596990766789">Spremenite količino</translation>
-<translation id="5899814466108868020">V pomoč ste pri podpori skupnosti Brave in BAT</translation>
+<translation id="5899814466108868020">V pomoč ste pri podpori skupnosti Ping in BAT</translation>
 <translation id="654447476965480878">Izvedite več o zaslužku BAT</translation>
 <translation id="4105212447337987768">Dne <ph name="DATE"/> bomo ukinili podporo za obstoječa virtualna stanja BAT. Pred tem datumom povežite skrbniški račun, da bomo lahko vaše zasluženo stanje prenesli na vaš skrbniški račun, sicer bo vaše stanje izgubljeno.</translation>
 <translation id="707569835145765061">Zahtevano dejanje: povežite skrbniški račun, sicer bo vaš vBAT izgubljen</translation>
@@ -535,21 +535,21 @@
 <translation id="2429828319207652823">Pri obdelavi vaše donacije je prišlo do težave.</translation>
 <translation id="6390041270339783491">Mesečni prispevek ni uspel</translation>
 <translation id="7047578174221019462">Vaši mesečni prispevki so bili obdelani.</translation>
-<translation id="2529827670795983639">Zdi se, da to ne deluje. Oglasi Brave Ads bodo ostali zaustavljeni. Če potrebujete pomoč pri captcha, nas kontaktirajte.</translation>
+<translation id="2529827670795983639">Zdi se, da to ne deluje. Oglasi Ping Ads bodo ostali zaustavljeni. Če potrebujete pomoč pri captcha, nas kontaktirajte.</translation>
 <translation id="261607053214862521">Največje število poskusov je preseženo</translation>
 <translation id="2323171459178104277">Rešeno!</translation>
-<translation id="1512837998731269583">Oglasi in zaslužki se bodo zdaj nadaljevali. Hvala, ker ste nam pomagali zaščititi Brave Rewards in oglase, ki temeljijo na zasebnosti.</translation>
+<translation id="1512837998731269583">Oglasi in zaslužki se bodo zdaj nadaljevali. Hvala, ker ste nam pomagali zaščititi Ping Rewards in oglase, ki temeljijo na zasebnosti.</translation>
 <translation id="3247549836099021862">Obrnite se na podporo</translation>
 <translation id="5234764350956374838">Opusti</translation>
 <translation id="7859066142771796818">Uporabite žetone za nakup darilnih kartic, zamenjavo za druge valute, podporo ustvarjalcem vsebine in še več.</translation>
 <translation id="7352651011704765696">Prišlo je do napake</translation>
-<translation id="5425006356459378415">Nagrade Brave niso na voljo</translation>
-<translation id="909076461795862330">Na žalost je med poskusom nastavitve nagrad Brave prišlo do napake. Poskusite znova.</translation>
+<translation id="5425006356459378415">Nagrade Ping niso na voljo</translation>
+<translation id="909076461795862330">Na žalost je med poskusom nastavitve nagrad Ping prišlo do napake. Poskusite znova.</translation>
 <translation id="3180990265682133881">Na žalost je med poskusom nastavitve vaše države prišlo do napake. Poskusite znova.</translation>
-<translation id="5931798071481566121">Nove prijave za nagrade Brave so v vaši regij trenutno onemogočene. Vendar lahko poskusite znova pozneje. <ph name="LINK_BEGIN"/>Več o tem<ph name="LINK_END"/></translation>
+<translation id="5931798071481566121">Nove prijave za nagrade Ping so v vaši regij trenutno onemogočene. Vendar lahko poskusite znova pozneje. <ph name="LINK_BEGIN"/>Več o tem<ph name="LINK_END"/></translation>
 <translation id="6439128034594289376">Juhu! Vse je pripravljeno!</translation>
 <translation id="6136350726756049410">Zdaj lahko prejmete nagrado za ogled oglasov. Splet pomagate narediti boljše mesto za vse. In to je super!</translation>
-<translation id="5547108999862247665">Kako delujejo Nagrade Brave?</translation>
+<translation id="5547108999862247665">Kako delujejo Nagrade Ping?</translation>
 <translation id="3970520675790340955">Izberite svojo državo, da vam lahko pokažemo prave možnosti in oglase za vašo regijo.</translation>
 <translation id="6945221475159498467">Izberi</translation>
 <translation id="3279158300746391749">Pritisnite ikono<ph name="BAT_ICON"/>BAT v vrstici URL za začetek.</translation>
@@ -557,11 +557,11 @@
 <translation id="8981626318554555706">Izberite svojo regijo</translation>
 <translation id="6923445315496949274">Izberite svojo regijo, da vam lahko pokažemo prave možnosti in oglase za vašo regijo.</translation>
 <translation id="840952951051929644">Če omogočite nagrade, se strinjate s <ph name="TOS_LINK_BEGIN"/>Pogoji uporabe storitev<ph name="TOS_LINK_END"/> in <ph name="PP_LINK_BEGIN"/>Politiko zasebnosti<ph name="PP_LINK_END"/>.</translation>
-<translation id="5259608623172605993">Zagotovite si zaslužek za zasebne oglase, ki jih vidite v Brave</translation>
+<translation id="5259608623172605993">Zagotovite si zaslužek za zasebne oglase, ki jih vidite v Ping</translation>
 <translation id="3099020087817489135">Zagotovite si posebne ugodnosti in popuste</translation>
-<translation id="3991575120992914717">Vklopite Brave nagrade</translation>
-<translation id="1015443539415537847">Žal nagrade Brave niso na voljo</translation>
-<translation id="5007776270364097327">Na žalost je videti, da ste v regiji, kjer nagrade Brave niso na voljo.</translation>
+<translation id="3991575120992914717">Vklopite Ping nagrade</translation>
+<translation id="1015443539415537847">Žal nagrade Ping niso na voljo</translation>
+<translation id="5007776270364097327">Na žalost je videti, da ste v regiji, kjer nagrade Ping niso na voljo.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Več o tem<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Ne skrbite.</translation>
 <translation id="5027616819996705541">Še vedno lahko brskate zasebno!</translation>
@@ -575,16 +575,16 @@
 <translation id="4185473179105062442">Prejemanje BAT neposredno na kriptografski naslov za lastno hrambo</translation>
 <translation id="5802986777701714573">Dodali smo nov način prejemanja mesečnih nagrad BAT. Povežite račun enega od naših partnerjev ali uporabite novo možnost samostojnega skrbništva in začnite zaslužiti že zdaj.</translation>
 <translation id="3251885322612056119">Posodobljeni pogoji uporabe storitve</translation>
-<translation id="7454675823870922788">Posodobili smo pogoje storitve za Brave Rewards. S temi posodobitvami smo pojasnili naše pogoje in zagotovili, da bodo zajemali nove funkcije. Če še naprej uporabljate storitev Brave Rewards, se strinjate s posodobljenimi pogoji uporabe. Če se s tem ne strinjate, lahko<ph name="LINK_BEGIN"/>ponastavite <ph name="LINK_END"/> Brave Rewards, s čimer bo funkcija onemogočena.</translation>
-<translation id="5192526308598085294">Oglejte <ph name="LINK_BEGIN"/> si Pogoje uporabe storitev Brave Rewards<ph name="LINK_END"/></translation>
+<translation id="7454675823870922788">Posodobili smo pogoje storitve za Ping Rewards. S temi posodobitvami smo pojasnili naše pogoje in zagotovili, da bodo zajemali nove funkcije. Če še naprej uporabljate storitev Ping Rewards, se strinjate s posodobljenimi pogoji uporabe. Če se s tem ne strinjate, lahko<ph name="LINK_BEGIN"/>ponastavite <ph name="LINK_END"/> Ping Rewards, s čimer bo funkcija onemogočena.</translation>
+<translation id="5192526308598085294">Oglejte <ph name="LINK_BEGIN"/> si Pogoje uporabe storitev Ping Rewards<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">Strinjam se</translation>
 <translation id="86107454835395919">Nastavite kot mesečni prispevek</translation>
-<translation id="6621880242105464352">Brave pobere <ph name="FEE_PCT"/> poslanega zneska kot provizijo za obdelavo.</translation>
+<translation id="6621880242105464352">Ping pobere <ph name="FEE_PCT"/> poslanega zneska kot provizijo za obdelavo.</translation>
 <translation id="1420756770787071946">Podprite tega ustvarjalca</translation>
 <translation id="1483493594462132177">Pošlji</translation>
 <translation id="6632987674051304487">Pošlji z <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Uporabite denarnico Web3</translation>
-<translation id="4530198836725543997">Ta ustvarjalec se je registriral pri Brave in lahko prejema prispevke uporabnikov Brave Rewards.</translation>
+<translation id="4530198836725543997">Ta ustvarjalec se je registriral pri Ping in lahko prejema prispevke uporabnikov Ping Rewards.</translation>
 <translation id="4529874892536380156">Naj bo to mesečni ponavljajoči se prispevek. Prekličete ga lahko kadar koli.</translation>
 <translation id="1177863135347784049">Po meri</translation>
 <translation id="5907051927340164207">Temu ustvarjalcu že pošiljate mesečne prispevke</translation>
@@ -594,18 +594,18 @@
 <translation id="8379442066667303579">Še vedno lahko pošiljate kripto prispevke temu ustvarjalcu s svojo denarnico Web3.</translation>
 <translation id="5738476099155572155">Pošljite kripto prispevke</translation>
 <translation id="1162617592412598913">Odjavljen/-a iz <ph name="PROVIDER"/></translation>
-<translation id="1782485249139199535">Videti je, da ste odjavljeni iz <ph name="PROVIDER"/> za Brave Rewards. Za nadaljevanje se znova prijavite.</translation>
+<translation id="1782485249139199535">Videti je, da ste odjavljeni iz <ph name="PROVIDER"/> za Ping Rewards. Za nadaljevanje se znova prijavite.</translation>
 <translation id="4379244534135194459">Temu ustvarjalcu lahko tudi pošljete kripto prispevke s svojo denarnico Web3.</translation>
 <translation id="2718860759172031728">Prijavite se v <ph name="PROVIDER"/></translation>
 <translation id="6268134562674951939">Nimate dovolj žetonov</translation>
-<translation id="5562948772940025260">Z dobroimetjem Brave Rewards lahko pošljete samo do <ph name="AMOUNT"/> BAT.</translation>
+<translation id="5562948772940025260">Z dobroimetjem Ping Rewards lahko pošljete samo do <ph name="AMOUNT"/> BAT.</translation>
 <translation id="4827581232860040208">Pri pošiljanju vašega prispevka je prišlo do težave</translation>
 <translation id="3259723213051400722">Poskusite znova.</translation>
 <translation id="8725066075913043281">Poskusi znova</translation>
 <translation id="5379685283876547860">Prispevek je poslan!</translation>
 <translation id="7063168612616047608">Hvala, ker podpirate svoje najljubše ustvarjalce</translation>
 <translation id="1041398280582063935">Delite svojo podporo</translation>
-<translation id="4001190813297686107">Pravkar sem prispeval <ph name="AMOUNT"/> BAT z brskalnikom Brave! Oglejte si, kako lahko podprete tudi svoje najljubše ustvarjalce in spletna mesta: https://brave.com/rewards</translation>
+<translation id="4001190813297686107">Pravkar sem prispeval <ph name="AMOUNT"/> BAT z brskalnikom Ping! Oglejte si, kako lahko podprete tudi svoje najljubše ustvarjalce in spletna mesta: https://brave.com/rewards</translation>
 <translation id="1950340257946519340">Prišlo je do nepričakovane napake</translation>
 <translation id="2605703631071131439">Ponovno odprite ploščo s prispevki in poskusite znova.</translation>
 <translation id="8855543392451028706">Dobrodošli! Uporabniki lahko podprejo tega ustvarjalca vsebin tako, da mu pošljejo prispevke. To je način zahvale za ustvarjanje odlične vsebine.</translation>
@@ -634,40 +634,40 @@
 <translation id="1165039591588034296">Napaka</translation>
 <translation id="5826530373788377342">Dosegli ste največjo omejitev na napravi za ta račun<ph name="PROVIDER"/> .</translation>
 <translation id="6700131426769360592">Dosežena omejitev naprave</translation>
-<translation id="6895088073061692390">Na žalost je bil vaš profil Brave Rewards označen z zastavico, ker so naša samodejna preverjanja odkrila nekaj nepričakovanih dejavnosti pri Brave Ads.</translation>
-<translation id="4229056297802204697">Medtem ko je vaš profil označen, lahko še naprej vidite oglase, vendar ne boste upravičeni do prejemanja izplačil. Prav tako ne boste mogli povezati skrbniškega računa z Brave Rewards.</translation>
+<translation id="6895088073061692390">Na žalost je bil vaš profil Ping Rewards označen z zastavico, ker so naša samodejna preverjanja odkrila nekaj nepričakovanih dejavnosti pri Ping Ads.</translation>
+<translation id="4229056297802204697">Medtem ko je vaš profil označen, lahko še naprej vidite oglase, vendar ne boste upravičeni do prejemanja izplačil. Prav tako ne boste mogli povezati skrbniškega računa z Ping Rewards.</translation>
 <translation id="5124846913141379164">Morda je bil vaš profil pomotoma označen z zastavico in vam ni treba takoj ukrepati. Zastavica na vašem profilu bo morda v prihodnosti odstranjena.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Preberite več o postopku Brave za označevanje profilov Rewards z opozorilom.<ph name="END_LINK"/></translation>
-<translation id="4699218748197721830">Profil Brave Rewards je označen z opozorilom</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Preberite več o postopku Ping za označevanje profilov Rewards z opozorilom.<ph name="END_LINK"/></translation>
+<translation id="4699218748197721830">Profil Ping Rewards je označen z opozorilom</translation>
 <translation id="2607420597216860026">Poskusite znova, ko vklopite preverjanje osebnega dokumenta <ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">Za prijavo potrebujete preverjen račun</translation>
-<translation id="1859789048900659918">Hmm, izgleda, da se vaša država za nagrade Brave ne ujema z državo <ph name="PROVIDER"/>, ki ga poskušate povezati.</translation>
+<translation id="1859789048900659918">Hmm, izgleda, da se vaša država za nagrade Ping ne ujema z državo <ph name="PROVIDER"/>, ki ga poskušate povezati.</translation>
 <translation id="3080649636035373911">Neujemanje države</translation>
-<translation id="5260522591743022748">Hmm, zdi se, da so bile vaše nagrade Brave Rewards že preverjene z drugim računom <ph name="PROVIDER"/>. Poskusite znova preveriti s svojim prejšnjim računom.</translation>
+<translation id="5260522591743022748">Hmm, zdi se, da so bile vaše nagrade Ping Rewards že preverjene z drugim računom <ph name="PROVIDER"/>. Poskusite znova preveriti s svojim prejšnjim računom.</translation>
 <translation id="6408621361472415607">Drugi račun</translation>
-<translation id="5225019866741699134">Izgleda, da povezovanje <ph name="PROVIDER"/> s programom Brave Rewards začasno ni na voljo. Prosimo, poskusite kasneje.</translation>
+<translation id="5225019866741699134">Izgleda, da povezovanje <ph name="PROVIDER"/> s programom Ping Rewards začasno ni na voljo. Prosimo, poskusite kasneje.</translation>
 <translation id="6105073131081187815">Stanje storitve <ph name="BEGIN_LINK"/>si lahko ogledate tukaj<ph name="END_LINK"/>.</translation>
 <translation id="3969419585013689529">Povezovanje z izbranim skrbnikom začasno ni na voljo</translation>
-<translation id="1024520300696337331">Vašega računa <ph name="PROVIDER"/> trenutno ni mogoče povezati z vašim profilom Brave Rewards. Vaš račun <ph name="PROVIDER"/> je registriran v državi, ki trenutno ni podprta za povezavo z nagradami Brave.</translation>
-<translation id="619384413404021992">Oglejte si <ph name="LINK_BEGIN"/>trenutni seznam podprtih regij in izvedite več<ph name="END_LINK"/> o povezavi skrbniškega računa z nagradami Brave.</translation>
+<translation id="1024520300696337331">Vašega računa <ph name="PROVIDER"/> trenutno ni mogoče povezati z vašim profilom Ping Rewards. Vaš račun <ph name="PROVIDER"/> je registriran v državi, ki trenutno ni podprta za povezavo z nagradami Ping.</translation>
+<translation id="619384413404021992">Oglejte si <ph name="LINK_BEGIN"/>trenutni seznam podprtih regij in izvedite več<ph name="END_LINK"/> o povezavi skrbniškega računa z nagradami Ping.</translation>
 <translation id="7933193151688235283">Regija trenutno ni podprta</translation>
 <translation id="5376524136040178759">Po podatkih Uphold so v računu Uphold trenutno določene omejitve. Prijavite se v svoj račun Uphold in preverite, ali so na računu še kakšna obvestila ali preostale zahteve, ki jih morate izpolniti, nato pa poskusite znova. Morda boste morali na primer podjetju Uphold predložiti več informacij.</translation>
 <translation id="6349168810769273818">Omejena funkcionalnost računa Uphold</translation>
-<translation id="1279668677171152085">Pri preverjanju zahteve za povezavo vašega računa <ph name="PROVIDER"/> z Brave Rewards. Lahko se <ph name="BEGIN_LINK"/>obrnete na našo podporo<ph name="END_LINK"/>, ki vam bo priskočila na pomoč.</translation>
+<translation id="1279668677171152085">Pri preverjanju zahteve za povezavo vašega računa <ph name="PROVIDER"/> z Ping Rewards. Lahko se <ph name="BEGIN_LINK"/>obrnete na našo podporo<ph name="END_LINK"/>, ki vam bo priskočila na pomoč.</translation>
 <translation id="8761736799800527591">Zahteve ni bilo mogoče potrditi</translation>
 <translation id="8285276813470932793">Vaše zahteve nismo mogli izpolniti. Poskusite znova in <ph name="LINK_BEGIN"/>se obrnite na podporo<ph name="LINK_END"/> , če se težava ne odpravi.</translation>
 <translation id="135956957367307069">Vaša zahteva se še vedno obdeluje, počakajte.</translation>
 <translation id="9033500121333471466">Označi kot neprimerno</translation>
-<translation id="4477865412359526485">Trenutno ni zgodovine Brave Ads.</translation>
+<translation id="4477865412359526485">Trenutno ni zgodovine Ping Ads.</translation>
 <translation id="4256040774643144761">Zgodovina oglasov</translation>
 <translation id="1188389905162088150">Oglasi, ki ste jih prejeli v zadnjih 30 dneh</translation>
 <translation id="4296467068886908539">Največ <ph name="NUM"/>/uro</translation>
 <translation id="3266055641283174315">Vrsta oglasa</translation>
 <translation id="8706824117053903390">Ogledi v tem mesecu</translation>
 <translation id="5105890735834548623">Nastavitve oglasov</translation>
-<translation id="96989662637180657">Oglasi za Iskanje Brave se prikazujejo na <ph name="LINK_BEGIN"/>Iskanje Brave <ph name="LINK_END"/>.</translation>
+<translation id="96989662637180657">Oglasi za Iskanje Ping se prikazujejo na <ph name="LINK_BEGIN"/>Iskanje Ping <ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Nastavitve oglasov</translation>
-<translation id="2446517297521536638">Nadzirajte, katere vrste oglasov Brave vidite in kako pogosto. Več vidite, več lahko zaslužite.</translation>
+<translation id="2446517297521536638">Nadzirajte, katere vrste oglasov Ping vidite in kako pogosto. Več vidite, več lahko zaslužite.</translation>
 <translation id="5860033963881614850">Izklopljeno</translation>
 <translation id="5916664084637901428">Vklopljeno</translation>
 <translation id="4284417062730522399"><ph name="NUM"/> prejetih oglasov v tem mesecu</translation>
@@ -686,11 +686,11 @@
 <translation id="7666058404763778706">Samodejni način izkazovanja podpore spletnim mestom in ustvarjalcem vsebine glede na to, koliko časa porabite za njihovo vsebino.</translation>
 <translation id="4319242254058427792">Samodejne donacije so onemogočene</translation>
 <translation id="1091835891554961609">Med brskanjem bodo tukaj prikazani preverjeni ustvarjalci, ki jih obiščete.</translation>
-<translation id="7714706530499503523">Samodejna donacija samodejno pošilja mesečne prispevke ustvarjalcem, preverjenim s strani Brave, in sicer glede na to, koliko časa porabite za njihovo vsebino.</translation>
+<translation id="7714706530499503523">Samodejna donacija samodejno pošilja mesečne prispevke ustvarjalcem, preverjenim s strani Ping, in sicer glede na to, koliko časa porabite za njihovo vsebino.</translation>
 <translation id="2358028754328876971">Kako delujejo samodejne donacije?</translation>
 <translation id="2870560284913253234">Spletno mesto</translation>
-<translation id="1184072843013036520">Zagotovite si izdelke znamke Brave.</translation>
-<translation id="1170674812179664523">Trgovina z izdelki znamke Brave</translation>
+<translation id="1184072843013036520">Zagotovite si izdelke znamke Ping.</translation>
+<translation id="1170674812179664523">Trgovina z izdelki znamke Ping</translation>
 <translation id="8673202990286883068">Vaše ugodnosti</translation>
 <translation id="3699766258844277472">Nimate še nastavljenih mesečnih prispevkov.</translation>
 <translation id="957921474773060718">Naslednji prispevek:</translation>
@@ -712,12 +712,12 @@
 <translation id="1128992132632883337">Prišlo je do napake pri razčlenjevanju odgovora</translation>
 <translation id="5382339341735118861">Zgodila se je generična napaka pri obdelavi zahteve</translation>
 <translation id="7123780456696055383">Zahtevani vir ni na voljo</translation>
-<translation id="1680597601664421644">Mnemonika, ki se uvozi, ne velja za Brave Wallet</translation>
+<translation id="1680597601664421644">Mnemonika, ki se uvozi, ne velja za Ping Wallet</translation>
 <translation id="372898731091371291">Katero vrsto denarnice želite uvoziti?</translation>
 <translation id="1430728084670406473">Denarnica Ethereum/Solana/Filecoin</translation>
 <translation id="8659668419772278776">Uvozite svoje obnovitveno geslo iz obstoječe denarnice</translation>
 <translation id="8110492767853188065">Strojna denarnica</translation>
-<translation id="7437218084485869007">Svojo strojno denarnico povežite z Brave</translation>
+<translation id="7437218084485869007">Svojo strojno denarnico povežite z Ping</translation>
 <translation id="4641919696349069826">Zahteva je že v teku</translation>
 <translation id="872806943696014633">Manjkajo podatki o transakcijah</translation>
 <translation id="7068183357903252127">Transakcijski podatki 'to' ali 'data' je treba navesti</translation>
@@ -783,7 +783,7 @@
 <translation id="9021834401351805394">Iščite po imenu ali prilepite naslov</translation>
 <translation id="5009335307032488349">Iščite NFT po imenu, ID-ju</translation>
 <translation id="8667560635828712526">Izberite sredstvo</translation>
-<translation id="4853960199138416955">Pogumna denarnica Brave trenutno ne podpira bitcoinovih NFT (vrstilcev). Pošiljanje BTC z naslova, ki ima ordinale, lahko povzroči nenameren prenos njegovih ordinalov.</translation>
+<translation id="4853960199138416955">Pogumna denarnica Ping trenutno ne podpira bitcoinovih NFT (vrstilcev). Pošiljanje BTC z naslova, ki ima ordinale, lahko povzroči nenameren prenos njegovih ordinalov.</translation>
 <translation id="29976300677902325">Izberi prejemnika</translation>
 <translation id="7231620608040154667">Moji naslovi</translation>
 <translation id="4504682768625050939">Vnesi javni naslov ali domeno.</translation>
@@ -830,17 +830,17 @@
 <translation id="6728663400147327751">Prejemnik</translation>
 <translation id="9209024278910716955">Nakup za izbrano omrežje ni podprt</translation>
 <translation id="4982630604810554641">Iskanje domene ...</translation>
-<translation id="5467044307473123584">Brave podpira uporabo prehodov zunaj verige za razreševanje domen .eth.</translation>
+<translation id="5467044307473123584">Ping podpira uporabo prehodov zunaj verige za razreševanje domen .eth.</translation>
 <translation id="4896417414446851895">Kaže, da ste vnesli naslov ENS. Ta zahteva bo razrešena s strani prehoda tretje osebe, ta pa bo morda lahko videla vaš IP naslov in domeno.</translation>
 <translation id="8646078615727397565">Uporabite domeno ENS</translation>
 <translation id="1191686659164947414">Transakcija je lahko vnaprejšnja</translation>
 <translation id="4500473291496079954">Poteče čez</translation>
 <translation id="2236833281018938257">Naslov denarnice ali URL</translation>
 <translation id="928500657730628112">Naslov denarnice</translation>
-<translation id="6812967455478797345">Brave uporablja <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> kot zbiralnik DEX.</translation>
+<translation id="6812967455478797345">Ping uporablja <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> kot zbiralnik DEX.</translation>
 <translation id="151946611346774041">0x bo obdelal naslov Ethereum in naslov IP za izvedbo transakcije (vključno s pridobivanjem ponudb). 0x bo te podatke uporabil SAMO za namene obdelave transakcij.</translation>
 <translation id="7465227658364622464">Jupiter bo obdelal naslov Solana in naslov IP za izpolnitev transakcije (vključno s pridobivanjem ponudb). Jupiter bo te podatke uporabil SAMO za namene obdelave transakcij.</translation>
-<translation id="712738518060477110">Ponudba vključuje <ph name="SWAP_FEE_PERCENTAGE"/> pristojbino za Brave.</translation>
+<translation id="712738518060477110">Ponudba vključuje <ph name="SWAP_FEE_PERCENTAGE"/> pristojbino za Ping.</translation>
 <translation id="8368540604723748428">Preveč decimalnih mest</translation>
 <translation id="6575120282593094155">Nimate računa <ph name="ACCOUNT_TYPE"/>. Ga želite ustvariti?</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -852,12 +852,12 @@
 <translation id="6518133107902771759">Preveri</translation>
 <translation id="3157931365184549694">Obnovi</translation>
 <translation id="414070570958255222">Nativni brskalnik. Samostojno skrbništvo. In več verig.</translation>
-<translation id="1350120992777389959">Prevzemite nadzor nad kriptovalutami in NFT. Denarnica Brave podpira Ethereum, verige EVM, Solana, Filecoin, Bitcoin in druge.</translation>
+<translation id="1350120992777389959">Prevzemite nadzor nad kriptovalutami in NFT. Denarnica Ping podpira Ethereum, verige EVM, Solana, Filecoin, Bitcoin in druge.</translation>
 <translation id="165255193061631296">Potrebujete novo denarnico?</translation>
-<translation id="1939235910515558387">Že v nekaj minutah začnite uporabljati Denarnico Brave.</translation>
+<translation id="1939235910515558387">Že v nekaj minutah začnite uporabljati Denarnico Ping.</translation>
 <translation id="5844138175312846408">Že imate denarnico?</translation>
 <translation id="772643556080081594">Potrebujem denarnico, ki omogoča samo spremljanje stanja</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave in logotip Brave sta registrirani blagovni znamki družbe Brave Software, Inc. Imena drugih izdelkov in logotipi so lahko blagovne znamke njihovih lastnih podjetij. Vse pravice pridržane.</translation>
+<translation id="4878034296528175352">©2024 Ping Software Inc. Ping in logotip Ping sta registrirani blagovni znamki družbe Ping Software, Inc. Imena drugih izdelkov in logotipi so lahko blagovne znamke njihovih lastnih podjetij. Vse pravice pridržane.</translation>
 <translation id="7501957181231305652">ali</translation>
 <translation id="375882617301124395">Varnostno kopirajte svojo kripto denarnico</translation>
 <translation id="5024543173656851695">Zavedam se, da ne morem dostopati do svoje denarnice s kriptovalutami, če izgubim svoje ključne besede za obnovitev dostopa.</translation>
@@ -895,13 +895,13 @@
 <translation id="352407037922720467">Zavihek NFT-ja</translation>
 <translation id="163697698769819510">Rezervirajte denarnico zdaj, da zaščitite svoja kripto sredstva in zagotovite, da nikoli ne izgubite dostopa.</translation>
 <translation id="1018806299114415224">Varnostno kopijo naredite zdaj</translation>
-<translation id="1400709719911593089">Denarnica Brave ni nastavljena kot privzeta denarnica in se ne bo odzivala na aplikacije Web3 DApps. Če želite spremeniti privzeto denarnico, obiščite nastavitve.</translation>
+<translation id="1400709719911593089">Denarnica Ping ni nastavljena kot privzeta denarnica in se ne bo odzivala na aplikacije Web3 DApps. Če želite spremeniti privzeto denarnico, obiščite nastavitve.</translation>
 <translation id="4362717653795263052">Obnovite primarne kripto račune</translation>
-<translation id="3038077262567136741">Vnesite svojo frazo za obnovitev, da obnovite kripto račun za Brave denarnico.</translation>
+<translation id="3038077262567136741">Vnesite svojo frazo za obnovitev, da obnovite kripto račun za Ping denarnico.</translation>
 <translation id="955918646509748368">Vnesena fraza za obnovitev ni veljavna.</translation>
 <translation id="8107437138787377150">Prilepite frazo za obnovitev iz odložišča</translation>
 <translation id="4811736040444856406">Oglejte si fazo obnovitve</translation>
-<translation id="4359319875297001084">Uvozim iz starejših Brave kripto denarnic?</translation>
+<translation id="4359319875297001084">Uvozim iz starejših Ping kripto denarnic?</translation>
 <translation id="3331452756822160641">Novo geslo</translation>
 <translation id="8624315169751085215">Kopiraj v odložišče</translation>
 <translation id="2598171223363459366">Ta korak lahko za zdaj preskočite, vendar morate kljub temu narediti varnostno kopijo fraze za obnovitev in tako zagotoviti varnost računa.</translation>
@@ -945,7 +945,7 @@
 <translation id="6892232036314454524">Ta napaka se lahko pojavi, ko je na napravi Ledger odprta napačna aplikacija.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Knjiženje</translation>
-<translation id="8012452656725205792">Svoji napravi <ph name="HARDWARE_DEVICE"/> omogočite dostop do Brave.</translation>
+<translation id="8012452656725205792">Svoji napravi <ph name="HARDWARE_DEVICE"/> omogočite dostop do Ping.</translation>
 <translation id="4378551569595875038">Povezovanje ...</translation>
 <translation id="1943188256166395881">Dodajte preverjene račune</translation>
 <translation id="8554010658308662631">Naloži več</translation>
@@ -959,9 +959,9 @@
 <translation id="7261362517244085362">Določite svojo denarnico</translation>
 <translation id="7150150391368236519">Poveži strojno denarnico</translation>
 <translation id="5400782314657008092">Trenutno podpiramo naprave<ph name="HARDWARE_DEVICE"/> in <ph name="HARDWARE_DEVICE1"/>.</translation>
-<translation id="8144305264680648043">Povežite svojo strojno denarnico in s svojimi sredstvi upravljajte neposredno iz Denarnice Brave</translation>
+<translation id="8144305264680648043">Povežite svojo strojno denarnico in s svojimi sredstvi upravljajte neposredno iz Denarnice Ping</translation>
 <translation id="1329837291200753515">Izberite verigo blokov za uvoz strojne denarnice</translation>
-<translation id="6983390509997396124">Svojo napravo<ph name="HARDWARE_DEVICE"/> povežite z denarnico Brave</translation>
+<translation id="6983390509997396124">Svojo napravo<ph name="HARDWARE_DEVICE"/> povežite z denarnico Ping</translation>
 <translation id="5149944858285555235">Neznana napaka, znova povežite denarnico s strojno opremo in poskusite znova.</translation>
 <translation id="9220525904950070496">Izbriši račun</translation>
 <translation id="8574289650879708853">Dodajte sredstvo po meri</translation>
@@ -1014,7 +1014,7 @@
 <translation id="3352959425838279177">Pridobite Ether iz pipe za <ph name="SELECTED_NETWORK"/></translation>
 <translation id="6449626816252815844">Izberite način nakupa</translation>
 <translation id="8009571545960303544">Zahtevan je bil vaš podpis</translation>
-<translation id="5294062982587710720">Upoštevajte, da Brave ne more preveriti, kaj se bo zgodilo, če podpišete. Podpis lahko pooblasti skoraj vse operacije v vašem računu ali v vašem imenu, vključno z (vendar ne omejeno na) popolnim nadzorom vašega računa in kriptovalut spletnega mesta, ki poda zahtevo. Podpišite se le, če ste prepričani, da želite izvesti to dejanje, in če zaupate mestu, ki to zahteva.</translation>
+<translation id="5294062982587710720">Upoštevajte, da Ping ne more preveriti, kaj se bo zgodilo, če podpišete. Podpis lahko pooblasti skoraj vse operacije v vašem računu ali v vašem imenu, vključno z (vendar ne omejeno na) popolnim nadzorom vašega računa in kriptovalut spletnega mesta, ki poda zahtevo. Podpišite se le, če ste prepričani, da želite izvesti to dejanje, in če zaupate mestu, ki to zahteva.</translation>
 <translation id="3474375934783434676">Podpišite se na lastno odgovornost</translation>
 <translation id="5488357322146334497">Sporočilo</translation>
 <translation id="3586931643579894722">Skrij podrobnosti</translation>
@@ -1038,7 +1038,7 @@
 <translation id="7073918978411974168">Predlagani dodatek</translation>
 <translation id="9019403281000653275">Zahtevana je neomejena odobritev</translation>
 <translation id="4717431746210146708">Ali dovolite temu mestu, da doda omrežje?</translation>
-<translation id="2521480044079508357">To bo omogočilo uporabo tega omrežja v Brave denarnici.</translation>
+<translation id="2521480044079508357">To bo omogočilo uporabo tega omrežja v Ping denarnici.</translation>
 <translation id="1982257600591932657">Ime omrežja</translation>
 <translation id="5052727830821470769">URL omrežja</translation>
 <translation id="427875364838253580">Ogled vseh podrobnosti</translation>
@@ -1093,8 +1093,8 @@
 <translation id="9139452553033760558">Za 1 teden</translation>
 <translation id="1658834457013045127">Za vedno</translation>
 <translation id="2770851145415891830">Zaznane so obstoječe kripto denarnice</translation>
-<translation id="2237759620789871865">Če bi raje preskočili uvoz in obdržali staro izkušnjo s kripto denarnicami, se pomaknite do <ph name="LINK_BEFORE"/>Nastavitev<ph name="LINK_AFTER"/> brskalnika Brave in spremenite privzeto nazaj na Crypto denarnice. Prav tako lahko uvozite, preizkusite novo Brave denarnico in kadar koli spremenite nazaj.</translation>
-<translation id="5590175005414413980">Vnesite geslo za obstoječe kripto denarnice za uvoz v denarnico Brave. Uživajte v hitrejšem in varnejšem načinu upravljanja kripto sredstev in interakcije z aplikacijami Web3 DApps.</translation>
+<translation id="2237759620789871865">Če bi raje preskočili uvoz in obdržali staro izkušnjo s kripto denarnicami, se pomaknite do <ph name="LINK_BEFORE"/>Nastavitev<ph name="LINK_AFTER"/> brskalnika Ping in spremenite privzeto nazaj na Crypto denarnice. Prav tako lahko uvozite, preizkusite novo Ping denarnico in kadar koli spremenite nazaj.</translation>
+<translation id="5590175005414413980">Vnesite geslo za obstoječe kripto denarnice za uvoz v denarnico Ping. Uživajte v hitrejšem in varnejšem načinu upravljanja kripto sredstev in interakcije z aplikacijami Web3 DApps.</translation>
 <translation id="880619123281809987">Vnesite geslo za kripto denarnice</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> povezana</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> prekinjena</translation>
@@ -1164,7 +1164,7 @@
 <translation id="8464365289405373974">Dodajte naslovnika</translation>
 <translation id="6326239384961270135">Manjka prosojni del</translation>
 <translation id="8585995109882455949">Kako naj poiščem pravi naslov?</translation>
-<translation id="105524480632150318">Brave uporabnikom preprečuje, da bi zaradi nepravilne velike začetnice poslali sredstva na napačen naslov. Prepričajte se, da gre za pravilen naslov, tako da sledite spodnjim navodilom.</translation>
+<translation id="105524480632150318">Ping uporabnikom preprečuje, da bi zaradi nepravilne velike začetnice poslali sredstva na napačen naslov. Prepričajte se, da gre za pravilen naslov, tako da sledite spodnjim navodilom.</translation>
 <translation id="4583433813614292221">1. Obiščite</translation>
 <translation id="8061317754447191238">Obiščite etherscan in prilepite naslov denarnice, na katero želite poslati žetone. Nato vstopite</translation>
 <translation id="5393164213211430081">2. Kopirajte in vnesite naslov ETH</translation>
@@ -1226,7 +1226,7 @@
 <translation id="2962388922926051374">Zahteva za metodo 'eth_chainId' na <ph name="URL"/> ni bila uspešna</translation>
 <translation id="8325036459845654666">To omrežje je že dodano.</translation>
 <translation id="554350381160981853">Podpisovanje vnesenih podatkov je podprto samo na Trezor Model One z vdelano programsko opremo 1.10.5 ali novejšo</translation>
-<translation id="1752214435563414457">Stave Brave Swap</translation>
+<translation id="1752214435563414457">Stave Ping Swap</translation>
 <translation id="7829441065063984927">7 dni kriptovalutnih daril, nagrade v vvrednosti več kot ~$500.000.</translation>
 <translation id="8292716346768453265">Prijavite se zdaj</translation>
 <translation id="1935944189549132903">Vsa sredstva</translation>
@@ -1240,7 +1240,7 @@
 <translation id="5522073372365069684">Kupite z Ramp</translation>
 <translation id="6153197326949684688">Prodaja z <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Kupite s Sardino</translation>
-<translation id="3301984548406568819">Finančne in transakcijske podatke obdelujejo naši zunanji povezani partnerji. Brave ne zbira in nima dostopa do takih podatkov.</translation>
+<translation id="3301984548406568819">Finančne in transakcijske podatke obdelujejo naši zunanji povezani partnerji. Ping ne zbira in nima dostopa do takih podatkov.</translation>
 <translation id="6534275647567011533">Za nakup uporabite Transak</translation>
 <translation id="5973390321030037823">Nakup s povezavo</translation>
 <translation id="1932640759496708012">Kupujte s Coinbase Pay</translation>
@@ -1303,9 +1303,9 @@
 <translation id="5601436886921227795">Interakcija Dapp</translation>
 <translation id="9104177294757104789">Pošlji <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Zamenjaj <ph name="MAKER"/> v <ph name="TAKER"/></translation>
-<translation id="8613144770663526433">Prijavite se s Brave Wallet</translation>
+<translation id="8613144770663526433">Prijavite se s Ping Wallet</translation>
 <translation id="8813165409788097898">Vpisujete se v
-<ph name="ORIGIN"/>. Brave denarnica bo naslov vaše denarnice delila z 
+<ph name="ORIGIN"/>. Ping denarnica bo naslov vaše denarnice delila z 
 <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Glej podrobnosti</translation>
 <translation id="3950820424414687140">Prijava</translation>
@@ -1395,7 +1395,7 @@
 <translation id="4412698727486357573">Center za pomoč</translation>
 <translation id="2095142195578664632">Potrebujete pomoč? Oglejte si stran</translation>
 <translation id="3253669416991680932">Ta strojna denarnica tega dejanja ne podpira.</translation>
-<translation id="7457027586454688423">Vnesite geslo za Brave Wallet</translation>
+<translation id="7457027586454688423">Vnesite geslo za Ping Wallet</translation>
 <translation id="7553242001898162573">Vnesite svoje geslo</translation>
 <translation id="2873714185189940594">Odprem aplikacijo Rainbow Bridge?</translation>
 <translation id="2069777099181262239">Rainbow Bridge je neodvisna storitev, ki vam pomaga pri premostitvi sredstev med omrežji in uporabi kriptovalut v drugih omrežjih in ekosistemih DApp. Premostitev sredstev v druga omrežja prinaša nekatera tveganja.</translation>
@@ -1403,20 +1403,20 @@
 <translation id="3890567288132019108">Preberite več o zmanjševanju tveganja na strani Rainbow Bridge</translation>
 <translation id="1792917191129448067">Odpri aplikacijo Rainbow Bridge</translation>
 <translation id="1522775706527775647">Most do Aurore</translation>
-<translation id="4903322403594141291">Izvedite več o Brave Wallet</translation>
+<translation id="4903322403594141291">Izvedite več o Ping Wallet</translation>
 <translation id="4427684901715566795">Geslo mora imeti:</translation>
 <translation id="8521329076169776625">Vsaj 8 znakov</translation>
 <translation id="3665035348242240953">Gesli se ujemata</translation>
 <translation id="8918368616587206671">Močno!</translation>
 <translation id="574392208103952083">Srednje</translation>
 <translation id="8297006494302853456">Šibek</translation>
-<translation id="3282258437441351851">Denarnica Brave se bo kasneje samodejno zaklenila</translation>
+<translation id="3282258437441351851">Denarnica Ping se bo kasneje samodejno zaklenila</translation>
 <translation id="114276356113671828"><ph name="VALUE"/> minut</translation>
 <translation id="5408337686677411363"><ph name="VALUE"/> ur(a)</translation>
 <translation id="7084181009966710506">Ustvarjanje denarnice...</translation>
 <translation id="3259102562570606417">Shranite svojo frazo za obnovitev dostopa</translation>
 <translation id="7119749028647909394">Beseda fraza z dolžino med 12 in 24 besed za obnovitev je zasebni ključ, ki ga lahko uporabite za ponovni dostop do denarnice, če izgubite povezano(-e) napravo(-e). Shranjujte ga na varnem mestu in v točno takšnem vrstnem redu, kot je prikazan spodaj.</translation>
-<translation id="3259018319025894691">Brave ne more dostopati do skrivne obnovitvene besedne zveze. Shranjujte jo na varnem in jo nikoli ne delite z nikomer drugim.</translation>
+<translation id="3259018319025894691">Ping ne more dostopati do skrivne obnovitvene besedne zveze. Shranjujte jo na varnem in jo nikoli ne delite z nikomer drugim.</translation>
 <translation id="426648489149930289">Hranite jo na varnem mestu, ki ni dostopno drugim, in je ne delite z drugimi.</translation>
 <translation id="119185410022731300">Na položaj<ph name="VALUE"/> vnesite besedo iz vaše fraze za obnovitev.</translation>
 <translation id="2193954488469999829">Ste pozabili shraniti vnos? Pojdite nazaj</translation>
@@ -1439,7 +1439,7 @@
 <translation id="7992766987062040279">rd</translation>
 <translation id="2295726992010694229">th</translation>
 <translation id="1148624853678088576">Vse je nared!</translation>
-<translation id="1656439328205762155">Vaša denarnica Brave je zdaj nastavljena in pripravljena za uporabo.</translation>
+<translation id="1656439328205762155">Vaša denarnica Ping je zdaj nastavljena in pripravljena za uporabo.</translation>
 <translation id="3342494025742308764">Pojdite na portfelj</translation>
 <translation id="396152018598329740">Kako uporabljati kripto denarnico?</translation>
 <translation id="7512061585041489067">Katera je najboljša kripto denarnica?</translation>
@@ -1471,14 +1471,14 @@
 <translation id="6260144012548445299">Več o moji novi denarnici</translation>
 <translation id="2502258949541727762">Preden začnemo</translation>
 <translation id="5333225216561354793">Od vas zahtevamo, da potrdite spodaj navedene elemente</translation>
-<translation id="4284971227128011550">Razumem, da je to denarnica s samostojnim skrbništvom in da sem samo jaz odgovoren/a za vsa povezana sredstva, premoženja ali račune ter za ustrezno ukrepanje za zavarovanje, zaščito in varnostno kopiranje svoje denarnice. Razumem, da Brave ne more dostopati do moje denarnice ali razveljaviti transakcij v mojem imenu in da je moja besedna zveza za obnovitev EDINI način za ponovno pridobitev dostopa v primeru izgubljenega gesla, ukradene naprave ali podobnih okoliščin.</translation>
+<translation id="4284971227128011550">Razumem, da je to denarnica s samostojnim skrbništvom in da sem samo jaz odgovoren/a za vsa povezana sredstva, premoženja ali račune ter za ustrezno ukrepanje za zavarovanje, zaščito in varnostno kopiranje svoje denarnice. Razumem, da Ping ne more dostopati do moje denarnice ali razveljaviti transakcij v mojem imenu in da je moja besedna zveza za obnovitev EDINI način za ponovno pridobitev dostopa v primeru izgubljenega gesla, ukradene naprave ali podobnih okoliščin.</translation>
 <translation id="3604445540387095708">Prebral sem in se strinjam s <ph name="LINK_BEFORE"/>Pogoji uporabe<ph name="LINK_AFTER"/></translation>
 <translation id="1422451606553326863">Kupite kripto</translation>
 <translation id="3887541341068007345">Preverjanje za razširitev denarnice ...</translation>
-<translation id="3567994771568272606">Uvoz iz podedovanih kripto denarnic Brave</translation>
+<translation id="3567994771568272606">Uvoz iz podedovanih kripto denarnic Ping</translation>
 <translation id="8407091560429310499">Izberite sredstvo</translation>
 <translation id="756590380936155533">Če želite dokončati nakup za <ph name="ASSET_TICKER"/>, izberite enega od naših partnerjev</translation>
-<translation id="7880860489474966219">Po zaključku bodo vaša sredstva prenesena v vašo Brave Wallet</translation>
+<translation id="7880860489474966219">Po zaključku bodo vaša sredstva prenesena v vašo Ping Wallet</translation>
 <translation id="6182661078713714878">Polog kriptovalut</translation>
 <translation id="3683305208314702347">Polog <ph name="VALUE"/></translation>
 <translation id="5768739294929936862">Polog Solana ali SPL žetonov</translation>
@@ -1526,13 +1526,13 @@
 <translation id="434502623875309667">Ločljivost naslova zahteva zahteve omrežja izven verige. Nadaljuj?</translation>
 <translation id="2779500703989728346">NFT</translation>
 <translation id="1893207255459018302">Ni zgodovine transakcij</translation>
-<translation id="5356382676355994980">Tukaj bodo prikazane transakcije, opravljene z vašo denarnico Brave Wallet.</translation>
+<translation id="5356382676355994980">Tukaj bodo prikazane transakcije, opravljene z vašo denarnico Ping Wallet.</translation>
 <translation id="3033638954295674319">Pri pridobivanju podrobnosti NFT je prišlo do napake. Prosimo, poskusite kasneje.</translation>
 <translation id="5964615240954462738">Uredi žeton</translation>
 <translation id="2612436523196658045">Naslov ETH bo preveden v naslov Filecoin.</translation>
 <translation id="3282354360699748542"><ph name="FILECOIN_ADDRESS"/>naslov v imeniku Filecoin bo uporabljen za transakcijo.</translation>
 <translation id="2540568096903252632">Za nadaljevanje vnesite geslo</translation>
-<translation id="3356580495013324916">Vnesite geslo za denarnico Brave, da jo začnete varnostno kopirati.</translation>
+<translation id="3356580495013324916">Vnesite geslo za denarnico Ping, da jo začnete varnostno kopirati.</translation>
 <translation id="7545441766078366279">Potrdi <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Prenizko stanje <ph name="TOKEN"/></translation>
 <translation id="3453833142586986467">Izberite žeton</translation>
@@ -1553,7 +1553,7 @@
 <translation id="2538996898605796431">Vpliv na ceno</translation>
 <translation id="8007404171238546456">Minimalni prejemek po spremembi</translation>
 <translation id="767199001998615704">Strošek omrežja</translation>
-<translation id="28584716826670202">Vključena pristojbina Brave</translation>
+<translation id="28584716826670202">Vključena pristojbina Ping</translation>
 <translation id="3624518972158401291">Brezplačno</translation>
 <translation id="8450638959928932199">Zamenjaj in pošlji</translation>
 <translation id="476816352791390168">BREZ dodatnih stroškov!</translation>
@@ -1569,7 +1569,7 @@
 <translation id="6778140392042462129">Menjave</translation>
 <translation id="6173494033320397682">Samo neposredna pot</translation>
 <translation id="2440960581098655899">Zagotavlja izključno neposredno usmerjanje in hkrati onemogoča trgovanje z razdeljenimi naročili</translation>
-<translation id="6245314729809503023">Brave za vmesno usmerjanje za namen optimizacije delovanja uporablja 60 najboljših žetonov</translation>
+<translation id="6245314729809503023">Ping za vmesno usmerjanje za namen optimizacije delovanja uporablja 60 najboljših žetonov</translation>
 <translation id="2379187373676242615"><ph name="VALUE"/>% ceneje kot CoinGecko</translation>
 <translation id="5351867352310722022">V okviru <ph name="VALUE"/>% od CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% dražje kot CoinGecko</translation>
@@ -1577,7 +1577,7 @@
 <translation id="7561262633951061138">Najboljše</translation>
 <translation id="8060029310790625334">Središče za pomoč</translation>
 <translation id="3143110700666266545">Ta aplikacija uporablja naslednje API-je tretjih oseb:</translation>
-<translation id="163536108506359457">Brave Swap uporablja <ph name="AGGREGATOR"/> kot agregator DEX za podprta <ph name="NETWORKS"/>omrežja. <ph name="AGGREGATOR"/>bo obdelal<ph name="NETWORK"/> naslov denarnice in naslov IP za izvedbo transakcije (vključno s pridobivanjem ponudb). <ph name="AGGREGATOR"/>bo te podatke uporabil SAMO za namene obdelave transakcij.</translation>
+<translation id="163536108506359457">Ping Swap uporablja <ph name="AGGREGATOR"/> kot agregator DEX za podprta <ph name="NETWORKS"/>omrežja. <ph name="AGGREGATOR"/>bo obdelal<ph name="NETWORK"/> naslov denarnice in naslov IP za izvedbo transakcije (vključno s pridobivanjem ponudb). <ph name="AGGREGATOR"/>bo te podatke uporabil SAMO za namene obdelave transakcij.</translation>
 <translation id="1847885264294023691">Kliknite tukaj za <ph name="AGGREGATOR"/> pravilnik o zasebnosti.</translation>
 <translation id="644984757357042735">Zahtevano je omrežje</translation>
 <translation id="132243864024778443">Zahtevano je ime žetona</translation>
@@ -1599,11 +1599,11 @@
 <translation id="5810047320613496595">Smeti</translation>
 <translation id="7257605968082307175">Označi kot smeti</translation>
 <translation id="1255896809210433555">Dodaj NFT</translation>
-<translation id="7600335727434653744">Odstraniti iz Brave Wallet?</translation>
-<translation id="6657860743511185539">NFT bo odstranjen iz Brave Wallet, vendar bo ostal v verigi blokov. Če ga odstranite in si nato premislite, ga boste morali znova uvoziti ročno.</translation>
+<translation id="7600335727434653744">Odstraniti iz Ping Wallet?</translation>
+<translation id="6657860743511185539">NFT bo odstranjen iz Ping Wallet, vendar bo ostal v verigi blokov. Če ga odstranite in si nato premislite, ga boste morali znova uvoziti ročno.</translation>
 <translation id="849880459530751909">Uredi NFT</translation>
 <translation id="5925465310724910998">Želite, da se vaši NFT-ji samodejno prikažejo?</translation>
-<translation id="5400791731776892411">Brave Wallet lahko uporabi storitev tretje osebe za samodejni prikaz vaših NFT-jev. Brave bo za zagotavljanje te storitve delil vaše naslove denarnice s <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/>. <ph name="BEFORE_URL"/>Več o tem.<ph name="AFTER_URL"/></translation>
+<translation id="5400791731776892411">Ping Wallet lahko uporabi storitev tretje osebe za samodejni prikaz vaših NFT-jev. Ping bo za zagotavljanje te storitve delil vaše naslove denarnice s <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/>. <ph name="BEFORE_URL"/>Več o tem.<ph name="AFTER_URL"/></translation>
 <translation id="7661959661113971834">Da, nadaljuj</translation>
 <translation id="4733761855978444079">Ne hvala, to bom naredil/a ročno</translation>
 <translation id="353620741952662530">Ni NFT-jev za prikaz</translation>
@@ -1622,7 +1622,7 @@
 <translation id="1554316484739382186">Porabnik: <ph name="ADDRESS"/></translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> račun</translation>
-<translation id="5360752485622434494">Brave Nagrade BAT vklopljene
+<translation id="5360752485622434494">Ping Nagrade BAT vklopljene
 <ph name="PROVIDER"/></translation>
 <translation id="429061011725027672">Trenutno ste odjavljeni iz
 <ph name="PROVIDER"/>. Prijavite se za ogled stanja.</translation>
@@ -1660,7 +1660,7 @@
 <translation id="1913853014470037784">Skrij nelastniške NFT-je</translation>
 <translation id="6722771294390991852">Zbiranje po zbirkah</translation>
 <translation id="8775144690796719618">Neveljaven URL</translation>
-<translation id="8892896831704748782">Če ne vidite NFT-ja, ki ga samodejno zazna Brave, ali želite slediti NFT-ju, ki je v lasti drugih oseb, ga lahko uvozite ročno.</translation>
+<translation id="8892896831704748782">Če ne vidite NFT-ja, ki ga samodejno zazna Ping, ali želite slediti NFT-ju, ki je v lasti drugih oseb, ga lahko uvozite ročno.</translation>
 <translation id="6301982082639804892">Naslov pogodbe pri dodajanju NFT v denarnico je edinstven naslov v verigi blokov, kjer se nahaja pametna pogodba za zbirko NFT. Naslov pogodbe lahko najdete na tržnici ali v raziskovalcih verig blokov itd.</translation>
 <translation id="9033155463293614176">Enolični identifikator za določen NFT znotraj zbirke.</translation>
 <translation id="2483152581664459180">Metapodatkov za NFT ni mogoče pridobiti</translation>
@@ -1733,10 +1733,10 @@
 <translation id="6951743416068151209">Tor strežnik URI</translation>
 <translation id="1671503397662036257">Stanje povezave Tor</translation>
 <translation id="6024292492796847324">Napredek pri inicializaciji Tor</translation>
-<translation id="8300751939969131609">Vklopite novice Brave in nikoli ne zamudite zgodbe</translation>
-<translation id="7758665172236842395">Sledite svojim priljubljenim virom v enem samem viru. Preprosto odprite zavihek v Brave, se pomaknite navzdol in ... tukaj je!</translation>
-<translation id="2376542729617592331">Novice Brave podpirajo oglasi s popolnoma zasebnimi in anonimiziranimi oglasi. <ph name="LINK_START"/>Izvedite več.<ph name="LINK_END"/>.</translation>
-<translation id="1765217911817124376">Vklopite Brave novice</translation>
+<translation id="8300751939969131609">Vklopite novice Ping in nikoli ne zamudite zgodbe</translation>
+<translation id="7758665172236842395">Sledite svojim priljubljenim virom v enem samem viru. Preprosto odprite zavihek v Ping, se pomaknite navzdol in ... tukaj je!</translation>
+<translation id="2376542729617592331">Novice Ping podpirajo oglasi s popolnoma zasebnimi in anonimiziranimi oglasi. <ph name="LINK_START"/>Izvedite več.<ph name="LINK_END"/>.</translation>
+<translation id="1765217911817124376">Vklopite Ping novice</translation>
 <translation id="6265592479622441247">Nazaj na <ph name="BEGIN_BOLD"/>nadzorno ploščo<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Poiščite spletno mesto, temo ali vir RSS</translation>
 <translation id="1498364270401875204">Kanali</translation>
@@ -1755,11 +1755,11 @@
 <translation id="4750394297954878236">Predlogi</translation>
 <translation id="7436846601026966360">Nekateri viri, ki vam bodo morda všeč. Predlogi so anonimni in se ujemajo le na vaši napravi.</translation>
 <translation id="7950715913905993008">Ojoj ...</translation>
-<translation id="7158100730468448581">Za novice Brave ni bilo mogoče pridobiti vsebine.</translation>
+<translation id="7158100730468448581">Za novice Ping ni bilo mogoče pridobiti vsebine.</translation>
 <translation id="2665462122884195298">Vaš feed je prazen</translation>
 <translation id="8461269982440806387">Spremljajte založnike in kanale, da jih boste videli v svojih feedih.</translation>
 <translation id="1685574186123115251">Dodajte vire vsebine</translation>
-<translation id="939305735877869636">Brave</translation>
+<translation id="939305735877869636">Ping</translation>
 <translation id="6261915643960475695">Posel</translation>
 <translation id="8265589281845759879">Avtomobili</translation>
 <translation id="7726519849288907308">Zvezdniki</translation>
@@ -1880,7 +1880,7 @@
 <translation id="4276265845501430443">Pokaži pomoč</translation>
 <translation id="8104889575691864804">Pokaži meni aplikacije</translation>
 <translation id="3215896810006717687">Pregled orodij za razvijalce</translation>
-<translation id="1761865962743604547">Nadgradi Brave</translation>
+<translation id="1761865962743604547">Nadgradi Ping</translation>
 <translation id="7012611213801651252">Prikaži meni z avatarji</translation>
 <translation id="6263048902976129908">Preklop orodij za razvijalce</translation>
 <translation id="1386786836007298307">Preklopi celozaslonsko orodno vrstico</translation>
@@ -1912,23 +1912,23 @@
 <translation id="5854741377790551127">Odpravljanje napak v drevesu pogleda tiskanja</translation>
 <translation id="8199130368328220410">Preklopi podnapise v živo</translation>
 <translation id="5509712368473990741">Preklop Leo AI</translation>
-<translation id="9055778350624039365">Prikaži ploščo Denarnice Brave</translation>
-<translation id="2548853975094084059">Zapri ploščo Denarnice Brave</translation>
-<translation id="3765209580429944524">Prikaži ploščo Brave VPN</translation>
-<translation id="5989009326527614692">Preklopi gumb v orodni vrstici Brave VPN</translation>
-<translation id="7334332308395652803">Preklopite ikono v pladnju Brave VPN</translation>
-<translation id="4326011033480357140">Pošlji povratne informacije Brave VPN</translation>
-<translation id="2345974803401546682">Predstavitev Brave VPN</translation>
-<translation id="8934783170241943640">Upravljaj načrt Brave VPN</translation>
-<translation id="6332027154313182926">Preklopi Brave VPN</translation>
+<translation id="9055778350624039365">Prikaži ploščo Denarnice Ping</translation>
+<translation id="2548853975094084059">Zapri ploščo Denarnice Ping</translation>
+<translation id="3765209580429944524">Prikaži ploščo Ping VPN</translation>
+<translation id="5989009326527614692">Preklopi gumb v orodni vrstici Ping VPN</translation>
+<translation id="7334332308395652803">Preklopite ikono v pladnju Ping VPN</translation>
+<translation id="4326011033480357140">Pošlji povratne informacije Ping VPN</translation>
+<translation id="2345974803401546682">Predstavitev Ping VPN</translation>
+<translation id="8934783170241943640">Upravljaj načrt Ping VPN</translation>
+<translation id="6332027154313182926">Preklopi Ping VPN</translation>
 <translation id="6539014233195996894">Preklopi zvok zavihka</translation>
 <translation id="2682865834956428001">Preklopi položaj stranske vrstice</translation>
 <translation id="6105745639559695088">Preklopi stransko vrstico</translation>
 <translation id="3488252265135539275">Preklopi navpične zavihke</translation>
 <translation id="7134064542341959603">Preklopi naslov okna z navpičnimi zavihki</translation>
-<translation id="3067105725259639716">Konfiguriraj Brave Novice</translation>
+<translation id="3067105725259639716">Konfiguriraj Ping Novice</translation>
 <translation id="6286510487460330478">Konfiguriraj bližnjice</translation>
-<translation id="9214819486716388964">Prikaži Brave Govor</translation>
+<translation id="9214819486716388964">Prikaži Ping Govor</translation>
 <translation id="5950760360751948276">Vedno pokaži vrstico z zaznamki</translation>
 <translation id="2960757369920422313">Pokaži vrstico z zaznamki na NTP</translation>
 <translation id="522953399371747698">Skrij vrstico z zaznamki</translation>
@@ -1998,9 +1998,9 @@
 <translation id="8637805148029768813">Funkcija povzemanja je trenutno na voljo samo za izbrane članke in druge dolge spletne strani.</translation>
 <translation id="1223498995510244364">Povzemi</translation>
 <translation id="7491773233732232424">O Leu</translation>
-<translation id="5208096220706490232">Brave Leo je zasebni pametni pomočnik z umetno inteligenco, ki izboljša vašo uporabo interneta. Leo je brezplačen z omejenim dostopom. Brave Leo Premium ponuja več modelov, višje omejitve in naročnikom omogoča zgodnji dostop do novih funkcij. Privzeti model za vse uporabnike je trenutno Mixtral 8x7B. Za več<ph name="LINK_BEFORE"/>podrobnosti glejte
-<ph name="LINK_AFTER"/> wiki Brave.</translation>
-<translation id="7189603330209995455">Ko Leu zastavite vprašanje, lahko privzeto pošlje in uporabi vsebino spletne strani, ki si jo ogledujete, ali besedilo, ki ga označite na strani, in ga pošlje Brave Leu, da zagotovi odgovor. Natančnost odgovorov ni zagotovljena in lahko vsebujejo netočne, zavajajoče ali napačne informacije. Leo uporablja podatke iz iskalnika Brave Search za izboljšanje kakovosti odgovorov. Ne pošiljajte občutljivih ali zasebnih informacij in bodite previdni pri vseh odgovorih, povezanih z zdravjem, financami, osebno varnostjo in podobno. Leove možnosti lahko kadar koli prilagodite v nastavitvah. Pojdite v Nastavitve &gt; Leo.</translation>
+<translation id="5208096220706490232">Ping Leo je zasebni pametni pomočnik z umetno inteligenco, ki izboljša vašo uporabo interneta. Leo je brezplačen z omejenim dostopom. Ping Leo Premium ponuja več modelov, višje omejitve in naročnikom omogoča zgodnji dostop do novih funkcij. Privzeti model za vse uporabnike je trenutno Mixtral 8x7B. Za več<ph name="LINK_BEFORE"/>podrobnosti glejte
+<ph name="LINK_AFTER"/> wiki Ping.</translation>
+<translation id="7189603330209995455">Ko Leu zastavite vprašanje, lahko privzeto pošlje in uporabi vsebino spletne strani, ki si jo ogledujete, ali besedilo, ki ga označite na strani, in ga pošlje Ping Leu, da zagotovi odgovor. Natančnost odgovorov ni zagotovljena in lahko vsebujejo netočne, zavajajoče ali napačne informacije. Leo uporablja podatke iz iskalnika Ping Search za izboljšanje kakovosti odgovorov. Ne pošiljajte občutljivih ali zasebnih informacij in bodite previdni pri vseh odgovorih, povezanih z zdravjem, financami, osebno varnostjo in podobno. Leove možnosti lahko kadar koli prilagodite v nastavitvah. Pojdite v Nastavitve &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo ne zbira identifikatorjev, kot je vaš naslov IP, ki bi jih lahko povezali z vami. Za usposabljanje modelov umetne inteligence se ne uporabljajo nobeni podatki in modeli umetne inteligence ne hranijo osebnih podatkov (razen modela Anthropic, ki podatke hrani 30 dni, preden jih izbriše). Za več informacij glejte<ph name="LINK_BEFORE"/>
 <ph name="LINK_AFTER"/> pravilnik o zasebnosti.</translation>
 <translation id="7839853125981164613">Vnesite poziv tukaj</translation>
@@ -2010,11 +2010,11 @@
 <translation id="7932221068776853847">Prekinite povezavo, da prenehate pošiljati vsebino te strani za Leo, in začnite nov pogovor</translation>
 <translation id="1167803637855350748">Pri povezovanju z Leom je prišlo do težave z omrežjem, preverite povezavo in poskusite znova.</translation>
 <translation id="1996126325390835277">Dosegli ste omejitev stopnje Premium. Poskusite znova čez nekaj ur.</translation>
-<translation id="4177458398826096846">Živjo, jaz sem Leo. Sem v celoti gostujoči pomočnik na področju umetne inteligence pri Brave. Poganja me Llama 3.1 8B, model, ki ga je družba Meta ustvarila za zmogljivost in uporabnost v številnih primerih uporabe. <ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Živjo, jaz sem Leo. Sem v celoti gostujoči pomočnik na področju umetne inteligence pri Brave. Poganja me Mixtral 8x7B, model, ki ga je družba Mistral AI ustvarila za opravljanje naprednih nalog.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Živjo, jaz sem Leo. Posreduje me Brave in poganja Claude Instant, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Živjo, jaz sem Leo. Posreduje me Brave in poganja Claude 3 Haiku, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.</translation>
-<translation id="1107977270364670952">Živjo, jaz sem Leo. Posreduje me Brave in poganja Claude 3.5 Sonnet, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.</translation>
+<translation id="4177458398826096846">Živjo, jaz sem Leo. Sem v celoti gostujoči pomočnik na področju umetne inteligence pri Ping. Poganja me Llama 3.1 8B, model, ki ga je družba Meta ustvarila za zmogljivost in uporabnost v številnih primerih uporabe. <ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Živjo, jaz sem Leo. Sem v celoti gostujoči pomočnik na področju umetne inteligence pri Ping. Poganja me Mixtral 8x7B, model, ki ga je družba Mistral AI ustvarila za opravljanje naprednih nalog.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Živjo, jaz sem Leo. Posreduje me Ping in poganja Claude Instant, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="8583558415545871403">Živjo, jaz sem Leo. Posreduje me Ping in poganja Claude 3 Haiku, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.</translation>
+<translation id="1107977270364670952">Živjo, jaz sem Leo. Posreduje me Ping in poganja Claude 3.5 Sonnet, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> od<ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Klepet</translation>
@@ -2038,14 +2038,14 @@
 <translation id="5031778211368112461">Modeli za dostop, ki so primernejši za ustvarjalne naloge in ustvarjanje vsebine.</translation>
 <translation id="298783097210745222">Pridobite natančnejše odgovore za bolj poglobljene pogovore.</translation>
 <translation id="4314705522985583059">Pridobite višje cenovne omejitve za daljše pogovore.</translation>
-<translation id="1068954060985569277">Seja vašega računa Brave je potekla. Obiščite stran svojega računa, da jo osvežite, nato pa se vrnite za uporabo premium funkcij.</translation>
+<translation id="1068954060985569277">Seja vašega računa Ping je potekla. Obiščite stran svojega računa, da jo osvežite, nato pa se vrnite za uporabo premium funkcij.</translation>
 <translation id="94736968936709953">Povratne informacije so bile uspešno poslane</translation>
 <translation id="9109355817507033196">Odgovor ni bil všeč</translation>
 <translation id="4049425842478222936">Odgovor všečkan</translation>
 <translation id="6393149565874086128">Dodaj povratne informacije</translation>
 <translation id="3521125531016408657">Odgovor mi je všeč.</translation>
 <translation id="8202517001427388906">Ni mi všeč odgovor</translation>
-<translation id="1379399209929302811">Zagotovite Brave AI povratne informacije</translation>
+<translation id="1379399209929302811">Zagotovite Ping AI povratne informacije</translation>
 <translation id="8442999546461118871">Izberite temo povratnih informacij</translation>
 <translation id="9018766373792005944">Kakšne so vaše povratne informacije?</translation>
 <translation id="7355096922131918313">Tukaj pošljite povratne informacije</translation>
@@ -2064,7 +2064,7 @@
 <translation id="1093419424466417703">Stran je predolga za Lea. V pogovoru morda manjka nekaj konteksta. Leo je lahko prebral                                       <ph name="PERCENTAGE"/>vsebino strani.</translation>
 <translation id="2186990448773134544">Vsebina strani je bila izpopolnjena z izborom najpomembnejših informacij s strani, ker je bila za Lea predolga.</translation>
 <translation id="4370698775470316661">Ta pogovor je predolg in se ne more nadaljevati. Morda so na voljo drugi modeli, s katerimi je Leo sposoben ohraniti natančnost za daljše pogovore.</translation>
-<translation id="5719170755629028558">Izboljšanje odgovora z Iskanjem z Brave ...</translation>
+<translation id="5719170755629028558">Izboljšanje odgovora z Iskanjem z Ping ...</translation>
 <translation id="5794962229997281366">Iskanje izboljšanih odgovorov za<ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Klepet za splošne namene</translation>
 <translation id="8193130769524604031">Napredne naloge klepeta</translation>
@@ -2073,15 +2073,15 @@
 <translation id="2836330653441111204">Uravnotežena hitrost in inteligenca</translation>
 <translation id="3965507912994218570">Nastavitve Lea</translation>
 <translation id="1037324977127422019">Živjo, jaz sem Leo!</translation>
-<translation id="8930348081963284873">Inteligentni pomočnik, ki ga poganja AI, vgrajen neposredno v Brave.</translation>
+<translation id="8930348081963284873">Inteligentni pomočnik, ki ga poganja AI, vgrajen neposredno v Ping.</translation>
 <translation id="3528849152231418380">Potrebujete pomoč pri spletnem mestu?</translation>
 <translation id="1558192229187362674">Lahko vam pomagam pri povzemanju člankov, razširitvi vsebine spletnega mesta in še veliko več.</translation>
 <translation id="861953757568623294">Lahko vam pomagam pri povzemanju člankov, razširitvi vsebine spletnega mesta in še veliko več. Niste prepričani, kje začeti? Poskusite to:</translation>
 <translation id="5642775487085641191">Želite samo klepetati?</translation>
 <translation id="8857222718794549840">Vprašajte me karkoli! Pogovarjamo se lahko o vseh temah, ki jih želite. Vedno se učim in izpopolnjujem, da bi lahko ponudil boljše odgovore.</translation>
-<translation id="9051226419897869406">Klepetaj zasebno z Brave Leo</translation>
+<translation id="9051226419897869406">Klepetaj zasebno z Ping Leo</translation>
 <translation id="637548538907281147">Oblikujte odgovore v skladu z vsebino strani</translation>
-<translation id="8599503173207256429">Preklopite in vprašajte o tej strani. Njena vsebina bo poslana Brave Leo skupaj z vašimi sporočili.</translation>
+<translation id="8599503173207256429">Preklopite in vprašajte o tej strani. Njena vsebina bo poslana Ping Leo skupaj z vašimi sporočili.</translation>
 <translation id="318819763888864209">Vse naročnine se samodejno podaljšajo, vendar jih lahko kadar koli pred podaljšanjem prekličete.</translation>
 <translation id="5091223967610958">Delite ime gostitelja strani, na kateri se nahajate (<ph name="HOST_NAME"/>), in nam tako pomagajte izboljšati Lea.</translation>
 <translation id="8732450785281947197">Orodja Leo AI</translation>
@@ -2110,13 +2110,13 @@
 <translation id="3895031624234442305">Modeli po meri</translation>
 <translation id="4572010449071015143">Začnite nov pogovor</translation>
 <translation id="6303294677342628402">Ščiti</translation>
-<translation id="8458987127502506209">Omogoči zaščito Ščiti Brave</translation>
+<translation id="8458987127502506209">Omogoči zaščito Ščiti Ping</translation>
 <translation id="7509914170164691086">Ščit je VKOPLJEN <ph name="LINK_BEFORE"/>za<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Ščit je IZKLOPLJEN <ph name="LINK_BEFORE"/>za<ph name="LINK_AFTER"/></translation>
 <translation id="3907405056878805220">Če se zdi, da je to spletno mesto pokvarjeno, poskusite Shields down.
- <ph name="LINK_BEFORE"/>Opomba: to lahko zmanjša zaščito zasebnosti Brave.<ph name="LINK_AFTER"/></translation>
+ <ph name="LINK_BEFORE"/>Opomba: to lahko zmanjša zaščito zasebnosti Ping.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Sledilniki, oglasi in vse drugo so blokirani <ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">Nimate zaščite Brave Shields <ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Nimate zaščite Ping Shields <ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Napredne nastavitve</translation>
 <translation id="5799940914270080805">Pri spreminjanju teh nastavitev lahko pride do okvare spletnih mest.</translation>
 <translation id="9204041448536398473">Splošne nastavitve zaščite</translation>
@@ -2147,8 +2147,8 @@
 <translation id="2570787596946026998">Povezava samo s HTTPS</translation>
 <translation id="1992750560347846445">Prijavite spletno mesto</translation>
 <translation id="2387532482048804818">Povejte nam, če je spletno mesto z vklopljenimi ščiti delovalo pravilno.</translation>
-<translation id="3795015906457257780">To spletno mesto si ogledujete brez zaščite zasebnosti družbe Brave.</translation>
-<translation id="7194012750329511146">Ščit Brave 
+<translation id="3795015906457257780">To spletno mesto si ogledujete brez zaščite zasebnosti družbe Ping.</translation>
+<translation id="7194012750329511146">Ščit Ping 
 <ph name="NUMBER"/> Blokirani sledilniki, oglasi in drugo</translation>
 <translation id="4292121526390005808">Blokirane skripte</translation>
 <translation id="5046271170844958713">Dovoljene skripte</translation>
@@ -2157,43 +2157,43 @@
 <translation id="1905384713982899903">Blokirani prstni odtisi</translation>
 <translation id="314364527871618241">Dovoljeni prstni odtisi</translation>
 <translation id="264682546981571963">Ste naveličani obvestil o soglasju za piškotke?</translation>
-<translation id="4986297793092101884">Brave že blokira piškotke tretjih oseb. Prav tako lahko blokiramo obvestila o soglasju za piškotke.</translation>
+<translation id="4986297793092101884">Ping že blokira piškotke tretjih oseb. Prav tako lahko blokiramo obvestila o soglasju za piškotke.</translation>
 <translation id="535688588637568715">Da, blokiraj obvestila o soglasju za piškotke</translation>
-<translation id="2808175374672429053">Nadomestni znaki za Brave Shields niso dovoljeni.</translation>
+<translation id="2808175374672429053">Nadomestni znaki za Ping Shields niso dovoljeni.</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
-=1 {Brave ščiti so blokirali 1 sledilca na <ph name="SITE_URL"/> }
-other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL"/>}
+=1 {Ping ščiti so blokirali 1 sledilca na <ph name="SITE_URL"/> }
+other {Ping ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL"/>}
  }</translation>
-<translation id="2540598191934725677">Kliknite ikono Brave, da si ogledate zaščito Brave Shields.</translation>
+<translation id="2540598191934725677">Kliknite ikono Ping, da si ogledate zaščito Ping Shields.</translation>
 <translation id="6294662480095808915">Zasebnost. Privzeto.</translation>
-<translation id="4366423156486478559">Zagotovite si zaščito Brave za vsako povezavo, na katero kliknete. Preprosto nastavite brskalnik Brave kot privzet in brskajte. Zasebno.</translation>
+<translation id="4366423156486478559">Zagotovite si zaščito Ping za vsako povezavo, na katero kliknete. Preprosto nastavite brskalnik Ping kot privzet in brskajte. Zasebno.</translation>
 <translation id="3830912418080848377">Uvozite nastavitve</translation>
 <translation id="6378406588483694938">Iz starega brskalnika preprosto uvozite zaznamke, razširitve in celo shranjena gesla.</translation>
 <translation id="2092825239819166928">Izberite profil, ki ga želite uvoziti</translation>
 <translation id="4763127492635705340">Brskalnik, ki ste ga izbrali, ima več profilov. Izberite profile, ki jih želite uvoziti.</translation>
 <translation id="880174232178865598">Uvozite profile</translation>
 <translation id="2453860139492968684">Dokončaj</translation>
-<translation id="2273851479262317744">Nastavite Brave kot privzeti brskalnik</translation>
+<translation id="2273851479262317744">Nastavite Ping kot privzeti brskalnik</translation>
 <translation id="5037676449506322593">Izberite vse</translation>
-<translation id="5148943178722443958">Pomagajte izboljšati Brave.</translation>
+<translation id="5148943178722443958">Pomagajte izboljšati Ping.</translation>
 <translation id="1097073572755862978">Pošljite diagnostična poročila, če pride do okvare ali zamrznitve. <ph name="LINK_BEFORE"/>Več o tem.<ph name="LINK_AFTER"/></translation>
-<translation id="6629244688368006959">Delite zasebne in anonimne vpoglede v izdelek o tem, katere funkcije uporabljajo uporabniki sistema Brave. <ph name="LINK_BEFORE"/>Več o tem.<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Delite zasebne in anonimne vpoglede v izdelek o tem, katere funkcije uporabljajo uporabniki sistema Ping. <ph name="LINK_BEFORE"/>Več o tem.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Namestitev končana</translation>
-<translation id="3141206739023333979">Te izbire lahko kadar koli spremenite v Brave na povezavi<ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
+<translation id="3141206739023333979">Te izbire lahko kadar koli spremenite v Ping na povezavi<ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Preberite našo celotno <ph name="LINK_BEFORE"/>politiko zasebnosti<ph name="LINK_AFTER"/></translation>
 <translation id="2801098717523961746">Izberite temo</translation>
-<translation id="6262510489122516114">To lahko kadar koli spremenite v nastavitvah sistema Brave.</translation>
+<translation id="6262510489122516114">To lahko kadar koli spremenite v nastavitvah sistema Ping.</translation>
 <translation id="546481172717459539">Ujemanje nastavitev sistema</translation>
 <translation id="7799817062559422778">Svetli način</translation>
 <translation id="4117637339509843559">Temni način</translation>
 <translation id="6302485303316397682">Želiš boljše rezultate iskanja?</translation>
-<translation id="7014699001826714920">Pridruži se gibanju, prispevaj k Brave Search.</translation>
-<translation id="6821108091726602352">Pomagaj nam popraviti splet s sodelovanjem v projektu Brave Web Discovery Project. Z deljenjem popolnoma anonimnih iskalnih signalov lahko podjetju Brave pomagaš povečati iskalni indeks.</translation>
+<translation id="7014699001826714920">Pridruži se gibanju, prispevaj k Ping Search.</translation>
+<translation id="6821108091726602352">Pomagaj nam popraviti splet s sodelovanjem v projektu Ping Web Discovery Project. Z deljenjem popolnoma anonimnih iskalnih signalov lahko podjetju Ping pomagaš povečati iskalni indeks.</translation>
 <translation id="6764845498618413165">Izvedi več.</translation>
 <translation id="7818938154803162778">Seveda, pomagal bom</translation>
-<translation id="7821773512278295352">Požarni zid Brave + VPN: povezano</translation>
-<translation id="6019088868713395120">Požarni zid Brave + VPN: prekinjena povezava</translation>
-<translation id="3541307549916475335">Uporabniški vmesnik plošče Brave VPN</translation>
+<translation id="7821773512278295352">Požarni zid Ping + VPN: povezano</translation>
+<translation id="6019088868713395120">Požarni zid Ping + VPN: prekinjena povezava</translation>
+<translation id="3541307549916475335">Uporabniški vmesnik plošče Ping VPN</translation>
 <translation id="7143207342074048698">Vzpostavljanje povezave</translation>
 <translation id="1202549130170287307">Prekinitev povezave</translation>
 <translation id="2325196879156848326">Povezava ni uspela</translation>
@@ -2201,7 +2201,7 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="3936826714240735937">Izberite drug strežnik</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> se ni mogel povezati s strežnikom <ph name="REGION_NAME"/> Lahko poskusite znova ali izberete drugo državo.</translation>
 <translation id="5753795690521538679">Začni 7-dnevni brezplačni preizkus</translation>
-<translation id="3357036723290257445">Ste že kupili VPN Brave?</translation>
+<translation id="3357036723290257445">Ste že kupili VPN Ping?</translation>
 <translation id="8814357473522731680">Poganja</translation>
 <translation id="8652175077544655965">Zaprite nastavitve</translation>
 <translation id="3099126540952997993">Požarni zid + VPN</translation>
@@ -2230,7 +2230,7 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="427718751211990320">Datum poteka veljavnosti poverilnic je potekel.</translation>
 <translation id="8670619630771851260">Poverilnic ni mogoče naložiti.</translation>
 <translation id="1594643509610625766">Žeton ni več veljaven.</translation>
-<translation id="8373427068383038263">Vaše zadnje plačilo za <ph name="VALUE"/> morda ni bilo izvedeno. Dostop do te naročnine bo prekinjen, dokler ne bo rešeno vprašanje plačila. Poskusite urediti način plačila ali se obrnite na podporo Brave.</translation>
+<translation id="8373427068383038263">Vaše zadnje plačilo za <ph name="VALUE"/> morda ni bilo izvedeno. Dostop do te naročnine bo prekinjen, dokler ne bo rešeno vprašanje plačila. Poskusite urediti način plačila ali se obrnite na podporo Ping.</translation>
 <translation id="5257165507296814658">Zaprite obrazec za podporo</translation>
 <translation id="1839021455997460752">Vaš e-poštni naslov</translation>
 <translation id="7508253027939632101">Vnesite vaš e-poštni naslov</translation>
@@ -2251,12 +2251,12 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="6676791921618140305">Različica OS:</translation>
 <translation id="1156325797949437777">Podpora se zagotavlja v sodelovanju z družbo Guardian.</translation>
 <translation id="8146777497879160283">Konfiguracije VPN ni bilo mogoče napisati. To se lahko zgodi, če nimate dovoljenja ali če nedavno niste zagnali storitve Windows Update.</translation>
-<translation id="3362894458460231163">Povezava VPN ni uspela. Poskusite se ponovno povezati in kliknite "Dovoli", da omogočite konfiguracijo VPN v Braveu.</translation>
-<translation id="7261518280726313829">Če v sistemu Windows izklopite varen DNS ali uporabljate privzete strežnike, lahko ponudniku internetnih storitev razkrijete imena spletnih mest, ki jih obiščete. Brave tega ne priporoča. Ali to vseeno želite storiti?</translation>
-<translation id="888284761945060750">Varni DNS je onemogočen v skladu s pravili vaše organizacije. Uporaba storitve Brave VPN brez Secure DNS lahko vašemu ponudniku internetnih storitev ali organizaciji razkrije imena spletnih mest, ki jih obiščete.</translation>
-<translation id="6593224083874259773">Brave VPN na sistemu Windows</translation>
+<translation id="3362894458460231163">Povezava VPN ni uspela. Poskusite se ponovno povezati in kliknite "Dovoli", da omogočite konfiguracijo VPN v Pingu.</translation>
+<translation id="7261518280726313829">Če v sistemu Windows izklopite varen DNS ali uporabljate privzete strežnike, lahko ponudniku internetnih storitev razkrijete imena spletnih mest, ki jih obiščete. Ping tega ne priporoča. Ali to vseeno želite storiti?</translation>
+<translation id="888284761945060750">Varni DNS je onemogočen v skladu s pravili vaše organizacije. Uporaba storitve Ping VPN brez Secure DNS lahko vašemu ponudniku internetnih storitev ali organizaciji razkrije imena spletnih mest, ki jih obiščete.</translation>
+<translation id="6593224083874259773">Ping VPN na sistemu Windows</translation>
 <translation id="3153983908111684619">BraveVPN zaklene nastavitev, ko je povezava vzpostavljena</translation>
-<translation id="1055657720430482013">V sistemu Windows je na voljo funkcija, imenovana Pametno reševanje imen z več domovi, ki lahko razkrije informacije o vaši lokaciji in spletnih mestih, ki jih obiskujete. Brave ima storitev pomoči, ki vas ščiti pred to izpostavljenostjo s filtriranjem načina izvajanja poizvedb DNS na vaši povezavi VPN. Vendar pa smo opazili, da ta pomožna storitev ne deluje – in ne želimo, da ste nezaščiteni. Spremenili smo nastavitve DNS v brskalniku, da bi se zaščitili pred tem razkritjem. Nastavitve bodo ostale v veljavi in zaklenjene, ko bo vzpostavljena povezava VPN. <ph name="LEARN_MORE"/></translation>
+<translation id="1055657720430482013">V sistemu Windows je na voljo funkcija, imenovana Pametno reševanje imen z več domovi, ki lahko razkrije informacije o vaši lokaciji in spletnih mestih, ki jih obiskujete. Ping ima storitev pomoči, ki vas ščiti pred to izpostavljenostjo s filtriranjem načina izvajanja poizvedb DNS na vaši povezavi VPN. Vendar pa smo opazili, da ta pomožna storitev ne deluje – in ne želimo, da ste nezaščiteni. Spremenili smo nastavitve DNS v brskalniku, da bi se zaščitili pred tem razkritjem. Nastavitve bodo ostale v veljavi in zaklenjene, ko bo vzpostavljena povezava VPN. <ph name="LEARN_MORE"/></translation>
 <translation id="7082498599369566941">Zdi se, da obstajajo težave s povezavo WireGuard. Želite omogočiti rezervni protokol IKEv2 za zanesljivo omrežje VPN? Preprosto spremenite nastavitve.
 
 Potrebujete pomoč pri združljivosti ali konfiguraciji? Obrnite se na našo prijazno ekipo za podporo.
@@ -2268,16 +2268,16 @@ Vzpostavimo povezavo!</translation>
 <translation id="7423206764347669977">Spreminjanje nastavitev</translation>
 <translation id="9061845622728745852">Časovni pas</translation>
 <translation id="8295393906499561642">Seja je potekla</translation>
-<translation id="3312623558576021182">Vpišite se v svoj<ph name="BRAVE_ACCOUNT_BEGIN"/>uporabniški račun Brave<ph name="BRAVE_ACCOUNT_END"/> in osvežite svojo sejo VPN.</translation>
-<translation id="6021669293402055982">Brave VPN: povezava prekinjena</translation>
-<translation id="7861195049821776142">Brave VPN: Prekinitev povezave</translation>
-<translation id="958268166261124668">Brave VPN: povezan</translation>
-<translation id="2061807837510296780">Brave VPN: Povezovanje</translation>
-<translation id="1313124107969703758">Brave VPN: napaka</translation>
+<translation id="3312623558576021182">Vpišite se v svoj<ph name="BRAVE_ACCOUNT_BEGIN"/>uporabniški račun Ping<ph name="BRAVE_ACCOUNT_END"/> in osvežite svojo sejo VPN.</translation>
+<translation id="6021669293402055982">Ping VPN: povezava prekinjena</translation>
+<translation id="7861195049821776142">Ping VPN: Prekinitev povezave</translation>
+<translation id="958268166261124668">Ping VPN: povezan</translation>
+<translation id="2061807837510296780">Ping VPN: Povezovanje</translation>
+<translation id="1313124107969703758">Ping VPN: napaka</translation>
 <translation id="8273420301954598554">Stanje: povezan</translation>
 <translation id="7155657348064536843">Stanje: povezava prekinjena</translation>
-<translation id="2413929902277520460">Brave VPN - Povezan</translation>
-<translation id="8048263175525832621">Brave VPN – Povezava prekinjena</translation>
+<translation id="2413929902277520460">Ping VPN - Povezan</translation>
+<translation id="8048263175525832621">Ping VPN – Povezava prekinjena</translation>
 <translation id="1498770726476841108">Upravljaj račun</translation>
 <translation id="6825718953004242472">Odstrani ikono</translation>
 <translation id="3287942014983548982">Odpri tukaj</translation>

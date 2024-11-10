@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">ストア情報を表示しますか？</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> 個のタブを閉じました}other{<ph name="MANY_CLOSED"/> 個のタブを閉じました}}</translation>
 <translation id="2894757982205307093">グループにタブを追加</translation>
-<translation id="4691798003247738043">Brave | このショップについて</translation>
+<translation id="4691798003247738043">Ping | このショップについて</translation>
 <translation id="2977480621796371840">グループから削除</translation>
 <translation id="29919168204617356">アクティブでないタブは自動的に閉じられます。閉じたタブは履歴でいつでも見つけることができます。</translation>
 <translation id="3008554597174452548">商品のトラッキングを停止</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">ストア情報を表示、画面上部付近に表示されるオプション</translation>
 <translation id="5627941783489838464">タブの更新はありません</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{タブを復元}other{タブを復元}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave からの <ph name="TABS_COUNT_ONE"/> 件のリンク}other{Brave からの <ph name="TABS_COUNT_MANY"/> 件のリンク}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{Ping からの <ph name="TABS_COUNT_ONE"/> 件のリンク}other{Ping からの <ph name="TABS_COUNT_MANY"/> 件のリンク}}</translation>
 <translation id="575494663145460764">値下げアラートを受け取りますか？</translation>
 <translation id="58326064309361797">タブをグループ化するにはドラッグします</translation>
 <translation id="5901630391730855834">黄</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">タブグループは自動的に保存され、すべてのデバイスで更新されます</translation>
 <translation id="747459581954555080">すべて復元</translation>
 <translation id="753732157349120914">タブ切り替え機能</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Brave による審査 <ph name="REVIEWS_COUNT_ONE"/> 件}other{Brave による審査 <ph name="REVIEWS_COUNT_MANY"/> 件}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Ping による審査 <ph name="REVIEWS_COUNT_ONE"/> 件}other{Ping による審査 <ph name="REVIEWS_COUNT_MANY"/> 件}}</translation>
 <translation id="7559245342362162951">グループのタブを全画面グリッドで表示</translation>
 <translation id="7658239707568436148">キャンセル</translation>
 <translation id="7688386659311034820">アクティブでないタブのダイアログ</translation>

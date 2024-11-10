@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Переглянути інформацію про магазин?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> вкладку закрито}one{<ph name="MANY_CLOSED"/> вкладку закрито}few{<ph name="MANY_CLOSED"/> вкладки закрито}many{<ph name="MANY_CLOSED"/> вкладок закрито}other{<ph name="MANY_CLOSED"/> вкладки закрито}}</translation>
 <translation id="2894757982205307093">Нова вкладка в групі</translation>
-<translation id="4691798003247738043">Brave | Про цей магазин</translation>
+<translation id="4691798003247738043">Ping | Про цей магазин</translation>
 <translation id="2977480621796371840">Вилучити з групи</translation>
 <translation id="29919168204617356">Неактивні вкладки буде автоматично закрито. Ви завжди можете знайти їх в історії.</translation>
 <translation id="3008554597174452548">Вимкнути відстеження товару</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Переглянути інформацію про магазин. Опція доступна вгорі екрана.</translation>
 <translation id="5627941783489838464">Немає оновлень щодо вкладок</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Відновити вкладку}one{Відновити вкладки}few{Відновити вкладки}many{Відновити вкладки}other{Відновити вкладки}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> посилання з Brave}one{<ph name="TABS_COUNT_MANY"/> посилання з Brave}few{<ph name="TABS_COUNT_MANY"/> посилання з Brave}many{<ph name="TABS_COUNT_MANY"/> посилань із Brave}other{<ph name="TABS_COUNT_MANY"/> посилання з Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> посилання з Ping}one{<ph name="TABS_COUNT_MANY"/> посилання з Ping}few{<ph name="TABS_COUNT_MANY"/> посилання з Ping}many{<ph name="TABS_COUNT_MANY"/> посилань із Ping}other{<ph name="TABS_COUNT_MANY"/> посилання з Ping}}</translation>
 <translation id="575494663145460764">Хочете отримувати сповіщення про зниження цін?</translation>
 <translation id="58326064309361797">Перетягуйте вкладки, щоб групувати їх</translation>
 <translation id="5901630391730855834">Жовтий</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Групи вкладок автоматично зберігаються й синхронізуються з усіма вашими пристроями</translation>
 <translation id="747459581954555080">Відновити все</translation>
 <translation id="753732157349120914">Перемикач вкладок</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> відгук із Brave}one{<ph name="REVIEWS_COUNT_MANY"/> відгук із Brave}few{<ph name="REVIEWS_COUNT_MANY"/> відгуки з Brave}many{<ph name="REVIEWS_COUNT_MANY"/> відгуків із Brave}other{<ph name="REVIEWS_COUNT_MANY"/> відгуку з Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> відгук із Ping}one{<ph name="REVIEWS_COUNT_MANY"/> відгук із Ping}few{<ph name="REVIEWS_COUNT_MANY"/> відгуки з Ping}many{<ph name="REVIEWS_COUNT_MANY"/> відгуків із Ping}other{<ph name="REVIEWS_COUNT_MANY"/> відгуку з Ping}}</translation>
 <translation id="7559245342362162951">Показувати вкладки групи в повноекранній сітці</translation>
 <translation id="7658239707568436148">Скасувати</translation>
 <translation id="7688386659311034820">Вікно "Неактивні вкладки"</translation>

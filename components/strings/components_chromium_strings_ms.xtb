@@ -2,14 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
 <translation id="130631256467250065">Perubahan anda akan dilaksanakan apabila anda memulakan semula peranti anda pada masa akan datang.</translation>
-<translation id="7999989146447764333">Laporan keranapan tidak tersedia dalam Brave.</translation>
-<translation id="1953231710324290369">Anda sedang melihat halaman Brave yang selamat</translation>
-<translation id="907470742420136113">Brave sedang cuba mengubah suai tetapan untuk pengisian kaedah pembayaran.</translation>
-<translation id="4847979153841887006">Logo Brave</translation>
-<translation id="336808635693308470">Brave sedang cuba mengedit kaedah pembayaran.</translation>
-<translation id="7932149101545999102">Brave berjaya dilaksanakan melalui projek sumber terbuka <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> dan <ph name="BEGIN_LINK_OSS"/>perisian sumber terbuka<ph name="END_LINK_OSS"/> yang lain.</translation>
+<translation id="7999989146447764333">Laporan keranapan tidak tersedia dalam Ping.</translation>
+<translation id="1953231710324290369">Anda sedang melihat halaman Ping yang selamat</translation>
+<translation id="907470742420136113">Ping sedang cuba mengubah suai tetapan untuk pengisian kaedah pembayaran.</translation>
+<translation id="4847979153841887006">Logo Ping</translation>
+<translation id="336808635693308470">Ping sedang cuba mengedit kaedah pembayaran.</translation>
+<translation id="7932149101545999102">Ping berjaya dilaksanakan melalui projek sumber terbuka <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> dan <ph name="BEGIN_LINK_OSS"/>perisian sumber terbuka<ph name="END_LINK_OSS"/> yang lain.</translation>
 <translation id="8746410156982274638">Pergi ke
-          menu Brave &gt;
+          menu Ping &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -18,24 +18,24 @@
           &gt;
           Tetapan LAN
           dan nyahpilih kotak pilihan "Gunakan pelayan proksi untuk LAN anda".</translation>
-<translation id="303960458633076466">Halaman ini telah disekat oleh Brave</translation>
-<translation id="2017237562285586622">Benarkan Brave mengakses rangkaian di tetapan tembok api atau
+<translation id="303960458633076466">Halaman ini telah disekat oleh Ping</translation>
+<translation id="2017237562285586622">Benarkan Ping mengakses rangkaian di tetapan tembok api atau
         antivirus anda.</translation>
 <translation id="8619622797841001082">Pergi ke
-          menu Brave &gt;
+          menu Ping &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
           dan pastikan konfigurasi anda ditetapkan kepada "tiada proksi" atau "terus".</translation>
-<translation id="2765022094254723779">Brave juga berjaya dilaksanakan oleh <ph name="BEGIN_LINK_OSS"/>perisian sumber terbuka<ph name="END_LINK_OSS"/> yang lain.</translation>
-<translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
-<translation id="8828443087767259398">Brave memerlukan akses Bluetooth untuk meneruskan 
+<translation id="2765022094254723779">Ping juga berjaya dilaksanakan oleh <ph name="BEGIN_LINK_OSS"/>perisian sumber terbuka<ph name="END_LINK_OSS"/> yang lain.</translation>
+<translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Ping pada masa hadapan.</translation>
+<translation id="8828443087767259398">Ping memerlukan akses Bluetooth untuk meneruskan 
  penggandingan. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
-<translation id="6477625882876869143">Brave berjaya dilaksanakan oleh projek sumber terbuka <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
+<translation id="6477625882876869143">Ping berjaya dilaksanakan oleh projek sumber terbuka <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Pergi ke
-          menu Brave &gt;
+          menu Ping &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -45,6 +45,6 @@
 <translation id="8187289872471304532">Pergi ke
           Apikasi &gt; Pilihan Sistem &gt; Rangkaian &gt; Terperinci &gt; Proksi
           dan nyahpilih mana-mana proksi yang telah dipilih.</translation>
-<translation id="4159376633403260073">Anda melihat halaman Brave for Testing yang selamat</translation>
-<translation id="88187049159266777">Brave tidak ditutup dengan betul.</translation>
+<translation id="4159376633403260073">Anda melihat halaman Ping for Testing yang selamat</translation>
+<translation id="88187049159266777">Ping tidak ditutup dengan betul.</translation>
 </translationbundle>

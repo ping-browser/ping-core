@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "متابعة";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "افتح كل رابط تنقر عليه باستخدام حماية الخصوصية من Brave";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "افتح كل رابط تنقر عليه باستخدام حماية الخصوصية من Ping";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "تعيين Brave كمتصفحك الافتراضي";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "تعيين Ping كمتصفحك الافتراضي";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "تصفح بشكل أسرع واستخدم بيانات أقل.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "أخبرنا بالميزات التي تستمتع بها أكثر.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "اجعل Brave أفضل.";
+"focusOnboarding.p3aScreenTitle" = "اجعل Ping أفضل.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "قم بتغيير هذا في أي وقت في إعدادات Brave ضمن \"Brave Shields والخصوصية\".";
+"focusOnboarding.p3aToggleDescription" = "قم بتغيير هذا في أي وقت في إعدادات Ping ضمن \"Ping Shields والخصوصية\".";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "تمتع بمشاركة رؤى المنتج الخاصة ومجهولة المصدر.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "أدخل عنوان URL للاستمتاع بعدد أقل من الإعلانات وأدوات التتبع";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "شاهد اختلاف Brave";
+"focusOnboarding.urlBarIndicatorTitle" = "شاهد اختلاف Ping";
 

@@ -24,7 +24,7 @@ public class NtpUtil {
 
     public static boolean shouldDisplayBraveStats() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, true);
+                .readBoolean(BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
     }
 
     public static void setDisplayBraveStats(boolean shouldDisplayBraveStats) {

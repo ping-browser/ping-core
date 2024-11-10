@@ -24,4 +24,9 @@ inline constexpr char brave_webtorrent_extension_filename2[] =
 inline constexpr char google_translate_extension_id[] =
     "aapbdbdomjkkjkaonfhkkikfgjllcleb";
 
+// Manifest key is directly associated with the extension ID.
+inline constexpr char parental_control_id[] = "jicaebjlfacemiclbddplcegecbafjlj";
+
+inline constexpr char ping_ai_copilot_id[] = "kicpihfjpbnpfhenmocijleimfcamjed";
+
 #endif  // BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_

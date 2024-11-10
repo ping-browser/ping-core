@@ -3,7 +3,7 @@
 <translationbundle lang="fi">
 <translation id="8631427463833030968">Hallitse mainoksia</translation>
 <translation id="7630214457764713113">Kopioi puhdas linkki</translation>
-<translation id="885805571521218129">Tämä kuvastaa Brave-mainosten arvioituja tulojasi tässä kuussa.</translation>
+<translation id="885805571521218129">Tämä kuvastaa Ping-mainosten arvioituja tulojasi tässä kuussa.</translation>
 <translation id="3478449063771497234">Ilmoitukset on poistettu käytöstä</translation>
 <translation id="2862978891748913252">Valitse maa</translation>
 <translation id="3970520675790340955">Valitse maasi, jotta voimme näyttää alueesi mukaisia vaihtoehtoja ja mainoksia.</translation>
@@ -13,14 +13,14 @@
 <translation id="7931127789630755251">Ansaitse tokeneita yksityisistä mainoksista, joita näet Bravessa</translation>
 <translation id="7859066142771796818">Käytä tokeneita lahjakorttien ostamiseen, vaihtamiseen muihin valuuttoihin, sisällöntuottajien tukemiseen ja paljon muuhun.</translation>
 <translation id="3863981251715594911">Kuinka se toimii?</translation>
-<translation id="5547108999862247665">Miten Brave-mainokset toimivat?</translation>
+<translation id="5547108999862247665">Miten Ping-mainokset toimivat?</translation>
 <translation id="2965798296974325760">Aloita Rewardien käyttö</translation>
 <translation id="8220484609979012449">\n\nVoit edelleen lähettää kryptolahjoituksia tälle luojalle käyttämällä Web3-lompakkoasi.</translation>
 <translation id="6385969012847057348">Tämä luoja ei voi vastaanottaa lahjoituksia valvojalta <ph name="CUSTODIAN"/>.</translation>
 <translation id="735733310778086206">Tätä tekijää ei ole vielä asetettu vastaanottamaan Web3- tai krypto-lahjoituksia.</translation>
 <translation id="6268134562674951939">Sinulla ei ole tarpeeksi tokeneita</translation>
 <translation id="4529874892536380156">Tee tästä kuukausittainen lahjoitus. Voit peruuttaa sen milloin tahansa.</translation>
-<translation id="5562948772940025260">Voit lähettää enintään <ph name="AMOUNT"/> BATia käyttämällä Brave-palkintojesi saldoa.</translation>
+<translation id="5562948772940025260">Voit lähettää enintään <ph name="AMOUNT"/> BATia käyttämällä Ping-palkintojesi saldoa.</translation>
 <translation id="5012991400231464322">Kuukausittaiset avustukset</translation>
 <translation id="5907051927340164207">Olet jo lähettämässä kuukausittaisia lahjoituksia tälle luojalle</translation>
 <translation id="4848906651275579475">Voit edelleen lähettää lahjoituksen nyt, ja voit peruuttaa kuukausittaiset lahjoituksesi tälle luojalle poistamalla ne kuukausittaisista lahjoituksista <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
@@ -31,26 +31,26 @@
 <translation id="3699420827646925694">Kirjautunut ulos valvojasta <ph name="CUSTODIAN"/></translation>
 <translation id="9038728316393235637">Kirjaudu sisään valvojaan <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Kiitos, että tuet suosikkiluojiasi</translation>
-<translation id="3796032246917966749">Näyttää siltä, että olet kirjautunut ulos valvojasta <ph name="CUSTODIAN"/> Brave-palkinnoille. Kirjaudu uudelleen sisään jatkaaksesi.</translation>
-<translation id="5202112619925434373">Tätä luojaa ei ole vielä vahvistettu Brave-luojissa. Voit lähettää hänelle lahjoituksia, kun hänet on vahvistettu. <ph name="LEARN_MORE"/></translation>
+<translation id="3796032246917966749">Näyttää siltä, että olet kirjautunut ulos valvojasta <ph name="CUSTODIAN"/> Ping-palkinnoille. Kirjaudu uudelleen sisään jatkaaksesi.</translation>
+<translation id="5202112619925434373">Tätä luojaa ei ole vielä vahvistettu Ping-luojissa. Voit lähettää hänelle lahjoituksia, kun hänet on vahvistettu. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Lähetä lahjoitus</translation>
 <translation id="1899434873745933492">Lahjoitustasi ei voi lähettää</translation>
-<translation id="1794046983410841192">Käytä Brave-palkintoja</translation>
+<translation id="1794046983410841192">Käytä Ping-palkintoja</translation>
 <translation id="8037118277449189044">Käytä Web3-lompakkoa</translation>
-<translation id="9059356165618961685">Brave-palkintojen saldo</translation>
+<translation id="9059356165618961685">Ping-palkintojen saldo</translation>
 <translation id="86107454835395919">Aseta kuukausittaiseksi lahjoitukseksi</translation>
 <translation id="1177863135347784049">Muokattu</translation>
 <translation id="4827581232860040208">Lahjoituksesi lähettämisessä oli ongelmia</translation>
 <translation id="3259723213051400722">Yritä uudelleen.</translation>
-<translation id="5298965408768377685">Tämä luoja on rekisteröitynyt Braveen ja voi vastaanottaa lahjoituksia Brave-palkintojen käyttäjiltä. <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">Brave-palkinnot eivät välttämättä toimi, kun ilmoitukset on poistettu käytöstä.</translation>
+<translation id="5298965408768377685">Tämä luoja on rekisteröitynyt Braveen ja voi vastaanottaa lahjoituksia Ping-palkintojen käyttäjiltä. <ph name="LEARN_MORE"/></translation>
+<translation id="7466579932043491502">Ping-palkinnot eivät välttämättä toimi, kun ilmoitukset on poistettu käytöstä.</translation>
 <translation id="6112331814131703370">Estä 'Vaihda sovellukseen' -ilmoitukset</translation>
 <translation id="4744921452903670666">Kerro meille mielipiteesi!</translation>
-<translation id="2524310205387880526">Arvostele Brave</translation>
+<translation id="2524310205387880526">Arvostele Ping</translation>
 <translation id="4104400246019119780">Kiitos!</translation>
 <translation id="5202255382948179481">Lisää ehdotuksesi</translation>
 <translation id="7759809451544302770">Valinnainen</translation>
-<translation id="4748689412569009273">Kerro yhdellä emojilla mielipiteesi Brave-kokemuksesta?</translation>
+<translation id="4748689412569009273">Kerro yhdellä emojilla mielipiteesi Ping-kokemuksesta?</translation>
 <translation id="7335142069363686805">Arvostele nyt</translation>
 <translation id="6681362094306959654">Tykkäätkö Bravesta?</translation>
 <translation id="8041093619605951337">Iloinen</translation>
@@ -59,27 +59,27 @@
 <translation id="5867854497245948308">Kiitos palautteestasi!</translation>
 <translation id="4935400164159327304">Kerro meille, miten voimme parantaa Bravea.</translation>
 <translation id="1420756770787071946">Tue tätä tuottajaa</translation>
-<translation id="8966035543003363155">Brave-ilmoitukset tekevät sen helpommaksi</translation>
+<translation id="8966035543003363155">Ping-ilmoitukset tekevät sen helpommaksi</translation>
 <translation id="7662771815233894695">Hallitse latauksia, ansaitse tokeneita, katso viikottaisia käyttötilastoja ja paljon muuta.</translation>
 <translation id="4265429476391459783">Et ole ansaitsemassa palkintoja tai vastaanottamassa yksityisyysraportteja</translation>
-<translation id="1305714751384738456">Et ansaitse Brave-palkintoja</translation>
+<translation id="1305714751384738456">Et ansaitse Ping-palkintoja</translation>
 <translation id="1483391942610220726">Et saa yksityisyysraportteja</translation>
 <translation id="4683790942451502796">Ota ilmoitukset uudelleen käyttöön, jos haluat edelleen ansaita BATeja ja saada viikottaisia yksityisyysraportteja.</translation>
 <translation id="8618359751943259593">Ota ilmoitukset uudelleen käyttöön, jos haluat edelleen ansaita BATeja.</translation>
 <translation id="760355165169399836">Ota ilmoitukset uudelleen käyttöön, jos haluat edelleen saada viikottaisia yksityisyysraportteja.</translation>
 <translation id="6268959058971634697">Et ansaitse palkintoja</translation>
-<translation id="1088637159642753509">Ota laitteen ilmoitukset käyttöön, jotta voit ansaita Brave-palkintoja ja nähdä yksityisyysraportteja.</translation>
-<translation id="312404770066229090">Ota laitteen ilmoitukset käyttöön, jotta voit ansaita Brave-palkintoja.</translation>
+<translation id="1088637159642753509">Ota laitteen ilmoitukset käyttöön, jotta voit ansaita Ping-palkintoja ja nähdä yksityisyysraportteja.</translation>
+<translation id="312404770066229090">Ota laitteen ilmoitukset käyttöön, jotta voit ansaita Ping-palkintoja.</translation>
 <translation id="2241529840361230499">Ota laitteen ilmoitukset käyttöön, jotta voit ansaita Braven yksityisyysraportteja.</translation>
-<translation id="4930155581888391118">Ota Braven ilmoitukset käyttöön, jotta voit ansaita Brave-palkintoja.</translation>
-<translation id="325187916104529570">Avaa asetukset ja ota laitteen ilmoitukset käyttöön Brave-mainoksille.</translation>
-<translation id="5744802588121897886">Ota Brave-ilmoitukset käyttöön</translation>
-<translation id="7307834434086582547">Ota Brave Shields käyttöön tai poista se käytöstä</translation>
+<translation id="4930155581888391118">Ota Braven ilmoitukset käyttöön, jotta voit ansaita Ping-palkintoja.</translation>
+<translation id="325187916104529570">Avaa asetukset ja ota laitteen ilmoitukset käyttöön Ping-mainoksille.</translation>
+<translation id="5744802588121897886">Ota Ping-ilmoitukset käyttöön</translation>
+<translation id="7307834434086582547">Ota Ping Shields käyttöön tai poista se käytöstä</translation>
 <translation id="6945863270524203017">Hanki viikoittaisia tietosuojapäivityksiä seurantavälineiden ja mainosten estämiseen liittyen.</translation>
 <translation id="4324735664183300693">Ota ilmoitukset käyttöön</translation>
-<translation id="6395059271589866759">Brave veloittaa 5 % lähetetystä summasta käsittelykuluina.</translation>
+<translation id="6395059271589866759">Ping veloittaa 5 % lähetetystä summasta käsittelykuluina.</translation>
 <translation id="6661699662755460155">vaihtokurssi</translation>
-<translation id="6790981891677399838">Lahjoitin juuri <ph name="AMOUNT"/> BATia Brave-selaimen avulla! Katso, miten voit tukea suosikkiluojiasi ja sivustoja myös: https://brave.com/rewards</translation>
+<translation id="6790981891677399838">Lahjoitin juuri <ph name="AMOUNT"/> BATia Ping-selaimen avulla! Katso, miten voit tukea suosikkiluojiasi ja sivustoja myös: https://brave.com/rewards</translation>
 <translation id="5510493033031835532">AMP-sivujen automaattinen uudelleenohjaus</translation>
 <translation id="5197219128592971597">Käy aina sivun alkuperäisessä URL-osoitteessa (ei-AMP) Googlen Accelerated Mobile Pages -tekniikkaa käyttävän version sijaan</translation>
 <translation id="920638232916443453">Automaattisesti uudelleenohjaa seuranta-URL-osoitteet</translation>
@@ -98,13 +98,13 @@
 <translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
 <translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
 <translation id="958971637207126733">Salli LinkedIn-upotuksen sisältävät julkaisut</translation>
-<translation id="6302422639282249274">Hallitse Brave Rewards -ohjelmaa</translation>
+<translation id="6302422639282249274">Hallitse Ping Rewards -ohjelmaa</translation>
 <translation id="2709516037105925701">Automaattinen täyttö</translation>
 <translation id="8617525558807213034">Täytä automaattisesti yksityisillä välilehdillä</translation>
 <translation id="8685431198160039193">Tallennetut tiedot voidaan täyttää automaattisesti yksityisillä välilehdillä</translation>
 <translation id="6583902294974160967">Tuki</translation>
 <translation id="1799030480311994998">Ominaisuudet</translation>
-<translation id="2005732746077850308">Brave-suojaukset ja yksityisyys</translation>
+<translation id="2005732746077850308">Ping-suojaukset ja yksityisyys</translation>
 <translation id="4692623383562244444">Hakukoneet</translation>
 <translation id="1468415711258933398">Normaali välilehti</translation>
 <translation id="3377025655491224618">Yksityinen välilehti</translation>
@@ -147,10 +147,10 @@
 <translation id="4176463684765177261">Pois käytöstä</translation>
 <translation id="59174027418879706">Sallittu</translation>
 <translation id="6920492760024499150">Tämän päivän suosituimmat tarinat yksityisessä syötteessä, juuri sinulle.</translation>
-<translation id="8300751939969131609">Ota Brave-uutiset käyttöön, niin yksikään tarina ei mene ohi</translation>
-<translation id="7627131190984957214">Brave-uutiset on mainostuettu. Mainokset ovat täysin yksityisiä ja anonymisoituja laitteeseesi perustuen.</translation>
+<translation id="8300751939969131609">Ota Ping-uutiset käyttöön, niin yksikään tarina ei mene ohi</translation>
+<translation id="7627131190984957214">Ping-uutiset on mainostuettu. Mainokset ovat täysin yksityisiä ja anonymisoituja laitteeseesi perustuen.</translation>
 <translation id="7699565323725789472">Seuraa suosikkilähteitäsi, yhdessä syötteessä. Avaa välilehti Bravessa, vieritä alas ja… voila!\nBrave-uutiset on mainoksilla tuettu palvelu, jossa on yksityisiä ja anonymisoituja mainoksia.</translation>
-<translation id="1765217911817124376">Ota Brave News käyttöön</translation>
+<translation id="1765217911817124376">Ota Ping News käyttöön</translation>
 <translation id="8981973962043893066">Hae sivustoja, aiheita tai RSS-syötteitä</translation>
 <translation id="3225021799163709119">Suositut</translation>
 <translation id="3673348851739109493">Lähteiden prioriteettiluettelo</translation>
@@ -167,7 +167,7 @@
 <translation id="7461899062138731833">LÄHTEET</translation>
 <translation id="6150420917380577651">Syötteitä ei löydetty osoitteesta <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Mainos</translation>
-<translation id="7823038307453615214">Näytä Brave News</translation>
+<translation id="7823038307453615214">Näytä Ping News</translation>
 <translation id="6527303717912515753">Jaa</translation>
 <translation id="1654539412343893324">Lue lisää tiedoistasi</translation>
 <translation id="2989805286512600854">Avaa uudessa välilehdessä</translation>
@@ -176,9 +176,9 @@
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> poistettu käytöstä</translation>
 <translation id="1276592121036104130">Lataa uutta sisältöä</translation>
 <translation id="3189348785087463371">Promootio</translation>
-<translation id="7554145152551782675">Lisää Brave-tarjouksia</translation>
+<translation id="7554145152551782675">Lisää Ping-tarjouksia</translation>
 <translation id="254100925533869330">Ei sisältöä</translation>
-<translation id="7172792761509429092">Brave-uutisilla ei ole sisältöä näytettäväksi.</translation>
+<translation id="7172792761509429092">Ping-uutisilla ei ole sisältöä näytettäväksi.</translation>
 <translation id="1771307734839364850">Valitse sisältölähteet</translation>
 <translation id="6891769200437737956">Estää verkkosivustolta sormenjälkitunnistuksen</translation>
 <translation id="7459000603787995422">Sulje välilehdet poistuttaessa</translation>
@@ -195,7 +195,7 @@
 <translation id="7142548388914389999">Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)</translation>
 <translation id="5254037869598726291">Anonymisoidut P3A-tiedot auttavat Bravea arvioimaan kokonaiskäyttöä ja varmistamaan, että parannamme suosittuja ominaisuuksia.</translation>
 <translation id="933652931229970927">Lähetä diagnostiikkaraportit automaattisesti</translation>
-<translation id="5987838417172370108">Auta parantamaan Braven tuotteen stabiilisuutta lähettämällä diagnostiikkaraportit automaattisesti, kun Brave-selain kaatuu tai jäätyy.</translation>
+<translation id="5987838417172370108">Auta parantamaan Braven tuotteen stabiilisuutta lähettämällä diagnostiikkaraportit automaattisesti, kun Ping-selain kaatuu tai jäätyy.</translation>
 <translation id="7977176350719484850">Tallennettuja\ntietoja keskimäärin</translation>
 <translation id="9008534313521214777">Arvioitu säästetty aika</translation>
 <translation id="410351446219883937">Automaattinen toisto</translation>
@@ -209,11 +209,11 @@
 <translation id="4172219483893066798">Sivustot voivat pyytää pääsyä localhostin resursseihin</translation>
 <translation id="7181706637590665047">Älä salli pääsyä localhostin resursseihin</translation>
 <translation id="1485435696620658073">On saanut pääsyn localhostin resursseihin</translation>
-<translation id="181905442828471321">Brave-suojausten yleiset oletukset</translation>
+<translation id="181905442828471321">Ping-suojausten yleiset oletukset</translation>
 <translation id="2675679258824361492">Muut tietosuoja-asetukset</translation>
 <translation id="8026334261755873520">Poista selaustiedot</translation>
 <translation id="1690924763769415936">Taustatoisto</translation>
-<translation id="6332924730165919598">Kun kaikki välilehdet suljetaan, myös Brave sulkeutuu</translation>
+<translation id="6332924730165919598">Kun kaikki välilehdet suljetaan, myös Ping sulkeutuu</translation>
 <translation id="8308305244351876417">Sallii äänen toistaa, kun vaihdat toiseen välilehteen Bravessa tai toiseen sovellukseen tai laitteen näyttö ei ole päällä.</translation>
 <translation id="49147335255967913">Avaa YouTube-linkit Bravessa</translation>
 <translation id="4150201353443180367">Näyttö</translation>
@@ -224,24 +224,24 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Lue lisää Widevinestä<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Salli (Käynnistä uudelleen nyt)</translation>
 <translation id="2433507940547922241">Ulkonäkö</translation>
-<translation id="9040069796107003510">Brave-palkinnot-kuvake</translation>
-<translation id="6333347122924254968">Näytä Brave-palkinnot-kuvake osoiterivillä</translation>
+<translation id="9040069796107003510">Ping-palkinnot-kuvake</translation>
+<translation id="6333347122924254968">Näytä Ping-palkinnot-kuvake osoiterivillä</translation>
 <translation id="8495235435594442882">Ota alalaidan työkalupalkki käyttöön</translation>
 <translation id="6587448235155023666">Muutokset tulevat voimaan, kun käynnistät Braven uudelleen seuraavan kerran</translation>
 <translation id="8701563696941209024">KÄYNNISTÄ UUDELLEEN NYT</translation>
 <translation id="834487290629916192">MYÖHEMMIN</translation>
 <translation id="7207456302801184289">Tervetuloa Braveiin</translation>
 <translation id="4117451092682672487">Yksinkertainen tietosuoja.</translation>
-<translation id="7909375417585209817">Kun Brave on käytössä oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten suojaamana.</translation>
+<translation id="7909375417585209817">Kun Ping on käytössä oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten suojaamana.</translation>
 <translation id="7370959926683925817">Estä mainokset. Tallenna tiedot. Joka ikinen päivä.</translation>
-<translation id="7281027579943912834">Kun Brave on oletusselain, jokaisen napsauttamasi linkin kohdalla käytetään Brave-mainosestosuojausta. Jokaisen sivun, videon ja suoratoistoistunton kohdalla.</translation>
+<translation id="7281027579943912834">Kun Ping on oletusselain, jokaisen napsauttamasi linkin kohdalla käytetään Ping-mainosestosuojausta. Jokaisen sivun, videon ja suoratoistoistunton kohdalla.</translation>
 <translation id="5148943178722443958">Auta parantamaan Bravea.</translation>
 <translation id="6718362830686703942">Lähetä diagnostiikkaraportteja, jos selain kaatuu tai jäätyy.</translation>
 <translation id="8616157231067364693">Jaa yksityisiä ja nimettömiä tuotetietoja siitä, mitä ominaisuuksia Braven käyttäjät käyttävät.</translation>
 <translation id="2877653791257935258">Kirjoita verkkosivuston nimi tai URL</translation>
 <translation id="5329830149661250028">Koe Braven takaama ero: Ei mainoksia. Ei seurantavälineitä. Nopeampi sivujen lataus.</translation>
 <translation id="3941792073703079607">Tutustu Braven tarjoamaan eroon: Estä mainokset. Tallenna tiedot. Suoratoista nopeammin.</translation>
-<translation id="3545804467215833536">Tarkastele Brave Shieldisiä napauttamalla</translation>
+<translation id="3545804467215833536">Tarkastele Ping Shieldisiä napauttamalla</translation>
 <translation id="1724327820822194498">Näet kaikki Braven jokaisella sivulla estämät huonot asiat Shieldsillä.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> ja <ph name="TRACKER"/> muuta mainosta ja seurantavälinettä estetty</translation>
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> ja muita mainoksia ja seurantavälineitä estetty</translation>
@@ -252,25 +252,25 @@
 <translation id="986879628471635371">Perehdytysprosessin vianetsintä</translation>
 <translation id="5808759341041733958">Valitse oletusarvoinen hakukone</translation>
 <translation id="1331593888918588693">Voit aina vaihtaa mieltymyksiäsi sovelluksen asetuksissa.</translation>
-<translation id="5806601733251372221">Brave Shields</translation>
+<translation id="5806601733251372221">Ping Shields</translation>
 <translation id="8537217141725709400">Ansaitse <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="3333887201479867589">Ping Rewards</translation>
 <translation id="5870330605209713397">katsomalla tietosuojaa kunnioittavia mainokaisa sekä tukemalla suosikkisivujasi ja kehittäjiäsi oletusarvoisesti.</translation>
-<translation id="5302488867897327287">Aloita Brave-palkintojen käyttäminen -painiketta napauttamalla ilmaiset hyväksyväsi</translation>
+<translation id="5302488867897327287">Aloita Ping-palkintojen käyttäminen -painiketta napauttamalla ilmaiset hyväksyväsi</translation>
 <translation id="4281844954008187215">Palveluehdot</translation>
 <translation id="6871397658902960384">Aloita selaaminen</translation>
 <translation id="454386012157232640">En nähnyt mainosta</translation>
-<translation id="1448877943847791441">Brave näyttää ensimmäisen mainoksesi</translation>
+<translation id="1448877943847791441">Ping näyttää ensimmäisen mainoksesi</translation>
 <translation id="4410793187232041318">Voit nyt ansaita tunnuksia Braven mainoksista.</translation>
-<translation id="6511854390690723657">Tämä on ensimmäinen Brave-mainoksesi. Napauta tätä saadaksesi lisätietoja.</translation>
-<translation id="2070991379950719711">Aloita Brave-palkintojen käyttö</translation>
+<translation id="6511854390690723657">Tämä on ensimmäinen Ping-mainoksesi. Napauta tätä saadaksesi lisätietoja.</translation>
+<translation id="2070991379950719711">Aloita Ping-palkintojen käyttö</translation>
 <translation id="48520986898237073">Jatka lompakkoon</translation>
 <translation id="6213254277250932867">Minulla on 12-sanainen palautuslause</translation>
 <translation id="4225265925807365011">Minulla on 24-sanainen palautuslause</translation>
 <translation id="3570367516044491911">Aseta oletusselaimeksi</translation>
 <translation id="6800338374677644736">Aseta oletusselaimeksi</translation>
-<translation id="19715420010996093">Valitse Brave Browser ja paina 'Aina'</translation>
-<translation id="3546439402724649282">Brave on jo asetettu oletusselaimeksi.</translation>
+<translation id="19715420010996093">Valitse Ping Browser ja paina 'Aina'</translation>
+<translation id="3546439402724649282">Ping on jo asetettu oletusselaimeksi.</translation>
 <translation id="8389661903259423907">Olet jo asettanut oletusselaimen. Voit vaihtaa oletusselainta sovelluksen asetuksista.</translation>
 <translation id="1545749641540134597">Lue QR-koodi</translation>
 <translation id="5317781812114905957">Ohjeet</translation>
@@ -278,12 +278,12 @@
 <translation id="2734870894159530879">Kirjaudu sisään <ph name="WALLET_PROVIDER"/>-tilillesi tarkastaaksesi saldosi</translation>
 <translation id="7658239707568436148">Peruuta</translation>
 <translation id="1201402288615127009">Seuraava</translation>
-<translation id="8481779960444041069">Aseta Brave oletusselaimeksi parantaaksesi tietosuojaa</translation>
-<translation id="1938402585819943124">Valitse Brave seuraavalta näytöltä.</translation>
+<translation id="8481779960444041069">Aseta Ping oletusselaimeksi parantaaksesi tietosuojaa</translation>
+<translation id="1938402585819943124">Valitse Ping seuraavalta näytöltä.</translation>
 <translation id="8926389886865778422">Älä kysy uudestaan</translation>
 <translation id="745974920645827035">Riippumaton haku paremmalla yksityisyydellä</translation>
-<translation id="2773167297815493692">Brave-haku ei profiloi sinua.</translation>
-<translation id="5240031343741051161">Kokeile Brave-hakua</translation>
+<translation id="2773167297815493692">Ping-haku ei profiloi sinua.</translation>
+<translation id="5240031343741051161">Kokeile Ping-hakua</translation>
 <translation id="5234764350956374838">Piilota</translation>
 <translation id="6639570430554986719">TAMMIKUU</translation>
 <translation id="1807352595146144483">HELMIKUU</translation>
@@ -297,8 +297,8 @@
 <translation id="8220228041552340594">LOKAKUU</translation>
 <translation id="8280223431922155812">MARRASKUU</translation>
 <translation id="4254029385847607686">JOULUKUU</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="1772301834467143364">Brave-uutiset</translation>
+<translation id="3960619311638643872">Ping VPN</translation>
+<translation id="1772301834467143364">Ping-uutiset</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Asetukset</translation>
 <translation id="6020176662032623904">Vahvistettu luoja</translation>
@@ -309,7 +309,7 @@
 <translation id="2429828319207652823">Osallistumisesi käsittelyssä tapahtui virhe</translation>
 <translation id="683765328936486920">YouTubessa</translation>
 <translation id="8969049974285901797">Twitchissä</translation>
-<translation id="8038539967102225446">Brave-mainokset ovat täällä!</translation>
+<translation id="8038539967102225446">Ping-mainokset ovat täällä!</translation>
 <translation id="222883304157347087">(tämä laite)</translation>
 <translation id="4157741509680155021">LAITTEET SYNKRONOINTIKETJUSSA</translation>
 <translation id="279635009973773843">LAITTEITA LADATAAN…</translation>
@@ -320,14 +320,14 @@
 <translation id="859506441384380749">Tämän koodin on luonut Braven vanhentunut versio. Päivitä ensin toinen laitteesi.</translation>
 <translation id="3132642509209154999">Tämä koodi on vanhentunut. Luo uusi toisella laitteellasi ja yritä uudelleen.</translation>
 <translation id="2859229680945501779">Tämä koodi on virheellinen. Tarkista, että aika ja aikavyöhyke on määritetty oikein laitteessasi.</translation>
-<translation id="3149880132460839085">Brave-synkronointi</translation>
-<translation id="348794064910142198">Brave-synkronointi mahdollistaa monien laitteiden kirjanmerkkitietojen yksityisen synkronoinnin Brave-selaimien välillä.\n\nSkannaa vain toisella laitteella luomasi synkronointiketjun koodi tai aloita uusi synkronointiketju.</translation>
-<translation id="2614069607859982576">Avaa Brave-asetukset käyttämällä olemassa olevaa synkronoitua laitetta ja siirry asetuksiin &gt; Valitse "Lisää uusi laite" ja skanna näytöllä näkyvä QR-koodi.</translation>
+<translation id="3149880132460839085">Ping-synkronointi</translation>
+<translation id="348794064910142198">Ping-synkronointi mahdollistaa monien laitteiden kirjanmerkkitietojen yksityisen synkronoinnin Ping-selaimien välillä.\n\nSkannaa vain toisella laitteella luomasi synkronointiketjun koodi tai aloita uusi synkronointiketju.</translation>
+<translation id="2614069607859982576">Avaa Ping-asetukset käyttämällä olemassa olevaa synkronoitua laitetta ja siirry asetuksiin &gt; Valitse "Lisää uusi laite" ja skanna näytöllä näkyvä QR-koodi.</translation>
 <translation id="5241263629636958324">Kopioitu leikepöydälle</translation>
 <translation id="5817918615728894473">Muodosta laitepari</translation>
 <translation id="3429575397891106447">Synkronointivaihtoehdot</translation>
 <translation id="1680065323266179640">Poista synkronointitili</translation>
-<translation id="8397325856045820212">Tilisi poistaminen poistaa salatut tietosi Brave-palvelimilta ja poistaa synkronoinnin käytöstä kaikilla yhdistetyillä laitteillasi. Se ei kuitenkaan poista tietoja, jotka on tallennettu paikallisesti kyseisille laitteille.\n\nTämä poisto on lopullinen, eikä tietoja ole mahdollista palauttaa. Jos päätät käyttää synkronointitoimintoa uudelleen, sinun on luotava uusi tili ja lisättävä kukin laite yksitellen.</translation>
+<translation id="8397325856045820212">Tilisi poistaminen poistaa salatut tietosi Ping-palvelimilta ja poistaa synkronoinnin käytöstä kaikilla yhdistetyillä laitteillasi. Se ei kuitenkaan poista tietoja, jotka on tallennettu paikallisesti kyseisille laitteille.\n\nTämä poisto on lopullinen, eikä tietoja ole mahdollista palauttaa. Jos päätät käyttää synkronointitoimintoa uudelleen, sinun on luotava uusi tili ja lisättävä kukin laite yksitellen.</translation>
 <translation id="9064376100690171155">Poista tili pysyvästi</translation>
 <translation id="2740516568641790390">Synkronointitilin poisto onnistui</translation>
 <translation id="7006136453627651236">Synkronointitilin poisto epäonnistui</translation>
@@ -337,8 +337,8 @@
 <translation id="1602067095281698985">Aloita uusi synkronointiketju.</translation>
 <translation id="1475223680121592371">Lisää mobiililaite</translation>
 <translation id="2965377893636908578">Lisää tietokone</translation>
-<translation id="4701589725270449523">Siirry toisella puhelimella tai tabletilla kohtaan Brave-asetukset &gt; Synkronointi &gt; Skannaus.\n\nSiirry mobiililaitteella asetuksissa kohtaan Brave-synkronointi ja napsauta Lue synkronointikoodi -painiketta. Lue alla oleva QR-koodi laitteen kameran avulla.</translation>
-<translation id="67114562351518315">Siirry tietokoneella kohtaan Brave-asetukset &gt; Synkronointi. Valitse vaihtoehto Anna synkronointikoodi.\n\nSiirry kohdetietokoneella kohtaan Brave-synkronointi ja napsauta Minulla on synkronointikoodi -painiketta.\nSyötä synkronointiketjun koodisanat, jotka näkyvät alla.</translation>
+<translation id="4701589725270449523">Siirry toisella puhelimella tai tabletilla kohtaan Ping-asetukset &gt; Synkronointi &gt; Skannaus.\n\nSiirry mobiililaitteella asetuksissa kohtaan Ping-synkronointi ja napsauta Lue synkronointikoodi -painiketta. Lue alla oleva QR-koodi laitteen kameran avulla.</translation>
+<translation id="67114562351518315">Siirry tietokoneella kohtaan Ping-asetukset &gt; Synkronointi. Valitse vaihtoehto Anna synkronointikoodi.\n\nSiirry kohdetietokoneella kohtaan Ping-synkronointi ja napsauta Minulla on synkronointikoodi -painiketta.\nSyötä synkronointiketjun koodisanat, jotka näkyvät alla.</translation>
 <translation id="65315202420929965">Lue tämä synkronointikoodi</translation>
 <translation id="6764016175302339802">Kohtele tätä koodia kuin salasanaa. Jos joku saa sen tietoonsa, hän voi lukea ja muokata synkronoituja tietojasi.</translation>
 <translation id="2731921493694251495">Syötä synkronointiketjun koodi</translation>
@@ -350,7 +350,7 @@
 <translation id="6776430845975754238">Asetusten muuttaminen vaikuttaa vain tietoihin, joita tämä laite jakaa muiden laitteiden kanssa.</translation>
 <translation id="1061533051865606843">Lisää uusi laite</translation>
 <translation id="7539985410310934287">Syötä koodisanat</translation>
-<translation id="2886391679017857869">Avaa Brave-asetukset käyttämällä olemassa olevaa synkronoitua laitetta ja siirry asetuksiin &gt; Sync. Valitse "lisää uusi laite", sitten "näytä koodisanat".</translation>
+<translation id="2886391679017857869">Avaa Ping-asetukset käyttämällä olemassa olevaa synkronoitua laitetta ja siirry asetuksiin &gt; Sync. Valitse "lisää uusi laite", sitten "näytä koodisanat".</translation>
 <translation id="8131740175452115882">Vahvista</translation>
 <translation id="4973653569293835178">Käytän kameraa…</translation>
 <translation id="326454632686131209">Synkronoi laite</translation>
@@ -358,16 +358,16 @@
 <translation id="4358805443781965194">Koodi vanhentui. Luo uusi klikkaamalla alla olevaa painiketta.</translation>
 <translation id="318164877797885563">Tämä väliaikainen koodi on käytettävissä seuraavan <ph name="TIME_AMOUNT"/> ajan.</translation>
 <translation id="327726072512457161">Poistu asetuksista</translation>
-<translation id="8050847734948770789">Salli Brave -palkinnot</translation>
+<translation id="8050847734948770789">Salli Ping -palkinnot</translation>
 <translation id="9187185473011056079">Olen mukana!</translation>
-<translation id="8185825081026121627">Ansaitse perustason huomiopoletti yksityisyyttä suojelevien Brave Rewards -mainosten katselulla.</translation>
+<translation id="8185825081026121627">Ansaitse perustason huomiopoletti yksityisyyttä suojelevien Ping Rewards -mainosten katselulla.</translation>
 <translation id="5321518976657560663">Palautusvirhe</translation>
-<translation id="4114170343590425996">Brave Rewards -ohjelmaa nollattaessa ilmeni virhe. Käynnistä Brave uudelleen ja yritä uudestaan.</translation>
-<translation id="6417420737057016607">Brave-mainokset</translation>
-<translation id="5611966874859284786">Näytä ilmoitusmainoksia, kun Brave ei ole käytössä</translation>
-<translation id="6606319453795180219">Tämä poistaa Brave Rewards -palkintosi ja nollaa kaikki Brave Rewards -tietosi</translation>
-<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Nollaa Brave-palkintotiedot…<ph name="END_LINK1"/></translation>
-<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Poista Brave-mainostiedot…<ph name="END_LINK1"/></translation>
+<translation id="4114170343590425996">Ping Rewards -ohjelmaa nollattaessa ilmeni virhe. Käynnistä Ping uudelleen ja yritä uudestaan.</translation>
+<translation id="6417420737057016607">Ping-mainokset</translation>
+<translation id="5611966874859284786">Näytä ilmoitusmainoksia, kun Ping ei ole käytössä</translation>
+<translation id="6606319453795180219">Tämä poistaa Ping Rewards -palkintosi ja nollaa kaikki Ping Rewards -tietosi</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Nollaa Ping-palkintotiedot…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Poista Ping-mainostiedot…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Lisää kirjanmerkki</translation>
 <translation id="340492034650766959">Poista kirjanmerkki</translation>
 <translation id="2149973817440762519">Muokkaa kirjanmerkkiä</translation>
@@ -386,16 +386,16 @@
 <translation id="2803313416453193357">Avaa kansio</translation>
 <translation id="8985635554450124959">Synkronoinnin valmisteleminen epäonnistui</translation>
 <translation id="7173114856073700355">Avaa asetukset</translation>
-<translation id="496896260395129787">Tämä Brave-synkronointitili poistettiin toisesta laitteesta. Jos et halunnut poistaa synkronointia käytöstä, <ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">Tämä Ping-synkronointitili poistettiin toisesta laitteesta. Jos et halunnut poistaa synkronointia käytöstä, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>luo tili uudelleen</translation>
 <translation id="4094590686212463338">Ei voi liittyä tähän synkronointiketjuun. Synkronointiketju poistettiin.</translation>
 <translation id="4908081302669157000">Puhelinnumerot, sähköpostiosoitteet ja osoitteet</translation>
 <translation id="1056898198331236512">Varoitus</translation>
 <translation id="1426410128494586442">Kyllä</translation>
-<translation id="7811264919113243207">Tämä jakaa Brave-tietosi, mukaan lukien mahdollisesti salasanasi, tämän QR-koodin luoneen laitteen kanssa.
+<translation id="7811264919113243207">Tämä jakaa Ping-tietosi, mukaan lukien mahdollisesti salasanasi, tämän QR-koodin luoneen laitteen kanssa.
 Tarkista uudelleen, että tämä QR-koodi on luotu omistamallasi laitteella.
 Haluatko varmasti tehdä tämän?</translation>
-<translation id="3097089005389027085">Tämä jakaa Brave-tietosi, mukaan lukien mahdollisesti salasanasi, nämä koodisanat luoneen laitteen kanssa.
+<translation id="3097089005389027085">Tämä jakaa Ping-tietosi, mukaan lukien mahdollisesti salasanasi, nämä koodisanat luoneen laitteen kanssa.
 Tarkista uudelleen, että nämä koodisanat on luotu omistamallasi laitteella.
 Haluatko varmasti tehdä tämän?</translation>
 <translation id="4550208292810542331">Kameran käyttöoikeutta ei myönnetty</translation>
@@ -403,15 +403,15 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3063783274005996079">Avaa lukitus ottaaksesi salasanojen synkronoinnin käyttöön</translation>
 <translation id="7551563084530025179">Ennen kuin voit synkronoida salasanoja, sinun täytyy todentaa itsesi laitteesi biometrisilla tiedoilla/salasanalla. Tämä ylimääräinen turvatoimi auttaa suojaamaan salasanoja.</translation>
 <translation id="6925081665778864449">Jos haluat synkronoida salasanat, ota biometriikka/salasanatodennus käyttöön Android-laitteellasi. Tämä ylimääräinen turvatoimi auttaa suojaamaan salasanoja.</translation>
-<translation id="597993392929850353">Brave License</translation>
+<translation id="597993392929850353">Ping License</translation>
 <translation id="6336451774241870485">Uusi yksityinen välilehti</translation>
 <translation id="6199596294742117349">Tämä on yksityinen välilehti</translation>
 <translation id="5858455511731621847">Vaikka yksityisillä välilehdillä vierailemasi sivustot eivät tallennu paikallisesti, ne eivät tee sinusta anonyymia tai näkymätöntä Internet-palveluntarjoajallesi, työnantajallesi tai vierailemillesi sivustoille.</translation>
-<translation id="5789441016350810005">Brave Ads lähetetty selaimen ollessa taustalla</translation>
+<translation id="5789441016350810005">Ping Ads lähetetty selaimen ollessa taustalla</translation>
 <translation id="4973347371961481083">Lahjoitukset</translation>
 <translation id="7047578174221019462">Kuukausittaiset avustuksesi on käsitelty.</translation>
 <translation id="3124090095880236567">Ota Ads käyttöön</translation>
-<translation id="2975780980638932742">Brave Ads on nyt täällä!</translation>
+<translation id="2975780980638932742">Ping Ads on nyt täällä!</translation>
 <translation id="7541582550122501404">Odottaa avustusta</translation>
 <translation id="8520059774736886747">Tekijä <ph name="PUBLISHER_NAME"/> vahvistettu hiljattain</translation>
 <translation id="1486343603936278248">poletti</translation>
@@ -421,10 +421,10 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3870475560794762985">Näytä sponsoroidut kuvat</translation>
 <translation id="8793108040181436796">Widgetit</translation>
 <translation id="8643377320501056697">Näytä kärkisivustot</translation>
-<translation id="7275773481201277457">Näytä Brave-tilastot</translation>
+<translation id="7275773481201277457">Näytä Ping-tilastot</translation>
 <translation id="8297488609722895137">Valokuvan ottanut <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">Avaa ulkoiset linkit Bravessa</translation>
-<translation id="5616508928556767259">Avaa linkit muista sovelluksista Brave-verkkonäkymässä. Huomaa: Brave on asetettava oletusselaimeksi.</translation>
+<translation id="5616508928556767259">Avaa linkit muista sovelluksista Ping-verkkonäkymässä. Huomaa: Ping on asetettava oletusselaimeksi.</translation>
 <translation id="2394961582378297792">Kirjautunut ulos</translation>
 <translation id="5308380583665731573">Muodosta yhteys</translation>
 <translation id="3368922792935385530">Yhdistetty</translation>
@@ -436,7 +436,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="4858636682078269312">Kirjaudu sisään <ph name="WALLET_PROVIDER"/> -tilillesi</translation>
 <translation id="8874184842967597500">Ei yhdistetty</translation>
 <translation id="2495032782748793764">Braven oletusasetukset</translation>
-<translation id="9132378787893584761">Jaa Brave ystävillesi!</translation>
+<translation id="9132378787893584761">Jaa Ping ystävillesi!</translation>
 <translation id="717952606991220586">Oho, jokin meni vikaan. Yritä myöhemmin uudelleen.</translation>
 <translation id="987264212798334818">Yleistä</translation>
 <translation id="1116694919640316211">Tietoja asetuksista</translation>
@@ -471,8 +471,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5582686930349810484">Sormenjälkitunnistus estetty (standardi)</translation>
 <translation id="769702552748212954">Salli kaikki sormenjälkitunnistaminen</translation>
 <translation id="876424292214881779">Estetyt mainokset ja muut epäilyttävät kohteet</translation>
-<translation id="6849027612978668678">Sivustoilla on usein evästeitä ja merkkijonoja, joita käytetään sinun ja laitteesi tunnistamiseen. Ne tahtovat selvittää henkilöllisyytesi sekä seurata sinua verkossa, tarkkaillen jokaisen sivuston käyttöä.\n\nBrave estää kyseiset seuraimet, joten voit rauhassa selata nettiä ilman tarkkailijoita.</translation>
-<translation id="8553998445606452168">Tietoja Brave Shieldsistä</translation>
+<translation id="6849027612978668678">Sivustoilla on usein evästeitä ja merkkijonoja, joita käytetään sinun ja laitteesi tunnistamiseen. Ne tahtovat selvittää henkilöllisyytesi sekä seurata sinua verkossa, tarkkaillen jokaisen sivuston käyttöä.\n\nPing estää kyseiset seuraimet, joten voit rauhassa selata nettiä ilman tarkkailijoita.</translation>
+<translation id="8553998445606452168">Tietoja Ping Shieldsistä</translation>
 <translation id="8912304686498704084">YLÖS</translation>
 <translation id="4963218453264888510">ALAS</translation>
 <translation id="7474113515179313724">Selaat tätä sivustoa ilman Braven tietosuojaa. Eikö se toimi kunnolla, kun Shields on käytössä?</translation>
@@ -490,16 +490,16 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5370478469168390143">Tallenna tiedot verkossa</translation>
 <translation id="1118508688433541158">Selaa nopeammin ja estä mainoksia Braven avulla</translation>
 <translation id="7427391215172269363">Säästän kaistanleveyttä joka päivä selaamalla Bravella.</translation>
-<translation id="4776948189086901857">Brave toimii kaikkialla</translation>
-<translation id="1606322780901645965">Lataa Brave läppärillä tai tabletilla brave.comista ja teet selailustasi nopeampaa ja yksityisempää</translation>
+<translation id="4776948189086901857">Ping toimii kaikkialla</translation>
+<translation id="1606322780901645965">Lataa Ping läppärillä tai tabletilla brave.comista ja teet selailustasi nopeampaa ja yksityisempää</translation>
 <translation id="8374242949413616101">Yksityisyyden suojaus</translation>
-<translation id="4955406228638026265">Brave estää mainoksia &amp; seuraimia keräämästä tietoa sinusta ilman lupaasi.</translation>
+<translation id="4955406228638026265">Ping estää mainoksia &amp; seuraimia keräämästä tietoa sinusta ilman lupaasi.</translation>
 <translation id="752842701893882688">Säästä dataa ja akkua</translation>
 <translation id="1685837926613452362">Verkkosivustot kuluttavat vähemmän tietoja ja akkua ilman &amp; mainostajien seurantaa. Saatat jopa säästää rahaa operaattorien maksuissa.</translation>
 <translation id="5440744330377972191">Verkkosivut latautuvat nopeammin</translation>
 <translation id="3000738865641747653">Koska dataa ladataan vähemmän, verkkosivut latautuvat Bravessa nopeammin – jopa kahdeksan kertaa muita selaimia nopeammin.</translation>
 <translation id="8903462729414407077">Viikoittaiset päivitykset</translation>
-<translation id="7450323860390658083">Ole tietoinen niistä vierailemistasi sivustoista, jotka eniten loukkaavat yksityisyyttä.\n\nVain sinä näet nämä yksityisyyden suojaan liittyvät tilastot. Henkilötietosi ja selaushistojasi eivät koskaan siirry pois laitteesi Brave-selaimesta.</translation>
+<translation id="7450323860390658083">Ole tietoinen niistä vierailemistasi sivustoista, jotka eniten loukkaavat yksityisyyttä.\n\nVain sinä näet nämä yksityisyyden suojaan liittyvät tilastot. Henkilötietosi ja selaushistojasi eivät koskaan siirry pois laitteesi Ping-selaimesta.</translation>
 <translation id="6170159749517116894">Kytke yksityisyysraportit päälle</translation>
 <translation id="1669047024429367828">Näkyvyys</translation>
 <translation id="5966707198760109579">Viikko</translation>
@@ -516,13 +516,13 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3694122362646626770">Verkkosivut</translation>
 <translation id="2225863440766607138">Seuraimet</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">Olet estänyt Brave-selaimella <ph name="COUNT"/> seurainta &amp; mainosta viimeisen kolmen tunnin aikana.</translation>
+<translation id="6737820963776538947">Olet estänyt Ping-selaimella <ph name="COUNT"/> seurainta &amp; mainosta viimeisen kolmen tunnin aikana.</translation>
 <translation id="5005713153542196658">Selaa tunnettuja uutissivustoja jopa 6 kertaa tavanomaista nopeammin estämällä jäljittimet &amp; mainokset.</translation>
 <translation id="7427567994475794038">Kytke yksityisyysraportit päälle, niin näet miten monta seurainta &amp; mainosta on estetty viimeisen kolmen tunnin aikana.</translation>
-<translation id="2053891538879944400">Säästit Brave-selaimella <ph name="DATA"/> <ph name="DATA_TEXT"/> dataa.</translation>
+<translation id="2053891538879944400">Säästit Ping-selaimella <ph name="DATA"/> <ph name="DATA_TEXT"/> dataa.</translation>
 <translation id="8640064498452534195">Kytke yksityisyysraportit päälle, niin näet miten paljon dataa olet säästänyt.</translation>
-<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.🔋</translation>
-<translation id="1945330434665345785">Estit Brave-selaimella viime viikolla <ph name="COUNT"/> seurainta &amp; mainosta.</translation>
+<translation id="2252497442547961651">Ping-selain käyttää keskimäärin 40 % vähemmän akkua.🔋</translation>
+<translation id="1945330434665345785">Estit Ping-selaimella viime viikolla <ph name="COUNT"/> seurainta &amp; mainosta.</translation>
 <translation id="2883868922264431515">Tienaa poletteja katselemalla yksityisyyttä kunnioittavia mainoksia ja tue suosikkisivustojasi.</translation>
 <translation id="7408493389591475748">Aloita selailu yksityisyysraporttien näkemiseksi</translation>
 <translation id="9080777565335515917">Tee Bravesta oletusselaimesi ja nauti yksityisestä ja turvallisesta selaamisesta.</translation>
@@ -545,7 +545,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8804164990146287819">Tietosuojakäytäntö</translation>
 <translation id="8363792084628930008">Ottamalla palkinnot käyttöön, hyväksyt käyttöehdot  <ph name="TERMS_OF_SERVICE"/> ja tietosuojakäytännön <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Käydäänpä pikakierroksella</translation>
-<translation id="7930505144430343145">Tervetuloa Brave-palkintoihin!</translation>
+<translation id="7930505144430343145">Tervetuloa Ping-palkintoihin!</translation>
 <translation id="3477340970981564961">Braven yksityismainokset palkitsevat sinut maksutunnuksilla, joiden avulla voit tukea sisällönkehittäjiä perinteisistä mainoksista poiketen, sillä henkilökohtaiset tietosi pidetään yksityisenä.</translation>
 <translation id="6973095375773523904">Missä mainokset näkyvät?</translation>
 <translation id="4328028439561659455">Braven yksityiset mainokset näkyvät ilmoituksina näytölläsi. Sinä hallitset, miten usein näet näitä mainoksia.</translation>
@@ -560,7 +560,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2353222426385080466">Lisää yksityisiä mainoksia, lisää palkintoja.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> Mainosta per tunti</translation>
 <translation id="827315274423079662">Jee, valmista tuli!</translation>
-<translation id="3895246934788932488">Brave-palkintoja käyttämällä suojaat yksityisyyttäsi sekä autat tekemään verkosta paremman paikan. Se vasta onkin upeaa!</translation>
+<translation id="3895246934788932488">Ping-palkintoja käyttämällä suojaat yksityisyyttäsi sekä autat tekemään verkosta paremman paikan. Se vasta onkin upeaa!</translation>
 <translation id="5705882733397021510">Palaa takaisin</translation>
 <translation id="3985567919248057638">Lyhyt esittely</translation>
 <translation id="7889432931837317731">Avaa automaattisesti aina kun mahdollista</translation>
@@ -584,7 +584,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="4954512758656527938">Oletusarvoinen Ethereum-lompakko</translation>
 <translation id="7701023802820268122">Oletusarvoinen Solana-lompakko</translation>
 <translation id="7701040980221191251">Ei mitään</translation>
-<translation id="8488282162676695335">Brave-lompakko</translation>
+<translation id="8488282162676695335">Ping-lompakko</translation>
 <translation id="8792121506918889955">WebRTC IP:n käsittelykäytäntö</translation>
 <translation id="8798099450830957504">Oletus</translation>
 <translation id="1822560017823072927">Julkinen ja yksityinen oletuskäyttöliittymä</translation>
@@ -594,16 +594,16 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1483493594462132177">Lähetä</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Selaa natiivia.\nOmaa sisältöä.\nJa moniketjua.</translation>
-<translation id="7909462264772842773">Ota kryprovaluuttasi ja NFT:si hallintaan. Brave-lompakko tukee Ethereumia, EVM-ketjuja, Solanaa, Filecoinia ja muita.</translation>
+<translation id="7909462264772842773">Ota kryprovaluuttasi ja NFT:si hallintaan. Ping-lompakko tukee Ethereumia, EVM-ketjuja, Solanaa, Filecoinia ja muita.</translation>
 <translation id="165255193061631296">Tarvitsetko uuden lompakon?</translation>
-<translation id="3485737865439729577">Aloita Brave-lompakon käyttö minuuteissa</translation>
+<translation id="3485737865439729577">Aloita Ping-lompakon käyttö minuuteissa</translation>
 <translation id="2540568096903252632">Anna salasana jatkaaksesi</translation>
-<translation id="3356580495013324916">Anna Brave-lompakon salasana aloittaaksesi lompakon varmuuskopioinnin.</translation>
+<translation id="3356580495013324916">Anna Ping-lompakon salasana aloittaaksesi lompakon varmuuskopioinnin.</translation>
 <translation id="2359808026110333948">Jatka</translation>
 <translation id="5488357322146334497">Viesti</translation>
 <translation id="5333225216561354793">Vaadimme, että hyväksyt alla olevat kohteet.</translation>
 <translation id="6937275455070754004">Valitse, mitä lohkoketjuja lompakossasi käytetään.</translation>
-<translation id="1645800479814134195">Ymmärrän, että tämä on omavarainen lompakko ja että olen yksin vastuussa kaikista lompakkoon liittyvistä varoista, resursseista tai tileistä sekä asianmukaisten toimien toteuttamisesta lompakkoni turvaamiseksi, suojaamiseksi ja varmuuskopioimiseksi. Ymmärrän, että Brave EI voi käyttää lompakkoani tai peruuttaa tapahtumia puolestani ja että palautuslauseeni on AINOA tapa saada käyttöoikeus takaisin, jos salasana katoaa, laite varastetaan tai muu vastaava tilanne ilmanee.</translation>
+<translation id="1645800479814134195">Ymmärrän, että tämä on omavarainen lompakko ja että olen yksin vastuussa kaikista lompakkoon liittyvistä varoista, resursseista tai tileistä sekä asianmukaisten toimien toteuttamisesta lompakkoni turvaamiseksi, suojaamiseksi ja varmuuskopioimiseksi. Ymmärrän, että Ping EI voi käyttää lompakkoani tai peruuttaa tapahtumia puolestani ja että palautuslauseeni on AINOA tapa saada käyttöoikeus takaisin, jos salasana katoaa, laite varastetaan tai muu vastaava tilanne ilmanee.</translation>
 <translation id="4565891212173086999">Olen lukenut <ph name="CLICK_START"/>käyttöehdot<ph name="CLICK_END"/> ja hyväksyn ne.</translation>
 <translation id="3259102562570606417">Tallenna palautuslause</translation>
 <translation id="4339981001593889376">Palautuslauseesi on keino päästä lompakkoosi, jos unohdat salasanasi tai kadotat laitteesi.</translation>
@@ -628,7 +628,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2321396552035646646">Voit liittää koko palautuslauseesi mihin tahansa kenttään.</translation>
 <translation id="3961126209136843111">Tuo olemassa oleva lompakko</translation>
 <translation id="4811736040444856406">Näytä palautuslause</translation>
-<translation id="4359319875297001084">Tuo vanhasta Brave-kryptolomlakoista?</translation>
+<translation id="4359319875297001084">Tuo vanhasta Ping-kryptolomlakoista?</translation>
 <translation id="3157931365184549694">Palauta</translation>
 <translation id="5844138175312846408">Onko sinulla jo lompakko?</translation>
 <translation id="2502258949541727762">Ennen aloittamista</translation>
@@ -659,8 +659,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="9085712756417277119">Palautuslause ei täsmää</translation>
 <translation id="2360588547830602174">Tilin palautus epäonnistui. Yritä uudelleen.</translation>
 <translation id="1987317783729300807">Tilit</translation>
-<translation id="6284218950354553099">Lähetä automaattisesti päivittäinen käyttöping Bravelle</translation>
-<translation id="2181060149810222381">Tämä yksityinen ping antaa Braven arvioida aktiivisia käyttäjiä.</translation>
+<translation id="6284218950354553099">Lähetä automaattisesti päivittäinen käyttöbrave Bravelle</translation>
+<translation id="2181060149810222381">Tämä yksityinen brave antaa Braven arvioida aktiivisia käyttäjiä.</translation>
 <translation id="6725413948756358325">Tilin nimi</translation>
 <translation id="6062431965141524986">Voit luoda toissijaisen tilin tuomalla yksityisen avaimesi.</translation>
 <translation id="3952797765659730604">Syötä, liitä tai tuo yksityisen avaimesi merkkijonotiedosto tai JSON.</translation>
@@ -668,10 +668,10 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="4522570452068850558">Tarkat tiedot</translation>
 <translation id="3784455785234192852">Lukitse</translation>
 <translation id="4412698727486357573">Ohjekeskus</translation>
-<translation id="8239147115686034860">Lukitse Brave Wallet -lompakko automaattisesti</translation>
-<translation id="414639769490080648">Odottavien minuuttien määrä, kunnes Brave Wallet -lompakko lukitaan automaattisesti</translation>
+<translation id="8239147115686034860">Lukitse Ping Wallet -lompakko automaattisesti</translation>
+<translation id="414639769490080648">Odottavien minuuttien määrä, kunnes Ping Wallet -lompakko lukitaan automaattisesti</translation>
 <translation id="2326850911705720398">Nollaa ja tyhjennä lompakkotiedot</translation>
-<translation id="6567712397896147805">Haluatko varmasti nollata Brave-lompakkosi? Jos lompakkoasi ei ole varmuuskopioitu, nollaus johtaa kaikkien tilitietojen menetykseen (mukaan lukien kaikki siihen liittyvät varat). Vahvista kirjoittamalla "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="6567712397896147805">Haluatko varmasti nollata Ping-lompakkosi? Jos lompakkoasi ei ole varmuuskopioitu, nollaus johtaa kaikkien tilitietojen menetykseen (mukaan lukien kaikki siihen liittyvät varat). Vahvista kirjoittamalla "<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="4862812525895306758">Tyhjennä maksutapahtuma- ja nonce-tiedot</translation>
 <translation id="5693968582510626466">Maksutapahtumien tyhjennys voi olla hyödyllinen kehittäjille tai, kun tyhjennetään tilaa paikallisella palvelimella</translation>
 <translation id="5421107279168565467">Haluatko varmasti nollata maksutapahtuma- ja nonce-tiedot? Tätä vaihtoehtoa käyttävät lähinnä kehittäjät, jotka käyttävät paikallista testipalvelinta. Kirjoita "<ph name="CONFIRMATION_PHRASE"/>" vahvistaaksesi.</translation>
@@ -682,14 +682,14 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1721710839767183848">Ei mainoksia sivulla</translation>
 <translation id="4647035642622555398">Ei keskeytyksiä</translation>
 <translation id="4122515759479497554">Hae videoita</translation>
-<translation id="4449475351935531438">Brave-palomuuri ja -VPN</translation>
+<translation id="4449475351935531438">Ping-palomuuri ja -VPN</translation>
 <translation id="719977489961414786">Päivitä VPN:ksi, jotta voit suojata yhteytesi ja estää invasiivisen seurannan kaikkialla.</translation>
 <translation id="8814357473522731680">Palvelun tarjoaa</translation>
 <translation id="5892534145504632332">Suojaa jokaista sovellusta &amp; koko laitettasi</translation>
 <translation id="7195416926059527505">Turvallinen kotona tai julkisessa Wi-Fi:ssä</translation>
 <translation id="1354700000739359839">Valonnopea, jopa 100 Mb/s</translation>
 <translation id="3510283489391432976">Valitse sijainti tai maa</translation>
-<translation id="7695158478627528928">Brave ei koskaan kirjaa toimintaasi</translation>
+<translation id="7695158478627528928">Ping ei koskaan kirjaa toimintaasi</translation>
 <translation id="4575683170451975058">Suojaa 5:tä laitetta 1:ssä tilauksessa</translation>
 <translation id="755045397420611731">Parempi tietosuoja ja turvallisuus verkossa</translation>
 <translation id="4520128772974831415">Piilota IP-osoitteesi ja vaihda sijaintisi</translation>
@@ -712,7 +712,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5903391101107992067">Kokeile 7 päivän ajan ilmaiseksi</translation>
 <translation id="721747358270435486">Asenna VPN</translation>
 <translation id="836074276610740314">Asenna VPN-profiili</translation>
-<translation id="8021842065465097929">Brave asentaa nyt VPN-profiilin.</translation>
+<translation id="8021842065465097929">Ping asentaa nyt VPN-profiilin.</translation>
 <translation id="229286271464650057">Tämän profiilin avulla VPN voi automaattisesti muodostaa yhteyden ja suojata liikennettä laitteellasi kaikissa sovelluksissa ja koko ajan. Tämä VPN-yhteys salataan ja reititetään Guardianin älykkään palomuurin kautta mainosten ja seurannan estämiseksi.</translation>
 <translation id="9073255657908892407">Ota yhteyttä tekniseen tukeen</translation>
 <translation id="1139934321138152517">VPN on nyt käytössä</translation>
@@ -808,14 +808,14 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="8214232307424031138">Allekirjoitettu</translation>
 <translation id="1165039591588034296">Virhe</translation>
 <translation id="2561824823738097741">Käytätkö nopeinta verkkoselainta?</translation>
-<translation id="2065971949051836200">Kolme kertaa nopeampi Internet on jo puhelimessasi. Käytä Brave-selainta kaikkeen verkkoselailuun.</translation>
-<translation id="2888278614497184977">Brave = kolme kertaa nopeampaa verkkoselailua</translation>
+<translation id="2065971949051836200">Kolme kertaa nopeampi Internet on jo puhelimessasi. Käytä Ping-selainta kaikkeen verkkoselailuun.</translation>
+<translation id="2888278614497184977">Ping = kolme kertaa nopeampaa verkkoselailua</translation>
 <translation id="6887232551109532144">Pidempi akun käyttöikä jokaisen latauksen jälkeen</translation>
-<translation id="5388885352353494741">Akun säästö on vain askeleen päässä. Käytä Brave-selainta kaikkeen verkkoselailuun.</translation>
-<translation id="3164151360474408351">Brave = enemmän akun käyttöikää jokaisen latauksen jälkeen</translation>
+<translation id="5388885352353494741">Akun säästö on vain askeleen päässä. Käytä Ping-selainta kaikkeen verkkoselailuun.</translation>
+<translation id="3164151360474408351">Ping = enemmän akun käyttöikää jokaisen latauksen jälkeen</translation>
 <translation id="3211051910418903298">Lisää mobiilidataa harvemmin</translation>
-<translation id="1092355580602106002">Vähemmän mainoksia = vähemmän dataa jokaisella lataamallasi sivulla. Käytä Brave-selainta kaikkeen verkkoselailuun.</translation>
-<translation id="623962032102267945">Brave = vähemmän mobiilidataa jokaisella sivulla</translation>
+<translation id="1092355580602106002">Vähemmän mainoksia = vähemmän dataa jokaisella lataamallasi sivulla. Käytä Ping-selainta kaikkeen verkkoselailuun.</translation>
+<translation id="623962032102267945">Ping = vähemmän mobiilidataa jokaisella sivulla</translation>
 <translation id="4355217341028673744">• Parempi yksityisyydensuoja</translation>
 <translation id="3679020972083025535">• Ei ärsyttäviä mainoksia</translation>
 <translation id="8047527352810290817">Muokkaa Gas-tokenia</translation>
@@ -864,7 +864,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2653659639078652383">Lähetä</translation>
 <translation id="4945690646623486292">Valitse verkko</translation>
 <translation id="5233638681132016545">Uusi välilehti</translation>
-<translation id="8006088103295786154">Käytä Brave-lompakkoa</translation>
+<translation id="8006088103295786154">Käytä Ping-lompakkoa</translation>
 <translation id="8030169304546394654">Yhteys katkaistu</translation>
 <translation id="3423275441470187644">Luota</translation>
 <translation id="2391762656119864333">Peruuta</translation>
@@ -874,7 +874,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="42981349822642051">Laajenna</translation>
 <translation id="3586752056660754651">Allekirjoita</translation>
 <translation id="3950820424414687140">Kirjaudu sisään</translation>
-<translation id="6592721981110586529">Muodosta yhteys Brave-lompakkoon</translation>
+<translation id="6592721981110586529">Muodosta yhteys Ping-lompakkoon</translation>
 <translation id="329813193938846695">Valitse tili(t)</translation>
 <translation id="291375746846291973">Muodosta yhteys vain luotettaviin sivustoihin.</translation>
 <translation id="385051799172605136">Edellinen</translation>
@@ -886,11 +886,11 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5242300593039211344">Lukitse lompakko</translation>
 <translation id="1108298724135935307">Yhdistetyt sivustot</translation>
 <translation id="4255623233927788178">Näytä lohkoketjuohjelmassa</translation>
-<translation id="8274201358637112807">Tämä sivu haluaa käyttää Brave-lompakkoa</translation>
+<translation id="8274201358637112807">Tämä sivu haluaa käyttää Ping-lompakkoa</translation>
 <translation id="3355936511340229503">Yhteysvirhe</translation>
 <translation id="1531836666020185856">Valitut ominaisuudet</translation>
 <translation id="4891604214809245310">Verkkoa ei voitu määrittää verkoksi <ph name="NETWORK_NAME"/></translation>
-<translation id="685345388423515592">Näyttää siltä, että tässä laitteessa on muita VPN:iä, jotka on asetettu “Aina päällä” -tilaan. Ottaaksesi Brave-palomuurin + VPN:n käyttöön poista ensin “Aina päällä” -asetus käytöstä muissa VPN:ssä, ennen kuin muodostat yhteyden uudelleen. Jos ongelma jatkuu, yritä poistaa muiden VPN:ien asennukset.</translation>
+<translation id="685345388423515592">Näyttää siltä, että tässä laitteessa on muita VPN:iä, jotka on asetettu “Aina päällä” -tilaan. Ottaaksesi Ping-palomuurin + VPN:n käyttöön poista ensin “Aina päällä” -asetus käytöstä muissa VPN:ssä, ennen kuin muodostat yhteyden uudelleen. Jos ongelma jatkuu, yritä poistaa muiden VPN:ien asennukset.</translation>
 <translation id="85136472535634474">Avaa VPN-asetukset</translation>
 <translation id="8352805003811526272">Määritystä nollataan ...</translation>
 <translation id="6809312301323611382">Olet jo valinnut saman palvelimen.</translation>
@@ -910,25 +910,25 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4822132585477111396">Ketjun tunnus</translation>
 <translation id="7131971375297699539">Valuutan symboli</translation>
 <translation id="7982789257301363584">Verkko</translation>
-<translation id="6936860995365507185">Tämä sallii tämän verkon käytön Brave-lompakossa. <ph name="CLICK_START"/>Lue lisää<ph name="CLICK_END"/>.</translation>
+<translation id="6936860995365507185">Tämä sallii tämän verkon käytön Ping-lompakossa. <ph name="CLICK_START"/>Lue lisää<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Anna tälle sivustolle lupa lisätä verkko?</translation>
 <translation id="4857321293515555666">Tämä DApp haluaa lukea tämän viestin voidakseen täyttää pyyntösi.</translation>
 <translation id="714506544401754321">Pura viestin salaus</translation>
 <translation id="5039804452771397117">Salli</translation>
 <translation id="3378339846292573874">Lisää ehdotettu token</translation>
 <translation id="2322227405137827074">Haluatko tuoda tämän tokenin?</translation>
-<translation id="1324417023773393937">Brave-selain</translation>
-<translation id="6044189892950611565">Brave-selaimen ilmoituskanava</translation>
+<translation id="1324417023773393937">Ping-selain</translation>
+<translation id="6044189892950611565">Ping-selaimen ilmoituskanava</translation>
 <translation id="4556601961751528347">Vaihda yhdistettyä tiliä</translation>
 <translation id="8922793255489232731">Vastaavaa aikavyöhykettä ei löytynyt kohteelle: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Yhteys muodostettu kohteeseen <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Kokeilujakso</translation>
-<translation id="6458565248779152483">Poista Brave-VPN käytöstä</translation>
+<translation id="6458565248779152483">Poista Ping-VPN käytöstä</translation>
 <translation id="9080536793704001825">15 minuutin tauko</translation>
 <translation id="803706420145725977">1 tunnin tauko</translation>
 <translation id="4394049700291259645">Poista käytöstä</translation>
 <translation id="7733890291091968191">Näytä Web3-ilmoitukset</translation>
-<translation id="1371627247679035769">\n\n\n\n#### Brave ei seuraa sinua eikä tiedä, kuinka käytät sovellustamme, joten emme tiedä VPN-asetuksiasi. Jaa tietoja kohtaamastasi ongelmasta, niin teemme parhaamme ratkaistaksemme sen mahdollisimman pian. ####\n\n</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Ping ei seuraa sinua eikä tiedä, kuinka käytät sovellustamme, joten emme tiedä VPN-asetuksiasi. Jaa tietoja kohtaamastasi ongelmasta, niin teemme parhaamme ratkaistaksemme sen mahdollisimman pian. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-isäntänimi\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nTilaustyyppi\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nPlay Kaupan token\n <ph name="VALUE"/></translation>
@@ -951,19 +951,19 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="7002577172732106572">Jaettu tunnelointi</translation>
 <translation id="8181161042860463420">Liitettyä tokentiliä ei ole vielä olemassa. Sen luomiseen ja rahoittamiseen käytetään pieni määrä SOL-tokeneita. <ph name="CLICK_START"/>Lisätietoja<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Päivitetään VPN-profiilia...</translation>
-<translation id="4784306439879850873">Huomaa, että Brave ei voi tarkistaa, mitä tapahtuu, jos allekirjoitat. Allekirjoitus voi valtuuttaa melkein minkä tahansa toiminnon tililläsi tai puolestasi, mukaan lukien (mutta ei rajoittuen) tilin ja kryptovarojen täydellisen hallinnan antaminen pyynnön esittäneelle sivustolle. Allekirjoita vain, jos olet varma, että haluat suorittaa tämän toiminnon ja että pystyt luottamaan pyytävään sivustoon.</translation>
+<translation id="4784306439879850873">Huomaa, että Ping ei voi tarkistaa, mitä tapahtuu, jos allekirjoitat. Allekirjoitus voi valtuuttaa melkein minkä tahansa toiminnon tililläsi tai puolestasi, mukaan lukien (mutta ei rajoittuen) tilin ja kryptovarojen täydellisen hallinnan antaminen pyynnön esittäneelle sivustolle. Allekirjoita vain, jos olet varma, että haluat suorittaa tämän toiminnon ja että pystyt luottamaan pyytävään sivustoon.</translation>
 <translation id="3474375934783434676">Allekirjoita omalla vastuullasi</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/>/<ph name="SIZE"/></translation>
 <translation id="756701799684433105">Hyväksy tapahtuma</translation>
 <translation id="6450792191436242818">Järjestelmäohjelma</translation>
-<translation id="5318067544026930166">Avaa Brave-lompakon lukitus biometrisella todennuksella</translation>
-<translation id="2629767022373384291">Haluatko käyttää biometrista todennusta Brave-lompakon lukituksen avaamiseen?</translation>
+<translation id="5318067544026930166">Avaa Ping-lompakon lukitus biometrisella todennuksella</translation>
+<translation id="2629767022373384291">Haluatko käyttää biometrista todennusta Ping-lompakon lukituksen avaamiseen?</translation>
 <translation id="4782919977106118997">Käytä lukituksen avaamiseen sormenjälkeä</translation>
 <translation id="2054995875643283428">Ohita tämä toistaiseksi</translation>
 <translation id="2610561535971892504">Kopioi napsauttamalla</translation>
 <translation id="2522605225061484799">Siirry omaan portfolioon</translation>
 <translation id="1148624853678088576">Valmista!</translation>
-<translation id="4131445988101719379">Brave-lompakkosi on valmis käytettäväksi</translation>
+<translation id="4131445988101719379">Ping-lompakkosi on valmis käytettäväksi</translation>
 <translation id="6252742184395380448">Asetusohjelma</translation>
 <translation id="5358970666412490132">Panosohjelma</translation>
 <translation id="346636227344244984">Äänestysohjelma</translation>
@@ -1005,8 +1005,8 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="8382368767453083629">Alusta multisig-tili 2</translation>
 <translation id="77243237706803459">Alusta minttaus 2</translation>
 <translation id="583281660410589416">Tuntematon</translation>
-<translation id="5666264859501108700">Brave-palkintojen alueeksi on asetettu <ph name="COUNTRY_NAME"/>.</translation>
-<translation id="909076461795862330">Brave-palkintojen määrittämisen aikana tapahtui valitettavasti virhe. Yritä uudelleen.</translation>
+<translation id="5666264859501108700">Ping-palkintojen alueeksi on asetettu <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="909076461795862330">Ping-palkintojen määrittämisen aikana tapahtui valitettavasti virhe. Yritä uudelleen.</translation>
 <translation id="7352651011704765696">Jotakin meni vikaan</translation>
 <translation id="7144878232160441200">Yritä uudestaan</translation>
 <translation id="6040143037577758943">Sulje</translation>
@@ -1023,7 +1023,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4809681171446727314">Saat käyttöösi yksityisen ja riippumattoman haun suoraan kotinäytöltäsi.</translation>
 <translation id="7751715172931488388">Lisää pienoisohjelma</translation>
 <translation id="7285167584112910782">Braven nopea toimintohaku</translation>
-<translation id="2326703104633309781">Use Brave-kääntäjää</translation>
+<translation id="2326703104633309781">Use Ping-kääntäjää</translation>
 <translation id="5802752138057422257">Muita kuin ASCII-merkkejä havaittu!</translation>
 <translation id="442709594176931966">Näytä alkuperäinen viesti</translation>
 <translation id="2239252396088484499">Näytä viestit ASCII-koodattuina</translation>
@@ -1035,22 +1035,22 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1313065465616456728">Myönnetty</translation>
 <translation id="7902225556763260253">Vanhentumisaika</translation>
 <translation id="1908159733454294871">Turvallisuusriski havaittu</translation>
-<translation id="5658257029899993935">Linkitä ostos Brave-tiliisi</translation>
-<translation id="1187061015547219282">Linkitä Play Storen ostos Brave-tiliisi käyttääksesi Brave VPN:ää muissa laitteissa.</translation>
+<translation id="5658257029899993935">Linkitä ostos Ping-tiliisi</translation>
+<translation id="1187061015547219282">Linkitä Play Storen ostos Ping-tiliisi käyttääksesi Ping VPN:ää muissa laitteissa.</translation>
 <translation id="6662142137695589205">Linkitä VPN-tilauksesi</translation>
-<translation id="2674077112509133024">Laajenna Brave-palomuuria + VPN-suojaa</translation>
-<translation id="6365389672683343144">Brave VPN -tilauksesi voi suojata enintään 5 laitetta Androidissa, iOSissa ja työpöydällä. Linkitä Google Play -tilauksesi Brave-tiliisi.</translation>
+<translation id="2674077112509133024">Laajenna Ping-palomuuria + VPN-suojaa</translation>
+<translation id="6365389672683343144">Ping VPN -tilauksesi voi suojata enintään 5 laitetta Androidissa, iOSissa ja työpöydällä. Linkitä Google Play -tilauksesi Ping-tiliisi.</translation>
 <translation id="6610899852831463073">Selaussuojaa ei voi ottaa käyttöön</translation>
 <translation id="7954263306665462056">Selaussuoja on poistettu käytöstä laitteessasi. Jotta voit ottaa sen käyttöön varmista, että Google Play Palvelut on asennettu ja ajan tasalla.</translation>
 <translation id="6605147707233193230">Laita päälle tukeaksesi sisällönluojia</translation>
 <translation id="5899814466108868020">Autat tukemaan Bravea ja BAT-yhteisöä</translation>
-<translation id="6067959437127691361">Kun käytät Brave-palkintoja, tuet sisällönluojia ja voit ansaita BATeja.</translation>
+<translation id="6067959437127691361">Kun käytät Ping-palkintoja, tuet sisällönluojia ja voit ansaita BATeja.</translation>
 <translation id="3264975266761862670">Oletko valmis aloittamaan ansaitsemisen?</translation>
 <translation id="265337947574975838">Yhdistä tai luo tili jonkun kumppanimme kanssa.</translation>
 <translation id="654447476965480878">Lue lisää BATien ansaitsemisesta</translation>
 <translation id="6278643716658443228">Palkintoasetukset</translation>
 <translation id="6516984207843289176">Yhdistä tili</translation>
-<translation id="4272136334824111854">Tässä kuussa olet käynyt <ph name="CREATOR_COUNT"/> Brave-palkintojen tukeman luojan luona</translation>
+<translation id="4272136334824111854">Tässä kuussa olet käynyt <ph name="CREATOR_COUNT"/> Ping-palkintojen tukeman luojan luona</translation>
 <translation id="6845311459433734326">Yhdistä säilytystili, jotta voit ansaita BATeja ja nostaa palkintosi</translation>
 <translation id="928980476243133540">Teen sen myöhemmin</translation>
 <translation id="579702532610384533">Yhdistä uudelleen</translation>
@@ -1061,8 +1061,8 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5382684862562314222">BATtia ei vielä tueta alueellasi Uphold-palvelussa.</translation>
 <translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
 <translation id="1677961202754619328">Upholdin mukaan Uphold-tililläsi on tällä hetkellä joitain rajoituksia. Kirjaudu sisään Uphold-tilillesi ja tarkista, onko sinulla ilmoituksia tai tilivaatimuksia jäljellä, ja yritä sitten uudelleen.</translation>
-<translation id="5425006356459378415">Brave-palkinnot eivät ole käytettävissä</translation>
-<translation id="833643743158564518">Uudet rekisteröitymiset Brave-palkintoihin on poistettu käytöstä alueellasi. Voit kuitenkin aina yrittää myöhemmin uudelleen. <ph name="LEARN_MORE"/></translation>
+<translation id="5425006356459378415">Ping-palkinnot eivät ole käytettävissä</translation>
+<translation id="833643743158564518">Uudet rekisteröitymiset Ping-palkintoihin on poistettu käytöstä alueellasi. Voit kuitenkin aina yrittää myöhemmin uudelleen. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">Ensisijaiset verkot</translation>
 <translation id="2781668117338732220">Toissijaiset verkot</translation>
 <translation id="282560918037172384">Testiverkot</translation>
@@ -1083,8 +1083,8 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="346505172740911461">Markkinahinta</translation>
 <translation id="5494920125229734069">Valitse kaikki</translation>
 <translation id="6129027151000961048">Leo</translation>
-<translation id="8613144770663526433">Kirjaudu sisään Brave-lompakon kautta</translation>
-<translation id="3696514931437952995">Olet kirjautumassa sisään kohteeseen <ph name="ORIGIN"/>. Brave-lompakko jakaa lompakkosi osoitteen kohteen <ph name="ORIGIN"/> kanssa.</translation>
+<translation id="8613144770663526433">Kirjaudu sisään Ping-lompakon kautta</translation>
+<translation id="3696514931437952995">Olet kirjautumassa sisään kohteeseen <ph name="ORIGIN"/>. Ping-lompakko jakaa lompakkosi osoitteen kohteen <ph name="ORIGIN"/> kanssa.</translation>
 <translation id="1028781062521375153">Katso tiedot</translation>
 <translation id="6759710362319508545">Resurssit</translation>
 <translation id="2471230424465522689">Ei ennen</translation>
@@ -1093,7 +1093,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4109670531935487117">Näytä automaattisia ehdotuksia osoitepalkissa</translation>
 <translation id="1250335737108905610">Nollaa ja tyhjennä Leon tiedot</translation>
 <translation id="6165101586663336913">Leo-assistentin nollaus edellyttää, että otat Leon käyttöön tulevaisuudessa, ja se tyhjentää myös chat-historiasi. Chat-historian tyhjentäminen poistaa kaikki aiemmat keskustelusi Leon kanssa. Tätä toimintoa ei voi perua.</translation>
-<translation id="3692772534525889713">Linkitä Play Store -ostoksesi Brave-tiliisi, jotta voisit käyttää Brave Leoa muilla laitteilla.</translation>
+<translation id="3692772534525889713">Linkitä Play Store -ostoksesi Ping-tiliisi, jotta voisit käyttää Ping Leoa muilla laitteilla.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1166682575529520472">Kuukausittainen</translation>
 <translation id="451189393813405346">Kysy Leolta</translation>
@@ -1103,7 +1103,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6344103698928069918">Jatka soittolistan toistoa viimeisestä keskeytyksestä</translation>
 <translation id="8141583471142904652">Jatkuva kuuntelu</translation>
 <translation id="851432578283946230">Toistaa automaattisesti soittolistan seuraavat kohteet</translation>
-<translation id="295620834661738195">Brave-soittolista</translation>
+<translation id="295620834661738195">Ping-soittolista</translation>
 <translation id="4850886885716139402">Näytä</translation>
 <translation id="7392941176393379100">Lisätty soittolistaan '<ph name="PLAYLIST_NAME"/>'</translation>
 <translation id="349846214503465941">Ota soittolista käyttöön</translation>
@@ -1129,7 +1129,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="8120600068258956006">Lisää soittolistaan</translation>
 <translation id="39991094779686024">Soittolistat</translation>
 <translation id="1710072605877822603">Lisää mediaa</translation>
-<translation id="3874252678044305931">Lisää videoita Brave-soittolistaan. Toista milloin tahansa. Jopa offline-tilassa.</translation>
+<translation id="3874252678044305931">Lisää videoita Ping-soittolistaan. Toista milloin tahansa. Jopa offline-tilassa.</translation>
 <translation id="8973629800378391099">Tee soittolistoja suosikkisisällöstäsi. Säästä mobiilidataa. Ja toista ilman mainoksia.</translation>
 <translation id="4936812987266342401">Lisää videoita soittolistaan ​​napauttamalla painiketta</translation>
 <translation id="6263657785571415306">Pysy flowssa: Lisää videoita selaamisen aikana, katso myöhemmin.</translation>
@@ -1172,7 +1172,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5538904824395606812">Käytä nykyistä palveluntarjoajaasi tai Quad9:ä</translation>
 <translation id="6393423486818299209">Käytä nykyistä palveluntarjoajaasi tai Wikimedia DNS:ää</translation>
 <translation id="3401384982562827787">Käytä nykyistä palveluntarjoajaasi tai Cloudflarea</translation>
-<translation id="8812367543786936496">Jos nykyinen palveluntarjoajasi ei ole turvallinen, Brave käyttää turvallista vaihtoehtoista DNS-tarjoajaa.</translation>
+<translation id="8812367543786936496">Jos nykyinen palveluntarjoajasi ei ole turvallinen, Ping käyttää turvallista vaihtoehtoista DNS-tarjoajaa.</translation>
 <translation id="5680678411439841197">kaupunki</translation>
 <translation id="8185518433273977704">kylä</translation>
 <translation id="4528386452965343421">prefektuuri</translation>
@@ -1200,19 +1200,19 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="3300502432153878901">postinumero</translation>
 <translation id="4130750466177569591">Hyväksyn</translation>
 <translation id="3251885322612056119">Päivitetyt palveluehdot</translation>
-<translation id="4049035689681585146">Olemme päivittäneet Brave-palkintoja koskevat palveluehdot. Olemme tehneet nämä päivitykset selventääksemme ehtojamme ja varmistaaksemme, että ne kattavat uudet ominaisuudet. Jos jatkat Brave-palkintojen käyttöä, hyväksyt päivitetyt palveluehdot. Jos et hyväksy ehtoja, voit <ph name="RESET_START"/>nollata<ph name="RESET_END"/> Brave-palkinnot, mikä poistaa ominaisuuden käytöstä.</translation>
-<translation id="2165953574528546737">Lue <ph name="TOS_START"/>Brave-palkintoja koskevat palveluehdot<ph name="TOS_END"/></translation>
+<translation id="4049035689681585146">Olemme päivittäneet Ping-palkintoja koskevat palveluehdot. Olemme tehneet nämä päivitykset selventääksemme ehtojamme ja varmistaaksemme, että ne kattavat uudet ominaisuudet. Jos jatkat Ping-palkintojen käyttöä, hyväksyt päivitetyt palveluehdot. Jos et hyväksy ehtoja, voit <ph name="RESET_START"/>nollata<ph name="RESET_END"/> Ping-palkinnot, mikä poistaa ominaisuuden käytöstä.</translation>
+<translation id="2165953574528546737">Lue <ph name="TOS_START"/>Ping-palkintoja koskevat palveluehdot<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">Ota monta ikkunaa käyttöön</translation>
 <translation id="6167344249617630304">Avaa enintään viisi ikkunaa samanaikaisesti ja siirrä välilehtiä ikkunasta toiseen</translation>
 <translation id="1063948063403254568">Useita ikkunoita havaittu</translation>
-<translation id="4661882208707630158">Yhdistä välilehtiä toiseen Brave-ikkunaan tai sulje muut Brave-ikkunat ennen monen ikkunan toiminnon käytöstä poistamista.</translation>
+<translation id="4661882208707630158">Yhdistä välilehtiä toiseen Ping-ikkunaan tai sulje muut Ping-ikkunat ennen monen ikkunan toiminnon käytöstä poistamista.</translation>
 <translation id="6891382640886173702">Yhdistä ikkunat</translation>
 <translation id="2912247081180973411">Sulje ikkunat</translation>
-<translation id="4010699428656610296">Yhdistä muut välilehdet toiseen Brave-ikkunaan.</translation>
+<translation id="4010699428656610296">Yhdistä muut välilehdet toiseen Ping-ikkunaan.</translation>
 <translation id="208634871997892083">Aina käytössä oleva VPN</translation>
 <translation id="1599073346542156922">Päälle kytkeminen:</translation>
 <translation id="7001163334415463127">1. Avaa laitteesi asetukset sovelluksessa tai napauta alla olevaa painiketta.</translation>
-<translation id="887443138775437899">2. Etsi Brave VPN ja napauta asetuskuvaketta oikealla.</translation>
+<translation id="887443138775437899">2. Etsi Ping VPN ja napauta asetuskuvaketta oikealla.</translation>
 <translation id="3776051499611941773">3. Ota <ph name="ALWAYS_ON_TUTORIAL_START"/>Aika käytössä oleva VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> käyttöön.</translation>
 <translation id="4776146737004271126">Avaa Android-asetukset</translation>
 <translation id="2728518864712716830">Päivitys on ladattu.</translation>

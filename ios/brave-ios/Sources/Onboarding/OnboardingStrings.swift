@@ -11,9 +11,9 @@ extension Strings {
     public static let introducingBravePlaylist = NSLocalizedString(
       "introducingBravePlaylist",
       bundle: .module,
-      value: "Introducing Brave Playlist",
+      value: "Introducing Playlist",
       comment:
-        "A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name"
+        "A title shown on the first 2 steps of onboarding for Ping Playlist. Ping Playlist is a product name"
     )
 
     // -------------------
@@ -26,21 +26,21 @@ extension Strings {
       value:
         "Create playlists with content you love. Add media from any page.\nPlay anytime. Even offline!",
       comment:
-        "A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist'"
+        "A body of text explaining the feature that will be displayed under a title reading 'Introducing Ping Playlist'"
     )
     public static let advanceInitialOnboardingButtonTitle = NSLocalizedString(
       "advanceInitialOnboardingButtonTitle",
       bundle: .module,
       value: "Discover How",
       comment:
-        "A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature'"
+        "A button title shown below language introducing the Ping Playlist feature. i.e. 'Discover how to use use this feature'"
     )
     public static let dismissOnboardingButtonTitle = NSLocalizedString(
       "dismissOnboardingButtonTitle",
       bundle: .module,
       value: "Dismiss",
       comment:
-        "A button title that allows the user to dismiss the popup explaining the Brave Playlist feature"
+        "A button title that allows the user to dismiss the popup explaining the Ping Playlist feature"
     )
 
     // -------------------
@@ -50,7 +50,7 @@ extension Strings {
     public static let playlistInfoFeaturePointTitleOne = NSLocalizedString(
       "playlistInfoFeaturePointTitleOne",
       bundle: .module,
-      value: "Add videos to Brave Playlist. Playback anytime. Even offline",
+      value: "Add videos to Playlist. Playback anytime. Even offline",
       comment: "A list of features in Playlist"
     )
     public static let playlistInfoFeaturePointSubtitleOne = NSLocalizedString(
@@ -95,7 +95,7 @@ extension Strings {
       bundle: .module,
       value: "Maybe Later",
       comment:
-        "A button title that allows the user to dismiss the popup explaining the Brave Playlist feature"
+        "A button title that allows the user to dismiss the popup explaining the Ping Playlist feature"
     )
 
     // -------------------
@@ -146,14 +146,14 @@ extension Strings {
       "confirmationActionButtonTitle",
       bundle: .module,
       value: "Take me to my Playlist",
-      comment: "A button title that when tapped opens Brave Playlist"
+      comment: "A button title that when tapped opens Ping Playlist"
     )
     public static let dismissStep4OnboardingButtonTitle = NSLocalizedString(
       "dismissStep4OnboardingButtonTitle",
       bundle: .module,
       value: "Close",
       comment:
-        "A button title that allows the user to dismiss the popup explaining the Brave Playlist feature"
+        "A button title that allows the user to dismiss the popup explaining the Ping Playlist feature"
     )
   }
 }

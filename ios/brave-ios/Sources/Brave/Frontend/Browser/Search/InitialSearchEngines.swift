@@ -179,7 +179,7 @@ class InitialSearchEngines {
   }
 
   private func priorityOverrides() {
-    // No priority engines are live at the moment.
+    defaultSearchEngine = .google
   }
 
   // MARK: - Helpers

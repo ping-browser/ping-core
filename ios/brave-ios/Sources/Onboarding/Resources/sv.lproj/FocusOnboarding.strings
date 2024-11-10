@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Fortsätt";
 
-/* The subtitle of the screen that requests user to set Brave as default */
+/* The subtitle of the screen that requests user to set Ping as default */
 "focusOnboarding.defaultBrowserScreenDescription" = "Öppna varje länk du trycker på med Braves integritetsskydd";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Välj Brave som din standardwebbläsare";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Välj Ping som din standardwebbläsare";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Surfa snabbare och använd mindre mängd data.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Låt oss veta vilka funktioner du gillar mest.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Gör Brave bättre.";
+"focusOnboarding.p3aScreenTitle" = "Gör Ping bättre.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Ändra det här när som helst i Brave-inställningarna under \"Brave Shields och sekretess\".";
+"focusOnboarding.p3aToggleDescription" = "Ändra det här när som helst i Ping-inställningarna under \"Ping Shields och sekretess\".";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Dela privat och anonym produktstatistik.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Ange en webbadress för att njuta av färre annonser och spårare";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Se skillnaden med Brave";
+"focusOnboarding.urlBarIndicatorTitle" = "Se skillnaden med Ping";
 

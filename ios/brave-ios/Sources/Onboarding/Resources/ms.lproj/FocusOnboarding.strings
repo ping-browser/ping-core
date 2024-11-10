@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Teruskan";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Buka setiap pautan yang anda ketik dengan perlindungan privasi Brave";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Buka setiap pautan yang anda ketik dengan perlindungan privasi Ping";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Tetapkan Brave sebagai Pelayar Piawai anda";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Tetapkan Ping sebagai Pelayar Piawai anda";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Semak imbas lebih pantas dan gunakan data yang lebih sedikit.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Beritahu kami tentang ciri yang paling anda nikmati.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Jadikan Brave Lebih Baik.";
+"focusOnboarding.p3aScreenTitle" = "Jadikan Ping Lebih Baik.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Tukar ini pada bila-bila masa dalam Tetapan Brave di bawah 'Perisai dan Privasi Brave'.";
+"focusOnboarding.p3aToggleDescription" = "Tukar ini pada bila-bila masa dalam Tetapan Ping di bawah 'Perisai dan Privasi Ping'.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Kongsi Cerapan Produk Peribadi dan Tanpa Nama.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Masukkan URL untuk menikmati iklan & penjejak yang Lebih Sedikit";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Lihat perbezaan Brave";
+"focusOnboarding.urlBarIndicatorTitle" = "Lihat perbezaan Ping";
 

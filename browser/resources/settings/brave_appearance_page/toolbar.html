@@ -51,25 +51,25 @@
 </settings-toggle-button>
 <settings-brave-appearance-bookmark-bar prefs="{{prefs}}">
 </settings-brave-appearance-bookmark-bar>
-<settings-toggle-button
+<!-- <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.today.should_show_toolbar_button}}"
   label="$i18n{appearanceSettingsShowBraveNewsButtonLabel}">
-</settings-toggle-button>
-<template is="dom-if" if="[[showLeoAssistant_()]]">
+</settings-toggle-button> -->
+<!-- <template is="dom-if" if="[[showLeoAssistant_()]]">
   <settings-toggle-button
     class="cr-row"
     pref="{{prefs.brave.ai_chat.show_toolbar_button}}"
     label="$i18n{appearanceSettingsShowLeoButtonLabel}">
   </settings-toggle-button>
-</template>
-<template is="dom-if" if="[[isBraveRewardsSupported_()]]">
+</template> -->
+<!-- <template is="dom-if" if="[[isBraveRewardsSupported_()]]">
   <settings-toggle-button
     class="cr-row"
     label="$i18n{braveRewardsShowBraveRewardsButtonLabel}"
     pref="{{prefs.brave.rewards.show_brave_rewards_button_in_location_bar}}">
   </settings-toggle-button>
-</template>
+</template> -->
 <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
   <settings-toggle-button id="showBraveWalletIconOnToolbar"
     class="cr-row"
@@ -77,12 +77,12 @@
     label="$i18n{showBravewalletIconOnToolbar}">
   </settings-toggle-button>
 </template>
-<settings-toggle-button
+<!-- <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.show_side_panel_button}}"
   label="$i18n{appearanceSettingsShowSidebarButton}">
-</settings-toggle-button>
-<if expr="enable_brave_vpn_wireguard">
+</settings-toggle-button> -->
+<!-- <if expr="enable_brave_vpn_wireguard">
   <template is="dom-if" if="[[showBraveVPNOption_()]]">
     <settings-toggle-button
       pref="{{prefs.brave.brave_vpn.show_button}}"
@@ -91,7 +91,7 @@
       sub-label="$i18n{showBraveVPNButtonSubLabel}">
     </settings-toggle-button>
   </template>
-</if>
+</if> -->
 <settings-toggle-button
   id="autocomplete-suggestion-sources"
   class="cr-row"
@@ -124,12 +124,12 @@
         label="$i18n{appearanceSettingsUseCommanderSuggestions}">
       </settings-checkbox>
     </template>
-    <template is="dom-if" if="[[showLeoAssistant_()]]">
+    <!-- <template is="dom-if" if="[[showLeoAssistant_()]]">
       <settings-checkbox class="cr-row list-item"
         pref="{{prefs.brave.ai_chat.autocomplete_provider_enabled}}"
         label="$i18n{appearanceSettingsUseLeoSuggestions}">
       </settings-checkbox>
-    </template>
+    </template> -->
   </div>
 </template>
 <settings-toggle-button

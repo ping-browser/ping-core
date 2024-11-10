@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Brave\" ?";
+"e13lS3-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Ping\" ?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Vouliez-vous dire \"Portefeuille Brave\" ?";
+"e13lS3-jXiFQY" = "Vouliez-vous dire \"Portefeuille Ping\" ?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
+"e13lS3-XCyA8c" = "Vouliez-vous dire \"Actualités Ping\" ?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";
@@ -74,7 +74,7 @@
 "EUS9FL" = "Raccourci du widget";
 
 /* (No Comment) */
-"FGO5qW" = "Liste de lecture Brave";
+"FGO5qW" = "Liste de lecture Ping";
 
 /* (No Comment) */
 "gpCwrM" = "Configuration des statistiques";
@@ -89,7 +89,7 @@
 "joEZJM" = "Nº 2";
 
 /* (No Comment) */
-"jXiFQY" = "Portefeuille Brave";
+"jXiFQY" = "Portefeuille Ping";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "Il y a ${count} options correspondant à « Nouvel onglet ».";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Brave\".";
+"L1fziM-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Ping\".";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Brave\".";
+"L1fziM-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Ping\".";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+"L1fziM-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Ping\".";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Brave\" ?";
+"r2EI05-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Ping\" ?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Vouliez-vous dire \"Portefeuille Brave\" ?";
+"r2EI05-jXiFQY" = "Vouliez-vous dire \"Portefeuille Ping\" ?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
+"r2EI05-XCyA8c" = "Vouliez-vous dire \"Actualités Ping\" ?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Brave\".";
+"tNCrcE-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Ping\".";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Brave\".";
+"tNCrcE-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Ping\".";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+"tNCrcE-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Ping\".";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Brave\".";
+"TxuMja-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Ping\".";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Brave\".";
+"TxuMja-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Ping\".";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+"TxuMja-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Ping\".";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
@@ -248,7 +248,7 @@
 "xcI3h9" = "Publicités bloquées";
 
 /* (No Comment) */
-"XCyA8c" = "Actualités Brave";
+"XCyA8c" = "Actualités Ping";
 
 /* (No Comment) */
 "XkwBGY" = "Configuration des raccourcis sur l'écran de verrouillage";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Brave\" ?";
+"YQiQuz-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Ping\" ?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Vouliez-vous dire \"Portefeuille Brave\" ?";
+"YQiQuz-jXiFQY" = "Vouliez-vous dire \"Portefeuille Ping\" ?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
+"YQiQuz-XCyA8c" = "Vouliez-vous dire \"Actualités Ping\" ?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";

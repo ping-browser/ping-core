@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">¿Ver información de la tienda?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> pestaña cerrada}other{<ph name="MANY_CLOSED"/> pestañas cerradas}}</translation>
 <translation id="2894757982205307093">Nueva pestaña en el grupo</translation>
-<translation id="4691798003247738043">Brave | Acerca de esta tienda</translation>
+<translation id="4691798003247738043">Ping | Acerca de esta tienda</translation>
 <translation id="2977480621796371840">Quitar del grupo</translation>
 <translation id="29919168204617356">Las pestañas inactivas se cerrarán automáticamente. Podrás encontrarlas en el historial siempre que quieras.</translation>
 <translation id="3008554597174452548">Dejar de seguir el producto</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Ver información de la tienda, opción disponible cerca de la parte superior de la pantalla</translation>
 <translation id="5627941783489838464">No hay actualizaciones de pestañas</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Restaurar pestaña}other{Restaurar pestañas}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> enlace de Brave}other{<ph name="TABS_COUNT_MANY"/> enlaces de Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> enlace de Ping}other{<ph name="TABS_COUNT_MANY"/> enlaces de Ping}}</translation>
 <translation id="575494663145460764">¿Quieres recibir alertas por bajadas de precio?</translation>
 <translation id="58326064309361797">Arrastra las pestañas para agruparlas</translation>
 <translation id="5901630391730855834">Amarillo</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Los grupos de pestañas se guardan y se actualizan automáticamente en todos tus dispositivos</translation>
 <translation id="747459581954555080">Restaurar todo</translation>
 <translation id="753732157349120914">Función de cambio de pestaña</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> reseña de Brave}other{<ph name="REVIEWS_COUNT_MANY"/> reseñas de Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> reseña de Ping}other{<ph name="REVIEWS_COUNT_MANY"/> reseñas de Ping}}</translation>
 <translation id="7559245342362162951">Mostrar las pestañas del grupo en una cuadrícula en pantalla completa</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="7688386659311034820">Cuadro de diálogo de pestañas inactivas</translation>

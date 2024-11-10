@@ -52,7 +52,7 @@ extension Strings {
       "focusOnboarding.p3aScreenTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Make Brave Better.",
+      value: "Make Ping Better.",
       comment: "The title of the screen which asks user to enable privacy preserving analytics."
     )
 
@@ -76,7 +76,7 @@ extension Strings {
       "focusOnboarding.p3aToggleDescription",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Change this at any time in Brave Settings under ‘Brave Shields and Privacy’.",
+      value: "Change this at any time in Ping Settings under ‘Brave Shields and Privacy’.",
       comment: "The title of the toggle for enable / disable privacy preserving analytics."
     )
 
@@ -92,8 +92,8 @@ extension Strings {
       "focusOnboarding.defaultBrowserScreenTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Set Brave as your Default Browser",
-      comment: "The title of the screen that requests user to set Brave as default"
+      value: "Set Ping as your Default Browser",
+      comment: "The title of the screen that requests user to set Ping as default"
     )
 
     public static let defaultBrowserScreenDescription = NSLocalizedString(
@@ -101,7 +101,7 @@ extension Strings {
       tableName: "FocusOnboarding",
       bundle: .module,
       value: "Open every link you tap with Brave’s privacy protections",
-      comment: "The subtitle of the screen that requests user to set Brave as default"
+      comment: "The subtitle of the screen that requests user to set Ping as default"
     )
 
     public static let systemSettingsButtonTitle = NSLocalizedString(
@@ -132,7 +132,7 @@ extension Strings {
       "focusOnboarding.urlBarIndicatorTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "See the Brave difference",
+      value: "See the Ping difference",
       comment: "The title of the popup which points to URL Bar after onboarding"
     )
 

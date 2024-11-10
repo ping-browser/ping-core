@@ -27,10 +27,10 @@
   </message>
 
   <!-- Contextual Menu -->
-  <message name="IDS_MEDIA_ROUTER_ABOUT" desc="Title of a menu item which, on click, opens a page with product information about Brave Cast.">
+  <message name="IDS_MEDIA_ROUTER_ABOUT" desc="Title of a menu item which, on click, opens a page with product information about Ping Cast.">
     About
   </message>
-  <message name="IDS_MEDIA_ROUTER_HELP" desc="Title of a menu item which, on click, opens a page to the Brave Cast help center.">
+  <message name="IDS_MEDIA_ROUTER_HELP" desc="Title of a menu item which, on click, opens a page to the Ping Cast help center.">
     Help
   </message>
   <message name="IDS_MEDIA_ROUTER_ALWAYS_SHOW_TOOLBAR_ACTION" desc="Title of a menu item which, on click, toggles whether or not the Media Router action icon is always shown. When toggled off, the icon is shown only when the Media Router dialog is open or if there is an active local Media Route or an issue.">
@@ -82,7 +82,7 @@
   <message name="IDS_MEDIA_ROUTER_ISSUE_FAILED_TO_CAST" desc="Title of an issue shown when cast intialization failed with no clear reason">
       Failed to cast. Please try again.
   </message>
-  <message name="IDS_MEDIA_ROUTER_ISSUE_CANNOT_TERMINATE" desc="Title of an issue shown when a Cast session cannot be stopped from Brave side, and needs to be stopped using the remote control for the Cast device where the Cast session is running.">
+  <message name="IDS_MEDIA_ROUTER_ISSUE_CANNOT_TERMINATE" desc="Title of an issue shown when a Cast session cannot be stopped from Ping side, and needs to be stopped using the remote control for the Cast device where the Cast session is running.">
       Use remote to stop casting
   </message>
 
@@ -96,14 +96,14 @@
   <message name="IDS_MEDIA_ROUTER_NO_DEVICES_FOUND_BUTTON" desc="The accessibility label that gets read by screen readers for a button shown when no Cast device was found. Clicking on the button opens a new tab.">
     No devices found. Open a help center article in a new tab
   </message>
-  <message name="IDS_MEDIA_ROUTER_DESTINATION_MISSING" desc="Link to display when no Cast destinations are found which, on click, opens a page to the Brave Cast help center explaining possible reasons why none are detected.">
+  <message name="IDS_MEDIA_ROUTER_DESTINATION_MISSING" desc="Link to display when no Cast destinations are found which, on click, opens a page to the Ping Cast help center explaining possible reasons why none are detected.">
     No cast destinations found. Need help?
   </message>
   <message name="IDS_MEDIA_ROUTER_LOCAL_DISCOVERY_PERMISSION_REJECTED_BUTTON" desc="The accessibility label for a button shown when the browser does not have the permission to connect to devices on the local network.">
     Permission to cast is rejected. Open a help center article in a new tab to learn more.
   </message>
   <message name="IDS_MEDIA_ROUTER_LOCAL_DISCOVERY_PERMISSION_REJECTED_LABEL" desc="The error message including the link to the OS settings page, shown when the browser does not have the permission to connect to devices on the local network.">
-    To cast, give Brave access in <ph name="IDS_MEDIA_ROUTER_LOCAL_DISCOVERY_PERMISSION_REJECTED_LINK">$1<ex>system settings</ex></ph>
+    To cast, give Ping access in <ph name="IDS_MEDIA_ROUTER_LOCAL_DISCOVERY_PERMISSION_REJECTED_LINK">$1<ex>system settings</ex></ph>
   </message>
     <message name="IDS_MEDIA_ROUTER_LOCAL_DISCOVERY_PERMISSION_REJECTED_LINK" desc="Text for the link to the OS settings page allowing useres to turn on the permission. This string will be embedded in a longer sentence that makes up the whole label.">
     system settings
@@ -197,10 +197,10 @@
 
   <!-- Cast-to-meeting deprecation/removal -->
   <message name="IDS_MEDIA_ROUTER_CAST_TO_MEETING_DEPRECATED" desc="Used in the Cast dialog to inform the user that starting a presentation from the Cast dialog will no longer work, and using meet.google.com will be the only option.">
-    Soon this option will no longer be supported. To present a tab, use <ph name="GOOGLE_MEET">$1<ex>Brave Meet</ex></ph>.
+    Soon this option will no longer be supported. To present a tab, use <ph name="GOOGLE_MEET">$1<ex>Ping Meet</ex></ph>.
   </message>
   <message name="IDS_MEDIA_ROUTER_CAST_TO_MEETING_REMOVED" desc="Used in the Cast dialog to inform the user that starting a presentation from the Cast dialog is not longer supported, and using meet.google.com is the only option.">
-    This option is no longer supported. To present a tab, use <ph name="GOOGLE_MEET">$1<ex>Brave Meet</ex></ph>.
+    This option is no longer supported. To present a tab, use <ph name="GOOGLE_MEET">$1<ex>Ping Meet</ex></ph>.
   </message>
 
   <!-- Wired Display Media Route Provider -->
@@ -210,19 +210,19 @@
 
   <!-- Cast feedback dialog (chrome://cast-feedback) -->
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_TITLE" desc="Title of the tab opened by selecting '''Report an issue' from the Cast menu.">
-    Brave Cast Feedback
+    Ping Cast Feedback
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_NA" desc="Label used for subjective quality ratings where the user expresses no opinion.">
     N/A
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_FORM_DESCRIPTION" desc="Text to describe the feedback form.">
-    Your feedback helps us to improve Brave Cast and is appreciated.
+    Your feedback helps us to improve Ping Cast and is appreciated.
     For help troubleshooting issues with cast, please refer to the
     <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>
     help center<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_HEADER" desc="Header of the Media Router feedback page.">
-    Tell us what's happening with Brave Cast.
+    Tell us what's happening with Ping Cast.
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_YOUR_ANSWER" desc="Placeholder text for inputs in the feedback form.">
     Your answer
@@ -254,7 +254,7 @@
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_ADDITIONAL_COMMENTS" desc="Text for field in feedback form for other comments.">
     Additional comments:
   </message>
-  <message name="IDS_MEDIA_ROUTER_FEEDBACK_ALLOW_CONTACT_BY_EMAIL" desc="Label for a checkbox in a form indicating whether the user is permitting Brave to contact them by email.">
+  <message name="IDS_MEDIA_ROUTER_FEEDBACK_ALLOW_CONTACT_BY_EMAIL" desc="Label for a checkbox in a form indicating whether the user is permitting Ping to contact them by email.">
     We may email you for more information or updates
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_YOUR_EMAIL_ADDRESS" desc="Default text shown in a text input box for the user to enter their email address.">
@@ -367,22 +367,22 @@
     Send debug logs (recommended)
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_PRIVACY_DATA_USAGE" desc="Text with details about data usage of details submitted in the feedback page.">
-    Your Brave version, operating system version, Cast settings,
+    Your Ping version, operating system version, Cast settings,
     mirroring performance stats, and communication channel diagnostic
     logs will be submitted in addition to any information you choose
     to include above. This feedback is used to diagnose problems and
     help improve the feature. Any personal information you submit,
     whether explicitly or incidentally, will be protected in
     accordance with our privacy policies. By submitting this feedback,
-    you agree that Brave may use feedback that you provide to improve
-    any Brave product or service.
+    you agree that Ping may use feedback that you provide to improve
+    any Ping product or service.
   </message>
 
   <!-- Cast feedback dialog: discovery -->
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_SETUP_VISIBILITY_QUESTION" desc="Text for the question about device visibility through setup flow">
     Are you able to see your casting device in the
     <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>
-    Brave Home app<ph name="END_LINK">&lt;/a&gt;</ph>?
+    Ping Home app<ph name="END_LINK">&lt;/a&gt;</ph>?
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_YES" desc="Label for yes option.">
     Yes
@@ -403,10 +403,10 @@
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_NETWORK_QUESTION" desc="Text for the question describing the network.">
     Which of the following best describes your network?
   </message>
-  <message name="IDS_MEDIA_ROUTER_FEEDBACK_NETWORK_SAME_WIFI" desc="Option for describing the network with PC and the Brave Cast device on the same Wi-Fi network.">
+  <message name="IDS_MEDIA_ROUTER_FEEDBACK_NETWORK_SAME_WIFI" desc="Option for describing the network with PC and the Ping Cast device on the same Wi-Fi network.">
     PC and casting device on the same Wi-Fi network
   </message>
-  <message name="IDS_MEDIA_ROUTER_FEEDBACK_NETWORK_DIFFERENT_WIFI" desc="Option for describing the network with PC and the Brave Cast device on different Wi-Fi networks.">
+  <message name="IDS_MEDIA_ROUTER_FEEDBACK_NETWORK_DIFFERENT_WIFI" desc="Option for describing the network with PC and the Ping Cast device on different Wi-Fi networks.">
     PC and casting device on different Wi-Fi networks (e.g. 2.4GHz
     vs. 5GHz)
   </message>

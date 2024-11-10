@@ -104,7 +104,7 @@ import {
   BalanceAndLineChartWrapper,
   ActivityWrapper
 } from './style'
-import { Column, Row, HorizontalSpace } from '../../../shared/style'
+import { Column, Row } from '../../../shared/style'
 
 // Queries
 import {
@@ -567,7 +567,7 @@ export const PortfolioOverview = () => {
                     </>
                   ) : (
                     <>
-                      <LoadingSkeleton
+                      {/* <LoadingSkeleton
                         width={55}
                         height={24}
                       />
@@ -575,7 +575,7 @@ export const PortfolioOverview = () => {
                       <LoadingSkeleton
                         width={55}
                         height={24}
-                      />
+                      /> */}
                     </>
                   )}
                 </Row>

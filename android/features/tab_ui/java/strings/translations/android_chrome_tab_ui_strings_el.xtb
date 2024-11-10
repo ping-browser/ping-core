@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Προβολή πληροφοριών καταστήματος;</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{Έκλεισε <ph name="ONE_CLOSED"/> καρτέλα}other{Έκλεισαν <ph name="MANY_CLOSED"/> καρτέλες}}</translation>
 <translation id="2894757982205307093">Νέα καρτέλα στην ομάδα</translation>
-<translation id="4691798003247738043">Brave | Σχετικά με αυτό το κατάστημα</translation>
+<translation id="4691798003247738043">Ping | Σχετικά με αυτό το κατάστημα</translation>
 <translation id="2977480621796371840">Κατάργηση από την ομάδα</translation>
 <translation id="29919168204617356">Οι ανενεργές καρτέλες θα κλείσουν αυτόματα. Μπορείτε να τις βρείτε στο Ιστορικό ανά πάσα στιγμή.</translation>
 <translation id="3008554597174452548">Διακοπή παρακολούθησης προϊόντος</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Δείτε πληροφορίες καταστήματος, η επιλογή είναι διαθέσιμη στο επάνω μέρος της οθόνης</translation>
 <translation id="5627941783489838464">Δεν υπάρχουν ενημερώσεις καρτελών</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Επαναφορά καρτέλας}other{Επαναφορά καρτελών}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> σύνδεσμος από το Brave}other{<ph name="TABS_COUNT_MANY"/> σύνδεσμοι από το Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> σύνδεσμος από το Ping}other{<ph name="TABS_COUNT_MANY"/> σύνδεσμοι από το Ping}}</translation>
 <translation id="575494663145460764">Θέλετε να λαμβάνετε ειδοποιήσεις για πτώσεις τιμών;</translation>
 <translation id="58326064309361797">Σύρετε καρτέλες για να τις ομαδοποιήσετε.</translation>
 <translation id="5901630391730855834">Κίτρινο</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Οι ομάδες καρτελών αποθηκεύονται και ενημερώνονται αυτόματα σε όλες τις συσκευές σας</translation>
 <translation id="747459581954555080">Επαναφορά όλων</translation>
 <translation id="753732157349120914">Εναλλαγή καρτελών</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> έλεγχος από την Brave}other{<ph name="REVIEWS_COUNT_MANY"/> έλεγχοι από την Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> έλεγχος από την Ping}other{<ph name="REVIEWS_COUNT_MANY"/> έλεγχοι από την Ping}}</translation>
 <translation id="7559245342362162951">Εμφάνιση καρτελών ομάδας σε πλέγμα πλήρους οθόνης</translation>
 <translation id="7658239707568436148">Ακύρωση</translation>
 <translation id="7688386659311034820">Παράθυρο διαλόγου ανενεργών καρτελών</translation>

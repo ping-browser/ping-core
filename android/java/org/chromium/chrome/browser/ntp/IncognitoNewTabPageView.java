@@ -87,7 +87,7 @@ public class IncognitoNewTabPageView extends FrameLayout {
 
         mVpnCta = findViewById(R.id.tv_try_vpn);
         if (BraveVpnUtils.isVpnFeatureSupported(getContext())
-                && !BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                && !BraveVpnNativeWorker.getInstance().isPurchasedUser() || false) {
             mVpnCta.setOnClickListener(
                     v -> {
                         if (!InternetConnection.isNetworkAvailable(getContext())) {

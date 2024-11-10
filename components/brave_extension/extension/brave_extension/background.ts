@@ -5,6 +5,8 @@
 
 import './background/greaselion'
 import './background/webDiscoveryProject'
+import './background/highContrastBg'
+require('./background/contextMenu')
 
 if (chrome.test) {
   chrome.test.sendMessage('brave-extension-enabled')

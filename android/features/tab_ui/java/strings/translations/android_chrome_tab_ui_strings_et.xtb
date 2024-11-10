@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Kas kuvada poe teave?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> vaheleht suleti}other{<ph name="MANY_CLOSED"/> vahelehte suleti}}</translation>
 <translation id="2894757982205307093">Uus vaheleht grupis</translation>
-<translation id="4691798003247738043">Brave | Teave selle poe kohta</translation>
+<translation id="4691798003247738043">Ping | Teave selle poe kohta</translation>
 <translation id="2977480621796371840">Grupist eemaldamine</translation>
 <translation id="29919168204617356">Inaktiivsed vahelehed suletakse automaatselt. Leiate need alati jaotisest Ajalugu.</translation>
 <translation id="3008554597174452548">Lõpeta toote jälgimine</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Poe teabe vaatamine, valik saadaval ekraanikuva ülaosas</translation>
 <translation id="5627941783489838464">Vahelehtede värskendused puuduvad</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Taasta vaheleht}other{Taasta vahelehed}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link Brave'ist}other{<ph name="TABS_COUNT_MANY"/> linki Brave'ist}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link Ping'ist}other{<ph name="TABS_COUNT_MANY"/> linki Ping'ist}}</translation>
 <translation id="575494663145460764">Kas soovite hinnalanguste puhul märguandeid saada?</translation>
 <translation id="58326064309361797">Lohistage vahelehti, et neid grupeerida</translation>
 <translation id="5901630391730855834">Kollane</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Vahelehegrupid salvestuvad automaatselt ja värskendatakse kõikides teie seadmetes</translation>
 <translation id="747459581954555080">Taasta kõik</translation>
 <translation id="753732157349120914">Vahelehtede vaheti</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> arvustus Brave'ist}other{<ph name="REVIEWS_COUNT_MANY"/> arvustust Brave'ist}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> arvustus Ping'ist}other{<ph name="REVIEWS_COUNT_MANY"/> arvustust Ping'ist}}</translation>
 <translation id="7559245342362162951">Kuva grupi vahelehed täisekraani ruudustikus</translation>
 <translation id="7658239707568436148">Tühista</translation>
 <translation id="7688386659311034820">Dialoog Inaktiivsed vahelehed</translation>

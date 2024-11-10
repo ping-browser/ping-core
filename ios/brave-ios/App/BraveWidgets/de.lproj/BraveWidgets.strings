@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Nur, um sicherzugehen, Sie suchten nach „Lesezeichen“?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Playlist“?";
+"e13lS3-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Ping-Playlist“?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Wallet“?";
+"e13lS3-jXiFQY" = "Nur, um sicherzugehen, Sie suchten nach „Ping-Wallet“?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Nur, um sicherzugehen, Sie suchten nach „Downloads“?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Nachrichten“?";
+"e13lS3-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Ping-Nachrichten“?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Nur, um sicherzugehen, Sie suchten nach „Suche“?";
@@ -74,7 +74,7 @@
 "EUS9FL" = "Widget-Verknüpfung";
 
 /* (No Comment) */
-"FGO5qW" = "Brave-Playlist";
+"FGO5qW" = "Ping-Playlist";
 
 /* (No Comment) */
 "gpCwrM" = "Statistikkonfiguration";
@@ -89,7 +89,7 @@
 "joEZJM" = "Nr. 2";
 
 /* (No Comment) */
-"jXiFQY" = "Brave-Wallet";
+"jXiFQY" = "Ping-Wallet";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "Es gibt ${count} Optionen, die mit „Neuer Tab“ übereinstimmen.";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave-Playlist“ übereinstimmen.";
+"L1fziM-FGO5qW" = "Es gibt ${count} Optionen, die mit „Ping-Playlist“ übereinstimmen.";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Es gibt ${count} Optionen, die mit „Brave-Wallet“ übereinstimmen.";
+"L1fziM-jXiFQY" = "Es gibt ${count} Optionen, die mit „Ping-Wallet“ übereinstimmen.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
+"L1fziM-XCyA8c" = "Es gibt ${count} Optionen, die mit „Ping-Nachrichten“ übereinstimmen.";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Nur, um sicherzugehen, Sie suchten nach „Lesezeichen“?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Playlist“?";
+"r2EI05-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Ping-Playlist“?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Wallet“?";
+"r2EI05-jXiFQY" = "Nur, um sicherzugehen, Sie suchten nach „Ping-Wallet“?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Nur, um sicherzugehen, Sie suchten nach „Downloads“?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Nachrichten“?";
+"r2EI05-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Ping-Nachrichten“?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Nur, um sicherzugehen, Sie suchten nach „Suche“?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave-Playlist“ übereinstimmen.";
+"tNCrcE-FGO5qW" = "Es gibt ${count} Optionen, die mit „Ping-Playlist“ übereinstimmen.";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Es gibt ${count} Optionen, die mit „Brave-Wallet“ übereinstimmen.";
+"tNCrcE-jXiFQY" = "Es gibt ${count} Optionen, die mit „Ping-Wallet“ übereinstimmen.";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
+"tNCrcE-XCyA8c" = "Es gibt ${count} Optionen, die mit „Ping-Nachrichten“ übereinstimmen.";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave-Playlist“ übereinstimmen.";
+"TxuMja-FGO5qW" = "Es gibt ${count} Optionen, die mit „Ping-Playlist“ übereinstimmen.";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Es gibt ${count} Optionen, die mit „Brave-Wallet“ übereinstimmen.";
+"TxuMja-jXiFQY" = "Es gibt ${count} Optionen, die mit „Ping-Wallet“ übereinstimmen.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
+"TxuMja-XCyA8c" = "Es gibt ${count} Optionen, die mit „Ping-Nachrichten“ übereinstimmen.";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";
@@ -248,7 +248,7 @@
 "xcI3h9" = "Blockierte Anzeigen";
 
 /* (No Comment) */
-"XCyA8c" = "Brave-Nachrichten";
+"XCyA8c" = "Ping-Nachrichten";
 
 /* (No Comment) */
 "XkwBGY" = "Sperrbildschirm Verknüpfungskonfiguration";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Nur, um sicherzugehen, Sie suchten nach „Lesezeichen“?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Playlist“?";
+"YQiQuz-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Ping-Playlist“?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Wallet“?";
+"YQiQuz-jXiFQY" = "Nur, um sicherzugehen, Sie suchten nach „Ping-Wallet“?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Nur, um sicherzugehen, Sie suchten nach „Downloads“?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Nachrichten“?";
+"YQiQuz-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Ping-Nachrichten“?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Nur, um sicherzugehen, Sie suchten nach „Suche“?";

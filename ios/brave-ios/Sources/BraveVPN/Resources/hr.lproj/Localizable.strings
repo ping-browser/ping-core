@@ -7,25 +7,25 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "DOSTUPNI POSLUŽITELJI";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Kupi";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Zaštitite 5 uređaja uz 1 pretplatu";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Odaberi svoju geolokaciju/državu";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave nikada ne bilježi Vašu aktivnost";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping nikada ne bilježi Vašu aktivnost";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Zaštitite aplikacije i cijeli uređaj";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Sigurnije za kućni ili javni Wi-Fi";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Munjevito brzo, do 100 Mbps";
 
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
@@ -44,7 +44,7 @@
 "vpn.contactFormCarrier" = "Mobilni operater";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Društvo Brave vas ne prati niti zna kako upotrebljavate aplikaciju, pa ne znamo kako ste postavili mrežu VPN. Podijelite informacije o problemu koji imate, a mi ćemo se potruditi da ga riješimo što je prije moguće.";
+"vpn.contactFormDoNotEditText" = "Društvo Ping vas ne prati niti zna kako upotrebljavate aplikaciju, pa ne znamo kako ste postavili mrežu VPN. Podijelite informacije o problemu koji imate, a mi ćemo se potruditi da ga riješimo što je prije moguće.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Nije moguće poslati poruku e-pošte. Provjerite konfiguraciju svoje e-pošte.";
@@ -101,9 +101,9 @@
 "vpn.contactFormTimezone" = "Vremenska zona sustava iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Vatrozid preglednika Brave + problem mreže VPN";
+"vpn.contactFormTitle" = "Vatrozid preglednika Ping + problem mreže VPN";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Omogući";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -125,7 +125,7 @@
 "vpn.installProfileButtonText" = "Instaliraj profil za mrežu VPN";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Preglednikom Brave sada se instalira profil za mrežu VPN.";
+"vpn.installProfileTitle" = "Preglednikom Ping sada se instalira profil za mrežu VPN.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "Mreža VPN sada omogućena";
@@ -133,7 +133,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Instaliraj mrežu VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Isprobaj BESPLATNO";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -222,10 +222,10 @@
 "vpn.settingsFAQ" = "Podrška za mrežu VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Povežite kupnju sa svojim računom Brave";
+"vpn.settingsLinkReceipt" = "Povežite kupnju sa svojim računom Ping";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Povežite svoju kupnju iz trgovine App Store sa svojim računom Brave kako biste upotrijebili mrežu VPN preglednika Brave na drugim uređajima.";
+"vpn.settingsLinkReceiptFooter" = "Povežite svoju kupnju iz trgovine App Store sa svojim računom Ping kako biste upotrijebili mrežu VPN preglednika Ping na drugim uređajima.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Upravljaj pretplatom";
@@ -261,10 +261,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ažurirajte način plaćanja";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Preglednikom Brave pruža se zaštita čak u pozadini.";
+"vpn.vpnBackgroundNotificationBody" = "Preglednikom Ping pruža se zaštita čak u pozadini.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "UKLJUČENI su vatrozid preglednika Brave + mreža VPN";
+"vpn.vpnBackgroundNotificationTitle" = "UKLJUČENI su vatrozid preglednika Ping + mreža VPN";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Upotrijebite najbolji dostupni poslužitelj";
@@ -279,7 +279,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Pogreška";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Za vatrozid preglednika Brave + mrežu VPN treba instalirati profil mreže VPN na uređaj kako bi radili. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Za vatrozid preglednika Ping + mrežu VPN treba instalirati profil mreže VPN na uređaj kako bi radili. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Dopuštenje odbijeno";
@@ -294,13 +294,13 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Pogreška";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Pretplate se naplaćuju ​​putem vašeg računa usluge iTunes.\n\nSvaki neupotrijebljeni dio besplatnog probnog razdoblja, ako je ponuđen, gubi se kada kupite pretplatu.\n\nVaša se pretplata automatski obnavlja osim ako se ne otkaže najmanje 24 sata prije kraja tekućeg razdoblja.\n\nSvojim pretplatama možete upravljati u Postavkama.\n\nUpotrebom preglednika Brave slažete se s Odredbama upotrebe i Pravilnikom o zaštiti privatnosti.";
+"vpn.vpnIAPBoilerPlate" = "Pretplate se naplaćuju ​​putem vašeg računa usluge iTunes.\n\nSvaki neupotrijebljeni dio besplatnog probnog razdoblja, ako je ponuđen, gubi se kada kupite pretplatu.\n\nVaša se pretplata automatski obnavlja osim ako se ne otkaže najmanje 24 sata prije kraja tekućeg razdoblja.\n\nSvojim pretplatama možete upravljati u Postavkama.\n\nUpotrebom preglednika Ping slažete se s Odredbama upotrebe i Pravilnikom o zaštiti privatnosti.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Iskoristi kôd";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Ovim se ponovno postavlja vaša konfiguracija vatrozida preglednika Brave Firewall + mreže VPN i ispravljaju sve pogreške. Taj postupak može trajati minutu.";
+"vpn.vpnResetAlertBody" = "Ovim se ponovno postavlja vaša konfiguracija vatrozida preglednika Ping Firewall + mreže VPN i ispravljaju sve pogreške. Taj postupak može trajati minutu.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Ponovno postavljanje konfiguracije";

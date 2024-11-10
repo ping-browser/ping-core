@@ -3,35 +3,35 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { setIconBasePath } from '@brave/leo/react/icon'
+import { initLocale } from 'brave-ui'
+import Theme from 'brave-ui/theme/brave-default'
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { initLocale } from 'brave-ui'
+import { bindActionCreators, createStore } from 'redux'
 import { ThemeProvider } from 'styled-components'
-import Theme from 'brave-ui/theme/brave-default'
-import { setIconBasePath } from '@brave/leo/react/icon'
-import { createStore, bindActionCreators } from 'redux'
-
 import { loadTimeData } from '../../../common/loadTimeData'
+import { WithThemeVariables } from '../shared/components/with_theme_variables'
 import { LocaleContext } from '../shared/lib/locale_context'
 import { createLocaleContextForWebUI } from '../shared/lib/webui_locale_context'
+import * as rewardsActions from './actions/rewards_actions'
 import { PlatformContext } from './lib/platform_context'
-import { WithThemeVariables } from '../shared/components/with_theme_variables'
 import { createReducer } from './reducers'
 import { getCurrentBalanceReport } from './reducers/utils'
-import * as rewardsActions from './actions/rewards_actions'
+// import { App } from './components/app'
 
-import { App } from './components/app'
 import * as mojom from '../shared/lib/mojom'
 
 import * as Rewards from './lib/types'
+import PdfRenderer from './ping_doc_signer/pdf_renderer'
 
 const store = createStore(createReducer())
 const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
 
 setIconBasePath('chrome://resources/brave-icons')
 
-function initialize () {
+function initialize() {
   // For `brave://rewards/reconnect`, automatically trigger reconnection on page
   // load and send the user immediately to the external wallet login page. Do
   // not show any additional UI while redirecting.
@@ -52,7 +52,9 @@ function initialize () {
         <LocaleContext.Provider value={createLocaleContextForWebUI()}>
           <PlatformContext.Provider value={platformInfo}>
             <WithThemeVariables>
-              <App />
+              {/* <App /> */}
+              <PdfRenderer />
+              <></>
             </WithThemeVariables>
           </PlatformContext.Provider>
         </LocaleContext.Provider>
@@ -61,62 +63,62 @@ function initialize () {
     document.getElementById('root'))
 }
 
-function userType (userType: number) {
+function userType(userType: number) {
   actions.onUserType(userType)
 }
 
-function isTermsOfServiceUpdateRequired (updateRequired: boolean) {
+function isTermsOfServiceUpdateRequired(updateRequired: boolean) {
   actions.onIsTermsOfServiceUpdateRequired(updateRequired)
 }
 
-function rewardsParameters (properties: Rewards.RewardsParameters) {
+function rewardsParameters(properties: Rewards.RewardsParameters) {
   actions.onRewardsParameters(properties)
   // Get the current AC amount after rewards parameters have been
   // updated, as the default AC amount may have been changed.
   actions.getContributionAmount()
 }
 
-function reconcileStamp (stamp: number) {
+function reconcileStamp(stamp: number) {
   actions.onReconcileStamp(stamp)
 }
 
-function contributeList (list: Rewards.Publisher[]) {
+function contributeList(list: Rewards.Publisher[]) {
   actions.onContributeList(list)
 }
 
-function excludedList (list: Rewards.ExcludedPublisher[]) {
+function excludedList(list: Rewards.ExcludedPublisher[]) {
   actions.onExcludedList(list)
 }
 
-function balanceReport (properties: { month: number, year: number, report: Rewards.BalanceReport }) {
+function balanceReport(properties: { month: number, year: number, report: Rewards.BalanceReport }) {
   actions.onBalanceReport(properties)
 }
 
-function contributionAmount (amount: number) {
+function contributionAmount(amount: number) {
   actions.onContributionAmount(amount)
 }
 
-function recurringTips (list: Rewards.Publisher[]) {
+function recurringTips(list: Rewards.Publisher[]) {
   actions.onRecurringTips(list)
 }
 
-function currentTips (list: Rewards.Publisher[]) {
+function currentTips(list: Rewards.Publisher[]) {
   actions.onCurrentTips(list)
 }
 
-function onIsAutoContributeSupported (isAcSupported: boolean) {
+function onIsAutoContributeSupported(isAcSupported: boolean) {
   actions.onIsAutoContributeSupported(isAcSupported)
 }
 
-function autoContributeProperties (properties: any) {
+function autoContributeProperties(properties: any) {
   actions.onAutoContributeProperties(properties)
 }
 
-function adsData (adsData: Rewards.AdsData) {
+function adsData(adsData: Rewards.AdsData) {
   actions.onAdsData(adsData)
 }
 
-function adsHistory (adsHistory: Rewards.AdsHistory[]) {
+function adsHistory(adsHistory: Rewards.AdsHistory[]) {
   actions.onAdsHistory(adsHistory)
 }
 
@@ -144,36 +146,36 @@ function onToggleFlaggedAd(success: boolean) {
   actions.onToggleFlaggedAd(success)
 }
 
-function statement (data: any) {
+function statement(data: any) {
   actions.onStatement(data)
 }
 
-function statementChanged () {
+function statementChanged() {
   actions.onStatementChanged()
 }
 
-function recurringTipSaved (success: boolean) {
+function recurringTipSaved(success: boolean) {
   actions.onRecurringTipSaved(success)
 }
 
-function recurringTipRemoved (success: boolean) {
+function recurringTipRemoved(success: boolean) {
   actions.onRecurringTipRemoved(success)
 }
 
-function externalWalletProviderList (list: Rewards.ExternalWalletProvider[]) {
+function externalWalletProviderList(list: Rewards.ExternalWalletProvider[]) {
   actions.onExternalWalletProviderList(list)
 }
 
-function excludedSiteChanged () {
+function excludedSiteChanged() {
   actions.getExcludedSites()
   actions.getContributeList()
 }
 
-function balance (balance?: mojom.Balance) {
+function balance(balance?: mojom.Balance) {
   actions.onBalance(balance)
 }
 
-function reconcileComplete (properties: { type: number, result: number }) {
+function reconcileComplete(properties: { type: number, result: number }) {
   chrome.send('brave_rewards.getReconcileStamp')
   actions.getContributeList()
   actions.getBalance()
@@ -188,44 +190,44 @@ function reconcileComplete (properties: { type: number, result: number }) {
   }
 }
 
-function onGetExternalWallet (externalWallet?: mojom.ExternalWallet) {
+function onGetExternalWallet(externalWallet?: mojom.ExternalWallet) {
   actions.onGetExternalWallet(externalWallet)
 }
 
-function onConnectExternalWallet (result: mojom.ConnectExternalWalletResult) {
+function onConnectExternalWallet(result: mojom.ConnectExternalWalletResult) {
   actions.onConnectExternalWallet(result)
 }
 
-function onExternalWalletLoggedOut () {
+function onExternalWalletLoggedOut() {
   actions.getExternalWallet()
   actions.getBalance()
 }
 
-function onExternalWalletDisconnected () {
+function onExternalWalletDisconnected() {
   actions.getUserType()
 }
 
-function reconcileStampReset () {
+function reconcileStampReset() {
   actions.onReconcileStampReset()
 }
 
-function countryCode (countryCode: string) {
+function countryCode(countryCode: string) {
   actions.onCountryCode(countryCode)
 }
 
-function initialized () {
+function initialized() {
   actions.onInitialized()
 }
 
-function completeReset (success: boolean) {
+function completeReset(success: boolean) {
   actions.onCompleteReset(success)
 }
 
-function onboardingStatus (result: { showOnboarding: boolean }) {
+function onboardingStatus(result: { showOnboarding: boolean }) {
   actions.onOnboardingStatus(result.showOnboarding)
 }
 
-function externalWalletLogin (url: string) {
+function externalWalletLogin(url: string) {
   if (url) {
     window.open(url, '_self', 'noreferrer')
   } else {
@@ -233,11 +235,11 @@ function externalWalletLogin (url: string) {
   }
 }
 
-function onPrefChanged (key: string) {
+function onPrefChanged(key: string) {
   actions.onPrefChanged(key)
 }
 
-function onIsUnsupportedRegion (isUnsupportedRegion: boolean) {
+function onIsUnsupportedRegion(isUnsupportedRegion: boolean) {
   actions.onIsUnsupportedRegion(isUnsupportedRegion)
 }
 

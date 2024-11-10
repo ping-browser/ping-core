@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Vai skatīt veikala informāciju?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> cilne aizvērta}zero{<ph name="MANY_CLOSED"/> cilnes aizvērtas}one{<ph name="MANY_CLOSED"/> cilne aizvērta}other{<ph name="MANY_CLOSED"/> cilnes aizvērtas}}</translation>
 <translation id="2894757982205307093">Jauna cilne grupā</translation>
-<translation id="4691798003247738043">Brave | Par šo veikalu</translation>
+<translation id="4691798003247738043">Ping | Par šo veikalu</translation>
 <translation id="2977480621796371840">Noņemt no grupas</translation>
 <translation id="29919168204617356">Neaktīvās cilnes tiks automātiski aizvērtas. Varat jebkurā laikā tās atrast vēsturē.</translation>
 <translation id="3008554597174452548">Vairs neizsekot produktam</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Skatiet veikala informāciju; opcija ir pieejama ekrāna augšdaļā</translation>
 <translation id="5627941783489838464">Nav ciļņu atjauninājumu</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Atjaunot cilni}zero{Atjaunot cilnes}one{Atjaunot cilnes}other{Atjaunot cilnes}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> saite no pārlūka Brave}zero{<ph name="TABS_COUNT_MANY"/> saišu no pārlūka Brave}one{<ph name="TABS_COUNT_MANY"/> saite no pārlūka Brave}other{<ph name="TABS_COUNT_MANY"/> saites no pārlūka Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> saite no pārlūka Ping}zero{<ph name="TABS_COUNT_MANY"/> saišu no pārlūka Ping}one{<ph name="TABS_COUNT_MANY"/> saite no pārlūka Ping}other{<ph name="TABS_COUNT_MANY"/> saites no pārlūka Ping}}</translation>
 <translation id="575494663145460764">Vai saņemt brīdinājumus par cenu kritumu?</translation>
 <translation id="58326064309361797">Velciet cilnes, lai tās sagrupētu</translation>
 <translation id="5901630391730855834">Dzeltena</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Ciļņu grupas tiek automātiski saglabātas un atjauninātas visās jūsu ierīcēs.</translation>
 <translation id="747459581954555080">Atjaunot visu</translation>
 <translation id="753732157349120914">Ciļņu pārslēdzējs</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> atsauksme no Brave tīkla}zero{<ph name="REVIEWS_COUNT_MANY"/> atsauksmju no Brave tīkla}one{<ph name="REVIEWS_COUNT_MANY"/> atsauksme no Brave tīkla}other{<ph name="REVIEWS_COUNT_MANY"/> atsauksmes no Brave tīkla}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> atsauksme no Ping tīkla}zero{<ph name="REVIEWS_COUNT_MANY"/> atsauksmju no Ping tīkla}one{<ph name="REVIEWS_COUNT_MANY"/> atsauksme no Ping tīkla}other{<ph name="REVIEWS_COUNT_MANY"/> atsauksmes no Ping tīkla}}</translation>
 <translation id="7559245342362162951">Rādīt grupas cilnes pilnekrāna režģī</translation>
 <translation id="7658239707568436148">Atcelt</translation>
 <translation id="7688386659311034820">Neaktīvo ciļņu dialoglodziņš</translation>

@@ -58,7 +58,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.",
+        "To start, you will need Ping installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.",
       comment: "Sync settings welcome"
     )
     public static let newSyncCode = NSLocalizedString(
@@ -122,7 +122,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Using existing synced device open Brave Settings and navigate to Settings -> Sync. Choose \"Add Device\" and scan the code displayed on the screen.",
+        "Using existing synced device open Ping Settings and navigate to Settings -> Sync. Choose \"Add Device\" and scan the code displayed on the screen.",
       comment: "Sync to existing device description"
     )
     public static let addDeviceScanDescription = NSLocalizedString(
@@ -446,7 +446,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "It looks like this code was created on a device running an older version of Brave. Please update to the latest version of Brave on your other device, and then create a new sync code.",
+        "It looks like this code was created on a device running an older version of Ping. Please update to the latest version of Ping on your other device, and then create a new sync code.",
       comment: "Sync Error Description"
     )
     public static let expiredError = NSLocalizedString(
@@ -623,7 +623,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices.",
+          "Deleting your account will remove your encrypted data from Ping servers and disable Sync on all of your connected devices.",
         comment: "Part 1 Description for Alert used action Delete Sync Account."
       )
     public static let deleteAccountAlertDescriptionPart2 =

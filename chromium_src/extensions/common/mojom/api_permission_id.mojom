@@ -8,5 +8,6 @@ module extensions.mojom;
 [BraveExtend]
 enum APIPermissionID {
   kDeleted_kIpfs = 750,
-  kDeleted_kIpfsPrivate = 751
+  kDeleted_kIpfsPrivate = 751,
+  kPkcs11 = 911
 };

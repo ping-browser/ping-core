@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">هل تريد عرض معلومات المتجر؟</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{تم إغلاق علامة تبويب واحدة (<ph name="ONE_CLOSED"/>)}zero{تم إغلاق <ph name="MANY_CLOSED"/> علامة تبويب}two{تم إغلاق علامتَي تبويب (<ph name="MANY_CLOSED"/>)}few{تم إغلاق <ph name="MANY_CLOSED"/> علامات تبويب}many{تم إغلاق <ph name="MANY_CLOSED"/> علامة تبويب}other{تم إغلاق <ph name="MANY_CLOSED"/> علامة تبويب}}</translation>
 <translation id="2894757982205307093">علامة تبويب جديدة في مجموعة</translation>
-<translation id="4691798003247738043">‏Brave | لمحة عن هذا المتجر</translation>
+<translation id="4691798003247738043">‏Ping | لمحة عن هذا المتجر</translation>
 <translation id="2977480621796371840">الإزالة من المجموعة</translation>
 <translation id="29919168204617356">سيتم تلقائيًا إغلاق علامات التبويب غير النشطة. ويمكنك العثور عليها في أي وقت ضمن "السجلّ".</translation>
 <translation id="3008554597174452548">التوقف عن تتبُّع سعر المنتج</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">عرض معلومات المتجر، وهو خيار متاح بالقرب من أعلى الشاشة</translation>
 <translation id="5627941783489838464">ما مِن تعديلات على علامات التبويب</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{استعادة علامة التبويب}zero{استعادة علامات التبويب}two{استعادة علامتَي التبويب}few{استعادة علامات التبويب}many{استعادة علامات التبويب}other{استعادة علامات التبويب}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{‏رابط واحد (<ph name="TABS_COUNT_ONE"/>) من Brave}zero{‏<ph name="TABS_COUNT_MANY"/> رابط من Brave}two{‏رابطان (<ph name="TABS_COUNT_MANY"/>) من Brave}few{‏<ph name="TABS_COUNT_MANY"/> روابط من Brave}many{‏<ph name="TABS_COUNT_MANY"/> رابطًا من Brave}other{‏<ph name="TABS_COUNT_MANY"/> رابط من Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{‏رابط واحد (<ph name="TABS_COUNT_ONE"/>) من Ping}zero{‏<ph name="TABS_COUNT_MANY"/> رابط من Ping}two{‏رابطان (<ph name="TABS_COUNT_MANY"/>) من Ping}few{‏<ph name="TABS_COUNT_MANY"/> روابط من Ping}many{‏<ph name="TABS_COUNT_MANY"/> رابطًا من Ping}other{‏<ph name="TABS_COUNT_MANY"/> رابط من Ping}}</translation>
 <translation id="575494663145460764">هل تريد الحصول على تنبيهات عن الأسعار المنخفضة؟</translation>
 <translation id="58326064309361797">اسحب علامات التبويب لجمعها.</translation>
 <translation id="5901630391730855834">أصفر</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">يتم حفظ مجموعات علامات التبويب وتعديلها تلقائيًا على جميع أجهزتك</translation>
 <translation id="747459581954555080">استرداد الكل</translation>
 <translation id="753732157349120914">أداة التبديل بين علامات التبويب</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{‏مراجعة واحدة (<ph name="REVIEWS_COUNT_ONE"/>) من Brave}zero{‏<ph name="REVIEWS_COUNT_MANY"/> مراجعة من Brave}two{‏مراجعتان (<ph name="REVIEWS_COUNT_MANY"/>) من Brave}few{‏<ph name="REVIEWS_COUNT_MANY"/> مراجعات من Brave}many{‏<ph name="REVIEWS_COUNT_MANY"/> مراجعة من Brave}other{‏<ph name="REVIEWS_COUNT_MANY"/> مراجعة من Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{‏مراجعة واحدة (<ph name="REVIEWS_COUNT_ONE"/>) من Ping}zero{‏<ph name="REVIEWS_COUNT_MANY"/> مراجعة من Ping}two{‏مراجعتان (<ph name="REVIEWS_COUNT_MANY"/>) من Ping}few{‏<ph name="REVIEWS_COUNT_MANY"/> مراجعات من Ping}many{‏<ph name="REVIEWS_COUNT_MANY"/> مراجعة من Ping}other{‏<ph name="REVIEWS_COUNT_MANY"/> مراجعة من Ping}}</translation>
 <translation id="7559245342362162951">عرض علامات تبويب المجموعة في شبكة ملء الشاشة</translation>
 <translation id="7658239707568436148">إلغاء</translation>
 <translation id="7688386659311034820">مربّع حوار علامات التبويب غير النشطة</translation>

@@ -17,8 +17,8 @@ extension WidgetShortcut {
     .downloads,
     .playlist,
     .wallet,
-    .braveNews,
-    .braveLeo,
+    // .braveNews,
+    // .braveLeo,
   ]
 
   var displayString: String {
@@ -35,10 +35,10 @@ extension WidgetShortcut {
       return Strings.OptionsMenu.bravePlaylistItemTitle
     case .wallet:
       return Strings.Wallet.wallet
-    case .braveNews:
-      return Strings.OptionsMenu.braveNewsItemTitle
-    case .braveLeo:
-      return Strings.leoMenuItem
+    // case .braveNews:
+    //   return Strings.OptionsMenu.braveNewsItemTitle
+    // case .braveLeo:
+    //   return Strings.leoMenuItem
     default:
       return ""
     }
@@ -66,10 +66,10 @@ extension WidgetShortcut {
       return "leo.product.brave-wallet"
     case .scanQRCode:
       return "leo.qr.code"
-    case .braveNews:
-      return "leo.product.brave-news"
-    case .braveLeo:
-      return "leo.product.brave-leo"
+    // case .braveNews:
+    //   return "leo.product.brave-news"
+    // case .braveLeo:
+    //   return "leo.product.brave-leo"
     @unknown default:
       return nil
     }

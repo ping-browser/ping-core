@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Συνέχεια";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Ανοίξτε κάθε σύνδεσμο που πατάτε με προστασίες απορρήτου του Brave";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Ανοίξτε κάθε σύνδεσμο που πατάτε με προστασίες απορρήτου του Ping";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Ορισμός του Brave ως προεπιλεγμένο πρόγραμμα περιήγησης";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Ορισμός του Ping ως προεπιλεγμένο πρόγραμμα περιήγησης";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Ταχύτερη περιήγηση, με χρήση λιγότερων δεδομένων.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Πείτε μας ποιες λειτουργίες απολαμβάνετε περισσότερο";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Κάντε το Brave καλύτερο.";
+"focusOnboarding.p3aScreenTitle" = "Κάντε το Ping καλύτερο.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Μπορείτε να το αλλάξετε όποτε θέλετε, από τις Ρυθμίσεις Brave, στην επιλογή «Ασπίδες Brave και απόρρητο».";
+"focusOnboarding.p3aToggleDescription" = "Μπορείτε να το αλλάξετε όποτε θέλετε, από τις Ρυθμίσεις Ping, στην επιλογή «Ασπίδες Ping και απόρρητο».";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Κοινοποιήστε ιδιωτικές και ανώνυμες πληροφορίες προϊόντος.";
@@ -44,5 +44,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Εισαγάγετε μια διεύθυνση URL για να απολαύσετε λιγότερες διαφημίσεις και ιχνηλάτες";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Δείτε τη διαφορά του Brave";
+"focusOnboarding.urlBarIndicatorTitle" = "Δείτε τη διαφορά του Ping";
 

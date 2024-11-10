@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Queres ver a información da tenda?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> pestana pechada}other{<ph name="MANY_CLOSED"/> pestanas pechadas}}</translation>
 <translation id="2894757982205307093">Nova pestana no grupo</translation>
-<translation id="4691798003247738043">Brave | Acerca desta tenda</translation>
+<translation id="4691798003247738043">Ping | Acerca desta tenda</translation>
 <translation id="2977480621796371840">Quitar do grupo</translation>
 <translation id="29919168204617356">As pestanas inactivas pecharanse automaticamente. Sempre podes atopalas no historial.</translation>
 <translation id="3008554597174452548">Deter seguimento do produto</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Ver información sobre a tenda, opción dispoñible preto da parte superior da pantalla</translation>
 <translation id="5627941783489838464">Non hai actualizacións de pestanas</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Restaurar pestana}other{Restaurar pestanas}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ligazón de Brave}other{<ph name="TABS_COUNT_MANY"/> ligazóns de Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ligazón de Ping}other{<ph name="TABS_COUNT_MANY"/> ligazóns de Ping}}</translation>
 <translation id="575494663145460764">Queres recibir alertas de baixadas de prezo?</translation>
 <translation id="58326064309361797">Arrastra as pestanas para agrupalas</translation>
 <translation id="5901630391730855834">Amarelo</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Os grupos de pestanas gárdanse e actualízanse automaticamente en todos os dispositivos</translation>
 <translation id="747459581954555080">Restablecer todo</translation>
 <translation id="753732157349120914">Selector de pestanas</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> recensión procedente de Brave}other{<ph name="REVIEWS_COUNT_MANY"/> recensións procedentes de Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> recensión procedente de Ping}other{<ph name="REVIEWS_COUNT_MANY"/> recensións procedentes de Ping}}</translation>
 <translation id="7559245342362162951">Mostrar as pestanas do grupo nunha grade en pantalla completa</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="7688386659311034820">Cadro de diálogo de pestanas inactivas</translation>

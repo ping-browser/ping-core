@@ -43,7 +43,7 @@
 <translation id="2801787514987684416">સ્ટોરની માહિતી જોઈએ?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> ટૅબ બંધ કર્યું}one{<ph name="MANY_CLOSED"/> બંધ કર્યું}other{<ph name="MANY_CLOSED"/> બંધ કર્યા}}</translation>
 <translation id="2894757982205307093">ગ્રૂપમાં નવું ટૅબ</translation>
-<translation id="4691798003247738043">Brave | આ સ્ટોર વિશે</translation>
+<translation id="4691798003247738043">Ping | આ સ્ટોર વિશે</translation>
 <translation id="2977480621796371840">ગ્રૂપમાંથી દૂર કરો</translation>
 <translation id="29919168204617356">નિષ્ક્રિય ટૅબ ઑટોમૅટિક રીતે બંધ થઈ જશે. તમે ગમે ત્યારે તેને ઇતિહાસમાં શોધી શકો છો.</translation>
 <translation id="3008554597174452548">પ્રોડક્ટને ટ્રૅક કરવાનું બંધ કરો</translation>
@@ -148,7 +148,7 @@
 <translation id="7452985128687107478">ટૅબના ગ્રૂપ તમારા બધા ડિવાઇસ પર ઑટોમૅટિક રીતે સાચવવામાં અને અપડેટ કરવામાં આવે છે</translation>
 <translation id="747459581954555080">બધુ પુનર્પ્રાપ્ત કરો</translation>
 <translation id="753732157349120914">ટૅબ સ્વિચર</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{Brave તરફથી <ph name="REVIEWS_COUNT_ONE"/> રિવ્યૂ}one{Brave તરફથી <ph name="REVIEWS_COUNT_MANY"/> રિવ્યૂ}other{Brave તરફથી <ph name="REVIEWS_COUNT_MANY"/> રિવ્યૂ}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{Ping તરફથી <ph name="REVIEWS_COUNT_ONE"/> રિવ્યૂ}one{Ping તરફથી <ph name="REVIEWS_COUNT_MANY"/> રિવ્યૂ}other{Ping તરફથી <ph name="REVIEWS_COUNT_MANY"/> રિવ્યૂ}}</translation>
 <translation id="7559245342362162951">ગ્રુપના ટૅબને પૂર્ણસ્ક્રીન ગ્રિડમાં બતાવો</translation>
 <translation id="7658239707568436148">રદ કરો</translation>
 <translation id="7688386659311034820">નિષ્ક્રિય ટૅબ સંવાદ</translation>

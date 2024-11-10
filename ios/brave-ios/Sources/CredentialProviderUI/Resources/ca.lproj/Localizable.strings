@@ -10,8 +10,8 @@
 /* A title for a button that when tapped copies the content highlighted into the users clipboard */
 "CredentialProvider.copyMenuItemTitle" = "Copia";
 
-/* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
-"CredentialProvider.credentialListTitle" = "Contrasenyes de Brave";
+/* The title shown at the top of a list of credentials. 'Ping' in this case is the company name */
+"CredentialProvider.credentialListTitle" = "Contrasenyes de Ping";
 
 /* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
 "CredentialProvider.detailsFormPasswordField" = "Contrasenya";
@@ -34,13 +34,13 @@
 /* The title on a button that dismisses the onboarding view */
 "CredentialProvider.onboardingViewContinueCTA" = "Continua";
 
-/* A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product. */
+/* A footnote shown on a screen shown when the user turns on Ping as a password autofill provider. 'iCloud Keychain' is an Apple product. */
 "CredentialProvider.onboardingViewFootnote" = "Per accedir més ràpidament a les contrasenyes, desmarca el clauer de l'iCloud";
 
-/* The subtitle on a screen shown when the user turns on Brave as a password autofill provider */
+/* The subtitle on a screen shown when the user turns on Ping as a password autofill provider */
 "CredentialProvider.onboardingViewSubtitle" = "Pots utilitzar contrasenyes desades en altres aplicacions de l'aparell";
 
-/* The title on a screen shown when the user turns on Brave as a password autofill provider */
+/* The title on a screen shown when the user turns on Ping as a password autofill provider */
 "CredentialProvider.onboardingViewTitle" = "L'emplenament automàtic està activat";
 
 /* A header label shown above a list of website logins (username/password combinations) */
@@ -61,7 +61,7 @@
 /* The title displayed in alert when a user needs to set passcode */
 "CredentialProvider.setPasscodeAlertTitle" = "Estableix una contrasenya";
 
-/* A title for a button shown as a confirmation action on a login's detail screen. Tapping it uses the password when autofilling into the website */
+/* A title for a button shown as a confirmation action on a login's detail screen. Tapbrave it uses the password when autofilling into the website */
 "CredentialProvider.useButtonTitle" = "Utilitza";
 
 /* An accessibility label read out when a user activates VoiceOver on a button that when taps drills down into a credentials details */

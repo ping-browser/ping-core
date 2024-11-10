@@ -259,26 +259,25 @@ void BraveBrowser::UpdateTargetURL(content::WebContents* source,
 }
 
 bool BraveBrowser::ShouldAskForBrowserClosingBeforeHandlers() {
-  if (g_suppress_dialog_for_testing) {
+  // returning false to suppress this warning for Ping
     return false;
-  }
 
-  // Don't need to ask when application closing is in-progress.
-  if (BrowserCloseManager::BrowserClosingStarted()) {
-    return false;
-  }
-
-  if (confirmed_to_close_) {
-    return false;
-  }
-
-  PrefService* prefs = profile()->GetPrefs();
-  if (!prefs->GetBoolean(kEnableWindowClosingConfirm)) {
-    return false;
-  }
-
-  // Only launch confirm dialog while closing when browser has multiple tabs.
-  return tab_strip_model()->count() > 1;
+//  if (g_suppress_dialog_for_testing)
+//    return false;
+//
+//  // Don't need to ask when application closing is in-progress.
+//  if (BrowserCloseManager::BrowserClosingStarted())
+//    return false;
+//
+//  if (confirmed_to_close_)
+//    return false;
+//
+//  PrefService* prefs = profile()->GetPrefs();
+//  if (!prefs->GetBoolean(kEnableWindowClosingConfirm))
+//    return false;
+//
+//  // Only launch confirm dialog while closing when browser has multiple tabs.
+//  return tab_strip_model()->count() > 1;
 }
 
 bool BraveBrowser::AreAllTabsSharedPinnedTabs() {

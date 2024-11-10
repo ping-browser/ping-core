@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Jen pro potvrzení, chtěli jste „Záložky“?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Jen pro potvrzení, chtěli jste „Seznam skladeb Brave“?";
+"e13lS3-FGO5qW" = "Jen pro potvrzení, chtěli jste „Seznam skladeb Ping“?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Jen pro potvrzení, chtěli jste „Peněženka Brave“?";
+"e13lS3-jXiFQY" = "Jen pro potvrzení, chtěli jste „Peněženka Ping“?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Jen pro potvrzení, chtěli jste „Stahování“?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Jen pro potvrzení, chtěli jste „Nová soukromá karta“?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Jen pro potvrzení, chtěli jste „Novinky Brave“?";
+"e13lS3-XCyA8c" = "Jen pro potvrzení, chtěli jste „Novinky Ping“?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Jen pro potvrzení, chtěli jste „Vyhledat“?";
@@ -74,7 +74,7 @@
 "EUS9FL" = "Zkratka widgetu";
 
 /* (No Comment) */
-"FGO5qW" = "Seznam stop Brave";
+"FGO5qW" = "Seznam stop Ping";
 
 /* (No Comment) */
 "gpCwrM" = "Konfigurace statistik";
@@ -89,7 +89,7 @@
 "joEZJM" = "#2";
 
 /* (No Comment) */
-"jXiFQY" = "Peněženka Brave";
+"jXiFQY" = "Peněženka Ping";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová karta“.";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "Existují/existuje ${počet} možnosti/možností odpovídající „Záložky“.";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Existují/existuje ${počet} možnosti/možností odpovídající „Seznam skladeb Brave“.";
+"L1fziM-FGO5qW" = "Existují/existuje ${počet} možnosti/možností odpovídající „Seznam skladeb Ping“.";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Existují/existuje ${počet} možnosti/možností odpovídající „Peněženka Brave“.";
+"L1fziM-jXiFQY" = "Existují/existuje ${počet} možnosti/možností odpovídající „Peněženka Ping“.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Existují/existuje ${počet} možnosti/možností odpovídající „Stahování“.";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová soukromá karta“.";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Existují/existuje ${počet} možnosti/možností odpovídající „Novinky Brave“.";
+"L1fziM-XCyA8c" = "Existují/existuje ${počet} možnosti/možností odpovídající „Novinky Ping“.";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Existují/existuje ${počet} možnosti/možností odpovídající „Vyhledat“.";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Jen pro potvrzení, chtěli jste „Záložky“?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Jen pro potvrzení, chtěli jste „Seznam skladeb Brave“?";
+"r2EI05-FGO5qW" = "Jen pro potvrzení, chtěli jste „Seznam skladeb Ping“?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Jen pro potvrzení, chtěli jste „Peněženka Brave“?";
+"r2EI05-jXiFQY" = "Jen pro potvrzení, chtěli jste „Peněženka Ping“?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Jen pro potvrzení, chtěli jste „Stahování“?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Jen pro potvrzení, chtěli jste „Nová soukromá karta“?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Jen pro potvrzení, chtěli jste „Novinky Brave“?";
+"r2EI05-XCyA8c" = "Jen pro potvrzení, chtěli jste „Novinky Ping“?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Jen pro potvrzení, chtěli jste „Vyhledat“?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "Existují/existuje ${počet} možnosti/možností odpovídající „Záložky“.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Existují/existuje ${počet} možnosti/možností odpovídající „Seznam skladeb Brave“.";
+"tNCrcE-FGO5qW" = "Existují/existuje ${počet} možnosti/možností odpovídající „Seznam skladeb Ping“.";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Existují/existuje ${počet} možnosti/možností odpovídající „Peněženka Brave“.";
+"tNCrcE-jXiFQY" = "Existují/existuje ${počet} možnosti/možností odpovídající „Peněženka Ping“.";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "Existují/existuje ${počet} možnosti/možností odpovídající „Stahování“.";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová soukromá karta“.";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Existují/existuje ${počet} možnosti/možností odpovídající „Novinky Brave“.";
+"tNCrcE-XCyA8c" = "Existují/existuje ${počet} možnosti/možností odpovídající „Novinky Ping“.";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Existují/existuje ${počet} možnosti/možností odpovídající „Vyhledat“.";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "Existují/existuje ${počet} možnosti/možností odpovídající „Záložky“.";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Existují/existuje ${počet} možnosti/možností odpovídající „Seznam skladeb Brave“.";
+"TxuMja-FGO5qW" = "Existují/existuje ${počet} možnosti/možností odpovídající „Seznam skladeb Ping“.";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Existují/existuje ${počet} možnosti/možností odpovídající „Peněženka Brave“.";
+"TxuMja-jXiFQY" = "Existují/existuje ${počet} možnosti/možností odpovídající „Peněženka Ping“.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Existují/existuje ${počet} možnosti/možností odpovídající „Stahování“.";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová soukromá karta“.";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Existují/existuje ${počet} možnosti/možností odpovídající „Novinky Brave“.";
+"TxuMja-XCyA8c" = "Existují/existuje ${počet} možnosti/možností odpovídající „Novinky Ping“.";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Existují/existuje ${počet} možnosti/možností odpovídající „Vyhledat“.";
@@ -248,7 +248,7 @@
 "xcI3h9" = "Reklamy blokovány";
 
 /* (No Comment) */
-"XCyA8c" = "Zprávy Brave";
+"XCyA8c" = "Zprávy Ping";
 
 /* (No Comment) */
 "XkwBGY" = "Konfigurace klávesové zkratky uzamčení obrazovky";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Jen pro potvrzení, chtěli jste „Záložky“?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Jen pro potvrzení, chtěli jste „Seznam skladeb Brave“?";
+"YQiQuz-FGO5qW" = "Jen pro potvrzení, chtěli jste „Seznam skladeb Ping“?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Jen pro potvrzení, chtěli jste „Peněženka Brave“?";
+"YQiQuz-jXiFQY" = "Jen pro potvrzení, chtěli jste „Peněženka Ping“?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Jen pro potvrzení, chtěli jste „Stahování“?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Jen pro potvrzení, chtěli jste „Nová soukromá karta“?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Jen pro potvrzení, chtěli jste „Novinky Brave“?";
+"YQiQuz-XCyA8c" = "Jen pro potvrzení, chtěli jste „Novinky Ping“?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Jen pro potvrzení, chtěli jste „Vyhledat“?";

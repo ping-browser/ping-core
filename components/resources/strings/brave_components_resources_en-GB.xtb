@@ -26,10 +26,10 @@
 <translation id="985862351129593673">Customise dashboard</translation>
 <translation id="7180865173735832675">Customise</translation>
 <translation id="8522669544471808198">Show background images</translation>
-<translation id="5801450813341024983">Brave backgrounds</translation>
+<translation id="5801450813341024983">Ping backgrounds</translation>
 <translation id="1416884769823233410">Use your own</translation>
 <translation id="6246790815526961700">Upload from device</translation>
-<translation id="7275773481201277457">Show Brave Stats</translation>
+<translation id="7275773481201277457">Show Ping Stats</translation>
 <translation id="6836061097810262923">Show Clock</translation>
 <translation id="5912396950572065471">Format</translation>
 <translation id="604124094241169006">Automatic</translation>
@@ -64,23 +64,23 @@
 <translation id="780301667611848630">No, thanks</translation>
 <translation id="1230746063445072175">Want even better privacy?</translation>
 <translation id="6699628638740071563">It's time to ditch Google.</translation>
-<translation id="5588534392045217394">Brave Search doesn't bias or censor results, and it doesn't profile you.</translation>
-<translation id="6811221529729056895">Try Brave Search now</translation>
-<translation id="3446024864193919737">Show Brave Rewards</translation>
+<translation id="5588534392045217394">Ping Search doesn't bias or censor results, and it doesn't profile you.</translation>
+<translation id="6811221529729056895">Try Ping Search now</translation>
+<translation id="3446024864193919737">Show Ping Rewards</translation>
 <translation id="5585019845078534178">Cards</translation>
 <translation id="3870475560794762985">Show sponsored images</translation>
 <translation id="2414654907269324670">You're earning BATs for sponsored images.</translation>
 <translation id="4942016616604700968">Enable Rewards</translation>
 <translation id="5684562942023496754">You can earn for seeing sponsored images.</translation>
-<translation id="8934374643857605034">As a Brave Rewards user, you can earn BATs for seeing sponsored images.</translation>
-<translation id="1570714748649804013">As a Brave Rewards user, you earn BATs for sponsored images you see. Disabling sponsored images will reduce how much you earn.</translation>
-<translation id="8998727244653964783">You can earn BATs for seeing sponsored images when you connect a custodial account to Brave Rewards. In the meantime, you're helping to support creators with sponsored images.</translation>
-<translation id="5512383650263136662">You can earn BATs for seeing sponsored images with Brave Rewards. Not a Rewards user? Turning on sponsored images still supports Brave's mission.</translation>
+<translation id="8934374643857605034">As a Ping Rewards user, you can earn BATs for seeing sponsored images.</translation>
+<translation id="1570714748649804013">As a Ping Rewards user, you earn BATs for sponsored images you see. Disabling sponsored images will reduce how much you earn.</translation>
+<translation id="8998727244653964783">You can earn BATs for seeing sponsored images when you connect a custodial account to Ping Rewards. In the meantime, you're helbrave to support creators with sponsored images.</translation>
+<translation id="5512383650263136662">You can earn BATs for seeing sponsored images with Ping Rewards. Not a Rewards user? Turning on sponsored images still supports Ping's mission.</translation>
 <translation id="2875302873837723333">top sites</translation>
-<translation id="8173998484743827990">Brave stats</translation>
+<translation id="8173998484743827990">Ping stats</translation>
 <translation id="383680190590774040">clock</translation>
 <translation id="1383876407941801731">Search</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="3333887201479867589">Ping Rewards</translation>
 <translation id="3159285901314605198">Background Image</translation>
 <translation id="385051799172605136">Back</translation>
 <translation id="4225429340218993596">Solid colours</translation>
@@ -92,13 +92,13 @@
 <translation id="4108314971463891922">Follow</translation>
 <translation id="3861486700625780712">Unfollow</translation>
 <translation id="8909741410750517071">Follow this source in 1-click.</translation>
-<translation id="1982678174789043774">Get all the latest stories in Brave News.</translation>
+<translation id="1982678174789043774">Get all the latest stories in Ping News.</translation>
 <translation id="7894417427965898400">Manage feeds</translation>
 <translation id="9164544612367905452">Fetching…</translation>
 <translation id="1276592121036104130">Load new content</translation>
-<translation id="2875288128871360696">Scroll for Brave news</translation>
-<translation id="8510120023634509743">Reset Brave News sources</translation>
-<translation id="75825199302994272">Reset all your Brave News publisher choices to their default?</translation>
+<translation id="2875288128871360696">Scroll for Ping news</translation>
+<translation id="8510120023634509743">Reset Ping News sources</translation>
+<translation id="75825199302994272">Reset all your Ping News publisher choices to their default?</translation>
 <translation id="954001034349395856">All sources</translation>
 <translation id="8890516388109605451">Sources</translation>
 <translation id="5158129253322921540">Disable content from <ph name="PUBLISHER_NAME"/></translation>
@@ -108,12 +108,12 @@
 <translation id="7791543448312431591">Add</translation>
 <translation id="7679334366167089823">Earn tokens for watching privacy-respecting ads.</translation>
 <translation id="7191394989411626168">By turning off Cards, all cards currently visible will be hidden. However, you may still be notified of new cards.</translation>
-<translation id="6820526586005233839">Brave Ads paused</translation>
-<translation id="5190407395832551012">To keep Brave Rewards safe from abuse, we'll randomly ask users to solve a captcha. Click “Solve” to resume ads.</translation>
+<translation id="6820526586005233839">Ping Ads paused</translation>
+<translation id="5190407395832551012">To keep Ping Rewards safe from abuse, we'll randomly ask users to solve a captcha. Click “Solve” to resume ads.</translation>
 <translation id="1693773514029371138">Solve</translation>
 <translation id="6991128190741664836">Later</translation>
-<translation id="8112367589167674370">Brave talk</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="8112367589167674370">Ping talk</translation>
+<translation id="8488282162676695335">Ping Wallet</translation>
 <translation id="8820817407110198400">Bookmarks bar</translation>
 <translation id="1644574205037202324">History</translation>
 <translation id="2702801445560668637">Reading List</translation>
@@ -123,23 +123,23 @@
 <translation id="8730621377337864115">Done</translation>
 <translation id="730042046912793465">This is a</translation>
 <translation id="2055363275850890030">Private Window</translation>
-<translation id="9133213713928851646">Brave doesn't remember what you do in a Private Window. Sites you visit won't show up in your history, and cookies vanish when you're done. Private Windows don't make you completely anonymous online, though.</translation>
-<translation id="4085423007106063912">Brave never remembers what you do in a private window. Sites you visit won't show up in your history. Cookies, form data and site data vanish when you close the window.</translation>
+<translation id="9133213713928851646">Ping doesn't remember what you do in a Private Window. Sites you visit won't show up in your history, and cookies vanish when you're done. Private Windows don't make you completely anonymous online, though.</translation>
+<translation id="4085423007106063912">Ping never remembers what you do in a private window. Sites you visit won't show up in your history. Cookies, form data and site data vanish when you close the window.</translation>
 <translation id="1700746046668116047">Note that your activity could still be visible to your Internet service provider, passive network observers or your employer (if you're using a work machine or network). For more privacy, open a private window with Tor.</translation>
 <translation id="8759753423332885148">Learn more.</translation>
 <translation id="8611976753572844841">Private window with Tor connectivity</translation>
-<translation id="1645589858096839236">Brave doesn't store browsing activity from private windows. With Tor connectivity, it becomes more difficult for sites to see your true IP address and for network observers to see what sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor browser instead.</translation>
+<translation id="1645589858096839236">Ping doesn't store browsing activity from private windows. With Tor connectivity, it becomes more difficult for sites to see your true IP address and for network observers to see what sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor browser instead.</translation>
 <translation id="7919374705736538787">Search Privately with</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
-<translation id="218839872518145456">With private search, Brave will use DuckDuckGo for searches in Private Windows. DuckDuckGo doesn't track your search history, so you can search privately.</translation>
+<translation id="218839872518145456">With private search, Ping will use DuckDuckGo for searches in Private Windows. DuckDuckGo doesn't track your search history, so you can search privately.</translation>
 <translation id="1925197199485958903">In Private Windows with Tor, DuckDuckGo is the default search engine. Some of the other popular search engines are harder to use with Tor. DuckDuckGo doesn't track your search history; with Tor, they don't even know your IP address.</translation>
 <translation id="4371533307685765155">Search with DuckDuckGo</translation>
 <translation id="548478195417408221">Make Private Windows more private</translation>
 <translation id="3294503279952534143">This Private Window is more private</translation>
 <translation id="6126226144537295436">with Tor connectivity</translation>
 <translation id="8541421872680304667">Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. Tor can slow down browsing and some sites might not work at all.</translation>
-<translation id="8897548669448660973">Using Private Windows only changes what Brave does on your device — it doesn't change anyone else's behavior. Tor hides your IP address from the sites you visit and makes it somewhat more difficult, but not impossible, for your ISP or employer to see what sites you are visiting. Open a Private Window with Tor from the menu, or with [[ key ]].</translation>
-<translation id="6975708438781948564">Learn more about Tor in Brave</translation>
+<translation id="8897548669448660973">Using Private Windows only changes what Ping does on your device — it doesn't change anyone else's behavior. Tor hides your IP address from the sites you visit and makes it somewhat more difficult, but not impossible, for your ISP or employer to see what sites you are visiting. Open a Private Window with Tor from the menu, or with [[ key ]].</translation>
+<translation id="6975708438781948564">Learn more about Tor in Ping</translation>
 <translation id="4712050378540986986">Tor status</translation>
 <translation id="1939334281379458295">Tor connected successfully</translation>
 <translation id="8030169304546394654">Disconnected</translation>
@@ -148,7 +148,7 @@
 <translation id="2795840524629682765">Tor connection failed</translation>
 <translation id="1149108864689950951">Tor is connecting ... [[percentage]]%</translation>
 <translation id="3651192084771403430">Having problems connecting? Try <ph name="BEGIN_LINK"/>turning off<ph name="END_LINK"/> Private Window with Tor and back on again in settings.</translation>
-<translation id="8834376622642889380">Open <ph name="BEGIN_LINK"/>Brave Settings<ph name="END_LINK"/>, disable Private Window with Tor, then re-enable.</translation>
+<translation id="8834376622642889380">Open <ph name="BEGIN_LINK"/>Ping Settings<ph name="END_LINK"/>, disable Private Window with Tor, then re-enable.</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>Still having trouble?<ph name="END_BOLD"/> Try using <ph name="BEGIN_BRIDGES_LINK"/>bridges<ph name="END_BRIDGES_LINK"/> or <ph name="BEGIN_SUPPORT_LINK"/>contact support<ph name="END_SUPPORT_LINK"/>.</translation>
 <translation id="8388043004918289671">Contact support.</translation>
 <translation id="4272382368346338917">Additional Filters</translation>
@@ -168,36 +168,36 @@
 <translation id="5334844597069022743">View source</translation>
 <translation id="4720556299488643018">Unsubscribe</translation>
 <translation id="1209739344687072997">Report a broken site</translation>
-<translation id="8510478288840333677">Let Brave's developers know that this site doesn't work properly with Shields:</translation>
+<translation id="8510478288840333677">Let Ping's developers know that this site doesn't work properly with Shields:</translation>
 <translation id="3110968385867124099">This page cannot be reported because it was not served over HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">This page is a local web page and is not eligible for reporting.</translation>
 <translation id="3645455863322075098">This page is an error page and is not eligible for reporting.</translation>
-<translation id="105644511106871142">Thank you for helping make Brave better for all. This report will only send information necessary for us to fix this site.</translation>
+<translation id="105644511106871142">Thank you for helbrave make Ping better for all. This report will only send information necessary for us to fix this site.</translation>
 <translation id="6476216365964140603">Additional details (optional)</translation>
 <translation id="6145852496180774737">Contact me at: (optional)</translation>
 <translation id="7616645803364270729">Email, Twitter, etc.</translation>
 <translation id="721949491455392748">Include screenshot of the current page</translation>
 <translation id="8459191579769999214">View screenshot</translation>
 <translation id="5299848999918506028">Thank you!</translation>
-<translation id="76550953340008122">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
-<translation id="4046860372562593546">Manage Brave Ads</translation>
-<translation id="5136973036012418831">Control what kinds of Brave Ads you see and how often.</translation>
+<translation id="76550953340008122">Thanks for letting Ping's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
+<translation id="4046860372562593546">Manage Ping Ads</translation>
+<translation id="5136973036012418831">Control what kinds of Ping Ads you see and how often.</translation>
 <translation id="4759608598194750161">The more you see, the more you can earn.</translation>
 <translation id="7526443283522395161">New tab page ads</translation>
 <translation id="7968650944098083708">Notification ads</translation>
 <translation id="8289546216379862569">Search ads</translation>
-<translation id="4758111936363146244">Brave Search Ads appear on <ph name="BEGIN_LINK"/>Brave Search<ph name="END_LINK"/>.</translation>
-<translation id="7596536223419118193">You cannot earn BATs from Brave Search Ads yet, but you help support Brave by having them on.</translation>
-<translation id="6390952132783970876">Brave News ads</translation>
-<translation id="7516281787184495886">Brave News contains ads that cannot be independently disabled.</translation>
-<translation id="8008378848677625233">Brave News is currently disabled.</translation>
+<translation id="4758111936363146244">Ping Search Ads appear on <ph name="BEGIN_LINK"/>Ping Search<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">You cannot earn BATs from Ping Search Ads yet, but you help support Ping by having them on.</translation>
+<translation id="6390952132783970876">Ping News ads</translation>
+<translation id="7516281787184495886">Ping News contains ads that cannot be independently disabled.</translation>
+<translation id="8008378848677625233">Ping News is currently disabled.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="557705068184766514">An automatic way to support sites and content creators. Set a monthly contribution and browse normally. <ph name="BEGIN_LINK"/>Verified sites and creators<ph name="END_LINK"/> you visit will receive contributions from you each month based on the amount of time you spend on their content.</translation>
 <translation id="6688567880783357035">Earnings so far this month</translation>
 <translation id="949044897316791211">Next earnings payout date</translation>
 <translation id="2211646556917925490">Total ads received this month</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
-<translation id="2539279826042558064">Brave Rewards and Ads are not available on your device at this time.</translation>
+<translation id="2539279826042558064">Ping Rewards and Ads are not available on your device at this time.</translation>
 <translation id="5736977383725358876">Notification ad frequency</translation>
 <translation id="7701040980221191251">None</translation>
 <translation id="480668534656787076">Max 1 per hour</translation>
@@ -207,7 +207,7 @@
 <translation id="7136536490586989815">Max 5 per hour</translation>
 <translation id="5751102711563374080">Max 10 per hour</translation>
 <translation id="2356652719351432565">Regional ad relevance</translation>
-<translation id="3216275550298493597">This allows Brave to show you ads meant specifically for your region.</translation>
+<translation id="3216275550298493597">This allows Ping to show you ads meant specifically for your region.</translation>
 <translation id="8446884382197647889">Learn More</translation>
 <translation id="3783399046165388366">Auto-detected as <ph name="SUBDIVISION"/></translation>
 <translation id="8010081455002666927">Auto-detect</translation>
@@ -243,7 +243,7 @@
 <translation id="6805660603861526473">Viewed</translation>
 <translation id="8167256685618982116">By turning on <ph name="TITLE"/>, you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 <translation id="1892970806832316900">Pending until <ph name="DATE"/></translation>
-<translation id="7849926087559412554">Oops! Your browser cannot receive Brave Private Ads.</translation>
+<translation id="7849926087559412554">Oops! Your browser cannot receive Ping Private Ads.</translation>
 <translation id="5177429570315095022">Your browser needs to be updated to continue seeing ads.</translation>
 <translation id="4593680147181354667">Diagnostic ID</translation>
 <translation id="3995471429906554168">Diagnostic info</translation>
@@ -310,8 +310,8 @@
 <translation id="3368922792935385530">Connected</translation>
 <translation id="5058161306698404465">Creation environment:</translation>
 <translation id="5856438412804207598">Current environment:</translation>
-<translation id="5916290544882167205">Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</translation>
-<translation id="9026369588205476247">To protect your privacy, this Brave Rewards statement is not saved, recorded or logged anywhere other than on your device (this computer). It cannot be retrieved from Brave in the event of data loss on your device.</translation>
+<translation id="5916290544882167205">Ping Software. Ping is a registered trademark of Ping Software. Site names may be trademarks or registered trademarks of the site owner.</translation>
+<translation id="9026369588205476247">To protect your privacy, this Ping Rewards statement is not saved, recorded or logged anywhere other than on your device (this computer). It cannot be retrieved from Ping in the event of data loss on your device.</translation>
 <translation id="1919345977826869612">Ads</translation>
 <translation id="3587482841069643663">All</translation>
 <translation id="4241224519481557898">Category</translation>
@@ -321,7 +321,7 @@
 <translation id="8863685593846905344">Ads history</translation>
 <translation id="5212777575344695266">Mark as inappropriate</translation>
 <translation id="2111256234277361810">Mark as inappropriate ✓</translation>
-<translation id="8988332871810963281">There is currently no Brave ads history</translation>
+<translation id="8988332871810963281">There is currently no Ping ads history</translation>
 <translation id="5345727496083327478">You will no longer receive ads from this category</translation>
 <translation id="2631006050119455616">Saved</translation>
 <translation id="3671566813999349838">Amount</translation>
@@ -334,7 +334,7 @@
 <translation id="4932733599132424254">Date</translation>
 <translation id="3552003743293281224">Deposits</translation>
 <translation id="3866249974567520381">Description</translation>
-<translation id="8605272644314973683">Brave Rewards is</translation>
+<translation id="8605272644314973683">Ping Rewards is</translation>
 <translation id="298067735430872465">Earnings from Ads</translation>
 <translation id="1418534671788496616">View deposit history</translation>
 <translation id="3412655388715513818">Exclude this site</translation>
@@ -380,13 +380,13 @@
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transactions</translation>
 <translation id="2448312741937722512">Type</translation>
-<translation id="8772672608371898774">Brave Verified Publisher</translation>
+<translation id="8772672608371898774">Ping Verified Publisher</translation>
 <translation id="5050370287908180130">View Monthly Statement for Details</translation>
 <translation id="7853202427316060426">Activity</translation>
 <translation id="7232682712743566408">Rewards balance</translation>
-<translation id="4258022280942725182">Your Brave Rewards</translation>
+<translation id="4258022280942725182">Your Ping Rewards</translation>
 <translation id="6727483290601442544">View Details</translation>
-<translation id="4206899127409458763">Creating your Brave Rewards profile</translation>
+<translation id="4206899127409458763">Creating your Ping Rewards profile</translation>
 <translation id="8706157865312453070">Sites excluded</translation>
 <translation id="2501059654604370822">Remove from excluded</translation>
 <translation id="9075700728717335924">You've excluded</translation>
@@ -395,25 +395,25 @@
 <translation id="5113531205597573951">Sites viewed</translation>
 <translation id="4450893287417543264">Don't show again</translation>
 <translation id="7642372245223412840">Connect to bitFlyer</translation>
-<translation id="6143701117592994599">Connecting Brave Rewards to a bitFlyer account will let you earn BATs and withdraw your BAT earnings from Brave Rewards.</translation>
-<translation id="4354564238172327160">Become a Brave creator!</translation>
+<translation id="6143701117592994599">Connecting Ping Rewards to a bitFlyer account will let you earn BATs and withdraw your BAT earnings from Ping Rewards.</translation>
+<translation id="4354564238172327160">Become a Ping creator!</translation>
 <translation id="4639659520811817892">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</translation>
-<translation id="4816455138209470435">Brave supports YouTube, Twitch, Vimeo and more!</translation>
+<translation id="4816455138209470435">Ping supports YouTube, Twitch, Vimeo and more!</translation>
 <translation id="7404779623219601861">Redeem BAT for gift cards</translation>
 <translation id="6215565499749144110">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</translation>
 <translation id="6074001074364432111">* Requires Uphold account.</translation>
 <translation id="7703007724342399482">Get 2% cryptoback with the Uphold card</translation>
 <translation id="1109729143147368573">Spend your crypto and other assets at nearly 50 million merchants and ATMs worldwide. Spend crypto to get crypto!</translation>
 <translation id="3787061634640932557">Edit Cards</translation>
-<translation id="2070991379950719711">Start using Brave Rewards</translation>
+<translation id="2070991379950719711">Start using Ping Rewards</translation>
 <translation id="6297791103122079275">Talk</translation>
 <translation id="5977237145327845546">Start a private video call with your friends and colleagues.</translation>
 <translation id="8863928195533744356">Start call</translation>
 <translation id="3651550649176056334">About your data</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="616639131065447379">Welcome to Brave Crypto Wallets</translation>
-<translation id="1740464057879304704">Crypto Wallets lets you work with cryptocurrency and related assets in Brave. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems - or are excited to learn.</translation>
-<translation id="4855440621031541830">Only use Crypto Wallets if you accept that you alone are responsible for all risk associated with this use, and that Brave Software bears no responsibility or liability for any losses, including incidental or consequential losses you might suffer as a result of this use.</translation>
+<translation id="616639131065447379">Welcome to Ping Crypto Wallets</translation>
+<translation id="1740464057879304704">Crypto Wallets lets you work with cryptocurrency and related assets in Ping. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems - or are excited to learn.</translation>
+<translation id="4855440621031541830">Only use Crypto Wallets if you accept that you alone are responsible for all risk associated with this use, and that Ping Software bears no responsibility or liability for any losses, including incidental or consequential losses you might suffer as a result of this use.</translation>
 <translation id="3187473319809074178">All of this is completely separate from</translation>
 <translation id="8327818101454798856">So if you were looking to support your favourite sites, head over there instead.</translation>
 <translation id="412480955826088549">Downloading Component...</translation>
@@ -421,35 +421,35 @@
 <translation id="326118736933420687">You're viewing a WebTorrent page</translation>
 <translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
-<translation id="4492298165410552103">Enable support of Unstoppable Domains in Brave?</translation>
-<translation id="5015092481905019948">Brave will be using <ph name="PROVIDER_NAME"/> to resolve <ph name="DOMAIN_LIST"/> domain names that are on <ph name="DOMAIN_PROVIDER_NAME"/>. Brave hides your IP address. If you enable this, <ph name="PROVIDER_NAME"/> will see that someone is trying to visit these domains but nothing else. See <ph name="PROVIDER_NAME"/>'s <ph name="BEGIN_PROVIDER_TOU_LINK"/>terms of use<ph name="END_PROVIDER_TOU_LINK"/> and <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>privacy policy<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
+<translation id="4492298165410552103">Enable support of Unstoppable Domains in Ping?</translation>
+<translation id="5015092481905019948">Ping will be using <ph name="PROVIDER_NAME"/> to resolve <ph name="DOMAIN_LIST"/> domain names that are on <ph name="DOMAIN_PROVIDER_NAME"/>. Ping hides your IP address. If you enable this, <ph name="PROVIDER_NAME"/> will see that someone is trying to visit these domains but nothing else. See <ph name="PROVIDER_NAME"/>'s <ph name="BEGIN_PROVIDER_TOU_LINK"/>terms of use<ph name="END_PROVIDER_TOU_LINK"/> and <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>privacy policy<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="2789190492285945209">Ethereum Name Service (ENS)</translation>
-<translation id="4335039108389860301">Enable support of Ethereum Name Service (ENS) in Brave?</translation>
+<translation id="4335039108389860301">Enable support of Ethereum Name Service (ENS) in Ping?</translation>
 <translation id="807404806385418949">Ethereum Name Service off-chain look-up</translation>
-<translation id="4049590838234508776">Enable support of Ethereum Name Service (ENS) off-chain look-up in Brave?</translation>
+<translation id="4049590838234508776">Enable support of Ethereum Name Service (ENS) off-chain look-up in Ping?</translation>
 <translation id="5944991147217767764">This .eth domain name is stored off-chain and will be resolved by a third-party gateway. If you enable ENS off-chain lookup, the third-party gateway will see that you're trying to visit the .eth domain. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Learn more<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Proceed with off-chain look-up</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
-<translation id="1090584614351290462">Enable support of Solana Name Service (SNS) in Brave?</translation>
-<translation id="7769345036263036863">Brave will be using a third party to resolve <ph name="DOMAIN_LIST"/> domain names. Brave hides your IP address. If you enable this, the third party will see that someone is trying to visit these <ph name="DOMAIN_LIST"/> domains but nothing else. For more information about which third parties we use and their privacy policies, please see our <ph name="BEGIN_SNS_WIKI_LINK"/>help page<ph name="END_SNS_WIKI_LINK"/>.</translation>
+<translation id="1090584614351290462">Enable support of Solana Name Service (SNS) in Ping?</translation>
+<translation id="7769345036263036863">Ping will be using a third party to resolve <ph name="DOMAIN_LIST"/> domain names. Ping hides your IP address. If you enable this, the third party will see that someone is trying to visit these <ph name="DOMAIN_LIST"/> domains but nothing else. For more information about which third parties we use and their privacy policies, please see our <ph name="BEGIN_SNS_WIKI_LINK"/>help page<ph name="END_SNS_WIKI_LINK"/>.</translation>
 <translation id="884864496166128252">Proceed using <ph name="PROVIDER_NAME"/> server</translation>
 <translation id="4388873516324656141">Proceed using an SNS server</translation>
 <translation id="2356070529366658676">Ask</translation>
 <translation id="59174027418879706">Enabled</translation>
 <translation id="2468755552460246661">Domain blocked</translation>
 <translation id="6393849031898466746">This site may attempt to track you across other sites</translation>
-<translation id="983774928604730749">Brave has prevented the following site from loading:</translation>
-<translation id="8629537573456243518">Because you requested to aggressively block trackers and ads, Brave is blocking this site before the first network connection.</translation>
+<translation id="983774928604730749">Ping has prevented the following site from loading:</translation>
+<translation id="8629537573456243518">Because you requested to aggressively block trackers and ads, Ping is blocking this site before the first network connection.</translation>
 <translation id="2459038234784107183">Don't warn me about this site again</translation>
 <translation id="8242426110754782860">Proceed</translation>
 <translation id="2501278716633472235">Go back</translation>
 <translation id="8377779554871767775">Sensitive Website</translation>
 <translation id="5396996252458181259">This site may contain sensitive content.</translation>
 <translation id="8415427685483394219">Would you like to visit this site in Off-The-Record mode?</translation>
-<translation id="5754874269349119401">Brave wants to protect you when visiting sensitive sites. Sites you visit in Off-The-Record mode won't show up in your browsing history, and cookies will not be saved.</translation>
+<translation id="5754874269349119401">Ping wants to protect you when visiting sensitive sites. Sites you visit in Off-The-Record mode won't show up in your browsing history, and cookies will not be saved.</translation>
 <translation id="1307431692088049276">Don't ask me again</translation>
-<translation id="6329829767845427007">You can change this later in Brave Settings in the Privacy and Security section</translation>
+<translation id="6329829767845427007">You can change this later in Ping Settings in the Privacy and Security section</translation>
 <translation id="951201617124425694">Proceed Off-The-Record</translation>
 <translation id="4087894168792701548">Proceed Normally</translation>
 <translation id="5874287397425241890">You're browsing this website in Off-The-Record mode.</translation>
@@ -466,9 +466,9 @@
 <translation id="6053826678715267477">Allow access to localhost resources</translation>
 <translation id="2973562729984406132"><ph name="URL"/> wants access to localhost resources</translation>
 <translation id="5939518447894949180">Reset</translation>
-<translation id="3349204812119681938">Reset Brave Rewards</translation>
-<translation id="4915997950539925115">By resetting, your current Brave Rewards profile will be deleted and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN"/>support article about resetting<ph name="LINK_END"/> for more details.</translation>
-<translation id="4806029412510565611">I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN"/>support article about resetting<ph name="LINK_END"/>.</translation>
+<translation id="3349204812119681938">Reset Ping Rewards</translation>
+<translation id="4915997950539925115">By resetting, your current Ping Rewards profile will be deleted and Ping Rewards will no longer be enabled. If you enable Ping Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN"/>support article about resetting<ph name="LINK_END"/> for more details.</translation>
+<translation id="4806029412510565611">I understand that my current Ping Rewards profile and Ping Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN"/>support article about resetting<ph name="LINK_END"/>.</translation>
 <translation id="7717357606512850995">Check status</translation>
 <translation id="6473937687348632190">The payout for <ph name="MONTH"/> rewards has completed.</translation>
 <translation id="1711367267038576241">The payout for <ph name="MONTH"/> rewards will begin processing by <ph name="DATE"/>.</translation>
@@ -485,11 +485,11 @@
 <translation id="1848737374354350807">Balance</translation>
 <translation id="6516984207843289176">Connect account</translation>
 <translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>Ready to start earning?<ph name="BOLD_END"/> Connect an account so we have a place to send your earnings.</translation>
-<translation id="902298128239575729">Send contributions with Brave Rewards</translation>
-<translation id="6276721355724491595">You'll be able to send on-demand contributions to your favorite creators with your Brave Rewards balance once you have a custodial account connected.</translation>
+<translation id="902298128239575729">Send contributions with Ping Rewards</translation>
+<translation id="6276721355724491595">You'll be able to send on-demand contributions to your favorite creators with your Ping Rewards balance once you have a custodial account connected.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
-      =1 {This month, you've visited # creator supported by Brave Rewards}
-      other {This month, you've visited # creators supported by Brave Rewards}
+      =1 {This month, you've visited # creator supported by Ping Rewards}
+      other {This month, you've visited # creators supported by Ping Rewards}
     }</translation>
 <translation id="3264975266761862670">Ready to start earning?</translation>
 <translation id="2784412028126205842">Connect a payout account</translation>
@@ -498,20 +498,20 @@
       =1 {You could be getting paid for the <ph name="COUNT_BEGIN"/># ad<ph name="COUNT_END"/> you've seen this month.}
       other {You could be getting paid for the <ph name="COUNT_BEGIN"/># ads<ph name="COUNT_END"/> you've seen this month.}
     }</translation>
-<translation id="6067959437127691361">Using Brave Rewards helps support content creators, and lets you earn BATs.</translation>
+<translation id="6067959437127691361">Using Ping Rewards helps support content creators, and lets you earn BATs.</translation>
 <translation id="944736176598169208">Rewards</translation>
 <translation id="2359808026110333948">Continue</translation>
-<translation id="885805571521218129">This reflects your estimated earnings range for Brave Ads this month.</translation>
+<translation id="885805571521218129">This reflects your estimated earnings range for Ping Ads this month.</translation>
 <translation id="3863981251715594911">How does it work?</translation>
-<translation id="7931127789630755251">Earn tokens for private ads you see in Brave</translation>
+<translation id="7931127789630755251">Earn tokens for private ads you see in Ping</translation>
 <translation id="2278423362884506724">Support content creators and use your tokens to buy gift cards, exchange for other currencies and more.</translation>
 <translation id="6278643716658443228">Rewards settings</translation>
 <translation id="2862978891748913252">Select your country</translation>
-<translation id="3717922248131893262">To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/></translation>
+<translation id="3717922248131893262">To continue using Ping Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Start using Rewards</translation>
 <translation id="2956070106555335453">Summary</translation>
 <translation id="2369994359029526515">Unverified Creator</translation>
-<translation id="3984338085370091436">This creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified.</translation>
+<translation id="3984338085370091436">This creator is not yet verified with Ping Creators. You'll be able to send them contributions once they're verified.</translation>
 <translation id="6020176662032623904">Verified creator</translation>
 <translation id="8635423276837443905">Refresh creator verification status</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> on <ph name="PLATFORM"/></translation>
@@ -520,7 +520,7 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Set</translation>
 <translation id="8853725596990766789">Change amount</translation>
-<translation id="5899814466108868020">You are helping support Brave and the BAT community</translation>
+<translation id="5899814466108868020">You are helbrave support Ping and the BAT community</translation>
 <translation id="654447476965480878">Learn more about earning BATs</translation>
 <translation id="4105212447337987768">On <ph name="DATE"/>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.</translation>
 <translation id="707569835145765061">Action required: connect a custodial account or your vBATs will be lost</translation>
@@ -535,21 +535,21 @@
 <translation id="2429828319207652823">There was a problem processing your contribution.</translation>
 <translation id="6390041270339783491">Monthly contribution failed</translation>
 <translation id="7047578174221019462">Your monthly contributions have been processed.</translation>
-<translation id="2529827670795983639">Looks like this is not working, Brave ads will remain paused. Contact us if you need help with the captcha.</translation>
+<translation id="2529827670795983639">Looks like this is not working, Ping ads will remain paused. Contact us if you need help with the captcha.</translation>
 <translation id="261607053214862521">Max attempts exceeded</translation>
 <translation id="2323171459178104277">Solved!</translation>
-<translation id="1512837998731269583">Ads and earnings will now resume. Thanks for helping us protect Brave Rewards and privacy-based ads.</translation>
+<translation id="1512837998731269583">Ads and earnings will now resume. Thanks for helbrave us protect Ping Rewards and privacy-based ads.</translation>
 <translation id="3247549836099021862">Contact support</translation>
 <translation id="5234764350956374838">Dismiss</translation>
 <translation id="7859066142771796818">Use tokens to buy gift cards, exchange for other currencies, support content creators and more.</translation>
 <translation id="7352651011704765696">Something went wrong</translation>
-<translation id="5425006356459378415">Brave Rewards not available</translation>
-<translation id="909076461795862330">Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.</translation>
+<translation id="5425006356459378415">Ping Rewards not available</translation>
+<translation id="909076461795862330">Unfortunately, there was an error while trying to set up Ping Rewards. Please try again.</translation>
 <translation id="3180990265682133881">Unfortunately, there was an error while trying to set your country. Please try again.</translation>
-<translation id="5931798071481566121">New sign-ups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
+<translation id="5931798071481566121">New sign-ups for Ping Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="6439128034594289376">Woohoo! You’re all set!</translation>
-<translation id="6136350726756049410">Now you can get rewarded for viewing ads. You're helping make the web a better place for everyone. And that's awesome!</translation>
-<translation id="5547108999862247665">How does Brave Rewards work?</translation>
+<translation id="6136350726756049410">Now you can get rewarded for viewing ads. You're helbrave make the web a better place for everyone. And that's awesome!</translation>
+<translation id="5547108999862247665">How does Ping Rewards work?</translation>
 <translation id="3970520675790340955">Select your country so we can show you the right options and ads for your region.</translation>
 <translation id="6945221475159498467">Select</translation>
 <translation id="3279158300746391749">Press the <ph name="BAT_ICON"/> BAT icon in the URL bar to start.</translation>
@@ -557,11 +557,11 @@
 <translation id="8981626318554555706">Select your region</translation>
 <translation id="6923445315496949274">Select your region so we can show you the right options and ads for your region.</translation>
 <translation id="840952951051929644">By enabling Rewards, you agree to the <ph name="TOS_LINK_BEGIN"/>Terms of Service<ph name="TOS_LINK_END"/> and <ph name="PP_LINK_BEGIN"/>Privacy Policy<ph name="PP_LINK_END"/>.</translation>
-<translation id="5259608623172605993">Get paid for private ads you see in Brave</translation>
+<translation id="5259608623172605993">Get paid for private ads you see in Ping</translation>
 <translation id="3099020087817489135">Get special benefits and discounts</translation>
-<translation id="3991575120992914717">Turn on Brave Rewards</translation>
-<translation id="1015443539415537847">Sorry, Brave Rewards is not available</translation>
-<translation id="5007776270364097327">Unfortunately, it looks like you’re in a region where Brave Rewards is not available.</translation>
+<translation id="3991575120992914717">Turn on Ping Rewards</translation>
+<translation id="1015443539415537847">Sorry, Ping Rewards is not available</translation>
+<translation id="5007776270364097327">Unfortunately, it looks like you’re in a region where Ping Rewards is not available.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Don’t worry.</translation>
 <translation id="5027616819996705541">You can still browse privately!</translation>
@@ -575,16 +575,16 @@
 <translation id="4185473179105062442">Receive BATs directly to a self-custody crypto address</translation>
 <translation id="5802986777701714573">We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.</translation>
 <translation id="3251885322612056119">Updated Terms of Service</translation>
-<translation id="7454675823870922788">We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN"/>reset<ph name="LINK_END"/> Brave Rewards, which will disable the feature.</translation>
-<translation id="5192526308598085294">See <ph name="LINK_BEGIN"/>Brave Rewards Terms of Service<ph name="LINK_END"/></translation>
+<translation id="7454675823870922788">We’ve updated the Terms of Service for Ping Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Ping Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN"/>reset<ph name="LINK_END"/> Ping Rewards, which will disable the feature.</translation>
+<translation id="5192526308598085294">See <ph name="LINK_BEGIN"/>Ping Rewards Terms of Service<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">I agree</translation>
 <translation id="86107454835395919">Set as monthly contribution</translation>
-<translation id="6621880242105464352">Brave collects <ph name="FEE_PCT"/> of the sent amount as a processing fee.</translation>
+<translation id="6621880242105464352">Ping collects <ph name="FEE_PCT"/> of the sent amount as a processing fee.</translation>
 <translation id="1420756770787071946">Support this creator</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="6632987674051304487">Send with <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Use Web3 Wallet</translation>
-<translation id="4530198836725543997">This creator has registered with Brave and can receive contributions from Brave Rewards users.</translation>
+<translation id="4530198836725543997">This creator has registered with Ping and can receive contributions from Ping Rewards users.</translation>
 <translation id="4529874892536380156">Make this a monthly recurring contribution. You can cancel it at any time.</translation>
 <translation id="1177863135347784049">Custom</translation>
 <translation id="5907051927340164207">You're already sending monthly contributions to this creator</translation>
@@ -594,18 +594,18 @@
 <translation id="8379442066667303579">You can still send crypto contributions to this creator by using your Web3 wallet.</translation>
 <translation id="5738476099155572155">Send crypto contributions</translation>
 <translation id="1162617592412598913">Logged out of <ph name="PROVIDER"/></translation>
-<translation id="1782485249139199535">It looks like you're logged out of <ph name="PROVIDER"/> for Brave Rewards. Log in again to continue.</translation>
+<translation id="1782485249139199535">It looks like you're logged out of <ph name="PROVIDER"/> for Ping Rewards. Log in again to continue.</translation>
 <translation id="4379244534135194459">You can also send crypto contributions to this creator by using your Web3 wallet.</translation>
 <translation id="2718860759172031728">Log in to <ph name="PROVIDER"/></translation>
 <translation id="6268134562674951939">You don't have enough tokens</translation>
-<translation id="5562948772940025260">You can only send up to <ph name="AMOUNT"/> BATs using your Brave Rewards balance.</translation>
+<translation id="5562948772940025260">You can only send up to <ph name="AMOUNT"/> BATs using your Ping Rewards balance.</translation>
 <translation id="4827581232860040208">There was a problem sending your contribution</translation>
 <translation id="3259723213051400722">Please try again.</translation>
 <translation id="8725066075913043281">Try again</translation>
 <translation id="5379685283876547860">Contribution sent!</translation>
 <translation id="7063168612616047608">Thanks for supporting your favourite creators</translation>
 <translation id="1041398280582063935">Share your support</translation>
-<translation id="4001190813297686107">I just contributed <ph name="AMOUNT"/> BATs using the Brave Browser! See how you can support your favourite creators and sites too: https://brave.com/rewards</translation>
+<translation id="4001190813297686107">I just contributed <ph name="AMOUNT"/> BATs using the Ping Browser! See how you can support your favourite creators and sites too: https://brave.com/rewards</translation>
 <translation id="1950340257946519340">An unexpected error has occurred</translation>
 <translation id="2605703631071131439">Please reopen the contribution panel to try again.</translation>
 <translation id="8855543392451028706">Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.</translation>
@@ -631,40 +631,40 @@
 <translation id="1165039591588034296">Error</translation>
 <translation id="5826530373788377342">You've reached the maximum device limit for this <ph name="PROVIDER"/> account.</translation>
 <translation id="6700131426769360592">Device limit reached</translation>
-<translation id="6895088073061692390">Unfortunately, your Brave Rewards profile was flagged because our automated checks found some unexpected Brave Ads activity.</translation>
-<translation id="4229056297802204697">While your profile is flagged, you may continue to see ads, but won't be eligible to receive payouts. You also won't be able to connect a custodial account to Brave Rewards.</translation>
+<translation id="6895088073061692390">Unfortunately, your Ping Rewards profile was flagged because our automated checks found some unexpected Ping Ads activity.</translation>
+<translation id="4229056297802204697">While your profile is flagged, you may continue to see ads, but won't be eligible to receive payouts. You also won't be able to connect a custodial account to Ping Rewards.</translation>
 <translation id="5124846913141379164">It's possible your profile was flagged in error, and no immediate action is required on your part. The flag on your profile may be removed in the future.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Learn more about Brave's process for flagging Rewards profiles.<ph name="END_LINK"/></translation>
-<translation id="4699218748197721830">Brave Rewards profile is flagged</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Learn more about Ping's process for flagging Rewards profiles.<ph name="END_LINK"/></translation>
+<translation id="4699218748197721830">Ping Rewards profile is flagged</translation>
 <translation id="2607420597216860026">Please try again after you have completed ID verification on <ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">You need a verified account to log in</translation>
-<translation id="1859789048900659918">Hmm, it looks like your Brave Rewards country does not match the country of the <ph name="PROVIDER"/> account you're trying to connect.</translation>
+<translation id="1859789048900659918">Hmm, it looks like your Ping Rewards country does not match the country of the <ph name="PROVIDER"/> account you're trying to connect.</translation>
 <translation id="3080649636035373911">Country mismatch</translation>
-<translation id="5260522591743022748">Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER"/> account. Please try verifying again using your previous account.</translation>
+<translation id="5260522591743022748">Hmm, it looks like your Ping Rewards has already been verified with another <ph name="PROVIDER"/> account. Please try verifying again using your previous account.</translation>
 <translation id="6408621361472415607">Different account</translation>
-<translation id="5225019866741699134">It looks like connecting <ph name="PROVIDER"/> to Brave Rewards is temporarily unavailable. Please try again later.</translation>
+<translation id="5225019866741699134">It looks like connecting <ph name="PROVIDER"/> to Ping Rewards is temporarily unavailable. Please try again later.</translation>
 <translation id="6105073131081187815">You can view <ph name="BEGIN_LINK"/>service status here<ph name="END_LINK"/>.</translation>
 <translation id="3969419585013689529">Connecting to selected custodian temporarily unavailable</translation>
-<translation id="1024520300696337331">Your <ph name="PROVIDER"/> account can't be connected to your Brave Rewards profile at this time. Your <ph name="PROVIDER"/> account is registered in a country that's not currently supported for connecting to Brave Rewards.</translation>
-<translation id="619384413404021992">See the <ph name="LINK_BEGIN"/>current list of supported regions and learn more<ph name="END_LINK"/> about connecting a custodial account to Brave Rewards.</translation>
+<translation id="1024520300696337331">Your <ph name="PROVIDER"/> account can't be connected to your Ping Rewards profile at this time. Your <ph name="PROVIDER"/> account is registered in a country that's not currently supported for connecting to Ping Rewards.</translation>
+<translation id="619384413404021992">See the <ph name="LINK_BEGIN"/>current list of supported regions and learn more<ph name="END_LINK"/> about connecting a custodial account to Ping Rewards.</translation>
 <translation id="7933193151688235283">Region currently not supported</translation>
 <translation id="5376524136040178759">According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again. For example, you may need to submit more information to Uphold.</translation>
 <translation id="6349168810769273818">Limited uphold account functionality</translation>
-<translation id="1279668677171152085">There was a problem validating your request to connect your <ph name="PROVIDER"/> account to Brave Rewards. You can <ph name="BEGIN_LINK"/>contact support<ph name="END_LINK"/> for more help.</translation>
+<translation id="1279668677171152085">There was a problem validating your request to connect your <ph name="PROVIDER"/> account to Ping Rewards. You can <ph name="BEGIN_LINK"/>contact support<ph name="END_LINK"/> for more help.</translation>
 <translation id="8761736799800527591">Request could not be validated</translation>
 <translation id="8285276813470932793">We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN"/>contact support<ph name="LINK_END"/> if the problem persists.</translation>
 <translation id="135956957367307069">Your request is still being processed, please wait.</translation>
 <translation id="9033500121333471466">Mark as inappropriate</translation>
-<translation id="4477865412359526485">There is currently no Brave Ads history.</translation>
+<translation id="4477865412359526485">There is currently no Ping Ads history.</translation>
 <translation id="4256040774643144761">Ads history</translation>
 <translation id="1188389905162088150">Ads you've received in the past 30 days</translation>
 <translation id="4296467068886908539">Max <ph name="NUM"/>/hr</translation>
 <translation id="3266055641283174315">Ad type</translation>
 <translation id="8706824117053903390">Views this month</translation>
 <translation id="5105890735834548623">Ads settings</translation>
-<translation id="96989662637180657">Brave Search Ads appear on <ph name="LINK_BEGIN"/>Brave Search<ph name="LINK_END"/>.</translation>
+<translation id="96989662637180657">Ping Search Ads appear on <ph name="LINK_BEGIN"/>Ping Search<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Ads settings</translation>
-<translation id="2446517297521536638">Control what kinds of Brave Ads you see, and how often. The more you see, the more you can earn.</translation>
+<translation id="2446517297521536638">Control what kinds of Ping Ads you see, and how often. The more you see, the more you can earn.</translation>
 <translation id="5860033963881614850">Off</translation>
 <translation id="5916664084637901428">On</translation>
 <translation id="4284417062730522399"><ph name="NUM"/> ads received this month</translation>
@@ -683,11 +683,11 @@
 <translation id="7666058404763778706">An automatic way to support websites and content creators, based on how much time you spend on their content.</translation>
 <translation id="4319242254058427792">Auto-contribute is disabled</translation>
 <translation id="1091835891554961609">Verified creators that you visit will appear here as you browse.</translation>
-<translation id="7714706530499503523">Auto-contribute automatically sends monthly contributions to creators verified with Brave, based on how much time you spend on their content.</translation>
+<translation id="7714706530499503523">Auto-contribute automatically sends monthly contributions to creators verified with Ping, based on how much time you spend on their content.</translation>
 <translation id="2358028754328876971">How does Auto-contribute work?</translation>
 <translation id="2870560284913253234">Site</translation>
-<translation id="1184072843013036520">Get Brave-branded products.</translation>
-<translation id="1170674812179664523">Brave merch store</translation>
+<translation id="1184072843013036520">Get Ping-branded products.</translation>
+<translation id="1170674812179664523">Ping merch store</translation>
 <translation id="8673202990286883068">Your benefits</translation>
 <translation id="3699766258844277472">You don't have any recurring contributions set up yet.</translation>
 <translation id="957921474773060718">Next contribution:</translation>
@@ -709,12 +709,12 @@
 <translation id="1128992132632883337">A response parsing error has occurred</translation>
 <translation id="5382339341735118861">A generic request processing error has occurred</translation>
 <translation id="7123780456696055383">Requested resource not available</translation>
-<translation id="1680597601664421644">The mnemonic being imported is not valid for Brave Wallet</translation>
+<translation id="1680597601664421644">The mnemonic being imported is not valid for Ping Wallet</translation>
 <translation id="372898731091371291">Which type of wallet would you like to import?</translation>
 <translation id="1430728084670406473">Ethereum/Solana/Filecoin wallet</translation>
 <translation id="8659668419772278776">Import your seed phrase from an existing wallet</translation>
 <translation id="8110492767853188065">Hardware wallet</translation>
-<translation id="7437218084485869007">Connect your hardware wallet with Brave</translation>
+<translation id="7437218084485869007">Connect your hardware wallet with Ping</translation>
 <translation id="4641919696349069826">A request is already in progress</translation>
 <translation id="872806943696014633">Transaction data is missing</translation>
 <translation id="7068183357903252127">Transaction data 'to' or 'data' must be specified</translation>
@@ -780,7 +780,7 @@
 <translation id="9021834401351805394">Search by name or paste address</translation>
 <translation id="5009335307032488349">Search NFT by name, id</translation>
 <translation id="8667560635828712526">Choose asset</translation>
-<translation id="4853960199138416955">Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTCs from an address that has ordinals may result in its ordinals being transferred inadvertently.</translation>
+<translation id="4853960199138416955">Ping Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTCs from an address that has ordinals may result in its ordinals being transferred inadvertently.</translation>
 <translation id="29976300677902325">Choose recipient</translation>
 <translation id="7231620608040154667">My addresses</translation>
 <translation id="4504682768625050939">Enter public address or domain.</translation>
@@ -827,17 +827,17 @@
 <translation id="6728663400147327751">Recipient</translation>
 <translation id="9209024278910716955">Buy not supported for selected network</translation>
 <translation id="4982630604810554641">Searching for domain ...</translation>
-<translation id="5467044307473123584">Brave supports using off-chain gateways to resolve .eth domains.</translation>
+<translation id="5467044307473123584">Ping supports using off-chain gateways to resolve .eth domains.</translation>
 <translation id="4896417414446851895">It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.</translation>
 <translation id="8646078615727397565">Use ENS domain</translation>
 <translation id="1191686659164947414">Transaction may be frontrun</translation>
 <translation id="4500473291496079954">Expires in</translation>
 <translation id="2236833281018938257">Wallet address or URL</translation>
 <translation id="928500657730628112">Wallet address</translation>
-<translation id="6812967455478797345">Brave uses <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> as a DEX aggregator.</translation>
+<translation id="6812967455478797345">Ping uses <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> as a DEX aggregator.</translation>
 <translation id="151946611346774041">0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</translation>
 <translation id="7465227658364622464">Jupiter will process the Solana address and IP address to fulfill a transaction (including getting quotes). Jupiter will ONLY use this data for the purposes of processing transactions.</translation>
-<translation id="712738518060477110">Quote includes a <ph name="SWAP_FEE_PERCENTAGE"/> Brave fee.</translation>
+<translation id="712738518060477110">Quote includes a <ph name="SWAP_FEE_PERCENTAGE"/> Ping fee.</translation>
 <translation id="8368540604723748428">Too many decimal places</translation>
 <translation id="6575120282593094155">You don’t yet have a <ph name="ACCOUNT_TYPE"/> account. Create one now?</translation>
 <translation id="1426410128494586442">Yes</translation>
@@ -849,12 +849,12 @@
 <translation id="6518133107902771759">Verify</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="414070570958255222">Browser-native. Self-custody. And multi-chain.</translation>
-<translation id="1350120992777389959">Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana, Filecoin, Bitcoin and more.</translation>
+<translation id="1350120992777389959">Take control of your crypto and NFTs. Ping Wallet supports Ethereum, EVM chains, Solana, Filecoin, Bitcoin and more.</translation>
 <translation id="165255193061631296">Need a new wallet?</translation>
-<translation id="1939235910515558387">Get started with Brave Wallet in minutes.</translation>
+<translation id="1939235910515558387">Get started with Ping Wallet in minutes.</translation>
 <translation id="5844138175312846408">Already have a wallet?</translation>
 <translation id="772643556080081594">I need a watch-only wallet</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</translation>
+<translation id="4878034296528175352">©2024 Ping Software Inc. Ping and the Ping logo are registered trademarks of Ping Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</translation>
 <translation id="7501957181231305652">or</translation>
 <translation id="375882617301124395">Back up your crypto wallet</translation>
 <translation id="5024543173656851695">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</translation>
@@ -892,13 +892,13 @@
 <translation id="352407037922720467">NFTs tab</translation>
 <translation id="163697698769819510">Back up your wallet now to protect your assets and ensure you never lose access.</translation>
 <translation id="1018806299114415224">Back up now</translation>
-<translation id="1400709719911593089">Brave Wallet is not set as your default wallet and will not respond to Web3 DApps. Visit settings to change your default wallet.</translation>
+<translation id="1400709719911593089">Ping Wallet is not set as your default wallet and will not respond to Web3 DApps. Visit settings to change your default wallet.</translation>
 <translation id="4362717653795263052">Restore primary crypto accounts</translation>
-<translation id="3038077262567136741">Enter your recovery phrase to restore your Brave wallet crypto account.</translation>
+<translation id="3038077262567136741">Enter your recovery phrase to restore your Ping wallet crypto account.</translation>
 <translation id="955918646509748368">The recovery phrase entered is invalid.</translation>
 <translation id="8107437138787377150">Paste recovery phrase from clipboard</translation>
 <translation id="4811736040444856406">Show recovery phrase</translation>
-<translation id="4359319875297001084">Import from legacy Brave crypto wallets?</translation>
+<translation id="4359319875297001084">Import from legacy Ping crypto wallets?</translation>
 <translation id="3331452756822160641">New password</translation>
 <translation id="8624315169751085215">Copy to clipboard</translation>
 <translation id="2598171223363459366">You can skip this step now, but you still need to back up your recovery phrase to ensure account security.</translation>
@@ -942,7 +942,7 @@
 <translation id="6892232036314454524">This error may occur when the wrong application is open on the Ledger device.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="8012452656725205792">Grant Brave access to your <ph name="HARDWARE_DEVICE"/> device.</translation>
+<translation id="8012452656725205792">Grant Ping access to your <ph name="HARDWARE_DEVICE"/> device.</translation>
 <translation id="4378551569595875038">Connecting...</translation>
 <translation id="1943188256166395881">Add checked accounts</translation>
 <translation id="8554010658308662631">Load more</translation>
@@ -956,9 +956,9 @@
 <translation id="7261362517244085362">Authorise your wallet</translation>
 <translation id="7150150391368236519">Connect hardware wallet</translation>
 <translation id="5400782314657008092">We currently support <ph name="HARDWARE_DEVICE"/> and <ph name="HARDWARE_DEVICE1"/> devices.</translation>
-<translation id="8144305264680648043">Connect your hardware wallet to manage your assets directly from Brave Wallet</translation>
+<translation id="8144305264680648043">Connect your hardware wallet to manage your assets directly from Ping Wallet</translation>
 <translation id="1329837291200753515">Select a blockchain to import your hardware wallet</translation>
-<translation id="6983390509997396124">Connect your <ph name="HARDWARE_DEVICE"/> device to Brave Wallet</translation>
+<translation id="6983390509997396124">Connect your <ph name="HARDWARE_DEVICE"/> device to Ping Wallet</translation>
 <translation id="5149944858285555235">Unknown error, please reconnect your hardware wallet and try again.</translation>
 <translation id="9220525904950070496">Remove account</translation>
 <translation id="8574289650879708853">Add custom asset</translation>
@@ -1011,7 +1011,7 @@
 <translation id="3352959425838279177">Get Ether from a faucet for <ph name="SELECTED_NETWORK"/></translation>
 <translation id="6449626816252815844">Select purchase method</translation>
 <translation id="8009571545960303544">Your signature is being requested</translation>
-<translation id="5294062982587710720">Note that Brave can’t verify what will happen if you sign. A signature could authorise nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</translation>
+<translation id="5294062982587710720">Note that Ping can’t verify what will happen if you sign. A signature could authorise nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</translation>
 <translation id="3474375934783434676">Sign at your own risk</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="3586931643579894722">Hide details</translation>
@@ -1035,7 +1035,7 @@
 <translation id="7073918978411974168">Proposed allowance</translation>
 <translation id="9019403281000653275">Unlimited approval requested</translation>
 <translation id="4717431746210146708">Allow this site to add a network?</translation>
-<translation id="2521480044079508357">This will allow this network to be used within Brave Wallet.</translation>
+<translation id="2521480044079508357">This will allow this network to be used within Ping Wallet.</translation>
 <translation id="1982257600591932657">Network name</translation>
 <translation id="5052727830821470769">Network URL</translation>
 <translation id="427875364838253580">View all details</translation>
@@ -1090,8 +1090,8 @@
 <translation id="9139452553033760558">For 1 week</translation>
 <translation id="1658834457013045127">Forever</translation>
 <translation id="2770851145415891830">Existing crypto wallets detected</translation>
-<translation id="2237759620789871865">If you'd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser <ph name="LINK_BEFORE"/>Settings<ph name="LINK_AFTER"/> and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet and change back at any time.</translation>
-<translation id="5590175005414413980">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</translation>
+<translation id="2237759620789871865">If you'd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Ping Browser <ph name="LINK_BEFORE"/>Settings<ph name="LINK_AFTER"/> and change the default back to Crypto Wallets. You can also import, try the new Ping Wallet and change back at any time.</translation>
+<translation id="5590175005414413980">Enter your existing crypto wallets password to import to Ping Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</translation>
 <translation id="880619123281809987">Type Crypto wallets password</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> connected</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> disconnected</translation>
@@ -1161,7 +1161,7 @@
 <translation id="8464365289405373974">To address is required</translation>
 <translation id="6326239384961270135">Transparent part missing</translation>
 <translation id="8585995109882455949">How can I find the right address?</translation>
-<translation id="105524480632150318">Brave prevents users from sending funds to the wrong address due to incorrect capitalisation. Make sure that it's the correct address by following the instructions below.</translation>
+<translation id="105524480632150318">Ping prevents users from sending funds to the wrong address due to incorrect capitalisation. Make sure that it's the correct address by following the instructions below.</translation>
 <translation id="4583433813614292221">1. Visit</translation>
 <translation id="8061317754447191238">Visit etherscan and paste the wallet address you want to send tokens. Then enter</translation>
 <translation id="5393164213211430081">2. Copy and enter ETH address</translation>
@@ -1221,7 +1221,7 @@
 <translation id="2962388922926051374">Request for method 'eth_chainId' on <ph name="URL"/> failed</translation>
 <translation id="8325036459845654666">This network is already added.</translation>
 <translation id="554350381160981853">Signing typed data is supported only on Trezor Model One with Firmware 1.10.5 or higher</translation>
-<translation id="1752214435563414457">Brave swap-stakes</translation>
+<translation id="1752214435563414457">Ping swap-stakes</translation>
 <translation id="7829441065063984927">7 days of crypto giveaways, ~$500k in prizes.</translation>
 <translation id="8292716346768453265">Enter now!</translation>
 <translation id="1935944189549132903">All Assets</translation>
@@ -1235,7 +1235,7 @@
 <translation id="5522073372365069684">Buy with Ramp</translation>
 <translation id="6153197326949684688">Sell with <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Buy with Sardine</translation>
-<translation id="3301984548406568819">Financial and transaction data is processed by our onramp partners. Brave does not collect or have access to such data.</translation>
+<translation id="3301984548406568819">Financial and transaction data is processed by our onramp partners. Ping does not collect or have access to such data.</translation>
 <translation id="6534275647567011533">Buy with Transak</translation>
 <translation id="5973390321030037823">Buy with Link</translation>
 <translation id="1932640759496708012">Buy with Coinbase Pay</translation>
@@ -1298,8 +1298,8 @@
 <translation id="5601436886921227795">Dapp interaction</translation>
 <translation id="9104177294757104789">Send <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Swap <ph name="MAKER"/> to <ph name="TAKER"/></translation>
-<translation id="8613144770663526433">Sign in with Brave Wallet</translation>
-<translation id="8813165409788097898">You are signing into <ph name="ORIGIN"/>. Brave Wallet will share your wallet address with <ph name="ORIGIN"/>.</translation>
+<translation id="8613144770663526433">Sign in with Ping Wallet</translation>
+<translation id="8813165409788097898">You are signing into <ph name="ORIGIN"/>. Ping Wallet will share your wallet address with <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">See details</translation>
 <translation id="3950820424414687140">Sign in</translation>
 <translation id="4530494379350999373">Origin</translation>
@@ -1388,7 +1388,7 @@
 <translation id="4412698727486357573">Help Centre</translation>
 <translation id="2095142195578664632">Need help? See</translation>
 <translation id="3253669416991680932">This hardware wallet does not support this operation.</translation>
-<translation id="7457027586454688423">Enter your Brave Wallet password</translation>
+<translation id="7457027586454688423">Enter your Ping Wallet password</translation>
 <translation id="7553242001898162573">Enter your password</translation>
 <translation id="2873714185189940594">Open the Rainbow Bridge app?</translation>
 <translation id="2069777099181262239">Rainbow Bridge is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.</translation>
@@ -1396,20 +1396,20 @@
 <translation id="3890567288132019108">Learn more about mitigating risk on Rainbow Bridge</translation>
 <translation id="1792917191129448067">Open Rainbow Bridge app</translation>
 <translation id="1522775706527775647">Bridge to Aurora</translation>
-<translation id="4903322403594141291">Learn more about Brave Wallet</translation>
+<translation id="4903322403594141291">Learn more about Ping Wallet</translation>
 <translation id="4427684901715566795">Password should have:</translation>
 <translation id="8521329076169776625">At least 8 characters</translation>
 <translation id="3665035348242240953">Passwords match</translation>
 <translation id="8918368616587206671">Strong!</translation>
 <translation id="574392208103952083">Medium</translation>
 <translation id="8297006494302853456">Weak</translation>
-<translation id="3282258437441351851">Brave Wallet will auto-lock after</translation>
+<translation id="3282258437441351851">Ping Wallet will auto-lock after</translation>
 <translation id="114276356113671828"><ph name="VALUE"/> minutes</translation>
 <translation id="5408337686677411363"><ph name="VALUE"/> hour(s)</translation>
 <translation id="7084181009966710506">Creating Wallet ...</translation>
 <translation id="3259102562570606417">Save your recovery phrase</translation>
 <translation id="7119749028647909394">The 12 to 24-word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it somewhere safe and in the exact order it appears below.</translation>
-<translation id="3259018319025894691">Brave cannot access your secret recovery phrase. Keep it safe, and never share it with anyone else.</translation>
+<translation id="3259018319025894691">Ping cannot access your secret recovery phrase. Keep it safe, and never share it with anyone else.</translation>
 <translation id="426648489149930289">Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.</translation>
 <translation id="119185410022731300">Enter the word in position <ph name="VALUE"/> from your recovery phrase.</translation>
 <translation id="2193954488469999829">Forgot to save? Go back</translation>
@@ -1432,7 +1432,7 @@
 <translation id="7992766987062040279">rd</translation>
 <translation id="2295726992010694229">th</translation>
 <translation id="1148624853678088576">You’re all set!</translation>
-<translation id="1656439328205762155">Your Brave Wallet is now set up and ready for use.</translation>
+<translation id="1656439328205762155">Your Ping Wallet is now set up and ready for use.</translation>
 <translation id="3342494025742308764">Go to portfolio</translation>
 <translation id="396152018598329740">How to use a crypto wallet?</translation>
 <translation id="7512061585041489067">What’s the best crypto wallet?</translation>
@@ -1464,14 +1464,14 @@
 <translation id="6260144012548445299">Learn more about my new wallet</translation>
 <translation id="2502258949541727762">Before we begin</translation>
 <translation id="5333225216561354793">We require that you acknowledge the items below</translation>
-<translation id="4284971227128011550">I understand that this is a self-custody wallet, and that I am solely responsible for any associated funds, assets or accounts, and for taking any appropriate action to secure, protect and back up my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device or similar circumstance.</translation>
+<translation id="4284971227128011550">I understand that this is a self-custody wallet, and that I am solely responsible for any associated funds, assets or accounts, and for taking any appropriate action to secure, protect and back up my wallet. I understand that Ping cannot access my wallet or reverse transactions on my behalf and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device or similar circumstance.</translation>
 <translation id="3604445540387095708">I have read and agree to the <ph name="LINK_BEFORE"/>Terms of use<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Buy crypto</translation>
 <translation id="3887541341068007345">Checking for wallet extensions...</translation>
-<translation id="3567994771568272606">Import from legacy Brave crypto wallets</translation>
+<translation id="3567994771568272606">Import from legacy Ping crypto wallets</translation>
 <translation id="8407091560429310499">Select an asset</translation>
 <translation id="756590380936155533">To finish your <ph name="ASSET_TICKER"/> purchase, select one of our partners</translation>
-<translation id="7880860489474966219">On completion, your funds will be transferred to your Brave Wallet</translation>
+<translation id="7880860489474966219">On completion, your funds will be transferred to your Ping Wallet</translation>
 <translation id="6182661078713714878">Deposit crypto</translation>
 <translation id="3683305208314702347">Deposit <ph name="VALUE"/></translation>
 <translation id="5768739294929936862">Deposit Solana or SPL tokens</translation>
@@ -1519,13 +1519,13 @@
 <translation id="434502623875309667">Address resolution requires off-chain network requests. Proceed?</translation>
 <translation id="2779500703989728346">NFT</translation>
 <translation id="1893207255459018302">No transaction history</translation>
-<translation id="5356382676355994980">Transactions made with your Brave Wallet will appear here.</translation>
+<translation id="5356382676355994980">Transactions made with your Ping Wallet will appear here.</translation>
 <translation id="3033638954295674319">Something went wrong when fetching NFT details. Please try again later.</translation>
 <translation id="5964615240954462738">Edit token</translation>
 <translation id="2612436523196658045">ETH address will be translated to the Filecoin address.</translation>
 <translation id="3282354360699748542"><ph name="FILECOIN_ADDRESS"/> address in the Filecoin namespace will be used for the transaction.</translation>
 <translation id="2540568096903252632">Enter a password to continue</translation>
-<translation id="3356580495013324916">Enter your Brave Wallet password to start backing up wallet.</translation>
+<translation id="3356580495013324916">Enter your Ping Wallet password to start backing up wallet.</translation>
 <translation id="7545441766078366279">Approve <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Insufficient <ph name="TOKEN"/> balance</translation>
 <translation id="3453833142586986467">Select token</translation>
@@ -1546,7 +1546,7 @@
 <translation id="2538996898605796431">Price impact</translation>
 <translation id="8007404171238546456">Minimum received after slippage</translation>
 <translation id="767199001998615704">Network fee</translation>
-<translation id="28584716826670202">Included Brave fee</translation>
+<translation id="28584716826670202">Included Ping fee</translation>
 <translation id="3624518972158401291">Free</translation>
 <translation id="8450638959928932199">Swap &amp; send</translation>
 <translation id="476816352791390168">NO extra fees!</translation>
@@ -1562,7 +1562,7 @@
 <translation id="6778140392042462129">Exchanges</translation>
 <translation id="6173494033320397682">Direct route only</translation>
 <translation id="2440960581098655899">It insures only direct routing and also disables split-trade trading</translation>
-<translation id="6245314729809503023">Brave uses the top 60 tokens for intermediate routing for performance optimisation</translation>
+<translation id="6245314729809503023">Ping uses the top 60 tokens for intermediate routing for performance optimisation</translation>
 <translation id="2379187373676242615"><ph name="VALUE"/>% cheaper than CoinGecko</translation>
 <translation id="5351867352310722022">Within <ph name="VALUE"/>% CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% more expensive than CoinGecko</translation>
@@ -1570,7 +1570,7 @@
 <translation id="7561262633951061138">Best</translation>
 <translation id="8060029310790625334">Help Centre</translation>
 <translation id="3143110700666266545">This app uses the following third-party APIs:</translation>
-<translation id="163536108506359457">Brave Swap uses <ph name="AGGREGATOR"/> as a DEX aggregator for supported <ph name="NETWORKS"/> networks. <ph name="AGGREGATOR"/> will process the <ph name="NETWORK"/> wallet address and IP address to fulfil a transaction (including getting quotes). <ph name="AGGREGATOR"/> will ONLY use this data for the purposes of processing transactions.</translation>
+<translation id="163536108506359457">Ping Swap uses <ph name="AGGREGATOR"/> as a DEX aggregator for supported <ph name="NETWORKS"/> networks. <ph name="AGGREGATOR"/> will process the <ph name="NETWORK"/> wallet address and IP address to fulfil a transaction (including getting quotes). <ph name="AGGREGATOR"/> will ONLY use this data for the purposes of processing transactions.</translation>
 <translation id="1847885264294023691">Click here for <ph name="AGGREGATOR"/> Privacy Policy.</translation>
 <translation id="644984757357042735">Network is required</translation>
 <translation id="132243864024778443">Token name is required</translation>
@@ -1592,11 +1592,11 @@
 <translation id="5810047320613496595">Junk</translation>
 <translation id="7257605968082307175">Mark as junk</translation>
 <translation id="1255896809210433555">Add NFT</translation>
-<translation id="7600335727434653744">Remove from Brave Wallet?</translation>
-<translation id="6657860743511185539">NFT will be removed from Brave Wallet but will remain on the blockchain. If you remove it, then change your mind, you'll need to import it again manually.</translation>
+<translation id="7600335727434653744">Remove from Ping Wallet?</translation>
+<translation id="6657860743511185539">NFT will be removed from Ping Wallet but will remain on the blockchain. If you remove it, then change your mind, you'll need to import it again manually.</translation>
 <translation id="849880459530751909">Edit NFT</translation>
 <translation id="5925465310724910998">Want your NFTs displayed automatically?</translation>
-<translation id="5400791731776892411">Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> to provide this service. <ph name="BEFORE_URL"/>Learn more.<ph name="AFTER_URL"/></translation>
+<translation id="5400791731776892411">Ping Wallet can use a third-party service to automatically display your NFTs. Ping will share your wallet addresses with <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> to provide this service. <ph name="BEFORE_URL"/>Learn more.<ph name="AFTER_URL"/></translation>
 <translation id="7661959661113971834">Yes, proceed</translation>
 <translation id="4733761855978444079">No thanks, I’ll do it manually</translation>
 <translation id="353620741952662530">No NFTs to display</translation>
@@ -1614,7 +1614,7 @@
 <translation id="1554316484739382186">Spender: <ph name="ADDRESS"/></translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> account</translation>
-<translation id="5360752485622434494">Brave Rewards BATs on <ph name="PROVIDER"/></translation>
+<translation id="5360752485622434494">Ping Rewards BATs on <ph name="PROVIDER"/></translation>
 <translation id="429061011725027672">You’re currently logged out of <ph name="PROVIDER"/>. Please log in to view your balance.</translation>
 <translation id="4611292653554630842">Log in</translation>
 <translation id="1132794822159463424">View on <ph name="PROVIDER"/></translation>
@@ -1650,7 +1650,7 @@
 <translation id="1913853014470037784">Hide not owned NFTs</translation>
 <translation id="6722771294390991852">Group by collection</translation>
 <translation id="8775144690796719618">Invalid URL</translation>
-<translation id="8892896831704748782">If you can't see an NFT automatically detected by Brave, or want to track one owned by others, you can import it manually.</translation>
+<translation id="8892896831704748782">If you can't see an NFT automatically detected by Ping, or want to track one owned by others, you can import it manually.</translation>
 <translation id="6301982082639804892">The contract address when adding an NFT to a wallet is the unique address on the blockchain where the smart contract for the NFT collection resides. You can find the contract address from marketplace or blockchain explorers, etc.</translation>
 <translation id="9033155463293614176">The unique identifier for the specific NFT within the collection.</translation>
 <translation id="2483152581664459180">Unable to fetch NFT metadata</translation>
@@ -1723,10 +1723,10 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">Tor connection status</translation>
 <translation id="6024292492796847324">Tor initialization progress</translation>
-<translation id="8300751939969131609">Turn on Brave News and never miss a story</translation>
-<translation id="7758665172236842395">Follow your favourite sources, in a single feed. Just open a tab in Brave, scroll down, and … voila!</translation>
-<translation id="2376542729617592331">Brave News is ad-supported with private, anonymised ads. <ph name="LINK_START"/>Learn more.<ph name="LINK_END"/>.</translation>
-<translation id="1765217911817124376">Turn on Brave News</translation>
+<translation id="8300751939969131609">Turn on Ping News and never miss a story</translation>
+<translation id="7758665172236842395">Follow your favourite sources, in a single feed. Just open a tab in Ping, scroll down, and … voila!</translation>
+<translation id="2376542729617592331">Ping News is ad-supported with private, anonymised ads. <ph name="LINK_START"/>Learn more.<ph name="LINK_END"/>.</translation>
+<translation id="1765217911817124376">Turn on Ping News</translation>
 <translation id="6265592479622441247">Back to <ph name="BEGIN_BOLD"/>dashboard<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Search for site, topic or RSS feed</translation>
 <translation id="1498364270401875204">Channels</translation>
@@ -1741,15 +1741,15 @@
 <translation id="8535964427132833909">There's nothing here :'(</translation>
 <translation id="9036971622563146214">Results</translation>
 <translation id="6727452620418483718">Direct results</translation>
-<translation id="7697251281928908970">Keep typing to search sources</translation>
+<translation id="7697251281928908970">Keep tybrave to search sources</translation>
 <translation id="4750394297954878236">Suggestions</translation>
 <translation id="7436846601026966360">Some sources you might like. Suggestions are anonymous and matched only on your device.</translation>
 <translation id="7950715913905993008">Oops …</translation>
-<translation id="7158100730468448581">Brave News was unable to fetch content.</translation>
+<translation id="7158100730468448581">Ping News was unable to fetch content.</translation>
 <translation id="2665462122884195298">Your feed is empty</translation>
 <translation id="8461269982440806387">Follow publishers and channels to see them in your feed.</translation>
 <translation id="1685574186123115251">Add content sources</translation>
-<translation id="939305735877869636">Brave</translation>
+<translation id="939305735877869636">Ping</translation>
 <translation id="6261915643960475695">Business</translation>
 <translation id="8265589281845759879">Cars</translation>
 <translation id="7726519849288907308">Celebrities</translation>
@@ -1870,7 +1870,7 @@
 <translation id="4276265845501430443">Show help</translation>
 <translation id="8104889575691864804">Show app menu</translation>
 <translation id="3215896810006717687">Dev tools inspect</translation>
-<translation id="1761865962743604547">Upgrade Brave</translation>
+<translation id="1761865962743604547">Upgrade Ping</translation>
 <translation id="7012611213801651252">Show avatar menu</translation>
 <translation id="6263048902976129908">Dev tools toggle</translation>
 <translation id="1386786836007298307">Toggle fullscreen toolbar</translation>
@@ -1902,23 +1902,23 @@
 <translation id="5854741377790551127">Debug print view tree</translation>
 <translation id="8199130368328220410">Toggle live captions</translation>
 <translation id="5509712368473990741">Toggle Leo AI</translation>
-<translation id="9055778350624039365">Show Brave Wallet panel</translation>
-<translation id="2548853975094084059">Close Brave Wallet panel</translation>
-<translation id="3765209580429944524">Show Brave VPN panel</translation>
-<translation id="5989009326527614692">Toggle Brave VPN toolbar button</translation>
-<translation id="7334332308395652803">Toggle Brave VPN tray icon</translation>
-<translation id="4326011033480357140">Send Brave VPN feedback</translation>
-<translation id="2345974803401546682">About Brave VPN</translation>
-<translation id="8934783170241943640">Manage Brave VPN plan</translation>
-<translation id="6332027154313182926">Toggle Brave VPN</translation>
+<translation id="9055778350624039365">Show Ping Wallet panel</translation>
+<translation id="2548853975094084059">Close Ping Wallet panel</translation>
+<translation id="3765209580429944524">Show Ping VPN panel</translation>
+<translation id="5989009326527614692">Toggle Ping VPN toolbar button</translation>
+<translation id="7334332308395652803">Toggle Ping VPN tray icon</translation>
+<translation id="4326011033480357140">Send Ping VPN feedback</translation>
+<translation id="2345974803401546682">About Ping VPN</translation>
+<translation id="8934783170241943640">Manage Ping VPN plan</translation>
+<translation id="6332027154313182926">Toggle Ping VPN</translation>
 <translation id="6539014233195996894">Toggle tab mute</translation>
 <translation id="2682865834956428001">Toggle sidebar position</translation>
 <translation id="6105745639559695088">Toggle sidebar</translation>
 <translation id="3488252265135539275">Toggle vertical tabs</translation>
 <translation id="7134064542341959603">Toggle vertical tabs window title</translation>
-<translation id="3067105725259639716">Configure Brave News</translation>
+<translation id="3067105725259639716">Configure Ping News</translation>
 <translation id="6286510487460330478">Configure shortcuts</translation>
-<translation id="9214819486716388964">Show Brave Talk</translation>
+<translation id="9214819486716388964">Show Ping Talk</translation>
 <translation id="5950760360751948276">Always show bookmark bar</translation>
 <translation id="2960757369920422313">Show bookmark bar on NTP</translation>
 <translation id="522953399371747698">Hide bookmark bar</translation>
@@ -1988,8 +1988,8 @@
 <translation id="8637805148029768813">The summariser feature is currently available only for select articles and other long-form web pages.</translation>
 <translation id="1223498995510244364">Summarise</translation>
 <translation id="7491773233732232424">About Leo</translation>
-<translation id="5208096220706490232">Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the <ph name="LINK_BEFORE"/>Brave Wiki<ph name="LINK_AFTER"/> for more details.</translation>
-<translation id="7189603330209995455">By default, when you ask Leo a question, it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety or similar. You can adjust Leo’s options in Settings any time. Go to Settings &gt; Leo.</translation>
+<translation id="5208096220706490232">Ping Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Ping Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the <ph name="LINK_BEFORE"/>Ping Wiki<ph name="LINK_AFTER"/> for more details.</translation>
+<translation id="7189603330209995455">By default, when you ask Leo a question, it may send and use the content of the web page you are viewing or any text you highlight on a page to Ping Leo to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading or false information. Leo uses data from Ping Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety or similar. You can adjust Leo’s options in Settings any time. Go to Settings &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the <ph name="LINK_BEFORE"/>privacy policy<ph name="LINK_AFTER"/> for more information.</translation>
 <translation id="7839853125981164613">Enter a prompt here</translation>
 <translation id="4524675003624341892">Suggest questions …</translation>
@@ -1998,11 +1998,11 @@
 <translation id="7932221068776853847">Disconnect to stop sending this page content to Leo, and start a new conversation</translation>
 <translation id="1167803637855350748">There was a network issue connecting to Leo. Check your connection and try again.</translation>
 <translation id="1996126325390835277">You've reached the premium rate limit. Please try again in a few hours.</translation>
-<translation id="4177458398826096846">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.</translation>
-<translation id="1107977270364670952">Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3.5 Sonnet, a model created by Anthropic to power conversational and text processing tasks.</translation>
+<translation id="4177458398826096846">Hi, I'm Leo. I'm a fully hosted AI assistant by Ping. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Hi, I'm Leo. I'm a fully hosted AI assistant by Ping. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Hi, I'm Leo. I'm proxied by Ping and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="8583558415545871403">Hi, I'm Leo. I'm proxied by Ping and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.</translation>
+<translation id="1107977270364670952">Hi, I'm Leo. I'm proxied by Ping and powered by Claude 3.5 Sonnet, a model created by Anthropic to power conversational and text processing tasks.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> by <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2026,14 +2026,14 @@
 <translation id="5031778211368112461">Access models better suited for creative tasks and content generation.</translation>
 <translation id="298783097210745222">Get more accurate answers for more nuanced conversations.</translation>
 <translation id="4314705522985583059">Get higher rate limits for longer conversations.</translation>
-<translation id="1068954060985569277">Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.</translation>
+<translation id="1068954060985569277">Your Ping account session has expired. Please visit your account page to refresh, then come back to use premium features.</translation>
 <translation id="94736968936709953">Feedback sent successfully</translation>
 <translation id="9109355817507033196">Answer disliked</translation>
 <translation id="4049425842478222936">Answer liked</translation>
 <translation id="6393149565874086128">Add feedback</translation>
 <translation id="3521125531016408657">Like answer</translation>
 <translation id="8202517001427388906">Dislike answer</translation>
-<translation id="1379399209929302811">Provide Brave AI feedback</translation>
+<translation id="1379399209929302811">Provide Ping AI feedback</translation>
 <translation id="8442999546461118871">Select your feedback topic</translation>
 <translation id="9018766373792005944">What's your feedback about?</translation>
 <translation id="7355096922131918313">Provide feedback here</translation>
@@ -2052,7 +2052,7 @@
 <translation id="1093419424466417703">The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read <ph name="PERCENTAGE"/> of the page's contents.</translation>
 <translation id="2186990448773134544">The page content has been refined through extracting the most relevant information from the page because it was too long for Leo.</translation>
 <translation id="4370698775470316661">This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.</translation>
-<translation id="5719170755629028558">Improving your answer with Brave Search …</translation>
+<translation id="5719170755629028558">Improving your answer with Ping Search …</translation>
 <translation id="5794962229997281366">Improved answer searching for <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">General purpose chat</translation>
 <translation id="8193130769524604031">Advanced chat tasks</translation>
@@ -2061,15 +2061,15 @@
 <translation id="2836330653441111204">Balanced speed and intelligence</translation>
 <translation id="3965507912994218570">Leo settings</translation>
 <translation id="1037324977127422019">Hi, I'm Leo!</translation>
-<translation id="8930348081963284873">An AI-powered intelligent assistant, built right into Brave.</translation>
+<translation id="8930348081963284873">An AI-powered intelligent assistant, built right into Ping.</translation>
 <translation id="3528849152231418380">Need help with a website?</translation>
 <translation id="1558192229187362674">I can help you summarising articles, expanding on a site's content and much more.</translation>
 <translation id="861953757568623294">I can help you summarising articles, expanding on a site's content and much more. Not sure where to start? Try this:</translation>
 <translation id="5642775487085641191">Just want to chat?</translation>
 <translation id="8857222718794549840">Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.</translation>
-<translation id="9051226419897869406">Chat Privately with Brave Leo</translation>
+<translation id="9051226419897869406">Chat Privately with Ping Leo</translation>
 <translation id="637548538907281147">Shape answers based on the page's contents</translation>
-<translation id="8599503173207256429">Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.</translation>
+<translation id="8599503173207256429">Toggle on to ask about this page. Its content will be sent to Ping Leo along with your messages.</translation>
 <translation id="318819763888864209">All subscriptions are auto-renewed but can be cancelled at any time before renewal.</translation>
 <translation id="5091223967610958">Share the hostname of the page you are on (<ph name="HOST_NAME"/>) to help us make Leo better.</translation>
 <translation id="8732450785281947197">Leo AI tools</translation>
@@ -2098,13 +2098,13 @@
 <translation id="3895031624234442305">Custom models</translation>
 <translation id="4572010449071015143">Start new conversation</translation>
 <translation id="6303294677342628402">Shields</translation>
-<translation id="8458987127502506209">Enable Brave Shields</translation>
+<translation id="8458987127502506209">Enable Ping Shields</translation>
 <translation id="7509914170164691086">Shields are UP <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Shields are DOWN <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
 <translation id="3907405056878805220">If this site seems broken, try Shields down.
-    <ph name="LINK_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="LINK_AFTER"/></translation>
+    <ph name="LINK_BEFORE"/>Note: this may reduce Ping's privacy protections.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, ads and more blocked <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">Not protected by Brave Shields <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Not protected by Ping Shields <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Advanced controls</translation>
 <translation id="5799940914270080805">Changing these settings might break sites.</translation>
 <translation id="9204041448536398473">Global Shield settings</translation>
@@ -2135,8 +2135,8 @@
 <translation id="2570787596946026998">Only connect with HTTPS</translation>
 <translation id="1992750560347846445">Report site</translation>
 <translation id="2387532482048804818">Tell us if the site wasn't working properly with Shields up.</translation>
-<translation id="3795015906457257780">You are viewing this site without Brave's privacy protections.</translation>
-<translation id="7194012750329511146">Brave Shields
+<translation id="3795015906457257780">You are viewing this site without Ping's privacy protections.</translation>
+<translation id="7194012750329511146">Ping Shields
 <ph name="NUMBER"/> Trackers, ads and more blocked</translation>
 <translation id="4292121526390005808">Blocked scripts</translation>
 <translation id="5046271170844958713">Allowed scripts</translation>
@@ -2145,43 +2145,43 @@
 <translation id="1905384713982899903">Blocked fingerprints</translation>
 <translation id="314364527871618241">Allowed fingerprints</translation>
 <translation id="264682546981571963">Tired of cookie consent notices?</translation>
-<translation id="4986297793092101884">Brave already blocks third-party cookies. We can block cookie consent notices, too.</translation>
+<translation id="4986297793092101884">Ping already blocks third-party cookies. We can block cookie consent notices, too.</translation>
 <translation id="535688588637568715">Yes, block cookie consent notices</translation>
-<translation id="2808175374672429053">Wildcards are not allowed for Brave Shields.</translation>
+<translation id="2808175374672429053">Wildcards are not allowed for Ping Shields.</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
-      =1 {Brave Shields blocked 1 tracker on <ph name="SITE_URL"/>}
-      other {Brave Shields blocked {BLOCKED_COUNT} trackers on <ph name="SITE_URL"/>}
+      =1 {Ping Shields blocked 1 tracker on <ph name="SITE_URL"/>}
+      other {Ping Shields blocked {BLOCKED_COUNT} trackers on <ph name="SITE_URL"/>}
     }</translation>
-<translation id="2540598191934725677">Click the Brave icon to view Brave Shields.</translation>
+<translation id="2540598191934725677">Click the Ping icon to view Ping Shields.</translation>
 <translation id="6294662480095808915">Privacy. By default.</translation>
-<translation id="4366423156486478559">Get Brave protection on every link you click. Just set Brave as default and browse. Privately.</translation>
+<translation id="4366423156486478559">Get Ping protection on every link you click. Just set Ping as default and browse. Privately.</translation>
 <translation id="3830912418080848377">Import Settings</translation>
 <translation id="6378406588483694938">Easily import bookmarks, extensions and even saved passwords from your old browser.</translation>
 <translation id="2092825239819166928">Select profile to import</translation>
 <translation id="4763127492635705340">The browser you chose has multiple profiles. Select the profile(s) you'd like to import.</translation>
 <translation id="880174232178865598">Import profiles</translation>
 <translation id="2453860139492968684">Finish</translation>
-<translation id="2273851479262317744">Set Brave as default browser</translation>
+<translation id="2273851479262317744">Set Ping as default browser</translation>
 <translation id="5037676449506322593">Select all</translation>
-<translation id="5148943178722443958">Help make Brave better.</translation>
+<translation id="5148943178722443958">Help make Ping better.</translation>
 <translation id="1097073572755862978">Send diagnostic reports if you experience a crash or freeze. <ph name="LINK_BEFORE"/>Learn more.<ph name="LINK_AFTER"/></translation>
-<translation id="6629244688368006959">Share private and anonymous product insights about what features are being used by Brave's users. <ph name="LINK_BEFORE"/>Learn more.<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Share private and anonymous product insights about what features are being used by Ping's users. <ph name="LINK_BEFORE"/>Learn more.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Set-up complete</translation>
-<translation id="3141206739023333979">Change these choices at any time in Brave at <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
+<translation id="3141206739023333979">Change these choices at any time in Ping at <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Read our full <ph name="LINK_BEFORE"/>Privacy Policy<ph name="LINK_AFTER"/></translation>
 <translation id="2801098717523961746">Choose your theme</translation>
-<translation id="6262510489122516114">You can change this at any time in Brave settings.</translation>
+<translation id="6262510489122516114">You can change this at any time in Ping settings.</translation>
 <translation id="546481172717459539">Match system setting</translation>
 <translation id="7799817062559422778">Light mode</translation>
 <translation id="4117637339509843559">Dark mode</translation>
 <translation id="6302485303316397682">Want better search results?</translation>
-<translation id="7014699001826714920">Join the movement: contribute to Brave Search.</translation>
-<translation id="6821108091726602352">Help us fix the web by participating in Brave’s Web Discovery Project. By sharing completely anonymous search signals, you can help Brave grow the search index.</translation>
+<translation id="7014699001826714920">Join the movement: contribute to Ping Search.</translation>
+<translation id="6821108091726602352">Help us fix the web by participating in Ping’s Web Discovery Project. By sharing completely anonymous search signals, you can help Ping grow the search index.</translation>
 <translation id="6764845498618413165">Learn more.</translation>
 <translation id="7818938154803162778">Sure, I'll help</translation>
-<translation id="7821773512278295352">Brave Firewall + VPN: connected</translation>
-<translation id="6019088868713395120">Brave Firewall + VPN: disconnected</translation>
-<translation id="3541307549916475335">Brave VPN Panel UI</translation>
+<translation id="7821773512278295352">Ping Firewall + VPN: connected</translation>
+<translation id="6019088868713395120">Ping Firewall + VPN: disconnected</translation>
+<translation id="3541307549916475335">Ping VPN Panel UI</translation>
 <translation id="7143207342074048698">Connecting ...</translation>
 <translation id="1202549130170287307">Disconnecting</translation>
 <translation id="2325196879156848326">Connection failed</translation>
@@ -2189,7 +2189,7 @@
 <translation id="3936826714240735937">Choose another server</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> couldn't connect to the <ph name="REGION_NAME"/> server. Please try again or choose another country.</translation>
 <translation id="5753795690521538679">Start free 7-day trial</translation>
-<translation id="3357036723290257445">Already purchased Brave VPN?</translation>
+<translation id="3357036723290257445">Already purchased Ping VPN?</translation>
 <translation id="8814357473522731680">Powered by</translation>
 <translation id="8652175077544655965">Close settings</translation>
 <translation id="3099126540952997993">Firewall + VPN</translation>
@@ -2218,7 +2218,7 @@
 <translation id="427718751211990320">Credentials expiry date elapsed.</translation>
 <translation id="8670619630771851260">Unable to load credentials.</translation>
 <translation id="1594643509610625766">Token no longer valid.</translation>
-<translation id="8373427068383038263">Looks like your most recent payment for <ph name="VALUE"/> did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method or contact Brave support.</translation>
+<translation id="8373427068383038263">Looks like your most recent payment for <ph name="VALUE"/> did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method or contact Ping support.</translation>
 <translation id="5257165507296814658">Close support form</translation>
 <translation id="1839021455997460752">Your email address</translation>
 <translation id="7508253027939632101">Enter your email address</translation>
@@ -2239,14 +2239,14 @@
 <translation id="6676791921618140305">OS version:</translation>
 <translation id="1156325797949437777">Support provided in partnership with Guardian.</translation>
 <translation id="8146777497879160283">Failed to write the VPN config. This may happen if you don't have permission or if you haven't run Windows Update recently.</translation>
-<translation id="3362894458460231163">VPN connection failed. Please try connecting again and be sure to click "Allow" to enable Brave's VPN configuration.</translation>
-<translation id="7261518280726313829">Turning off secure DNS or using default servers on Windows may reveal the names of the sites you visit to your Internet service provider. Brave does not recommend doing this. Do you want to do it anyway?</translation>
-<translation id="888284761945060750">Secure DNS is disabled by your organisation's policies. Using Brave VPN without Secure DNS may reveal the names of the sites you visit to your Internet service provider or organisation.</translation>
-<translation id="6593224083874259773">Brave VPN on Windows</translation>
-<translation id="3153983908111684619">The setting is locked by BraveVPN while it is connected</translation>
+<translation id="3362894458460231163">VPN connection failed. Please try connecting again and be sure to click "Allow" to enable Ping's VPN configuration.</translation>
+<translation id="7261518280726313829">Turning off secure DNS or using default servers on Windows may reveal the names of the sites you visit to your Internet service provider. Ping does not recommend doing this. Do you want to do it anyway?</translation>
+<translation id="888284761945060750">Secure DNS is disabled by your organisation's policies. Using Ping VPN without Secure DNS may reveal the names of the sites you visit to your Internet service provider or organisation.</translation>
+<translation id="6593224083874259773">Ping VPN on Windows</translation>
+<translation id="3153983908111684619">The setting is locked by PingVPN while it is connected</translation>
 <translation id="1055657720430482013">Windows has a feature called Smart Multi-Homed Name Resolution, which can expose information about your location and the sites you visit.
 
-Brave has a helper service that protects you from this exposure by filtering the way DNS queries are made on your VPN connection.
+Ping has a helper service that protects you from this exposure by filtering the way DNS queries are made on your VPN connection.
 
 However, we noticed this helper service is not running, and we don't want to leave you unprotected. We’ve changed the DNS settings in the browser to protect against this exposure. The settings will remain in effect and locked while the VPN is connected.
 
@@ -2262,16 +2262,16 @@ Let's get you connected!</translation>
 <translation id="7423206764347669977">Change the settings</translation>
 <translation id="9061845622728745852">Timezone:</translation>
 <translation id="8295393906499561642">Session expired</translation>
-<translation id="3312623558576021182">Please log in to your <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave Account<ph name="BRAVE_ACCOUNT_END"/> to refresh your VPN session.</translation>
-<translation id="6021669293402055982">Brave VPN: disconnected</translation>
-<translation id="7861195049821776142">Brave VPN: disconnecting</translation>
-<translation id="958268166261124668">Brave VPN: connected</translation>
-<translation id="2061807837510296780">Brave VPN: connecting</translation>
-<translation id="1313124107969703758">Brave VPN: error</translation>
+<translation id="3312623558576021182">Please log in to your <ph name="BRAVE_ACCOUNT_BEGIN"/>Ping Account<ph name="BRAVE_ACCOUNT_END"/> to refresh your VPN session.</translation>
+<translation id="6021669293402055982">Ping VPN: disconnected</translation>
+<translation id="7861195049821776142">Ping VPN: disconnecting</translation>
+<translation id="958268166261124668">Ping VPN: connected</translation>
+<translation id="2061807837510296780">Ping VPN: connecting</translation>
+<translation id="1313124107969703758">Ping VPN: error</translation>
 <translation id="8273420301954598554">Status: connected</translation>
 <translation id="7155657348064536843">Status: disconnected</translation>
-<translation id="2413929902277520460">Brave VPN – connected</translation>
-<translation id="8048263175525832621">Brave VPN – disconnected</translation>
+<translation id="2413929902277520460">Ping VPN – connected</translation>
+<translation id="8048263175525832621">Ping VPN – disconnected</translation>
 <translation id="1498770726476841108">Manage account</translation>
 <translation id="6825718953004242472">Remove icon</translation>
 <translation id="3287942014983548982">Open here</translation>

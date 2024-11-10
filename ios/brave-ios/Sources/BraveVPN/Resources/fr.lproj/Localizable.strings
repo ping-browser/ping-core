@@ -7,25 +7,25 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "SERVEURS DISPONIBLES";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Acheter";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Protégez 5 appareils avec 1 abonnement";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Choisissez votre emplacement géographique/pays";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave n'enregistre jamais votre activité";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping n'enregistre jamais votre activité";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Protégez chaque application et tout votre appareil";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Une connexion Wi-Fi plus sûre, qu'elle soit privée ou publique";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Rapide comme l'éclair, jusqu'à 100 Mbit/s";
 
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
@@ -44,7 +44,7 @@
 "vpn.contactFormCarrier" = "Opérateur mobile";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave ne vous suit pas à la trace et ne sait pas comment vous utilisez l'application. Nous ne savons donc pas comment vous avez configuré votre VPN. Donnez-nous des informations au sujet du problème que vous rencontrez et nous ferons de notre mieux pour le résoudre dans les meilleurs délais.";
+"vpn.contactFormDoNotEditText" = "Ping ne vous suit pas à la trace et ne sait pas comment vous utilisez l'application. Nous ne savons donc pas comment vous avez configuré votre VPN. Donnez-nous des informations au sujet du problème que vous rencontrez et nous ferons de notre mieux pour le résoudre dans les meilleurs délais.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Échec d’envoi de l’e-mail. Vérifiez la configuration de votre messagerie.";
@@ -101,9 +101,9 @@
 "vpn.contactFormTimezone" = "Fuseau horaire iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Problème avec Brave Firewall + VPN";
+"vpn.contactFormTitle" = "Problème avec Ping Firewall + VPN";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Activer";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -119,13 +119,13 @@
 "vpn.iapDisclaimer" = "Tous les abonnements sont à renouvellement automatique, mais il est possible d'annuler avant le renouvellement.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Ce profil permet au VPN de se connecter automatiquement et de sécuriser en continu le trafic sur votre appareil. La connexion VPN est chiffrée et transite par le pare-feu intelligent de Brave afin de bloquer les connexions potentiellement dangereuses et invasives.";
+"vpn.installProfileBody" = "Ce profil permet au VPN de se connecter automatiquement et de sécuriser en continu le trafic sur votre appareil. La connexion VPN est chiffrée et transite par le pare-feu intelligent de Ping afin de bloquer les connexions potentiellement dangereuses et invasives.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Installer le profil VPN";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave va procéder à l'installation d'un profil VPN.";
+"vpn.installProfileTitle" = "Ping va procéder à l'installation d'un profil VPN.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "Le VPN est maintenant activé";
@@ -133,7 +133,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Installer le VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Essai GRATUIT";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -222,10 +222,10 @@
 "vpn.settingsFAQ" = "Assistance VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Associer cet achat à votre compte Brave";
+"vpn.settingsLinkReceipt" = "Associer cet achat à votre compte Ping";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Associez votre achat sur l'App Store à votre compte Brave pour utiliser le VPN Brave sur d'autres appareils.";
+"vpn.settingsLinkReceiptFooter" = "Associez votre achat sur l'App Store à votre compte Ping pour utiliser le VPN Ping sur d'autres appareils.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Gérer mon abonnement";
@@ -261,10 +261,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Mettre à jour le mode de paiement";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Brave continue à vous protéger en arrière-plan.";
+"vpn.vpnBackgroundNotificationBody" = "Ping continue à vous protéger en arrière-plan.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN est Activé";
+"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN est Activé";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Utiliser le meilleur serveur disponible";
@@ -279,7 +279,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Erreur";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Un profil VPN doit être installé sur votre appareil pour que Brave Firewall + VPN puisse fonctionner.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Un profil VPN doit être installé sur votre appareil pour que Ping Firewall + VPN puisse fonctionner.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Autorisation refusée";
@@ -294,13 +294,13 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Erreur";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Les abonnements seront facturés via votre compte iTunes.\n\nToute période d’essai gratuite non utilisée sera annulée en cas d’achat d’un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d’annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans Paramètres.\n\nEn utilisant Brave, vous acceptez les Conditions d’utilisation et la Politique de confidentialité.";
+"vpn.vpnIAPBoilerPlate" = "Les abonnements seront facturés via votre compte iTunes.\n\nToute période d’essai gratuite non utilisée sera annulée en cas d’achat d’un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d’annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans Paramètres.\n\nEn utilisant Ping, vous acceptez les Conditions d’utilisation et la Politique de confidentialité.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Utiliser le code";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Votre configuration Brave Firewall + VPN sera réinitialisée afin de résoudre les problèmes. Cette opération peut prendre quelques instants.";
+"vpn.vpnResetAlertBody" = "Votre configuration Ping Firewall + VPN sera réinitialisée afin de résoudre les problèmes. Cette opération peut prendre quelques instants.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Réinitialiser la configuration";

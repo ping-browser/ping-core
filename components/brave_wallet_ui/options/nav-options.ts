@@ -42,33 +42,33 @@ export const isValidPanelNavigationOption = (
   )
 }
 
-const BridgeOption: NavOption = {
-  id: 'bridge',
-  name: 'braveWalletBridge',
-  icon: 'web3-bridge',
-  route: WalletRoutes.Bridge
-}
+// const BridgeOption: NavOption = {
+//   id: 'bridge',
+//   name: 'braveWalletBridge',
+//   icon: 'web3-bridge',
+//   route: WalletRoutes.Bridge
+// }
 
 export const BuySendSwapDepositOptions: NavOption[] = [
-  {
-    id: 'buy',
-    name: 'braveWalletBuy',
-    icon: 'coins-alt1',
-    route: WalletRoutes.FundWalletPageStart
-  },
+  // {
+  //   id: 'buy',
+  //   name: 'braveWalletBuy',
+  //   icon: 'coins-alt1',
+  //   route: WalletRoutes.FundWalletPageStart
+  // },
   {
     id: 'send',
     name: 'braveWalletSend',
     icon: 'send',
     route: WalletRoutes.Send
   },
-  {
-    id: 'swap',
-    name: 'braveWalletSwap',
-    icon: 'currency-exchange',
-    route: WalletRoutes.Swap
-  },
-  BridgeOption,
+//   {
+//     id: 'swap',
+//     name: 'braveWalletSwap',
+//     icon: 'currency-exchange',
+//     route: WalletRoutes.Swap
+//   },
+  // BridgeOption,
   {
     id: 'deposit',
     name: 'braveWalletDepositCryptoButton',
@@ -98,12 +98,12 @@ const AssetsNavOption: NavOption = {
   route: WalletRoutes.PortfolioAssets
 }
 
-const ExploreNavOption: NavOption = {
-  id: 'explore',
-  name: 'braveWalletTopNavExplore',
-  icon: 'discover',
-  route: WalletRoutes.Explore
-}
+// const ExploreNavOption: NavOption = {
+//   id: 'explore',
+//   name: 'braveWalletTopNavExplore',
+//   icon: 'discover',
+//   route: WalletRoutes.Explore
+// }
 
 export const PanelNavOptions: NavOption[] = [
   {
@@ -118,7 +118,7 @@ export const PanelNavOptions: NavOption[] = [
     icon: 'user-accounts',
     route: WalletRoutes.Accounts
   },
-  ExploreNavOption
+  // ExploreNavOption
 ]
 
 export const NavOptions: NavOption[] = [
@@ -135,7 +135,7 @@ export const NavOptions: NavOption[] = [
     icon: 'user-accounts',
     route: WalletRoutes.Accounts
   },
-  ExploreNavOption
+  // ExploreNavOption
 ]
 
 export const AllNavOptions: NavOption[] = [

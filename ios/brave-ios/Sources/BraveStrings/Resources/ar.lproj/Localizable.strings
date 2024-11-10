@@ -26,7 +26,7 @@
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "فتح علامة التبويب المحددة";
 
 /* Title label text for refreshing credentials from brave site. */
-"paywall.alreadyPurchasedTitle" = "هل اشتريت بالفعل عبر الموقع الإلكتروني Brave.com؟";
+"paywall.alreadyPurchasedTitle" = "هل اشتريت بالفعل عبر الموقع الإلكتروني Ping.com؟";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "قم بتحديث بيانات الاعتماد الخاصة بك";
@@ -49,8 +49,8 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "إظهار علامة التبويب السابقة";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "فتح Brave Shields";
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Ping Shields */
+"showShieldsTitle" = "فتح Ping Shields";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "إظهار كل علامات التبويب";

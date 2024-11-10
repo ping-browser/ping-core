@@ -3,24 +3,24 @@
 <translationbundle lang="pl">
 <translation id="8631427463833030968">Zarządzaj reklamami</translation>
 <translation id="7630214457764713113">Skopiuj wyczyszczone łącze</translation>
-<translation id="885805571521218129">Oto Twoje szacunkowe zarobki z reklam Brave w tym miesiącu</translation>
+<translation id="885805571521218129">Oto Twoje szacunkowe zarobki z reklam Ping w tym miesiącu</translation>
 <translation id="3478449063771497234">Powiadomienia są wyłączone</translation>
 <translation id="2862978891748913252">Wybierz kraj</translation>
 <translation id="3970520675790340955">Wybierz kraj, żebyśmy mogli pokazać Ci opcje i reklamy właściwe dla Twojego regionu.</translation>
 <translation id="7301741773883122509">Teraz możesz otrzymać nagrody za oglądanie reklam. W ten sposób pomagasz ulepszać sieć dla wszystkich. To wspaniałe!</translation>
 <translation id="6439128034594289376">Huraa, jesteście gotowi!</translation>
 <translation id="370665806235115550">Ładowanie...</translation>
-<translation id="7931127789630755251">Zdobywaj tokeny za oglądanie prywatnych reklam wyświetlanych w Brave.</translation>
+<translation id="7931127789630755251">Zdobywaj tokeny za oglądanie prywatnych reklam wyświetlanych w Ping.</translation>
 <translation id="7859066142771796818">Używaj tokenów do zakupu kart podarunkowych, wymieniaj je na inne waluty, wspieraj twórców treści itd.</translation>
 <translation id="3863981251715594911">Jak to działa?</translation>
-<translation id="5547108999862247665">Jak działają reklamy Brave?</translation>
+<translation id="5547108999862247665">Jak działają reklamy Ping?</translation>
 <translation id="2965798296974325760">Rozpocznij korzystanie z Nagród</translation>
 <translation id="8220484609979012449">\n\nNadal możesz wysłać datki w postaci kryptowaluty do tego twórcy, używając swojego portfela Web3.</translation>
 <translation id="6385969012847057348">Ten twórca nie może otrzymywać datków od <ph name="CUSTODIAN"/>.</translation>
 <translation id="735733310778086206">Ten twórca nie może jeszcze otrzymywać datków Web3 lub w kryptowalucie.</translation>
 <translation id="6268134562674951939">Masz za mało tokenów</translation>
 <translation id="4529874892536380156">Ustaw jako comiesięczny cykliczny datek. Możesz go anulować w każdej chwili.</translation>
-<translation id="5562948772940025260">Używając swojego salda Nagród Brave, możesz wysłać jedynie <ph name="AMOUNT"/> BAT.</translation>
+<translation id="5562948772940025260">Używając swojego salda Nagród Ping, możesz wysłać jedynie <ph name="AMOUNT"/> BAT.</translation>
 <translation id="5012991400231464322">Miesięczne datki</translation>
 <translation id="5907051927340164207">Już wysyłasz comiesięczne datki temu twórcy</translation>
 <translation id="4848906651275579475">Nadal możesz wysłać datek teraz i anulować swój comiesięczny datek dla tego twórcy, usuwając go z <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
@@ -31,55 +31,55 @@
 <translation id="3699420827646925694">Wylogowano z <ph name="CUSTODIAN"/></translation>
 <translation id="9038728316393235637">Zalogowano do <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Dziękujemy za wspieranie Twojego ulubionego twórcy</translation>
-<translation id="3796032246917966749">Wygląda na to, że wylogowano Cię z <ph name="CUSTODIAN"/> do Nagród Brave. Zaloguj się ponownie, aby kontynuować.</translation>
-<translation id="5202112619925434373">Ten twórca nie jest jeszcze zweryfikowany przez Twórców Brave. Będziesz w stanie wysyłać mu datki, gdy tylko zostanie zweryfikowany. <ph name="LEARN_MORE"/></translation>
+<translation id="3796032246917966749">Wygląda na to, że wylogowano Cię z <ph name="CUSTODIAN"/> do Nagród Ping. Zaloguj się ponownie, aby kontynuować.</translation>
+<translation id="5202112619925434373">Ten twórca nie jest jeszcze zweryfikowany przez Twórców Ping. Będziesz w stanie wysyłać mu datki, gdy tylko zostanie zweryfikowany. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Wyślij datek</translation>
 <translation id="1899434873745933492">Nie możemy wysłać Twojego datku</translation>
-<translation id="1794046983410841192">Użyj Nagród Brave</translation>
+<translation id="1794046983410841192">Użyj Nagród Ping</translation>
 <translation id="8037118277449189044">Użyj portfela Web3</translation>
-<translation id="9059356165618961685">Saldo Nagród Brave</translation>
+<translation id="9059356165618961685">Saldo Nagród Ping</translation>
 <translation id="86107454835395919">Ustaw jako comiesięczny datek</translation>
 <translation id="1177863135347784049">Niestandardowe</translation>
 <translation id="4827581232860040208">Wystąpił problem przy wysyłaniu Twojego datku</translation>
 <translation id="3259723213051400722">Spróbuj ponownie.</translation>
-<translation id="5298965408768377685">Ten twórca zarejestrował się w Brave i może otrzymywać datki od użytkowników Nagród Brave.<ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">Nagrody Brave mogą nie działać, gdy powiadomienia są wyłączone.</translation>
+<translation id="5298965408768377685">Ten twórca zarejestrował się w Ping i może otrzymywać datki od użytkowników Nagród Ping.<ph name="LEARN_MORE"/></translation>
+<translation id="7466579932043491502">Nagrody Ping mogą nie działać, gdy powiadomienia są wyłączone.</translation>
 <translation id="6112331814131703370">Zablokuj powiadomienia „Przełącz na aplikację”</translation>
 <translation id="4744921452903670666">Powiedz nam, co myślisz!</translation>
-<translation id="2524310205387880526">Oceń Brave</translation>
+<translation id="2524310205387880526">Oceń Ping</translation>
 <translation id="4104400246019119780">Dziękujemy!</translation>
 <translation id="5202255382948179481">Dodaj swoje sugestie</translation>
 <translation id="7759809451544302770">Opcjonalne</translation>
-<translation id="4748689412569009273">Wyrażając to jedną emotikoną, jak oceniasz swoje doświadczenia z Brave?</translation>
+<translation id="4748689412569009273">Wyrażając to jedną emotikoną, jak oceniasz swoje doświadczenia z Ping?</translation>
 <translation id="7335142069363686805">Oceń teraz</translation>
-<translation id="6681362094306959654">Podoba Ci się Brave?</translation>
+<translation id="6681362094306959654">Podoba Ci się Ping?</translation>
 <translation id="8041093619605951337">Radosny</translation>
 <translation id="6826743502395386800">Smutny</translation>
 <translation id="5488843227043643519">Może wystawisz ocenę na Play Store?</translation>
 <translation id="5867854497245948308">Dziękujemy za Twoją opinię!</translation>
-<translation id="4935400164159327304">Powiedz nam, jak możemy ulepszyć Brave.</translation>
+<translation id="4935400164159327304">Powiedz nam, jak możemy ulepszyć Ping.</translation>
 <translation id="1420756770787071946">Wspieraj tego twórcę</translation>
-<translation id="8966035543003363155">Powiadomienia w przeglądarce Brave wszystko ułatwiają</translation>
+<translation id="8966035543003363155">Powiadomienia w przeglądarce Ping wszystko ułatwiają</translation>
 <translation id="7662771815233894695">Zarządzaj pobieraniem plików, zdobywaj tokeny, wyświetlaj statystyki tygodniowego zużycia i wiele więcej.</translation>
 <translation id="4265429476391459783">Nie zdobywasz nagród i nie otrzymujesz raportów dotyczących prywatności</translation>
-<translation id="1305714751384738456">Nie zdobywasz Nagród Brave</translation>
+<translation id="1305714751384738456">Nie zdobywasz Nagród Ping</translation>
 <translation id="1483391942610220726">Nie otrzymujesz raportów dotyczących prywatności</translation>
 <translation id="4683790942451502796">Ponownie włącz powiadomienia, jeśli wciąż chcesz otrzymywać tokeny BAT i cotygodniowe raporty dotyczące prywatności.</translation>
 <translation id="8618359751943259593">Ponownie włącz powiadomienia, jeśli wciąż chcesz otrzymywać tokeny BAT.</translation>
 <translation id="760355165169399836">Ponownie włącz powiadomienia, jeśli wciąż chcesz otrzymywać cotygodniowe raporty dotyczące prywatności.</translation>
 <translation id="6268959058971634697">Nie zdobywasz nagród</translation>
-<translation id="1088637159642753509">Włącz powiadomienia na urządzeniu, żeby otrzymywać Nagrody Brave i sprawdzać raporty dotyczące prywatności.</translation>
-<translation id="312404770066229090">Włącz powiadomienia na urządzeniu, żeby zdobywać Nagrody Brave.</translation>
-<translation id="2241529840361230499">Włącz powiadomienia na urządzeniu, żeby otrzymywać raporty dotyczące prywatności Brave.</translation>
-<translation id="4930155581888391118">Włącz powiadomienia otrzymywane od przeglądarki Brave, żeby zdobywać Nagrody Brave.</translation>
-<translation id="325187916104529570">Otwórz ustawienia i włącz powiadomienia na urządzeniu w przypadku Reklam Brave.</translation>
-<translation id="5744802588121897886">Włącz powiadomienia przeglądarki Brave</translation>
-<translation id="7307834434086582547">Włącz/wyłącz tarcze Brave</translation>
+<translation id="1088637159642753509">Włącz powiadomienia na urządzeniu, żeby otrzymywać Nagrody Ping i sprawdzać raporty dotyczące prywatności.</translation>
+<translation id="312404770066229090">Włącz powiadomienia na urządzeniu, żeby zdobywać Nagrody Ping.</translation>
+<translation id="2241529840361230499">Włącz powiadomienia na urządzeniu, żeby otrzymywać raporty dotyczące prywatności Ping.</translation>
+<translation id="4930155581888391118">Włącz powiadomienia otrzymywane od przeglądarki Ping, żeby zdobywać Nagrody Ping.</translation>
+<translation id="325187916104529570">Otwórz ustawienia i włącz powiadomienia na urządzeniu w przypadku Reklam Ping.</translation>
+<translation id="5744802588121897886">Włącz powiadomienia przeglądarki Ping</translation>
+<translation id="7307834434086582547">Włącz/wyłącz tarcze Ping</translation>
 <translation id="6945863270524203017">Uzyskaj cotygodniowe aktualizacje dotyczące prywatności na temat blokowania skryptów śledzących i reklam.</translation>
 <translation id="4324735664183300693">Włącz powiadomienia</translation>
-<translation id="6395059271589866759">Brave pobiera 5% przesłanej kwoty jako opłatę manipulacyjną.</translation>
+<translation id="6395059271589866759">Ping pobiera 5% przesłanej kwoty jako opłatę manipulacyjną.</translation>
 <translation id="6661699662755460155">wymień</translation>
-<translation id="6790981891677399838"><ph name="AMOUNT"/> BAT właśnie poszło ode mnie jako datek przez przeglądarkę Brave! Sprawdź, jak możesz wspierać ulubione witryny i twórców: https://brave.com/rewards</translation>
+<translation id="6790981891677399838"><ph name="AMOUNT"/> BAT właśnie poszło ode mnie jako datek przez przeglądarkę Ping! Sprawdź, jak możesz wspierać ulubione witryny i twórców: https://brave.com/rewards</translation>
 <translation id="5510493033031835532">Automatyczne przekierowywanie stron AMP</translation>
 <translation id="5197219128592971597">Zawsze odwiedzaj pierwotne (bez standardu AMP) adresy URL, a nie wersje stron korzystających ze standardu Accelerated Mobile Pages Google</translation>
 <translation id="920638232916443453">Automatycznie przekierowuj śledzące adresy URL</translation>
@@ -98,13 +98,13 @@
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
 <translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
-<translation id="6302422639282249274">Zarządzaj nagrodami Brave</translation>
+<translation id="6302422639282249274">Zarządzaj nagrodami Ping</translation>
 <translation id="2709516037105925701">Autouzupełnianie</translation>
 <translation id="8617525558807213034">Autouzupełnianie w prywatnych oknach</translation>
 <translation id="8685431198160039193">Zapisane informacje mogą być autouzupełniane w prywatnych oknach</translation>
 <translation id="6583902294974160967">Wsparcie</translation>
 <translation id="1799030480311994998">Funkcje</translation>
-<translation id="2005732746077850308">Tarcze Brave i prywatność</translation>
+<translation id="2005732746077850308">Tarcze Ping i prywatność</translation>
 <translation id="4692623383562244444">Wyszukiwarki</translation>
 <translation id="1468415711258933398">Karta standardowa</translation>
 <translation id="3377025655491224618">Karta prywatna</translation>
@@ -147,10 +147,10 @@
 <translation id="4176463684765177261">Wyłączone</translation>
 <translation id="59174027418879706">Włączone</translation>
 <translation id="6920492760024499150">Dzisiejsze najpopularniejsze historie na prywatnym kanale. Tylko dla Ciebie.</translation>
-<translation id="8300751939969131609">Włącz Aktualności Brave i bądź zawsze na bieżąco</translation>
-<translation id="7627131190984957214">Aktualności Brave są obsługiwane przy użyciu prywatnych i zanonimizowanych reklam dopasowanych na Twoim urządzeniu.</translation>
-<translation id="7699565323725789472">Obserwuj swoje ulubione źródła w pojedynczym kanale aktywności. Wystarczy, że otworzysz kartę przeglądarki Brave, przewiniesz na dół i… gotowe!\nAktualności Brave wyświetlają prywatne i zanonimizowane reklamy.</translation>
-<translation id="1765217911817124376">Włącz aktualności Brave</translation>
+<translation id="8300751939969131609">Włącz Aktualności Ping i bądź zawsze na bieżąco</translation>
+<translation id="7627131190984957214">Aktualności Ping są obsługiwane przy użyciu prywatnych i zanonimizowanych reklam dopasowanych na Twoim urządzeniu.</translation>
+<translation id="7699565323725789472">Obserwuj swoje ulubione źródła w pojedynczym kanale aktywności. Wystarczy, że otworzysz kartę przeglądarki Ping, przewiniesz na dół i… gotowe!\nAktualności Ping wyświetlają prywatne i zanonimizowane reklamy.</translation>
+<translation id="1765217911817124376">Włącz aktualności Ping</translation>
 <translation id="8981973962043893066">Wyszukuj strony, tematy i kanały RSS</translation>
 <translation id="3225021799163709119">Popularne</translation>
 <translation id="3673348851739109493">Ranking źródeł</translation>
@@ -167,7 +167,7 @@
 <translation id="7461899062138731833">ŹRÓDŁA</translation>
 <translation id="6150420917380577651">Nie znaleziono kanałów w <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Reklama</translation>
-<translation id="7823038307453615214">Pokaż Brave News</translation>
+<translation id="7823038307453615214">Pokaż Ping News</translation>
 <translation id="6527303717912515753">Udostępnij</translation>
 <translation id="1654539412343893324">Dowiedz się więcej o swoich danych</translation>
 <translation id="2989805286512600854">Otwórz w nowej karcie</translation>
@@ -176,9 +176,9 @@
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> – wyłączone</translation>
 <translation id="1276592121036104130">Wczytaj nowe treści.</translation>
 <translation id="3189348785087463371">Promowane</translation>
-<translation id="7554145152551782675">Więcej ofert Brave</translation>
+<translation id="7554145152551782675">Więcej ofert Ping</translation>
 <translation id="254100925533869330">Brak treści</translation>
-<translation id="7172792761509429092">Brak treści do pokazania w Aktualnościach Brave.</translation>
+<translation id="7172792761509429092">Brak treści do pokazania w Aktualnościach Ping.</translation>
 <translation id="1771307734839364850">Wybierz źródło treści</translation>
 <translation id="6891769200437737956">Uniemożliwia stronom internetowym fingerprinting urządzenia</translation>
 <translation id="7459000603787995422">Zamknij karty przy wyjściu</translation>
@@ -193,9 +193,9 @@
 <translation id="6975864539539353406">Usuwa pliki cookie i inne dane strony po jej zamknięciu</translation>
 <translation id="1680858055899097121">Nie utrzymuj kart między sesjami przeglądania</translation>
 <translation id="7142548388914389999">Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)</translation>
-<translation id="5254037869598726291">Zanonimizowane dane P3A pomagają Brave oszacować ogólny poziom użytkowania i upewnić się, że ulepszamy popularne funkcje.</translation>
+<translation id="5254037869598726291">Zanonimizowane dane P3A pomagają Ping oszacować ogólny poziom użytkowania i upewnić się, że ulepszamy popularne funkcje.</translation>
 <translation id="933652931229970927">Automatycznie wysyłaj raporty diagnostyczne</translation>
-<translation id="5987838417172370108">Pomóż poprawić stabilność produktu Brave\u2019s, automatycznie przesyłając raporty diagnostyczne po awarii lub zacięciu przeglądarki Brave.</translation>
+<translation id="5987838417172370108">Pomóż poprawić stabilność produktu Ping\u2019s, automatycznie przesyłając raporty diagnostyczne po awarii lub zacięciu przeglądarki Ping.</translation>
 <translation id="7977176350719484850">Zaoszczędzony transfer danych</translation>
 <translation id="9008534313521214777">Zaoszczędzony czas</translation>
 <translation id="410351446219883937">Autoodtwarzanie</translation>
@@ -209,13 +209,13 @@
 <translation id="4172219483893066798">Strony mogą poprosić o dostęp do zasobów hosta lokalnego</translation>
 <translation id="7181706637590665047">Nie zezwalaj na dostęp do zasobów hosta lokalnego</translation>
 <translation id="1485435696620658073">Zgoda na dostęp do zasobów hosta lokalnego</translation>
-<translation id="181905442828471321">Ustawienia ogólne tarczy Brave</translation>
+<translation id="181905442828471321">Ustawienia ogólne tarczy Ping</translation>
 <translation id="2675679258824361492">Inne ustawienia prywatności</translation>
 <translation id="8026334261755873520">Wyczyść dane przeglądania</translation>
 <translation id="1690924763769415936">Odtwarzanie w tle</translation>
-<translation id="6332924730165919598">Zamknięcie wszystkich kart zamyka Brave</translation>
-<translation id="8308305244351876417">Zezwól na odtwarzanie po przełączeniu na inną kartę w przeglądarce Brave, aplikację lub po wyłączeniu ekranu Twojego urządzenia.</translation>
-<translation id="49147335255967913">Otwieraj linki z YouTube w Brave</translation>
+<translation id="6332924730165919598">Zamknięcie wszystkich kart zamyka Ping</translation>
+<translation id="8308305244351876417">Zezwól na odtwarzanie po przełączeniu na inną kartę w przeglądarce Ping, aplikację lub po wyłączeniu ekranu Twojego urządzenia.</translation>
+<translation id="49147335255967913">Otwieraj linki z YouTube w Ping</translation>
 <translation id="4150201353443180367">Wygląd</translation>
 <translation id="4275663329226226506">Multimedia</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -224,25 +224,25 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Dowiedz się więcej o Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Zezwalaj (uruchom ponownie teraz)</translation>
 <translation id="2433507940547922241">Wygląd</translation>
-<translation id="9040069796107003510">Ikona nagród Brave</translation>
-<translation id="6333347122924254968">Pokaż ikonę Nagród Brave w pasku adresu</translation>
+<translation id="9040069796107003510">Ikona nagród Ping</translation>
+<translation id="6333347122924254968">Pokaż ikonę Nagród Ping w pasku adresu</translation>
 <translation id="8495235435594442882">Włącz dolny pasek narzędzi</translation>
-<translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave</translation>
+<translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Ping</translation>
 <translation id="8701563696941209024">URUCHOM PONOWNIE</translation>
 <translation id="834487290629916192">PÓŹNIEJ</translation>
-<translation id="7207456302801184289">Witamy w przeglądarce Brave</translation>
+<translation id="7207456302801184289">Witamy w przeglądarce Ping</translation>
 <translation id="4117451092682672487">Prosta ochrona prywatności.</translation>
-<translation id="7909375417585209817">Gdy Brave jest domyślną przeglądarką, każdy otwarty link otwiera się z ochroną prywatności Brave.</translation>
+<translation id="7909375417585209817">Gdy Ping jest domyślną przeglądarką, każdy otwarty link otwiera się z ochroną prywatności Ping.</translation>
 <translation id="7370959926683925817">Blokuj reklamy. Chroń dane. Każdego dnia.</translation>
-<translation id="7281027579943912834">Z Brave jako domyślną przeglądarką każdy link, który klikniesz, zostanie objęty ochroną Brave przed reklamami. Każda strona i transmisja. Każdy film.</translation>
-<translation id="5148943178722443958">Pomóż ulepszyć Brave.</translation>
+<translation id="7281027579943912834">Z Ping jako domyślną przeglądarką każdy link, który klikniesz, zostanie objęty ochroną Ping przed reklamami. Każda strona i transmisja. Każdy film.</translation>
+<translation id="5148943178722443958">Pomóż ulepszyć Ping.</translation>
 <translation id="6718362830686703942">Wysyłaj raporty diagnostyczne w przypadku wystąpienia błędu.</translation>
-<translation id="8616157231067364693">Dziel się w sposób prywatny i anonimowy uwagami na temat produktów, które są używane przez użytkowników Brave.</translation>
+<translation id="8616157231067364693">Dziel się w sposób prywatny i anonimowy uwagami na temat produktów, które są używane przez użytkowników Ping.</translation>
 <translation id="2877653791257935258">Podaj nazwę witryny internetowej lub adres URL</translation>
-<translation id="5329830149661250028">Zalety korzystania z Brave: Brak reklam. Brak oprogramowania śledzącego. Szybsze ładowanie stron.</translation>
-<translation id="3941792073703079607">Zobacz różnicę Brave: Blokuj reklamy. Zapisuj dane. Transmituj szybciej.</translation>
-<translation id="3545804467215833536">Stuknij, aby wyświetlić Tarcze Brave</translation>
-<translation id="1724327820822194498">Dzięki Tarczom będzie można zobaczyć wszystkie zablokowane przez Brave niepożądane elementy.</translation>
+<translation id="5329830149661250028">Zalety korzystania z Ping: Brak reklam. Brak oprogramowania śledzącego. Szybsze ładowanie stron.</translation>
+<translation id="3941792073703079607">Zobacz różnicę Ping: Blokuj reklamy. Zapisuj dane. Transmituj szybciej.</translation>
+<translation id="3545804467215833536">Stuknij, aby wyświetlić Tarcze Ping</translation>
+<translation id="1724327820822194498">Dzięki Tarczom będzie można zobaczyć wszystkie zablokowane przez Ping niepożądane elementy.</translation>
 <translation id="5386259141409498372">Zablokowano skrypty śledzące <ph name="BIG_TECH"/> i inne reklamy (<ph name="TRACKER"/>)</translation>
 <translation id="7256200875155794202">Zablokowano reklamy i skrypty śledzące: <ph name="BIG_TECH"/></translation>
 <translation id="3092683655478890840">Zablokowanych reklam i skryptów śledzących: <ph name="TRACKER_COUNT"/></translation>
@@ -252,25 +252,25 @@
 <translation id="986879628471635371">Rozwiązywanie problemów z wdrożeniem</translation>
 <translation id="5808759341041733958">Wybierz domyślną wyszukiwarkę</translation>
 <translation id="1331593888918588693">Później możesz zawsze zmienić preferencje w ustawieniach aplikacji.</translation>
-<translation id="5806601733251372221">Tarcze Brave</translation>
+<translation id="5806601733251372221">Tarcze Ping</translation>
 <translation id="8537217141725709400">Zdobywaj <ph name="TOKEN"/>y</translation>
-<translation id="3333887201479867589">Nagrody Brave</translation>
+<translation id="3333887201479867589">Nagrody Ping</translation>
 <translation id="5870330605209713397">oglądając reklamy szanujące prywatność, i domyślnie wspieraj swoje ulubione witryny oraz twórców.</translation>
-<translation id="5302488867897327287">Stukając opcję Zacznij podczas korzystania z nagród Brave, zgadzają się Państwo na</translation>
+<translation id="5302488867897327287">Stukając opcję Zacznij podczas korzystania z nagród Ping, zgadzają się Państwo na</translation>
 <translation id="4281844954008187215">Warunki świadczenia usługi</translation>
 <translation id="6871397658902960384">Zacznij przeglądać</translation>
 <translation id="454386012157232640">Nie było reklamy</translation>
-<translation id="1448877943847791441">Brave pokaże Twoją pierwszą reklamę za</translation>
-<translation id="4410793187232041318">Teraz zyskasz token z reklam Brave.</translation>
-<translation id="6511854390690723657">To Twoja pierwsza reklama Brave. Kliknij, aby dowiedzieć się więcej.</translation>
-<translation id="2070991379950719711">Zacznij korzystać z nagród Brave.</translation>
+<translation id="1448877943847791441">Ping pokaże Twoją pierwszą reklamę za</translation>
+<translation id="4410793187232041318">Teraz zyskasz token z reklam Ping.</translation>
+<translation id="6511854390690723657">To Twoja pierwsza reklama Ping. Kliknij, aby dowiedzieć się więcej.</translation>
+<translation id="2070991379950719711">Zacznij korzystać z nagród Ping.</translation>
 <translation id="48520986898237073">Przejdź do portfela</translation>
 <translation id="6213254277250932867">Mam 12-wyrazową frazę odzyskiwania</translation>
 <translation id="4225265925807365011">Mam 24-wyrazową frazę odzyskiwania</translation>
 <translation id="3570367516044491911">Ustaw jako domyślną przeglądarkę</translation>
 <translation id="6800338374677644736">Ustaw jako domyślną przeglądarkę</translation>
-<translation id="19715420010996093">Wybierz przeglądarkę Brave i kliknij „Zawsze”</translation>
-<translation id="3546439402724649282">Brave jest już ustawiona jako Twoja domyślna przeglądarka.</translation>
+<translation id="19715420010996093">Wybierz przeglądarkę Ping i kliknij „Zawsze”</translation>
+<translation id="3546439402724649282">Ping jest już ustawiona jako Twoja domyślna przeglądarka.</translation>
 <translation id="8389661903259423907">Domyślna przeglądarka jest już ustawiona. Możesz zmienić domyślną przeglądarkę w ustawieniach aplikacji.</translation>
 <translation id="1545749641540134597">Skanuj kod QR</translation>
 <translation id="5317781812114905957">Instrukcje</translation>
@@ -278,12 +278,12 @@
 <translation id="2734870894159530879">Zaloguj się do <ph name="WALLET_PROVIDER"/>, aby wyświetlić saldo</translation>
 <translation id="7658239707568436148">Anuluj</translation>
 <translation id="1201402288615127009">Dalej</translation>
-<translation id="8481779960444041069">Aby zwiększyć prywatność, używaj Brave jako domyślnej przeglądarki</translation>
-<translation id="1938402585819943124">Wybierz Brave na następnym ekranie.</translation>
+<translation id="8481779960444041069">Aby zwiększyć prywatność, używaj Ping jako domyślnej przeglądarki</translation>
+<translation id="1938402585819943124">Wybierz Ping na następnym ekranie.</translation>
 <translation id="8926389886865778422">Nie pytaj ponownie</translation>
 <translation id="745974920645827035">Niezależna wyszukiwarka z lepszą prywatnością</translation>
-<translation id="2773167297815493692">Wyszukiwarka Brave nie profiluje użytkowników.</translation>
-<translation id="5240031343741051161">Wypróbuj Wyszukiwarkę Brave</translation>
+<translation id="2773167297815493692">Wyszukiwarka Ping nie profiluje użytkowników.</translation>
+<translation id="5240031343741051161">Wypróbuj Wyszukiwarkę Ping</translation>
 <translation id="5234764350956374838">Zamknij</translation>
 <translation id="6639570430554986719">STYCZEŃ</translation>
 <translation id="1807352595146144483">LUTY</translation>
@@ -297,8 +297,8 @@
 <translation id="8220228041552340594">PAŹDZIERNIK</translation>
 <translation id="8280223431922155812">LISTOPAD</translation>
 <translation id="4254029385847607686">GRUDZIEŃ</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="1772301834467143364">Brave News</translation>
+<translation id="3960619311638643872">Ping VPN</translation>
+<translation id="1772301834467143364">Ping News</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="6020176662032623904">Zweryfikowany twórca</translation>
@@ -309,7 +309,7 @@
 <translation id="2429828319207652823">Wystąpił problem przy przetwarzaniu Twojego wsparcia.</translation>
 <translation id="683765328936486920">na YouTube</translation>
 <translation id="8969049974285901797">na Twitch</translation>
-<translation id="8038539967102225446">Oto reklamy Brave!</translation>
+<translation id="8038539967102225446">Oto reklamy Ping!</translation>
 <translation id="222883304157347087">(to urządzenie)</translation>
 <translation id="4157741509680155021">URZĄDZENIA W ŁAŃCUCHU SYNCHRONIZACJI</translation>
 <translation id="279635009973773843">WCZYTYWANIE URZĄDZEŃ...</translation>
@@ -317,17 +317,17 @@
 <translation id="2569646144216067185">Liczba słów: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Nieprawidłowy kod synchronizacji</translation>
 <translation id="8284063834901328650">Nieprawidłowy kod QR synchronizacji</translation>
-<translation id="859506441384380749">Ten kod został wygenerowany przy użyciu przestarzałej wersji Brave. Zaktualizuj najpierw inne urządzenie.</translation>
+<translation id="859506441384380749">Ten kod został wygenerowany przy użyciu przestarzałej wersji Ping. Zaktualizuj najpierw inne urządzenie.</translation>
 <translation id="3132642509209154999">Ten kod wygasł. Wygeneruj nowy kod na innym urządzeniu i ponów próbę.</translation>
 <translation id="2859229680945501779">Ten kod jest nieprawidłowy. Sprawdź, czy godzina i strefa czasowa są skonfigurowane prawidłowo na Twoim urządzeniu.</translation>
-<translation id="3149880132460839085">Synchronizacja Brave</translation>
-<translation id="348794064910142198">Synchronizowanie Brave pozwala na prywatne synchronizowanie  danych zakładek między Przeglądarkami Brave a różnymi urządzeniami.n\nWystarczy przeskanować kod z łańcucha synchronizacji, który utworzono na innym urządzeniu. Możesz też rozpocząć nowy łańcuch synchronizacji.</translation>
+<translation id="3149880132460839085">Synchronizacja Ping</translation>
+<translation id="348794064910142198">Synchronizowanie Ping pozwala na prywatne synchronizowanie  danych zakładek między Przeglądarkami Ping a różnymi urządzeniami.n\nWystarczy przeskanować kod z łańcucha synchronizacji, który utworzono na innym urządzeniu. Możesz też rozpocząć nowy łańcuch synchronizacji.</translation>
 <translation id="2614069607859982576">Używając istniejącego zsynchronizowanego urządzenia, otwórz Ustawienia i przejdź do sekcji Ustawienia i synchronizacja. Wybierz opcję Dodaj nowe urządzenie i zeskanuj kod QR wyświetlony na ekranie.</translation>
 <translation id="5241263629636958324">Skopiowane do schowka</translation>
 <translation id="5817918615728894473">Sparuj</translation>
 <translation id="3429575397891106447">Opcje synchronizacji</translation>
 <translation id="1680065323266179640">Usuń konto synchronizacji</translation>
-<translation id="8397325856045820212">Usunięcie konta spowoduje usunięcie Twoich zaszyfrowanych danych z serwerów Brave i wyłączenie funkcji synchronizacji na wszystkich Twoich podłączonych urządzeniach. Nie spowoduje to jednak usunięcia danych przechowywanych lokalnie na tych urządzeniach.\n\n Takie usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zdecydujesz się ponownie rozpocząć korzystanie z funkcji synchronizacji, będzie trzeba utworzyć nowe konto i ponownie dodać każde urządzenie jedno po drugim.</translation>
+<translation id="8397325856045820212">Usunięcie konta spowoduje usunięcie Twoich zaszyfrowanych danych z serwerów Ping i wyłączenie funkcji synchronizacji na wszystkich Twoich podłączonych urządzeniach. Nie spowoduje to jednak usunięcia danych przechowywanych lokalnie na tych urządzeniach.\n\n Takie usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zdecydujesz się ponownie rozpocząć korzystanie z funkcji synchronizacji, będzie trzeba utworzyć nowe konto i ponownie dodać każde urządzenie jedno po drugim.</translation>
 <translation id="9064376100690171155">Trwale usuń konto</translation>
 <translation id="2740516568641790390">Konto synchronizacji zostało pomyślnie usunięte</translation>
 <translation id="7006136453627651236">Nie udało się usunąć konta synchronizacji</translation>
@@ -337,8 +337,8 @@
 <translation id="1602067095281698985">Rozpocznij nowy łańcuch synchronizacji</translation>
 <translation id="1475223680121592371">Dodaj urządzenie przenośne</translation>
 <translation id="2965377893636908578">Dodaj komputer</translation>
-<translation id="4701589725270449523">Używając drugiego telefonu lub tabletu, przejdź do Ustawień Brave &gt; Synchronizowanie &gt; Skanowanie.\n\nNa swoim urządzeniu przenośnym przejdź do synchronizacji Brave w panelu ustawień i kliknij przycisk Zeskanuj kod synchronizacji. Użyj aparatu, aby zeskanować kod QR poniżej.</translation>
-<translation id="67114562351518315">Na komputerze przejdź do Ustawienia Brave &gt; Synchronizowanie. Wybierz „Wprowadź łańcuch synchronizacji”.\n\nNa swoim komputerze docelowym przejdź do synchronizacji Brave w ustawieniach i kliknij przycisk Mam kod synchronizacji.\nWprowadź słowa kodu łańcucha synchronizacji pokazanego poniżej.</translation>
+<translation id="4701589725270449523">Używając drugiego telefonu lub tabletu, przejdź do Ustawień Ping &gt; Synchronizowanie &gt; Skanowanie.\n\nNa swoim urządzeniu przenośnym przejdź do synchronizacji Ping w panelu ustawień i kliknij przycisk Zeskanuj kod synchronizacji. Użyj aparatu, aby zeskanować kod QR poniżej.</translation>
+<translation id="67114562351518315">Na komputerze przejdź do Ustawienia Ping &gt; Synchronizowanie. Wybierz „Wprowadź łańcuch synchronizacji”.\n\nNa swoim komputerze docelowym przejdź do synchronizacji Ping w ustawieniach i kliknij przycisk Mam kod synchronizacji.\nWprowadź słowa kodu łańcucha synchronizacji pokazanego poniżej.</translation>
 <translation id="65315202420929965">Zeskanuj ten kod synchronizacji</translation>
 <translation id="6764016175302339802">Traktuj ten kod jak hasło. Jeśli ktoś go przechwyci, będzie mógł odczytać i zmodyfikować Twoje zsynchronizowane dane.</translation>
 <translation id="2731921493694251495">Wprowadź kod łańcuchowy synchronizacji</translation>
@@ -358,16 +358,16 @@
 <translation id="4358805443781965194">Kod wygasł. Wygeneruj nowy, klikając poniższy przycisk.</translation>
 <translation id="318164877797885563">Ten tymczasowy kod jest ważny przez kolejne <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Wyjdź z ustawień</translation>
-<translation id="8050847734948770789">Włącz Nagrody Brave</translation>
+<translation id="8050847734948770789">Włącz Nagrody Ping</translation>
 <translation id="9187185473011056079">Wchodzę w to!</translation>
-<translation id="8185825081026121627">Zdobądź token Basic Atenttion Token (BAT) za wyświetlanie reklam Brave chroniących Twoją prywatność.</translation>
+<translation id="8185825081026121627">Zdobądź token Basic Atenttion Token (BAT) za wyświetlanie reklam Ping chroniących Twoją prywatność.</translation>
 <translation id="5321518976657560663">Błąd resetowania</translation>
-<translation id="4114170343590425996">Podczas resetowania nagród Brave wystąpił błąd. Zrestartuj Brave i spróbuj ponownie.</translation>
-<translation id="6417420737057016607">Reklamy Brave</translation>
-<translation id="5611966874859284786">Pokazuj powiadominia reklamowe, kiedy Brave nie jest używana</translation>
-<translation id="6606319453795180219">Spowoduje to usunięcie Twoich Nagród Brave i zresetuje wszystkie związane z nimi dane</translation>
-<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Zresetuj dane nagród Brave…<ph name="END_LINK1"/></translation>
-<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Wyczyść dane platformy Brave Ads…<ph name="END_LINK1"/></translation>
+<translation id="4114170343590425996">Podczas resetowania nagród Ping wystąpił błąd. Zrestartuj Ping i spróbuj ponownie.</translation>
+<translation id="6417420737057016607">Reklamy Ping</translation>
+<translation id="5611966874859284786">Pokazuj powiadominia reklamowe, kiedy Ping nie jest używana</translation>
+<translation id="6606319453795180219">Spowoduje to usunięcie Twoich Nagród Ping i zresetuje wszystkie związane z nimi dane</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Zresetuj dane nagród Ping…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Wyczyść dane platformy Ping Ads…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Dodaj zakładkę</translation>
 <translation id="340492034650766959">Usuń zakładkę</translation>
 <translation id="2149973817440762519">Edytuj zakładkę</translation>
@@ -386,16 +386,16 @@
 <translation id="2803313416453193357">Otwórz folder</translation>
 <translation id="8985635554450124959">Nie można skonfigurować synchronizacji</translation>
 <translation id="7173114856073700355">Otwórz Ustawienia</translation>
-<translation id="496896260395129787">Konto synchronizacji Brave zostało usunięte z poziomu innego urządzenia. Jeśli wyłączenie synchronizacji było przypadkowe, <ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">Konto synchronizacji Ping zostało usunięte z poziomu innego urządzenia. Jeśli wyłączenie synchronizacji było przypadkowe, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>utwórz konto ponownie</translation>
 <translation id="4094590686212463338">Nie można połączyć z tym łańcuchem synchronizacji. Został on usunięty.</translation>
 <translation id="4908081302669157000">Numery telefonów, adresy e-mail i adresy fizyczne</translation>
 <translation id="1056898198331236512">Uwaga</translation>
 <translation id="1426410128494586442">Tak</translation>
-<translation id="7811264919113243207">Spowoduje to udostępnienie danych Brave, w tym potencjalnie haseł, urządzeniu, które wygenerowało ten kod QR.
+<translation id="7811264919113243207">Spowoduje to udostępnienie danych Ping, w tym potencjalnie haseł, urządzeniu, które wygenerowało ten kod QR.
 Sprawdź, czy ten kod QR został wygenerowane przez urządzenie, które należy do Ciebie.
 Czy na pewno chcesz to zrobić?</translation>
-<translation id="3097089005389027085">Spowoduje to udostępnienie danych Brave, w tym potencjalnie haseł, urządzeniu, które wygenerowało te słowa kodu.
+<translation id="3097089005389027085">Spowoduje to udostępnienie danych Ping, w tym potencjalnie haseł, urządzeniu, które wygenerowało te słowa kodu.
 Sprawdź, czy te słowa kodu zostały wygenerowane przez urządzenie, które należy do Ciebie.
 Czy na pewno chcesz to zrobić?</translation>
 <translation id="4550208292810542331">Nie udzielono pozwolenia na użycie aparatu</translation>
@@ -403,15 +403,15 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="3063783274005996079">Odblokuj, aby włączyć synchronizację haseł</translation>
 <translation id="7551563084530025179">Zanim będzie można zsynchronizować hasła, konieczne będzie uwierzytelnienie za pomocą danych biometrycznych/kodu dostępu urządzenia. Ten dodatkowy środek bezpieczeństwa pomaga chronić hasła.</translation>
 <translation id="6925081665778864449">Aby zsynchronizować hasła, włącz uwierzytelnianie biometryczne/kodem na swoim urządzeniu z Androidem. Ten dodatkowy środek bezpieczeństwa pomaga chronić hasła.</translation>
-<translation id="597993392929850353">Licencja Brave</translation>
+<translation id="597993392929850353">Licencja Ping</translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="6199596294742117349">To jest karta prywatna</translation>
 <translation id="5858455511731621847">Mimo że strony otwierane w prywatnych kartach nie są zapisywane lokalnie. Taki sposób przeglądania treści nie zapewnia użytkownikowi anonimowości, ani nie czyni go niewidocznym dla dostawcy Internetu, pracodawcy bądź dla odwiedzanych przez niego stron.</translation>
-<translation id="5789441016350810005">Reklamy Brave przesyłane, gdy przeglądarka znajduje się w tle</translation>
+<translation id="5789441016350810005">Reklamy Ping przesyłane, gdy przeglądarka znajduje się w tle</translation>
 <translation id="4973347371961481083">Datki</translation>
 <translation id="7047578174221019462">Twoje miesięczne wsparcie zostało przetworzone.</translation>
 <translation id="3124090095880236567">Włącz reklamy</translation>
-<translation id="2975780980638932742">Reklamy Brave są już dostępne!</translation>
+<translation id="2975780980638932742">Reklamy Ping są już dostępne!</translation>
 <translation id="7541582550122501404">Datek oczekujący</translation>
 <translation id="8520059774736886747">Twórca <ph name="PUBLISHER_NAME"/> został niedawno zweryfikowany.</translation>
 <translation id="1486343603936278248">token</translation>
@@ -421,10 +421,10 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="3870475560794762985">Wyświetl obrazy sponsorowane</translation>
 <translation id="8793108040181436796">Widżety</translation>
 <translation id="8643377320501056697">Pokaż popularne strony</translation>
-<translation id="7275773481201277457">Pokaż statystyki Brave</translation>
+<translation id="7275773481201277457">Pokaż statystyki Ping</translation>
 <translation id="8297488609722895137">Zdjęcie autorstwa <ph name="PHOTO_BY"/></translation>
-<translation id="2898634658146274982">Otwórz łącza zewnętrzne w Brave</translation>
-<translation id="5616508928556767259">Otwieraj łącza z innych aplikacji w podglądzie sieciowym Brave. Uwaga: Brave musi być ustawiona jako domyślna przeglądarka.</translation>
+<translation id="2898634658146274982">Otwórz łącza zewnętrzne w Ping</translation>
+<translation id="5616508928556767259">Otwieraj łącza z innych aplikacji w podglądzie sieciowym Ping. Uwaga: Ping musi być ustawiona jako domyślna przeglądarka.</translation>
 <translation id="2394961582378297792">Wylogowano</translation>
 <translation id="5308380583665731573">Połącz</translation>
 <translation id="3368922792935385530">Połączone</translation>
@@ -435,8 +435,8 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1665118090708049096">Przejdź do mojego konta <ph name="WALLET_PROVIDER"/></translation>
 <translation id="4858636682078269312">Zaloguj się do swojego konta <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Brak połączenia</translation>
-<translation id="2495032782748793764">Domyślne ustawienia Brave</translation>
-<translation id="9132378787893584761">Udostępnij Brave znajomym!</translation>
+<translation id="2495032782748793764">Domyślne ustawienia Ping</translation>
+<translation id="9132378787893584761">Udostępnij Ping znajomym!</translation>
 <translation id="717952606991220586">Ups, coś poszło nie tak. Spróbuj ponownie później.</translation>
 <translation id="987264212798334818">Ogólne</translation>
 <translation id="1116694919640316211">Informacje</translation>
@@ -471,35 +471,35 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="5582686930349810484">Zablokuj rozpoznawanie urządzenia (standardowe)</translation>
 <translation id="769702552748212954">Zezwalaj na rozpoznawanie urządzenia</translation>
 <translation id="876424292214881779">Reklamy i inne nieprzyjemne rzeczy zablokowane</translation>
-<translation id="6849027612978668678">Witryny często zawierają pliki cookies i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie. Chcą dowiedzieć się, kim jesteś, i śledzić Cię w sieci, monitorując wykonywane przez Ciebie czynności na każdej stronie.\n\nBrave blokuje to, dzięki czemu możesz przeglądać, i nikt nie będzie Cię śledzić.</translation>
-<translation id="8553998445606452168">O tarczach Brave</translation>
+<translation id="6849027612978668678">Witryny często zawierają pliki cookies i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie. Chcą dowiedzieć się, kim jesteś, i śledzić Cię w sieci, monitorując wykonywane przez Ciebie czynności na każdej stronie.\n\nPing blokuje to, dzięki czemu możesz przeglądać, i nikt nie będzie Cię śledzić.</translation>
+<translation id="8553998445606452168">O tarczach Ping</translation>
 <translation id="8912304686498704084">WŁĄCZONE</translation>
 <translation id="4963218453264888510">WYŁĄCZONE</translation>
-<translation id="7474113515179313724">Przeglądasz tę stronę bez włączonych tarcz Brave. Czy strona nie działa prawidłowo z włączonymi tarczami?</translation>
+<translation id="7474113515179313724">Przeglądasz tę stronę bez włączonych tarcz Ping. Czy strona nie działa prawidłowo z włączonymi tarczami?</translation>
 <translation id="4226543734057230801">Sieci Ethereum</translation>
 <translation id="3504157706952484145">Sieci Filecoin</translation>
 <translation id="1561541094377237745">Sieci Solana</translation>
 <translation id="7141438739990875547">Sieci Bitcoin</translation>
 <translation id="9055546041146396417">Jeśli strona nie działa, spróbuj wyłączyć tarcze.</translation>
 <translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
-<translation id="8510478288840333677">Poinformuj programistów Brave, że ta strona nie działa prawidłowo z tarczami Brave.</translation>
-<translation id="5429200298326665264">Uwaga: Adres tej witryny zostanie wysłany wraz z numerem Twojej wersji Brave i adresem IP (który nie będzie przechowywany).</translation>
+<translation id="8510478288840333677">Poinformuj programistów Ping, że ta strona nie działa prawidłowo z tarczami Ping.</translation>
+<translation id="5429200298326665264">Uwaga: Adres tej witryny zostanie wysłany wraz z numerem Twojej wersji Ping i adresem IP (który nie będzie przechowywany).</translation>
 <translation id="5299848999918506028">Dziękujemy!</translation>
-<translation id="76550953340008122">Dziękujemy za poinformowanie deweloperów Brave, że coś jest nie tak z tą witryną. Dołożymy wszelkich starań, aby ją naprawić!</translation>
+<translation id="76550953340008122">Dziękujemy za poinformowanie deweloperów Ping, że coś jest nie tak z tą witryną. Dołożymy wszelkich starań, aby ją naprawić!</translation>
 <translation id="650318023204990401">Zaawansowane sterowanie</translation>
 <translation id="5370478469168390143">Zapisz dane online</translation>
-<translation id="1118508688433541158">Przeglądaj szybciej i blokuj reklamy z Brave</translation>
-<translation id="7427391215172269363">Codziennie zapisuję dane, przeglądając Internet za pomocą przeglądarki Brave.</translation>
-<translation id="4776948189086901857">Przeglądarka Brave działa wszędzie.</translation>
-<translation id="1606322780901645965">Pobierz przeglądarkę Brave ze strony brave.com na swój laptop lub tablet, aby korzystać z szybszego i Internetu z większą ochroną prywatności.</translation>
+<translation id="1118508688433541158">Przeglądaj szybciej i blokuj reklamy z Ping</translation>
+<translation id="7427391215172269363">Codziennie zapisuję dane, przeglądając Internet za pomocą przeglądarki Ping.</translation>
+<translation id="4776948189086901857">Przeglądarka Ping działa wszędzie.</translation>
+<translation id="1606322780901645965">Pobierz przeglądarkę Ping ze strony brave.com na swój laptop lub tablet, aby korzystać z szybszego i Internetu z większą ochroną prywatności.</translation>
 <translation id="8374242949413616101">Ochrona prywatności</translation>
-<translation id="4955406228638026265">Przeglądarka Brave zapobiega zbieraniu informacji o Tobie bez Twojej zgody przez reklamy i narzędzia do monitorowania.</translation>
+<translation id="4955406228638026265">Przeglądarka Ping zapobiega zbieraniu informacji o Tobie bez Twojej zgody przez reklamy i narzędzia do monitorowania.</translation>
 <translation id="752842701893882688">Oszczędzaj dane i prąd</translation>
 <translation id="1685837926613452362">Blokowanie reklam i skryptów śledzących na stronach internetowych pozwala zmniejszyć zużycie pakietu danych oraz baterii. Może to nawet przełożyć się na niższe opłaty za transmisję danych.</translation>
 <translation id="5440744330377972191">Witryny internetowe wczytują się szybciej</translation>
-<translation id="3000738865641747653">Wczytywanie mniejszej ilości danych oznacza, że witryny internetowe w przeglądarce Brave wczytują się szybciej – do 8 x szybciej niż w innych przeglądarkach.</translation>
+<translation id="3000738865641747653">Wczytywanie mniejszej ilości danych oznacza, że witryny internetowe w przeglądarce Ping wczytują się szybciej – do 8 x szybciej niż w innych przeglądarkach.</translation>
 <translation id="8903462729414407077">Otrzymuj co tydzień aktualne wiadomości</translation>
-<translation id="7450323860390658083">Bądź informowany o tym, które odwiedzane przez Ciebie strony internetowe najbardziej naruszają prywatność.\n\n Tylko Ty możesz zobaczyć te statystyki prywatności. Żadne dane osobowe ani historia przeglądania nigdy nie opuszczają przeglądarki Brave na Twoim urządzeniu.</translation>
+<translation id="7450323860390658083">Bądź informowany o tym, które odwiedzane przez Ciebie strony internetowe najbardziej naruszają prywatność.\n\n Tylko Ty możesz zobaczyć te statystyki prywatności. Żadne dane osobowe ani historia przeglądania nigdy nie opuszczają przeglądarki Ping na Twoim urządzeniu.</translation>
 <translation id="6170159749517116894">Włącz raporty o prywatności</translation>
 <translation id="1669047024429367828">Widoczność</translation>
 <translation id="5966707198760109579">Tydzień</translation>
@@ -516,17 +516,17 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="3694122362646626770">Witryny internetowe</translation>
 <translation id="2225863440766607138">Narzędzia do monitorowania</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">W ciągu ostatnich trzech godzin zablokowałeś z pomocą przeglądarki Brave <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
-<translation id="5005713153542196658">Przeszukuj największe portale informacyjne do 6 x szybciej w przeglądarce Brave, blokując śledzenie i reklamy.</translation>
+<translation id="6737820963776538947">W ciągu ostatnich trzech godzin zablokowałeś z pomocą przeglądarki Ping <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
+<translation id="5005713153542196658">Przeszukuj największe portale informacyjne do 6 x szybciej w przeglądarce Ping, blokując śledzenie i reklamy.</translation>
 <translation id="7427567994475794038">Włącz raporty o prywatności, aby zobaczyć, ile narzędzi do monitorowania i reklam zablokowano w ciągu ostatnich trzech godzin.</translation>
-<translation id="2053891538879944400">Oszczędziłeś(-aś) <ph name="DATA"/> <ph name="DATA_TEXT"/> danych z użyciem przeglądarki Brave.</translation>
+<translation id="2053891538879944400">Oszczędziłeś(-aś) <ph name="DATA"/> <ph name="DATA_TEXT"/> danych z użyciem przeglądarki Ping.</translation>
 <translation id="8640064498452534195">Włącz raporty o prywatności, aby zobaczyć, ile danych oszczędziłeś(-aś).</translation>
-<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.🔋</translation>
-<translation id="1945330434665345785">W ubiegłym tygodnia zablokowałeś z pomocą przeglądarki Brave <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
+<translation id="2252497442547961651">Przeglądarka Ping zużywa średnio o 40% mniej baterii.🔋</translation>
+<translation id="1945330434665345785">W ubiegłym tygodnia zablokowałeś z pomocą przeglądarki Ping <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
 <translation id="2883868922264431515">Zarabiaj tokeny, oglądając reklamy z poszanowaniem Twojej prywatności i wspieraj ulubione witryny internetowe.</translation>
 <translation id="7408493389591475748">Zacznij przeglądać, aby zobaczyć raporty o prywatności.</translation>
-<translation id="9080777565335515917">Ustaw przeglądarkę Brave jako swoją domyślną do prywatnego i bezpiecznego przeglądania.</translation>
-<translation id="1390943217516275883">Zezwala Brave na pokazywanie statystyk prywatności.</translation>
+<translation id="9080777565335515917">Ustaw przeglądarkę Ping jako swoją domyślną do prywatnego i bezpiecznego przeglądania.</translation>
+<translation id="1390943217516275883">Zezwala Ping na pokazywanie statystyk prywatności.</translation>
 <translation id="1763352720905582220">Wysyła cotygodniowy raport o prywatności</translation>
 <translation id="1811691435325545066">Wyczyść wszystkie dane dotyczące raportów o prywatności.</translation>
 <translation id="5966003059662780423">Wyczyść dane przy wyjściu</translation>
@@ -545,10 +545,10 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="8804164990146287819">Polityka prywatności</translation>
 <translation id="8363792084628930008">Aktywując nagrody, akceptujesz <ph name="TERMS_OF_SERVICE"/> oraz <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Zróbmy krótki kurs</translation>
-<translation id="7930505144430343145">Witamy w nagrodach Brave!</translation>
-<translation id="3477340970981564961">Brave Private Ads nagradza Cię za pomocą żetonów wspierających twórców treści innych niż tradycyjne reklamy, nie ujawniając zarazem Twoich danych osobowych.</translation>
+<translation id="7930505144430343145">Witamy w nagrodach Ping!</translation>
+<translation id="3477340970981564961">Ping Private Ads nagradza Cię za pomocą żetonów wspierających twórców treści innych niż tradycyjne reklamy, nie ujawniając zarazem Twoich danych osobowych.</translation>
 <translation id="6973095375773523904">Kiedy wyświetlane są reklamy?</translation>
-<translation id="4328028439561659455">Prywatne reklamy Brave pojawią się w postaci powiadomień na Twoim ekranie. Ty kontrolujesz, jak często będziesz widzieć te reklamy.</translation>
+<translation id="4328028439561659455">Prywatne reklamy Ping pojawią się w postaci powiadomień na Twoim ekranie. Ty kontrolujesz, jak często będziesz widzieć te reklamy.</translation>
 <translation id="7712287524451429139">Bezwysiłkowe obdarowywanie innych.</translation>
 <translation id="105037569026952831">Twórcy otrzymują przekazane przez Ciebie żetony automatycznie na podstawie poziomu Twojego zaangażowania, które mierzymy jako "Uwagę".</translation>
 <translation id="3025802705256919103">Podziękuj za pomocą datku</translation>
@@ -560,7 +560,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="2353222426385080466">Więcej prywatnych reklam to więcej nagród.</translation>
 <translation id="1201128255476890443">Liczba reklam na godzinę: <ph name="ADS_PER_HOUR"/></translation>
 <translation id="827315274423079662">Huraa, jesteście gotowi!</translation>
-<translation id="3895246934788932488">Korzystając z nagród Brave, chronisz swoją prywatność i pomagasz ulepszać sieć dla wszystkich. To wspaniałe!</translation>
+<translation id="3895246934788932488">Korzystając z nagród Ping, chronisz swoją prywatność i pomagasz ulepszać sieć dla wszystkich. To wspaniałe!</translation>
 <translation id="5705882733397021510">Wróć</translation>
 <translation id="3985567919248057638">Zapraszamy na szybkie oprowadzenie</translation>
 <translation id="7889432931837317731">Kiedy to możliwe, otwieraj automatycznie</translation>
@@ -584,7 +584,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="4954512758656527938">Domyślny portfel Ethereum</translation>
 <translation id="7701023802820268122">Domyślny portfel Solana</translation>
 <translation id="7701040980221191251">Brak</translation>
-<translation id="8488282162676695335">Portfel Brave</translation>
+<translation id="8488282162676695335">Portfel Ping</translation>
 <translation id="8792121506918889955">Zasady obsługi IP WebRTC IP</translation>
 <translation id="8798099450830957504">Domyślna</translation>
 <translation id="1822560017823072927">Domyślne interfejsy publiczne i prywatne</translation>
@@ -594,16 +594,16 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1483493594462132177">Wyślij</translation>
 <translation id="538450413584738399">Wymiana</translation>
 <translation id="4556086616242530072">Natywna przeglądarka.\nSamodzielne zabezpieczenie.\nWielołańcuchowość.</translation>
-<translation id="7909462264772842773">Kontroluj swoją kryptowalutę i NFT. Portfel Brave obsługuje sieci Ethereum, łańcuchy kompatybilne EVM, sieci Filecon, Solana i inne.</translation>
+<translation id="7909462264772842773">Kontroluj swoją kryptowalutę i NFT. Portfel Ping obsługuje sieci Ethereum, łańcuchy kompatybilne EVM, sieci Filecon, Solana i inne.</translation>
 <translation id="165255193061631296">Potrzebujesz nowego portfela?</translation>
-<translation id="3485737865439729577">Zacznij korzystać z portfela Brave w kilka minut</translation>
+<translation id="3485737865439729577">Zacznij korzystać z portfela Ping w kilka minut</translation>
 <translation id="2540568096903252632">Wprowadź hasło, aby kontynuować</translation>
-<translation id="3356580495013324916">Wprowadź hasło Portfela Brave w celu utworzenia jego kopii zapasowej.</translation>
+<translation id="3356580495013324916">Wprowadź hasło Portfela Ping w celu utworzenia jego kopii zapasowej.</translation>
 <translation id="2359808026110333948">Kontynuuj</translation>
 <translation id="5488357322146334497">Wiadomość</translation>
 <translation id="5333225216561354793">Prosimy Cię o akceptację poniższych punktów</translation>
 <translation id="6937275455070754004">Wybierz, które blockchainy chcesz używać w swoim portfelu.</translation>
-<translation id="1645800479814134195">Rozumiem, że jest to portfel do samodzielnego zabezpieczenia i że tylko ja odpowiadam za wszelkie powiązane fundusze, aktywa lub konta oraz za podjęcie odpowiednich działań w celu zabezpieczenia, ochrony i wykonania kopii zapasowej mojego portfela. Rozumiem, że Brave nie może uzyskać dostępu do mojego portfela ani cofnąć transakcji w moim imieniu i że moja fraza odzyskiwania jest JEDYNYM sposobem na odzyskanie dostępu w przypadku zgubienia hasła, utraty urządzenia lub podobnych okoliczności.</translation>
+<translation id="1645800479814134195">Rozumiem, że jest to portfel do samodzielnego zabezpieczenia i że tylko ja odpowiadam za wszelkie powiązane fundusze, aktywa lub konta oraz za podjęcie odpowiednich działań w celu zabezpieczenia, ochrony i wykonania kopii zapasowej mojego portfela. Rozumiem, że Ping nie może uzyskać dostępu do mojego portfela ani cofnąć transakcji w moim imieniu i że moja fraza odzyskiwania jest JEDYNYM sposobem na odzyskanie dostępu w przypadku zgubienia hasła, utraty urządzenia lub podobnych okoliczności.</translation>
 <translation id="4565891212173086999">Znam i akceptuję<ph name="CLICK_START"/>Regulamin<ph name="CLICK_END"/>.</translation>
 <translation id="3259102562570606417">Zapisz swoją frazę odzyskiwania</translation>
 <translation id="4339981001593889376">Fraza odzyskiwania jest kluczem dostępu do portfela na wypadek zapomnienia hasła lub utraty urządzenia.</translation>
@@ -628,7 +628,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="2321396552035646646">Możesz wkleić całą frazę odzyskiwania do dowolnego pola.</translation>
 <translation id="3961126209136843111">Importuj istniejący portfel</translation>
 <translation id="4811736040444856406">Pokaż wyrażenie odzyskiwania</translation>
-<translation id="4359319875297001084">Importować ze starszych portfeli kryptowalutowych Brave?</translation>
+<translation id="4359319875297001084">Importować ze starszych portfeli kryptowalutowych Ping?</translation>
 <translation id="3157931365184549694">Przywróć</translation>
 <translation id="5844138175312846408">Już posiadasz portfel?</translation>
 <translation id="2502258949541727762">Zanim rozpoczniemy</translation>
@@ -659,8 +659,8 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="9085712756417277119">Fraza odzyskiwania nie pasuje</translation>
 <translation id="2360588547830602174">Odzyskiwanie konta nie powiodło się. Spróbuj ponownie.</translation>
 <translation id="1987317783729300807">Konta</translation>
-<translation id="6284218950354553099">Automatycznie wysyłaj pingi dziennego użycia do Brave</translation>
-<translation id="2181060149810222381">Ten prywatny ping pozwala Brave oszacować liczbę aktywnych użytkowników.</translation>
+<translation id="6284218950354553099">Automatycznie wysyłaj bravei dziennego użycia do Ping</translation>
+<translation id="2181060149810222381">Ten prywatny brave pozwala Ping oszacować liczbę aktywnych użytkowników.</translation>
 <translation id="6725413948756358325">Nazwa konta</translation>
 <translation id="6062431965141524986">Możesz utworzyć konto dodatkowe poprzez zaimportowanie swojego klucza prywatnego.</translation>
 <translation id="3952797765659730604">Wprowadź, wklej lub zaimportuj plik ciągu klucza prywatnego lub JSON.</translation>
@@ -668,10 +668,10 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="4522570452068850558">Szczegóły</translation>
 <translation id="3784455785234192852">Zablokuj</translation>
 <translation id="4412698727486357573">Centrum pomocy</translation>
-<translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
-<translation id="414639769490080648">Czas, w minutach, po upływie którego portfel Brave zostanie automatycznie zablokowany</translation>
+<translation id="8239147115686034860">Automatycznie zablokuj portfel Ping</translation>
+<translation id="414639769490080648">Czas, w minutach, po upływie którego portfel Ping zostanie automatycznie zablokowany</translation>
 <translation id="2326850911705720398">Zresetuj i wyczyść dane portfela</translation>
-<translation id="6567712397896147805">Czy na pewno chcesz zresetować portfel Brave? Jeżeli Twój portfel nie będzie miał kopii zapasowej, zresetowanie spowoduje utratę wszystkich danych kont (w tym wszelkich powiązanych środków). Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
+<translation id="6567712397896147805">Czy na pewno chcesz zresetować portfel Ping? Jeżeli Twój portfel nie będzie miał kopii zapasowej, zresetowanie spowoduje utratę wszystkich danych kont (w tym wszelkich powiązanych środków). Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
 <translation id="4862812525895306758">Wyczyść informacje dotyczące transakcji jednorazowej</translation>
 <translation id="5693968582510626466">Transakcje czyszczenia mogą być przydatne dla programistów lub w takcie czyszczenia lokalnego serwera</translation>
 <translation id="5421107279168565467">Czy na pewno chcesz zresetować wszystkie transakcje i informacje jednorazowe? Tę opcję wykorzystują zazwyczaj programiści przeprowadzający lokalny test serwera. Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
@@ -682,14 +682,14 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1721710839767183848">Brak reklam na stronie</translation>
 <translation id="4647035642622555398">Bez przerw</translation>
 <translation id="4122515759479497554">Szukaj filmów</translation>
-<translation id="4449475351935531438">Zapora sieciowa + VPN Brave</translation>
+<translation id="4449475351935531438">Zapora sieciowa + VPN Ping</translation>
 <translation id="719977489961414786">Użyj VPN, aby chronić swoje połączenie i blokować inwazyjne trackery.</translation>
 <translation id="8814357473522731680">Technologia</translation>
 <translation id="5892534145504632332">Chroń każdą aplikację i całe twoje urządzenie</translation>
 <translation id="7195416926059527505">Bezpieczniejsze dla sieci domowych i publicznych</translation>
 <translation id="1354700000739359839">Szybki jak błyskawica, do 100 Mbps</translation>
 <translation id="3510283489391432976">Wybierz położenie geograficzne / kraj</translation>
-<translation id="7695158478627528928">Brave nigdy nie zapisuje Twojej aktywności</translation>
+<translation id="7695158478627528928">Ping nigdy nie zapisuje Twojej aktywności</translation>
 <translation id="4575683170451975058">Ochrona 5 urządzeń za pomocą 1 subskrypcji</translation>
 <translation id="755045397420611731">Dodatkowa prywatność i bezpieczeństwo w Internecie</translation>
 <translation id="4520128772974831415">Ukrywanie adresu IP i zmiana lokalizacji</translation>
@@ -705,14 +705,14 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1163809943099641131">Jeden rok</translation>
 <translation id="727385358513272220">Odnowienie roczne (<ph name="DISCOUNT_TEXT_START"/>pozwala zaoszczędzić <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> / rok</translation>
-<translation id="2786538705804257030">Subskrypcje będą naliczane przez Twoje konto Google. Wszelka niewykorzystana część okresu próbnego, jeśli taki posiadasz, przepadnie w momencie wykupienia subskrypcji.\n\nTwoja subskrypcja zostanie odnowiona automatycznie, chyba że zostanie anulowana na co najmniej 24 godziny przed końcem bieżącego okresu.\n\nMożesz zarządzać subskrypcjami w Ustawieniach.\nKorzystając z Brave, wyrażasz zgodę na Warunki świadczenia usług i Politykę prywatności.</translation>
+<translation id="2786538705804257030">Subskrypcje będą naliczane przez Twoje konto Google. Wszelka niewykorzystana część okresu próbnego, jeśli taki posiadasz, przepadnie w momencie wykupienia subskrypcji.\n\nTwoja subskrypcja zostanie odnowiona automatycznie, chyba że zostanie anulowana na co najmniej 24 godziny przed końcem bieżącego okresu.\n\nMożesz zarządzać subskrypcjami w Ustawieniach.\nKorzystając z Ping, wyrażasz zgodę na Warunki świadczenia usług i Politykę prywatności.</translation>
 <translation id="5035172357624830412">Masz już wykupioną subskrypcję na brave.com?</translation>
 <translation id="713136183174551885">Odśwież swoje poświadczenia</translation>
 <translation id="6053992191006521518">Wypróbuj BEZPŁATNIE</translation>
 <translation id="5903391101107992067">Wypróbuj przez 7 dni za darmo</translation>
 <translation id="721747358270435486">Zainstaluj VPN</translation>
 <translation id="836074276610740314">Zainstaluj profil VPN</translation>
-<translation id="8021842065465097929">Brave zainstaluje teraz profil VPN.</translation>
+<translation id="8021842065465097929">Ping zainstaluje teraz profil VPN.</translation>
 <translation id="229286271464650057">Profil ten umożliwia usłudze VPN automatyczne nawiązywanie połączeń i zabezpieczanie ruchu dla urządzenia — w każdej aplikacji i przez cały czas. To połączenie VPN będzie szyfrowane i kierowane przez inteligentną zaporę Guardian, aby blokować reklamy i pliki śledzące.</translation>
 <translation id="9073255657908892407">Skontaktuj się z pomocą techniczną</translation>
 <translation id="1139934321138152517">Usługa VPN jest włączona</translation>
@@ -808,14 +808,14 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="8214232307424031138">Podpisano</translation>
 <translation id="1165039591588034296">Błąd</translation>
 <translation id="2561824823738097741">Czy używasz najszybszej przeglądarki internetowej?</translation>
-<translation id="2065971949051836200">3x szybszy Internet jest już w Twoim telefonie. Korzystaj z Brave do przeglądania wszystkich stron internetowych.</translation>
-<translation id="2888278614497184977">Brave = 3x szybsze przeglądanie sieci</translation>
+<translation id="2065971949051836200">3x szybszy Internet jest już w Twoim telefonie. Korzystaj z Ping do przeglądania wszystkich stron internetowych.</translation>
+<translation id="2888278614497184977">Ping = 3x szybsze przeglądanie sieci</translation>
 <translation id="6887232551109532144">Dłuższa praca na baterii po każdym ładowaniu</translation>
-<translation id="5388885352353494741">Oszczędzanie baterii na wyciągnięcie ręki. Korzystaj z Brave do przeglądania wszystkich stron internetowych.</translation>
-<translation id="3164151360474408351">Brave = dłuższa praca po każdym ładowaniu</translation>
+<translation id="5388885352353494741">Oszczędzanie baterii na wyciągnięcie ręki. Korzystaj z Ping do przeglądania wszystkich stron internetowych.</translation>
+<translation id="3164151360474408351">Ping = dłuższa praca po każdym ładowaniu</translation>
 <translation id="3211051910418903298">Rzadziej doładowuj pakiet danych Internetu mobilnego</translation>
-<translation id="1092355580602106002">Mniej reklam = mniejsze użycie danych na każdej ładowanej stronie. Korzystaj z Brave do przeglądania wszystkich stron internetowych.</translation>
-<translation id="623962032102267945">Brave = mniejsze użycie danych na każdej stronie</translation>
+<translation id="1092355580602106002">Mniej reklam = mniejsze użycie danych na każdej ładowanej stronie. Korzystaj z Ping do przeglądania wszystkich stron internetowych.</translation>
+<translation id="623962032102267945">Ping = mniejsze użycie danych na każdej stronie</translation>
 <translation id="4355217341028673744">• Lepsza ochrona prywatności</translation>
 <translation id="3679020972083025535">• Brak irytujących reklam</translation>
 <translation id="8047527352810290817">Edytuj gaz</translation>
@@ -864,7 +864,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="2653659639078652383">Prześlij</translation>
 <translation id="4945690646623486292">Wybierz sieć</translation>
 <translation id="5233638681132016545">Nowa karta</translation>
-<translation id="8006088103295786154">Dostęp do portfela Brave</translation>
+<translation id="8006088103295786154">Dostęp do portfela Ping</translation>
 <translation id="8030169304546394654">Rozłączony</translation>
 <translation id="3423275441470187644">Dodaj do zaufanych</translation>
 <translation id="2391762656119864333">Unieważnij</translation>
@@ -874,7 +874,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="42981349822642051">Rozwiń stronę</translation>
 <translation id="3586752056660754651">Podpisz</translation>
 <translation id="3950820424414687140">Zaloguj się</translation>
-<translation id="6592721981110586529">Połącz z portfelem Brave</translation>
+<translation id="6592721981110586529">Połącz z portfelem Ping</translation>
 <translation id="329813193938846695">Wybierz konto(-a)</translation>
 <translation id="291375746846291973">Łącz się tylko ze stronami, którym ufasz.</translation>
 <translation id="385051799172605136">Wstecz</translation>
@@ -886,11 +886,11 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="5242300593039211344">Zablokuj portfel</translation>
 <translation id="1108298724135935307">Połączone strony</translation>
 <translation id="4255623233927788178">Wyświetl w eksploratorze bloków</translation>
-<translation id="8274201358637112807">Ta witryna chce wejść w interakcję z portfelem Brave</translation>
+<translation id="8274201358637112807">Ta witryna chce wejść w interakcję z portfelem Ping</translation>
 <translation id="3355936511340229503">Błąd połączenia</translation>
 <translation id="1531836666020185856">Dostępne sieci</translation>
 <translation id="4891604214809245310">Nie można ustawić <ph name="NETWORK_NAME"/> jako sieci</translation>
-<translation id="685345388423515592">Wygląda na to, że masz na tym urządzeniu inne aplikacje VPN z aktywnym ustawieniem „zawsze włączone”. Aby włączyć Zaporę ogniową Brave + VPN, dezaktywuj opcję „zawsze włączone” w innych aplikacjach VPN, zanim znów spróbujesz się połączyć. Jeśli problem będzie się powtarzał, spróbuj odinstalować inne aplikacje VPN.</translation>
+<translation id="685345388423515592">Wygląda na to, że masz na tym urządzeniu inne aplikacje VPN z aktywnym ustawieniem „zawsze włączone”. Aby włączyć Zaporę ogniową Ping + VPN, dezaktywuj opcję „zawsze włączone” w innych aplikacjach VPN, zanim znów spróbujesz się połączyć. Jeśli problem będzie się powtarzał, spróbuj odinstalować inne aplikacje VPN.</translation>
 <translation id="85136472535634474">Otwórz ustawienia VPN</translation>
 <translation id="8352805003811526272">Resetowanie konfiguracji…</translation>
 <translation id="6809312301323611382">Wybrano już ten sam serwer.</translation>
@@ -910,25 +910,25 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="4822132585477111396">Identyfikator łańcucha</translation>
 <translation id="7131971375297699539">Symbol waluty</translation>
 <translation id="7982789257301363584">Sieć</translation>
-<translation id="6936860995365507185">Pozwoli to na korzystanie z tej sieci w ramach portfela Brave. <ph name="CLICK_START"/>Dowiedz się więcej<ph name="CLICK_END"/></translation>
+<translation id="6936860995365507185">Pozwoli to na korzystanie z tej sieci w ramach portfela Ping. <ph name="CLICK_START"/>Dowiedz się więcej<ph name="CLICK_END"/></translation>
 <translation id="4717431746210146708">Zezwolić tej stronie na dodanie sieci?</translation>
 <translation id="4857321293515555666">Ta aplikacja DApp chce odczytać tę wiadomość, aby ukończyć żądanie.</translation>
 <translation id="714506544401754321">Odszyfruj wiadomość</translation>
 <translation id="5039804452771397117">Zezwalaj</translation>
 <translation id="3378339846292573874">Dodaj sugerowany token</translation>
 <translation id="2322227405137827074">Czy chcesz zaimportować ten token?</translation>
-<translation id="1324417023773393937">Przeglądarka Brave</translation>
-<translation id="6044189892950611565">Kanał powiadomień przeglądarki Brave</translation>
+<translation id="1324417023773393937">Przeglądarka Ping</translation>
+<translation id="6044189892950611565">Kanał powiadomień przeglądarki Ping</translation>
 <translation id="4556601961751528347">Zmień połączone konto</translation>
 <translation id="8922793255489232731">Nie udało się ustawić pasującej strefy czasowej dla: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Połączono do <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Wersja próbna</translation>
-<translation id="6458565248779152483">Wyłącz Brave VPN</translation>
+<translation id="6458565248779152483">Wyłącz Ping VPN</translation>
 <translation id="9080536793704001825">Wstrzymaj na 15 minut</translation>
 <translation id="803706420145725977">Wstrzymaj na 1 godzinę</translation>
 <translation id="4394049700291259645">Wyłącz</translation>
 <translation id="7733890291091968191">Wyświetl powiadomienia Web3</translation>
-<translation id="1371627247679035769">\n\n\n\n#### Brave nie śledzi użytkowników ani nie wie, jak korzystają z naszej aplikacji, więc nie wiemy, jak sieć VPN została skonfigurowana. Udostępnij informacje o napotkanym problemie, a my zrobimy co w naszej mocy, aby możliwie szybko rozwiązać problem. ####\n\n</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Ping nie śledzi użytkowników ani nie wie, jak korzystają z naszej aplikacji, więc nie wiemy, jak sieć VPN została skonfigurowana. Udostępnij informacje o napotkanym problemie, a my zrobimy co w naszej mocy, aby możliwie szybko rozwiązać problem. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNazwa hosta VPN\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nTyp subskrypcji\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nToken Playstore\n <ph name="VALUE"/></translation>
@@ -951,19 +951,19 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="7002577172732106572">Tunelowanie dzielone</translation>
 <translation id="8181161042860463420">Powiązane konto tokena jeszcze nie istnieje. Mała kwota SOL zostanie wydana na jego stworzenie i sfinansowanie. <ph name="CLICK_START"/>Dowiedz się więcej<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Aktualizuję profil VPN...</translation>
-<translation id="4784306439879850873">Uwaga: Należy pamiętać, że Brave nie może zweryfikować, co się stanie, gdy złożysz podpis. Podpis może autoryzować niemal dowolną operację na Twoim koncie lub w Twoim imieniu, taką jak np. przekazanie całkowitej kontroli nad Twoim kontem i kryptoaktywami stronie, z której pochodzi żądanie. Składaj podpisy tylko wtedy, gdy masz pewność i ufasz stronie przesyłającej żądanie.</translation>
+<translation id="4784306439879850873">Uwaga: Należy pamiętać, że Ping nie może zweryfikować, co się stanie, gdy złożysz podpis. Podpis może autoryzować niemal dowolną operację na Twoim koncie lub w Twoim imieniu, taką jak np. przekazanie całkowitej kontroli nad Twoim kontem i kryptoaktywami stronie, z której pochodzi żądanie. Składaj podpisy tylko wtedy, gdy masz pewność i ufasz stronie przesyłającej żądanie.</translation>
 <translation id="3474375934783434676">Podpisy składasz na własne ryzyko</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> z <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Zatwierdź transakcję</translation>
 <translation id="6450792191436242818">Program systemowy</translation>
-<translation id="5318067544026930166">Odblokuj Portfel Brave za pomocą uwierzytelniania biometrycznego</translation>
-<translation id="2629767022373384291">Czy chcesz używać uwierzytelniania biometrycznego do odblokowywania swojego Portfela Brave?</translation>
+<translation id="5318067544026930166">Odblokuj Portfel Ping za pomocą uwierzytelniania biometrycznego</translation>
+<translation id="2629767022373384291">Czy chcesz używać uwierzytelniania biometrycznego do odblokowywania swojego Portfela Ping?</translation>
 <translation id="4782919977106118997">Użyj odblokowywania za pomocą odcisku palca</translation>
 <translation id="2054995875643283428">Na razie pomiń</translation>
 <translation id="2610561535971892504">Kliknij, aby skopiować</translation>
 <translation id="2522605225061484799">Przejdź do mojego portfela</translation>
 <translation id="1148624853678088576">Wszystko gotowe!</translation>
-<translation id="4131445988101719379">Twój Portfel Brave jest gotowy do użycia</translation>
+<translation id="4131445988101719379">Twój Portfel Ping jest gotowy do użycia</translation>
 <translation id="6252742184395380448">Program konfiguracji</translation>
 <translation id="5358970666412490132">Program stakowania</translation>
 <translation id="346636227344244984">Program głosowania</translation>
@@ -1005,8 +1005,8 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="8382368767453083629">Uruchom multipodpis 2</translation>
 <translation id="77243237706803459">Uruchom tworzenie tokenów 2</translation>
 <translation id="583281660410589416">Nieznany</translation>
-<translation id="5666264859501108700">Region Twoich Nagród Brave ustawiono na: <ph name="COUNTRY_NAME"/>.</translation>
-<translation id="909076461795862330">Niestety wystąpił błąd podczas konfigurowania Nagród Brave. Spróbuj ponownie.</translation>
+<translation id="5666264859501108700">Region Twoich Nagród Ping ustawiono na: <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="909076461795862330">Niestety wystąpił błąd podczas konfigurowania Nagród Ping. Spróbuj ponownie.</translation>
 <translation id="7352651011704765696">Coś poszło nie tak</translation>
 <translation id="7144878232160441200">Ponów próbę</translation>
 <translation id="6040143037577758943">Zamknij</translation>
@@ -1015,15 +1015,15 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="8496335570810457">Zatwierdzenie Preflight:</translation>
 <translation id="5100124500279922001">Pomiń etap Preflight:</translation>
 <translation id="7152095322071766507">Najczęściej odwiedzane strony</translation>
-<translation id="7230006500876504868">Szukaj z Brave</translation>
+<translation id="7230006500876504868">Szukaj z Ping</translation>
 <translation id="5888208462949095139">Wyszukaj za pomocą <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Ekran główny widżetu</translation>
 <translation id="703185154752046151">Dodano widżet do ekranu głównego</translation>
-<translation id="3290805388004282161">Wypróbuj widżet wyszukiwania przeglądarki Brave</translation>
+<translation id="3290805388004282161">Wypróbuj widżet wyszukiwania przeglądarki Ping</translation>
 <translation id="4809681171446727314">Uzyskaj dostęp bezpośrednio ze swojego ekranu głównego do chroniącej prywatność i niezależnej funkcji wyszukiwania.</translation>
 <translation id="7751715172931488388">Dodaj widżet</translation>
-<translation id="7285167584112910782">Wyszukiwanie szybkiego działania przeglądarki Brave</translation>
-<translation id="2326703104633309781">Użyj Tłumaczenia Brave</translation>
+<translation id="7285167584112910782">Wyszukiwanie szybkiego działania przeglądarki Ping</translation>
+<translation id="2326703104633309781">Użyj Tłumaczenia Ping</translation>
 <translation id="5802752138057422257">Wykryto znaki spoza systemu ASCII!</translation>
 <translation id="442709594176931966">Wyświetl oryginalną wiadomość</translation>
 <translation id="2239252396088484499">Wyświetl wiadomość z kodowaniem ASCII.</translation>
@@ -1035,22 +1035,22 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="1313065465616456728">Wystawiono</translation>
 <translation id="7902225556763260253">Wygaśnięcie</translation>
 <translation id="1908159733454294871">Wykryto zagrożenie bezpieczeństwa</translation>
-<translation id="5658257029899993935">Połącz zakup ze swoim kontem Brave</translation>
-<translation id="1187061015547219282">Połącz zakup w sklepie Play Store ze swoim kontem Brave, aby używać funkcji VPN Brave na innych urządzeniach.</translation>
+<translation id="5658257029899993935">Połącz zakup ze swoim kontem Ping</translation>
+<translation id="1187061015547219282">Połącz zakup w sklepie Play Store ze swoim kontem Ping, aby używać funkcji VPN Ping na innych urządzeniach.</translation>
 <translation id="6662142137695589205">Subskrypcja połączenia VPN</translation>
-<translation id="2674077112509133024">Rozszerz swoją ochronę Firewall Brave + VPN</translation>
-<translation id="6365389672683343144">Twoja subskrypcja połączenia VPN Brave może chronić do 5 urządzeń stacjonarnych lub z systemami Android oraz iOS. Wystarczy, że połączysz swoją subskrypcję Google Play z kontem Brave.</translation>
+<translation id="2674077112509133024">Rozszerz swoją ochronę Firewall Ping + VPN</translation>
+<translation id="6365389672683343144">Twoja subskrypcja połączenia VPN Ping może chronić do 5 urządzeń stacjonarnych lub z systemami Android oraz iOS. Wystarczy, że połączysz swoją subskrypcję Google Play z kontem Ping.</translation>
 <translation id="6610899852831463073">Nie można włączyć Bezpiecznego przeglądania</translation>
 <translation id="7954263306665462056">Funkcja Bezpiecznego przeglądania została wyłączona na Twoim urządzeniu. W celu jej ponownego włączenia upewnij się, że Usługi Google Play są zainstalowane i aktualne.</translation>
 <translation id="6605147707233193230">Włącz, aby wspierać twórców treści</translation>
-<translation id="5899814466108868020">Pomagasz wspierać Brave oraz społeczność BAT</translation>
-<translation id="6067959437127691361">Korzystanie z Nagród Brave pomaga we wsparciu twórców i pozwala na zdobywanie BAT.</translation>
+<translation id="5899814466108868020">Pomagasz wspierać Ping oraz społeczność BAT</translation>
+<translation id="6067959437127691361">Korzystanie z Nagród Ping pomaga we wsparciu twórców i pozwala na zdobywanie BAT.</translation>
 <translation id="3264975266761862670">Gotowy do zarabiania?</translation>
 <translation id="265337947574975838">Podłącz lub utwórz konto u jednego z naszych partnerów.</translation>
 <translation id="654447476965480878">Dowiedz się więcej o zarabianiu BAT</translation>
 <translation id="6278643716658443228">Ustawienia nagród</translation>
 <translation id="6516984207843289176">Połącz konto</translation>
-<translation id="4272136334824111854">Liczba twórców, których udało Ci się odwiedzić w tym miesiącu, którzy są wspierani przez Nagrody Brave: <ph name="CREATOR_COUNT"/></translation>
+<translation id="4272136334824111854">Liczba twórców, których udało Ci się odwiedzić w tym miesiącu, którzy są wspierani przez Nagrody Ping: <ph name="CREATOR_COUNT"/></translation>
 <translation id="6845311459433734326">Połącz swoje konto powiernicze, żeby zdobywać BAT-y i wypłacać nagrody</translation>
 <translation id="928980476243133540">Zrobię to później</translation>
 <translation id="579702532610384533">Połącz ponownie</translation>
@@ -1061,8 +1061,8 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="5382684862562314222">BAT nie jest jeszcze obsługiwany w Twoim regionie w systemie Uphold.</translation>
 <translation id="6996157559236886133">Błąd: ograniczona funkcjonalność konta Uphold</translation>
 <translation id="1677961202754619328">Według serwisu Uphold na Twoim koncie Uphold obowiązują obecnie pewne ograniczenia. Zaloguj się na swoje konto i sprawdź, czy nie ma jakichś powiadomień lub pozostałych wymagań związanych z kontem, które należy spełnić, a następnie spróbuj ponownie.</translation>
-<translation id="5425006356459378415">Nagrody Brave nie są dostępne</translation>
-<translation id="833643743158564518">Nowe rejestracje w ramach Nagród Brave są obecnie wyłączone w Twoim regionie. Zawsze możesz spróbować później. <ph name="LEARN_MORE"/></translation>
+<translation id="5425006356459378415">Nagrody Ping nie są dostępne</translation>
+<translation id="833643743158564518">Nowe rejestracje w ramach Nagród Ping są obecnie wyłączone w Twoim regionie. Zawsze możesz spróbować później. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">Sieci główne</translation>
 <translation id="2781668117338732220">Sieci pomocnicze</translation>
 <translation id="282560918037172384">Sieci testowe</translation>
@@ -1083,8 +1083,8 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="346505172740911461">Cena rynkowa</translation>
 <translation id="5494920125229734069">Wybierz wszystko</translation>
 <translation id="6129027151000961048">Leo</translation>
-<translation id="8613144770663526433">Zaloguj się za pomocą portfela Brave</translation>
-<translation id="3696514931437952995">Logujesz się do <ph name="ORIGIN"/>. Portfel Brave udostępni adres Twojego portfela <ph name="ORIGIN"/>.</translation>
+<translation id="8613144770663526433">Zaloguj się za pomocą portfela Ping</translation>
+<translation id="3696514931437952995">Logujesz się do <ph name="ORIGIN"/>. Portfel Ping udostępni adres Twojego portfela <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Zobacz szczegóły</translation>
 <translation id="6759710362319508545">Zasoby</translation>
 <translation id="2471230424465522689">Najwcześniej</translation>
@@ -1093,7 +1093,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="4109670531935487117">Pokaż sugestie automatycznego uzupełniana na pasku adresu</translation>
 <translation id="1250335737108905610">Resetuj i wyczyść dane Leo</translation>
 <translation id="6165101586663336913">Zresetowanie asystenta Leo będzie wymagało wyrażenia zgody na korzystanie z Leo w przyszłości, a także spowoduje wyczyszczenie historii czatu. Wyczyszczenie historii czatu oznacza usunięcie wszystkich poprzednich rozmów z Leo. Tej czynności nie można cofnąć.</translation>
-<translation id="3692772534525889713">Połącz zakup w sklepie Play Store ze swoim kontem Brave, aby używać Brave Leo na innych urządzeniach.</translation>
+<translation id="3692772534525889713">Połącz zakup w sklepie Play Store ze swoim kontem Ping, aby używać Ping Leo na innych urządzeniach.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1166682575529520472">Miesięcznie</translation>
 <translation id="451189393813405346">Zapytaj Leo</translation>
@@ -1103,7 +1103,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="6344103698928069918">W przypadku listy odtwarzania wznów odtwarzanie od momentu ostatniego wstrzymania</translation>
 <translation id="8141583471142904652">Kontynuuj słuchanie</translation>
 <translation id="851432578283946230">Automatycznie odtwarzaj kolejne pozycje na liście odtwarzania</translation>
-<translation id="295620834661738195">Lista odtwarzania Brave</translation>
+<translation id="295620834661738195">Lista odtwarzania Ping</translation>
 <translation id="4850886885716139402">Widok</translation>
 <translation id="7392941176393379100">Dodano do „<ph name="PLAYLIST_NAME"/>”</translation>
 <translation id="349846214503465941">Włącz listę odtwarzania</translation>
@@ -1129,7 +1129,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="8120600068258956006">Dodaj do listy odtwarzania</translation>
 <translation id="39991094779686024">Listy odtwarzania</translation>
 <translation id="1710072605877822603">Dodaj multimedia</translation>
-<translation id="3874252678044305931">Dodaj filmy do listy odtwarzania Brave. Obejrzyj je w dowolnym momencie. Nawet w trybie offline.</translation>
+<translation id="3874252678044305931">Dodaj filmy do listy odtwarzania Ping. Obejrzyj je w dowolnym momencie. Nawet w trybie offline.</translation>
 <translation id="8973629800378391099">Utwórz listy odtwarzania z ulubionymi treściami. Oszczędzaj przesył danych mobilnych. Odtwarzaj bez reklam.</translation>
 <translation id="4936812987266342401">Kliknij przycisk, żeby dodać filmy do listy odtwarzania</translation>
 <translation id="6263657785571415306">Bądź na bieżąco: dodawaj filmy podczas przeglądania i oglądaj je później.</translation>
@@ -1172,7 +1172,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="5538904824395606812">Wybierz Twojego dostawcę usług internetowych lub Quad9</translation>
 <translation id="6393423486818299209">Wybierz Twojego dostawcę usług internetowych lub Wikimedia DNS</translation>
 <translation id="3401384982562827787">Wybierz Twojego dostawcę usług internetowych lub Cloudflare</translation>
-<translation id="8812367543786936496">Jeśli Twój dostawca usług jest niepewny, Brave może skorzystać z alternatywnego, bezpiecznego DNS</translation>
+<translation id="8812367543786936496">Jeśli Twój dostawca usług jest niepewny, Ping może skorzystać z alternatywnego, bezpiecznego DNS</translation>
 <translation id="5680678411439841197">miasto</translation>
 <translation id="8185518433273977704">miejscowość</translation>
 <translation id="4528386452965343421">prefektura</translation>
@@ -1200,19 +1200,19 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="3300502432153878901">kod pocztowy</translation>
 <translation id="4130750466177569591">zgadzam się</translation>
 <translation id="3251885322612056119">Zaktualizowane warunki świadczenia usług</translation>
-<translation id="4049035689681585146">Zaktualizowaliśmy warunki korzystania z usługi Nagrody Brave. Wprowadziliśmy te aktualizacje, aby wyjaśnić nasze warunki i upewnić się, że obejmują one nowe funkcje. Dalsze korzystanie z usługi Nagrody Brave oznacza akceptację zaktualizowanych warunków świadczenia usług. Jeśli nie wyrażasz zgody, możesz <ph name="RESET_START"/>zresetować <ph name="RESET_END"/> stronę usługi, co spowoduje wyłączenie tej funkcji.</translation>
-<translation id="2165953574528546737">Zobacz <ph name="TOS_START"/>Warunki świadczenia usługi Nagrody Brave<ph name="TOS_END"/></translation>
+<translation id="4049035689681585146">Zaktualizowaliśmy warunki korzystania z usługi Nagrody Ping. Wprowadziliśmy te aktualizacje, aby wyjaśnić nasze warunki i upewnić się, że obejmują one nowe funkcje. Dalsze korzystanie z usługi Nagrody Ping oznacza akceptację zaktualizowanych warunków świadczenia usług. Jeśli nie wyrażasz zgody, możesz <ph name="RESET_START"/>zresetować <ph name="RESET_END"/> stronę usługi, co spowoduje wyłączenie tej funkcji.</translation>
+<translation id="2165953574528546737">Zobacz <ph name="TOS_START"/>Warunki świadczenia usługi Nagrody Ping<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">Zezwól na wiele okien</translation>
 <translation id="6167344249617630304">Otwórz do 5 okien jednocześnie i przenoś karty między oknami</translation>
 <translation id="1063948063403254568">Wykryto wiele okien</translation>
-<translation id="4661882208707630158">Scal karty w innym oknie Brave lub zamknij okna Brave przed wyłączeniem funkcji wielu okien.</translation>
+<translation id="4661882208707630158">Scal karty w innym oknie Ping lub zamknij okna Ping przed wyłączeniem funkcji wielu okien.</translation>
 <translation id="6891382640886173702">Scal okna</translation>
 <translation id="2912247081180973411">Zamknij okna</translation>
-<translation id="4010699428656610296">Scal inne karty w innym oknie Brave.</translation>
+<translation id="4010699428656610296">Scal inne karty w innym oknie Ping.</translation>
 <translation id="208634871997892083">Zawsze aktywna sieć VPN</translation>
 <translation id="1599073346542156922">Włączanie:</translation>
 <translation id="7001163334415463127">1. Otwórz ustawienia urządzenia z menu wyboru aplikacji albo klikając przycisk poniżej.</translation>
-<translation id="887443138775437899">2. Znajdź Sieć VPN Brave i kliknij ikonę ustawień po prawej.</translation>
+<translation id="887443138775437899">2. Znajdź Sieć VPN Ping i kliknij ikonę ustawień po prawej.</translation>
 <translation id="3776051499611941773">3. Włącz opcję <ph name="ALWAYS_ON_TUTORIAL_START"/>Zawsze aktywna sieć VPN<ph name="ALWAYS_ON_TUTORIAL_END"/>.</translation>
 <translation id="4776146737004271126">Otwórz ustawienia Androida</translation>
 <translation id="2728518864712716830">Aktualizacja została pobrana.</translation>

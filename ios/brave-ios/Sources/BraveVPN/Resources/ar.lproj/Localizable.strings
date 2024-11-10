@@ -7,25 +7,25 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "الخوادم المتاحة";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "شراء";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "حماية 5 أجهزة باشتراك واحد";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "اختيار موقعك الجغرافي / بلدك";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "لا يسجل Brave نشاطك أبدًا";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "لا يسجل Ping نشاطك أبدًا";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "حماية كل تطبيق وجهازك بالكامل";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "أكثر أمانًا للمنزل أو شبكة Wi-Fi العامة";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "بسرعة البرق تصل إلى 100 ميجابت في الثانية";
 
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
@@ -44,7 +44,7 @@
 "vpn.contactFormCarrier" = "الناقل الخلوي";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave لا يتتبعك أو يعرف كيف تستخدم تطبيقنا، لذلك لا نعرف كيف قمت بإعداد VPN. يرجى مشاركة معلومات حول المشكلة التي تواجهها وسنبذل قصارى جهدنا لحلها في أقرب وقت ممكن.";
+"vpn.contactFormDoNotEditText" = "Ping لا يتتبعك أو يعرف كيف تستخدم تطبيقنا، لذلك لا نعرف كيف قمت بإعداد VPN. يرجى مشاركة معلومات حول المشكلة التي تواجهها وسنبذل قصارى جهدنا لحلها في أقرب وقت ممكن.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "لا يمكن إرسال بريد إلكتروني. يرجى التحقق من تكوين بريدك الإلكتروني.";
@@ -101,9 +101,9 @@
 "vpn.contactFormTimezone" = "المنطقة الزمنية لنظام iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "مشكلة Brave Firewall + VPN";
+"vpn.contactFormTitle" = "مشكلة Ping Firewall + VPN";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "تمكين";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -119,13 +119,13 @@
 "vpn.iapDisclaimer" = "يتم تجديد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها قبل التجديد.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "يسمح ملف التعريف هذا لشبكة VPN بالاتصال تلقائيًا وتأمين حركة المرور عبر جهازك طوال الوقت. سيتم تشفير اتصال VPN هذا وتوجيهه عبر جدار الحماية الذكي من Brave لحظر الاتصالات التي يحتمل أن تكون ضارة وغازية.";
+"vpn.installProfileBody" = "يسمح ملف التعريف هذا لشبكة VPN بالاتصال تلقائيًا وتأمين حركة المرور عبر جهازك طوال الوقت. سيتم تشفير اتصال VPN هذا وتوجيهه عبر جدار الحماية الذكي من Ping لحظر الاتصالات التي يحتمل أن تكون ضارة وغازية.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "تثبيت ملف تعريف VPN";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "ستقوم Brave الآن بتثبيت ملف تعريف VPN.";
+"vpn.installProfileTitle" = "ستقوم Ping الآن بتثبيت ملف تعريف VPN.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "تم تمكين VPN الآن";
@@ -133,7 +133,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "تثبيت VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "المحاولة مجانًا";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -221,10 +221,10 @@
 "vpn.settingsFAQ" = "دعم VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "ربط عملية الشراء بحسابك على Brave";
+"vpn.settingsLinkReceipt" = "ربط عملية الشراء بحسابك على Ping";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "اربط مشترياتك من آب ستور بحساب Brave الخاص بك لاستخدام Brave VPN على الأجهزة الأخرى.";
+"vpn.settingsLinkReceiptFooter" = "اربط مشترياتك من آب ستور بحساب Ping الخاص بك لاستخدام Ping VPN على الأجهزة الأخرى.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "إدارة الاشتراك";
@@ -260,10 +260,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "تحديث طريقة الدفع";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "حتى في الخلفية، سيستمر Brave في حمايتك.";
+"vpn.vpnBackgroundNotificationBody" = "حتى في الخلفية، سيستمر Ping في حمايتك.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN قيد التشغيل";
+"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN قيد التشغيل";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "استخدام أفضل خادم متاح";
@@ -278,7 +278,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "خطأ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "يتطلب Brave Firewall + VPN تثبيت ملف تعريف VPN على جهازك للعمل. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "يتطلب Ping Firewall + VPN تثبيت ملف تعريف VPN على جهازك للعمل. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "تم رفض الإذن";
@@ -293,13 +293,13 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "خطأ";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "سيتم فرض رسوم على الاشتراكات عبر حساب iTunes الخاص بك.\n\nتتم مصادرة أي جزء غير مستخدم من الإصدار التجريبي المجاني، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\n\nباستخدام Brave، فإنك توافق على شروط الاستخدام وسياسة الخصوصية.";
+"vpn.vpnIAPBoilerPlate" = "سيتم فرض رسوم على الاشتراكات عبر حساب iTunes الخاص بك.\n\nتتم مصادرة أي جزء غير مستخدم من الإصدار التجريبي المجاني، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\n\nباستخدام Ping، فإنك توافق على شروط الاستخدام وسياسة الخصوصية.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "استرداد الرمز";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "سيؤدي هذا إلى إعادة تعيين تكوين Brave Firewall + VPN وإصلاح أي أخطاء. قد تستغرق هذه العملية دقيقة.";
+"vpn.vpnResetAlertBody" = "سيؤدي هذا إلى إعادة تعيين تكوين Ping Firewall + VPN وإصلاح أي أخطاء. قد تستغرق هذه العملية دقيقة.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "إعادة تعيين التكوين";

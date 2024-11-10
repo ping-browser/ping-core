@@ -70,7 +70,7 @@ void DeletePromoCodeFile(const base::FilePath& promo_code_file) {
 
 #if BUILDFLAG(IS_MAC)
 std::string ReadPromoCodeFromXattr() {
-  static constexpr char kRefCodeAttr[] = "com.brave.refcode";
+  static constexpr char kRefCodeAttr[] = "com.ping.browser.mac.refcode";
   base::FilePath bundle_path = base::apple::OuterBundlePath();
   std::vector<char> value;
   int result_errno =

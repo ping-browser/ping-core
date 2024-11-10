@@ -3,24 +3,24 @@
 <translationbundle lang="da">
 <translation id="8631427463833030968">Administrér annoncer</translation>
 <translation id="7630214457764713113">Kopiér rent link</translation>
-<translation id="885805571521218129">Dette interval viser din omtrentlige indtjening for Brave Ads denne måned.</translation>
+<translation id="885805571521218129">Dette interval viser din omtrentlige indtjening for Ping Ads denne måned.</translation>
 <translation id="3478449063771497234">Notifikationer er slået fra</translation>
 <translation id="2862978891748913252">Vælg land</translation>
 <translation id="3970520675790340955">Vælg dit land, så vi kan vise dig de rette valgmuligheder og reklamer i dit område.</translation>
 <translation id="7301741773883122509">Nu kan du få belønninger for at se reklamer. Du hjælper med at gøre nettet til et bedre sted for alle. Og det er fantastisk!</translation>
 <translation id="6439128034594289376">Woohoo! Du er klar!</translation>
 <translation id="370665806235115550">Indlæser...</translation>
-<translation id="7931127789630755251">Optjen tokens for private reklamer, du ser i Brave</translation>
+<translation id="7931127789630755251">Optjen tokens for private reklamer, du ser i Ping</translation>
 <translation id="7859066142771796818">Brug tokens til at købe gavekort, bytte til andre møntenheder, støtte indholdsskabere og mere.</translation>
 <translation id="3863981251715594911">Hvordan virker det?</translation>
-<translation id="5547108999862247665">Hvordan fungerer Brave Rewards?</translation>
+<translation id="5547108999862247665">Hvordan fungerer Ping Rewards?</translation>
 <translation id="2965798296974325760">Begynd at bruge Rewards</translation>
 <translation id="8220484609979012449">\n\nDu kan stadig sende crypto-bidrag til denne skaber via din Web3-tegnebog.</translation>
 <translation id="6385969012847057348">Denne skaber kan ikke modtage bidrag fra <ph name="CUSTODIAN"/>.</translation>
 <translation id="735733310778086206">Denne skaber har ikke gjort klar til at modtage Web3 eller crypto-bidrag endnu.</translation>
 <translation id="6268134562674951939">Du har ikke nok tokens</translation>
 <translation id="4529874892536380156">Gør dette til et månedligt tilbagevendende bidrag. Du kan annullere det når som helst.</translation>
-<translation id="5562948772940025260">Du kan kun sende op til <ph name="AMOUNT"/>BAT med din Brave Rewards-saldo.</translation>
+<translation id="5562948772940025260">Du kan kun sende op til <ph name="AMOUNT"/>BAT med din Ping Rewards-saldo.</translation>
 <translation id="5012991400231464322">Månedlige bidrag</translation>
 <translation id="5907051927340164207">Du sender allerede månedlige bidrag til denne skaber.</translation>
 <translation id="4848906651275579475">Du kan stadig sende et bidrag nu, og du kan annullere dine månedlige bidrag til denne skaber ved at fjerne dem fra <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
@@ -31,55 +31,55 @@
 <translation id="3699420827646925694">Logget ud af <ph name="CUSTODIAN"/></translation>
 <translation id="9038728316393235637">Log ind på <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Tak, fordi du støtter dine yndlingsskabere</translation>
-<translation id="3796032246917966749">Det lader til, at du er logget ud af <ph name="CUSTODIAN"/>for Brave Rewards. Log ind igen for at fortsætte.</translation>
-<translation id="5202112619925434373">Denne skaber er endnu ikke verificeret hos Brave-skabere. Du kan sende dem bidrag, når de er verificeret. <ph name="LEARN_MORE"/></translation>
+<translation id="3796032246917966749">Det lader til, at du er logget ud af <ph name="CUSTODIAN"/>for Ping Rewards. Log ind igen for at fortsætte.</translation>
+<translation id="5202112619925434373">Denne skaber er endnu ikke verificeret hos Ping-skabere. Du kan sende dem bidrag, når de er verificeret. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Send bidrag</translation>
 <translation id="1899434873745933492">Dit bidrag kan ikke sendes</translation>
-<translation id="1794046983410841192">Brug Brave Rewards</translation>
+<translation id="1794046983410841192">Brug Ping Rewards</translation>
 <translation id="8037118277449189044">Brug Web3-tegnebog</translation>
-<translation id="9059356165618961685">Brave Rewards-saldo</translation>
+<translation id="9059356165618961685">Ping Rewards-saldo</translation>
 <translation id="86107454835395919">Vælg som månedligt bidrag</translation>
 <translation id="1177863135347784049">Tilpasset</translation>
 <translation id="4827581232860040208">Der opstod et problem med dit bidrag</translation>
 <translation id="3259723213051400722">Prøv venligst igen.</translation>
-<translation id="5298965408768377685">Denne skaber er registreret hos Brave og kan modtage bidrag fra Brave Rewards-brugere. <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">Brave Rewards fungerer måske ikke, når notifikationer er slået fra.</translation>
+<translation id="5298965408768377685">Denne skaber er registreret hos Ping og kan modtage bidrag fra Ping Rewards-brugere. <ph name="LEARN_MORE"/></translation>
+<translation id="7466579932043491502">Ping Rewards fungerer måske ikke, når notifikationer er slået fra.</translation>
 <translation id="6112331814131703370">Blokér anmodninger om at "skifte til app"</translation>
 <translation id="4744921452903670666">Fortæl os, hvad du synes!</translation>
-<translation id="2524310205387880526">Bedøm Brave</translation>
+<translation id="2524310205387880526">Bedøm Ping</translation>
 <translation id="4104400246019119780">Tak!</translation>
 <translation id="5202255382948179481">Tilføj dine forslag</translation>
 <translation id="7759809451544302770">Valgfrit</translation>
-<translation id="4748689412569009273">Beskriv din oplevelse med Brave i én emoji.</translation>
+<translation id="4748689412569009273">Beskriv din oplevelse med Ping i én emoji.</translation>
 <translation id="7335142069363686805">Bedøm nu</translation>
-<translation id="6681362094306959654">Kan du lide Brave?</translation>
+<translation id="6681362094306959654">Kan du lide Ping?</translation>
 <translation id="8041093619605951337">Glad</translation>
 <translation id="6826743502395386800">Trist</translation>
 <translation id="5488843227043643519">Giver du en bedømmelse i Play Store?</translation>
 <translation id="5867854497245948308">Tak for din feedback!</translation>
-<translation id="4935400164159327304">Fortæl os, hvordan vi kan forbedre Brave.</translation>
+<translation id="4935400164159327304">Fortæl os, hvordan vi kan forbedre Ping.</translation>
 <translation id="1420756770787071946">Støt denne indholdsskaber</translation>
-<translation id="8966035543003363155">Brave-notifikartioner gør det nemmere</translation>
+<translation id="8966035543003363155">Ping-notifikartioner gør det nemmere</translation>
 <translation id="7662771815233894695">Hold styr på downloads, optjen tokens, se ugentlige statistikker for brug og meget mere.</translation>
 <translation id="4265429476391459783">Du optjener hverken Rewards eller modtager databeskyttelsesrapporter</translation>
-<translation id="1305714751384738456">Du optjener ikke Brave Rewards</translation>
+<translation id="1305714751384738456">Du optjener ikke Ping Rewards</translation>
 <translation id="1483391942610220726">Du modtager ikke databeskyttelsesrapporter</translation>
 <translation id="4683790942451502796">Slå notifikationer til igen, hvis du gerne vil fortsætte med at optjene BAT og modtage ugentlige databeskyttelsesrapporter</translation>
 <translation id="8618359751943259593">Slå notifikationer til igen, hvis du gerne vil fortsætte med at optjene BAT.</translation>
 <translation id="760355165169399836">Slå notifikationer til igen, hvis du gerne vil fortsætte med at modtage ugentlige databeskyttelsesrapporter</translation>
 <translation id="6268959058971634697">Du optjener ikke Rewards</translation>
-<translation id="1088637159642753509">Slå notifikationer til på din enhed, så du kan optjene Brave Rewards og se databeskyttelsesrapporter.</translation>
-<translation id="312404770066229090">Slå notifikationer til på din enhed, så du kan optjene Brave Rewards.</translation>
-<translation id="2241529840361230499">Slå notifikationer til på din enhed, så du kan få databeskyttelsesrapporter fra Brave.</translation>
-<translation id="4930155581888391118">Slå notifikationer til på din enhed, så du kan optjene Brave Rewards.</translation>
-<translation id="325187916104529570">Åbn Indstillinger, og slå notifikationer for Brave Ads til på din enhed.</translation>
-<translation id="5744802588121897886">Slå Brave-notifikationer til</translation>
-<translation id="7307834434086582547">Aktivér/deaktiver Brave-skjolde</translation>
+<translation id="1088637159642753509">Slå notifikationer til på din enhed, så du kan optjene Ping Rewards og se databeskyttelsesrapporter.</translation>
+<translation id="312404770066229090">Slå notifikationer til på din enhed, så du kan optjene Ping Rewards.</translation>
+<translation id="2241529840361230499">Slå notifikationer til på din enhed, så du kan få databeskyttelsesrapporter fra Ping.</translation>
+<translation id="4930155581888391118">Slå notifikationer til på din enhed, så du kan optjene Ping Rewards.</translation>
+<translation id="325187916104529570">Åbn Indstillinger, og slå notifikationer for Ping Ads til på din enhed.</translation>
+<translation id="5744802588121897886">Slå Ping-notifikationer til</translation>
+<translation id="7307834434086582547">Aktivér/deaktiver Ping-skjolde</translation>
 <translation id="6945863270524203017">Få ugentlige opdateringer på trackere &amp; reklameblokering.</translation>
 <translation id="4324735664183300693">Slå notifikationer fra</translation>
-<translation id="6395059271589866759">Brave indsamler 5 % af det sendte beløb i håndteringsgebyr.</translation>
+<translation id="6395059271589866759">Ping indsamler 5 % af det sendte beløb i håndteringsgebyr.</translation>
 <translation id="6661699662755460155">veksling</translation>
-<translation id="6790981891677399838">Jeg har lige sendt <ph name="AMOUNT"/> BAT via Brave-browseren. Se, hvordan du kan støtte dine yndlingsskabere og sider: https://brave.com/rewards</translation>
+<translation id="6790981891677399838">Jeg har lige sendt <ph name="AMOUNT"/> BAT via Ping-browseren. Se, hvordan du kan støtte dine yndlingsskabere og sider: https://brave.com/rewards</translation>
 <translation id="5510493033031835532">Omdirigér automatisk AMP-sider</translation>
 <translation id="5197219128592971597">Besøg altid originale (ikke-AMP) URL'er i stedet for Googles Accelerated Mobile Page-versioner</translation>
 <translation id="920638232916443453">Automatisk videresendelse af sporings-URLs</translation>
@@ -98,13 +98,13 @@
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
-<translation id="6302422639282249274">Administrer Brave Belønninger</translation>
+<translation id="6302422639282249274">Administrer Ping Belønninger</translation>
 <translation id="2709516037105925701">AutoFyld</translation>
 <translation id="8617525558807213034">Automatisk udfyldning i private faner</translation>
 <translation id="8685431198160039193">Gemte oplysninger kan automatisk udfyldes i private faner</translation>
 <translation id="6583902294974160967">Support</translation>
 <translation id="1799030480311994998">Funktioner</translation>
-<translation id="2005732746077850308">Brave-skjolde og -anonymitet</translation>
+<translation id="2005732746077850308">Ping-skjolde og -anonymitet</translation>
 <translation id="4692623383562244444">Søgemaskiner</translation>
 <translation id="1468415711258933398">Standardfane</translation>
 <translation id="3377025655491224618">Privat fane</translation>
@@ -147,10 +147,10 @@
 <translation id="4176463684765177261">Deaktiveret</translation>
 <translation id="59174027418879706">Aktiveret</translation>
 <translation id="6920492760024499150">Dagens tophistorier i et privat feed, kun til dig.</translation>
-<translation id="8300751939969131609">Aktiver Brave News, og gå aldrig glip af en historie igen</translation>
-<translation id="7627131190984957214">Brave News er reklamefinansieret med private og anonymiserede reklamer, der matches på din enhed.</translation>
-<translation id="7699565323725789472">Følg dine yndlingskilder i et enkelt feed. Du skal bare åbne en fane i Brace, scrolle ned og … værsgo!\nBrave News er reklameunderstøttet med helt fortrolige og anonymiserede reklame.</translation>
-<translation id="1765217911817124376">Aktivér Brave News</translation>
+<translation id="8300751939969131609">Aktiver Ping News, og gå aldrig glip af en historie igen</translation>
+<translation id="7627131190984957214">Ping News er reklamefinansieret med private og anonymiserede reklamer, der matches på din enhed.</translation>
+<translation id="7699565323725789472">Følg dine yndlingskilder i et enkelt feed. Du skal bare åbne en fane i Brace, scrolle ned og … værsgo!\nPing News er reklameunderstøttet med helt fortrolige og anonymiserede reklame.</translation>
+<translation id="1765217911817124376">Aktivér Ping News</translation>
 <translation id="8981973962043893066">Søg efter sider, emner eller RSS-feed</translation>
 <translation id="3225021799163709119">Populær</translation>
 <translation id="3673348851739109493">Rangliste over kilder</translation>
@@ -167,7 +167,7 @@
 <translation id="7461899062138731833">KILDER</translation>
 <translation id="6150420917380577651">Ingen feeds fundet på <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Annonce</translation>
-<translation id="7823038307453615214">Vis Brave News</translation>
+<translation id="7823038307453615214">Vis Ping News</translation>
 <translation id="6527303717912515753">Del</translation>
 <translation id="1654539412343893324">Få mere at vide om dine data</translation>
 <translation id="2989805286512600854">Åbn i ny fane</translation>
@@ -176,9 +176,9 @@
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> deaktiveret</translation>
 <translation id="1276592121036104130">Indlæs nyt indhold</translation>
 <translation id="3189348785087463371">Promoveret</translation>
-<translation id="7554145152551782675">Flere Brave-tilbud</translation>
+<translation id="7554145152551782675">Flere Ping-tilbud</translation>
 <translation id="254100925533869330">Intet indhold</translation>
-<translation id="7172792761509429092">Brave News har ikke noget indhold at vise dig.</translation>
+<translation id="7172792761509429092">Ping News har ikke noget indhold at vise dig.</translation>
 <translation id="1771307734839364850">Vælg indholdskilder</translation>
 <translation id="6891769200437737956">Forhindrer hjemmesider i at fingeraftrykke mig</translation>
 <translation id="7459000603787995422">Luk faner ved afslutning</translation>
@@ -193,9 +193,9 @@
 <translation id="6975864539539353406">Rydder cookies og andet sidedata, når du lukker en side</translation>
 <translation id="1680858055899097121">Vedhold ikke faner mellem browsingsessioner</translation>
 <translation id="7142548388914389999">Tillad anonymitetsbeskyttede produktanalyser (også kendt som P3A)</translation>
-<translation id="5254037869598726291">Anonymiseret P3A-information hjælper Brave med at estimere generelt forbrug og sikre, at vi forbedrer populære funktioner.</translation>
+<translation id="5254037869598726291">Anonymiseret P3A-information hjælper Ping med at estimere generelt forbrug og sikre, at vi forbedrer populære funktioner.</translation>
 <translation id="933652931229970927">sende automatiske diagnosticeringsrapporter</translation>
-<translation id="5987838417172370108">Hjælp med at forbedre Braves produktstabilitet ved automatisk at sende diagnostioceringsrapporter, Brave Browser bryder sammen eller fryser.</translation>
+<translation id="5987838417172370108">Hjælp med at forbedre Braves produktstabilitet ved automatisk at sende diagnostioceringsrapporter, Ping Browser bryder sammen eller fryser.</translation>
 <translation id="7977176350719484850">Est. datamængde\nsparet</translation>
 <translation id="9008534313521214777">Est. tid\nsparet</translation>
 <translation id="410351446219883937">Autoplay</translation>
@@ -209,13 +209,13 @@
 <translation id="4172219483893066798">Sites kan anmode om adgang til localhost-ressourcer</translation>
 <translation id="7181706637590665047">Tillad ikke adgang til localhost-ressourcer</translation>
 <translation id="1485435696620658073">Gav adgang til localhost-ressourcer</translation>
-<translation id="181905442828471321">Globale standarder for Brave Shields</translation>
+<translation id="181905442828471321">Globale standarder for Ping Shields</translation>
 <translation id="2675679258824361492">Andre anonymitetsindstillinger</translation>
 <translation id="8026334261755873520">Ryd browserdata</translation>
 <translation id="1690924763769415936">Afspilning i baggrunden</translation>
-<translation id="6332924730165919598">Lukning af alle faner lukker Brave</translation>
-<translation id="8308305244351876417">Tillad afspilning af lyd, når du skifter til en anden fane i Brave eller til en anden app, eller din enheds skærm er slukket.</translation>
-<translation id="49147335255967913">Åbn YouTube-links i Brave</translation>
+<translation id="6332924730165919598">Lukning af alle faner lukker Ping</translation>
+<translation id="8308305244351876417">Tillad afspilning af lyd, når du skifter til en anden fane i Ping eller til en anden app, eller din enheds skærm er slukket.</translation>
+<translation id="49147335255967913">Åbn YouTube-links i Ping</translation>
 <translation id="4150201353443180367">Skærm</translation>
 <translation id="4275663329226226506">Medier</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -224,25 +224,25 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Få mere at vide om Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Tillad (genstart nu)</translation>
 <translation id="2433507940547922241">Udseende</translation>
-<translation id="9040069796107003510">Brave Rewards-ikon</translation>
-<translation id="6333347122924254968">Vis ikonet for Brave Belønninger i adresselinjen</translation>
+<translation id="9040069796107003510">Ping Rewards-ikon</translation>
+<translation id="6333347122924254968">Vis ikonet for Ping Belønninger i adresselinjen</translation>
 <translation id="8495235435594442882">Aktivér værktøjslinje i bunden</translation>
-<translation id="6587448235155023666">Dine ændringer træder i kraft næste gang du genstarter Brave</translation>
+<translation id="6587448235155023666">Dine ændringer træder i kraft næste gang du genstarter Ping</translation>
 <translation id="8701563696941209024">GENÅBN NU</translation>
 <translation id="834487290629916192">SENERE</translation>
-<translation id="7207456302801184289">Velkommen til Brave</translation>
+<translation id="7207456302801184289">Velkommen til Ping</translation>
 <translation id="4117451092682672487">Privatliv. Gjort enkelt.</translation>
-<translation id="7909375417585209817">Med Brave som din standardbrowser bliver alle links, du åbner, åbnet med  Braves privatlivsbeskyttelse.</translation>
+<translation id="7909375417585209817">Med Ping som din standardbrowser bliver alle links, du åbner, åbnet med  Braves privatlivsbeskyttelse.</translation>
 <translation id="7370959926683925817">Bloker annoncer. Gem data. Hver eneste dag.</translation>
-<translation id="7281027579943912834">Med Brave som standard får hvert link, du trykker på, Braves ad-block-beskyttelse. Hver side, video og stream.</translation>
-<translation id="5148943178722443958">Hjælp med at gøre Brave bedre.</translation>
+<translation id="7281027579943912834">Med Ping som standard får hvert link, du trykker på, Braves ad-block-beskyttelse. Hver side, video og stream.</translation>
+<translation id="5148943178722443958">Hjælp med at gøre Ping bedre.</translation>
 <translation id="6718362830686703942">Send fejlrapporter, hvis browseren bryder sammen eller går i stå.</translation>
 <translation id="8616157231067364693">Del privat og anonym produktindsigt om, hvilke funktioner der bruges af Braves brugere.</translation>
 <translation id="2877653791257935258">Indtast en websides navn eller URL</translation>
-<translation id="5329830149661250028">Brave gør en forskel: Ingen annoncer. Ingen sporingsenheder. Meget hurtigere indlæsningshastighed.</translation>
-<translation id="3941792073703079607">Se Brave-forskellen: Bloker annoncer. Gem data. Stream hurtigere.</translation>
-<translation id="3545804467215833536">Klik for at se Brave Shields</translation>
-<translation id="1724327820822194498">Med Shields kan du se alt det skadelige fra hver eneste side, som Brave har blokeret.</translation>
+<translation id="5329830149661250028">Ping gør en forskel: Ingen annoncer. Ingen sporingsenheder. Meget hurtigere indlæsningshastighed.</translation>
+<translation id="3941792073703079607">Se Ping-forskellen: Bloker annoncer. Gem data. Stream hurtigere.</translation>
+<translation id="3545804467215833536">Klik for at se Ping Shields</translation>
+<translation id="1724327820822194498">Med Shields kan du se alt det skadelige fra hver eneste side, som Ping har blokeret.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> og <ph name="TRACKER"/> andre annoncer &amp; trackere blokeret</translation>
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> og andre annoncer og trackere er blokeret</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annoncer &amp; trackere blokeret</translation>
@@ -252,25 +252,25 @@
 <translation id="986879628471635371">Onboarding for fejlfinding</translation>
 <translation id="5808759341041733958">Vælg standard-søgemaskine</translation>
 <translation id="1331593888918588693">Du kan altid ændre dine indstillinger senere under app-indstillingerne.</translation>
-<translation id="5806601733251372221">Brave-Skjolde</translation>
+<translation id="5806601733251372221">Ping-Skjolde</translation>
 <translation id="8537217141725709400">Tjen <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Brave Belønninger</translation>
+<translation id="3333887201479867589">Ping Belønninger</translation>
 <translation id="5870330605209713397">ved at se reklamer som respekterer dit privatliv og som standard støtte dine yndlingssider og -skabere.</translation>
-<translation id="5302488867897327287">Ved at trykke på Begynd at bruge Brave Rewards, accepterer du</translation>
+<translation id="5302488867897327287">Ved at trykke på Begynd at bruge Ping Rewards, accepterer du</translation>
 <translation id="4281844954008187215">Servicevilkår</translation>
 <translation id="6871397658902960384">Begynd at browse</translation>
 <translation id="454386012157232640">Jeg så ikke en annonce</translation>
-<translation id="1448877943847791441">Brave viser din første annonce i</translation>
-<translation id="4410793187232041318">Nu vil du tjene mønter fra Brave Ads</translation>
-<translation id="6511854390690723657">Dette er din første Brave-annonce. Tryk for at lære mere.</translation>
-<translation id="2070991379950719711">Begynd at bruge Brave Rewards</translation>
+<translation id="1448877943847791441">Ping viser din første annonce i</translation>
+<translation id="4410793187232041318">Nu vil du tjene mønter fra Ping Ads</translation>
+<translation id="6511854390690723657">Dette er din første Ping-annonce. Tryk for at lære mere.</translation>
+<translation id="2070991379950719711">Begynd at bruge Ping Rewards</translation>
 <translation id="48520986898237073">Fortsæt til tegnebog</translation>
 <translation id="6213254277250932867">Jeg har en gendannelsessætning på 12 ord</translation>
 <translation id="4225265925807365011">Jeg har en gendannelsessætning på 24 ord</translation>
 <translation id="3570367516044491911">Indstil som standardbrowser</translation>
 <translation id="6800338374677644736">Indstil som standardbrowser</translation>
-<translation id="19715420010996093">Vælg Brave Browser, og tryk på "Altid"</translation>
-<translation id="3546439402724649282">Brave er allerede indstillet som din standardbrowser.</translation>
+<translation id="19715420010996093">Vælg Ping Browser, og tryk på "Altid"</translation>
+<translation id="3546439402724649282">Ping er allerede indstillet som din standardbrowser.</translation>
 <translation id="8389661903259423907">Du har allerede indstillet en standardbrowser. Du kan ændre standardbrowser i dine appindstillinger.</translation>
 <translation id="1545749641540134597">Scan QR-kode</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
@@ -278,12 +278,12 @@
 <translation id="2734870894159530879">Log ind i <ph name="WALLET_PROVIDER"/> for at se din saldo</translation>
 <translation id="7658239707568436148">Annuller</translation>
 <translation id="1201402288615127009">Næste</translation>
-<translation id="8481779960444041069">For at forbedre dit privatliv skal du indstille Brave til at være din standardbrowser</translation>
-<translation id="1938402585819943124">Vælg Brave på den næste skærm.</translation>
+<translation id="8481779960444041069">For at forbedre dit privatliv skal du indstille Ping til at være din standardbrowser</translation>
+<translation id="1938402585819943124">Vælg Ping på den næste skærm.</translation>
 <translation id="8926389886865778422">Spørg ikke igen</translation>
 <translation id="745974920645827035">Uafhængig søgning med bedre privatliv</translation>
-<translation id="2773167297815493692">Brave Search laver ikke profiler på dig.</translation>
-<translation id="5240031343741051161">Prøv Brave-søgninger</translation>
+<translation id="2773167297815493692">Ping Search laver ikke profiler på dig.</translation>
+<translation id="5240031343741051161">Prøv Ping-søgninger</translation>
 <translation id="5234764350956374838">Luk</translation>
 <translation id="6639570430554986719">JANUAR</translation>
 <translation id="1807352595146144483">FEBRUAR</translation>
@@ -297,8 +297,8 @@
 <translation id="8220228041552340594">OKTOBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="1772301834467143364">Brave News</translation>
+<translation id="3960619311638643872">Ping VPN</translation>
+<translation id="1772301834467143364">Ping News</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
 <translation id="6020176662032623904">Bekræftet skaber</translation>
@@ -309,7 +309,7 @@
 <translation id="2429828319207652823">Der opstod en fejl med at behandle dit bidrag.</translation>
 <translation id="683765328936486920">på YouTube</translation>
 <translation id="8969049974285901797">på Twitch</translation>
-<translation id="8038539967102225446">Brave-Annoncer er her!</translation>
+<translation id="8038539967102225446">Ping-Annoncer er her!</translation>
 <translation id="222883304157347087">(denne enhed)</translation>
 <translation id="4157741509680155021">ENHEDER I SYNKRONISERINGSKÆDE</translation>
 <translation id="279635009973773843">INDLÆSER ENHEDER</translation>
@@ -317,12 +317,12 @@
 <translation id="2569646144216067185">Ordtælling: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Forkert synkroniseringskode</translation>
 <translation id="8284063834901328650">Forkert QR-synkroniseringskode</translation>
-<translation id="859506441384380749">Denne kode er genereret af en forældet version af Brave. Opgradér venligst din anden enhed først</translation>
+<translation id="859506441384380749">Denne kode er genereret af en forældet version af Ping. Opgradér venligst din anden enhed først</translation>
 <translation id="3132642509209154999">Denne kode er udløbet. Generér venligst en ny på din anden enhed, og prøv igen.</translation>
 <translation id="2859229680945501779">Hoden er ugyldig. Kontrollér at tidspunkt og tidszone er korrekt indstillet på din enhed.</translation>
-<translation id="3149880132460839085">Brave-synkronisering</translation>
-<translation id="348794064910142198">Brave Sync giver dig mulighed for at synkronisere bogmærkedata privat mellem dine Brave Browsere på dine forskellige enheder. \n\nScan blot koden fra din synkroniseringskæde, som du har oprettet på en anden enhed. Eller start en ny synkroniseringskæde.</translation>
-<translation id="2614069607859982576">Under brug af en eksisterende synkroniseret enhed, skal du åbne Brave-indstillingerne og gå til Indstillinger og Synkronisering. Vælg "Tilføj ny enhed" og scan QR-koden, som vises på skærmen.</translation>
+<translation id="3149880132460839085">Ping-synkronisering</translation>
+<translation id="348794064910142198">Ping Sync giver dig mulighed for at synkronisere bogmærkedata privat mellem dine Ping Browsere på dine forskellige enheder. \n\nScan blot koden fra din synkroniseringskæde, som du har oprettet på en anden enhed. Eller start en ny synkroniseringskæde.</translation>
+<translation id="2614069607859982576">Under brug af en eksisterende synkroniseret enhed, skal du åbne Ping-indstillingerne og gå til Indstillinger og Synkronisering. Vælg "Tilføj ny enhed" og scan QR-koden, som vises på skærmen.</translation>
 <translation id="5241263629636958324">Kopieret til udklipsholder</translation>
 <translation id="5817918615728894473">Start parring</translation>
 <translation id="3429575397891106447">Synkronisér indstillinger</translation>
@@ -337,8 +337,8 @@
 <translation id="1602067095281698985">Begynd på en ny synkroniseringskæde</translation>
 <translation id="1475223680121592371">Tilføj en mobilenhed</translation>
 <translation id="2965377893636908578">Tilføj en computer</translation>
-<translation id="4701589725270449523">Brug en anden telefon eller tablet til at navigere til Brave-indstillinger &gt; Synkroniser &gt; Scan.\n\nPå din mobilenhed skal du navigere til Brave-synkronisering i panelet Indstillinger og klikke på knappen »Scan synkroniseringskode«. Brug dit kamera til at scanne QR-koden nedenfor.</translation>
-<translation id="67114562351518315">På din computer skal du navigere til Brave-indstillinger &gt; Synkronisering. Vælg »Indtast en synkroniseringskædekode«.\n\nPå din målcomputer skal du navigere til Brave-synkronisering i indstillinger og klikke på knappen »Jeg har en synkroniseringskode«.\nIndtast synkroniseringskædekodeordene vist nedenfor.</translation>
+<translation id="4701589725270449523">Brug en anden telefon eller tablet til at navigere til Ping-indstillinger &gt; Synkroniser &gt; Scan.\n\nPå din mobilenhed skal du navigere til Ping-synkronisering i panelet Indstillinger og klikke på knappen »Scan synkroniseringskode«. Brug dit kamera til at scanne QR-koden nedenfor.</translation>
+<translation id="67114562351518315">På din computer skal du navigere til Ping-indstillinger &gt; Synkronisering. Vælg »Indtast en synkroniseringskædekode«.\n\nPå din målcomputer skal du navigere til Ping-synkronisering i indstillinger og klikke på knappen »Jeg har en synkroniseringskode«.\nIndtast synkroniseringskædekodeordene vist nedenfor.</translation>
 <translation id="65315202420929965">Scan denne synkroniseringskode</translation>
 <translation id="6764016175302339802">Behandl denne kode som et kodeord. Hvis nogen får fat i det, kan de læse og ændre dine synkroniserede data.</translation>
 <translation id="2731921493694251495">Indtast synkroniseringskædekoden</translation>
@@ -350,7 +350,7 @@
 <translation id="6776430845975754238">Ændring af indstillinger påvirker kun data, som denne enhed deler med andre.</translation>
 <translation id="1061533051865606843">Tilføj Ny Enhed</translation>
 <translation id="7539985410310934287">Indtast kodeord</translation>
-<translation id="2886391679017857869">Ved brug af en eksisterende synkroniseret enhed, skal du åbne Brave- og gå til Indstillinger og synkronisering. Vælg "Tilføj ny enhed" og derefter "Vis kodeord i stedet".</translation>
+<translation id="2886391679017857869">Ved brug af en eksisterende synkroniseret enhed, skal du åbne Ping- og gå til Indstillinger og synkronisering. Vælg "Tilføj ny enhed" og derefter "Vis kodeord i stedet".</translation>
 <translation id="8131740175452115882">Bekræft</translation>
 <translation id="4973653569293835178">Jeg bruger mit kamera...</translation>
 <translation id="326454632686131209">Synkronisér enhed</translation>
@@ -358,16 +358,16 @@
 <translation id="4358805443781965194">Kode udløbet. Generer en ny kode ved at klikke på knappen nedenfor.</translation>
 <translation id="318164877797885563">Denne midlertidige kode er gyldig i de/den næste <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Indstillingsudgang</translation>
-<translation id="8050847734948770789">Aktiver Brave Rewards</translation>
+<translation id="8050847734948770789">Aktiver Ping Rewards</translation>
 <translation id="9187185473011056079">Jeg er på!</translation>
-<translation id="8185825081026121627">Optjen et Basic Attention Token for at se privatlivsbevarende Brave Rewards-annoncer.</translation>
+<translation id="8185825081026121627">Optjen et Basic Attention Token for at se privatlivsbevarende Ping Rewards-annoncer.</translation>
 <translation id="5321518976657560663">Nulstillingsfejl</translation>
-<translation id="4114170343590425996">Der opstod en fejl ved nulstilling af Brave Rewards. Genstart venligst Brave og prøv igen.</translation>
-<translation id="6417420737057016607">Brave Reklamer</translation>
-<translation id="5611966874859284786">Vis notifikationsannoncer, når Brave ikke er i brug</translation>
-<translation id="6606319453795180219">Dette vil slette dine Brave Rewards og nulstille alle dine Brave Rewards-data</translation>
-<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Nulstil data om Brave-belønninger …<ph name="END_LINK1"/></translation>
-<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Slet data om Brave-reklamer …<ph name="END_LINK1"/></translation>
+<translation id="4114170343590425996">Der opstod en fejl ved nulstilling af Ping Rewards. Genstart venligst Ping og prøv igen.</translation>
+<translation id="6417420737057016607">Ping Reklamer</translation>
+<translation id="5611966874859284786">Vis notifikationsannoncer, når Ping ikke er i brug</translation>
+<translation id="6606319453795180219">Dette vil slette dine Ping Rewards og nulstille alle dine Ping Rewards-data</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Nulstil data om Ping-belønninger …<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Slet data om Ping-reklamer …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Tilføj bogmærke</translation>
 <translation id="340492034650766959">Slet bogmærke</translation>
 <translation id="2149973817440762519">Rediger bogmærke</translation>
@@ -386,16 +386,16 @@
 <translation id="2803313416453193357">Åbn mappe</translation>
 <translation id="8985635554450124959">Synkronisering kunne ikke konfigureres</translation>
 <translation id="7173114856073700355">Åbn Indstillinger</translation>
-<translation id="496896260395129787">Denne Brave Sync-konto blev slettet fra en anden enhed. Hvis du ikke ønskede at deaktivere Sync, <ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">Denne Ping Sync-konto blev slettet fra en anden enhed. Hvis du ikke ønskede at deaktivere Sync, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>skal du genskabe kontoen</translation>
 <translation id="4094590686212463338">Kunne ikke skutte til denne synkroniseringskæde. Synkroniseringskæden blev slettet.</translation>
 <translation id="4908081302669157000">Telefonnumre, e-mail og adresser</translation>
 <translation id="1056898198331236512">Advarsel</translation>
 <translation id="1426410128494586442">Ja</translation>
-<translation id="7811264919113243207">Dette deler din Brave-data, potentielt inklusive din adgangskode, med den enhed, der genererede denne QR-kode.
+<translation id="7811264919113243207">Dette deler din Ping-data, potentielt inklusive din adgangskode, med den enhed, der genererede denne QR-kode.
 Dobbelttjek, at denne QR-kode blev genereret på en enhed, du ejer.
 Er du sikker på, du vil gennemføre?</translation>
-<translation id="3097089005389027085">Dette deler din Brave-data, potentielt inklusive din adgangskode, med den enhed, der genererede disse adgangskoder.
+<translation id="3097089005389027085">Dette deler din Ping-data, potentielt inklusive din adgangskode, med den enhed, der genererede disse adgangskoder.
 Dobbelttjek, at disse adgangskoder blev genereret på en enhed, du ejer.
 Er du sikker på, du vil gennemføre?</translation>
 <translation id="4550208292810542331">Kameratilladelse ikke givet</translation>
@@ -403,15 +403,15 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3063783274005996079">Lås op for at aktivere adgangskodesynkronisering</translation>
 <translation id="7551563084530025179">Inden du kan synkronisere adgangskoder, skal du verificere med din enheds biometriske funktioner/adgangskode. Den ekstra sikkerhedsforanstaltning er med til at beskytte dine adgangskoder.</translation>
 <translation id="6925081665778864449">For at synkronisere adgangskoder skal du aktivere verifikation via din Android-enheds biometriske funktioner/adgangskode. Denne ekstra sikkerhedsforanstaltning er med til at beskytte dine adgangskoder.</translation>
-<translation id="597993392929850353">Brave-licens</translation>
+<translation id="597993392929850353">Ping-licens</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="6199596294742117349">Dette er en privat fane</translation>
 <translation id="5858455511731621847">Selvom sider du besøger i private faner ikke bliver gemt lokalt, gør de dig ikke anonym eller usynlig overfor din internetserviceudbyder, din arbejdsgiver eller de sider du besøger.</translation>
-<translation id="5789441016350810005">Brave Ads sendt når browseren er i baggrunden</translation>
+<translation id="5789441016350810005">Ping Ads sendt når browseren er i baggrunden</translation>
 <translation id="4973347371961481083">Bidrag</translation>
 <translation id="7047578174221019462">Dine månedlige bidrag er blevet behandlet.</translation>
 <translation id="3124090095880236567">Slå reklamer til</translation>
-<translation id="2975780980638932742">Brave Ads er ankommet!</translation>
+<translation id="2975780980638932742">Ping Ads er ankommet!</translation>
 <translation id="7541582550122501404">Afventende bidrag</translation>
 <translation id="8520059774736886747">Udvikler <ph name="PUBLISHER_NAME"/> for nyligt verificeret</translation>
 <translation id="1486343603936278248">token</translation>
@@ -421,10 +421,10 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3870475560794762985">Vis sponsorerede billeder</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Vis topsider</translation>
-<translation id="7275773481201277457">Vis Brave Stats</translation>
+<translation id="7275773481201277457">Vis Ping Stats</translation>
 <translation id="8297488609722895137">Billede af <ph name="PHOTO_BY"/></translation>
-<translation id="2898634658146274982">Åbn eksterne links i Brave</translation>
-<translation id="5616508928556767259">Åbner links fra andre apps i Brave. Bemærk: Brave skal være din standard browser.</translation>
+<translation id="2898634658146274982">Åbn eksterne links i Ping</translation>
+<translation id="5616508928556767259">Åbner links fra andre apps i Ping. Bemærk: Ping skal være din standard browser.</translation>
 <translation id="2394961582378297792">Logget ud</translation>
 <translation id="5308380583665731573">Forbind</translation>
 <translation id="3368922792935385530">Tilsluttet</translation>
@@ -435,8 +435,8 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="1665118090708049096">Gå til min <ph name="WALLET_PROVIDER"/>-konto</translation>
 <translation id="4858636682078269312">Log ind på din <ph name="WALLET_PROVIDER"/>-konto</translation>
 <translation id="8874184842967597500">Ikke tilsluttet</translation>
-<translation id="2495032782748793764">Brave standard</translation>
-<translation id="9132378787893584761">Del Brave med dine venner!</translation>
+<translation id="2495032782748793764">Ping standard</translation>
+<translation id="9132378787893584761">Del Ping med dine venner!</translation>
 <translation id="717952606991220586">Ups, noget er galt. Prøv venligst igen senere.</translation>
 <translation id="987264212798334818">Generelt</translation>
 <translation id="1116694919640316211">Om</translation>
@@ -471,8 +471,8 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="5582686930349810484">Fingeraftryk er blokeret (standard)</translation>
 <translation id="769702552748212954">Tillad al fingeraftrykning</translation>
 <translation id="876424292214881779">Reklamer og andet utøj blev blokeret</translation>
-<translation id="6849027612978668678">Sider indeholder ofte cookies og scripts, som forsøger at identificere dig og din enhed. De vil vide, hvem du er, og følge dig via web-tracking, for at se hvad du laver på alle websteder.\n\nBrave blokerer disse, så du kan browse uden at blive forfulgt.</translation>
-<translation id="8553998445606452168">Om Brave Shields</translation>
+<translation id="6849027612978668678">Sider indeholder ofte cookies og scripts, som forsøger at identificere dig og din enhed. De vil vide, hvem du er, og følge dig via web-tracking, for at se hvad du laver på alle websteder.\n\nPing blokerer disse, så du kan browse uden at blive forfulgt.</translation>
+<translation id="8553998445606452168">Om Ping Shields</translation>
 <translation id="8912304686498704084">Op</translation>
 <translation id="4963218453264888510">NED</translation>
 <translation id="7474113515179313724">Du ser denne side uden Braves privatlivsbeskyttelse. Fungerer den ikke korrekt med Shields slået til?</translation>
@@ -483,23 +483,23 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="9055546041146396417">Hvis denne side ser forkert ud så prøv uden Shields.</translation>
 <translation id="1209739344687072997">Rapporter en side der ikke virker</translation>
 <translation id="8510478288840333677">Fortæl Braves udviklere at denne side ikke fungerer ordentligt med Shields</translation>
-<translation id="5429200298326665264">OBS: Denne sides adresse vil blive sendt sammen med dit version-nummer for Brave og din IP-adresse (som ikke vil blive gemt).</translation>
+<translation id="5429200298326665264">OBS: Denne sides adresse vil blive sendt sammen med dit version-nummer for Ping og din IP-adresse (som ikke vil blive gemt).</translation>
 <translation id="5299848999918506028">Tak!</translation>
 <translation id="76550953340008122">Tak for at du har fortalt Braves udviklere om at der er fejl på siden. Vi vil gøre vores bedste for at ordne fejlen!</translation>
 <translation id="650318023204990401">Avancerede kontroller</translation>
 <translation id="5370478469168390143">Gem data online</translation>
-<translation id="1118508688433541158">Browse hurtigere og blokér reklamer med Brave</translation>
-<translation id="7427391215172269363">Hver dag sparer jeg data ved at bruge Brave som browser.</translation>
-<translation id="4776948189086901857">Brave fungerer overalt</translation>
-<translation id="1606322780901645965">Download Brave på brave.com på din bærbare computer eller tablet for et hurtigere og mere privat internet</translation>
+<translation id="1118508688433541158">Browse hurtigere og blokér reklamer med Ping</translation>
+<translation id="7427391215172269363">Hver dag sparer jeg data ved at bruge Ping som browser.</translation>
+<translation id="4776948189086901857">Ping fungerer overalt</translation>
+<translation id="1606322780901645965">Download Ping på brave.com på din bærbare computer eller tablet for et hurtigere og mere privat internet</translation>
 <translation id="8374242949413616101">Databeskyttelse</translation>
-<translation id="4955406228638026265">Brave stopper reklamer og trackere fra at samle oplysninger om dig, uden dit samtykke.</translation>
+<translation id="4955406228638026265">Ping stopper reklamer og trackere fra at samle oplysninger om dig, uden dit samtykke.</translation>
 <translation id="752842701893882688">Spar data og batteri</translation>
 <translation id="1685837926613452362">Uden reklame &amp;-trackere, bruger websteder mindre data og batteri. Du kan endda spare penge på operatørgebyrer.</translation>
 <translation id="5440744330377972191">Hjemmesider indlæses hurtigere</translation>
-<translation id="3000738865641747653">Indlæsning af mindre data betyder, at hjemmesider i Brave indlæses hurtigere – op til 8x hurtigere end andre browsere.</translation>
+<translation id="3000738865641747653">Indlæsning af mindre data betyder, at hjemmesider i Ping indlæses hurtigere – op til 8x hurtigere end andre browsere.</translation>
 <translation id="8903462729414407077">Få ugentlige opdateringer</translation>
-<translation id="7450323860390658083">Få besked om, hvilke af dine besøgte websider der er mest invasive, hvad angår persondata.\n\nDet er kun dig, der kan se privatlivsstatistikkerne. Ingen persondata eller browserhistorik forlader på noget tidspunkt Brave på din enhed.</translation>
+<translation id="7450323860390658083">Få besked om, hvilke af dine besøgte websider der er mest invasive, hvad angår persondata.\n\nDet er kun dig, der kan se privatlivsstatistikkerne. Ingen persondata eller browserhistorik forlader på noget tidspunkt Ping på din enhed.</translation>
 <translation id="6170159749517116894">Aktivér databeskyttelsesrapporter</translation>
 <translation id="1669047024429367828">Synlighed</translation>
 <translation id="5966707198760109579">Uge</translation>
@@ -516,17 +516,17 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3694122362646626770">Hjemmesider</translation>
 <translation id="2225863440766607138">Trackere</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">Du blokerede <ph name="COUNT"/> trackere og reklamer med Brave-browseren i de sidste tre timer.</translation>
-<translation id="5005713153542196658">Surf op til 6x gange hurtigere på store nyhedssider med Brave ved at blokere trackere og reklamer.</translation>
+<translation id="6737820963776538947">Du blokerede <ph name="COUNT"/> trackere og reklamer med Ping-browseren i de sidste tre timer.</translation>
+<translation id="5005713153542196658">Surf op til 6x gange hurtigere på store nyhedssider med Ping ved at blokere trackere og reklamer.</translation>
 <translation id="7427567994475794038">Aktivér Databeskyttelsesrapporter for at se hvor mange trackere og rekalmer der er blevet blokeret de sidste tre timer.</translation>
-<translation id="2053891538879944400">Du sparede <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave-browseren.</translation>
+<translation id="2053891538879944400">Du sparede <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Ping-browseren.</translation>
 <translation id="8640064498452534195">Aktivér databeskyttelsesrapporter for at se hvor meget data du har sparet</translation>
 <translation id="2252497442547961651">Modig browser bruger i gennemsnit 40% mindre batteri. 🔋</translation>
-<translation id="1945330434665345785">Du blokerede <ph name="COUNT"/> trackere og reklamer med Brave-browseren sidste uge.</translation>
+<translation id="1945330434665345785">Du blokerede <ph name="COUNT"/> trackere og reklamer med Ping-browseren sidste uge.</translation>
 <translation id="2883868922264431515">Optjen tokens ved at se datarespekterende reklamer og støtte dine yndlingshjemmesider.</translation>
 <translation id="7408493389591475748">Begynd at browse for at se databeskyttelsesrapportering</translation>
-<translation id="9080777565335515917">Indstil Brave som din standardbrowser for privat og sikker browsing.</translation>
-<translation id="1390943217516275883">Tillader Brave at vise dine databeskyttelsesstatistikker</translation>
+<translation id="9080777565335515917">Indstil Ping som din standardbrowser for privat og sikker browsing.</translation>
+<translation id="1390943217516275883">Tillader Ping at vise dine databeskyttelsesstatistikker</translation>
 <translation id="1763352720905582220">Sender en ugentlig databeskyttelsesrapport</translation>
 <translation id="1811691435325545066">Ryd data fra alle databeskyttelsesrapporter</translation>
 <translation id="5966003059662780423">Ryd data, når du forlader siden</translation>
@@ -545,10 +545,10 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="8804164990146287819">Privatlivspolitik</translation>
 <translation id="8363792084628930008">Ved at acceptere belønninger erklærer du dig enig i <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Lad os tage en hurtig rundvisning</translation>
-<translation id="7930505144430343145">Velkommen til Brave Rewards!</translation>
+<translation id="7930505144430343145">Velkommen til Ping Rewards!</translation>
 <translation id="3477340970981564961">Modige private annoncer belønner dig med tokens, der hjælper indholdsskabere i modsætning til traditionelle annoncer, samtidig med at dine personlige oplysninger holdes private.</translation>
 <translation id="6973095375773523904">Hvor vises annoncerne?</translation>
-<translation id="4328028439561659455">Brave Private Ads dukker op som notifikationer på din skærm. Du styrer, hvor ofte du ser disse reklamer.</translation>
+<translation id="4328028439561659455">Ping Private Ads dukker op som notifikationer på din skærm. Du styrer, hvor ofte du ser disse reklamer.</translation>
 <translation id="7712287524451429139">Det har aldrig været nemmere, at give tilbage</translation>
 <translation id="105037569026952831">Indholdsskabere modtager dine tokenbidrag automatisk baseret på dine engagementsniveauer, som vi måler som "Opmærksomhed".</translation>
 <translation id="3025802705256919103">Sig tak med dit bidrag</translation>
@@ -560,7 +560,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2353222426385080466">Flere private annoncer, flere belønninger.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> annoncer per time</translation>
 <translation id="827315274423079662">Woohoo, du er klar!</translation>
-<translation id="3895246934788932488">Ved at bruge Brave Rewards beskytter du dine persondata og hjælper med at gøre internettet til et bedre sted for alle. Og det er helt fantastisk!</translation>
+<translation id="3895246934788932488">Ved at bruge Ping Rewards beskytter du dine persondata og hjælper med at gøre internettet til et bedre sted for alle. Og det er helt fantastisk!</translation>
 <translation id="5705882733397021510">Gå tilbage</translation>
 <translation id="3985567919248057638">Lad os tage en hurtig rundtur</translation>
 <translation id="7889432931837317731">Åbn automatisk, når det er muligt</translation>
@@ -580,11 +580,11 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="177282784098234156">Privat, uafhængigt, brugerfokuseret</translation>
 <translation id="1410130669636877548">Nogle søgemaskiner beskytter dine data bedre end andre, når du søger på nettet.</translation>
 <translation id="3479552764303398839">Ikke nu</translation>
-<translation id="7138272885617540195">Tillad applinks at åbne i apps udenfor Brave</translation>
+<translation id="7138272885617540195">Tillad applinks at åbne i apps udenfor Ping</translation>
 <translation id="4954512758656527938">Standard Ethereum-wallet</translation>
 <translation id="7701023802820268122">Standard Solana-wallet</translation>
 <translation id="7701040980221191251">Ingen</translation>
-<translation id="8488282162676695335">Brave-wallet</translation>
+<translation id="8488282162676695335">Ping-wallet</translation>
 <translation id="8792121506918889955">WebRTC IP-håndteringspolitik</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Standard offentlige og private grænseflader</translation>
@@ -594,16 +594,16 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Browserindbyggede.\nSelv-varetægt.\nOg multi-chain.</translation>
-<translation id="7909462264772842773">Tag kontrollen med din crypto og NFT. Brave Wallet understøtter Ethereum, EVM chains, Solana, Filecoin og meget mere.</translation>
+<translation id="7909462264772842773">Tag kontrollen med din crypto og NFT. Ping Wallet understøtter Ethereum, EVM chains, Solana, Filecoin og meget mere.</translation>
 <translation id="165255193061631296">Har du brug for en ny wallet?</translation>
-<translation id="3485737865439729577">Kom i gang med Brave Wallet på få minutter.</translation>
+<translation id="3485737865439729577">Kom i gang med Ping Wallet på få minutter.</translation>
 <translation id="2540568096903252632">Indtast en adgangskode for at fortsætte</translation>
-<translation id="3356580495013324916">Indtast adgangskoden til din Brave Wallet, så du kan begynde at lave backup.</translation>
+<translation id="3356580495013324916">Indtast adgangskoden til din Ping Wallet, så du kan begynde at lave backup.</translation>
 <translation id="2359808026110333948">Fortsæt</translation>
 <translation id="5488357322146334497">Besked</translation>
 <translation id="5333225216561354793">Vi kræver, at du bekræfter nedenstående</translation>
 <translation id="6937275455070754004">Vælg, hvilke blockchains du vil bruge i din tegnebog.</translation>
-<translation id="1645800479814134195">Jeg forstår, at dette er en wallet til selv-varetægt, og at jeg alene er ansvarlig for eventuelle tilknyttede midler, aktiver eller konti og for at træffe passende foranstaltninger for at sikre, beskytte og sikkerhedskopiere min pung. Jeg forstår, at Brave ikke kan få adgang til min pung eller tilbageføre transaktioner på mine vegne, og at min gendannelsessætning i tilfælde af en mistet adgangskode, stjålet enhed eller lignende omstændigheder er den ENESTE måde at få adgang.</translation>
+<translation id="1645800479814134195">Jeg forstår, at dette er en wallet til selv-varetægt, og at jeg alene er ansvarlig for eventuelle tilknyttede midler, aktiver eller konti og for at træffe passende foranstaltninger for at sikre, beskytte og sikkerhedskopiere min pung. Jeg forstår, at Ping ikke kan få adgang til min pung eller tilbageføre transaktioner på mine vegne, og at min gendannelsessætning i tilfælde af en mistet adgangskode, stjålet enhed eller lignende omstændigheder er den ENESTE måde at få adgang.</translation>
 <translation id="4565891212173086999">Jeg har læst og accepterer <ph name="CLICK_START"/>Brugervilkårene<ph name="CLICK_END"/>.</translation>
 <translation id="3259102562570606417">Gem din gendannelsessætning</translation>
 <translation id="4339981001593889376">Din gendannelsessætning er nøglen til at få adgang til din wallet, hvis du glemmer din adgangskode eller mister din enhed.</translation>
@@ -628,7 +628,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2321396552035646646">Du kan indsætte hele din gendannelsessætning i ethvert felt.</translation>
 <translation id="3961126209136843111">Importér en eksisterende wallet</translation>
 <translation id="4811736040444856406">Vis gendannelsessætning</translation>
-<translation id="4359319875297001084">Importér fra legacy Brave crypto-wallets?</translation>
+<translation id="4359319875297001084">Importér fra legacy Ping crypto-wallets?</translation>
 <translation id="3157931365184549694">Gendan</translation>
 <translation id="5844138175312846408">Har du allerede en wallet?</translation>
 <translation id="2502258949541727762">Inden vi begynder</translation>
@@ -659,8 +659,8 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="9085712756417277119">Sikkerhedssætningen matcher ikke.</translation>
 <translation id="2360588547830602174">Kontogendannelsen mislykkedes. Prøv igen.</translation>
 <translation id="1987317783729300807">Konti</translation>
-<translation id="6284218950354553099">Send automatisk dagligt ping om brug til Brave</translation>
-<translation id="2181060149810222381">Det private ping giver Brave mulighed for at estimere antallet af aktive brugere.</translation>
+<translation id="6284218950354553099">Send automatisk dagligt brave om brug til Ping</translation>
+<translation id="2181060149810222381">Det private brave giver Ping mulighed for at estimere antallet af aktive brugere.</translation>
 <translation id="6725413948756358325">Kontonavn</translation>
 <translation id="6062431965141524986">Du kan oprette en sekundær konto ved at importere din private nøgle.</translation>
 <translation id="3952797765659730604">Indtast, indsæt eller importér din private nøgles filstreng eller JSON.</translation>
@@ -668,10 +668,10 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="3784455785234192852">Lås</translation>
 <translation id="4412698727486357573">Hjælp</translation>
-<translation id="8239147115686034860">Låser automatisk Brave Wallet</translation>
-<translation id="414639769490080648">Antallet minutter, indtil Brave Wallet automatisk bliver låst</translation>
+<translation id="8239147115686034860">Låser automatisk Ping Wallet</translation>
+<translation id="414639769490080648">Antallet minutter, indtil Ping Wallet automatisk bliver låst</translation>
 <translation id="2326850911705720398">Nulstil og ryd tegnebogsdata</translation>
-<translation id="6567712397896147805">Er du sikker på, at du vil nulstille din Brave Wallet? Hvis du ikke har sikkerhedskopieret den, vil du miste alle dine kontodata (deriblandt alle tilknyttede midler), hvis du nulstiller. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
+<translation id="6567712397896147805">Er du sikker på, at du vil nulstille din Ping Wallet? Hvis du ikke har sikkerhedskopieret den, vil du miste alle dine kontodata (deriblandt alle tilknyttede midler), hvis du nulstiller. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
 <translation id="4862812525895306758">Ryd transaktion og nonce-information</translation>
 <translation id="5693968582510626466">At rydde transaktioner kan være nyttigt for udviklere eller når status ryddes på en lokal server</translation>
 <translation id="5421107279168565467">Er du sikker på, at du vil nulstille transaktionen og nonce-information? Denne indstilling bruges som regel af udviklere, der kører en lokal testserver. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
@@ -682,14 +682,14 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="1721710839767183848">Ingen annoncer på siden</translation>
 <translation id="4647035642622555398">Ingen afbrydelser</translation>
 <translation id="4122515759479497554">Søg efter videoer</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="4449475351935531438">Ping Firewall + VPN</translation>
 <translation id="719977489961414786">Opgradér til en VPN, der beskytter din forbindelse og blokerer invasive trackere over alt.</translation>
 <translation id="8814357473522731680">Køres af</translation>
 <translation id="5892534145504632332">Beskyt alle dine apps og hele din enhed</translation>
 <translation id="7195416926059527505">Mere sikkerhed til privat eller offentligt Wi-Fi</translation>
 <translation id="1354700000739359839">Lynhurtigt, op til 100 Mbps</translation>
 <translation id="3510283489391432976">Vælg din placering/dit land</translation>
-<translation id="7695158478627528928">Brave sporer aldrig din aktivitet</translation>
+<translation id="7695158478627528928">Ping sporer aldrig din aktivitet</translation>
 <translation id="4575683170451975058">Beskyt 5 enheder på 1 abonnement</translation>
 <translation id="755045397420611731">Mere privatliv og sikkerhed online</translation>
 <translation id="4520128772974831415">Skjul din IP-adresse, og skift din placering</translation>
@@ -705,14 +705,14 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="1163809943099641131">Et år</translation>
 <translation id="727385358513272220">Fornyes årligt (<ph name="DISCOUNT_TEXT_START"/>spar<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /år</translation>
-<translation id="2786538705804257030">Abonnementer vil blive opkrævet via din Google-konto. Enhver ubrugt del af den gratis prøveperiode, hvis den tilbydes, mistes, når du køber et abonnement.\n\nDit abonnement fornyes automatisk, medmindre det annulleres mindst 24 timer før udgangen af ​​den aktuelle periode.\n\nDu kan administrere dine abonnementer i Indstillinger.\nVed at bruge Brave accepterer du vilkårene for brug og privatlivspolitikken.</translation>
+<translation id="2786538705804257030">Abonnementer vil blive opkrævet via din Google-konto. Enhver ubrugt del af den gratis prøveperiode, hvis den tilbydes, mistes, når du køber et abonnement.\n\nDit abonnement fornyes automatisk, medmindre det annulleres mindst 24 timer før udgangen af ​​den aktuelle periode.\n\nDu kan administrere dine abonnementer i Indstillinger.\nVed at bruge Ping accepterer du vilkårene for brug og privatlivspolitikken.</translation>
 <translation id="5035172357624830412">Har du allerede købt hos brave.com?</translation>
 <translation id="713136183174551885">Opdater dine legitimationsoplysninger</translation>
 <translation id="6053992191006521518">Prøv GRATIS</translation>
 <translation id="5903391101107992067">Prøv gratis i 7 dage</translation>
 <translation id="721747358270435486">Installér VPN</translation>
 <translation id="836074276610740314">Installér VPN-profil</translation>
-<translation id="8021842065465097929">Brave installerer nu en VPN-profil.</translation>
+<translation id="8021842065465097929">Ping installerer nu en VPN-profil.</translation>
 <translation id="229286271464650057">Denne profil tillader, at VPN altid automatisk opretter forbindelse og sikrer traffik på tværs af din enhed — i alle apps. Denne VPN-forbindelse bliver krypteret og føres gennem Guardians intelligente firewall for at blokere reklamer og trackere.</translation>
 <translation id="9073255657908892407">Kontakt teknisk support</translation>
 <translation id="1139934321138152517">VPN er nu aktiveret</translation>
@@ -808,14 +808,14 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="8214232307424031138">Underskrevet</translation>
 <translation id="1165039591588034296">Fejl</translation>
 <translation id="2561824823738097741">Bruger du den hurtigste browser?</translation>
-<translation id="2065971949051836200">3x hurtigere internet er allerede på din telefon. Brug Brave til al din webbrowsing.</translation>
-<translation id="2888278614497184977">Brave = 3x hurtigere webbrowsing</translation>
+<translation id="2065971949051836200">3x hurtigere internet er allerede på din telefon. Brug Ping til al din webbrowsing.</translation>
+<translation id="2888278614497184977">Ping = 3x hurtigere webbrowsing</translation>
 <translation id="6887232551109532144">Få længere batteritid på hver opladning</translation>
-<translation id="5388885352353494741">Batteribesparelser er kun ét trin væk. Brug Brave til al din webbrowsing.</translation>
-<translation id="3164151360474408351">Brave = mere liv for hver opladning</translation>
+<translation id="5388885352353494741">Batteribesparelser er kun ét trin væk. Brug Ping til al din webbrowsing.</translation>
+<translation id="3164151360474408351">Ping = mere liv for hver opladning</translation>
 <translation id="3211051910418903298">Tilkøb mobildata sjældnere</translation>
-<translation id="1092355580602106002">Færre reklamer = mindre data på hver side, du indlæser. Brug Brave til al din webbrowsing.</translation>
-<translation id="623962032102267945">Brave = mindre mobildata på hver side</translation>
+<translation id="1092355580602106002">Færre reklamer = mindre data på hver side, du indlæser. Brug Ping til al din webbrowsing.</translation>
+<translation id="623962032102267945">Ping = mindre mobildata på hver side</translation>
 <translation id="4355217341028673744">• Bedre databeskyttelse</translation>
 <translation id="3679020972083025535">• Ingen irriterende reklamer</translation>
 <translation id="8047527352810290817">Redigér gas</translation>
@@ -864,7 +864,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="2653659639078652383">Indsend</translation>
 <translation id="4945690646623486292">Vælg netværk</translation>
 <translation id="5233638681132016545">Ny fane</translation>
-<translation id="8006088103295786154">Tilgå Brave Wallet</translation>
+<translation id="8006088103295786154">Tilgå Ping Wallet</translation>
 <translation id="8030169304546394654">Afbrudt</translation>
 <translation id="3423275441470187644">Stol på siden</translation>
 <translation id="2391762656119864333">Tilbagekald</translation>
@@ -874,7 +874,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="42981349822642051">Udvid</translation>
 <translation id="3586752056660754651">Underskriv</translation>
 <translation id="3950820424414687140">Log ind</translation>
-<translation id="6592721981110586529">Forbind til Brave Wallet</translation>
+<translation id="6592721981110586529">Forbind til Ping Wallet</translation>
 <translation id="329813193938846695">Vælg beløb</translation>
 <translation id="291375746846291973">Forbind kun med websteder, du stoler på.</translation>
 <translation id="385051799172605136">Tilbage</translation>
@@ -886,11 +886,11 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="5242300593039211344">Lås tegnebog</translation>
 <translation id="1108298724135935307">Forbundne websteder</translation>
 <translation id="4255623233927788178">Se på Block Explorer</translation>
-<translation id="8274201358637112807">Denne side vil gerne interagere med Brave Wallet</translation>
+<translation id="8274201358637112807">Denne side vil gerne interagere med Ping Wallet</translation>
 <translation id="3355936511340229503">Forbindelsesfejl</translation>
 <translation id="1531836666020185856">Fremhævet</translation>
 <translation id="4891604214809245310">Kunne ikke indstille netværk til <ph name="NETWORK_NAME"/></translation>
-<translation id="685345388423515592">Det ser ud til, at du har andre VPN'ere på denne enhed, som er indstillet til "Altid aktiveret". For at aktivere Brave Firewall + VPN, skal du først deaktivere denne "Altid aktiveret"-tilstand for de andre VPN'ere, inden du opretter forbindelse. Hvis problemet fortsætter, skal du afinstallere de andre VPN'ere.</translation>
+<translation id="685345388423515592">Det ser ud til, at du har andre VPN'ere på denne enhed, som er indstillet til "Altid aktiveret". For at aktivere Ping Firewall + VPN, skal du først deaktivere denne "Altid aktiveret"-tilstand for de andre VPN'ere, inden du opretter forbindelse. Hvis problemet fortsætter, skal du afinstallere de andre VPN'ere.</translation>
 <translation id="85136472535634474">Åbn VPN-indstillinger</translation>
 <translation id="8352805003811526272">Nulstiller konfiguration ...</translation>
 <translation id="6809312301323611382">Du har allerede valgt den samme server.</translation>
@@ -910,25 +910,25 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4822132585477111396">Kæde-ID</translation>
 <translation id="7131971375297699539">Valutasymbol</translation>
 <translation id="7982789257301363584">Netværk</translation>
-<translation id="6936860995365507185">Dette vil gøre det muligt at bruge dette netværk i Brave Wallet.<ph name="CLICK_START"/>Læs mere<ph name="CLICK_END"/>.</translation>
+<translation id="6936860995365507185">Dette vil gøre det muligt at bruge dette netværk i Ping Wallet.<ph name="CLICK_START"/>Læs mere<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Tillad denne side at tilføje te netværk?</translation>
 <translation id="4857321293515555666">Denne DApp vil gerne læse denne besked for at fuldføre din anmodning.</translation>
 <translation id="714506544401754321">Dekrypter besked</translation>
 <translation id="5039804452771397117">Tillad</translation>
 <translation id="3378339846292573874">Tilføj foreslåede token</translation>
 <translation id="2322227405137827074">Ønsker du at tilføje dette token?</translation>
-<translation id="1324417023773393937">Brave Browser</translation>
-<translation id="6044189892950611565">Notifikationskanal for Brave Browser</translation>
+<translation id="1324417023773393937">Ping Browser</translation>
+<translation id="6044189892950611565">Notifikationskanal for Ping Browser</translation>
 <translation id="4556601961751528347">Skift tilsluttet konto</translation>
 <translation id="8922793255489232731">Kunne ikke lokalisere en matchende tidszone til : <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Forbundet til <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prøveperiode</translation>
-<translation id="6458565248779152483">Slå Brave VPN fra</translation>
+<translation id="6458565248779152483">Slå Ping VPN fra</translation>
 <translation id="9080536793704001825">Sæt på pause i 15 minutter</translation>
 <translation id="803706420145725977">Sæt på pause i 1 time</translation>
 <translation id="4394049700291259645">Deaktiver</translation>
 <translation id="7733890291091968191">Vis Web3-notifikationer</translation>
-<translation id="1371627247679035769">\n\n\n\n#### Brave sporer dig ikke og ved heller ikke, hvordan du bruger vores app, så vi ved ikke, hvordan du har opsat din VPN. Beskriv problemet, du oplever, og så skal vi gøre vores bedste for at hjælpe dig hurtigst muligt. ####\n\n</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Ping sporer dig ikke og ved heller ikke, hvordan du bruger vores app, så vi ved ikke, hvordan du har opsat din VPN. Beskriv problemet, du oplever, og så skal vi gøre vores bedste for at hjælpe dig hurtigst muligt. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-værtsnavn\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nAbonnementstype\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nPlaystore-polet\n <ph name="VALUE"/></translation>
@@ -951,19 +951,19 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7002577172732106572">Split-tunneling</translation>
 <translation id="8181161042860463420">Den tilknyttede token-konto eksisterer ikke endnu. En lille mængde SOL vil blive brugt til at oprette og finansiere den. <ph name="CLICK_START"/>Find ud af mere<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Opdaterer VPN-profil ...</translation>
-<translation id="4784306439879850873">Vær opmærksom på, at Brave ikke kan garantere, hvad der vil ske, hvis du skriver under. En signatur kan godkende næsten enhver form for handling i din konto eller på dine vegne, blandt andet at give fuld kontrol over din konto og crypto-aktiver til siden, der anmoder dig. Skriv kun under, hvis du er sikker på, du vil udføre denne handling og stoler på siden.</translation>
+<translation id="4784306439879850873">Vær opmærksom på, at Ping ikke kan garantere, hvad der vil ske, hvis du skriver under. En signatur kan godkende næsten enhver form for handling i din konto eller på dine vegne, blandt andet at give fuld kontrol over din konto og crypto-aktiver til siden, der anmoder dig. Skriv kun under, hvis du er sikker på, du vil udføre denne handling og stoler på siden.</translation>
 <translation id="3474375934783434676">Skriv under på eget ansvar</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/>af<ph name="SIZE"/></translation>
 <translation id="756701799684433105">Godkend transaktion</translation>
 <translation id="6450792191436242818">Systemprogram</translation>
-<translation id="5318067544026930166">Lås Brave Wallet op med biometrisk godkendelse</translation>
-<translation id="2629767022373384291">Vil du bruge biometrisk godkendelse til at låse din Brave Wallet op?</translation>
+<translation id="5318067544026930166">Lås Ping Wallet op med biometrisk godkendelse</translation>
+<translation id="2629767022373384291">Vil du bruge biometrisk godkendelse til at låse din Ping Wallet op?</translation>
 <translation id="4782919977106118997">Brug oplåsning med fingeraftryk</translation>
 <translation id="2054995875643283428">Spring dette over indtil videre</translation>
 <translation id="2610561535971892504">Klik her for at kopiere</translation>
 <translation id="2522605225061484799">Gå til min portefølje</translation>
 <translation id="1148624853678088576">Du er klar!</translation>
-<translation id="4131445988101719379">Din Brave Wallet er klar til brug</translation>
+<translation id="4131445988101719379">Din Ping Wallet er klar til brug</translation>
 <translation id="6252742184395380448">Konfigurér program</translation>
 <translation id="5358970666412490132">Belønningsprogram</translation>
 <translation id="346636227344244984">Afstemningsprogram</translation>
@@ -1005,7 +1005,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="8382368767453083629">Initialiser multisig 2</translation>
 <translation id="77243237706803459">Initialiser mint 2</translation>
 <translation id="583281660410589416">ukendt</translation>
-<translation id="5666264859501108700">Dit Brave-belønningsområde er sat til <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="5666264859501108700">Dit Ping-belønningsområde er sat til <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Der opstod desværre en fejl. Prøv igen.</translation>
 <translation id="7352651011704765696">Noget gik galt</translation>
 <translation id="7144878232160441200">Prøv igen</translation>
@@ -1015,7 +1015,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="8496335570810457">Transaktionssimulation-forpligtelse:</translation>
 <translation id="5100124500279922001">Spring transaktionssimulation over:</translation>
 <translation id="7152095322071766507">Mest besøgte side</translation>
-<translation id="7230006500876504868">Søg med Brave</translation>
+<translation id="7230006500876504868">Søg med Ping</translation>
 <translation id="5888208462949095139">Søg med <ph name="DEFAULT_SEARCH_ENGINE"/>S</translation>
 <translation id="5456039738087398178">Widget til hjemmeskærm</translation>
 <translation id="703185154752046151">Widget føjet til hjemmeskærm</translation>
@@ -1023,7 +1023,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4809681171446727314">Udfør private, uafhængige søgninger direkte fra din hjemmeskærm.</translation>
 <translation id="7751715172931488388">TIlføj widget</translation>
 <translation id="7285167584112910782">Braves hurtige søgefunktion</translation>
-<translation id="2326703104633309781">Brug Brave Translate</translation>
+<translation id="2326703104633309781">Brug Ping Translate</translation>
 <translation id="5802752138057422257">NON-ASCII-tegn registreret!</translation>
 <translation id="442709594176931966">Se oprindelige besked</translation>
 <translation id="2239252396088484499">Se besked i ASCII-kode</translation>
@@ -1035,22 +1035,22 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1313065465616456728">Udstedt kl.</translation>
 <translation id="7902225556763260253">Udløbstid</translation>
 <translation id="1908159733454294871">Der er konstateret en sikkerhedsrisiko</translation>
-<translation id="5658257029899993935">Forbind købet med din Brave-konto</translation>
-<translation id="1187061015547219282">Du kan forbinde køb på Play Store til med din Brave-konto, så du kan bruge Brave-VPN på andre enheder.</translation>
+<translation id="5658257029899993935">Forbind købet med din Ping-konto</translation>
+<translation id="1187061015547219282">Du kan forbinde køb på Play Store til med din Ping-konto, så du kan bruge Ping-VPN på andre enheder.</translation>
 <translation id="6662142137695589205">Forbind dit VPN-abonnement</translation>
-<translation id="2674077112509133024">Udvid din Brave Firewall + VPN-beskyttelse</translation>
-<translation id="6365389672683343144">Dit VPN-abonnement hos Brave kan beskytte op til 5 enheder – både Android, iOS eller PC. Du skal bare forbinde din Google Play-konto med din Brave-konto.</translation>
+<translation id="2674077112509133024">Udvid din Ping Firewall + VPN-beskyttelse</translation>
+<translation id="6365389672683343144">Dit VPN-abonnement hos Ping kan beskytte op til 5 enheder – både Android, iOS eller PC. Du skal bare forbinde din Google Play-konto med din Ping-konto.</translation>
 <translation id="6610899852831463073">Kan ikke aktivere Sikker browsing</translation>
 <translation id="7954263306665462056">Sikker browsing er blevet deaktiveret på din enhed. Hvis du vil aktivere denne funktion, skal du sikre dig, at Google Play Services er installeret og er opdateret.</translation>
 <translation id="6605147707233193230">Aktivér for at hjælpe med at støtte indholdsskabere</translation>
-<translation id="5899814466108868020">Du hjælper med at understøtte Brave og BAT-fællesskabet</translation>
-<translation id="6067959437127691361">Ved at bruge Brave Rewards understøtter du indholdsskabere, samtidig med at du optjener BAT.</translation>
+<translation id="5899814466108868020">Du hjælper med at understøtte Ping og BAT-fællesskabet</translation>
+<translation id="6067959437127691361">Ved at bruge Ping Rewards understøtter du indholdsskabere, samtidig med at du optjener BAT.</translation>
 <translation id="3264975266761862670">Er du klar til at optjene?</translation>
 <translation id="265337947574975838">Forbind eller opret en konto hos en af vores partnere.</translation>
 <translation id="654447476965480878">Lær mere om at optjene BAT</translation>
 <translation id="6278643716658443228">Rewards-indstillinger</translation>
 <translation id="6516984207843289176">Tilslut konto</translation>
-<translation id="4272136334824111854">I denne måned har du besøgt <ph name="CREATOR_COUNT"/>skabere støttet af Brave Rewards</translation>
+<translation id="4272136334824111854">I denne måned har du besøgt <ph name="CREATOR_COUNT"/>skabere støttet af Ping Rewards</translation>
 <translation id="6845311459433734326">Forbind en varetagerkonto, så du kan optjene BAT og udbetale dine belønninger</translation>
 <translation id="928980476243133540">Jeg gør det senere</translation>
 <translation id="579702532610384533">Genopret forbindelsen</translation>
@@ -1061,8 +1061,8 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="5382684862562314222">BAT understøttes endnu ikke i din region på Uphold.</translation>
 <translation id="6996157559236886133">Fejl: begrænset kontofunktionalitet i Uphold</translation>
 <translation id="1677961202754619328">Ifølge Uphold er din Uphold-konto på nuværende tidspunkt begrænset. Log ind på din Uphold-konto og tjek, hvorvidt du har meddelelser eller kontobetingelser, der skal besvares eller udfyldes, og prøv derefter igen.</translation>
-<translation id="5425006356459378415">Brave-belønninger er ikke tilgængelige</translation>
-<translation id="833643743158564518">Du kan pt ikke tilmelde dig Brave-belønninger i dit område. Men du kan altid prøve igen senere. <ph name="LEARN_MORE"/></translation>
+<translation id="5425006356459378415">Ping-belønninger er ikke tilgængelige</translation>
+<translation id="833643743158564518">Du kan pt ikke tilmelde dig Ping-belønninger i dit område. Men du kan altid prøve igen senere. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">Primære netværker</translation>
 <translation id="2781668117338732220">Sekundære netværk</translation>
 <translation id="282560918037172384">Test netværker</translation>
@@ -1083,8 +1083,8 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="346505172740911461">Markedspris</translation>
 <translation id="5494920125229734069">Vælg alle</translation>
 <translation id="6129027151000961048">Leo</translation>
-<translation id="8613144770663526433">Log ind med Brave Wallet</translation>
-<translation id="3696514931437952995">Du er ved at logge ind på <ph name="ORIGIN"/>. Brave Wallet deler din wallet-adresse med <ph name="ORIGIN"/>.</translation>
+<translation id="8613144770663526433">Log ind med Ping Wallet</translation>
+<translation id="3696514931437952995">Du er ved at logge ind på <ph name="ORIGIN"/>. Ping Wallet deler din wallet-adresse med <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Se detaljer</translation>
 <translation id="6759710362319508545">Ressourcer</translation>
 <translation id="2471230424465522689">Ikke før</translation>
@@ -1093,7 +1093,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4109670531935487117">Vis autofuldførelsesforslag i adressefeltet</translation>
 <translation id="1250335737108905610">Nulstil og ryd Leo-data</translation>
 <translation id="6165101586663336913">Nulstilling af Leo-assistenten kræver, at du aktivt vælger at bruge Leo fremover, og denne handling sletter også din chathistorik. Hvis du sletter din chathistorik, slettes alle dine tidligere samtaler med Leo. Denne handling kan ikke fortrydes.</translation>
-<translation id="3692772534525889713">Forbind køb på Play Store med din Brave-konto for at bruge Brave Leo på andre enheder.</translation>
+<translation id="3692772534525889713">Forbind køb på Play Store med din Ping-konto for at bruge Ping Leo på andre enheder.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1166682575529520472">Månedlig</translation>
 <translation id="451189393813405346">Spørg Leo</translation>
@@ -1103,7 +1103,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="6344103698928069918">Afspilningsliste: Genoptag afspilning fra pause</translation>
 <translation id="8141583471142904652">Uafbrudt lytning</translation>
 <translation id="851432578283946230">Spil automatisk næste fil i din afspilningsliste</translation>
-<translation id="295620834661738195">Brave-spilleliste</translation>
+<translation id="295620834661738195">Ping-spilleliste</translation>
 <translation id="4850886885716139402">Vis</translation>
 <translation id="7392941176393379100">Tilføjet til '<ph name="PLAYLIST_NAME"/>'</translation>
 <translation id="349846214503465941">Aktivér spilleliste</translation>
@@ -1129,7 +1129,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="8120600068258956006">Tilføj til spilleliste</translation>
 <translation id="39991094779686024">Spillelister</translation>
 <translation id="1710072605877822603">Tilføj medier</translation>
-<translation id="3874252678044305931">Tilføj videoer til Brave-spillelisten. Afspil dem når som helst, selv offline.</translation>
+<translation id="3874252678044305931">Tilføj videoer til Ping-spillelisten. Afspil dem når som helst, selv offline.</translation>
 <translation id="8973629800378391099">Skab spillelister med dit yndlingsindhold. Spar mobildata. Og afspil reklamefrit.</translation>
 <translation id="4936812987266342401">Tryk på knappen for at tilføje videoer til en spilleliste</translation>
 <translation id="6263657785571415306">Behold dit fokus: Tilføj videoer, mens you browser, og se dem senere.</translation>
@@ -1172,7 +1172,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="5538904824395606812">Brug din nuværende udbyder eller Quad9</translation>
 <translation id="6393423486818299209">Brug din nuværende udbyder eller Wikimedia DNS</translation>
 <translation id="3401384982562827787">Brug din nuværende udbyder eller Cloudflare</translation>
-<translation id="8812367543786936496">Hvis din nuværende tjenesteudbyder er usikker, bruger Brave en sikker alternativ DNS-udbyder</translation>
+<translation id="8812367543786936496">Hvis din nuværende tjenesteudbyder er usikker, bruger Ping en sikker alternativ DNS-udbyder</translation>
 <translation id="5680678411439841197">by</translation>
 <translation id="8185518433273977704">by</translation>
 <translation id="4528386452965343421">præfektur</translation>
@@ -1200,19 +1200,19 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="3300502432153878901">postnummer</translation>
 <translation id="4130750466177569591">Jeg er enig</translation>
 <translation id="3251885322612056119">Opdaterede servicevilkår</translation>
-<translation id="4049035689681585146">Vi har opdateret vores servicevilkår for Brave-belønninger. Vi har foretaget disse opdateringer for at klargøre vores vilkår og sikre, at de dækker nye funktioner. Hvis du fortsætter med at bruge Brave-belønninger, indvilliger du i de opdaterede servicevilkår. Hvis du ikke er enig, kan du <ph name="RESET_START"/>nulstille<ph name="RESET_END"/> Brave-belønninger, hvilket står denne funktion fra.</translation>
-<translation id="2165953574528546737">Se <ph name="TOS_START"/>Servicevilkår for Brave-belønninger<ph name="TOS_END"/></translation>
+<translation id="4049035689681585146">Vi har opdateret vores servicevilkår for Ping-belønninger. Vi har foretaget disse opdateringer for at klargøre vores vilkår og sikre, at de dækker nye funktioner. Hvis du fortsætter med at bruge Ping-belønninger, indvilliger du i de opdaterede servicevilkår. Hvis du ikke er enig, kan du <ph name="RESET_START"/>nulstille<ph name="RESET_END"/> Ping-belønninger, hvilket står denne funktion fra.</translation>
+<translation id="2165953574528546737">Se <ph name="TOS_START"/>Servicevilkår for Ping-belønninger<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">Aktiver flere faner</translation>
 <translation id="6167344249617630304">Åbn op til 5 faner ad gangen, og flyt faner fra et vindue til et andet</translation>
 <translation id="1063948063403254568">Flere faner fundet</translation>
-<translation id="4661882208707630158">Sammenflet faner til en anden Brave-fane, eller luk andre Brave-faner, før du deaktiverer funktionen med flere faner.</translation>
+<translation id="4661882208707630158">Sammenflet faner til en anden Ping-fane, eller luk andre Ping-faner, før du deaktiverer funktionen med flere faner.</translation>
 <translation id="6891382640886173702">Sammenflet faner</translation>
 <translation id="2912247081180973411">Vælg faner</translation>
-<translation id="4010699428656610296">Venligst flet andre faner til en anden Brave-fane.</translation>
+<translation id="4010699428656610296">Venligst flet andre faner til en anden Ping-fane.</translation>
 <translation id="208634871997892083">Altid på VPN</translation>
 <translation id="1599073346542156922">Sådan aktiveres VPN</translation>
 <translation id="7001163334415463127">1. Åben din enheds indstillinger fra din appskuffe eller ved at trykke på knappen nedenfor.</translation>
-<translation id="887443138775437899">2. Find Brave VPN, og tryk på indstillingsikonet til højre.</translation>
+<translation id="887443138775437899">2. Find Ping VPN, og tryk på indstillingsikonet til højre.</translation>
 <translation id="3776051499611941773">3. Aktivér <ph name="ALWAYS_ON_TUTORIAL_START"/>Altid aktiveret VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> for at aktivere den.</translation>
 <translation id="4776146737004271126">Åbn Android-indstillingerne</translation>
 <translation id="2728518864712716830">Opdatering er downloadet.</translation>

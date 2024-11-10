@@ -48,7 +48,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if !BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -247,7 +247,7 @@ void BraveToolbarView::Init() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Don't check policy status since we're going to
   // setup a watcher for policy pref.
-  if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
+  if ((false) && ai_chat::IsAllowedForContext(browser_->profile(), false)) {
     ai_chat_button_ = container_view->AddChildViewAt(
         std::make_unique<AIChatButton>(browser()),
         *container_view->GetIndexOf(GetAppMenuButton()) - 1);
@@ -264,7 +264,7 @@ void BraveToolbarView::Init() {
   }
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if !BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
     brave_vpn_ = container_view->AddChildViewAt(
         std::make_unique<BraveVPNButton>(browser()),
@@ -301,7 +301,7 @@ void BraveToolbarView::Init() {
   }
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if !BUILDFLAG(ENABLE_BRAVE_VPN)
 bool BraveToolbarView::IsBraveVPNButtonVisible() const {
   return show_brave_vpn_button_.GetValue() &&
          !hide_brave_vpn_button_by_policy_.GetValue();

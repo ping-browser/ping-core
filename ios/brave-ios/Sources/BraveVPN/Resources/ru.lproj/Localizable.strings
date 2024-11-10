@@ -7,25 +7,25 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "ДОСТУПНЫЕ СЕРВЕРЫ";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Купить";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Поддержка до 5 устройств по одной подписке";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Выбирайте свое местоположение";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxNoIPLog" = "Отсутствие журналов активности";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Защита всех приложений на любых устройствах";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Повышенная безопасность для домашнего или публичного Wi-Fi-соединения";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Скорость до 100 Мбит/с";
 
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
@@ -44,7 +44,7 @@
 "vpn.contactFormCarrier" = "Оператор сотовой связи";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave не отслеживает, как вы используете приложение, поэтому у нас нет информации об установленном VPN. Расскажите о вашей проблеме и мы постараемся решить ее как можно быстрее.";
+"vpn.contactFormDoNotEditText" = "Ping не отслеживает, как вы используете приложение, поэтому у нас нет информации об установленном VPN. Расскажите о вашей проблеме и мы постараемся решить ее как можно быстрее.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Нам не удалось отправить письмо. Проверьте настройки электронной почты.";
@@ -101,9 +101,9 @@
 "vpn.contactFormTimezone" = "Часовой пояс iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Проблема, связанная с файрволом и VPN-расширением для браузера Brave";
+"vpn.contactFormTitle" = "Проблема, связанная с файрволом и VPN-расширением для браузера Ping";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Включить";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -119,13 +119,13 @@
 "vpn.iapDisclaimer" = "Все подписки продлеваются автоматически. Однако вы можете отменить подписку до того, как она будет продлена.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "В этом режиме сеть VPN автоматически проверяет весь трафик на устройстве, делая просмотр безопасным. VPN-соединение зашифровано, а трафик проходит через умный брандмауэр Brave, который не пропускает потенциально вредоносный контент и блокирует попытки отслеживания.";
+"vpn.installProfileBody" = "В этом режиме сеть VPN автоматически проверяет весь трафик на устройстве, делая просмотр безопасным. VPN-соединение зашифровано, а трафик проходит через умный брандмауэр Ping, который не пропускает потенциально вредоносный контент и блокирует попытки отслеживания.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Установить профиль VPN";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Сейчас в браузер Brave будет установлен профиль VPN.";
+"vpn.installProfileTitle" = "Сейчас в браузер Ping будет установлен профиль VPN.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "Теперь VPN включен";
@@ -133,7 +133,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Установить VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Попробовать БЕСПЛАТНО";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -222,10 +222,10 @@
 "vpn.settingsFAQ" = "Справочная информация в отношении VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Привязать покупку к аккаунту Brave";
+"vpn.settingsLinkReceipt" = "Привязать покупку к аккаунту Ping";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Привяжите покупку в App Store к аккаунту Brave, чтобы использовать Brave VPN на других устройствах.";
+"vpn.settingsLinkReceiptFooter" = "Привяжите покупку в App Store к аккаунту Ping, чтобы использовать Ping VPN на других устройствах.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Управление подписками";
@@ -261,10 +261,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Измените способ оплаты";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Браузер Brave будет защищать вас даже в фоновом режиме.";
+"vpn.vpnBackgroundNotificationBody" = "Браузер Ping будет защищать вас даже в фоновом режиме.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Файрвол и VPN-расширение для браузера Brave ВКЛЮЧЕНЫ";
+"vpn.vpnBackgroundNotificationTitle" = "Файрвол и VPN-расширение для браузера Ping ВКЛЮЧЕНЫ";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Использовать лучший сервер";
@@ -279,7 +279,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Ошибка";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Для работы файрвола и VPN-расширения для браузера Brave необходимо установить профиль VPN.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Для работы файрвола и VPN-расширения для браузера Ping необходимо установить профиль VPN.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "В доступе отказано";
@@ -294,13 +294,13 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Ошибка";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Плата за подписки будет взиматься через ваш аккаунт iTunes.\n\nПри покупке подписки неиспользованный период бесплатной версии аннулируется.\n\nПодписка будет обновляться автоматически. Чтобы отменить подписку, откажитесь от нее как минимум за 24 часа до окончания текущего расчетного периода.\n\nВы можете управлять подписками в настройках.\n\nИспользуя Brave, вы соглашаетесь с нашими Условиями использования и Политикой конфиденциальности.";
+"vpn.vpnIAPBoilerPlate" = "Плата за подписки будет взиматься через ваш аккаунт iTunes.\n\nПри покупке подписки неиспользованный период бесплатной версии аннулируется.\n\nПодписка будет обновляться автоматически. Чтобы отменить подписку, откажитесь от нее как минимум за 24 часа до окончания текущего расчетного периода.\n\nВы можете управлять подписками в настройках.\n\nИспользуя Ping, вы соглашаетесь с нашими Условиями использования и Политикой конфиденциальности.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Активировать код";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Это позволит сбросить настройки файрвола и VPN-расширения для браузера Brave и исправить любые ошибки. Процесс может занять около минуты.";
+"vpn.vpnResetAlertBody" = "Это позволит сбросить настройки файрвола и VPN-расширения для браузера Ping и исправить любые ошибки. Процесс может занять около минуты.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Сбросить настройки";

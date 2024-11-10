@@ -256,22 +256,22 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
 
 SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
     version_info::Channel channel) {
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDontShowSidebarOnNonStable) &&
-      channel != version_info::Channel::STABLE) {
-    return ShowSidebarOption::kShowAlways;
-  }
+  // if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+  //         switches::kDontShowSidebarOnNonStable) &&
+  //     channel != version_info::Channel::STABLE) {
+  //   return ShowSidebarOption::kShowAlways;
+  // }
 
-  if (!g_browser_process) {
-    CHECK_IS_TEST();
-    return ShowSidebarOption::kShowAlways;
-  }
+  // if (!g_browser_process) {
+  //   CHECK_IS_TEST();
+  //   return ShowSidebarOption::kShowAlways;
+  // }
 
-  if (auto* local_state = g_browser_process->local_state()) {
-    return local_state->GetBoolean(kTargetUserForSidebarEnabledTest)
-               ? ShowSidebarOption::kShowAlways
-               : ShowSidebarOption::kShowNever;
-  }
+  // if (auto* local_state = g_browser_process->local_state()) {
+  //   return local_state->GetBoolean(kTargetUserForSidebarEnabledTest)
+  //              ? ShowSidebarOption::kShowAlways
+  //              : ShowSidebarOption::kShowNever;
+  // }
 
   return ShowSidebarOption::kShowNever;
 }

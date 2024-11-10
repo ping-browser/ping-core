@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Ga door";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Gebruik de privacyfuncties van Brave voor elke link waar u op tikt";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Gebruik de privacyfuncties van Ping voor elke link waar u op tikt";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Brave instellen als uw standaardbrowser";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Ping instellen als uw standaardbrowser";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Surf sneller en verbruik minder data.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Laat ons weten welke functies u het fijnst vindt.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Maak Brave beter.";
+"focusOnboarding.p3aScreenTitle" = "Maak Ping beter.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "U kunt dit op elk gewenst moment veranderen in uw Brave-instellingen onder 'Brave Shields en Privacy'.";
+"focusOnboarding.p3aToggleDescription" = "U kunt dit op elk gewenst moment veranderen in uw Ping-instellingen onder 'Ping Shields en Privacy'.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Browsen maar";
@@ -41,5 +41,5 @@
 "focusOnboarding.urlBarIndicatorDescription" = "Geef een URL op om te profiteren van minder advertenties en trackers";
 
 /* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Bekijk wat Brave zo bijzonder maakt";
+"focusOnboarding.urlBarIndicatorTitle" = "Bekijk wat Ping zo bijzonder maakt";
 

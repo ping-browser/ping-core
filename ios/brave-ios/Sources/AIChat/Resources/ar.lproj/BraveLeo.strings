@@ -1,5 +1,5 @@
 /* The description for the error message when the user's session has expired */
-"aichat.accountSessionExpiredDescription" = "لقد انتهت صلاحية الجلسة لحساب Brave خاصتك. يرجى زيارة صفحة حسابك للتحديث، ثم العودة لاستخدام المميزات المتقدمة.";
+"aichat.accountSessionExpiredDescription" = "لقد انتهت صلاحية الجلسة لحساب Ping خاصتك. يرجى زيارة صفحة حسابك للتحديث، ثم العودة لاستخدام المميزات المتقدمة.";
 
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "إضافة تعليقات";
@@ -16,11 +16,11 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo هو مساعد ذكي يعمل بالذكاء الاصطناعي، ومُدمج مباشرةً في المتصفح.";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "اربط مشترياتك من آب ستور بحساب Brave الخاص بك لاستخدام Leo على الأجهزة الأخرى.";
+/* The subtitle for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "اربط مشترياتك من آب ستور بحساب Ping الخاص بك لاستخدام Leo على الأجهزة الأخرى.";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "ربط عملية الشراء بحسابك على Brave";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "ربط عملية الشراء بحسابك على Ping";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "تاريخ انتهاء الصلاحية";
@@ -50,7 +50,7 @@
 "aichat.chatIntroJustTalkTitle" = "هل تريد إجراء محادثة فقط؟";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "مساعد ذكاء مدعوم من الذكاء الاصطناعي، تم إنشاؤه مباشرة في متصفح Brave.";
+"aichat.chatIntroSubTitle" = "مساعد ذكاء مدعوم من الذكاء الاصطناعي، تم إنشاؤه مباشرة في متصفح Ping.";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "مرحبًا، أدعى ليو!";
@@ -122,7 +122,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "أعجبتني الإجابة";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "إضافة تعليق بخصوص Brave AI ";
+"aichat.feedbackViewMainTitle" = "إضافة تعليق بخصوص Ping AI ";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "الاشتراك الحصري (Premium)";
@@ -131,7 +131,7 @@
 "aichat.infoAboutPageContext" = "قم بصياغة الإجابات بناءً على محتويات الصفحة";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Haiku، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Ping، كما أنني مدعوم بواسطة Claude 3 Haiku، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "كلود هايكو من Anthropic";
@@ -146,13 +146,13 @@
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "سرعة وذكاء متوازنان";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "مرحبا ، أنا Leo. أنا مساعد الذكاء الاصطناعي من Brave. أنا مدعوم من %@. اسألني أي شيء، وسأبذل قصارى جهدي للإجابة.";
+"aichat.introMessageGenericMessageDescription" = "مرحبا ، أنا Leo. أنا مساعد الذكاء الاصطناعي من Ping. أنا مدعوم من %@. اسألني أي شيء، وسأبذل قصارى جهدي للإجابة.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "دردشة حول أغراض عامة";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد الذكاء الاصطناعي المستضاف بالكامل بواسطة Brave. أنا مدعوم بـ Mixtral 8x7B، وهو نموذج تم إنشاؤه بواسطة Mistral AI للتعامل مع المهام المتقدمة.";
+"aichat.introMessageMixtralMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد الذكاء الاصطناعي المستضاف بالكامل بواسطة Ping. أنا مدعوم بـ Mixtral 8x7B، وهو نموذج تم إنشاؤه بواسطة Mistral AI للتعامل مع المهام المتقدمة.";
 
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral بواسطة Mistral AI";
@@ -173,13 +173,13 @@
 "aichat.leoImprovedAnswerBraveSearch" = "تحسين البحث عن إجابة";
 
 /* The text displayed on the loading screen when searching for a user query */
-"aichat.leoImprovingAnswerBraveSearch" = "تحسين الإجابة باستخدام Brave Search ...";
+"aichat.leoImprovingAnswerBraveSearch" = "تحسين الإجابة باستخدام Ping Search ...";
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo الذكاء الاصطناعي";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "قم بالتشغيل لطرح سؤال حول هذه الصفحة. سيتم إرسال محتواها إلى ليو في متصفح Brave إلى جانب رسائلك.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "قم بالتشغيل لطرح سؤال حول هذه الصفحة. سيتم إرسال محتواها إلى ليو في متصفح Ping إلى جانب رسائلك.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "معلومات سياق الصفحة";
@@ -200,7 +200,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "إدارة الاشتراكات";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "يرجى السماح بالوصول إلى الميكروفون في إعدادات نظام iOS لـ Brave لاستخدام إدخال صوت مجهول.";
+"aichat.microphonePermissionAlertDescription" = "يرجى السماح بالوصول إلى الميكروفون في إعدادات نظام iOS لـ Ping لاستخدام إدخال صوت مجهول.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "يلزم الوصول إلى الميكروفون";
@@ -338,7 +338,7 @@
 "aichat.retryActionTitle" = "إعادة المحاولة";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "لا يقوم Brave بتخزين أو مشاركة مدخلاتك الصوتية.";
+"aichat.speechRecognizerDisclaimer" = "لا يقوم Ping بتخزين أو مشاركة مدخلاتك الصوتية.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "اقترح أسئلة...";
@@ -346,14 +346,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "تلخيص هذه الصفحة";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "أفهم";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo هو مساعد ذكي بالذكاء الاصطناعي يعزز استخدامك للويب. وLeo مجاني للاستخدام مع وصول محدود. يقدم Brave Leo Premium المزيد من النماذج وحدودًا أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. النموذج الافتراضي لجميع المستخدمين حاليا هو Mixtral 8x7B. انظر Brave **[مركز المساعدة](%1$@)** لمزيد من التفاصيل.\n\nبشكل افتراضي ، عندما تسأل Leo سؤالًا ، قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تظلله على الصفحة إلى Brave Leo لتقديم رد. وفي بعض الحالات ، سيرسل Leo استعلامات مشتقة من إدخالك إلى Brave Search ويستخدم نتائج البحث للإجابة على سؤالك بشكل أفضل. دقة الردود غير مضمونة ، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. لا ترسل معلومات حساسة أو خاصة ، وتوخّ الحذر مع أي إجابات تتعلق بالصحة أو التمويل أو السلامة الشخصية أو ما شابه ذلك. ويمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات > Leo.\n\nلا يجمع Leo معرفات مثل عنوان بروتوكول الإنترنت الخاص بك والذي يمكن ربطه بك. ولا يتم استخدام أي بيانات لتدريب نماذج الذكاء الاصطناعي ولا يتم الاحتفاظ بأي بيانات شخصية بواسطة نماذج الذكاء الاصطناعي (باستثناء Anthropic التي تحتفظ بالبيانات لمدة 30 يومًا قبل حذفها). راجع **[سياسة الخصوصية](%2$@)** لمزيد من المعلومات.";
+"aichat.termsConditionsDescription" = "Ping Leo هو مساعد ذكي بالذكاء الاصطناعي يعزز استخدامك للويب. وLeo مجاني للاستخدام مع وصول محدود. يقدم Ping Leo Premium المزيد من النماذج وحدودًا أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. النموذج الافتراضي لجميع المستخدمين حاليا هو Mixtral 8x7B. انظر Ping **[مركز المساعدة](%1$@)** لمزيد من التفاصيل.\n\nبشكل افتراضي ، عندما تسأل Leo سؤالًا ، قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تظلله على الصفحة إلى Ping Leo لتقديم رد. وفي بعض الحالات ، سيرسل Leo استعلامات مشتقة من إدخالك إلى Ping Search ويستخدم نتائج البحث للإجابة على سؤالك بشكل أفضل. دقة الردود غير مضمونة ، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. لا ترسل معلومات حساسة أو خاصة ، وتوخّ الحذر مع أي إجابات تتعلق بالصحة أو التمويل أو السلامة الشخصية أو ما شابه ذلك. ويمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات > Leo.\n\nلا يجمع Leo معرفات مثل عنوان بروتوكول الإنترنت الخاص بك والذي يمكن ربطه بك. ولا يتم استخدام أي بيانات لتدريب نماذج الذكاء الاصطناعي ولا يتم الاحتفاظ بأي بيانات شخصية بواسطة نماذج الذكاء الاصطناعي (باستثناء Anthropic التي تحتفظ بالبيانات لمدة 30 يومًا قبل حذفها). راجع **[سياسة الخصوصية](%2$@)** لمزيد من المعلومات.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "الدردشة بخصوصية مع Brave Leo";
+"aichat.termsConditionsTitle" = "الدردشة بخصوصية مع Ping Leo";
 
 /* The title of the badge where a model which can be used unlimited */
 "aichat.unlimitedModelStatusTitle" = "غير حدود";

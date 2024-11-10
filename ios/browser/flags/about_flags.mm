@@ -43,15 +43,15 @@
       {                                                                       \
           "brave-wallet-zcash",                                               \
           "Enable BraveWallet ZCash support",                                 \
-          "Zcash support for native Brave Wallet",                            \
+          "Zcash support for native Ping Wallet",                            \
           flags_ui::kOsIos,                                                   \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletZCashFeature),              \
       },                                                                      \
       {                                                                       \
           "brave-wallet-bitcoin",                                             \
-          "Enable Brave Wallet Bitcoin support",                              \
-          "Bitcoin support for native Brave Wallet",                          \
+          "Enable Ping Wallet Bitcoin support",                              \
+          "Bitcoin support for native Ping Wallet",                          \
           flags_ui::kOsIos,                                                   \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletBitcoinFeature),            \
@@ -69,7 +69,7 @@
           "brave-wallet-enable-transaction-simulations",                      \
           "Enable transaction simulations",                                   \
           "Enable usage of Blowfish API for running transaction simulations " \
-          "in Brave Wallet",                                                  \
+          "in Ping Wallet",                                                  \
           flags_ui::kOsIos,                                                   \
           FEATURE_VALUE_TYPE(brave_wallet::features::                         \
                                  kBraveWalletTransactionSimulationsFeature),  \

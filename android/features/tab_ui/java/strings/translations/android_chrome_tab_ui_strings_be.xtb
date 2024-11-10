@@ -43,7 +43,7 @@
 <translation id="2801787514987684416">Прагледзець звесткі пра краму?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{Укладак закрыта: <ph name="ONE_CLOSED"/>}one{Укладак закрыта: <ph name="MANY_CLOSED"/>}few{Укладак закрыта: <ph name="MANY_CLOSED"/>}many{Укладак закрыта: <ph name="MANY_CLOSED"/>}other{Укладак закрыта: <ph name="MANY_CLOSED"/>}}</translation>
 <translation id="2894757982205307093">Стварыць у групе новую ўкладку</translation>
-<translation id="4691798003247738043">Brave | Пра гэту краму</translation>
+<translation id="4691798003247738043">Ping | Пра гэту краму</translation>
 <translation id="2977480621796371840">Выдаліць з групы</translation>
 <translation id="29919168204617356">Неактыўныя ўкладкі будуць аўтаматычна закрывацца. Іх можна заўсёды знайсці ў раздзеле гісторыі браўзера.</translation>
 <translation id="3008554597174452548">Перастаць адсочваць прадукт</translation>
@@ -108,7 +108,7 @@
 <translation id="5556417849629758491">Прагледзець звесткі пра краму; гэты варыянт выбару даступны ўверсе экрана</translation>
 <translation id="5627941783489838464">Абнаўленняў укладак няма</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Аднавіць укладку}one{Аднавіць укладкі}few{Аднавіць укладкі}many{Аднавіць укладкі}other{Аднавіць укладкі}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> спасылка з Brave}one{<ph name="TABS_COUNT_MANY"/> спасылка з Brave}few{<ph name="TABS_COUNT_MANY"/> спасылкі з Brave}many{<ph name="TABS_COUNT_MANY"/> спасылак з Brave}other{<ph name="TABS_COUNT_MANY"/> спасылкі з Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> спасылка з Ping}one{<ph name="TABS_COUNT_MANY"/> спасылка з Ping}few{<ph name="TABS_COUNT_MANY"/> спасылкі з Ping}many{<ph name="TABS_COUNT_MANY"/> спасылак з Ping}other{<ph name="TABS_COUNT_MANY"/> спасылкі з Ping}}</translation>
 <translation id="575494663145460764">Атрымліваць абвесткі пра зніжэнні цэн?</translation>
 <translation id="58326064309361797">Каб згрупаваць укладкі, перацягвайце іх</translation>
 <translation id="5901630391730855834">Жоўты</translation>
@@ -148,7 +148,7 @@
 <translation id="7452985128687107478">Групы ўкладак аўтаматычна захоўваюцца і абнаўляюцца на ўсіх вашых прыладах</translation>
 <translation id="747459581954555080">Аднавіць усе</translation>
 <translation id="753732157349120914">Пераключальнік укладак</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> водгук з Brave}one{<ph name="REVIEWS_COUNT_MANY"/> водгук з Brave}few{<ph name="REVIEWS_COUNT_MANY"/> водгукі з Brave}many{<ph name="REVIEWS_COUNT_MANY"/> водгукаў з Brave}other{<ph name="REVIEWS_COUNT_MANY"/> водгуку з Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> водгук з Ping}one{<ph name="REVIEWS_COUNT_MANY"/> водгук з Ping}few{<ph name="REVIEWS_COUNT_MANY"/> водгукі з Ping}many{<ph name="REVIEWS_COUNT_MANY"/> водгукаў з Ping}other{<ph name="REVIEWS_COUNT_MANY"/> водгуку з Ping}}</translation>
 <translation id="7559245342362162951">Паказваць укладкі групы ў поўнаэкраннай сетцы</translation>
 <translation id="7658239707568436148">Скасаваць</translation>
 <translation id="7688386659311034820">Дыялогавае акно "Неактыўныя ўкладкі"</translation>

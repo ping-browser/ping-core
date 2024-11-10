@@ -44,7 +44,7 @@
 <translation id="2801787514987684416">Skoða upplýsingar verslunar?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> flipa lokað}one{<ph name="MANY_CLOSED"/> flipa lokað}other{<ph name="MANY_CLOSED"/> flipum lokað}}</translation>
 <translation id="2894757982205307093">Nýr flipi í hópi</translation>
-<translation id="4691798003247738043">Brave | Um þessa verslun</translation>
+<translation id="4691798003247738043">Ping | Um þessa verslun</translation>
 <translation id="2977480621796371840">Fjarlægja úr hópi</translation>
 <translation id="29919168204617356">Óvirkum flipum verður lokað sjálfkrafa. Þú getur alltaf fundið þá í „Ferli“.</translation>
 <translation id="3008554597174452548">Hætta að fylgjast með vöru</translation>
@@ -109,7 +109,7 @@
 <translation id="5556417849629758491">Skoða upplýsingar um verslun, valkostir eru ofarlega á skjánum</translation>
 <translation id="5627941783489838464">Engar uppfærslur á flipum</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Endurheimta flipa}one{Endurheimta flipa}other{Endurheimta flipa}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> tengill frá Brave}one{<ph name="TABS_COUNT_MANY"/> tengill frá Brave}other{<ph name="TABS_COUNT_MANY"/> tenglar frá Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> tengill frá Ping}one{<ph name="TABS_COUNT_MANY"/> tengill frá Ping}other{<ph name="TABS_COUNT_MANY"/> tenglar frá Ping}}</translation>
 <translation id="575494663145460764">Fá tilkynningar um verðlækkanir?</translation>
 <translation id="58326064309361797">Dragðu flipa til að sameina þá</translation>
 <translation id="5901630391730855834">Gulur</translation>
@@ -149,7 +149,7 @@
 <translation id="7452985128687107478">Flipahópar vistast og uppfærast sjálfkrafa í öllum tækjunum þínum</translation>
 <translation id="747459581954555080">Endurheimta allt</translation>
 <translation id="753732157349120914">Flipaval</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> umsögn frá Brave}one{<ph name="REVIEWS_COUNT_MANY"/> umsögn frá Brave}other{<ph name="REVIEWS_COUNT_MANY"/> umsagnir frá Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> umsögn frá Ping}one{<ph name="REVIEWS_COUNT_MANY"/> umsögn frá Ping}other{<ph name="REVIEWS_COUNT_MANY"/> umsagnir frá Ping}}</translation>
 <translation id="7559245342362162951">Sýna flipa hóps á öllum skjánum</translation>
 <translation id="7658239707568436148">Hætta við</translation>
 <translation id="7688386659311034820">Gluggi með óvirkum flipum</translation>

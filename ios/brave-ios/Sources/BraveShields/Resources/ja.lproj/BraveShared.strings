@@ -7,7 +7,7 @@
 /* A title within a cell where a user can navigate to an add screen. */
 "AddFilterByURL" = "URLでフィルターを追加";
 
-/* A discription of the Brave Player. */
+/* A discription of the Ping Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Braveプレーヤー**は、広告なしで途切れることのない動画視聴をお楽しみいただけるツールです。";
 
 /* A button that disables ad-blocking and uses brave player. */
@@ -17,7 +17,7 @@
 "AntiAdBlockWarningDescription" = "このサイトで一部の広告ブロッカーのブロックを開始しました。予期せぬ動作が観察される可能性があります。";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "この問題に対処するため、Braveではシールドの設定を調整することができます。調整後は、代わりにBrave プレーヤーでこのコンテンツの視聴をお試しください。";
+"AntiAdBlockWarningDescription2" = "この問題に対処するため、Braveではシールドの設定を調整することができます。調整後は、代わりにPing プレーヤーでこのコンテンツの視聴をお試しください。";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "現在の設定を維持する";

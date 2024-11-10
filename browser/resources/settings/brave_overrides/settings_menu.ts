@@ -8,8 +8,8 @@
 import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {loadTimeData} from '../i18n_setup.js'
 import 'chrome://resources/brave/leo.bundle.js'
+import { loadTimeData } from '../i18n_setup.js'
 
 function createMenuElement(title, href, iconName, pageVisibilitySection) {
   const menuEl = document.createElement('a')
@@ -83,7 +83,8 @@ RegisterStyleOverride(
       }
 
       .cr-nav-menu-item[selected] {
-        --iron-icon-fill-color: var(--leo-color-icon-interactive);
+        // --iron-icon-fill-color: var(--leo-gradient-icons-active);
+        --iron-icon-fill-color: #27a348;
 
         color: var(--leo-color-text-interactive) !important;
         background: transparent !important;
@@ -122,7 +123,11 @@ RegisterStyleOverride(
       }
 
       a:hover, cr-icon:hover {
-        color: var(--leo-color-icon-interactive) !important;
+        color: #47d789 !important;
+      }
+
+      a:hover, iron-icon:hover {
+        color: #47d789 !important;
       }
 
       cr-icon, leo-icon {
@@ -140,7 +145,7 @@ RegisterStyleOverride(
         display: block;
         height: 32px;
         width: 4px;
-        background: var(--leo-color-text-interactive);
+        background: linear-gradient(96.98deg, #27a348 0%, #27c5a1 78.13%);
         border-radius: 0px 2px 2px 0px;
       }
 
@@ -150,8 +155,11 @@ RegisterStyleOverride(
         }
 
         a:hover, cr-icon:hover {
-          --iron-icon-fill-color: var(--leo-color-icon-interactive) !important;
-          color: var(--leo-color-icon-interactive) !important;
+          color: #47d789 !important;
+        }
+
+        a:hover, iron-icon:hover {
+          color: #47d789 !important;
         }
       }
 
@@ -264,13 +272,13 @@ RegisterPolymerTemplateModifications({
     privacyEl.insertAdjacentElement('afterend', web3El)
 
     // Add leo item
-    const leoAssistantEl = createMenuElement(
-      loadTimeData.getString('leoAssistant'),
-      '/leo-assistant',
-      'product-brave-leo',
-      'leoAssistant',
-    )
-    web3El.insertAdjacentElement('afterend', leoAssistantEl)
+    // const leoAssistantEl = createMenuElement(
+    //   loadTimeData.getString('leoAssistant'),
+    //   '/leo-assistant',
+    //   'product-brave-leo',
+    //   'leoAssistant',
+    // )
+    // web3El.insertAdjacentElement('afterend', leoAssistantEl)
 
     // Add Sync item
     const syncEl = createMenuElement(
@@ -279,7 +287,7 @@ RegisterPolymerTemplateModifications({
       'product-sync',
       'braveSync',
     )
-    leoAssistantEl.insertAdjacentElement('afterend', syncEl)
+    web3El.insertAdjacentElement('afterend', syncEl)
 
     // Add search item
     const searchEl = getMenuElement(templateContent, '/search')
@@ -325,10 +333,10 @@ RegisterPolymerTemplateModifications({
     graphicsEl.setAttribute('class', 'brave-about-graphic')
 
     // Use per-channel logo image.
-    const icon = document.createElement('img')
-    icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
-    icon.setAttribute('width', '20px')
-    icon.setAttribute('height', '20px')
+//     const icon = document.createElement('img')
+//     icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
+//     icon.setAttribute('width', '20px')
+//     icon.setAttribute('height', '20px')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')
@@ -343,7 +351,7 @@ RegisterPolymerTemplateModifications({
 
     parent.appendChild(newAboutEl)
     newAboutEl.appendChild(graphicsEl)
-    graphicsEl.appendChild(icon)
+    // graphicsEl.appendChild(icon)
     newAboutEl.appendChild(metaEl)
     metaEl.appendChild(menuLink)
     metaEl.appendChild(versionEl)

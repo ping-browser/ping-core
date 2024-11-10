@@ -10,8 +10,8 @@
 /* A title for a button that when tapped copies the content highlighted into the users clipboard */
 "CredentialProvider.copyMenuItemTitle" = "Kopioi";
 
-/* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
-"CredentialProvider.credentialListTitle" = "Brave-salasanat";
+/* The title shown at the top of a list of credentials. 'Ping' in this case is the company name */
+"CredentialProvider.credentialListTitle" = "Ping-salasanat";
 
 /* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
 "CredentialProvider.detailsFormPasswordField" = "Salasana";
@@ -34,13 +34,13 @@
 /* The title on a button that dismisses the onboarding view */
 "CredentialProvider.onboardingViewContinueCTA" = "Jatka";
 
-/* A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product. */
+/* A footnote shown on a screen shown when the user turns on Ping as a password autofill provider. 'iCloud Keychain' is an Apple product. */
 "CredentialProvider.onboardingViewFootnote" = "Poista iCloud Keychainin valinta, niin pääset nopeammin käsiksi salasanoihin";
 
-/* The subtitle on a screen shown when the user turns on Brave as a password autofill provider */
+/* The subtitle on a screen shown when the user turns on Ping as a password autofill provider */
 "CredentialProvider.onboardingViewSubtitle" = "Voit käyttää tallennettuja salasanoja muissa sovelluksissa laitteellasi";
 
-/* The title on a screen shown when the user turns on Brave as a password autofill provider */
+/* The title on a screen shown when the user turns on Ping as a password autofill provider */
 "CredentialProvider.onboardingViewTitle" = "Automaattinen täyttö on käytössä";
 
 /* A header label shown above a list of website logins (username/password combinations) */
@@ -61,7 +61,7 @@
 /* The title displayed in alert when a user needs to set passcode */
 "CredentialProvider.setPasscodeAlertTitle" = "Aseta salasana";
 
-/* A title for a button shown as a confirmation action on a login's detail screen. Tapping it uses the password when autofilling into the website */
+/* A title for a button shown as a confirmation action on a login's detail screen. Tapbrave it uses the password when autofilling into the website */
 "CredentialProvider.useButtonTitle" = "Käytä";
 
 /* An accessibility label read out when a user activates VoiceOver on a button that when taps drills down into a credentials details */

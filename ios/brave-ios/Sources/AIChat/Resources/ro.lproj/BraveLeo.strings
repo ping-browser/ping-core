@@ -1,5 +1,5 @@
 /* The description for the error message when the user's session has expired */
-"aichat.accountSessionExpiredDescription" = "Sesiunea ta de Brave a expirat. Accesează pagina contului pentru a actualiza apoi revino pentru a folosi funcțiile premium.";
+"aichat.accountSessionExpiredDescription" = "Sesiunea ta de Ping a expirat. Accesează pagina contului pentru a actualiza apoi revino pentru a folosi funcțiile premium.";
 
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Adaugă feedback";
@@ -13,11 +13,11 @@
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Model Implicit";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Asociază achiziția din App Store la contul tău Brave pentru a utiliza Brave Leo și pe alte dispozitive.";
+/* The subtitle for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Asociază achiziția din App Store la contul tău Ping pentru a utiliza Ping Leo și pe alte dispozitive.";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "Asociază achiziția la contul tău Brave";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Asociază achiziția la contul tău Ping";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Expiră";
@@ -47,7 +47,7 @@
 "aichat.chatIntroJustTalkTitle" = "Vrei doar să stăm de vorbă?";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "Un asistent de inteligență artificială, integrat direct în Brave.";
+"aichat.chatIntroSubTitle" = "Un asistent de inteligență artificială, integrat direct în Ping.";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "Salut, eu sunt Leo!";
@@ -113,7 +113,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Răspuns apreciat";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Oferă feedback pentru IA Brave";
+"aichat.feedbackViewMainTitle" = "Oferă feedback pentru IA Ping";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Alege Premium";
@@ -122,7 +122,7 @@
 "aichat.infoAboutPageContext" = "Generează răspunsuri pe baza conținutului paginii";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Salut, eu sunt Leo. Sunt oferit prin proxy de către Brave și furnizat de Claude 3 Haiku, un model creat de Anthropic pentru a asigura activități de conversație și de procesare de text.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Salut, eu sunt Leo. Sunt oferit prin proxy de către Ping și furnizat de Claude 3 Haiku, un model creat de Anthropic pentru a asigura activități de conversație și de procesare de text.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku de la Anthropic";
@@ -137,13 +137,13 @@
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Viteză și inteligență echilibrate";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "Salut, eu sunt Leo. Sunt un asistent IA oferit de Brave. Sunt structurat pe baza %@. Întreabă-mă orice și voi face tot posibilul să răspund.";
+"aichat.introMessageGenericMessageDescription" = "Salut, eu sunt Leo. Sunt un asistent IA oferit de Ping. Sunt structurat pe baza %@. Întreabă-mă orice și voi face tot posibilul să răspund.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Chat de interes general";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Salut, eu sunt Leo. Sunt un asistent IA complet găzduit și oferit de Brave, structurat pe baza Mixtral 8x7B, un model creat de Mistral AI pentru a gestiona sarcini avansate.";
+"aichat.introMessageMixtralMessageDescription" = "Salut, eu sunt Leo. Sunt un asistent IA complet găzduit și oferit de Ping, structurat pe baza Mixtral 8x7B, un model creat de Mistral AI pentru a gestiona sarcini avansate.";
 
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral de la Mistral AI";
@@ -161,13 +161,13 @@
 "aichat.leoImprovedAnswerBraveSearch" = "Căutare îmbunătățită pentru";
 
 /* The text displayed on the loading screen when searching for a user query */
-"aichat.leoImprovingAnswerBraveSearch" = "Îmbunătățim răspunsul cu Brave Search...";
+"aichat.leoImprovingAnswerBraveSearch" = "Îmbunătățim răspunsul cu Ping Search...";
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo IA";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Activează pentru a pune întrebări despre această pagină. Conținutul paginii va fi trimis lui Brave Leo alături de mesajele tale.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Activează pentru a pune întrebări despre această pagină. Conținutul paginii va fi trimis lui Ping Leo alături de mesajele tale.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Informații despre contextul paginii";
@@ -188,7 +188,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Gestionare abonamente";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Te rog să permiți accesul la microfon în setările sistemului iOS pentru ca Brave să poată folosi introducerea vocală anonimă.";
+"aichat.microphonePermissionAlertDescription" = "Te rog să permiți accesul la microfon în setările sistemului iOS pentru ca Ping să poată folosi introducerea vocală anonimă.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Este necesar accesul la microfon";
@@ -329,7 +329,7 @@
 "aichat.retryActionTitle" = "Reîncearcă";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave nu stochează și nu distribuie input-urile tale vocale.";
+"aichat.speechRecognizerDisclaimer" = "Ping nu stochează și nu distribuie input-urile tale vocale.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Sugerează întrebări...";
@@ -337,14 +337,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Rezumă această pagină";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Înțeleg";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo este un asistent inteligent privat IA care îți îmbunătățește utilizarea web-ului. Leo poate fi utilizat gratuit cu acces limitat. Brave Leo Premium oferă mai multe modele lingvistice, limite mai mari și oferă abonaților acces timpuriu la funcții noi. Modelul implicit pentru toți utilizatorii este în prezent Mixtral 8x7B. Consultă **[Centrul de asistență Brave](%1$@)** pentru mai multe detalii.\n\nÎn mod implicit, când îi adresezi o întrebare lui Leo, acesta poate trimite și folosi conținutul paginii web pe care o vizualizezi sau textul pe care îl evidențiezi către Brave Leo pentru a oferi un răspuns. În unele cazuri, Leo va trimite întrebări derivate din promptul tău către Brave Search și va folosi rezultatele căutărilor pentru a îti răspunde mai bine la întrebare. Acuratețea răspunsurilor nu este garantată și poate include informații inexacte, înșelătoare sau false. Nu trimite informații sensibile sau private și fii precaut cu orice răspunsuri legate de sănătate, finanțe, siguranță personală sau similare. Poți ajusta opțiunile lui Leo în Setări oricând. Mergi la Setări > Leo.\n\nLeo nu colectează identificatori, cum ar fi adresa ta IP, care pot fi legați de tine. Niciun fel de date nu sunt folosite pentru a antrena modelele de IA și niciun fel de date personale nu sunt reținute de către modelele de IA  (exceptând Anthropic care reține datele pentru 30 zile înainte de a le șterge). Consultă **[politica de confidențialitate](%2$@)** pentru mai multe informații.";
+"aichat.termsConditionsDescription" = "Ping Leo este un asistent inteligent privat IA care îți îmbunătățește utilizarea web-ului. Leo poate fi utilizat gratuit cu acces limitat. Ping Leo Premium oferă mai multe modele lingvistice, limite mai mari și oferă abonaților acces timpuriu la funcții noi. Modelul implicit pentru toți utilizatorii este în prezent Mixtral 8x7B. Consultă **[Centrul de asistență Ping](%1$@)** pentru mai multe detalii.\n\nÎn mod implicit, când îi adresezi o întrebare lui Leo, acesta poate trimite și folosi conținutul paginii web pe care o vizualizezi sau textul pe care îl evidențiezi către Ping Leo pentru a oferi un răspuns. În unele cazuri, Leo va trimite întrebări derivate din promptul tău către Ping Search și va folosi rezultatele căutărilor pentru a îti răspunde mai bine la întrebare. Acuratețea răspunsurilor nu este garantată și poate include informații inexacte, înșelătoare sau false. Nu trimite informații sensibile sau private și fii precaut cu orice răspunsuri legate de sănătate, finanțe, siguranță personală sau similare. Poți ajusta opțiunile lui Leo în Setări oricând. Mergi la Setări > Leo.\n\nLeo nu colectează identificatori, cum ar fi adresa ta IP, care pot fi legați de tine. Niciun fel de date nu sunt folosite pentru a antrena modelele de IA și niciun fel de date personale nu sunt reținute de către modelele de IA  (exceptând Anthropic care reține datele pentru 30 zile înainte de a le șterge). Consultă **[politica de confidențialitate](%2$@)** pentru mai multe informații.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Inițiază conversații private cu Brave Leo";
+"aichat.termsConditionsTitle" = "Inițiază conversații private cu Ping Leo";
 
 /* The title of the badge where a model which can be used unlimited */
 "aichat.unlimitedModelStatusTitle" = "Nelimitat";

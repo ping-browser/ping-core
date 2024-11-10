@@ -18,34 +18,34 @@ import os.log
 extension BrowserViewController {
   func featuresMenuSection(_ menuController: MenuViewController) -> some View {
     VStack(alignment: .leading, spacing: 5) {
-      VPNMenuButton(
-        retryStateActive: Preferences.VPN.vpnReceiptStatus.value
-          == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
-        vpnProductInfo: self.vpnProductInfo,
-        displayVPNDestination: { [unowned self] vc in
-          (self.presentedViewController as? MenuViewController)?
-            .pushInnerMenu(vc)
-        },
-        enableInstalledVPN: { [unowned menuController] in
-          // Donate Enable VPN Activity for suggestions
-          let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(
-            type: .enableBraveVPN
-          )
-          menuController.userActivity = enableVPNActivity
-          enableVPNActivity.becomeCurrent()
-        },
-        displayAlert: { [unowned menuController] alert in
-          menuController.present(alert, animated: true)
-        },
-        openURL: { [weak self] url in
-          guard let self = self else { return }
-          self.openURLInNewTab(
-            url,
-            isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
-            isPrivileged: false
-          )
-        }
-      )
+      // VPNMenuButton(
+      //   retryStateActive: Preferences.VPN.vpnReceiptStatus.value
+      //     == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
+      //   vpnProductInfo: self.vpnProductInfo,
+      //   displayVPNDestination: { [unowned self] vc in
+      //     (self.presentedViewController as? MenuViewController)?
+      //       .pushInnerMenu(vc)
+      //   },
+      //   enableInstalledVPN: { [unowned menuController] in
+      //     // Donate Enable VPN Activity for suggestions
+      //     let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(
+      //       type: .enableBraveVPN
+      //     )
+      //     menuController.userActivity = enableVPNActivity
+      //     enableVPNActivity.becomeCurrent()
+      //   },
+      //   displayAlert: { [unowned menuController] alert in
+      //     menuController.present(alert, animated: true)
+      //   },
+      //   openURL: { [weak self] url in
+      //     guard let self = self else { return }
+      //     self.openURLInNewTab(
+      //       url,
+      //       isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+      //       isPrivileged: false
+      //     )
+      //   }
+      // )
 
       // Region Button is populated without current selected detail title for features menu
       RegionMenuButton(
@@ -71,35 +71,35 @@ extension BrowserViewController {
         .padding(.horizontal, 14)
         .padding(.bottom, 5)
 
-      VPNMenuButton(
-        retryStateActive: Preferences.VPN.vpnReceiptStatus.value
-          == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
-        vpnProductInfo: self.vpnProductInfo,
-        description: Strings.OptionsMenu.braveVPNItemDescription,
-        displayVPNDestination: { [unowned self] vc in
-          (self.presentedViewController as? MenuViewController)?
-            .pushInnerMenu(vc)
-        },
-        enableInstalledVPN: { [unowned menuController] in
-          // Donate Enable VPN Activity for suggestions
-          let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(
-            type: .enableBraveVPN
-          )
-          menuController.userActivity = enableVPNActivity
-          enableVPNActivity.becomeCurrent()
-        },
-        displayAlert: { [unowned self] alert in
-          self.popToBVC()
-          self.present(alert, animated: true)
-        },
-        openURL: { [unowned self] url in
-          self.openURLInNewTab(
-            url,
-            isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
-            isPrivileged: false
-          )
-        }
-      )
+      // VPNMenuButton(
+      //   retryStateActive: Preferences.VPN.vpnReceiptStatus.value
+      //     == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
+      //   vpnProductInfo: self.vpnProductInfo,
+      //   description: Strings.OptionsMenu.braveVPNItemDescription,
+      //   displayVPNDestination: { [unowned self] vc in
+      //     (self.presentedViewController as? MenuViewController)?
+      //       .pushInnerMenu(vc)
+      //   },
+      //   enableInstalledVPN: { [unowned menuController] in
+      //     // Donate Enable VPN Activity for suggestions
+      //     let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(
+      //       type: .enableBraveVPN
+      //     )
+      //     menuController.userActivity = enableVPNActivity
+      //     enableVPNActivity.becomeCurrent()
+      //   },
+      //   displayAlert: { [unowned self] alert in
+      //     self.popToBVC()
+      //     self.present(alert, animated: true)
+      //   },
+      //   openURL: { [unowned self] url in
+      //     self.openURLInNewTab(
+      //       url,
+      //       isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+      //       isPrivileged: false
+      //     )
+      //   }
+      // )
 
       // Region Button is populated including the details for privacy feature menu
       RegionMenuButton(
@@ -114,7 +114,7 @@ extension BrowserViewController {
         }
       )
 
-      Divider()
+      // Divider()
 
       MenuItemFactory.button(
         for: .playlist(subtitle: Strings.OptionsMenu.bravePlaylistItemDescription)
@@ -124,7 +124,7 @@ extension BrowserViewController {
       }
 
       // Add Brave Talk and News options only in normal browsing
-      if !privateBrowsingManager.isPrivateBrowsing {
+      if false && !privateBrowsingManager.isPrivateBrowsing {
         // Show Brave News if it is first launch and after first launch If the new is enabled
         if Preferences.General.isFirstLaunch.value
           || (!Preferences.General.isFirstLaunch.value && Preferences.BraveNews.isEnabled.value)
@@ -154,7 +154,7 @@ extension BrowserViewController {
       }
 
       // Add Brave-Leo options only in normal browsing
-      if !privateBrowsingManager.isPrivateBrowsing {
+      if false && !privateBrowsingManager.isPrivateBrowsing {
         MenuItemFactory.button(for: .leo) { [unowned self] in
           self.popToBVC()
           self.openBraveLeo()
@@ -356,7 +356,7 @@ extension BrowserViewController {
           }
 
           // Add Brave-Leo options only in normal browsing
-          if !browserViewController.tabManager.privateBrowsingManager.isPrivateBrowsing {
+          if false && !browserViewController.tabManager.privateBrowsingManager.isPrivateBrowsing {
             MenuItemButton(
               icon: Image(braveSystemName: "leo.product.brave-leo"),
               title: Strings.leoMenuItem

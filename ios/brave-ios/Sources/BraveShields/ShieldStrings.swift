@@ -142,17 +142,17 @@ extension Strings.Shields {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "To address this issue, Brave can adjust your shields settings for you. Once adjusted, you can try watching this content in Brave Player instead.",
+      "To address this issue, Ping can adjust your shields settings for you. Once adjusted, you can try watching this content in Ping Player instead.",
     comment: "A descriptive message explaining to disable shields on this site."
   )
 
-  /// A button that disables ad-blocking and uses brave player
+  /// A button that disables ad-blocking and uses ping player
   public static let antiAdBlockWarningConfirmationButton = NSLocalizedString(
     "AntiAdBlockWarningConfirmationButton",
     tableName: "BraveShared",
     bundle: .module,
     value: "Adjust Shields For Me",
-    comment: "A button that disables ad-blocking and uses brave player."
+    comment: "A button that disables ad-blocking and uses ping player."
   )
 
   /// A button that dismisses the warning and does nothing
@@ -164,74 +164,74 @@ extension Strings.Shields {
     comment: "A button that dismisses the warning and does nothing."
   )
 
-  /// A discription of the Brave Player
+  /// A discription of the Ping Player
   public static let antiAdBlockWarningBravePlayerDescription = NSLocalizedString(
     "AntiAdBlockWarningBravePlayerDescription",
     tableName: "BraveShared",
     bundle: .module,
-    value: "**Brave Player** is your ticket to an ad-free and uninterrupted video experience.",
-    comment: "A discription of the Brave Player."
+    value: "**Ping Player** is your ticket to an ad-free and uninterrupted video experience.",
+    comment: "A discription of the Ping Player."
   )
 }
 
-// MARK: - Brave Player
+// MARK: - Ping Player
 
 extension Strings.Shields {
-  /// Title for the brave player feature
+  /// Title for the ping player feature
   public static let bravePlayer = NSLocalizedString(
     "BravePlayer",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Player",
-    comment: "Title for the brave player feature"
+    value: "Ping Player",
+    comment: "Title for the ping player feature"
   )
 
-  /// Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar
+  /// Title for the ping player info popup which appears when clicking on the ping player icon on the navigation bar
   public static let bravePlayerInfoTitle = NSLocalizedString(
     "BravePlayerInfoTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Watch In Brave Player Instead",
+    value: "Watch In Ping Player Instead",
     comment:
-      "Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar."
+      "Title for the ping player info popup which appears when clicking on the ping player icon on the navigation bar."
   )
 
-  /// A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time
+  /// A description of the ping player that is presented on the info panel when clicing on the ping player icon for the first time
   public static let bravePlayerInfoMessage = NSLocalizedString(
     "BravePlayerInfoMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Player lets you watch videos without interruptions.",
+    value: "Ping Player lets you watch videos without interruptions.",
     comment:
-      "A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time."
+      "A description of the ping player that is presented on the info panel when clicing on the ping player icon for the first time."
   )
 
-  /// A label for a toggle that enables automatic launching of brave player for certain sites
+  /// A label for a toggle that enables automatic launching of ping player for certain sites
   public static let bravePlayerAlwaysOpenVideoLinks = NSLocalizedString(
     "BravePlayerAlwaysOpenYouTubeLinks",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Always open videos from this site with Brave Player",
+    value: "Always open videos from this site with Ping Player",
     comment:
-      "A label for a toggle that enables automatic launching of brave player for certain sites"
+      "A label for a toggle that enables automatic launching of ping player for certain sites"
   )
 
-  /// A button that confirms to use the brave player
+  /// A button that confirms to use the ping player
   public static let bravePlayerConfirmButton = NSLocalizedString(
     "BravePlayerConfirmButton",
     tableName: "BraveShared",
     bundle: .module,
     value: "Try It Out",
-    comment: "A button that confirms to use the brave player."
+    comment: "A button that confirms to use the ping player."
   )
 
-  /// A button that ignores the brave player
+  /// A button that ignores the ping player
   public static let bravePlayerDismissButton = NSLocalizedString(
     "BravePlayerDismissButton",
     tableName: "BraveShared",
     bundle: .module,
     value: "Not Now",
-    comment: "A button that ignores the brave player"
+    comment: "A button that ignores the ping player"
   )
 }
 
@@ -393,7 +393,7 @@ extension Strings.Shields {
     "DomainBlockedPageMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave has prevented the following site from loading:",
+    value: "Ping has prevented the following site from loading:",
     comment: "A message in the warning page that appears when a page was blocked"
   )
 
@@ -403,7 +403,7 @@ extension Strings.Shields {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "Because you requested to aggressively block trackers and ads, Brave is blocking this site before the first network connection.",
+      "Because you requested to aggressively block trackers and ads, Ping is blocking this site before the first network connection.",
     comment: "A description in the warning page that appears when a page was blocked"
   )
 

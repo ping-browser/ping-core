@@ -144,11 +144,11 @@ import os
         isEnabled: true
       ),
       ClearableSetting(id: .downloads, clearable: DownloadsClearable(), isEnabled: true),
-      ClearableSetting(
-        id: .braveNews,
-        clearable: BraveNewsClearable(feedDataSource: feedDataSource),
-        isEnabled: true
-      ),
+//       ClearableSetting(
+//         id: .braveNews,
+//         clearable: BraveNewsClearable(feedDataSource: feedDataSource),
+//         isEnabled: true
+//       ),
     ]
 
     // Enable clearing of Brave Ads data only if:

@@ -1,11 +1,11 @@
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Continuar";
 
-/* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Abra todos os links que você toca com as proteções de privacidade do Brave";
+/* The subtitle of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Abra todos os links que você toca com as proteções de privacidade do Ping";
 
-/* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Defina o Brave como seu navegador padrão";
+/* The title of the screen that requests user to set Ping as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Defina o Ping como seu navegador padrão";
 
 /* The subtitle of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenDescription" = "Navegue mais rápido e use menos dados.";
@@ -26,10 +26,10 @@
 "focusOnboarding.p3aScreenDescription" = "Conte para a gente quais recursos você mais gosta.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Deixe o Brave melhor.";
+"focusOnboarding.p3aScreenTitle" = "Deixe o Ping melhor.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Altere isso a qualquer momento nas configurações do Brave em ‘Proteções e Privacidade do Brave’.";
+"focusOnboarding.p3aToggleDescription" = "Altere isso a qualquer momento nas configurações do Ping em ‘Proteções e Privacidade do Ping’.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Compartilhe insights privados e anônimos sobre produtos.";

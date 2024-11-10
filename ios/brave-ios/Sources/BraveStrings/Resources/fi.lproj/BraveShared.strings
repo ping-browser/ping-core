@@ -1,17 +1,17 @@
 /* About settings section title */
 "About" = "Tietoja asetuksista";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Tietoja Brave Shieldsistä";
+/* The title of the screen explaining Ping Shields */
+"AboutBraveShields" = "Tietoja Ping Shieldsistä";
 
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Sivustoilla on usein evästeitä ja merkkijonoja, joita käytetään sinun ja laitteesi tunnistamiseen. Ne tahtovat selvittää henkilöllisyytesi sekä seurata sinua verkossa, tarkkaillen jokaisen sivuston käyttöä.\n\nBrave estää kyseiset seuraimet, joten voit rauhassa selata nettiä ilman tarkkailijoita.";
+/* The body of the screen explaining Ping Shields */
+"AboutBraveShieldsBody" = "Sivustoilla on usein evästeitä ja merkkijonoja, joita käytetään sinun ja laitteesi tunnistamiseen. Ne tahtovat selvittää henkilöllisyytesi sekä seurata sinua verkossa, tarkkaillen jokaisen sivuston käyttöä.\n\nPing estää kyseiset seuraimet, joten voit rauhassa selata nettiä ilman tarkkailijoita.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Tämän avulla voit tallentaa kuvia kameran kuviin.";
 
 /* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave haluaa käyttää valokuviasi";
+"AccessPhotoDeniedAlertTitle" = "Ping haluaa käyttää valokuviasi";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Lisää kirjanmerkki";
@@ -40,7 +40,7 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Käytössä";
 
-/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+/* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Tämä todentaa Braven käyttöoikeutesi";
 
 /* Label for Cancel button */
@@ -143,43 +143,43 @@
 "BookmarkUrlPlaceholderText" = "Osoite";
 
 /* Button to show the brave panel */
-"BravePanel" = "Brave-paneeli";
+"BravePanel" = "Ping-paneeli";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Brave -palkinnot";
+"BraveRewardsAdNotificationTitle" = "Ping -palkinnot";
 
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Avaa";
 
-/* Brave Rewards title in settings */
+/* Ping Rewards title in settings */
 "BraveRewardsSettingsTitle" = "Palkinnot";
 
-/* Brave Rewards title */
-"BraveRewardsTitle" = "Brave -palkinnot";
+/* Ping Rewards title */
+"BraveRewardsTitle" = "Ping -palkinnot";
 
-/* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Brave-haku ei profiloi sinua.";
+/* Ping Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Ping-haku ei profiloi sinua.";
 
-/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+/* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Ehkä myöhemmin";
 
-/* Brave Search Banner Promotion title in Search Suggestions */
+/* Ping Search Banner Promotion title in Search Suggestions */
 "braveSearchPromotion.bannerTitle" = "Tue riippumatonta hakua paremmalla yksityisyydellä";
 
-/* Brave Search Banner Promotion title for try button in Search Suggestions */
-"braveSearchPromotion.bannerTryButtonTitle" = "Kokeile Brave-hakua";
+/* Ping Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Kokeile Ping-hakua";
 
 /* Button title for Bottom Bar Callout View for action later */
 "braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Ehkä myöhemmin";
 
-/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+/* Ping Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Piilota";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Edistyneet kontrollit";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave-suojaukset ja yksityisyys";
+"BraveShieldsAndPrivacy" = "Ping-suojaukset ja yksityisyys";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Suojaukset ja yksityisyys";
@@ -199,17 +199,17 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Kokeile käyttöä ilman Shieldsiä, jos sivusto vaikuttaa olevan rikkinäinen.";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
+"BraveShieldsStatusTitle" = "Ping Shields";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Alas";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Ylös";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Vaihda Brave-suojauksen asetusta kaksoisnapauttamalla";
+"BraveShieldsToggleHint" = "Vaihda Ping-suojauksen asetusta kaksoisnapauttamalla";
 
 /* Sync page title */
 "BraveSync" = "Synkronointi";
@@ -218,10 +218,10 @@
 "BraveSyncInternalsTitle" = "Synkronoi sisäiset toiminnot";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "Ensi alkuun sinun on asennettava Brave synkronoitaville laitteille. Voit ketjuttaa ne käynnistämällä synkronointiketjun, jonka avulla voit yhdistää kaikki laitteesi toisiinsa turvallisesti.";
+"BraveSyncWelcome" = "Ensi alkuun sinun on asennettava Ping synkronoitaville laitteille. Voit ketjuttaa ne käynnistämällä synkronointiketjun, jonka avulla voit yhdistää kaikki laitteesi toisiinsa turvallisesti.";
 
 /* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
+"bravetalk.braveTalkTitle" = "Ping Talk";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Selaimen lukitus";
@@ -242,13 +242,13 @@
 "callout.bottomBarCalloutDescription" = "Siirrä osoitepalkki, välilehdet, kirjanmerkit ja muut työkalut selaimen alaosaan.";
 
 /* Title for Bottom Bar Callout View */
-"callout.bottomBarCalloutTitle" = "Mukauta Brave-välilehtipalkkia";
+"callout.bottomBarCalloutTitle" = "Mukauta Ping-välilehtipalkkia";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Asetetaanko Brave oletusselaimeksi?";
+"callout.defaultBrowserCalloutButtonDescription" = "Asetetaanko Ping oletusselaimeksi?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Kun Brave on käytössä oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten suojaamana.";
+"callout.defaultBrowserCalloutDescription" = "Kun Ping on käytössä oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten suojaamana.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Aseta oletusarvoiseksi";
@@ -263,7 +263,7 @@
 "callout.defaultBrowserTitle" = "Yksinkertainen tietosuoja.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Tämä auttaa meitä selvittämään, mitä Braven ominaisuuksia käytetään eniten. Voit muuttaa niitä milloin tahansa Braven asetuksissa kohdassa Brave-suojaus ja muut tietosuoja-asetukset.";
+"callout.p3aCalloutDescription" = "Tämä auttaa meitä selvittämään, mitä Braven ominaisuuksia käytetään eniten. Voit muuttaa niitä milloin tahansa Braven asetuksissa kohdassa Ping-suojaus ja muut tietosuoja-asetukset.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Lue lisää yksityisyyden säilyttävästä tuoteanalytiikasta (P3A).";
@@ -275,7 +275,7 @@
 "callout.p3aCalloutToggleTitle" = "Jaa yksityisiä ja anonyymejä tuotetietoja.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "Hanki Brave-tietosuoja tietokoneellesi tai tabletillesi ja synkronoi kirjanmerkit ja laajennukset laitteiden välillä.";
+"callout.privacyEverywhereCalloutDescription" = "Hanki Ping-tietosuoja tietokoneellesi tai tabletillesi ja synkronoi kirjanmerkit ja laajennukset laitteiden välillä.";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Synkronoi nyt";
@@ -355,7 +355,7 @@
 /* Title of the section for Department of the Company. Example: Human Resources. */
 "certificateViewer.organizationalUnitTitle" = "Organisaatioyksikkö";
 
-/* Title of the section for Name of the Company. Example: Brave Inc. */
+/* Title of the section for Name of the Company. Example: Ping Inc. */
 "certificateViewer.organizationTitle" = "Organisaatio";
 
 /* Title indicating 'Parameters' or Input passed to a function/algorithm. */
@@ -535,19 +535,19 @@
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Samanniminen hakukone on jo olemassa.";
 
-/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Ping Search, Ping Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Suojaamaton mukautettu hakumalli kohteelle";
 
-/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Ping Search, Ping Search is name of search engine on a new seperate line */
 "customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Suojaamaton mukautettu ehdotusmalli kohteelle";
 
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Lisää hakukone";
 
-/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Search Template title - for instance it will be used Search Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.searchTemplateTitle" = "Hakumalli:";
 
-/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Suggestion Template title - for instance it will be used Suggestion Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.suggestionTemplateTitle" = "Ehdotusmalli:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
@@ -593,22 +593,22 @@
 "defaultBrowserCallout.introPrimaryText" = "Avaa kaikki linkit Bravella suojellaksesi yksityisyyttäsi";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Brave-suojaus estää seurantaohjelmat ja mainokset sekä säästää dataa ja aikaa jokaisella vierailemallasi sivulla.";
+"defaultBrowserCallout.introSecondaryText" = "Ping-suojaus estää seurantaohjelmat ja mainokset sekä säästää dataa ja aikaa jokaisella vierailemallasi sivulla.";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Avaa asetukset, napauta Oletusarvoinen selainsovellus ja valitse Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Avaa asetukset, napauta Oletusarvoinen selainsovellus ja valitse Ping.";
 
-/* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Aseta Brave oletusselaimeksi";
+/* Notification body to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationBody" = "Aseta Ping oletusselaimeksi";
 
-/* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Hanki Brave-suojaus jokaisen linkin kohdalla";
+/* Notification title to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Hanki Ping-suojaus jokaisen linkin kohdalla";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Sulje oletusarvoisen selaimen kehote";
 
-/* Name for default Brave theme. */
-"defaultThemeName" = "Oletisarvoinen Brave";
+/* Name for default Ping theme. */
+"defaultThemeName" = "Oletisarvoinen Ping";
 
 /* No comment provided by engineer. */
 "Delete" = "Poista";
@@ -722,7 +722,7 @@
 "ErrorPageReloadButtonTitle" = "Lataa uudelleen";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ käyttää yleensä salausta tietojesi suojaamiseen. Kun Brave yritti muodostaa yhteyden kohteeseen %2$@, sivusto lähetti tällä kertaa takaisin epätavalliset ja virheelliset kirjautumistiedot. Näin voi käydä, kun hyökkääjä yrittää teeskennellä olevansa %3$@ tai kun Wi-Fi-kirjautumisnäyttö on katkaissut yhteyden. Tietosi ovat edelleen turvassa, koska Brave katkaisi yhteyden ennen tietojen vaihtoa.<br />Et voi juuri nyt käytä kohteessa %4$@, koska verkkosivusto käyttää varmenteen kiinnitystä. Verkkovirheet ja hyökkäykset ovat yleensä tilapäisiä, joten tämä sivu todennäköisesti toimii myöhemmin.";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ käyttää yleensä salausta tietojesi suojaamiseen. Kun Ping yritti muodostaa yhteyden kohteeseen %2$@, sivusto lähetti tällä kertaa takaisin epätavalliset ja virheelliset kirjautumistiedot. Näin voi käydä, kun hyökkääjä yrittää teeskennellä olevansa %3$@ tai kun Wi-Fi-kirjautumisnäyttö on katkaissut yhteyden. Tietosi ovat edelleen turvassa, koska Ping katkaisi yhteyden ennen tietojen vaihtoa.<br />Et voi juuri nyt käytä kohteessa %4$@, koska verkkosivusto käyttää varmenteen kiinnitystä. Verkkovirheet ja hyökkäykset ovat yleensä tilapäisiä, joten tämä sivu todennäköisesti toimii myöhemmin.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Palvelin ei pystynyt todistamaan, että se on %@; laitteesi käyttöjärjestelmä ei pidä suojausvarmennetta luotettavana. Tämä voi johtua virheellisestä määrityksestä tai siitä, että hyökkääjä yrittää siepata yhteytesi.";
@@ -769,10 +769,10 @@
 /* Allow link to switch apps? */
 "ExternalAppURLAlertTitle" = "Saako linkki vaihtaa sovellusta?";
 
-/* Allow Brave to open the external app URL */
+/* Allow Ping to open the external app URL */
 "ExternalAppURLAllow" = "Salli";
 
-/* Don't allow Brave to open the external app URL */
+/* Don't allow Ping to open the external app URL */
 "ExternalAppURLDontAllow" = "Älä salli";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
@@ -845,10 +845,10 @@
 "HideLinkPreviewsActionTitle" = "Piilota linkkiesikats.";
 
 /* Hides the rewards icon */
-"HideRewardsIcon" = "Piilota Brave Rewards -kuvake";
+"HideRewardsIcon" = "Piilota Ping Rewards -kuvake";
 
 /* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Piilottaa Brave-palkintojen kuvakkeen, kun Brave-palkinnot eivät ole käytössä";
+"HideRewardsIconSubtitle" = "Piilottaa Ping-palkintojen kuvakkeen, kun Ping-palkinnot eivät ole käytössä";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Historia";
@@ -904,7 +904,7 @@
 /* No comment provided by engineer. */
 "learnMore" = "Lisätietoja";
 
-/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+/* Title for Ping Leo menu item. Ping Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
@@ -992,7 +992,7 @@
 "MyFirstAdBody" = "Saat lisätietoja napauttamalla tästä.";
 
 /* No comment provided by engineer. */
-"MyFirstAdTitle" = "Tämä on ensimmäinen Brave-mainoksesi";
+"MyFirstAdTitle" = "Tämä on ensimmäinen Ping-mainoksesi";
 
 /* Bookmark title / Device name */
 "Name" = "Nimi";
@@ -1054,13 +1054,13 @@
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Ohjaa automaattisesti NPR-linkit niiden tekstipohjaiseen versioon (text.npr.org).";
 
-/* Bookmark title for Brave Support */
+/* Bookmark title for Ping Support */
 "ntp.braveSupportFavoriteTitle" = "Braven tuki";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Lunasta tokenit";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "Ansaitsit %@ selaamalla Bravella.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1070,10 +1070,10 @@
 "ntp.hideSponsoredImages" = "Piilota maksetut kuvat";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Sponsoroidut ovat muita brändättyjä taustoja, joista voit ansaita, kun Brave-palkinnot on käytössä.";
+"ntp.imageTypeSelectionDescription" = "Sponsoroidut ovat muita brändättyjä taustoja, joista voit ansaita, kun Ping-palkinnot on käytössä.";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "Lue lisää Brave-palkinnoista";
+"ntp.learnMoreAboutRewards" = "Lue lisää Ping-palkinnoista";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Lue lisää sponsoroiduista kuvista";
@@ -1112,10 +1112,10 @@
 "OBAdsOptInMessageJapan" = "Ansaitse pisteitä ja palkitse sisällöntuottajia upeasta sisällöstä selaamisen aikana.";
 
 /* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave-mainokset ovat täällä!";
+"OBAdsOptInTitle" = "Ping-mainokset ovat täällä!";
 
 /* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave näyttää ensimmäisen mainoksesi";
+"OBAdsTitle" = "Ping näyttää ensimmäisen mainoksesi";
 
 /* Title for when the user completes onboarding */
 "OBCompleteTitle" = "Olet nyt valmis.";
@@ -1135,14 +1135,14 @@
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Aloita selaaminen";
 
-/* Button to join Brave Rewards. */
+/* Button to join Ping Rewards. */
 "OBJoinButton" = "Liity";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentClipboardPermission" = "Salli Braven tarkistaa vastaava suosittelijakoodi leikepöydältäni";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Olet ehkä ladannut Braven suosittelijan avulla. Suosittelijasi tunnistamiseksi Brave tarkistaa leikepöydältäsi kertaluonteisen suosittelijakoodin. Tämä tarkistus rajoittuu vain koodiin, eikä muita henkilötietoja lähetetä. Jos kieltäydyt, suosittelijasi ei saa palkintoja Bravelta.";
+"OBPrivacyConsentDetail" = "Olet ehkä ladannut Braven suosittelijan avulla. Suosittelijasi tunnistamiseksi Ping tarkistaa leikepöydältäsi kertaluonteisen suosittelijakoodin. Tämä tarkistus rajoittuu vain koodiin, eikä muita henkilötietoja lähetetä. Jos kieltäydyt, suosittelijasi ei saa palkintoja Bravelta.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Älä salli tätä tarkistusta";
@@ -1163,7 +1163,7 @@
 "OBRewardsAgreementDetailsAnd" = "ja";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave -palkinnot";
+"OBRewardsAgreementTitle" = "Ping -palkinnot";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Braven yksityisten mainosten käyttöönotto tukee julkaisijoita ja sisällöntuottajia jokaisen mainoksen katselun myötä.";
@@ -1175,7 +1175,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "Tietosuojakäytäntö";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave -palkinnot";
+"OBRewardsTitle" = "Ping -palkinnot";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Tallenna";
@@ -1184,28 +1184,28 @@
 "OBSearchEngineDetail" = "Valitse oletushakukone";
 
 /* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Tervetuloa Brave-selaimeen";
+"OBSearchEngineTitle" = "Tervetuloa Ping-selaimeen";
 
 /* Detail text for shields onboarding screen */
 "OBShieldsDetail" = "Estä yksityisyyttäsi loukkaavat mainokset ja seurantaohjelmat, jotta voit selata verkkoa ilman, että sinua seurataan.";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
+"OBShieldsTitle" = "Ping Shields";
 
-/* Button to show the Brave Rewards Ads. */
+/* Button to show the Ping Rewards Ads. */
 "OBShowMeButton" = "Näytä";
 
-/* Button to show Brave Rewards. */
+/* Button to show Ping Rewards. */
 "OBTurnOnButton" = "Aloita";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ ja %2$lld muuta mainosta ja seurantaohjelmaa estetty";
 
-/* The footnote indicating what Brave shields is blocking */
+/* The footnote indicating what Ping shields is blocking */
 "onboarding.blockedAdsOnboardingFootnoteText" = "Näet kaikki Braven jokaisella sivulla estämät huonot asiat Shieldsillä.";
 
 /* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Tarkastele Brave Shieldisiä napauttamalla";
+"onboarding.blockedAdsOnboardingInstructionsText" = "Tarkastele Ping Shieldisiä napauttamalla";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "mainosta ja seurantaohjelmaa estetty";
@@ -1214,10 +1214,10 @@
 "onboarding.linkReceiptButton" = "Linkitä VPN-tilauksesi";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Brave VPN -tilauksesi voi suojata enintään 5 laitetta Android- tai iOS-laitteilla ja tietokoneella. Linkitä App Store -tilauksesi Brave-tiliisi.";
+"onboarding.linkReceiptDescription" = "Ping VPN -tilauksesi voi suojata enintään 5 laitetta Android- tai iOS-laitteilla ja tietokoneella. Linkitä App Store -tilauksesi Ping-tiliisi.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptTitle" = "Laajenna Brave-palomuuria + VPN-suojaa";
+"onboarding.linkReceiptTitle" = "Laajenna Ping-palomuuria + VPN-suojaa";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "Etsi Oletusselainsovellus-kohta";
@@ -1249,8 +1249,8 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Avaa kaikki (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Avaa Brave-palkintojen asetukset";
+/* Button title for opening the Ping Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Avaa Ping-palkintojen asetukset";
 
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Tapahtui tuntematon virhe avattaessa Lataukset-kansiota Tiedostot-sovelluksessa.";
@@ -1307,13 +1307,13 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "Aloita määrittämällä synkronointiketju ja valitsemalla synkronointiasetuksista Avoimet välilehdet.";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Hallinnoi, mitä Brave synkronoi asetuksissa.";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Hallinnoi, mitä Ping synkronoi asetuksissa.";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Muilta laitteiltasi ei ole näytettäviä aktiivisia istuntoja.";
 
 /* The title of the view showing no synced sessions */
-"opentabs.noSyncSessionPlaceHolderViewTitle" = "Täällä näytetään muilla laitteilla avoinna olevat Brave-välilehdet";
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Täällä näytetään muilla laitteilla avoinna olevat Ping-välilehdet";
 
 /* The title for the action to hide open session with all tabs */
 "opentabs.openSessionHideAllActionTitle" = "Piilota toistaiseksi";
@@ -1366,38 +1366,38 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Avaa verkkosivusto";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+/* The subtitle description of menu item Ping Leo. Ping Leo is the name of a product and should not be translated. */
 "optionsMenu.braveLeoItemDescription" = "Leo on tekoälyllä toimiva älykäs avustaja, joka on rakennettu suoraan selaimeen";
 
-/* The subtitle description of menu item Brave News */
+/* The subtitle description of menu item Ping News */
 "optionsMenu.braveNewsItemDescription" = "Tämän päivän suosituimmat uutiset yksityisessä uutissyötteessä";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Uutiset";
 
-/* The subtitle description of menu item Brave Playlist */
+/* The subtitle description of menu item Ping Playlist */
 "optionsMenu.bravePlaylistItemDescription" = "Pidä offline-soittolista kaikista videoista/suoratoistoista";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Soittolista";
 
-/* The subtitle description of menu item Brave Talk */
+/* The subtitle description of menu item Ping Talk */
 "optionsMenu.braveTalkItemDescription" = "Yksityiset videopuhelut suoraan selaimessa";
 
-/* Brave Talk Item Menu title */
+/* Ping Talk Item Menu title */
 "optionsMenu.braveTalkItemTitle" = "Puhe";
 
-/* The subtitle description of menu item Brave VPN */
+/* The subtitle description of menu item Ping VPN */
 "optionsMenu.braveVPNItemDescription" = "Suojaa koko laitteesi verkossa";
 
-/* Brave VPN Item Menu title */
+/* Ping VPN Item Menu title */
 "optionsMenu.braveVPNItemTitle" = "VPN";
 
-/* The subtitle description of menu item Brave Wallet */
+/* The subtitle description of menu item Ping Wallet */
 "optionsMenu.braveWalletItemDescription" = "Suojattu kryptolompakko, laajennuksia ei vaadita";
 
 /* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Brave-ominaisuudet";
+"optionsMenu.menuSectionTitle" = "Ping-ominaisuudet";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Muut tietosuoja-asetukset";
@@ -1408,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Jatka";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
+/* A subtitle shown on the setting that toggles analytics on Ping. */
 "p3a.settingSubtitle" = "Nämä yksityiset tiedot auttavat Bravea arvioimaan tiettyjen ominaisuuksien kokonaiskäytön ja tekemään niistä parempia sinulle.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)";
 
 /* No comment provided by engineer. */
@@ -1487,7 +1487,7 @@
 "playList.addToPlayListAlertDescription" = "Haluatko lisätä tämän videon soittolistallesi?";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "Lisää Brave-soittolistalle";
+"playList.addToPlayListAlertTitle" = "Lisää Ping-soittolistalle";
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Toistoasetukset";
@@ -1508,7 +1508,7 @@
 "playlist.carplaySettingsSectionTitle" = "Asetukset";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Brave-soittolista";
+"playlist.carplayTitle" = "Ping-soittolista";
 
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Vaihda soittolistaa";
@@ -1535,7 +1535,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Resurssin lataamisessa oli ongelma!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Kun tämä asetus on käytössä, päävalikon kuvakkeessa näkyy merkki, joka osoittaa, että sivulla oleva mediatiedosto voidaan lisätä Brave-soittolistaan.";
+"playlist.menuBadgeOptionFooterText" = "Kun tämä asetus on käytössä, päävalikon kuvakkeessa näkyy merkki, joka osoittaa, että sivulla oleva mediatiedosto voidaan lisätä Ping-soittolistaan.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Näytä valikon ilmoitusmerkki";
@@ -1544,7 +1544,7 @@
 "playlist.movePlaylistShareActionMenuTitle" = "Siirretään...";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "Voit lisätä kohteita Brave-soittolistallesi selaimessa";
+"playList.noItemLabelDetailLabel" = "Voit lisätä kohteita Ping-soittolistallesi selaimessa";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Ei käytettävissä olevia kohteita";
@@ -1634,7 +1634,7 @@
 "playList.playListSettingTitle" = "Soittolista";
 
 /* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Tämä kansio on jo Brave-soittolistallasi";
+"playList.playlistSharedFolderAlreadyExistsBody" = "Tämä kansio on jo Ping-soittolistallasi";
 
 /* Title for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsTitle" = "Pahoittelut";
@@ -1709,7 +1709,7 @@
 "playlist.sharePlaylistActionDetailsTitle" = "Voit avata nykyisen kohteen uudessa välilehdessä tai jakaa sen järjestelmän jakamisvalikon kautta";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Brave-soittolistavalikko";
+"playlist.sharePlaylistActionTitle" = "Ping-soittolistavalikko";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Avaa yksityisessä välilehdessä";
@@ -1724,22 +1724,22 @@
 "playList.sorryAlertTitle" = "Pahoittelut";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Lisätty Brave-soittolistalle";
+"playList.toastAddedToPlaylistTitle" = "Lisätty Ping-soittolistalle";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Avaa";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Lisää Brave-soittolistalle";
+"playList.toastAddToPlaylistTitle" = "Lisää Ping-soittolistalle";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Katso Brave-soittolistassa";
+"playList.toastExitingItemPlaylistTitle" = "Katso Ping-soittolistassa";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Pura";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Lisää soittolistapainikkeen (se näyttää +-symbolilla varustetulta neljältä riviltä) Brave-selaimen osoitepalkin viereen. Tällä painikkeella pääset nopeasti avaamaan soittolistan tai lisäämään tai poistamaan mediatiedostoja.";
+"playlist.urlBarButtonOptionFooter" = "Lisää soittolistapainikkeen (se näyttää +-symbolilla varustetulta neljältä riviltä) Ping-selaimen osoitepalkin viereen. Tällä painikkeella pääset nopeasti avaamaan soittolistan tai lisäämään tai poistamaan mediatiedostoja.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Ota pikakäyttöpainike käyttöön";
@@ -1777,7 +1777,7 @@
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Siirrä";
 
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+/* %@ Should NOT be localized. It is a placeholder. Example: Ping Folder and 1 more item. */
 "playlistFolders.moveItemDescription" = "%@ ja 1 muu kohde";
 
 /* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
@@ -1786,7 +1786,7 @@
 /* Sometimes an item can have no name. So this is a generic title to use */
 "playlistFolders.moveItemWithNoNameTitle" = "1 kohde";
 
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Ping Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ ja %2$lld muuta kohdetta";
 
 /* The title of the button to create a new folder */
@@ -1817,7 +1817,7 @@
 "playlistFolders.untitledFolderTitle" = "Nimetön soittolista";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Lisää Brave-soittolistalle ​​-painike";
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Lisää Ping-soittolistalle ​​-painike";
 
 /* Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonTitle" = "Tallenna";
@@ -1855,8 +1855,8 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Synkronoi nyt";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Sulje Brave-suojaus";
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Sulje Ping-suojaus";
 
 /* Settings privacy section title */
 "Privacy" = "Tietosuoja";
@@ -1870,7 +1870,7 @@
 /* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
 "privacyHub.allTimeListsHeader" = "Kaikki";
 
-/* Title of a section to show total count of trackers blocked by Brave */
+/* Title of a section to show total count of trackers blocked by Ping */
 "privacyHub.allTimeListsTrackersView" = "Seurantaohjelmat ja mainokset";
 
 /* Title of a section to show websites containing highest amount of trackers */
@@ -1894,10 +1894,10 @@
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Verkkosivusto";
 
-/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+/* Text for a button to display a list of all alerts caught by the Ping VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
 "privacyHub.allVPNAlertsButtonText" = "Kaikki hälytykset";
 
-/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Ping Shields', 'Blocked by BraveVPN */
 "privacyHub.blockedBy" = "Estetty:";
 
 /* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
@@ -1921,8 +1921,8 @@
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Viime viikko";
 
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "**Brave-suojaus esti kohteen **%1$@** **%2$ lld** sivustolla";
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**Ping-suojaus esti kohteen **%1$@** **%2$ lld** sivustolla";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
 "privacyHub.mostFrequentTrackerAndAdTitle" = "Yleisin seurantaohjelma ja mainos";
@@ -1939,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Ota ilmoitukset käyttöön";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "Tiivistelmä siitä, kuinka Brave suojeli sinua verkossa tällä viikolla.";
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "Tiivistelmä siitä, kuinka Ping suojeli sinua verkossa tällä viikolla.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Viikoittainen yksityisyysraportti";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1954,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Tietosuojakeskuksen tiedot tallennetaan paikallisesti, eikä niitä koskaan lähetetä minnekään.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Tietosuojakeskus";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -1963,22 +1963,22 @@
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "Sivusto, jossa on eniten seurantaohjelmia";
 
-/* This text explains a setting that lets Brave monitor blocked network requests */
+/* This text explains a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "Tietosuojakeskus näyttää suojauksen estämien kohteiden määrän. Asetus ei vaikuta suojauslaskuriin uudella välilehdellä. Suojaustietoja ei lasketa yksityisissä ikkunoissa.";
 
-/* Title of a setting that lets Brave monitor blocked network requests */
+/* Title of a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "Näytä suojaustiedot";
 
-/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* This text explains a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsFooter" = "Asetus on käytettävissä vain, jos olet ostanut VPN-tilauksen.";
 
-/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* Title of a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsTitle" = "Näytä VPN-hälytykset";
 
 /* This text explains what the button to clear datain the Privacy Hub is for. */
 "privacyHub.settingsSlearDataFooter" = "Nollaa kaikkien suojauksen estämien tietojen määrän.";
 
-/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+/* Button that lets user clear all blocked requests and vpn alerts data that Ping captured for them. */
 "privacyHub.settingsSlearDataTitle" = "Tyhjennä suojaustiedot";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
@@ -2006,15 +2006,15 @@
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Seurantaohjelma tai mainos";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Brave-palomuuri ja -VPN -hälytykset";
+"privacyHub.vpnAlertsHeader" = "Ping-palomuuri ja -VPN -hälytykset";
 
-/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+/* This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = "Palomuuri ja VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "Kokonaismäärä";
 
-/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+/* Show Ping Browser Privacy Policy page from the Privacy section in the settings. */
 "PrivacyPolicy" = "Tietosuojakäytäntö";
 
 /* Private button title */
@@ -2033,7 +2033,7 @@
 "PrivateTabBody" = "Yksityisiä välilehtiä ei tallenneta Braveen, mutta ne eivät tee sinusta anonyymiä verkossa. Sivustot, joilla käyt yksityisellä välilehdellä, eivät näy historiassasi, ja niiden evästeet katoavat aina, kun suljet ne – niistä ei jää jälkeäkään Braveen. Lataukset kuitenkin tallennetaan.\nMobiilioperaattorisi (tai sen Wi-Fi-verkon tai VPN:n omistaja, johon olet yhteydessä) voi nähdä, millä sivustoilla vierailet, ja kyseiset sivustot saavat tietoonsa julkisen IP-osoitteesi, jopa yksityisillä välilehdillä.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Yksityisten välilehtien käyttäminen muuttaa vain sitä, mitä Brave voi tehdä laitteellasi, se ei muuta kenenkään muun käyttäytymistä.\n\nSivustot saavat aina tietoonsa IP-osoitteesi, kun vierailet niillä. Sen perusteella ne voivat usein arvata karkeasti missä olet – tyypillisesti kaupunkisi. Joskus tämä sijainnin arvaus voi olla paljon tarkempi. Sivustot tietävät myös kaiken, mitä kerrot niille, kuten hakutermit. Jos kirjaudut sisään sivustolle, ne tietävät sinun olevan kyseisen tilin omistaja. Olet silti kirjautuneena ulos, kun suljet yksityiset välilehdet, koska Brave poistaa evästeen, joka pitää sinut kirjautuneena sisään.\n\n Kuka tahansa, joka yhdistää sinut Internetiin (internet-palveluntarjoajasi), voi nähdä kaiken toimintasi verkossa. Usein tämä on mobiilioperaattorisi. Jos olet yhteydessä Wi-Fi-verkkoon, tämä on kyseisen verkon omistaja, ja jos käytät VPN:ää, se on VPN:n ylläpitäjä. Internet-palveluntarjoajasi voi nähdä, millä sivustoilla käyt. Jos kyseiset sivustot käyttävät HTTPS:ää, Internet-palveoluntarjoajasi voi tehdä enintään valistuneen arvauksen siitä, mitä teet kyseisillä sivustoilla. Mutta jos sivusto käyttää vain HTTP:tä, Internet-palveluntarjoajasi näkee kaiken: hakutermit, lukemasi sivut ja seuraamasi linkit.\n\n Jos työnantaja hallinnoi laitettasi, hän saattaa myös seurata, mitä teet sillä. Yksityisten välilehtien käyttäminen ei todennäköisesti estä työnantajaa selvittämästä, millä sivustoilla olet käynyt. Myös joku muu, jolla on pääsy käsiksi laitteeseesi, on voinut asentaa ohjelmiston, joka seuraa toimintaasi, eivätkä yksityiset välilehdet suojaa sinua tällaisessa tilanteessa.";
+"PrivateTabDetails" = "Yksityisten välilehtien käyttäminen muuttaa vain sitä, mitä Ping voi tehdä laitteellasi, se ei muuta kenenkään muun käyttäytymistä.\n\nSivustot saavat aina tietoonsa IP-osoitteesi, kun vierailet niillä. Sen perusteella ne voivat usein arvata karkeasti missä olet – tyypillisesti kaupunkisi. Joskus tämä sijainnin arvaus voi olla paljon tarkempi. Sivustot tietävät myös kaiken, mitä kerrot niille, kuten hakutermit. Jos kirjaudut sisään sivustolle, ne tietävät sinun olevan kyseisen tilin omistaja. Olet silti kirjautuneena ulos, kun suljet yksityiset välilehdet, koska Ping poistaa evästeen, joka pitää sinut kirjautuneena sisään.\n\n Kuka tahansa, joka yhdistää sinut Internetiin (internet-palveluntarjoajasi), voi nähdä kaiken toimintasi verkossa. Usein tämä on mobiilioperaattorisi. Jos olet yhteydessä Wi-Fi-verkkoon, tämä on kyseisen verkon omistaja, ja jos käytät VPN:ää, se on VPN:n ylläpitäjä. Internet-palveluntarjoajasi voi nähdä, millä sivustoilla käyt. Jos kyseiset sivustot käyttävät HTTPS:ää, Internet-palveoluntarjoajasi voi tehdä enintään valistuneen arvauksen siitä, mitä teet kyseisillä sivustoilla. Mutta jos sivusto käyttää vain HTTP:tä, Internet-palveluntarjoajasi näkee kaiken: hakutermit, lukemasi sivut ja seuraamasi linkit.\n\n Jos työnantaja hallinnoi laitettasi, hän saattaa myös seurata, mitä teet sillä. Yksityisten välilehtien käyttäminen ei todennäköisesti estä työnantajaa selvittämästä, millä sivustoilla olet käynyt. Myös joku muu, jolla on pääsy käsiksi laitteeseesi, on voinut asentaa ohjelmiston, joka seuraa toimintaasi, eivätkä yksityiset välilehdet suojaa sinua tällaisessa tilanteessa.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Lue lisää yksityisistä välilehdistä.";
@@ -2047,8 +2047,8 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Pikahakukoneet";
 
-/* Open the App Store to rate Brave. */
-"RateBrave" = "Arvostele Brave";
+/* Open the App Store to rate Ping. */
+"RateBrave" = "Arvostele Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Suurenna tekstin kokoa";
@@ -2077,13 +2077,13 @@
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Muuttaa fonttityyppiä.";
 
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadingContentDisplayText" = "Ladataan sisältöä…";
 
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Lataa alkuperäinen sivu";
 
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Sivua ei voitu näyttää lukijanäkymässä.";
 
 /* Title of a bar that show up when you enter reader mode. */
@@ -2204,7 +2204,7 @@
 "ReportBrokenSiteBody1" = "Tuo Braven kehittäjien tietoon, ettei tämä sivusto toimi kunnolla kilpien kanssa:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Huomaa: Brave-palvelimille lähetettävä raportti sisältää sivuston osoitteen, Brave-versionumeron, Shields-asetukset, VPN-tilan ja kieliasetukset. ";
+"ReportBrokenSiteBody2" = "Huomaa: Ping-palvelimille lähetettävä raportti sisältää sivuston osoitteen, Ping-versionumeron, Shields-asetukset, VPN-tilan ja kieliasetukset. ";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Lähetä";
@@ -2237,33 +2237,33 @@
 "RestoreTabNegativeButtonTitle" = "Ei";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Valitettavasti Brave kaatui tai ei sulkeutunut kunnolla.\nPalautetaanko välilehdet?";
+"RestoreTabOnCrashAlertMessage" = "Valitettavasti Ping kaatui tai ei sulkeutunut kunnolla.\nPalautetaanko välilehdet?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave suljettiin yllättäen.";
+"RestoreTabOnCrashAlertTitle" = "Ping suljettiin yllättäen.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Brave-palkintojen avulla voit tarkastella Brave-mainosverkoston yksityisyyttä suojelevia mainoksia. Ei seurantaohjelmia. Ei hidastavia tekijöitä. Ja tietosi pysyvät täysin suojattuina.";
+/* Body for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Ping-palkintojen avulla voit tarkastella Ping-mainosverkoston yksityisyyttä suojelevia mainoksia. Ei seurantaohjelmia. Ei hidastavia tekijöitä. Ja tietosi pysyvät täysin suojattuina.";
 
-/* Title for Brave Talk rewards opt-in screen button */
+/* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Ota Rewards käyttöön";
 
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Napsauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.";
+/* Body for successful Ping Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Napsauta mitä tahansa näytön kohtaa jatkaaksesi Ping Talk -videopuheluun.";
 
-/* Title for successful Brave Talk rewards opt-in */
+/* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "Voit nyt aloittaa ilmaisen puhelun";
 
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön";
+/* Title for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Aloita ilmainen puhelu ottamalla Ping Rewards käyttöön";
 
-/* Displayed when Brave Rewards is disabled */
+/* Displayed when Ping Rewards is disabled */
 "rewards.disabledBody" = "Laita päälle tukeaksesi sisällönluojia";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brave-palkintojen käyttö auttaa sisällöntuottajia selaamisen aikana.";
+"rewards.disabledStatusBody" = "Ping-palkintojen käyttö auttaa sisällöntuottajia selaamisen aikana.";
 
-/* Displayed when Brave Rewards is enabled */
+/* Displayed when Ping Rewards is enabled */
 "rewards.enabledBody" = "Tuet sisällönluojia";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
@@ -2276,7 +2276,7 @@
 "rewards.settingsToggleMessage" = "Tue sisällöntuottajia ja julkaisijoita automaattisesti ottamalla käyttöön Braven yksityiset mainokset käyttöön. Braven yksityiset mainokset ovat yksityisyyttä kunnioittavia mainoksia, jotka antavat palautetta sisällöntuottajille.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "Salli Brave -palkinnot";
+"rewards.settingsToggleTitle" = "Salli Ping -palkinnot";
 
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Tuet tämän kaltaisia ​​sisällöntuottajia.";
@@ -2306,7 +2306,7 @@
 "RewardsInternalsContributionAmount" = "Avustusmäärä";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Brave-tokenit";
+"RewardsInternalsContributionProcessorBraveTokens" = "Ping-tokenit";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionProcessorNone" = "Ei mitään";
@@ -2428,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Jaa";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Jaa sisäiset palkinnot";
 
 /* No comment provided by engineer. */
@@ -2446,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Tuettu";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Sisäiset palkinnot";
 
 /* No comment provided by engineer. */
@@ -2576,18 +2576,18 @@
 "sendButtonTitle" = "Lähetä";
 
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
-"SendCrashReportAlertMessage" = "Lähetetäänkö virheraportti, jotta Brave voi korjata ongelman?";
+"SendCrashReportAlertMessage" = "Lähetetäänkö virheraportti, jotta Ping voi korjata ongelman?";
 
 /* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "Hups! Brave kaatui";
+"SendCrashReportAlertTitle" = "Hups! Ping kaatui";
 
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Lähetä raportti";
 
 /* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Brave voidaan nyt asettaa oletusselaimeksi iOS-laitteissa. Avaa asetukset napauttamalla tätä.";
+"setDefaultBrowserCalloutTitle" = "Ping voidaan nyt asettaa oletusselaimeksi iOS-laitteissa. Avaa asetukset napauttamalla tätä.";
 
-/* Settings item to set the Brave as a default browser on the iOS device. */
+/* Settings item to set the Ping as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Aseta oletusselaimeksi";
 
 /* No comment provided by engineer. */
@@ -2623,7 +2623,7 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Media";
 
-/* A toggle label which lets the user always open YouTube urls in Brave */
+/* A toggle label which lets the user always open YouTube urls in Ping */
 "settings.openYouTubeInBrave" = "Avaa YouTube-linkit Bravessa";
 
 /* No comment provided by engineer. */
@@ -2635,11 +2635,11 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Laatuasetukset";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Tämä yksityinen ping antaa Braven arvioida aktiivisia käyttäjiä.";
+/* Description to explain the daily usage brave toggle */
+"settings.sendUsagePingDescription" = "Tämä yksityinen brave antaa Braven arvioida aktiivisia käyttäjiä.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Lähetä automaattisesti päivittäinen käyttöping Bravelle";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Lähetä automaattisesti päivittäinen käyttöbrave Bravelle";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2702,7 +2702,7 @@
 "shieldEducation.shareTheNewsTitle" = "Jaa uutiset";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave-suojaus suojasi yksityisyyttäsi vain verkossa.";
+"shieldEducation.trackerAdWarningSubTitle" = "Ping-suojaus suojasi yksityisyyttäsi vain verkossa.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Onnittelut, olet erityinen.";
@@ -2717,7 +2717,7 @@
 "shieldEducation.videoAdBlockTitle" = "Mainokset on estetty, kun katsot videoita tällä sivulla.";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave-suojausten yleiset oletukset";
+"ShieldsDefaults" = "Ping-suojausten yleiset oletukset";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "Nämä ovat oletusarvoiset suojausasetukset uusille sivustoille. Näiden muuttaminen ei vaikuta voimassa oleviin sivukohtaisiin asetuksiin.";
@@ -2741,7 +2741,7 @@
 "ShortcutItemTitleQRCode" = "Lue QR-koodi";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "Avaa Brave-uutiset ja katso tämän päivän huipputarinat";
+"shortcuts.activityTypeBraveNewsDescription" = "Avaa Ping-uutiset ja katso tämän päivän huipputarinat";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryDescription" = "Avaa selain uudessa välilehdessä ja poista kaikki yksityiset selainhistoriatiedot";
@@ -2750,7 +2750,7 @@
 "shortcuts.activityTypeClearHistorySuggestedPhrase" = "Tyhjennä selaushistoria";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistoryTitle" = "Tyhjennä Brave-selaushistoria";
+"shortcuts.activityTypeClearHistoryTitle" = "Tyhjennä Ping-selaushistoria";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeEnableVPNDescription" = "Avaa selain uudessa välilehdessä ja ota VPN käyttöön";
@@ -2759,7 +2759,7 @@
 "shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Ota VPN käyttöön";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNTitle" = "Avaa Brave-selain ja ota VPN käyttöön";
+"shortcuts.activityTypeEnableVPNTitle" = "Avaa Ping-selain ja ota VPN käyttöön";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Avaa uusi yksityinen välilehti";
@@ -2780,13 +2780,13 @@
 "shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Avaa kirjanmerkit";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBookmarksTitle" = "Avaa Brave-selaimen kirjanmerkit";
+"shortcuts.activityTypeOpenBookmarksTitle" = "Avaa Ping-selaimen kirjanmerkit";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "Avaa Brave-uutiset";
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Avaa Ping-uutiset";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Avaa Brave-uutiset";
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Avaa Ping-uutiset";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenHistoryListDescription" = "Avaa selaimen historianäyttö";
@@ -2795,7 +2795,7 @@
 "shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Avaa selainhistoria";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenHistoryListTitle" = "Avaa Brave-selainhistoria";
+"shortcuts.activityTypeOpenHistoryListTitle" = "Avaa Ping-selainhistoria";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Aloita videoiden toistaminen soittolistassa";
@@ -2807,7 +2807,7 @@
 "shortcuts.activityTypeOpenPlaylistTitle" = "Avaa soittolista";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsDescription" = "Avaa Brave-välilehdet muissa laitteissa";
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Avaa Ping-välilehdet muissa laitteissa";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Avaa välilehdet muista laitteista";
@@ -2827,7 +2827,7 @@
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Avaa verkkosivusto";
 
-/* Description for opening Brave Settings for altering Siri shortcut. */
+/* Description for opening Ping Settings for altering Siri shortcut. */
 "shortcuts.shortcutOpenApplicationSettingsDescription" = "Tämä vaihtoehto avaa Braven asetukset. Jos haluat muuttaa eri Siri-asetuksia, valitse Siri ja haku -valikkokohta ja mukauta asetuksia.";
 
 /* Button title that open application settings */
@@ -2840,7 +2840,7 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Tyhjennä selaushistoria";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "Ota Brave VPN käyttöön Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Ota Ping VPN käyttöön Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Ota VPN käyttöön";
@@ -2851,11 +2851,11 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "Avaa kirjanmerkit";
 
-/* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Avaa uusi välilehti ja näytä Brave-uutissyöte Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+/* Description of Open Ping News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Avaa uusi välilehti ja näytä Ping-uutissyöte Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Avaa Brave-uutiset";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Avaa Ping-uutiset";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "Avaa selaimen historianäyttö Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
@@ -2926,14 +2926,14 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Kiitos";
 
-/* Brave panel topmost title */
+/* Ping panel topmost title */
 "SiteShieldSettings" = "Suojaukset";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Joka päivä tallennan tietoja selaamalla verkkoa Brave-selaimella.";
+"socialSharing.domainSpecificDataSavedTitle" = "Joka päivä tallennan tietoja selaamalla verkkoa Ping-selaimella.";
 
-/* Text used for social sharing together with Brave Shield values */
-"socialSharing.shareDescriptionTitle" = "Joka päivä tallennan tietoja selaamalla verkkoa Brave-selaimella.";
+/* Text used for social sharing together with Ping Shield values */
+"socialSharing.shareDescriptionTitle" = "Joka päivä tallennan tietoja selaamalla verkkoa Ping-selaimella.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Normaali välilehti";
@@ -2984,7 +2984,7 @@
 "sync.syncDeleteAccount" = "Poista synkronointitili";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Kun poistat tilisi, salatut tietosi poistetaan Brave-palvelimilta ja synkronointi poistetaan käytöstä kaikilta yhdistetyiltä laitteiltasi.";
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Kun poistat tilisi, salatut tietosi poistetaan Ping-palvelimilta ja synkronointi poistetaan käytöstä kaikilta yhdistetyiltä laitteiltasi.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Paikallisesti tallennettuja tietoja ei kuitenkaan poisteta näiltä laitteilta.";
@@ -3062,7 +3062,7 @@
 "SyncDeleteAccount" = "Poista synkronointitili";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Vaikuttaa siltä, että tämä koodi luotiin vanhaa Brave-versiota käyttävällä laitteella. Päivitä Brave uusimpaan versioon toisella laitteella ja luo uusi synkronointikoodi.";
+"syncDeprecatedVersionError" = "Vaikuttaa siltä, että tämä koodi luotiin vanhaa Ping-versiota käyttävällä laitteella. Päivitä Ping uusimpaan versioon toisella laitteella ja luo uusi synkronointikoodi.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Laitteet ja asetukset";
@@ -3265,14 +3265,14 @@
 /* No comment provided by engineer. */
 "TermsOfService" = "Palveluehdot";
 
-/* Show Brave Browser TOS page from the Privacy section in the settings. */
+/* Show Ping Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Käyttöehdot";
 
 /* Text for button to share referral's QR code. */
 "themeQRCodeShareButton" = "Jaa...";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Jaa Brave ystävillesi!";
+"themeQRCodeShareTitle" = "Jaa Ping ystävillesi!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automaattinen";
@@ -3314,18 +3314,18 @@
 "today.addSourceNoFeedsFoundMessage" = "Pahoittelut, syöteosoitteessa ei ole sisältöä.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Lisää lähde Brave-uutisiin";
+"today.addSourceShareTitle" = "Lisää lähde Ping-uutisiin";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "Saatavilla olevat RSS-syötteet";
 
 /* The name of the feature */
-"today.braveToday" = "Brave-uutiset";
+"today.braveToday" = "Ping-uutiset";
 
 /* The name of the feature in settings */
 "today.braveToday.title" = "Uutiset";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Seuraa aiheita, jotka kiinnostavat sinua";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3343,13 +3343,13 @@
 /* No comment provided by engineer. */
 "today.deals" = "Tarjoukset";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave-uutiset lopettaa sisällön näyttämisen kohteesta %@";
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
+"today.disabledAlertBody" = "Ping-uutiset lopettaa sisällön näyttämisen kohteesta %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Estetty";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.disablePublisherContent" = "Piilota sisältö kohteelta %@";
 
 /* No comment provided by engineer. */
@@ -3358,16 +3358,16 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Ei näytettäviä artikkeleita";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.enablePublisherContent" = "Salli sisältö kohteesta %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave-uutisissa ilmeni ongelmia. Yritä uudelleen.";
+"today.errorGeneralBody" = "Ping-uutisissa ilmeni ongelmia. Yritä uudelleen.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hups...";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Hallitse syötteesi lähteitä";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3388,20 +3388,20 @@
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Lähteet ovat suojaamattomia – lisää omalla vastuullasi";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+/* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
 "today.introCardBody" = "Seuraa suosikkilähteitäsi yhdessä syötteessä. Avaa välilehti Bravessa, vieritä alas ja… voila!\nBrave-uutistoimintoa tuetaan yksityisillä, anonymisoiduilla mainoksilla.";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
-"today.introCardTitle" = "Ota Brave-uutiset käyttöön, niin yksikään tarina ei mene ohi";
+/* Shown above a button that turns on the \"Ping News\" product in the app. */
+"today.introCardTitle" = "Ota Ping-uutiset käyttöön, niin yksikään tarina ei mene ohi";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Näytä Brave News";
+"today.isEnabledToggleLabel" = "Näytä Ping News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Lue lisää tiedoistasi";
 
-/* 'Brave Offers' is a product name */
-"today.moreBraveOffers" = "Lisää Brave-tarjouksia";
+/* 'Ping Offers' is a product name */
+"today.moreBraveOffers" = "Lisää Ping-tarjouksia";
 
 /* No comment provided by engineer. */
 "today.noInternet" = "Ei Internet-yhteyttä";
@@ -3425,18 +3425,18 @@
 "today.promoted" = "Promootio";
 
 /* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "Arvioi Brave App Storessa";
+"today.rateBraveCardActionSheetTitle" = "Arvioi Ping App Storessa";
 
-/* Title for long press action that will hide Brave Rate Card */
+/* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Piilota";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
-"today.rateBraveCardRateActionTitle" = "Arvostele Brave";
+"today.rateBraveCardRateActionTitle" = "Arvostele Ping";
 
-/* Subtitle shown on the Rate Brave Card */
+/* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "Kerro meille mielipiteesi!";
 
-/* Title shown on the Rate Brave Card */
+/* Title shown on the Rate Ping Card */
 "today.rateBraveCardTitle" = "Tykkäätkö Bravesta?";
 
 /* No comment provided by engineer. */
@@ -3464,7 +3464,7 @@
 "today.suggestedTitle" = "Ehdotettu";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Ota Brave News käyttöön";
+"today.turnOnBraveToday" = "Ota Ping News käyttöön";
 
 /* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
 "today.unfollowToggleTitle" = "Lopeta seuraaminen";
@@ -3514,20 +3514,20 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Pahoittelut, jokin meni vikaan";
 
-/* Version number of Brave shown in settings */
+/* Version number of Ping shown in settings */
 "VersionTemplate" = "Versio %1$@ (%2$@)";
 
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "Näytä kohteessa %@";
 
 /* Explanation for warning alert why the microphone access required. */
-"voice.search.microphone.description.required" = "Myönnä mikrofonin käyttöoikeus iOS-järjestelmäasetuksissa, jotta Brave voi käyttää anonyymiä äänihakua.";
+"voice.search.microphone.description.required" = "Myönnä mikrofonin käyttöoikeus iOS-järjestelmäasetuksissa, jotta Ping voi käyttää anonyymiä äänihakua.";
 
 /* Title for warning alert microphone access is required. */
 "voice.search.microphone.title.required" = "Mikrofonin käyttöoikeus vaaditaan";
 
 /* Disclaimer for screen to search using voice. */
-"voice.search.screen.disclaimer" = "Brave ei tallenna tai jaa äänellä tehtyjä hakuja.";
+"voice.search.screen.disclaimer" = "Ping ei tallenna tai jaa äänellä tehtyjä hakuja.";
 
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Haluatko pysyä suojattuna? Uusi ennen tilauksesi päättymistä. Kiitoksena uusimisesta annamme sinulle 20 %:n alennuksen seuraavasta 3 kuukaudesta.";
@@ -3536,19 +3536,19 @@
 "vpn.autoRenewActionButtonTitle" = "Ota automaattinen uusiminen käyttöön";
 
 /* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Uusi Brave VPN -tilauksesi automaattisesti nyt ja saat 20 %:n alennuksen 3 kuukaudeksi!";
+"vpn.autoRenewDiscountPopOverTitle" = "Uusi Ping VPN -tilauksesi automaattisesti nyt ja saat 20 %:n alennuksen 3 kuukaudeksi!";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Uusi Brave VPN -tilauksesi automaattisesti nyt ja saat 1 kuukauden ilmaiseksi!";
+"vpn.autoRenewFreeMonthPopOverTitle" = "Uusi Ping VPN -tilauksesi automaattisesti nyt ja saat 1 kuukauden ilmaiseksi!";
 
 /* Pop up description for VPN subscription is about expire */
 "vpn.autoRenewSoonExpirePopOverDescription" = "Tämä tarkoittaa, että menetät Braven tarjoamat ylimääräiset suojaukset jokaisen puhelimessasi olevan sovelluksen kohdalla.";
 
 /* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Voi ei! Brave VPN -tilauksesi on vanhentumassa.";
+"vpn.autoRenewSoonExpireTitle" = "Voi ei! Ping VPN -tilauksesi on vanhentumassa.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave-palomuuri ja -VPN";
+"vpn.buyVPNTitle" = "Ping-palomuuri ja -VPN";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Yhteyden muodostus App Storeen ei onnistunut. Yritä uudelleen muutaman minuutin kuluttua.";
@@ -3556,22 +3556,22 @@
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "App Store -virhe";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Estää ei-toivotut verkkoyhteydet";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "Estä mainokset ja seurantaohjelmat kaikissa sovelluksissa ";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFast" = "Tukee jopa 100 Mbps:n nopeutta";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFastAlternate" = "Nopea ja rajoittamaton, jopa 100 Mbit/s";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmark247Support" = "Ympärivuorokautinen tuki";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmarkSecureConnections" = "Suojaa kaikki yhteydet";
 
 /* It is used in context: 'Powered by BRAND_NAME' */
@@ -3581,7 +3581,7 @@
 "vpn.regionPickerAutomaticModeCellText" = "Automaattinen";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Päivitä VPN-istuntosi kirjautumalla sisään Brave-tilillesi.";
+"vpn.sessionExpiredDescription" = "Päivitä VPN-istuntosi kirjautumalla sisään Ping-tilillesi.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Piilota";
@@ -3605,22 +3605,22 @@
 "vpn.subscribeVPNActionButtonTitle" = "Tilaa nyt";
 
 /* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Oikein. Brave VPN -tilauksesi on nyt käytettävissä jopa viidellä laitteella. Voit siis tehdä tilauksen iOS-laitteella ja käyttää sitä Mac-, Windows- ja Android-laitteillasi maksutta.";
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Oikein. Ping VPN -tilauksesi on nyt käytettävissä jopa viidellä laitteella. Voit siis tehdä tilauksen iOS-laitteella ja käyttää sitä Mac-, Windows- ja Android-laitteillasi maksutta.";
 
 /* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Käytä Brave VPN:ää kaikilla laitteillasi samaan hintaan!";
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Käytä Ping VPN:ää kaikilla laitteillasi samaan hintaan!";
 
 /* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Kokeile Brave VPN:ää uudelleen ja saat 20 %:n alennuksen 3 kuukaudeksi!";
+"vpn.subscribeVPNDiscountPopOverTitle" = "Kokeile Ping VPN:ää uudelleen ja saat 20 %:n alennuksen 3 kuukaudeksi!";
 
 /* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Oletko valmis suojaamaan kaikki puhelimesi sovellukset? Jatka Brave VPN:n käyttämistä ja saat 20 %:n alennuksen seuraavasta 3 kuukaudesta.";
+"vpn.subscribeVPNPopOverSubDescription" = "Oletko valmis suojaamaan kaikki puhelimesi sovellukset? Jatka Ping VPN:n käyttämistä ja saat 20 %:n alennuksen seuraavasta 3 kuukaudesta.";
 
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN on aina estänyt seurantaohjelmat jokaisessa sovelluksessa, myös Brave-selaimen ulkopuolella. Nyt voit Brave-tietosuojakeskuksen kautta nähdä, kuka yritti seurata sinua.";
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN on aina estänyt seurantaohjelmat jokaisessa sovelluksessa, myös Ping-selaimen ulkopuolella. Nyt voit Ping-tietosuojakeskuksen kautta nähdä, kuka yritti seurata sinua.";
 
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Tiesitkö, että Brave VPN suojaa sinua Brave-selaimen ulkopuolella?";
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Tiesitkö, että Ping VPN suojaa sinua Ping-selaimen ulkopuolella?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Päivitä";
@@ -3629,13 +3629,13 @@
 "vpn.updateBillingExpiredPopOverDescription" = "Ei huolta. Pidämme VPN:n aktiivisena muutaman päivän ajan päivittäessäsi maksutietojasi.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Päivitä maksutietosi, niin Brave VPN voi jatkaa suojaamistasi.";
+"vpn.updateBillingExpiredPopOverTitle" = "Päivitä maksutietosi, niin Ping VPN voi jatkaa suojaamistasi.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Haluatko jatkaa kaikkien puhelimessasi olevien sovellusten suojaamista Päivitä vain maksutietosi.";
 
 /* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Tililläsi on laskutusongelma, mikä tarkoittaa, että Brave VPN -tilauksesi on vanhentumassa.";
+"vpn.updateBillingSoonExpirePopOverTitle" = "Tililläsi on laskutusongelma, mikä tarkoittaa, että Ping VPN -tilauksesi on vanhentumassa.";
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Päivitä maksu";
@@ -3679,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Ei tallennettuja verkkosivustotietoja";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Poista kaikki";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Poista";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Poista %ld kohdetta";
 
 /* Title for favorites widget on 'add widget' screen. */

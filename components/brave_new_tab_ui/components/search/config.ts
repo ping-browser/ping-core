@@ -11,7 +11,8 @@ import { SearchEngineInfo } from "../../api/background";
 const ENABLED_SEARCH_ENGINES_KEY = 'search-engines'
 const LAST_SEARCH_ENGINE_KEY = 'last-search-engine'
 
-export const braveSearchHost = 'search.brave.com'
+// Defaults to google with empty key
+export const braveSearchHost = ''
 export const searchBoxRadius = radius.xl;
 
 let cache: Record<string, boolean> | undefined

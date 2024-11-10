@@ -42,7 +42,7 @@
 <translation id="2801787514987684416">Ver informações da loja?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> guia fechada}one{<ph name="MANY_CLOSED"/> guia fechada}other{<ph name="MANY_CLOSED"/> guias fechadas}}</translation>
 <translation id="2894757982205307093">Nova guia no grupo</translation>
-<translation id="4691798003247738043">Brave | Sobre a loja</translation>
+<translation id="4691798003247738043">Ping | Sobre a loja</translation>
 <translation id="2977480621796371840">Remover do grupo</translation>
 <translation id="29919168204617356">As guias inativas serão fechadas automaticamente. Elas podem ser encontradas no Histórico.</translation>
 <translation id="3008554597174452548">Parar de monitorar o produto</translation>
@@ -107,7 +107,7 @@
 <translation id="5556417849629758491">Ver informações da loja, opção disponível perto da parte superior da tela</translation>
 <translation id="5627941783489838464">Nenhuma atualização de guias</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Restaurar guia}one{Restaurar guia}other{Restaurar guias}}</translation>
-<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link do Brave}one{<ph name="TABS_COUNT_MANY"/> link do Brave}other{<ph name="TABS_COUNT_MANY"/> links do Brave}}</translation>
+<translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link do Ping}one{<ph name="TABS_COUNT_MANY"/> link do Ping}other{<ph name="TABS_COUNT_MANY"/> links do Ping}}</translation>
 <translation id="575494663145460764">Receber alertas de reduções no preço?</translation>
 <translation id="58326064309361797">Arraste as guias para agrupá-las</translation>
 <translation id="5901630391730855834">Amarelo</translation>
@@ -147,7 +147,7 @@
 <translation id="7452985128687107478">Os grupos de guias são salvos e atualizados automaticamente em todos os seus dispositivos</translation>
 <translation id="747459581954555080">Restaurar todas</translation>
 <translation id="753732157349120914">Seletor de guias</translation>
-<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> avaliação do Brave}one{<ph name="REVIEWS_COUNT_MANY"/> avaliação do Brave}other{<ph name="REVIEWS_COUNT_MANY"/> avaliações do Brave}}</translation>
+<translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> avaliação do Ping}one{<ph name="REVIEWS_COUNT_MANY"/> avaliação do Ping}other{<ph name="REVIEWS_COUNT_MANY"/> avaliações do Ping}}</translation>
 <translation id="7559245342362162951">Mostrar guias do grupo em grade de tela cheia</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="7688386659311034820">Caixa de diálogo de guias inativas</translation>

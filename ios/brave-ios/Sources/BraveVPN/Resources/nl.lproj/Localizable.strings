@@ -4,25 +4,25 @@
 /* Text for toggle which indicating the toggle action is for selecting region in automatic */
 "vpn.automaticServerSelectionToggleTitle" = "Automatisch";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Koop";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Bescherm 5 apparaten met 1 abonnement";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Kies je geolocatie of land";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave legt je activiteit nooit vast";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping legt je activiteit nooit vast";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Bescherm elke app en je volledige apparaat";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Veiliger voor privé- of openbare wifinetwerken";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Razendsnel, tot 100 Mbps";
 
 /* Text showing the vpn region is connected */
@@ -38,7 +38,7 @@
 "vpn.contactFormCarrier" = "Mobiele provider";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave volgt je niet of weet niet hoe je onze app gebruikt, dus we weten niet hoe je VPN hebt ingesteld. Deel informatie over het probleem dat je ondervindt en we doen ons best om het zo snel mogelijk op te lossen.";
+"vpn.contactFormDoNotEditText" = "Ping volgt je niet of weet niet hoe je onze app gebruikt, dus we weten niet hoe je VPN hebt ingesteld. Deel informatie over het probleem dat je ondervindt en we doen ons best om het zo snel mogelijk op te lossen.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "E-mail kan niet worden verstuurd. Controleer je e-mailconfiguratie.";
@@ -95,9 +95,9 @@
 "vpn.contactFormTimezone" = "Tijdzone op iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Probleem met Brave Firewall + VPN";
+"vpn.contactFormTitle" = "Probleem met Ping Firewall + VPN";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Schakel in";
 
 /* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
@@ -113,13 +113,13 @@
 "vpn.iapDisclaimer" = "Alle abonnementen worden automatisch verlengd, maar kunnen vóór de verlengdatum worden opgezegd.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Met dit profiel kan VPN automatisch verbinding maken en het verkeer op je apparaat beveiligen. Deze VPN-verbinding is geëncrypt en gerouteerd via de intelligente firewall van Brave om potentieel schadelijke en ongewenste verbindingen te blokkeren.";
+"vpn.installProfileBody" = "Met dit profiel kan VPN automatisch verbinding maken en het verkeer op je apparaat beveiligen. Deze VPN-verbinding is geëncrypt en gerouteerd via de intelligente firewall van Ping om potentieel schadelijke en ongewenste verbindingen te blokkeren.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Installeer VPN-profiel";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave installeert nu een VPN-profiel.";
+"vpn.installProfileTitle" = "Ping installeert nu een VPN-profiel.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "VPN is nu ingeschakeld";
@@ -127,7 +127,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Installeer VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Probeer GRATIS";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -201,10 +201,10 @@
 "vpn.settingsFAQ" = "VPN-ondersteuning";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Koppel aankoop aan Brave-account";
+"vpn.settingsLinkReceipt" = "Koppel aankoop aan Ping-account";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Koppel je App Store-aankoop aan je Brave-account om Brave VPN op andere apparaten te gebruiken.";
+"vpn.settingsLinkReceiptFooter" = "Koppel je App Store-aankoop aan je Ping-account om Ping VPN op andere apparaten te gebruiken.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Beheer abonnement";
@@ -240,10 +240,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Werk betaalmethode bij";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Zelfs op de achtergrond beschermt Brave je.";
+"vpn.vpnBackgroundNotificationBody" = "Zelfs op de achtergrond beschermt Ping je.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN staat AAN";
+"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN staat AAN";
 
 /* Text for title of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalTitle" = "Optimaal";
@@ -255,7 +255,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Fout";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Als je Brave Firewall + VPN wilt gebruiken, moet er een VPN-profiel op je apparaat geïnstalleerd zijn. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Als je Ping Firewall + VPN wilt gebruiken, moet er een VPN-profiel op je apparaat geïnstalleerd zijn. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Geen toestemming";
@@ -270,13 +270,13 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Fout";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Abonnementen worden in rekening gebracht bij je iTunes-account.\n\nAlle resterende tijd van een eventuele gratis proefperiode gaat verloren bij de aankoop van een abonnement.\n\nJe abonnement wordt automatisch verlengd tenzij je het ten minste 24 uur vóór het einde van de huidige periode opzegt.\n\nJe kunt je abonnementen beheren in Instellingen.\n\nAls je Brave gebruikt, ga je akkoord met de Gebruiksvoorwaarden en het Privacybeleid.";
+"vpn.vpnIAPBoilerPlate" = "Abonnementen worden in rekening gebracht bij je iTunes-account.\n\nAlle resterende tijd van een eventuele gratis proefperiode gaat verloren bij de aankoop van een abonnement.\n\nJe abonnement wordt automatisch verlengd tenzij je het ten minste 24 uur vóór het einde van de huidige periode opzegt.\n\nJe kunt je abonnementen beheren in Instellingen.\n\nAls je Ping gebruikt, ga je akkoord met de Gebruiksvoorwaarden en het Privacybeleid.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Wissel code in";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Hiermee stel je de configuratie van Brave Firewall + VPN opnieuw in en los je eventuele fouten op. Dit proces duurt maar even.";
+"vpn.vpnResetAlertBody" = "Hiermee stel je de configuratie van Ping Firewall + VPN opnieuw in en los je eventuele fouten op. Dit proces duurt maar even.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Stel configuratie opnieuw in";

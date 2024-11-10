@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Haluan vahvistaa, halusit tehdä haun ”Kirjanmerkit”?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Haluan vahvistaa, halusit tehdä haun ”Brave-soittolista”?";
+"e13lS3-FGO5qW" = "Haluan vahvistaa, halusit tehdä haun ”Ping-soittolista”?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Haluan vahvistaa, halusit tehdä haun ”Brave-lompakko”?";
+"e13lS3-jXiFQY" = "Haluan vahvistaa, halusit tehdä haun ”Ping-lompakko”?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Haluan vahvistaa, halusit tehdä haun ”Lataukset”?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Haluan vahvistaa, halusit tehdä haun ”Uusi yksityinen välilehti”?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Haluan vahvistaa, halusit tehdä haun ”Brave-uutiset”?";
+"e13lS3-XCyA8c" = "Haluan vahvistaa, halusit tehdä haun ”Ping-uutiset”?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Haluan vahvistaa, halusit tehdä haun ”Haku”?";
@@ -74,7 +74,7 @@
 "EUS9FL" = "Pienoisohjelman pikavalinta";
 
 /* (No Comment) */
-"FGO5qW" = "Brave-soittolista";
+"FGO5qW" = "Ping-soittolista";
 
 /* (No Comment) */
 "gpCwrM" = "Tilastoasetukset";
@@ -89,7 +89,7 @@
 "joEZJM" = "2.";
 
 /* (No Comment) */
-"jXiFQY" = "Brave-lompakko";
+"jXiFQY" = "Ping-lompakko";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "Hakua ”Uusi välilehti” vastaa ${count} vaihtoehtoa.";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "Hakua ”Kirjanmerkit” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Hakua ”Brave-soittolista” vastaa ${count} vaihtoehtoa.";
+"L1fziM-FGO5qW" = "Hakua ”Ping-soittolista” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Hakua ”Brave-lompakko” vastaa ${count} vaihtoehtoa.";
+"L1fziM-jXiFQY" = "Hakua ”Ping-lompakko” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Hakua ”Lataukset” vastaa ${count} vaihtoehtoa.";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "Hakua ”Uusi yksityinen välilehti” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Hakua ”Brave-uutiset” vastaa ${count} vaihtoehtoa.";
+"L1fziM-XCyA8c" = "Hakua ”Ping-uutiset” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Hakua ”Haku” vastaa ${count} vaihtoehtoa.";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Haluan vahvistaa, halusit tehdä haun ”Kirjanmerkit”?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Haluan vahvistaa, halusit tehdä haun ”Brave-soittolista”?";
+"r2EI05-FGO5qW" = "Haluan vahvistaa, halusit tehdä haun ”Ping-soittolista”?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Haluan vahvistaa, halusit tehdä haun ”Brave-lompakko”?";
+"r2EI05-jXiFQY" = "Haluan vahvistaa, halusit tehdä haun ”Ping-lompakko”?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Haluan vahvistaa, halusit tehdä haun ”Lataukset”?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Haluan vahvistaa, halusit tehdä haun ”Uusi yksityinen välilehti”?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Haluan vahvistaa, halusit tehdä haun ”Brave-uutiset”?";
+"r2EI05-XCyA8c" = "Haluan vahvistaa, halusit tehdä haun ”Ping-uutiset”?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Haluan vahvistaa, halusit tehdä haun ”Haku”?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "Hakua ”Kirjanmerkit” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Hakua ”Brave-soittolista” vastaa ${count} vaihtoehtoa.";
+"tNCrcE-FGO5qW" = "Hakua ”Ping-soittolista” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Hakua ”Brave-lompakko” vastaa ${count} vaihtoehtoa.";
+"tNCrcE-jXiFQY" = "Hakua ”Ping-lompakko” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "Hakua ”Lataukset” vastaa ${count} vaihtoehtoa.";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "Hakua ”Uusi yksityinen välilehti” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Hakua ”Brave-uutiset” vastaa ${count} vaihtoehtoa.";
+"tNCrcE-XCyA8c" = "Hakua ”Ping-uutiset” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Hakua ”Haku” vastaa ${count} vaihtoehtoa.";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "Hakua ”Kirjanmerkit” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Hakua ”Brave-soittolista” vastaa ${count} vaihtoehtoa.";
+"TxuMja-FGO5qW" = "Hakua ”Ping-soittolista” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Hakua ”Brave-lompakko” vastaa ${count} vaihtoehtoa.";
+"TxuMja-jXiFQY" = "Hakua ”Ping-lompakko” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Hakua ”Lataukset” vastaa ${count} vaihtoehtoa.";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "Hakua ”Uusi yksityinen välilehti” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Hakua ”Brave-uutiset” vastaa ${count} vaihtoehtoa.";
+"TxuMja-XCyA8c" = "Hakua ”Ping-uutiset” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Hakua ”Haku” vastaa ${count} vaihtoehtoa.";
@@ -248,7 +248,7 @@
 "xcI3h9" = "mainosta estetty";
 
 /* (No Comment) */
-"XCyA8c" = "Brave-uutiset";
+"XCyA8c" = "Ping-uutiset";
 
 /* (No Comment) */
 "XkwBGY" = "Lukitusnäytön pikavalintojen määritys";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Haluan vahvistaa, halusit tehdä haun ”Kirjanmerkit”?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Haluan vahvistaa, halusit tehdä haun ”Brave-soittolista”?";
+"YQiQuz-FGO5qW" = "Haluan vahvistaa, halusit tehdä haun ”Ping-soittolista”?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Haluan vahvistaa, halusit tehdä haun ”Brave-lompakko”?";
+"YQiQuz-jXiFQY" = "Haluan vahvistaa, halusit tehdä haun ”Ping-lompakko”?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Haluan vahvistaa, halusit tehdä haun ”Lataukset”?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Haluan vahvistaa, halusit tehdä haun ”Uusi yksityinen välilehti”?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Haluan vahvistaa, halusit tehdä haun ”Brave-uutiset”?";
+"YQiQuz-XCyA8c" = "Haluan vahvistaa, halusit tehdä haun ”Ping-uutiset”?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Haluan vahvistaa, halusit tehdä haun ”Haku”?";

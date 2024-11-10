@@ -18,7 +18,7 @@ struct TopNewsListWidget: Widget {
   var body: some WidgetConfiguration {
     StaticConfiguration(kind: "TopNewsListWidget", provider: TopNewsListWidgetProvider()) { entry in
       TopNewsListView(entry: entry)
-    }
+  }
     .supportedFamilies([.systemMedium, .systemLarge])
     .configurationDisplayName(Strings.Widgets.newsClusteringWidgetTitle)
     .description(Strings.Widgets.newsClusteringWidgetDescription)
@@ -92,7 +92,7 @@ private struct TopNewsListView: View {
       Link(
         destination: URL(
           string:
-            "\(AppURLScheme.appURLScheme)://shortcut?path=\(WidgetShortcut.braveNews.rawValue)"
+            "\(AppURLScheme.appURLScheme)://shortcut?path=\(WidgetShortcut.search.rawValue)"
         )!
       ) {
         Text(Strings.Widgets.newsClusteringReadMoreButtonTitle)
