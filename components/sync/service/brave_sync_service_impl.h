@@ -12,6 +12,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/engine/sync_protocol_error.h"
@@ -34,7 +35,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   // SyncServiceImpl implementation
   bool IsSetupInProgress() const override;
-  void StopAndClear() override;
+  void StopAndClear(ResetEngineReason reset_engine_reason) override;
 
   // SyncEngineHost override.
   void OnEngineInitialized(bool success,
@@ -57,7 +58,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void SuspendDeviceObserverForOwnReset();
   void ResumeDeviceObserver();
 
-  void Initialize() override;
+  void Initialize(DataTypeController::TypeVector controllers) override;
 
   const brave_sync::Prefs& prefs() const { return brave_sync_prefs_; }
   brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
@@ -67,7 +68,13 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void SetJoinChainResultCallback(base::OnceCallback<void(bool)> callback);
 
+  // Calls `StopAndClear` with a specific listed reason, as the overriden
+  // function cannot be called from outside this class' scope.
+  void StopAndClearWithShutdownReason();
+  void StopAndClearWithResetLocalDataReason();
+
  private:
+  friend class BraveSyncServiceImplGACookiesTest;
   friend class BraveSyncServiceImplTest;
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
                            ForcedSetDecryptionPassphrase);
@@ -95,7 +102,6 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
       const SyncProtocolError&);
 
   std::unique_ptr<SyncEngine> ResetEngine(
-      ShutdownReason shutdown_reason,
       ResetEngineReason reset_reason) override;
 
   void LocalDeviceAppeared();
@@ -111,9 +117,22 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void UpdateP3AObjectsNumber();
   void OnGetTypeEntitiesCount(const TypeEntitiesCount& count);
 
+  // IdentityManager::Observer implementation.
+  // Override with an empty implementation.
+  // We need this to avoid device cache guid regeneration once any Google
+  // Account cookie gets deleted, for example when user signs out from GMail
+  void OnAccountsCookieDeletedByUserAction() override;
+  void OnAccountsInCookieUpdated(
+      const signin::AccountsInCookieJarInfo& accounts_in_cookie_jar_info,
+      const GoogleServiceAuthError& error) override;
+  void OnPrimaryAccountChanged(
+      const signin::PrimaryAccountChangeEvent& event_details) override;
+
   brave_sync::Prefs brave_sync_prefs_;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
+
+  brave_sync::p3a::SyncCodeMonitor sync_code_monitor_;
 
   // This is set to true between |PermanentlyDeleteAccount| succeeded call and
   // new sync chain setup or browser exit. This is used to avoid show the

@@ -19,9 +19,10 @@ import {
   SettingsText
 } from '../../../components/default'
 import { searchEnginesPromise } from '../../../components/search/SearchContext'
-import { MediumIcon } from '../../../components/search/SearchEngineIcon'
-import { isSearchEngineEnabled, setEngineEnabled } from '../../../components/search/config'
+import { MediumSearchEngineIcon } from '../../../components/search/SearchEngineIcon'
+import { hasEnabledEngine, isSearchEngineEnabled, maybeEnableDefaultEngine, setEngineEnabled } from '../../../components/search/config'
 import { useNewTabPref } from '../../../hooks/usePref'
+import { getLocale } from '../../../../common/locale'
 
 const EnginesContainer = styled(Flex)`
   font: ${font.default.regular};
@@ -72,28 +73,43 @@ export default function SearchSettings() {
 
   return <Flex direction='column' gap={spacing.xl}>
     <SettingsRow>
-      <SettingsText>Show search widget in new tabs</SettingsText>
-      <Toggle size='small' checked={showSearchBox} onChange={e => setShowSearchBox(e.checked)} />
+      <SettingsText>{getLocale('searchShowSetting')}</SettingsText>
+      <Toggle size='small' checked={showSearchBox} onChange={e => {
+        setShowSearchBox(e.checked)
+
+        // If we've just enabled the searchbox, make sure at least one engine
+        // is enabled.
+        if (e.checked) {
+          maybeEnableDefaultEngine()
+        }
+      }} />
     </SettingsRow>
-    <Hr />
-    <EnginesContainer direction='column' gap={spacing.xl}>
-      <div>Enabled search engines on the New Tab Page</div>
-      <EnginesGrid>
-        {engines.map(engine => <EngineCard key={engine.keyword}>
-          <EngineCheckbox checked={isSearchEngineEnabled(engine)} onChange={e => setEngineEnabled(engine, e.checked)}>
-            <CheckboxText>{engine.name}</CheckboxText>
-            <MediumIcon src={engine.faviconUrl.url} />
-          </EngineCheckbox>
-        </EngineCard>)}
-      </EnginesGrid>
-    </EnginesContainer>
-    <Hr />
-    <div>
-      <LinkButton href='chrome://settings/searchEngines' kind='plain'>
-        Customize available engines
-        <div slot='icon-after'><Icon name='launch' /></div>
-      </LinkButton>
-      <span />
-    </div>
+    {showSearchBox && <>
+      <Hr />
+      <EnginesContainer direction='column' gap={spacing.xl}>
+        <div>{getLocale('searchEnableSearchEnginesTitle')}</div>
+        <EnginesGrid>
+          {engines.map(engine => <EngineCard key={engine.keyword}>
+            <EngineCheckbox checked={isSearchEngineEnabled(engine)} onChange={e => {
+              setEngineEnabled(engine, e.checked)
+              if (!hasEnabledEngine()) {
+                setShowSearchBox(false)
+              }
+            }}>
+              <CheckboxText>{engine.name}</CheckboxText>
+              <MediumSearchEngineIcon engine={engine} />
+            </EngineCheckbox>
+          </EngineCard>)}
+        </EnginesGrid>
+      </EnginesContainer>
+      <Hr />
+      <div>
+        <LinkButton href='chrome://settings/searchEngines' kind='plain'>
+          {getLocale('searchCustomizeSearchEngines')}
+          <div slot='icon-after'><Icon name='launch' /></div>
+        </LinkButton>
+        <span />
+      </div>
+    </>}
   </Flex>
 }

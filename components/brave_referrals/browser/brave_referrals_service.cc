@@ -19,6 +19,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
@@ -49,7 +50,7 @@ const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 
 // Default promo code, used when no promoCode file exists on first
 // run.
-const char kDefaultPromoCode[] = "BRV001";
+constexpr char kDefaultPromoCode[] = "BRV001";
 
 namespace brave {
 
@@ -129,15 +130,14 @@ std::string ReadPromoCode(const base::FilePath& promo_code_file) {
 std::string BuildReferralEndpoint(const std::string& path) {
   std::unique_ptr<base::Environment> env(base::Environment::Create());
   std::string referral_server;
-  std::string proto = "https";
   env->GetVar("BRAVE_REFERRALS_SERVER", &referral_server);
-  if (referral_server.empty())
-    referral_server = kBraveReferralsServer;
-  if (env->HasVar("BRAVE_REFERRALS_LOCAL"))
-    proto = "http";
+  if (referral_server.empty()) {
+    auto referral_domain = brave_domains::GetServicesDomain("usage-ping");
+    referral_server = base::StrCat(
+        {url::kHttpsScheme, url::kStandardSchemeSeparator, referral_domain});
+  }
 
-  return base::StringPrintf("%s://%s%s", proto.c_str(), referral_server.c_str(),
-                            path.c_str());
+  return referral_server + path;
 }
 
 }  // namespace
@@ -524,7 +524,7 @@ void BraveReferralsService::GetSafetynetStatusResult(
     const std::string& result_string,
     const bool attestation_passed) {
   if (pref_service_->GetString(kSafetynetStatus).empty()) {
-    NOTREACHED() << "Failed to get safetynet status";
+    // The device could not support SafetyNet.
     pref_service_->SetString(kSafetynetStatus, "not verified");
   }
   CheckForReferralFinalization();

@@ -7,7 +7,7 @@
 
 namespace {
 
-const char kSafeBrowsingHelpCenterURL[] =
+constexpr char kSafeBrowsingHelpCenterURL[] =
     "https://ping-browser.com/faqs-and-help";
 
 }  // namespace

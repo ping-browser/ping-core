@@ -35,6 +35,9 @@ class KeyringService;
 
 class EthTxManager : public TxManager, public EthBlockTracker::Observer {
  public:
+  using AddUnapprovedEvmTransactionCallback =
+      mojom::TxService::AddUnapprovedEvmTransactionCallback;
+
   EthTxManager(TxService* tx_service,
                JsonRpcService* json_rpc_service,
                KeyringService* keyring_service,
@@ -44,6 +47,11 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   ~EthTxManager() override;
   EthTxManager(const EthTxManager&) = delete;
   EthTxManager operator=(const EthTxManager&) = delete;
+
+  void AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParamsPtr params,
+      const std::optional<url::Origin>& origin,
+      AddUnapprovedEvmTransactionCallback callback);
 
   // TxManager
   void AddUnapprovedTransaction(const std::string& chain_id,
@@ -59,10 +67,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       SpeedupOrCancelTransactionCallback callback) override;
   void RetryTransaction(const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
-  void GetTransactionMessageToSign(
-      const std::string& tx_meta_id,
-      GetTransactionMessageToSignCallback callback) override;
-
   // Resets things back to the original state of EthTxManager
   // To be used when the Wallet is reset / erased
   void Reset() override;
@@ -85,8 +89,10 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       mojom::EthTxManagerProxy::SetNonceForUnapprovedTransactionCallback;
   using GetNonceForHardwareTransactionCallback =
       mojom::EthTxManagerProxy::GetNonceForHardwareTransactionCallback;
-  using ProcessHardwareSignatureCallback =
-      mojom::EthTxManagerProxy::ProcessHardwareSignatureCallback;
+  using GetEthTransactionMessageToSignCallback =
+      mojom::EthTxManagerProxy::GetEthTransactionMessageToSignCallback;
+  using ProcessEthHardwareSignatureCallback =
+      mojom::EthTxManagerProxy::ProcessEthHardwareSignatureCallback;
   using GetGasEstimation1559Callback =
       mojom::EthTxManagerProxy::GetGasEstimation1559Callback;
   using MakeFilForwarderDataCallback =
@@ -136,11 +142,13 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   void GetNonceForHardwareTransaction(
       const std::string& tx_meta_id,
       GetNonceForHardwareTransactionCallback callback);
-  void ProcessHardwareSignature(const std::string& tx_meta_id,
-                                const std::string& v,
-                                const std::string& r,
-                                const std::string& s,
-                                ProcessHardwareSignatureCallback callback);
+  void GetEthTransactionMessageToSign(
+      const std::string& tx_meta_id,
+      GetEthTransactionMessageToSignCallback callback);
+  void ProcessEthHardwareSignature(
+      const std::string& tx_meta_id,
+      mojom::EthereumSignatureVRSPtr hw_signature,
+      ProcessEthHardwareSignatureCallback callback);
 
   // Gas estimation API via eth_feeHistory API
   void GetGasEstimation1559(const std::string& chain_id,
@@ -268,7 +276,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& error_message);
 
   void ContinueProcessHardwareSignature(
-      ProcessHardwareSignatureCallback callback,
+      ProcessEthHardwareSignatureCallback callback,
       bool status,
       mojom::ProviderErrorUnionPtr error_union,
       const std::string& error_message);
@@ -288,6 +296,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
+  raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
 

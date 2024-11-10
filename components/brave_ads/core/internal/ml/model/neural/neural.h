@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_NEURAL_NEURAL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_NEURAL_NEURAL_H_
 
+#include <cstddef>
 #include <optional>
 
 #include "base/memory/raw_ptr.h"
@@ -48,7 +49,8 @@ class NeuralModel final {
       const VectorData& data,
       size_t top_count) const;
 
-  raw_ptr<const neural_text_classification::flat::Model> model_;
+  raw_ptr<const neural_text_classification::flat::Model> model_ =
+      nullptr;  // NOT OWNED
 };
 
 }  // namespace ml

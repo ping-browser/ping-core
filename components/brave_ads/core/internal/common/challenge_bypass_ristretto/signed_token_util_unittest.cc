@@ -6,36 +6,40 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token_test_util.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::cbr {
+namespace brave_ads {
 
-TEST(BraveAdsSignedTokenUtilTest, TokensToRawTokens) {
+TEST(BraveAdsSignedTokenUtilTest, SignedTokensToRawSignedTokens) {
   // Arrange
-  const std::vector<SignedToken> tokens = test::GetSignedTokens();
-
-  // Act & Assert
-  std::vector<challenge_bypass_ristretto::SignedToken> expected_raw_tokens;
-  expected_raw_tokens.reserve(tokens.size());
-  for (const auto& token : tokens) {
-    expected_raw_tokens.push_back(token.get());
-  }
-  EXPECT_EQ(expected_raw_tokens, ToRawSignedTokens(tokens));
-}
-
-TEST(BraveAdsSignedTokenUtilTest, EmptyTokensToRawTokens) {
-  // Arrange
-  const std::vector<SignedToken> tokens;
+  const std::vector<cbr::SignedToken> signed_tokens =
+      cbr::test::GetSignedTokens();
 
   // Act
-  const std::vector<challenge_bypass_ristretto::SignedToken> raw_tokens =
-      ToRawSignedTokens(tokens);
+  const std::vector<challenge_bypass_ristretto::SignedToken> raw_signed_tokens =
+      ToRawSignedTokens(signed_tokens);
 
   // Assert
-  EXPECT_TRUE(raw_tokens.empty());
+  std::vector<challenge_bypass_ristretto::SignedToken>
+      expected_raw_signed_tokens;
+  expected_raw_signed_tokens.reserve(signed_tokens.size());
+  for (const auto& signed_token : signed_tokens) {
+    expected_raw_signed_tokens.push_back(signed_token.get());
+  }
+  EXPECT_EQ(expected_raw_signed_tokens, raw_signed_tokens);
 }
 
-}  // namespace brave_ads::cbr
+TEST(BraveAdsSignedTokenUtilTest, EmptySignedTokensToRawSignedTokens) {
+  // Act
+  const std::vector<challenge_bypass_ristretto::SignedToken> raw_signed_tokens =
+      cbr::ToRawSignedTokens({});
+
+  // Assert
+  EXPECT_THAT(raw_signed_tokens, ::testing::IsEmpty());
+}
+
+}  // namespace brave_ads

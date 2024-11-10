@@ -6,24 +6,27 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/build_channel_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsBuildChannelUserDataTest : public UnitTestBase {};
+class BraveAdsBuildChannelUserDataTest : public test::TestBase {};
 
 TEST_F(BraveAdsBuildChannelUserDataTest,
        BuildBuildChannelUserDataForRewardsUser) {
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildBuildChannelUserData();
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "buildChannel": "release"
                     })"),
-            BuildBuildChannelUserData());
+            user_data);
 }
 
 TEST_F(BraveAdsBuildChannelUserDataTest,
@@ -31,8 +34,11 @@ TEST_F(BraveAdsBuildChannelUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  // Act & Assert
-  EXPECT_TRUE(BuildBuildChannelUserData().empty());
+  // Act
+  const base::Value::Dict user_data = BuildBuildChannelUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

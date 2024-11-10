@@ -73,13 +73,13 @@ class SolanaTransaction {
   bool operator!=(const SolanaTransaction&) const;
 
   // Serialize the message and sign it with the selected account.
-  std::string GetSignedTransaction(
-      KeyringService* keyring_service,
-      const mojom::AccountIdPtr& selected_account) const;
   std::optional<std::vector<uint8_t>> GetSignedTransactionBytes(
       KeyringService* keyring_service,
       const mojom::AccountIdPtr& selected_account,
-      const std::vector<uint8_t>* selected_account_signature = nullptr) const;
+      const mojom::SolanaSignaturePtr& selected_account_signature) const;
+
+  // https://docs.rs/solana-sdk/1.18.14/src/solana_sdk/transaction/mod.rs.html#271-276
+  std::string GetUnsignedTransaction() const;
 
   // Serialize and encode the message in Base64.
   std::string GetBase64EncodedMessage() const;
@@ -102,7 +102,7 @@ class SolanaTransaction {
   bool IsPartialSigned() const;
 
   std::string to_wallet_address() const { return to_wallet_address_; }
-  std::string spl_token_mint_address() const { return spl_token_mint_address_; }
+  std::string token_address() const { return token_address_; }
   mojom::TransactionType tx_type() const { return tx_type_; }
   uint64_t lamports() const { return lamports_; }
   uint64_t amount() const { return amount_; }
@@ -116,8 +116,8 @@ class SolanaTransaction {
   void set_to_wallet_address(const std::string& to_wallet_address) {
     to_wallet_address_ = to_wallet_address;
   }
-  void set_spl_token_mint_address(const std::string& spl_token_mint_address) {
-    spl_token_mint_address_ = spl_token_mint_address;
+  void set_token_address(const std::string& token_address) {
+    token_address_ = token_address;
   }
   void set_tx_type(mojom::TransactionType tx_type);
   void set_lamports(uint64_t lamports) { lamports_ = lamports; }
@@ -129,9 +129,16 @@ class SolanaTransaction {
     sign_tx_param_ = std::move(sign_tx_param);
   }
   void set_wired_tx(const std::string& wired_tx) { wired_tx_ = wired_tx; }
+  void set_fee_estimation(mojom::SolanaFeeEstimationPtr estimation) {
+    fee_estimation_ = std::move(estimation);
+  }
+  const mojom::SolanaFeeEstimationPtr& fee_estimation() const {
+    return fee_estimation_;
+  }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, GetBase64EncodedMessage);
+
   SolanaMessage message_;
   // Value will be assigned when FromSignedTransactionBytes is called.
   std::vector<uint8_t> raw_signatures_;
@@ -155,7 +162,7 @@ class SolanaTransaction {
   // Data fields to be used for UI, they are filled currently when we create
   // SolanaTxData to transfer SOL or SPL tokens for UI.
   std::string to_wallet_address_;
-  std::string spl_token_mint_address_;
+  std::string token_address_;
   mojom::TransactionType tx_type_ = mojom::TransactionType::Other;
   uint64_t lamports_ = 0;  // amount of lamports to transfer
   uint64_t amount_ = 0;    // amount of SPL tokens to transfer
@@ -163,6 +170,9 @@ class SolanaTransaction {
   // Currently might be specified by solana.signAndSendTransaction provider
   // API as the options to be passed to sendTransaction RPC call.
   std::optional<SendOptions> send_options_;
+
+  // Fee estimation result
+  mojom::SolanaFeeEstimationPtr fee_estimation_;
 };
 
 }  // namespace brave_wallet

@@ -20,8 +20,8 @@ public class DAU {
     // TODO: Handle via brave-stats-updater-server switch and get URL from brave_stats_updater_url
     let domain =
       AppConstants.isOfficialBuild
-      ? "https://laptop-updates.brave.com/"
-      : "https://laptop-updates.bravesoftware.com/"
+      ? "https://usage-ping.brave.com/"
+      : "https://usage-ping.bravesoftware.com/"
 
     return "\(domain)\(apiVersion)/usage/ios?platform=ios"
   }
@@ -101,7 +101,6 @@ public class DAU {
   @objc private func sendPingToServerInternal() {
     guard let paramsAndPrefs = paramsAndPrefsSetup(for: Date()) else {
       Logger.module.debug("dau, no changes detected, no server ping")
-      DebugLogger.log(for: .urp, text: "dau, no changes detected, no server ping")
       return
     }
 
@@ -123,7 +122,6 @@ public class DAU {
     }
 
     Logger.module.debug("send ping to server, url: \(pingRequestUrl)")
-    DebugLogger.log(for: .urp, text: "send ping to server, url: \(pingRequestUrl)")
 
     var request = URLRequest(url: pingRequestUrl)
     for (key, value) in paramsAndPrefs.headers {
@@ -137,7 +135,6 @@ public class DAU {
 
       if let e = error {
         Logger.module.error("status update error: \(e.localizedDescription)")
-        DebugLogger.log(for: .urp, text: "status update error: \(e)")
         return
       }
 
@@ -224,7 +221,6 @@ public class DAU {
 
     if let referralCode = UserReferralProgram.getReferralCode() {
       params.append(URLQueryItem(name: "ref", value: referralCode))
-      DebugLogger.log(for: .urp, text: "DAU ping with added ref, params: \(params)")
     }
 
     let lastPingTimestamp = [Int((date).timeIntervalSince1970)]
@@ -262,8 +258,14 @@ public class DAU {
   }
 
   func braveCoreParams(for braveStats: BraveStats) -> [URLQueryItem] {
-    // For now we only have wallet params from brave-core
-    braveStats.walletParams.map({ URLQueryItem(name: $0.key, value: $0.value) })
+    var queryItems: [URLQueryItem] = []
+    queryItems.append(
+      contentsOf: braveStats.walletParams.map({ URLQueryItem(name: $0.key, value: $0.value) })
+    )
+    queryItems.append(
+      .init(name: "ads_enabled", value: braveStats.isNotificationAdsEnabled ? "true" : "false")
+    )
+    return queryItems
   }
 
   func versionParam(for version: String = AppInfo.appVersion) -> URLQueryItem {

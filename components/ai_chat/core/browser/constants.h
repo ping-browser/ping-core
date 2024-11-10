@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_
 
+#include <limits>
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
@@ -21,8 +22,21 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 extern const base::fixed_flat_set<std::string_view, 1>
     kPrintPreviewRetrievalHosts;
 
-inline constexpr uint8_t kMaxPreviewPages = 20;
+constexpr uint8_t kMaxPreviewPages = 20;
 extern const char kLeoModelSupportUrl[];
+
+// Upon registering a custom model, users have the ability to explicitly
+// provide a context size (in tokens). When present, we'll use this value to
+// determine the max associated content length (in chars). We will assume 4
+// chars per token. When no context size has been provided, we will default to a
+// conservative 4k tokens based on common models like Phi 3 Mini and Llama 2
+// (both have 4k token context limits).
+constexpr size_t kDefaultCharsPerToken = 4;
+constexpr float kMaxContentLengthThreshold = 0.6f;
+constexpr size_t kReservedTokensForPrompt = 300;
+constexpr size_t kReservedTokensForMaxNewTokens = 400;
+
+inline constexpr char kBraveSearchURLPrefix[] = "search";
 
 }  // namespace ai_chat
 

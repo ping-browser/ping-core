@@ -5,6 +5,7 @@
 import { BraveWallet, NetworkFilterType } from '../constants/types'
 import { getLocale } from '../../common/locale'
 import AllNetworksIcon from '../assets/svg-icons/all-networks-icon.svg'
+import { getNetworkId } from '../common/slices/entities/network.entity'
 
 export const AllNetworksOption: BraveWallet.NetworkInfo = {
   blockExplorerUrls: [],
@@ -17,9 +18,10 @@ export const AllNetworksOption: BraveWallet.NetworkInfo = {
   rpcEndpoints: [],
   symbol: 'all',
   symbolName: 'all',
-  supportedKeyrings: [],
-  isEip1559: false
+  supportedKeyrings: []
 }
+
+export const AllNetworksOptionNetworkId = getNetworkId(AllNetworksOption)
 
 export const AllNetworksOptionDefault: NetworkFilterType = {
   chainId: 'all',

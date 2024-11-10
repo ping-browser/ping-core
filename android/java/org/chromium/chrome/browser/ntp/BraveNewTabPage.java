@@ -19,7 +19,6 @@ import org.chromium.chrome.browser.feed.FeedFeatures;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.FeedSurfaceProvider;
 import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
-import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
@@ -34,10 +33,10 @@ import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
-import org.chromium.chrome.browser.xsurface.feed.FeedLaunchReliabilityLogger.SurfaceType;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 public class BraveNewTabPage extends NewTabPage {
     private JankTracker mJankTracker;
@@ -54,6 +53,7 @@ public class BraveNewTabPage extends NewTabPage {
             Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<Tab> activityTabProvider,
+            ModalDialogManager modalDialogManager,
             SnackbarManager snackbarManager,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             TabModelSelector tabModelSelector,
@@ -76,6 +76,7 @@ public class BraveNewTabPage extends NewTabPage {
                 activity,
                 browserControlsStateProvider,
                 activityTabProvider,
+                modalDialogManager,
                 snackbarManager,
                 lifecycleDispatcher,
                 tabModelSelector,
@@ -126,7 +127,6 @@ public class BraveNewTabPage extends NewTabPage {
             Activity activity,
             WindowAndroid windowAndroid,
             SnackbarManager snackbarManager,
-            NewTabPageUma uma,
             boolean isInNightMode,
             Supplier<ShareDelegate> shareDelegateSupplier,
             String url) {
@@ -155,13 +155,11 @@ public class BraveNewTabPage extends NewTabPage {
                         NewTabPageUtils.decodeOriginFromNtpUrl(url),
                         PrivacyPreferencesManagerImpl.getInstance(),
                         mToolbarSupplier,
-                        SurfaceType.NEW_TAB_PAGE,
                         mConstructedTimeNs,
                         FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
                         /* overScrollDisabled= */ false,
                         /* viewportView= */ null,
                         /* actionDelegate= */ null,
-                        HelpAndFeedbackLauncherImpl.getForProfile(profile),
                         mTabStripHeightSupplier);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;

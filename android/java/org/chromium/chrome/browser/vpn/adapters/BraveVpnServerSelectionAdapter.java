@@ -1,23 +1,25 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.vpn.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.radiobutton.MaterialRadioButton;
+
+import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity.OnServerRegionSelection;
-import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
@@ -26,8 +28,13 @@ import java.util.List;
 
 public class BraveVpnServerSelectionAdapter
         extends RecyclerView.Adapter<BraveVpnServerSelectionAdapter.ViewHolder> {
-    List<BraveVpnServerRegion> mBraveVpnServerRegions = new ArrayList<>();
+    private final Context mContext;
+    private List<Region> mRegions = new ArrayList<>();
     private OnServerRegionSelection mOnServerRegionSelection;
+
+    public BraveVpnServerSelectionAdapter(Context context) {
+        this.mContext = context;
+    }
 
     @NonNull
     @Override
@@ -40,35 +47,40 @@ public class BraveVpnServerSelectionAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final BraveVpnServerRegion vpnServerRegion = mBraveVpnServerRegions.get(position);
-        if (vpnServerRegion != null) {
-            String locationText =
-                    BraveVpnUtils.countryCodeToEmoji(vpnServerRegion.getCountryIsoCode())
-                            + " "
-                            + vpnServerRegion.getNamePretty();
-            holder.serverText.setText(locationText);
-            if (BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName())) {
-                holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
-                        0, 0, R.drawable.ic_checkbox_checked, 0);
-            } else {
-                holder.serverText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            }
-            holder.serverText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOnServerRegionSelection.onServerRegionClick(vpnServerRegion);
-                }
-            });
+        final Region region = mRegions.get(position);
+        if (region != null) {
+            holder.serverIconText.setText(BraveVpnUtils.countryCodeToEmoji(region.countryIsoCode));
+            holder.serverText.setText(region.namePretty);
+            String cityText =
+                    mContext.getResources()
+                            .getQuantityString(
+                                    R.plurals.city_text,
+                                    region.cities.length,
+                                    region.cities.length);
+            String serverText =
+                    mContext.getResources()
+                            .getQuantityString(
+                                    R.plurals.server_text, region.serverCount, region.serverCount);
+            holder.cityServerText.setText(cityText.concat(serverText));
+            holder.serverRadioButton.setChecked(
+                    BraveVpnPrefUtils.getRegionIsoCode().equals(region.countryIsoCode));
+            holder.serverSelectionItemLayout.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnServerRegionSelection.onServerRegionClick(region);
+                        }
+                    });
         }
     }
 
     @Override
     public int getItemCount() {
-        return mBraveVpnServerRegions.size();
+        return mRegions.size();
     }
 
-    public void setVpnServerRegions(List<BraveVpnServerRegion> vpnServerRegions) {
-        this.mBraveVpnServerRegions = vpnServerRegions;
+    public void setVpnServerRegions(List<Region> vpnServerRegions) {
+        this.mRegions = vpnServerRegions;
     }
 
     public void setOnServerRegionSelection(OnServerRegionSelection onServerRegionSelection) {
@@ -76,11 +88,20 @@ public class BraveVpnServerSelectionAdapter
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public LinearLayout serverSelectionItemLayout;
+        public TextView serverIconText;
         public TextView serverText;
+        public TextView cityServerText;
+        public MaterialRadioButton serverRadioButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            this.serverSelectionItemLayout =
+                    itemView.findViewById(R.id.server_selection_item_layout);
+            this.serverIconText = itemView.findViewById(R.id.server_icon);
             this.serverText = itemView.findViewById(R.id.server_text);
+            this.cityServerText = itemView.findViewById(R.id.city_server_text);
+            this.serverRadioButton = itemView.findViewById(R.id.server_radio_button);
         }
     }
 }

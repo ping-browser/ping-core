@@ -5,6 +5,8 @@
 
 #include "chrome/browser/android/signin/signin_manager_android.h"
 
+#include "base/android/callback_android.h"
+#include "base/android/jni_string.h"
 #include "brave/build/android/jni_headers/BraveSigninManager_jni.h"
 #include "chrome/android/chrome_jni_headers/SigninManagerImpl_jni.h"
 
@@ -14,7 +16,7 @@ class UnusedClass {
  private:
   void test() {
     Java_SigninManagerImpl_create(nullptr, 0ll, nullptr, nullptr, nullptr,
-                                  nullptr, nullptr);
+                                  nullptr);
     Java_SigninManagerImpl_destroy(nullptr, 0ll);
   }
 };

@@ -13,6 +13,7 @@ import Shared
 public enum DeepLink: String {
   case vpnCrossPlatformPromo = "vpn_promo"
   case braveLeo = "brave_leo"
+  case playlist
 }
 
 // The root navigation for the Router. Look at the tests to see a complete URL
@@ -24,8 +25,7 @@ public enum NavigationPath: Equatable {
 
   public init?(url: URL, isPrivateBrowsing: Bool) {
     let urlString = url.absoluteString
-    if url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https" || url.isIPFSScheme
-    {
+    if url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https" {
       self = .url(webURL: url, isPrivate: isPrivateBrowsing)
       return
     }
@@ -89,6 +89,9 @@ public enum NavigationPath: Equatable {
       bvc.presentVPNInAppEventCallout()
     case .braveLeo:
       bvc.presentBraveLeoDeepLink()
+    case .playlist:
+      let helper = BrowserNavigationHelper(bvc)
+      helper.openPlaylist()
     }
   }
 
@@ -108,8 +111,7 @@ public enum NavigationPath: Equatable {
     )
   }
 
-  private static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController)
-  {
+  static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
     switch path {
     case .unknown, .search:
       // Search
@@ -156,13 +158,16 @@ public enum NavigationPath: Equatable {
       bvc.navigationHelper.openWallet()
     case .scanQRCode:
       bvc.scanQRCode()
-//    case .braveNews:
-//      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
-//      bvc.popToBVC()
-//      guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else {
-//        return
-//      }
-//      newTabPageController.scrollToBraveNews()
+//     case .braveNews:
+//       bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
+//       bvc.popToBVC()
+//       guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else {
+//         return
+//       }
+//       newTabPageController.scrollToBraveNews()
+//     case .braveLeo:
+//       bvc.popToBVC()
+//       bvc.openBraveLeo()
     @unknown default:
       assertionFailure()
       break

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 
-#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_ads {
@@ -22,10 +22,16 @@ constexpr char kEpsilonGreedyBanditArms[] =
 constexpr char kEpsilonGreedyBanditEligibleSegments[] =
     "brave.brave_ads.epsilon_greedy_bandit_eligible_segments.v2";
 
+constexpr char kHasMigratedConversionState[] =
+    "brave.brave_ads.migrated.conversion_state";
+constexpr char kHasMigratedNotificationState[] =
+    "brave.brave_ads.has_migrated.notification_state";
+constexpr char kHasMigratedRewardsState[] =
+    "brave.brave_ads.migrated.rewards_state";
+
 }  // namespace
 
-void RegisterProfilePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry) {
+void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
   // Added 11/2023.
   registry->RegisterDoublePref(kNotificationAdLastNormalizedDisplayCoordinateX,
                                0.0);
@@ -35,9 +41,14 @@ void RegisterProfilePrefsForMigration(
   // Added 04/2024.
   registry->RegisterDictionaryPref(kEpsilonGreedyBanditArms);
   registry->RegisterListPref(kEpsilonGreedyBanditEligibleSegments);
+
+  // Added 08/2024.
+  registry->RegisterBooleanPref(kHasMigratedConversionState, false);
+  registry->RegisterBooleanPref(kHasMigratedNotificationState, false);
+  registry->RegisterBooleanPref(kHasMigratedRewardsState, false);
 }
 
-void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   // Added 11/2023.
   prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateX);
   prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateY);
@@ -45,6 +56,11 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 04/2024.
   prefs->ClearPref(kEpsilonGreedyBanditArms);
   prefs->ClearPref(kEpsilonGreedyBanditEligibleSegments);
+
+  // Added 08/2024.
+  prefs->ClearPref(kHasMigratedConversionState);
+  prefs->ClearPref(kHasMigratedNotificationState);
+  prefs->ClearPref(kHasMigratedRewardsState);
 }
 
 }  // namespace brave_ads

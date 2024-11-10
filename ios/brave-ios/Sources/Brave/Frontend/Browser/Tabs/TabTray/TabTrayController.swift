@@ -5,10 +5,12 @@
 
 import BraveCore
 import BraveShared
+import BraveShields
 import BraveUI
 import Combine
 import Data
 import LocalAuthentication
+import Lottie
 import Preferences
 import Shared
 import SnapKit
@@ -19,6 +21,9 @@ protocol TabTrayDelegate: AnyObject {
   /// Notifies the delegate that order of tabs on tab tray has changed.
   /// This info can be used to update UI in other place, for example update order of tabs in tabs bar.
   func tabOrderChanged()
+  /// Notifies the delegate that the user tapped the add button to create a tab and the tab tray
+  /// used the tab manager to create one
+  func didCreateTab()
 }
 
 class TabTrayController: AuthenticationController {
@@ -90,6 +95,8 @@ class TabTrayController: AuthenticationController {
 
       privateModeButton.isSelected = privateMode
       tabTypeSelector.isHidden = privateMode
+      tabTypeSelectorContainerView.isHidden =
+        privateMode && !BraveCore.FeatureList.kBraveShredFeature.enabled
     }
   }
 
@@ -115,6 +122,7 @@ class TabTrayController: AuthenticationController {
 
   private let tabContentView = UIView()
 
+  private let tabTypeSelectorContainerView = UIView()
   private var tabTypeSelectorItems = [UIImage]()
   private lazy var tabTypeSelector: UISegmentedControl = {
     let segmentedControl = UISegmentedControl(items: tabTypeSelectorItems).then {
@@ -133,7 +141,7 @@ class TabTrayController: AuthenticationController {
   }
 
   let newTabButton = UIButton(type: .system).then {
-    $0.setImage(UIImage(named: "add_tab", in: .module, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(UIImage(braveSystemNamed: "leo.plus.add"), for: .normal)
     $0.accessibilityLabel = Strings.tabTrayAddTabAccessibilityLabel
     $0.accessibilityIdentifier = "TabTrayController.addTabButton"
     $0.contentEdgeInsets = .init(
@@ -164,12 +172,25 @@ class TabTrayController: AuthenticationController {
     $0.accessibilityLabel = Strings.done
     $0.accessibilityIdentifier = "TabTrayController.privateButton"
     $0.tintColor = .braveLabel
-    $0.selectedBackgroundColor = UIColor(braveSystemName: .primitivePrivateWindow70)
+    $0.selectedBackgroundColor = UIColor(braveSystemName: .primitivePrivateWindow25)
 
     if Preferences.Privacy.privateBrowsingOnly.value {
       $0.alpha = 0
     }
   }
+
+  lazy var shredButton: UIButton = {
+    var button = UIButton(frame: .zero)
+    button.setImage(UIImage(braveSystemNamed: "leo.shred.data"), for: .normal)
+    button.tintColor = .bravePrimary
+    button.titleLabel?.font = .preferredFont(forTextStyle: .body)
+    button.titleLabel?.adjustsFontForContentSizeCategory = true
+    button.contentHorizontalAlignment = .right
+    button.titleLabel?.adjustsFontSizeToFitWidth = true
+    button.accessibilityLabel = Strings.Shields.shredSiteData
+    button.accessibilityIdentifier = "TabTrayController.shredButton"
+    return button
+  }()
 
   private var searchBarView: TabTraySearchBar?
   let tabTraySearchController = UISearchController(searchResultsController: nil)
@@ -343,6 +364,7 @@ class TabTrayController: AuthenticationController {
     reloadOpenTabsSession()
     updateColors()
 
+    shredButton.addTarget(self, action: #selector(shredButtonPressed), for: .touchUpInside)
     becomeFirstResponder()
   }
 
@@ -378,18 +400,39 @@ class TabTrayController: AuthenticationController {
       $0.isLayoutMarginsRelativeArrangement = true
     }
 
-    contentStackView.addArrangedSubview(tabTypeSelector)
-    contentStackView.setCustomSpacing(UX.segmentedControlTopInset, after: tabTypeSelector)
+    tabTypeSelectorContainerView.addSubview(tabTypeSelector)
+    contentStackView.addArrangedSubview(tabTypeSelectorContainerView)
+    contentStackView.setCustomSpacing(
+      UX.segmentedControlTopInset,
+      after: tabTypeSelectorContainerView
+    )
     contentStackView.addArrangedSubview(tabContentView)
 
     containerView.addSubview(contentStackView)
+
+    if FeatureList.kBraveShredFeature.enabled {
+      tabTypeSelectorContainerView.addSubview(shredButton)
+
+      shredButton.snp.makeConstraints {
+        $0.leading.greaterThanOrEqualTo(tabTypeSelector.snp.trailing)
+        $0.trailing.equalTo(tabTypeSelectorContainerView.snp.trailing)
+        $0.centerY.equalTo(tabTypeSelectorContainerView)
+        $0.top.greaterThanOrEqualTo(tabTypeSelectorContainerView.snp.top)
+        $0.bottom.lessThanOrEqualTo(tabTypeSelectorContainerView.snp.bottom)
+      }
+    }
 
     contentStackView.snp.makeConstraints {
       $0.edges.equalTo(containerView.safeAreaLayoutGuide)
     }
 
+    tabTypeSelectorContainerView.snp.makeConstraints {
+      $0.width.equalTo(containerView.layoutMarginsGuide.snp.width)
+    }
+
     tabTypeSelector.snp.makeConstraints {
       $0.width.equalTo(contentStackView.snp.width).dividedBy(2)
+      $0.center.top.bottom.equalTo(tabTypeSelectorContainerView)
     }
 
     tabContentView.addSubview(tabTrayView)
@@ -418,6 +461,8 @@ class TabTrayController: AuthenticationController {
 
     tabTrayView.isHidden = tabTrayMode == .sync
     tabSyncView.isHidden = tabTrayMode == .local
+
+    updateShredButtonVisibility()
 
     searchBarView?.searchBar.placeholder =
       tabTrayMode == .local
@@ -465,6 +510,8 @@ class TabTrayController: AuthenticationController {
       $0.compactAppearance = navBarAppearance
       $0.scrollEdgeAppearance = navBarAppearance
     }
+
+    shredButton.tintColor = browserColors.textPrimary
 
     // Need to force a relayout for the nav controller for the appearance to take affect
     navigationController?.view.setNeedsLayout()
@@ -643,6 +690,11 @@ class TabTrayController: AuthenticationController {
     }
   }
 
+  private func updateShredButtonVisibility() {
+    let totalItems = dataSource.snapshot().numberOfItems
+    shredButton.isHidden = tabTrayMode == .sync || (privateMode && totalItems == 0)
+  }
+
   // MARK: - Actions
 
   @objc func doneAction() {
@@ -667,6 +719,23 @@ class TabTrayController: AuthenticationController {
     } else {
       tabManager.addTabAndSelect(isPrivate: privateMode)
     }
+
+    delegate?.didCreateTab()
+  }
+
+  @objc func shredButtonPressed() {
+    guard let tab = self.tabManager.selectedTab, let url = tab.url else { return }
+
+    let alert = UIAlertController.shredDataAlert(url: url) { _ in
+      LottieAnimationView.showShredAnimation(
+        on: self.navigationController?.view ?? self.view
+      ) { [weak self] in
+        self?.tabManager.shredData(for: url, in: tab)
+        self?.refreshDataSource()
+        self?.tabTrayView.collectionView.reloadData()
+      }
+    }
+    present(alert, animated: true)
   }
 
   @objc private func tappedButton(_ gestureRecognizer: UIGestureRecognizer) {
@@ -721,6 +790,8 @@ class TabTrayController: AuthenticationController {
     tabManager.willSwitchTabMode(leavingPBM: privateMode)
     privateMode.toggle()
 
+    updateShredButtonVisibility()
+
     // When we switch from Private => Regular make sure we reset _selectedIndex, fix for bug #888
     tabManager.resetSelectedIndex()
     if privateMode {
@@ -731,6 +802,7 @@ class TabTrayController: AuthenticationController {
         || tabManager.tabsForCurrentMode.isEmpty
       {
         tabTrayView.showPrivateModeInfo()
+        updateShredButtonVisibility()
         // New private tab is created immediately to reflect changes on NTP.
         // If user drags the modal down or dismisses it, a new private tab will be ready.
         tabManager.addTabAndSelect(isPrivate: true)
@@ -749,6 +821,7 @@ class TabTrayController: AuthenticationController {
         }
 
         tabTrayView.hidePrivateModeInfo()
+        updateShredButtonVisibility()
         tabTrayView.collectionView.reloadData()
 
         // When you go back from normal mode, current tab should be selected
@@ -775,6 +848,8 @@ class TabTrayController: AuthenticationController {
     }
 
     tabTypeSelector.isHidden = privateMode
+    tabTypeSelectorContainerView.isHidden =
+      privateMode && !BraveCore.FeatureList.kBraveShredFeature.enabled
   }
 
   func remove(tab: Tab) {
@@ -884,6 +959,7 @@ extension TabTrayController: PresentingModalViewControllerDelegate {
 
 extension TabTrayController: TabManagerDelegate {
   func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
+    updateShredButtonVisibility()
     applySnapshot()
 
     // This check is mainly for entering private mode.

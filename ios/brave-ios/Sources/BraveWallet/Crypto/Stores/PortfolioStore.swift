@@ -314,7 +314,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
   private typealias TokenBalanceCache = [String: [String: Double]]
-  /// Cache of token balances for each account. [token.id: [account.cacheBalanceKey: balance]]
+  /// Cache of token balances for each account. [token.id: [account.id: balance]]
   private var tokenBalancesCache: TokenBalanceCache = [:]
   /// Cache of prices for each token. The key is the token's `assetRatioId`.
   private var pricesCache: [String: String] = [:]
@@ -441,10 +441,11 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       let selectedAccounts = filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = filters.networks.filter(\.isSelected).map(\.model)
       let allVisibleUserAssets: [NetworkAssets] =
-        assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+        await assetManager.getUserAssets(
           networks: selectedNetworks,
           visible: true
-        ).map { networkAssets in  // filter out NFTs from Portfolio
+        )
+        .map { networkAssets in  // filter out NFTs from Portfolio
           NetworkAssets(
             network: networkAssets.network,
             tokens: networkAssets.tokens.filter { !($0.isNft || $0.isErc721) },
@@ -469,10 +470,14 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
             token: token,
             network: networkAssets.network,
             accounts: selectedAccounts.filter {
-              if token.coin == .fil {
+              switch token.coin {
+              case .fil, .btc, .zec:
                 return $0.keyringId
-                  == BraveWallet.KeyringId.keyringId(for: token.coin, on: token.chainId)
-              } else {
+                  == BraveWallet.KeyringId.keyringId(
+                    for: token.coin,
+                    on: token.chainId
+                  )
+              default:
                 return $0.coin == token.coin
               }
             }
@@ -504,7 +509,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
 
       // Looping through `allTokenNetworkAccounts` to get token's cached balance
       for tokenNetworkAccounts in allTokenNetworkAccounts {
-        if let tokenBalances = assetManager.getBalances(
+        if let tokenBalances = assetManager.getAssetBalances(
           for: tokenNetworkAccounts.token,
           account: nil
         ) {
@@ -551,11 +556,10 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                     )
                   }
                   tokenBalances.merge(with: [account.id: balanceForToken ?? 0])
-                  assetManager.updateBalance(
+                  await assetManager.updateAssetBalance(
                     for: token,
                     account: account.id,
-                    balance: "\(balanceForToken ?? 0)",
-                    completion: nil
+                    balance: "\(balanceForToken ?? 0)"
                   )
                 }
                 return [token.id: tokenBalances]
@@ -715,10 +719,14 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         AssetGroupViewModel.sorted(lhs: $0, rhs: $1)
       })
       .optionallyFilter(  // when grouping assets & hiding small balances
-        shouldFilter: filters.groupBy != .none && filters.isHidingSmallBalances,
+        shouldFilter: filters.groupBy != .none || filters.isHidingSmallBalances,
         isIncluded: { group in
-          // hide groups without assets or zero fiat value.
-          return (!group.assets.isEmpty && group.totalFiatValue > 0)
+          if filters.isHidingSmallBalances {
+            // hide groups without assets or zero fiat value.
+            return (!group.assets.isEmpty && group.totalFiatValue > 0)
+          }
+          // assets are grouped, hide groups without assets
+          return !group.assets.isEmpty
         }
       )
   }

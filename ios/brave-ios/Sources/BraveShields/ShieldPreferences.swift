@@ -25,6 +25,21 @@ public class ShieldPreferences {
     default: defaultHTTPsUpgradeLevel.rawValue
   )
 
+  /// Get the enabled level for https upgrade for when the kBraveHttpsByDefault feature flag is off
+  /// This preserves the value the user had set (possibly `strict` or `standard`) when they enable
+  /// https everywhere
+  public static var httpsUpgradePriorEnabledLevelRaw = Preferences.Option<String?>(
+    key: "shields.https-upgrade-prior-enabled-level",
+    default: nil
+  )
+
+  /// Get the level of the https upgrade setting as a stored preference
+  /// - Warning: You should not access this directly but  through ``httpsUpgradeLevel``
+  private static var shredLevelRaw = Preferences.Option<String?>(
+    key: "shields.shred-level",
+    default: nil
+  )
+
   /// Get the level of the adblock and tracking protection
   public static var blockAdsAndTrackingLevel: ShieldLevel {
     get {
@@ -39,6 +54,25 @@ public class ShieldPreferences {
       HTTPSUpgradeLevel(rawValue: httpsUpgradeLevelRaw.value) ?? defaultHTTPsUpgradeLevel
     }
     set { httpsUpgradeLevelRaw.value = newValue.rawValue }
+  }
+
+  /// Get the prior enabled level of HTTPS upgrades
+  public static var httpsUpgradePriorEnabledLevel: HTTPSUpgradeLevel? {
+    get {
+      httpsUpgradePriorEnabledLevelRaw.value.flatMap { HTTPSUpgradeLevel(rawValue: $0) }
+    }
+    set { httpsUpgradePriorEnabledLevelRaw.value = newValue?.rawValue }
+  }
+
+  /// Get the global shred level value
+  public static var shredLevel: SiteShredLevel {
+    get {
+      guard let shredLevelRaw = self.shredLevelRaw.value else { return .never }
+      return SiteShredLevel(rawValue: shredLevelRaw) ?? .never
+    }
+    set {
+      shredLevelRaw.value = newValue.rawValue
+    }
   }
 
   /// A boolean value inidicating if GPC is enabled

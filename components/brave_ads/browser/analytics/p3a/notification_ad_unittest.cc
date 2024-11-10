@@ -3,19 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
+
 #include <utility>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class NotificationAdP3ATest : public testing::Test {
+class BraveAdsNotificationAdP3ATest : public testing::Test {
  public:
   void SetUp() override {
     pref_service_.registry()->RegisterDoublePref(
@@ -40,7 +42,7 @@ class NotificationAdP3ATest : public testing::Test {
   TestingPrefServiceSimple pref_service_;
 };
 
-TEST_F(NotificationAdP3ATest, CustomNotificationsDisabled) {
+TEST_F(BraveAdsNotificationAdP3ATest, CustomNotificationsDisabled) {
   RecordNotificationAdPositionMetric(false, &pref_service_);
   histogram_tester_.ExpectUniqueSample(kNotificationAdPositionHistogramName,
                                        INT_MAX - 1, 1);
@@ -56,7 +58,7 @@ TEST_F(NotificationAdP3ATest, CustomNotificationsDisabled) {
   histogram_tester_.ExpectTotalCount(kNotificationAdPositionHistogramName, 3);
 }
 
-TEST_F(NotificationAdP3ATest, CustomNotificationsEnabled) {
+TEST_F(BraveAdsNotificationAdP3ATest, CustomNotificationsEnabled) {
   std::pair<std::pair<double, double>, int> cases[] = {
       {{0.15, 0.28}, 1},
       {{0.42, 0.1}, 2},

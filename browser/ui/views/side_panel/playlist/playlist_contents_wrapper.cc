@@ -12,23 +12,21 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_within_tab_helper.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "third_party/blink/public/mojom/frame/fullscreen.mojom.h"
 #include "ui/views/widget/widget.h"
 
 PlaylistContentsWrapper::PlaylistContentsWrapper(
     const GURL& webui_url,
-    content::BrowserContext* browser_context,
+    Profile* profile,
     int task_manager_string_id,
-    bool webui_resizes_host,
     bool esc_closes_ui,
     BrowserView* browser_view,
     PlaylistSidePanelCoordinator* coordinator)
     : WebUIContentsWrapperT(webui_url,
-                            browser_context,
+                            profile,
                             task_manager_string_id,
-                            webui_resizes_host,
                             esc_closes_ui),
       browser_view_(browser_view),
       coordinator_(coordinator) {}
@@ -36,8 +34,7 @@ PlaylistContentsWrapper::PlaylistContentsWrapper(
 PlaylistContentsWrapper::~PlaylistContentsWrapper() = default;
 
 bool PlaylistContentsWrapper::CanEnterFullscreenModeForTab(
-    content::RenderFrameHost* requesting_frame,
-    const blink::mojom::FullscreenOptions& options) {
+    content::RenderFrameHost* requesting_frame) {
   return true;
 }
 
@@ -131,7 +128,7 @@ void PlaylistContentsWrapper::ExitPictureInPicture() {
   PictureInPictureWindowManager::GetInstance()->ExitPictureInPicture();
 }
 
-void PlaylistContentsWrapper::AddNewContents(
+content::WebContents* PlaylistContentsWrapper::AddNewContents(
     content::WebContents* source,
     std::unique_ptr<content::WebContents> new_contents,
     const GURL& target_url,
@@ -139,7 +136,7 @@ void PlaylistContentsWrapper::AddNewContents(
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
-  static_cast<WebContentsDelegate*>(browser_view_->browser())
+  return static_cast<WebContentsDelegate*>(browser_view_->browser())
       ->AddNewContents(source, std::move(new_contents), target_url, disposition,
                        window_features, user_gesture, was_blocked);
 }

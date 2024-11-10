@@ -12,7 +12,9 @@
 #include <string>
 #include <vector>
 
-#import "brave/components/brave_ads/core/public/client/ads_client.h"
+#include "base/values.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#import "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 @protocol AdsClientBridge
 @required
@@ -25,16 +27,14 @@
 - (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
-- (void)loadComponentResource:(const std::string&)id
+- (void)loadResourceComponent:(const std::string&)id
                       version:(const int)version
                      callback:(brave_ads::LoadFileCallback)callback;
-- (void)getScheduledCaptcha:(const std::string&)payment_id
-                   callback:(brave_ads::GetScheduledCaptchaCallback)callback;
-- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
-                               captchaId:(const std::string&)captcha_id;
-- (void)getBrowsingHistory:(const int)max_count
-                   forDays:(const int)days_ago
-                  callback:(brave_ads::GetBrowsingHistoryCallback)callback;
+- (void)showScheduledCaptcha:(const std::string&)payment_id
+                   captchaId:(const std::string&)captcha_id;
+- (void)getSiteHistory:(const int)max_count
+               forDays:(const int)days_ago
+              callback:(brave_ads::GetSiteHistoryCallback)callback;
 - (void)load:(const std::string&)name
     callback:(brave_ads::LoadCallback)callback;
 - (std::string)loadDataResource:(const std::string&)name;
@@ -48,25 +48,31 @@
 - (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)cacheAdEventForInstanceId:(const std::string&)id
-                           adType:(const std::string&)ad_type
-                 confirmationType:(const std::string&)confirmation_type
+                           adType:(const brave_ads::mojom::AdType)mojom_ad_type
+                 confirmationType:(const brave_ads::mojom::ConfirmationType)
+                                      mojom_confirmation_type
                              time:(const base::Time)time;
-- (std::vector<base::Time>)getCachedAdEvents:(const std::string&)ad_type
-                            confirmationType:
-                                (const std::string&)confirmation_type;
+- (std::vector<base::Time>)
+    getCachedAdEvents:(const brave_ads::mojom::AdType)mojom_ad_type
+     confirmationType:
+         (const brave_ads::mojom::ConfirmationType)mojom_confirmation_type;
 - (void)resetAdEventCacheForInstanceId:(const std::string&)id;
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
           callback:(brave_ads::UrlRequestCallback)callback;
-- (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
+- (void)runDBTransaction:
+            (brave_ads::mojom::DBTransactionInfoPtr)mojom_db_transaction
                 callback:(brave_ads::RunDBTransactionCallback)callback;
 - (void)setProfilePref:(const std::string&)path value:(base::Value)value;
+- (bool)findProfilePref:(const std::string&)path;
 - (std::optional<base::Value>)getProfilePref:(const std::string&)path;
 - (void)clearProfilePref:(const std::string&)path;
 - (bool)hasProfilePrefPath:(const std::string&)path;
 - (void)setLocalStatePref:(const std::string&)path value:(base::Value)value;
+- (bool)findLocalStatePref:(const std::string&)path;
 - (std::optional<base::Value>)getLocalStatePref:(const std::string&)path;
 - (void)clearLocalStatePref:(const std::string&)path;
 - (bool)hasLocalStatePrefPath:(const std::string&)path;
+- (base::Value::Dict)getVirtualPrefs;
 - (void)recordP2AEvents:(const std::vector<std::string>&)events;
 
 @end

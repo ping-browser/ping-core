@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
@@ -19,11 +19,11 @@ constexpr char kDiagnosticIdKey[] = "diagnosticId";
 }  // namespace
 
 base::Value::Dict BuildDiagnosticIdUserData() {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   const std::string diagnostic_id = GetProfileStringPref(prefs::kDiagnosticId);
 

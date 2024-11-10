@@ -43,6 +43,7 @@ source_set("brave_wallet") {
     "//ios/chrome/browser/content_settings/model",
     "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/model/paths",
+    "//ios/chrome/browser/shared/model/profile",
     "//net",
     "//ui/base",
   ]
@@ -50,7 +51,11 @@ source_set("brave_wallet") {
 
 ios_objc_mojom_wrappers("wallet_mojom_wrappers") {
   mojom_target = "//brave/components/brave_wallet/common:mojom"
-  sources = [ "//brave/components/brave_wallet/common/brave_wallet.mojom" ]
+  sources = [
+    "//brave/components/brave_wallet/common/brave_wallet.mojom",
+    "//brave/components/brave_wallet/common/meld_integration.mojom",
+  ]
+  generate_namespace = false
   exclude_types = [
     "PageHandlerFactory",
     "PanelHandlerFactory",

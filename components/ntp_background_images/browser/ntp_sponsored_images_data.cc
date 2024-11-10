@@ -94,7 +94,7 @@ Logo GetLogoFromValue(const base::FilePath& installed_dir,
 
 TopSite::TopSite() = default;
 TopSite::TopSite(const std::string& i_name,
-                 const std::string i_destination_url,
+                 const std::string& i_destination_url,
                  const std::string& i_image_path,
                  const base::FilePath& i_image_file)
     : name(i_name),
@@ -168,8 +168,18 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     url_prefix += kSponsoredImagesPath;
   }
 
-  auto* campaigns_value = root.FindList(kCampaignsKey);
-  if (campaigns_value) {
+  // SmartNTTs are targeted locally by the browser and are only shown to users
+  // if the configured conditions match. Non-smart capable browsers that predate
+  // the introduction of this feature should never show these NTTs. To enforce
+  // this, the existing `campaigns` array in `photo.json` never includes
+  // SmartNTTs. A new `campaigns2` array is included in `photo.json`. This
+  // includes all NTTs, including smart ones. SmartNTT capable browsers read the
+  // `campaigns2` array, fall back to `campaigns`, and then fall back to the
+  // root `campaign` for backward compatibility. Non-smart capable browsers
+  // continue to read the `campaigns` array.
+  if (auto* campaigns2_value = root.FindList(kCampaigns2Key)) {
+    ParseCampaignsList(*campaigns2_value, installed_dir);
+  } else if (auto* campaigns_value = root.FindList(kCampaignsKey)) {
     ParseCampaignsList(*campaigns_value, installed_dir);
   } else {
     // Get a global campaign directly if the campaign list doesn't exist.
@@ -225,6 +235,26 @@ Campaign NTPSponsoredImagesData::GetCampaignFromValue(
       if (auto* focal_point = wallpaper.FindDict(kWallpaperFocalPointKey)) {
         background.focal_point = {focal_point->FindInt(kXKey).value_or(0),
                                   focal_point->FindInt(kYKey).value_or(0)};
+      }
+
+      if (const auto* const condition_matchers =
+              wallpaper.FindList(kWallpaperConditionMatchersKey)) {
+        for (const auto& condition_matcher : *condition_matchers) {
+          const auto& dict = condition_matcher.GetDict();
+          const auto* const pref_path =
+              dict.FindString(kWallpaperConditionMatcherPrefPathKey);
+          if (!pref_path) {
+            continue;
+          }
+
+          const auto* const condition =
+              dict.FindString(kWallpaperConditionMatcherKey);
+          if (!condition) {
+            continue;
+          }
+
+          background.condition_matchers.emplace(*pref_path, *condition);
+        }
       }
 
       if (auto* viewbox = wallpaper.FindDict(kViewboxKey)) {
@@ -327,6 +357,16 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
            campaign.backgrounds[background_index].focal_point.x());
   data.Set(kWallpaperFocalPointYKey,
            campaign.backgrounds[background_index].focal_point.y());
+
+  base::Value::List condition_matchers;
+  for (const auto& [pref_path, condition] :
+       campaign.backgrounds[background_index].condition_matchers) {
+    base::Value::Dict dict;
+    dict.Set(kWallpaperConditionMatcherPrefPathKey, pref_path);
+    dict.Set(kWallpaperConditionMatcherKey, condition);
+    condition_matchers.Append(std::move(dict));
+  }
+  data.Set(kWallpaperConditionMatchersKey, std::move(condition_matchers));
 
   data.Set(kCreativeInstanceIDKey,
            campaign.backgrounds[background_index].creative_instance_id);

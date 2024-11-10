@@ -5,7 +5,7 @@
 "AboutBraveShields" = "Ping Shields – informacje";
 
 /* The body of the screen explaining Ping Shields */
-"AboutBraveShieldsBody" = "Witryny często wysyłają pliki cookie i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie. Chcą dowiedzieć się, kim jesteś, śledząc Twoje działania w każdej witrynie.\n\nBrave blokuje te próby, tak aby możliwe było przeglądanie bez śledzenia.";
+"AboutBraveShieldsBody" = "Witryny często wysyłają pliki cookie i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie. Chcą dowiedzieć się, kim jesteś, śledząc Twoje działania w każdej witrynie.\n\nPing blokuje te próby, tak aby możliwe było przeglądanie bez śledzenia.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Ta funkcja umożliwia zapisanie obrazu w Galerii.";
@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Aplikacja Ping chce uzyskać dostęp do Twoich zdjęć";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Dodaj zakładkę";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Dodaj zakładkę";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Dodaj listę filtrów niestandardowych";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Dodaje dodatkowe listy utworzone i utrzymywane przez Twoją zaufaną społeczność.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Subskrybuj tylko listy pochodzące od podmiotów, którym ufasz**. Twoja przeglądarka będzie regularnie sprawdzać podany adres URL pod kątem aktualizacji.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Dodaj do ulubionych";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor blokowania";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Zablokuj powiadomienia „Przełącz na aplikację”";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokuj wyskakujące okienka";
 
@@ -173,7 +158,7 @@
 "BraveRewardsTitle" = "Nagrody Ping";
 
 /* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Wyszukiwanie Ping nie śledzi Ciebie, Twwoich wyszukiwań i kliknięć.";
+"braveSearchPromotion.bannerDescription" = "Wyszukiwarka Ping nie profiluje użytkowników.";
 
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Może później";
@@ -214,13 +199,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Jeśli strona wygląda nieprawidłowo, spróbuj wyłączyć funkcję ochrony";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Tarcze Ping";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Wyłączone";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Włączone";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -287,7 +272,7 @@
 "callout.p3aCalloutTitle" = "Pomóż ulepszyć Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Dziel się zupełnie anonimowo uwagami na temat produktów.";
+"callout.p3aCalloutToggleTitle" = "Dziel się prywatnie i anonimowo uwagami na temat produktów.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Korzystaj z ochrony prywatności Ping na komputerze lub tablecie i synchronizuj zakładki i rozszerzenia między urządzeniami.";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Zamknij ";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Czy na pewno chcesz zamknąć wszystkie inne otwarte karty?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Zamknij wszystkie inne karty";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Czy na pewno chcesz zamknąć wszystkie otwarte karty?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Potwierdź";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Filtrowanie treści";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Włącz filtry niestandardowe, które blokują oprogramowanie śledzące i przeszkadzające, konkretne dla danego regionu oraz języka";
 
 /* Cookie settings option title */
 "CookieControl" = "Kontrola plików cookie";
@@ -514,6 +499,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Skopiuj łącze";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Skopiuj informację o zakładkach do schowka.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Skopiuj do schowka";
 
@@ -525,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Obecnie używane silniki wyszukiwania";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Lista filtrów niestandardowych";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Listy filtrów niestandardowych";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Adres URL listy filtrów niestandardowych";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Dodaj";
@@ -611,13 +590,13 @@
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Otwórz ustawienia";
 
 /* Primary text on default browser popup screen */
-"defaultBrowserCallout.introPrimaryText" = "Otwieraj wszystkie odsyłacze za pomocą przeglądarki Brave, aby chronić swoją prywatność";
+"defaultBrowserCallout.introPrimaryText" = "Otwieraj wszystkie odsyłacze za pomocą przeglądarki Ping, aby chronić swoją prywatność";
 
 /* Secondary text on default browser popup. */
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields blokuje programy śledzące i reklamy, zapisuje dane oraz oszczędza czas w każdej odwiedzanej witrynie";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Otwórz „Ustawienia”, dotknij „Domyślna aplikacja przeglądarki” i wybierz „Brave”.";
+"defaultBrowserCallout.introTertiaryText" = "Otwórz „Ustawienia”, dotknij „Domyślna aplikacja przeglądarki” i wybierz „Ping”.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Ustaw Ping jako domyślną przeglądarkę";
@@ -627,9 +606,6 @@
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Zamknij domyślne wywołanie przeglądarki";
-
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Listy filtrów domyślnych";
 
 /* Name for default Ping theme. */
 "defaultThemeName" = "Domyślne ustawienia Ping";
@@ -663,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Urządzenie %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Odrzuć zmiany";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Czy na pewno chcesz odrzucić te zmiany? Wszelkie modyfikacje zostaną utracone.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Odrzucić zmiany?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Certyfikat bezpieczeństwa";
@@ -798,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funkcje";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Wprowadzony adres URL jest nieprawidłowy";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "W przypadku list filtrów niestandardowych dozwolone są tylko bezpieczne adresy URL (https)";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Dodaj";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Dodatkowe, popularne listy społeczności. Pamiętaj, że włącznie zbyt dużej liczby filtrów spowolni prędkość przeglądania.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Nie udało się pobrać";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Oczekiwanie na pobranie";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Edytuj";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Wprowadź adres URL listy filtrów";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Ostatnia aktualizacja %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Wprowadź tutaj adres URL listy filtrów";
 
 /* Share action title */
 "FindInPage" = "Znajdź na stronie";
@@ -1105,7 +1060,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Odbierz tokeny";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "Udało Ci się zarobić %@, przeglądając z Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1187,7 +1142,7 @@
 "OBPrivacyConsentClipboardPermission" = "Pozwól Ping sprawdzać mój schowek w poszukiwaniu kodu polecającego";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Być może pobrałeś/pobrałaś Brave, wspierając osobę polecającą. Aby zidentyfikować tę osobę, Ping wykona jednorazowe sprawdzenie schowka w poszukiwaniu pasującego kodu polecającego. To sprawdzenie będzie ograniczone tylko do kodu i nie zostaną przesłane żadne inne dane osobowe. Jeśli zrezygnujesz z tej operacji, Twoja osoba polecająca nie otrzyma nagród od Ping.";
+"OBPrivacyConsentDetail" = "Być może pobrałeś/pobrałaś Ping, wspierając osobę polecającą. Aby zidentyfikować tę osobę, Ping wykona jednorazowe sprawdzenie schowka w poszukiwaniu pasującego kodu polecającego. To sprawdzenie będzie ograniczone tylko do kodu i nie zostaną przesłane żadne inne dane osobowe. Jeśli zrezygnujesz z tej operacji, Twoja osoba polecająca nie otrzyma nagród od Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Nie pozwalaj na to sprawdzenie";
@@ -1274,7 +1229,7 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Dzięki blokowaniu programów śledzących i reklam strony zużywają mniej danych i wczytują się dużo szybciej.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Poznaj zalety Brave:\nBrak reklam. Brak śledzenia. Szybsze wczytywanie stron.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Poznaj zalety Ping:\nBrak reklam. Brak śledzenia. Szybsze wczytywanie stron.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Wpisz nazwę strony lub URL";
@@ -1453,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Kontynuuj";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
+/* A subtitle shown on the setting that toggles analytics on Ping. */
 "p3a.settingSubtitle" = "Te całkowicie prywatne odpowiedzi pomagają Ping oszacować ogólny poziom korzystania z niektórych funkcji i ulepszyć je dla Ciebie.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1422,15 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Twoje połączenie z tą witryną nie jest bezpieczne.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Połączenie z witryną nie zostało zweryfikowane.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Nie można w pełni zweryfikować połączenia z tą witryną. Możesz kontynuować lub spróbować ponownie załadować stronę, aby nawiązać bezpieczne połączenie.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Zaloguj się na stronie";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Wyświetl certyfikat";
@@ -1775,7 +1739,7 @@
 "playList.undoRemoveButtonTitle" = "Cofnij";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Dodaje przycisk listy odtwarzania (wygląda jak cztery linie z symbolem +) obok paska z adresem w przeglądarce Brave. Przycisk umożliwia szybkie przejście do Listy odtwarzania i dodawanie lub usuwanie multimediów.";
+"playlist.urlBarButtonOptionFooter" = "Dodaje przycisk listy odtwarzania (wygląda jak cztery linie z symbolem +) obok paska z adresem w przeglądarce Ping. Przycisk umożliwia szybkie przejście do Listy odtwarzania i dodawanie lub usuwanie multimediów.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Włącz przycisk szybkiego dostępu";
@@ -1891,7 +1855,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Synchronizuj teraz";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Zamknij menu Shields";
 
 /* Settings privacy section title */
@@ -1975,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Włącz powiadomienia";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "Informacja o tym, jak Ping chroniło Cię w Internecie w tym tygodniu.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Tygodniowy raport na temat prywatności";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Dane centrum prywatności są przechowywane lokalnie i nigdy nie są nigdzie wysyłane.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Centrum prywatności";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2066,7 +2030,7 @@
 "PrivateBrowsingOnlyWarning" = "Tryb przeglądania wyłącznie w trybie prywatnym zamknie wszystkie bieżące karty i wyloguje Cię ze wszystkich stron.";
 
 /* Private tab details */
-"PrivateTabBody" = "Karty w trybie prywatnym nie są zapisywane w przeglądarce Brave, ale nie czyni to Cię anonimowym użytkownikiem sieci. Strony odwiedzane w trybie prywatnym nie będą wyświetlane w historii, a pliki cookie zostaną usunięte po zamknięciu stron — w przeglądarce Ping nie pozostanie po nich żaden ślad, ale zapisane pliki nie zostaną usunięte.\nTwój operator sieci komórkowej (lub właściciel użytkowanych przez Ciebie sieci Wi-Fi lub VPN) może zobaczyć odwiedzane przez Ciebie witryny, a na tych witrynach będzie znany Twój publiczny adres IP, nawet podczas korzystania z kart w trybie prywatnym.";
+"PrivateTabBody" = "Karty w trybie prywatnym nie są zapisywane w przeglądarce Ping, ale nie czyni to Cię anonimowym użytkownikiem sieci. Strony odwiedzane w trybie prywatnym nie będą wyświetlane w historii, a pliki cookie zostaną usunięte po zamknięciu stron — w przeglądarce Ping nie pozostanie po nich żaden ślad, ale zapisane pliki nie zostaną usunięte.\nTwój operator sieci komórkowej (lub właściciel użytkowanych przez Ciebie sieci Wi-Fi lub VPN) może zobaczyć odwiedzane przez Ciebie witryny, a na tych witrynach będzie znany Twój publiczny adres IP, nawet podczas korzystania z kart w trybie prywatnym.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Używanie kart prywatnych zmienia tylko działanie Ping na Twoim urządzeniu, nie zmieniając zachowań innych.\n\nStrony zawsze poznają Twój adres IP, gdy je odwiedzasz. Na tej podstawie są często w stanie z grubsza odgadnąć Twoją lokalizację – zazwyczaj miasto. Czasem określenie lokalizacji może być znacznie bardziej precyzyjne. Strony mają też informację o wszystkim, co przekaże im użytkownik np. o wyszukiwanych hasłach. W przypadku zalogowania się na stronie, wiadomo, kto jest właścicielem konta. Po zamknięciu kart prywatnych nastąpi wylogowanie, ponieważ Ping usuwa pliki cookie odpowiedzialne za zalogowanie.\n\nKażdy, kto podłącza Cię do Internetu (czyli Twój dostawca usług internetowych) może zobaczyć całą Twoją aktywność w sieci. Często jest to Twój dostawca usług telefonii komórkowej. W przypadku podłączenia do sieci Wi-Fi jest to właściciel tej sieci, a jeśli korzystasz z VPN, jest to jego operator. Twój dostawca widzi, jakie strony odwiedzasz. W przypadku korzystania z protokołu HTTPS można tyko zgadywać, co robisz na stronie. Ale jeśli używany jest zwykły protokół HTTP to dostawca widzi wszystko: wyszukiwane hasła, czytane strony i klikane łącza.\n\nJeśli Twój pracodawca zarządza Twoim urządzeniem to może też monitorować Twoje korzystanie z niego. Korzystanie z kart prywatnych prawdopodobnie nie ukryje odwiedzanych stron. Ktoś, kto ma dostęp do Twojego urządzenia mógł zainstalować oprogramowanie, które monitoruje Twoją aktywność, a karty prywatne nie chronią przed tym.";
@@ -2083,7 +2047,7 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Szybkie wyszukiwarki";
 
-/* Open the App Store to rate Brave. */
+/* Open the App Store to rate Ping. */
 "RateBrave" = "Oceń Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
@@ -2237,10 +2201,10 @@
 "ReportBrokenContactMeSuggestions" = "E-mail, Twitter, itp.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Daj znać programistom Brave, że ta strona nie działa poprawnie z Shields:";
+"ReportBrokenSiteBody1" = "Daj znać programistom Ping, że ta strona nie działa poprawnie z Shields:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Uwaga: raport wysłany do serwerów Ping będzie zawierał adres witryny, numer wersji Brave, ustawienia tarcz, status VPN oraz ustawienia językowe.";
+"ReportBrokenSiteBody2" = "Uwaga: raport wysłany do serwerów Ping będzie zawierał adres witryny, numer wersji Ping, ustawienia tarcz, status VPN oraz ustawienia językowe.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Prześlij";
@@ -2309,7 +2273,7 @@
 "rewards.optInDisclaimer" = "Klikając, wyrażasz zgodę na %1$@ i %2$@. W dowolnym momencie możesz to wyłączyć w Ustawieniach.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Wspieraj twórców i wydawców treści automatycznie, włączając reklamy prywatne Brave. Reklamy prywatne Ping Private Ads to reklamy respektujące prywatność, które zapewniają wsparcie twórcom treści.";
+"rewards.settingsToggleMessage" = "Wspieraj twórców i wydawców treści automatycznie, włączając reklamy prywatne Ping. Reklamy prywatne Ping Private Ads to reklamy respektujące prywatność, które zapewniają wsparcie twórcom treści.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Włącz nagrody Ping Rewards";
@@ -2464,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Udostępnij";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Udostępnij wewnętrzne elementy Rewards";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Obsługa";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Elementy wewnętrzne Rewards";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2478,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Zapisz";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Zapisz zmiany";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Zapisane loginy";
@@ -2668,11 +2635,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Ustawienia jakości";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Ten prywatny ping pozwala Ping oszacować liczbę aktywnych użytkowników.";
+/* Description to explain the daily usage brave toggle */
+"settings.sendUsagePingDescription" = "Ten prywatny brave pozwala Ping oszacować liczbę aktywnych użytkowników.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Automatycznie wysyłaj pingi dziennego użycia do Ping";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Automatycznie wysyłaj bravei dziennego użycia do Ping";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nie można załadować strony.";
@@ -2753,7 +2723,7 @@
 "ShieldsDefaultsFooter" = "Są to domyślne ustawienia Shields dla nowych stron. Ich zmiana nie wpłynie na istniejące ustawienia każdej strony.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Przeglądasz tę stronę bez użycia ochrony prywatności Brave. Czy nie działa ona właściwie przy włączonej ochronie?";
+"ShieldsDownDisclaimer" = "Przeglądasz tę stronę bez użycia ochrony prywatności Ping. Czy nie działa ona właściwie przy włączonej ochronie?";
 
 /* shields overview message */
 "ShieldsOverview" = "Zabezpieczenia witryn umożliwiają zarządzanie blokadą reklam i trackerów w przypadku każdej odwiedzanej strony. Jeżeli chcesz, aby reklamy  na danej stronie były wyświetlane, możesz je aktywować tutaj.";
@@ -2858,7 +2828,7 @@
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Otwórz stronę";
 
 /* Description for opening Ping Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Ta opcja otworzy ustawienia Brave. Aby zmienić opcje Siri, należy wybrać w menu pozycję 'Siri & Szukaj' i spersonalizować swoje wybory.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Ta opcja otworzy ustawienia Ping. Aby zmienić opcje Siri, należy wybrać w menu pozycję 'Siri & Szukaj' i spersonalizować swoje wybory.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Otwórz ustawienia";
@@ -3013,6 +2983,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Usuń konto Sync";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Usunięcie konta spowoduje wykasowanie zaszyfrowanych danych z serwerów Ping i wyłączy synchronizację na wszystkich połączonych urządzeniach.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Nie spowoduje to usunięcia danych, które są przechowywane lokalnie na tych urządzeniach.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "To usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zdecydujesz się ponownie zacząć używać aplikacji Sync, będzie trzeba utworzyć nowe konto i ponownie dodać każde urządzenie po kolei.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Coś poszło nie tak podczas wykrywania urządzeń w łańcuchu synchronizacji.";
 
@@ -3070,11 +3049,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Wybierz typ urządzenia, z którym chcesz zsynchronizować.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Kod wygasł. Wygeneruj nowy, klikając poniższy przycisk.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Ten tymczasowy kod jest ważny przez następne %@";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Komputer";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Usuń konto Sync";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Wygląda na to, że ten kod został utworzony na urządzeniu ze starszą wersją aplikacji Ping. Zaktualizuj Ping do najnowszej wersji na innym urządzeniu, a następnie utwórz nowy kod synchronizacji.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Urządzenia i ustawienia";
@@ -3337,7 +3325,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "Wiadomości";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Śledź interesujące cię tematy";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3379,7 +3367,7 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ups…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Zarządzaj źródłami dla swojego kanału";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,7 +3389,7 @@
 "today.insecureSourcesHeader" = "Niezabezpieczony kanał – dodajesz na własną odpowiedzialność";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Obserwuj swoje ulubione źródła w pojedynczym kanale aktywności. Wystarczy, że otworzysz kartę przeglądarki Brave, przewiniesz na dół i… gotowe!\nAktualności Ping wyświetlają prywatne i zanonimizowane reklamy.";
+"today.introCardBody" = "Obserwuj swoje ulubione źródła w pojedynczym kanale aktywności. Wystarczy, że otworzysz kartę przeglądarki Ping, przewiniesz na dół i… gotowe!\nAktualności Ping wyświetlają prywatne i zanonimizowane reklamy.";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "Włącz Aktualności Ping i bądź zawsze na bieżąco";
@@ -3412,7 +3400,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Dowiedz się więcej o swoich danych";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "Więcej ofert Ping";
 
 /* No comment provided by engineer. */
@@ -3436,6 +3424,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promowane";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Oceń Ping w sklepie App Store";
+
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Ukryj";
 
@@ -3446,7 +3437,7 @@
 "today.rateBraveCardSubtitle" = "Powiedz nam, co myślisz!";
 
 /* Title shown on the Rate Ping Card */
-"today.rateBraveCardTitle" = "Podoba Ci się Brave?";
+"today.rateBraveCardTitle" = "Podoba Ci się Ping?";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Odśwież";
@@ -3538,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Ping nie przechowuje ani nie udostępnia Twoich wyszukiwań głosowych.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "aktywuj";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Chcesz zachować ochronę? Wystarczy, że odnowisz subskrypcję przed jej zakończeniem. W ramach podziękowania za odnowienie oferujemy 20% zniżkę za kolejne 3 miesiące.";
 
@@ -3559,140 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "O nie! Okres Twojej subskrypcji VPN Ping zaraz się skończy.";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "Kup";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Ping Firewall + VPN";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "Ochrona 5 urządzeń za pomocą 1 subskrypcji";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "Wybierz swoją geolokalizację/lokalizację";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "Ping nigdy nie zapisuje Twojej aktywności";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "Chroń każdą aplikację i całe twoje urządzenie";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "Bezpieczniejsze dla sieci domowych i publicznych";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "Szybki jak błyskawica, do 100 Mbps";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Wersja aplikacji";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Operator komórkowy";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Ping Cię nie śledzi ani nie wie, jak korzystasz z naszej aplikacji, więc nie wiemy, jak mamy skonfigurowałeś VPN. Podziel się z nami informacjami na temat problemu, z którym się borykasz, a my dołożymy wszelkich starań, aby rozwiązać go jak najszybciej.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Nie można wysłać wiadomości e-mail. Proszę sprawdzić konfigurację poczty.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Wybierz informacje, które chcesz nam udostępnić.\n\nIm więcej informacji wstępnie udostępnisz, tym łatwiej będzie naszemu działowi pomocy technicznej rozwiązać Twój problem.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Wsparcie jest zapewniane przy pomocy zespołu Guardian.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "Nazwa hosta VPN";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Problem";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Problem z połączeniem";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "Brak dostępu do Internetu po połączeniu";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Inne";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Nie można połączyć z VPN (inny błąd)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Wolne połączenie";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Strona internetowa nie działa";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Dzienniki błędów";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Typ sieci";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Platforma";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Przejdź do adresu e-mail";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Typ subskrypcji";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "Strefa czasowa iOS";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Problem z Ping Firewall i VPN";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "Włącz";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Nie udało się połączyć z App Store, spróbuj ponownie za kilka minut.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Błąd App Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Wszystkie plany zawierają %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "7-dniowy okres próbny";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "wypróbuj przez 7 dni za darmo";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Wszystkie subskrypcje są odnawiane automatycznie, ale można je anulować przed odnowieniem.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Ten profil pozwala VPN na automatyczne łączenie i zabezpieczanie ruchu na Twoim urządzeniu przez cały czas. To połączenie VPN będzie zaszyfrowane i prowadzone przez inteligentną zaporę ogniową Brave, aby blokować potencjalnie szkodliwe i inwazyjne połączenia.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Zainstaluj profil VPN";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Ping zainstaluje teraz profil VPN.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "VPN jest teraz włączone";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Zainstaluj VPN";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "Wypróbuj BEZPŁATNIE";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Odnawianie co miesiąc";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Subskrypcja miesięczna";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Wygasł";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Blokuje niechciane połączenia internetowe";
@@ -3715,59 +3577,11 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Obsługiwane przez";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Proszę wybrać preferowany protokół transportowy. Po przełączeniu Twoje dotychczasowe dane uwierzytelniające VPN zostaną wyczyszczone i zostaniesz ponownie połączony(-a), jeśli połączenie VPN jest aktualnie ustanowione.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Nie udało się przełączyć protokołu tunelu, proszę spróbować ponownie później.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Błąd serwera";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Protokół transportu";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "Zmieniono protokół tunelu VPN.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Region serwera znajdujący się najbliżej Ciebie zostanie wybrany automatycznie w oparciu o strefę czasową Twojego systemu. Jest to zalecane w celu zapewnienia szybkich prędkości internetowych.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Automatycznie";
 
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Nie udało się przełączyć serwerów. Spróbuj ponownie później.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Błąd serwera";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Region serwera";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Zmieniono region VPN.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Nie można zresetować konfiguracji VPN. Spróbuj ponownie. Jeśli problem będzie nadal występował, skontaktuj się z działem pomocy technicznej w celu uzyskania pomocy.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Spróbuj jeszcze raz";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Reset nie powiódł się";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Konfiguracja VPN została pomyślnie zresetowana.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Reset zakończony sukcesem";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Przywróć";
-
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Zaloguj się na swoje konto Brave, aby odświeżyć sesję VPN.";
+"vpn.sessionExpiredDescription" = "Zaloguj się na swoje konto Ping, aby odświeżyć sesję VPN.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Zamknij";
@@ -3777,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Sesja wygasła";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Rozszerz do VPN, aby chronić połączenie i blokować inwazyjne programy śledzące.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Skontaktuj się z pomocą techniczną";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Nie udało się odebrać listy serwerów. Spróbuj ponownie później.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "Obsługa techniczna VPN";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Połącz zakup ze swoim kontem Ping";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Połącz zakup w sklepie App Store ze swoim kontem Brave, aby używać funkcji Ping VPN na innych urządzeniach.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Zarządzaj subskrypcją";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Zrealizuj kod oferty";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Zresetuj konfigurację";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Host";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Lokalizacja";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Serwer";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Wygasa";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Subskrypcja";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Status";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Protokół transportu";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Wyłączono";
@@ -3851,10 +3617,10 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Czy chcesz chronić wszystkie aplikacje na telefonie? Zacznij ponownie korzystać z VPN Ping i uzyskaj 20% zniżkę przez 3 miesiące.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping zawsze blokuje pliki śledzące w każdej aplikacji – nawet poza przeglądarką Brave. Od teraz możesz sprawdzić, kto usiłował Cię śledzić dzięki Centrum prywatności Ping.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping zawsze blokuje pliki śledzące w każdej aplikacji – nawet poza przeglądarką Ping. Od teraz możesz sprawdzić, kto usiłował Cię śledzić dzięki Centrum prywatności Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Czy wiesz, że VPN Ping chroni Cię również poza przeglądarką Brave?";
+"vpn.subscribeVPNProtectionPopOverTitle" = "Czy wiesz, że VPN Ping chroni Cię również poza przeglądarką Ping?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Aktualizuj";
@@ -3874,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Zaktualizuj dane dotyczące płatności";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Zaktualizuj metodę płatności";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Nawet w tle Ping będzie Cię chronić.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall i VPN są włączone";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "Wystąpił problem podczas włączania VPN. Spróbuj ponownie lub zresetuj konfigurację na stronie ustawień VPN.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Błąd";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Ping Firewall i VPN do działania wymagają, aby na danym urządzeniu był zainstalowany profil VPN.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Nie udzielono pozwolenia";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Nie można zrealizować kodu oferty. Spróbuj ponownie lub sprawdź szczegóły kodu oferty i spróbuj ponownie.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Nie udało się sfinalizować zakupu. Spróbuj ponownie lub sprawdź szczegóły płatności w Apple i spróbuj ponownie.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Błąd";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Opłaty za subskrypcje będą pobierane za pośrednictwem konta iTunes.\n\nKażda niewykorzystana część bezpłatnej wersji próbnej, jeśli jest oferowana, przepada w momencie zakupu subskrypcji.\nTwoja subskrypcja będzie się odnawiać automatycznie, chyba że zostanie anulowana co najmniej 24 godziny przed końcem bieżącego okresu.\n\nMożesz zarządzać swoimi subskrypcjami w menu Ustawienia.\n\nKorzystając z Brave, wyrażasz zgodę na Warunki użytkowania i Politykę prywatności.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Zrealizuj kod";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Region serwera";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Bieżące ustawienie: %@";
@@ -3916,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "Region VPN";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Spowoduje to zresetowanie konfiguracji Ping Firewall i VPN oraz naprawienie wszelkich błędów. Ten proces może potrwać kilka chwil.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Zresetuj konfigurację";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Resetuj";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Subskrypcja miesięczna";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Subskrypcja roczna";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Zaktualizuj metodę płatności";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Odnowienie roczne pozwala zaoszczędzić %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Największe korzyści";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Rok";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Data utworzenia portfela";
@@ -3970,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Brak zapisanych danych witryny internetowej";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Usuń wszystko";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Usuń";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Usuń pozycje: %ld";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3709,9 @@
 /* History tableview section header */
 "Yesterday" = "Wczoraj";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Włącz odtwarzanie filmów YouTube w wysokiej jakości";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Włączenie tej eksperymentalnej funkcji spowoduje odtwarzanie filmów w najwyższej dostępnej jakości. Będzie ona wykorzystywać większość ilość danych.";
 
@@ -4008,6 +3720,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Wł.";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Jakość odtwarzania w YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Zezwól na odtwarzanie przez Wi-Fi";

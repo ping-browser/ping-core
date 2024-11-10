@@ -141,7 +141,7 @@ const ControlsContainer = styled.div`
 
     &::before {
       content: '';
-      background-color: ${color.dialogs.frostedGlassBackground};
+      background-color: ${color.container.background};
       background-position: center;
       position: absolute;
       width: 100%;
@@ -402,8 +402,8 @@ export default function Player() {
               onClick={() => {
                 if (currentList && currentItem) {
                   notifyEventsToTopFrame({
-                    type: PlaylistTypes.PLAYLIST_GO_BACK_TO_CURRENTLY_PLAYING_FOLDER,
-                    data: { currentList, currentItem }
+                    type: PlaylistTypes.PLAYLIST_OPEN_SOURCE_PAGE,
+                    data: currentItem
                   })
                 }
               }}

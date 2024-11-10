@@ -5,80 +5,129 @@
 
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 
+#include <memory>
+
+#include "base/functional/bind.h"
+#include "base/run_loop.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
-#include "chrome/browser/ui/browser.h"
+#include "brave/browser/ui/tabs/test/shared_pinned_tab_service_browsertest.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/test/base/platform_browser_test.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "net/dns/mock_host_resolver.h"
+#include "ui/base/window_open_disposition.h"
 
-class SharedPinnedTabServiceBrowserTest : public InProcessBrowserTest {
- public:
-  SharedPinnedTabServiceBrowserTest()
-      : feature_list_(tabs::features::kBraveSharedPinnedTabs) {}
+SharedPinnedTabServiceBrowserTest::SharedPinnedTabServiceBrowserTest()
+    : feature_list_(tabs::features::kBraveSharedPinnedTabs) {}
 
-  ~SharedPinnedTabServiceBrowserTest() override = default;
+SharedPinnedTabServiceBrowserTest::~SharedPinnedTabServiceBrowserTest() =
+    default;
 
-  Browser* CreateNewBrowser() {
-    auto* new_browser =
-        chrome::OpenEmptyWindow(browser()->profile(),
-                                /*should_trigger_session_restore= */ false);
-    browsers_.push_back(new_browser->AsWeakPtr());
-    return new_browser;
+Browser* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
+  auto* new_browser =
+      chrome::OpenEmptyWindow(browser()->profile(),
+                              /*should_trigger_session_restore= */ false);
+  browsers_.push_back(new_browser->AsWeakPtr());
+  return new_browser;
+}
+
+SharedPinnedTabService* SharedPinnedTabServiceBrowserTest::GetForBrowser(
+    Browser* browser) {
+  return SharedPinnedTabServiceFactory::GetForProfile(browser->profile());
+}
+
+void SharedPinnedTabServiceBrowserTest::WaitUntil(
+    base::RepeatingCallback<bool()> condition) {
+  if (condition.Run()) {
+    return;
   }
 
-  SharedPinnedTabService* GetForBrowser(Browser* browser) {
-    return SharedPinnedTabServiceFactory::GetForProfile(browser->profile());
-  }
+  base::RepeatingTimer scheduler;
+  scheduler.Start(FROM_HERE, base::Milliseconds(100),
+                  base::BindLambdaForTesting([this, &condition] {
+                    if (condition.Run()) {
+                      run_loop_->Quit();
+                    }
+                  }));
+  Run();
+}
 
-  void WaitUntil(base::RepeatingCallback<bool()> condition) {
-    if (condition.Run()) {
-      return;
+void SharedPinnedTabServiceBrowserTest::Run() {
+  run_loop_ = std::make_unique<base::RunLoop>();
+  run_loop_->Run();
+}
+
+// InProcessBrowserTest:
+void SharedPinnedTabServiceBrowserTest::TearDownOnMainThread() {
+  for (auto& browser : browsers_) {
+    if (browser) {
+      browser->window()->Close();
     }
-
-    base::RepeatingTimer scheduler;
-    scheduler.Start(FROM_HERE, base::Milliseconds(100),
-                    base::BindLambdaForTesting([this, &condition]() {
-                      if (condition.Run()) {
-                        run_loop_->Quit();
-                      }
-                    }));
-    Run();
   }
 
-  void Run() {
-    run_loop_ = std::make_unique<base::RunLoop>();
-    run_loop_->Run();
-  }
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return base::ranges::none_of(browsers_, [](const auto& b) { return b; });
+  }));
 
-  // InProcessBrowserTest:
-  void TearDownOnMainThread() override {
-    for (auto& browser : browsers_) {
-      if (browser) {
-        browser->window()->Close();
-      }
-    }
+  InProcessBrowserTest::TearDownOnMainThread();
+}
 
-    WaitUntil(base::BindLambdaForTesting([&]() {
-      return base::ranges::none_of(browsers_, [](const auto& b) { return b; });
-    }));
+void SharedPinnedTabServiceBrowserTest::SetUpOnMainThread() {
+  PlatformBrowserTest::SetUpOnMainThread();
 
-    InProcessBrowserTest::TearDownOnMainThread();
-  }
+  host_resolver()->AddRule("*", "127.0.0.1");
+  mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
- private:
-  base::test::ScopedFeatureList feature_list_;
+  https_server_ = std::make_unique<net::EmbeddedTestServer>(
+      net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+  https_server_->RegisterRequestHandler(base::BindLambdaForTesting(
+      [](const net::test_server::HttpRequest& request)
+          -> std::unique_ptr<net::test_server::HttpResponse> {
+        auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+        response->set_code(net::HTTP_OK);
+        response->set_content(R"html(
+        <html>
+          <body>
+            Hello World!
+          </body>
+        </html>
+        )html");
+        response->set_content_type("text/html; charset=utf-8");
+        return response;
+      }));
+  ASSERT_TRUE(https_server_->Start());
 
-  std::vector<base::WeakPtr<Browser>> browsers_;
+  browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
+                                               true);
+}
 
-  std::unique_ptr<base::RunLoop> run_loop_;
-};
+void SharedPinnedTabServiceBrowserTest::SetUpCommandLine(
+    base::CommandLine* command_line) {
+  PlatformBrowserTest::SetUpCommandLine(command_line);
+  mock_cert_verifier_.SetUpCommandLine(command_line);
+}
+
+void SharedPinnedTabServiceBrowserTest::SetUpInProcessBrowserTestFixture() {
+  PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+  mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+}
+
+void SharedPinnedTabServiceBrowserTest::TearDownInProcessBrowserTestFixture() {
+  mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+}
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PinAndUnpinTabs) {
   // Precondition
@@ -237,3 +286,138 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
         tab_strip_model_1->GetWebContentsAt(0));
   }));
 }
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, SynchronizeURL) {
+  // Given that there're multiple windows with shared pinned tabs
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  auto* shared_pinned_tab_service = GetForBrowser(browser_1);
+  ASSERT_TRUE(shared_pinned_tab_service);
+  ASSERT_TRUE(shared_pinned_tab_service->IsSharedContents(
+      tab_strip_model_1->GetWebContentsAt(0)));
+
+  // When new window is open,
+  auto* browser_2 = CreateNewBrowser();
+  auto* tab_strip_model_2 = browser_2->tab_strip_model();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return tab_strip_model_2->count() > 1; }));
+  ASSERT_TRUE(tab_strip_model_2->IsTabPinned(0));
+
+  // Then a dummy pinned tab in the window should have the same URL as the
+  // shared pinned tab.
+  EXPECT_EQ(tab_strip_model_1->GetWebContentsAt(0)->GetVisibleURL(),
+            tab_strip_model_2->GetWebContentsAt(0)
+                ->GetController()
+                .GetVisibleEntry()
+                ->GetVirtualURL());
+
+  // When navigate to other sites,
+  GURL url = https_server()->GetURL("www.example.com", "/index.html");
+
+  ASSERT_TRUE(
+      content::NavigateToURL(tab_strip_model_1->GetWebContentsAt(0), url));
+  ASSERT_EQ(url, tab_strip_model_1->GetWebContentsAt(0)->GetVisibleURL());
+
+  // Then dummy contents' URL should be synchronized.
+  EXPECT_EQ(tab_strip_model_1->GetWebContentsAt(0)->GetVisibleURL(),
+            tab_strip_model_2->GetWebContentsAt(0)
+                ->GetController()
+                .GetVisibleEntry()
+                ->GetVirtualURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       CloseWindowWhenAllTabsAreSharedPinnedTabs) {
+  // Given that there're multiple windows with shared pinned tabs
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  auto* browser_2 = CreateNewBrowser();
+
+  // When all unpinned tabs are closed in a window,
+  while (browser_2->tab_strip_model()->count() >
+         browser_2->tab_strip_model()->IndexOfFirstNonPinnedTab()) {
+    browser_2->tab_strip_model()->CloseWebContentsAt(
+        browser_2->tab_strip_model()->count() - 1, /*close_types*/ 0);
+  }
+
+  // Then the window should be closed
+  WaitUntil(base::BindRepeating(
+      []() { return BrowserList::GetInstance()->size() == 1; }));
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PreferenceChanged) {
+  // Given that there're multiple windows with shared pinned tabs
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  chrome::AddTabAt(browser_1, GURL(), /*index*/ -1, /*foreground*/ true);
+
+  auto* browser_2 = CreateNewBrowser();
+  browser_2->tab_strip_model()->SetTabPinned(1, true);
+  chrome::AddTabAt(browser_2, GURL(), /*index*/ -1, /*foreground*/ true);
+
+  ASSERT_EQ(3, browser_1->tab_strip_model()->count());
+  ASSERT_TRUE(browser_1->tab_strip_model()->IsTabPinned(0));
+  ASSERT_TRUE(browser_1->tab_strip_model()->IsTabPinned(1));
+
+  ASSERT_EQ(3, browser_2->tab_strip_model()->count());
+  ASSERT_TRUE(browser_2->tab_strip_model()->IsTabPinned(0));
+  ASSERT_TRUE(browser_2->tab_strip_model()->IsTabPinned(1));
+
+  // When disabling the shared pinned tab preference
+  browser_1->profile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
+                                               false);
+
+  // Then all dummy contents should be gone.
+  EXPECT_EQ(2, browser_1->tab_strip_model()->count());
+  EXPECT_TRUE(browser_1->tab_strip_model()->IsTabPinned(0));
+  EXPECT_FALSE(browser_1->tab_strip_model()->IsTabPinned(1));
+
+  EXPECT_EQ(2, browser_2->tab_strip_model()->count());
+  EXPECT_TRUE(browser_2->tab_strip_model()->IsTabPinned(0));
+  EXPECT_FALSE(browser_2->tab_strip_model()->IsTabPinned(1));
+
+  // When enabling the shared pinned tab preference
+  browser_1->profile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
+                                               true);
+
+  // All pinned tabs should be synchronized
+  EXPECT_EQ(3, browser_1->tab_strip_model()->count());
+  EXPECT_TRUE(browser_1->tab_strip_model()->IsTabPinned(0));
+  EXPECT_TRUE(browser_1->tab_strip_model()->IsTabPinned(1));
+
+  EXPECT_EQ(3, browser_2->tab_strip_model()->count());
+  EXPECT_TRUE(browser_2->tab_strip_model()->IsTabPinned(0));
+  EXPECT_TRUE(browser_2->tab_strip_model()->IsTabPinned(1));
+}
+
+#if !BUILDFLAG(IS_MAC)
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       CloseTabShortCutShouldBeDisabled) {
+  auto* browser = CreateNewBrowser();
+  chrome::NewTab(browser);
+
+  EXPECT_EQ(browser->tab_strip_model()->count(), 2);
+  EXPECT_EQ(browser->tab_strip_model()->active_index(), 1);
+
+  EXPECT_EQ(browser->tab_strip_model()->SetTabPinned(1, true), 0);
+  EXPECT_EQ(browser->tab_strip_model()->active_index(), 0);
+
+  auto* browser_view = static_cast<BrowserView*>(browser->window());
+
+  // When Command + w is pressed
+  browser_view->AcceleratorPressed(
+      ui::Accelerator(ui::VKEY_W, ui::EF_CONTROL_DOWN));
+
+  // Then the tab should not be closed.
+  EXPECT_EQ(browser->tab_strip_model()->count(), 2);
+
+  // When other ways to close the tab are tried
+  chrome::ExecuteCommand(browser, IDC_CLOSE_TAB);
+
+  // Then tabs should be closed
+  EXPECT_EQ(browser->tab_strip_model()->count(), 1);
+}
+#endif  // !BUILDFLAG(IS_MAC)

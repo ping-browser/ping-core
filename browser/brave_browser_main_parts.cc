@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/path_service.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -17,18 +18,21 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/translate/core/common/brave_translate_features.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
-#include "components/translate/core/browser/translate_language_list.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_user_settings.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
 #include "media/base/media_switches.h"
 
@@ -56,11 +60,8 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
-#include "components/sync/service/sync_service.h"
-#include "components/sync/service/sync_user_settings.h"
-#include "content/public/browser/web_contents.h"
 #else
-#include "brave/browser/android/preferences/features.h"
+#include "brave/browser/android/background_video/features.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
@@ -69,15 +70,25 @@
 #include "extensions/browser/extension_system.h"
 #endif
 
-int BraveBrowserMainParts::PreMainMessageLoopRun() {
+#if BUILDFLAG(DEPRECATE_IPFS)
+#include "brave/components/ipfs/ipfs_component_cleaner.h"
+#endif  // BUILDFLAG(DEPRECATE_IPFS)
+
+ChromeBrowserMainParts::ChromeBrowserMainParts(bool is_integration_test,
+                                               StartupData* startup_data)
+    : ChromeBrowserMainParts_ChromiumImpl(is_integration_test, startup_data) {}
+
+ChromeBrowserMainParts::~ChromeBrowserMainParts() = default;
+
+int ChromeBrowserMainParts::PreMainMessageLoopRun() {
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
       ->RegisterOnDemandUpdater(
           &g_browser_process->component_updater()->GetOnDemandUpdater());
 
-  return ChromeBrowserMainParts::PreMainMessageLoopRun();
+  return ChromeBrowserMainParts_ChromiumImpl::PreMainMessageLoopRun();
 }
 
-void BraveBrowserMainParts::PreBrowserStart() {
+void ChromeBrowserMainParts::PreBrowserStart() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Register() must be called after the SerializedNavigationDriver is
   // initialized, but before any calls to
@@ -87,11 +98,12 @@ void BraveBrowserMainParts::PreBrowserStart() {
   DCHECK(sessions::ContentSerializedNavigationDriver::GetInstance());
   speedreader::SpeedreaderExtendedInfoHandler::Register();
 #endif
-  ChromeBrowserMainParts::PreBrowserStart();
+
+  ChromeBrowserMainParts_ChromiumImpl::PreBrowserStart();
 }
 
-void BraveBrowserMainParts::PostBrowserStart() {
-  ChromeBrowserMainParts::PostBrowserStart();
+void ChromeBrowserMainParts::PostBrowserStart() {
+  ChromeBrowserMainParts_ChromiumImpl::PostBrowserStart();
 
 #if BUILDFLAG(ENABLE_TOR)
   ProfileManager* profile_manager = g_browser_process->profile_manager();
@@ -154,14 +166,20 @@ void BraveBrowserMainParts::PostBrowserStart() {
     }
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(DEPRECATE_IPFS)
+  ipfs::CleanupIpfsComponent(
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA));
+#endif  // BUILDFLAG(DEPRECATE_IPFS)
 }
 
-void BraveBrowserMainParts::PreShutdown() {
+void ChromeBrowserMainParts::PreShutdown() {
   content::BraveClearBrowsingData::ClearOnExit();
+  ChromeBrowserMainParts_ChromiumImpl::PreShutdown();
 }
 
-void BraveBrowserMainParts::PreProfileInit() {
-  ChromeBrowserMainParts::PreProfileInit();
+void ChromeBrowserMainParts::PreProfileInit() {
+  ChromeBrowserMainParts_ChromiumImpl::PreProfileInit();
 #if !BUILDFLAG(IS_ANDROID)
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (!base::FeatureList::IsEnabled(brave_sync::features::kBraveSync)) {
@@ -174,14 +192,12 @@ void BraveBrowserMainParts::PreProfileInit() {
     command_line->RemoveSwitch(syncer::kDisableSync);
   }
 #endif
-
-  if (!translate::ShouldUpdateLanguagesList())
-    translate::TranslateLanguageList::DisableUpdate();
 }
 
-void BraveBrowserMainParts::PostProfileInit(Profile* profile,
-                                            bool is_initial_profile) {
-  ChromeBrowserMainParts::PostProfileInit(profile, is_initial_profile);
+void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
+                                             bool is_initial_profile) {
+  ChromeBrowserMainParts_ChromiumImpl::PostProfileInit(profile,
+                                                       is_initial_profile);
 
 #if BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(

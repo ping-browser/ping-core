@@ -10,6 +10,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +22,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -38,26 +37,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class BraveWalletAddNetworksFragment extends Fragment implements ConnectionErrorHandler {
-    private static final String TAG = "AddNetworksFragment";
 
-    interface Refresher {
-        void refreshNetworksList();
-    }
     /**
-     * A host to launch BraveWalletAddNetworksFragment and receive the result.
+     * Listener implemented by {@link BraveWalletNetworksPreferenceFragment} used to notify the
+     * fragment hosting network preference screen that a network is being added or modified.
      */
-    interface Launcher {
-        /**
-         * Launches BraveWalletAddNetworksFragment.
-         */
-        void launchAddNetwork(String chainId, boolean activeNetwork);
-        void setRefresher(Refresher refresher);
+    public interface Listener {
+        /** Adds a new network. */
+        void addNewNetwork();
+
+        /** Modifies an existing network. */
+        void modifyNetwork(String chainId, boolean activeNetwork);
     }
 
     private JsonRpcService mJsonRpcService;
     private boolean mIsActiveNetwork;
 
-    private String mChainId;
+    @Nullable private String mChainId;
     private EditText mChainIdEditText;
     private EditText mChainName;
     private EditText mChainCurrencyName;
@@ -113,13 +109,15 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         } else {
             mButtonSubmit.setVisibility(View.GONE);
         }
-        if (!mChainId.isEmpty()) {
+        if (!TextUtils.isEmpty(mChainId)) {
             mButtonSubmit.setText(R.string.brave_wallet_add_network_submit);
             assert mJsonRpcService != null;
             mJsonRpcService.getAllNetworks(
-                    CoinType.ETH,
                     networks -> {
                         for (NetworkInfo chain : networks) {
+                            if (chain.coin != CoinType.ETH) {
+                                continue;
+                            }
                             if (chain.chainId.equals(mChainId)) {
                                 fillControls(chain);
                                 break;
@@ -141,7 +139,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             return;
         }
 
-        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+        mJsonRpcService = BraveWalletServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     private void fillControls(@NonNull final NetworkInfo chain) {
@@ -203,6 +201,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
     private void validateInputsAddChain() {
         boolean error = false;
         mSubmitError.setVisibility(View.INVISIBLE);
+        mButtonSubmit.setEnabled(false);
 
         NetworkInfo chain = new NetworkInfo();
         String strChainId = mChainIdEditText.getText().toString().trim();
@@ -321,18 +320,23 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         chain.coin = CoinType.ETH;
 
         if (error) {
+            mButtonSubmit.setEnabled(true);
             return;
         }
 
         assert mJsonRpcService != null;
-        if (!mChainId.isEmpty()) {
+        if (!TextUtils.isEmpty(mChainId)) {
             if (mChainId.equals(chain.chainId)) {
-                mJsonRpcService.removeChain(mChainId, CoinType.ETH, success -> {
-                    if (!success) {
-                        return;
-                    }
-                    addChain(chain, false);
-                });
+                mJsonRpcService.removeChain(
+                        mChainId,
+                        CoinType.ETH,
+                        success -> {
+                            if (!success) {
+                                mButtonSubmit.setEnabled(true);
+                                return;
+                            }
+                            addChain(chain, false);
+                        });
             } else {
                 addChain(chain, true);
             }
@@ -353,6 +357,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                             mSubmitError.setText(errorMessage);
                             mSubmitError.setVisibility(View.VISIBLE);
                         }
+                        mButtonSubmit.setEnabled(true);
                         return;
                     }
                     if (remove) {
@@ -362,32 +367,27 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                                 success -> {
                                     // We just do nothing here as we added a chain with a diff
                                     // chainId already
-                                    refreshNetworksFinishFragment();
+                                    setActivityResult();
                                 });
+                    } else {
+                        setActivityResult();
                     }
-                    refreshNetworksFinishFragment();
                 });
     }
 
-    private void refreshNetworksFinishFragment() {
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "refreshNetworksFinishFragment", e);
-        }
+    private void setActivityResult() {
         requireActivity().setResult(Activity.RESULT_OK);
         requireActivity().finish();
     }
 
     /**
-     * Returns <code>true</code> if URL protocol is HTTP or HTTPS, <code>false</code> otherwise.
+     * Returns <code>true</code> if URL protocol is HTTPS, <code>false</code> otherwise.
      *
      * @param url Url whose protocol will be verified.
-     * @return <code>true</code> if URL protocol is HTTP or HTTPS, <code>false</code> otherwise.
+     * @return <code>true</code> if URL protocol is HTTPS, <code>false</code> otherwise.
      * @noinspection BooleanMethodIsAlwaysInverted
      */
     private boolean isProtocolSupported(@NonNull final URL url) {
-        return url.getProtocol().equals("http") || url.getProtocol().equals("https");
+        return url.getProtocol().equals("https");
     }
 }

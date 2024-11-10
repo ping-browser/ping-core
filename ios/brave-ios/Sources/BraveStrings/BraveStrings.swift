@@ -16,6 +16,33 @@ extension Strings {
     value: "Cancel",
     comment: ""
   )
+  /// A confirmation title that appears in an alert to dismiss changes in a form or text input
+  public static let dismissChangesConfirmationTitle = NSLocalizedString(
+    "DismissChangesConfirmationTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Dismiss Changes?",
+    comment:
+      "A confirmation title that appears in an alert to dismiss changes in a form or text input"
+  )
+  /// A confirmation message that appears in an alert to dismiss changes in a form or text input
+  public static let dismissChangesConfirmationMessage = NSLocalizedString(
+    "DismissChangesConfirmationMessage",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Are you sure you want to dismiss these changes? Any modifications will be lost.",
+    comment:
+      "A confirmation message that appears in an alert to dismiss changes in a form or text input"
+  )
+  /// A confirmation button title for a alert option to dismiss changes in a form or text input
+  public static let dismissChangesButtonTitle = NSLocalizedString(
+    "DismissChangesButtonTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Dismiss Changes",
+    comment:
+      "A confirmation button title for a alert option to dismiss changes in a form or text input"
+  )
   public static let unlockButtonTitle = NSLocalizedString(
     "UnlockButtonTitle",
     tableName: "BraveShared",
@@ -71,6 +98,13 @@ extension Strings {
     bundle: .module,
     value: "Save",
     comment: "Label for the button used to save data"
+  )
+  public static let saveChangesButtonTitle = NSLocalizedString(
+    "SaveChangesButtonTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Save changes",
+    comment: "Label for the button used to save changes in some text input."
   )
   public static let share = NSLocalizedString(
     "CommonShare",
@@ -489,6 +523,13 @@ extension Strings {
     value: "Close All %i Tabs",
     comment: ""
   )
+  public static let closeAllOtherTabsTitle = NSLocalizedString(
+    "closeAllOtherTabsTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Close All Other Tabs",
+    comment: "Title for asking user to close all tabs except the active tab."
+  )
   public static let closeAllTabsPrompt =
     NSLocalizedString(
       "closeAllTabsPrompt",
@@ -496,6 +537,14 @@ extension Strings {
       bundle: .module,
       value: "Are you sure you want to close all open tabs?",
       comment: "We ask users this prompt before attempting to close multiple tabs via context menu"
+    )
+  public static let closeAllOtherTabsPrompt =
+    NSLocalizedString(
+      "closeAllOtherTabsPrompt",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Are you sure you want to close all other open tabs?",
+      comment: "We ask users this prompt before attempting to close all tabs except active one via context menu"
     )
   public static let savedTabsFolderTitle = NSLocalizedString(
     "SavedTabsFolderTitle",
@@ -746,9 +795,17 @@ extension Strings {
         "callout.p3aCalloutToggleTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Share Completely Private and Anonymous Product Insights.",
+        value: "Share Private and Anonymous Product Insights.",
         comment:
           "Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout"
+      )
+    public static let p3aCalloutCloseAccessibilityLabel =
+      NSLocalizedString(
+        "p3aCalloutCloseAccessibilityLabel",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Close Privacy Preserving Product Callout",
+        comment: ""
       )
     public static let p3aCalloutLinkTitle =
       NSLocalizedString(
@@ -1097,6 +1154,20 @@ extension Strings {
 // MARK: - PageSecurityView.swift
 extension Strings {
   public enum PageSecurityView {
+    public static let pageUnknownStatusTitle = NSLocalizedString(
+      "pageSecurityView.pageUnknownStatusTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Site connection not verified.",
+      comment: ""
+    )
+    public static let pageUnknownStatusWarning = NSLocalizedString(
+      "pageSecurityView.pageUnknownStatusWarning",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Your connection to this site could not be fully verified. You may proceed, or try reloading the page to establish a secure connection.",
+      comment: ""
+    )
     public static let pageNotSecureTitle = NSLocalizedString(
       "pageSecurityView.pageNotSecureTitle",
       tableName: "BraveShared",
@@ -1124,6 +1195,13 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "View Certificate",
+      comment: ""
+    )
+    public static let signIntoWebsiteURLBarTitle = NSLocalizedString(
+      "pageSecurityView.signIntoWebsiteURLBarTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sign in to website",
       comment: ""
     )
   }
@@ -1500,7 +1578,7 @@ extension Strings {
     )
 }
 
-// MARK: -  SearchSettingsTableViewController
+// MARK: -  SearchSettingsViewController
 
 extension Strings {
   public static let searchSettingNavTitle = NSLocalizedString(
@@ -1550,7 +1628,7 @@ extension Strings {
     )
 }
 
-// MARK: - SearchCustomEngineViewController
+// MARK: - CustomEngineViewController
 
 extension Strings {
   public struct CustomSearchEngine {
@@ -1577,14 +1655,6 @@ extension Strings {
       bundle: .module,
       value: "Auto Add",
       comment: "Button title for Auto Add in header"
-    )
-
-    public static let customEngineAddButtonTitle = NSLocalizedString(
-      "customSearchEngine.addButtonTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Add",
-      comment: "Button title for Adding Engine in navigation Bar"
     )
 
     public static let thirdPartySearchEngineAddErrorTitle = NSLocalizedString(
@@ -1841,7 +1911,7 @@ extension Strings {
       "braveSearchPromotion.bannerDescription",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Ping Search doesn't track you, your queries, or your clicks.",
+      value: "Ping Search doesn't profile you.",
       comment: "Ping Search Banner Promotion description content in Search Suggestions"
     )
     public static let braveSearchPromotionBannerTryButtonTitle = NSLocalizedString(
@@ -2374,216 +2444,6 @@ extension Strings {
 
 // MARK: - Sync
 extension Strings {
-  public static let QRCode = NSLocalizedString(
-    "QRCode",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "QR Code",
-    comment: "QR Code section title"
-  )
-  public static let codeWords = NSLocalizedString(
-    "CodeWords",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Code Words",
-    comment: "Code words section title"
-  )
-  public static let sync = NSLocalizedString(
-    "Sync",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Sync",
-    comment: "Sync settings section title"
-  )
-  public static let syncSettingsHeader = NSLocalizedString(
-    "SyncSettingsHeader",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "The device list below includes all devices in your sync chain. Each device can be managed from any other device.",
-    comment: "Header title for Sync settings"
-  )
-  public static let syncThisDevice = NSLocalizedString(
-    "SyncThisDevice",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "This Device",
-    comment: "This device cell"
-  )
-  public static let braveSync = NSLocalizedString(
-    "BraveSync",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Sync",
-    comment: "Sync page title"
-  )
-  public static let braveSyncInternalsTitle = NSLocalizedString(
-    "BraveSyncInternalsTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Sync Internals",
-    comment: "Sync-Internals screen title (Sync Internals or Sync Debugging is fine)."
-  )
-  public static let braveSyncWelcome = NSLocalizedString(
-    "BraveSyncWelcome",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "To start, you will need Ping installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.",
-    comment: "Sync settings welcome"
-  )
-  public static let newSyncCode = NSLocalizedString(
-    "NewSyncCode",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Start a new Sync Chain",
-    comment: "New sync code button title"
-  )
-  public static let scanSyncCode = NSLocalizedString(
-    "ScanSyncCode",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "I have a Sync Code",
-    comment: "Scan sync code button title"
-  )
-  public static let scan = NSLocalizedString(
-    "Scan",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Scan",
-    comment: "Scan sync code title"
-  )
-  public static let syncChooseDevice = NSLocalizedString(
-    "SyncChooseDevice",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Choose Device Type",
-    comment: "Choose device type for sync"
-  )
-  public static let syncAddDeviceScan = NSLocalizedString(
-    "SyncAddDeviceScan",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Sync Chain QR Code",
-    comment: "Add mobile device to sync with scan"
-  )
-  public static let syncAddDeviceWords = NSLocalizedString(
-    "SyncAddDeviceWords",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Enter the sync code",
-    comment: "Add device to sync with code words"
-  )
-  public static let syncAddDeviceWordsTitle = NSLocalizedString(
-    "SyncAddDeviceWordsTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Enter Code Words",
-    comment: "Add device to sync with code words navigation title"
-  )
-  public static let syncToDevice = NSLocalizedString(
-    "SyncToDevice",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Sync to device",
-    comment: "Sync to existing device"
-  )
-  public static let syncToDeviceDescription = NSLocalizedString(
-    "SyncToDeviceDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "Using existing synced device open Ping Settings and navigate to Settings -> Sync. Choose \"Add Device\" and scan the code displayed on the screen.",
-    comment: "Sync to existing device description"
-  )
-
-  public static let syncAddDeviceScanDescription = NSLocalizedString(
-    "SyncAddDeviceScanDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "On your second mobile device, navigate to Sync in the Settings panel and tap the button \"Scan Sync Code\". Use your camera to scan the QR Code below.\n\n Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
-    comment: "Sync add device description"
-  )
-  public static let syncSwitchBackToCameraButton = NSLocalizedString(
-    "SyncSwitchBackToCameraButton",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "I'll use my camera...",
-    comment: "Switch back to camera button"
-  )
-  public static let syncAddDeviceWordsDescription = NSLocalizedString(
-    "SyncAddDeviceWordsDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "On your device, navigate to Sync in the Settings panel and tap the button \"%@\". Enter the sync chain code words shown below.\n\n Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
-    comment: "Sync add device description"
-  )
-  public static let syncNoConnectionTitle = NSLocalizedString(
-    "SyncNoConnectionTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Can't connect to sync",
-    comment: "No internet connection alert title."
-  )
-  public static let syncNoConnectionBody = NSLocalizedString(
-    "SyncNoConnectionBody",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Check your internet connection and try again.",
-    comment: "No internet connection alert body."
-  )
-  public static let enterCodeWords = NSLocalizedString(
-    "EnterCodeWords",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Enter code words",
-    comment: "Sync enter code words"
-  )
-  public static let showCodeWords = NSLocalizedString(
-    "ShowCodeWords",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Show code words instead",
-    comment: "Show code words instead"
-  )
-  public static let syncDevices = NSLocalizedString(
-    "SyncDevices",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Devices & Settings",
-    comment: "Sync you browser settings across devices."
-  )
-  public static let devices = NSLocalizedString(
-    "Devices",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Devices on sync chain",
-    comment: "Sync device settings page title."
-  )
-  public static let codeWordInputHelp = NSLocalizedString(
-    "CodeWordInputHelp",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Type your supplied sync chain code words into the form below.",
-    comment: "Code words input help"
-  )
-  public static let copyToClipboard = NSLocalizedString(
-    "CopyToClipboard",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Copy to Clipboard",
-    comment: "Copy codewords title"
-  )
-  public static let copiedToClipboard = NSLocalizedString(
-    "CopiedToClipboard",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Copied to Clipboard!",
-    comment: "Copied codewords title"
-  )
-
   /// A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters.
   public static let copyCleanLink = NSLocalizedString(
     "CopyCleanLink",
@@ -2594,279 +2454,6 @@ extension Strings {
       "A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters."
   )
 
-  public static let syncUnsuccessful = NSLocalizedString(
-    "SyncUnsuccessful",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Unsuccessful",
-    comment: ""
-  )
-  public static let syncUnableCreateGroup = NSLocalizedString(
-    "SyncUnableCreateGroup",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Can't sync this device",
-    comment: "Description on popup when setting up a sync group fails"
-  )
-  public static let copied = NSLocalizedString(
-    "Copied",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Copied!",
-    comment: "Copied action complete title"
-  )
-  public static let wordCount = NSLocalizedString(
-    "WordCount",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Word count: %i",
-    comment: "Word count title"
-  )
-  public static let unableToConnectTitle = NSLocalizedString(
-    "UnableToConnectTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Unable to Connect",
-    comment: "Sync Alert"
-  )
-  public static let unableToConnectDescription = NSLocalizedString(
-    "UnableToConnectDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Unable to join sync group. Please check the entered words and try again.",
-    comment: "Sync Alert"
-  )
-  public static let enterCodeWordsBelow = NSLocalizedString(
-    "EnterCodeWordsBelow",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Enter code words below",
-    comment: "Enter sync code words below"
-  )
-  public static let syncRemoveThisDevice = NSLocalizedString(
-    "SyncRemoveThisDevice",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Remove this device",
-    comment: "Sync remove device."
-  )
-  public static let syncRemoveDeviceAction = NSLocalizedString(
-    "SyncRemoveDeviceAction",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Remove device",
-    comment: "Remove device button for action sheet."
-  )
-  public static let syncRemoveThisDeviceQuestion = NSLocalizedString(
-    "SyncRemoveThisDeviceQuestion",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Remove this device?",
-    comment: "Sync remove device?"
-  )
-  public static let syncChooseDeviceHeader = NSLocalizedString(
-    "SyncChooseDeviceHeader",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Choose the type of device you would like to sync to.",
-    comment: "Header for device choosing screen."
-  )
-  public static let syncRemoveThisDeviceQuestionDesc = NSLocalizedString(
-    "SyncRemoveThisDeviceQuestionDesc",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "This device will be disconnected from sync group and no longer receive or send sync data. All existing data will remain on device.",
-    comment: "Sync remove device?"
-  )
-  public static let pair = NSLocalizedString(
-    "Pair",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Pair",
-    comment: "Sync pair device settings section title"
-  )
-  public static let syncAddAnotherDevice = NSLocalizedString(
-    "SyncAddAnotherDevice",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Add New Device",
-    comment: "Add New Device cell button."
-  )
-  public static let syncDeleteAccount = NSLocalizedString(
-    "SyncDeleteAccount",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Delete Sync Account",
-    comment: "Delete Sync Account cell title for button."
-  )
-  public static let syncTabletOrMobileDevice = NSLocalizedString(
-    "SyncTabletOrMobileDevice",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Tablet or Phone",
-    comment: "Tablet or phone button title"
-  )
-  public static let syncAddTabletOrPhoneTitle = NSLocalizedString(
-    "SyncAddTabletOrPhoneTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Add a Tablet or Phone",
-    comment: "Add Tablet or phone title"
-  )
-  public static let syncComputerDevice = NSLocalizedString(
-    "SyncComputerDevice",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Computer",
-    comment: "Computer device button title"
-  )
-  public static let syncAddComputerTitle = NSLocalizedString(
-    "SyncAddComputerTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Add a Computer",
-    comment: "Add a Computer title"
-  )
-  public static let grantCameraAccess = NSLocalizedString(
-    "GrantCameraAccess",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Enable Camera",
-    comment: "Grand camera access"
-  )
-  public static let removeDevice = NSLocalizedString(
-    "RemoveDevice",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Remove",
-    comment: "Action button for removing sync device."
-  )
-  public static let syncInitErrorTitle = NSLocalizedString(
-    "SyncInitErrorTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Sync Communication Error",
-    comment: "Title for sync initialization error alert"
-  )
-  public static let syncInitErrorMessage = NSLocalizedString(
-    "SyncInitErrorMessage",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "The Sync Agent is currently offline or not reachable. Please try again later.",
-    comment: "Message for sync initialization error alert"
-  )
-  // Remove device popups
-  public static let syncRemoveLastDeviceTitle = NSLocalizedString(
-    "SyncRemoveLastDeviceTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Removing %@ will delete the Sync Chain.",
-    comment: "Title for removing last device from Sync"
-  )
-  public static let syncRemoveLastDeviceMessage = NSLocalizedString(
-    "SyncRemoveLastDeviceMessage",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "Data currently synced will be retained but all data in Brave’s Sync cache will be deleted. You will need to start a new sync chain to sync device data again.",
-    comment: "Message for removing last device from Sync"
-  )
-  public static let syncRemoveLastDeviceRemoveButtonName = NSLocalizedString(
-    "SyncRemoveLastDeviceRemoveButtonName",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Delete Sync Chain",
-    comment: "Button name for removing last device from Sync"
-  )
-  public static let syncRemoveCurrentDeviceTitle = NSLocalizedString(
-    "SyncRemoveCurrentDeviceTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Remove %@ from Sync Chain?",
-    comment: "Title for removing the current device from Sync"
-  )
-  public static let syncRemoveCurrentDeviceMessage = NSLocalizedString(
-    "SyncRemoveCurrentDeviceMessage",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "Local device data will remain intact on all devices. Other devices in this Sync Chain will remain synced. ",
-    comment: "Message for removing the current device from Sync"
-  )
-  public static let syncRemoveOtherDeviceTitle = NSLocalizedString(
-    "SyncRemoveOtherDeviceTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Remove %@ from Sync Chain?",
-    comment: "Title for removing other device from Sync"
-  )
-  public static let syncRemoveOtherDeviceMessage = NSLocalizedString(
-    "SyncRemoveOtherDeviceMessage",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "Removing the device from the Sync Chain will not clear previously synced data from the device.",
-    comment: "Message for removing other device from Sync"
-  )
-  public static let syncRemoveDeviceDefaultName = NSLocalizedString(
-    "SyncRemoveDeviceDefaultName",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Device",
-    comment: "Default name for a device"
-  )
-  public static let syncValidForTooLongError = NSLocalizedString(
-    "syncValidForTooLongError",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "This code is invalid. Please check that the time and timezone are set correctly on your device.",
-    comment: "Sync Error Description"
-  )
-  public static let syncDeprecatedVersionError = NSLocalizedString(
-    "syncDeprecatedVersionError",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "It looks like this code was created on a device running an older version of Ping. Please update to the latest version of Ping on your other device, and then create a new sync code.",
-    comment: "Sync Error Description"
-  )
-  public static let syncExpiredError = NSLocalizedString(
-    "syncExpiredError",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "This sync code has expired, please generate a new sync code and try again.",
-    comment: "Sync Error message for when the sync code is expired"
-  )
-  public static let syncGenericError = NSLocalizedString(
-    "syncGenericError",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Sorry, something went wrong",
-    comment: "Generic Sync Error Description"
-  )
-  public static let notEnoughWordsTitle = NSLocalizedString(
-    "NotEnoughWordsTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Not Enough Words",
-    comment: "Error title for when the sync code does not have the correct amount of words"
-  )
-  public static let notEnoughWordsDescription = NSLocalizedString(
-    "NotEnoughWordsDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Please enter all of the words and try again.",
-    comment: "Error message for when the sync code does not have the correct amount of words"
-  )
-  public static let invalidSyncCodeDescription = NSLocalizedString(
-    "InvalidSyncCodeDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Invalid sync code, please check and try again.",
-    comment: "Generic error message for when the sync code is invalid"
-  )
 }
 
 extension Strings {
@@ -2993,14 +2580,6 @@ extension Strings {
     bundle: .module,
     value: "Save Logins",
     comment: "Setting to enable the built-in password manager"
-  )
-  public static let showBookmarkButtonInTopToolbar = NSLocalizedString(
-    "ShowBookmarkButtonInTopToolbar",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Show Bookmarks Shortcut",
-    comment:
-      "Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks."
   )
   public static let alwaysRequestDesktopSite = NSLocalizedString(
     "AlwaysRequestDesktopSite",
@@ -3218,13 +2797,6 @@ extension Strings {
     value: "Show History",
     comment: "Button to show the history list"
   )
-  public static let addBookmark = NSLocalizedString(
-    "AddBookmark",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Add Bookmark",
-    comment: "Button to add a bookmark"
-  )
   public static let editBookmark = NSLocalizedString(
     "EditBookmark",
     tableName: "BraveShared",
@@ -3268,7 +2840,6 @@ extension Strings {
     value: "Yes, Delete",
     comment: "Button title to confirm the deletion of a bookmarks folder"
   )
-
   public static let close = NSLocalizedString(
     "Close",
     tableName: "BraveShared",
@@ -3312,14 +2883,14 @@ extension Strings {
     "BraveShieldsAndPrivacy",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Privacy & Security",
+    value: "Ping Shields & Privacy",
     comment: ""
   )
   public static let braveShieldsAndPrivacySettingsTitle = NSLocalizedString(
     "BraveShieldsAndPrivacyTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Privacy & Security",
+    value: "Shields & Privacy",
     comment: ""
   )
   public static let bookmarksImportAction = NSLocalizedString(
@@ -3608,6 +3179,14 @@ extension Strings {
       value: "Copy app size info to clipboard.",
       comment: "Copy app info to clipboard action sheet action."
     )
+  public static let copyTabsDebugToClipboard =
+    NSLocalizedString(
+      "copyTabsDebugToClipboard",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Copy Tabs info to clipboard.",
+      comment: "Copy Tabs info to clipboard action sheet action."
+    )
   public static let blockThirdPartyCookies = NSLocalizedString(
     "Block3rdPartyCookies",
     tableName: "BraveShared",
@@ -3697,7 +3276,7 @@ extension Strings {
     "ReportABug",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Need help?",
+    value: "Report a Bug",
     comment: "Providers the user an email page where they can submit a but report."
   )
   public static let privacyPolicy = NSLocalizedString(
@@ -4046,7 +3625,7 @@ extension Strings {
     bundle: .module,
     value: "\"%@\" Would Like to Access the Camera",
     comment:
-      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\")"
+      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.ping.com\")"
   )
   public static let requestMicrophonePermissionPrompt = NSLocalizedString(
     "requestMicrophonePermissionPrompt",
@@ -4054,7 +3633,7 @@ extension Strings {
     bundle: .module,
     value: "\"%@\" Would Like to Access the Microphone",
     comment:
-      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\")"
+      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.ping.com\")"
   )
   public static let requestCameraAndMicrophonePermissionPrompt = NSLocalizedString(
     "requestCameraAndMicrophonePermissionPrompt",
@@ -4062,7 +3641,7 @@ extension Strings {
     bundle: .module,
     value: "\"%@\" Would Like to Access the Camera and Microphone",
     comment:
-      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\")"
+      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.ping.com\")"
   )
   public static let requestCaptureDevicePermissionPrompt = NSLocalizedString(
     "requestCaptureDevicePermissionPrompt",
@@ -4070,7 +3649,7 @@ extension Strings {
     bundle: .module,
     value: "\"%@\" Would Like to Access a Media Capture Device",
     comment:
-      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\")"
+      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.ping.com\")"
   )
   public static let requestCaptureDevicePermissionAllowButtonTitle = NSLocalizedString(
     "requestCaptureDevicePermissionAllowButtonTitle",
@@ -4577,14 +4156,14 @@ extension Strings {
       "ntp.settingsBackgroundImages",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Background Images",
-      comment: "A setting to enable or disable background images on the main screen."
+      value: "Background",
+      comment: "A setting to enable or disable background on the NTP screen."
     )
     public static let settingsBackgroundImageSubMenu = NSLocalizedString(
       "ntp.settingsBackgroundImageSubMenu",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Image Type",
+      value: "Media Type",
       comment: "A button that leads to a 'more' menu, letting users configure additional settings."
     )
     public static let settingsDefaultImagesOnly = NSLocalizedString(
@@ -4599,9 +4178,17 @@ extension Strings {
       "ntp.settingsSponsoredImagesSelection",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Sponsored",
+      value: "Sponsored Images",
       comment:
         "A selection to let the users see sponsored image backgrounds when opening a new tab."
+    )
+    public static let settingsSponsoredImagesAndVideosSelection = NSLocalizedString(
+      "ntp.settingsSponsoredImagesAndVideosSelection",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sponsored Images & Videos",
+      comment:
+        "A selection to let the users see sponsored image and video backgrounds when opening a new tab."
     )
     public static let settingsAutoOpenKeyboard = NSLocalizedString(
       "ntp.settingsAutoOpenKeyboard",
@@ -6383,7 +5970,7 @@ extension Strings {
         bundle: .module,
         value: "Domain Component",
         comment:
-          "Title of the section for the Domain Component such as: DNS or brave.com or a website's domain."
+          "Title of the section for the Domain Component such as: DNS or ping.com or a website's domain."
       )
 
     public static let userIDTitle =
@@ -7015,190 +6602,49 @@ extension Strings {
         comment: "It is used in context: 'Powered by BRAND_NAME'"
       )
 
-    public static let freeTrialDetail =
+    public static let updateActionCellTitle =
       NSLocalizedString(
-        "vpn.freeTrialDetail",
+        "vpn.updateActionCellTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "All plans include a %@!",
-        comment:
-          "Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include"
+        value: "Update",
+        comment: "Cell title indicates update payment method"
       )
 
-    public static let freeTrialPeriod =
+    public static let settingsVPNEnabled =
       NSLocalizedString(
-        "vpn.freeTrialPeriod",
+        "vpn.settingsVPNEnabled",
         tableName: "BraveShared",
         bundle: .module,
-        value: "free 7-day trial",
-        comment:
-          "Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long"
+        value: "Enabled",
+        comment: "Whether the VPN is enabled or not"
       )
 
-    public static let freeTrialPeriodAction =
+    public static let errorCantGetPricesTitle =
       NSLocalizedString(
-        "vpn.freeTrialPeriodAction",
+        "vpn.errorCantGetPricesTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "try 7 days free",
-        comment: "The button text that starts the trial action"
+        value: "App Store Error",
+        comment: "Title for an alert when the VPN can't get prices from the App Store"
       )
 
-    public static let activateSubscriptionAction =
+    public static let errorCantGetPricesBody =
       NSLocalizedString(
-        "vpn.activateSubscriptionAction",
+        "vpn.errorCantGetPricesBody",
         tableName: "BraveShared",
         bundle: .module,
-        value: "activate",
-        comment: "The button text that starts the subscription action"
+        value: "Could not connect to the App Store, please try again in few minutes.",
+        comment: "Message for an alert when the VPN can't get prices from the App Store"
       )
 
-    public static let restorePurchases =
+    public static let settingsVPNDisabled =
       NSLocalizedString(
-        "vpn.restorePurchases",
+        "vpn.settingsVPNDisabled",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Restore",
-        comment: ""
-      )
-
-    public static let monthlySubTitle =
-      NSLocalizedString(
-        "vpn.monthlySubTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Monthly Subscription",
-        comment: ""
-      )
-
-    public static let monthlySubDetail =
-      NSLocalizedString(
-        "vpn.monthlySubDetail",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Renews monthly",
-        comment: "Used in context: 'Monthly subscription, (it) renews monthly'"
-      )
-
-    public static let yearlySubTitle =
-      NSLocalizedString(
-        "vpn.yearlySubTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "One year",
-        comment: "One year lenght vpn subcription"
-      )
-
-    public static let yearlySubDetail =
-      NSLocalizedString(
-        "vpn.yearlySubDetail",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Renew annually save %@",
-        comment:
-          "Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value"
-      )
-
-    public static let yearlySubDisclaimer =
-      NSLocalizedString(
-        "vpn.yearlySubDisclaimer",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Best value",
-        comment:
-          "It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value'"
-      )
-
-    // MARK: Checkboxes
-
-    public static let checkboxProtectYourDevices =
-      NSLocalizedString(
-        "vpn.checkboxProtectYourDevices",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Protect every app & your whole device",
-        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
-      )
-
-    public static let checkboxSaferWifi =
-      NSLocalizedString(
-        "vpn.checkboxSaferWifi",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Safer for home or public Wi-Fi",
-        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
-      )
-
-    public static let checkboxSpeedFast =
-      NSLocalizedString(
-        "vpn.checkboxSpeedFast",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Lightning-fast, up to 100 Mbps",
-        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
-      )
-
-    public static let checkboxGeoLocation =
-      NSLocalizedString(
-        "vpn.checkboxGeoLocation",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Choose your geo/country location",
-        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
-      )
-
-    public static let checkboxNoIPLog =
-      NSLocalizedString(
-        "vpn.checkboxNoIPLog",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Ping never logs your activity",
-        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
-      )
-
-    public static let checkboxDevicesProtect =
-      NSLocalizedString(
-        "vpn.checkboxDevicesProtect",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Protect 5 devices on 1 subscription",
-        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
-      )
-
-    public static let installTitle =
-      NSLocalizedString(
-        "vpn.installTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Install VPN",
-        comment: "Title for screen to install the VPN."
-      )
-
-    public static let installProfileTitle =
-      NSLocalizedString(
-        "vpn.installProfileTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Ping will now install a VPN profile.",
-        comment: ""
-      )
-
-    public static let popupCheckmarkSecureConnections =
-      NSLocalizedString(
-        "vpn.popupCheckmarkSecureConnections",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Secures all connections",
-        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
-      )
-
-    public static let popupCheckmark247Support =
-      NSLocalizedString(
-        "vpn.popupCheckmark247Support",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "24/7 support",
-        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
+        value: "Disabled",
+        comment: "Whether the VPN is enabled or not"
       )
 
     public static let popupCheckboxBlockAds =
@@ -7237,830 +6683,22 @@ extension Strings {
         comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
-    public static let installProfileBody =
+    public static let popupCheckmarkSecureConnections =
       NSLocalizedString(
-        "vpn.installProfileBody",
+        "vpn.popupCheckmarkSecureConnections",
         tableName: "BraveShared",
         bundle: .module,
-        value:
-          "This profile allows the VPN to automatically connect and secure traffic across your device all the time. This VPN connection will be encrypted and routed through Ping's intelligent firewall to block potentially harmful and invasive connections.",
-        comment: "Text explaining how the VPN works."
+        value: "Secures all connections",
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
-    public static let installProfileButtonText =
+    public static let popupCheckmark247Support =
       NSLocalizedString(
-        "vpn.installProfileButtonText",
+        "vpn.popupCheckmark247Support",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Install VPN Profile",
-        comment: "Text for 'install vpn profile' button"
-      )
-
-    public static let settingsVPNEnabled =
-      NSLocalizedString(
-        "vpn.settingsVPNEnabled",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Enabled",
-        comment: "Whether the VPN is enabled or not"
-      )
-
-    public static let settingsVPNExpired =
-      NSLocalizedString(
-        "vpn.settingsVPNExpired",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Expired",
-        comment: "Whether the VPN plan has expired"
-      )
-
-    public static let settingsVPNDisabled =
-      NSLocalizedString(
-        "vpn.settingsVPNDisabled",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Disabled",
-        comment: "Whether the VPN is enabled or not"
-      )
-
-    public static let settingsSubscriptionSection =
-      NSLocalizedString(
-        "vpn.settingsSubscriptionSection",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Subscription",
-        comment: "Header title for vpn settings subscription section."
-      )
-
-    public static let settingsServerSection =
-      NSLocalizedString(
-        "vpn.settingsServerSection",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Server",
-        comment: "Header title for vpn settings server section."
-      )
-
-    public static let settingsSubscriptionStatus =
-      NSLocalizedString(
-        "vpn.settingsSubscriptionStatus",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Status",
-        comment: "Table cell title for status of current VPN subscription."
-      )
-
-    public static let settingsSubscriptionExpiration =
-      NSLocalizedString(
-        "vpn.settingsSubscriptionExpiration",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Expires",
-        comment: "Table cell title for cell that shows when the VPN subscription expires."
-      )
-
-    public static let settingsManageSubscription =
-      NSLocalizedString(
-        "vpn.settingsManageSubscription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Manage Subscription",
-        comment: "Button to manage your VPN subscription"
-      )
-
-    public static let settingsRedeemOfferCode =
-      NSLocalizedString(
-        "vpn.settingsRedeemOfferCode",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Redeem Offer Code",
-        comment: "Button to redeem offer code subscription"
-      )
-
-    public static let settingsLinkReceipt =
-      NSLocalizedString(
-        "vpn.settingsLinkReceipt",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Link purchase to your Ping account",
-        comment: "Button to link your VPN receipt to other devices."
-      )
-
-    public static let settingsLinkReceiptFooter =
-      NSLocalizedString(
-        "vpn.settingsLinkReceiptFooter",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Link your App Store purchase to your Ping account to use Ping VPN on other devices.",
-        comment: "Footer text to link your VPN receipt to other devices."
-      )
-
-    public static let settingsServerHost =
-      NSLocalizedString(
-        "vpn.settingsServerHost",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Host",
-        comment: "Table cell title for vpn's server host"
-      )
-
-    public static let settingsServerLocation =
-      NSLocalizedString(
-        "vpn.settingsServerLocation",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Location",
-        comment: "Table cell title for vpn's server location and which open opens location select"
-      )
-
-    public static let settingsResetConfiguration =
-      NSLocalizedString(
-        "vpn.settingsResetConfiguration",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Reset Configuration",
-        comment: "Button to reset VPN configuration"
-      )
-
-    public static let settingsTransportProtocol =
-      NSLocalizedString(
-        "vpn.settingsTransportProtocol",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Transport Protocol",
-        comment:
-          "Table cell title for vpn's transport protocol and which open opens protocol select"
-      )
-
-    public static let settingsContactSupport =
-      NSLocalizedString(
-        "vpn.settingsContactSupport",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Contact Technical Support",
-        comment: "Button to contact tech support"
-      )
-
-    public static let settingsFAQ =
-      NSLocalizedString(
-        "vpn.settingsFAQ",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "VPN Support",
-        comment: "Button for FAQ"
-      )
-
-    public static let enableButton =
-      NSLocalizedString(
-        "vpn.enableButton",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Enable",
-        comment: "Button text to enable Ping VPN"
-      )
-
-    public static let buyButton =
-      NSLocalizedString(
-        "vpn.buyButton",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Buy",
-        comment: "Button text to buy Ping VPN"
-      )
-
-    public static let tryForFreeButton =
-      NSLocalizedString(
-        "vpn.learnMore",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Try for FREE",
-        comment: "Button text to try free Ping VPN"
-      )
-
-    public static let settingHeaderBody =
-      NSLocalizedString(
-        "vpn.settingHeaderBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Upgrade to a VPN to protect your connection and block invasive trackers everywhere.",
-        comment: "VPN Banner Description"
-      )
-
-    public static let errorCantGetPricesTitle =
-      NSLocalizedString(
-        "vpn.errorCantGetPricesTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "App Store Error",
-        comment: "Title for an alert when the VPN can't get prices from the App Store"
-      )
-
-    public static let errorCantGetPricesBody =
-      NSLocalizedString(
-        "vpn.errorCantGetPricesBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Could not connect to the App Store, please try again in few minutes.",
-        comment: "Message for an alert when the VPN can't get prices from the App Store"
-      )
-
-    public static let vpnConfigGenericErrorTitle =
-      NSLocalizedString(
-        "vpn.vpnConfigGenericErrorTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Error",
-        comment: "Title for an alert when the VPN can't be configured"
-      )
-
-    public static let vpnConfigGenericErrorBody =
-      NSLocalizedString(
-        "vpn.vpnConfigGenericErrorBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "There was a problem initializing the VPN. Please try again or try resetting configuration in the VPN settings page.",
-        comment: "Message for an alert when the VPN can't be configured."
-      )
-
-    public static let vpnConfigPermissionDeniedErrorTitle =
-      NSLocalizedString(
-        "vpn.vpnConfigPermissionDeniedErrorTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Permission denied",
-        comment: "Title for an alert when the user didn't allow to install VPN profile"
-      )
-
-    public static let vpnRedeemCodeButtonActionTitle =
-      NSLocalizedString(
-        "vpn.vpnRedeemCodeButtonActionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Redeem Code",
-        comment: "Title for a button for enabling the Redeem Code flow"
-      )
-
-    public static let vpnConfigPermissionDeniedErrorBody =
-      NSLocalizedString(
-        "vpn.vpnConfigPermissionDeniedErrorBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "The Ping Firewall + VPN requires a VPN profile to be installed on your device to work. ",
-        comment: "Title for an alert when the user didn't allow to install VPN profile"
-      )
-
-    public static let vpnSettingsMonthlySubName =
-      NSLocalizedString(
-        "vpn.vpnSettingsMonthlySubName",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Monthly subscription",
-        comment: "Name of monthly subscription in VPN Settings"
-      )
-
-    public static let vpnSettingsYearlySubName =
-      NSLocalizedString(
-        "vpn.vpnSettingsYearlySubName",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Yearly subscription",
-        comment: "Name of annual subscription in VPN Settings"
-      )
-
-    public static let vpnErrorPurchaseFailedTitle =
-      NSLocalizedString(
-        "vpn.vpnErrorPurchaseFailedTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Error",
-        comment: "Title for error when VPN could not be purchased."
-      )
-
-    public static let vpnErrorPurchaseFailedBody =
-      NSLocalizedString(
-        "vpn.vpnErrorPurchaseFailedBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Unable to complete purchase. Please try again, or check your payment details on Apple and try again.",
-        comment: "Message for error when VPN could not be purchased."
-      )
-
-    public static let vpnErrorOfferCodeFailedBody =
-      NSLocalizedString(
-        "vpn.vpnErrorOfferCodeFailedBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Unable to redeem offer code. Please try again, or check your offer code details and try again.",
-        comment: "Message for error when VPN offer code could not be redeemed."
-      )
-
-    public static let vpnResetAlertTitle =
-      NSLocalizedString(
-        "vpn.vpnResetAlertTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Reset configuration",
-        comment: "Title for alert to reset vpn configuration"
-      )
-
-    public static let vpnResetAlertBody =
-      NSLocalizedString(
-        "vpn.vpnResetAlertBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "This will reset your Ping Firewall + VPN configuration and fix any errors. This process may take a minute.",
-        comment: "Message for alert to reset vpn configuration"
-      )
-
-    public static let vpnResetButton =
-      NSLocalizedString(
-        "vpn.vpnResetButton",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Reset",
-        comment: "Button name to reset vpn configuration"
-      )
-
-    public static let contactFormHostname =
-      NSLocalizedString(
-        "vpn.contactFormHostname",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "VPN Hostname",
-        comment: "VPN Hostname field for customer support contact form."
-      )
-
-    public static let contactFormSubscriptionType =
-      NSLocalizedString(
-        "vpn.contactFormSubscriptionType",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Subscription Type",
-        comment: "Subscription Type field for customer support contact form."
-      )
-
-    public static let contactFormAppStoreReceipt =
-      NSLocalizedString(
-        "vpn.contactFormAppStoreReceipt",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "App Store Receipt",
-        comment: "App Store Receipt field for customer support contact form."
-      )
-
-    public static let contactFormAppVersion =
-      NSLocalizedString(
-        "vpn.contactFormAppVersion",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "App Version",
-        comment: "App Version field for customer support contact form."
-      )
-
-    public static let contactFormTimezone =
-      NSLocalizedString(
-        "vpn.contactFormTimezone",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "iOS Timezone",
-        comment: "iOS Timezone field for customer support contact form."
-      )
-
-    public static let contactFormPlatform =
-      NSLocalizedString(
-        "vpn.contactFormPlatform",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Platform",
-        comment: "A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'"
-      )
-
-    public static let contactFormNetworkType =
-      NSLocalizedString(
-        "vpn.contactFormNetworkType",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Network Type",
-        comment: "Network Type field for customer support contact form."
-      )
-
-    public static let contactFormCarrier =
-      NSLocalizedString(
-        "vpn.contactFormCarrier",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Cellular Carrier",
-        comment: "Cellular Carrier field for customer support contact form."
-      )
-
-    public static let contactFormLogs =
-      NSLocalizedString(
-        "vpn.contactFormLogs",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Error Logs",
-        comment: "VPN logs field for customer support contact form."
-      )
-
-    public static let contactFormIssue =
-      NSLocalizedString(
-        "vpn.contactFormIssue",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Issue",
-        comment: "Specific issue field for customer support contact form."
-      )
-
-    public static let contactFormIssueDescription =
-      NSLocalizedString(
-        "vpn.contactFormIssueDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Please choose the category that describes the issue.",
-        comment: "Description used for specific issue field for customer support contact form."
-      )
-
-    public static let contactFormFooterSharedWithGuardian =
-      NSLocalizedString(
-        "vpn.contactFormFooterSharedWithGuardian",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Support provided with the help of the Guardian team.",
-        comment: "Footer for customer support contact form."
-      )
-
-    public static let contactFormFooter =
-      NSLocalizedString(
-        "vpn.contactFormFooter",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Please select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your issue.",
-        comment: "Footer for customer support contact form."
-      )
-
-    public static let contactFormSendButton =
-      NSLocalizedString(
-        "vpn.contactFormSendButton",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Continue to Email",
-        comment: "Button name to send contact form."
-      )
-
-    public static let contactFormIssueOtherConnectionError =
-      NSLocalizedString(
-        "vpn.contactFormIssueOtherConnectionError",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Cannot connect to the VPN (Other error)",
-        comment: "Other connection problem for contact form issue field."
-      )
-
-    public static let contactFormIssueNoInternet =
-      NSLocalizedString(
-        "vpn.contactFormIssueNoInternet",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "No internet when connected",
-        comment: "No internet problem for contact form issue field."
-      )
-
-    public static let contactFormIssueSlowConnection =
-      NSLocalizedString(
-        "vpn.contactFormIssueSlowConnection",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Slow connection",
-        comment: "Slow connection problem for contact form issue field."
-      )
-
-    public static let contactFormIssueWebsiteProblems =
-      NSLocalizedString(
-        "vpn.contactFormIssueWebsiteProblems",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Website doesn't work",
-        comment: "Website problem for contact form issue field."
-      )
-
-    public static let contactFormIssueConnectionReliability =
-      NSLocalizedString(
-        "vpn.contactFormIssueConnectionReliability",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Connection reliability problem",
-        comment: "Connection problems for contact form issue field."
-      )
-
-    public static let contactFormIssueOther =
-      NSLocalizedString(
-        "vpn.contactFormIssueOther",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Other",
-        comment: "Other problem for contact form issue field."
-      )
-
-    public static let subscriptionStatusExpired =
-      NSLocalizedString(
-        "vpn.planExpired",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Expired",
-        comment: "Text to show user when their vpn plan has expired"
-      )
-
-    public static let resetVPNErrorTitle =
-      NSLocalizedString(
-        "vpn.resetVPNErrorTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Reset Failed",
-        comment: "Title for error message when vpn configuration reset fails."
-      )
-
-    public static let resetVPNErrorBody =
-      NSLocalizedString(
-        "vpn.resetVPNErrorBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Unable to reset VPN configuration. Please try again. If the issue persists, contact support for assistance.",
-        comment: "Message to show when vpn configuration reset fails."
-      )
-
-    public static let resetVPNErrorButtonActionTitle =
-      NSLocalizedString(
-        "vpn.resetVPNErrorButtonActionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Try Again",
-        comment: "Title of button to try again when vpn configuration reset fails."
-      )
-
-    public static let resetVPNSuccessTitle =
-      NSLocalizedString(
-        "vpn.resetVPNSuccessTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Reset Successful",
-        comment: "Title for success message when vpn configuration reset succeeds."
-      )
-
-    public static let resetVPNSuccessBody =
-      NSLocalizedString(
-        "vpn.resetVPNSuccessBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "VPN configuration has been reset successfully.",
-        comment: "Message to show when vpn configuration reset succeeds."
-      )
-
-    public static let contactFormDoNotEditText =
-      NSLocalizedString(
-        "vpn.contactFormDoNotEditText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Ping doesn’t track you or know how you use our app, so we don’t know how you've set up VPN. Please share info about the issue you're experiencing and we'll do our best to resolve it as soon as we can.",
-        comment: "Text to tell user to not modify support info below email's body."
-      )
-
-    public static let contactFormTitle =
-      NSLocalizedString(
-        "vpn.contactFormTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Ping Firewall + VPN Issue",
-        comment: "Title for contact form email."
-      )
-
-    public static let iapDisclaimer =
-      NSLocalizedString(
-        "vpn.iapDisclaimer",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "All subscriptions are auto-renewed but can be cancelled before renewal.",
-        comment: "Disclaimer about in app subscription"
-      )
-
-    public static let installSuccessPopup =
-      NSLocalizedString(
-        "vpn.installSuccessPopup",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "VPN is now enabled",
-        comment: "Popup that shows after user installs the vpn for the first time."
-      )
-
-    public static let vpnBackgroundNotificationTitle =
-      NSLocalizedString(
-        "vpn.vpnBackgroundNotificationTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Ping Firewall + VPN is ON",
-        comment: "Notification title to tell user that the vpn is turned on even in background"
-      )
-
-    public static let vpnBackgroundNotificationBody =
-      NSLocalizedString(
-        "vpn.vpnBackgroundNotificationBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Even in the background, Ping will continue to protect you.",
-        comment: "Notification title to tell user that the vpn is turned on even in background"
-      )
-
-    public static let vpnIAPBoilerPlate =
-      NSLocalizedString(
-        "vpn.vpnIAPBoilerPlate",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Subscriptions will be charged via your iTunes account.\n\nAny unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Ping, you agree to the Terms of Use and Privacy Policy.",
-        comment: "Disclaimer for user purchasing the VPN plan."
-      )
-
-    public static let regionPickerTitle =
-      NSLocalizedString(
-        "vpn.regionPickerTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Server Region",
-        comment: "Title for vpn region selector screen"
-      )
-
-    public static let regionPickerAutomaticModeCellText =
-      NSLocalizedString(
-        "vpn.regionPickerAutomaticModeCellText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Automatic",
-        comment: "Name of automatic vpn region selector"
-      )
-
-    public static let regionPickerAutomaticDescription =
-      NSLocalizedString(
-        "vpn.regionPickerAutomaticDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.",
-        comment: "Description of what automatic server selection does."
-      )
-
-    public static let regionPickerErrorTitle =
-      NSLocalizedString(
-        "vpn.regionPickerErrorTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Server Error",
-        comment: "Title for error when we fail to switch vpn server for the user"
-      )
-
-    public static let regionPickerErrorMessage =
-      NSLocalizedString(
-        "vpn.regionPickerErrorMessage",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Failed to switch servers, please try again later.",
-        comment: "Message for error when we fail to switch vpn server for the user"
-      )
-
-    public static let protocolPickerTitle =
-      NSLocalizedString(
-        "vpn.protocolPickerTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Transport Protocol",
-        comment: "Title for vpn tunnel protocol screen"
-      )
-
-    public static let protocolPickerDescription =
-      NSLocalizedString(
-        "vpn.protocolPickerDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Please select your preferred transport protocol. Once switched your existing VPN credentials will be cleared and you will be reconnected if a VPN connection is currently established.",
-        comment: "Description of vpn tunnel protocol"
-      )
-
-    public static let regionSwitchSuccessPopupText =
-      NSLocalizedString(
-        "vpn.regionSwitchSuccessPopupText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "VPN region changed.",
-        comment: "Message that we show after successfully changing vpn region."
-      )
-
-    public static let protocolPickerErrorTitle =
-      NSLocalizedString(
-        "vpn.protocolPickerErrorTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Server Error",
-        comment: "Title for error when we fail to switch tunnel protocol for the user"
-      )
-
-    public static let protocolPickerErrorMessage =
-      NSLocalizedString(
-        "vpn.protocolPickerErrorMessage",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Failed to switch tunnel protocol, please try again later.",
-        comment: "Message for error when we fail to switch tunnel protocol for the user"
-      )
-
-    public static let protocolSwitchSuccessPopupText =
-      NSLocalizedString(
-        "vpn.protocolSwitchSuccessPopupText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "VPN Tunnel Protocol changed.",
-        comment: "Message that we show after successfully changing tunnel protocol."
-      )
-
-    public static let settingsFailedToFetchServerList =
-      NSLocalizedString(
-        "vpn.settingsFailedToFetchServerList",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Failed to retrieve server list, please try again later.",
-        comment: "Error message shown if we failed to retrieve vpn server list."
-      )
-
-    public static let contactFormEmailNotConfiguredBody =
-      NSLocalizedString(
-        "vpn.contactFormEmailNotConfiguredBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Can't send email. Please check your email configuration.",
-        comment: "Button name to send contact form."
-      )
-
-    public static let sessionExpiredTitle =
-      NSLocalizedString(
-        "vpn.sessionExpiredTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Session expired",
-        comment: "Alert title to show when the VPN session has expired"
-      )
-
-    public static let sessionExpiredDescription =
-      NSLocalizedString(
-        "vpn.sessionExpiredDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Please login to your Ping Account to refresh your VPN session.",
-        comment: "Alert description to show when the VPN session has expired"
-      )
-
-    public static let sessionExpiredLoginButton =
-      NSLocalizedString(
-        "vpn.sessionExpiredLoginButton",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Login",
-        comment: "Login button to fix the vpn session expiration issue"
-      )
-
-    public static let sessionExpiredDismissButton =
-      NSLocalizedString(
-        "vpn.sessionExpiredDismissButton",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Dismiss",
-        comment: "Dismiss button to close the alert showing that the vpn session has expired"
-      )
-
-    public static let vpnRegionSelectorButtonTitle =
-      NSLocalizedString(
-        "vpn.vpnRegionSelectorButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "VPN Region",
-        comment: "Button title for VPN region selection in menu"
-      )
-
-    public static let vpnRegionSelectorButtonSubTitle =
-      NSLocalizedString(
-        "vpn.vpnRegionSelectorButtonSubTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Current Setting: %@",
-        comment:
-          "Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic"
+        value: "24/7 support",
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let autoRenewSoonExpirePopOverTitle =
@@ -8137,52 +6775,6 @@ extension Strings {
         comment: "Pop up description for billing issue of subcription VPN already expired"
       )
 
-    public static let autoReneSoonExpirePopOverSubDescription =
-      NSLocalizedString(
-        "vpn.autoReneSoonExpirePopOverSubDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Want to stay protected? Just renew before your subscription ends. As a thanks for renewing, we'll even take 20% off for the next 3 months.",
-        comment: "Pop up extra description for billing issue of subcription VPN about to expire"
-      )
-
-    public static let autoRenewActionButtonTitle =
-      NSLocalizedString(
-        "vpn.autoRenewActionButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Enable Auto-Renew",
-        comment: "Action button title that enables auto renew for subcription"
-      )
-
-    public static let updatePaymentActionButtonTitle =
-      NSLocalizedString(
-        "vpn.updatePaymentActionButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Update Payment",
-        comment: "Action button title that updates method payment"
-      )
-
-    public static let updateActionCellTitle =
-      NSLocalizedString(
-        "vpn.updateActionCellTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Update",
-        comment: "Cell title indicates update payment method"
-      )
-
-    public static let subscribeVPNActionButtonTitle =
-      NSLocalizedString(
-        "vpn.subscribeVPNActionButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Subscribe Now",
-        comment: "Action button title that subscribe action for VPN purchase"
-      )
-
     public static let subscribeVPNDiscountPopOverTitle =
       NSLocalizedString(
         "vpn.subscribeVPNDiscountPopOverTitle",
@@ -8241,6 +6833,52 @@ extension Strings {
         comment: "Pop up sub description the subscription for VPN can be used for all platforms"
       )
 
+    public static let sessionExpiredTitle =
+      NSLocalizedString(
+        "vpn.sessionExpiredTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Session expired",
+        comment: "Alert title to show when the VPN session has expired"
+      )
+
+    public static let sessionExpiredDescription =
+      NSLocalizedString(
+        "vpn.sessionExpiredDescription",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Please login to your Ping Account to refresh your VPN session.",
+        comment: "Alert description to show when the VPN session has expired"
+      )
+
+    public static let sessionExpiredLoginButton =
+      NSLocalizedString(
+        "vpn.sessionExpiredLoginButton",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Login",
+        comment: "Login button to fix the vpn session expiration issue"
+      )
+
+    public static let sessionExpiredDismissButton =
+      NSLocalizedString(
+        "vpn.sessionExpiredDismissButton",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Dismiss",
+        comment: "Dismiss button to close the alert showing that the vpn session has expired"
+      )
+
+    public static let vpnRegionSelectorButtonSubTitle =
+      NSLocalizedString(
+        "vpn.vpnRegionSelectorButtonSubTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Current Setting: %@",
+        comment:
+          "Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic"
+      )
+
     public static let vpnUpdatePaymentMethodDescriptionText =
       NSLocalizedString(
         "vpn.vpnUpdatePaymentMethodDescriptionText",
@@ -8250,224 +6888,77 @@ extension Strings {
         comment: "Text description of VPN subscription needs a method of payment update"
       )
 
-    public static let vpnActionUpdatePaymentMethodSettingsText =
+    public static let settingsVPNExpired =
       NSLocalizedString(
-        "vpn.vpnActionUpdatePaymentMethodSettingsText",
+        "vpn.settingsVPNExpired",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Update Payment Method",
-        comment:
-          "Text for necesseray required action of VPN subscription needs a method of payment update"
+        value: "Expired",
+        comment: "Whether the VPN plan has expired"
       )
-  }
 
-}
+    public static let vpnRegionSelectorButtonTitle =
+      NSLocalizedString(
+        "vpn.vpnRegionSelectorButtonTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "VPN Region",
+        comment: "Button title for VPN region selection in menu"
+      )
 
-extension Strings {
-  public struct Sync {
-    public static let bookmarksImportExportPopupTitle =
+    public static let regionPickerAutomaticModeCellText =
       NSLocalizedString(
-        "sync.bookmarksImportPopupErrorTitle",
+        "vpn.regionPickerAutomaticModeCellText",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Bookmarks",
-        comment: "Title of the bookmark import popup."
+        value: "Automatic",
+        comment: "Name of automatic vpn region selector"
       )
-    public static let bookmarksImportPopupSuccessMessage =
+
+    public static let autoRenewActionButtonTitle =
       NSLocalizedString(
-        "sync.bookmarksImportPopupSuccessMessage",
+        "vpn.autoRenewActionButtonTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Bookmarks Imported Successfully",
-        comment: "Message of the popup if bookmark import succeeds."
+        value: "Enable Auto-Renew",
+        comment: "Action button title that enables auto renew for subcription"
       )
-    public static let bookmarksExportPopupSuccessMessage =
+
+    public static let autoReneSoonExpirePopOverSubDescription =
       NSLocalizedString(
-        "sync.bookmarksExportPopupSuccessMessage",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Bookmarks Exported Successfully",
-        comment: "Message of the popup if bookmark export succeeds."
-      )
-    public static let bookmarksExportPopupFailureMessage =
-      NSLocalizedString(
-        "sync.bookmarksIExportPopupFailureMessage",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Bookmark Export Failed",
-        comment: "Message of the popup if bookmark export fails."
-      )
-    public static let bookmarksImportPopupFailureMessage =
-      NSLocalizedString(
-        "sync.bookmarksImportPopupFailureMessage",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Bookmark Import Failed",
-        comment: "Message of the popup if bookmark import fails."
-      )
-    /// Important: Do NOT change the `KEY` parameter without updating it in
-    /// BraveCore's brave_bookmarks_importer.mm file.
-    public static let importFolderName =
-      NSLocalizedString(
-        "SyncImportFolderName",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Imported Bookmarks",
-        comment:
-          "Folder name for where bookmarks are imported into when the root folder is not empty."
-      )
-    public static let syncConfigurationInformationText =
-      NSLocalizedString(
-        "sync.syncConfigurationInformationText",
+        "vpn.autoReneSoonExpirePopOverSubDescription",
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Manage what information you would like to sync between devices. These settings only affect this device.",
-        comment:
-          "Information Text underneath the toggles for enable/disable different sync types for the device"
+          "Want to stay protected? Just renew before your subscription ends. As a thanks for renewing, we'll even take 20% off for the next 3 months.",
+        comment: "Pop up extra description for billing issue of subcription VPN about to expire"
       )
-    public static let syncSettingsTitle =
+
+    public static let updatePaymentActionButtonTitle =
       NSLocalizedString(
-        "sync.syncSettingsTitle",
+        "vpn.updatePaymentActionButtonTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Sync Settings",
-        comment: "Title for Sync Settings Toggle Header"
+        value: "Update Payment",
+        comment: "Action button title that updates method payment"
       )
-    public static let syncDeleteAccountAlertTitle =
+
+    public static let subscribeVPNActionButtonTitle =
       NSLocalizedString(
-        "sync.syncDeleteAccount",
+        "vpn.subscribeVPNActionButtonTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Delete Sync Account",
-        comment: "Title for Alert used action Delete Sync Account."
+        value: "Subscribe Now",
+        comment: "Action button title that subscribe action for VPN purchase"
       )
-    public static let syncDeleteAccountAlertDescriptionPart1 =
+
+    public static let vpnRegionListServerScreenTitle =
       NSLocalizedString(
-        "sync.syncDeleteAccountAlertDescriptionPart1",
+        "vpn.vpnRegionListServerScreenTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value:
-          "Deleting your account will remove your encrypted data from Ping servers and disable Sync on all of your connected devices.",
-        comment: "Part 1 Description for Alert used action Delete Sync Account."
-      )
-    public static let syncDeleteAccountAlertDescriptionPart2 =
-      NSLocalizedString(
-        "sync.syncDeleteAccountAlertDescriptionPart2",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "It will not however delete the data that is stored locally on those devices.",
-        comment: "Part 2 Description for Alert used action Delete Sync Account."
-      )
-    public static let syncDeleteAccountAlertDescriptionPart3 =
-      NSLocalizedString(
-        "sync.syncDeleteAccountAlertDescriptionPart3",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "This deletion is permanent and there is no way to recover the data. Should you decide to start using Sync again, you will need to create a new account and re-add each device one by one.",
-        comment: "Part 3 Description for Alert used action Delete Sync Account."
-      )
-    public static let syncChainAlreadyDeletedAlertTitle =
-      NSLocalizedString(
-        "sync.syncChainAlreadyDeletedAlertTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sync Device",
-        comment:
-          "Alert title for the occasion when an user is trying to join a already deleted account"
-      )
-    public static let syncChainAlreadyDeletedAlertDescription =
-      NSLocalizedString(
-        "sync.syncChainAlreadyDeletedAlertDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Could not join this chain. Account was deleted.",
-        comment:
-          "Alert description for the occasion when an user is trying to join a already deleted account"
-      )
-    public static let syncChainAccountDeletionErrorTitle =
-      NSLocalizedString(
-        "sync.syncChainAccountDeletionErrorTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sync Device",
-        comment: "Alert title for error while deleting sync chain"
-      )
-    public static let syncChainAccountDeletionErrorDescription =
-      NSLocalizedString(
-        "sync.syncChainAccountDeletionErrorDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sync Device",
-        comment: "Alert description for error while deleting sync chain"
-      )
-    public static let syncSetPasscodeAlertTitle =
-      NSLocalizedString(
-        "sync.syncSetPasscodeAlertTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Set a Passcode",
-        comment: "The title displayed in alert when a user needs to set passcode"
-      )
-    public static let syncSetPasscodeAlertDescription =
-      NSLocalizedString(
-        "sync.syncSetPasscodeAlertDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "To add a device to sync chain or toggle password sync, you must first set a passcode on your device.",
-        comment: "The message displayed in alert when a user needs to set a passcode"
-      )
-    public static let syncJoinChainCodewordsWarning =
-      NSLocalizedString(
-        "sync.syncJoinChainCodewordsWarning",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Note: You should verify you recognize each device in the list above. Devices in a sync chain may receive personal data like passwords and browsing history.",
-        comment: "A warning when user adds more than 5 device to sync chain"
-      )
-    public static let syncDeviceFetchErrorAlertDescription =
-      NSLocalizedString(
-        "sync.syncDeviceFetchErrorAlertDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Something went wrong while retrieving devices in sync chain.",
-        comment: "The message displayed in alert when a there is a problem with fetching devices"
-      )
-    public static let syncDevicesInSyncChainTitle =
-      NSLocalizedString(
-        "sync.syncDevicesInSyncChainTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Devices in Sync Chain",
-        comment: "The message displayed in alert when a list of devices will be shown"
-      )
-    public static let syncMaximumDeviceReachedErrorTitle =
-      NSLocalizedString(
-        "sync.syncMaximumDeviceReachedErrorTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Device limit",
-        comment: "The warning displayed in alert when the maxmium of devices is reached"
-      )
-    public static let syncMaximumDeviceReachedErrorDescription =
-      NSLocalizedString(
-        "sync.syncMaximumDeviceReachedErrorDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "You've reached the maximum number of devices (10) allowed in a sync chain. Remove a device to continue.",
-        comment: "The message displayed in alert when the maxmium of devices is reached"
-      )
-    public static let syncJoinChainWarningTitle =
-      NSLocalizedString(
-        "sync.syncJoinChainWarningTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Device Confirmation",
-        comment: "Title for alert error for device confirmation"
+        value: "Server Region",
+        comment: "The title for screen for showing list of server region"
       )
   }
 }
@@ -9303,7 +7794,7 @@ extension Strings {
       bundle: .module,
       value: "Get feeds from",
       comment:
-        "Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'."
+        "Shown with a website the user has typed in after the text. For example: 'Get feeds from https://ping.com'."
     )
     public static let noResultsFound = NSLocalizedString(
       "today.noResultsFound",
@@ -9822,21 +8313,21 @@ extension Strings {
       "rewards.enabledBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "You are helping support content creators",
+      value: "You are helping support Ping and the BAT community.",
       comment: "Displayed when Ping Rewards is enabled"
     )
     public static let disabledBody = NSLocalizedString(
       "rewards.disabledBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Turn on to help support content creators",
+      value: "Turn on to help support Ping and the BAT community.",
       comment: "Displayed when Ping Rewards is disabled"
     )
     public static let supportingPublisher = NSLocalizedString(
       "rewards.supportingPublisher",
       tableName: "BraveShared",
       bundle: .module,
-      value: "You are helping support content creators like this one.",
+      value: "This content creator is verified with Ping Creators",
       comment: "Displayed under verified publishers"
     )
     public static let unverifiedPublisher = NSLocalizedString(
@@ -9850,7 +8341,7 @@ extension Strings {
       "rewards.enabledStatusBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Thank you for helping support content creators as you browse!",
+      value: "Thank you for helping support Ping and the BAT community!",
       comment:
         "Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count)"
     )
@@ -9858,7 +8349,7 @@ extension Strings {
       "rewards.disabledStatusBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Using Ping Rewards helps support content creators as you browse.",
+      value: "Using Ping Rewards helps support Ping and the BAT community.",
       comment: "Displayed in the status container when rewards is disabled"
     )
     public static let totalSupportedCount = NSLocalizedString(
@@ -9880,7 +8371,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Support content creators and publishers automatically by enabling Ping Private Ads. Ping Private Ads are privacy-respecting ads that give back to content creators.",
+        "Help support Ping and the BAT community by enabling Ping Rewards and seeing Ping Ads.",
       comment: ""
     )
     public static let onProviderText = NSLocalizedString(
@@ -9992,6 +8483,16 @@ extension Strings {
       value: "Ping Rewards",
       comment: ""
     )
+
+    public static let braveAdsDataToggleOption =
+      NSLocalizedString(
+        "ads.braveAdsDataToggleOption",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Ping Ads Data",
+        comment:
+          "Text for the toggle switch to clear 'Ping Ads' data in settings"
+      )
   }
 }
 
@@ -11188,160 +9689,38 @@ extension Strings {
   }
 }
 
-// MARK: - Filter lists
+// MARK: - Paywall
 
 extension Strings {
-  public static let contentFiltering = NSLocalizedString(
-    "ContentFiltering",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Content Filtering",
-    comment:
-      "A title to the content filtering page under global shield settings and the title on the Content filtering page"
-  )
-  public static let blockMobileAnnoyances = NSLocalizedString(
-    "blockMobileAnnoyances",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Block 'Switch to App' Notices",
-    comment: "A title for setting which blocks 'switch to app' popups"
-  )
-  public static let contentFilteringDescription = NSLocalizedString(
-    "ContentFilteringDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "Enable custom filters that block regional and language-specific trackers and Annoyances",
-    comment: "A description of the content filtering page."
-  )
-  public static let defaultFilterLists = NSLocalizedString(
-    "DefaultFilterLists",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Default Filter Lists",
-    comment:
-      "A section title that contains default (predefined) filter lists a user can enable/diable."
-  )
-  public static let filterListsDescription = NSLocalizedString(
-    "FilterListsDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "Additional popular community lists. Note that enabling too many filters will degrade browsing speeds.",
-    comment: "A description on the content filtering screen for the filter lists section."
-  )
-  public static let addCustomFilterList = NSLocalizedString(
-    "AddCustomFilterList",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Add Custom Filter List",
-    comment: "A title within a cell where a user can navigate to an add screen."
-  )
-  public static let customFilterList = NSLocalizedString(
-    "CustomFilterList",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Custom Filter List",
-    comment: "Title for the custom filter list add screen found in the navigation bar."
-  )
-  public static let customFilterLists = NSLocalizedString(
-    "CustomFilterLists",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Custom Filter Lists",
-    comment: "A title for a section that contains all custom filter lists"
-  )
-  public static let customFilterListURL = NSLocalizedString(
-    "CustomFilterListsURL",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Custom Filter List URL",
-    comment: "A section heading above a cell that allows you to enter a filter list URL."
-  )
-  public static let addCustomFilterListDescription = NSLocalizedString(
-    "AddCustomFilterListDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Add additional lists created and maintained by your trusted community.",
-    comment:
-      "A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen"
-  )
-  public static let addCustomFilterListWarning = NSLocalizedString(
-    "AddCustomFilterListWarning",
-    tableName: "BraveShared",
-    bundle: .module,
-    value:
-      "**Only subscribe to lists from entities you trust**. Your browser will periodically check for list updates from the URL you enter.",
-    comment: "Warning text found in the footer of the add custom filter list url screen."
-  )
-  public static let filterListsLastUpdated = NSLocalizedString(
-    "FilterListsLastUpdatedLabel",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Last updated %@",
-    comment:
-      "A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'."
-  )
-  public static let filterListsDownloadPending = NSLocalizedString(
-    "FilterListsDownloadPending",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Pending download",
-    comment:
-      "If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending."
-  )
-  public static let filterListsEnterFilterListURL = NSLocalizedString(
-    "FilterListsEnterFilterListURL",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Enter filter list URL",
-    comment: "This is a placeholder for an input field that takes a custom filter list URL."
-  )
-  public static let filterListsAdd = NSLocalizedString(
-    "FilterListsAdd",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Add",
-    comment:
-      "This is a button on the top navigation that takes the user to an add custom filter list url to the list"
-  )
-  public static let filterListsEdit = NSLocalizedString(
-    "FilterListsEdit",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Edit",
-    comment:
-      "This is a button on the top navigation that takes the user to an add custom filter list url to the list"
-  )
-  public static let filterListURLTextFieldPlaceholder = NSLocalizedString(
-    "FilterListURLTextFieldPlaceholder",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Enter filter list URL here ",
-    comment:
-      "This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL"
-  )
-  public static let filterListsDownloadFailed = NSLocalizedString(
-    "FilterListsDownloadFailed",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Download failed",
-    comment: "This is a generic error message when downloading a filter list fails."
-  )
-  public static let filterListAddInvalidURLError = NSLocalizedString(
-    "FilterListAddInvalidURLError",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "The URL entered is invalid",
-    comment:
-      "This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field."
-  )
-  public static let filterListAddOnlyHTTPSAllowedError = NSLocalizedString(
-    "FilterListAddOnlyHTTPSAllowedError",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Only secure (https) URLs are allowed for custom filter lists",
-    comment:
-      "This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field"
-  )
+  public struct Paywall {
+    public static let alreadyPurchasedTitle = NSLocalizedString(
+      "paywall.alreadyPurchasedTitle",
+      bundle: .module,
+      value: "Already purchased on ping.com?",
+      comment: "Title label text for refreshing credentials from ping site."
+    )
+    public static let refreshCredentialsButtonTitle = NSLocalizedString(
+      "paywall.refreshCredentialsButtonTitle",
+      bundle: .module,
+      value: "Refresh your credentials",
+      comment: "Button action text for refreshing credentials from ping site."
+    )
+  }
+}
+
+extension Strings {
+  public struct ShortcutButton {
+    public static let hideButtonTitle = NSLocalizedString(
+      "shortcutsButton.hideButtonTitle",
+      bundle: .module,
+      value: "Hide Shortcut Button",
+      comment: "An option in a list of shortcut actions that hides the button"
+    )
+    public static let shortcutButtonTitle = NSLocalizedString(
+      "shortcutsButton.shortcutButtonTitle",
+      bundle: .module,
+      value: "Shortcut Button",
+      comment: "A title shown when letting the user choose a button's purpose from a list of destinations"
+    )
+  }
 }

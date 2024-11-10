@@ -6,11 +6,11 @@
 .turn {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
-  padding: 16px;
-  position: relative;
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
   letter-spacing: -0.1px;
 }
 
@@ -28,7 +28,11 @@
 }
 
 .suggestedQuestionsBox {
-  padding: 16px 16px 16px 64px;
+  padding: var(--leo-spacing-2xl);
+
+  leo-button {
+    --leo-button-padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  }
 }
 
 .buttonText {
@@ -46,10 +50,21 @@
   gap: var(--leo-spacing-m);
 }
 
+.avatarContainer {
+  display: flex;
+  gap: var(--leo-spacing-m);
+  align-items: center;
+
+  span {
+    font: var(--leo-font-default-semibold);
+    color: var(--leo-color-text-tertiary);
+  }
+}
+
 .avatar {
   --leo-icon-size: 18px;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   background: var(--leo-color-container-highlight);
   border-radius: 100px;
   flex-shrink: 0;
@@ -66,26 +81,54 @@
 
 .message {
   margin: 0;
-  padding-top: 5px;
   width: 100%;
+}
+
+.humanMessageContent {
+  white-space: pre-wrap;
 }
 
 .feedbackFormPortal {
   padding: 0 16px;
 }
 
-.asistantMenu {
-  position: absolute;
-  right: 16px;
-  z-index: inherit;
-}
-
-@media (pointer: fine) {
-  .turn:not(:hover) > .asistantMenu {
-    display: none;
-  }
-}
-
 .siteTitleContainer {
   margin-top: var(--leo-spacing-m);
+}
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.turnHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.turnActions {
+  display: flex;
+  gap: 12px;
+}
+
+.editLabel {
+  display: flex;
+  height: 20px;
+  padding: 0px var(--leo-spacing-s);
+  align-items: center;
+  gap: var(--leo-spacing-xs);
+  border-radius: var(--leo-radius-s);
+  background: var(--leo-color-neutral-20);
+}
+
+.editLabelText {
+  color: var(---leo-color-neutral-60);
+  text-transform: uppercase;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 10px;
 }

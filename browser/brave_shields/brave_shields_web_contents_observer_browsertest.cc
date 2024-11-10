@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
-#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -58,7 +59,6 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
@@ -81,19 +81,19 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
   }
 
   std::vector<GURL> GetBlockedJsList() {
-    return brave_shields::BraveShieldsDataController::FromWebContents(
+    return brave_shields::BraveShieldsTabHelper::FromWebContents(
                GetWebContents())
         ->GetBlockedJsList();
   }
 
   std::vector<GURL> GetAllowedJsList() {
-    return brave_shields::BraveShieldsDataController::FromWebContents(
+    return brave_shields::BraveShieldsTabHelper::FromWebContents(
                GetWebContents())
         ->GetAllowedJsList();
   }
 
   void ClearAllResourcesList() {
-    return brave_shields::BraveShieldsDataController::FromWebContents(
+    return brave_shields::BraveShieldsTabHelper::FromWebContents(
                GetWebContents())
         ->ClearAllResourcesList();
   }

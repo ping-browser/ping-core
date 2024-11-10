@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
@@ -18,18 +17,16 @@
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "extensions/buildflags/buildflags.h"
 
-class Profile;
+class PrefService;
 
 namespace brave_rewards {
 
 class ExtensionRewardsNotificationServiceObserver;
 
-class RewardsNotificationServiceImpl
-    : public RewardsNotificationService,
-      public RewardsServiceObserver,
-      public base::SupportsWeakPtr<RewardsNotificationServiceImpl> {
+class RewardsNotificationServiceImpl final : public RewardsNotificationService,
+                                             public RewardsServiceObserver {
  public:
-  explicit RewardsNotificationServiceImpl(Profile* profile);
+  explicit RewardsNotificationServiceImpl(PrefService* prefs);
   RewardsNotificationServiceImpl(const RewardsNotificationServiceImpl&) =
       delete;
   RewardsNotificationServiceImpl& operator=(
@@ -83,7 +80,7 @@ class RewardsNotificationServiceImpl
   RewardsNotificationID GenerateRewardsNotificationID() const;
   RewardsNotificationTimestamp GenerateRewardsNotificationTimestamp() const;
 
-  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
   RewardsNotificationsMap rewards_notifications_;
   std::vector<RewardsNotificationID> rewards_notifications_displayed_;
   std::unique_ptr<RewardsNotificationServiceObserver> extension_observer_;

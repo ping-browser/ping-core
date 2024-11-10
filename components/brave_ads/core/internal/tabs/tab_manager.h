@@ -15,7 +15,7 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 class GURL;
 
@@ -38,8 +38,8 @@ class TabManager final : public AdsClientNotifierObserver {
   void AddObserver(TabManagerObserver* observer);
   void RemoveObserver(TabManagerObserver* observer);
 
-  bool IsVisible(int32_t tab_id) const;
-  std::optional<TabInfo> GetVisible() const;
+  bool IsVisible(int32_t tab_id) const { return visible_tab_id_ == tab_id; }
+  std::optional<TabInfo> MaybeGetVisible() const;
 
   std::optional<TabInfo> MaybeGetForId(int32_t tab_id) const;
 
@@ -52,6 +52,7 @@ class TabManager final : public AdsClientNotifierObserver {
 
   void NotifyTabDidChangeFocus(int32_t tab_id) const;
   void NotifyTabDidChange(const TabInfo& tab) const;
+  void NotifyTabDidLoad(const TabInfo& tab, int http_status_code) const;
   void NotifyDidOpenNewTab(const TabInfo& tab) const;
   void NotifyTextContentDidChange(int32_t tab_id,
                                   const std::vector<GURL>& redirect_chain,
@@ -74,8 +75,10 @@ class TabManager final : public AdsClientNotifierObserver {
   void OnNotifyTabDidStopPlayingMedia(int32_t tab_id) override;
   void OnNotifyTabDidChange(int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
-                            bool is_error_page,
+                            bool is_new_navigation,
+                            bool is_restoring,
                             bool is_visible) override;
+  void OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void OnNotifyDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<TabManagerObserver> observers_;

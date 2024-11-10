@@ -13,6 +13,7 @@ import { BraveWallet, WalletRoutes } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import { reduceInt } from '../../../utils/string-utils'
 
 // Components
 import {
@@ -75,21 +76,15 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
       <StyledWrapper ref={forwardedRef}>
         <NameAndIcon>
           {token.isNft ? (
-            <NftIconWithPlaceholder
-              asset={token}
-              network={tokensNetwork}
-            />
+            <NftIconWithPlaceholder asset={token} />
           ) : (
-            <AssetIconWithPlaceholder
-              asset={token}
-              network={tokensNetwork}
-            />
+            <AssetIconWithPlaceholder asset={token} />
           )}
           <NameAndSymbol>
             <AssetName>
-              {token.name}{' '}
+              {token.name || token.symbol}{' '}
               {token.isErc721 && token.tokenId
-                ? '#' + new Amount(token.tokenId).toNumber()
+                ? '#' + reduceInt(new Amount(token.tokenId).format())
                 : ''}
             </AssetName>
             <AssetSymbol>

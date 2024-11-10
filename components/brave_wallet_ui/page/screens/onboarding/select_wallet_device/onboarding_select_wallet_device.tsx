@@ -7,11 +7,10 @@ import * as React from 'react'
 import { Redirect, useHistory, useParams } from 'react-router'
 
 // utils
-import { WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import {
   CreateAccountOptions //
 } from '../../../../options/create-account-options'
-import { HardwareVendor } from '../../../../common/api/hardware_keyrings'
 
 // components
 import {
@@ -22,23 +21,39 @@ import {
 } from '../../../../components/desktop/hardware-wallet-connect/hardware_wallet_connect'
 import { getLocale } from '../../../../../common/locale'
 
+// queries
+import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
+
+// selectors
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
+
 interface Params {
   accountTypeName: string
 }
-
-const accountOptions = CreateAccountOptions({
-  isBitcoinEnabled: false, // No bitcoin hardware accounts by now.
-  isZCashEnabled: false // No zcash hardware accounts by now.
-})
 
 export const OnboardingSelectWalletDevice = () => {
   // routing
   const { accountTypeName } = useParams<Params>()
   const history = useHistory()
 
+  // queries
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
+
+  // redux
+  const isBitcoinLedgerEnabled = useSafeWalletSelector(
+    WalletSelectors.isBitcoinLedgerEnabled
+  )
+
+  const accountOptions = CreateAccountOptions({
+    visibleNetworks,
+    isBitcoinEnabled: isBitcoinLedgerEnabled,
+    isZCashEnabled: false // No zcash hardware accounts by now.
+  })
+
   // state
   const [selectedHardwareWallet, setSelectedHardwareWallet] =
-    React.useState<HardwareVendor>()
+    React.useState<BraveWallet.HardwareVendor>()
 
   const selectedAccountType =
     accountTypeName !== ''

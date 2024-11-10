@@ -13,7 +13,6 @@ import { getLocale } from '../../../../common/locale'
 import {
   getSolanaTransactionInstructionParamsAndType as getTypedSolTxInstruction //
 } from '../../../utils/solana-instruction-utils'
-import { getTxDatasFromQueuedSolSignRequest } from '../../../utils/tx-utils'
 
 // Hooks
 import { useAccountOrb } from '../../../common/hooks/use-orb'
@@ -26,6 +25,12 @@ import NavButton from '../buttons/nav-button/index'
 import PanelTab from '../panel-tab/index'
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import SolanaTransactionInstruction from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
+import {
+  TxWarningBanner //
+} from '../confirm-transaction-panel/common/tx_warnings'
+import {
+  TransactionSimulationNotSupportedSheet //
+} from '../transaction_simulation_not_supported_sheet/transaction_simulation_not_supported_sheet'
 
 // Styled Components
 import {
@@ -58,21 +63,22 @@ import {
 
 import { DetailColumn } from '../transaction-box/style'
 import { Tooltip } from '../../shared/tooltip/index'
+import { Column } from '../../shared/style'
 
 interface Props {
-  signMode: 'signTx' | 'signAllTxs'
+  selectedRequest: BraveWallet.SignSolTransactionsRequest
   isSigningDisabled: boolean
   network: BraveWallet.NetworkInfo
   queueNextSignTransaction: () => void
-  selectedQueueData:
-    | BraveWallet.SignTransactionRequest
-    | BraveWallet.SignAllTransactionsRequest
-    | undefined
-  signingAccount?: BraveWallet.AccountInfo
+  signingAccount: BraveWallet.AccountInfo
   queueLength: number
   queueNumber: number
+  retrySimulation?: () => void
+  showSimulationNotSupportedMessage?: boolean
 }
 
+// TODO: broken article link
+// https://github.com/brave/brave-browser/issues/39708
 const onClickLearnMore = () => {
   window.open(
     'https://support.brave.com/hc/en-us/articles/4409513799693',
@@ -82,14 +88,15 @@ const onClickLearnMore = () => {
 }
 
 export const SignTransactionPanel = ({
-  signMode,
+  selectedRequest,
   isSigningDisabled,
   network,
   queueLength,
   queueNextSignTransaction,
   queueNumber,
-  selectedQueueData,
-  signingAccount
+  signingAccount,
+  retrySimulation,
+  showSimulationNotSupportedMessage
 }: Props) => {
   // custom hooks
   const orb = useAccountOrb(signingAccount)
@@ -98,6 +105,8 @@ export const SignTransactionPanel = ({
   const [signStep, setSignStep] = React.useState<SignDataSteps>(
     SignDataSteps.SignRisk
   )
+  const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
+    React.useState(false)
 
   // methods
   const onAcceptSigningRisks = React.useCallback(() => {
@@ -106,16 +115,8 @@ export const SignTransactionPanel = ({
 
   const { cancelSign: onCancelSign, sign: onSign } =
     useProcessSignSolanaTransaction({
-      signMode,
-      account: signingAccount,
-      request: selectedQueueData
+      signSolTransactionsRequest: selectedRequest
     })
-
-  const txDatas = React.useMemo(() => {
-    return selectedQueueData
-      ? getTxDatasFromQueuedSolSignRequest(selectedQueueData)
-      : []
-  }, [selectedQueueData])
 
   // render
   return (
@@ -135,27 +136,20 @@ export const SignTransactionPanel = ({
           </QueueStepRow>
         )}
       </TopRow>
-
       <AccountCircle orb={orb} />
-
-      {selectedQueueData && (
-        <URLText>
-          <CreateSiteOrigin
-            originSpec={selectedQueueData.originInfo.originSpec}
-            eTldPlusOne={selectedQueueData.originInfo.eTldPlusOne}
-          />
-        </URLText>
-      )}
-
+      <URLText>
+        <CreateSiteOrigin
+          originSpec={selectedRequest.originInfo.originSpec}
+          eTldPlusOne={selectedRequest.originInfo.eTldPlusOne}
+        />
+      </URLText>
       <Tooltip
-        text={selectedQueueData?.fromAddress || ''}
+        text={selectedRequest.fromAddress || ''}
         isAddress
       >
         <AccountNameText>{signingAccount?.name ?? ''}</AccountNameText>
       </Tooltip>
-
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
-
       {signStep === SignDataSteps.SignRisk && (
         <WarningBox warningType='danger'>
           <WarningTitleRow>
@@ -170,17 +164,16 @@ export const SignTransactionPanel = ({
           </LearnMoreButton>
         </WarningBox>
       )}
-
       {signStep === SignDataSteps.SignData && (
         <>
           <TabRow>
             <PanelTab
               isSelected={true}
-              text={getLocale('braveWalletAccountSettingsDetails')}
+              text={getLocale('braveWalletDetails')}
             />
           </TabRow>
           <MessageBox>
-            {txDatas.map(({ instructions, txType }, i) => {
+            {selectedRequest.txDatas.map(({ instructions, txType }, i) => {
               return (
                 <DetailColumn key={`${txType}-${i}`}>
                   {instructions?.map((instruction, index) => {
@@ -199,26 +192,42 @@ export const SignTransactionPanel = ({
           </MessageBox>
         </>
       )}
-      <SignPanelButtonRow>
-        <NavButton
-          buttonType='secondary'
-          text={getLocale('braveWalletButtonCancel')}
-          onSubmit={onCancelSign}
-          disabled={isSigningDisabled}
-        />
-        <NavButton
-          buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
-          text={
-            signStep === SignDataSteps.SignData
-              ? getLocale('braveWalletSignTransactionButton')
-              : getLocale('braveWalletButtonContinue')
-          }
-          onSubmit={
-            signStep === SignDataSteps.SignRisk ? onAcceptSigningRisks : onSign
-          }
-          disabled={isSigningDisabled}
-        />
-      </SignPanelButtonRow>
+      <Column
+        fullWidth
+        gap={'8px'}
+      >
+        {retrySimulation && !isSimulationWarningDismissed && (
+          <TxWarningBanner
+            onDismiss={() => setIsSimulationWarningDismissed(true)}
+            retrySimulation={retrySimulation}
+          />
+        )}
+        <SignPanelButtonRow>
+          <NavButton
+            buttonType='secondary'
+            text={getLocale('braveWalletButtonCancel')}
+            onSubmit={onCancelSign}
+            disabled={isSigningDisabled}
+          />
+          <NavButton
+            buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
+            text={
+              signStep === SignDataSteps.SignData
+                ? getLocale('braveWalletSignTransactionButton')
+                : getLocale('braveWalletButtonContinue')
+            }
+            onSubmit={
+              signStep === SignDataSteps.SignRisk
+                ? onAcceptSigningRisks
+                : onSign
+            }
+            disabled={isSigningDisabled}
+          />
+        </SignPanelButtonRow>
+      </Column>
+      {showSimulationNotSupportedMessage && (
+        <TransactionSimulationNotSupportedSheet />
+      )}
     </StyledWrapper>
   )
 }

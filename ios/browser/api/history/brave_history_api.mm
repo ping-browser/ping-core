@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "brave/ios/browser/api/history/history_driver_ios.h"
@@ -18,7 +19,7 @@
 #include "components/keyed_service/core/service_access_type.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
@@ -109,13 +110,51 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 }
 @end
 
+#pragma mark - IOSHistorySearchOptions
+
+@implementation IOSHistorySearchOptions
+
+- (instancetype)init {
+  return [self initWithMaxCount:0
+                       hostOnly:NO
+              duplicateHandling:HistoryDuplicateHandlingIOSRemoveAll
+                      beginDate:nil
+                        endDate:nil];
+}
+
+- (instancetype)initWithMaxCount:(NSUInteger)maxCount
+               duplicateHandling:
+                   (HistoryDuplicateHandlingIOS)duplicateHandling {
+  return [self initWithMaxCount:maxCount
+                       hostOnly:NO
+              duplicateHandling:duplicateHandling
+                      beginDate:nil
+                        endDate:nil];
+}
+
+- (instancetype)initWithMaxCount:(NSUInteger)maxCount
+                        hostOnly:(BOOL)hostOnly
+               duplicateHandling:(HistoryDuplicateHandlingIOS)duplicateHandling
+                       beginDate:(nullable NSDate*)beginDate
+                         endDate:(nullable NSDate*)endDate {
+  if ((self = [super init])) {
+    self.maxCount = maxCount;
+    self.hostOnly = hostOnly;
+    self.duplicateHandling = duplicateHandling;
+    self.beginDate = beginDate;
+    self.endDate = endDate;
+  }
+  return self;
+}
+@end
+
 #pragma mark - BraveHistoryAPI
 
 @interface BraveHistoryAPI () {
   // History Service for adding and querying
-  history::HistoryService* history_service_;
+  raw_ptr<history::HistoryService> history_service_;
   // WebhistoryService for delete operations
-  history::WebHistoryService* web_history_service_;
+  raw_ptr<history::WebHistoryService> web_history_service_;
   // Tracker for history requests.
   base::CancelableTaskTracker tracker_;
 
@@ -129,7 +168,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 @end
 
 @implementation BraveHistoryAPI {
-  ChromeBrowserState* _mainBrowserState;  // NOT OWNED
+  raw_ptr<ChromeBrowserState> _mainBrowserState;  // NOT OWNED
 }
 
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
@@ -196,18 +235,23 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
   history_service_->AddPage(args);
 }
 
-- (void)removeHistory:(IOSHistoryNode*)history {
+- (void)removeHistoryForNode:(IOSHistoryNode*)node {
+  [self removeHistoryForNodes:@[ node ]];
+}
+
+- (void)removeHistoryForNodes:(NSArray<IOSHistoryNode*>*)nodes {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
 
   // Delete items from Browser History and from synced devices
   std::vector<history::BrowsingHistoryService::HistoryEntry> entries;
-  history::BrowsingHistoryService::HistoryEntry entry;
-  entry.url = net::GURLWithNSURL(history.url);
-  entry.all_timestamps.insert(base::Time::FromNSDate(history.dateAdded)
-                                  .ToDeltaSinceWindowsEpoch()
-                                  .InMicroseconds());
-  entries.push_back(entry);
-
+  for (IOSHistoryNode* history in nodes) {
+    history::BrowsingHistoryService::HistoryEntry entry;
+    entry.url = net::GURLWithNSURL(history.url);
+    entry.all_timestamps.insert(base::Time::FromNSDate(history.dateAdded)
+                                    .ToDeltaSinceWindowsEpoch()
+                                    .InMicroseconds());
+    entries.push_back(entry);
+  }
   _browsingHistoryService->RemoveVisits(entries);
 }
 
@@ -234,11 +278,12 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 }
 
 - (void)searchWithQuery:(NSString*)queryArg
-               maxCount:(NSUInteger)maxCountArg
+                options:(IOSHistorySearchOptions*)searchOptionsArg
              completion:
                  (void (^)(NSArray<IOSHistoryNode*>* historyResults))callback {
   __weak BraveHistoryAPI* weak_history_api = self;
-  auto search_with_query = ^(NSString* query, NSUInteger maxCount,
+  auto search_with_query = ^(NSString* query,
+                             IOSHistorySearchOptions* searchOptions,
                              void (^completion)(NSArray<IOSHistoryNode*>*)) {
     BraveHistoryAPI* historyAPI = weak_history_api;
     if (!historyAPI) {
@@ -247,19 +292,36 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     }
 
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-
-    // Check Query is empty for Fetching all history
-    // The entered query can be nil or empty String
-    BOOL fetchAllHistory = !query || [query length] == 0;
-    std::u16string queryString =
-        fetchAllHistory ? std::u16string() : base::SysNSStringToUTF16(query);
+    std::u16string queryString = !query || [query length] == 0
+                                     ? std::u16string()
+                                     : base::SysNSStringToUTF16(query);
 
     // Creating fetch options for querying history
     history::QueryOptions options;
-    options.duplicate_policy =
-        fetchAllHistory ? history::QueryOptions::REMOVE_DUPLICATES_PER_DAY
-                        : history::QueryOptions::REMOVE_ALL_DUPLICATES;
-    options.max_count = fetchAllHistory ? 0 : static_cast<int>(maxCount);
+    options.max_count = static_cast<int>(searchOptions.maxCount);
+    options.host_only = searchOptions.hostOnly;
+
+    if (searchOptions.beginDate) {
+      options.begin_time = base::Time::FromNSDate(searchOptions.beginDate);
+    }
+    if (searchOptions.endDate) {
+      options.end_time = base::Time::FromNSDate(searchOptions.endDate);
+    }
+
+    switch (searchOptions.duplicateHandling) {
+      case HistoryDuplicateHandlingIOSRemoveAll:
+        options.duplicate_policy =
+            history::QueryOptions::DuplicateHandling::REMOVE_ALL_DUPLICATES;
+        break;
+      case HistoryDuplicateHandlingIOSRemovePerDay:
+        options.duplicate_policy =
+            history::QueryOptions::DuplicateHandling::REMOVE_DUPLICATES_PER_DAY;
+        break;
+      case HistoryDuplicateHandlingIOSKeepAll:
+        options.duplicate_policy =
+            history::QueryOptions::DuplicateHandling::KEEP_ALL_DUPLICATES;
+        break;
+    }
     options.matching_algorithm =
         query_parser::MatchingAlgorithm::ALWAYS_PREFIX_SEARCH;
 
@@ -282,7 +344,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE,
-      base::BindOnce(search_with_query, queryArg, maxCountArg, callback));
+      base::BindOnce(search_with_query, queryArg, searchOptionsArg, callback));
 }
 
 - (void)fetchDomainDiversityForType:(DomainMetricTypeIOS)type

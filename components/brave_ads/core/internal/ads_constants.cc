@@ -3,10 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/public/ads_constants.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
-namespace brave_ads::data::resource {
+namespace brave_ads {
 
-const char kCatalogJsonSchemaFilename[] = "catalog-schema.json";
+constexpr char kDatabaseFilename[] = "database.sqlite";
 
-}  // namespace brave_ads::data::resource
+constexpr char kClientJsonFilename[] = "client.json";
+
+constexpr char kConfirmationsJsonFilename[] = "confirmations.json";
+
+constexpr char kCatalogJsonSchemaDataResourceName[] = "catalog-schema.json";
+
+}  // namespace brave_ads

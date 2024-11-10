@@ -24,11 +24,9 @@
 
 namespace brave_ads {
 
-class TokenGeneratorInterface;
-
 class RefillConfirmationTokens final {
  public:
-  explicit RefillConfirmationTokens(TokenGeneratorInterface* token_generator);
+  RefillConfirmationTokens();
 
   RefillConfirmationTokens(const RefillConfirmationTokens&) = delete;
   RefillConfirmationTokens& operator=(const RefillConfirmationTokens&) = delete;
@@ -53,19 +51,23 @@ class RefillConfirmationTokens final {
 
   bool ShouldRequestSignedTokens() const;
   void RequestSignedTokens();
-  void RequestSignedTokensCallback(const mojom::UrlResponseInfo& url_response);
+  void RequestSignedTokensCallback(
+      const mojom::UrlResponseInfo& mojom_url_response);
   base::expected<void, std::tuple<std::string, /*should_retry*/ bool>>
   HandleRequestSignedTokensUrlResponse(
-      const mojom::UrlResponseInfo& url_response);
+      const mojom::UrlResponseInfo& mojom_url_response);
 
   void GetSignedTokens();
-  void GetSignedTokensCallback(const mojom::UrlResponseInfo& url_response);
+  void GetSignedTokensCallback(
+      const mojom::UrlResponseInfo& mojom_url_response);
   base::expected<void, std::tuple<std::string, /*should_retry*/ bool>>
-  HandleGetSignedTokensUrlResponse(const mojom::UrlResponseInfo& url_response);
+  HandleGetSignedTokensUrlResponse(
+      const mojom::UrlResponseInfo& mojom_url_response);
   void ParseAndRequireCaptcha(const base::Value::Dict& dict) const;
 
   void SuccessfullyRefilled();
-  void FailedToRefill(bool should_retry);
+  void FailedToRefillAndRetry();
+  void FailedToRefill();
 
   void Retry();
   void RetryCallback();
@@ -80,9 +82,6 @@ class RefillConfirmationTokens final {
   void NotifyFailedToRefillConfirmationTokens() const;
   void NotifyWillRetryRefillingConfirmationTokens(base::Time retry_at) const;
   void NotifyDidRetryRefillingConfirmationTokens() const;
-
-  const raw_ptr<TokenGeneratorInterface> token_generator_ =
-      nullptr;  // NOT OWNED
 
   raw_ptr<RefillConfirmationTokensDelegate> delegate_ = nullptr;
 

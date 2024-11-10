@@ -13,7 +13,7 @@
     "declarativeNetRequestWithHostAccess"
   ],
   "host_permissions": [
-    "https://openai-text-summarizer.azurewebsites.net/*"
+    "https://ping-backend.azurewebsites.net/*"
   ],
   "content_scripts": [
     {

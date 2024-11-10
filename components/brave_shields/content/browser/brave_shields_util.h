@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_SHIELDS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_SHIELDS_UTIL_H_
 
-#include <stdint.h>
 #include <string>
 
-#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 
 namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
@@ -23,6 +23,7 @@ namespace content_settings {
 class CookieSettings;
 }
 
+class ContentSettingsPattern;
 class GURL;
 class HostContentSettingsMap;
 class PrefService;
@@ -141,6 +142,17 @@ void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
 bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
                                        const GURL& url);
 
+// Enables a webcompat exception for a specific URL.
+void SetWebcompatEnabled(HostContentSettingsMap* map,
+                         ContentSettingsType webcompat_settings_type,
+                         bool enabled,
+                         const GURL& url,
+                         PrefService* local_state);
+
+bool IsWebcompatEnabled(HostContentSettingsMap* map,
+                        ContentSettingsType webcompat_settings_type,
+                        const GURL& url);
+
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 
 bool MaybeChangeReferrer(bool allow_referrers,
@@ -151,6 +163,9 @@ bool MaybeChangeReferrer(bool allow_referrers,
 
 ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map);
 ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
+
+mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
+                                      const GURL& primary_url);
 
 }  // namespace brave_shields
 

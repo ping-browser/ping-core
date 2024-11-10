@@ -12,7 +12,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -28,21 +28,23 @@ using Signals =
     base::flat_map</*channel name or publisher_id*/ std::string, Signal>;
 using SignalsCallback = base::OnceCallback<void(Signals)>;
 
+class SubscriptionsSnapshot;
+
 class SignalCalculator {
  public:
   SignalCalculator(PublishersController& publishers_controller,
                    ChannelsController& channels_controller,
-                   history::HistoryService& history_service);
+                   BackgroundHistoryQuerier& history_querier);
   SignalCalculator(const SignalCalculator&) = delete;
   SignalCalculator& operator=(const SignalCalculator&) = delete;
   ~SignalCalculator();
 
-  void GetSignals(const BraveNewsSubscriptions& subscriptions,
+  void GetSignals(const SubscriptionsSnapshot& subscriptions,
                   const FeedItems& feed,
                   SignalsCallback callback);
 
  private:
-  void OnGotHistory(const BraveNewsSubscriptions& subscriptions,
+  void OnGotHistory(const SubscriptionsSnapshot& subscriptions,
                     std::vector<mojom::FeedItemMetadataPtr> articles,
                     SignalsCallback callback,
                     history::QueryResults results);
@@ -53,7 +55,7 @@ class SignalCalculator {
 
   raw_ref<PublishersController> publishers_controller_;
   raw_ref<ChannelsController> channels_controller_;
-  raw_ref<history::HistoryService> history_service_;
+  raw_ref<BackgroundHistoryQuerier> history_querier_;
 
   base::WeakPtrFactory<SignalCalculator> weak_ptr_factory_{this};
 };

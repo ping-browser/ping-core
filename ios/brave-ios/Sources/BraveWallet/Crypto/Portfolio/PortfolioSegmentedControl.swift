@@ -66,29 +66,10 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
   @GestureState private var isDragGestureActive: Bool = false
 
   var body: some View {
-    Capsule()
+    RoundedRectangle(cornerRadius: 8)
       .fill(Color(braveSystemName: .containerHighlight))
-      .osAvailabilityModifiers {
-        if #unavailable(iOS 16) {
-          $0.overlay {
-            // TapGesture does not give a location,
-            // SpatialTapGesture is iOS 16+.
-            HStack {
-              ForEach(items) { item in
-                Color.clear
-                  .contentShape(Rectangle())
-                  .onTapGesture {
-                    select(item)
-                  }
-              }
-            }
-          }
-        } else {
-          $0
-        }
-      }
-      .overlay {  // selected capsule
-        Capsule()
+      .overlay {  // selected item
+        RoundedRectangle(cornerRadius: 8)
           .fill(Color(braveSystemName: .containerBackground))
           .padding(4)
           .frame(width: itemWidth)
@@ -126,13 +107,7 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
           select(selected, animated: false)
         }
       }
-      .osAvailabilityModifiers {
-        if #available(iOS 16, *) {
-          $0.simultaneousGesture(tapGesture)
-        } else {
-          $0
-        }
-      }
+      .simultaneousGesture(tapGesture)
       .accessibilityRepresentation {
         Picker(selection: $selected) {
           ForEach(items) { item in
@@ -159,6 +134,7 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
       .dynamicTypeSize(dynamicTypeRange)
       .allowsHitTesting(false)
       .frame(width: itemWidth)
+      .hoverEffect()
   }
 
   private var dragGesture: some Gesture {
@@ -167,7 +143,7 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
         state = true
       }
       .onChanged { value in
-        // `location` is the middle of capsule
+        // `location` is the middle of RoundedRectangle
         let minX = itemWidth / 2
         let maxX = viewSize.width - minX
         let newX = min(max(value.location.x, minX), maxX)

@@ -162,19 +162,19 @@ struct SaferSignMessageRequestContainerView: View {
 
   private var networkFeeSection: some View {
     VStack(alignment: .leading, spacing: 4) {
-      HStack {
+      HStack(alignment: .top) {
         VStack(alignment: .leading, spacing: 4) {
           Text(Strings.Wallet.swapConfirmationNetworkFee)
             .fontWeight(.medium)
             .foregroundColor(Color(.secondaryBraveLabel))
           HStack {
             Group {
-              if let image = network?.nativeTokenLogoImage {
-                Image(uiImage: image)
-                  .resizable()
+              if let network {
+                NetworkIcon(network: network)
               } else {
                 Circle()
                   .stroke(Color(.braveSeparator))
+                  .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
               }
             }
             .frame(
@@ -193,6 +193,9 @@ struct SaferSignMessageRequestContainerView: View {
           Text(detailsButtonTitle)
             .fontWeight(.medium)
             .foregroundColor(Color(braveSystemName: .textInteractive))
+        }
+        .transaction {
+          $0.disablesAnimations = true
         }
       }
     }

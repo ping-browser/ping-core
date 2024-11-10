@@ -3,40 +3,36 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+
 #include <memory>
 #include <utility>
 
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
-
 #include "base/no_destructor.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "chrome/browser/browser_process.h"
+#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
+#include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/prefs/pref_service.h"
-#include "content/public/browser/notification_service.h"
-#include "content/public/browser/notification_types.h"
+#include "content/public/browser/storage_partition.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "extensions/browser/event_router_factory.h"
-#include "brave/browser/brave_rewards/extension_rewards_service_observer.h"
 #include "brave/browser/brave_rewards/extension_rewards_notification_service_observer.h"
+#include "brave/browser/brave_rewards/extension_rewards_service_observer.h"
+#include "extensions/browser/event_router_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/browser/greaselion/greaselion_service_factory.h"
-#include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
 
 namespace brave_rewards {
@@ -44,8 +40,7 @@ namespace brave_rewards {
 RewardsService* testing_service_ = nullptr;
 
 // static
-RewardsService* RewardsServiceFactory::GetForProfile(
-    Profile* profile) {
+RewardsService* RewardsServiceFactory::GetForProfile(Profile* profile) {
   if (testing_service_) {
     return testing_service_;
   }
@@ -74,36 +69,68 @@ RewardsServiceFactory::RewardsServiceFactory()
 #if BUILDFLAG(ENABLE_GREASELION)
   DependsOn(greaselion::GreaselionServiceFactory::GetInstance());
 #endif
-  DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
+  DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
 }
 
-KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   std::unique_ptr<RewardsServiceObserver> extension_observer = nullptr;
   std::unique_ptr<RewardsNotificationServiceObserver> notification_observer =
       nullptr;
+  auto* profile = Profile::FromBrowserContext(context);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  extension_observer = std::make_unique<ExtensionRewardsServiceObserver>(
-      Profile::FromBrowserContext(context));
+  extension_observer =
+      std::make_unique<ExtensionRewardsServiceObserver>(profile);
   notification_observer =
-      std::make_unique<ExtensionRewardsNotificationServiceObserver>(
-          Profile::FromBrowserContext(context));
+      std::make_unique<ExtensionRewardsNotificationServiceObserver>(profile);
 #endif
-  auto* wallet_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(context);
+  // Set up the rewards data source
+  content::URLDataSource::Add(profile,
+                              std::make_unique<BraveRewardsSource>(profile));
+
+  // BitmapFetcherServiceFactory has private ProfileKeyedServiceFactory so we
+  // can't add `DependsOn` to ensure proper lifetime management.
+  auto request_image_callback = base::BindRepeating(
+      [](Profile* profile, const GURL& url,
+         BitmapFetcherService::BitmapFetchedCallback callback,
+         const net::NetworkTrafficAnnotationTag& tag) {
+        auto* bitmap_fetcher_service =
+            BitmapFetcherServiceFactory::GetForBrowserContext(profile);
+        if (bitmap_fetcher_service) {
+          return bitmap_fetcher_service
+              ->RequestImageWithNetworkTrafficAnnotationTag(
+                  url, std::move(callback), tag);
+        } else {
+          return BitmapFetcherService::REQUEST_ID_INVALID;
+        }
+      },
+      profile);
+  auto cancel_request_image_callback = base::BindRepeating(
+      [](Profile* profile, BitmapFetcherService::RequestId request_id) {
+        auto* bitmap_fetcher_service =
+            BitmapFetcherServiceFactory::GetForBrowserContext(profile);
+        if (bitmap_fetcher_service) {
+          return bitmap_fetcher_service->CancelRequest(request_id);
+        }
+      },
+      profile);
+
+  std::unique_ptr<RewardsServiceImpl> rewards_service =
+      std::make_unique<RewardsServiceImpl>(
+          profile->GetPrefs(), profile->GetPath(),
+          FaviconServiceFactory::GetForProfile(
+              profile, ServiceAccessType::EXPLICIT_ACCESS),
+          request_image_callback, cancel_request_image_callback,
+          profile->GetDefaultStoragePartition(),
 #if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionService* greaselion_service =
-      greaselion::GreaselionServiceFactory::GetForBrowserContext(context);
-  std::unique_ptr<RewardsServiceImpl> rewards_service(
-      new RewardsServiceImpl(Profile::FromBrowserContext(context),
-                             greaselion_service, wallet_rpc_service));
-#else
-  std::unique_ptr<RewardsServiceImpl> rewards_service(new RewardsServiceImpl(
-      Profile::FromBrowserContext(context), wallet_rpc_service));
+          greaselion::GreaselionServiceFactory::GetForBrowserContext(context),
 #endif
+          brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+              context));
   rewards_service->Init(std::move(extension_observer),
                         std::move(notification_observer));
-  return rewards_service.release();
+  return rewards_service;
 }
 
 // static

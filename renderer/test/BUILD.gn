@@ -15,7 +15,6 @@ source_set("browser_tests") {
     "font_browsertest.cc",
     "js_ethereum_provider_browsertest.cc",
     "navigator_connection_attribute_browsertest.cc",
-    "serial_api_browsertest.cc",
     "subresource_web_bundles_browsertest.cc",
   ]
 
@@ -24,7 +23,6 @@ source_set("browser_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/browser/brave_wallet",
-    "//brave/browser/profiles:profiles",
     "//brave/common",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:utils",

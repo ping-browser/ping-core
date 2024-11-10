@@ -48,7 +48,7 @@ struct SaferSignTransactionContainerView: View {
   ) {
     self.originInfo = parsedTransaction.transaction.originInfo
     self.network = parsedTransaction.network
-    self.fromAddress = parsedTransaction.fromAddress
+    self.fromAddress = parsedTransaction.fromAccountInfo.address
     self.namedFromAddress = parsedTransaction.namedFromAddress
     if case .ethSwap(let details) = parsedTransaction.details {
       self.fromToken = details.fromToken
@@ -146,6 +146,7 @@ struct SaferSignTransactionContainerView: View {
           } else {
             Circle()
               .stroke(Color(.braveSeparator))
+              .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
           }
         }
         .frame(

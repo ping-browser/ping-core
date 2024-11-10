@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_OBSERVER_INTERFACE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_OBSERVER_INTERFACE_H_
 
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -20,11 +20,11 @@ class AdsObserverInterface {
   // Invoked when a browser upgrade is required to serve ads.
   virtual void OnBrowserUpgradeRequiredToServeAds() = 0;
 
-  // Invoked when a Rewards wallet is deemed ineligible to serve ads.
-  virtual void OnIneligibleRewardsWalletToServeAds() = 0;
+  // Invoked when a wallet is deemed ineligible to serve ads.
+  virtual void OnIneligibleWalletToServeAds() = 0;
 
   // Invoked to remind the user of what to do and what not to do.
-  virtual void OnRemindUser(mojom::ReminderType type) = 0;
+  virtual void OnRemindUser(mojom::ReminderType mojom_reminder_type) = 0;
 };
 
 }  // namespace brave_ads

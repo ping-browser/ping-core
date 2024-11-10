@@ -25,6 +25,7 @@
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/views/controls/combobox/combobox.h"
 #include "ui/views/controls/label.h"
@@ -101,9 +102,9 @@ TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
                          base::BindRepeating(
                              &TextRecognitionDialogView::OnShowResultTimerFired,
                              base::Unretained(this))) {
-  SetModalType(ui::MODAL_TYPE_CHILD);
-  SetButtons(ui::DIALOG_BUTTON_OK);
-  SetButtonLabel(ui::DIALOG_BUTTON_OK,
+  SetModalType(ui::mojom::ModalType::kChild);
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk));
+  SetButtonLabel(ui::mojom::DialogButton::kOk,
                  brave_l10n::GetLocalizedResourceUTF16String(
                      IDS_TEXT_RECOGNITION_DIALOG_CLOSE_BUTTON));
   SetShowCloseButton(false);

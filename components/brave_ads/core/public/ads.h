@@ -10,13 +10,11 @@
 #include <optional>
 #include <string>
 
+#include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_observer_interface.h"
 #include "brave/components/brave_ads/core/public/export.h"
-#include "brave/components/brave_ads/core/public/history/history_filter_types.h"
-#include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "brave/components/brave_ads/core/public/history/history_sort_types.h"
 
 namespace base {
 class Time;
@@ -41,19 +39,20 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  virtual void AddBatAdsObserver(
-      std::unique_ptr<AdsObserverInterface> observer) = 0;
+  virtual void AddObserver(
+      std::unique_ptr<AdsObserverInterface> ads_observer) = 0;
 
-  virtual void SetSysInfo(mojom::SysInfoPtr sys_info) = 0;
+  virtual void SetSysInfo(mojom::SysInfoPtr mojom_sys_info) = 0;
 
-  virtual void SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) = 0;
+  virtual void SetBuildChannel(
+      mojom::BuildChannelInfoPtr mojom_build_channel) = 0;
 
-  virtual void SetFlags(mojom::FlagsPtr flags) = 0;
+  virtual void SetFlags(mojom::FlagsPtr mojom_flags) = 0;
 
-  // Called to initialize ads for the specified `mojom::WalletInfoPtr`. `wallet`
-  // can be nullptr if there is no wallet. The callback takes one argument -
-  // `bool` is set to `true` if successful otherwise `false`.
-  virtual void Initialize(mojom::WalletInfoPtr wallet,
+  // Called to initialize ads for the specified `mojom::WalletInfoPtr`.
+  // `mojom_wallet` can be nullptr if there is no wallet. The callback takes one
+  // argument - `bool` is set to `true` if successful otherwise `false`.
+  virtual void Initialize(mojom::WalletInfoPtr mojom_wallet,
                           InitializeCallback callback) = 0;
 
   // Called to shutdown ads. The callback takes one argument - `bool` is set to
@@ -78,16 +77,17 @@ class ADS_EXPORT Ads {
       MaybeServeInlineContentAdCallback callback) = 0;
 
   // Called when a user views or interacts with an inline content ad to trigger
-  // an `event_type` event for the specified `placement_id` and
+  // a `mojom_ad_event_type` event for the specified `placement_id` and
   // `creative_instance_id`. `placement_id` should be a 128-bit random UUID in
   // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
   // generated for the viewed impression event should be used for all other
   // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`.
+  // is set to `true` if successful otherwise `false`. Must be called before the
+  // `mojom::InlineContentAdEventType::target_url` landing page is opened.
   virtual void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::InlineContentAdEventType event_type,
+      mojom::InlineContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
 
   // Called to serve a new tab page ad. The callback takes one argument -
@@ -95,104 +95,120 @@ class ADS_EXPORT Ads {
   virtual void MaybeServeNewTabPageAd(
       MaybeServeNewTabPageAdCallback callback) = 0;
 
-  // Called when a user views or interacts with a new tab page ad to trigger an
-  // `event_type` event for the specified `placement_id` and
+  // Called when a user views or interacts with a new tab page ad to trigger a
+  // `mojom_ad_event_type` event for the specified `placement_id` and
   // `creative_instance_id`. `placement_id` should be a 128-bit random UUID in
   // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
   // generated for the viewed impression event should be used for all other
   // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`.
-  virtual void TriggerNewTabPageAdEvent(const std::string& placement_id,
-                                        const std::string& creative_instance_id,
-                                        mojom::NewTabPageAdEventType event_type,
-                                        TriggerAdEventCallback callback) = 0;
+  // is set to `true` if successful otherwise `false`. Must be called before the
+  // `mojom::NewTabPageAdEventType::target_url` landing page is opened.
+  virtual void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::NewTabPageAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) = 0;
 
-  // Called to get the notification ad specified by `placement_id`. Returns
-  // `NotificationAdInfo` containing the info of the ad.
-  virtual std::optional<NotificationAdInfo> MaybeGetNotificationAd(
-      const std::string& placement_id) = 0;
+  // Called to get the notification ad specified by `placement_id`. The callback
+  // takes one argument - `NotificationAdInfo` containing the info of the ad.
+  virtual void MaybeGetNotificationAd(
+      const std::string& placement_id,
+      MaybeGetNotificationAdCallback callback) = 0;
 
   // Called when a user views or interacts with a notification ad or the ad
-  // notification times out to trigger an `event_type` event for the specified
-  // `placement_id`. `placement_id` should be a 128-bit random UUID in the form
-  // of version 4. See RFC 4122, section 4.4. The same `placement_id` generated
-  // for the viewed impression event should be used for all other events for the
-  // same ad placement. The callback takes one argument - `bool` is set to
-  // `true` if successful otherwise `false`.
+  // notification times out to trigger a `mojom_ad_event_type` event for the
+  // specified `placement_id`. `placement_id` should be a 128-bit random UUID in
+  // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
+  // generated for the viewed impression event should be used for all other
+  // events for the same ad placement. The callback takes one argument - `bool`
+  // is set to `true` if successful otherwise `false`. Must be called before the
+  // `mojom::NotificationAdEventType::target_url` landing page is opened.
   virtual void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      mojom::NotificationAdEventType event_type,
+      mojom::NotificationAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
 
   // Called when a user views or interacts with a promoted content ad to trigger
-  // an `event_type` event for the specified `placement_id` and
+  // a `mojom_ad_event_type` event for the specified `placement_id` and
   // `creative_instance_id`. `placement_id` should be a 128-bit random UUID in
   // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
   // generated for the viewed impression event should be used for all other
   // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`.
+  // is set to `true` if successful otherwise `false`. Must be called before the
+  // `mojom::PromotedContentAdEventType::target_url` landing page is opened.
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type,
+      mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
 
-  // Called when a user views or interacts with a search result ad to trigger an
-  // `event_type` event for the ad specified in `ad_mojom`. The callback takes
-  // one argument - `bool` is set to `true` if successful otherwise `false`.
+  // Called to get the search result ad specified by `placement_id`. The
+  // callback takes one argument - `mojom::CreativeSearchResultAdInfoPtr`
+  // containing the info of the search result ad.
+  virtual void MaybeGetSearchResultAd(
+      const std::string& placement_id,
+      MaybeGetSearchResultAdCallback callback) = 0;
+
+  // Called when a user views or interacts with a search result ad to trigger a
+  // `mojom_ad_event_type` event for the ad specified in `mojom_creative_ad`.
+  // The callback takes one argument - `bool` is set to `true` if successful
+  // otherwise `false`. Must be called before the
+  // `mojom::CreativeSearchResultAdInfo::target_url` landing page is opened.
   virtual void TriggerSearchResultAdEvent(
-      mojom::SearchResultAdInfoPtr ad_mojom,
-      mojom::SearchResultAdEventType event_type,
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+      mojom::SearchResultAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
 
-  // Called to purge orphaned served ad events for the specified `ad_type`
+  // Called to purge orphaned served ad events for the specified `mojom_ad_type`
   // before calling `MaybeServe*Ad`. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void PurgeOrphanedAdEventsForType(
-      mojom::AdType ad_type,
+      mojom::AdType mojom_ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
-  // Called to get history filtered by `filter_type` and sorted by `sort_type`
-  // between `from_time` and `to_time` date range. Returns `HistoryItemList`
-  // containing info of the obtained history.
-  virtual HistoryItemList GetHistory(HistoryFilterType filter_type,
-                                     HistorySortType sort_type,
-                                     base::Time from_time,
-                                     base::Time to_time) = 0;
+  // Called to get ad history for the given date range in descending order. The
+  // callback takes one argument - `base::Value::List` containing info of the
+  // obtained ad history.
+  virtual void GetAdHistory(base::Time from_time,
+                            base::Time to_time,
+                            GetAdHistoryForUICallback callback) = 0;
 
-  // Called to like an advertiser. This is a toggle, so calling it again returns
-  // the setting to the neutral state. Returns `UserReactionType` containing the
-  // current state.
-  virtual mojom::UserReactionType ToggleLikeAd(
-      const base::Value::Dict& value) = 0;
+  // Called to like an ad. This is a toggle, so calling it again returns the
+  // setting to the neutral state. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`.
+  virtual void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                            ToggleReactionCallback callback) = 0;
 
-  // Called to dislike an advertiser. This is a toggle, so calling it again
-  // returns the setting to the neutral state. Returns `UserReactionType`
-  // containing the current state.
-  virtual mojom::UserReactionType ToggleDislikeAd(
-      const base::Value::Dict& value) = 0;
+  // Called to dislike an ad. This is a toggle, so calling it again returns the
+  // setting to the neutral state. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`.
+  virtual void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                               ToggleReactionCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
-  // the setting to the neutral state. Returns `UserReactionType` containing the
-  // current state.
-  virtual mojom::UserReactionType ToggleLikeCategory(
-      const base::Value::Dict& value) = 0;
+  // the setting to the neutral state. The callback takes one argument - `bool`
+  // is set to `true` if successful otherwise `false`.
+  virtual void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
+                                 ToggleReactionCallback callback) = 0;
 
-  // Called to dislike a category. This is a toggle, so calling it again returns
-  // the setting to the neutral state. Returns `UserReactionType` containing the
-  // current state.
-  virtual mojom::UserReactionType ToggleDislikeCategory(
-      const base::Value::Dict& value) = 0;
+  // Called to dislike a category. This is a toggle, so calling it again
+  // returns the setting to the neutral state. The callback takes one argument -
+  // `bool` is set to `true` if successful otherwise `false`.
+  virtual void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
+                                    ToggleReactionCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
-  // again removes the ad from the saved list. Returns `true` if the ad was
-  // saved otherwise `false`.
-  virtual bool ToggleSaveAd(const base::Value::Dict& value) = 0;
+  // again removes the ad from the saved list. The callback takes one argument -
+  // `bool` is set to `true` if successful otherwise `false`.
+  virtual void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
+                            ToggleReactionCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
-  // again unmarks the ad. Returns `true` if the ad was marked otherwise
-  // `false`.
-  virtual bool ToggleMarkAdAsInappropriate(const base::Value::Dict& value) = 0;
+  // again unmarks the ad. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`.
+  virtual void ToggleMarkAdAsInappropriate(
+      mojom::ReactionInfoPtr mojom_reaction,
+      ToggleReactionCallback callback) = 0;
 };
 
 }  // namespace brave_ads

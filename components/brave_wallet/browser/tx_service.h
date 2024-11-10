@@ -15,7 +15,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -48,48 +47,45 @@ class BitcoinTxManager;
 class FilTxManager;
 class ZCashTxManager;
 
-class TxService : public KeyedService,
-                  public mojom::TxService,
+class TxService : public mojom::TxService,
                   public mojom::EthTxManagerProxy,
                   public mojom::SolanaTxManagerProxy,
-                  public mojom::FilTxManagerProxy {
+                  public mojom::FilTxManagerProxy,
+                  public mojom::BtcTxManagerProxy {
  public:
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
             ZCashWalletService* zcash_wallet_service,
             KeyringService* keyring_service,
             PrefService* prefs,
-            const base::FilePath& context_path,
+            const base::FilePath& wallet_base_directory,
             scoped_refptr<base::SequencedTaskRunner> ui_task_runner);
   ~TxService() override;
   TxService(const TxService&) = delete;
   TxService operator=(const TxService&) = delete;
 
-  mojo::PendingRemote<mojom::TxService> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::TxService> receiver);
-  mojo::PendingRemote<mojom::EthTxManagerProxy> MakeEthTxManagerProxyRemote();
-  void BindEthTxManagerProxy(
-      mojo::PendingReceiver<mojom::EthTxManagerProxy> receiver);
-  mojo::PendingRemote<mojom::SolanaTxManagerProxy>
-  MakeSolanaTxManagerProxyRemote();
-  void BindSolanaTxManagerProxy(
-      mojo::PendingReceiver<mojom::SolanaTxManagerProxy> receiver);
-
-  mojo::PendingRemote<mojom::FilTxManagerProxy> MakeFilTxManagerProxyRemote();
-  void BindFilTxManagerProxy(
-      mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver);
+  template <class T>
+  void Bind(mojo::PendingReceiver<T> receiver);
 
   // mojom::TxService
-  void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& chain_id,
-                                mojom::AccountIdPtr from,
-                                AddUnapprovedTransactionCallback) override;
+  void AddUnapprovedTransaction(
+      mojom::TxDataUnionPtr tx_data_union,
+      const std::string& chain_id,
+      mojom::AccountIdPtr from,
+      AddUnapprovedTransactionCallback callback) override;
   void AddUnapprovedTransactionWithOrigin(
       mojom::TxDataUnionPtr tx_data_union,
       const std::string& chain_id,
       mojom::AccountIdPtr from,
       const std::optional<url::Origin>& origin,
-      AddUnapprovedTransactionCallback);
+      AddUnapprovedTransactionCallback callback);
+  void AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParamsPtr params,
+      AddUnapprovedEvmTransactionCallback callback) override;
+  void AddUnapprovedEvmTransactionWithOrigin(
+      mojom::NewEvmTransactionParamsPtr params,
+      const std::optional<url::Origin>& origin,
+      AddUnapprovedEvmTransactionCallback callback);
   void ApproveTransaction(mojom::CoinType coin_type,
                           const std::string& chain_id,
                           const std::string& tx_meta_id,
@@ -99,9 +95,11 @@ class TxService : public KeyedService,
                          const std::string& tx_meta_id,
                          RejectTransactionCallback) override;
   void GetTransactionInfo(mojom::CoinType coin_type,
-                          const std::string& chain_id,
                           const std::string& tx_meta_id,
                           GetTransactionInfoCallback) override;
+  mojom::TransactionInfoPtr GetTransactionInfoSync(
+      mojom::CoinType coin_type,
+      const std::string& tx_meta_id);
   void GetAllTransactionInfo(mojom::CoinType coin_type,
                              const std::optional<std::string>& chain_id,
                              mojom::AccountIdPtr from,
@@ -121,12 +119,6 @@ class TxService : public KeyedService,
                         const std::string& chain_id,
                         const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
-
-  void GetTransactionMessageToSign(
-      mojom::CoinType coin_type,
-      const std::string& chain_id,
-      const std::string& tx_meta_id,
-      GetTransactionMessageToSignCallback callback) override;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::TxServiceObserver> observer) override;
@@ -186,16 +178,15 @@ class TxService : public KeyedService,
       const std::string& nonce,
       SetNonceForUnapprovedTransactionCallback) override;
   void GetNonceForHardwareTransaction(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetNonceForHardwareTransactionCallback callback) override;
-  void ProcessHardwareSignature(
-      const std::string& chain_id,
+  void GetEthTransactionMessageToSign(
       const std::string& tx_meta_id,
-      const std::string& v,
-      const std::string& r,
-      const std::string& s,
-      ProcessHardwareSignatureCallback callback) override;
+      GetEthTransactionMessageToSignCallback callback) override;
+  void ProcessEthHardwareSignature(
+      const std::string& tx_meta_id,
+      mojom::EthereumSignatureVRSPtr hw_signature,
+      ProcessEthHardwareSignatureCallback callback) override;
   // Gas estimation API via eth_feeHistory API
   void GetGasEstimation1559(const std::string& chain_id,
                             GetGasEstimation1559Callback callback) override;
@@ -212,28 +203,48 @@ class TxService : public KeyedService,
       const std::string& from_wallet_address,
       const std::string& to_wallet_address,
       uint64_t amount,
+      uint8_t decimals,
       MakeTokenProgramTransferTxDataCallback callback) override;
   void MakeTxDataFromBase64EncodedTransaction(
       const std::string& encoded_transaction,
       const mojom::TransactionType tx_type,
       mojom::SolanaSendTransactionOptionsPtr send_options,
       MakeTxDataFromBase64EncodedTransactionCallback callback) override;
-
-  void GetEstimatedTxFee(const std::string& chain_id,
-                         const std::string& tx_meta_id,
-                         GetEstimatedTxFeeCallback callback) override;
-  void ProcessSolanaHardwareSignature(
+  void GetSolanaTxFeeEstimation(
       const std::string& chain_id,
       const std::string& tx_meta_id,
-      const std::vector<uint8_t>& signature,
+      GetSolanaTxFeeEstimationCallback callback) override;
+  void MakeBubbleGumProgramTransferTxData(
+      const std::string& chain_id,
+      const std::string& token_address,
+      const std::string& from_wallet_address,
+      const std::string& to_wallet_address,
+      MakeBubbleGumProgramTransferTxDataCallback callback) override;
+  void GetSolTransactionMessageToSign(
+      const std::string& tx_meta_id,
+      GetSolTransactionMessageToSignCallback callback) override;
+  void ProcessSolanaHardwareSignature(
+      const std::string& tx_meta_id,
+      mojom::SolanaSignaturePtr hw_signature,
       ProcessSolanaHardwareSignatureCallback callback) override;
 
   // mojom::FilTxManagerProxy
-  void ProcessFilHardwareSignature(
-      const std::string& chain_id,
+  void GetFilTransactionMessageToSign(
       const std::string& tx_meta_id,
-      const std::string& signed_message,
+      GetFilTransactionMessageToSignCallback callback) override;
+  void ProcessFilHardwareSignature(
+      const std::string& tx_meta_id,
+      mojom::FilecoinSignaturePtr hw_signature,
       ProcessFilHardwareSignatureCallback callback) override;
+
+  // mojom::BtcTxManagerProxy
+  void GetBtcHardwareTransactionSignData(
+      const std::string& tx_meta_id,
+      GetBtcHardwareTransactionSignDataCallback callback) override;
+  void ProcessBtcHardwareSignature(
+      const std::string& tx_meta_id,
+      mojom::BitcoinSignaturePtr hw_signature,
+      ProcessBtcHardwareSignatureCallback callback) override;
 
   TxStorageDelegate* GetDelegateForTesting();
 
@@ -267,6 +278,7 @@ class TxService : public KeyedService,
   mojo::ReceiverSet<mojom::EthTxManagerProxy> eth_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::SolanaTxManagerProxy> solana_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::FilTxManagerProxy> fil_tx_manager_receivers_;
+  mojo::ReceiverSet<mojom::BtcTxManagerProxy> btc_tx_manager_receivers_;
 
   base::WeakPtrFactory<TxService> weak_factory_;
 };

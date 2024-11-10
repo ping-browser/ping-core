@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
@@ -20,7 +20,8 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -38,7 +39,7 @@ void EligibleInlineContentAdsV2::GetForUserModel(
     EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
 
-  ad_events_database_table_.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpired(
       mojom::AdType::kInlineContentAd,
       base::BindOnce(
           &EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback,
@@ -55,12 +56,13 @@ void EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback(
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    BLOG(1, "Failed to get ad events");
+    BLOG(0, "Failed to get ad events");
+
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  GetBrowsingHistory(
-      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryRecentDayRange.Get(),
+  GetAdsClient()->GetSiteHistory(
+      kSiteHistoryMaxCount.Get(), kSiteHistoryRecentDayRange.Get(),
       base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, dimensions, std::move(callback)));
@@ -71,35 +73,36 @@ void EligibleInlineContentAdsV2::GetEligibleAds(
     const AdEventList& ad_events,
     const std::string& dimensions,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
-    const BrowsingHistoryList& browsing_history) {
-  database_table_.GetForDimensions(
+    const SiteHistoryList& site_history) {
+  creative_ads_database_table_.GetForDimensions(
       dimensions,
       base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
-                     ad_events, browsing_history, std::move(callback)));
+                     ad_events, site_history, std::move(callback)));
 }
 
 void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history,
+    const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
-    BLOG(1, "Failed to get ads");
+    BLOG(0, "Failed to get ads");
+
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
   FilterAndMaybePredictCreativeAd(user_model, creative_ads, ad_events,
-                                  browsing_history, std::move(callback));
+                                  site_history, std::move(callback));
 }
 
 void EligibleInlineContentAdsV2::FilterAndMaybePredictCreativeAd(
     const UserModelInfo& user_model,
     const CreativeInlineContentAdList& creative_ads,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history,
+    const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
@@ -107,8 +110,7 @@ void EligibleInlineContentAdsV2::FilterAndMaybePredictCreativeAd(
   }
 
   CreativeInlineContentAdList eligible_creative_ads = creative_ads;
-  FilterIneligibleCreativeAds(eligible_creative_ads, ad_events,
-                              browsing_history);
+  FilterIneligibleCreativeAds(eligible_creative_ads, ad_events, site_history);
 
   const PrioritizedCreativeAdBuckets<CreativeInlineContentAdList> buckets =
       SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
@@ -142,14 +144,14 @@ void EligibleInlineContentAdsV2::FilterAndMaybePredictCreativeAd(
 void EligibleInlineContentAdsV2::FilterIneligibleCreativeAds(
     CreativeInlineContentAdList& creative_ads,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history) {
+    const SiteHistoryList& site_history) {
   if (creative_ads.empty()) {
     return;
   }
 
   InlineContentAdExclusionRules exclusion_rules(
       ad_events, *subdivision_targeting_, *anti_targeting_resource_,
-      browsing_history);
+      site_history);
   ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 
   PaceCreativeAds(creative_ads);

@@ -15,8 +15,7 @@ const int kCurrentVersionNumber = 14;
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
 StateMigration::StateMigration(RewardsEngine& engine)
     : engine_(engine),
@@ -133,7 +132,6 @@ void StateMigration::Migrate(ResultCallback callback) {
 
   engine_->LogError(FROM_HERE)
       << "Migration version is not handled " << new_version;
-  NOTREACHED();
 }
 
 void StateMigration::OnMigration(ResultCallback callback,
@@ -160,5 +158,4 @@ void StateMigration::OnMigration(ResultCallback callback,
   Migrate(std::move(callback));
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

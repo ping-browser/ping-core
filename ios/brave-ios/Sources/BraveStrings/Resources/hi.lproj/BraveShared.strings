@@ -214,17 +214,17 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "यदि यह साइट सही ढंग से काम नहीं कर रही हो, तो शील्ड्स को अक्षम करने का प्रयास करें";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "पिंग शील्ड्स";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "अक्षम";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "सक्रिय";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Brave शील्ड्स को सक्षम या अक्षम करने के लिए दो बार दबाएँ";
+"BraveShieldsToggleHint" = "Ping शील्ड्स को सक्षम या अक्षम करने के लिए दो बार दबाएँ";
 
 /* Sync page title */
 "BraveSync" = "सिंक्रोनाइज़ेशन";
@@ -278,7 +278,7 @@
 "callout.defaultBrowserTitle" = "गोपनीयता। सरल।";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "यह जानकारी हमें पिंग फ़ंक्शन की सबसे अधिक उपयोगिता को पहचानने में मदद करती है। आप इसे Brave की सेटिंग्स में कभी भी बदल सकते हैं, << पिंग और अन्य गोपनीयता सेटिंग्स' सेक्शन में। >>";
+"callout.p3aCalloutDescription" = "यह जानकारी हमें पिंग फ़ंक्शन की सबसे अधिक उपयोगिता को पहचानने में मदद करती है। आप इसे Ping की सेटिंग्स में कभी भी बदल सकते हैं, << पिंग और अन्य गोपनीयता सेटिंग्स' सेक्शन में। >>";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "हमारे गोपनीयता-संरक्षण विश्लेषण के बारे में अधिक जानें (P3A)।";
@@ -623,7 +623,7 @@
 "defaultBrowserCallout.notificationBody" = "Ping को डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें";
 
 /* Notification title to promote setting Ping app as default browser */
-"defaultBrowserCallout.notificationTitle" = "हर लिंक पर Brave की सुरक्षा का आनंद लें";
+"defaultBrowserCallout.notificationTitle" = "हर लिंक पर Ping की सुरक्षा का आनंद लें";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "डिफ़ॉल्ट ब्राउज़र लेबल बंद करें";
@@ -1105,7 +1105,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "मेरे टोकन प्राप्त करें";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "आपने %@ ब्राउज़िंग करके Ping के साथ कमाया।";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1453,10 +1453,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "जारी रखें";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
+/* A subtitle shown on the setting that toggles analytics on Ping. */
 "p3a.settingSubtitle" = "ये निजता-मिटाने वाली उत्पाद विश्लेषण द्वारा पिंग को कुछ सुविधाओं के सार्वजनिक उपयोग को अनुमानित करने में मदद करती है और उन्हें सुधारती है।";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "गोपनीयता-मिटाने वाला उत्पाद विश्लेषण (P3A) सक्षम करें";
 
 /* No comment provided by engineer. */
@@ -1891,7 +1891,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "सिंक्रनाइज़ करें";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "शील्ड्स मेनू बंद करें";
 
 /* Settings privacy section title */
@@ -1975,10 +1975,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "सूचनाएँ सक्रिय करें";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "यह सप्ताह Ping ने आपको ऑनलाइन सुरक्षित करने में कैसे मदद की।";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "साप्ताहिक गोपनीयता रिपोर्ट";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1990,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "गोपनीयता रिपोर्ट्स का डेटा स्थानीय रूप से संग्रहित होता है और कहीं भी नहीं भेजा जाता है।";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "गोपनीयता केंद्र";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2083,7 +2083,7 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "त्वरित खोज इंजन";
 
-/* Open the App Store to rate Brave. */
+/* Open the App Store to rate Ping. */
 "RateBrave" = "Ping की रेटिंग करें";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
@@ -2240,7 +2240,7 @@
 "ReportBrokenSiteBody1" = "Ping विकासकों को सूचित करें कि यह साइट Shields के साथ सही तरीके से काम नहीं कर रही है:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "नोट: Ping सर्वर्स को भेजे जाने वाले रिपोर्ट में साइट का पता, Brave का संस्करण संख्या, Shields की सेटिंग्स, VPN की स्थिति और भाषा सेटिंग्स शामिल होंगे।";
+"ReportBrokenSiteBody2" = "नोट: Ping सर्वर्स को भेजे जाने वाले रिपोर्ट में साइट का पता, Ping का संस्करण संख्या, Shields की सेटिंग्स, VPN की स्थिति और भाषा सेटिंग्स शामिल होंगे।";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "भेजें";
@@ -2464,7 +2464,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "साझा करें";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "आंतरिक Rewards डेटा साझा करें";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2482,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "समर्थित";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "आंतरिक Rewards डेटा";
 
 /* No comment provided by engineer. */
@@ -2668,10 +2668,10 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "गुणवत्ता सेटिंग्स";
 
-/* Description to explain the daily usage ping toggle */
+/* Description to explain the daily usage brave toggle */
 "settings.sendUsagePingDescription" = "यह निजी संकेत देता है ताकि पिंग को दैनिक सक्रिय उपयोगकर्ताओं की गणना कर सके।";
 
-/* Title to explain the daily usage ping toggle */
+/* Title to explain the daily usage brave toggle */
 "settings.sendUsagePingTitle" = "पिंग को स्वचालित रूप से दैनिक उपयोग संकेत भेजें";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -3326,7 +3326,7 @@
 "today.addSourceNoFeedsFoundMessage" = "क्षमा करें, इस RSS पते में कोई सामग्री नहीं है।";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Brave News में स्रोत जोड़ें";
+"today.addSourceShareTitle" = "Ping News में स्रोत जोड़ें";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "उपलब्ध RSS फ़ीड";
@@ -3337,7 +3337,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "समाचार";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "जिन विषयों का आपको रुचि है, उनका पालन करें";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3374,12 +3374,12 @@
 "today.enablePublisherContent" = "%@ की सामग्री अनुमति दें";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave News में समस्या है। पुनः प्रयास करें।";
+"today.errorGeneralBody" = "Ping News में समस्या है। पुनः प्रयास करें।";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Oops…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "अपने फ़ॉलो किए गए स्रोतों का प्रबंधन करें";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3412,7 +3412,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "अपने डेटा के बारे में और अधिक जानें";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "और पिंग ऑफ़र्स";
 
 /* No comment provided by engineer. */
@@ -3905,7 +3905,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "त्रुटि";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "सदस्यता आपके iTunes खाते के माध्यम से बिल किए जाएंगे।\n\nकिसी भी मुफ्त परीक्षण अवधि को खत्म कर दिया जाएगा यदि सदस्यता खरीदी जाती है।\n\nआपकी सदस्यता स्वचालित रूप से नवीनीकृत हो जाएगी, यदि यह पिछले चालू अवधि से कम से कम 24 घंटे पहले रद्द नहीं की गई है।\n\nआप अपनी सदस्यताओं को सेटिंग्स में प्रबंधित कर सकते हैं।\n\nBrave का उपयोग करके आप उपयोग की शर्तें और गोपनीयता नीति स्वीकार कर रहे हैं।";
+"vpn.vpnIAPBoilerPlate" = "सदस्यता आपके iTunes खाते के माध्यम से बिल किए जाएंगे।\n\nकिसी भी मुफ्त परीक्षण अवधि को खत्म कर दिया जाएगा यदि सदस्यता खरीदी जाती है।\n\nआपकी सदस्यता स्वचालित रूप से नवीनीकृत हो जाएगी, यदि यह पिछले चालू अवधि से कम से कम 24 घंटे पहले रद्द नहीं की गई है।\n\nआप अपनी सदस्यताओं को सेटिंग्स में प्रबंधित कर सकते हैं।\n\nPing का उपयोग करके आप उपयोग की शर्तें और गोपनीयता नीति स्वीकार कर रहे हैं।";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "कोड उपयोग करें";
@@ -3970,13 +3970,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "कोई वेबसाइट डेटा सहेजा नहीं गया है";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "सभी हटाएँ";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "हटाएँ";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "%ld आइटम हटाएँ";
 
 /* Title for favorites widget on 'add widget' screen. */

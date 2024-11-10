@@ -6,11 +6,13 @@
 import { useCallback, useEffect, useState } from "react";
 import getBraveNewsController, { FeedV2, FeedV2Type } from "./api";
 import { addFeedListener } from "./feedListener";
+import { loadTimeData } from "$web-common/loadTimeData";
+import { mojoTimeToJSDate } from "$web-common/mojomUtils";
 
 export type FeedView = 'all' | 'following' | `publishers/${string}` | `channels/${string}`
 
 // This is the cutoff age for loading a feed from local storage (1 hour)
-const MAX_AGE_FOR_LOCAL_STORAGE_FEED = 1000 * 60 * 60
+const MAX_AGE_FOR_CACHED_FEED = 1000 * 60 * 60
 
 const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
   if (type?.channel) return `channels/${type.channel.channel}`
@@ -52,18 +54,18 @@ const saveFeed = (feed?: FeedV2) => {
   }
 }
 
+const isTooOld = (feed: FeedV2) => mojoTimeToJSDate(feed.constructTime).getTime() + MAX_AGE_FOR_CACHED_FEED < Date.now()
+
 const maybeLoadFeed = (view?: FeedView) => {
   const cachedFeed = localCache[view!]
-  if (cachedFeed) {
+  if (cachedFeed && !isTooOld(cachedFeed)) {
     saveFeed(cachedFeed)
     return cachedFeed
   }
 
   // Prefer data from our current session, but fall back to whats in localStorage.
-  let fromLocalStorage = false
   let data = sessionStorage.getItem(FEED_KEY)
   if (!data) {
-    fromLocalStorage = true
     data = localStorage.getItem(FEED_KEY)
   }
 
@@ -73,9 +75,9 @@ const maybeLoadFeed = (view?: FeedView) => {
 
   // If we loaded the feed from localStorage, and it's too old remove it from
   // storage and return undefined.
-  if (fromLocalStorage
-    && BigInt(feed.constructTime.internalValue) + BigInt(MAX_AGE_FOR_LOCAL_STORAGE_FEED) < Date.now()) {
+  if (isTooOld(feed)) {
     localStorage.removeItem(FEED_KEY)
+    sessionStorage.removeItem(FEED_KEY)
     return undefined
   }
 
@@ -98,6 +100,7 @@ const maybeLoadFeedView = (feed?: FeedV2): FeedView => {
 }
 
 const fetchFeed = (feedView: FeedView) => {
+  if (!loadTimeData.getBoolean('featureFlagBraveNewsFeedV2Enabled')) return Promise.resolve(undefined)
   let promise: Promise<{ feed: FeedV2 }> | undefined
   if (feedView.startsWith('publishers/')) {
     promise = getBraveNewsController().getPublisherFeed(feedView.split('/')[1]);
@@ -181,6 +184,22 @@ export const useFeedV2 = (enabled: boolean) => {
     getBraveNewsController().ensureFeedV2IsUpdating()
     fetchFeed(feedView).then(setFeedV2)
   }, [feedView])
+
+  // When we switch back to this tab, if the feed is stale refresh it.
+  useEffect(() => {
+    const handler = () => {
+      if (document.visibilityState !== 'visible') return
+
+      if (feedV2 && isTooOld(feedV2)) {
+        refresh()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handler)
+    return () => {
+      document.removeEventListener('visibilitychange', handler)
+    }
+  }, [refresh, feedV2])
 
   // Updates are available if we've been told the latest hash, we have a feed
   // and the hashes don't match.

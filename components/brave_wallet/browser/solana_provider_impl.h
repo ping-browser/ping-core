@@ -42,10 +42,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
   SolanaProviderImpl(HostContentSettingsMap& host_content_settings_map,
-                     KeyringService* keyring_service,
                      BraveWalletService* brave_wallet_service,
-                     TxService* tx_service,
-                     JsonRpcService* json_rpc_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
@@ -83,12 +80,13 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       RequestPermissionsError error,
       const std::optional<std::vector<std::string>>& allowed_accounts);
 
-  void OnSignMessageRequestProcessed(const std::vector<uint8_t>& blob_msg,
-                                     const mojom::AccountInfoPtr& account,
-                                     SignMessageCallback callback,
-                                     bool approved,
-                                     mojom::ByteArrayStringUnionPtr signature,
-                                     const std::optional<std::string>& error);
+  void OnSignMessageRequestProcessed(
+      const std::vector<uint8_t>& blob_msg,
+      const mojom::AccountInfoPtr& account,
+      SignMessageCallback callback,
+      bool approved,
+      mojom::EthereumSignatureBytesPtr hw_signature,
+      const std::optional<std::string>& error);
   void ContinueSignTransaction(
       std::optional<std::pair<SolanaMessage, std::vector<uint8_t>>> msg_pair,
       mojom::SolanaSignTransactionParamPtr param,
@@ -103,12 +101,12 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       const mojom::AccountInfoPtr& account,
       SignTransactionCallback callback,
       bool approved,
-      mojom::ByteArrayStringUnionPtr signature,
+      std::vector<mojom::SolanaSignaturePtr> hw_signatures,
       const std::optional<std::string>& error);
   void ContinueSignAllTransactions(
-      std::vector<mojom::TxDataUnionPtr> tx_datas,
+      std::vector<mojom::SolanaTxDataPtr> tx_datas,
       std::vector<std::unique_ptr<SolanaTransaction>> txs,
-      std::vector<mojom::ByteArrayStringUnionPtr> raw_messages,
+      std::vector<std::vector<uint8_t>> raw_messages,
       mojom::AccountInfoPtr account,
       const std::string& chain_id,
       SignAllTransactionsCallback callback,
@@ -118,7 +116,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       mojom::AccountInfoPtr account,
       SignAllTransactionsCallback callback,
       bool approved,
-      std::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+      std::vector<mojom::SolanaSignaturePtr> signatures,
       const std::optional<std::string>& error);
   void OnAddUnapprovedTransaction(SignAndSendTransactionCallback callback,
                                   bool success,
@@ -170,8 +168,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
   bool account_creation_shown_ = false;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{

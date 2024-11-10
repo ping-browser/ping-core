@@ -50,7 +50,6 @@ import {
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
-  selectedAssetsNetwork: BraveWallet.NetworkInfo | undefined | null
   sellAmount: string
   showSellModal: boolean
   sellAssetBalance: string
@@ -63,7 +62,6 @@ interface Props {
 export const SellAssetModal = (props: Props) => {
   const {
     selectedAsset,
-    selectedAssetsNetwork,
     sellAmount,
     showSellModal,
     sellAssetBalance,
@@ -151,10 +149,9 @@ export const SellAssetModal = (props: Props) => {
       title={`${getLocale('braveWalletSell')} ${selectedAsset.name}`}
       onClose={onCloseSellModal}
       width='512px'
-      borderRadius={16}
       ref={sellAssetModalRef}
-      headerPaddingVertical={24}
-      headerPaddingHorizontal={32}
+      headerPaddingVertical={'24px'}
+      headerPaddingHorizontal={'32px'}
     >
       <StyledWrapper>
         <Column fullWidth={true}>
@@ -210,10 +207,7 @@ export const SellAssetModal = (props: Props) => {
                 />
               </Row>
               <Row width='unset'>
-                <AssetIconWithPlaceholder
-                  asset={selectedAsset}
-                  network={selectedAssetsNetwork}
-                />
+                <AssetIconWithPlaceholder asset={selectedAsset} />
                 <Text
                   textSize='22px'
                   isBold={true}

@@ -9,15 +9,12 @@
 #include <utility>
 
 #include "base/no_destructor.h"
-#include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
-#include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -34,18 +31,6 @@ BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
 }
 
 // static
-mojo::PendingRemote<mojom::BraveWalletService>
-BraveWalletServiceFactory::GetForContext(content::BrowserContext* context) {
-  if (!IsAllowedForContext(context)) {
-    return mojo::PendingRemote<mojom::BraveWalletService>();
-  }
-
-  return static_cast<BraveWalletService*>(
-             GetInstance()->GetServiceForBrowserContext(context, true))
-      ->MakeRemote();
-}
-
-// static
 BraveWalletService* BraveWalletServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
@@ -55,50 +40,34 @@ BraveWalletService* BraveWalletServiceFactory::GetServiceForContext(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
-// static
-void BraveWalletServiceFactory::BindForContext(
-    content::BrowserContext* context,
-    mojo::PendingReceiver<mojom::BraveWalletService> receiver) {
-  auto* brave_wallet_service =
-      BraveWalletServiceFactory::GetServiceForContext(context);
-  if (brave_wallet_service) {
-    brave_wallet_service->Bind(std::move(receiver));
-  }
-}
-
 BraveWalletServiceFactory::BraveWalletServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveWalletService",
-          BrowserContextDependencyManager::GetInstance()) {
-  DependsOn(KeyringServiceFactory::GetInstance());
-  DependsOn(JsonRpcServiceFactory::GetInstance());
-  DependsOn(TxServiceFactory::GetInstance());
-  DependsOn(BitcoinWalletServiceFactory::GetInstance());
-  DependsOn(ZCashWalletServiceFactory::GetInstance());
-}
+          BrowserContextDependencyManager::GetInstance()) {}
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
-KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto* default_storage_partition = context->GetDefaultStoragePartition();
-  auto shared_url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
-
-  return new BraveWalletService(
-      shared_url_loader_factory, BraveWalletServiceDelegate::Create(context),
-      KeyringServiceFactory::GetServiceForContext(context),
-      JsonRpcServiceFactory::GetServiceForContext(context),
-      TxServiceFactory::GetServiceForContext(context),
-      BitcoinWalletServiceFactory::GetServiceForContext(context),
-      ZCashWalletServiceFactory::GetServiceForContext(context),
-      user_prefs::UserPrefs::Get(context), g_browser_process->local_state(),
-      Profile::FromBrowserContext(context)->IsIncognitoProfile());
+  return std::make_unique<BraveWalletService>(
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      BraveWalletServiceDelegate::Create(context),
+      user_prefs::UserPrefs::Get(context), g_browser_process->local_state());
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return context;
+}
+
+bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {
+  // KeyringService and BraveWalletP3A expect a valid local state. Without it
+  // we'd need to put a lot of unnecessary ifs/checks into those services.
+  // Instead, we just won't create the wallet service if the local state isn't
+  // available.
+  return (g_browser_process->local_state() == nullptr);
 }
 
 }  // namespace brave_wallet

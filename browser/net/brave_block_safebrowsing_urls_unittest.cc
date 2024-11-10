@@ -16,7 +16,7 @@
 #include "url/url_constants.h"
 
 namespace {
-const char kInvalidUrl[] = "https://no-thanks.invalid";
+constexpr char kInvalidUrl[] = "https://no-thanks.invalid";
 }  // namespace
 
 void CheckUrl(const std::string& test_url,
@@ -30,7 +30,7 @@ void CheckUrl(const std::string& test_url,
 }
 
 TEST(BraveBlockReportingUrlsHelperTest, PreserveNormalUrls) {
-  const std::vector<const std::string> normalUrls({
+  const std::vector<std::string> normalUrls({
       "https://brave.com/",
       "https://safebrowsing.google.com/safebrowsing",
       "https://safebrowsing.google.com/safebrowsing/clientreport/crx-list-info",
@@ -44,7 +44,7 @@ TEST(BraveBlockReportingUrlsHelperTest, PreserveNormalUrls) {
 }
 
 TEST(BraveBlockReportingUrlsHelperTest, CancelReportingUrl) {
-  const std::vector<const std::string> reportingUrls({
+  const std::vector<std::string> reportingUrls({
       "https://sb-ssl.google.com/safebrowsing/clientreport/chrome-cct",
       "https://sb-ssl.google.com/safebrowsing/clientreport/chrome-reset",
       "https://sb-ssl.google.com/safebrowsing/clientreport/chrome-sw-reporter",

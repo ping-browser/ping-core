@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
-index 44302e399fb06e1b582d17f1ae33b233b5c74117..7cacff717e97f8f5951c8bf13b4ddcf8abfa7ca4 100644
+index 4a27147ef8825d436f2dceb9bd813d652b7dec9a..015b80fb4559e89a9d5ecc981a49c82d57165b8f 100644
 --- a/components/content_settings/core/browser/content_settings_policy_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
-@@ -38,6 +38,7 @@ struct PrefsForManagedContentSettingsMapEntry {
+@@ -39,6 +39,7 @@ struct PrefsForManagedContentSettingsMapEntry {
  
  constexpr PrefsForManagedContentSettingsMapEntry
      kPrefsForManagedContentSettingsMap[] = {
@@ -10,7 +10,7 @@ index 44302e399fb06e1b582d17f1ae33b233b5c74117..7cacff717e97f8f5951c8bf13b4ddcf8
          {prefs::kManagedAutomaticFullscreenAllowedForUrls,
           ContentSettingsType::AUTOMATIC_FULLSCREEN, CONTENT_SETTING_ALLOW},
          {prefs::kManagedAutomaticFullscreenBlockedForUrls,
-@@ -128,6 +129,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
+@@ -133,6 +134,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
  };
  
  constexpr const char* kManagedPrefs[] = {

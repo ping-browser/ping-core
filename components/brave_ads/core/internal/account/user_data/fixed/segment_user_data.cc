@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -15,13 +16,14 @@ constexpr char kSegmentKey[] = "segment";
 }  // namespace
 
 base::Value::Dict BuildSegmentUserData(const TransactionInfo& transaction) {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
 
-  if (!transaction.segment.empty()) {
+  base::Value::Dict user_data;
+
+  if (transaction.ad_type != mojom::AdType::kSearchResultAd &&
+      !transaction.segment.empty()) {
     user_data.Set(kSegmentKey, transaction.segment);
   }
 

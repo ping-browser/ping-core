@@ -21,6 +21,7 @@
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -55,6 +56,10 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   // Should be called right after constructor to subscribe to histogram
   // updates. Can't call it in constructor because of refcounted peculiarities.
   void InitCallbacks();
+
+  // Should be called in UI thread by BraveBrowserProcess to remove
+  // all observers from the PrefChangeRegistrar.
+  void StartTeardown();
 
   // Called by other components to add/remove dynamic metrics
   // (metrics not included in the metric_names.h static list).
@@ -108,9 +113,11 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   friend class base::RefCountedThreadSafe<P3AService>;
   ~P3AService() override;
 
-  void InitCallback(const std::string_view histogram_name);
+  void InitCallback(std::string_view histogram_name);
 
   void LoadDynamicMetrics();
+
+  void OnP3AEnabledChanged();
 
   void OnHistogramChangedOnUI(const char* histogram_name,
                               base::HistogramBase::Sample sample,
@@ -127,6 +134,9 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
   const raw_ref<PrefService> local_state_;
   P3AConfig config_;
+
+  PrefChangeRegistrar pref_change_registrar_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   // Contains metrics added via `RegisterDynamicMetric`
   base::flat_map<std::string, MetricLogType> dynamic_metric_log_types_;

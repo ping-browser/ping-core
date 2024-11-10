@@ -4,20 +4,59 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { Route, Switch, Redirect } from 'react-router'
+
+// types
+import { WalletRoutes } from '../../../../constants/types'
 
 import {
   WalletPageStory //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { AddAccountModal } from './add-account-modal'
 
-export const _AddAccountModal = () => {
-  return (
-    <WalletPageStory>
-      <AddAccountModal />
-    </WalletPageStory>
-  )
+export const _CreateAccountModal = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <AddAccountModal />
+      </WalletPageStory>
+    )
+  },
+  title: 'Create Account Modal'
 }
 
-_AddAccountModal.storyName = 'Add Account Modal'
+export const _AddHardwareAccountModal = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <Switch>
+          <Route path={WalletRoutes.AddHardwareAccountModal}>
+            <AddAccountModal />
+          </Route>
+          <Redirect to={WalletRoutes.AddHardwareAccountModalStart} />
+        </Switch>
+      </WalletPageStory>
+    )
+  },
+  title: 'Add Hardware Account Modal'
+}
 
-export default _AddAccountModal
+export const _ImportAccountModal = {
+  title: 'Import Account Modal',
+  render: () => {
+    return (
+      <WalletPageStory>
+        <Switch>
+          <Route path={WalletRoutes.ImportAccountModal}>
+            <AddAccountModal />
+          </Route>
+          <Redirect to={WalletRoutes.ImportAccountModalStart} />
+        </Switch>
+      </WalletPageStory>
+    )
+  }
+}
+
+export default {
+  component: AddAccountModal
+}

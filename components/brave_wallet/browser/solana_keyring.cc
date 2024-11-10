@@ -10,7 +10,9 @@
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -63,7 +65,7 @@ void SolanaKeyring::RemoveLastHDAccount() {
   accounts_.pop_back();
 }
 
-std::string SolanaKeyring::ImportAccount(const std::vector<uint8_t>& keypair) {
+std::string SolanaKeyring::ImportAccount(base::span<const uint8_t> keypair) {
   // extract private key from keypair
   std::vector<uint8_t> private_key = std::vector<uint8_t>(
       keypair.begin(), keypair.begin() + kSolanaPrikeySize);
@@ -105,7 +107,7 @@ std::string SolanaKeyring::EncodePrivateKeyForExport(
 
 std::vector<uint8_t> SolanaKeyring::SignMessage(
     const std::string& address,
-    const std::vector<uint8_t>& message) {
+    base::span<const uint8_t> message) {
   HDKeyEd25519* hd_key =
       static_cast<HDKeyEd25519*>(GetHDKeyFromAddress(address));
   if (!hd_key) {
@@ -220,14 +222,20 @@ std::optional<std::string> SolanaKeyring::FindProgramDerivedAddress(
 // static
 std::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
     const std::string& spl_token_mint_address,
-    const std::string& wallet_address) {
+    const std::string& wallet_address,
+    mojom::SPLTokenProgram token_program) {
+  std::string token_program_id = SPLTokenProgramToProgramID(token_program);
+  if (token_program_id.empty()) {
+    return std::nullopt;
+  }
+
   std::vector<std::vector<uint8_t>> seeds;
   std::vector<uint8_t> wallet_address_bytes;
   std::vector<uint8_t> token_program_id_bytes;
   std::vector<uint8_t> spl_token_mint_address_bytes;
 
   if (!Base58Decode(wallet_address, &wallet_address_bytes, kSolanaPubkeySize) ||
-      !Base58Decode(mojom::kSolanaTokenProgramId, &token_program_id_bytes,
+      !Base58Decode(token_program_id, &token_program_id_bytes,
                     kSolanaPubkeySize) ||
       !Base58Decode(spl_token_mint_address, &spl_token_mint_address_bytes,
                     kSolanaPubkeySize)) {

@@ -10,7 +10,7 @@ namespace brave {
 
 // Before adding to this list, get approval from the security team.
 inline constexpr const char* kAllowedUrlProtocols[] = {
-    "chrome-extension", "chrome", "brave", "file", "data", "blob",
+    "chrome-extension", "chrome", "brave", "ping", "file", "data", "blob",
 };
 
 // Before adding to this list, get approval from the security team.
@@ -23,8 +23,7 @@ inline constexpr const char* kAllowedUrlPrefixes[] = {
     "https://updates.bravesoftware.com/",
 
     // stats/referrals
-    "https://laptop-updates.brave.com/",
-    "https://laptop-updates-staging.brave.com/",
+    "https://usage-ping.brave.com/",
 
     // needed for DoH on Mac build machines
     "https://dns.google/dns-query",

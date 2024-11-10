@@ -10,8 +10,9 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -35,10 +36,10 @@
 
 namespace {
 
-const char kEmbeddedTestServerDirectory[] = "brave-wallet";
-const char kSomeChainId[] = "0xabcde";
+constexpr char kEmbeddedTestServerDirectory[] = "brave-wallet";
+constexpr char kSomeChainId[] = "0xabcde";
 
-const char kScriptWaitForEvent[] = R"(
+constexpr char kScriptWaitForEvent[] = R"(
     new Promise(resolve => {
       const timer = setInterval(function () {
         if (request_finished) {
@@ -49,7 +50,7 @@ const char kScriptWaitForEvent[] = R"(
     });
   )";
 
-const char kScriptRunAndCheckAddChainResult[] = R"(
+constexpr char kScriptRunAndCheckAddChainResult[] = R"(
     new Promise(resolve => {
       const timer = setInterval(function () {
         if (!window.ethereum)
@@ -69,7 +70,7 @@ const char kScriptRunAndCheckAddChainResult[] = R"(
     });
   )";
 
-const char kScriptRunEmptyAndCheckChainResult[] = R"(
+constexpr char kScriptRunEmptyAndCheckChainResult[] = R"(
     new Promise(resolve => {
       const timer = setInterval(function () {
         if (!window.ethereum)
@@ -100,7 +101,7 @@ void ExtractParameters(const std::string& params,
       EXPECT_TRUE(result->find(key) == result->end());
       (*result)[key] = (key_val.size() == 2) ? key_val[1] : std::string();
     } else {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
     }
   }
 }
@@ -134,9 +135,6 @@ class TestJsonRpcServiceObserver
     EXPECT_EQ(chain_id, expected_chain_id_);
     EXPECT_EQ(coin, expected_coin_);
   }
-
-  void OnIsEip1559Changed(const std::string& chain_id,
-                          bool is_eip1559) override {}
 
   bool chain_changed_called() {
     base::RunLoop().RunUntilIdle();
@@ -186,7 +184,6 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
@@ -242,13 +239,14 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
   }
 
   brave_wallet::JsonRpcService* GetJsonRpcService() {
-    return brave_wallet::JsonRpcServiceFactory::GetInstance()
-        ->GetServiceForContext(browser()->profile());
+    return brave_wallet::BraveWalletServiceFactory::GetInstance()
+        ->GetServiceForContext(browser()->profile())
+        ->json_rpc_service();
   }
 
   std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllEthCustomChains() {
-    return brave_wallet::GetAllCustomChains(browser()->profile()->GetPrefs(),
-                                            brave_wallet::mojom::CoinType::ETH);
+    return GetJsonRpcService()->network_manager()->GetAllCustomChains(
+        brave_wallet::mojom::CoinType::ETH);
   }
 
   void CallAndWaitForEthereumChainRequestCompleted(

@@ -51,7 +51,7 @@ class TorControl {
   using CmdCallback = base::OnceCallback<
       void(bool error, const std::string& status, const std::string& reply)>;
 
-  class Delegate : public base::SupportsWeakPtr<Delegate> {
+  class Delegate {
    public:
     virtual ~Delegate() = default;
     virtual void OnTorControlReady() = 0;
@@ -70,6 +70,9 @@ class TorControl {
                              const std::string& line) {}
     virtual void OnTorRawEnd(const std::string& status,
                              const std::string& line) {}
+
+    // Returns a WeakPtr to the implementation instance.
+    virtual base::WeakPtr<Delegate> AsWeakPtr() = 0;
   };
 
   TorControl(base::WeakPtr<TorControl::Delegate> delegate,
@@ -104,6 +107,7 @@ class TorControl {
   friend class TorControlTest;
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ParseQuoted);
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ParseKV);
+  FRIEND_TEST_ALL_PREFIXES(TorControlTest, ReadDone);
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ReadLine);
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, GetCircuitEstablishedDone);
 
@@ -204,7 +208,7 @@ class TorControl {
   void DoReads();
   void ReadDoneAsync(int rv);
   void ReadDone(int rv);
-  bool ReadLine(const std::string& line);
+  bool ReadLine(std::string_view line);
 
   void Error();
 

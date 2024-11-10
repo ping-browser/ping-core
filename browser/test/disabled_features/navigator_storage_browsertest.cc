@@ -11,14 +11,13 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
-const char kStorageEstimateTest[] = "/storage_estimate.html";
+constexpr char kStorageEstimateTest[] = "/storage_estimate.html";
 
 class NavigatorStorageEstimateQuotaTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);

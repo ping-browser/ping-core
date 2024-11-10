@@ -5,122 +5,280 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 
-#include <memory>
+#include <optional>
+#include <utility>
 
+#include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/history/history_item_util.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_unittest_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsReactionsTest : public UnitTestBase {
+class BraveAdsReactionsTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
-    account_ = std::make_unique<Account>(&token_generator_mock_);
-    account_->AddObserver(&observer_mock_);
-
-    reactions_ = std::make_unique<Reactions>(*account_);
-
-    test::ForcePermissionRules();
+    GetAccount().AddObserver(&account_observer_mock_);
   }
 
   void TearDown() override {
-    account_->RemoveObserver(&observer_mock_);
+    GetAccount().RemoveObserver(&account_observer_mock_);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
-
-  std::unique_ptr<Account> account_;
-  AccountObserverMock observer_mock_;
-
-  std::unique_ptr<Reactions> reactions_;
+  AccountObserverMock account_observer_mock_;
 };
 
-TEST_F(BraveAdsReactionsTest, LikeAd) {
+TEST_F(BraveAdsReactionsTest, ToggleLikeAd) {
   // Arrange
-  const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
-  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  test::MockTokenGenerator(/*count=*/1);
 
-  const HistoryItemInfo history_item = BuildHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
-  const AdContentInfo& ad_content = history_item.ad_content;
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
-  EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-  HistoryManager::GetInstance().LikeAd(ad_content);
+  EXPECT_CALL(
+      account_observer_mock_,
+      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+          /*id*/ ::testing::_, /*created_at*/ test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          mojom::AdType::kNotificationAd, mojom::ConfirmationType::kLikedAd,
+          /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleLikeAd(std::move(mojom_reaction), callback.Get());
+  EXPECT_EQ(mojom::ReactionType::kLiked,
+            GetReactions().AdReactionTypeForId(test::kAdvertiserId));
 }
 
-TEST_F(BraveAdsReactionsTest, DislikeAd) {
+TEST_F(BraveAdsReactionsTest, ToggleDislikeAd) {
   // Arrange
-  const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
-  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  test::MockTokenGenerator(/*count=*/1);
 
-  const HistoryItemInfo history_item = BuildHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
-  const AdContentInfo& ad_content = history_item.ad_content;
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
-  EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-  HistoryManager::GetInstance().DislikeAd(ad_content);
+  EXPECT_CALL(
+      account_observer_mock_,
+      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+          /*id*/ ::testing::_, /*created_at*/ test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          mojom::AdType::kNotificationAd, mojom::ConfirmationType::kDislikedAd,
+          /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleDislikeAd(std::move(mojom_reaction), callback.Get());
+  EXPECT_EQ(mojom::ReactionType::kDisliked,
+            GetReactions().AdReactionTypeForId(test::kAdvertiserId));
 }
 
-TEST_F(BraveAdsReactionsTest, MarkAdAsInappropriate) {
+TEST_F(BraveAdsReactionsTest, Ads) {
   // Arrange
-  const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
-  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  test::MockTokenGenerator(/*count=*/1);
 
-  const HistoryItemInfo history_item = BuildHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
-  const AdContentInfo& ad_content = history_item.ad_content;
+  {
+    mojom::ReactionInfoPtr mojom_reaction =
+        test::BuildReaction(mojom::AdType::kNotificationAd);
+    mojom_reaction->advertiser_id = test::kAnotherCampaignId;
+
+    base::MockCallback<ToggleReactionCallback> callback;
+    EXPECT_CALL(callback, Run(/*success=*/true));
+    GetReactions().ToggleLikeAd(std::move(mojom_reaction), callback.Get());
+  }
+
+  {
+    mojom::ReactionInfoPtr mojom_reaction =
+        test::BuildReaction(mojom::AdType::kNotificationAd);
+    mojom_reaction->advertiser_id = test::kAdvertiserId;
+
+    base::MockCallback<ToggleReactionCallback> callback;
+    EXPECT_CALL(callback, Run(/*success=*/true));
+    GetReactions().ToggleLikeAd(std::move(mojom_reaction), callback.Get());
+  }
+
+  {
+    mojom::ReactionInfoPtr mojom_reaction =
+        test::BuildReaction(mojom::AdType::kNotificationAd);
+    mojom_reaction->advertiser_id = "2c0577b2-097b-41e8-81db-685de60d26e5";
+
+    base::MockCallback<ToggleReactionCallback> callback;
+    EXPECT_CALL(callback, Run(/*success=*/true));
+    GetReactions().ToggleDislikeAd(std::move(mojom_reaction), callback.Get());
+  }
+
+  {
+    mojom::ReactionInfoPtr mojom_reaction =
+        test::BuildReaction(mojom::AdType::kNotificationAd);
+    mojom_reaction->advertiser_id = test::kAnotherCampaignId;
+
+    base::MockCallback<ToggleReactionCallback> callback;
+    EXPECT_CALL(callback, Run(/*success=*/true));
+    GetReactions().ToggleDislikeAd(std::move(mojom_reaction), callback.Get());
+  }
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
-  EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-  HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
+  const ReactionMap expected_ad_reactions = {
+      {test::kAdvertiserId, mojom::ReactionType::kLiked},
+      {/*advertiser_id=*/"2c0577b2-097b-41e8-81db-685de60d26e5",
+       mojom::ReactionType::kDisliked},
+      {test::kAnotherCampaignId, mojom::ReactionType::kDisliked}};
+  EXPECT_EQ(expected_ad_reactions, GetReactions().Ads());
 }
 
-TEST_F(BraveAdsReactionsTest, SaveAd) {
-  // Arrange
-  const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
-  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+TEST_F(BraveAdsReactionsTest, ToggleLikeSegment) {
+  // Act
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
 
-  const HistoryItemInfo history_item = BuildHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
-  const AdContentInfo& ad_content = history_item.ad_content;
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleLikeSegment(std::move(mojom_reaction), callback.Get());
+
+  // Assert
+  EXPECT_EQ(mojom::ReactionType::kLiked,
+            GetReactions().SegmentReactionTypeForId(test::kSegment));
+}
+
+TEST_F(BraveAdsReactionsTest, ToggleDislikeSegment) {
+  // Act
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleDislikeSegment(std::move(mojom_reaction),
+                                      callback.Get());
+
+  // Assert
+  EXPECT_EQ(mojom::ReactionType::kDisliked,
+            GetReactions().SegmentReactionTypeForId(test::kSegment));
+}
+
+TEST_F(BraveAdsReactionsTest, Segments) {
+  // Arrange
+
+  {
+    mojom::ReactionInfoPtr mojom_reaction =
+        test::BuildReaction(mojom::AdType::kNotificationAd);
+    mojom_reaction->segment = "technology & computing";
+
+    base::MockCallback<ToggleReactionCallback> callback;
+    EXPECT_CALL(callback, Run(/*success=*/true));
+    GetReactions().ToggleLikeSegment(std::move(mojom_reaction), callback.Get());
+  }
+
+  {
+    mojom::ReactionInfoPtr mojom_reaction =
+        test::BuildReaction(mojom::AdType::kNotificationAd);
+    mojom_reaction->segment = test::kSegment;
+
+    base::MockCallback<ToggleReactionCallback> callback;
+    EXPECT_CALL(callback, Run(/*success=*/true));
+    GetReactions().ToggleLikeSegment(std::move(mojom_reaction), callback.Get());
+  }
+
+  {
+    mojom::ReactionInfoPtr mojom_reaction =
+        test::BuildReaction(mojom::AdType::kNotificationAd);
+    mojom_reaction->segment = "food & drink";
+
+    base::MockCallback<ToggleReactionCallback> callback;
+    EXPECT_CALL(callback, Run(/*success=*/true));
+    GetReactions().ToggleDislikeSegment(std::move(mojom_reaction),
+                                        callback.Get());
+  }
+
+  {
+    mojom::ReactionInfoPtr mojom_reaction =
+        test::BuildReaction(mojom::AdType::kNotificationAd);
+    mojom_reaction->segment = "technology & computing";
+
+    base::MockCallback<ToggleReactionCallback> callback;
+    EXPECT_CALL(callback, Run(/*success=*/true));
+    GetReactions().ToggleDislikeSegment(std::move(mojom_reaction),
+                                        callback.Get());
+  }
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
-  EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-  HistoryManager::GetInstance().ToggleSaveAd(ad_content);
+  const ReactionMap expected_segment_reactions = {
+      {test::kSegment, mojom::ReactionType::kLiked},
+      {"technology & computing", mojom::ReactionType::kDisliked},
+      {"food & drink", mojom::ReactionType::kDisliked}};
+  EXPECT_EQ(expected_segment_reactions, GetReactions().Segments());
+}
+
+TEST_F(BraveAdsReactionsTest, ToggleSaveAd) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+
+  // Act & Assert
+  EXPECT_CALL(
+      account_observer_mock_,
+      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+          /*id*/ ::testing::_, /*created_at*/ test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          mojom::AdType::kNotificationAd, mojom::ConfirmationType::kSavedAd,
+          /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleSaveAd(std::move(mojom_reaction), callback.Get());
+  EXPECT_TRUE(GetReactions().IsAdSaved(test::kCreativeInstanceId));
+}
+
+TEST_F(BraveAdsReactionsTest, IsAdNotSaved) {
+  // Act & Assert
+  EXPECT_FALSE(GetReactions().IsAdSaved(test::kCreativeInstanceId));
+}
+
+TEST_F(BraveAdsReactionsTest, ToggleMarkAdAsInappropriate) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+
+  // Act & Assert
+  EXPECT_CALL(account_observer_mock_,
+              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+                  mojom::AdType::kNotificationAd,
+                  mojom::ConfirmationType::kMarkAdAsInappropriate,
+                  /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleMarkAdAsInappropriate(std::move(mojom_reaction),
+                                             callback.Get());
+  EXPECT_TRUE(GetReactions().IsAdMarkedAsInappropriate(test::kCreativeSetId));
+}
+
+TEST_F(BraveAdsReactionsTest, IsAdMarkedAsAppropriate) {
+  // Act & Assert
+  EXPECT_FALSE(GetReactions().IsAdMarkedAsInappropriate(test::kCreativeSetId));
 }
 
 }  // namespace brave_ads

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/side_panel/side_panel_entry_id.h b/chrome/browser/ui/views/side_panel/side_panel_entry_id.h
+index fe3eaaa62ebf4b754c46f1ded0ec75807f6ab734..dc029e66a54312fea12f96a3e79658f2e783e6dc 100644
+--- a/chrome/browser/ui/views/side_panel/side_panel_entry_id.h
++++ b/chrome/browser/ui/views/side_panel/side_panel_entry_id.h
+@@ -30,6 +30,7 @@
+   V(kSideSearch, kActionSidePanelShowSideSearch, "SideSearch")                \
+   V(kLens, kActionSidePanelShowLens, "Lens")                                  \
+   V(kAssistant, kActionSidePanelShowAssistant, "Assistant")                   \
++  V(kPlaylist, kActionSidePanelShowPlaylist, "Playlist") V(kChatUI, kActionSidePanelShowChatUI, "ChatUI") \
+   V(kAboutThisSite, kActionSidePanelShowAboutThisSite, "AboutThisSite")       \
+   V(kCustomizeChrome, kActionSidePanelShowCustomizeChrome, "CustomizeChrome") \
+   V(kSearchCompanion, kActionSidePanelShowSearchCompanion, "Companion")       \

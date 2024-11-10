@@ -56,31 +56,22 @@ class TransactionsActivityStoreTests: XCTestCase {
       $0(.mock)
     }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = { coin, completion in
-      switch coin {
-      case .eth:
-        completion([.mockMainnet, .mockGoerli])
-      case .sol:
-        completion([.mockSolana, .mockSolanaTestnet])
-      case .fil:
-        completion([.mockFilecoinMainnet, .mockFilecoinTestnet])
-      case .btc, .zec:
-        completion([])
-      @unknown default:
-        completion([])
-      }
-    }
-    rpcService._hiddenNetworks = { $1([]) }
-    rpcService._erc721Metadata = { _, _, _, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks.removeAll()
+    rpcService._nftMetadatas = { _, _, completion in
+      let metadata: BraveWallet.NftMetadata = .init(
+        name: "mock.nft.name",
+        description: "mock.nft.description",
+        image: "mock.nft.image",
+        imageData: "mock.nft.image.data",
+        externalUrl: "mock.nft.external.url",
+        attributes: [],
+        backgroundColor: "mock.nft.background.color",
+        animationUrl: "mock.nft.animation.url",
+        youtubeUrl: "mock.youtube.url",
+        collection: "moc.nft.collection"
+      )
+      completion([metadata], "")
     }
 
     let walletService = BraveWallet.TestBraveWalletService()
@@ -105,9 +96,9 @@ class TransactionsActivityStoreTests: XCTestCase {
     // default in mainnet
     let ethSendTxCopy =
       BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
-    let goerliSwapTxCopy =
+    let sepoliaSwapTxCopy =
       BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
-    goerliSwapTxCopy.chainId = BraveWallet.GoerliChainId
+    sepoliaSwapTxCopy.chainId = BraveWallet.SepoliaChainId
     let solSendTxCopy =
       BraveWallet.TransactionInfo.previewConfirmedSolSystemTransfer.copy()
       as! BraveWallet.TransactionInfo  // default in mainnet
@@ -121,7 +112,7 @@ class TransactionsActivityStoreTests: XCTestCase {
       BraveWallet.TransactionInfo.mockFilUnapprovedSend.copy() as! BraveWallet.TransactionInfo
     filTestnetSendTxCopy.chainId = BraveWallet.FilecoinTestnet
     let txs: [BraveWallet.TransactionInfo] = [
-      ethNFTSendTxCopy, ethSendTxCopy, goerliSwapTxCopy,
+      ethNFTSendTxCopy, ethSendTxCopy, sepoliaSwapTxCopy,
       solSendTxCopy, solTestnetSendTxCopy,
       filSendTxCopy, filTestnetSendTxCopy,
     ]
@@ -144,7 +135,17 @@ class TransactionsActivityStoreTests: XCTestCase {
     }
 
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = { $2(UInt64(1), .success, "") }
+    solTxManagerProxy._solanaTxFeeEstimation = { _, _, completion in
+      completion(
+        BraveWallet.SolanaFeeEstimation(
+          baseFee: UInt64(1),
+          computeUnits: UInt32(0),
+          feePerComputeUnit: UInt64(0)
+        ),
+        .success,
+        ""
+      )
+    }
 
     let mockUserManager = TestableWalletUserAssetManager()
     mockUserManager._getAllUserAssetsInNetworkAssets = { [weak self] networks, _ in
@@ -274,15 +275,15 @@ class TransactionsActivityStoreTests: XCTestCase {
         // Day 3 Transaction 2
         XCTAssertEqual(
           transactionSectionsWithoutPrices[safe: 2]?.transactions[safe: 1]?.transaction,
-          goerliSwapTxCopy
+          sepoliaSwapTxCopy
         )
         XCTAssertEqual(
           transactionSectionsWithoutPrices[safe: 2]?.transactions[safe: 1]?.transaction.chainId,
-          goerliSwapTxCopy.chainId
+          sepoliaSwapTxCopy.chainId
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 2]?.transactions[safe: 1]?.transaction,
-          goerliSwapTxCopy
+          sepoliaSwapTxCopy
         )
         // Day 4 Transaction 1
         XCTAssertEqual(

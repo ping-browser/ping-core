@@ -40,6 +40,9 @@
       }
     },
     {
+      "skippedTests" : [
+        "DecentralizedDNSHelperTests"
+      ],
       "target" : {
         "containerPath" : "container:..",
         "identifier" : "BraveWalletTests",
@@ -52,7 +55,8 @@
         "PlaylistTests\/testVideoPlayerTrackBarTimeManualFormatter()",
         "SyncTests",
         "TabSessionTests",
-        "TestFavicons"
+        "TestFavicons",
+        "URLFormatTests"
       ],
       "target" : {
         "containerPath" : "container:..",
@@ -131,6 +135,20 @@
         "containerPath" : "container:..",
         "identifier" : "UserAgentTests",
         "name" : "UserAgentTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "AIChatTests",
+        "name" : "AIChatTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "PlaylistUITests",
+        "name" : "PlaylistUITests"
       }
     }
   ],

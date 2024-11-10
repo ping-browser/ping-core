@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// Types
+import { WalletRoutes } from '../../../constants/types'
+
 // Selectors
 import { UISelectors } from '../../../common/selectors'
 
@@ -24,7 +27,7 @@ import { AccountsMenu } from '../wallet-menus/accounts-menu'
 import {
   HeaderTitle,
   MenuButton,
-  ButtonIcon,
+  MenuButtonIcon,
   MenuWrapper
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
@@ -48,7 +51,10 @@ export const AccountsHeader = () => {
   )
 
   return isPanel ? (
-    <DefaultPanelHeader title={getLocale('braveWalletTopNavAccounts')} />
+    <DefaultPanelHeader
+      title={getLocale('braveWalletTopNavAccounts')}
+      expandRoute={WalletRoutes.Accounts}
+    />
   ) : (
     <Row
       padding='24px 0px'
@@ -59,7 +65,7 @@ export const AccountsHeader = () => {
         <MenuButton
           onClick={() => setShowPortfolioOverviewMenu((prev) => !prev)}
         >
-          <ButtonIcon name='plus-add' />
+          <MenuButtonIcon name='plus-add' />
         </MenuButton>
         {showPortfolioOverviewMenu && <AccountsMenu />}
       </MenuWrapper>

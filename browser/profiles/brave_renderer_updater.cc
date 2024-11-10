@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
@@ -17,14 +18,13 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/playlist/browser/pref_names.h"
+#include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_channel_proxy.h"
-#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -79,13 +79,22 @@ BraveRendererUpdater::BraveRendererUpdater(
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  widevine_enabled_.Init(kWidevineEnabled, local_state);
-  local_state_change_registrar_.Init(local_state);
-  local_state_change_registrar_.Add(
-      kWidevineEnabled,
+  if (local_state_) {
+    widevine_enabled_.Init(kWidevineEnabled, local_state_);
+    local_state_change_registrar_.Init(local_state_);
+    local_state_change_registrar_.Add(
+        kWidevineEnabled,
+        base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                            base::Unretained(this)));
+  } else {
+    CHECK_IS_TEST();
+  }
+#endif
+
+  pref_change_registrar_.Add(
+      playlist::kPlaylistEnabledPref,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
-#endif
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
@@ -212,8 +221,16 @@ void BraveRendererUpdater::UpdateRenderer(
 #endif
   bool widevine_enabled = false;
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+  if (local_state_) {
+    widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+  } else {
+    CHECK_IS_TEST();
+  }
 #endif
+
+  const bool playlist_enabled =
+      base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+      pref_service->GetBoolean(playlist::kPlaylistEnabledPref);
 
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
@@ -222,5 +239,5 @@ void BraveRendererUpdater::UpdateRenderer(
           allow_overwrite_window_ethereum_provider,
           brave_use_native_solana_wallet,
           allow_overwrite_window_solana_provider, de_amp_enabled,
-          onion_only_in_tor_windows, widevine_enabled));
+          onion_only_in_tor_windows, widevine_enabled, playlist_enabled));
 }

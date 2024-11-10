@@ -85,7 +85,7 @@ class SignMessageRequestStore: ObservableObject {
       let allNetworks = await rpcService.allNetworksForSupportedCoins(
         respectHiddenNetworksPreference: false
       )
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
+      let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
         networks: allNetworks,
         includingUserDeleted: true
       ).flatMap(\.tokens)
@@ -121,7 +121,7 @@ class SignMessageRequestStore: ObservableObject {
           return
         }
 
-        let formatter = WeiFormatter(
+        let formatter = WalletAmountFormatter(
           decimalFormatStyle: .decimals(precision: Int(network.decimals))
         )
 
@@ -155,10 +155,12 @@ class SignMessageRequestStore: ObservableObject {
 
         let details = EthSwapDetails(
           fromToken: fromToken,
+          fromNetwork: network,
           fromValue: cowSwapOrder.sellAmount,
           fromAmount: formattedSellAmount,
           fromFiat: nil,  // not required for display
           toToken: toToken,
+          toNetwork: network,
           minBuyValue: cowSwapOrder.buyToken,
           minBuyAmount: formattedMinBuyAmount,
           minBuyAmountFiat: nil,  // not required for display

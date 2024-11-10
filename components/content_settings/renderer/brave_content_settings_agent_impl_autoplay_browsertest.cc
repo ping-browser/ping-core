@@ -82,7 +82,6 @@ MockContentSettingsAgentImpl::MockContentSettingsAgentImpl(
     content::RenderFrame* render_frame)
     : BraveContentSettingsAgentImpl(
           render_frame,
-          false,
           std::make_unique<ContentSettingsAgentImpl::Delegate>()) {}
 
 void MockContentSettingsAgentImpl::BindContentSettingsManager(
@@ -121,7 +120,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
   autoplay_setting_rules.push_back(ContentSettingPatternSource(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
-      std::string(), false));
+      content_settings::ProviderType::kNone, false));
 
   MockContentSettingsAgentImpl agent(GetMainRenderFrame());
   agent.SetRendererContentSettingRulesForTest(content_setting_rules);
@@ -137,7 +136,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
           ContentSettingsPattern::Wildcard(),
           ContentSettingsPattern::FromString("https://example.com"),
           content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),
-          std::string(), false));
+          content_settings::ProviderType::kNone, false));
   agent.SetRendererContentSettingRulesForTest(content_setting_rules);
   EXPECT_TRUE(agent.AllowAutoplay(true));
 }
@@ -153,7 +152,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
   autoplay_setting_rules.push_back(ContentSettingPatternSource(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),
-      std::string(), false));
+      content_settings::ProviderType::kNone, false));
 
   MockContentSettingsAgentImpl agent(GetMainRenderFrame());
   agent.SetRendererContentSettingRulesForTest(content_setting_rules);
@@ -166,7 +165,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
           ContentSettingsPattern::Wildcard(),
           ContentSettingsPattern::FromString("https://example.com"),
           content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
-          std::string(), false));
+          content_settings::ProviderType::kNone, false));
   agent.SetRendererContentSettingRulesForTest(content_setting_rules);
   EXPECT_FALSE(agent.AllowAutoplay(true));
   base::RunLoop().RunUntilIdle();

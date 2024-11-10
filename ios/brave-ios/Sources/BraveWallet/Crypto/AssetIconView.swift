@@ -37,24 +37,25 @@ struct AssetIcon: View {
 
   @State private var monogramSize: CGSize = .zero
   private var fallbackMonogram: some View {
-    BlockieMaterial(address: token.contractAddress)
-      .blur(radius: 8, opaque: true)
-      .clipShape(Circle())
-      .readSize(onChange: { newSize in
-        monogramSize = newSize
-      })
-      .overlay(
-        Text(token.symbol.first?.uppercased() ?? "")
-          .font(
-            .system(
-              size: max(monogramSize.width, monogramSize.height) / 2,
-              weight: .bold,
-              design: .rounded
-            )
+    BlockieBackground(
+      seed: token.contractAddress.isEmpty ? token.name : token.contractAddress.lowercased()
+    )
+    .clipShape(Circle())
+    .readSize(onChange: { newSize in
+      monogramSize = newSize
+    })
+    .overlay(
+      Text(token.symbol.first?.uppercased() ?? "")
+        .font(
+          .system(
+            size: max(monogramSize.width, monogramSize.height) / 2,
+            weight: .bold,
+            design: .rounded
           )
-          .foregroundColor(.white)
-          .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
-      )
+        )
+        .foregroundColor(.white)
+        .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
+    )
   }
 }
 
@@ -113,9 +114,11 @@ struct AssetIconView_Previews: PreviewProvider {
         contractAddress: "0x55296f69f40ea6d20e478533c15a6b08b654e758",
         name: "XY Oracle",
         logo: "",
+        isCompressed: false,
         isErc20: true,
         isErc721: false,
         isErc1155: false,
+        splTokenProgram: .unsupported,
         isNft: false,
         isSpam: false,
         symbol: "XYO",
@@ -232,7 +235,7 @@ struct StackedAssetIconsView: View {
           )
         } else {  // nil token possible for Solana Swaps
           GenericAssetIconView(
-            backgroundColor: Color(braveSystemName: .gray40),
+            backgroundColor: Color(braveSystemName: .neutral40),
             iconColor: Color.white,
             length: assetIconLength,
             maxLength: maxAssetIconLength
@@ -254,7 +257,7 @@ struct StackedAssetIconsView: View {
           )
         } else {  // nil token possible for Solana Swaps
           GenericAssetIconView(
-            backgroundColor: Color(braveSystemName: .gray20),
+            backgroundColor: Color(braveSystemName: .neutral20),
             iconColor: Color.black,
             length: assetIconLength,
             maxLength: maxAssetIconLength
@@ -311,7 +314,7 @@ struct GenericAssetIconView: View {
   let maxLength: CGFloat?
 
   init(
-    backgroundColor: Color = Color(braveSystemName: .gray20),
+    backgroundColor: Color = Color(braveSystemName: .neutral20),
     iconColor: Color = Color.black,
     length: CGFloat = 40,
     maxLength: CGFloat? = nil

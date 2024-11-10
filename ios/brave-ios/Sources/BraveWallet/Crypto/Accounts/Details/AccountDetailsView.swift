@@ -49,17 +49,11 @@ struct AccountDetailsView: View {
         }
         Section(
           content: {
-            Group {
-              if #available(iOS 16, *) {
-                TextField(
-                  Strings.Wallet.accountDetailsNamePlaceholder,
-                  text: $name,
-                  axis: .vertical
-                )
-              } else {
-                TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
-              }
-            }
+            TextField(
+              Strings.Wallet.accountDetailsNamePlaceholder,
+              text: $name,
+              axis: .vertical
+            )
             .introspectTextField { tf in
               if editMode && !isFieldFocused && !tf.isFirstResponder {
                 isFieldFocused = tf.becomeFirstResponder()
@@ -76,7 +70,12 @@ struct AccountDetailsView: View {
           },
           footer: {
             SectionFooterErrorView(
-              errorMessage: name.isValidAccountName ? nil : Strings.Wallet.accountNameLengthError
+              errorMessage: name.isValidAccountName
+                ? nil
+                : String.localizedStringWithFormat(
+                  Strings.Wallet.accountNameLengthError,
+                  BraveWallet.AccountNameMaxCharacterLength
+                )
             )
           }
         )

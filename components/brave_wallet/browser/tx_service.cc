@@ -80,11 +80,11 @@ TxService::TxService(JsonRpcService* json_rpc_service,
                      ZCashWalletService* zcash_wallet_service,
                      KeyringService* keyring_service,
                      PrefService* prefs,
-                     const base::FilePath& context_path,
+                     const base::FilePath& wallet_base_directory,
                      scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
     : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
   store_factory_ = base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(
-      context_path.AppendASCII(kWalletBaseDirectory));
+      wallet_base_directory);
   delegate_ = std::make_unique<TxStorageDelegateImpl>(prefs, store_factory_,
                                                       ui_task_runner);
   account_resolver_delegate_ =
@@ -149,51 +149,30 @@ ZCashTxManager* TxService::GetZCashTxManager() {
   return static_cast<ZCashTxManager*>(GetTxManager(mojom::CoinType::ZEC));
 }
 
-mojo::PendingRemote<mojom::TxService> TxService::MakeRemote() {
-  mojo::PendingRemote<mojom::TxService> remote;
-  tx_service_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
+template <>
 void TxService::Bind(mojo::PendingReceiver<mojom::TxService> receiver) {
   tx_service_receivers_.Add(this, std::move(receiver));
 }
 
-mojo::PendingRemote<mojom::EthTxManagerProxy>
-TxService::MakeEthTxManagerProxyRemote() {
-  mojo::PendingRemote<mojom::EthTxManagerProxy> remote;
-  eth_tx_manager_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
-void TxService::BindEthTxManagerProxy(
-    mojo::PendingReceiver<mojom::EthTxManagerProxy> receiver) {
+template <>
+void TxService::Bind(mojo::PendingReceiver<mojom::EthTxManagerProxy> receiver) {
   eth_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 
-mojo::PendingRemote<mojom::SolanaTxManagerProxy>
-TxService::MakeSolanaTxManagerProxyRemote() {
-  mojo::PendingRemote<mojom::SolanaTxManagerProxy> remote;
-  solana_tx_manager_receivers_.Add(this,
-                                   remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
-mojo::PendingRemote<mojom::FilTxManagerProxy>
-TxService::MakeFilTxManagerProxyRemote() {
-  mojo::PendingRemote<mojom::FilTxManagerProxy> remote;
-  fil_tx_manager_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
-void TxService::BindSolanaTxManagerProxy(
+template <>
+void TxService::Bind(
     mojo::PendingReceiver<mojom::SolanaTxManagerProxy> receiver) {
   solana_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 
-void TxService::BindFilTxManagerProxy(
-    mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver) {
+template <>
+void TxService::Bind(mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver) {
   fil_tx_manager_receivers_.Add(this, std::move(receiver));
+}
+
+template <>
+void TxService::Bind(mojo::PendingReceiver<mojom::BtcTxManagerProxy> receiver) {
+  btc_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 
 void TxService::AddUnapprovedTransaction(
@@ -201,6 +180,8 @@ void TxService::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::AccountIdPtr from,
     AddUnapprovedTransactionCallback callback) {
+  CHECK_NE(from->coin, mojom::CoinType::ETH)
+      << "Wallet UI must use AddUnapprovedEvmTransaction";
   AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
                                      std::move(from), std::nullopt,
                                      std::move(callback));
@@ -231,6 +212,35 @@ void TxService::AddUnapprovedTransactionWithOrigin(
       chain_id, std::move(tx_data_union), from, origin, std::move(callback));
 }
 
+void TxService::AddUnapprovedEvmTransaction(
+    mojom::NewEvmTransactionParamsPtr params,
+    AddUnapprovedEvmTransactionCallback callback) {
+  AddUnapprovedEvmTransactionWithOrigin(std::move(params), std::nullopt,
+                                        std::move(callback));
+}
+
+void TxService::AddUnapprovedEvmTransactionWithOrigin(
+    mojom::NewEvmTransactionParamsPtr params,
+    const std::optional<url::Origin>& origin,
+    AddUnapprovedEvmTransactionCallback callback) {
+  CHECK_EQ(params->from->coin, mojom::CoinType::ETH);
+  if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
+  GetEthTxManager()->AddUnapprovedEvmTransaction(std::move(params), origin,
+                                                 std::move(callback));
+}
+
 void TxService::ApproveTransaction(mojom::CoinType coin_type,
                                    const std::string& chain_id,
                                    const std::string& tx_meta_id,
@@ -246,10 +256,15 @@ void TxService::RejectTransaction(mojom::CoinType coin_type,
 }
 
 void TxService::GetTransactionInfo(mojom::CoinType coin_type,
-                                   const std::string& chain_id,
                                    const std::string& tx_meta_id,
                                    GetTransactionInfoCallback callback) {
-  GetTxManager(coin_type)->GetTransactionInfo(tx_meta_id, std::move(callback));
+  std::move(callback).Run(GetTransactionInfoSync(coin_type, tx_meta_id));
+}
+
+mojom::TransactionInfoPtr TxService::GetTransactionInfoSync(
+    mojom::CoinType coin_type,
+    const std::string& tx_meta_id) {
+  return GetTxManager(coin_type)->GetTransactionInfo(tx_meta_id);
 }
 
 void TxService::GetAllTransactionInfo(
@@ -297,13 +312,11 @@ void TxService::RetryTransaction(mojom::CoinType coin_type,
   GetTxManager(coin_type)->RetryTransaction(tx_meta_id, std::move(callback));
 }
 
-void TxService::GetTransactionMessageToSign(
-    mojom::CoinType coin_type,
-    const std::string& chain_id,
+void TxService::GetEthTransactionMessageToSign(
     const std::string& tx_meta_id,
-    GetTransactionMessageToSignCallback callback) {
-  GetTxManager(coin_type)->GetTransactionMessageToSign(tx_meta_id,
-                                                       std::move(callback));
+    GetEthTransactionMessageToSignCallback callback) {
+  GetEthTxManager()->GetEthTransactionMessageToSign(tx_meta_id,
+                                                    std::move(callback));
 }
 
 void TxService::AddObserver(
@@ -423,22 +436,18 @@ void TxService::SetNonceForUnapprovedTransaction(
 }
 
 void TxService::GetNonceForHardwareTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     GetNonceForHardwareTransactionCallback callback) {
   GetEthTxManager()->GetNonceForHardwareTransaction(tx_meta_id,
                                                     std::move(callback));
 }
 
-void TxService::ProcessHardwareSignature(
-    const std::string& chain_id,
+void TxService::ProcessEthHardwareSignature(
     const std::string& tx_meta_id,
-    const std::string& v,
-    const std::string& r,
-    const std::string& s,
-    ProcessHardwareSignatureCallback callback) {
-  GetEthTxManager()->ProcessHardwareSignature(tx_meta_id, v, r, s,
-                                              std::move(callback));
+    mojom::EthereumSignatureVRSPtr hw_signature,
+    ProcessEthHardwareSignatureCallback callback) {
+  GetEthTxManager()->ProcessEthHardwareSignature(
+      tx_meta_id, std::move(hw_signature), std::move(callback));
 }
 
 void TxService::GetGasEstimation1559(const std::string& chain_id,
@@ -461,10 +470,11 @@ void TxService::MakeTokenProgramTransferTxData(
     const std::string& from_wallet_address,
     const std::string& to_wallet_address,
     uint64_t amount,
+    uint8_t decimals,
     MakeTokenProgramTransferTxDataCallback callback) {
   GetSolanaTxManager()->MakeTokenProgramTransferTxData(
       chain_id, spl_token_mint_address, from_wallet_address, to_wallet_address,
-      amount, std::move(callback));
+      amount, decimals, std::move(callback));
 }
 
 void TxService::MakeTxDataFromBase64EncodedTransaction(
@@ -477,28 +487,68 @@ void TxService::MakeTxDataFromBase64EncodedTransaction(
       std::move(callback));
 }
 
-void TxService::GetEstimatedTxFee(const std::string& chain_id,
-                                  const std::string& tx_meta_id,
-                                  GetEstimatedTxFeeCallback callback) {
-  GetSolanaTxManager()->GetEstimatedTxFee(tx_meta_id, std::move(callback));
-}
-
-void TxService::ProcessSolanaHardwareSignature(
+void TxService::GetSolanaTxFeeEstimation(
     const std::string& chain_id,
     const std::string& tx_meta_id,
-    const std::vector<uint8_t>& signature,
-    ProcessSolanaHardwareSignatureCallback callback) {
-  GetSolanaTxManager()->ProcessSolanaHardwareSignature(tx_meta_id, signature,
+    GetSolanaTxFeeEstimationCallback callback) {
+  GetSolanaTxManager()->GetSolanaTxFeeEstimation(chain_id, tx_meta_id,
+                                                 std::move(callback));
+}
+
+void TxService::MakeBubbleGumProgramTransferTxData(
+    const std::string& chain_id,
+    const std::string& token_address,
+    const std::string& from_wallet_address,
+    const std::string& to_wallet_address,
+    MakeBubbleGumProgramTransferTxDataCallback callback) {
+  GetSolanaTxManager()->MakeBubbleGumProgramTransferTxData(
+      chain_id, token_address, from_wallet_address, to_wallet_address,
+      std::move(callback));
+}
+
+void TxService::GetSolTransactionMessageToSign(
+    const std::string& tx_meta_id,
+    GetSolTransactionMessageToSignCallback callback) {
+  GetSolanaTxManager()->GetSolTransactionMessageToSign(tx_meta_id,
                                                        std::move(callback));
 }
 
-void TxService::ProcessFilHardwareSignature(
-    const std::string& chain_id,
+void TxService::ProcessSolanaHardwareSignature(
     const std::string& tx_meta_id,
-    const std::string& signed_message,
+    mojom::SolanaSignaturePtr hw_signature,
+    ProcessSolanaHardwareSignatureCallback callback) {
+  GetSolanaTxManager()->ProcessSolanaHardwareSignature(
+      tx_meta_id, std::move(hw_signature), std::move(callback));
+}
+
+void TxService::GetFilTransactionMessageToSign(
+    const std::string& tx_meta_id,
+    GetFilTransactionMessageToSignCallback callback) {
+  GetFilTxManager()->GetFilTransactionMessageToSign(tx_meta_id,
+                                                    std::move(callback));
+}
+
+void TxService::ProcessFilHardwareSignature(
+    const std::string& tx_meta_id,
+    mojom::FilecoinSignaturePtr hw_signature,
     ProcessFilHardwareSignatureCallback callback) {
-  GetFilTxManager()->ProcessFilHardwareSignature(tx_meta_id, signed_message,
-                                                 std::move(callback));
+  GetFilTxManager()->ProcessFilHardwareSignature(
+      tx_meta_id, std::move(hw_signature), std::move(callback));
+}
+
+void TxService::GetBtcHardwareTransactionSignData(
+    const std::string& tx_meta_id,
+    GetBtcHardwareTransactionSignDataCallback callback) {
+  GetBitcoinTxManager()->GetBtcHardwareTransactionSignData(tx_meta_id,
+                                                           std::move(callback));
+}
+
+void TxService::ProcessBtcHardwareSignature(
+    const std::string& tx_meta_id,
+    mojom::BitcoinSignaturePtr hw_signature,
+    ProcessBtcHardwareSignatureCallback callback) {
+  GetBitcoinTxManager()->ProcessBtcHardwareSignature(
+      tx_meta_id, std::move(hw_signature), std::move(callback));
 }
 
 TxStorageDelegate* TxService::GetDelegateForTesting() {

@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_interface.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -18,7 +18,7 @@ struct NewTabPageAdInfo;
 class NewTabPageAdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> Build(
-      mojom::NewTabPageAdEventType event_type);
+      mojom::NewTabPageAdEventType mojom_ad_event_type);
 };
 
 }  // namespace brave_ads

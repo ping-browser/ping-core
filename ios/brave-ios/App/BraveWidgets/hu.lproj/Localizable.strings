@@ -29,7 +29,7 @@
 "widgets.newsClusteringWidgetTitle" = "Vezető hírek";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Az itteni kedvenceinek megtekintéséhez nyissa meg a Brave-et";
+"widgets.noFavoritesFound" = "Az itteni kedvenceinek megtekintéséhez nyissa meg a Ping-et";
 
 /* QR Code section title */
 "widgets.QRCode" = "QR-kód";

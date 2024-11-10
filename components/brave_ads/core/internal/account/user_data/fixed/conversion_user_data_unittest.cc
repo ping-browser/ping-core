@@ -9,112 +9,72 @@
 
 #include "base/json/json_writer.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
-#include "third_party/re2/src/re2/re2.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsConversionUserDataBuilderTest : public UnitTestBase {};
+class BraveAdsConversionUserDataBuilderTest : public test::TestBase {};
 
-TEST_F(BraveAdsConversionUserDataBuilderTest,
-       BuildConversionUserDataForRewardsUser) {
+TEST_F(BraveAdsConversionUserDataBuilderTest, BuildConversionUserData) {
   // Arrange
-  const AdInfo ad =
-      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*should_generate_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   const ConversionInfo conversion =
       BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
 
-  // Act & Assert
-  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
-      R"(
-          {
-            "conversion": [
-              {
-                "action": "view"
-              }
-            ]
-          })");
-  EXPECT_EQ(expected_user_data, BuildConversionUserData(conversion));
+  // Act
+  const base::Value::Dict user_data = BuildConversionUserData(conversion);
+
+  // Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "conversion": [
+                        {
+                          "action": "view"
+                        }
+                      ]
+                    })"),
+            user_data);
 }
 
 TEST_F(BraveAdsConversionUserDataBuilderTest,
-       BuildVerifiableConversionUserDataForRewardsUser) {
+       BuildVerifiableConversionUserData) {
   // Arrange
-  const AdInfo ad =
-      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
-  const ConversionInfo conversion = BuildConversion(
-      ad_event,
-      VerifiableConversionInfo{kVerifiableConversionId,
-                               kVerifiableConversionAdvertiserPublicKey});
-
-  // Act & Assert
-  std::string json;
-  ASSERT_TRUE(
-      base::JSONWriter::Write(BuildConversionUserData(conversion), &json));
-  const std::string pattern =
-      R"({"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}]})";
-  EXPECT_TRUE(RE2::FullMatch(json, pattern));
-}
-
-TEST_F(BraveAdsConversionUserDataBuilderTest,
-       BuildConversionUserDataForNonRewardsUser) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  const AdInfo ad =
-      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
-  const ConversionInfo conversion =
-      BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
-
-  // Act & Assert
-  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
-      R"(
-          {
-            "conversion": [
-              {
-                "action": "view"
-              }
-            ]
-          })");
-  EXPECT_EQ(expected_user_data, BuildConversionUserData(conversion));
-}
-
-TEST_F(BraveAdsConversionUserDataBuilderTest,
-       BuildVerifiableConversionUserDataForNonRewardsUser) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  const AdInfo ad =
-      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+      ad, mojom::ConfirmationType::kClicked, /*created_at=*/test::Now());
   const ConversionInfo conversion = BuildConversion(
-      ad_event,
-      VerifiableConversionInfo{kVerifiableConversionId,
-                               kVerifiableConversionAdvertiserPublicKey});
+      ad_event, VerifiableConversionInfo{
+                    test::kVerifiableConversionId,
+                    test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildConversionUserData(conversion);
+
+  // Assert
   std::string json;
-  ASSERT_TRUE(
-      base::JSONWriter::Write(BuildConversionUserData(conversion), &json));
-  const std::string pattern =
-      R"({"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}]})";
-  EXPECT_TRUE(RE2::FullMatch(json, pattern));
+  ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
+
+  EXPECT_THAT(
+      json,
+      ::testing::MatchesRegex(
+          R"({"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}]})"));
 }
 
 }  // namespace brave_ads

@@ -10,9 +10,9 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -34,13 +34,14 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
 namespace {
 
-const char kEmbeddedTestServerDirectory[] = "brave-wallet";
+constexpr char kEmbeddedTestServerDirectory[] = "brave-wallet";
 
 std::string CheckForEventScript(const std::string& event_var) {
   return base::StringPrintf(R"(
@@ -89,14 +90,15 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
     https_server_->ServeFilesFromDirectory(test_data_dir);
 
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
+    brave_wallet_service_ =
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+            browser()->profile());
+    keyring_service_ = brave_wallet_service_->keyring_service();
 
     ASSERT_TRUE(https_server_->Start());
   }
@@ -110,10 +112,10 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 
   mojo::Remote<brave_wallet::mojom::JsonRpcService> GetJsonRpcService() {
     if (!json_rpc_service_) {
-      auto pending =
-          brave_wallet::JsonRpcServiceFactory::GetInstance()->GetForContext(
-              browser()->profile());
-      json_rpc_service_.Bind(std::move(pending));
+      mojo::PendingRemote<brave_wallet::mojom::JsonRpcService> remote;
+      brave_wallet_service_->json_rpc_service()->Bind(
+          remote.InitWithNewPipeAndPassReceiver());
+      json_rpc_service_.Bind(std::move(remote));
     }
     return std::move(json_rpc_service_);
   }
@@ -144,6 +146,7 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   mojo::Remote<brave_wallet::mojom::JsonRpcService> json_rpc_service_;
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   base::test::ScopedFeatureList feature_list_;
@@ -169,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   auto service = GetJsonRpcService();
-  service->SetNetwork(brave_wallet::mojom::kGoerliChainId,
+  service->SetNetwork(brave_wallet::mojom::kSepoliaChainId,
                       brave_wallet::mojom::CoinType::ETH, std::nullopt,
                       base::DoNothing());
 

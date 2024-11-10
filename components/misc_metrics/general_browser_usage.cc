@@ -19,7 +19,7 @@ namespace misc_metrics {
 
 namespace {
 
-const base::TimeDelta kReportInterval = base::Minutes(10);
+constexpr base::TimeDelta kReportInterval = base::Minutes(10);
 
 #if !BUILDFLAG(IS_ANDROID)
 constexpr int kProfileCountBuckets[] = {0, 1, 2, 3, 5};
@@ -60,13 +60,15 @@ void GeneralBrowserUsage::ReportWeeklyUse() {
   usage_storage_->ReplaceTodaysValueIfGreater(1);
   UMA_HISTOGRAM_EXACT_LINEAR(kWeeklyUseHistogramName,
                              usage_storage_->GetLastISOWeekSum(), 8);
+
+  // TODO(djandries): remove the following report when Nebula experiment is over
+  UMA_HISTOGRAM_EXACT_LINEAR(kWeeklyUseNebulaHistogramName,
+                             usage_storage_->GetLastISOWeekSum(), 8);
 }
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 void GeneralBrowserUsage::ReportInstallTime() {
-  int days_since_install =
-      (base::Time::Now().LocalMidnight() - first_run_time_.LocalMidnight())
-          .InDays();
+  int days_since_install = (base::Time::Now() - first_run_time_).InDays();
   if (days_since_install < 0 || days_since_install > 30) {
     return;
   }

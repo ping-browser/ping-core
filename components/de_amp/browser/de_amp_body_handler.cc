@@ -6,6 +6,7 @@
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -35,12 +36,13 @@ constexpr size_t kMaxBytesToCheck = 3 * 65536;
 constexpr size_t kMaxRedirectHops = 7;
 
 base::Value LoadNavigationChain(const network::ResourceRequest& request) {
-  std::string de_amp_header;
-  if (!request.headers.GetHeader(kDeAmpHeaderName, &de_amp_header)) {
+  std::optional<std::string> de_amp_header =
+      request.headers.GetHeader(kDeAmpHeaderName);
+  if (!de_amp_header) {
     return base::Value(
         base::Value::List().Append(base::Value(request.url.spec())));
   }
-  auto value = base::JSONReader::Read(de_amp_header);
+  auto value = base::JSONReader::Read(*de_amp_header);
   if (!value || !value->is_list()) {
     return base::Value(
         base::Value::List().Append(base::Value(request.url.spec())));
@@ -127,7 +129,7 @@ DeAmpBodyHandler::Action DeAmpBodyHandler::OnBodyUpdated(
 
   switch (state_) {
     case State::kCheckForAmp:
-      if (!CheckIfAmpPage(body)) {
+      if (!CheckIfAmpPage(std::string_view(body).substr(0, kMaxBytesToCheck))) {
         // if we did find AMP, complete the load.
         return DeAmpBodyHandler::Action::kComplete;
       }
@@ -154,7 +156,7 @@ bool DeAmpBodyHandler::IsTransformer() const {
 void DeAmpBodyHandler::DeAmpBodyHandler::Transform(
     std::string body,
     base::OnceCallback<void(std::string)> on_complete) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void DeAmpBodyHandler::UpdateResponseHead(

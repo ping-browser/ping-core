@@ -7,9 +7,11 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../../utils/pricing-utils'
 import {
   getDominantColorFromImageURL //
 } from '../../../../utils/style.utils'
@@ -26,6 +28,7 @@ import {
 
 // Types
 import { BraveWallet, SendPageTabHashes } from '../../../../constants/types'
+import { SwapParamsOverrides } from '../../swap/constants/types'
 
 // Components
 import { SelectButton } from '../select_button/select_button'
@@ -39,14 +42,30 @@ import {
   ReceiveAndQuoteText,
   NetworkAndFiatRow,
   ReceiveAndQuoteRow,
-  SelectAndInputRow
+  SelectAndInputRow,
+  RefreshIcon,
+  RefreshButton
 } from './to_asset.style'
 import { AmountInput, ToSectionWrapper } from '../shared_composer.style'
-import { Column, Row } from '../../../../components/shared/style'
+import { Column, Row, Text } from '../../../../components/shared/style'
+
+const makeTwoDigits = (n: number) => {
+  return (n < 10 ? '0' : '') + n
+}
+
+const millisecondToString = (milliseconds: number) => {
+  const calculatedMin = Math.floor(milliseconds / 60000)
+  const calculatedSec = Math.floor(milliseconds / 1000)
+  const secRemaining = calculatedSec - calculatedMin * 60
+  const min = makeTwoDigits(calculatedMin)
+  const sec = makeTwoDigits(secRemaining)
+  return `${min}:${sec}`
+}
 
 interface Props {
   onClickSelectToken: () => void
   onInputChange: (value: string) => void
+  onRefreshQuote: (overrides: SwapParamsOverrides) => void
   inputValue: string
   inputDisabled: boolean
   buttonDisabled?: boolean
@@ -55,6 +74,7 @@ interface Props {
   network: BraveWallet.NetworkInfo | undefined
   selectedSendOption: SendPageTabHashes
   isFetchingQuote: boolean
+  timeUntilNextQuote?: number
   children?: React.ReactNode
 }
 
@@ -62,6 +82,7 @@ export const ToAsset = (props: Props) => {
   const {
     token,
     onClickSelectToken,
+    onRefreshQuote,
     onInputChange: onChange,
     hasInputError,
     inputDisabled,
@@ -70,6 +91,7 @@ export const ToAsset = (props: Props) => {
     network,
     selectedSendOption,
     isFetchingQuote,
+    timeUntilNextQuote,
     children
   } = props
 
@@ -86,6 +108,9 @@ export const ToAsset = (props: Props) => {
       querySubscriptionOptions60s
     )
 
+  // State
+  const [refreshClicked, setRefreshClicked] = React.useState<boolean>(false)
+
   // methods
   const onInputChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,6 +119,12 @@ export const ToAsset = (props: Props) => {
     [onChange]
   )
 
+  const handleRefreshQuote = React.useCallback(() => {
+    setRefreshClicked(true)
+    onRefreshQuote({})
+  }, [onRefreshQuote])
+
+  // Memos
   const fiatValue = React.useMemo(() => {
     if (!token || selectedSendOption === SendPageTabHashes.nft) {
       return ''
@@ -118,6 +149,18 @@ export const ToAsset = (props: Props) => {
     return getDominantColorFromImageURL(token?.logo ?? '')
   }, [token?.logo])
 
+  // Computed
+  const countdown =
+    timeUntilNextQuote !== undefined
+      ? millisecondToString(timeUntilNextQuote)
+      : ''
+
+  const newQuoteString = getLocale('braveWalletNewQuoteIn').replace(
+    '$3',
+    countdown
+  )
+  const { beforeTag, duringTag } = splitStringForTag(newQuoteString)
+
   // render
   return (
     <ToSectionWrapper
@@ -126,37 +169,61 @@ export const ToAsset = (props: Props) => {
     >
       <Column
         fullWidth={true}
-        justifyContent='space-between'
+        fullHeight={true}
+        justifyContent='flex-start'
         alignItems='center'
-        padding='48px 0px 0px 0px'
+        padding='32px 0px 0px 0px'
       >
         <ReceiveAndQuoteRow
           width='100%'
           alignItems='center'
           justifyContent='space-between'
-          padding='0px 16px'
           marginBottom={10}
         >
           <ReceiveAndQuoteText
-            textSize='16px'
+            textSize='14px'
             isBold={false}
           >
             {getLocale('braveWalletReceiveEstimate')}
           </ReceiveAndQuoteText>
-          {isFetchingQuote && (
-            <ReceiveAndQuoteText
-              textSize='16px'
-              isBold={false}
-            >
-              {getLocale('braveSwapFindingPrice')}
-            </ReceiveAndQuoteText>
-          )}
+          <Row width='unset'>
+            {!isFetchingQuote && timeUntilNextQuote !== undefined && (
+              <Row
+                width='unset'
+                gap='4px'
+                margin='0px 4px 0px 0px'
+              >
+                <ReceiveAndQuoteText
+                  textSize='12px'
+                  isBold={false}
+                >
+                  {beforeTag}
+                </ReceiveAndQuoteText>
+                <Text
+                  textSize='12px'
+                  isBold={true}
+                  textColor='primary'
+                >
+                  {duringTag}
+                </Text>
+              </Row>
+            )}
+            {timeUntilNextQuote !== undefined && (
+              <RefreshButton
+                onClick={handleRefreshQuote}
+                clicked={refreshClicked}
+                onAnimationEnd={() => setRefreshClicked(false)}
+                disabled={refreshClicked || isFetchingQuote}
+              >
+                <RefreshIcon />
+              </RefreshButton>
+            )}
+          </Row>
         </ReceiveAndQuoteRow>
         <SelectAndInputRow
           width='100%'
           alignItems='center'
           justifyContent='space-between'
-          padding='0px 16px 0px 6px'
           marginBottom={10}
         >
           <Row width='unset'>
@@ -182,7 +249,6 @@ export const ToAsset = (props: Props) => {
           width='100%'
           alignItems='center'
           justifyContent='space-between'
-          padding='0px 16px'
         >
           {network && token && (
             <NetworkAndFiatText

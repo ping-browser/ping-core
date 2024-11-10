@@ -11,15 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
+import org.chromium.ai_chat.mojom.ModelWithSubtitle;
 import org.chromium.ai_chat.mojom.PremiumStatus;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -33,15 +38,18 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private static final String PREF_AUTOCOMPLETE = "autocomplete_switch";
     private static final String PREF_SUBSCRIPTION_CATEGORY = "subscription_category";
     private static final String PREF_DEFAULT_MODEL = "default_model";
-    private static final String LINK_SUBSCRIPTION_URL =
-            "https://ping-browser.com/faqs-and-help";
-    private static final String LINK_SUBSCRIPTION_URL_STAGING =
-            "https://ping-browser.com/faqs-and-help";
+
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        requireActivity().setTitle(R.string.menu_brave_leo);
+        mPageTitle.set(getString(R.string.menu_brave_leo));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_leo_preferences);
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override
@@ -68,12 +76,20 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         BraveLeoMojomHelper.getInstance(getProfile())
                 .getModels(
                         (models -> {
+                            setDefaultModelName(models);
+                        }));
+    }
+
+    private void setDefaultModelName(ModelWithSubtitle[] models) {
+        BraveLeoMojomHelper.getInstance(getProfile())
+                .getDefaultModelKey(
+                        (model -> {
                             Preference pref = findPreference(PREF_DEFAULT_MODEL);
                             if (pref == null) {
                                 Log.e(TAG, "Default model pref is null");
                                 return;
                             }
-                            pref.setSummary(BraveLeoUtils.getDefaultModelName(models));
+                            pref.setSummary(BraveLeoUtils.getDefaultModelName(models, model));
                         }));
     }
 
@@ -117,7 +133,9 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         manageSubscription.setVisible(true);
         linkSubscription.setOnPreferenceClickListener(
                 preference -> {
-                    BraveLeoUtils.openURL(getLinkURL());
+                    TabUtils.openURLWithBraveActivity(
+                            LinkSubscriptionUtils.getBraveAccountLinkUrl(
+                                    InAppPurchaseWrapper.SubscriptionProduct.LEO));
                     return true;
                 });
         manageSubscription.setOnPreferenceClickListener(
@@ -143,13 +161,5 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         super.onResume();
         setModel();
         checkLinkPurchase();
-    }
-
-    private String getLinkURL() {
-        if (BraveQAPreferences.isLeoStagingUsed()) {
-            return LINK_SUBSCRIPTION_URL_STAGING;
-        }
-
-        return LINK_SUBSCRIPTION_URL;
     }
 }

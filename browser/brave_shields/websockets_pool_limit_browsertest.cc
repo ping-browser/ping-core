@@ -8,6 +8,7 @@
 #include "base/path_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -91,14 +92,16 @@ constexpr char kWsCloseInSwScript[] = R"(
 
 class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
  public:
-  WebSocketsPoolLimitBrowserTest() = default;
+  WebSocketsPoolLimitBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        webcompat::features::kBraveWebcompatExceptionsService);
+  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.ServeFilesFromDirectory(test_data_dir);
@@ -193,8 +196,10 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
   net::test_server::EmbeddedTestServer https_server_{
       net::test_server::EmbeddedTestServer::TYPE_HTTPS};
   std::unique_ptr<net::SpawnedTestServer> ws_server_;
-
   GURL ws_url_;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest, PoolIsLimitedByDefault) {
@@ -320,6 +325,29 @@ IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
       kRegisterSwScript, "service-worker-websockets-limit.js");
   ASSERT_TRUE(content::ExecJs(a_com_rfh, register_sw_script));
   OpenWebSockets(a_com_rfh, kWsOpenInSwScript, kWebSocketsPoolLimit + 5);
+}
+
+IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
+                       PoolIsNotLimitedWithWebcompatException) {
+  const GURL url(https_server_.GetURL("a.com", "/ephemeral_storage.html"));
+
+  // Enable shields.
+  brave_shields::SetBraveShieldsEnabled(content_settings(), true, url);
+  // Enable webcompat exception.
+  brave_shields::SetWebcompatEnabled(
+      content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL,
+      true, https_server_.GetURL("a.com", "/"), nullptr);
+
+  auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+
+  // No limits should be active.
+  OpenWebSockets(a_com_rfh, kWsOpenScript, kWebSocketsPoolLimit + 5);
+
+  // No limits should be active in a 3p frame.
+  auto* b_com_in_a_com_rfh = GetNthChildFrameWithHost(a_com_rfh, "b.com");
+  OpenWebSockets(b_com_in_a_com_rfh, kWsOpenScript, kWebSocketsPoolLimit + 5);
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

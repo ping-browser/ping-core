@@ -17,18 +17,19 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/query_filter/utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -44,6 +45,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
@@ -62,6 +64,10 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_enums.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -90,10 +96,6 @@
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/components/ipfs/ipfs_utils.h"
-#endif
-
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
 #include "brave/browser/ui/commander/commander_service_factory.h"
@@ -106,9 +108,9 @@ namespace brave {
 namespace {
 
 bool CanTakeTabs(const Browser* from, const Browser* to) {
-  return from != to && !from->IsAttemptingToCloseBrowser() &&
-         !from->IsBrowserClosing() && !from->is_delete_scheduled() &&
-         to->profile() == from->profile();
+  return from != to && from->type() == Browser::TYPE_NORMAL &&
+         !from->IsAttemptingToCloseBrowser() && !from->IsBrowserClosing() &&
+         !from->is_delete_scheduled() && to->profile() == from->profile();
 }
 
 std::optional<tabs::TabHandle> GetActiveTabHandle(Browser* browser) {
@@ -200,19 +202,6 @@ void ToggleBraveVPNButton(Browser* browser) {
 #endif
 }
 
-void OpenIpfsFilesWebUI(Browser* browser) {
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  auto* prefs = browser->profile()->GetPrefs();
-  DCHECK(ipfs::IsLocalGatewayConfigured(prefs));
-  GURL gateway = ipfs::GetAPIServer(chrome::GetChannel());
-  GURL::Replacements replacements;
-  replacements.SetPathStr("/webui/");
-  replacements.SetRefStr("/files");
-  auto target_url = gateway.ReplaceComponents(replacements);
-  chrome::AddTabAt(browser, GURL(target_url), -1, true);
-#endif
-}
-
 void OpenBraveVPNUrls(Browser* browser, int command_id) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVpnService* vpn_service =
@@ -231,12 +220,22 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
           brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment());
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
 
   chrome::AddTabAt(browser, GURL(target_url), -1, true);
 #endif
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void ToggleAIChat(Browser* browser) {
+#if defined(TOOLKIT_VIEWS)
+  SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  side_panel_ui->Toggle(SidePanelEntry::Key(SidePanelEntryId::kChatUI),
+                        SidePanelOpenTrigger::kToolbarButton);
+#endif
+}
+#endif
 
 void ShowWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
@@ -337,8 +336,8 @@ void ToggleActiveTabAudioMute(Browser* browser) {
   }
 
   bool mute_tab = !contents->IsAudioMuted();
-  chrome::SetTabAudioMuted(contents, mute_tab, TabMutedReason::AUDIO_INDICATOR,
-                           std::string());
+  SetTabAudioMuted(contents, mute_tab, TabMutedReason::AUDIO_INDICATOR,
+                   std::string());
 }
 
 void ToggleSidebarPosition(Browser* browser) {
@@ -386,7 +385,7 @@ void ToggleShieldsEnabled(Browser* browser) {
     return;
   }
   auto* shields =
-      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+      brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
   if (!shields) {
     return;
   }
@@ -404,7 +403,7 @@ void ToggleJavascriptEnabled(Browser* browser) {
     return;
   }
   auto* shields =
-      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+      brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
   if (!shields) {
     return;
   }
@@ -693,15 +692,21 @@ void BringAllTabs(Browser* browser) {
   std::stack<std::unique_ptr<tabs::TabModel>> detached_pinned_tabs;
   std::stack<std::unique_ptr<tabs::TabModel>> detached_unpinned_tabs;
 
+  const bool shared_pinned_tab_enabled =
+      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      browser->profile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab);
+
   base::ranges::for_each(browsers, [&detached_pinned_tabs,
-                                    &detached_unpinned_tabs,
-                                    &browsers_to_close](auto* other) {
+                                    &detached_unpinned_tabs, &browsers_to_close,
+                                    shared_pinned_tab_enabled](auto* other) {
+    static_cast<BraveBrowser*>(other)
+        ->set_ignore_enable_closing_last_tab_pref();
+
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
     for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
       const bool is_pinned = i < pinned_tab_count;
-      if (is_pinned && base::FeatureList::IsEnabled(
-                           tabs::features::kBraveSharedPinnedTabs)) {
+      if (is_pinned && shared_pinned_tab_enabled) {
         // SharedPinnedTabService is responsible for synchronizing pinned
         // tabs, thus we shouldn't manually detach and attach tabs here.
         // Meanwhile, the tab strips don't get empty when they have dummy
@@ -736,7 +741,7 @@ void BringAllTabs(Browser* browser) {
     detached_unpinned_tabs.pop();
   }
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (shared_pinned_tab_enabled) {
     base::ranges::for_each(browsers_to_close,
                            [](auto* other) { other->window()->Close(); });
   }
@@ -918,7 +923,9 @@ bool CanOpenNewSplitViewForTab(Browser* browser,
   return !split_view_data->IsTabTiled(*tab);
 }
 
-void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
+void NewSplitViewForTab(Browser* browser,
+                        std::optional<tabs::TabHandle> tab,
+                        const GURL& url) {
   auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
   if (!split_view_data) {
     return;
@@ -938,10 +945,16 @@ void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
                                 ? model->IndexOfFirstNonPinnedTab()
                                 : tab_index + 1;
 
-  chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
-                   /*foreground*/ true);
-  split_view_data->TileTabs(std::make_pair(
-      model->GetTabHandleAt(tab_index), model->GetTabHandleAt(new_tab_index)));
+  if (!url.is_valid()) {
+    chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
+                     /*foreground*/ true);
+  } else {
+    chrome::AddTabAt(browser, url, new_tab_index,
+                     /*foreground*/ true);
+  }
+
+  split_view_data->TileTabs({.first = model->GetTabHandleAt(tab_index),
+                             .second = model->GetTabHandleAt(new_tab_index)});
 }
 
 void TileTabs(Browser* browser, const std::vector<int>& indices) {
@@ -976,8 +989,8 @@ void TileTabs(Browser* browser, const std::vector<int>& indices) {
     std::swap(tab1, tab2);
   }
 
-  split_view_data->TileTabs(
-      std::make_pair(model->GetTabHandleAt(tab1), model->GetTabHandleAt(tab2)));
+  split_view_data->TileTabs({.first = model->GetTabHandleAt(tab1),
+                             .second = model->GetTabHandleAt(tab2)});
 }
 
 void BreakTiles(Browser* browser, const std::vector<int>& indices) {
@@ -1043,6 +1056,30 @@ bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
   return base::ranges::none_of(indices, [&](auto index) {
     return split_view_data->IsTabTiled(model->GetTabHandleAt(index));
   });
+}
+
+void SwapTabsInTile(Browser* browser) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
+  if (browser->tab_strip_model()->empty()) {
+    return;
+  }
+
+  if (!IsTabsTiled(browser)) {
+    return;
+  }
+
+  auto* model = browser->tab_strip_model();
+  auto tab = model->GetActiveTab()->GetHandle();
+  auto tile = *split_view_data->GetTile(tab);
+  split_view_data->SwapTabsInTile(tile);
+
+  model->MoveWebContentsAt(model->GetIndexOfTab(tile.second),
+                           model->GetIndexOfTab(tile.first),
+                           /*select_after_move*/ false);
 }
 
 }  // namespace brave

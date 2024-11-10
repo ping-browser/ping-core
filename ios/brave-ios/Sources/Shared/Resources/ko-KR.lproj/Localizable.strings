@@ -49,7 +49,7 @@
 /* The button to open a new tab with the Downloads home panel */
 "DownloadsButtonTitle" = "다운로드";
 
-/* Question shown to user when tapping a link that opens the App Store app */
+/* Question shown to user when tapbrave a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "이 링크를 App Store 앱에서 여시겠습니까?";
 
 /* The button to open a new tab with the copied link */
@@ -118,7 +118,7 @@
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorTitle" = "패스 추가 실패";
 
-/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+/* The message displayed to a user when they try to open a URL that cannot be handled by Ping, or any external app. */
 "UnableToOpenURLError" = "주소가 올바르지 않으므로 Brave에서 페이지를 열 수 없습니다.";
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */

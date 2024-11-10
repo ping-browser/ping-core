@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
@@ -31,16 +32,15 @@ namespace brave_ads {
 
 namespace {
 
-std::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
-                                      const ConfirmationInfo& confirmation) {
-  CHECK(token_generator);
+std::optional<RewardInfo> BuildReward(const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
   CHECK(UserHasJoinedBraveRewards());
 
   RewardInfo reward;
 
   // Token
-  const std::vector<cbr::Token> tokens = token_generator->Generate(/*count=*/1);
+  const std::vector<cbr::Token> tokens =
+      GetTokenGenerator()->Generate(/*count=*/1);
   CHECK(!tokens.empty());
   reward.token = tokens.front();
 
@@ -55,17 +55,19 @@ std::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
       MaybeGetConfirmationToken();
   if (!confirmation_token) {
     BLOG(0, "Failed to get confirmation token");
+
     return std::nullopt;
   }
 
   if (!RemoveConfirmationToken(*confirmation_token)) {
     BLOG(0, "Failed to remove confirmation token");
+
     return std::nullopt;
   }
 
   reward.unblinded_token = confirmation_token->unblinded_token;
   reward.public_key = confirmation_token->public_key;
-  reward.signature = confirmation_token->signature;
+  reward.signature = confirmation_token->signature_base64;
 
   // Credential
   ConfirmationInfo mutable_confirmation(confirmation);
@@ -91,6 +93,7 @@ std::optional<std::string> BuildRewardCredential(
           json::writer::WriteConfirmationPayload(confirmation));
   if (!reward_credential) {
     BLOG(0, "Failed to build reward credential");
+
     return std::nullopt;
   }
 
@@ -102,10 +105,8 @@ std::optional<std::string> BuildRewardCredential(
 }
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
-    TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
     base::Value::Dict user_data) {
-  CHECK(token_generator);
   CHECK(transaction.IsValid());
   CHECK(UserHasJoinedBraveRewards());
 
@@ -118,10 +119,10 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
   confirmation.user_data =
       BuildConfirmationUserData(transaction, std::move(user_data));
 
-  const std::optional<RewardInfo> reward =
-      BuildReward(token_generator, confirmation);
+  const std::optional<RewardInfo> reward = BuildReward(confirmation);
   if (!reward) {
     BLOG(0, "Failed to build reward");
+
     return std::nullopt;
   }
   confirmation.reward = reward;

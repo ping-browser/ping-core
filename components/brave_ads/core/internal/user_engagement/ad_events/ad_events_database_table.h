@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
 namespace brave_ads::database::table {
 
@@ -27,27 +27,28 @@ class AdEvents final : public TableInterface {
   void GetAll(GetAdEventsCallback callback) const;
   // Get unexpired ad events, sorted in descending order.
   void GetUnexpired(GetAdEventsCallback callback) const;
-  void GetUnexpiredForType(mojom::AdType ad_type,
-                           GetAdEventsCallback callback) const;
+  void GetUnexpired(mojom::AdType mojom_ad_type,
+                    GetAdEventsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
 
-  void PurgeOrphaned(mojom::AdType ad_type, ResultCallback callback) const;
+  void PurgeOrphaned(mojom::AdType mojom_ad_type,
+                     ResultCallback callback) const;
   void PurgeOrphaned(const std::vector<std::string>& placement_ids,
                      ResultCallback callback) const;
   void PurgeAllOrphaned(ResultCallback callback) const;
 
   std::string GetTableName() const override;
-
-  void Create(mojom::DBTransactionInfo* transaction) override;
-  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
+  void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
+  void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+               int to_version) override;
 
  private:
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                      const AdEventList& ad_event);
+  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+              const AdEventList& ad_event);
 
-  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
-                                     const AdEventList& ad_events) const;
+  std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                             const AdEventList& ad_events) const;
 };
 
 }  // namespace brave_ads::database::table

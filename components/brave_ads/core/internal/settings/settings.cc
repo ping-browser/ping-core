@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -41,6 +41,10 @@ int GetMaximumNotificationAdsPerHour() {
       GetProfileInt64Pref(prefs::kMaximumNotificationAdsPerHour));
 
   return ads_per_hour > 0 ? ads_per_hour : kDefaultNotificationAdsPerHour.Get();
+}
+
+bool UserHasOptedInToSearchResultAds() {
+  return GetProfileBooleanPref(prefs::kOptedInToSearchResultAds);
 }
 
 }  // namespace brave_ads

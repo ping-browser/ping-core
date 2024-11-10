@@ -23,8 +23,7 @@ namespace brave_wallet {
 
 namespace {
 
-const char* GetJupiterQuoteTemplate() {
-  return R"(
+constexpr char kJupiterQuoteTemplate[] = R"(
     {
       "inputMint": "So11111111111111111111111111111111111111112",
       "inAmount": "100000000",
@@ -67,10 +66,8 @@ const char* GetJupiterQuoteTemplate() {
         }
       ]
     })";
-}
 
-const char* GetLiFiQuoteTemplate() {
-  return R"(
+constexpr char kLiFiQuoteTemplate[] = R"(
     {
       "routes": [
         {
@@ -367,10 +364,8 @@ const char* GetLiFiQuoteTemplate() {
       }
     }
   )";
-}
 
-const char* GetLiFiEvmToSolQuoteTemplate() {
-  return R"(
+constexpr char kLiFiEvmToSolQuoteTemplate[] = R"(
     {
       "routes": [
         {
@@ -602,14 +597,242 @@ const char* GetLiFiEvmToSolQuoteTemplate() {
       }
     }
   )";
-}
+
+constexpr char kLiFiEvmToSolQuoteTemplate2[] = R"(
+    {
+      "routes": [
+        {
+          "id": "4c901782-830f-454e-9ed8-6d246829799f",
+          "fromChainId": "137",
+          "fromAmountUSD": "20.00",
+          "fromAmount": "20000000",
+          "fromToken": {
+            "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+            "chainId": "137",
+            "symbol": "USDC.e",
+            "decimals": "6",
+            "name": "Bridged USD Coin",
+            "coinKey": "USDCe",
+            "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+            "priceUSD": "1"
+          },
+          "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+          "toChainId": "1151111081099710",
+          "toAmountUSD": "17.15",
+          "toAmount": "107802690",
+          "toAmountMin": "104568610",
+          "toToken": {
+            "address": "11111111111111111111111111111111",
+            "chainId": "1151111081099710",
+            "symbol": "SOL",
+            "decimals": "9",
+            "name": "SOL",
+            "coinKey": "SOL",
+            "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
+            "priceUSD": "159.11"
+          },
+          "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+          "gasCostUSD": "0.01",
+          "containsSwitchChain": false,
+          "steps": [
+            {
+              "type": "lifi",
+              "id": "4c901782-830f-454e-9ed8-6d246829799f:0",
+              "tool": "mayan",
+              "toolDetails": {
+                "key": "mayan",
+                "name": "Mayan",
+                "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/bridges/mayan.png"
+              },
+              "action": {
+                "fromToken": {
+                  "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                  "chainId": "137",
+                  "symbol": "USDC.e",
+                  "decimals": "6",
+                  "name": "Bridged USD Coin",
+                  "coinKey": "USDCe",
+                  "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+                  "priceUSD": "1"
+                },
+                "fromAmount": "20000000",
+                "toToken": {
+                  "address": "11111111111111111111111111111111",
+                  "chainId": "1151111081099710",
+                  "symbol": "SOL",
+                  "decimals": "9",
+                  "name": "SOL",
+                  "coinKey": "SOL",
+                  "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
+                  "priceUSD": "159.11"
+                },
+                "fromChainId": "137",
+                "toChainId": "1151111081099710",
+                "slippage": "0.03",
+                "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+                "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4"
+              },
+              "estimate": {
+                "tool": "mayan",
+                "approvalAddress": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+                "toAmountMin": "104568610",
+                "toAmount": "107802690",
+                "fromAmount": "20000000",
+                "feeCosts": [
+                  {
+                    "name": "Swap Relayer Fee",
+                    "description": "Fee for the swap relayer",
+                    "token": {
+                      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                      "chainId": "137",
+                      "symbol": "USDC.e",
+                      "decimals": "6",
+                      "name": "Bridged USD Coin",
+                      "coinKey": "USDCe",
+                      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+                      "priceUSD": "1"
+                    },
+                    "amount": "2746612",
+                    "amountUSD": "2.75",
+                    "percentage": "0.1373305975",
+                    "included": true
+                  }
+                ],
+                "gasCosts": [
+                  {
+                    "type": "SEND",
+                    "price": "43687550986",
+                    "estimate": "370000",
+                    "limit": "513000",
+                    "amount": "16164393864820000",
+                    "amountUSD": "0.01",
+                    "token": {
+                      "address": "0x0000000000000000000000000000000000000000",
+                      "chainId": "137",
+                      "symbol": "MATIC",
+                      "decimals": "18",
+                      "name": "MATIC",
+                      "coinKey": "MATIC",
+                      "logoURI": "https://static.debank.com/image/matic_token/logo_url/matic/6f5a6b6f0732a7a235131bd7804d357c.png",
+                      "priceUSD": "0.4077"
+                    }
+                  }
+                ],
+                "executionDuration": "368",
+                "fromAmountUSD": "20.00",
+                "toAmountUSD": "17.15"
+              },
+              "includedSteps": [
+                {
+                  "id": "e003be5c-5099-4f3a-8053-efb5767c4ba8",
+                  "type": "cross",
+                  "action": {
+                    "fromChainId": "137",
+                    "fromAmount": "20000000",
+                    "fromToken": {
+                      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                      "chainId": "137",
+                      "symbol": "USDC.e",
+                      "decimals": "6",
+                      "name": "Bridged USD Coin",
+                      "coinKey": "USDCe",
+                      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+                      "priceUSD": "1"
+                    },
+                    "toChainId": "1151111081099710",
+                    "toToken": {
+                      "address": "11111111111111111111111111111111",
+                      "chainId": "1151111081099710",
+                      "symbol": "SOL",
+                      "decimals": "9",
+                      "name": "SOL",
+                      "coinKey": "SOL",
+                      "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
+                      "priceUSD": "159.11"
+                    },
+                    "slippage": "0.03",
+                    "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+                    "destinationGasConsumption": "0"
+                  },
+                  "estimate": {
+                    "tool": "mayan",
+                    "fromAmount": "20000000",
+                    "toAmount": "107802690",
+                    "toAmountMin": "104568610",
+                    "gasCosts": [
+                      {
+                        "type": "SEND",
+                        "price": "43687550986",
+                        "estimate": "370000",
+                        "limit": "555000",
+                        "amount": "16164393864820000",
+                        "amountUSD": "0.01",
+                        "token": {
+                          "address": "0x0000000000000000000000000000000000000000",
+                          "chainId": "137",
+                          "symbol": "MATIC",
+                          "decimals": "18",
+                          "name": "MATIC",
+                          "coinKey": "MATIC",
+                          "logoURI": "https://static.debank.com/image/matic_token/logo_url/matic/6f5a6b6f0732a7a235131bd7804d357c.png",
+                          "priceUSD": "0.4077"
+                        }
+                      }
+                    ],
+                    "executionDuration": "368",
+                    "approvalAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+                    "feeCosts": [
+                      {
+                        "name": "Swap Relayer Fee",
+                        "description": "Fee for the swap relayer",
+                        "token": {
+                          "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                          "chainId": "137",
+                          "symbol": "USDC.e",
+                          "decimals": "6",
+                          "name": "Bridged USD Coin",
+                          "coinKey": "USDCe",
+                          "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+                          "priceUSD": "1"
+                        },
+                        "amount": "2746612",
+                        "amountUSD": "2.75",
+                        "percentage": "0.1373305975",
+                        "included": true
+                      }
+                    ]
+                  },
+                  "tool": "mayan",
+                  "toolDetails": {
+                    "key": "mayan",
+                    "name": "Mayan",
+                    "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/bridges/mayan.png"
+                  }
+                }
+              ],
+              "integrator": "lifi-api"
+            }
+          ],
+          "tags": [
+            "RECOMMENDED",
+            "CHEAPEST",
+            "FASTEST"
+          ]
+        }
+      ],
+      "unavailableRoutes": {
+        "filteredOut": [],
+        "failed": []
+      }
+    }
+  )";
 
 }  // namespace
 
 TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
-  auto* json_template = GetJupiterQuoteTemplate();
   std::string json = base::StringPrintf(
-      json_template, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");  // USDC
+      kJupiterQuoteTemplate,
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");  // USDC
   mojom::JupiterQuotePtr swap_quote =
       jupiter::ParseQuoteResponse(ParseJson(json));
   ASSERT_TRUE(swap_quote);
@@ -664,7 +887,9 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
           }
         ]
       },
-      "userPublicKey": "mockPubKey"
+      "userPublicKey": "mockPubKey",
+      "dynamicComputeUnitLimit": true,
+      "prioritizationFeeLamports": "auto"
     })");
 
   // OK: Jupiter transaction params with feeAccount
@@ -716,7 +941,9 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
           }
         ]
       },
-      "userPublicKey": "mockPubKey"
+      "userPublicKey": "mockPubKey",
+      "dynamicComputeUnitLimit": true,
+      "prioritizationFeeLamports": "auto"
     })";
   expected_params_value = ParseJson(expected_params);
   ASSERT_NE(encoded_params, std::nullopt);
@@ -746,7 +973,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
   params->to_chain_id = mojom::kSolanaMainnet;
   params->to_token = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   params->slippage_percentage = "3";
-  params->route_priority = mojom::RoutePriority::kSafest;
+  params->route_priority = mojom::RoutePriority::kCheapest;
 
   auto encoded_params = lifi::EncodeQuoteParams(std::move(params), "0.2");
   ASSERT_NE(encoded_params, std::nullopt);
@@ -765,7 +992,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
         "slippage": 0.03
       },
       "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
-      "toChainId": "SOL",
+      "toChainId": "1151111081099710",
       "toTokenAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
     }
   )");
@@ -775,7 +1002,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
 TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
   // OK: EVM -> EVM bridge quotes are correctly handled
   mojom::LiFiQuotePtr quote =
-      lifi::ParseQuoteResponse(ParseJson(GetLiFiQuoteTemplate()));
+      lifi::ParseQuoteResponse(ParseJson(kLiFiQuoteTemplate));
   ASSERT_TRUE(quote);
   ASSERT_EQ(quote->routes.size(), 1UL);
   ASSERT_EQ(quote->routes[0]->steps.size(), 1UL);
@@ -1006,7 +1233,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
   EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
 
   // OK: EVM -> SOL bridge quotes are correctly handled
-  quote = lifi::ParseQuoteResponse(ParseJson(GetLiFiEvmToSolQuoteTemplate()));
+  quote = lifi::ParseQuoteResponse(ParseJson(kLiFiEvmToSolQuoteTemplate));
   ASSERT_TRUE(quote);
   ASSERT_EQ(quote->routes.size(), 1UL);
   ASSERT_EQ(quote->routes[0]->steps.size(), 1UL);
@@ -1030,7 +1257,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
         "fromAmount": "2000000",
         "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
         "slippage": 0.03,
-        "toChainId": "SOL",
+        "toChainId": "1151111081099710",
         "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
         "fromToken": {
           "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
@@ -1042,7 +1269,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
         },
         "toToken": {
           "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-          "chainId": "SOL",
+          "chainId": "1151111081099710",
           "symbol": "USDC",
           "decimals": 6,
           "name": "USD Coin",
@@ -1102,7 +1329,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
             "fromAmount": "2000000",
             "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
             "slippage": 0.03,
-            "toChainId": "SOL",
+            "toChainId": "1151111081099710",
             "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
             "fromToken": {
               "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
@@ -1114,7 +1341,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
             },
             "toToken": {
               "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-              "chainId": "SOL",
+              "chainId": "1151111081099710",
               "symbol": "USDC",
               "decimals": 6,
               "name": "USD Coin",
@@ -1176,6 +1403,258 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
     }
   )";
   EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+
+  // OK: EVM to native SOL bridge quotes are correctly handled
+  quote = lifi::ParseQuoteResponse(ParseJson(kLiFiEvmToSolQuoteTemplate2));
+  ASSERT_TRUE(quote);
+  ASSERT_EQ(quote->routes.size(), 1UL);
+  ASSERT_EQ(quote->routes[0]->steps.size(), 1UL);
+
+  auto& step_2 = quote->routes[0]->steps[0];
+  params = lifi::EncodeTransactionParams(std::move(step_2));
+  ASSERT_NE(params, std::nullopt);
+
+  expected_params = R"(
+    {
+      "type": "lifi",
+      "id": "4c901782-830f-454e-9ed8-6d246829799f:0",
+      "tool": "mayan",
+      "toolDetails": {
+        "key": "mayan",
+        "name": "Mayan",
+        "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/bridges/mayan.png"
+      },
+      "action": {
+        "fromToken": {
+          "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+          "chainId": "137",
+          "symbol": "USDC.e",
+          "decimals": 6,
+          "name": "Bridged USD Coin",
+          "priceUSD": "0"
+        },
+        "fromAmount": "20000000",
+        "toToken": {
+          "address": "11111111111111111111111111111111",
+          "chainId": "1151111081099710",
+          "symbol": "SOL",
+          "decimals": 9,
+          "name": "SOL",
+          "priceUSD": "0"
+        },
+        "fromChainId": "137",
+        "toChainId": "1151111081099710",
+        "slippage": 0.03,
+        "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+        "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4"
+      },
+      "estimate": {
+        "tool": "mayan",
+        "approvalAddress": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+        "toAmountMin": "104568610",
+        "toAmount": "107802690",
+        "fromAmount": "20000000",
+        "feeCosts": [
+          {
+            "name": "Swap Relayer Fee",
+            "description": "Fee for the swap relayer",
+            "token": {
+              "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+              "chainId": "137",
+              "symbol": "USDC.e",
+              "decimals": 6,
+              "name": "Bridged USD Coin",
+              "priceUSD": "0"
+            },
+            "amount": "2746612",
+            "amountUSD": "0",
+            "percentage": "0.1373305975",
+            "included": true
+          }
+        ],
+        "gasCosts": [
+          {
+            "type": "SEND",
+            "price": "0",
+            "estimate": "370000",
+            "limit": "513000",
+            "amount": "16164393864820000",
+            "amountUSD": "0",
+            "token": {
+              "address": "0x0000000000000000000000000000000000000000",
+              "chainId": "137",
+              "symbol": "MATIC",
+              "decimals": 18,
+              "name": "MATIC",
+              "priceUSD": "0"
+            }
+          }
+        ],
+        "executionDuration": 368.0
+      },
+      "includedSteps": [
+        {
+          "id": "e003be5c-5099-4f3a-8053-efb5767c4ba8",
+          "type": "cross",
+          "action": {
+            "fromChainId": "137",
+            "fromAmount": "20000000",
+            "fromToken": {
+              "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+              "chainId": "137",
+              "symbol": "USDC.e",
+              "decimals": 6,
+              "name": "Bridged USD Coin",
+              "priceUSD": "0"
+            },
+            "toChainId": "1151111081099710",
+            "toToken": {
+              "address": "11111111111111111111111111111111",
+              "chainId": "1151111081099710",
+              "symbol": "SOL",
+              "decimals": 9,
+              "name": "SOL",
+              "priceUSD": "0"
+            },
+            "slippage": 0.03,
+            "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0"
+          },
+          "estimate": {
+            "tool": "mayan",
+            "fromAmount": "20000000",
+            "toAmount": "107802690",
+            "toAmountMin": "104568610",
+            "gasCosts": [
+              {
+                "type": "SEND",
+                "price": "0",
+                "estimate": "370000",
+                "limit": "555000",
+                "amount": "16164393864820000",
+                "amountUSD": "0",
+                "token": {
+                  "address": "0x0000000000000000000000000000000000000000",
+                  "chainId": "137",
+                  "symbol": "MATIC",
+                  "decimals": 18,
+                  "name": "MATIC",
+                  "priceUSD": "0"
+                }
+              }
+            ],
+            "executionDuration": 368.0,
+            "approvalAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+            "feeCosts": [
+              {
+                "name": "Swap Relayer Fee",
+                "description": "Fee for the swap relayer",
+                "token": {
+                  "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                  "chainId": "137",
+                  "symbol": "USDC.e",
+                  "decimals": 6,
+                  "name": "Bridged USD Coin",
+                  "priceUSD": "0"
+                },
+                "amount": "2746612",
+                "amountUSD": "0",
+                "percentage": "0.1373305975",
+                "included": true
+              }
+            ]
+          },
+          "tool": "mayan",
+          "toolDetails": {
+            "key": "mayan",
+            "name": "Mayan",
+            "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/bridges/mayan.png"
+          }
+        }
+      ],
+      "integrator": "lifi-api"
+    }
+  )";
+  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeSquidQuoteParams) {
+  auto params = mojom::SwapQuoteParams::New();
+  params->from_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->from_chain_id = mojom::kPolygonMainnetChainId;
+  params->from_token = "";
+  params->from_amount = "1000000000000000000000";
+  params->to_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->to_chain_id = mojom::kBnbSmartChainMainnetChainId;
+  params->to_token = "0x2170ed0880ac9a755fd29b2688956bd959f933f8";
+  params->slippage_percentage = "3";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+
+  auto encoded_params = squid::EncodeQuoteParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "fromAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "fromAmount": "1000000000000000000000",
+      "fromChain": "137",
+      "fromToken": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "toAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "toChain": "56",
+      "toToken": "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+      "slippage": 3.0,
+      "slippageConfig": {
+        "autoMode": 1
+      },
+      "quoteOnly": false,
+      "enableBoost": true
+    }
+  )");
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeSquidTransactionParams) {
+  auto params = mojom::SwapQuoteParams::New();
+  params->from_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->from_chain_id = mojom::kPolygonMainnetChainId;
+  params->from_token = "";
+  params->from_amount = "1000000000000000000000";
+  params->to_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->to_chain_id = mojom::kBnbSmartChainMainnetChainId;
+  params->to_token = "0x2170ed0880ac9a755fd29b2688956bd959f933f8";
+  params->slippage_percentage = "3";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+
+  auto encoded_params = squid::EncodeTransactionParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "fromAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "fromAmount": "1000000000000000000000",
+      "fromChain": "137",
+      "fromToken": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "toAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "toChain": "56",
+      "toToken": "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+      "slippage": 3.0,
+      "slippageConfig": {
+        "autoMode": 1
+      },
+      "quoteOnly": false,
+      "enableBoost": true
+    }
+  )");
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
 }
 
 }  // namespace brave_wallet

@@ -23,6 +23,19 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   @NSManaged public var uuid: String?
   @NSManaged public var playlistFolder: PlaylistFolder?
 
+  static public func resolvingCachedData(_ cachedData: Data) async -> URL? {
+    do {
+      var isStale: Bool = false
+      let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
+      if FileManager.default.fileExists(atPath: url.path) {
+        return url
+      }
+    } catch {
+      return nil
+    }
+    return nil
+  }
+
   @available(*, unavailable)
   public init() {
     fatalError("No Such Initializer: init()")
@@ -63,8 +76,8 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     self.uuid = UUID().uuidString
   }
 
-  public var id: String {
-    objectID.uriRepresentation().absoluteString
+  public var id: NSManagedObjectID {
+    objectID
   }
 
   public class func frc() -> NSFetchedResultsController<PlaylistItem> {
@@ -150,6 +163,42 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         uuid: folderUUID ?? PlaylistFolder.savedFolderUUID,
         context: context
       )
+
+      PlaylistItem.reorderItems(context: context)
+      PlaylistItem.saveContext(context)
+
+      DispatchQueue.main.async {
+        completion?()
+      }
+    }
+  }
+
+  public static func addItems(
+    _ items: [PlaylistInfo],
+    folderUUID: String? = nil,
+    cachedData: Data?,
+    completion: (() -> Void)? = nil
+  ) {
+    DataController.perform(context: .new(inMemory: false), save: false) { context in
+      let folder = PlaylistFolder.getFolder(
+        uuid: folderUUID ?? PlaylistFolder.savedFolderUUID,
+        context: context
+      )
+      for item in items {
+        let playlistItem = PlaylistItem(
+          context: context,
+          name: item.name,
+          pageTitle: item.pageTitle,
+          pageSrc: item.pageSrc,
+          cachedData: cachedData ?? Data(),
+          duration: item.duration,
+          mimeType: item.mimeType,
+          mediaSrc: item.src
+        )
+        playlistItem.order = item.order
+        playlistItem.uuid = item.tagId
+        playlistItem.playlistFolder = folder
+      }
 
       PlaylistItem.reorderItems(context: context)
       PlaylistItem.saveContext(context)
@@ -258,12 +307,20 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     return PlaylistItem.all(where: NSPredicate(format: "pageSrc == %@", pageSrc)) ?? []
   }
 
+  public static func getItem(id: PlaylistItem.ID) -> PlaylistItem? {
+    return PlaylistItem.first(where: NSPredicate(format: "self == %@", id))
+  }
+
   public static func getItem(uuid: String) -> PlaylistItem? {
     return PlaylistItem.first(where: NSPredicate(format: "uuid == %@", uuid))
   }
 
   public class func all() -> [PlaylistItem] {
     all() ?? []
+  }
+
+  public class func count() -> Int {
+    count() ?? 0
   }
 
   public static func itemExists(pageSrc: String) -> Bool {

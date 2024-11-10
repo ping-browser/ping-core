@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
 
-#include <list>
-#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -21,15 +19,14 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
+#include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -45,24 +42,32 @@ namespace brave_wallet {
 
 class EnsResolverTask;
 class NftMetadataFetcher;
+class NetworkManager;
 struct PendingAddChainRequest;
 struct PendingSwitchChainRequest;
 
-class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
+template <typename T>
+struct SolanaRPCResponse;
+
+template <typename T>
+using SolanaRPCResponsesCallback =
+    base::OnceCallback<void(std::vector<T> values,
+                            mojom::SolanaProviderError error,
+                            const std::string& error_message)>;
+
+template <typename T>
+void MergeSolanaRPCResponses(SolanaRPCResponsesCallback<T> callback,
+                             std::vector<SolanaRPCResponse<T>> responses);
+
+class JsonRpcService : public mojom::JsonRpcService {
  public:
   JsonRpcService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      NetworkManager* network_manager,
       PrefService* prefs,
       PrefService* local_state_prefs);
-  // For testing:
-  JsonRpcService(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs);
-  // For testing:
-  JsonRpcService();
   ~JsonRpcService() override;
 
-  mojo::PendingRemote<mojom::JsonRpcService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::JsonRpcService> receiver);
 
   using APIRequestHelper = api_request_helper::APIRequestHelper;
@@ -112,7 +117,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void GetBalance(const std::string& address,
                   mojom::CoinType coin,
-                  const std::string& chaind_id,
+                  const std::string& chain_id,
                   GetBalanceCallback callback) override;
   void GetCode(const std::string& address,
                mojom::CoinType coin,
@@ -260,8 +265,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   std::vector<mojom::SwitchChainRequestPtr> GetPendingSwitchChainRequestsSync();
   void NotifySwitchChainRequestProcessed(const std::string& request_id,
                                          bool approved) override;
-  void GetAllNetworks(mojom::CoinType coin,
-                      GetAllNetworksCallback callback) override;
+  void GetAllNetworks(GetAllNetworksCallback callback) override;
   void GetCustomNetworks(mojom::CoinType coin,
                          GetCustomNetworksCallback callback) override;
   void GetKnownNetworks(mojom::CoinType coin,
@@ -274,12 +278,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void RemoveHiddenNetwork(mojom::CoinType coin,
                            const std::string& chain_id,
                            RemoveHiddenNetworkCallback callback) override;
-  std::string GetNetworkUrl(mojom::CoinType coin,
-                            const std::optional<::url::Origin>& origin) const;
-  void GetNetworkUrl(
-      mojom::CoinType coin,
-      const std::optional<::url::Origin>& origin,
-      mojom::JsonRpcService::GetNetworkUrlCallback callback) override;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;
@@ -451,6 +449,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
     skip_eth_chain_id_validation_for_testing_ = skipped;
   }
 
+  void SetGasPriceForTesting(const std::optional<std::string>& gas_price) {
+    gas_price_for_testing_ = gas_price;
+  }
+
   // Solana JSON RPCs
   void GetSolanaBalance(const std::string& pubkey,
                         const std::string& chain_id,
@@ -463,6 +465,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetSolTokenMetadata(const std::string& chain_id,
                            const std::string& token_mint_address,
                            GetSolTokenMetadataCallback callback) override;
+
   void IsSolanaBlockhashValid(const std::string& chain_id,
                               const std::string& blockhash,
                               const std::optional<std::string>& commitment,
@@ -512,14 +515,28 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetSolanaBlockHeight(const std::string& chain_id,
                             GetSolanaBlockHeightCallback callback);
 
-  using GetSolanaTokenAccountsByOwnerCallback = base::OnceCallback<void(
-      const std::vector<SolanaAccountInfo>& token_accounts,
-      mojom::SolanaProviderError error,
-      const std::string& error_message)>;
+  using GetSolanaTokenAccountsByOwnerCallback =
+      base::OnceCallback<void(std::vector<SolanaAccountInfo> token_accounts,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
   void GetSolanaTokenAccountsByOwner(
       const SolanaAddress& pubkey,
       const std::string& chain_id,
       GetSolanaTokenAccountsByOwnerCallback callback);
+
+  using GetSPLTokenProgramByMintCallback =
+      base::OnceCallback<void(mojom::SPLTokenProgram token_program,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  // Get the SPL token program for a given mint address.
+  // It would first check if there's an existing info in prefs or registry,
+  // otherwise it would issue a request to the network to get the owner of the
+  // mint address to determine the token program. If the property was unknown
+  // in the user asset stored in prefs, it would be updated to the token program
+  // we get from the network.
+  void GetSPLTokenProgramByMint(const std::string& chain_id,
+                                const std::string& mint_address,
+                                GetSPLTokenProgramByMintCallback callback);
 
   void GetSPLTokenBalances(const std::string& pubkey,
                            const std::string& chain_id,
@@ -528,6 +545,36 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void AnkrGetAccountBalances(const std::string& account,
                               const std::vector<std::string>& chain_ids,
                               AnkrGetAccountBalancesCallback callback) override;
+
+  using SimulateSolanaTransactionCallback =
+      base::OnceCallback<void(uint64_t compute_units_consumed,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void SimulateSolanaTransaction(const std::string& chain_id,
+                                 const std::string& unsigned_tx,
+                                 SimulateSolanaTransactionCallback callback);
+
+  using GetRecentSolanaPrioritizationFeesCallback = base::OnceCallback<void(
+      std::vector<std::pair<uint64_t, uint64_t>>& recent_fees,
+      mojom::SolanaProviderError error,
+      const std::string& error_message)>;
+  void GetRecentSolanaPrioritizationFees(
+      const std::string& chain_id,
+      GetRecentSolanaPrioritizationFeesCallback callback);
+
+  // SimpleHash APIs
+  void GetNftMetadatas(mojom::CoinType coin,
+                       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+                       GetNftMetadatasCallback callback) override;
+  void GetNftBalances(const std::string& wallet_address,
+                      std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+                      mojom::CoinType coin,
+                      GetNftBalancesCallback callback) override;
+  void FetchSolCompressedNftProofData(
+      const std::string& token_address,
+      SimpleHashClient::FetchSolCompressedNftProofDataCallback callback);
+
+  NetworkManager* network_manager() { return network_manager_; }
 
  private:
   void FireNetworkChanged(mojom::CoinType coin,
@@ -608,6 +655,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        const std::string& base_fee_per_gas,
                        mojom::ProviderError error,
                        const std::string& error_message);
+  void AddCustomNetworkInternal(const mojom::NetworkInfo& network);
+
+  GURL GetNetworkURL(const std::string& chain_id, mojom::CoinType coin);
 
   void RequestInternal(
       const std::string& json_payload,
@@ -681,6 +731,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                                     mojom::ProviderError error,
                                     const std::string& error_message);
 
+  void OnGetNftMetadatas(GetNftMetadatasCallback callback,
+                         std::vector<mojom::NftMetadataPtr> metadatas);
+
+  void OnGetNftBalances(GetNftBalancesCallback callback,
+                        const std::vector<uint64_t>& balances);
   // Solana
   void OnGetSolanaBalance(GetSolanaBalanceCallback callback,
                           APIRequestResult api_request_result);
@@ -700,16 +755,40 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetSolanaBlockHeight(GetSolanaBlockHeightCallback callback,
                               APIRequestResult api_request_result);
   void OnGetSolanaTokenAccountsByOwner(
-      GetSolanaTokenAccountsByOwnerCallback callback,
+      base::OnceCallback<void(SolanaRPCResponse<SolanaAccountInfo>)> callback,
       APIRequestResult api_request_result);
   void OnIsSolanaBlockhashValid(IsSolanaBlockhashValidCallback callback,
                                 APIRequestResult api_request_result);
 
-  void OnGetSPLTokenBalances(GetSPLTokenBalancesCallback callback,
-                             APIRequestResult api_request_result);
+  void OnGetSPLTokenProgramByMint(const std::string& wallet_address,
+                                  const std::string& token_mint_address,
+                                  const GURL& network_url,
+                                  GetSPLTokenAccountBalanceCallback callback,
+                                  mojom::SPLTokenProgram token_program,
+                                  mojom::SolanaProviderError error,
+                                  const std::string& error_message);
+
+  void ContinueGetSPLTokenProgramByMint(
+      mojom::BlockchainTokenPtr user_asset,
+      GetSPLTokenProgramByMintCallback callback,
+      std::optional<SolanaAccountInfo> account_info,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
+
+  void OnGetSPLTokenBalances(
+      base::OnceCallback<void(SolanaRPCResponse<mojom::SPLTokenAmountPtr>)>
+          callback,
+      APIRequestResult api_request_result);
 
   void OnAnkrGetAccountBalances(AnkrGetAccountBalancesCallback callback,
                                 APIRequestResult api_request_result);
+
+  void OnSimulateSolanaTransaction(SimulateSolanaTransactionCallback callback,
+                                   APIRequestResult api_request_result);
+
+  void OnGetRecentSolanaPrioritizationFees(
+      GetRecentSolanaPrioritizationFeesCallback callback,
+      APIRequestResult api_request_result);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
@@ -735,12 +814,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   SnsResolverTaskContainer<SnsResolveHostCallback> sns_resolve_host_tasks_;
 
   bool skip_eth_chain_id_validation_for_testing_ = false;
+  std::optional<std::string> gas_price_for_testing_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
+  raw_ptr<NetworkManager> network_manager_ = nullptr;
   const raw_ptr<PrefService> prefs_ = nullptr;
   const raw_ptr<PrefService> local_state_prefs_ = nullptr;
   std::unique_ptr<NftMetadataFetcher> nft_metadata_fetcher_;
-  base::WeakPtrFactory<JsonRpcService> weak_ptr_factory_;
+  std::unique_ptr<SimpleHashClient> simple_hash_client_;
+  base::WeakPtrFactory<JsonRpcService> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

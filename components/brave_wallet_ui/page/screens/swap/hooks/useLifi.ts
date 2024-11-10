@@ -72,7 +72,8 @@ export function useLifi({
         const swapParamsUnion: BraveWallet.SwapTransactionParamsUnion = {
           lifiTransactionParams: step,
           jupiterTransactionParams: undefined,
-          zeroExTransactionParams: undefined
+          zeroExTransactionParams: undefined,
+          squidTransactionParams: undefined
         }
 
         transactionResponse = await generateSwapTransaction(
@@ -103,7 +104,7 @@ export function useLifi({
             fromAccount,
             to: evmTransaction.to,
             value: new Amount(evmTransaction.value).toHex(),
-            gas: new Amount(evmTransaction.gasLimit).toHex(),
+            gasLimit: new Amount(evmTransaction.gasLimit).toHex(),
             data: hexStrToNumberArray(evmTransaction.data),
             network: fromNetwork
           }).unwrap()

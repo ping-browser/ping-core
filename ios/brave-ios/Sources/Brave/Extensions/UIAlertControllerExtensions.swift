@@ -201,6 +201,32 @@ extension UIAlertController {
       callbackOnMain: callbackOnMain
     ).alert
   }
+
+  class func shredDataAlert(
+    url: URL,
+    confirmationHandler: @escaping (UIAlertAction) -> Void
+  ) -> UIAlertController {
+    let alert = UIAlertController(
+      title: Strings.Shields.shredSiteDataConfirmationTitle,
+      message: Strings.Shields.shredSiteDataConfirmationMessage,
+      preferredStyle: .alert
+    )
+    alert.addAction(
+      UIAlertAction(
+        title: Strings.Shields.shredDataButtonTitle,
+        style: .destructive,
+        handler: confirmationHandler
+      )
+    )
+    alert.addAction(
+      UIAlertAction(
+        title: Strings.cancelButtonTitle,
+        style: .cancel
+      )
+    )
+
+    return alert
+  }
 }
 
 // Not part of extension due to needing observing

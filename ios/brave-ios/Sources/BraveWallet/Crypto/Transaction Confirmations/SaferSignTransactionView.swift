@@ -231,6 +231,7 @@ private struct TokenRow: View {
         Circle()
           .stroke(Color(.braveSeparator))
           .frame(width: assetIconSize, height: assetIconSize)
+          .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
       }
       VStack(alignment: .leading) {
         Text(title)
@@ -270,17 +271,19 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
     let parsedTransaction: ParsedTransaction = .init(
       transaction: transaction,
       namedFromAddress: "Ethereum Account 1",
-      fromAddress: BraveWallet.AccountInfo.previewAccount.address,
+      fromAccountInfo: BraveWallet.AccountInfo.previewAccount,
       namedToAddress: "0x Exchange",
       toAddress: "0x1111111111222222222233333333334444444444",
       network: .mockMainnet,
       details: .ethSwap(
         .init(
           fromToken: .mockUSDCToken,
+          fromNetwork: .mockMainnet,
           fromValue: "1.000004",
           fromAmount: "1",
           fromFiat: "$1.04",
           toToken: .previewDaiToken,
+          toNetwork: .mockMainnet,
           minBuyValue: "0.994798",
           minBuyAmount: "0.994798",
           minBuyAmountFiat: "$0.99",
@@ -293,7 +296,7 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
         ScrollView {
           SaferSignTransactionView(
             network: parsedTransaction.network,
-            fromAddress: parsedTransaction.fromAddress,
+            fromAddress: parsedTransaction.fromAccountInfo.address,
             namedFromAddress: parsedTransaction.namedFromAddress,
             receiverAddress: nil,
             namedReceiverAddress: nil,

@@ -42,13 +42,6 @@
                       "y": 1400
                     },
                     "imageUrl": "https://brave.com/1/test2.jpg"
-                  },
-                  {
-                    "focalPoint": {
-                      "x": 1200,
-                      "y": 1400
-                    },
-                    "imageUrl": "https://brave.com/1/test3.jpg"
                   }
                 ]
               }
@@ -112,11 +105,9 @@
           "conversions": [
             {
               "observationWindow": 30,
-              "urlPattern": "https://www.brave.com/1/*",
-              "type": "postview"
+              "urlPattern": "https://www.brave.com/1/*"
             }
           ],
-          "channels": [],
           "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
           "perDay": 5,
           "perWeek": 6,

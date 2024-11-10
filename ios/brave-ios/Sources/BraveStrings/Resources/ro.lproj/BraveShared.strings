@@ -5,7 +5,7 @@
 "AboutBraveShields" = "Despre Ping Shields";
 
 /* The body of the screen explaining Ping Shields */
-"AboutBraveShieldsBody" = "Site-urile adesea includ cookie-uri și script-uri care încearcă să te identifice pe tine și dispozitivul tău. Vor să afle cine ești și te urmăresc pe internet, monitorizându-ți activitatea pe fiecare site.\n\nBrave le blochează astfel încât să poți naviga pe internet fără să fii urmărit.";
+"AboutBraveShieldsBody" = "Site-urile adesea includ cookie-uri și script-uri care încearcă să te identifice pe tine și dispozitivul tău. Vor să afle cine ești și te urmăresc pe internet, monitorizându-ți activitatea pe fiecare site.\n\nPing le blochează astfel încât să poți naviga pe internet fără să fii urmărit.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Asta îți va permite să salvezi imaginea în Galerie.";
@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Ping dorește să acceseze galeria ta de poze.";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Adaugă marcaj";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Adaugă marcaj";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Adaugă listă de filtre personalizate";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Adaugă liste suplimentare, create și întreținute de comunitatea în care ai încredere.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Abonează-te doar la liste alcătuite de entități în care ai încredere**. Browser-ul va verifica periodic actualizările listelor din URL-ul introdus.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Adaugă la favorite";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor de blocare";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blochează anunțurile de tip \"Deschide în aplicație\"";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blochează popup-uri";
 
@@ -172,9 +157,6 @@
 /* Ping Rewards title */
 "BraveRewardsTitle" = "Ping Rewards";
 
-/* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Ping Search nu te urmărește pe tine, căutările sau click-urile tale.";
-
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Poate mai târziu";
 
@@ -214,13 +196,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Dacă site-ul pare nefuncțional, încearcă să dezactivezi Shields";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Ping Shields";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Jos";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Sus";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -263,7 +245,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Setează Ping ca browser implicit?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Atunci când Ping este setat ca browser implicit, orice link pe care îl accesezi va beneficia de setările de confidențialitate ale lui Brave.  ";
+"callout.defaultBrowserCalloutDescription" = "Atunci când Ping este setat ca browser implicit, orice link pe care îl accesezi va beneficia de setările de confidențialitate ale lui Ping.  ";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Setează ca implicit";
@@ -285,9 +267,6 @@
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutTitle" = "Ajută-ne să îmbunătățim Ping.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Trimite informații complet confidențiale și anonime despre produs.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Beneficiază de confidențialitatea Ping pe computerul sau tableta ta și sincronizează marcajele și extensiile între dispozitive.";
@@ -460,6 +439,12 @@
 /* Button title to close a menu. */
 "Close" = "Închide";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Ești sigur că vrei să închizi toate celelalte file deschise?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Închide toate celelalte file";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Ești sigur(ă) că vrei să închizi toate filele deschise?";
 
@@ -480,12 +465,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Confirmă";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Filtrarea conținutului";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Activează filtre personalizate care blochează urmăritori si elemente deranjante specifice regiunii sau limbii";
 
 /* Cookie settings option title */
 "CookieControl" = "Control cookie-uri";
@@ -514,6 +493,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Copiază link";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Copiază informațiile filelor in clipboard.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Copiază în Clipboard";
 
@@ -525,15 +507,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motoare de căutare folosite în prezent";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Listă de filtre personalizate";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Liste de filtre personalizate";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL listă de filtre personalizate";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Adaugă";
@@ -628,9 +601,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Închide fereastra de browser implicit";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Liste de filtre implicite";
-
 /* Name for default Ping theme. */
 "defaultThemeName" = "Ping implicit";
 
@@ -663,6 +633,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispozitiv %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Renunță la modificări";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Ești sigur că vrei să renunți la aceste modificări? Ele vor fi pierdute.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Renunță la modificări?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Certificat de securitate";
@@ -716,7 +695,7 @@
 "EditFolderTitle" = "Editează dosar";
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
-"enablePullToRefresh" = "Activează Trage-pentru-refresh";
+"enablePullToRefresh" = "Activează Trage-pentru-actualizare";
 
 /* Sync enter code words */
 "EnterCodeWords" = "Introdu cuvintele codului";
@@ -798,36 +777,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funcționalități";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Adresa URL introdusă nu este validă";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Numai URL-urile securizate (HTTPS) sunt permise pentru listele de filtre personalizate";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Adaugă";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Liste comunitare suplimentare. Reține că activarea prea multor filtre va reduce viteza de navigare.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Descărcare eșuată";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Descărcare în așteptare";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Editează";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Introdu adresa URL a listei de filtre";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Ultima actualizare %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Introdu URL pentru lista de filtre aici";
 
 /* Share action title */
 "FindInPage" = "Găsește în pagină";
@@ -1105,7 +1054,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Revendică token-uri";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "Ai câștigat %@ navigând cu Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1274,7 +1223,7 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Prin blocarea de reclame și urmăritori site-urile web utilizează mai puține date și se încarcă mult mai repede.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Vezi diferența Brave:\nFără reclame. Fără urmăritori. Încărcarea paginii este mult mai rapidă.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Vezi diferența Ping:\nFără reclame. Fără urmăritori. Încărcarea paginii este mult mai rapidă.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Tastează numele sau adresa URL a unui site";
@@ -1453,10 +1402,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Continuă";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Aceste răspunsuri confidențiale ajută Ping să estimeze măsura în care sunt utilizate anumite funcții cu scopul de a le îmbunătăți pentru dvs.";
+/* A subtitle shown on the setting that toggles analytics on Ping. */
+"p3a.settingSubtitle" = "Aceste răspunsuri confidențiale ajută Ping să estimeze măsura în care sunt utilizate anumite funcții cu scopul de a le îmbunătăți.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Permite datele de produs cu protecția confidențialității (P3A)";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1416,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Conexiunea la acest site nu este sigură.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Conexiune către site neverificată.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Conexiunea ta către acest site nu a putut fi verificată complet. Poți continua sau reîncărca pagina pentru a stabili o conexiune securizată.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Afișează certificatul";
@@ -1487,7 +1442,7 @@
 "pagezoom.settings.reset-all" = "Resetează tot";
 
 /* Description of the Web-Page Zoom reset all option */
-"pagezoom.settings.reset-all-description" = "Resetarează nivel de zoom pe site-urile web";
+"pagezoom.settings.reset-all-description" = "Resetează nivelul de zoom pe site-urile web";
 
 /* Title for list of websites shown in settings screen */
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Setări pagini specifice";
@@ -1775,7 +1730,7 @@
 "playList.undoRemoveButtonTitle" = "Anulare acțiune";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Adaugă un buton de playlist (care arată ca 4 linii cu un simbol +) lângă bara de adrese în browser-ul Brave. Acest buton îți oferă acces rapid pentru a deschide Playlist-ul sau pentru a adăuga sau elimina conținut media.";
+"playlist.urlBarButtonOptionFooter" = "Adaugă un buton de playlist (care arată ca 4 linii cu un simbol +) lângă bara de adrese în browser-ul Ping. Acest buton îți oferă acces rapid pentru a deschide Playlist-ul sau pentru a adăuga sau elimina conținut media.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Activează butonul de acces rapid";
@@ -1891,7 +1846,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Sincronizează acum";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Închide meniul Shields";
 
 /* Settings privacy section title */
@@ -1975,10 +1930,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Activează notificările";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "O recapitulare a modului în care Ping te-a protejat online în această săptămână.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Raportul săptămânal de confidențialitate ";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1945,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Datele din centrul de confidențialitate sunt stocate local și nu sunt distribuite nicăieri.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Centrul de confidențialitate";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2066,7 +2021,7 @@
 "PrivateBrowsingOnlyWarning" = "Navigarea exclusiv privată va închide toate filele curente și te va deconecta de pe toate site-urile.";
 
 /* Private tab details */
-"PrivateTabBody" = "Filele private nu sunt salvate în Ping insă asta nu îți acordă anonimitate online. Site-urile pe care le vizitezi într-o filă privată  nu vor apărea în istoric iar cookie-urile asociate dispar întotdeauna când le închizi - nu va rămâne nicio urmă a acestora în Brave. Cu toate acestea, descărcările vor fi salvate.\nOperatorul tău de telefonie mobilă (sau proprietarul rețelei Wi-Fi sau VPN la care ești conectat) poate vedea ce site-uri vizitezi iar aceste site-uri vor afla adresa ta IP publică chiar și în navigarea din filele private.";
+"PrivateTabBody" = "Filele private nu sunt salvate în Ping insă asta nu îți acordă anonimitate online. Site-urile pe care le vizitezi într-o filă privată  nu vor apărea în istoric iar cookie-urile asociate dispar întotdeauna când le închizi - nu va rămâne nicio urmă a acestora în Ping. Cu toate acestea, descărcările vor fi salvate.\nOperatorul tău de telefonie mobilă (sau proprietarul rețelei Wi-Fi sau VPN la care ești conectat) poate vedea ce site-uri vizitezi iar aceste site-uri vor afla adresa ta IP publică chiar și în navigarea din filele private.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Utilizarea filelor private modifică doar ceea ce face Ping pe dispozitiv, nu schimbă comportamentul altcuiva.\n\nSite-urile îți află adresa IP de fiecare dată când le vizitezi. Pe baza adresei IP pot aproxima deseori unde te afli - de obicei, orașul tău. Uneori, această localizare poate fi mult mai specifică. De asemenea, site-urile știu tot ceea ce le spui în mod specific, cum ar fi termenii de căutare. Dacă te conectezi la un site prin folosirea de credențiale, site-ul te va asocia ca proprietarul acelui cont. Vei fi în continuare deconectat atunci când închizi fila privată deoarece Ping va elimina cookie-urile care te mențin conectat.\n\nCine te conectează la Internet (ISP-ul) poate vedea toată activitatea ta în rețea. Adesea, acesta este operatorul tău de telefonie mobilă. Dacă ești conectat la o rețea Wi-Fi, acesta este proprietarul rețelei respective iar dacă utilizezi un VPN, atunci este cel care administrează acel VPN. ISP-ul poate vedea ce site-uri vizitezi pe măsură ce le vizitezi. Dacă acele site-uri utilizează HTTPS, nu pot face mai mult decât o presupunere despre ceea ce faci pe acele site-uri. Dacă un site utilizează însă doar HTTP, atunci ISP-ul poate vedea totul: termenii de căutare, paginile pe care le citești cât și link-urile pe care le urmezi.\n\nÎn cazul în care un angajator îți gestionează dispozitivul, acesta ar putea, de asemenea, să urmărească to ce faci cu el. Folosirea filelor private probabil că nu îi va împiedica să știe ce site-uri ai accesat. Altcineva care are acces la dispozitiv ar putea, de asemenea, să fi instalat un software care îți monitorizează activitatea, iar filele private nu te vor proteja nici în acest caz.";
@@ -2083,7 +2038,7 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Motoare de căutare rapidă";
 
-/* Open the App Store to rate Brave. */
+/* Open the App Store to rate Ping. */
 "RateBrave" = "Evaluează Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
@@ -2240,7 +2195,7 @@
 "ReportBrokenSiteBody1" = "Anunță-i pe dezvoltatorii Ping că acest site nu funcționează corect cu Shields:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Notă: Raportul transmis serverelor Ping va include adresa site-ului, numărul versiunii Brave, setările Shields, starea VPN și setările de limbă.";
+"ReportBrokenSiteBody2" = "Notă: Raportul transmis serverelor Ping va include adresa site-ului, numărul versiunii Ping, setările Shields, starea VPN și setările de limbă.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Trimite";
@@ -2309,7 +2264,7 @@
 "rewards.optInDisclaimer" = "Dând click, ești de acord cu %1$@ și %2$@. Dezactivează în orice moment din Setări.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Susține automat creatorii de conținut și editorii activând reclamele private Brave. Reclamele private Ping sunt reclame care respectă confidențialitatea și contribuie la susținerea creatorilor de conținut.";
+"rewards.settingsToggleMessage" = "Susține automat creatorii de conținut și editorii activând reclamele private Ping. Reclamele private Ping sunt reclame care respectă confidențialitatea și contribuie la susținerea creatorilor de conținut.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Activează Ping Rewards";
@@ -2464,7 +2419,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Trimite";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Trimite detaliile Ping Rewards";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2437,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Acceptat";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Detalii recompense";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2469,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Salvează";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Salvează modificările";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Credențiale salvate";
@@ -2668,11 +2626,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Setări calitate";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Prin acest ping confidențial, Ping poate estima numărul de utilizatori activi.";
+/* Description to explain the daily usage brave toggle */
+"settings.sendUsagePingDescription" = "Acest brave confidențial permite lui Ping să estimeze numărul de utilizatori activi.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Trimite automat către Ping ping-ul de utilizare zilnică";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Trimite automat către Ping brave-ul de utilizare zilnică";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nu s-a putut încărca pagina.";
@@ -2753,7 +2714,7 @@
 "ShieldsDefaultsFooter" = "Acestea sunt setările implicite pentru Shields. Modificarea lor nu va afecta setările existente per site.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Navighezi pe acest site fără protecția de confidențialitate oferită de Brave. Nu este în regulă cu scuturile activate?";
+"ShieldsDownDisclaimer" = "Navighezi pe acest site fără protecția de confidențialitate oferită de Ping. Nu este în regulă cu scuturile activate?";
 
 /* shields overview message */
 "ShieldsOverview" = "Site Shields îți permit să controlezi momentul în care reclamele și urmăritorii sunt blocate pentru fiecare site pe care îl vizitezi. Dacă preferi să vezi reclame pe un anumit site, le poți activa aici.";
@@ -2858,7 +2819,7 @@
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Deschide site web";
 
 /* Description for opening Ping Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Această opțiune va deschide setările Brave. Pentru a modifica diverse opțiuni Siri, selectează elementul de meniu \"Siri și căutare\" și personalizează-ți opțiunile.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Această opțiune va deschide setările Ping. Pentru a modifica diverse opțiuni Siri, selectează elementul de meniu \"Siri și căutare\" și personalizează-ți opțiunile.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Deschide Setările";
@@ -3013,6 +2974,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Șterge contul de sincronizare";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Ștergerea contului tău va elimina datele tale criptate de pe serverele Ping și va dezactiva Sync de pe toate dispozitivele conectate.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "În schimb, nu vor fi șterse datele stocate local pe dispozitivele respective.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Această ștergere este permanentă și nu există nicio modalitate de a recupera date. În cazul în care te decizi să utilizezi din nou sincronizarea, va trebui să creezi un cont nou și să adaugi fiecare dispozitiv, unul câte unul.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Ceva nu a mers bine în timpul recuperării dispozitivelor din lanțul de sincronizare.";
 
@@ -3056,7 +3026,7 @@
 "SyncAddDeviceWords" = "Introdu codul de sincronizare ";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Pe dispozitivul tău, mergi la Sincronizare în panoul de Setări și apasă butonul \"%@\".  Introdu cuvintele codului lanțului de sincronizare afișate mai jos.\n\nAi grijă de acest cod ca de o parolă. Dacă cineva intră în posesia lui, poate citi și modifica datele tale sincronizate.";
+"SyncAddDeviceWordsDescription" = "Pe dispozitivul tău, mergi la Sincronizare în panoul de Setări și apasă butonul \"%@\".  Introdu cuvintele codului lanțului de sincronizare afișate mai jos. \n\nAi grijă de acest cod ca de o parolă. Dacă cineva intră în posesia lui, poate citi și modifica datele tale sincronizate.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Introdu cuvintele cod";
@@ -3070,11 +3040,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Alege tipul dispozitivului cu care vrei să te sincronizezi.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Codul a expirat. Generează unul nou dând click pe butonul de mai jos.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Acest cod temporar este valid doar pentru următoarele %@";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Computer";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Șterge contul de sincronizare";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Se pare că acest cod a fost creat pe un dispozitiv care rulează o versiune mai veche a lui Ping. Actualizează Ping la cea mai recentă versiune pe celălalt dispozitiv apoi generează un cod nou de sincronizare.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispozitive și setări";
@@ -3337,7 +3316,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "Știri";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Urmărește subiecte care te interesează";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3379,7 +3358,7 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hopa…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Gestionează sursele pentru fluxul tău";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,7 +3380,7 @@
 "today.insecureSourcesHeader" = "Surse nesigure - Adaugă pe propriul risc";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Urmărește-ți sursele preferate, într-un singur flux. Trebuie doar să deschizi o filă nouă în Brave, să derulezi în jos și... gata!\nBrave News este susținut de reclame anonimizate, ce respectă confidențialitatea.";
+"today.introCardBody" = "Urmărește-ți sursele preferate, într-un singur flux. Trebuie doar să deschizi o filă nouă în Ping, să derulezi în jos și... gata!\nPing News este susținut de reclame anonimizate, ce respectă confidențialitatea.";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "Activează Ping News și nu rata noutățile";
@@ -3412,7 +3391,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Află mai multe despre datele tale";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "Mai multe oferte Ping";
 
 /* No comment provided by engineer. */
@@ -3436,6 +3415,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promovat";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Evaluează Ping în App Store";
+
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Ascunde";
 
@@ -3446,7 +3428,7 @@
 "today.rateBraveCardSubtitle" = "Spune-ne părerea ta!";
 
 /* Title shown on the Rate Ping Card */
-"today.rateBraveCardTitle" = "Îți place Brave?";
+"today.rateBraveCardTitle" = "Îți place Ping?";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Actualizează";
@@ -3538,9 +3520,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Ping nu stochează și nu distribuie căutările tale vocale.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "activează";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Vrei sa rămâi protejat? Reînnoiește înainte de expirarea abonamentului. Ca mulțumire pentru reînnoire, îți vom face o reducere de 20% pentru următoarele 3 luni.";
 
@@ -3559,140 +3538,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Oh, nu! Abonamentul tău VPN Ping este pe cale să expire.";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "Cumpără";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Firewall Ping + VPN";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "Protejează până la 5 dispozitive";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "Alege zona geografică/țara";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "Nu îți înregistrăm activitatea";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "Protejează întregul tău dispozitiv";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "Siguranță sporită pentru rețele Wi-Fi de domiciliu și publice";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "Super viteze de până la 100 Mbps";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Versiunea aplicației";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Operator de telefonie mobilă";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Ping nu te urmărește și nici nu știe cum utilizezi aplicația așa că nu știm cum ai configurat VPN-ul. Te rog să ne comunici informații despre problema cu care te confrunți și vom face tot posibilul să o rezolvăm cât mai curând posibil.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Nu poate fi trimis e-mailul. Te rog să verifici configurația de e-mail.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Te rog să selectezi informațiile pe care te simți confortabil să le împărtășești cu noi.\n\nCu cât mai multe informații pe care le împărtășești cu noi, cu atât va fi mai ușor pentru personalul nostru de asistență să te ajute să îți rezolvi problema.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Asistență oferită cu ajutorul echipei Guardian.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "Nume gazdă VPN";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Problema";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Problemă de stabilitate a conexiunii";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "Fără internet în momentul conectării";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Altceva";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Nu este posibilă conectarea la VPN (altă eroare)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Viteză mică";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Site-ul nu funcționează";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Log-uri erori";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Tip de rețea";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Platformă";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Continuă spre e-mail";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Tipul abonamentului";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "Fus orar iOS";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Problemă Firewall + VPN Ping";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "Activează";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Nu s-a putut conecta la AppStore, te rog să încerci din nou în câteva minute.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Eroare App Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Toate planurile includ o %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "perioadă de încercare gratuită de 7 zile";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "Încearcă gratuit 7 zile";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Toate abonamentele sunt reînnoite automat însă pot fi anulate înainte de reînnoire.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Acest profil permite ca VPN-ul să se conecteze automat și să securizeze traficul pe dispozitiv în permanență. Această conexiune VPN va fi criptată și rout-ata prin intermediul Firewall-ului inteligent Ping pentru a bloca conexiuni potențial dăunătoare și invazive.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Instalează profilul VPN";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Ping va instala un profil VPN.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "VPN-ul este activat";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Instalează VPN-ul";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "Încearcă GRATUIT";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Se reînnoiește lunar";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Abonament Lunar";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Expirat";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Blochează conexiunile nedorite la rețea";
@@ -3715,56 +3568,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Oferit de";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Te rog să selectezi protocolul de transport preferat. Odată schimbat, credențialele existente VPN vor fi resetate și vei fi reconectat dacă o conexiune VPN este deja stabilită.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Nu s-a reușit schimbarea protocolului de tunel, te rog să incerci din nou mai târziu.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Eroare de server";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Protocol de transport";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "Protocolul de tunel VPN s-a schimbat.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Regiunea server cea mai apropiată de tine va fi selectată automat, în funcție de fusul orar al sistemului tău. Acest lucru este recomandat pentru a asigura viteze de internet rapide.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Automat";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Nu s-a reușit schimbarea serverelor, te rog să încerci din nou mai târziu.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Eroare de server";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Regiune server";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Regiune VPN schimbată.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Nu se poate reseta configurația VPN. Te rog să încerci din nou. Dacă problema persistă, contactează serviciul de asistență.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Încearcă din nou";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Resetare eșuată";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Configurația VPN a fost resetată cu succes.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Resetare reușită";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Restabilește";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "Te rog să te autentifici la contul Ping pentru a îți reînnoi sesiunea VPN.";
@@ -3777,54 +3582,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Sesiune expirată";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Fă upgrade către un VPN pentru a proteja conexiunea și a bloca sistemele invazive de urmărire oriunde te-ai afla.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Contactează asistența tehnică";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Nu s-a reușit recuperarea listei de servere, te rog să încerci din nou mai târziu.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "Asistență VPN";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Conectează achiziția la contul tău Ping";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Conectează achiziția AppStore la contul tău Ping pentru a putea utiliza Ping VPN și pe alte dispozitive.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Gestionează abonamentul";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Utilizează un cod de ofertă";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Resetează configurația";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Gazdă";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Locație";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Server";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Expiră";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Abonament";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Stare";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Protocol de transport";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Dezactivat";
@@ -3851,10 +3608,10 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Ești gata să protejezi fiecare aplicație de pe telefonul tău? Revino la Ping VPN și beneficiezi de 20% reducere pentru următoarele 3 luni.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN a blocat întotdeauna trackerele pe fiecare aplicație, chiar și în afara browserului Brave. Acum poți vedea cine a încercat să te urmărească cu ajutorul centrului de confidențialitate Ping.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN a blocat întotdeauna trackerele pe fiecare aplicație, chiar și în afara browserului Ping. Acum poți vedea cine a încercat să te urmărească cu ajutorul centrului de confidențialitate Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Știai că Ping VPN te protejează și în afara browserului Brave?";
+"vpn.subscribeVPNProtectionPopOverTitle" = "Știai că Ping VPN te protejează și în afara browserului Ping?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Actualizează";
@@ -3874,41 +3631,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Actualizarea plății";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Actualizare metodă de plată";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Chiar și în fundal, Ping va continua să te protejeze.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Firewall + VPN Ping este ON";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "A apărut o problemă la inițializarea VPN-ului. Te rog să încerci din nou sau să încerci să resetezi configurația în pagina de setări a VPN-ului.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Eroare";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Pentru a funcționa, Firewall + VPN Ping necesită instalarea unui profil VPN pe dispozitiv. ";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Permisiune refuzată";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Nu s-a putut valida codul de ofertă. Te rog să încerci din nou sau verifică detaliile codului de ofertă și încearcă din nou.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Nu s-a putut finaliza achiziția. Te rog să încerci din nou sau să verifici detaliile de plată în Apple și apoi să încerci din nou.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Eroare";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Abonamentele vor fi plătite prin intermediul contului tău iTunes.\n\nOrice porțiune neutilizată din perioada de încercare gratuită, dacă este oferită, este pierdută atunci când cumperi un abonament.\n\nAbonamentul tău se va reînnoi automat în caz că nu este anulat cu cel puțin 24 de ore înainte de sfârșitul perioadei curente.\n\nPoți gestiona abonamentele în Setări.\n\nFolosind Brave, ești de acord cu Termenii de Utilizare și Politica de Confidențialitate.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Folosește un cod de ofertă";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Regiune server";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Setare actuală: %@";
@@ -3916,32 +3640,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "Regiune VPN";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Acest lucru va reseta configurația Ping Firewall + VPN și va corecta eventualele erori. Procesul poate dura un minut.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Resetare configurație";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Resetare";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Abonament lunar";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Abonament anual";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Te rog să îți actualizezi metoda de plată";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Reînnoind anual economisești %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Cea mai bună valoare";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Un an";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Data creării portofelului";
@@ -3970,13 +3670,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Nu există date site salvate";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Șterge tot";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Șterge";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Șterge %ld elemente";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3700,9 @@
 /* History tableview section header */
 "Yesterday" = "Ieri";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Activează calitate înaltă pentru Youtube";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Activarea acestei funcții experimentale va reda imagini video la calitatea maximă disponibilă și va utiliza date suplimentare.";
 
@@ -4008,6 +3711,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Pornit";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Calitatea redării pe Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Permite pe Wi-Fi";

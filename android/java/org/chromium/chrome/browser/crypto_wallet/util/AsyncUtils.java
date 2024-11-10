@@ -13,8 +13,10 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.SolanaFeeEstimation;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
@@ -23,7 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class AsyncUtils {
-    private final static String TAG = "AsyncUtils";
+    private static final String TAG = "AsyncUtils";
 
     // Helper to track multiple wallet services responses
     public static class MultiResponseHandler {
@@ -48,16 +50,17 @@ public class AsyncUtils {
             }
         }
 
-        public Runnable singleResponseComplete = new Runnable() {
-            @Override
-            public void run() {
-                synchronized (mLock) {
-                    mCurrentElements++;
-                    assert mCurrentElements <= mTotalElements;
-                    checkAndRunCompletedAction();
-                }
-            }
-        };
+        public Runnable singleResponseComplete =
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        synchronized (mLock) {
+                            mCurrentElements++;
+                            assert mCurrentElements <= mTotalElements;
+                            checkAndRunCompletedAction();
+                        }
+                    }
+                };
 
         private void checkAndRunCompletedAction() {
             if (mCurrentElements == mTotalElements && mWhenAllCompletedRunnable != null) {
@@ -100,8 +103,12 @@ public class AsyncUtils {
         }
 
         // For GetSplTokenAccountBalance
-        public void callSplBase(String amount, Integer decimals, String uiAmountString,
-                Integer error, String errorMessage) {
+        public void callSplBase(
+                String amount,
+                Integer decimals,
+                String uiAmountString,
+                Integer error,
+                String errorMessage) {
             this.decimals = decimals;
             this.uiAmountString = uiAmountString;
             this.callBase(amount, error, errorMessage);
@@ -198,8 +205,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetAllTransactionInfoResponseContext
-            extends SingleResponseBaseContext implements TxService.GetAllTransactionInfo_Response {
+    public static class GetAllTransactionInfoResponseContext extends SingleResponseBaseContext
+            implements TxService.GetAllTransactionInfo_Response {
         public TransactionInfo[] txInfos;
         public String name;
 
@@ -230,21 +237,6 @@ public class AsyncUtils {
         public void call(boolean success, AssetTimePrice[] timePrices) {
             this.success = success;
             this.timePrices = timePrices;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
-    public static class GetNetworkResponseContext
-            extends SingleResponseBaseContext implements JsonRpcService.GetAllNetworks_Response {
-        public NetworkInfo[] networkInfos;
-
-        public GetNetworkResponseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-            networkInfos = new NetworkInfo[0];
-        }
-        @Override
-        public void call(NetworkInfo[] networkInfos) {
-            this.networkInfos = networkInfos;
             super.fireResponseCompleteCallback();
         }
     }
@@ -291,7 +283,8 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(Integer coinType,
+        public void call(
+                Integer coinType,
                 HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
             this.coinType = coinType;
             this.blockchainTokensBalances = blockchainTokensBalances;
@@ -300,8 +293,11 @@ public class AsyncUtils {
     }
 
     public static class GetTxExtraInfoResponseContext extends SingleResponseBaseContext
-            implements Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[],
-                    HashMap<String, Double>, HashMap<String, HashMap<String, Double>>> {
+            implements Callbacks.Callback4<
+                    HashMap<String, Double>,
+                    BlockchainToken[],
+                    HashMap<String, Double>,
+                    HashMap<String, HashMap<String, Double>>> {
         public HashMap<String, Double> assetPrices;
         public BlockchainToken[] tokenList;
         public HashMap<String, Double> nativeAssetsBalances;
@@ -312,7 +308,9 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(HashMap<String, Double> assetPrices, BlockchainToken[] tokenList,
+        public void call(
+                HashMap<String, Double> assetPrices,
+                BlockchainToken[] tokenList,
                 HashMap<String, Double> nativeAssetsBalances,
                 HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
             this.assetPrices = assetPrices;
@@ -324,7 +322,7 @@ public class AsyncUtils {
     }
 
     public static class GetSolanaEstimatedTxFeeResponseContext extends SingleResponseBaseContext
-            implements SolanaTxManagerProxy.GetEstimatedTxFee_Response {
+            implements SolanaTxManagerProxy.GetSolanaTxFeeEstimation_Response {
         public Long fee;
         public Integer error;
         public String errorMessage;
@@ -335,8 +333,11 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(long fee, int error, String errorMessage) {
-            this.fee = fee;
+        public void call(SolanaFeeEstimation fee, int error, String errorMessage) {
+            this.fee =
+                    fee.baseFee
+                            + (((long) fee.computeUnits * fee.feePerComputeUnit)
+                                    / BraveWalletConstants.MICRO_LAMPORTS_PER_LAMPORT);
             this.error = error;
             this.errorMessage = errorMessage;
             super.fireResponseCompleteCallback();
@@ -358,7 +359,7 @@ public class AsyncUtils {
         }
     }
 
-    public static abstract class BaseGetNftMetadataContext extends SingleResponseBaseContext {
+    public abstract static class BaseGetNftMetadataContext extends SingleResponseBaseContext {
         public BlockchainToken asset;
         public String tokenMetadata;
         public Integer errorCode;
@@ -401,8 +402,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetNetworkAllTokensContext
-            extends SingleResponseBaseContext implements BlockchainRegistry.GetAllTokens_Response {
+    public static class GetNetworkAllTokensContext extends SingleResponseBaseContext
+            implements BlockchainRegistry.GetAllTokens_Response {
         public BlockchainToken[] tokens;
         public NetworkInfo networkInfo;
 

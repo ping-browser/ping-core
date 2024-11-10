@@ -7,11 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_TOKENS_UTIL_H_
 
 #include <optional>
-#include <string>
 #include <vector>
 
-#include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 
 namespace brave_ads {
 
@@ -20,7 +19,6 @@ class BlindedToken;
 class PublicKey;
 class SignedToken;
 class Token;
-class UnblindedToken;
 }  // namespace cbr
 
 std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict);
@@ -28,8 +26,7 @@ std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict);
 std::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
     const base::Value::Dict& dict);
 
-base::expected<std::vector<cbr::UnblindedToken>, std::string>
-ParseVerifyAndUnblindTokens(
+std::optional<std::vector<cbr::UnblindedToken>> ParseVerifyAndUnblindTokens(
     const base::Value::Dict& dict,
     const std::vector<cbr::Token>& tokens,
     const std::vector<cbr::BlindedToken>& blinded_tokens,

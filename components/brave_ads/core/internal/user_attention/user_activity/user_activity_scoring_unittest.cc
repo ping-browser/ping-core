@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-class BraveAdsUserActivityScoringTest : public UnitTestBase {};
+class BraveAdsUserActivityScoringTest : public test::TestBase {};
 
 TEST_F(BraveAdsUserActivityScoringTest, GetUserActivityScore) {
   // Arrange
@@ -104,7 +104,7 @@ TEST_F(BraveAdsUserActivityScoringTest,
           base::Hours(1));
 
   // Act & Assert
-  EXPECT_EQ(0.0, GetUserActivityScore(triggers, events));
+  EXPECT_DOUBLE_EQ(0.0, GetUserActivityScore(triggers, events));
 }
 
 TEST_F(BraveAdsUserActivityScoringTest,
@@ -197,7 +197,7 @@ TEST_F(BraveAdsUserActivityScoringTest,
           base::Hours(1));
 
   // Act & Assert
-  EXPECT_EQ(0.0, GetUserActivityScore(triggers, events));
+  EXPECT_DOUBLE_EQ(0.0, GetUserActivityScore(triggers, events));
 }
 
 }  // namespace brave_ads

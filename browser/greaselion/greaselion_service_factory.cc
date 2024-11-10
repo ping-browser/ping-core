@@ -8,12 +8,15 @@
 #include <memory>
 #include <string>
 
+#include "base/check_is_test.h"
 #include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "brave/components/greaselion/browser/greaselion_service_impl.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -35,6 +38,19 @@ class GreaselionServiceDelegateImpl
       content::BrowserContext* browser_context)
       : browser_context_(browser_context) {
     DCHECK(browser_context_);
+    pref_change_registrar_.Init(
+        Profile::FromBrowserContext(browser_context)->GetPrefs());
+    pref_change_registrar_.Add(
+        brave_rewards::prefs::kEnabled,
+        base::BindRepeating(
+            &GreaselionServiceDelegateImpl::UpdateGreaselionExtensions,
+            base::Unretained(this)));
+  }
+
+  bool IsEnabled() const override {
+    return Profile::FromBrowserContext(browser_context_)
+        ->GetPrefs()
+        ->GetBoolean(brave_rewards::prefs::kEnabled);
   }
 
   void AddExtension(extensions::Extension* extension) override {
@@ -55,7 +71,16 @@ class GreaselionServiceDelegateImpl
   }
 
  private:
+  void UpdateGreaselionExtensions() {
+    auto* service =
+        GreaselionServiceFactory::GetForBrowserContext(browser_context_);
+    if (service) {
+      service->UpdateInstalledExtensions();
+    }
+  }
+
   raw_ptr<content::BrowserContext> browser_context_;  // Not owned
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace
@@ -89,7 +114,8 @@ GreaselionServiceFactory::GreaselionServiceFactory()
 
 GreaselionServiceFactory::~GreaselionServiceFactory() = default;
 
-KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+GreaselionServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   extensions::ExtensionSystem* extension_system =
       extensions::ExtensionSystem::Get(context);
@@ -97,17 +123,18 @@ KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
       extensions::ExtensionRegistry::Get(context);
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       extensions::GetExtensionFileTaskRunner();
-  greaselion::GreaselionDownloadService* download_service = nullptr;
-  // Brave browser process may be null if we are being created within a unit
-  // test.
-  if (g_brave_browser_process)
-    download_service = g_brave_browser_process->greaselion_download_service();
-  std::unique_ptr<GreaselionServiceImpl> greaselion_service(
-      new GreaselionServiceImpl(
-          download_service, GetInstallDirectory(), extension_system,
-          extension_registry, task_runner,
-          std::make_unique<GreaselionServiceDelegateImpl>(context)));
-  return greaselion_service.release();
+  auto* download_service =
+      g_brave_browser_process->greaselion_download_service();
+  // download service can be null in tests
+  if (!download_service) {
+    CHECK_IS_TEST();
+    return nullptr;
+  }
+
+  return std::make_unique<GreaselionServiceImpl>(
+      download_service, GetInstallDirectory(), extension_system,
+      extension_registry, task_runner,
+      std::make_unique<GreaselionServiceDelegateImpl>(context));
 }
 
 bool GreaselionServiceFactory::ServiceIsNULLWhileTesting() const {

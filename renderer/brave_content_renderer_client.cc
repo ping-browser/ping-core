@@ -26,6 +26,7 @@
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
+#include "chrome/renderer/process_state.h"
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
@@ -89,6 +90,9 @@ void BraveContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
   blink::WebRuntimeFeatures::EnableFledge(false);
+  // Disable topics APIs because kBrowsingTopics feature is disabled
+  blink::WebRuntimeFeatures::EnableTopicsAPI(false);
+  blink::WebRuntimeFeatures::EnableTopicsDocumentAPI(false);
   blink::WebRuntimeFeatures::EnableWebGPUExperimentalFeatures(false);
   blink::WebRuntimeFeatures::EnableWebNFC(false);
 
@@ -102,9 +106,6 @@ void BraveContentRendererClient::
         "FileSystemAccessAPIExperimental", false);
   }
   blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
-  if (!base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI)) {
-    blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
-  }
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   if (base::FeatureList::IsEnabled(
@@ -159,7 +160,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature) &&
-      !ChromeRenderThreadObserver::is_incognito_process()) {
+      !chrome::IsIncognitoProcess()) {
     new skus::SkusRenderFrameObserver(render_frame);
   }
 
@@ -183,9 +184,12 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-      !ChromeRenderThreadObserver::is_incognito_process()) {
-    new playlist::PlaylistRenderFrameObserver(render_frame,
-                                              ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+      !chrome::IsIncognitoProcess()) {
+    new playlist::PlaylistRenderFrameObserver(
+        render_frame, base::BindRepeating([] {
+          return BraveRenderThreadObserver::GetDynamicParams().playlist_enabled;
+        }),
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
 }
@@ -238,13 +242,14 @@ void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
     v8::Local<v8::Context> v8_context,
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
-    const GURL& script_url) {
+    const GURL& script_url,
+    const blink::ServiceWorkerToken& service_worker_token) {
   brave_search_service_worker_holder_.WillEvaluateServiceWorkerOnWorkerThread(
       context_proxy, v8_context, service_worker_version_id,
       service_worker_scope, script_url);
   ChromeContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
       context_proxy, v8_context, service_worker_version_id,
-      service_worker_scope, script_url);
+      service_worker_scope, script_url, service_worker_token);
 }
 
 void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(

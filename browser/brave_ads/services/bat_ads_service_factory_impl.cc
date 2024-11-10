@@ -12,7 +12,7 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/single_thread_task_runner_thread_mode.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_ads/services/service_sandbox_type.h"  // IWYU pragma: keep
+#include "brave/browser/brave_ads/services/service_sandbox_type.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -27,21 +27,23 @@ namespace {
 
 // Binds the `receiver` to a new provider on a background task runner.
 void BindInProcessBatAdsService(
-    mojo::PendingReceiver<bat_ads::mojom::BatAdsService> receiver) {
+    mojo::PendingReceiver<bat_ads::mojom::BatAdsService>
+        bat_ads_service_pending_receiver) {
   mojo::MakeSelfOwnedReceiver(std::make_unique<bat_ads::BatAdsServiceImpl>(),
-                              std::move(receiver));
+                              std::move(bat_ads_service_pending_receiver));
 }
 
 // Launches an in process Bat Ads Service.
 mojo::Remote<bat_ads::mojom::BatAdsService> LaunchInProcessBatAdsService() {
-  mojo::Remote<bat_ads::mojom::BatAdsService> remote;
+  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote;
   base::ThreadPool::CreateSingleThreadTaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives()},
       base::SingleThreadTaskRunnerThreadMode::DEDICATED)
-      ->PostTask(FROM_HERE,
-                 base::BindOnce(&BindInProcessBatAdsService,
-                                remote.BindNewPipeAndPassReceiver()));
-  return remote;
+      ->PostTask(
+          FROM_HERE,
+          base::BindOnce(&BindInProcessBatAdsService,
+                         bat_ads_service_remote.BindNewPipeAndPassReceiver()));
+  return bat_ads_service_remote;
 }
 
 // Launches a new Bat Ads Service utility process.

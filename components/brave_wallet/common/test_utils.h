@@ -14,12 +14,19 @@
 namespace brave_wallet {
 
 bool AllCoinsTested();
+bool AllKeyringsTested();
+
+inline constexpr char kHttpURL[] = "http://bad.com/";
+inline constexpr char kHttpLocalhostURL[] = "http://localhost:8080/";
 
 mojom::NetworkInfo GetTestNetworkInfo1(
     const std::string& chain_id = "chain_id",
     mojom::CoinType coin = mojom::CoinType::ETH);
 mojom::NetworkInfo GetTestNetworkInfo2(
     const std::string& chain_id = "chain_id2",
+    mojom::CoinType coin = mojom::CoinType::ETH);
+mojom::NetworkInfo GetTestNetworkInfoWithHttpURL(
+    const std::string& chain_id = "http_url",
     mojom::CoinType coin = mojom::CoinType::ETH);
 
 // Matcher to check equality of two mojo structs. Matcher needs copyable value
@@ -38,6 +45,9 @@ void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os);
 void PrintTo(const BlockchainTokenPtr& token, ::std::ostream* os);
 void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os);
 void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os);
+void PrintTo(const BitcoinAccountInfoPtr& account_info, ::std::ostream* os);
+void PrintTo(const BtcHardwareTransactionSignInputDataPtr& input_data,
+             ::std::ostream* os);
 
 }  // namespace mojom
 

@@ -16,15 +16,17 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 
@@ -46,14 +48,7 @@ double ProjectToRange(double value, double min, double max) {
 }
 
 base::flat_map<std::string, double> GetVisitWeightings(
-    const Publishers& publishers,
     const history::QueryResults& history) {
-  // Get a flat list of hostnames from publishers
-  base::flat_set<std::string> publisher_hosts;
-  for (const auto& [_, publisher] : publishers) {
-    publisher_hosts.insert(publisher->site_url.host());
-  }
-
   // Score hostnames from browsing history by how many times they appear
   base::flat_map<std::string, double> weightings;
   for (const auto& entry : history) {
@@ -78,8 +73,9 @@ base::flat_map<std::string, double> GetVisitWeightings(
 }
 
 // Get score for having visited a source.
-double GetVisitWeighting(const mojom::PublisherPtr& publisher,
-                         base::flat_map<std::string, double> visit_weightings) {
+double GetVisitWeighting(
+    const mojom::PublisherPtr& publisher,
+    const base::flat_map<std::string, double>& visit_weightings) {
   const auto host_name = publisher->site_url.host();
   auto it = visit_weightings.find(host_name);
   if (it == visit_weightings.end()) {
@@ -133,58 +129,60 @@ SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
 SuggestionsController::SuggestionsController(
     PublishersController* publishers_controller,
     api_request_helper::APIRequestHelper* api_request_helper,
-    history::HistoryService* history_service)
+    BackgroundHistoryQuerier& history_querier)
     : publishers_controller_(publishers_controller),
       api_request_helper_(api_request_helper),
-      history_service_(history_service),
+      history_querier_(history_querier),
       on_current_update_complete_(new base::OneShotEvent()) {}
 SuggestionsController::~SuggestionsController() = default;
 
 void SuggestionsController::GetSuggestedPublisherIds(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     GetSuggestedPublisherIdsCallback callback) {
   GetOrFetchSimilarityMatrix(
       subscriptions,
       base::BindOnce(
-          [](SuggestionsController* controller,
-             const BraveNewsSubscriptions& subscriptions,
+          [](base::WeakPtr<SuggestionsController> controller,
+             const SubscriptionsSnapshot& subscriptions,
              GetSuggestedPublisherIdsCallback callback) {
+            if (!controller) {
+              return;
+            }
             controller->publishers_controller_->GetOrFetchPublishers(
                 subscriptions,
                 base::BindOnce(
-                    [](SuggestionsController* controller,
+                    [](base::WeakPtr<SuggestionsController> controller,
                        GetSuggestedPublisherIdsCallback callback,
                        Publishers publishers) {
-                      history::QueryOptions options;
-                      options.max_count = 2000;
-                      options.SetRecentDayRange(14);
-                      controller->history_service_->QueryHistory(
-                          std::u16string(), options,
-                          base::BindOnce(
-                              [](SuggestionsController* controller,
-                                 Publishers publishers,
-                                 GetSuggestedPublisherIdsCallback callback,
-                                 history::QueryResults results) {
-                                auto result =
-                                    controller
-                                        ->GetSuggestedPublisherIdsWithHistory(
-                                            publishers, results);
-                                std::move(callback).Run(std::move(result));
-                              },
-                              base::Unretained(controller),
-                              std::move(publishers), std::move(callback)),
-                          &controller->task_tracker_);
+                      if (!controller) {
+                        return;
+                      }
+                      controller->history_querier_->Run(base::BindOnce(
+                          [](base::WeakPtr<SuggestionsController> controller,
+                             Publishers publishers,
+                             GetSuggestedPublisherIdsCallback callback,
+                             history::QueryResults results) {
+                            if (!controller) {
+                              return;
+                            }
+                            auto result =
+                                controller->GetSuggestedPublisherIdsWithHistory(
+                                    publishers, results);
+                            std::move(callback).Run(std::move(result));
+                          },
+                          controller, std::move(publishers),
+                          std::move(callback)));
                     },
-                    base::Unretained(controller), std::move(callback)));
+                    controller, std::move(callback)));
           },
-          base::Unretained(this), subscriptions, std::move(callback)));
+          weak_ptr_factory_.GetWeakPtr(), subscriptions, std::move(callback)));
 }
 
 std::vector<std::string>
 SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     const Publishers& publishers,
     const history::QueryResults& history) {
-  const auto visit_weightings = GetVisitWeightings(publishers, history);
+  const auto visit_weightings = GetVisitWeightings(history);
   base::flat_map<std::string, double> scores;
 
   for (const auto& [publisher_id, publisher] : publishers) {
@@ -275,7 +273,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
 }
 
 void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
-    const BraveNewsSubscriptions& subscriptions) {
+    const SubscriptionsSnapshot& subscriptions) {
   if (is_update_in_progress_) {
     return;
   }
@@ -284,14 +282,21 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
   publishers_controller_->GetLocale(
       subscriptions,
       base::BindOnce(
-          [](SuggestionsController* controller,
-             const BraveNewsSubscriptions& subscriptions,
+          [](base::WeakPtr<SuggestionsController> controller,
+             const SubscriptionsSnapshot& subscriptions,
              const std::string& locale) {
+            if (!controller) {
+              return;
+            }
             controller->publishers_controller_->GetOrFetchPublishers(
                 subscriptions,
                 base::BindOnce(
-                    [](SuggestionsController* controller,
+                    [](base::WeakPtr<SuggestionsController> controller,
                        const std::string& locale, Publishers publishers) {
+                      if (!controller) {
+                        return;
+                      }
+
                       const GURL url(
                           "https://" + brave_news::GetHostname() +
                           "/source-suggestions/source_similarity_t10." +
@@ -299,10 +304,14 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
                       controller->api_request_helper_->Request(
                           "GET", url, "", "",
                           base::BindOnce(
-                              [](SuggestionsController* controller,
+                              [](base::WeakPtr<SuggestionsController>
+                                     controller,
                                  std::string locale,
                                  api_request_helper::APIRequestResult
                                      api_request_result) {
+                                if (!controller) {
+                                  return;
+                                }
                                 controller->locale_ = locale;
                                 controller->similarities_ =
                                     ParseSimilarityResponse(
@@ -313,18 +322,18 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
                                 controller->on_current_update_complete_ =
                                     std::make_unique<base::OneShotEvent>();
                               },
-                              base::Unretained(controller), locale),
+                              controller, locale),
                           {},
                           {.auto_retry_on_network_change = true,
                            .timeout = GetDefaultRequestTimeout()});
                     },
-                    base::Unretained(controller), locale));
+                    controller, locale));
           },
-          base::Unretained(this), subscriptions));
+          weak_ptr_factory_.GetWeakPtr(), subscriptions));
 }
 
 void SuggestionsController::GetOrFetchSimilarityMatrix(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     base::OnceClosure callback) {
   if (!similarities_.empty() && !is_update_in_progress_) {
     std::move(callback).Run();

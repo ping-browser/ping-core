@@ -9,23 +9,23 @@
 
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
-#include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "chrome/browser/ui/views/chrome_layout_provider.h"
-#include "chrome/browser/ui/views/tabs/new_tab_button.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/gfx/geometry/point_f.h"
-#include "ui/gfx/geometry/rect.h"
-#include "ui/gfx/geometry/size.h"
-#include "ui/gfx/geometry/skia_conversions.h"
-#include "ui/views/layout/layout_provider.h"
 
 BraveTabSearchButton::BraveTabSearchButton(
     TabStripController* tab_strip_controller,
     Edge flat_edge)
     : TabSearchButton(tab_strip_controller, flat_edge) {
+  // Resetting the tab search bubble host first, to avoid a dangling in
+  // `BraveTabSearchButton`, triggered `TabSearchBubbleHost` calling
+  // `SetButtonController` and in the process destroying the still alive
+  // `MenuButtonController` through a move assignment, leaving a dangliing
+  // pointer behind.
+  tab_search_bubble_host_ = nullptr;
+
   tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
       this, tab_strip_controller->GetProfile());
 
@@ -35,15 +35,6 @@ BraveTabSearchButton::BraveTabSearchButton(
 }
 
 BraveTabSearchButton::~BraveTabSearchButton() = default;
-
-gfx::Size BraveTabSearchButton::CalculatePreferredSize() const {
-  auto size = BraveNewTabButton::GetButtonSize();
-  if (tabs::features::HorizontalTabsUpdateEnabled()) {
-    auto insets = GetInsets();
-    size.Enlarge(insets.width(), insets.height());
-  }
-  return size;
-}
 
 void BraveTabSearchButton::SetBubbleArrow(views::BubbleBorder::Arrow arrow) {
   static_cast<BraveTabSearchBubbleHost*>(tab_search_bubble_host_.get())
@@ -71,8 +62,7 @@ void BraveTabSearchButton::UpdateColors() {
 }
 
 int BraveTabSearchButton::GetCornerRadius() const {
-  return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::Emphasis::kMaximum, GetContentsBounds().size());
+  return TabStripControlButton::GetCornerRadius();
 }
 
 BEGIN_METADATA(BraveTabSearchButton)

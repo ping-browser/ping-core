@@ -31,3 +31,7 @@ void WalletPageHandler::ShowApprovePanelUI() {
 void WalletPageHandler::ShowWalletBackupUI() {
   NOTREACHED();
 }
+
+void WalletPageHandler::UnlockWalletUI() {
+  NOTREACHED();
+}

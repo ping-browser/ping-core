@@ -68,7 +68,7 @@ extension Strings {
       "focusOnboarding.p3aToggleTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Share Completely Private & Anonymous Product Insights.",
+      value: "Share Private & Anonymous Product Insights.",
       comment: "The title of the toggle for enable / disable the privacy preserving analytics."
     )
 
@@ -118,6 +118,14 @@ extension Strings {
       bundle: .module,
       value: "Start Browsing",
       comment: "The title of the button that finishes the onboarding without setting default"
+    )
+
+    public static let notNowActionButtonTitle = NSLocalizedString(
+      "focusOnboarding.notNowActionButtonTitle",
+      tableName: "FocusOnboarding",
+      bundle: .module,
+      value: "Not Now",
+      comment: "The title of the button that closes the default browser full screen callout"
     )
 
     public static let urlBarIndicatorTitle = NSLocalizedString(

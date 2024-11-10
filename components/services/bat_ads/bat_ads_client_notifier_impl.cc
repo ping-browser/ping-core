@@ -10,128 +10,143 @@
 namespace bat_ads {
 
 BatAdsClientNotifierImpl::BatAdsClientNotifierImpl(
-    mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
-    : pending_receiver_(std::move(client_notifier)) {}
+    mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+        bat_ads_client_notifier_pending_receiver)
+    : bat_ads_client_notifier_pending_receiver_(
+          std::move(bat_ads_client_notifier_pending_receiver)) {
+  bat_ads_client_notifier_receiver_.Bind(
+      std::move(bat_ads_client_notifier_pending_receiver_));
+}
 
 BatAdsClientNotifierImpl::~BatAdsClientNotifierImpl() = default;
 
 void BatAdsClientNotifierImpl::AddObserver(
     brave_ads::AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
-  notifier_.AddObserver(observer);
+  CHECK(observer);
+
+  ads_client_notifier_.AddObserver(observer);
 }
 
 void BatAdsClientNotifierImpl::RemoveObserver(
     brave_ads::AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
-  notifier_.RemoveObserver(observer);
+  CHECK(observer);
+
+  ads_client_notifier_.RemoveObserver(observer);
 }
 
-void BatAdsClientNotifierImpl::BindReceiver() {
-  DCHECK(pending_receiver_.is_valid());
-  receiver_.Bind(std::move(pending_receiver_));
+void BatAdsClientNotifierImpl::NotifyPendingObservers() {
+  ads_client_notifier_.NotifyPendingObservers();
 }
 
 void BatAdsClientNotifierImpl::NotifyDidInitializeAds() {
-  notifier_.NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 }
 
 void BatAdsClientNotifierImpl::NotifyLocaleDidChange(
     const std::string& locale) {
-  notifier_.NotifyLocaleDidChange(locale);
+  ads_client_notifier_.NotifyLocaleDidChange(locale);
 }
 
 void BatAdsClientNotifierImpl::NotifyPrefDidChange(const std::string& path) {
-  notifier_.NotifyPrefDidChange(path);
+  ads_client_notifier_.NotifyPrefDidChange(path);
 }
 
-void BatAdsClientNotifierImpl::NotifyDidUpdateResourceComponent(
+void BatAdsClientNotifierImpl::NotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
-  notifier_.NotifyDidUpdateResourceComponent(manifest_version, id);
+  ads_client_notifier_.NotifyResourceComponentDidChange(manifest_version, id);
 }
 
 void BatAdsClientNotifierImpl::NotifyDidUnregisterResourceComponent(
     const std::string& id) {
-  notifier_.NotifyDidUnregisterResourceComponent(id);
+  ads_client_notifier_.NotifyDidUnregisterResourceComponent(id);
 }
 
 void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
-    const std::string& recovery_seed) {
-  notifier_.NotifyRewardsWalletDidUpdate(payment_id, recovery_seed);
+    const std::string& recovery_seed_base64) {
+  ads_client_notifier_.NotifyRewardsWalletDidUpdate(payment_id,
+                                                    recovery_seed_base64);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabTextContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
-  notifier_.NotifyTabTextContentDidChange(tab_id, redirect_chain, text);
+  ads_client_notifier_.NotifyTabTextContentDidChange(tab_id, redirect_chain,
+                                                     text);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabHtmlContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
-  notifier_.NotifyTabHtmlContentDidChange(tab_id, redirect_chain, html);
+  ads_client_notifier_.NotifyTabHtmlContentDidChange(tab_id, redirect_chain,
+                                                     html);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabDidStartPlayingMedia(
     const int32_t tab_id) {
-  notifier_.NotifyTabDidStartPlayingMedia(tab_id);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(tab_id);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabDidStopPlayingMedia(
     const int32_t tab_id) {
-  notifier_.NotifyTabDidStopPlayingMedia(tab_id);
+  ads_client_notifier_.NotifyTabDidStopPlayingMedia(tab_id);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const bool is_error_page,
+    const bool is_new_navigation,
+    const bool is_restoring,
     const bool is_visible) {
-  notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_error_page,
-                               is_visible);
+  ads_client_notifier_.NotifyTabDidChange(
+      tab_id, redirect_chain, is_new_navigation, is_restoring, is_visible);
+}
+
+void BatAdsClientNotifierImpl::NotifyTabDidLoad(const int32_t tab_id,
+                                                const int http_status_code) {
+  ads_client_notifier_.NotifyTabDidLoad(tab_id, http_status_code);
 }
 
 void BatAdsClientNotifierImpl::NotifyDidCloseTab(const int32_t tab_id) {
-  notifier_.NotifyDidCloseTab(tab_id);
+  ads_client_notifier_.NotifyDidCloseTab(tab_id);
 }
 
 void BatAdsClientNotifierImpl::NotifyUserGestureEventTriggered(
     const int32_t page_transition_type) {
-  notifier_.NotifyUserGestureEventTriggered(page_transition_type);
+  ads_client_notifier_.NotifyUserGestureEventTriggered(page_transition_type);
 }
 
 void BatAdsClientNotifierImpl::NotifyUserDidBecomeIdle() {
-  notifier_.NotifyUserDidBecomeIdle();
+  ads_client_notifier_.NotifyUserDidBecomeIdle();
 }
 
 void BatAdsClientNotifierImpl::NotifyUserDidBecomeActive(
     const base::TimeDelta idle_time,
     const bool screen_was_locked) {
-  notifier_.NotifyUserDidBecomeActive(idle_time, screen_was_locked);
+  ads_client_notifier_.NotifyUserDidBecomeActive(idle_time, screen_was_locked);
 }
 
 void BatAdsClientNotifierImpl::NotifyBrowserDidEnterForeground() {
-  notifier_.NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 }
 
 void BatAdsClientNotifierImpl::NotifyBrowserDidEnterBackground() {
-  notifier_.NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 }
 
 void BatAdsClientNotifierImpl::NotifyBrowserDidBecomeActive() {
-  notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
 }
 
 void BatAdsClientNotifierImpl::NotifyBrowserDidResignActive() {
-  notifier_.NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
 }
 
 void BatAdsClientNotifierImpl::NotifyDidSolveAdaptiveCaptcha() {
-  notifier_.NotifyDidSolveAdaptiveCaptcha();
+  ads_client_notifier_.NotifyDidSolveAdaptiveCaptcha();
 }
 
 }  // namespace bat_ads

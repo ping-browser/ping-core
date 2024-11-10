@@ -15,21 +15,21 @@ import androidx.annotation.NonNull;
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
-import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider.IncognitoStateObserver;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
-import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
-import org.chromium.ui.resources.dynamics.DynamicResourceLoader;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.widget.ChromeImageView;
 
 public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
@@ -39,6 +39,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     // Own members.
     private IncognitoStateProvider mIncognitoStateProvider;
     private IncognitoStateObserver mIncognitoStateObserver;
+    private ProfileManager.Observer mProfileManagerObserver;
 
     public BraveTabGroupUiCoordinator(
             @NonNull Activity activity,
@@ -48,15 +49,12 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull ScrimCoordinator scrimCoordinator,
             @NonNull ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             @NonNull BottomSheetController bottomSheetController,
-            @NonNull ActivityLifecycleDispatcher activityLifecycleDispatcher,
-            @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
+            @NonNull DataSharingTabManager dataSharingTabManager,
             @NonNull TabModelSelector tabModelSelector,
             @NonNull TabContentManager tabContentManager,
-            @NonNull ViewGroup rootView,
-            @NonNull Supplier<DynamicResourceLoader> dynamicResourceLoaderSupplier,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            @NonNull SnackbarManager snackbarManager) {
+            @NonNull ModalDialogManager modalDialogManager) {
         super(
                 activity,
                 parentView,
@@ -65,15 +63,12 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 scrimCoordinator,
                 omniboxFocusStateSupplier,
                 bottomSheetController,
-                activityLifecycleDispatcher,
-                isWarmOnResumeSupplier,
+                dataSharingTabManager,
                 tabModelSelector,
                 tabContentManager,
-                rootView,
-                dynamicResourceLoaderSupplier,
                 tabCreatorManager,
                 layoutStateProviderSupplier,
-                snackbarManager);
+                modalDialogManager);
 
         mIncognitoStateProvider = incognitoStateProvider;
 
@@ -89,15 +84,51 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
         if (fadingEdgeEnd != null) {
             fadingEdgeEnd.setVisibility(View.GONE);
         }
-        ChromeImageView toolbarRightButton = mToolbarView.findViewById(R.id.toolbar_right_button);
-        assert toolbarRightButton != null : "Something has changed in upstream.";
-        if (toolbarRightButton != null) {
-            toolbarRightButton.setImageResource(R.drawable.brave_new_group_tab);
+        ChromeImageView toolbarNewTabButton =
+                mToolbarView.findViewById(R.id.toolbar_new_tab_button);
+        assert toolbarNewTabButton != null : "Something has changed in upstream.";
+        if (toolbarNewTabButton != null) {
+            toolbarNewTabButton.setImageResource(R.drawable.brave_new_group_tab);
         }
     }
 
     @Override
     public void initializeWithNative(
+            Activity activity,
+            BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
+            Callback<Object> onModelTokenChange) {
+        // Fix for the null object crash at TabGroupSyncFeatures.isTabGroupSyncEnabled
+        // Stack:
+        // at TabGroupSyncFeatures.isTabGroupSyncEnabled (TabGroupSyncFeatures.java:18)
+        // at TabGroupUiMediator.<init> (TabGroupUiMediator.java:143)
+        // at TabGroupUiCoordinator.initializeWithNative (TabGroupUiCoordinator.java:238)
+        // at BraveTabGroupUiCoordinator.initializeWithNative (BraveTabGroupUiCoordinator.java:97)
+        // at BottomControlsCoordinator.lambda$new$1 (BottomControlsCoordinator.java:148)
+        //
+        // Profile at TabGroupUiCoordinator can be null.
+        // Upstream does not have this issue because they don't use BottomControlsCoordinator
+        if (ProfileManager.isInitialized()) {
+            callSuperInitializeWithNative(activity, visibilityController, onModelTokenChange);
+        } else {
+            // Profile is not yet ready, continue initialization when it will be ready
+            mProfileManagerObserver =
+                    new ProfileManager.Observer() {
+                        @Override
+                        public void onProfileAdded(Profile profile) {
+                            ProfileManager.removeObserver(mProfileManagerObserver);
+
+                            callSuperInitializeWithNative(
+                                    activity, visibilityController, onModelTokenChange);
+                        }
+
+                        @Override
+                        public void onProfileDestroyed(Profile profile) {}
+                    };
+            ProfileManager.addObserver(mProfileManagerObserver);
+        }
+    }
+
+    private void callSuperInitializeWithNative(
             Activity activity,
             BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
             Callback<Object> onModelTokenChange) {
@@ -120,8 +151,12 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
 
     @Override
     public void destroy() {
-        super.destroy();
-
+        try {
+            super.destroy();
+        } catch (NullPointerException ignore) {
+            // mTabStripCoordinator could be null in a base class.
+            // https://github.com/brave/brave-browser/issues/40673
+        }
         mIncognitoStateProvider.removeObserver(mIncognitoStateObserver);
     }
 }

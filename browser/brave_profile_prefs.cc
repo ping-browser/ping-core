@@ -7,10 +7,9 @@
 
 #include <string>
 
-#include "brave/browser/new_tab/new_tab_shows_options.h"
-
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
@@ -20,9 +19,12 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/common/p3a_pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -40,7 +42,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -65,6 +67,7 @@
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/signin/public/base/signin_pref_names.h"
+#include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -80,10 +83,6 @@
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_service.h"
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -114,6 +113,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
@@ -188,7 +188,7 @@ void RegisterProfilePrefsForMigration(
 
   brave_rewards::RegisterProfilePrefsForMigration(registry);
 
-  brave_news::p3a::NewsMetrics::RegisterProfilePrefsForMigration(registry);
+  brave_news::p3a::prefs::RegisterProfileNewsMetricsPrefsForMigration(registry);
 
   // Added May 2023
 #if defined(TOOLKIT_VIEWS)
@@ -211,6 +211,12 @@ void RegisterProfilePrefsForMigration(
   ai_chat::prefs::RegisterProfilePrefsForMigration(registry);
 #endif
   brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
+
+  // Added 2024-05
+  ipfs::RegisterDeprecatedIpfsPrefs(registry);
+
+  // Added 2024-07
+  registry->RegisterBooleanPref(kHangoutsEnabled, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -234,7 +240,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
-  brave_news::BraveNewsPrefManager::RegisterProfilePrefs(registry);
+  brave_news::prefs::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings
@@ -261,10 +267,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
                                 false);
 
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IpfsService::RegisterProfilePrefs(registry);
-#endif
-
   // WebTorrent
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   webtorrent::RegisterProfilePrefs(registry);
@@ -286,18 +288,25 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
                                 base::Value(base::Value::Type::LIST));
   // Disable NTP suggestions
-  feed::RegisterProfilePrefs(registry);
-  registry->RegisterBooleanPref(feed::prefs::kEnableSnippets, false);
-  registry->RegisterBooleanPref(feed::prefs::kArticlesListVisible, false);
+  // On Android we want to have enable_feed_v2 parameter enabled to
+  // provide linking with feed::FetchRssLinks at
+  // BraveNewsTabHelper::DOMContentLoaded, but kEnableSnippets and
+  // kArticlesListVisible must be defaulted to false to avoid failed assertion
+  // at BraveNewTabPage.initializeMainView. So override
+  // feed::prefs::RegisterFeedSharedProfilePrefs for Android only. Related
+  // Chromium's commit: d3500b942cde04737bc13021173b6ffa11aaf1b9.
+  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippetsByDse,
+                                base::Value(false));
 
   // Explicitly disable safe browsing extended reporting by default in case they
   // change it in upstream.
   registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
                                 base::Value(false));
 #endif
-
-  // Hangouts
-  registry->RegisterBooleanPref(kHangoutsEnabled, true);
 
   // Restore last profile on restart
   registry->SetDefaultPrefValue(
@@ -354,9 +363,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
   registry->RegisterBooleanPref(kImportDialogPayments, true);
-
-  // IPFS companion extension
-  registry->RegisterBooleanPref(kIPFSCompanionEnabled, false);
 
   // New Tab Page
   registry->RegisterBooleanPref(kNewTabPageShowClock, true);
@@ -450,6 +456,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(true));
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
+  registry->RegisterBooleanPref(kShowFullscreenReminder, true);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
 
@@ -460,6 +467,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterProfilePrefs(registry);
+  ai_chat::ModelService::RegisterProfilePrefs(registry);
 #endif
 
   brave_search_conversion::RegisterPrefs(registry);
@@ -469,11 +477,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // kEnableMediaRouterOnRestart is used to remember the user's choice.
   registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(true));
   registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, true);
-
-  // Disable Raw sockets API (see github.com/brave/brave-browser/issues/11546).
-  registry->SetDefaultPrefValue(
-      policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed,
-      base::Value(false));
 
   BraveFarblingService::RegisterProfilePrefs(registry);
 
@@ -488,6 +491,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if defined(TOOLKIT_VIEWS)
   bookmarks::prefs::RegisterProfilePrefs(registry);
 #endif
+
+  brave_ads::RegisterProfilePrefs(registry);
+  brave_rewards::RegisterProfilePrefs(registry);
+
+  registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
+                                base::Value(false));
 }
 
 }  // namespace brave

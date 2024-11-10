@@ -11,13 +11,10 @@
 # pylint: disable=no-name-in-module, too-few-public-methods
 # pytype: disable=import-error
 
-from page_sets.system_health import story_tags
-from page_sets.system_health import system_health_story
 from page_sets.helpers import override_online
-
-from telemetry.util import wpr_modes
-
+from page_sets.system_health import story_tags, system_health_story
 from py_utils import TimeoutException
+from telemetry.util import wpr_modes
 
 
 class _BraveLoadingStory(system_health_story.SystemHealthStory):
@@ -47,6 +44,35 @@ class _BraveLoadingStory(system_health_story.SystemHealthStory):
     return 'Load %s' % cls.URL
 
 
+class _BraveMultiTabLoadingStory(_BraveLoadingStory):
+  """ Abstract base class for multi-tab System Health user stories.
+
+  We should only use this for `system_health.memory*` benchmarks.
+  """
+
+  TABS_COUNT = 10
+
+  def RunPageInteractions(self, action_runner):
+
+    def load_and_wait(action_runner):
+      action_runner.tab.WaitForDocumentReadyStateToBeComplete()
+      self._DidLoadDocument(action_runner)
+      action_runner.Wait(1)
+
+    tabs = action_runner.tab.browser.tabs
+    load_and_wait(action_runner)
+
+    new_tab = None
+    for _ in range(self.TABS_COUNT - 1):
+      new_tab = tabs.New()
+      new_tab.action_runner.Navigate(self.url)
+      load_and_wait(new_tab.action_runner)
+    # Measure only the last tab
+    action_runner.Wait(5)
+    assert new_tab
+    self._Measure(new_tab.action_runner)
+
+
 class LoadExampleStory2023(_BraveLoadingStory):
   NAME = 'load:site:example:2023'
   URL = 'https://example.com'
@@ -67,7 +93,7 @@ class LoadGoogleStory2023(_BraveLoadingStory):
 
 
 class LoadYoutubeStory2023(_BraveLoadingStory):
-  NAME = 'load:site:youtube:2023:wow'
+  NAME = 'load:site:youtube:2023'
   URL = 'https://www.youtube.com/watch?v=Way9Dexny3w'
   SCROLL_PAGE = False
   TAGS = [story_tags.YEAR_2023]
@@ -88,10 +114,10 @@ class LoadWikipediaStory2023(_BraveLoadingStory):
     super()._DidLoadDocument(action_runner)
 
 
-class LoadTwitterStory2023(_BraveLoadingStory):
-  NAME = 'load:site:twitter:2023'
-  URL = 'https://twitter.com/SpaceX'
-  TAGS = [story_tags.YEAR_2023]
+class LoadTwitterStory2024(_BraveLoadingStory):
+  NAME = 'load:site:twitter:2024'
+  URL = 'https://x.com/SpaceX'
+  TAGS = [story_tags.YEAR_2024]
 
 
 class LoadCNNStory2023(_BraveLoadingStory):
@@ -104,3 +130,41 @@ class LoadBBCStory2023(_BraveLoadingStory):
   NAME = 'load:site:bbc:2023'
   URL = 'https://www.bbc.com/'
   TAGS = [story_tags.YEAR_2023]
+
+
+class LoadHackernewsStory2024(_BraveLoadingStory):
+  NAME = 'load:site:hackernews:2024'
+  URL = 'https://news.ycombinator.com/'
+  SCROLL_PAGE = False
+  TAGS = [story_tags.YEAR_2024]
+
+
+class LoadPinterestStory2024(_BraveLoadingStory):
+  NAME = 'load:site:pinterest:2024'
+  URL = 'https://www.pinterest.com/search/pins/?q=home%20decor'
+  TAGS = [story_tags.YEAR_2024]
+
+
+class LoadIMDBStory2024(_BraveLoadingStory):
+  NAME = 'load:site:imdb:2024'
+  URL = 'https://www.imdb.com/what-to-watch/popular/'
+  TAGS = [story_tags.YEAR_2024]
+
+
+class LoadAmazonStory2024(_BraveLoadingStory):
+  NAME = 'load:site:amazon:2024'
+  URL = 'https://www.amazon.com/gp/new-releases/'
+  TAGS = [story_tags.YEAR_2024]
+
+
+class LoadBraveNewsStory2024(_BraveLoadingStory):
+  NAME = 'load:ntp:brave_news:2024'
+  URL = 'chrome://newtab/'
+  TAGS = [story_tags.YEAR_2024]
+
+
+class MultiTabLoadExampleStory2024(_BraveMultiTabLoadingStory):
+  NAME = 'multitab_load:site:example.com:2024'
+  URL = 'https://example.com'
+  SCROLL_PAGE = False
+  TAGS = [story_tags.YEAR_2024]

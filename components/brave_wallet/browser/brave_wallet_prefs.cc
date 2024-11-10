@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -52,6 +53,14 @@ constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
 // Deprecated 12/2023.
 constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
+// Deprecated 06/2024.
+constexpr char kBraveWalletTransactionsChainIdMigrated[] =
+    "brave.wallet.transactions.chain_id_migrated";
+
+// Deprecated 07/2024
+constexpr char kPinnedNFTAssetsMigrated[] = "brave.wallet.user_pin_data";
+// Deprecated 07/2024
+constexpr char kAutoPinEnabledMigrated[] = "brave.wallet.auto_pin_enabled";
 
 base::Value::Dict GetDefaultSelectedNetworks() {
   base::Value::Dict selected_networks;
@@ -79,7 +88,6 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   base::Value::Dict hidden_networks;
 
   base::Value::List eth_hidden;
-  eth_hidden.Append(mojom::kGoerliChainId);
   eth_hidden.Append(mojom::kSepoliaChainId);
   eth_hidden.Append(mojom::kLocalhostChainId);
   eth_hidden.Append(mojom::kFilecoinEthereumTestnetChainId);
@@ -128,6 +136,15 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
   // Deprecated 12/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
                                 false);
+  // Deprecated 06/2024.
+  registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
+}
+
+void RegisterDeprecatedIpfsPrefs(user_prefs::PrefRegistrySyncable* registry) {
+  // Deprecated 05/2024
+  registry->RegisterDictionaryPref(kPinnedNFTAssetsMigrated);
+  // Deprecated 05/2024
+  registry->RegisterBooleanPref(kAutoPinEnabledMigrated, false);
 }
 
 void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
@@ -145,6 +162,16 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssetsAddIsSpamMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletUserAssetsAddIsERC1155Migrated);
+  // Deprecated 06/2024.
+  prefs->ClearPref(kBraveWalletTransactionsChainIdMigrated);
+}
+
+void ClearDeprecatedIpfsPrefs(PrefService* prefs) {
+  DCHECK(prefs);
+  // Deprecated 05/2024
+  prefs->ClearPref(kPinnedNFTAssetsMigrated);
+  // Deprecated 05/2024
+  prefs->ClearPref(kAutoPinEnabledMigrated);
 }
 
 }  // namespace
@@ -178,6 +205,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
                                 false);
   registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  registry->RegisterDictionaryPref(kBraveWalletEip1559CustomChains);
   registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks,
                                    GetDefaultHiddenNetworks());
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,
@@ -189,12 +217,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes,
                                 kDefaultWalletAutoLockMinutes);
   registry->RegisterDictionaryPref(kBraveWalletEthAllowancesCache);
-  registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
 
-  registry->RegisterDictionaryPref(kPinnedNFTAssets);
-  registry->RegisterBooleanPref(kAutoPinEnabled, false);
   registry->RegisterBooleanPref(kShouldShowWalletSuggestionBadge, true);
   registry->RegisterBooleanPref(kBraveWalletNftDiscoveryEnabled, false);
   registry->RegisterBooleanPref(kBraveWalletPrivateWindowsEnabled, false);
@@ -206,6 +231,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       kBraveWalletTransactionSimulationOptInStatus,
       static_cast<int>(brave_wallet::mojom::BlowfishOptInStatus::kUnset));
+  registry->RegisterStringPref(kBraveWalletEncryptorSalt, "");
+  registry->RegisterDictionaryPref(kBraveWalletMnemonic);
+  registry->RegisterBooleanPref(kBraveWalletLegacyEthSeedFormat, false);
+  registry->RegisterBooleanPref(kBraveWalletMnemonicBackedUp, false);
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
@@ -220,6 +249,7 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefsDeprecatedMigrationFlags(registry);
+  RegisterDeprecatedIpfsPrefs(registry);
 
   // Added 04/2023
   p3a_utils::RegisterFeatureUsagePrefs(
@@ -232,15 +262,8 @@ void RegisterProfilePrefsForMigration(
                              base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorageDeprecated);
 
-  // Added 02/2023
-  registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
-
   // Added 03/2023
   registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
-
-  // Added 04/2023
-  registry->RegisterBooleanPref(kBraveWalletSolanaTransactionsV0SupportMigrated,
-                                false);
 
   // Added 06/2023
   registry->RegisterIntegerPref(
@@ -260,6 +283,20 @@ void RegisterProfilePrefsForMigration(
   // Added 01/2024
   registry->RegisterBooleanPref(kBraveWalletTransactionsDBFormatMigrated,
                                 false);
+  // Added 06/2024
+  registry->RegisterBooleanPref(kBraveWalletEip1559ForCustomNetworksMigrated,
+                                false);
+  // Added 06/2024
+  registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChainDeprecated,
+                                false);
+  // Added 06/2024
+  registry->RegisterBooleanPref(kBraveWalletIsCompressedNftMigrated, false);
+
+  // Added 07/2024
+  registry->RegisterBooleanPref(kBraveWalletGoerliNetworkMigrated, false);
+
+  // Added 08/2024
+  registry->RegisterBooleanPref(kBraveWalletIsSPLTokenProgramMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -268,12 +305,16 @@ void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletHiddenNetworks);
   prefs->ClearPref(kBraveWalletSelectedNetworks);
   prefs->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
-  prefs->ClearPref(kSupportEip1559OnLocalhostChain);
+  prefs->ClearPref(kBraveWalletEip1559CustomChains);
 }
 
 void ClearKeyringServiceProfilePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletKeyrings);
+  prefs->ClearPref(kBraveWalletEncryptorSalt);
+  prefs->ClearPref(kBraveWalletMnemonic);
+  prefs->ClearPref(kBraveWalletLegacyEthSeedFormat);
+  prefs->ClearPref(kBraveWalletMnemonicBackedUp);
   prefs->ClearPref(kBraveWalletAutoLockMinutes);
   prefs->ClearPref(kBraveWalletSelectedWalletAccount);
   prefs->ClearPref(kBraveWalletSelectedEthDappAccount);
@@ -304,14 +345,20 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // or custom origins.
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(prefs);
 
-  // Added 02/2023
-  TxStateManager::MigrateAddChainIdToTransactionInfo(prefs);
-
   // Added 07/2023
-  KeyringService::MigrateDerivedAccountIndex(prefs);
+  MigrateDerivedAccountIndex(prefs);
 
   // Added 01/2024 migrate assets pref to plain list.
   BraveWalletService::MigrateAssetsPrefToList(prefs);
+
+  // Added 06/2024 to migrate Eip1559 flag to a separate pref.
+  BraveWalletService::MigrateEip1559ForCustomNetworks(prefs);
+
+  // Added 05/2024
+  ClearDeprecatedIpfsPrefs(prefs);
+
+  // Added 07/2024 to set active ETH chain to Sepolia if Goerli is selected.
+  BraveWalletService::MigrateGoerliNetwork(prefs);
 }
 
 }  // namespace brave_wallet

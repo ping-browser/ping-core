@@ -8,8 +8,8 @@
 #include "base/files/file_path.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -24,11 +24,11 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   constexpr double kTolerance = 1e-7;
 
   // Act
-  const base::Value::Dict root =
-      base::test::ParseJsonDictFromFile(TestDataPath().AppendASCII(kHashCheck));
+  const base::Value::Dict dict = base::test::ParseJsonDictFromFile(
+      test::DataPath().AppendASCII(kHashCheck));
 
   const base::Value::Dict* const test_case_name_dict =
-      root.FindDict(test_case_name);
+      dict.FindDict(test_case_name);
   ASSERT_TRUE(test_case_name_dict);
 
   const std::string* const input = test_case_name_dict->FindString("input");
@@ -61,29 +61,7 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
 
 }  // namespace
 
-class BraveAdsHashVectorizerTest : public UnitTestBase {};
-
-TEST_F(BraveAdsHashVectorizerTest, ValidJsonScheme) {
-  // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(
-      R"(
-          {
-            "test": {
-              "foo": true,
-              "bar": 3.14,
-              "baz": "qux",
-              "quux": "corge"
-            },
-            "list": [
-              "grault",
-              "garply"
-            ]
-          })");
-
-  // Act & Assert
-  EXPECT_TRUE(dict.FindDict("test"));
-  EXPECT_TRUE(dict.FindList("list"));
-}
+class BraveAdsHashVectorizerTest : public test::TestBase {};
 
 TEST_F(BraveAdsHashVectorizerTest, EmptyText) {
   RunHashingExtractorTestCase("empty");

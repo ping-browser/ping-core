@@ -22,6 +22,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
@@ -46,7 +47,9 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -55,11 +58,9 @@
 #include "net/test/test_data_directory.h"
 #include "services/network/host_resolver.h"
 
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 
@@ -70,17 +71,17 @@
 #include "brave/components/playlist/common/features.h"
 #endif
 
-const char kAdBlockTestPage[] = "/blocking.html";
+constexpr char kAdBlockTestPage[] = "/blocking.html";
 
-const char kAdBlockEasyListFranceUUID[] =
+constexpr char kAdBlockEasyListFranceUUID[] =
     "9852EFC4-99E4-4F2D-A915-9C3196C7A1DE";
 
-const char kDefaultAdBlockComponentTestId[] =
+constexpr char kDefaultAdBlockComponentTestId[] =
     "naccapggpomhlhoifnlebfoocegenbol";
-const char kRegionalAdBlockComponentTestId[] =
+constexpr char kRegionalAdBlockComponentTestId[] =
     "dlpmaigjliompnelofkljgcmlenklieh";
 
-const char kDefaultAdBlockComponentTest64PublicKey[] =
+constexpr char kDefaultAdBlockComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtV7Vr69kkvSvu2lhcMDh"
     "j4Jm3FKU1zpUkALaum5719/cccVvGpMKKFyy4WYXsmAfcIONmGO4ThK/q6jkgC5v"
     "8HrkjPOf7HHebKEnsJJucz/Z1t6dq0CE+UA2IWfbGfFM4nJ8AKIv2gqiw2d4ydAs"
@@ -88,7 +89,7 @@ const char kDefaultAdBlockComponentTest64PublicKey[] =
     "Qdk+dZ9r8NRQnpjChQzwhMAkxyrdjT1N7NcfTufiYQTOyiFvxPAC9D7vAzkpGgxU"
     "Ikylk7cYRxqkRGS/AayvfipJ/HOkoBd0yKu1MRk4YcKGd/EahDAhUtd9t4+v33Qv"
     "uwIDAQAB";
-const char kRegionalAdBlockComponentTest64PublicKey[] =
+constexpr char kRegionalAdBlockComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoKYkdDM8vWZXBbDJXTP6"
     "1m9yLuH9iL/TvqAqu1zOd91VJu4bpcCMZjfGPC1g+O+pZrCaFVv5NJeZxGqT6DUB"
     "RZUdXPkGGUC1ebS4LLJbggNQb152LFk8maR0/ItvMOW8eTcV8VFKHk4UrVhPTggf"
@@ -101,8 +102,19 @@ using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
+using brave_shields::features::kBraveAdblockProceduralFiltering;
 using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
+
+namespace {
+void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
+                            const std::string& selector) {
+  const char kTemplate[] = R"(waitCSSSelector($1, 'display', 'none'))";
+
+  ASSERT_TRUE(
+      EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
+}
+}  // namespace
 
 AdBlockServiceTest::AdBlockServiceTest()
     : https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {}
@@ -122,16 +134,12 @@ void AdBlockServiceTest::SetUpOnMainThread() {
   PlatformBrowserTest::SetUpOnMainThread();
   mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   host_resolver()->AddRule("*", "127.0.0.1");
+  InitEmbeddedTestServer();
   // Most tests are written for aggressive mode. Individual tests should reset
   // this using `DisableAggressiveMode` if they are testing standard mode
   // behavior.
   brave_shields::SetCosmeticFilteringControlType(
       content_settings(), brave_shields::ControlType::BLOCK, GURL());
-}
-
-void AdBlockServiceTest::SetUp() {
-  InitEmbeddedTestServer();
-  PlatformBrowserTest::SetUp();
 }
 
 void AdBlockServiceTest::PreRunTestOnMainThread() {
@@ -200,7 +208,7 @@ base::FilePath AdBlockServiceTest::MakeFileInTempDir(
                                                    base::File::FLAG_WRITE |
                                                    base::File::FLAG_READ);
   EXPECT_TRUE(list_file.IsValid());
-  list_file.Write(0, contents.c_str(), contents.size());
+  UNSAFE_TODO(list_file.Write(0, contents.c_str(), contents.size()));
   list_file.Close();
 
   temp_dirs_.push_back(std::move(dir));
@@ -295,7 +303,6 @@ void AdBlockServiceTest::InitEmbeddedTestServer() {
 
 base::FilePath AdBlockServiceTest::GetTestDataDir() {
   base::ScopedAllowBlockingForTesting allow_blocking;
-  brave::RegisterPathProvider();
   return base::PathService::CheckedGet(brave::DIR_TEST_DATA);
 }
 
@@ -1718,10 +1725,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
 #define MAYBE_RemoveparamTopLevelNavigation \
   DISABLED_RemoveparamTopLevelNavigation
 #define MAYBE_DefaultRemoveparamFromCustom DISABLED_DefaultRemoveparamFromCustom
-#else
+#else  // BUILDFLAG(IS_ANDROID)
 #define MAYBE_RemoveparamTopLevelNavigation RemoveparamTopLevelNavigation
 #define MAYBE_DefaultRemoveparamFromCustom DefaultRemoveparamFromCustom
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
 // `$removeparam` should be respected for top-level navigations
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
@@ -1930,6 +1937,40 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
                          "checkSelector('.ad-banner', 'display', 'block')"));
 
   ASSERT_EQ(true, EvalJs(contents, "checkSelector('.ad', 'display', 'block')"));
+}
+
+class ProceduralFilteringFlagDisabledTest : public AdBlockServiceTest {
+ public:
+  ProceduralFilteringFlagDisabledTest() {
+    feature_list_.InitAndDisableFeature(kBraveAdblockProceduralFiltering);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Ensure no cosmetic filtering occurs when the feature flag is disabled
+IN_PROC_BROWSER_TEST_F(ProceduralFilteringFlagDisabledTest,
+                       ProceduralFilteringDisabledHasText) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##.string-cases > div:has-text(hide me)\n"
+      "a.com##.regex-cases > div:has-text(/should be [a-z]{6}\\./)\n"
+      "a.com##.items:has-text(Sponsored)\n"
+      "a.com##.items2:has-text(Sponsored) + .container:has-text(Ad)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-has-text [data-expect]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
 }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -2251,6 +2292,114 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringCustomStyle) {
   EXPECT_EQ(base::Value(true), result.value);
 }
 
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveStatic) {
+  UpdateAdBlockInstanceWithRules(
+      "b.com###ad-banner:remove()\n"
+      "b.com##.whatever:remove()");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  EXPECT_EQ(true, EvalJs(contents, "check('#ad-banner', existence(false))"));
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveDynamic) {
+  UpdateAdBlockInstanceWithRules("b.com##.blockme:remove()");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  auto result = EvalJs(contents,
+                       "addElementsDynamically();\n"
+                       "wait('.dontblockme', existence(true)).then(() =>"
+                       "wait('.blockme', existence(false)))");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveAttribute) {
+  UpdateAdBlockInstanceWithRules(
+      "b.com##.ad img:remove-attr(something)\n"
+      "b.com##.ad img:remove-attr(src)\n"
+      "b.com##.ad img:remove-attr(nothing)\n"
+      "b.com##img:remove-attr(whatever)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  EXPECT_EQ(true, EvalJs(contents, "check('.ad img', attributes(['alt']))"));
+
+  // Sanity check selector
+  EXPECT_EQ(
+      true,
+      EvalJs(contents, "check('#relative-url-div img', attributes(['src']))"));
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringRemoveAttributeDynamic) {
+  UpdateAdBlockInstanceWithRules("b.com##img.blockme:remove-attr(src)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  auto result = EvalJs(contents,
+                       "addElementsDynamically();\n"
+                       "wait('img.blockme', attributes(['class']))");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveClass) {
+  UpdateAdBlockInstanceWithRules(
+      "b.com##.ad:remove-class(ghi)\n"
+      "b.com##div:remove-class(whatever)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  EXPECT_EQ(true, EvalJs(contents, "check('.ghi', existence(false))"));
+  EXPECT_EQ(true, EvalJs(contents, "check('.ad.jkl', classes(['ad', 'jkl']))"));
+}
+
+// `:remove` filters should still function correctly if `$generichide` is active
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringGenerichideRemove) {
+  UpdateAdBlockInstanceWithRules(
+      "||b.com^$generichide\n"
+      "b.com###ad-banner:remove()\n"
+      "b.com##.whatever:remove()\n"
+      "b.com##.blockme:remove()");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  EXPECT_EQ(true, EvalJs(contents, "check('#ad-banner', existence(false))"));
+
+  auto result = EvalJs(contents,
+                       "addElementsDynamically();\n"
+                       "wait('.dontblockme', existence(true)).then(() =>"
+                       "wait('.blockme', existence(false)))");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
+}
+
 // Test rules overridden by hostname-specific exception rules
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
   UpdateAdBlockInstanceWithRules(
@@ -2466,6 +2615,59 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
   ASSERT_EQ(true, EvalJs(contents, "show_ad"));
 }
 
+// Test scriptlet injection inside about:blank frames
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringAboutBlankScriptlet) {
+  std::string scriptlet =
+      "(function() {"
+      "  window.sval = true;"
+      "})();";
+  UpdateAdBlockResources(
+      "[{"
+      "\"name\": \"set.js\","
+      "\"aliases\": [\"set.js\"],"
+      "\"kind\": {\"mime\": \"application/javascript\"},"
+      "\"content\": \"" +
+      base::Base64Encode(scriptlet) + "\"}]");
+  UpdateAdBlockInstanceWithRules("b.com##+js(set)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  auto result = EvalJs(
+      contents, R"(document.getElementById('iframe').contentWindow.sval)");
+  EXPECT_EQ(true, result);
+}
+
+// Test network blocking initiated from inside about:blank frames
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NetworkBlockAboutBlank) {
+  UpdateAdBlockInstanceWithRules("/ad_banner.png^$1p");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  // Note: window.sval is a promise which will be resolved by `EvalJs`
+  auto result = EvalJs(contents, R"(const i = document.getElementById('iframe');
+                   const s = i.contentDocument.createElement('script');
+                   s.innerText = 'window.sval = fetch("/ad_banner.png").then(() => "fetched").catch(() => "blocked")';
+                   i.contentDocument.documentElement.appendChild(s);)");
+  ASSERT_TRUE(result.error.empty());
+
+  content::RenderFrameHost* inner_frame = content::FrameMatchingPredicate(
+      contents->GetPrimaryPage(),
+      base::BindRepeating(content::FrameHasSourceUrl, GURL("about:blank")));
+
+  EXPECT_EQ("blocked", EvalJs(inner_frame, "window.sval"));
+
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
 // Test cosmetic filtering on an element that already has an `!important`
 // marker on its `display` style.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
@@ -2503,6 +2705,240 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
       R"(waitCSSSelector('#inline-block-important', 'display', 'none'))");
   ASSERT_TRUE(result_first.error.empty());
   EXPECT_EQ(base::Value(true), result_first.value);
+}
+
+// Test `has-text` procedural filters in standard blocking mode
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       ProceduralFilterHasTextStandardBlocking) {
+  DisableAggressiveMode();
+
+  UpdateAdBlockInstanceWithRules(
+      "a.com##.string-cases > div:has-text(hide me)\n"
+      "a.com##.regex-cases > div:has-text(/should be [a-z]{6}\\./)\n"
+      "a.com##.items:has-text(Sponsored)\n"
+      "a.com##.items2:has-text(Sponsored) + .container:has-text(Ad)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-has-text [data-expect]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `has-text` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterHasText) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##.string-cases > div:has-text(hide me)\n"
+      "a.com##.regex-cases > div:has-text(/should be [a-z]{6}\\./)\n"
+      "a.com##.items:has-text(Sponsored)\n"
+      "a.com##.items2:has-text(Sponsored) + .container:has-text(Ad)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-has-text [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-has-text [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `matches-attr` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesAttr) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##:matches-attr(\"test-attr\"=\"test-value\")\n"
+      "a.com##:matches-attr(\"/test-y.{2}-attr/\"=\"/test-y[a-z]s-value/\")");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-attr [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-attr [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `matches-css` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesCss) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##:matches-css(opacity: 0.9)\n"
+      "a.com##:matches-css-before(display: inline-block)\n"
+      "a.com##:matches-css-before(content:\"advertisement\")");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-css [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-css [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `matches-path` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesPath) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##section .positive-string-case "
+      "p.odd:matches-path(cosmetic_filtering.html)\n"
+      "a.com##section .positive-regex-case "
+      "p.odd:matches-path(/c[aeiou]smetic\\_[a-z]{9}/)\n"
+      "a.com##section .negative-case:matches-path(/some-other-page.html)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-path [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-path [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `min-text-length` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMinTextLength) {
+  UpdateAdBlockInstanceWithRules("a.com##p:min-text-length(50)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-min-text-length [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-min-text-length [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `upward` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterUpward) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##.string-tests em.target:upward(div.needle)\n"
+      "a.com##.int-tests "
+      "em.target:upward(2):matches-attr(test-needle=\"true\")");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-upward [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-upward [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `xpath` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterXpath) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##:xpath(//div[@class='no-subject-case']/p[@class='odd'])\n"
+      "a.com##div.with-subject-case:xpath(p[@class='even'])");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-xpath [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-xpath [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
 }
 
 class CookieListPrefObserver {
@@ -2563,6 +2999,72 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
   }
 }
 
+// Content Picker and the context menu are disabled for Android.
+#if !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
+  const GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+  const char kPickerIsInjected[] =
+      "document.getElementById('brave-element-picker') != null";
+  ASSERT_FALSE(
+      content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
+
+  const auto click_menu = [&]() {
+    content::ContextMenuParams params;
+    params.page_url = tab_url;
+    TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
+                                   params);
+    menu.Init();
+    EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS));
+    menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS, 0);
+  };
+
+  click_menu();
+
+  ASSERT_TRUE(content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
+
+  EXPECT_TRUE(content::EvalJs(web_contents(),
+                              "checkSelector('#ad-banner', 'display', 'block')")
+                  .ExtractBool());
+
+  // Emulate selecting some element and clicking `Create` button.
+  ASSERT_TRUE(content::ExecJs(web_contents(),
+                              "cf_worker.addSiteCosmeticFilter('#ad-banner')",
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+
+  // Reload the page and check the selector is blocked by the new rule.
+  NavigateToURL(tab_url);
+  WaitForSelectorBlocked(web_contents(), "#ad-banner");
+  EXPECT_FALSE(
+      content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
+
+  click_menu();
+  // Emulate clicking `Manage filters`.
+  ASSERT_TRUE(content::ExecJs(web_contents(), "cf_worker.manageCustomFilters()",
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(),
+            "chrome://settings/shields/filters");
+
+  ShieldsDown(tab_url);
+  NavigateToURL(tab_url);
+  {
+    content::ContextMenuParams params;
+    params.page_url = tab_url;
+    TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
+                                   params);
+    menu.Init();
+    // No menu item if Shields are down.
+    EXPECT_FALSE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS));
+  }
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
  public:
   AdBlockServiceTestJsPerformance() {
@@ -2587,15 +3089,7 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
         target, content::JsReplace(kTemplate, start_number, end_number)));
   }
 
-  void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
-                              const std::string& selector) const {
-    const char kTemplate[] = R"(waitCSSSelector($1, 'display', 'none'))";
-
-    ASSERT_TRUE(
-        EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
-  }
-
-  void NonBlockingDelay(const base::TimeDelta& delay) {
+  void NonBlockingDelay(base::TimeDelta delay) {
     base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
     base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);

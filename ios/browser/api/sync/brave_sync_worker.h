@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_sync/time_limited_words.h"
@@ -85,9 +86,9 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::string GetHexSeedFromSyncCode(const std::string& code_words);
   std::string GetQrCodeJsonFromHexSeed(const std::string& hex_seed);
   brave_sync::QrCodeDataValidationResult GetQrCodeValidationResult(
-      const std::string json);
+      const std::string& json);
   brave_sync::TimeLimitedWords::ValidationStatus GetWordsValidationResult(
-      const std::string time_limited_words);
+      const std::string& time_limited_words);
   std::string GetWordsFromTimeLimitedWords(
       const std::string& time_limited_words);
   std::string GetTimeLimitedWordsFromWords(const std::string& words);
@@ -118,7 +119,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   std::string passphrase_;
 
-  ChromeBrowserState* browser_state_;  // NOT OWNED
+  raw_ptr<ChromeBrowserState> browser_state_;  // NOT OWNED
   base::ScopedMultiSourceObservation<syncer::SyncService,
                                      syncer::SyncServiceObserver>
       sync_service_observer_{this};

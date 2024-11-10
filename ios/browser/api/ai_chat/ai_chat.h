@@ -16,28 +16,17 @@ OBJC_EXPORT
 @property(nonatomic) bool isAgreementAccepted;
 
 @property(nonatomic, readonly)
-    AiChatSuggestionGenerationStatus suggestionsStatus;
-
-@property(nonatomic, readonly) AiChatModel* currentModel;
-
-@property(nonatomic, readonly) NSArray<AiChatModel*>* models;
-
-@property(nonatomic, readonly)
     NSArray<AiChatConversationTurn*>* conversationHistory;
 
-@property(nonatomic, readonly) bool isRequestInProgress;
-
-@property(nonatomic, readonly) NSArray<NSString*>* suggestedQuestions;
-
-@property(nonatomic, readonly) bool hasPendingConversationEntry;
-
-@property(nonatomic, readonly) AiChatAPIError currentAPIError;
-
-@property(nonatomic, readonly) bool canShowPremiumPrompt;
+@property(nonatomic, readonly) NSArray<AiChatActionGroup*>* slashActions;
 
 @property(nonatomic) NSString* defaultModelKey;
 
-@property(nonatomic) bool shouldSendPageContents;
+- (void)createNewConversation;
+
+- (void)getState:(void (^_Nullable)(AiChatConversationState*))completion;
+
+- (void)setShouldSendPageContents:(bool)shouldSend;
 
 - (void)changeModel:(NSString*)modelKey;
 
@@ -45,15 +34,17 @@ OBJC_EXPORT
 
 - (void)submitSummarizationRequest;
 
-- (void)setConversationActive:(bool)is_conversation_active;
-
 - (void)retryAPIRequest;
 
 - (void)generateQuestions;
 
-- (void)clearConversationHistory;
+- (void)clearErrorAndGetFailedMessage:
+    (void (^_Nullable)(AiChatConversationTurn*))completion;
 
 - (void)getPremiumStatus:(void (^_Nullable)(AiChatPremiumStatus))completion;
+
+- (void)submitSelectedText:(NSString*)selectedText
+                actionType:(AiChatActionType)actionType;
 
 - (void)rateMessage:(bool)isLiked
              turnId:(NSUInteger)turnId
@@ -65,6 +56,10 @@ OBJC_EXPORT
             ratingId:(NSString*)ratingId
          sendPageUrl:(bool)sendPageUrl
           completion:(void (^_Nullable)(bool))completion;
+
+- (void)modifyConversation:(NSUInteger)turnId newText:(NSString*)newText;
+
+- (void)getCanShowPremiumPrompt:(void (^_Nullable)(bool))completion;
 
 - (void)dismissPremiumPrompt;
 @end

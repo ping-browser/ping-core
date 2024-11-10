@@ -1,0 +1,12 @@
+diff --git a/third_party/tflite/BUILD.gn b/third_party/tflite/BUILD.gn
+index ff1851f79d7f34935a9b0d4b0a3009738ee4b84b..b5ee6f5a4b21640f7674173c1fd4d0751702f47d 100644
+--- a/third_party/tflite/BUILD.gn
++++ b/third_party/tflite/BUILD.gn
+@@ -214,6 +214,7 @@ tflite_static_library("tflite_builtin_op_resolver") {
+     "//services/webnn/*",
+     "//third_party/mediapipe/*",
+   ]
++  import("//brave/third_party/tflite/tflite.gni") visibility += brave_tflite_builtin_op_resolver_visibility
+ 
+   conditional_deps = [ ":tflite" ]
+ }

@@ -258,8 +258,6 @@ std::unique_ptr<views::View> CreateGeolocationDescLabel(
   contents_label->AddStyleRange(
       gfx::Range(offsets[learn_more_offset], offsets[learn_more_offset + 1]),
       learn_more_style);
-  constexpr int kFixedLabelWidth = 290;
-  contents_label->SizeToFit(kFixedLabelWidth);
   return contents_label;
 }
 
@@ -347,7 +345,7 @@ void AddGeolocationDescriptionIfNeeded(
         // To update widget layout after adding another child view.
         bubble_base_view->UpdateAnchorPosition();
       },
-      bubble_base_view->AsWeakPtr(), browser->AsWeakPtr(),
+      bubble_base_view->GetWeakPtr(), browser->AsWeakPtr(),
       enable_high_accuracy));
 }
 
@@ -425,7 +423,7 @@ void AddFootnoteViewIfNeeded(
   AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
   auto* permission_lifetime_view =                                        \
       AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());       \
-  AddFootnoteViewIfNeeded(this, delegate_->Requests(), browser_);         \
+  AddFootnoteViewIfNeeded(this, delegate_->Requests(), browser());        \
   if (permission_lifetime_view) {                                         \
     set_fixed_width(                                                      \
         std::max(GetPreferredSize().width(),                              \
@@ -433,7 +431,7 @@ void AddFootnoteViewIfNeeded(
         margins().width());                                               \
     set_should_ignore_snapping(true);                                     \
   }                                                                       \
-  AddGeolocationDescriptionIfNeeded(this, delegate_.get(), browser_);
+  AddGeolocationDescriptionIfNeeded(this, delegate_.get(), browser());
 
 #include "src/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc"
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW

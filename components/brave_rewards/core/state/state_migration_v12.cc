@@ -76,8 +76,8 @@ bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
 
       break;
     default:
-      NOTREACHED() << "Unexpected " << wallet_type
-                   << " wallet status: " << status << '!';
+      engine_->LogError(FROM_HERE) << "Unexpected " << wallet_type
+                                   << " wallet status: " << status << '!';
       return false;
   }
 

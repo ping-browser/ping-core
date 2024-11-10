@@ -126,15 +126,12 @@ extension BrowserViewController: TabManagerDelegate {
       }
     }
 
-    if #unavailable(iOS 16.0) {
-      updateFindInPageVisibility(visible: false, tab: previous)
-    }
     displayPageZoom(visible: false)
     updateTabsBarVisibility()
     selected?.updatePullToRefreshVisibility()
 
     topToolbar.locationView.loading = selected?.loading ?? false
-    navigationToolbar.updateBackStatus(selected?.canGoBack ?? false)
+    updateBackForwardActionStatus(for: selected?.webView)
     navigationToolbar.updateForwardStatus(selected?.canGoForward ?? false)
 
     let shouldShowPlaylistURLBarButton = selected?.url?.isPlaylistSupportedSiteURL == true
@@ -215,9 +212,17 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     // If BVC isnt visible hold on to this toast until viewDidAppear
-    if self.view.window == nil {
-      self.pendingToast = toast
+    if view.window == nil {
+      pendingToast = toast
       return
+    }
+
+    if toast is ButtonToast {
+      if activeButtonToast != nil {
+        activeButtonToast?.dismiss(false, animated: false)
+      } else {
+        activeButtonToast = toast
+      }
     }
 
     toast.showToast(
@@ -227,6 +232,11 @@ extension BrowserViewController: TabManagerDelegate {
       makeConstraints: { make in
         make.left.right.equalTo(self.view)
         make.bottom.equalTo(self.webViewContainer)
+      },
+      completion: {
+        if toast is ButtonToast {
+          self.activeButtonToast = nil
+        }
       }
     )
   }
@@ -298,8 +308,10 @@ extension BrowserViewController: TabManagerDelegate {
     var bookmarkMenuChildren: [UIAction] = []
 
     let containsWebPage = tabManager.selectedTab?.containsWebPage == true
+    let containsBookmarkablePage = tabManager.openedWebsitesCount > 1
 
-    if tabManager.openedWebsitesCount > 0, containsWebPage {
+    // Show bookmark actions if current page is a webpage
+    if containsWebPage {
       let bookmarkActiveTab = UIAction(
         title: Strings.addToMenuItem,
         image: UIImage(systemName: "book"),
@@ -307,33 +319,32 @@ extension BrowserViewController: TabManagerDelegate {
           self.openAddBookmark()
         }
       )
-
       bookmarkMenuChildren.append(bookmarkActiveTab)
-    }
 
-    if tabManager.tabsForCurrentMode.count > 1 {
-      let bookmarkAllTabs = UIAction(
-        title: String.localizedStringWithFormat(
-          Strings.bookmarkAllTabsTitle,
-          tabManager.tabsForCurrentMode.count
-        ),
-        image: UIImage(systemName: "book"),
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
-          let mode = BookmarkEditMode.addFolderUsingTabs(
-            title: Strings.savedTabsFolderTitle,
-            tabList: tabManager.tabsForCurrentMode
-          )
-          let addBookMarkController = AddEditBookmarkTableViewController(
-            bookmarkManager: bookmarkManager,
-            mode: mode,
-            isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-          )
+      // To show bookmark all there should be more than 1 bookmarkable tab
+      if containsBookmarkablePage {
+        let bookmarkAllTabs = UIAction(
+          title: String.localizedStringWithFormat(
+            Strings.bookmarkAllTabsTitle,
+            tabManager.openedWebsitesCount
+          ),
+          image: UIImage(systemName: "book"),
+          handler: UIAction.deferredActionHandler { [unowned self] _ in
+            let mode = BookmarkEditMode.addFolderUsingTabs(
+              title: Strings.savedTabsFolderTitle,
+              tabList: tabManager.tabsForCurrentMode
+            )
+            let addBookMarkController = AddEditBookmarkTableViewController(
+              bookmarkManager: bookmarkManager,
+              mode: mode,
+              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+            )
 
-          presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
-        }
-      )
-
-      bookmarkMenuChildren.append(bookmarkAllTabs)
+            presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+          }
+        )
+        bookmarkMenuChildren.append(bookmarkAllTabs)
+      }
     }
 
     var duplicateTabMenuChildren: [UIAction] = []
@@ -433,47 +444,92 @@ extension BrowserViewController: TabManagerDelegate {
 
     closeTabMenuChildren.append(closeActiveTab)
 
+    var closeAllTabMenuChildren: [UIAction] = []
+
+    if FeatureList.kBraveShredFeature.enabled {
+      let shredDataAction = UIAction(
+        title: String(format: Strings.Shields.shredSiteData),
+        image: UIImage(braveSystemNamed: "leo.shred.data"),
+        attributes: .destructive,
+        handler: UIAction.deferredActionHandler { [weak self] _ in
+          guard let tab = self?.tabManager.selectedTab, let url = tab.url else { return }
+          let alert = UIAlertController.shredDataAlert(url: url) { _ in
+            self?.shredData(for: url, in: tab)
+          }
+
+          self?.present(alert, animated: true)
+        }
+      )
+      closeAllTabMenuChildren.append(shredDataAction)
+    }
+
     if tabManager.tabsForCurrentMode.count > 1 {
+      func showCloseTabWarning(isActiveTabIncluded: Bool, _ completion: @escaping () -> Void) {
+        let alert = UIAlertController(
+          title: nil,
+          message: isActiveTabIncluded
+            ? Strings.closeAllTabsPrompt : Strings.closeAllOtherTabsPrompt,
+          preferredStyle: .actionSheet
+        )
+        let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
+        let closedTabsTitle =
+          isActiveTabIncluded
+          ? String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count)
+          : Strings.closeAllOtherTabsTitle
+        let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) { _ in
+          completion()
+        }
+        alert.addAction(closeAllAction)
+        alert.addAction(cancelAction)
+
+        if let popoverPresentation = alert.popoverPresentationController {
+          let tabsButton = toolbar?.tabsButton ?? topToolbar.tabsButton
+          popoverPresentation.sourceView = tabsButton
+          popoverPresentation.sourceRect =
+            .init(x: tabsButton.frame.width / 2, y: tabsButton.frame.height, width: 1, height: 1)
+        }
+
+        present(alert, animated: true)
+      }
+
+      let closeAllOtherTabs = UIAction(
+        title: Strings.closeAllOtherTabsTitle,
+        image: UIImage(systemName: "xmark"),
+        attributes: .destructive,
+        handler: UIAction.deferredActionHandler { [weak self] _ in
+          guard let self = self else { return }
+
+          showCloseTabWarning(isActiveTabIncluded: false) {
+            if !self.privateBrowsingManager.isPrivateBrowsing {
+              // Add the tab information to recently closed before removing
+              self.tabManager.addAllTabsToRecentlyClosed(isActiveTabIncluded: false)
+            }
+
+            self.tabManager.removeAllForCurrentMode(isActiveTabIncluded: false)
+          }
+        }
+      )
+
       let closeAllTabs = UIAction(
         title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count),
         image: UIImage(systemName: "xmark"),
         attributes: .destructive,
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
+        handler: UIAction.deferredActionHandler { [weak self] _ in
+          guard let self = self else { return }
 
-          let alert = UIAlertController(
-            title: nil,
-            message: Strings.closeAllTabsPrompt,
-            preferredStyle: .actionSheet
-          )
-          let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
-          let closedTabsTitle = String(
-            format: Strings.closeAllTabsTitle,
-            tabManager.tabsForCurrentMode.count
-          )
-          let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) {
-            [unowned self] _ in
-            if !privateBrowsingManager.isPrivateBrowsing {
+          showCloseTabWarning(isActiveTabIncluded: true) {
+            if !self.privateBrowsingManager.isPrivateBrowsing {
               // Add the tab information to recently closed before removing
-              tabManager.addAllTabsToRecentlyClosed()
+              self.tabManager.addAllTabsToRecentlyClosed(isActiveTabIncluded: true)
             }
 
-            tabManager.removeAllForCurrentMode()
+            self.tabManager.removeAllForCurrentMode()
           }
-          alert.addAction(closeAllAction)
-          alert.addAction(cancelAction)
-
-          if let popoverPresentation = alert.popoverPresentationController {
-            let tabsButton = toolbar?.tabsButton ?? topToolbar.tabsButton
-            popoverPresentation.sourceView = tabsButton
-            popoverPresentation.sourceRect =
-              .init(x: tabsButton.frame.width / 2, y: tabsButton.frame.height, width: 1, height: 1)
-          }
-
-          self.present(alert, animated: true)
         }
       )
 
-      closeTabMenuChildren.append(closeAllTabs)
+      closeAllTabMenuChildren.append(closeAllOtherTabs)
+      closeAllTabMenuChildren.append(closeAllTabs)
     }
 
     let newTabMenu = UIMenu(title: "", options: .displayInline, children: newTabMenuChildren)
@@ -489,10 +545,15 @@ extension BrowserViewController: TabManagerDelegate {
       options: .displayInline,
       children: recentlyClosedMenuChildren
     )
+    let closeAllTabMenu = UIMenu(
+      title: "",
+      options: .displayInline,
+      children: closeAllTabMenuChildren
+    )
     let closeTabMenu = UIMenu(title: "", options: .displayInline, children: closeTabMenuChildren)
 
     let tabButtonMenuActionList = [
-      closeTabMenu, recentlyClosedMenu, duplicateTabMenu, bookmarkMenu, newTabMenu,
+      closeTabMenu, closeAllTabMenu, recentlyClosedMenu, duplicateTabMenu, bookmarkMenu, newTabMenu,
     ]
     let addTabMenuActionList = [addTabMenu]
 

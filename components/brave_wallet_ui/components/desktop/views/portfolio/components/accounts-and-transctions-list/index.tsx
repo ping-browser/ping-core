@@ -217,7 +217,7 @@ export const AccountsAndTransactionsList = ({
           <Row padding='24px 0px'>
             <SegmentedControl
               navOptions={PortfolioAssetOptions}
-              width={384}
+              maxWidth='384px'
             />
           </Row>
         )}
@@ -300,7 +300,7 @@ export const AccountsAndTransactionsList = ({
             <Row padding='24px 0px'>
               <SegmentedControl
                 navOptions={PortfolioAssetOptions}
-                width={384}
+                maxWidth='384px'
               />
             </Row>
           )}
@@ -461,7 +461,6 @@ export const AccountsAndTransactionsList = ({
       {showSellModal && selectedAsset && (
         <SellAssetModal
           selectedAsset={selectedAsset}
-          selectedAssetsNetwork={selectedAssetNetwork || selectedNetwork}
           onClose={() => setShowSellModal(false)}
           sellAmount={sellAmount}
           setSellAmount={setSellAmount}

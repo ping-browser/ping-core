@@ -1,20 +1,37 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index fbece51ef5c77767e968c7fcc56e5a537f0a1a8b..9289cf0a7f6085cb0e3da847ace4b5ab045bee8f 100644
+index 2223ebf02ac6d90b5a597e6d25b989c2c8f3077b..c1855e897d60531e4e265fd65256ebff40526b78 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
-@@ -44,6 +44,7 @@ js_files = [
- ]
+@@ -37,10 +37,12 @@ js_files = [
+ # Also needed on LaCros for Print Preview. Remove once CrOS Print Preview
+ # launches.
+ if (is_chromeos) {
++} if (!is_android) {
+   js_files += [ "iron-fit-behavior/iron-fit-behavior.js" ]
+ }
  
  if (is_chromeos_ash) {
 +} if (!is_android) {
    js_files += [
-     "iron-dropdown/iron-dropdown.js",
-     "iron-dropdown/iron-dropdown-scroll-manager.js",
-@@ -171,6 +172,7 @@ ts_library("library") {
-   ]
+     "iron-a11y-announcer/iron-a11y-announcer.js",
+     "iron-behaviors/iron-control-state.js",
+@@ -270,11 +272,13 @@ ts_library("library") {
+   # Also needed on LaCros for Print Preview. Remove once CrOS Print Preview
+   # launches.
+   if (is_chromeos) {
++  } if (!is_android) {
+     definitions +=
+         [ "components-chromium/iron-fit-behavior/iron-fit-behavior.d.ts" ]
+   }
  
    if (is_chromeos_ash) {
 +  } if (!is_android) {
      definitions += [
-       "components-chromium/iron-dropdown/iron-dropdown.d.ts",
-       "components-chromium/iron-dropdown/iron-dropdown-scroll-manager.d.ts",
+       "components-chromium/iron-a11y-announcer/iron-a11y-announcer.d.ts",
+       "components-chromium/iron-collapse/iron-collapse.d.ts",
+@@ -301,4 +305,5 @@ ts_library("library") {
+       "components-chromium/paper-tooltip/paper-tooltip.d.ts",
+     ]
+   }
++  import("//brave/third_party/polymer/v3_0/sources.gni") visibility += brave_polymer_library_visibility
+ }

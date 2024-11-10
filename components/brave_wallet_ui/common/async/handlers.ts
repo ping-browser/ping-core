@@ -5,29 +5,26 @@
 
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
-import { WalletState, RefreshOpts } from '../../constants/types'
 
 // Utils
 import getAPIProxy from './bridge'
 import { Store } from './types'
-import InteractionNotifier from './interactionNotifier'
+import { interactionNotifier } from './interactionNotifier'
 import { walletApi } from '../slices/api.slice'
 
 const handler = new AsyncActionHandler()
 
-const interactionNotifier = new InteractionNotifier()
-
-function getWalletState(store: Store): WalletState {
-  return store.getState().wallet
+const onInteractionInterval = () => {
+  getAPIProxy().keyringService.notifyUserInteraction()
 }
 
-async function refreshWalletInfo(store: Store, payload: RefreshOpts = {}) {
+async function refreshWalletInfo(store: Store) {
   const apiProxy = getAPIProxy()
 
   const { walletInfo } = await apiProxy.walletHandler.getWalletInfo()
   const { allAccounts } = await apiProxy.keyringService.getAllAccounts()
   store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
-  store.dispatch(WalletActions.refreshAll(payload))
+  store.dispatch(WalletActions.refreshAll())
 
   // refresh networks registry & selected network
   await store
@@ -46,7 +43,7 @@ async function refreshWalletInfo(store: Store, payload: RefreshOpts = {}) {
 
 handler.on(
   WalletActions.refreshNetworksAndTokens.type,
-  async (store: Store, payload: RefreshOpts) => {
+  async (store: Store) => {
     // refresh networks registry & selected network
     store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(true))
     await store
@@ -59,16 +56,21 @@ handler.on(
   }
 )
 
-handler.on(
-  WalletActions.initialize.type,
-  async (store, payload: RefreshOpts) => {
-    // Initialize active origin state.
-    const braveWalletService = getAPIProxy().braveWalletService
-    const { originInfo } = await braveWalletService.getActiveOrigin()
-    store.dispatch(WalletActions.activeOriginChanged(originInfo))
-    await refreshWalletInfo(store, payload)
+handler.on(WalletActions.initialize.type, async (store) => {
+  const { walletHandler, keyringService } = getAPIProxy()
+  const { walletInfo } = await walletHandler.getWalletInfo()
+  const { isWalletLocked } = walletInfo
+  const { allAccounts } = await keyringService.getAllAccounts()
+  if (!isWalletLocked) {
+    keyringService.notifyUserInteraction()
   }
-)
+  interactionNotifier.beginWatchingForInteraction(
+    50000,
+    isWalletLocked,
+    onInteractionInterval
+  )
+  store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
+})
 
 handler.on(WalletActions.walletCreated.type, async (store) => {
   await refreshWalletInfo(store)
@@ -88,9 +90,14 @@ handler.on(WalletActions.locked.type, async (store) => {
 })
 
 handler.on(WalletActions.unlocked.type, async (store) => {
-  await refreshWalletInfo(store, {
-    skipBalancesRefresh: true
-  })
+  await refreshWalletInfo(store)
+  const { keyringService } = getAPIProxy()
+  keyringService.notifyUserInteraction()
+  interactionNotifier.beginWatchingForInteraction(
+    50000,
+    false,
+    onInteractionInterval
+  )
 })
 
 handler.on(WalletActions.backedUp.type, async (store) => {
@@ -108,36 +115,21 @@ handler.on(
   }
 )
 
-handler.on(
-  WalletActions.refreshAll.type,
-  async (store: Store, payload: RefreshOpts) => {
-    const keyringService = getAPIProxy().keyringService
-    const state = getWalletState(store)
-    if (!state.isWalletLocked) {
-      keyringService.notifyUserInteraction()
-    }
-    interactionNotifier.beginWatchingForInteraction(
-      50000,
-      state.isWalletLocked,
-      async () => {
-        keyringService.notifyUserInteraction()
-      }
-    )
-    const braveWalletService = getAPIProxy().braveWalletService
-    store.dispatch(walletApi.util.invalidateTags(['DefaultFiatCurrency']))
-    // Fetch Balances and Prices
-    if (!state.isWalletLocked && state.isWalletCreated) {
-      // refresh networks registry & selected network
-      await store
-        .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
-        .unwrap()
-      store.dispatch(
-        walletApi.endpoints.invalidateUserTokensRegistry.initiate()
-      )
-      await braveWalletService.discoverAssetsOnAllSupportedChains(false)
-    }
+handler.on(WalletActions.refreshAll.type, async (store: Store) => {
+  const { braveWalletService, walletHandler } = getAPIProxy()
+  const { walletInfo } = await walletHandler.getWalletInfo()
+  const { isWalletCreated, isWalletLocked } = walletInfo
+  store.dispatch(walletApi.util.invalidateTags(['DefaultFiatCurrency']))
+  // Fetch Balances and Prices
+  if (!isWalletLocked && isWalletCreated) {
+    // refresh networks registry & selected network
+    await store
+      .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
+      .unwrap()
+    store.dispatch(walletApi.endpoints.invalidateUserTokensRegistry.initiate())
+    await braveWalletService.discoverAssetsOnAllSupportedChains(false)
   }
-)
+})
 
 handler.on(
   WalletActions.refreshBalancesAndPriceHistory.type,

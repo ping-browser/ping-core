@@ -23,7 +23,8 @@ class BraveAutocompleteMediatorBase {
             @NonNull AutocompleteMatch suggestion,
             @NonNull GURL url,
             long inputStart,
-            boolean openInNewTab) {
+            boolean openInNewTab,
+            boolean shouldUpdateSuggestionUrl) {
         Context context =
                 (Context)
                         BraveReflectionUtil.getField(AutocompleteMediator.class, "mContext", this);
@@ -47,7 +48,7 @@ class BraveAutocompleteMediatorBase {
             }
         }
 
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 AutocompleteMediator.class,
                 this,
                 "loadUrlForOmniboxMatch",
@@ -60,6 +61,8 @@ class BraveAutocompleteMediatorBase {
                 long.class,
                 inputStart,
                 boolean.class,
-                openInNewTab);
+                openInNewTab,
+                boolean.class,
+                shouldUpdateSuggestionUrl);
     }
 }

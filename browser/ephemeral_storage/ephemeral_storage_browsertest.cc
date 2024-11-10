@@ -31,7 +31,6 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
-#include "content/public/browser/notification_types.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/common/content_paths.h"
 #include "content/public/common/content_switches.h"
@@ -164,17 +163,32 @@ void HttpRequestMonitor::Clear() {
 }
 
 EphemeralStorageBrowserTest::EphemeralStorageBrowserTest()
-    : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-  SetUpHttpsServer();
-}
+    : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
 EphemeralStorageBrowserTest::~EphemeralStorageBrowserTest() = default;
 
+void EphemeralStorageBrowserTest::SetUp() {
+  ASSERT_TRUE(https_server_.InitializeAndListen());
+  InProcessBrowserTest::SetUp();
+}
+
 void EphemeralStorageBrowserTest::SetUpOnMainThread() {
   InProcessBrowserTest::SetUpOnMainThread();
+  std::vector<base::FilePath> test_data_dirs(2);
+  base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dirs[0]);
+  base::PathService::Get(content::DIR_TEST_DATA, &test_data_dirs[1]);
 
-  host_resolver()->AddRule("*", "127.0.0.1");
+  https_server_.RegisterDefaultHandler(base::BindRepeating(
+      &HandleFileRequestWithCustomHeaders,
+      base::Unretained(&http_request_monitor_), test_data_dirs));
+  https_server_.AddDefaultHandlers(GetChromeTestDataDir());
+  content::SetupCrossSiteRedirector(&https_server_);
+  https_server_.StartAcceptingConnections();
+
   mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+
+  ASSERT_TRUE(embedded_test_server()->Start());
+  host_resolver()->AddRule("*", "127.0.0.1");
 
   a_site_ephemeral_storage_url_ =
       https_server_.GetURL("a.com", "/ephemeral_storage.html");
@@ -186,26 +200,11 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
       "a.com", "/ephemeral_storage_with_network_cookies.html");
 }
 
-void EphemeralStorageBrowserTest::SetUpHttpsServer() {
-  brave::RegisterPathProvider();
-  content::RegisterPathProvider();
-
-  std::vector<base::FilePath> test_data_dirs(2);
-  base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dirs[0]);
-  base::PathService::Get(content::DIR_TEST_DATA, &test_data_dirs[1]);
-
-  https_server_.RegisterDefaultHandler(base::BindRepeating(
-      &HandleFileRequestWithCustomHeaders,
-      base::Unretained(&http_request_monitor_), test_data_dirs));
-  https_server_.AddDefaultHandlers(GetChromeTestDataDir());
-  content::SetupCrossSiteRedirector(&https_server_);
-  ASSERT_TRUE(https_server_.Start());
-}
-
 void EphemeralStorageBrowserTest::SetUpCommandLine(
     base::CommandLine* command_line) {
   InProcessBrowserTest::SetUpCommandLine(command_line);
   mock_cert_verifier_.SetUpCommandLine(command_line);
+
   // Backgrounded renderer processes run at a lower priority, causing the
   // JS events to slow down. Disable backgrounding so that the tests work
   // properly.
@@ -875,6 +874,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
       "b.com", "/set-cookie?name=bcom_ephemeral;path=/;SameSite=None;Secure");
   NavigateIframeToURL(web_contents, "third_party_iframe_a",
                       b_site_set_ephemeral_cookie_url);
+  iframe_a = content::ChildFrameAt(main_frame, 0);
   ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_a));
   ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_b));
 

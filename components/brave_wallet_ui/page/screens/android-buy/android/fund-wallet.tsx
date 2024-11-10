@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -18,19 +18,16 @@ import 'emptykit.css'
 // Utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
 
-// Actions
+// Redux
+import { store } from '../../../store'
 import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
-import { store, walletPageApiProxy } from '../../../store'
 import {
   // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider
 } from '../../../../../common/BraveCoreThemeProvider'
 import { FundWalletScreen } from '../../fund-wallet/fund-wallet'
-
-// Hooks
-import { ApiProxyContext } from '../../../../common/context/api-proxy.context'
 
 // Resources
 import { setIconBasePath } from '@brave/leo/react/icon'
@@ -44,9 +41,7 @@ export function AndroidFundWalletApp() {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <ApiProxyContext.Provider value={walletPageApiProxy}>
-            <FundWalletScreen isAndroid={true} />
-          </ApiProxyContext.Provider>
+          <FundWalletScreen isAndroid={true} />
         </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>
@@ -55,8 +50,9 @@ export function AndroidFundWalletApp() {
 
 function initialize() {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize({}))
-  render(AndroidFundWalletApp(), document.getElementById('root'))
+  store.dispatch(WalletActions.initialize())
+  const root = createRoot(document.getElementById('root')!)
+  root.render(<AndroidFundWalletApp />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

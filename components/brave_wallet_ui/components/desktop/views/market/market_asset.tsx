@@ -20,7 +20,6 @@ import {
 } from '../../../../common/constants/local-storage-keys'
 
 // Utils
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import {
@@ -34,7 +33,10 @@ import {
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../../utils/pricing-utils'
 import {
   querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'
@@ -385,7 +387,7 @@ export const MarketAsset = () => {
     <WalletPageWrapper
       wrapContentInBox={true}
       noCardPadding={true}
-      hideDivider={true}
+      useCardInPanel={true}
       cardHeader={
         <AssetDetailsHeader
           selectedTimeline={selectedTimeline}
@@ -451,7 +453,6 @@ export const MarketAsset = () => {
           selectedAssetsNetwork && (
             <HideTokenModal
               selectedAsset={selectedAssetFromParams}
-              selectedAssetNetwork={selectedAssetsNetwork}
               onClose={onCloseHideTokenModal}
               onHideAsset={onHideAsset}
             />

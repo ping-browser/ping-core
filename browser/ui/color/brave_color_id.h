@@ -18,6 +18,7 @@
     E_CPONLY(kColorIconBase)                         \
     E_CPONLY(kColorMenuItemSubText)                  \
     E_CPONLY(kColorBookmarkBarInstructionsText)      \
+    E_CPONLY(kColorBookmarkBarInstructionsLink)      \
     E_CPONLY(kColorLocationBarFocusRing)             \
     E_CPONLY(kColorLocationBarHoveredShadow)         \
     E_CPONLY(kColorDialogDontAskAgainButton)         \
@@ -33,16 +34,21 @@
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \
     E_CPONLY(kColorSearchConversionCloseButton)                       \
+    E_CPONLY(kColorSearchConversionBannerTypeBackground)              \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorder)        \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorderHovered) \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundGradientFrom)  \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundGradientTo)    \
     E_CPONLY(kColorSearchConversionBannerTypeDescText)                \
-    E_CPONLY(kColorSearchConversionButtonTypeBackgroundNormal)        \
-    E_CPONLY(kColorSearchConversionButtonTypeBackgroundHovered)       \
-    E_CPONLY(kColorSearchConversionButtonTypeDescNormal)              \
-    E_CPONLY(kColorSearchConversionButtonTypeDescHovered)             \
-    E_CPONLY(kColorSearchConversionButtonTypeInputAppend)
+    E_CPONLY(kColorSearchConversionButtonBorder)                      \
+    E_CPONLY(kColorSearchConversionButtonBackground)                  \
+    E_CPONLY(kColorSearchConversionButtonBackgroundHovered)           \
+    E_CPONLY(kColorSearchConversionButtonText)                        \
+    E_CPONLY(kColorSearchConversionButtonCaratRight)                  \
+    E_CPONLY(kColorSearchConversionButtonCloseButton)                 \
+    E_CPONLY(kColorSearchConversionButtonCloseButtonHovered)          \
+    E_CPONLY(kColorSearchConversionButtonShadow1)                     \
+    E_CPONLY(kColorSearchConversionButtonShadow2)
 
 #define BRAVE_SIDEBAR_COLOR_IDS                               \
     E_CPONLY(kColorSidebarAddBubbleBackground)                \
@@ -111,17 +117,32 @@
 // as brave_color_mixer depends on this without deps to //ui/views:flags.
 // But it's safe have without the guard as this file is included only when
 // !is_android.
-#define BRAVE_VERTICAL_TAB_COLOR_IDS                    \
-    E_CPONLY(kColorBraveVerticalTabSeparator)           \
-    E_CPONLY(kColorBraveVerticalTabActiveBackground)    \
-    E_CPONLY(kColorBraveVerticalTabInactiveBackground)  \
-    E_CPONLY(kColorBraveVerticalTabNTBIconColor)        \
-    E_CPONLY(kColorBraveVerticalTabNTBTextColor)        \
+#define BRAVE_VERTICAL_TAB_COLOR_IDS                        \
+    E_CPONLY(kColorBraveVerticalTabSeparator)               \
+    E_CPONLY(kColorBraveVerticalTabActiveBackground)        \
+    E_CPONLY(kColorBraveVerticalTabInactiveBackground)      \
+    E_CPONLY(kColorBraveVerticalTabInactiveHoverBackground) \
+    E_CPONLY(kColorBraveVerticalTabNTBIconColor)            \
+    E_CPONLY(kColorBraveVerticalTabNTBTextColor)            \
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
+
+#define BRAVE_SHARED_PINNED_TAB_COLOR_IDS                    \
+    E_CPONLY(kColorBraveSharedPinnedTabDummyViewBackground)  \
+    E_CPONLY(kColorBraveSharedPinnedTabDummyViewTitle)       \
+    E_CPONLY(kColorBraveSharedPinnedTabDummyViewDescription) \
+    E_CPONLY(kColorBraveSharedPinnedTabDummyViewThumbnailBorder)
+
 
 #define BRAVE_SPLIT_VIEW_COLOR_IDS \
     E_CPONLY(kColorBraveSplitViewTileBackground)        \
+    E_CPONLY(kColorBraveSplitViewActiveWebViewBorder) \
     E_CPONLY(kColorBraveSplitViewInactiveWebViewBorder) \
+    E_CPONLY(kColorBraveSplitViewMenuButtonIcon)        \
+    E_CPONLY(kColorBraveSplitViewMenuButtonBackground)  \
+    E_CPONLY(kColorBraveSplitViewMenuButtonBorder)      \
+    E_CPONLY(kColorBraveSplitViewMenuItemIcon)          \
+    E_CPONLY(kColorBraveSplitViewUrl)
+
 
 #define BRAVE_PLAYLIST_COLOR_IDS                                      \
     E_CPONLY(kColorBravePlaylistAddedIcon)                            \
@@ -131,11 +152,17 @@
     E_CPONLY(kColorBravePlaylistMoveDialogDescription)                \
     E_CPONLY(kColorBravePlaylistMoveDialogCreatePlaylistAndMoveTitle) \
     E_CPONLY(kColorBravePlaylistNewPlaylistDialogNameLabel)           \
-    E_CPONLY(kColorBravePlaylistNewPlaylistDialogItemsLabel)
+    E_CPONLY(kColorBravePlaylistNewPlaylistDialogItemsLabel)          \
+    E_CPONLY(kColorBravePlaylistTextInteractive)
 
 #define BRAVE_OMNIBOX_COLOR_IDS \
-    E_CPONLY(kColorBraveOmniboxResultViewSeparator) \
-    E_CPONLY(kColorBravePlayerActionViewBorder)
+    E_CPONLY(kColorBraveOmniboxResultViewSeparator)
+
+#define BRAVE_EXTENSION_MENU_COLOR_IDS \
+    E_CPONLY(kColorBraveExtensionMenuIcon)
+
+#define BRAVE_APP_MENU_COLOR_IDS \
+    E_CPONLY(kColorBraveAppMenuAccentColor)
 
 #define BRAVE_COLOR_IDS               \
     BRAVE_COMMON_COLOR_IDS            \
@@ -144,10 +171,13 @@
     BRAVE_SPEEDREADER_COLOR_IDS       \
     BRAVE_VPN_COLOR_IDS               \
     BRAVE_VERTICAL_TAB_COLOR_IDS      \
+    BRAVE_SHARED_PINNED_TAB_COLOR_IDS \
     BRAVE_SPLIT_VIEW_COLOR_IDS        \
     BRAVE_PLAYLIST_COLOR_IDS          \
     BRAVE_OMNIBOX_COLOR_IDS           \
-    BRAVE_WAYBACK_MACHINE_COLOR_IDS
+    BRAVE_WAYBACK_MACHINE_COLOR_IDS   \
+    BRAVE_EXTENSION_MENU_COLOR_IDS    \
+    BRAVE_APP_MENU_COLOR_IDS
 
 #include "ui/color/color_id_macros.inc"
 

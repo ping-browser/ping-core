@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -98,12 +99,6 @@ void BraveWalletP3A::AddObservers() {
   update_timer_.Start(FROM_HERE, base::Hours(kRefreshP3AFrequencyHours), this,
                       &BraveWalletP3A::OnUpdateTimerFired);
   OnUpdateTimerFired();  // Also call on startup
-}
-
-mojo::PendingRemote<mojom::BraveWalletP3A> BraveWalletP3A::MakeRemote() {
-  mojo::PendingRemote<mojom::BraveWalletP3A> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
 }
 
 void BraveWalletP3A::Bind(
@@ -262,7 +257,7 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
       histogram_name = kZecTransactionSentHistogramName;
       break;
     default:
-      NOTREACHED() << coin;
+      NOTREACHED_IN_MIGRATION() << coin;
       return;
   }
 
@@ -315,7 +310,7 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
       histogram_name = kZecActiveAccountHistogramName;
       break;
     default:
-      NOTREACHED() << coin_type;
+      NOTREACHED_IN_MIGRATION() << coin_type;
       return;
   }
 
@@ -436,8 +431,7 @@ void BraveWalletP3A::OnTransactionStatusChanged(
       return;
     }
     if (!count_test_networks &&
-        (chain_id == mojom::kGoerliChainId ||
-         chain_id == mojom::kSepoliaChainId ||
+        (chain_id == mojom::kSepoliaChainId ||
          chain_id == mojom::kLocalhostChainId ||
          chain_id == mojom::kFilecoinEthereumTestnetChainId)) {
       return;
@@ -478,7 +472,7 @@ void BraveWalletP3A::OnTransactionStatusChanged(
       return;
     }
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
   ReportTransactionSent(tx_coin, true);
 }

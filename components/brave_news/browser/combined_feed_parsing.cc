@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
 
+#include <algorithm>
+#include <iterator>
 #include <string>
 #include <utility>
 #include <vector>
@@ -76,6 +78,12 @@ base::expected<mojom::FeedItemPtr, std::string> ParseFeedItem(
 
   auto metadata = mojom::FeedItemMetadata::New();
   metadata->category_name = GetMigratedChannel(feed_item.category);
+  if (feed_item.channels) {
+    std::ranges::transform(*feed_item.channels,
+                           std::back_inserter(metadata->channels),
+                           &GetMigratedChannel);
+  }
+
   metadata->title = feed_item.title;
   metadata->description = feed_item.description;
   metadata->publisher_id = feed_item.publisher_id;
@@ -137,7 +145,7 @@ base::expected<mojom::FeedItemPtr, std::string> ParseFeedItem(
 std::vector<mojom::FeedItemPtr> ParseFeedItems(const base::Value& value) {
   std::vector<mojom::FeedItemPtr> items;
   if (!value.is_list()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return items;
   }
   for (const base::Value& feed_item : value.GetList()) {

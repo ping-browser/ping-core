@@ -43,6 +43,7 @@ import {
   BraveRewardsProxyOverrides,
   WalletApiDataOverrides
 } from '../constants/testing_types'
+import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 export interface RootStateOverrides {
   accountTabStateOverride?: Partial<AccountsTabState>
@@ -104,7 +105,7 @@ export const createMockStore = (
   proxy?.addKeyringServiceObserver?.(makeKeyringServiceObserver(store))
   proxy?.addTxServiceObserver?.(makeTxServiceObserver(store))
   proxy?.addBraveWalletServiceObserver?.(makeBraveWalletServiceObserver(store))
-  store.dispatch(WalletActions.initialize({}))
+  store.dispatch(WalletActions.initialize())
 
   return store
 }
@@ -117,4 +118,42 @@ export function renderHookOptionsWithMockStore(
       <Provider store={store}>{children}</Provider>
     )
   }
+}
+
+export function renderComponentOptionsWithMockStore(
+  store: ReturnType<typeof createMockStore>
+) {
+  return {
+    wrapper: ({ children }: { children?: React.ReactNode }) => (
+      <BraveCoreThemeProvider>
+        <Provider store={store}>{children}</Provider>
+      </BraveCoreThemeProvider>
+    )
+  }
+}
+
+export const makeMockedStoreWithSpy = (
+  stateOverrides: RootStateOverrides = {},
+  apiOverrides?: WalletApiDataOverrides,
+  rewardsApiOverrides?: BraveRewardsProxyOverrides
+) => {
+  const store = createMockStore(
+    stateOverrides,
+    apiOverrides,
+    rewardsApiOverrides
+  )
+
+  const areWeTestingWithJest = process.env.JEST_WORKER_ID !== undefined
+
+  if (areWeTestingWithJest) {
+    const dispatchSpy = jest.fn(store.dispatch)
+    const ogDispatch = store.dispatch
+    store.dispatch = ((args: any) => {
+      ogDispatch(args)
+      dispatchSpy?.(args)
+    }) as any
+    return { store, dispatchSpy }
+  }
+
+  return { store }
 }

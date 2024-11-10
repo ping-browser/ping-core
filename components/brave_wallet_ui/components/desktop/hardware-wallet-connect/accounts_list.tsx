@@ -3,24 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { EntityId } from '@reduxjs/toolkit'
 import Dropdown from '@brave/leo/react/dropdown'
 
 // Types
+import { BraveWallet } from '../../../constants/types'
 import {
-  LedgerDerivationPath,
-  SolDerivationPaths,
-  TrezorDerivationPath,
-  TrezorDerivationPaths
+  DerivationScheme,
+  HardwareImportScheme,
+  AccountFromDevice
 } from '../../../common/hardware/types'
-import { BraveWallet, FilecoinNetwork } from '../../../constants/types'
-import {
-  HardwareWalletDerivationPathLocaleMapping,
-  HardwareWalletDerivationPathsMapping,
-  SolHardwareWalletDerivationPathLocaleMapping
-} from './hardware_wallet_connect.types'
-import { HardwareVendor } from '../../../common/api/hardware_keyrings'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -30,13 +24,9 @@ import {
 } from '../../../common/slices/api.slice'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import {
-  networkEntityAdapter //
+  networkEntityAdapter, //
+  selectAllNetworksFromQueryResult
 } from '../../../common/slices/entities/network.entity'
-import {
-  getPathForEthLedgerIndex,
-  getPathForSolLedgerIndex,
-  getPathForTrezorIndex
-} from '../../../utils/derivation_path_utils'
 
 // Components
 import { SearchBar } from '../../shared/search-bar/index'
@@ -67,49 +57,77 @@ import {
 } from '../../../page/screens/onboarding/onboarding.style'
 import { Row } from '../../shared/style'
 
+export interface AccountFromDeviceListItem extends AccountFromDevice {
+  alreadyInWallet: boolean
+  shouldAddToWallet: boolean
+}
+
 interface Props {
-  hardwareWallet: HardwareVendor
-  accounts: BraveWallet.HardwareWalletAccount[]
-  preAddedHardwareWalletAccounts: BraveWallet.AccountInfo[]
+  currentHardwareImportScheme: HardwareImportScheme
+  supportedSchemes: HardwareImportScheme[]
+  accounts: AccountFromDeviceListItem[]
   onLoadMore: () => void
-  selectedDerivationPaths: string[]
-  setSelectedDerivationPaths: (paths: string[]) => void
-  selectedDerivationScheme: string
-  setSelectedDerivationScheme: (scheme: string) => void
+  onAccountChecked: (path: string, checked: boolean) => void
+  setHardwareImportScheme: (scheme: DerivationScheme) => void
   onAddAccounts: () => void
-  filecoinNetwork: FilecoinNetwork
-  onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
-  coin: BraveWallet.CoinType
+}
+
+const defaultNetworkId = (
+  currentHardwareImportScheme: HardwareImportScheme
+) => {
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.ETH) {
+    return BraveWallet.MAINNET_CHAIN_ID
+  }
+
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.SOL) {
+    return BraveWallet.SOLANA_MAINNET
+  }
+
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.FIL) {
+    assert(currentHardwareImportScheme.fixedNetwork)
+    return currentHardwareImportScheme.fixedNetwork
+  }
+
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.BTC) {
+    assert(currentHardwareImportScheme.fixedNetwork)
+    return currentHardwareImportScheme.fixedNetwork
+  }
+
+  assertNotReached(
+    `Unknown currentHardwareImportScheme ${currentHardwareImportScheme}`
+  )
+}
+
+const coinsSupportingSchemesDropdown = [
+  BraveWallet.CoinType.ETH,
+  BraveWallet.CoinType.SOL
+]
+
+const getHardwareImportSchemeLabel = (scheme: HardwareImportScheme): string => {
+  return `${scheme.name} "${scheme.pathTemplate('x')}"`
 }
 
 export const HardwareWalletAccountsList = ({
+  currentHardwareImportScheme,
+  supportedSchemes,
+  setHardwareImportScheme,
   accounts,
-  preAddedHardwareWalletAccounts,
-  hardwareWallet,
-  selectedDerivationScheme,
-  setSelectedDerivationScheme,
-  setSelectedDerivationPaths,
-  selectedDerivationPaths,
   onLoadMore,
-  onAddAccounts,
-  filecoinNetwork,
-  onChangeFilecoinNetwork,
-  coin
+  onAccountChecked,
+  onAddAccounts
 }: Props) => {
+  const { coin } = currentHardwareImportScheme
+
   // queries
   const { data: networksRegistry } = useGetNetworksRegistryQuery()
 
   // state
   const [filteredAccountList, setFilteredAccountList] = React.useState<
-    BraveWallet.HardwareWalletAccount[]
+    AccountFromDeviceListItem[]
   >([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
   const [selectedNetworkId, setSelectedNetworkId] = React.useState<EntityId>(
-    coin === BraveWallet.CoinType.ETH
-      ? BraveWallet.MAINNET_CHAIN_ID
-      : coin === BraveWallet.CoinType.SOL
-      ? BraveWallet.SOLANA_MAINNET
-      : BraveWallet.FILECOIN_MAINNET
+    defaultNetworkId(currentHardwareImportScheme)
   )
 
   // memos
@@ -124,25 +142,53 @@ export const HardwareWalletAccountsList = ({
     if (!networksRegistry) {
       return []
     }
-    return networksRegistry.idsByCoinType[coin].map(
-      (id) => networksRegistry.entities[id] as BraveWallet.NetworkInfo
-    )
-  }, [networksRegistry, coin])
 
-  // computed
-  const ethDerivationPathsEnum =
-    HardwareWalletDerivationPathsMapping[hardwareWallet]
-  const solDerivationPathsEnum = SolHardwareWalletDerivationPathLocaleMapping
+    if (currentHardwareImportScheme.fixedNetwork) {
+      return selectAllNetworksFromQueryResult({
+        data: networksRegistry
+      }).filter(
+        (n) =>
+          n.coin === currentHardwareImportScheme.coin &&
+          n.chainId === currentHardwareImportScheme.fixedNetwork
+      )
+    }
+
+    return networksRegistry.visibleIdsByCoinType[
+      currentHardwareImportScheme.coin
+    ].map((id) => networksRegistry.entities[id] as BraveWallet.NetworkInfo)
+  }, [networksRegistry, currentHardwareImportScheme])
+
+  const showSchemesDropdown = coinsSupportingSchemesDropdown.includes(
+    currentHardwareImportScheme.coin
+  )
+
+  const dropdownItems = React.useMemo(() => {
+    if (!showSchemesDropdown) {
+      return null
+    }
+    return (
+      <>
+        <div slot='value'>
+          {getHardwareImportSchemeLabel(currentHardwareImportScheme)}
+        </div>
+        {supportedSchemes.map((scheme) => {
+          return (
+            <leo-option
+              value={scheme.derivationScheme}
+              key={scheme.derivationScheme}
+            >
+              {getHardwareImportSchemeLabel(scheme)}
+            </leo-option>
+          )
+        })}
+      </>
+    )
+  }, [currentHardwareImportScheme, showSchemesDropdown, supportedSchemes])
 
   // methods
   const onSelectAccountCheckbox =
-    (account: BraveWallet.HardwareWalletAccount) => () => {
-      const { derivationPath } = account
-      const isSelected = selectedDerivationPaths.includes(derivationPath)
-      const updatedPaths = isSelected
-        ? selectedDerivationPaths.filter((path) => path !== derivationPath)
-        : [...selectedDerivationPaths, derivationPath]
-      setSelectedDerivationPaths(updatedPaths)
+    (account: AccountFromDeviceListItem) => () => {
+      onAccountChecked(account.derivationPath, !account.shouldAddToWallet)
     }
 
   const filterAccountList = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,46 +211,17 @@ export const HardwareWalletAccountsList = ({
     onLoadMore()
   }
 
-  const isPreAddedAccount = React.useCallback(
-    (account: BraveWallet.HardwareWalletAccount) => {
-      return preAddedHardwareWalletAccounts.some(
-        (e) => e.address === account.address
-      )
-    },
-    [preAddedHardwareWalletAccounts]
-  )
-
   const onSelectNetwork = React.useCallback(
     (n: BraveWallet.NetworkInfo): void => {
       setSelectedNetworkId(networkEntityAdapter.selectId(n))
-      if (coin === BraveWallet.CoinType.FIL) {
-        onChangeFilecoinNetwork(n.chainId as FilecoinNetwork)
-      }
+      assert(!currentHardwareImportScheme.fixedNetwork)
     },
-    [coin, onChangeFilecoinNetwork]
+    [currentHardwareImportScheme]
   )
-
-  const getPathValue = (
-    path: string
-  ): LedgerDerivationPath | TrezorDerivationPath => {
-    return ethDerivationPathsEnum[path]
-  }
-
-  const getDerivationPathLabel = (
-    pathValue: LedgerDerivationPath | TrezorDerivationPath
-  ): string => {
-    const pathLocale = HardwareWalletDerivationPathLocaleMapping[pathValue]
-    const isTrezorPath = pathValue === TrezorDerivationPaths.Default
-    const devicePath = isTrezorPath
-      ? getPathForTrezorIndex(undefined, pathValue)
-      : getPathForEthLedgerIndex(undefined, pathValue)
-
-    return `${pathLocale} "${devicePath}"`
-  }
 
   const onChangeDerivationScheme = (value?: string) => {
     if (value) {
-      setSelectedDerivationScheme(value)
+      setHardwareImportScheme(value as DerivationScheme)
     }
   }
 
@@ -223,7 +240,7 @@ export const HardwareWalletAccountsList = ({
     }
 
     // set network dropdown default value
-    setSelectedNetworkId(networksRegistry.idsByCoinType[coin][0])
+    setSelectedNetworkId(networksRegistry.visibleIdsByCoinType[coin][0])
   }, [networksRegistry, coin, selectedNetworkId])
 
   // render
@@ -240,7 +257,7 @@ export const HardwareWalletAccountsList = ({
           />
           {coin === BraveWallet.CoinType.ETH ? (
             <Dropdown
-              value={selectedDerivationScheme}
+              value={currentHardwareImportScheme.derivationScheme}
               onChange={(e) => onChangeDerivationScheme(e.value)}
             >
               <Row
@@ -257,53 +274,20 @@ export const HardwareWalletAccountsList = ({
                   {getLocale('braveWalletHelpCenter')}
                 </HelpLink>
               </Row>
-              <div slot='value'>
-                {getDerivationPathLabel(
-                  selectedDerivationScheme as
-                    | LedgerDerivationPath
-                    | TrezorDerivationPath
-                )}
-              </div>
-              {Object.keys(ethDerivationPathsEnum).map((path) => {
-                const pathValue = getPathValue(path)
-
-                return (
-                  <leo-option
-                    value={pathValue}
-                    key={pathValue}
-                  >
-                    {getDerivationPathLabel(pathValue)}
-                  </leo-option>
-                )
-              })}
+              {dropdownItems}
             </Dropdown>
           ) : null}
           {coin === BraveWallet.CoinType.SOL ? (
             <Dropdown
-              value={selectedDerivationScheme}
+              value={currentHardwareImportScheme.derivationScheme}
               onChange={(e) => onChangeDerivationScheme(e.value)}
             >
-              <div slot='value'>{selectedDerivationScheme}</div>
-              {Object.keys(solDerivationPathsEnum).map((path) => {
-                const pathLocale = solDerivationPathsEnum[path]
-                return (
-                  <leo-option
-                    data-value={path}
-                    key={path}
-                  >
-                    {pathLocale}{' '}
-                    {`"${getPathForSolLedgerIndex(
-                      undefined,
-                      path as SolDerivationPaths
-                    )}"`}
-                  </leo-option>
-                )
-              })}
+              {dropdownItems}
             </Dropdown>
           ) : null}
         </SelectWrapper>
       </SelectRow>
-      {coin !== BraveWallet.CoinType.FIL && (
+      {showSchemesDropdown && (
         <DisclaimerWrapper>
           <DisclaimerText>
             {getLocale('braveWalletSwitchHDPathTextHardwareWallet')}
@@ -339,19 +323,15 @@ export const HardwareWalletAccountsList = ({
               </AccountListHeader>
               <AccountListContent>
                 {filteredAccountList.map((account) => {
-                  const isPreAdded = isPreAddedAccount(account)
-
                   return (
                     <AccountListItem
                       key={account.derivationPath}
                       balanceAsset={accountNativeAsset}
-                      account={account}
+                      address={account.address}
                       selected={
-                        selectedDerivationPaths.includes(
-                          account.derivationPath
-                        ) || isPreAdded
+                        account.alreadyInWallet || account.shouldAddToWallet
                       }
-                      disabled={isPreAdded}
+                      disabled={account.alreadyInWallet}
                       onSelect={onSelectAccountCheckbox(account)}
                     />
                   )
@@ -367,7 +347,7 @@ export const HardwareWalletAccountsList = ({
           isDisabled={
             isLoadingMore ||
             accounts.length === 0 ||
-            selectedDerivationScheme === SolDerivationPaths.Bip44Root
+            currentHardwareImportScheme.singleAccount
           }
         >
           {isLoadingMore
@@ -376,9 +356,7 @@ export const HardwareWalletAccountsList = ({
         </ContinueButton>
         <ContinueButton
           onClick={onAddAccounts}
-          isDisabled={
-            accounts.length === 0 || selectedDerivationPaths.length === 0
-          }
+          isDisabled={!accounts.find((acc) => acc.shouldAddToWallet)}
         >
           {getLocale('braveWalletButtonContinue')}
         </ContinueButton>

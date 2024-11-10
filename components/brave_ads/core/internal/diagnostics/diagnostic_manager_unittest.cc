@@ -8,12 +8,11 @@
 #include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -22,26 +21,26 @@
 
 namespace brave_ads {
 
-class BraveAdsDiagnosticManagerTest : public UnitTestBase {};
+class BraveAdsDiagnosticManagerTest : public test::TestBase {};
 
 TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   // Arrange
-  MockDeviceId();
+  test::MockDeviceId();
 
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
-  AdvanceClockTo(TimeFromString("Wed, 18 Nov 1970 12:34:56"));
+  AdvanceClockTo(test::TimeFromString("Wed, 18 Nov 1970 12:34:56"));
 
-  SetCatalogId(kCatalogId);
-  SetCatalogLastUpdated(Now());
+  SetCatalogId(test::kCatalogId);
+  SetCatalogLastUpdated(test::Now());
 
   AdvanceClockTo(
-      TimeFromString("Fri, 16 Mar 2012 06:23:00"));  // Hello Phoebe!!!
+      test::TimeFromString("Fri, 16 Mar 2012 06:23:00"));  // Hello Phoebe!!!
 
-  SetLastUnIdleTimeDiagnosticEntry(Now());
+  SetLastUnIdleTimeDiagnosticEntry(test::Now());
 
   // Act & Assert
-  const base::Value::List expected_list = base::test::ParseJsonList(
+  const base::Value::List expected_diagnostics = base::test::ParseJsonList(
       R"(
           [
             {
@@ -49,15 +48,19 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
               "value": "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e"
             },
             {
-              "name": "Opted-in to Brave News ads",
+              "name": "Opted into Brave News ads",
               "value": "true"
             },
             {
-              "name": "Opted-in to new tab page ads",
+              "name": "Opted into new tab page ads",
               "value": "true"
             },
             {
-              "name": "Opted-in to notification ads",
+              "name": "Opted into notification ads",
+              "value": "true"
+            },
+            {
+              "name": "Opted into search result ads",
               "value": "true"
             },
             {
@@ -79,7 +82,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
           ])");
 
   base::MockCallback<GetDiagnosticsCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_list))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_diagnostics))));
   DiagnosticManager::GetInstance().GetDiagnostics(callback.Get());
 }
 

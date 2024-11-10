@@ -18,14 +18,16 @@ public class BraveApplicationImplBase extends SplitCompatApplication.Impl {
     public void onCreate() {
         super.onCreate();
         if (SplitCompatApplication.isBrowserProcess()) {
-            GoBackend.setAlwaysOnCallback(new GoBackend.AlwaysOnCallback() {
-                @Override
-                public void alwaysOnTriggered() {
-                    BraveVpnProfileUtils.getInstance().startVpn(getApplication());
-                }
-            });
+            GoBackend.setAlwaysOnCallback(
+                    new GoBackend.AlwaysOnCallback() {
+                        @Override
+                        public void alwaysOnTriggered() {
+                            BraveVpnProfileUtils.getInstance().startVpn(getApplication());
+                        }
+                    });
             // Set a handler for SafeBrowsing. It has to be done only once for a process lifetime.
-            SafeBrowsingApiBridge.setSafetyNetApiHandler(BraveSafeBrowsingApiHandler.getInstance());
+            SafeBrowsingApiBridge.setSafeBrowsingApiHandler(
+                    BraveSafeBrowsingApiHandler.getInstance());
         }
     }
 }

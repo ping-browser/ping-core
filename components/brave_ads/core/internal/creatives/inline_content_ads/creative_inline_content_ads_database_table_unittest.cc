@@ -6,17 +6,19 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsCreativeInlineContentAdsDatabaseTableTest : public UnitTestBase {
+class BraveAdsCreativeInlineContentAdsDatabaseTableTest
+    : public test::TestBase {
  protected:
   database::table::CreativeInlineContentAds database_table_;
 };
@@ -44,9 +46,10 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest, Save) {
   // Assert
   base::MockCallback<database::table::GetCreativeInlineContentAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            SegmentList{"architecture", "arts & entertainment"},
-                            testing::UnorderedElementsAreArray(creative_ads)));
+  EXPECT_CALL(
+      callback,
+      Run(/*success=*/true, SegmentList{"architecture", "arts & entertainment"},
+          ::testing::UnorderedElementsAreArray(creative_ads)));
   database_table_.GetForActiveCampaigns(callback.Get());
 }
 
@@ -63,10 +66,11 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest, SaveInBatches) {
   // Assert
   base::MockCallback<database::table::GetCreativeInlineContentAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            SegmentList{"architecture", "arts & entertainment",
-                                        "automotive"},
-                            testing::UnorderedElementsAreArray(creative_ads)));
+  EXPECT_CALL(
+      callback,
+      Run(/*success=*/true,
+          SegmentList{"architecture", "arts & entertainment", "automotive"},
+          ::testing::UnorderedElementsAreArray(creative_ads)));
   database_table_.GetForActiveCampaigns(callback.Get());
 }
 
@@ -93,19 +97,19 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
   creative_ad_1.dimensions = "200x100";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
   creative_ad_2.dimensions = "300x200";
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.dimensions = "150x150";
   creative_ads.push_back(creative_ad_3);
@@ -160,17 +164,17 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_3.segment = "automotive";
   creative_ads.push_back(creative_ad_3);
 
@@ -182,7 +186,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   EXPECT_CALL(
       callback,
       Run(/*success=*/true, SegmentList{"technology & computing", "automotive"},
-          testing::UnorderedElementsAreArray(
+          ::testing::UnorderedElementsAreArray(
               CreativeInlineContentAdList{creative_ad_1, creative_ad_3})));
   database_table_.GetForSegmentsAndDimensions(
       /*segments=*/{"technology & computing", "automotive"},
@@ -195,11 +199,11 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   CreativeInlineContentAdList creative_ads;
 
   const CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   const CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeInlineContentAds(creative_ads);
@@ -219,7 +223,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   CreativeInlineContentAdList creative_ads;
 
   const CreativeInlineContentAdInfo creative_ad =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad);
 
   database::SaveCreativeInlineContentAds(creative_ads);
@@ -227,9 +231,9 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   // Act & Assert
   base::MockCallback<database::table::GetCreativeInlineContentAdCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/false, kMissingCreativeInstanceId,
+  EXPECT_CALL(callback, Run(/*success=*/false, test::kMissingCreativeInstanceId,
                             CreativeInlineContentAdInfo{}));
-  database_table_.GetForCreativeInstanceId(kMissingCreativeInstanceId,
+  database_table_.GetForCreativeInstanceId(test::kMissingCreativeInstanceId,
                                            callback.Get());
 }
 
@@ -238,15 +242,15 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest, GetNonExpired) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
-  creative_ad_1.start_at = DistantPast();
-  creative_ad_1.end_at = Now();
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
+  creative_ad_1.start_at = test::DistantPast();
+  creative_ad_1.end_at = test::Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
-  creative_ad_2.start_at = DistantPast();
-  creative_ad_2.end_at = DistantFuture();
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
+  creative_ad_2.start_at = test::DistantPast();
+  creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeInlineContentAds(creative_ads);

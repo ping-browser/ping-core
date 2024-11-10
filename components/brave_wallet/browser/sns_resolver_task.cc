@@ -13,6 +13,7 @@
 #include "base/base64.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -27,6 +28,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "build/build_config.h"
 #include "crypto/sha2.h"
 #include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
@@ -102,17 +104,6 @@ std::optional<T> FromBase64(const std::string& str) {
   return T::FromBytes(*data);
 }
 
-template <class T>
-T FromLE(base::span<const uint8_t> buf) {
-  CHECK_EQ(buf.size(), sizeof(T));
-  T uint = *reinterpret_cast<const T*>(buf.data());
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint;
-#else
-  return base::ByteSwap(uint);
-#endif
-}
-
 SnsResolverTaskError ParseErrorResult(const base::Value& json_value) {
   SnsResolverTaskError task_error;
   brave_wallet::ParseErrorResult<mojom::SolanaProviderError>(
@@ -146,7 +137,6 @@ struct SnsRecordV2 {
 
 base::span<const uint8_t> ExtractSpan(base::span<const uint8_t>& data,
                                       size_t size) {
-  CHECK_GT(size, 0u);
   if (data.size() < size) {
     return {};
   }
@@ -189,23 +179,23 @@ std::optional<SnsRecordV2> ParseSnsRecordV2(
 
   if (auto field = ExtractSpan(sol_record_payload, sizeof(uint16_t));
       !field.empty()) {
-    result.staleness_validation_type =
-        static_cast<SnsRecordV2ValidationType>(FromLE<uint16_t>(field));
+    result.staleness_validation_type = static_cast<SnsRecordV2ValidationType>(
+        base::U16FromNativeEndian(field.first<2u>()));
   } else {
     return std::nullopt;
   }
 
   if (auto field = ExtractSpan(sol_record_payload, sizeof(uint16_t));
       !field.empty()) {
-    result.roa_validation_type =
-        static_cast<SnsRecordV2ValidationType>(FromLE<uint16_t>(field));
+    result.roa_validation_type = static_cast<SnsRecordV2ValidationType>(
+        base::U16FromNativeEndian(field.first<2u>()));
   } else {
     return std::nullopt;
   }
 
   if (auto field = ExtractSpan(sol_record_payload, sizeof(uint32_t));
       !field.empty()) {
-    result.content_length = FromLE<uint32_t>(field);
+    result.content_length = base::U32FromNativeEndian(field.first<4u>());
   } else {
     return std::nullopt;
   }
@@ -360,7 +350,8 @@ struct SplMintData {
     result.emplace();
     // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L41
     constexpr size_t kSupplyOffset = 36;
-    result->supply = FromLE<uint64_t>(data_span.subspan(kSupplyOffset, 8));
+    result->supply =
+        base::U64FromNativeEndian(data_span.subspan(kSupplyOffset).first<8u>());
     return result;
   }
 };
@@ -798,7 +789,7 @@ void SnsResolverTask::FetchNftSplMint() {
 }
 
 void SnsResolverTask::OnFetchNftSplMint(APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -836,7 +827,7 @@ void SnsResolverTask::FetchNftTokenOwner() {
 
 void SnsResolverTask::OnFetchNftTokenOwner(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -866,7 +857,7 @@ void SnsResolverTask::FetchDomainRegistryState() {
 
 void SnsResolverTask::OnFetchDomainRegistryState(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -905,7 +896,7 @@ void SnsResolverTask::FetchNextRecord() {
 }
 
 void SnsResolverTask::OnFetchNextRecord(APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -951,14 +942,19 @@ void SnsResolverTask::OnFetchNextRecord(APIRequestResult api_request_result) {
         cur_item, base::make_span(record_name_registry_state->data),
         domain_owner);
     if (registry_string) {
-      GURL url(*registry_string);
+      GURL ipfs_resolved_url;
+      GURL url = (cur_item.record == kSnsIpfsRecord &&
+                  ipfs::TranslateIPFSURI(GURL(*registry_string),
+                                         &ipfs_resolved_url, false))
+                     ? ipfs_resolved_url
+                     : GURL(*registry_string);
       if (url.is_valid()) {
         SetUrlResult(std::move(url));
         return;
       }
     }
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 }
 
@@ -966,10 +962,10 @@ void SnsResolverTask::RequestInternal(
     const std::string& json_payload,
     RequestIntermediateCallback callback,
     ResponseConversionCallback conversion_callback) {
-  api_request_helper_->Request("POST", network_url_, json_payload,
-                               "application/json", std::move(callback),
-                               MakeCommonJsonRpcHeaders(json_payload), {},
-                               std::move(conversion_callback));
+  api_request_helper_->Request(
+      "POST", network_url_, json_payload, "application/json",
+      std::move(callback), MakeCommonJsonRpcHeaders(json_payload, network_url_),
+      {}, std::move(conversion_callback));
 }
 
 }  // namespace brave_wallet

@@ -7,9 +7,32 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "ui/views/view.h"
 
+namespace {
+
+int ClampSplitViewSizeDelta(views::View* contents_view, int size_delta) {
+  constexpr int kMinWidth = 144;  // From 144p resolution.
+  const auto half_size =
+      (contents_view->width() -
+       BraveContentsLayoutManager::kSpacingBetweenContentsWebViews) /
+      2;
+
+  return std::clamp(size_delta, /*min*/ kMinWidth - half_size,
+                    /*max*/ half_size - kMinWidth);
+}
+
+}  // namespace
+
 BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
+
+void BraveContentsLayoutManager::SetSplitViewSeparator(
+    SplitViewSeparator* split_view_separator) {
+  split_view_separator_ = split_view_separator;
+  split_view_separator_->set_delegate(this);
+}
 
 void BraveContentsLayoutManager::SetSecondaryContentsResizingStrategy(
     const DevToolsContentsResizingStrategy& strategy) {
@@ -23,11 +46,35 @@ void BraveContentsLayoutManager::SetSecondaryContentsResizingStrategy(
   }
 }
 
+void BraveContentsLayoutManager::OnDoubleClicked() {
+  split_view_size_delta_ = ongoing_split_view_size_delta_ = 0;
+  LayoutImpl();
+}
+
+void BraveContentsLayoutManager::OnResize(int resize_amount,
+                                          bool done_resizing) {
+  ongoing_split_view_size_delta_ = resize_amount;
+  if (done_resizing) {
+    split_view_size_delta_ += ongoing_split_view_size_delta_;
+    split_view_size_delta_ =
+        ClampSplitViewSizeDelta(host_view(), split_view_size_delta_);
+    ongoing_split_view_size_delta_ = 0;
+  }
+
+  LayoutImpl();
+}
+
 void BraveContentsLayoutManager::LayoutImpl() {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) ||
       !secondary_contents_view_ || !secondary_devtools_view_ ||
       !secondary_contents_view_->GetVisible()) {
     ContentsLayoutManager::LayoutImpl();
+    return;
+  }
+
+  const bool is_host_empty = !host_view()->width();
+  if (is_host_empty) {
+    // When minimizing window, this can happen
     return;
   }
 
@@ -51,7 +98,10 @@ void BraveContentsLayoutManager::LayoutImpl() {
       };
 
   gfx::Rect bounds = host_view()->GetLocalBounds();
-  bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2);
+  const auto size_delta = ClampSplitViewSizeDelta(
+      host_view(), split_view_size_delta_ + ongoing_split_view_size_delta_);
+  bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2 +
+                   size_delta);
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
                                      secondary_devtools_view_,
@@ -61,11 +111,12 @@ void BraveContentsLayoutManager::LayoutImpl() {
                                      strategy_);
   }
 
-  // In case of odd width, give the remaining
-  // width to the secondary contents view.
-  bounds.set_x(bounds.width() + kSpacingBetweenContentsWebViews);
-  bounds.set_width(host_view()->width() - bounds.width() -
-                   kSpacingBetweenContentsWebViews);
+  bounds.set_x(bounds.right());
+  bounds.set_width(kSpacingBetweenContentsWebViews);
+  split_view_separator_->SetBoundsRect(bounds);
+
+  bounds.set_x(bounds.right());
+  bounds.set_width(host_view()->width() - bounds.x());
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, contents_view_, devtools_view_,
                                      strategy_);
@@ -73,5 +124,9 @@ void BraveContentsLayoutManager::LayoutImpl() {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
                                      secondary_devtools_view_,
                                      secondary_strategy_);
+  }
+
+  if (browser_view_) {
+    browser_view_->NotifyDialogPositionRequiresUpdate();
   }
 }

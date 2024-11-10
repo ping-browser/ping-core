@@ -14,7 +14,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -89,7 +88,6 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII("brave-wallet");
@@ -99,8 +97,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
+    keyring_service_ = brave_wallet_service_->keyring_service();
   }
 
   content::WebContents* web_contents() {
@@ -129,7 +126,8 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(ExecJs(web_contents(), "ethereumEnable()"));
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   }
-  std::string GetSIWEMessage(const std::string& account) {
+  std::string GetSIWEMessage(const std::string& account,
+                             const std::string& uri = "a.com") {
     return base::StringPrintf(
         "%s wants you to sign in with your Ethereum account:\n"
         "%s\n\n\n"
@@ -139,7 +137,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
         "Nonce: 32891756\n"
         "Issued At: 2021-09-30T16:25:24Z)",
         https_server()->GetOrigin("a.com").Serialize().c_str(), account.c_str(),
-        https_server()->GetURL("a.com", "/sign_message.html").spec().c_str());
+        https_server()->GetURL(uri, "/sign_message.html").spec().c_str());
   }
 
  protected:
@@ -332,6 +330,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
           base::StringPrintf(
               "%s('%s', '%s')", method.c_str(), valid_case.api_account.c_str(),
               ToHex(GetSIWEMessage(valid_case.msg_account)).c_str())));
+      // uri has different origin
+      ASSERT_TRUE(ExecJs(
+          web_contents(),
+          base::StringPrintf(
+              "%s('%s', '%s')", method.c_str(), valid_case.api_account.c_str(),
+              ToHex(GetSIWEMessage(valid_case.msg_account, "www.a.com"))
+                  .c_str())));
       // Wait for EthereumProviderImpl::ContinueSignMessage
       base::RunLoop().RunUntilIdle();
       EXPECT_TRUE(WaitForWalletBubble(web_contents()));

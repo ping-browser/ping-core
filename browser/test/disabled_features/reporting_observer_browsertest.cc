@@ -14,7 +14,7 @@
 
 namespace {
 
-const char kReportingObserver[] = "/reporting_observer.html";
+constexpr char kReportingObserver[] = "/reporting_observer.html";
 
 }  // namespace
 
@@ -24,7 +24,6 @@ class ReportingObserverTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     content::SetupCrossSiteRedirector(embedded_test_server());
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
@@ -33,11 +32,11 @@ class ReportingObserverTest : public InProcessBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(ReportingObserverTest, IsDisabled) {
+IN_PROC_BROWSER_TEST_F(ReportingObserverTest, IsNoop) {
   GURL url = embedded_test_server()->GetURL(kReportingObserver);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_EQ(true, EvalJs(contents, "isReportingObserverDisabled();"));
+  EXPECT_EQ(true, EvalJs(contents, "isReportingObserverNoop();"));
 }

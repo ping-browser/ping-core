@@ -18,7 +18,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/l10n/common/country_code_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/p3a/uploader.h"
 #include "brave/components/version_info/version_info.h"
@@ -31,8 +31,10 @@
 namespace p3a {
 
 namespace {
+
 constexpr char kMetricNameAttributeName[] = "metric_name";
 constexpr char kMetricValueAttributeName[] = "metric_value";
+constexpr char kMetricNameAndValueAttributeName[] = "metric_name_and_value";
 constexpr char kPlatformAttributeName[] = "platform";
 constexpr char kChannelAttributeName[] = "channel";
 constexpr char kYosAttributeName[] = "yos";
@@ -133,32 +135,44 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
                                             uint64_t metric_value,
                                             const MessageMetainfo& meta,
                                             const std::string& upload_type,
-                                            bool include_refcode) {
+                                            bool include_refcode,
+                                            bool is_nebula) {
   base::Time::Exploded exploded;
   meta.date_of_install.LocalExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
 
   std::vector<std::array<std::string, 2>> attributes;
 
-  if (upload_type == kP3ACreativeUploadType) {
-    attributes = {{
-        {kMetricNameAttributeName, std::string(metric_name)},
-        {kMetricValueAttributeName, base::NumberToString(metric_value)},
-        {kChannelAttributeName, meta.channel},
-        {kPlatformAttributeName, meta.platform},
-        {kCountryCodeAttributeName, meta.country_code_from_locale_raw},
-    }};
+  std::string metric_name_str = std::string(metric_name);
+  std::string metric_value_str = base::NumberToString(metric_value);
+
+  if (!is_nebula) {
+    attributes = {{{kMetricNameAttributeName, metric_name_str},
+                   {kMetricValueAttributeName, metric_value_str}}};
   } else {
-    attributes = {{
-        {kMetricNameAttributeName, std::string(metric_name)},
-        {kMetricValueAttributeName, base::NumberToString(metric_value)},
-        {kVersionAttributeName, meta.version},
-        {kYoiAttributeName, base::NumberToString(exploded.year)},
-        {kChannelAttributeName, meta.channel},
-        {kPlatformAttributeName, meta.platform},
-        {kCountryCodeAttributeName, meta.GetCountryCodeForNormalMetrics()},
-        {kWoiAttributeName, base::NumberToString(meta.woi)},
-    }};
+    attributes = {{kMetricNameAndValueAttributeName,
+                   base::JoinString({metric_name_str, metric_value_str},
+                                    kP3AMessageNebulaNameValueSeparator)}};
+  }
+
+  bool is_creative = upload_type == kP3ACreativeUploadType;
+
+  if (!is_creative) {
+    attributes.push_back({kVersionAttributeName, meta.version});
+    attributes.push_back(
+        {kYoiAttributeName, base::NumberToString(exploded.year)});
+  }
+
+  attributes.push_back({kChannelAttributeName, meta.channel});
+  attributes.push_back({kPlatformAttributeName, meta.platform});
+
+  if (is_creative) {
+    attributes.push_back(
+        {kCountryCodeAttributeName, meta.country_code_from_locale_raw});
+  } else {
+    attributes.push_back(
+        {kCountryCodeAttributeName, meta.GetCountryCodeForNormalMetrics()});
+    attributes.push_back({kWoiAttributeName, base::NumberToString(meta.woi)});
   }
 
   if (include_refcode) {
@@ -195,12 +209,9 @@ void MessageMetainfo::Init(PrefService* local_state,
 
   country_code_from_timezone =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
-  if (local_state->FindPreference(brave_l10n::prefs::kCountryCode)) {
-    // Since the country code pref is not available in unit tests,
-    // only load it if it's available.
-    country_code_from_locale_raw = brave_l10n::GetCountryCode(local_state);
-    country_code_from_locale = country_code_from_locale_raw;
-  }
+  country_code_from_locale_raw = brave_l10n::GetDefaultISOCountryCodeString();
+  country_code_from_locale = country_code_from_locale_raw;
+
   MaybeStripCountry();
 
   Update();
@@ -248,12 +259,12 @@ void MessageMetainfo::MaybeStripCountry() {
   constexpr char kCountryOther[] = "other";
 
   static base::flat_set<std::string> const kLinuxCountries(
-      {"US", "FR", "DE", "GB", "IN", "BR", "PL", "NL", "ES", "CA", "IT", "AU",
-       "MX", "CH", "RU", "ZA", "SE", "BE", "JP"});
+      {"US", "FR", "DE", "GB", "IN", "BR", "PL", "NL", "ES", "CA",
+       "IT", "AU", "MX", "CH", "RU", "ZA", "SE", "BE", "JP", "AT"});
 
   static base::flat_set<std::string> const kNotableCountries(
-      {"US", "FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES", "NL", "MX",
-       "AU", "RU", "JP", "PL", "ID", "KR", "AR"});
+      {"US", "FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES",
+       "NL", "MX", "AU", "RU", "JP", "PL", "ID", "KR", "AR", "AT"});
 
   if (platform == "linux-bc") {
     // If we have more than 3/0.05 = 60 users in a country for

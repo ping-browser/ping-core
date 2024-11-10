@@ -5,24 +5,23 @@
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
+import { showAlert } from '@brave/leo/react/alertCenter'
 import Button from '@brave/leo/react/button'
+import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
-import { showAlert } from '@brave/leo/react/alertCenter'
-
-import getPageHandlerInstance from '../../api/page_handler'
-import styles from './style.module.scss'
+import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
 import FeedbackForm from '../feedback_form'
-import DataContext from '../../state/context'
+import styles from './style.module.scss'
 
 interface ContextMenuAssistantProps {
-  turnText: string
   turnId: number
   isOpen: boolean
   onClick: () => void
   onClose: () => void
+  onEditAnswerClicked: () => void
 }
 
 enum RatingStatus {
@@ -35,7 +34,9 @@ function ContextMenuAssistant_(
   props: ContextMenuAssistantProps,
   ref: React.RefObject<Map<number, Element>>
 ) {
-  const context = React.useContext(DataContext)
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
+  const {shouldDisableUserInput} = conversationContext
   const [feedbackId, setFeedbackId] = React.useState<string | null>()
   const [isFormVisible, setIsFormVisible] = React.useState(false)
   const [currentRatingStatus, setCurrentRatingStatus] =
@@ -45,15 +46,11 @@ function ContextMenuAssistant_(
 
   const hasSentRating = currentRatingStatus !== RatingStatus.None
 
-  const handleCopyText = () => {
-    navigator.clipboard.writeText(props.turnText)
-  }
-
   const handleLikeAnswer = () => {
     if (hasSentRating) return
 
-    getPageHandlerInstance()
-      .pageHandler.rateMessage(true, props.turnId)
+    conversationContext.conversationHandler
+      ?.rateMessage(true, props.turnId)
       .then((resp) => {
         if (!resp.ratingId) {
           showAlert({
@@ -79,8 +76,8 @@ function ContextMenuAssistant_(
   const handleDislikeAnswer = () => {
     if (hasSentRating) return
 
-    getPageHandlerInstance()
-      .pageHandler.rateMessage(false, props.turnId)
+    conversationContext.conversationHandler
+      ?.rateMessage(false, props.turnId)
       .then((resp) => {
         if (!resp.ratingId) {
           showAlert({
@@ -116,8 +113,8 @@ function ContextMenuAssistant_(
 
   const handleOnSubmit = (selectedCategory: string, feedbackText: string, shouldSendUrl: boolean) => {
     if (feedbackId) {
-      getPageHandlerInstance()
-        .pageHandler.sendFeedback(selectedCategory, feedbackText, feedbackId, shouldSendUrl)
+      conversationContext.conversationHandler
+        ?.sendFeedback(selectedCategory, feedbackText, feedbackId, shouldSendUrl)
         .then((resp) => {
           if (!resp.isSuccess) {
             showAlert({
@@ -149,21 +146,27 @@ function ContextMenuAssistant_(
         onClose={props.onClose}
       >
         <Button
+          fab
           slot='anchor-content'
-          size="small"
+          size="tiny"
           kind="plain-faint"
           onClick={props.onClick}
           className={classnames({
             [styles.moreButton]: true,
-            [styles.moreButtonHide]: context.isMobile
+            [styles.moreButtonActive]: props.isOpen,
+            [styles.moreButtonHide]: aiChatContext.isMobile
           })}
         >
-          <Icon name='more-horizontal' />
+          <Icon name='more-vertical' />
         </Button>
-        <leo-menu-item onClick={handleCopyText}>
-          <Icon name='copy' />
-          <span>{getLocale('copyButtonLabel')}</span>
-        </leo-menu-item>
+        {!shouldDisableUserInput && (
+          <leo-menu-item
+            onClick={props.onEditAnswerClicked}
+          >
+            <Icon name='edit-pencil' />
+            <span>{getLocale('editAnswerLabel')}</span>
+          </leo-menu-item>
+        )}
         <leo-menu-item
           class={classnames({
             [styles.liked]: currentRatingStatus === RatingStatus.Liked

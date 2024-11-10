@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Το Ping θα ήθελε να έχει πρόσβαση στις Φωτογραφίες σας";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Προσθήκη σελιδοδείκτη";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Προσθήκη σελιδοδείκτη";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Προσθήκη προσαρμοσμένης λίστας φίλτρων";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Προσθέστε επιπλέον λίστες, τις οποίες μπορεί να δημιουργήσει και να συντηρεί η έμπιστη κοινότητά σας.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Να εγγράφεστε μόνο σε λίστες από οργανισμούς που εμπιστεύεστε**. Το πρόγραμμα περιήγησής σας θα ελέγχει περιοδικά για ενημερώσεις λιστών από τη διεύθυνση URL που εισάγετε.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Προσθήκη στα αγαπημένα";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Αποκλεισμός της οθόνης";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Αποκλεισμός ειδοποιήσεων \"Μετάβαση στην εφαρμογή\"";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Αποκλεισμός αναδυόμενων παραθύρων";
 
@@ -173,7 +158,7 @@
 "BraveRewardsTitle" = "Επιβραβεύσεις Ping";
 
 /* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Η Ping Search δεν παρακολουθεί εσάς, τα ερωτήματά σας ή τα κλικ σας.";
+"braveSearchPromotion.bannerDescription" = "Η Αναζήτηση Ping δεν σκιαγραφεί το προφίλ σας.";
 
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Ίσως αργότερα";
@@ -214,13 +199,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Εάν αυτός ο ιστότοπος φαίνεται να μην λειτουργεί σωστά, δοκιμάστε να απενεργοποιήσετε τις Ασπίδες";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Ασπίδες Ping ";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Κάτω";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Επάνω";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -287,7 +272,7 @@
 "callout.p3aCalloutTitle" = "Βοηθήστε μας να κάνουμε το Ping καλύτερο.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Κοινοποιήστε απολύτως ιδιωτικές και ανώνυμες πληροφορίες προϊόντος.";
+"callout.p3aCalloutToggleTitle" = "Κοινοποιήστε ιδιωτικές και ανώνυμες πληροφορίες προϊόντος.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Εξασφαλίστε το απόρρητο του Ping στον υπολογιστή ή στο tablet σας και συγχρονίστε σελιδοδείκτες και επεκτάσεις μεταξύ συσκευών.";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Κλείσιμο";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Σίγουρα θέλετε να κλείσετε όλες τις ανοιχτές καρτέλες;";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Κλείστε όλες τις άλλες καρτέλες";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Είστε βέβαιοι ότι θέλετε να κλείσετε όλες τις ανοιχτές καρτέλες;";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Επιβεβαίωση";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Φιλτράρισμα περιεχομένου";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Ενεργοποιήστε προσαρμοσμένα φίλτρα που αποκλείουν τοπικούς και σχετικούς με τη γλώσσα ιχνηλάτες και Eνοχλήσεις";
 
 /* Cookie settings option title */
 "CookieControl" = "Έλεγχος Cookies";
@@ -514,6 +499,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Αντιγραφή συνδέσμου";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Αντιγράψτε τις καρτέλες στο πρόχειρο.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Αντιγραφή στο πρόχειρο";
 
@@ -525,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Μηχανές αναζήτησης σε χρήση";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Προσαρμοσμένη λίστα φίλτρων";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Προσαρμοσμένες λίστες φίλτρων";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Διεύθυνση URL προσαρμοσμένης λίστας φίλτρων";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Προσθήκη";
@@ -617,19 +596,16 @@
 "defaultBrowserCallout.introSecondaryText" = "Οι Ασπίδες Ping αποκλείουν προγράμματα παρακολούθησης και διαφημίσεις, αποθηκεύουν δεδομένα και σας βοηθούν να εξοικονομείτε χρόνο σε κάθε ιστότοπο που επισκέπτεστε";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Ανοίξτε τις Ρυθμίσεις, πατήστε «Προεπιλεγμένη εφαρμογή προγράμματος περιήγησης» και επιλέξτε «Brave».";
+"defaultBrowserCallout.introTertiaryText" = "Ανοίξτε τις Ρυθμίσεις, πατήστε «Προεπιλεγμένη εφαρμογή προγράμματος περιήγησης» και επιλέξτε «Ping».";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Ορισμός του Ping ως προεπιλεγμένο πρόγραμμα περιήγησης";
 
 /* Notification title to promote setting Ping app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Εξασφαλίστε την προστασία Brave, σε κάθε σύνδεσμο";
+"defaultBrowserCallout.notificationTitle" = "Εξασφαλίστε την προστασία Ping, σε κάθε σύνδεσμο";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Κλείσιμο επεξήγησης προεπιλεγμένου προγράμματος περιήγησης";
-
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Προεπιλεγμένες λίστες φίλτρων";
 
 /* Name for default Ping theme. */
 "defaultThemeName" = "Προεπιλογή Ping";
@@ -663,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Συσκευή %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Απόρριψη αλλαγών";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Σίγουρα θέλετε να απορρίψετε τις αλλαγές; Οι τροποποιήσεις που τυχόν έχουν γίνει θα χαθούν.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Απόρριψη αλλαγών;";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Πιστοποιητικό ασφαλείας";
@@ -798,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Δυνατότητες";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Η διεύθυνση URL που εισαγάγατε δεν είναι έγκυρη";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Μόνο ασφαλείς διευθύνσεις URL (https) επιτρέπονται για προσαρμοσμένες λίστες φίλτρων";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Προσθήκη";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Επιπλέον δημοφιλείς λίστες της κοινότητας. Λάβετε υπόψη ότι η ενεργοποίηση πολλών φίλτρων θα υποβαθμίσει τις ταχύτητες περιήγησης.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Η λήψη απέτυχε";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Λήψη σε εκκρεμότητα";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Επεξεργασία";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Εισαγάγετε τη διεύθυνση URL της λίστας φίλτρων";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Τελευταία ενημέρωση %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Εισαγάγετε τη διεύθυνση URL της λίστας φίλτρων εδώ ";
 
 /* Share action title */
 "FindInPage" = "Εύρεση στη σελίδα";
@@ -1105,7 +1060,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Διεκδικήστε token";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "Κερδίσατε %@ από την περιήγηση με το Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1247,7 +1202,7 @@
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ και %2$ άλλες διαφημίσεις και προγράμματα παρακολούθησης αποκλείστηκαν";
 
 /* The footnote indicating what Ping shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Δείτε όλα τα βλαβερά στοιχεία που έχει αποκλείσει το Brave, σε κάθε σελίδα, με τις Ασπίδες.";
+"onboarding.blockedAdsOnboardingFootnoteText" = "Δείτε όλα τα βλαβερά στοιχεία που έχει αποκλείσει το Ping, σε κάθε σελίδα, με τις Ασπίδες.";
 
 /* The text describing user where they should press in order to open Shield panel */
 "onboarding.blockedAdsOnboardingInstructionsText" = "Πατήστε για να προβάλλετε τις Ασπίδες Ping ";
@@ -1274,7 +1229,7 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Αποκλείοντας προγράμματα παρακολούθησης και διαφημίσεις, οι ιστότοποι χρησιμοποιούν λιγότερα δεδομένα και φορτώνονται πολύ πιο γρήγορα.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Δείτε τη διαφορά του Brave:\nΧωρίς διαφημίσεις. Χωρίς προγράμματα παρακολούθησης. Πολύ πιο γρήγορη φόρτωση σελίδων.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Δείτε τη διαφορά του Ping:\nΧωρίς διαφημίσεις. Χωρίς προγράμματα παρακολούθησης. Πολύ πιο γρήγορη φόρτωση σελίδων.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Πληκτρολογήστε ένα όνομα ιστοτόπου ή μια διεύθυνση URL";
@@ -1453,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Συνέχεια";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
+/* A subtitle shown on the setting that toggles analytics on Ping. */
 "p3a.settingSubtitle" = "Αυτές οι ιδιωτικές απαντήσεις βοηθούν το Ping να εκτιμήσει τη συνολική χρήση ορισμένων χαρακτηριστικών και να τα βελτιώσει.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Να επιτρέπονται αναλυτικά στοιχεία προϊόντων με προστασία απορρήτου (P3A)";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1422,15 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Η σύνδεσή σας σε αυτόν τον ιστότοπο δεν είναι ασφαλής.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Η σύνδεση στον ιστότοπο δεν επαληθεύτηκε";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Η σύνδεσή σας σε αυτόν τον ιστότοπο δεν ήταν δυνατό να επαληθευτεί πλήρως. Μπορείτε να προχωρήσετε ή να προσπαθήσετε να φορτώσετε ξανά τη σελίδα, για να δημιουργήσετε ασφαλή σύνδεση.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Σύνδεση στον ιστότοπο";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Προβολή πιστοποιητικού";
@@ -1775,7 +1739,7 @@
 "playList.undoRemoveButtonTitle" = "Αναίρεση";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Προσθέτει ένα κουμπί λίστας αναπαραγωγής (μοιάζει με 4 γραμμές με ένα σύμβολο +) δίπλα στη γραμμή διευθύνσεων στο πρόγραμμα περιήγησης Brave. Αυτό το κουμπί σάς δίνει γρήγορη πρόσβαση στο άνοιγμα της Λίστας αναπαραγωγής ή στην προσθήκη ή κατάργηση πολυμέσων.";
+"playlist.urlBarButtonOptionFooter" = "Προσθέτει ένα κουμπί λίστας αναπαραγωγής (μοιάζει με 4 γραμμές με ένα σύμβολο +) δίπλα στη γραμμή διευθύνσεων στο πρόγραμμα περιήγησης Ping. Αυτό το κουμπί σάς δίνει γρήγορη πρόσβαση στο άνοιγμα της Λίστας αναπαραγωγής ή στην προσθήκη ή κατάργηση πολυμέσων.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Ενεργοποίηση κουμπιού γρήγορης πρόσβασης";
@@ -1891,7 +1855,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Συγχρονισμός τώρα";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Κλείσιμο μενού Ασπίδων";
 
 /* Settings privacy section title */
@@ -1975,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Ενεργοποίηση ειδοποιήσεων";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "Μια ανακεφαλαίωση του τρόπου με τον οποίο η Ping σάς προστάτευσε online αυτή την εβδομάδα.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Εβδομαδιαία αναφορά απορρήτου";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Τα δεδομένα του Κέντρου απορρήτου αποθηκεύονται τοπικά και δεν αποστέλλονται ποτέ πουθενά.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Κέντρο απορρήτου";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2066,7 +2030,7 @@
 "PrivateBrowsingOnlyWarning" = "Η λειτουργία «Μόνο ιδιωτική περιήγηση» θα κλείσει όλες τις τρέχουσες καρτέλες σας και θα σας αποσυνδέσει από όλους τους ιστότοπους.";
 
 /* Private tab details */
-"PrivateTabBody" = "Οι ιδιωτικές καρτέλες δεν αποθηκεύονται στο Brave, αλλά δεν σας καθιστούν ανώνυμο online. Οι ιστότοποι που επισκέπτεστε σε μια ιδιωτική καρτέλα δεν θα εμφανίζονται στο ιστορικό σας και τα cookie τους εξαφανίζονται πάντα όταν τους κλείνετε. Δεν θα μένει κανένα ίχνος τους στο Brave. Ωστόσο, οι λήψεις θα αποθηκεύονται.\nΗ εταιρεία κινητής τηλεφωνίας σας (ή ο κάτοχος του δικτύου Wi-Fi ή του VPN στο οποίο έχετε συνδεθεί) μπορεί να δει ποιους ιστότοπους επισκέπτεστε και αυτοί οι ιστότοποι θα μαθαίνουν τη δημόσια διεύθυνση IP σας, ακόμη και σε ιδιωτικές καρτέλες.";
+"PrivateTabBody" = "Οι ιδιωτικές καρτέλες δεν αποθηκεύονται στο Ping, αλλά δεν σας καθιστούν ανώνυμο online. Οι ιστότοποι που επισκέπτεστε σε μια ιδιωτική καρτέλα δεν θα εμφανίζονται στο ιστορικό σας και τα cookie τους εξαφανίζονται πάντα όταν τους κλείνετε. Δεν θα μένει κανένα ίχνος τους στο Ping. Ωστόσο, οι λήψεις θα αποθηκεύονται.\nΗ εταιρεία κινητής τηλεφωνίας σας (ή ο κάτοχος του δικτύου Wi-Fi ή του VPN στο οποίο έχετε συνδεθεί) μπορεί να δει ποιους ιστότοπους επισκέπτεστε και αυτοί οι ιστότοποι θα μαθαίνουν τη δημόσια διεύθυνση IP σας, ακόμη και σε ιδιωτικές καρτέλες.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Η χρήση ιδιωτικών καρτελών αλλάζει μόνο ό,τι κάνει το Ping στη συσκευή σας και δεν αλλάζει τη συμπεριφορά κανενός άλλου.\n\nΟι ιστότοποι μαθαίνουν πάντα τη διεύθυνση IP σας όταν τους επισκέπτεστε. Από αυτό, συχνά μπορούν να μαντέψουν περίπου πού βρίσκεστε, συνήθως την πόλη σας. Μερικές φορές αυτή η εικασία τοποθεσίας μπορεί να είναι πολύ πιο συγκεκριμένη. Οι ιστότοποι γνωρίζουν επίσης όλα όσα τους λέτε συγκεκριμένα, όπως τους όρους αναζήτησης. Εάν συνδεθείτε σε έναν ιστότοπο, θα γνωρίζει ότι είστε ο κάτοχος αυτού του λογαριασμού. Θα αποσυνδεθείτε και πάλι, όταν κλείσετε τις ιδιωτικές καρτέλες, επειδή το Ping θα απορρίψει το cookie που σας διατηρεί συνδεδεμένους.\n\nΌποιος σας συνδέει στο Internet (ο ISP που χρησιμοποιείτε) μπορεί να δει όλη τη δραστηριότητα δικτύου σας. Συχνά, πρόκειται για την εταιρεία κινητής τηλεφωνίας σας. Εάν είστε συνδεδεμένοι σε ένα δίκτυο Wi-Fi, πρόκειται για τον κάτοχο αυτού του δικτύου και, εάν χρησιμοποιείτε VPN, τότε πρόκειται για όποιον διαχειρίζεται αυτό το VPN. Ο ISP σας μπορεί να δει ποιους ιστότοπους επισκέπτεστε καθώς τους επισκέπτεστε. Εάν αυτοί οι ιστότοποι χρησιμοποιούν HTTPS, δεν μπορεί παρά να υποθέσει τι κάνετε σε αυτούς τους ιστότοπους βάσει ορισμένων στοιχείων. Ωστόσο, εάν ένας ιστότοπος χρησιμοποιεί μόνο HTTP, τότε ο ISP σας μπορεί να δει τα πάντα: τους όρους αναζήτησής σας, ποιες σελίδες διαβάζετε και ποιους συνδέσμους ακολουθείτε.\n\nΕάν ένας εργοδότης διαχειρίζεται τη συσκευή σας, μπορεί επίσης να παρακολουθεί τι κάνετε με αυτήν. Η χρήση ιδιωτικών καρτελών πιθανότατα δεν θα τον εμποδίσει να γνωρίζει ποιους ιστότοπους έχετε επισκεφτεί. Κάποιος άλλος με πρόσβαση στη συσκευή σας θα μπορούσε επίσης να έχει εγκαταστήσει λογισμικό που παρακολουθεί τη δραστηριότητά σας και οι ιδιωτικές καρτέλες δεν θα σας προστατεύσουν ούτε από αυτό.";
@@ -2083,7 +2047,7 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Μηχανές γρήγορης αναζήτησης";
 
-/* Open the App Store to rate Brave. */
+/* Open the App Store to rate Ping. */
 "RateBrave" = "Αξιολογήστε το Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
@@ -2240,7 +2204,7 @@
 "ReportBrokenSiteBody1" = "Ενημερώστε τους προγραμματιστές του Ping ότι ο ιστότοπος αυτός δεν λειτουργεί σωστά με τις Ασπίδες:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Σημείωση: Η αναφορά που αποστέλλεται στους διακομιστές Ping θα περιλαμβάνει τη διεύθυνση τοποθεσίας, τον αριθμό έκδοσης Brave, τις ρυθμίσεις Ασπίδων, την κατάσταση VPN και τις ρυθμίσεις γλώσσας.";
+"ReportBrokenSiteBody2" = "Σημείωση: Η αναφορά που αποστέλλεται στους διακομιστές Ping θα περιλαμβάνει τη διεύθυνση τοποθεσίας, τον αριθμό έκδοσης Ping, τις ρυθμίσεις Ασπίδων, την κατάσταση VPN και τις ρυθμίσεις γλώσσας.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Υποβολή";
@@ -2279,7 +2243,7 @@
 "RestoreTabOnCrashAlertTitle" = "Το Ping έκλεισε απροσδόκητα.";
 
 /* Body for Ping Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Με τις Ανταμοιβές Brave, μπορείτε να προβάλλετε διαφημίσεις που διατηρούν το απόρρητο από το δίκτυο Διαφημίσεων Brave. Χωρίς προγράμματα παρακολούθησης. Χωρίς καθυστερήσεις. Και τα δεδομένα σας παραμένουν απολύτως ασφαλή.";
+"rewards.braveTalkRewardsOptInBody" = "Με τις Ανταμοιβές Ping, μπορείτε να προβάλλετε διαφημίσεις που διατηρούν το απόρρητο από το δίκτυο Διαφημίσεων Ping. Χωρίς προγράμματα παρακολούθησης. Χωρίς καθυστερήσεις. Και τα δεδομένα σας παραμένουν απολύτως ασφαλή.";
 
 /* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Ενεργοποιήστε τις Ανταμοιβές";
@@ -2309,7 +2273,7 @@
 "rewards.optInDisclaimer" = "Κάνοντας κλικ, συμφωνείτε με τους %1$@ και την %2$@. Απενεργοποιήστε ανά πάσα στιγμή στις Ρυθμίσεις.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Υποστηρίξτε αυτόματα δημιουργούς περιεχομένου και εκδότες, ενεργοποιώντας τις Ιδιωτικές διαφημίσεις Brave. Οι Ιδιωτικές διαφημίσεις Ping είναι διαφημίσεις που σέβονται το απόρρητο και προσφέρουν στους δημιουργούς περιεχομένου.";
+"rewards.settingsToggleMessage" = "Υποστηρίξτε αυτόματα δημιουργούς περιεχομένου και εκδότες, ενεργοποιώντας τις Ιδιωτικές διαφημίσεις Ping. Οι Ιδιωτικές διαφημίσεις Ping είναι διαφημίσεις που σέβονται το απόρρητο και προσφέρουν στους δημιουργούς περιεχομένου.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Ενεργοποίηση Ανταμοιβών Ping";
@@ -2464,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Κοινοποίηση";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Κοινοποίηση εσωτερικών στοιχείων Ανταμοιβών";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Υποστηρίζεται";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Εσωτερικά στοιχεία Ανταμοιβών";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2478,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Αποθήκευση";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Αποθήκευση αλλαγών";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Αποθηκευμένες συνδέσεις";
@@ -2668,11 +2635,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Ρυθμίσεις ποιότητας";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Αυτό το ιδιωτικό ping επιτρέπει στο Ping να εκτιμήσει τους ενεργούς χρήστες.";
+/* Description to explain the daily usage brave toggle */
+"settings.sendUsagePingDescription" = "Αυτό το ιδιωτικό brave επιτρέπει στο Ping να εκτιμήσει τους ενεργούς χρήστες.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Αυτόματη αποστολή ping καθημερινής χρήσης στο Ping";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Αυτόματη αποστολή brave καθημερινής χρήσης στο Ping";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Η φόρτωση της σελίδας δεν ήταν δυνατή.";
@@ -2753,7 +2723,7 @@
 "ShieldsDefaultsFooter" = "Αυτές είναι οι προεπιλεγμένες ρυθμίσεις των Ασπίδων για νέες τοποθεσίες. Η αλλαγή αυτών δεν θα επηρεάσει τις υπάρχουσες ρυθμίσεις ανά ιστότοπο.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Περιηγείστε σε αυτήν την ιστοσελίδα χωρίς την προστασία απορρήτου του Brave. Δεν λειτουργεί σωστά με τις Ασπίδες ενεργές;";
+"ShieldsDownDisclaimer" = "Περιηγείστε σε αυτήν την ιστοσελίδα χωρίς την προστασία απορρήτου του Ping. Δεν λειτουργεί σωστά με τις Ασπίδες ενεργές;";
 
 /* shields overview message */
 "ShieldsOverview" = "Οι Ασπίδες ιστότοπου σας επιτρέπουν να ελέγχετε πότε αποκλείονται οι διαφημίσεις και τα προγράμματα παρακολούθησης για κάθε ιστότοπο που επισκέπτεστε. Εάν προτιμάτε να βλέπετε διαφημίσεις σε έναν συγκεκριμένο ιστότοπο, μπορείτε να τις ενεργοποιήσετε εδώ.";
@@ -2858,7 +2828,7 @@
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Άνοιγμα ιστότοπου";
 
 /* Description for opening Ping Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Αυτή η επιλογή θα ανοίξει τις Ρυθμίσεις Brave. Για να αλλάξετε διάφορες επιλογές Siri, επιλέξτε το στοιχείο μενού «Siri και αναζήτηση» και προσαρμόστε τις επιλογές σας.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Αυτή η επιλογή θα ανοίξει τις Ρυθμίσεις Ping. Για να αλλάξετε διάφορες επιλογές Siri, επιλέξτε το στοιχείο μενού «Siri και αναζήτηση» και προσαρμόστε τις επιλογές σας.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Άνοιγμα ρυθμίσεων";
@@ -3013,6 +2983,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Διαγραφή λογαριασμού συγχρονισμού";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Η διαγραφή του λογαριασμού σας θα καταργήσει τα κρυπτογραφημένα δεδομένα σας από τους διακομιστές Ping και θα απενεργοποιήσει τον Συγχρονισμό σε όλες τις συνδεδεμένες συσκευές σας.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Ωστόσο, δεν θα διαγράψει τα δεδομένα που είναι αποθηκευμένα τοπικά σε αυτές τις συσκευές.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Αυτή η διαγραφή είναι οριστική και δεν υπάρχει τρόπος ανάκτησης των δεδομένων. Εάν αποφασίσετε να αρχίσετε να χρησιμοποιείτε ξανά τον Συγχρονισμό, θα πρέπει να δημιουργήσετε έναν νέο λογαριασμό και να προσθέσετε ξανά κάθε συσκευή μία-μία.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Παρουσιάστηκε πρόβλημα κατά την ανάκτηση των συσκευών στην αλυσίδα συγχρονισμού.";
 
@@ -3070,11 +3049,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Επιλέξτε τον τύπο της συσκευής με την οποία θέλετε να συγχρονίσετε.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Ο κωδικός έληξε. Δημιουργήστε νέο κωδικό, κάνοντας κλικ στο παρακάτω κουμπί.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Αυτός ο προσωρινός κωδικός θα ισχύει για %@";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Υπολογιστής";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Διαγραφή λογαριασμού συγχρονισμού";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Φαίνεται ότι αυτός ο κωδικός δημιουργήθηκε σε συσκευή με παλιότερη εκδοχή του Ping. Ενημερώστε τον Ping στη συσκευή σας, με την τελευταία εκδοχή, και στη συνέχεια, δημιουργήστε έναν νέο κωδικό συγχρονισμού.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Συσκευές και ρυθμίσεις";
@@ -3337,7 +3325,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "Ειδήσεις";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Ακολουθήστε θέματα που σας ενδιαφέρουν";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3379,7 +3367,7 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ωχ…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Διαχειριστείτε πηγές προέλευσης για τη ροή σας";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,7 +3389,7 @@
 "today.insecureSourcesHeader" = "Μη ασφαλείς πηγές - Προσθέστε με δική σας ευθύνη";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Ακολουθήστε τις αγαπημένες σας πηγές, σε μία μόνο ροή. Απλώς ανοίξτε μια καρτέλα στο Brave, κάντε κύλιση προς τα κάτω και… voila!\nΤο Ping News υποστηρίζεται από ιδιωτικές, ανωνυμοποιημένες διαφημίσεις.";
+"today.introCardBody" = "Ακολουθήστε τις αγαπημένες σας πηγές, σε μία μόνο ροή. Απλώς ανοίξτε μια καρτέλα στο Ping, κάντε κύλιση προς τα κάτω και… voila!\nΤο Ping News υποστηρίζεται από ιδιωτικές, ανωνυμοποιημένες διαφημίσεις.";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "Ενεργοποιήστε το Ping News, για να μην χάσετε ούτε μία είδηση";
@@ -3412,7 +3400,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Μάθετε περισσότερα σχετικά με τα δεδομένα σας";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "Περισσότερες προσφορές Ping";
 
 /* No comment provided by engineer. */
@@ -3436,6 +3424,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Προωθήθηκε";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Αξιολόγηση του Ping στο App Store";
+
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Απόκρυψη";
 
@@ -3446,7 +3437,7 @@
 "today.rateBraveCardSubtitle" = "Πείτε μας τι σκέφτεστε!";
 
 /* Title shown on the Rate Ping Card */
-"today.rateBraveCardTitle" = "Σας αρέσει ο Brave;";
+"today.rateBraveCardTitle" = "Σας αρέσει ο Ping;";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Ανανέωση";
@@ -3538,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Το Ping δεν αποθηκεύει ούτε κοινοποιεί τις φωνητικές αναζητήσεις σας.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "ενεργοποίηση";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Θέλετε να διατηρήσετε την προστασία σας; Απλώς ανανεώστε τη συνδρομή σας πριν λήξει. Ως ευχαριστώ για την ανανέωση, θα εφαρμόσουμε και έκπτωση 20% για τους επόμενους 3 μήνες.";
 
@@ -3559,140 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Ωχ, όχι! Η συνδρομή σας Ping VPN πρόκειται να λήξει.";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "Αγορά";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Τείχος προστασίας Ping + VPN";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "Προστατέψτε 5 συσκευές με 1 συνδρομή";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "Επιλέξτε την τοποθεσία της γεωγραφικής περιοχής/χώρας σας";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "Το Ping δεν καταγράφει ποτέ τη δραστηριότητά σας";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "Συνολική προστασία εφαρμογών/συσκευής";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "Ασφαλέστερο για οικιακό ή δημόσιο Wi-Fi";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "Αστραπιαίες ταχύτητες, έως 100 Mbps";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Έκδοση εφαρμογής";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Εταιρεία κινητής τηλεφωνίας";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Η Ping δεν σας παρακολουθεί ούτε γνωρίζει πώς χρησιμοποιείτε την εφαρμογή μας, επομένως δεν γνωρίζουμε πώς έχετε ρυθμίσει το VPN. Στείλτε μας πληροφορίες σχετικά με το πρόβλημα που αντιμετωπίζετε και θα κάνουμε ό,τι καλύτερο μπορούμε για να το επιλύσουμε το συντομότερο δυνατό.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Δεν είναι δυνατή η αποστολή email. Ελέγξτε τη διαμόρφωση του email σας.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Επιλέξτε τις πληροφορίες που θέλετε να μοιραστείτε μαζί μας.\n\nΌσο περισσότερες πληροφορίες μοιραστείτε αρχικά μαζί μας τόσο πιο εύκολο θα είναι για το προσωπικό υποστήριξής μας να σας βοηθήσει να επιλύσετε το πρόβλημά σας.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Η υποστήριξη παρέχεται με τη βοήθεια της ομάδας Guardian.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "Όνομα κεντρικού υπολογιστή VPN";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Πρόβλημα";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Πρόβλημα αξιοπιστίας σύνδεσης";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "Δεν υπάρχει σύνδεση στο διαδίκτυο κατά τη σύνδεση";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Άλλο";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Δεν είναι δυνατή η σύνδεση με το VPN (Άλλο σφάλμα)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Αργή σύνδεση";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Ο ιστότοπος δεν λειτουργεί";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Αρχεία καταγραφής σφαλμάτων";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Τύπος δικτύου";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Πλατφόρμα";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Συνέχεια ως email";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Τύπος συνδρομής";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "Ζώνη ώρας iOS";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Πρόβλημα Τείχους προστασίας + VPN Ping";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "Ενεργοποίηση";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Δεν ήταν δυνατή η σύνδεση στο App Store. Δοκιμάστε ξανά σε λίγα λεπτά.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Σφάλμα App Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Όλα τα προγράμματα περιλαμβάνουν %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "δωρεάν δοκιμή 7 ημερών";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "δωρεάν δοκιμή 7 ημερών";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Όλες οι συνδρομές ανανεώνονται αυτόματα, αλλά μπορούν να ακυρωθούν πριν από την ανανέωση.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Αυτό το προφίλ επιτρέπει στο VPN να συνδέεται αυτόματα και να ασφαλίζει συνεχώς την κυκλοφορία στη συσκευή σας. Αυτή η σύνδεση VPN θα κρυπτογραφείται και θα δρομολογείται μέσω του έξυπνου τείχους προστασίας της Ping για να αποκλείει δυνητικά επιβλαβείς και παρεμβατικές συνδέσεις.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Εγκατάσταση προφίλ VPN";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Το Ping θα εγκαταστήσει τώρα ένα προφίλ VPN.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "Το VPN έχει ενεργοποιηθεί";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Εγκατάσταση VPN";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "Δοκιμάστε ΔΩΡΕΑΝ";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Μηνιαία ανανέωση";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Μηνιαία συνδρομή";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Έχει λήξει";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Αποκλείει ανεπιθύμητες συνδέσεις δικτύου";
@@ -3715,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Με την υποστήριξη";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Επιλέξτε το πρωτόκολλο μεταφοράς που προτιμάτε. Μετά την εναλλαγή, τα υπάρχοντα διαπιστευτήριά σας VPN θα εκκαθαριστούν και θα συνδεθείτε ξανά, εάν έχει δημιουργηθεί μια σύνδεση VPN τη δεδομένη στιγμή.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Η αλλαγή πρωτοκόλλου διοχέτευσης απέτυχε. Δοκιμάστε ξανά αργότερα.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Σφάλμα διακομιστή";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Πρωτόκολλο μεταφοράς";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "Το πρωτόκολλο διοχέτευσης VPN άλλαξε.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Θα επιλεγεί αυτόματα μια περιοχή διακομιστή που είναι πιο κοντά σε εσάς, με βάση τη ζώνη ώρας του συστήματός σας. Αυτό συνιστάται για να εξασφαλίσετε γρήγορες ταχύτητες Internet.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Αυτόματη";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Η αλλαγή διακομιστών απέτυχε. Δοκιμάστε ξανά αργότερα.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Σφάλμα διακομιστή";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Περιοχή διακομιστή";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Η περιοχή VPN άλλαξε.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Δεν ήταν δυνατή η επαναφορά της διαμόρφωσης VPN. Δοκιμάστε ξανά. Εάν το πρόβλημα παραμένει, επικοινωνήστε με την υποστήριξη για βοήθεια.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Δοκιμάστε ξανά";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Η επαναφορά απέτυχε";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Η διαμόρφωση VPN επαναφέρθηκε με επιτυχία.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Η επαναφορά ήταν επιτυχής";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Ανάκτηση";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "Συνδεθείτε στον λογαριασμό σας Ping για να ανανεώσετε την περίοδο σύνδεσης VPN.";
@@ -3777,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Η περίοδος σύνδεσης έληξε";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Αναβαθμίστε σε ένα VPN για να προστατέψετε τη σύνδεσή σας και να αποκλείσετε παντού τους παρεμβατικούς ιχνηλάτες.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Επικοινωνία με την τεχνική υποστήριξη";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Η ανάκτηση της λίστας διακομιστών απέτυχε. Δοκιμάστε ξανά αργότερα.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "Υποστήριξη VPN";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Συνδέστε την αγορά στον λογαριασμό σας Ping";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Συνδέστε την αγορά σας από το App Store με τον λογαριασμό σας Ping για να χρησιμοποιήσετε το Ping VPN σε άλλες συσκευές.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Διαχείριση συνδρομής";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Εξαργύρωση κωδικού προσφοράς";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Επαναφορά διαμόρφωσης";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Κεντρικός υπολογιστής";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Τοποθεσία";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Διακομιστής";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Λήγει";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Συνδρομή";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Κατάσταση";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Πρωτόκολλο μεταφοράς";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Απενεργοποιημένο";
@@ -3851,10 +3617,10 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Είστε έτοιμοι να προστατέψετε κάθε εφαρμογή στο τηλέφωνό σας; Επιστρέψτε στο Ping VPN και κερδίστε έκπτωση 20% για τους επόμενους 3 μήνες.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Το Ping VPN αποκλείει πάντα τα προγράμματα παρακολούθησης σε κάθε εφαρμογή, ακόμη και εκτός του προγράμματος περιήγησης Brave. Τώρα μπορείτε να δείτε ποιος προσπάθησε να σας παρακολουθήσει, με το Κέντρο απορρήτου Ping.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "Το Ping VPN αποκλείει πάντα τα προγράμματα παρακολούθησης σε κάθε εφαρμογή, ακόμη και εκτός του προγράμματος περιήγησης Ping. Τώρα μπορείτε να δείτε ποιος προσπάθησε να σας παρακολουθήσει, με το Κέντρο απορρήτου Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Γνωρίζατε ότι το Ping VPN σάς προστατεύει εκτός του προγράμματος περιήγησης Brave;";
+"vpn.subscribeVPNProtectionPopOverTitle" = "Γνωρίζατε ότι το Ping VPN σάς προστατεύει εκτός του προγράμματος περιήγησης Ping;";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Ενημέρωση";
@@ -3874,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Ενημέρωση πληρωμής";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ενημέρωση τρόπου πληρωμής";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Ακόμα και στο παρασκήνιο, το Ping θα συνεχίσει να σας προστατεύει.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Το Τείχος προστασίας + VPN Ping είναι ΕΝΕΡΓΟ";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "Παρουσιάστηκε πρόβλημα με την προετοιμασία του VPN. Δοκιμάστε ξανά ή δοκιμάστε να επαναφέρετε τη διαμόρφωση στη σελίδα ρυθμίσεων VPN.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Σφάλμα";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Το Τείχος προστασίας + VPN Ping απαιτεί την εγκατάσταση ενός προφίλ VPN στη συσκευή σας για να λειτουργήσει. ";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Η άδεια απορρίφθηκε";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Δεν είναι δυνατή η εξαργύρωση του κωδικού προσφοράς. Δοκιμάστε ξανά ή ελέγξτε τα στοιχεία του κωδικού προσφοράς και δοκιμάστε ξανά.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Δεν είναι δυνατή η ολοκλήρωση της αγοράς. Δοκιμάστε ξανά ή ελέγξτε τα στοιχεία πληρωμής σας στην Apple και δοκιμάστε ξανά.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Σφάλμα";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Οι συνδρομές θα χρεώνονται μέσω του λογαριασμού σας iTunes.\n\nΟποιοδήποτε αχρησιμοποίητο τμήμα της δωρεάν δοκιμής, εάν προσφέρεται, χάνεται όταν αγοράζετε μια συνδρομή.\n\nΗ συνδρομή σας θα ανανεώνεται αυτόματα, εκτός εάν ακυρωθεί τουλάχιστον 24 ώρες πριν από το τέλος της τρέχουσας περιόδου.\n\nΜπορείτε να διαχειρίζεστε τις συνδρομές σας στις Ρυθμίσεις.\n\nΧρησιμοποιώντας το Brave, συμφωνείτε με τους Όρους χρήσης και την Πολιτική απορρήτου.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Εξαργύρωση κωδικού";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Περιοχή διακομιστή";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Τρέχουσα ρύθμιση: %@";
@@ -3916,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "Περιοχή VPN";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Αυτή η ενέργεια θα επαναφέρει τη διαμόρφωση Τείχους προστασίας + VPN Ping και θα διορθώσει τυχόν σφάλματα. Αυτή η διαδικασία μπορεί να χρειαστεί λίγο χρόνο.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Επαναφορά διαμόρφωσης";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Επαναφορά";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Μηνιαία συνδρομή";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Ετήσια συνδρομ";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Ενημερώστε τον τρόπο πληρωμής σας";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Ανανεώστε ετησίως και εξοικονομήστε %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Η καλύτερη αξία";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Ένα έτος";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Ημερομηνία δημιουργίας πορτοφολιού";
@@ -3970,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Δεν υπάρχουν αποθηκευμένα δεδομένα ιστότοπου";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Κατάργηση όλων";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Αφαίρεση";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Κατάργηση %ld στοιχείων";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3709,9 @@
 /* History tableview section header */
 "Yesterday" = "Χθες";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Ενεργοποίηση υψηλής ποιότητας βίντεο του YouTube";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Η ενεργοποίηση αυτής της πειραματικής λειτουργίας θα αναπαράγει βίντεο στη μέγιστη διαθέσιμη ποιότητα και θα χρησιμοποιεί πρόσθετα δεδομένα.";
 
@@ -4008,6 +3720,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Ενεργό";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Ποιότητα αναπαραγωγής YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Να επιτρέπεται μέσω Wi-Fi";

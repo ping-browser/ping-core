@@ -48,11 +48,11 @@ constexpr char kObsoleteShieldCookies[] =
 constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
 
-const char kExpirationPath[] = "expiration";
-const char kLastModifiedPath[] = "last_modified";
-const char kSessionModelPath[] = "model";
-const char kSettingPath[] = "setting";
-const char kPerResourcePath[] = "per_resource";
+constexpr char kExpirationPath[] = "expiration";
+constexpr char kLastModifiedPath[] = "last_modified";
+constexpr char kSessionModelPath[] = "model";
+constexpr char kSettingPath[] = "setting";
+constexpr char kPerResourcePath[] = "per_resource";
 
 std::unique_ptr<Rule> CloneRule(const Rule* original_rule) {
   DCHECK(original_rule);
@@ -624,13 +624,29 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
 std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
     ContentSettingsType content_type,
     bool incognito,
-    const PartitionKey& partition_key) const NO_THREAD_SAFETY_ANALYSIS {
+    const PartitionKey& partition_key) const {
   if (content_type == ContentSettingsType::COOKIES) {
     const auto& rules = cookie_rules_.at(incognito);
     return rules.GetRuleIterator(content_type);
   }
 
   return PrefProvider::GetRuleIterator(content_type, incognito, partition_key);
+}
+
+std::unique_ptr<Rule> BravePrefProvider::GetRule(
+    const GURL& primary_url,
+    const GURL& secondary_url,
+    ContentSettingsType content_type,
+    bool off_the_record,
+    const PartitionKey& partition_key) const {
+  if (content_type == ContentSettingsType::COOKIES) {
+    const auto& rules = cookie_rules_.at(off_the_record);
+    base::AutoLock auto_lock(rules.GetLock());
+    return rules.GetRule(primary_url, secondary_url, content_type);
+  }
+
+  return PrefProvider::GetRule(primary_url, secondary_url, content_type,
+                               off_the_record, partition_key);
 }
 
 void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,

@@ -14,12 +14,11 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
-const char kTableName[] = "event_log";
+constexpr char kTableName[] = "event_log";
 
 }  // namespace
 
@@ -146,5 +145,4 @@ void DatabaseEventLog::OnGetAllRecords(GetEventLogsCallback callback,
   std::move(callback).Run(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

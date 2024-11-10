@@ -28,8 +28,6 @@ class MediaDetectorComponentManager;
 
 class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static bool IsPlaylistEnabled(content::BrowserContext* context);
-
   static PlaylistService* GetForBrowserContext(
       content::BrowserContext* context);
 #if BUILDFLAG(IS_ANDROID)
@@ -54,7 +52,7 @@ class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
   ~PlaylistServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory overrides:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 
   void PrepareMediaDetectorComponentManager();

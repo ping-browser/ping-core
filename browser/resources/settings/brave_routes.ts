@@ -45,22 +45,12 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (pageVisibility.braveWeb3) {
     r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
   }
-  if (pageVisibility.braveIPFS) {
-    r.BRAVE_IPFS = r.BRAVE_WEB3.createSection('/ipfs', 'ipfs')
-    r.BRAVE_IPFS_KEYS = r.BRAVE_IPFS.createChild('/ipfs/keys')
-    r.BRAVE_IPFS_PEERS = r.BRAVE_IPFS.createChild('/ipfs/peers')
-  }
   if (pageVisibility.braveWallet) {
     r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
     r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
   }
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
-  if (r.SITE_SETTINGS_SITE_DETAILS) {
-    r.BRAVE_SITE_SETTINGS_COOKIES_DETAILS =
-      r.SITE_SETTINGS_SITE_DETAILS.createChild('/cookies/detail')
-  } else if (!isGuest) {
-    console.error('[Brave Settings Overrides] could not find expected route /content/siteDetails')
-  }
+
   if (pageVisibility.leoAssistant) {
     r.BRAVE_LEO_ASSISTANT =
       r.BASIC.createSection('/leo-assistant', 'leoAssistant')
@@ -109,12 +99,6 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   // Delete performance menu - system menu includes it instead.
   if (r.PERFORMANCE) {
     delete r.PERFORMANCE
-  }
-  // Safety check route is moved to advanced.
-  if (r.SAFETY_CHECK && r.ADVANCED) {
-    r.SAFETY_CHECK.parent = r.ADVANCED
-  } else if (!isGuest) {
-    console.error('[Brave Settings Overrides] Could not move safety check route to advanced route', r)
   }
   // Delete storage access
   if (r.SITE_SETTINGS_STORAGE_ACCESS) {

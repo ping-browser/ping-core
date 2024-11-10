@@ -1,0 +1,12 @@
+diff --git a/ui/color/color_id.h b/ui/color/color_id.h
+index 6884198248d78e707efc5ed5c4d121db5d5dbeec..e1bd9f55848909493ca9bcb67cf4ab3a8317dc45 100644
+--- a/ui/color/color_id.h
++++ b/ui/color/color_id.h
+@@ -672,6 +672,7 @@
+ 
+ #define COLOR_IDS \
+   CROSS_PLATFORM_COLOR_IDS \
++  BRAVE_MATERIAL_MISSING_COLOR_IDS \
+   PLATFORM_SPECIFIC_COLOR_IDS
+ // clang-format on
+ 

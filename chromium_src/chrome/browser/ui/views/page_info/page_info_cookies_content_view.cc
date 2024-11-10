@@ -13,7 +13,14 @@
 
 void PageInfoCookiesContentView::SetCookieInfo(
     const CookiesNewInfo& cookie_info) {
-  SetCookieInfo_ChromiumImpl(cookie_info);
+  // We need to call SetCookieInfo with controls_visible = false, or the layout
+  // will DCHECK since we hide the cookie container. We can't copy the existing
+  // struct when doing this because its copy constructor is implicitly deleted,
+  // so we just copy over the only other setting that's relevant for us.
+  CookiesNewInfo mutable_cookie_info;
+  mutable_cookie_info.allowed_sites_count = cookie_info.allowed_sites_count;
+  mutable_cookie_info.controls_visible = false;
+  SetCookieInfo_ChromiumImpl(mutable_cookie_info);
 
   // Hide cookies description and link to settings.
   cookies_description_label_->SetVisible(false);
@@ -29,11 +36,5 @@ void PageInfoCookiesContentView::SetCookieInfo(
           cookies_buttons_container_view_->children()[0]);
     }
   }
-
-  // Hide 3P cookies toggle if shown.
-  if (blocking_third_party_cookies_row_) {
-    blocking_third_party_cookies_row_->SetVisible(false);
-  }
-
   PreferredSizeChanged();
 }

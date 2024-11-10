@@ -16,12 +16,13 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_value_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_value_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
@@ -41,9 +42,10 @@ void ConfirmationStateManager::LoadState(
 
   wallet_ = wallet;
 
-  Load(kConfirmationStateFilename,
-       base::BindOnce(&ConfirmationStateManager::LoadCallback,
-                      weak_factory_.GetWeakPtr(), std::move(callback)));
+  GetAdsClient()->Load(
+      kConfirmationsJsonFilename,
+      base::BindOnce(&ConfirmationStateManager::LoadCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ConfirmationStateManager::LoadCallback(
@@ -57,13 +59,7 @@ void ConfirmationStateManager::LoadCallback(
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Failed to parse confirmation state");
-      base::debug::DumpWithoutCrashing();
-
-      BLOG(3, "Failed to parse confirmation state: " << *json);
+      BLOG(1, "Failed to parse confirmation state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);
     }
@@ -83,32 +79,23 @@ void ConfirmationStateManager::SaveState() {
 
   BLOG(9, "Saving confirmation state");
 
-  Save(kConfirmationStateFilename, ToJson(),
-       base::BindOnce([](const bool success) {
-         if (!success) {
-           // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-           // potential defects using `DumpWithoutCrashing`.
-           SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                     "Failed to save confirmation state");
-           base::debug::DumpWithoutCrashing();
+  GetAdsClient()->Save(kConfirmationsJsonFilename, ToJson(),
+                       base::BindOnce([](const bool success) {
+                         if (!success) {
+                           return BLOG(0, "Failed to save confirmation state");
+                         }
 
-           return BLOG(0, "Failed to save confirmation state");
-         }
-
-         BLOG(9, "Successfully saved confirmation state");
-       }));
+                         BLOG(9, "Successfully saved confirmation state");
+                       }));
 }
 
 std::string ConfirmationStateManager::ToJson() {
-  base::Value::Dict dict;
-
-  // Unblinded tokens
-  dict.Set("unblinded_tokens",
-           ConfirmationTokensToValue(confirmation_tokens_.GetAll()));
-
-  // Payment tokens
-  dict.Set("unblinded_payment_tokens",
-           PaymentTokensToValue(payment_tokens_.GetAllTokens()));
+  const base::Value::Dict dict =
+      base::Value::Dict()
+          .Set("unblinded_tokens",
+               ConfirmationTokensToValue(confirmation_tokens_.GetAll()))
+          .Set("unblinded_payment_tokens",
+               PaymentTokensToValue(payment_tokens_.GetAllTokens()));
 
   // Write to JSON
   std::string json;
@@ -128,6 +115,8 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                               "Malformed confirmation JSON state");
     base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Malformed confirmation JSON state");
 
     return false;
   }
@@ -152,17 +141,18 @@ void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
       ConfirmationTokensFromValue(*list);
 
   if (wallet_ && !filtered_confirmation_tokens.empty()) {
-    const std::string public_key = wallet_->public_key;
+    const std::string public_key_base64 = wallet_->public_key_base64;
 
     filtered_confirmation_tokens.erase(
         base::ranges::remove_if(
             filtered_confirmation_tokens,
-            [&public_key](const ConfirmationTokenInfo& confirmation_token) {
+            [&public_key_base64](
+                const ConfirmationTokenInfo& confirmation_token) {
               const std::optional<std::string> unblinded_token_base64 =
                   confirmation_token.unblinded_token.EncodeBase64();
               return !unblinded_token_base64 ||
-                     !crypto::Verify(*unblinded_token_base64, public_key,
-                                     confirmation_token.signature);
+                     !crypto::Verify(*unblinded_token_base64, public_key_base64,
+                                     confirmation_token.signature_base64);
             }),
         filtered_confirmation_tokens.cend());
   }

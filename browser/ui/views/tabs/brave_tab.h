@@ -39,8 +39,8 @@ class BraveTab : public Tab {
   void Layout(PassKey) override;
   void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                    int visual_width) const override;
-
   gfx::Insets GetInsets() const override;
+  void SetData(TabRendererData data) override;
 
  private:
   friend class BraveTabTest;

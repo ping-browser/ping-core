@@ -50,12 +50,13 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveNewsFeedUpdate;
 @property(class, nonatomic, readonly) Feature* kBraveReduceLanguage;
 @property(class, nonatomic, readonly) Feature* kBraveSearchDefaultAPIFeature;
+@property(class, nonatomic, readonly) Feature* kBraveShredFeature;
+@property(class, nonatomic, readonly) Feature* kBraveShredCacheData;
 @property(class, nonatomic, readonly)
     Feature* kBraveShowStrictFingerprintingMode;
 @property(class, nonatomic, readonly) Feature* kBraveSync;
 @property(class, nonatomic, readonly) Feature* kBraveWalletAnkrBalancesFeature;
 @property(class, nonatomic, readonly) Feature* kBraveWalletBitcoinFeature;
-@property(class, nonatomic, readonly) Feature* kBraveWalletNftPinningFeature;
 @property(class, nonatomic, readonly) Feature* kBraveWalletZCashFeature;
 @property(class, nonatomic, readonly) Feature* kConstellation;
 @property(class, nonatomic, readonly) Feature* kConstellationEnclaveAttestation;
@@ -64,15 +65,16 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringJsPerformance;
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringSyncLoad;
 @property(class, nonatomic, readonly, nullable) Feature* kGeminiFeature;
-@property(class, nonatomic, readonly) Feature* kIpfsFeature;
 @property(class, nonatomic, readonly) Feature* kNTP;
 @property(class, nonatomic, readonly) Feature* kNativeBraveWalletFeature;
 @property(class, nonatomic, readonly) Feature* kOtherJSONDeprecation;
 @property(class, nonatomic, readonly) Feature* kSkusFeature;
 @property(class, nonatomic, readonly) Feature* kTypicalJSONDeprecation;
 @property(class, nonatomic, readonly) Feature* kUseDevUpdaterUrl;
-@property(class, nonatomic, readonly) Feature* kVBatNoticeFeature;
 @property(class, nonatomic, readonly) Feature* kVerboseLoggingFeature;
+@property(class, nonatomic, readonly) Feature* kNewPlaylistUI;
+@property(class, nonatomic, readonly) Feature* kBraveHttpsByDefault;
+@property(class, nonatomic, readonly) Feature* kHttpsOnlyMode;
 @end
 
 NS_ASSUME_NONNULL_END

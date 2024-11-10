@@ -9,6 +9,7 @@ import {
   SerializableTransactionInfo,
   SpotPriceRegistry
 } from '../../constants/types'
+import type { TokenBalancesRegistry } from '../slices/entities/token-balance.entity'
 
 // images
 import {
@@ -18,8 +19,7 @@ import {
 } from '../../assets/network_token_icons/network_token_icons'
 
 // utils
-import { getAssetIdKey } from '../../utils/asset-utils'
-import { getPriceIdForToken } from '../../utils/api-utils'
+import { getPriceIdForToken } from '../../utils/pricing-utils'
 
 // mocks
 import {
@@ -29,7 +29,6 @@ import {
   mockBinanceCoinErc20TokenId,
   mockBitcoinErc20TokenId,
   mockDaiTokenId,
-  mockErc721Token,
   mockEthToken,
   mockMoonCatNFT,
   mockSplBasicAttentionTokenId,
@@ -91,7 +90,8 @@ export const getMockedTransactionInfo =
         eTldPlusOne: 'brave.com'
       },
       effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: undefined
     }
   }
 
@@ -106,8 +106,7 @@ export const mockNetwork: BraveWallet.NetworkInfo = {
   decimals: 18,
   iconUrls: [ETHIconUrl],
   coin: BraveWallet.CoinType.ETH,
-  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
-  isEip1559: false
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault]
 }
 
 export const mockFilecoinEVMMMainnetNetwork: BraveWallet.NetworkInfo = {
@@ -121,8 +120,7 @@ export const mockFilecoinEVMMMainnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 18,
   iconUrls: [FILECOINIconUrl],
   coin: BraveWallet.CoinType.ETH,
-  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
-  isEip1559: false
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault]
 }
 
 export const mockFilecoinEVMMTestnetNetwork: BraveWallet.NetworkInfo = {
@@ -136,8 +134,7 @@ export const mockFilecoinEVMMTestnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 18,
   iconUrls: [FILECOINIconUrl],
   coin: BraveWallet.CoinType.ETH,
-  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
-  isEip1559: false
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault]
 }
 
 export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
@@ -151,23 +148,21 @@ export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 18,
   iconUrls: [FILECOINIconUrl],
   coin: BraveWallet.CoinType.FIL,
-  supportedKeyrings: [BraveWallet.KeyringId.kFilecoin],
-  isEip1559: false
+  supportedKeyrings: [BraveWallet.KeyringId.kFilecoin]
 }
 
 export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
   chainId: 't',
   chainName: 'Filecoin Testnet',
   activeRpcEndpointIndex: 0,
-  rpcEndpoints: [{ url: 'https://mainnet-beta-solana.brave.com/rpc' }],
+  rpcEndpoints: [{ url: 'https://solana-mainnet.wallet.brave.com' }],
   blockExplorerUrls: ['https://calibration.filscan.io/tipset/message-detail'],
   symbol: 'FIL',
   symbolName: 'Filecoin',
   decimals: 18,
   iconUrls: [FILECOINIconUrl],
   coin: BraveWallet.CoinType.FIL,
-  supportedKeyrings: [BraveWallet.KeyringId.kFilecoinTestnet],
-  isEip1559: false
+  supportedKeyrings: [BraveWallet.KeyringId.kFilecoinTestnet]
 }
 
 export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
@@ -181,8 +176,7 @@ export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 9,
   iconUrls: [SOLIconUrl],
   coin: BraveWallet.CoinType.SOL,
-  supportedKeyrings: [BraveWallet.KeyringId.kSolana],
-  isEip1559: false
+  supportedKeyrings: [BraveWallet.KeyringId.kSolana]
 }
 
 export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
@@ -196,8 +190,7 @@ export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 9,
   iconUrls: [SOLIconUrl],
   coin: BraveWallet.CoinType.SOL,
-  supportedKeyrings: [BraveWallet.KeyringId.kSolana],
-  isEip1559: false
+  supportedKeyrings: [BraveWallet.KeyringId.kSolana]
 }
 
 export const mockBtcMainnetNetwork: BraveWallet.NetworkInfo = {
@@ -211,15 +204,7 @@ export const mockBtcMainnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 8,
   iconUrls: [],
   coin: BraveWallet.CoinType.BTC,
-  supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84],
-  isEip1559: false
-}
-
-export const mockNftPinningStatus = {
-  [getAssetIdKey(mockErc721Token)]: {
-    code: BraveWallet.TokenPinStatusCode.STATUS_PINNED,
-    error: undefined
-  }
+  supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84]
 }
 
 export const mockAccount: BraveWallet.AccountInfo = {
@@ -230,7 +215,7 @@ export const mockAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: '0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0'
   },
   hardware: undefined
@@ -244,7 +229,7 @@ export const mockBtcAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kBitcoin84,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'bc1q4500000000000000000',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_bc1q4500000000000000000'
   },
   hardware: undefined
@@ -258,7 +243,7 @@ export const mockZecAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kZCashMainnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'zCash-address',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_zCash-address'
   },
   hardware: undefined
@@ -273,7 +258,7 @@ export const mockEthAccountInfo: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: '0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db'
   }
 }
@@ -286,7 +271,7 @@ export const mockSolanaAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kSolana,
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRez',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRez'
   },
   hardware: undefined
@@ -300,7 +285,7 @@ export const mockSolanaAccountInfo: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kSolana,
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer'
   },
   hardware: undefined
@@ -314,7 +299,7 @@ export const mockFilecoinAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_t1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti'
   },
   hardware: undefined
@@ -328,7 +313,7 @@ export const mockFilecoinAccountInfo: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_t1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti'
   },
   hardware: undefined
@@ -342,7 +327,7 @@ export const mockBitcoinAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kBitcoin84,
     kind: BraveWallet.AccountKind.kDerived,
     address: '',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_MockBitcoinAccount'
   },
   hardware: undefined
@@ -356,7 +341,7 @@ export const mockBitcoinTestAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kBitcoin84Testnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: '',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_MockBitcoinTestAccount'
   },
   hardware: undefined
@@ -370,7 +355,7 @@ export const mockBitcoinTestnetAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kBitcoin84Testnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: '',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_MockBitcoinTestnetAccount'
   },
   hardware: undefined
@@ -423,7 +408,7 @@ export const mockFilInvalilAddresses: string[] = [
 ]
 
 export const mockSolDappSignTransactionRequest: //
-BraveWallet.SignTransactionRequest = {
+BraveWallet.SignSolTransactionsRequest = {
   originInfo: {
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app'
@@ -431,18 +416,13 @@ BraveWallet.SignTransactionRequest = {
   id: 0,
   fromAccountId: mockSolanaAccount.accountId,
   fromAddress: mockSolanaAccount.address,
-  txData: {
-    ethTxData: undefined,
-    ethTxData1559: undefined,
-    filTxData: undefined,
-    btcTxData: undefined,
-    zecTxData: undefined,
-    solanaTxData: {
+  txDatas: [
+    {
       recentBlockhash: 'B7Kg79jDm48LMdB4JB2hu82Yfsuz5xYm2cQDBYmKdDSn',
       lastValidBlockHeight: 0 as unknown as bigint,
       feePayer: mockSolanaAccount.address,
       toWalletAddress: '',
-      splTokenMintAddress: '',
+      tokenAddress: '',
       lamports: 0 as unknown as bigint,
       amount: 0 as unknown as bigint,
       txType: 12,
@@ -479,11 +459,11 @@ BraveWallet.SignTransactionRequest = {
       ],
       addressTableLookups: [],
       sendOptions: undefined,
-      signTransactionParam: undefined
+      signTransactionParam: undefined,
+      feeEstimation: undefined
     }
-  },
-  rawMessage: { bytes: [1], str: undefined },
-  coin: BraveWallet.CoinType.SOL,
+  ],
+  rawMessages: [[1, 2, 3]],
   chainId: BraveWallet.SOLANA_MAINNET
 }
 
@@ -506,7 +486,7 @@ SerializableTransactionInfo = {
       lastValidBlockHeight: '0',
       feePayer: mockSolanaAccount.address,
       toWalletAddress: '',
-      splTokenMintAddress: '',
+      tokenAddress: '',
       lamports: '0',
       amount: '0',
       txType: 11,
@@ -563,7 +543,8 @@ SerializableTransactionInfo = {
       ],
       addressTableLookups: [],
       sendOptions: undefined,
-      signTransactionParam: undefined
+      signTransactionParam: undefined,
+      feeEstimation: undefined
     }
   },
   txStatus: 0,
@@ -578,11 +559,12 @@ SerializableTransactionInfo = {
     eTldPlusOne: 'csb.app'
   },
   effectiveRecipient: undefined,
-  isRetriable: false
+  isRetriable: false,
+  swapInfo: undefined
 }
 
 export const mockSolDappSignAllTransactionsRequest: //
-BraveWallet.SignAllTransactionsRequest = {
+BraveWallet.SignSolTransactionsRequest = {
   originInfo: {
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app'
@@ -592,110 +574,97 @@ BraveWallet.SignAllTransactionsRequest = {
   fromAddress: mockSolanaAccount.address,
   txDatas: [
     {
-      ethTxData: undefined,
-      ethTxData1559: undefined,
-      filTxData: undefined,
-      btcTxData: undefined,
-      zecTxData: undefined,
-      solanaTxData: {
-        recentBlockhash: '8Yq6DGZBh9oEJsCVhUjTqN9kPiLoeYJ7J4n9TnpPYjqW',
-        lastValidBlockHeight: 0 as unknown as bigint,
-        feePayer: mockSolanaAccount.address,
-        toWalletAddress: '',
-        splTokenMintAddress: '',
-        lamports: 0 as unknown as bigint,
-        amount: 0 as unknown as bigint,
-        txType: 12,
-        instructions: [
-          {
-            programId: '11111111111111111111111111111111',
-            accountMetas: [
-              {
-                pubkey: mockSolanaAccount.address,
-                addrTableLookupIndex: undefined,
-                isSigner: true,
-                isWritable: true
-              },
-              {
-                pubkey: mockSolanaAccount.address,
-                addrTableLookupIndex: undefined,
-                isSigner: true,
-                isWritable: true
-              }
-            ],
-            data: [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
-            decodedData: undefined
-          }
-        ],
-        version: BraveWallet.SolanaMessageVersion.kLegacy,
-        messageHeader: {
-          numRequiredSignatures: 1,
-          numReadonlySignedAccounts: 0,
-          numReadonlyUnsignedAccounts: 1
-        },
-        staticAccountKeys: [
-          mockSolanaAccount.address,
-          '11111111111111111111111111111111'
-        ],
-        addressTableLookups: [],
-        sendOptions: undefined,
-        signTransactionParam: undefined
-      }
+      recentBlockhash: '8Yq6DGZBh9oEJsCVhUjTqN9kPiLoeYJ7J4n9TnpPYjqW',
+      lastValidBlockHeight: 0 as unknown as bigint,
+      feePayer: mockSolanaAccount.address,
+      toWalletAddress: '',
+      tokenAddress: '',
+      lamports: 0 as unknown as bigint,
+      amount: 0 as unknown as bigint,
+      txType: 12,
+      instructions: [
+        {
+          programId: '11111111111111111111111111111111',
+          accountMetas: [
+            {
+              pubkey: mockSolanaAccount.address,
+              addrTableLookupIndex: undefined,
+              isSigner: true,
+              isWritable: true
+            },
+            {
+              pubkey: mockSolanaAccount.address,
+              addrTableLookupIndex: undefined,
+              isSigner: true,
+              isWritable: true
+            }
+          ],
+          data: [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
+          decodedData: undefined
+        }
+      ],
+      version: BraveWallet.SolanaMessageVersion.kLegacy,
+      messageHeader: {
+        numRequiredSignatures: 1,
+        numReadonlySignedAccounts: 0,
+        numReadonlyUnsignedAccounts: 1
+      },
+      staticAccountKeys: [
+        mockSolanaAccount.address,
+        '11111111111111111111111111111111'
+      ],
+      addressTableLookups: [],
+      sendOptions: undefined,
+      signTransactionParam: undefined,
+      feeEstimation: undefined
     },
     {
-      ethTxData: undefined,
-      ethTxData1559: undefined,
-      filTxData: undefined,
-      btcTxData: undefined,
-      zecTxData: undefined,
-      solanaTxData: {
-        recentBlockhash: '8Yq6DGZBh9oEJsCVhUjTqN9kPiLoeYJ7J4n9TnpPYjqW',
-        lastValidBlockHeight: 0 as unknown as bigint,
-        feePayer: mockSolanaAccount.address,
-        toWalletAddress: '',
-        splTokenMintAddress: '',
-        lamports: 0 as unknown as bigint,
-        amount: 0 as unknown as bigint,
-        txType: 12,
-        instructions: [
-          {
-            programId: '11111111111111111111111111111111',
-            accountMetas: [
-              {
-                pubkey: mockSolanaAccount.address,
-                addrTableLookupIndex: undefined,
-                isSigner: true,
-                isWritable: true
-              },
-              {
-                pubkey: mockSolanaAccount.address,
-                addrTableLookupIndex: undefined,
-                isSigner: true,
-                isWritable: true
-              }
-            ],
-            data: [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
-            decodedData: undefined
-          }
-        ],
-        version: BraveWallet.SolanaMessageVersion.kLegacy,
-        messageHeader: {
-          numRequiredSignatures: 1,
-          numReadonlySignedAccounts: 0,
-          numReadonlyUnsignedAccounts: 1
-        },
-        staticAccountKeys: [
-          mockSolanaAccount.address,
-          '11111111111111111111111111111111'
-        ],
-        addressTableLookups: [],
-        sendOptions: undefined,
-        signTransactionParam: undefined
-      }
+      recentBlockhash: '8Yq6DGZBh9oEJsCVhUjTqN9kPiLoeYJ7J4n9TnpPYjqW',
+      lastValidBlockHeight: 0 as unknown as bigint,
+      feePayer: mockSolanaAccount.address,
+      toWalletAddress: '',
+      tokenAddress: '',
+      lamports: 0 as unknown as bigint,
+      amount: 0 as unknown as bigint,
+      txType: 12,
+      instructions: [
+        {
+          programId: '11111111111111111111111111111111',
+          accountMetas: [
+            {
+              pubkey: mockSolanaAccount.address,
+              addrTableLookupIndex: undefined,
+              isSigner: true,
+              isWritable: true
+            },
+            {
+              pubkey: mockSolanaAccount.address,
+              addrTableLookupIndex: undefined,
+              isSigner: true,
+              isWritable: true
+            }
+          ],
+          data: [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
+          decodedData: undefined
+        }
+      ],
+      version: BraveWallet.SolanaMessageVersion.kLegacy,
+      messageHeader: {
+        numRequiredSignatures: 1,
+        numReadonlySignedAccounts: 0,
+        numReadonlyUnsignedAccounts: 1
+      },
+      staticAccountKeys: [
+        mockSolanaAccount.address,
+        '11111111111111111111111111111111'
+      ],
+      addressTableLookups: [],
+      sendOptions: undefined,
+      signTransactionParam: undefined,
+      feeEstimation: undefined
     }
   ],
-  rawMessages: [{ bytes: [1], str: undefined }],
-  coin: BraveWallet.CoinType.SOL,
+  rawMessages: [[1]],
   chainId: BraveWallet.SOLANA_MAINNET
 }
 
@@ -738,7 +707,7 @@ export const BlowfishEVMAssets = {
     symbol: mockEthToken.symbol,
     verified: true
   } as BraveWallet.BlowfishEVMAsset,
-  goerliLink: {
+  sepoliaLink: {
     address: '0x326c977e6efc84e512bb9c30f76e30c160ed06fb',
     symbol: 'LINK',
     name: 'ChainLink Token',
@@ -854,16 +823,17 @@ export const BlowfishEVMAssets = {
   } as BraveWallet.BlowfishEVMAsset
 } as const
 
-const goerliLinkTransferData: BraveWallet.BlowfishERC20TransferData = {
+const sepoliaLinkTransferData: BraveWallet.BlowfishERC20TransferData = {
   counterparty: {
     address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
     kind: BraveWallet.BlowfishEVMAddressKind.kAccount
   },
+  // send
   amount: {
-    before: '28907865866843658798',
-    after: '14453965866843658798'
+    after: '28907865866843658798',
+    before: '14453965866843658798'
   },
-  asset: BlowfishEVMAssets.goerliLink
+  asset: BlowfishEVMAssets.sepoliaLink
 }
 
 const mockedSimulationWarnings: BraveWallet.BlowfishWarning[] = [
@@ -1037,12 +1007,12 @@ BraveWallet.BlowfishEVMStateChange = {
 }
 
 /**
- * - Send 14.4539 LINK
  * - Receive 14.4539 LINK
  * - Approve 10 LINK
- * - Approve 1 NFT
- * - Send 1 NFT
+ * - Send 1 Pudgy Pengiuns NFT
+ * - Receive 1 Bored Apes NFT
  * - Send 1 ETH
+ * - Approve 1 Mooncat NFT
  */
 export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kNone,
@@ -1055,7 +1025,7 @@ export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
         kind: BraveWallet.BlowfishEVMRawInfoKind.kErc20Transfer,
         data: {
           ...emptyEvmRawInfo,
-          erc20TransferData: goerliLinkTransferData
+          erc20TransferData: sepoliaLinkTransferData
         }
       }
     },
@@ -1070,7 +1040,7 @@ export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
               after: '10000000000000000000',
               before: '1'
             },
-            asset: BlowfishEVMAssets.goerliLink,
+            asset: BlowfishEVMAssets.sepoliaLink,
             owner: {
               address: mockAccount.address,
               kind: BraveWallet.BlowfishEVMAddressKind.kAccount
@@ -1109,7 +1079,7 @@ export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
       }
     },
     {
-      humanReadableDiff: `Send ${
+      humanReadableDiff: `Receive ${
         BlowfishEVMAssets.bayc.symbol //
       } #${BlowfishEVMAssets.bayc.tokenId}`,
       rawInfo: {
@@ -1118,8 +1088,8 @@ export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
           ...emptyEvmRawInfo,
           erc1155TransferData: {
             amount: {
-              after: '0',
-              before: '1'
+              after: '1',
+              before: '0'
             },
             counterparty: {
               address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
@@ -1394,15 +1364,16 @@ const BlowfishSolanaAssets = {
       source: BraveWallet.BlowfishAssetPriceSource.kCoingecko,
       lastUpdatedAt: new Date().toUTCString(),
       dollarValuePerToken: '98.54'
-    }
-  } as BraveWallet.BlowfishSolanaAsset,
+    },
+    metaplexTokenStandard:
+      BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungible
+  } satisfies BraveWallet.BlowfishSolanaAsset,
   bat: {
     decimals: mockSplBat.decimals,
     metaplexTokenStandard:
       BraveWallet.BlowfishMetaplexTokenStandardKind.kFungible,
     mint: mockSplBat.contractAddress,
     name: mockSplBat.name,
-    supply: BigInt(1000000000000),
     symbol: mockSplBat.symbol,
     imageUrl: mockSplBat.logo,
     price: {
@@ -1410,53 +1381,67 @@ const BlowfishSolanaAssets = {
       lastUpdatedAt: new Date().toUTCString(),
       dollarValuePerToken: '0.54'
     }
-  } as BraveWallet.BlowfishSolanaAsset,
+  } satisfies BraveWallet.BlowfishSolanaAsset,
   degenNft: {
     price: mockBlowfishAssetPrice,
     decimals: mockSplNft.decimals,
-    diff: {
-      digits: BigInt(1),
-      sign: BraveWallet.BlowfishDiffSign.kMinus
-    },
     imageUrl: mockSplNft.logo,
     metaplexTokenStandard:
       BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungible,
     mint: mockSplNft.tokenId,
     name: mockSplNft.name,
-    supply: BigInt(1),
     symbol: mockSplNft.symbol
-  } as BraveWallet.BlowfishSolanaAsset
+  } satisfies BraveWallet.BlowfishSolanaAsset
 }
 
 const emptySvmRawInfo: BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion = {
   solStakeAuthorityChangeData: undefined,
   solTransferData: undefined,
   splApprovalData: undefined,
-  splTransferData: undefined
+  splTransferData: undefined,
+  userAccountOwnerChangeData: undefined
+}
+
+const mockSendSolEvent: BraveWallet.BlowfishSolanaStateChange = {
+  humanReadableDiff: 'Send 0.0005 SOL',
+  suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
+  rawInfo: {
+    kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer,
+    data: {
+      ...emptySvmRawInfo,
+      solTransferData: {
+        asset: BlowfishSolanaAssets.mainnetSol,
+        diff: {
+          digits: BigInt(500000).toString(),
+          sign: BraveWallet.BlowfishDiffSign.kMinus
+        }
+      }
+    }
+  }
+}
+
+const mockReceiveSolEvent: BraveWallet.BlowfishSolanaStateChange = {
+  humanReadableDiff: 'Receive 0.0005 SOL',
+  suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
+  rawInfo: {
+    kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer,
+    data: {
+      ...emptySvmRawInfo,
+      solTransferData: {
+        asset: BlowfishSolanaAssets.mainnetSol,
+        diff: {
+          digits: BigInt(500000).toString(),
+          sign: BraveWallet.BlowfishDiffSign.kPlus
+        }
+      }
+    }
+  }
 }
 
 export const mockReceiveSolSimulation: BraveWallet.SolanaSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kBlock,
   error: undefined,
-  expectedStateChanges: [
-    {
-      humanReadableDiff: 'Receive 0.05657 SOL',
-      suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
-      rawInfo: {
-        kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer,
-        data: {
-          ...emptySvmRawInfo,
-          solTransferData: {
-            asset: BlowfishSolanaAssets.mainnetSol,
-            diff: {
-              digits: BigInt(500000),
-              sign: BraveWallet.BlowfishDiffSign.kPlus
-            }
-          }
-        }
-      }
-    }
-  ],
+  expectedStateChanges: [mockReceiveSolEvent],
   warnings: [
     {
       kind: BraveWallet.BlowfishWarningKind.kApprovalToEOA,
@@ -1491,7 +1476,7 @@ export const mockSolStakingChangeEvent: BraveWallet.BlowfishSolanaStateChange =
             withdrawer: mockSplNft.contractAddress
           },
           asset: BlowfishSolanaAssets.mainnetSol,
-          solStaked: BigInt(5657),
+          solStaked: BigInt(5657).toString(),
           stakeAccount: mockSolanaAccountInfo.address
         }
       }
@@ -1508,7 +1493,7 @@ export const mockSendSplTokenEvent: BraveWallet.BlowfishSolanaStateChange = {
       splTransferData: {
         asset: BlowfishSolanaAssets.bat,
         diff: {
-          digits: BigInt(1000000),
+          digits: BigInt(1000000).toString(),
           sign: BraveWallet.BlowfishDiffSign.kMinus
         },
         counterparty: 'sConterpartyAddress'
@@ -1528,12 +1513,25 @@ export const mockSendSolNftEvent: BraveWallet.BlowfishSolanaStateChange = {
         asset: BlowfishSolanaAssets.degenNft,
         counterparty: 'sCounterpartyAddress',
         diff: {
-          digits: BigInt(1),
+          digits: BigInt(1).toString(),
           sign: BraveWallet.BlowfishDiffSign.kMinus
         }
       }
     }
   }
+}
+
+export const mockSvmSimulationResult: BraveWallet.SolanaSimulationResponse = {
+  action: BraveWallet.BlowfishSuggestedAction.kNone,
+  error: undefined,
+  expectedStateChanges: [
+    mockSendSolEvent,
+    mockReceiveSolEvent,
+    mockSendSplTokenEvent,
+    mockSendSolNftEvent,
+    mockSolStakingChangeEvent
+  ],
+  warnings: mockedSimulationWarnings
 }
 
 export const mockSolStakingChangeSimulation: //
@@ -1573,14 +1571,6 @@ export type NativeAssetBalanceRegistry = Record<
   | undefined
 >
 
-export type TokenBalanceRegistry = Record<
-  string, // account address
-  Record<
-    string, // asset identifier
-    string // balance
-  >
->
-
 export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
   [mockAccount.address]: {
     [BraveWallet.BITCOIN_MAINNET]: '0',
@@ -1605,7 +1595,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.ZK_SYNC_ERA_CHAIN_ID]: '2621',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '0',
-    [BraveWallet.GOERLI_CHAIN_ID]: '67',
     [BraveWallet.LOCALHOST_CHAIN_ID]: '133',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '7798',
     // Other
@@ -1635,7 +1624,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.ZK_SYNC_ERA_CHAIN_ID]: '5377',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '1',
-    [BraveWallet.GOERLI_CHAIN_ID]: '7',
     [BraveWallet.LOCALHOST_CHAIN_ID]: '3',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '9',
     // Other
@@ -1658,7 +1646,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '330',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '220',
-    [BraveWallet.GOERLI_CHAIN_ID]: '30',
     [BraveWallet.LOCALHOST_CHAIN_ID]: '11110',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '5550',
     // Other
@@ -1675,7 +1662,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '30',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '20',
-    [BraveWallet.GOERLI_CHAIN_ID]: '3',
     [BraveWallet.LOCALHOST_CHAIN_ID]: '110',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '50',
     // Other
@@ -1684,35 +1670,73 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
   }
 }
 
-export const mockTokenBalanceRegistry: TokenBalanceRegistry = {
-  [mockAccount.address]: {
-    [mockBasicAttentionTokenId]: '111',
-    [mockBinanceCoinErc20TokenId]: '222',
-    [mockBitcoinErc20TokenId]: '333',
-    [mockAlgorandErc20TokenId]: '444',
-    [mockZrxErc20TokenId]: '555',
-    [mockDaiTokenId]: '666',
-    [mockUSDCoinId]: '777'
-  },
-  [mockEthAccountInfo.address]: {
-    [mockBasicAttentionTokenId]: '11',
-    [mockBinanceCoinErc20TokenId]: '22',
-    [mockBitcoinErc20TokenId]: '33',
-    [mockAlgorandErc20TokenId]: '44',
-    [mockZrxErc20TokenId]: '55',
-    [mockDaiTokenId]: '66',
-    [mockUSDCoinId]: '77'
-  },
-  [mockSolanaAccount.address]: {
-    [mockSplNftId]: '1',
-    [mockSplUSDCoinId]: '14444',
-    [mockSplBasicAttentionTokenId]: '99999'
-  },
-  [mockSolanaAccountInfo.address]: {
-    [mockSplNftId]: '0',
-    [mockSplUSDCoinId]: '3333',
-    [mockSplBasicAttentionTokenId]: '3421'
-  },
-  [mockFilecoinAccount.address]: {},
-  [mockFilecoinAccountInfo.address]: {}
+export const mockTokenBalanceRegistry: TokenBalancesRegistry = {
+  accounts: {
+    [mockAccount.accountId.uniqueKey]: {
+      chains: {
+        [BraveWallet.MAINNET_CHAIN_ID]: {
+          tokenBalances: {
+            [mockBasicAttentionTokenId]: '111',
+            [mockBinanceCoinErc20TokenId]: '222',
+            [mockBitcoinErc20TokenId]: '333',
+            [mockAlgorandErc20TokenId]: '444',
+            [mockZrxErc20TokenId]: '555',
+            [mockDaiTokenId]: '666',
+            [mockUSDCoinId]: '777'
+          }
+        }
+      }
+    },
+    [mockEthAccountInfo.accountId.uniqueKey]: {
+      chains: {
+        [BraveWallet.MAINNET_CHAIN_ID]: {
+          tokenBalances: {
+            [mockBasicAttentionTokenId]: '11',
+            [mockBinanceCoinErc20TokenId]: '22',
+            [mockBitcoinErc20TokenId]: '33',
+            [mockAlgorandErc20TokenId]: '44',
+            [mockZrxErc20TokenId]: '55',
+            [mockDaiTokenId]: '66',
+            [mockUSDCoinId]: '77'
+          }
+        }
+      }
+    },
+    [mockSolanaAccount.accountId.uniqueKey]: {
+      chains: {
+        [BraveWallet.SOLANA_MAINNET]: {
+          tokenBalances: {
+            [mockSplNftId]: '1',
+            [mockSplUSDCoinId]: '14444',
+            [mockSplBasicAttentionTokenId]: '99999'
+          }
+        }
+      }
+    },
+    [mockSolanaAccountInfo.accountId.uniqueKey]: {
+      chains: {
+        [BraveWallet.SOLANA_MAINNET]: {
+          tokenBalances: {
+            [mockSplNftId]: '0',
+            [mockSplUSDCoinId]: '3333',
+            [mockSplBasicAttentionTokenId]: '3421'
+          }
+        }
+      }
+    },
+    [mockFilecoinAccount.accountId.uniqueKey]: {
+      chains: {
+        [BraveWallet.FILECOIN_MAINNET]: {
+          tokenBalances: {}
+        }
+      }
+    },
+    [mockFilecoinAccountInfo.address]: {
+      chains: {
+        [BraveWallet.FILECOIN_MAINNET]: {
+          tokenBalances: {}
+        }
+      }
+    }
+  }
 }

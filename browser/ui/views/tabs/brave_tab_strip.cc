@@ -9,7 +9,6 @@
 #include <optional>
 #include <utility>
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -29,6 +28,7 @@
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -38,6 +38,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
+#include "components/tab_groups/tab_group_id.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
@@ -174,6 +175,7 @@ void BraveTabStrip::MaybeStartDrag(
           tab_strip_model->GetIndexOfTab(tile->first));
       new_selection.AddIndexToSelection(
           tab_strip_model->GetIndexOfTab(tile->second));
+      new_selection.set_active(tab_strip_model->active_index());
       tab_strip_model->SetSelectionFromModel(new_selection);
     }
   }
@@ -191,35 +193,8 @@ void BraveTabStrip::AddedToWidget() {
     // be being created and it could be unbound to Browser.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&BraveTabStrip::UpdateTabContainer,
-                                  base::Unretained(this)));
+                                  weak_factory_.GetWeakPtr()));
   }
-}
-
-SkColor BraveTabStrip::GetTabSeparatorColor() const {
-  if (ShouldShowVerticalTabs()) {
-    return SK_ColorTRANSPARENT;
-  }
-
-  Profile* profile = controller()->GetProfile();
-  if (!brave::IsRegularProfile(profile)) {
-    if (profile->IsTor()) {
-      return SkColorSetRGB(0x5A, 0x53, 0x66);
-    }
-
-    // For incognito/guest window.
-    return SkColorSetRGB(0x3F, 0x32, 0x56);
-  }
-
-  // If custom theme is used, follow upstream separator color.
-  auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
-  if (theme_service->GetThemeSupplier()) {
-    return TabStrip::GetTabSeparatorColor();
-  }
-
-  bool dark_mode = dark_mode::GetActiveBraveDarkModeType() ==
-                   dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
-  return dark_mode ? SkColorSetRGB(0x39, 0x38, 0x38)
-                   : SkColorSetRGB(0xBE, 0xBF, 0xBF);
 }
 
 std::optional<int> BraveTabStrip::GetCustomBackgroundId(
@@ -272,8 +247,7 @@ TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
   return IsFirstTabInTile(tab) ? TabTiledState::kFirst : TabTiledState::kSecond;
 }
 
-std::optional<SplitViewBrowserData::Tile> BraveTabStrip::GetTileForTab(
-    const Tab* tab) const {
+std::optional<TabTile> BraveTabStrip::GetTileForTab(const Tab* tab) const {
   auto* browser = GetBrowser();
   auto* data = SplitViewBrowserData::FromBrowser(browser);
   if (!data) {
@@ -299,11 +273,10 @@ std::optional<SplitViewBrowserData::Tile> BraveTabStrip::GetTileForTab(
 void BraveTabStrip::UpdateTabContainer() {
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   const bool should_use_compound_tab_container =
-      using_vertical_tabs ||
-      base::FeatureList::IsEnabled(features::kSplitTabStrip);
+      using_vertical_tabs || base::FeatureList::IsEnabled(tabs::kSplitTabStrip);
   const bool is_using_compound_tab_container =
       views::IsViewClass<BraveCompoundTabContainer>(
-          std::to_address(tab_container_));
+          base::to_address(tab_container_));
 
   base::ScopedClosureRunner layout_lock;
   if (should_use_compound_tab_container != is_using_compound_tab_container) {
@@ -313,7 +286,7 @@ void BraveTabStrip::UpdateTabContainer() {
 
     // Resets TabContainer to use.
     auto original_container = RemoveChildViewT(
-        static_cast<TabContainer*>(std::to_address(tab_container_)));
+        static_cast<TabContainer*>(base::to_address(tab_container_)));
 
     if (should_use_compound_tab_container) {
       // Container should be attached before TabDragContext so that dragged
@@ -352,6 +325,9 @@ void BraveTabStrip::UpdateTabContainer() {
     auto* model = GetBrowser()->tab_strip_model();
     for (int i = 0; i < model->count(); i++) {
       auto* tab = original_container->GetTabAtModelIndex(i);
+      // At this point, we don't have group views in the container. So before
+      // restoring groups, clears group for tabs.
+      tab->set_group(std::nullopt);
       tab_container_->AddTab(
           tab->parent()->RemoveChildViewT(tab), i,
           tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned);
@@ -391,9 +367,9 @@ void BraveTabStrip::UpdateTabContainer() {
       tab_container_->OnGroupVisualsChanged(group_id, visual_data, visual_data);
     }
 
-    for (int i = 0; i < model->count(); i++) {
-      for (auto& observer : observers_) {
-        observer.OnTabAdded(i);
+    if (observer_) {
+      for (int i = 0; i < model->count(); i++) {
+        observer_->OnTabAdded(i);
       }
     }
 
@@ -421,7 +397,7 @@ void BraveTabStrip::UpdateTabContainer() {
           base::Unretained(vertical_region_view)));
     }
   } else {
-    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
       auto* browser_view = static_cast<BraveBrowserView*>(
           BrowserView::GetBrowserViewForBrowser(browser));
       DCHECK(browser_view);

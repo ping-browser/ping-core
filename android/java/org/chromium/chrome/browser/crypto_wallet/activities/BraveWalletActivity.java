@@ -30,7 +30,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
-import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.ui.base.ActivityWindowAndroid;
@@ -74,7 +74,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.settings) {
-            SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+            SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
             settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);
             return true;
         } else if (item.getItemId() == R.id.lock) {
@@ -134,8 +134,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     }
                 });
 
-        mModalDialogManager = new ModalDialogManager(
-                new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
+        mModalDialogManager =
+                new ModalDialogManager(
+                        new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
 
         onInitialLayoutInflationComplete();
     }
@@ -164,7 +165,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                         } else if (mBackupWallet) {
                             showBackupSequence();
                         } else {
-                            showMainLayout();
+                            showMainLayout(false);
                         }
                     });
         }
@@ -186,17 +187,19 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         };
     }
 
-    private void showMainLayout() {
+    private void showMainLayout(final boolean forceNewTab) {
         addRemoveSecureFlag(false);
 
         mCryptoOnboardingLayout.setVisibility(View.GONE);
-        WalletUtils.openWebWallet();
+        WalletUtils.openWebWallet(forceNewTab);
     }
 
     private void addRemoveSecureFlag(final boolean add) {
         if (add) {
-            getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+            getWindow()
+                    .setFlags(
+                            WindowManager.LayoutParams.FLAG_SECURE,
+                            WindowManager.LayoutParams.FLAG_SECURE);
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
@@ -216,17 +219,18 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     }
 
     @Override
-    public void gotoNextPage() {
+    public void incrementPages(int pages) {
         if (mCryptoWalletOnboardingViewPager.getAdapter() != null
                 && mCryptoWalletOnboardingViewPager.getCurrentItem()
-                        < mCryptoWalletOnboardingViewPager.getAdapter().getItemCount() - 1) {
+                        < mCryptoWalletOnboardingViewPager.getAdapter().getItemCount() - pages) {
+            final boolean smoothScroll = pages == 1;
             mCryptoWalletOnboardingViewPager.setCurrentItem(
-                    mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+                    mCryptoWalletOnboardingViewPager.getCurrentItem() + pages, smoothScroll);
         }
     }
 
     @Override
-    public void onboardingCompleted() {
+    public void showWallet(final boolean forceNewTab) {
         if (mIsFromDapps) {
             finish();
             try {
@@ -236,7 +240,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 Log.e(TAG, "onboardingCompleted", e);
             }
         } else {
-            showMainLayout();
+            showMainLayout(forceNewTab);
         }
     }
 

@@ -17,7 +17,6 @@ class MockTxService: BraveWalletTxService {
 
   func transactionInfo(
     coinType: BraveWallet.CoinType,
-    chainId: String,
     txMetaId: String,
     completion: @escaping (BraveWallet.TransactionInfo?) -> Void
   ) {
@@ -28,6 +27,13 @@ class MockTxService: BraveWalletTxService {
     txDataUnion: BraveWallet.TxDataUnion,
     chainId: String,
     from: BraveWallet.AccountId,
+    completion: @escaping (Bool, String, String) -> Void
+  ) {
+    completion(true, "txMetaId", "")
+  }
+
+  func addUnapprovedEvmTransaction(
+    params: BraveWallet.NewEvmTransactionParams,
     completion: @escaping (Bool, String, String) -> Void
   ) {
     completion(true, "txMetaId", "")
@@ -82,15 +88,6 @@ class MockTxService: BraveWalletTxService {
   }
 
   func reset() {
-  }
-
-  func transactionMessageToSign(
-    coinType: BraveWallet.CoinType,
-    chainId: String,
-    txMetaId: String,
-    completion: @escaping (BraveWallet.MessageToSignUnion?) -> Void
-  ) {
-    completion(BraveWallet.MessageToSignUnion(messageStr: "Mock transaction message"))
   }
 
   func approveTransaction(

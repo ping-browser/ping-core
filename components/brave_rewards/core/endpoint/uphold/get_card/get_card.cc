@@ -9,27 +9,25 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
 GetCard::GetCard(RewardsEngine& engine) : engine_(engine) {}
 
 GetCard::~GetCard() = default;
 
 std::string GetCard::GetUrl(const std::string& address) {
-  auto url =
-      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().uphold_api_url(),
-                          {"/v0/me/cards/", address});
-  return url.spec();
+  return engine_->Get<EnvironmentConfig>()
+      .uphold_api_url()
+      .Resolve(base::StrCat({"/v0/me/cards/", address}))
+      .spec();
 }
 
 mojom::Result GetCard::CheckStatusCode(const int status_code) {
@@ -103,6 +101,4 @@ void GetCard::OnRequest(GetCardCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::uphold

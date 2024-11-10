@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 
+#include "base/containers/span_or_size.h"
 #include "base/time/time.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
@@ -50,6 +51,7 @@ class NodeHTML;
 class NodeHTMLElement;
 class NodeHTMLText;
 class NodeParser;
+class NodeScriptRemote;
 class NodeResource;
 class NodeShields;
 class NodeShield;
@@ -58,6 +60,7 @@ class NodeStorageLocalStorage;
 class NodeStorageRoot;
 class NodeStorageSessionStorage;
 class NodeTrackerFilter;
+class NodeUnknown;
 class NodeJSBuiltin;
 class NodeJSWebAPI;
 class RequestTracker;
@@ -156,8 +159,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                   const blink::Resource* cached_resource);
   void DidReceiveData(uint64_t identifier,
                       blink::DocumentLoader* loader,
-                      const char* data,
-                      uint64_t data_length);
+                      base::SpanOrSize<const char> data);
   void DidReceiveBlob(uint64_t identifier,
                       blink::DocumentLoader* loader,
                       blink::BlobDataHandle*);
@@ -224,7 +226,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                            const int script_id,
                                            v8::Local<v8::String> source);
   void RegisterV8JSBuiltinCall(
-      v8::Isolate* isolate,
+      blink::ExecutionContext* receiver_context,
       const char* builtin_name,
       const blink::PageGraphValues& args,
       const std::optional<blink::PageGraphValue>& result);
@@ -267,6 +269,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   PAGE_GRAPH_USING_DECL(NodeList);
   PAGE_GRAPH_USING_DECL(NodeParser);
   PAGE_GRAPH_USING_DECL(NodeResource);
+  PAGE_GRAPH_USING_DECL(NodeScriptRemote);
   PAGE_GRAPH_USING_DECL(NodeShield);
   PAGE_GRAPH_USING_DECL(NodeShields);
   PAGE_GRAPH_USING_DECL(NodeStorageCookieJar);
@@ -274,6 +277,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   PAGE_GRAPH_USING_DECL(NodeStorageRoot);
   PAGE_GRAPH_USING_DECL(NodeStorageSessionStorage);
   PAGE_GRAPH_USING_DECL(NodeTrackerFilter);
+  PAGE_GRAPH_USING_DECL(NodeUnknown);
   PAGE_GRAPH_USING_DECL(RequestTracker);
   PAGE_GRAPH_USING_DECL(RequestURL);
   PAGE_GRAPH_USING_DECL(ScriptData);
@@ -303,14 +307,14 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   void RegisterDocumentNodeCreated(blink::Document* node);
   void RegisterHTMLTextNodeCreated(blink::CharacterData* node);
   void RegisterHTMLElementNodeCreated(blink::Node* node);
-  void RegisterHTMLTextNodeInserted(blink::Node* node,
+  void RegisterHTMLTextNodeInserted(blink::CharacterData* node,
                                     blink::Node* parent_node,
                                     const blink::DOMNodeId before_sibling_id);
   void RegisterHTMLElementNodeInserted(
       blink::Node* node,
       blink::Node* parent_node,
       const blink::DOMNodeId before_sibling_id);
-  void RegisterHTMLTextNodeRemoved(blink::Node* node);
+  void RegisterHTMLTextNodeRemoved(blink::CharacterData* node);
   void RegisterHTMLElementNodeRemoved(blink::Node* node);
 
   void RegisterEventListenerAdd(blink::Node* node,
@@ -322,16 +326,19 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                    const EventListenerId listener_id,
                                    ScriptId listener_script_id);
 
-  void RegisterInlineStyleSet(blink::Node* node,
+  void RegisterInlineStyleSet(blink::Element* element,
                               const String& attr_name,
                               const String& attr_value);
-  void RegisterInlineStyleDelete(blink::Node* node, const String& attr_name);
-  void RegisterAttributeSet(blink::Node* node,
+  void RegisterInlineStyleDelete(blink::Element* element,
+                                 const String& attr_name);
+  void RegisterAttributeSet(blink::Element* element,
                             const String& attr_name,
                             const String& attr_value);
-  void RegisterAttributeDelete(blink::Node* node, const String& attr_name);
+  void RegisterAttributeDelete(blink::Element* element,
+                               const String& attr_name);
 
-  void RegisterTextNodeChange(blink::Node* node, const String& new_text);
+  void RegisterTextNodeChange(blink::CharacterData* node,
+                              const String& new_text);
 
   void DoRegisterRequestStart(const InspectorId request_id,
                               GraphNode* requesting_node,
@@ -410,10 +417,10 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                             const MethodName& method,
                             const blink::PageGraphValue& result);
 
-  void RegisterJSBuiltInCall(blink::ExecutionContext* execution_context,
+  void RegisterJSBuiltInCall(blink::ExecutionContext* receiver_context,
                              const char* builtin_name,
                              const blink::PageGraphValues& args);
-  void RegisterJSBuiltInResponse(blink::ExecutionContext* execution_context,
+  void RegisterJSBuiltInResponse(blink::ExecutionContext* receiver_context,
                                  const char* builtin_name,
                                  const blink::PageGraphValue& result);
 
@@ -428,6 +435,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   ScriptId GetExecutingScriptId(
       blink::ExecutionContext* execution_context,
       ScriptPosition* out_script_position = nullptr) const;
+
+  NodeUnknown* GetUnknownActorNode();
 
   NodeResource* GetResourceNodeForUrl(const KURL& url);
   NodeAdFilter* GetAdFilterNodeForRule(const String& rule);
@@ -491,6 +500,10 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   // and makes some kinds of queries nicer).
   HashMap<RequestURL, NodeResource*> resource_nodes_;
 
+  // Similarly, make sure we only have one node for each script executed
+  // somewhere outside the document.
+  HashMap<ScriptId, NodeScriptRemote*> remote_scripts_;
+
   // Index structure for looking up binding nodes.
   // This map does not own the references.
   HashMap<Binding, NodeBinding*> binding_nodes_;
@@ -523,6 +536,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   NodeStorageCookieJar* cookie_jar_node_;
   NodeStorageLocalStorage* local_storage_node_;
   NodeStorageSessionStorage* session_storage_node_;
+
+  NodeUnknown* unknown_actor_node_;
 };
 
 }  // namespace blink

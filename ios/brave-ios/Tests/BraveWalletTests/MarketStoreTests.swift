@@ -85,10 +85,7 @@ class MarketStoreTests: XCTestCase {
     blockchainRegistry._allTokens = { _, _, completion in
       completion([])
     }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = { _, completion in
-      completion([.mockMainnet])
-    }
+    let rpcService = MockJsonRpcService()
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._userAssets = { _, _, completion in
       completion([.previewToken])

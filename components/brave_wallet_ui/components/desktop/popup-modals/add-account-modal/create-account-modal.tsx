@@ -3,8 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assert } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { useHistory, useLocation, useParams } from 'react-router'
+import Input, { InputEventDetail } from '@brave/leo/react/input'
 
 // utils
 import { getLocale } from '$web-common/locale'
@@ -15,29 +17,18 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 
 // types
 import {
-  BitcoinNetwork,
-  BitcoinNetworkLocaleMapping,
-  BitcoinNetworkTypes,
   BraveWallet,
   CreateAccountOptionsType,
-  FilecoinNetwork,
-  FilecoinNetworkLocaleMapping,
-  FilecoinNetworkTypes,
-  WalletRoutes,
-  ZCashNetwork,
-  ZCashNetworkLocaleMapping,
-  ZCashNetworkTypes
+  WalletRoutes
 } from '../../../../constants/types'
 
 // components
-import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { DividerLine } from '../../../../components/extension/divider/index'
 import PopupModal from '..'
 import { SelectAccountType } from './select-account-type'
-import { Select } from 'brave-ui/components'
 
 // style
-import { Input, StyledWrapper, SelectWrapper } from './style'
+import { SubmitButtonWrapper, CreateAccountStyledWrapper } from './style'
 
 // selectors
 import { WalletSelectors } from '../../../../common/selectors'
@@ -47,7 +38,11 @@ import {
   useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
-import { useAddAccountMutation } from '../../../../common/slices/api.slice'
+import {
+  useAddAccountMutation,
+  useGetVisibleNetworksQuery
+} from '../../../../common/slices/api.slice'
+import { LeoSquaredButton } from '../../../shared/style'
 
 interface Params {
   accountTypeName: string
@@ -67,29 +62,24 @@ export const CreateAccountModal = () => {
 
   // queries
   const { accounts } = useAccountsQuery()
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
 
   // mutations
   const [addAccount] = useAddAccountMutation()
 
   // state
-  const [accountName, setAccountName] = React.useState<string>('')
-  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>(
-    BraveWallet.FILECOIN_MAINNET
-  )
-  const [bitcoinNetwork, setBitcoinNetwork] = React.useState<BitcoinNetwork>(
-    BraveWallet.BITCOIN_MAINNET
-  )
-  const [zcashNetwork, setZCashNetwork] = React.useState<ZCashNetwork>(
-    BraveWallet.Z_CASH_MAINNET
-  )
+  const [fullLengthAccountName, setFullLengthAccountName] =
+    React.useState<string>('')
+  const accountName = fullLengthAccountName.substring(0, 30)
 
   // memos
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
+      visibleNetworks,
       isBitcoinEnabled,
       isZCashEnabled
     })
-  }, [isBitcoinEnabled, isZCashEnabled])
+  }, [visibleNetworks, isBitcoinEnabled, isZCashEnabled])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {
@@ -114,16 +104,29 @@ export const CreateAccountModal = () => {
     if (!selectedAccountType) {
       return
     }
-    const network =
-      (selectedAccountType.coin === BraveWallet.CoinType.FIL &&
-        filecoinNetwork) ||
-      (selectedAccountType.coin === BraveWallet.CoinType.BTC &&
-        bitcoinNetwork) ||
-      (selectedAccountType.coin === BraveWallet.CoinType.ZEC && zcashNetwork) ||
-      undefined
+    let network
+    if (
+      [
+        BraveWallet.CoinType.FIL,
+        BraveWallet.CoinType.BTC,
+        BraveWallet.CoinType.ZEC
+      ].includes(selectedAccountType.coin)
+    ) {
+      network = selectedAccountType.fixedNetwork
+      assert(network)
+    }
 
     return keyringIdForNewAccount(selectedAccountType.coin, network)
-  }, [selectedAccountType, filecoinNetwork, bitcoinNetwork, zcashNetwork])
+  }, [selectedAccountType])
+
+  // computed
+  const isDisabled = accountName === ''
+  const modalTitle = selectedAccountType
+    ? getLocale('braveWalletCreateAccount').replace(
+        '$1',
+        selectedAccountType.name
+      )
+    : getLocale('braveWalletCreateAccountButton')
 
   // methods
   const onClickClose = React.useCallback(() => {
@@ -131,35 +134,14 @@ export const CreateAccountModal = () => {
   }, [history])
 
   const handleAccountNameChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setAccountName(event.target.value)
+    (detail: InputEventDetail) => {
+      setFullLengthAccountName(detail.value)
     },
     []
   )
-
-  const onChangeFilecoinNetwork = React.useCallback(
-    (network: FilecoinNetwork) => {
-      setFilecoinNetwork(network)
-    },
-    []
-  )
-
-  const onChangeBitcoinNetwork = React.useCallback(
-    (network: BitcoinNetwork) => {
-      setBitcoinNetwork(network)
-    },
-    []
-  )
-
-  const onChangeZCashNetwork = React.useCallback((network: ZCashNetwork) => {
-    setZCashNetwork(network)
-  }, [])
 
   const onClickCreateAccount = React.useCallback(async () => {
-    if (!selectedAccountType) {
-      return
-    }
-    if (targetKeyringId === undefined) {
+    if (!selectedAccountType || targetKeyringId === undefined || isDisabled) {
       return
     }
 
@@ -176,14 +158,15 @@ export const CreateAccountModal = () => {
     accountName,
     addAccount,
     history,
+    isDisabled,
     selectedAccountType,
     targetKeyringId,
     walletLocation
   ])
 
   const handleKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === 'Enter') {
+    (detail: InputEventDetail) => {
+      if ((detail.innerEvent as unknown as KeyboardEvent).key === 'Enter') {
         onClickCreateAccount()
       }
     },
@@ -204,17 +187,8 @@ export const CreateAccountModal = () => {
 
   // effects
   React.useEffect(() => {
-    setAccountName(suggestedAccountName)
+    setFullLengthAccountName(suggestedAccountName)
   }, [suggestedAccountName])
-
-  // computed
-  const isDisabled = accountName === ''
-  const modalTitle = selectedAccountType
-    ? getLocale('braveWalletCreateAccount').replace(
-        '$1',
-        selectedAccountType.name
-      )
-    : getLocale('braveWalletCreateAccountButton')
 
   // render
   return (
@@ -224,79 +198,31 @@ export const CreateAccountModal = () => {
     >
       <DividerLine />
       {selectedAccountType && (
-        <StyledWrapper>
-          {selectedAccountType?.coin === BraveWallet.CoinType.FIL && (
-            <SelectWrapper>
-              <Select
-                value={filecoinNetwork}
-                onChange={onChangeFilecoinNetwork}
-              >
-                {FilecoinNetworkTypes.map((network) => {
-                  return (
-                    <div
-                      data-value={network}
-                      key={network}
-                    >
-                      {FilecoinNetworkLocaleMapping[network]}
-                    </div>
-                  )
-                })}
-              </Select>
-            </SelectWrapper>
-          )}
-          {selectedAccountType?.coin === BraveWallet.CoinType.BTC && (
-            <SelectWrapper>
-              <Select
-                value={bitcoinNetwork}
-                onChange={onChangeBitcoinNetwork}
-              >
-                {BitcoinNetworkTypes.map((network) => {
-                  return (
-                    <div
-                      data-value={network}
-                      key={network}
-                    >
-                      {BitcoinNetworkLocaleMapping[network]}
-                    </div>
-                  )
-                })}
-              </Select>
-            </SelectWrapper>
-          )}
-          {selectedAccountType?.coin === BraveWallet.CoinType.ZEC && (
-            <SelectWrapper>
-              <Select
-                value={zcashNetwork}
-                onChange={onChangeZCashNetwork}
-              >
-                {ZCashNetworkTypes.map((network) => {
-                  return (
-                    <div
-                      data-value={network}
-                      key={network}
-                    >
-                      {ZCashNetworkLocaleMapping[network]}
-                    </div>
-                  )
-                })}
-              </Select>
-            </SelectWrapper>
-          )}
+        <CreateAccountStyledWrapper>
           <Input
             value={accountName}
             placeholder={getLocale('braveWalletAddAccountPlaceholder')}
+            onInput={handleAccountNameChanged}
             onKeyDown={handleKeyDown}
-            onChange={handleAccountNameChanged}
-            autoFocus={true}
-          />
+            showErrors={isDisabled}
+            maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+          >
+            {
+              // Label
+              getLocale('braveWalletAddAccountPlaceholder')
+            }
+          </Input>
 
-          <NavButton
-            onSubmit={onClickCreateAccount}
-            disabled={isDisabled}
-            text={getLocale('braveWalletCreateAccountButton')}
-            buttonType='primary'
-          />
-        </StyledWrapper>
+          <SubmitButtonWrapper>
+            <LeoSquaredButton
+              onClick={onClickCreateAccount}
+              isDisabled={isDisabled}
+              kind='filled'
+            >
+              {getLocale('braveWalletCreateAccountButton')}
+            </LeoSquaredButton>
+          </SubmitButtonWrapper>
+        </CreateAccountStyledWrapper>
       )}
 
       {!selectedAccountType && (

@@ -11,11 +11,11 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 
-class TokenGeneratorMock : public TokenGenerator {
+class TokenGeneratorMock : public TokenGeneratorInterface {
  public:
   TokenGeneratorMock();
 

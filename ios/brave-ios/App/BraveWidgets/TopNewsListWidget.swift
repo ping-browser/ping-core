@@ -40,7 +40,7 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
     Task {
       let grouping = context.family == .systemMedium ? 2 : 5
       // No need to load more than the grouping in the snapshot
-      let topics = Array(await model.fetchNewsTopics().prefix(grouping))
+      let topics = Array(await model.fetchNewsTopics(Locale.autoupdatingCurrent).prefix(grouping))
       let images = await model.fetchImageThumbnailsForTopics(topics, thumbnailSize)
       completion(.init(date: Date(), topics: topics, images: images))
     }
@@ -50,7 +50,9 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
     Task {
       let grouping = context.family == .systemMedium ? 2 : 5
       let interval = context.family == .systemMedium ? 15 : 20
-      let allTopics = Array(await model.fetchNewsTopics().prefix(grouping * 3))
+      let allTopics = Array(
+        await model.fetchNewsTopics(Locale.autoupdatingCurrent).prefix(grouping * 3)
+      )
       let topics = allTopics.splitEvery(grouping)
       let images = await model.fetchImageThumbnailsForTopics(allTopics, thumbnailSize)
       let entries: [TopNewsListEntry] = zip(topics, topics.indices).map({ topics, index in
@@ -69,6 +71,7 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
 }
 
 private struct TopNewsListView: View {
+  @Environment(\.widgetRenderingMode) private var widgetRenderingMode
   @Environment(\.pixelLength) var pixelLength
   @Environment(\.widgetFamily) var widgetFamily
   var entry: TopNewsListEntry
@@ -78,6 +81,7 @@ private struct TopNewsListView: View {
       HStack(spacing: 4) {
         Image("brave-icon-no-bg")
           .resizable()
+          .widgetAccentedRenderingModeFullColor()
           .aspectRatio(contentMode: .fit)
           .frame(width: 16, height: 16)
         Text(Strings.Widgets.braveNews)
@@ -106,7 +110,10 @@ private struct TopNewsListView: View {
       if let topics = entry.topics, !topics.isEmpty {
         VStack(alignment: .leading, spacing: widgetFamily == .systemLarge ? 12 : 8) {
           headerView
-            .background(Color(.braveGroupedBackground))
+            .background(
+              widgetRenderingMode == .accented
+                ? Color.white.opacity(0.1) : Color(.braveGroupedBackground)
+            )
           VStack(alignment: .leading, spacing: 8) {
             ForEach(topics.prefix(widgetFamily == .systemLarge ? 5 : 2)) { topic in
               HStack {
@@ -136,6 +143,7 @@ private struct TopNewsListView: View {
                     .overlay(
                       Image(uiImage: image)
                         .resizable()
+                        .widgetAccentedRenderingModeFullColor()
                         .aspectRatio(contentMode: .fill)
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
@@ -201,7 +209,7 @@ struct TopNewsListView_PreviewProvider: PreviewProvider {
     var body: some View {
       TopNewsListView(entry: .init(date: .now, topics: topics, images: [:]))
         .task {
-          topics = await model.fetchNewsTopics()
+          topics = await model.fetchNewsTopics(Locale(identifier: "en_US"))
         }
     }
   }

@@ -40,6 +40,9 @@ extension URL {
     public static let braveVPNLinkReceiptDev = URL(
       string: "https://account.brave.software/?intent=connect-receipt&product=vpn"
     )!
+    public static let braveVPNRefreshCredentials = URL(
+      string: "https://account.brave.com/?intent=recover&product=vpn&ux=mobile"
+    )!
     public static let safeBrowsingHelp = URL(
       string: "https://ping-browser.com/faqs-and-help"
     )!
@@ -64,6 +67,12 @@ extension URL {
     public static let braveLeoLinkReceiptDev = URL(
       string: "https://account.brave.software/?intent=link-order&product=leo"
     )!
+    public static let braveLeoRefreshCredentials = URL(
+      string: "https://account.brave.com/?intent=recover&product=leo&ux=mobile"
+    )!
+    public static let braveLeoModelCategorySupport = URL(
+      string: "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo"
+    )!
   }
   public enum Apple {
     public static let manageSubscriptions = URL(
@@ -77,6 +86,6 @@ extension URL {
 public struct AppURLScheme {
   /// The apps URL scheme for the current build channel
   public static var appURLScheme: String {
-    Bundle.main.infoDictionary?["BRAVE_URL_SCHEME"] as? String ?? "brave"
+    Bundle.main.infoDictionary?["BRAVE_URL_SCHEME"] as? String ?? "ping"
   }
 }

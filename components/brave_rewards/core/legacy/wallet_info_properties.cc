@@ -10,16 +10,15 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/notreached.h"
 
 namespace brave_rewards::internal {
 
 namespace {
 
 // Do not change these values as they are required to transition legacy state
-const char kPaymentIdKey[] = "paymentId";
-const char kAddressCardIdKey[] = "addressCARD_ID";
-const char kKeyInfoSeedKey[] = "keyInfoSeed";
+constexpr char kPaymentIdKey[] = "paymentId";
+constexpr char kAddressCardIdKey[] = "addressCARD_ID";
+constexpr char kKeyInfoSeedKey[] = "keyInfoSeed";
 
 }  // namespace
 
@@ -60,7 +59,6 @@ bool WalletInfoProperties::FromValue(const base::Value::Dict& dict) {
   if (const auto* value = dict.FindString(kPaymentIdKey)) {
     payment_id = *value;
   } else {
-    NOTREACHED();
     return false;
   }
 
@@ -68,19 +66,16 @@ bool WalletInfoProperties::FromValue(const base::Value::Dict& dict) {
   if (const auto* value = dict.FindString(kAddressCardIdKey)) {
     address_card_id = *value;
   } else {
-    NOTREACHED();
     return false;
   }
 
   // Key Info Seed (Base64)
   const auto* base64_key_info_seed = dict.FindString(kKeyInfoSeedKey);
   if (!base64_key_info_seed) {
-    NOTREACHED();
     return false;
   }
   std::string plain_key_info_seed;
   if (!base::Base64Decode(*base64_key_info_seed, &plain_key_info_seed)) {
-    NOTREACHED();
     return false;
   }
   key_info_seed.assign(plain_key_info_seed.begin(), plain_key_info_seed.end());

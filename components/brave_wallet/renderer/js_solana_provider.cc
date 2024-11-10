@@ -26,7 +26,7 @@
 #include "gin/converter.h"
 #include "gin/handle.h"
 #include "gin/object_template_builder.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/blink.h"
@@ -115,7 +115,7 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
   if (gin::ConvertFromV8(isolate, value.As<v8::ArrayBufferView>(), &view)) {
     data = reinterpret_cast<char*>(view.bytes());
     data_length = view.num_bytes();
-    bytes.assign(data, data + data_length);
+    UNSAFE_TODO(bytes.assign(data, data + data_length));
   }
   if (!bytes.size()) {
     return false;
@@ -164,13 +164,14 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   // Create a proxy to the actual JSSolanaProvider object which will be
   // exposed via window.braveSolana and window.solana.
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-  v8::Local<v8::Proxy> solana_proxy;
-  auto solana_proxy_handler_val =
-      ExecuteScript(web_frame, kSolanaProxyHandlerScript);
+  v8::Local<v8::Value> solana_proxy_handler_val;
+  if (!ExecuteScript(web_frame, kSolanaProxyHandlerScript)
+           .ToLocal(&solana_proxy_handler_val)) {
+    return;
+  }
   v8::Local<v8::Object> solana_proxy_handler_obj =
-      solana_proxy_handler_val.ToLocalChecked()
-          ->ToObject(context)
-          .ToLocalChecked();
+      solana_proxy_handler_val->ToObject(context).ToLocalChecked();
+  v8::Local<v8::Proxy> solana_proxy;
   if (!v8::Proxy::New(context, provider_object, solana_proxy_handler_obj)
            .ToLocal(&solana_proxy)) {
     return;
@@ -278,7 +279,7 @@ bool JSSolanaProvider::EnsureConnected() {
     return false;
   }
   if (!solana_provider_.is_bound()) {
-    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame()->GetBrowserInterfaceBroker().GetInterface(
         solana_provider_.BindNewPipeAndPassReceiver());
     solana_provider_->Init(receiver_.BindNewPipeAndPassRemote());
   }
@@ -630,8 +631,11 @@ void JSSolanaProvider::WalletStandardInit(gin::Arguments* arguments) {
       {"(function() {", LoadDataResource(IDR_BRAVE_WALLET_STANDARD_JS),
        "return walletStandardBrave; })()"});
 
-  v8::Local<v8::Value> wallet_standard =
-      ExecuteScript(web_frame, wallet_standard_module_str).ToLocalChecked();
+  v8::Local<v8::Value> wallet_standard;
+  if (!ExecuteScript(web_frame, wallet_standard_module_str)
+           .ToLocal(&wallet_standard)) {
+    return;
+  }
   v8::Local<v8::Value> object;
   v8::Isolate* isolate = arguments->isolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
@@ -1008,8 +1012,10 @@ JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
       if (!pubkey_string) {
         return std::nullopt;
       }
-      sig_pubkey_pairs.push_back(
-          mojom::SignaturePubkeyPair::New(signature_blob, *pubkey_string));
+      sig_pubkey_pairs.push_back(mojom::SignaturePubkeyPair::New(
+          signature_blob ? mojom::SolanaSignature::New(*signature_blob)
+                         : mojom::SolanaSignaturePtr(),
+          *pubkey_string));
     }
   } else {  // Transaction
     for (uint32_t i = 0; i < signatures_count; ++i) {
@@ -1037,8 +1043,10 @@ JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
         return std::nullopt;
       }
 
-      sig_pubkey_pairs.push_back(
-          mojom::SignaturePubkeyPair::New(signature_blob, *pubkey_string));
+      sig_pubkey_pairs.push_back(mojom::SignaturePubkeyPair::New(
+          signature_blob ? mojom::SolanaSignature::New(*signature_blob)
+                         : mojom::SolanaSignaturePtr(),
+          *pubkey_string));
     }
   }
 
@@ -1073,14 +1081,13 @@ bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
       {"(function() {", LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS),
        "return solanaWeb3; })()"});
 
-  solana_web3_module_.Reset(
-      isolate,
-      ExecuteScript(render_frame()->GetWebFrame(), solana_web3_module_str)
-          .ToLocalChecked());
+  v8::Local<v8::Value> solana_web3_module;
   // loading SolanaWeb3 module failed
-  if (solana_web3_module_.IsEmpty()) {
+  if (!ExecuteScript(render_frame()->GetWebFrame(), solana_web3_module_str)
+           .ToLocal(&solana_web3_module)) {
     return false;
   }
+  solana_web3_module_.Reset(isolate, solana_web3_module);
   return true;
 }
 

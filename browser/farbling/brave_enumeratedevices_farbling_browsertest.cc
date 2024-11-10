@@ -30,7 +30,7 @@
 
 using brave_shields::ControlType;
 
-const char kEnumerateDevicesScript[] =
+constexpr char kEnumerateDevicesScript[] =
     "navigator.mediaDevices.enumerateDevices()"
     ".then(function(devices) {"
     "  var devicekinds = '';"
@@ -43,16 +43,7 @@ const char kEnumerateDevicesScript[] =
 class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveEnumerateDevicesFarblingBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    EXPECT_TRUE(https_server_.Start());
-    top_level_page_url_ = https_server_.GetURL("b.test", "/");
-    farbling_url_ = https_server_.GetURL("b.test", "/simple.html");
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   BraveEnumerateDevicesFarblingBrowserTest(
       const BraveEnumerateDevicesFarblingBrowserTest&) = delete;
@@ -63,6 +54,13 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    EXPECT_TRUE(https_server_.Start());
+    top_level_page_url_ = https_server_.GetURL("b.test", "/");
+    farbling_url_ = https_server_.GetURL("b.test", "/simple.html");
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
@@ -93,6 +91,13 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  void EnableWebcompatException() {
+    brave_shields::SetWebcompatEnabled(
+        content_settings(),
+        ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY, true,
+        top_level_page_url_, nullptr);
   }
 
  private:
@@ -127,4 +132,13 @@ IN_PROC_BROWSER_TEST_F(BraveEnumerateDevicesFarblingBrowserTest,
   std::string maximum_value =
       content::EvalJs(contents(), kEnumerateDevicesScript).ExtractString();
   EXPECT_EQ(balanced_value, maximum_value);
+
+  // Farbling level: default, but with webcompat exception enabled
+  // get real navigator.mediaDevices.enumerateDevices array
+  SetFingerprintingDefault();
+  EnableWebcompatException();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
+  std::string real_value2 =
+      content::EvalJs(contents(), kEnumerateDevicesScript).ExtractString();
+  ASSERT_NE(real_value2, "");
 }

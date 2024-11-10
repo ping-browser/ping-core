@@ -9,6 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
@@ -28,12 +29,10 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/render_frame_host.h"
-#include "content/public/renderer/render_frame.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
-#include "third_party/blink/public/web/web_local_frame.h"
 
 using brave_shields::ControlType;
 using brave_shields::features::kBraveReduceLanguage;
@@ -41,7 +40,7 @@ using brave_shields::features::kBraveShowStrictFingerprintingMode;
 using content::TitleWatcher;
 
 namespace {
-const char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
+constexpr char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
 const uint64_t kTestingSessionToken = 12345;
 }  // namespace
 
@@ -51,13 +50,6 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeatures(
         {kBraveReduceLanguage, kBraveShowStrictFingerprintingMode}, {});
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    https_server_.RegisterRequestMonitor(base::BindRepeating(
-        &BraveNavigatorLanguagesFarblingBrowserTest::MonitorHTTPRequest,
-        base::Unretained(this)));
   }
 
   BraveNavigatorLanguagesFarblingBrowserTest(
@@ -80,10 +72,15 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    g_brave_browser_process->brave_farbling_service()
-        ->set_session_tokens_for_testing(kTestingSessionToken,
-                                         kTestingSessionToken);
+    brave::BraveFarblingServiceFactory::GetForProfile(browser()->profile())
+        ->set_session_tokens_for_testing(kTestingSessionToken);
 
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    https_server_.RegisterRequestMonitor(base::BindRepeating(
+        &BraveNavigatorLanguagesFarblingBrowserTest::MonitorHTTPRequest,
+        base::Unretained(this)));
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());

@@ -9,6 +9,8 @@
 // - for cosmetic filters work with CSS and stylesheet. That work itself
 //   could call the script several times.
 
+import { applyCompiledSelector, compileProceduralSelector } from './procedural_filters'
+
 // Start looking for things to unhide before at most this long after
 // the backend script is up and connected (eg backgroundReady = true),
 // or sooner if the thread is idle.
@@ -36,6 +38,16 @@ let currentMutationStartTime = performance.now()
 // The next allowed time to call FetchNewClassIdRules() if it's throttled.
 let nextFetchNewClassIdRulesCall = 0
 let fetchNewClassIdRulesTimeoutId: number | undefined
+
+// Generate a random string between [a000000000, zzzzzzzzzz] (base 36)
+const generateRandomAttr = () => {
+  const min = Number.parseInt('a000000000', 36)
+  const max = Number.parseInt('zzzzzzzzzz', 36)
+  return Math.floor(Math.random() * (max - min) + min).toString(36)
+}
+
+const globalStyleAttr = generateRandomAttr()
+const styleAttrMap = new Map<string, string>()
 
 const queriedIds = new Set<string>()
 const queriedClasses = new Set<string>()
@@ -147,23 +159,24 @@ const ShouldThrottleFetchNewClassIdsRules = (): boolean => {
   return false
 }
 
+const queueElementIdAndClasses = (element: Element) => {
+  const id = element.id
+  if (id && !queriedIds.has(id)) {
+    notYetQueriedIds.push(id)
+    queriedIds.add(id)
+  }
+  for (const className of element.classList.values()) {
+    if (className && !queriedClasses.has(className)) {
+      notYetQueriedClasses.push(className)
+      queriedClasses.add(className)
+    }
+  }
+}
+
 const fetchNewClassIdRules = () => {
   for (const elements of notYetQueriedElements) {
     for (const element of elements) {
-      const id = element.id
-      if (id && !queriedIds.has(id)) {
-        notYetQueriedIds.push(id)
-        queriedIds.add(id)
-      }
-      const classList = element.classList
-      if (classList) {
-        for (const className of classList.values()) {
-          if (className && !queriedClasses.has(className)) {
-            notYetQueriedClasses.push(className)
-            queriedClasses.add(className)
-          }
-        }
-      }
+      queueElementIdAndClasses(element)
     }
   }
   notYetQueriedElements.length = 0
@@ -279,8 +292,20 @@ const onMutations = (mutations: MutationRecord[], observer: MutationObserver) =>
     }
   }
 
-  if (!ShouldThrottleFetchNewClassIdsRules()) {
+  if (!CC.generichide && !ShouldThrottleFetchNewClassIdsRules()) {
     fetchNewClassIdRules()
+  }
+
+  if (CC.hasProceduralActions) {
+    const addedElements : Element[] = [];
+    mutations.forEach(mutation =>
+      mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n =>
+        n.nodeType === Node.ELEMENT_NODE && addedElements.push(n as Element)
+      )
+    )
+    if (addedElements.length !== 0) {
+      executeProceduralActions(addedElements);
+    }
   }
 
   if (eventId) {
@@ -612,22 +637,16 @@ const queryAttrsFromDocument = (switchToMutationObserverAtTime?: number) => {
   // @ts-expect-error
   const eventId: number | undefined = cf_worker.onQuerySelectorsBegin?.()
 
-  const elmWithClassOrId = document.querySelectorAll(classIdWithoutHtmlOrBody)
-  for (const elm of elmWithClassOrId) {
-    for (const aClassName of elm.classList.values()) {
-      if (aClassName && !queriedClasses.has(aClassName)) {
-        notYetQueriedClasses.push(aClassName)
-        queriedClasses.add(aClassName)
-      }
+  if (!CC.generichide) {
+    const elmWithClassOrId = document.querySelectorAll(classIdWithoutHtmlOrBody)
+    for (const elm of elmWithClassOrId) {
+      queueElementIdAndClasses(elm)
     }
-    const elmId = elm.getAttribute('id')
-    if (elmId && !queriedIds.has(elmId)) {
-      notYetQueriedIds.push(elmId)
-      queriedIds.add(elmId)
-    }
+
+    fetchNewClassIdRules()
   }
 
-  fetchNewClassIdRules()
+  if (CC.hasProceduralActions) executeProceduralActions();
 
   if (eventId) {
     // Callback to c++ renderer process
@@ -667,7 +686,7 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   // called, in which case set up a timer and quit
   CC._startCheckingId = window.requestIdleCallback(_ => {
     CC._hasDelayOcurred = true
-    if (!genericHide) {
+    if (!genericHide || CC.hasProceduralActions) {
       if (CC.firstSelectorsPollingDelayMs === undefined) {
         startObserving()
       } else {
@@ -692,3 +711,77 @@ const tryScheduleQueuePump = () => {
 CC.tryScheduleQueuePump = CC.tryScheduleQueuePump || tryScheduleQueuePump
 
 tryScheduleQueuePump()
+
+const executeProceduralActions = (added?: Element[]) => {
+  // If passed a list of added elements, do not query the entire document
+  if (CC.proceduralActionFilters === undefined) {
+    return
+  }
+
+  const getStyleAttr = (style: string): string => {
+    let styleAttr = styleAttrMap.get(style)
+    if (styleAttr === undefined) {
+      styleAttr = generateRandomAttr()
+      styleAttrMap.set(style, styleAttr)
+      const css = `[${globalStyleAttr}][${styleAttr}]{${style}}`
+      // @ts-expect-error
+      cf_worker.injectStylesheet(css)
+    }
+    return styleAttr
+  }
+
+  const performAction = (element: any, action: any) => {
+    if (action === undefined) {
+      const attr = getStyleAttr('display: none !important')
+      element.setAttribute(globalStyleAttr, '')
+      element.setAttribute(attr, '')
+    } else if (action.type === 'style') {
+      const attr = getStyleAttr(action.arg)
+      element.setAttribute(globalStyleAttr, '')
+      element.setAttribute(attr, '')
+    } else if (action.type === 'remove') {
+      element.remove()
+    } else if (action.type === 'remove-attr') {
+      // We can remove attributes without checking if they exist
+      element.removeAttribute(action.arg)
+    } else if (action.type === 'remove-class') {
+      // Check if the element has any classes to remove because
+      // classList.remove(tokens...) always triggers another mutation
+      // even if nothing was removed.
+      if (element.classList.contains(action.arg)) {
+        element.classList.remove(action.arg);
+      }
+    }
+  }
+  for (const { selector, action } of CC.proceduralActionFilters) {
+    let matchingElements: Element[] | NodeListOf<any>;
+    let startOperator: number;
+
+    if (selector[0].type === 'css-selector' && added === undefined) {
+      matchingElements = document.querySelectorAll(selector[0].arg);
+      startOperator = 1;
+    } else if (added === undefined) {
+      matchingElements = document.querySelectorAll('*');
+      startOperator = 0;
+    } else {
+      matchingElements = added;
+      startOperator = 0;
+    }
+
+    if (startOperator === selector.length) {
+      // First `css-selector` was already handled, and no more elements remain
+      matchingElements.forEach(elem => performAction(elem, action))
+    } else {
+      try {
+        const filter = compileProceduralSelector(selector.slice(startOperator));
+        applyCompiledSelector(filter, matchingElements as HTMLElement[]).forEach(elem => performAction(elem, action))
+      } catch (e) {
+        console.error('Failed to apply filter ' + JSON.stringify(selector) + ' ' + JSON.stringify(action) + ': ');
+        console.error(e.message);
+        console.error(e.stack);
+      }
+    }
+  }
+};
+
+if (CC.hasProceduralActions) executeProceduralActions();

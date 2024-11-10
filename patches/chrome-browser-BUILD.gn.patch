@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index df3456f3a4b3849eded02933c978b6b38d59cb1d..6bb9f33e2a6aab9c96302c81c5eeaa905f411a83 100644
+index 7f1c26990d8d43e92615bd3a5f4046d121d6ac6b..2b821a11ad5a449c0be7a58cfd858176049f24ed 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2752,6 +2752,7 @@ static_library("browser") {
+@@ -2516,6 +2516,7 @@ static_library("browser") {
        "performance_monitor/metric_evaluator_helper_posix.h",
      ]
    }
@@ -10,3 +10,11 @@ index df3456f3a4b3849eded02933c978b6b38d59cb1d..6bb9f33e2a6aab9c96302c81c5eeaa90
  
    if (!is_chromeos_ash) {
      sources += [
+@@ -8512,6 +8513,7 @@ static_library("browser_public_dependencies") {
+       "//rlz:rlz_lib",
+     ]
+   }
++  import("//brave/browser/sources.gni") public_deps += brave_chrome_browser_public_deps
+ }
+ 
+ # All generated files in //chrome/browser/ depended on by

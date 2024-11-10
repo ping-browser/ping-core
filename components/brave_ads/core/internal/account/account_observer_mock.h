@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_OBSERVER_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_OBSERVER_MOCK_H_
 
-#include "brave/components/brave_ads/core/internal/account/account_observer.h"
-
 #include <string>
 
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/internal/account/account_observer.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 
@@ -35,8 +35,8 @@ class AccountObserverMock : public AccountObserver {
   MOCK_METHOD(void,
               OnFailedToProcessDeposit,
               (const std::string& creative_instance_id,
-               AdType ad_type,
-               ConfirmationType confirmation_type));
+               mojom::AdType mojom_ad_type,
+               mojom::ConfirmationType mojom_confirmation_type));
 };
 
 }  // namespace brave_ads

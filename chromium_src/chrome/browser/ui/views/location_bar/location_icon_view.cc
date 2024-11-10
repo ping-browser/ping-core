@@ -3,10 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/ipfs_constants.h"
+#include "components/strings/grit/components_strings.h"
 
-#define BRAVE_SHOULD_SHOW_URL_IPFS_CHECK \
-  url.SchemeIs(ipfs::kIPFSScheme) || url.SchemeIs(ipfs::kIPNSScheme) ||
+namespace {
+constexpr int kDangerousVerboseState = IDS_DANGEROUS_VERBOSE_STATE;
+}  // namespace
+
+// To make |is_text_dangerous| false always.
+// It prevents to get color from LocationIconView. We want to get color
+// from its delegate.
+#undef IDS_DANGEROUS_VERBOSE_STATE
+#define IDS_DANGEROUS_VERBOSE_STATE kDangerousVerboseState) && (false
 
 #include "src/chrome/browser/ui/views/location_bar/location_icon_view.cc"
-#undef BRAVE_SHOULD_SHOW_URL_IPFS_CHECK
+
+#undef IDS_DANGEROUS_VERBOSE_STATE
+
+#define IDS_DANGEROUS_VERBOSE_STATE kDangerousVerboseState

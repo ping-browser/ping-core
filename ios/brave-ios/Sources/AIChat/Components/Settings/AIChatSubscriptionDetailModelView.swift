@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStore
 import Foundation
 import Preferences
 import StoreKit
@@ -131,10 +132,6 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
     }
 
     return nil
-  }
-
-  var inAppPurchaseSubscriptionEnviroment: BraveStoreEnvironment {
-    storeSDK.environment
   }
 
   var inAppPurchaseProductsLoaded: Bool {

@@ -30,14 +30,15 @@ extension BraveWallet.TransactionInfo {
       .erc1155SafeTransferFrom,
       .solanaSystemTransfer,
       .solanaSplTokenTransfer,
+      .solanaCompressedNftTransfer,
       .solanaSplTokenTransferWithAssociatedTokenAccountCreation,
       .solanaDappSignAndSendTransaction,
       .solanaDappSignTransaction,
       .ethFilForwarderTransfer:
       return true
     case .other:
-      // Filecoin send
-      return txDataUnion.filTxData != nil
+      // Filecoin or Bitcoin send
+      return txDataUnion.filTxData != nil || txDataUnion.btcTxData != nil
     case .erc20Approve,
       .ethSwap,
       .solanaSwap:
@@ -145,6 +146,10 @@ extension BraveWallet.AccountId {
     guard let object = object as? BraveWallet.AccountId else { return false }
     return self.uniqueKey == object.uniqueKey
   }
+
+  var blockieSeed: String {
+    address.isEmpty ? uniqueKey.sha256 : address.lowercased()
+  }
 }
 
 extension BraveWallet.AccountInfo {
@@ -167,7 +172,17 @@ extension BraveWallet.AccountInfo {
   }
 
   var blockieSeed: String {
-    address.isEmpty ? accountId.uniqueKey.sha256 : address
+    accountId.blockieSeed
+  }
+
+  /// Displays as `Account Name (truncated address)`, ex `Ethereum Account 1 (0x1234...5678)`
+  /// or `Account Name` for Bitcoin.
+  var accountNameDisplay: String {
+    if coin == .btc {
+      return name
+    } else {
+      return "\(name) (\(address.truncatedAddress))"
+    }
   }
 
   public func sort(
@@ -266,39 +281,6 @@ extension BraveWallet.CoinType {
     }
   }
 
-  var defaultAccountName: String {
-    switch self {
-    case .eth:
-      return Strings.Wallet.defaultEthAccountName
-    case .sol:
-      return Strings.Wallet.defaultSolAccountName
-    case .fil:
-      return Strings.Wallet.defaultFilAccountName
-    case .btc:
-      return Strings.Wallet.defaultBitcoinAccountName
-    case .zec:
-      fallthrough
-    @unknown default:
-      return ""
-    }
-  }
-
-  var defaultSecondaryAccountName: String {
-    switch self {
-    case .eth:
-      return Strings.Wallet.defaultSecondaryEthAccountName
-    case .sol:
-      return Strings.Wallet.defaultSecondarySolAccountName
-    case .fil:
-      return Strings.Wallet.defaultSecondaryFilAccountName
-    case .btc, .zec:
-      // no secondary/import account for bitcoin
-      fallthrough
-    @unknown default:
-      return ""
-    }
-  }
-
   /// Sort order used when sorting by coin types
   var sortOrder: Int {
     switch self {
@@ -331,6 +313,15 @@ extension BraveWallet.TransactionInfo {
     } else {
       return .eth
     }
+  }
+
+  var solEstimatedTxFeeFromTxData: UInt64? {
+    guard let fee = txDataUnion.solanaTxData?.feeEstimation
+    else { return nil }
+    let priorityFee =
+      (UInt64(fee.computeUnits) * fee.feePerComputeUnit)
+      / BraveWallet.MicroLamportsPerLamport
+    return fee.baseFee + priorityFee
   }
 }
 
@@ -406,6 +397,15 @@ extension BraveWallet.NetworkInfo {
       let tokenURL = URL(string: "\(explorerURL)/token/\(contractAddress)")
     {
       return tokenURL
+    }
+    return nil
+  }
+
+  func contractAddressURL(_ contractAddress: String) -> URL? {
+    if let explorerURL = blockExplorerUrls.first,
+      let contractAddressUrl = URL(string: "\(explorerURL)/address/\(contractAddress)/#code")
+    {
+      return contractAddressUrl
     }
     return nil
   }
@@ -605,11 +605,7 @@ extension BraveWallet.OnRampProvider {
 extension Locale {
   /// The region identifier (iOS 16+) or region code for the `Locale`.
   var safeRegionCode: String? {
-    if #available(iOS 16, *) {
-      return Locale.current.region?.identifier ?? Locale.current.regionCode
-    } else {
-      return Locale.current.regionCode
-    }
+    return Locale.current.region?.identifier
   }
 }
 
@@ -639,6 +635,31 @@ extension BraveWallet.KeyringId {
   }
 }
 
+extension BraveWallet.TransactionStatus {
+  var localizedDescription: String {
+    switch self {
+    case .confirmed:
+      return Strings.Wallet.transactionStatusConfirmed
+    case .approved:
+      return Strings.Wallet.transactionStatusApproved
+    case .rejected:
+      return Strings.Wallet.transactionStatusRejected
+    case .unapproved:
+      return Strings.Wallet.transactionStatusUnapproved
+    case .submitted:
+      return Strings.Wallet.transactionStatusSubmitted
+    case .error:
+      return Strings.Wallet.transactionStatusError
+    case .dropped:
+      return Strings.Wallet.transactionStatusDropped
+    case .signed:
+      return Strings.Wallet.transactionStatusSigned
+    @unknown default:
+      return Strings.Wallet.transactionStatusUnknown
+    }
+  }
+}
+
 extension String {
   /// Returns true if the string ends with a supported ENS extension.
   public var endsWithSupportedENSExtension: Bool {
@@ -657,7 +678,7 @@ extension String {
 
   /// Returns true if `Self` is a valid account name
   public var isValidAccountName: Bool {
-    self.count <= 30
+    self.count <= BraveWallet.AccountNameMaxCharacterLength
   }
 }
 
@@ -687,6 +708,73 @@ extension Array where Element == BraveWallet.AccountInfo {
     filter { account in
       account.coin == network.coin
         && network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
+    }
+  }
+}
+
+extension BraveWallet.NftMetadata {
+  var imageURL: URL? {
+    URL(string: image)
+  }
+
+  func httpfyIpfsUrl(ipfsApi: IpfsAPI) -> BraveWallet.NftMetadata {
+    guard image.hasPrefix("ipfs://"),
+      let url = URL(string: image)
+    else {
+      return self
+    }
+    return .init(
+      name: self.name,
+      description: self.desc,
+      image: ipfsApi.resolveGatewayUrl(for: url)?.absoluteString ?? self.image,
+      imageData: self.imageData,
+      externalUrl: self.externalUrl,
+      attributes: self.attributes,
+      backgroundColor: self.backgroundColor,
+      animationUrl: self.animationUrl,
+      youtubeUrl: self.youtubeUrl,
+      collection: self.collection
+    )
+  }
+}
+
+extension BraveWallet.NftAttribute: Identifiable {
+  public var id: String {
+    traitType
+  }
+}
+
+extension BraveWallet.TransactionType {
+  public var localizedDescription: String {
+    switch self {
+    case .erc20Approve:
+      return Strings.Wallet.txFunctionTypeERC20Approve
+    case .erc20Transfer, .solanaSplTokenTransfer:
+      return Strings.Wallet.txFunctionTypeTokenTransfer
+    case .erc721TransferFrom:
+      return Strings.Wallet.txFunctionTypeNFTTransfer
+    case .erc721SafeTransferFrom, .erc1155SafeTransferFrom:
+      return Strings.Wallet.txFunctionTypeSafeTransfer
+    case .ethFilForwarderTransfer:
+      return Strings.Wallet.txFunctionTypeForwardFil
+    case .solanaDappSignAndSendTransaction:
+      return Strings.Wallet.txFunctionTypeSignAndSendDapp
+    case .solanaSystemTransfer:
+      return String.localizedStringWithFormat(Strings.Wallet.txFunctionTypeSend, "SOL")
+    case .ethSwap, .solanaSwap:
+      return Strings.Wallet.txFunctionTypeSwap
+    case .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
+      return Strings.Wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation
+    case .solanaCompressedNftTransfer:
+      return Strings.Wallet.txFunctionTypeCompressedNFTTransfer
+    case .ethSend:
+      return String.localizedStringWithFormat(Strings.Wallet.txFunctionTypeSend, "ETH")
+    case .other:
+      return Strings.Wallet.txFunctionTypeOther
+    case .solanaDappSignTransaction:
+      return Strings.Wallet.txFunctionTypeSignDappTransaction
+    @unknown default:
+      return Strings.Wallet.txFunctionTypeOther
     }
   }
 }

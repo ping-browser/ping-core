@@ -191,9 +191,9 @@ extension Strings {
       "wallet.accountNameLengthError",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Account name must be at most 30 characters long",
+      value: "Account name must be %lld characters or less",
       comment:
-        "The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters."
+        "The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\")"
     )
     public static let accountPrivateKey = NSLocalizedString(
       "wallet.accountPrivateKey",
@@ -276,61 +276,21 @@ extension Strings {
       comment:
         "A button title that shows a screen that allows the user to backup their recovery phrase"
     )
-    public static let defaultEthAccountName = NSLocalizedString(
-      "wallet.defaultEthAccountName",
+    public static let defaultAccountName = NSLocalizedString(
+      "wallet.defaultAccountName",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Ethereum Account %lld",
+      value: "%@ Account %lld",
       comment:
-        "The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\")"
+        "The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\")"
     )
-    public static let defaultSolAccountName = NSLocalizedString(
-      "wallet.defaultSolAccountName",
+    public static let defaultTestnetAccountName = NSLocalizedString(
+      "wallet.defaultTestnetAccountName",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Solana Account %lld",
+      value: "%@ Testnet Account %lld",
       comment:
-        "The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\")"
-    )
-    public static let defaultFilAccountName = NSLocalizedString(
-      "wallet.defaultFilAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Filecoin Account %lld",
-      comment:
-        "The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\")"
-    )
-    public static let defaultBitcoinAccountName = NSLocalizedString(
-      "wallet.defaultBitcoinAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Bitcoin Account %lld",
-      comment:
-        "The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\")"
-    )
-    public static let defaultSecondaryEthAccountName = NSLocalizedString(
-      "wallet.defaultSecondaryEthAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Secondary Ethereum Account %lld",
-      comment:
-        "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\")"
-    )
-    public static let defaultSecondarySolAccountName = NSLocalizedString(
-      "wallet.defaultSecondarySolAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Secondary Solana Account %lld",
-      comment:
-        "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\")"
-    )
-    public static let defaultSecondaryFilAccountName = NSLocalizedString(
-      "wallet.defaultSecondaryFilAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Secondary Filecoin Account %lld",
-      comment:
-        "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\")"
+        "The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\")"
     )
     public static let addAccountWithCoinTypeTitle = NSLocalizedString(
       "wallet.addAccountWithCoinTypeTitle",
@@ -1601,13 +1561,13 @@ extension Strings {
       value: "No data.",
       comment: "A label shown inside of a box when there is no input data for a given transaction"
     )
-    public static let inputDataPlaceholderSolana = NSLocalizedString(
-      "wallet.inputDataPlaceholderSolana",
+    public static let inputDataPlaceholderTx = NSLocalizedString(
+      "wallet.inputDataPlaceholderTx",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Function Type: %d",
+      value: "Function Type:\n%@",
       comment:
-        "A label shown inside of a box when there is no input data for a given Solana transaction"
+        "A label shown inside of a box when there is no input data for a given transaction"
     )
     public static let rejectAllTransactions = NSLocalizedString(
       "wallet.rejectAllTransactions",
@@ -2340,6 +2300,14 @@ extension Strings {
       comment:
         "An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid"
     )
+    public static let sendErrorBtcAddressNotValid = NSLocalizedString(
+      "wallet.sendErrorBtcAddressNotValid",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Not a valid BTC address",
+      comment:
+        "An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address."
+    )
     public static let customNetworkChainIdTitle = NSLocalizedString(
       "wallet.customNetworkChainIdTitle",
       tableName: "BraveWallet",
@@ -2467,6 +2435,14 @@ extension Strings {
       value: "Invalid address.",
       comment:
         "The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen."
+    )
+    public static let customNetworkNotSecureErrMsg = NSLocalizedString(
+      "wallet.customNetworkNotSecureErrMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Not secure.",
+      comment:
+        "The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen."
     )
     public static let customNetworkIconUrlsTitle = NSLocalizedString(
       "wallet.customNetworkIconUrlsTitle",
@@ -4411,80 +4387,6 @@ extension Strings {
       value: "Web3 Domains",
       comment: "The header for the options to resolve Solana Name service domain names."
     )
-    public static let ipfsSettingsHeader = NSLocalizedString(
-      "wallet.ipfsSettingsHeader",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "IPFS",
-      comment: "The header of the section under Web3 settings for IPFS NFT gateway setting."
-    )
-    public static let ipfsResourcesOptionsTitle = NSLocalizedString(
-      "wallet.ipfsResourcesOptionsTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Resolve IPFS Resources",
-      comment:
-        "The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources."
-    )
-    public static let ipfsPublicGatewayAddressTitle = NSLocalizedString(
-      "wallet.ipfsPublicGatewayAddressTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "IPFS Public Gateway Address",
-      comment: "The navigation title of the screen for users to customize IPFS public gateway."
-    )
-    public static let ipfsPublicGatewayAddressNFTTitle = NSLocalizedString(
-      "wallet.ipfsPublicGatewayAddressNFTTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "IPFS Public Gateway Address for NFT",
-      comment: "The navigation title of the screen for users to customize NFT gateway."
-    )
-    public static let customizeIPFSPublicGatewayNavTitle = NSLocalizedString(
-      "wallet.customizeIPFSPublicGatewayNavTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Customize IPFS Gateway",
-      comment:
-        "The navigation title of the screen for users to customize ipfs public gateway address."
-    )
-    public static let customizeIPFSNFTPublicGatewayNavTitle = NSLocalizedString(
-      "wallet.customizeIPFSNFTPublicGatewayNavTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Customize IPFS Gateway for NFT",
-      comment:
-        "The navigation title of the screen for users to customize ipfs public gateway address for NFT."
-    )
-    public static let nftGatewayLongDescription = NSLocalizedString(
-      "wallet.nftGatewayLongDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value:
-        "Valid IPFS gateway should be provided. Provided gateway will be checked for the ability to load IPFS resources.",
-      comment: "Description of the NFT Gateway setting"
-    )
-    public static let setGatewayButtonTitle = NSLocalizedString(
-      "wallet.setGatewayButtonTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Set",
-      comment: "Title of the set IPFS gateway button"
-    )
-    public static let wrongGatewayAlertTitle = NSLocalizedString(
-      "wallet.wrongGatewayAlertTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Failed to set gateway",
-      comment: "Title of the wrong IPFS gateway alert"
-    )
-    public static let wrongGatewayAlertDescription = NSLocalizedString(
-      "wallet.wrongGatewayAlertDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Invalid url was provided. Gateway should be able to resolve IPFS resources.",
-      comment: "Description of the wrong IPFS gateway alert"
-    )
     public static let signedTransactionTitle = NSLocalizedString(
       "wallet.signedTransactionTitle",
       tableName: "BraveWallet",
@@ -4608,54 +4510,6 @@ extension Strings {
       bundle: .module,
       value: "Use ENS Domain",
       comment: "Button title when requesting to do an ENS off chain lookup."
-    )
-    public static let web3IPFSInterstitialProceedButton = NSLocalizedString(
-      "wallet.web3IPFSInterstitialProceedButton",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Use a Public Gateway",
-      comment:
-        "The title of the button that user will click to let Ping to resolve IPFS shceme url."
-    )
-    public static let web3IPFSInterstitialIPFSTitle = NSLocalizedString(
-      "wallet.web3IPFSInterstitialIPFSTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Set your IPFS preference",
-      comment:
-        "The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling."
-    )
-    public static let web3IPFSInterstitialIPFSPrivacy = NSLocalizedString(
-      "wallet.web3IPFSInterstitialIPFSPrivacy",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value:
-        "IPFS (InterPlanetary File System) is the public network for peer-to-peer data storage and delivery. This protocol has different privacy considerations from HTTP(S). <a href=%@>%@</a>",
-      comment:
-        "A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'."
-    )
-    public static let web3IPFSInterstitialIPFSPublicGateway = NSLocalizedString(
-      "wallet.web3IPFSInterstitialIPFSPublicGateway",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value:
-        "Protects your IP address and content you’re requesting from potential third-party observers, but not from the public gateway operator.  The gateway operator is responsible for ensuring that the content served to you over a gateway is the content you requested. Also, your device does not contribute to the public IPFS network.",
-      comment: "A brief explaination of resolving IPFS scheme url using a public gateway."
-    )
-    public static let ipfsErrorTitle = NSLocalizedString(
-      "wallet.ipfsErrorTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "This site can't be reached",
-      comment: "A title will displayed in the IPFS error page when IPFS is disabled."
-    )
-    public static let ipfsResolveMethodDescription = NSLocalizedString(
-      "wallet.ipfsResolveMethodDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "[Learn more](%@) about IPFS gateway privacy considerations.",
-      comment:
-        "The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy."
     )
     public static let web3DomainInterstitialPageTAndU = NSLocalizedString(
       "wallet.web3DomainInterstitialPageTAndU",
@@ -5550,6 +5404,165 @@ extension Strings {
       value: "Set as Default",
       comment:
         "One of the context menu option for user to tap to set a default network in wallet settings."
+    )
+    public static let btcOrdinalsUnsupportedWarning = NSLocalizedString(
+      "wallet.btcOrdinalsUnsupportedWarning",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Ping Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.",
+      comment: "A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected."
+    )
+    public static let inputLabel = NSLocalizedString(
+      "wallet.inputLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Input",
+      comment:
+        "The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index."
+    )
+    public static let outputLabel = NSLocalizedString(
+      "wallet.outputLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Output",
+      comment:
+        "The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index."
+    )
+    public static let valueLabel = NSLocalizedString(
+      "wallet.valueLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Value",
+      comment:
+        "The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value."
+    )
+    public static let addressLabel = NSLocalizedString(
+      "wallet.addressLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Address",
+      comment:
+        "The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address."
+    )
+    public static let bitcoinImportExtendedKeyWarning = NSLocalizedString(
+      "wallet.bitcoinImportExtendedKeyWarning",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Only %@ extended keys are supported.",
+      comment:
+        "The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\")"
+    )
+    public static let editExistingNetworkAlertMsg = NSLocalizedString(
+      "wallet.editExistingNetworkAlertMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Do you want to update the existing network?",
+      comment:
+        "A pop up message that will prompt to user before user confirms to edit the existing network."
+    )
+    public static let txFunctionTypeERC20Approve = NSLocalizedString(
+      "wallet.txFunctionTypeERC20Approve",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Approve",
+      comment:
+        "Blockchain function name for ERC-20 token approvals."
+    )
+    public static let txFunctionTypeTokenTransfer = NSLocalizedString(
+      "wallet.txFunctionTypeTokenTransfer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Token Transfer",
+      comment:
+        "Blockchain function name for non-native token transfers."
+    )
+    public static let txFunctionTypeNFTTransfer = NSLocalizedString(
+      "wallet.txFunctionTypeNFTTransfer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "NFT Transfer",
+      comment:
+        "Blockchain function name for NFT transfers"
+    )
+    public static let txFunctionTypeSafeTransfer = NSLocalizedString(
+      "wallet.txFunctionTypeSafeTransfer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Safe Transfer",
+      comment:
+        "Blockchain function name for SafeTransferFrom in ERC-721 and ERC-1155 tokens."
+    )
+    public static let txFunctionTypeForwardFil = NSLocalizedString(
+      "wallet.txFunctionTypeForwardFil",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Forward FIL",
+      comment:
+        "Blockchain function name for moving FIL from an  Ethereum-based f4 address to a Filecoin address of a different type. Don't need to translate the symbol `FIL`."
+    )
+    public static let txFunctionTypeSignAndSendDapp = NSLocalizedString(
+      "wallet.txFunctionTypeSignAndSendDapp",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sign and Send DApp transaction",
+      comment:
+        "Blockchain function name for signing and sending a Solana DApp transaction."
+    )
+    public static let txFunctionTypeSend = NSLocalizedString(
+      "wallet.txFunctionTypeSend",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Send %@",
+      comment:
+        "Blockchain function name for send native token. `%@` will be replaced with native token symbol."
+    )
+    public static let txFunctionTypeSwap = NSLocalizedString(
+      "wallet.txFunctionTypeSwap",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Swap",
+      comment:
+        "Blockchain function name for swap."
+    )
+    public static let txFunctionTypeSplWithAssociatedTokenAccountCreation = NSLocalizedString(
+      "wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "SPL Token Transfer With Associated Token Account Creation",
+      comment:
+        "Blockchain function name for Solana SPL token transfer with associated token account creation."
+    )
+    public static let txFunctionTypeCompressedNFTTransfer = NSLocalizedString(
+      "wallet.txFunctionTypeCompressedNFTTransfer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Compressed NFT Transfer",
+      comment:
+        "Blockchain function name for Solana compressed NFT transfers."
+    )
+    public static let txFunctionTypeOther = NSLocalizedString(
+      "wallet.txFunctionTypeOther",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Other",
+      comment:
+        "Blockchain function name for an unknown transaction type or an FIL transaction."
+    )
+    public static let txFunctionTypeSignDappTransaction = NSLocalizedString(
+      "wallet.txFunctionTypeSignDappTransaction",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sign DApp Transaction",
+      comment:
+        "Blockchain function name for Solana Sign DApp transactions."
+    )
+    public static let duplicationTokenError = NSLocalizedString(
+      "wallet.duplicationTokenError",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "This token has already been added to your portfolio.",
+      comment:
+        "An error message that will get displayed when user is trying to add an existed custom token."
     )
   }
 }

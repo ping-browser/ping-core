@@ -55,10 +55,11 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
   brave_sync_prefs_change_registrar_.RemoveAll();
 }
 
-void BraveSyncServiceImpl::Initialize() {
+void BraveSyncServiceImpl::Initialize(
+    DataTypeController::TypeVector controllers) {
   base::AutoReset<bool> is_initializing_resetter(&is_initializing_, true);
 
-  SyncServiceImpl::Initialize();
+  SyncServiceImpl::Initialize(std::move(controllers));
 
   // P3A ping for those who have sync disabled
   if (!user_settings_->IsInitialSyncFeatureSetupComplete()) {
@@ -71,7 +72,7 @@ bool BraveSyncServiceImpl::IsSetupInProgress() const {
          !user_settings_->IsInitialSyncFeatureSetupComplete();
 }
 
-void BraveSyncServiceImpl::StopAndClear() {
+void BraveSyncServiceImpl::StopAndClear(ResetEngineReason reset_engine_reason) {
   // StopAndClear is invoked during |SyncServiceImpl::Initialize| even if sync
   // is not enabled. This adds lots of useless lines into
   // `brave_sync_v2.diag.leave_chain_details`
@@ -80,7 +81,7 @@ void BraveSyncServiceImpl::StopAndClear() {
   }
   // Clear prefs before StopAndClear() to make NotifyObservers() be invoked
   brave_sync_prefs_.Clear();
-  SyncServiceImpl::StopAndClear();
+  SyncServiceImpl::StopAndClear(reset_engine_reason);
 }
 
 std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
@@ -97,6 +98,7 @@ std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
   if (sync_code.empty()) {
     std::vector<uint8_t> seed = brave_sync::crypto::GetSeed();
     sync_code = brave_sync::crypto::PassphraseFromBytes32(seed);
+    sync_code_monitor_.RecordCodeGenerated();
   }
 
   CHECK(!sync_code.empty()) << "Attempt to return empty sync code";
@@ -120,6 +122,8 @@ bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
   initiated_self_device_info_deleted_ = false;
   initiated_join_chain_ = true;
 
+  sync_code_monitor_.RecordCodeSet();
+
   return true;
 }
 
@@ -135,14 +139,14 @@ void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
   // ---
   // BraveSyncServiceImplDelegate::OnDeviceInfoChange()
   // ...
-  // ClientTagBasedModelTypeProcessor::ClearAllMetadataAndResetStateImpl()
+  // ClientTagBasedDataTypeProcessor::ClearAllMetadataAndResetStateImpl()
   // ...
-  // ClientTagBasedModelTypeProcessor::OnSyncStarting()
+  // ClientTagBasedDataTypeProcessor::OnSyncStarting()
   // ---
   // Note that `ClearAllTrackedMetadataAndResetState` will only be called during
   // init when sync seed decryption key mismatched.
   if (GetTransportState() != TransportState::CONFIGURING) {
-    StopAndClear();
+    StopAndClear(ResetEngineReason::kResetLocalData);
   }
 
   std::move(cb).Run();
@@ -243,7 +247,7 @@ void BraveSyncServiceImpl::OnAccountDeleted(
     // The code below cleans all on an initiator device. Other devices in the
     // chain will be cleaned at BraveSyncServiceImpl::ResetEngine
     DCHECK(initiated_delete_account_);
-    BraveSyncServiceImpl::StopAndClear();
+    BraveSyncServiceImpl::StopAndClear(ResetEngineReason::kDisabledAccount);
   } else if (current_attempt < kMaxPermanentlyDeleteSyncAccountAttempts) {
     // Server responded failure, but we need to try more
     base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
@@ -288,9 +292,10 @@ void BraveSyncServiceImpl::PermanentlyDeleteAccount(
 }
 
 std::unique_ptr<SyncEngine> BraveSyncServiceImpl::ResetEngine(
-    ShutdownReason shutdown_reason,
     ResetEngineReason reset_reason) {
-  auto result = SyncServiceImpl::ResetEngine(shutdown_reason, reset_reason);
+  auto result = SyncServiceImpl::ResetEngine(reset_reason);
+  auto shutdown_reason =
+      SyncServiceImpl::ShutdownReasonForResetEngineReason(reset_reason);
 
   if (initiated_self_device_info_deleted_) {
     return result;
@@ -303,14 +308,14 @@ std::unique_ptr<SyncEngine> BraveSyncServiceImpl::ResetEngine(
     brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
     brave_sync_prefs_.SetSyncAccountDeletedNoticePending(true);
     // Forcing stop and clear, because sync account was deleted
-    BraveSyncServiceImpl::StopAndClear();
+    BraveSyncServiceImpl::StopAndClear(ResetEngineReason::kResetLocalData);
   } else if (shutdown_reason == ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA &&
              reset_reason == ResetEngineReason::kDisabledAccount &&
              sync_disabled_by_admin_ && initiated_join_chain_) {
     brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
     // Forcing stop and clear, because we are trying to join the sync chain, but
     // sync account was deleted
-    BraveSyncServiceImpl::StopAndClear();
+    BraveSyncServiceImpl::StopAndClear(ResetEngineReason::kResetLocalData);
     // When it will be merged into master, iOS code will be a bit behind,
     // so don't expect join_chain_result_callback_ is set, but get CHECK back
     // once iOS changes will handle this
@@ -362,20 +367,17 @@ void BraveSyncServiceImpl::UpdateP3AObjectsNumber() {
 
   for (UserSelectableType user_selected_type :
        GetUserSettings()->GetSelectedTypes()) {
-    ModelType model_type =
-        UserSelectableTypeToCanonicalModelType(user_selected_type);
+    DataType data_type =
+        UserSelectableTypeToCanonicalDataType(user_selected_type);
 
-    ModelTypeController::TypeMap::const_iterator it =
-        model_type_controllers_.find(model_type);
-    DCHECK(it != model_type_controllers_.end())
-        << "Missing controller for type " << ModelTypeToDebugString(model_type);
-    if (it != model_type_controllers_.end()) {
-      ModelTypeController* controller = it->second.get();
+    auto dtc_it = data_type_manager_->GetControllerMap().find(data_type);
+    CHECK(dtc_it != data_type_manager_->GetControllerMap().end())
+        << "Missing controller for type " << DataTypeToDebugString(data_type);
 
-      controller->GetTypeEntitiesCount(
-          base::BindOnce(&BraveSyncServiceImpl::OnGetTypeEntitiesCount,
-                         weak_ptr_factory_.GetWeakPtr()));
-    }
+    DataTypeController* controller = dtc_it->second.get();
+    controller->GetTypeEntitiesCount(
+        base::BindOnce(&BraveSyncServiceImpl::OnGetTypeEntitiesCount,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
@@ -409,5 +411,22 @@ void BraveSyncServiceImpl::OnSelectedTypesPrefChange() {
       GetUserSettings()->IsSyncEverythingEnabled(),
       GetUserSettings()->GetSelectedTypes());
 }
+
+void BraveSyncServiceImpl::StopAndClearWithShutdownReason() {
+  StopAndClear(ResetEngineReason::kShutdown);
+}
+
+void BraveSyncServiceImpl::StopAndClearWithResetLocalDataReason() {
+  StopAndClear(ResetEngineReason::kResetLocalData);
+}
+
+void BraveSyncServiceImpl::OnAccountsCookieDeletedByUserAction() {}
+
+void BraveSyncServiceImpl::OnAccountsInCookieUpdated(
+    const signin::AccountsInCookieJarInfo& accounts_in_cookie_jar_info,
+    const GoogleServiceAuthError& error) {}
+
+void BraveSyncServiceImpl::OnPrimaryAccountChanged(
+    const signin::PrimaryAccountChangeEvent& event_details) {}
 
 }  // namespace syncer

@@ -26,11 +26,7 @@ class TabsBarViewController: UIViewController {
 
   private lazy var plusButton: UIButton = {
     let button = UIButton()
-    button.setImage(
-      UIImage(named: "add_tab", in: .module, compatibleWith: nil)!.template,
-      for: .normal
-    )
-    button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
+    button.setImage(UIImage(braveSystemNamed: "leo.plus.add"), for: .normal)
     button.tintColor = .braveLabel
     button.contentMode = .scaleAspectFit
     button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
@@ -411,6 +407,17 @@ extension TabsBarViewController: UICollectionViewDelegate {
       delegate?.tabsBarDidSelectTab(self, tab)
     }
   }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didEndDisplaying cell: UICollectionViewCell,
+    forItemAt indexPath: IndexPath
+  ) {
+    // Check if it is last item in the row and refresh indicators
+    if indexPath.row == tabList.count() - 1 {
+      updateOverflowIndicatorsLayout()
+    }
+  }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -436,6 +443,7 @@ extension TabsBarViewController: UICollectionViewDelegateFlowLayout {
 }
 
 // MARK: - UICollectionViewDataSource
+
 extension TabsBarViewController: UICollectionViewDataSource {
 
   func collectionView(
@@ -493,34 +501,14 @@ extension TabsBarViewController: UICollectionViewDataSource {
         scrollPosition: .centeredHorizontally
       )
       self.updateOverflowIndicatorsLayout()
-
     }
 
     return cell
   }
-
-  func collectionView(
-    _ collectionView: UICollectionView,
-    moveItemAt sourceIndexPath: IndexPath,
-    to destinationIndexPath: IndexPath
-  ) {
-    guard let manager = tabManager, let fromTab = tabList[sourceIndexPath.row],
-      let toTab = tabList[destinationIndexPath.row]
-    else { return }
-
-    // Find original from/to index... we need to target the full list not partial.
-    let tabs = manager.tabsForCurrentMode
-    guard let to = tabs.firstIndex(where: { $0 === toTab }) else { return }
-
-    manager.moveTab(fromTab, toIndex: to)
-    updateData()
-
-    guard let selectedTab = tabList[destinationIndexPath.row] else { return }
-    manager.selectTab(selectedTab)
-  }
 }
 
 // MARK: - UICollectionViewDragDelegate
+
 extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
   func collectionView(
     _ collectionView: UICollectionView,
@@ -594,9 +582,46 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
   ) -> UICollectionViewDropProposal {
     return .init(operation: .move, intent: .insertAtDestinationIndexPath)
   }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    moveItemAt sourceIndexPath: IndexPath,
+    to destinationIndexPath: IndexPath
+  ) {
+    guard let manager = tabManager, let fromTab = tabList[sourceIndexPath.row],
+      let toTab = tabList[destinationIndexPath.row]
+    else { return }
+
+    // Find original from/to index... we need to target the full list not partial.
+    let tabs = manager.tabsForCurrentMode
+    guard let to = tabs.firstIndex(where: { $0 === toTab }) else { return }
+
+    manager.moveTab(fromTab, toIndex: to)
+    updateData()
+
+    // Reconfiguring the drag and drop cells before selecting
+    reconfigureCellSelection(
+      sourceIndexPath: sourceIndexPath,
+      destinationIndexPath: destinationIndexPath
+    )
+    updateOverflowIndicatorsLayout()
+
+    guard let selectedTab = tabList[destinationIndexPath.row] else { return }
+    manager.selectTab(selectedTab)
+  }
+
+  func reconfigureCellSelection(sourceIndexPath: IndexPath, destinationIndexPath: IndexPath? = nil)
+  {
+    let sourceCell = collectionView.cellForItem(at: sourceIndexPath) as? TabBarCell
+    let destinationCell = collectionView.cellForItem(at: sourceIndexPath) as? TabBarCell
+
+    sourceCell?.resetConfiguration()
+    destinationCell?.resetConfiguration()
+  }
 }
 
 // MARK: - TabManagerDelegate
+
 extension TabsBarViewController: TabManagerDelegate {
   func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?) {
     assert(Thread.current.isMainThread)

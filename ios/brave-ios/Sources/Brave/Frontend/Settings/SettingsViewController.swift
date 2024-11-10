@@ -6,6 +6,7 @@ import AIChat
 import BraveCore
 import BraveNews
 import BraveShared
+import BraveStore
 import BraveUI
 import BraveVPN
 import BraveWallet
@@ -195,7 +196,7 @@ class SettingsViewController: TableViewController {
     ]
 
     let shouldShowVPNSection = { () -> Bool in
-      if !VPNProductInfo.isComplete || Preferences.VPN.vpnSettingHeaderWasDismissed.value {
+      if !BraveVPNProductInfo.isComplete || Preferences.VPN.vpnSettingHeaderWasDismissed.value {
         return false
       }
 
@@ -222,7 +223,7 @@ class SettingsViewController: TableViewController {
   // MARK: - Sections
 
   private lazy var enableBraveVPNSection: Static.Section = {
-    let header = EnableVPNSettingHeader()
+    let header = BraveVPNEnableSettingsHeader()
     header.enableVPNTapped = { [weak self] in
       self?.enableVPNTapped()
     }
@@ -276,10 +277,9 @@ class SettingsViewController: TableViewController {
                   profile: self.profile,
                   tabManager: self.tabManager,
                   feedDataSource: self.feedDataSource,
-                  historyAPI: self.historyAPI,
-                  p3aUtilities: self.p3aUtilities,
-                  deAmpPrefs: deAmpPrefs,
                   debounceService: DebounceServiceFactory.get(privateMode: false),
+                  braveCore: braveCore,
+                  rewards: rewards,
                   clearDataCallback: { [weak self] isLoading, isHistoryCleared in
                     guard let view = self?.navigationController?.view, view.window != nil else {
                       assertionFailure()
@@ -396,7 +396,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.searchEngines,
           selection: { [unowned self] in
-            let viewController = SearchSettingsTableViewController(
+            let viewController = SearchSettingsViewController(
               profile: self.profile,
               privateBrowsingManager: tabManager.privateBrowsingManager
             )
@@ -407,7 +407,7 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineValue1Cell.self
         ),
         Row(
-          text: Strings.sync,
+          text: Strings.Sync.syncTitle,
           selection: { [unowned self] in
             if syncAPI.isInSyncGroup {
               if !DeviceInfo.hasConnectivity() {
@@ -655,7 +655,7 @@ class SettingsViewController: TableViewController {
             detailText: Strings.NightMode.settingsDescription,
             option: Preferences.General.nightModeEnabled,
             onValueChange: { [unowned self] enabled in
-              NightModeScriptHandler.setNightMode(tabManager: tabManager, enabled: enabled)
+              DarkReaderScriptHandler.set(tabManager: tabManager, enabled: enabled)
             },
             image: UIImage(braveSystemNamed: "leo.theme.dark")
           )
@@ -671,7 +671,10 @@ class SettingsViewController: TableViewController {
       Row(
         text: Strings.NTP.settingsTitle,
         selection: { [unowned self] in
-          self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
+          self.navigationController?.pushViewController(
+            NTPTableViewController(rewards),
+            animated: true
+          )
         },
         image: UIImage(braveSystemNamed: "leo.window.tab-new"),
         accessory: .disclosureIndicator,
@@ -697,10 +700,16 @@ class SettingsViewController: TableViewController {
     }
 
     display.rows.append(contentsOf: [
-      .boolRow(
-        title: Strings.showBookmarkButtonInTopToolbar,
-        option: Preferences.General.showBookmarkToolbarShortcut,
-        image: UIImage(braveSystemNamed: "leo.product.bookmarks")
+      Row(
+        text: Strings.ShortcutButton.shortcutButtonTitle,
+        selection: { [weak self] in
+          let controller = UIHostingController(rootView: ShortcutButtonPickerView())
+          controller.navigationItem.title = Strings.ShortcutButton.shortcutButtonTitle
+          self?.navigationController?.pushViewController(controller, animated: true)
+        },
+        image: UIImage(braveSystemNamed: "leo.launch"),
+        accessory: .disclosureIndicator,
+        cellClass: MultilineValue1Cell.self
       ),
       // .boolRow(
       //   title: Strings.hideRewardsIcon,
@@ -738,25 +747,31 @@ class SettingsViewController: TableViewController {
       text: Strings.VPN.vpnName,
       detailText: text,
       selection: { [unowned self] in
-
         let vc = { () -> UIViewController? in
           switch BraveVPN.vpnState {
           case .notPurchased, .expired:
-            return BraveVPN.vpnState.enableVPNDestinationVC
+            guard let vpnPaywallVC = BraveVPN.vpnState.enableVPNDestinationVC else {
+              return nil
+            }
+            vpnPaywallVC.openAuthenticationVPNInNewTab = { [weak self] in
+              self?.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNRefreshCredentials)
+            }
+
+            return vpnPaywallVC
           case .purchased:
-            let vc = BraveVPNSettingsViewController(iapObserver: BraveVPN.iapObserver)
-            vc.openURL = { [unowned self] url in
+            let vpnSettingsVC = BraveVPNSettingsViewController(iapObserver: BraveVPN.iapObserver)
+            vpnSettingsVC.openURL = { [unowned self] url in
               self.settingsDelegate?.settingsOpenURLInNewTab(url)
               self.dismiss(animated: true)
             }
 
-            return vc
+            return vpnSettingsVC
           }
         }()
 
         guard let vcToShow = vc else { return }
 
-        if VPNProductInfo.isComplete {
+        if BraveVPNProductInfo.isComplete {
           self.navigationController?.pushViewController(vcToShow, animated: true)
         } else {
           let alert = UIAlertController(
@@ -789,7 +804,8 @@ class SettingsViewController: TableViewController {
         let model = AIChatViewModel(
           braveCore: self.braveCore,
           webView: self.tabManager.selectedTab?.webView,
-          script: BraveLeoScriptHandler.self
+          script: BraveLeoScriptHandler.self,
+          braveTalkScript: nil
         )
 
         let controller = UIHostingController(
@@ -935,18 +951,30 @@ class SettingsViewController: TableViewController {
               UIPasteboard.general.strings = [version, coreVersion, deviceModel]
             }
 
+            let copyTabDebugInfoAction = UIAlertAction(
+              title: Strings.copyTabsDebugToClipboard,
+              style: .default
+            ) { [weak tabManager] _ in
+              guard let tabManager else { return }
+              UIPasteboard.general.setSecureString(
+                AppDebugComposer.composeTabDebug(tabManager),
+                expirationDate: Date().addingTimeInterval(2.minutes)
+              )
+            }
+
             let copyAppInfoAction = UIAlertAction(
               title: Strings.copyAppSizeInfoToClipboard,
               style: .default
             ) { _ in
               UIPasteboard.general.setSecureString(
-                AppStorageDebugComposer.compose(),
+                AppDebugComposer.composeAppSize(),
                 expirationDate: Date().addingTimeInterval(2.minutes)
               )
             }
 
             actionSheet.addAction(copyDebugInfoAction)
             actionSheet.addAction(copyAppInfoAction)
+            actionSheet.addAction(copyTabDebugInfoAction)
             actionSheet.addAction(
               UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
             )
@@ -995,7 +1023,7 @@ class SettingsViewController: TableViewController {
     var section = Static.Section(
       header: "Developer Options",
       rows: [
-        Row(text: "Region: \(Locale.current.regionCode ?? "--")"),
+        Row(text: "Region: \(Locale.current.region?.identifier ?? "--")"),
         Row(
           text: "Sandbox Inspector",
           selection: { [unowned self] in
@@ -1005,10 +1033,12 @@ class SettingsViewController: TableViewController {
           accessory: .disclosureIndicator
         ),
         Row(
-          text: "Adblock Debug",
+          text: "AdBlock Debugger",
           selection: { [unowned self] in
-            let vc = AdblockDebugMenuTableViewController(style: .grouped)
-            self.navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(
+              UIHostingController(rootView: AdBlockDebugView()),
+              animated: true
+            )
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
@@ -1018,17 +1048,6 @@ class SettingsViewController: TableViewController {
           selection: { [unowned self] in
             self.navigationController?.pushViewController(
               DebugLogViewController(type: .secureState),
-              animated: true
-            )
-          },
-          accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self
-        ),
-        Row(
-          text: "View URP Logs",
-          selection: { [unowned self] in
-            self.navigationController?.pushViewController(
-              DebugLogViewController(type: .urp),
               animated: true
             )
           },
@@ -1070,7 +1089,7 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineValue1Cell.self
         ),
         Row(
-          text: "View Brave Wallet Debug Menu",
+          text: "View Ping Wallet Debug Menu",
           selection: { [unowned self] in
             self.displayBraveWalletDebugMenu()
           },
@@ -1109,7 +1128,34 @@ class SettingsViewController: TableViewController {
         Row(
           text: "Leo Logs",
           selection: { [unowned self] in
-            let controller = UIHostingController(rootView: AIChatLeoPurchaseLogs())
+            let controller = UIHostingController(rootView: AIChatLeoSkusLogsView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
+          text: "Playlist Debug",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: PlaylistDebugView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
+          text: "Injected Scripts",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: UserScriptsDebugView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
+          text: "StoreKit Receipt Viewer",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: StoreKitReceiptView())
             self.navigationController?.pushViewController(controller, animated: true)
           },
           accessory: .disclosureIndicator,
@@ -1305,6 +1351,9 @@ class SettingsViewController: TableViewController {
     switch state {
     case .notPurchased, .expired:
       guard let vc = state.enableVPNDestinationVC else { return }
+      vc.openAuthenticationVPNInNewTab = { [weak self] in
+        self?.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNRefreshCredentials)
+      }
       navigationController?.pushViewController(vc, animated: true)
     case .purchased:
       BraveVPN.reconnect()

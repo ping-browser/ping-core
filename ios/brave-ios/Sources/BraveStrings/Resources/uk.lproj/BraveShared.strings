@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Ping хоче отримати доступ до «Фотографій»";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Додати закладку";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Додати закладку";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Додавання списку користувацьких фільтрів";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Додавайте окремі списки, що створені довіреною спільнотою та які підтримуються нею.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Підписуйтеся лише на списки від тих компаній, яким довіряєте**. Ваш браузер час від часу перевірятиме наявність оновлень списків з указаної вами URL-адреси.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Додати до обраного";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Блокування програм відстеження";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Блокувати сповіщення «Перемкнути програму»";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Блокування спливаючих вікон";
 
@@ -173,7 +158,7 @@
 "BraveRewardsTitle" = "Нагороди Ping";
 
 /* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Пошук Ping не відстежує вас, ваші запити або натискання.";
+"braveSearchPromotion.bannerDescription" = "Пошук Ping не створює ваш профіль.";
 
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Можливо, пізніше";
@@ -214,13 +199,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Якщо вебсайт не працює, спробуйте вимкнути щити";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Щити Ping";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Вимкн.";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Увімкн.";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -278,7 +263,7 @@
 "callout.defaultBrowserTitle" = "Конфіденційність — це просто.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Завдяки цьому ми дізнаємося, які функції Ping використовуються найчастіше. Ви можете змінити ці параметри будь-коли в налаштуваннях Ping у розділі «Brave Shields й інші параметри конфіденційності».";
+"callout.p3aCalloutDescription" = "Завдяки цьому ми дізнаємося, які функції Ping використовуються найчастіше. Ви можете змінити ці параметри будь-коли в налаштуваннях Ping у розділі «Ping Shields й інші параметри конфіденційності».";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Дізнайтеся більше про аналітику продуктів зі збереженням конфіденційності (P3A).";
@@ -287,7 +272,7 @@
 "callout.p3aCalloutTitle" = "Допоможіть поліпшити Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Ділитися повністю конфіденційною й анонімною статистикою продукта.";
+"callout.p3aCalloutToggleTitle" = "Ділитися конфіденційною та анонімною статистикою продукта.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Отримуйте конфіденційність Ping на своєму комп’ютері або планшеті й синхронізуйте закладки й розширення на різних пристроях.";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Закрити";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Дійсно закрити всі інші відкриті вкладки?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Закрити інші вкладки";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Дійсно закрити всі відкриті вкладки?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Підтвердити";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Фільтрація вмісту";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Увімкніть користувацькі фільтри, які блокують трекери й дратівні елементи, специфічні для регіону чи мови";
 
 /* Cookie settings option title */
 "CookieControl" = "Керування файлами cookie";
@@ -514,6 +499,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Скопіювати посилання";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Скопіювати інформацію про вкладки до буфера обміну.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Копіювати в буфер";
 
@@ -525,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Нещодавно використані пошукові системи";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Список користувацьких фільтрів";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Списки користувацьких фільтрів";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL-адреса списку користувацьких фільтрів";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Додати";
@@ -611,7 +590,7 @@
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Відкрити налаштування";
 
 /* Primary text on default browser popup screen */
-"defaultBrowserCallout.introPrimaryText" = "Відкривайте всі посилання у Brave, щоб захистити свою конфіденційність";
+"defaultBrowserCallout.introPrimaryText" = "Відкривайте всі посилання у Ping, щоб захистити свою конфіденційність";
 
 /* Secondary text on default browser popup. */
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields блокує трекери та рекламу, а також дозволяє заощадити дані й час під час перегляду вебсайтів";
@@ -627,9 +606,6 @@
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Закрити запит на встановлення браузера за замовчуванням";
-
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Списки фільтрів за замовчуванням";
 
 /* Name for default Ping theme. */
 "defaultThemeName" = "Стандартна тема Ping";
@@ -663,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Пристрій %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Скасувати зміни";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Дійсно скасувати ці зміни? Всі правки буде втрачено.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Скасувати зміни?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Сертифікат безпеки";
@@ -798,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Функції";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Недійсна URL-адреса";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Для списків користувацьких фільтрів можна використовувати лише захищені (https) URL-адреси";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Додати";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Додаткові популярні списки спільноти. Зауважте, що через увімкнення надто багатьох фільтрів може зменшитися швидкість завантаження даних.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Не вдалося завантажити";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Очікує на завантаження";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Редагувати";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Уведіть URL-адресу списку фільтрів";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Останнє оновлення: %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Уведіть URL-адресу списку фільтрів";
 
 /* Share action title */
 "FindInPage" = "Знайти на сторінці";
@@ -1105,7 +1060,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Отримати токени";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "Ви заробили %@ під час використання Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1211,7 +1166,7 @@
 "OBRewardsAgreementTitle" = "Нагороди Ping";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Вибравши приватні рекламні оголошення Brave, кожним переглядом реклами ви підтримуєте видавців й авторів умісту.";
+"OBRewardsDetail" = "Вибравши приватні рекламні оголошення Ping, кожним переглядом реклами ви підтримуєте видавців й авторів умісту.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
@@ -1229,7 +1184,7 @@
 "OBSearchEngineDetail" = "Виберіть пошукову систему за замовчуванням";
 
 /* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Вітаємо в браузері Brave!";
+"OBSearchEngineTitle" = "Вітаємо в браузері Ping!";
 
 /* Detail text for shields onboarding screen */
 "OBShieldsDetail" = "Блокування трекерів, які порушують приватність, щоб за вами не стежили в мережі";
@@ -1274,13 +1229,13 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Завдяки блокуванню трекерів і реклами вебсайти використовують менше даних і завантажуються набагато швидше.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Відчуйте різницю з Brave!\nСторінки без реклами, без трекерів, ще й завантажуються напрочуд швидко.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Відчуйте різницю з Ping!\nСторінки без реклами, без трекерів, ще й завантажуються напрочуд швидко.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Наберіть назву сайту або введіть URL-посилання";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Вітаємо у Brave!";
+"onboarding.welcomeScreenTitle" = "Вітаємо у Ping!";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Продовжити";
@@ -1358,7 +1313,7 @@
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Немає активних сеансів для відображення з інших ваших пристроїв.";
 
 /* The title of the view showing no synced sessions */
-"opentabs.noSyncSessionPlaceHolderViewTitle" = "Тут показані вкладки Brave, відкриті на інших пристроях";
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Тут показані вкладки Ping, відкриті на інших пристроях";
 
 /* The title for the action to hide open session with all tabs */
 "opentabs.openSessionHideAllActionTitle" = "Приховати";
@@ -1453,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Продовжити";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
+/* A subtitle shown on the setting that toggles analytics on Ping. */
 "p3a.settingSubtitle" = "Ці приватні відповіді допомагають Ping оцінити загальне використання певних функцій і покращити їх для вас.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Дозволити аналітику продуктів зі збереженням конфіденційності (P3A)";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1422,15 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Ваше з’єднання із цим сайтом незахищене.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "З’єднання із сайтом не перевірено.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "З’єднання з цим сайтом не може бути повністю перевірено. Ви можете продовжити або спробувати перезавантажити сторінку для встановлення безпечного з’єднання.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Вхід на вебсайт";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Переглянути сертифікат";
@@ -1853,7 +1817,7 @@
 "playlistFolders.untitledFolderTitle" = "Список відтворення без назви";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Кнопка «Додати до списку відтворення Brave»";
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Кнопка «Додати до списку відтворення Ping»";
 
 /* Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonTitle" = "Зберегти";
@@ -1891,7 +1855,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Синхронізувати";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрити меню Shields";
 
 /* Settings privacy section title */
@@ -1975,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Увімкнути сповіщення";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "Зведення від Ping щодо вашого захисту в Інтернеті цього тижня.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Щотижневий звіт про конфіденційність";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Дані центру конфіденційності зберігаються локально й нікуди не надсилаються.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Центр конфіденційності";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2066,7 +2030,7 @@
 "PrivateBrowsingOnlyWarning" = "У режимі «Тільки приватний перегляд» буде закрито всі відкриті вкладки та виконано вихід з усіх сайтів.";
 
 /* Private tab details */
-"PrivateTabBody" = "Приватні вкладки не зберігаються в Brave, але це не робить ваші дії в Інтернеті анонімними. Сайти, які ви переглядаєте з приватних вкладок, не відображаються в історії, а файли cookie видаляються після закриття вкладки. У Ping не залишиться жодних даних про ваш сеанс, окрім завантажень.\nПроте оператор мобільного зв’язку (або власник мережі Wi-Fi чи VPN, до якої ви підключені) може бачити, які сайти ви відвідуєте. Сайти отримують інформацію про вашу публічну IP-адресу, навіть коли ви переглядаєте їх із приватних вкладок.";
+"PrivateTabBody" = "Приватні вкладки не зберігаються в Ping, але це не робить ваші дії в Інтернеті анонімними. Сайти, які ви переглядаєте з приватних вкладок, не відображаються в історії, а файли cookie видаляються після закриття вкладки. У Ping не залишиться жодних даних про ваш сеанс, окрім завантажень.\nПроте оператор мобільного зв’язку (або власник мережі Wi-Fi чи VPN, до якої ви підключені) може бачити, які сайти ви відвідуєте. Сайти отримують інформацію про вашу публічну IP-адресу, навіть коли ви переглядаєте їх із приватних вкладок.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Використання приватних вкладок впливає лише на роботу Ping на вашому пристрої та не впливає на дії поза вашим пристроєм.\n\nІнформація про вашу IP-адресу завжди передається на сайти, завдяки чому можна визначити ваше розташування. Зазвичай це місто, але інколи результати відстеження розташування можуть бути більш точними. Також сайти мають доступ до всієї інформації, яку ви вводите, наприклад до пошукових запитів. Якщо ви ввійдете до системи на веб-сайті, стане відомо, що ви є власником облікового запису. Коли ви закриєте приватну вкладку, буде виконано вихід з облікового запису, оскільки Ping видалить файл cookie, створений під час входу.\n\nКомпанія, що надає підключення до Інтернету (зазвичай провайдер мобільної мережі або власник мереж Wi-Fi чи VPN), може переглядати всю вашу мережеву діяльність і журнал відвідувань сайтів. Якщо на сайті використовується протокол HTTPS, провайдер може лише здогадуватися про ваші дії на сайті. Якщо ж на сайті використовується протокол HTTP, провайдер має інформацію про всі ваші пошукові запити, відвідувані сторінки та посилання.\n\nЯкщо ваш роботодавець керує вашим пристроєм, то він також може відстежувати ваші дії. Імовірно, використання приватних вкладок не допоможе приховати інформацію про те, які сайти ви відвідували. Крім того, інші люди, що мають доступ до вашого пристрою, можуть також установити програму, що відстежуватиме вашу діяльність. У цьому разі приватні вкладки також вам не допоможуть.";
@@ -2083,7 +2047,7 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Системи швидкого пошуку";
 
-/* Open the App Store to rate Brave. */
+/* Open the App Store to rate Ping. */
 "RateBrave" = "Оцінити Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
@@ -2237,10 +2201,10 @@
 "ReportBrokenContactMeSuggestions" = "Ел. адреса, Twitter тощо.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Повідомте розробників Brave, що за ввімкненої функції Shields вебсайт працює неправильно:";
+"ReportBrokenSiteBody1" = "Повідомте розробників Ping, що за ввімкненої функції Shields вебсайт працює неправильно:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Примітка. У повідомленні, надісланому на сервери Brave, міститиметься адреса вебсайта, номер версії Brave, параметри Shields, статус VPN і налаштування мови.";
+"ReportBrokenSiteBody2" = "Примітка. У повідомленні, надісланому на сервери Ping, міститиметься адреса вебсайта, номер версії Ping, параметри Shields, статус VPN і налаштування мови.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Надіслати";
@@ -2464,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Надіслати";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Надіслати внутрішні дані Rewards";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Підтримується";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Внутрішні дані Rewards";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2478,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Зберегти";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Зберегти зміни";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Збережені імена для входу";
@@ -2609,7 +2576,7 @@
 "sendButtonTitle" = "Надіслати";
 
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
-"SendCrashReportAlertMessage" = "Надіслати звіт про аварійне завершення роботи Brave, щоб вирішити проблему?";
+"SendCrashReportAlertMessage" = "Надіслати звіт про аварійне завершення роботи Ping, щоб вирішити проблему?";
 
 /* Title for prompt displayed to user after the app crashes */
 "SendCrashReportAlertTitle" = "Роботу Ping було завершено в аварійному режимі";
@@ -2668,11 +2635,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Налаштування якості";
 
-/* Description to explain the daily usage ping toggle */
+/* Description to explain the daily usage brave toggle */
 "settings.sendUsagePingDescription" = "Це приватне повідомлення дає можливість Ping оцінити активних користувачів.";
 
-/* Title to explain the daily usage ping toggle */
+/* Title to explain the daily usage brave toggle */
 "settings.sendUsagePingTitle" = "Автоматично надсилайте щоденний пінг використання в Ping";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Не вдалося завантажити сторінку.";
@@ -2753,7 +2723,7 @@
 "ShieldsDefaultsFooter" = "Це налаштування Shields за замовчуванням для нових вебсайтів. Якщо ви їх зміните, це не вплине на ваші налаштування для окремих вебсайтів.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Ви переглядаєте вебсайт з вимкненим засобом захисту конфіденційності від Brave. Вебсайт не працює належним чином, якщо щити увімкнено?";
+"ShieldsDownDisclaimer" = "Ви переглядаєте вебсайт з вимкненим засобом захисту конфіденційності від Ping. Вебсайт не працює належним чином, якщо щити увімкнено?";
 
 /* shields overview message */
 "ShieldsOverview" = "Екрани дозволяють керувати блокуванням реклами або трекерів на кожному сайті, який ви переглядаєте. Для перегляду реклами на сайті увімкніть цей параметр тут.";
@@ -2837,7 +2807,7 @@
 "shortcuts.activityTypeOpenPlaylistTitle" = "Відкрити список відтворення";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsDescription" = "Відкрити вкладки Brave, відкриті на інших пристроях";
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Відкрити вкладки Ping, відкриті на інших пристроях";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Відкрити вкладки з інших пристроїв";
@@ -2858,7 +2828,7 @@
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Відкрити вебсайт";
 
 /* Description for opening Ping Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Це відкриє налаштування Brave. Щоб змінити різні опції Siri, виберіть пункт меню «Siri й пошук» і виберіть відповідні параметри.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Це відкриє налаштування Ping. Щоб змінити різні опції Siri, виберіть пункт меню «Siri й пошук» і виберіть відповідні параметри.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Відкрити налаштування";
@@ -3013,6 +2983,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Видалити обліковий запис для синхронізації";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Видалення облікового запису призведе до видалення зашифрованих даних із серверів Ping і вимкнення синхронізації на всіх ваших підключених пристроях. ";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Однак дані, що зберігаються на цих пристроях, видалено не буде.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Дані буде видалено остаточно. Їх неможливо буде відновити. Якщо ви вирішите знову користуватися синхронізацією, вам потрібно буде створити новий обліковий запис і ще раз додати свої пристрої.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Під час визначення пристроїв у ланцюжку синхронізації сталася помилка.";
 
@@ -3070,11 +3049,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Виберіть тип пристрою, що ви бажаєте синхронізувати.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Термін коду сплив. Згенеруйте новий, натиснувши кнопку нижче.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Цей тимчасовий код діє наступні %@";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Комп’ютер";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Видалити обліковий запис для синхронізації";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Схоже, що цей код було створено на пристрої зі старою версією Ping. Оновіть Ping до найновішої версії на іншому пристрої, а потім створіть новий код синхронізації.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Пристрої та налаштування";
@@ -3152,7 +3140,7 @@
 "SyncToDevice" = "Синхронізація з пристроєм";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "На пристрої, який уже синхронізовано, відкрийте меню «Налаштування Brave» і перейдіть до розділу «Налаштування» -> «Синхронізація». Виберіть пункт «Додати пристрій» і відскануйте код, зображений на екрані.";
+"SyncToDeviceDescription" = "На пристрої, який уже синхронізовано, відкрийте меню «Налаштування Ping» і перейдіть до розділу «Налаштування» -> «Синхронізація». Виберіть пункт «Додати пристрій» і відскануйте код, зображений на екрані.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Не вдається синхронізувати цей пристрій";
@@ -3337,7 +3325,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "Новини";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Слідкуйте за темами, які вас цікавлять";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3379,7 +3367,7 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ой…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Керуйте джерелами у вашій стрічці";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,7 +3389,7 @@
 "today.insecureSourcesHeader" = "Небезпечні джерела — додавайте лише на власний розсуд";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Підпишіться на улюблені ресурси, щоб переглядати їх в одній стрічці. Просто відкрийте вкладку в Brave, прогорніть її донизу… готово!\nУ Ping News відображається приватна й анонімна реклама.";
+"today.introCardBody" = "Підпишіться на улюблені ресурси, щоб переглядати їх в одній стрічці. Просто відкрийте вкладку в Ping, прогорніть її донизу… готово!\nУ Ping News відображається приватна й анонімна реклама.";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "Увімкніть Ping News, щоб не пропустити жодної новини";
@@ -3412,7 +3400,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Докладніше про ваші дані";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "Більше пропозицій Ping";
 
 /* No comment provided by engineer. */
@@ -3436,6 +3424,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Реклама";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Оцінити Ping у App Store";
+
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Приховати";
 
@@ -3446,7 +3437,7 @@
 "today.rateBraveCardSubtitle" = "Поділіться з нами своїми думками!";
 
 /* Title shown on the Rate Ping Card */
-"today.rateBraveCardTitle" = "Вам подобається Brave?";
+"today.rateBraveCardTitle" = "Вам подобається Ping?";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Оновити";
@@ -3538,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Ping не зберігає та не передає іншим сторонам дані ваших голосових пошуків.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "активувати";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Хочете залишитися під захистом? Просто подовжте підписку до терміну її завершення. У такому разі ви отримаєте знижку 20 %  на наступні 3 місяці.";
 
@@ -3559,140 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Термін дії підписки Ping VPN скоро мине.";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "Придбати";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Файрвол та VPN-розширення браузера Ping";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "З 1 передплатою можна захистити 5 пристроїв";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "Виберіть своє географічне положення / країну перебування";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "Ping ніколи не записує ваші дії";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "Захищає кожну програму та пристрій загалом";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "Більш надійний захист як для домашніх, так і для загальнодоступних мереж Wi-Fi";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "Блискавична швидкість до 100 Мбіт/с";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Версія програми";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Оператор стільникового зв’язку";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Ping не відстежує вас і не знає, як ви користуєтеся додатком, тож ми не знаємо ваших налаштувань VPN. Розкажіть, із якою проблемою ви зіткнулися, і ми постараємося якнайшвидше зробити все можливе, щоб її вирішити.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Неможливо надіслати лист на електронну пошту. Будь ласка, перевірте налаштування електронної пошти.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Вкажіть, якою інформацією ви хотіли би з нами поділитись.\n\nЧим більше інформації ви надасте нам спочатку, тим легше нашій службі підтримки буде допомагати вам у вирішенні різноманітних проблем.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Підтримка надається за допомогою команди Guardian.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "Ім’я хоста VPN";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Проблема";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Проблема з надійністю з’єднання";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "З’єднання з Інтернетом відсутнє";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Інше";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Не вдалося встановити з’єднання з VPN (інша помилка)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Повільне з’єднання";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Вебсайт не працює";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Журнали помилок";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Тип мережі";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Платформа";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Надіслати на електронну пошту";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Тип підписки";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "Часовий пояс iOS";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Проблема, пов’язана з файрволом та VPN-розширенням браузера Ping";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "Увімкнути";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Не вдалося встановити з’єднання з App Store. Повторіть спробу через декілька хвилин.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Помилка з’єднання з App Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Усі плани передбачають %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "безкоштовний 7-денний пробний період";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "Спробувати безкоштовно протягом 7 днів";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Усі підписки поновлюються автоматично. Але ви можете відмовитися від підписки перед тим, як її буде поновлено.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Цей профіль дає можливість VPN-розширенню автоматично встановлювати з’єднання й безперервно захищати трафік застосунків на вашому пристрої. VPN-з’єднання буде зашифровано, його оброблятиме інтелектуальний брандмауер браузера Ping й блокуватиме шкідливі та небезпечні з’єднання.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Встановити профіль VPN";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Зараз до браузера Ping буде встановлено профіль VPN.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "Тепер VPN увімкнено";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Встановити VPN";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "Спробувати БЕЗКОШТОВНО";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Оновлюється щомісяця";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Щомісячна підписка";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Термін дії завершився";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Блокує небежані з’єднання з Інтернетом";
@@ -3715,59 +3577,11 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "За підтримки";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Виберіть бажаний протокол транспортування. Після перемикання наявні облікові дані VPN буде вилучено. Також буде здійснено повторне підключення за наявності активного VPN-з’єднання.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Не вдалося змінити протокол тунелювання. Спробуйте ще раз пізніше.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Помилка сервера";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Протокол транспортування";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "Протокол тунелювання VPN змінено.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "На основі часового поясу вашої системи буде автоматично обрано сервер у найближчому до вас регіоні. Це забезпечить високу швидкість підключення до Інтернету.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Автоматично";
 
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Не вдалося змінити сервер. Спробуйте ще раз пізніше.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Помилка сервера";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Регіон сервера";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Регіон VPN змінено.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Не вдалося скинути конфігурацію VPN. Спробуйте ще раз. Якщо проблема не зникне, зверніться до служби підтримки.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Повторити спробу";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Помилка скидання";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Параметри VPN скинуто.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Параметри скинуто";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Відновити";
-
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Увійдіть в обліковий запис Brave, щоб оновити сеанс VPN.";
+"vpn.sessionExpiredDescription" = "Увійдіть в обліковий запис Ping, щоб оновити сеанс VPN.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Відхилити";
@@ -3777,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Термін дії сеансу сплив";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Перейдіть на режим VPN, щоб захистити ваше з’єднання й блокувати небезпечні засоби відстеження вашої активності.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Звернутися до служби технічної підтримки";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Не вдалося отримати список серверів. Спробуйте ще раз пізніше.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "Довідкова інформація щодо VPN";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Зв’язати покупку з обліковим записом Ping";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Зв’яжіть покупку в App Store з вашим обліковим записом Brave, щоб користуватися Ping VPN і на інших пристроях.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Керування підпискою";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Активувати код пропозиції";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Скинути налаштування";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Хост-сервер";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Розташування";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Сервер";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Термін дії збігає";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Підписка";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Стан";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Протокол транспортування";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Вимкнено";
@@ -3851,10 +3617,10 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Готові захистити кожен додаток на телефоні? Поверніться у Ping VPN і отримайте знижку 20 % на 3 місяці.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN блокує трекери в кожному додатку, навіть поза браузером Brave. Тепер за допомогою Центра конфіденційності Ping ви можете переглянути, хто намагається відстежити вас.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN блокує трекери в кожному додатку, навіть поза браузером Ping. Тепер за допомогою Центра конфіденційності Ping ви можете переглянути, хто намагається відстежити вас.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Ви знали, що Ping VPN захищає вас не лише в браузері Brave?";
+"vpn.subscribeVPNProtectionPopOverTitle" = "Ви знали, що Ping VPN захищає вас не лише в браузері Ping?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Змінити";
@@ -3874,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Оновити платіжну інформацію";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Оновіть спосіб оплати";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Ping захищатиме вас навіть у фоновому режимі.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Файрвол та VPN-розширення браузера Ping УВІМКНЕНО";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "Виникла проблема з ініціалізацією VPN. Спробуйте ще раз або спробуйте скинути налаштування на сторінці налаштувань VPN.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Помилка";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Для роботи файрволу та VPN-розширення браузера Ping необхідно встановити профіль VPN.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "В доступі відмовлено";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Не вдалося активувати код пропозиції. Спробуйте ще раз або перевірте код і повторіть спробу.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Не вдалося здійснити покупку. Спробуйте ще раз або перевірте свої платіжні реквізити, вказані в мережі Apple, та повторіть спробу.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Помилка";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Плата за підписку стягується з вашого рахунку в iTunes.\n\nБудь-яка невикористана частина безкоштовної пробної версії, якщо вона пропонується, втрачається під час покупки підписки.\n\nПідписка продовжується автоматично, якщо її не скасовано не менше ніж за 24 години до закінчення поточного періоду.\n\nВи можете керувати своїми підписками у налаштуваннях.\n\nВикористовуючи Brave, ви погоджуєтеся з Умовами користування та Політикою конфіденційності.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Активувати код";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Регіон сервера";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Поточне налаштування: %@";
@@ -3916,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "Регіон VPN";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Це дозволить скинути налаштування файрволу та VPN-розширення браузера Brave, а також виправити будь-які помилки. Цей процес може зайняти хвилину.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Скинути налаштування";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Скинути";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Щомісячна підписка";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Щорічна підписка";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Оновіть свій спосіб оплати";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Поновлюйте раз на рік та заощаджуйте %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Оптимальна вартість";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Річна";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Дата створення гаманця";
@@ -3970,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Немає збережених даних вебсайту";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Видалити все";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Видалити";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Видалити елементи (%ld)";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3709,9 @@
 /* History tableview section header */
 "Yesterday" = "Учора";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Увімкнути високоякісні відео Youtube";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Ця експериментальна функція відтворюватиме відео з максимальною доступною якістю, що призведе до збільшення використовуваних даних.";
 
@@ -4008,6 +3720,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Увімк.";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Якість відео Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Дозволити через мережі Wi-Fi";

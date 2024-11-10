@@ -22,7 +22,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     }
   }
   /// The current selected NFT metadata. Default with nil value.
-  @Published var selectedSendNFTMetadata: NFTMetadata?
+  @Published var selectedSendNFTMetadata: BraveWallet.NftMetadata?
   /// The current selected token balance. Default with nil value.
   @Published var selectedSendTokenBalance: BDouble?
   /// A boolean indicates if this store is making an unapproved tx
@@ -49,6 +49,10 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   /// The amount the user inputs to send
   @Published var sendAmount = "" {
     didSet {
+      if oldValue != sendAmount {
+        // only reset if changed (field focus re-assigns current value)
+        isSendingMaxValue = false
+      }
       sendAmountUpdatedTimer?.invalidate()
       sendAmountUpdatedTimer = Timer.scheduledTimer(
         withTimeInterval: 0.25,  // try not to validate for every character entered
@@ -69,6 +73,13 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   @Published private(set) var resolvedAddress: String?
   /// If the current `sendAddress` needs to be resolved offchain
   @Published private(set) var isOffchainResolveRequired: Bool = false
+  // The BTC balance types for the currently selected account. Key is `account.id`.
+  @Published private(set) var btcBalances: [String: [BTCBalanceType: Double]] = [:]
+  /// Price of BTC in the users selected currency.
+  @Published private(set) var btcPrice: Double?
+
+  /// Indicates if user tapped `100%` button for current `sendAmount`
+  private var isSendingMaxValue: Bool = false
 
   enum AddressError: LocalizedError, Equatable {
     case sameAsFromAddress
@@ -81,6 +92,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     case ensError(domain: String)
     case udError(domain: String)
     case notFilAddress
+    case notBtcAddress
 
     var errorDescription: String? {
       switch self {
@@ -113,6 +125,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         )
       case .notFilAddress:
         return Strings.Wallet.sendErrorInvalidRecipientAddress
+      case .notBtcAddress:
+        return Strings.Wallet.sendErrorBtcAddressNotValid
       }
     }
 
@@ -144,6 +158,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     rpcService: rpcService,
     walletService: walletService,
     assetRatioService: assetRatioService,
+    bitcoinWalletService: bitcoinWalletService,
     ipfsApi: ipfsApi,
     userAssetManager: assetManager,
     query: prefilledToken?.symbol
@@ -157,11 +172,12 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   private let assetRatioService: BraveWalletAssetRatioService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var sendAddressUpdatedTimer: Timer?
   private var sendAmountUpdatedTimer: Timer?
   private var prefilledToken: BraveWallet.BlockchainToken?
-  private var metadataCache: [String: NFTMetadata] = [:]
+  private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -180,6 +196,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     prefilledToken: BraveWallet.BlockchainToken?,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
@@ -192,6 +209,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     self.assetRatioService = assetRatioService
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
+    self.bitcoinWalletService = bitcoinWalletService
     self.prefilledToken = prefilledToken
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
@@ -208,6 +226,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _selectedWalletAccountChanged: { [weak self] _ in
@@ -249,6 +268,9 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         precisionAfterDecimalPoint: decimalPoint,
         rounded: rounded
       ).trimmingTrailingZeros
+    // `isSendingMaxValue` reset to false in `sendAmount` didSet.
+    // Assign true after we've updated the value via 100% button.
+    isSendingMaxValue = amount == .all
   }
 
   func didSelect(account: BraveWallet.AccountInfo, token: BraveWallet.BlockchainToken) {
@@ -280,7 +302,9 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       self.selectedSendToken = prefilledToken
     } else {
       // need to try and select correct network.
-      let allNetworksForTokenCoin = await rpcService.allNetworks(coin: prefilledToken.coin)
+      let allNetworksForTokenCoin = await rpcService.allNetworks().filter({
+        $0.coin == prefilledToken.coin
+      })
       guard
         let networkForToken = allNetworksForTokenCoin.first(where: {
           $0.chainId == prefilledToken.chainId
@@ -325,7 +349,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       var network = await rpcService.network(coin: selectedAccount.coin, origin: nil)
       await validatePrefilledToken(on: &network)  // network may change
       // fetch user visible assets
-      let userVisibleAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+      let userVisibleAssets = await assetManager.getUserAssets(
         networks: [network],
         visible: true
       ).flatMap { $0.tokens }
@@ -350,51 +374,52 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         self.selectedSendTokenBalance = nil  // no selected account, or send token is nil
         return
       }
-      let balance = await self.rpcService.balance(
-        for: selectedSendToken,
-        in: selectedAccount.address,
-        network: network,
-        decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
-      )
+      let balance: BDouble?
+      if selectedSendToken.coin == .btc {
+        let btcBalances = await bitcoinWalletService.fetchBTCBalances(
+          accountId: selectedAccount.accountId
+        )
+        balance = BDouble(btcBalances[.available, default: 0])
+        if self.btcPrice == nil,
+          btcBalances[.pending] != 0,  // price needed for details display
+          let btcPriceString = await assetRatioService.fetchPrices(
+            for: [selectedSendToken.assetRatioId],
+            toAssets: [selectTokenStore.currencyCode],
+            timeframe: .oneDay
+          )[selectedSendToken.assetRatioId],
+          let btcPriceDouble = Double(btcPriceString)
+        {
+          self.btcPrice = btcPriceDouble
+        }
+        self.btcBalances[selectedAccount.id] = btcBalances
+      } else {
+        if let assetBalance = self.assetManager.getAssetBalances(
+          for: selectedSendToken,
+          account: selectedAccount.id
+        )?.first {
+          balance = BDouble(assetBalance.balance)
+        } else {
+          balance = await self.rpcService.balance(
+            for: selectedSendToken,
+            in: selectedAccount.address,
+            network: network,
+            decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
+          )
+        }
+      }
 
       if selectedSendToken.isErc721 || selectedSendToken.isNft,
         metadataCache[selectedSendToken.id] == nil
       {
         metadataCache[selectedSendToken.id] = await rpcService.fetchNFTMetadata(
           for: selectedSendToken,
-          ipfsApi: self.ipfsApi
+          ipfsApi: ipfsApi
         )
       }
       guard !Task.isCancelled else { return }
       self.selectedSendTokenBalance = balance
       self.selectedSendNFTMetadata = metadataCache[selectedSendToken.id]
       self.validateBalance()
-    }
-  }
-
-  private func makeEIP1559Tx(
-    chainId: String,
-    baseData: BraveWallet.TxData,
-    from accountId: BraveWallet.AccountId,
-    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
-  ) {
-    let eip1559Data = BraveWallet.TxData1559(
-      baseData: baseData,
-      chainId: chainId,
-      maxPriorityFeePerGas: "",
-      maxFeePerGas: "",
-      gasEstimation: nil
-    )
-    let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
-    self.txService.addUnapprovedTransaction(
-      txDataUnion: txDataUnion,
-      chainId: chainId,
-      from: accountId
-    ) {
-      success,
-      txMetaId,
-      errorMessage in
-      completion(success, errorMessage)
     }
   }
 
@@ -416,7 +441,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       case .fil:
         validateFilcoinSendAddress()
       case .btc:
-        break
+        validateBitcoinSendAddress(fromAccount: selectedAccount)
       case .zec:
         break
       @unknown default:
@@ -528,6 +553,12 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     addressError = sendAddress.isFILAddress ? nil : .notFilAddress
   }
 
+  private func validateBitcoinSendAddress(fromAccount: BraveWallet.AccountInfo) {
+    guard let selectedSendToken else { return }
+    let isMainnet = selectedSendToken.chainId == BraveWallet.BitcoinMainnet
+    addressError = sendAddress.isBTCAddress(isMainnet: isMainnet) ? nil : .notBtcAddress
+  }
+
   public func enableENSOffchainLookup() {
     Task { @MainActor in
       rpcService.setEnsOffchainLookupResolveMethod(.enabled)
@@ -596,13 +627,16 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     amount: String,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
+    self.isMakingTx = true
     guard let token = self.selectedSendToken else {
+      self.isMakingTx = false
       completion(false, Strings.Wallet.internalErrorMessage)
       return
     }
     let amount = (token.isErc721 || token.isNft) ? "1" : amount
     keyringService.allAccounts { allAccounts in
       guard let selectedAccount = allAccounts.selectedAccount else {
+        self.isMakingTx = false
         completion(false, Strings.Wallet.internalErrorMessage)
         return
       }
@@ -611,14 +645,14 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         self.sendTokenOnEth(
           amount: amount,
           token: token,
-          from: selectedAccount.accountId,
+          from: selectedAccount,
           completion: completion
         )
       case .sol:
         self.sendTokenOnSol(
           amount: amount,
           token: token,
-          from: selectedAccount.accountId,
+          from: selectedAccount,
           completion: completion
         )
       case .fil:
@@ -628,7 +662,15 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           from: selectedAccount.accountId,
           completion: completion
         )
+      case .btc:
+        self.sendTokenOnBtc(
+          amount: amount,
+          token: token,
+          from: selectedAccount.accountId,
+          completion: completion
+        )
       default:
+        self.isMakingTx = false
         completion(false, Strings.Wallet.internalErrorMessage)
       }
     }
@@ -637,58 +679,44 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   func sendTokenOnEth(
     amount: String,
     token: BraveWallet.BlockchainToken,
-    from fromAccountId: BraveWallet.AccountId,
+    from fromAccountInfo: BraveWallet.AccountInfo,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    isMakingTx = true
+    let walletAmountFormatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard
-      let weiHexString = weiFormatter.weiString(
+      let weiHexString = walletAmountFormatter.weiString(
         from: amount.normalizedDecimals,
         radix: .hex,
         decimals: Int(token.decimals)
       )
     else {
+      isMakingTx = false
       completion(false, Strings.Wallet.internalErrorMessage)
       return
     }
 
     let sendToAddress = resolvedAddress ?? sendAddress
-
-    isMakingTx = true
     rpcService.network(coin: .eth, origin: nil) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
-        let baseData = BraveWallet.TxData(
-          nonce: "",
-          gasPrice: "",
-          gasLimit: "",
+        let params = BraveWallet.NewEvmTransactionParams(
+          chainId: network.chainId,
+          from: fromAccountInfo.accountId,
           to: sendToAddress,
           value: "0x\(weiHexString)",
-          data: .init(),
-          signOnly: false,
-          signedTransaction: nil
+          gasLimit: "",
+          data: .init()
         )
-        if network.isEip1559 {
-          self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAccountId) {
-            success,
-            errorMessage in
-            self.isMakingTx = false
-            completion(success, errorMessage)
-          }
-        } else {
-          let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-          self.txService.addUnapprovedTransaction(
-            txDataUnion: txDataUnion,
-            chainId: network.chainId,
-            from: fromAccountId
-          ) { success, txMetaId, errorMessage in
-            self.isMakingTx = false
-            completion(success, errorMessage)
-          }
+        self.txService.addUnapprovedEvmTransaction(
+          params: params
+        ) { success, txMetaId, errorMessage in
+          self.isMakingTx = false
+          completion(success, errorMessage)
         }
       } else if token.isErc721 {
         self.ethTxManagerProxy.makeErc721TransferFromData(
-          from: fromAccountId.address,
+          from: fromAccountInfo.address,
           to: sendToAddress,
           tokenId: token.tokenId,
           contractAddress: token.contractAddress
@@ -697,21 +725,16 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             completion(false, nil)
             return
           }
-          let baseData = BraveWallet.TxData(
-            nonce: "",
-            gasPrice: "",
-            gasLimit: "",
+          let params = BraveWallet.NewEvmTransactionParams(
+            chainId: network.chainId,
+            from: fromAccountInfo.accountId,
             to: token.contractAddress,
             value: "0x0",
-            data: data,
-            signOnly: false,
-            signedTransaction: nil
+            gasLimit: "",
+            data: data
           )
-          let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-          self.txService.addUnapprovedTransaction(
-            txDataUnion: txDataUnion,
-            chainId: network.chainId,
-            from: fromAccountId
+          self.txService.addUnapprovedEvmTransaction(
+            params: params
           ) { success, txMetaId, errorMessage in
             self.isMakingTx = false
             completion(success, errorMessage)
@@ -728,33 +751,20 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             completion(false, nil)
             return
           }
-          let baseData = BraveWallet.TxData(
-            nonce: "",
-            gasPrice: "",
-            gasLimit: "",
+
+          let params = BraveWallet.NewEvmTransactionParams(
+            chainId: network.chainId,
+            from: fromAccountInfo.accountId,
             to: token.contractAddress,
             value: "0x0",
-            data: data,
-            signOnly: false,
-            signedTransaction: nil
+            gasLimit: "",
+            data: data
           )
-          if network.isEip1559 {
-            self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAccountId) {
-              success,
-              errorMessage in
-              self.isMakingTx = false
-              completion(success, errorMessage)
-            }
-          } else {
-            let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-            self.txService.addUnapprovedTransaction(
-              txDataUnion: txDataUnion,
-              chainId: network.chainId,
-              from: fromAccountId
-            ) { success, txMetaId, errorMessage in
-              self.isMakingTx = false
-              completion(success, errorMessage)
-            }
+          self.txService.addUnapprovedEvmTransaction(
+            params: params
+          ) { success, txMetaId, errorMessage in
+            self.isMakingTx = false
+            completion(success, errorMessage)
           }
         }
       }
@@ -764,30 +774,32 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   private func sendTokenOnSol(
     amount: String,
     token: BraveWallet.BlockchainToken,
-    from fromAccountId: BraveWallet.AccountId,
+    from fromAccountInfo: BraveWallet.AccountInfo,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
+    isMakingTx = true
     guard
-      let amount = WeiFormatter.decimalToAmount(
+      let amount = WalletAmountFormatter.decimalToAmount(
         amount.normalizedDecimals,
         tokenDecimals: Int(token.decimals)
       )
     else {
+      isMakingTx = false
       completion(false, Strings.Wallet.internalErrorMessage)
       return
     }
 
     let sendToAddress = resolvedAddress ?? sendAddress
-
     rpcService.network(coin: .sol, origin: nil) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
         self.solTxManagerProxy.makeSystemProgramTransferTxData(
-          from: fromAccountId.address,
+          from: fromAccountInfo.address,
           to: sendToAddress,
           lamports: amount
         ) { solTxData, error, errMsg in
           guard let solanaTxData = solTxData else {
+            self.isMakingTx = false
             completion(false, errMsg)
             return
           }
@@ -795,33 +807,76 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           self.txService.addUnapprovedTransaction(
             txDataUnion: txDataUnion,
             chainId: network.chainId,
-            from: fromAccountId
+            from: fromAccountInfo.accountId
           ) { success, txMetaId, errMsg in
+            self.isMakingTx = false
             completion(success, errMsg)
           }
+        }
+      } else if token.isCompressed {
+        self.solTxManagerProxy.makeBubbleGumProgramTransferTxData(
+          chainId: network.chainId,
+          tokenAddress: token.contractAddress,
+          fromWalletAddress: fromAccountInfo.address,
+          toWalletAddress: sendToAddress
+        ) { solTxData, error, errMsg in
+          guard let solanaTxData = solTxData else {
+            self.isMakingTx = false
+            completion(false, errMsg)
+            return
+          }
+          self.handleSolSPLTx(
+            network: network,
+            fromAccountInfo: fromAccountInfo,
+            solTxData: solanaTxData,
+            error: error,
+            errMsg: errMsg,
+            completion: completion
+          )
         }
       } else {
         self.solTxManagerProxy.makeTokenProgramTransferTxData(
           chainId: network.chainId,
           splTokenMintAddress: token.contractAddress,
-          fromWalletAddress: fromAccountId.address,
+          fromWalletAddress: fromAccountInfo.address,
           toWalletAddress: sendToAddress,
-          amount: amount
+          amount: amount,
+          decimals: UInt8(token.decimals)
         ) { solTxData, error, errMsg in
           guard let solanaTxData = solTxData else {
+            self.isMakingTx = false
             completion(false, errMsg)
             return
           }
-          let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solanaTxData)
-          self.txService.addUnapprovedTransaction(
-            txDataUnion: txDataUnion,
-            chainId: network.chainId,
-            from: fromAccountId
-          ) { success, txMetaId, errorMessage in
-            completion(success, errorMessage)
-          }
+          self.handleSolSPLTx(
+            network: network,
+            fromAccountInfo: fromAccountInfo,
+            solTxData: solanaTxData,
+            error: error,
+            errMsg: errMsg,
+            completion: completion
+          )
         }
       }
+    }
+  }
+
+  private func handleSolSPLTx(
+    network: BraveWallet.NetworkInfo,
+    fromAccountInfo: BraveWallet.AccountInfo,
+    solTxData: BraveWallet.SolanaTxData,
+    error: BraveWallet.SolanaProviderError,
+    errMsg: String,
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
+  ) {
+    let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solTxData)
+    self.txService.addUnapprovedTransaction(
+      txDataUnion: txDataUnion,
+      chainId: network.chainId,
+      from: fromAccountInfo.accountId
+    ) { success, txMetaId, errorMessage in
+      self.isMakingTx = false
+      completion(success, errorMessage)
     }
   }
 
@@ -831,18 +886,21 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     from fromAccountId: BraveWallet.AccountId,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(token.decimals)))
+    isMakingTx = true
+    let walletAmountFormatter = WalletAmountFormatter(
+      decimalFormatStyle: .decimals(precision: Int(token.decimals))
+    )
     guard
-      let weiString = weiFormatter.weiString(
+      let weiString = walletAmountFormatter.weiString(
         from: amount.normalizedDecimals,
         decimals: Int(token.decimals)
       )
     else {
+      isMakingTx = false
       completion(false, Strings.Wallet.internalErrorMessage)
       return
     }
 
-    isMakingTx = true
     rpcService.network(coin: .fil, origin: nil) { [weak self] network in
       guard let self = self else { return }
       let filTxData = BraveWallet.FilTxData(
@@ -865,9 +923,56 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  private func sendTokenOnBtc(
+    amount: String,
+    token: BraveWallet.BlockchainToken,
+    from fromAccountId: BraveWallet.AccountId,
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
+  ) {
+    isMakingTx = true
+    guard
+      let amountInSatoshi = WalletAmountFormatter.decimalToAmount(
+        amount.normalizedDecimals,
+        tokenDecimals: Int(token.decimals)
+      )
+    else {
+      isMakingTx = false
+      completion(false, Strings.Wallet.internalErrorMessage)
+      return
+    }
+    let btcTxData: BraveWallet.BtcTxData = .init(
+      to: sendAddress,
+      amount: amountInSatoshi,
+      sendingMaxAmount: isSendingMaxValue,
+      fee: 0,
+      inputs: [],
+      outputs: []
+    )
+    self.txService.addUnapprovedTransaction(
+      txDataUnion: BraveWallet.TxDataUnion(btcTxData: btcTxData),
+      chainId: token.chainId,
+      from: fromAccountId
+    ) { success, txMetaId, errorMessage in
+      self.isMakingTx = false
+      completion(success, errorMessage)
+    }
+  }
+
   @MainActor func fetchNFTMetadata(
     tokens: [BraveWallet.BlockchainToken]
-  ) async -> [String: NFTMetadata] {
-    return await rpcService.fetchNFTMetadata(tokens: tokens, ipfsApi: ipfsApi)
+  ) async -> [String: BraveWallet.NftMetadata] {
+    return await rpcService.fetchNFTMetadata(
+      tokens: tokens,
+      ipfsApi: ipfsApi
+    )
+  }
+}
+
+extension SendTokenStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    update()
+  }
+
+  public func userAssetUpdated() {
   }
 }

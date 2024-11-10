@@ -15,7 +15,7 @@ void DeleteCreativeNotificationAds() {
   const table::CreativeNotificationAds database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      return BLOG(0, "Failed to delete creative notification ads");
+      BLOG(0, "Failed to delete creative notification ads");
     }
   }));
 }

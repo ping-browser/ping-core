@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_observer_interface.h"
 
 namespace brave_ads {
@@ -27,27 +28,27 @@ void AdsNotifierManager::AddObserver(
 }
 
 void AdsNotifierManager::NotifyAdRewardsDidChange() const {
-  for (const auto& observer : observers_) {
-    observer->OnAdRewardsDidChange();
+  for (const auto& ads_observer : observers_) {
+    ads_observer->OnAdRewardsDidChange();
   }
 }
 
 void AdsNotifierManager::NotifyBrowserUpgradeRequiredToServeAds() const {
-  for (const auto& observer : observers_) {
-    observer->OnBrowserUpgradeRequiredToServeAds();
+  for (const auto& ads_observer : observers_) {
+    ads_observer->OnBrowserUpgradeRequiredToServeAds();
   }
 }
 
-void AdsNotifierManager::NotifyIneligibleRewardsWalletToServeAds() const {
-  for (const auto& observer : observers_) {
-    observer->OnIneligibleRewardsWalletToServeAds();
+void AdsNotifierManager::NotifyIneligibleWalletToServeAds() const {
+  for (const auto& ads_observer : observers_) {
+    ads_observer->OnIneligibleWalletToServeAds();
   }
 }
 
 void AdsNotifierManager::NotifyRemindUser(
-    const mojom::ReminderType type) const {
-  for (const auto& observer : observers_) {
-    observer->OnRemindUser(type);
+    const mojom::ReminderType mojom_reminder_type) const {
+  for (const auto& ads_observer : observers_) {
+    ads_observer->OnRemindUser(mojom_reminder_type);
   }
 }
 

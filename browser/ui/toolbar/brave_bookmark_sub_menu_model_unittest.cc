@@ -68,8 +68,7 @@ class BraveBookmarkSubMenuModelUnitTest : public testing::Test {
     TestingBrowserProcess::GetGlobal()->SetLocalState(&test_local_state_);
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
-    model_ = BookmarkModelFactory::GetForBrowserContext(profile_.get());
-    bookmarks::test::WaitForBookmarkModelToLoad(model_);
+    bookmarks::test::WaitForBookmarkModelToLoad(GetBookmarkModel());
   }
 
   ui::SimpleMenuModel::Delegate* delegate() { return &delegate_; }
@@ -85,17 +84,21 @@ class BraveBookmarkSubMenuModelUnitTest : public testing::Test {
   }
   void TearDown() override {
     browser_.reset();
+    profile_.reset();
     TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
+  }
+
+  BookmarkModel* GetBookmarkModel() {
+    return BookmarkModelFactory::GetForBrowserContext(profile_.get());
   }
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
+  TestingPrefServiceSimple test_local_state_;
   TestSimpleMenuDelegate delegate_;
   std::unique_ptr<Browser> browser_;
   std::unique_ptr<TestBrowserWindow> test_window_;
   std::unique_ptr<TestingProfile> profile_;
-  raw_ptr<BookmarkModel> model_ = nullptr;
-  TestingPrefServiceSimple test_local_state_;
 };
 
 TEST_F(BraveBookmarkSubMenuModelUnitTest, Build) {

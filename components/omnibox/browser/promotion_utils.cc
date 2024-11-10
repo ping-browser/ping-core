@@ -53,8 +53,10 @@ bool IsBraveSearchPromotionMatch(const AutocompleteMatch& match) {
 }
 
 ConversionType GetConversionTypeFromMatch(const AutocompleteMatch& match) {
+  // TODO: `GetAdditionalInfoForDebugging()` shouldn't be used for non-debugging
+  // purposes.
   const std::string type_string =
-      match.GetAdditionalInfo(kBraveSearchPromotionTypeProperty);
+      match.GetAdditionalInfoForDebugging(kBraveSearchPromotionTypeProperty);
   // |match| doesn't have type info.
   if (type_string.empty())
     return ConversionType::kNone;
@@ -62,8 +64,8 @@ ConversionType GetConversionTypeFromMatch(const AutocompleteMatch& match) {
   if (!base::StringToInt(type_string, &type_int))
     return ConversionType::kNone;
   const ConversionType type = static_cast<ConversionType>(type_int);
-  DCHECK((type >= ConversionType::kBannerTypeB &&
-          type <= ConversionType::kBannerTypeD));
+  CHECK((type >= ConversionType::kBannerTypeB &&
+         type <= ConversionType::kDDGBannerTypeD));
   return type;
 }
 

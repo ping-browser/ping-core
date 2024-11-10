@@ -29,7 +29,7 @@
 "widgets.newsClusteringWidgetTitle" = "Популярные новости";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Откройте Brave, чтобы добавить сюда избранные сайты.";
+"widgets.noFavoritesFound" = "Откройте Ping, чтобы добавить сюда избранные сайты.";
 
 /* QR Code section title */
 "widgets.QRCode" = "QR-код";

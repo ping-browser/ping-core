@@ -10,8 +10,8 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "Hesap Detayları";
 
-/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
-"wallet.accountNameLengthError" = "Hesap adı en fazla 30 karakter olmalıdır";
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\") */
+"wallet.accountNameLengthError" = "Hesap adı %lld karakter veya daha az olmalıdır";
 
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "Özel Anahtar";
@@ -93,6 +93,9 @@
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "Ağ Ekle";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address. */
+"wallet.addressLabel" = "Adres";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
 "wallet.addSuggestedTokenSubtitle" = "Bu token'ı içe aktarmak ister misiniz?";
@@ -181,6 +184,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "Bu adımı şimdilik atlayabilirsiniz ancak hesap güvenliğinizi sağlamak için kurtarma ifadenizi yine de yedeklemeniz gerekir.";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "Şimdi Yedekle";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "Cüzdanı Yedekleyin";
 
@@ -223,6 +229,9 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Dokunma Kimliği";
 
+/* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\") */
+"wallet.bitcoinImportExtendedKeyWarning" = "Sadece %@ genişletilmiş anahtarlar desteklenir.";
+
 /* The title for Ping Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.braveFeeLabel" = "Ping Ücreti: %@";
 
@@ -232,11 +241,41 @@
 /* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "Ücretsiz";
 
+/* A description of an Bitcoin account, displayed in Accounts tab. */
+"wallet.btcAccountDescription" = "Bitcoin";
+
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "Kullanmanız için bulunan fonlar.";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "Müsait";
+
+/* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
+"wallet.btcOrdinalsUnsupportedWarning" = "Ping Cüzdanı şu anda Bitcoin NFT'lerini (ordinaller) desteklemiyor. Ordinaller barındıran bir adresten BTC göndermek, ordinallerinin istenmeden transfer edilmesine sebep olabilir.";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "Cüzdan bakiyenizde bekleyen bir değişiklik.";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "Bazı bakiyeler kullanılamayabilir";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "Beklemede";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "Kullanılabilir fonlarınız artı henüz doğrulanmamış işlemler.";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "Toplam";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Satın Al";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Apple Pay, kredi veya banka kartıyla Wyre üzerinden kripto satın alın.";
+
+/* The title for the button to cancel a submitted transaction. */
+"wallet.cancelTransactionButtonTitle" = "İşlemi İptal Et";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Tarih";
@@ -264,6 +303,12 @@
 
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "Sıralama";
+
+/* One of the coin types for users to create an account to store BTC assets */
+"wallet.coinTypeBitcoin" = "Bitcoin";
+
+/* A description for Bitcoin coin type. */
+"wallet.coinTypeBitcoinDescription" = "BTC varlığını saklayın";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "Ethereum";
@@ -373,12 +418,6 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Ping Cüzdanı";
 
-/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
-"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "NFT için IPFS Ağ Geçidini Özelleştir";
-
-/* The navigation title of the screen for users to customize ipfs public gateway address. */
-"wallet.customizeIPFSPublicGatewayNavTitle" = "IPFS Ağ Geçidini Özelleştir";
-
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "Blok gezgini URL'leri";
 
@@ -418,11 +457,11 @@
 /* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
 "wallet.customNetworkInvalidAddressErrMsg" = "Geçersiz adres.";
 
+/* The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkNotSecureErrMsg" = "Güvenli değil.";
+
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "RPC URL'leri";
-
-/* The title of custom network list screen */
-"wallet.customNetworksTitle" = "Özel Ağlar";
 
 /* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
 "wallet.customNetworkSymbolNamePlaceholder" = "Para birimi adını girin";
@@ -518,7 +557,7 @@
 "wallet.decimalsPrecision" = "Kesinlik ondalıkları";
 
 /* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "Uyarı: Mesajınızın ekran görüntüsü bir bulut dosya hizmetinde saklanıyor ve fotoğraflara erişimi olan herhangi bir uygulama tarafından okunabiliyor olabilir. Brave, bu ekran görüntüsünü kaydetmemenizi ve en kısa sürede silmenizi öneriyor.";
+"wallet.decryptMessageScreenshotDetectedMessage" = "Uyarı: Mesajınızın ekran görüntüsü bir bulut dosya hizmetinde saklanıyor ve fotoğraflara erişimi olan herhangi bir uygulama tarafından okunabiliyor olabilir. Ping, bu ekran görüntüsünü kaydetmemenizi ve en kısa sürede silmenizi öneriyor.";
 
 /* The title of the button to approve a decrypt request from a dapps website. */
 "wallet.decryptRequestApprove" = "İzin Ver";
@@ -532,23 +571,11 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "İsteği Çöz";
 
-/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
-"wallet.defaultEthAccountName" = "Ethereum Hesabı %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\") */
+"wallet.defaultAccountName" = "%1$@ Hesabı %2$lld";
 
-/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
-"wallet.defaultFilAccountName" = "Filecoin Hesabı %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
-"wallet.defaultSecondaryEthAccountName" = "İkincil Ethereum Hesabı %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
-"wallet.defaultSecondaryFilAccountName" = "İkincil Filecoin Hesabı %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
-"wallet.defaultSecondarySolAccountName" = "İkincil Solana Hesabı %lld";
-
-/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
-"wallet.defaultSolAccountName" = "Solana Hesabı %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\") */
+"wallet.defaultTestnetAccountName" = "%1$@ Testnet Hesabı %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Sil";
@@ -559,6 +586,12 @@
 /* The button title for user to click to copy the account address for deposit. */
 "wallet.depositAddressCopy" = "Kopyala";
 
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "Varlıkları yatırın";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "Bu, Ethereum Ağını ve %@ gibi 2. seviye ağları destekleyen Ethereum cüzdanıdır";
+
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Tüm Seçimleri Kaldır";
 
@@ -567,6 +600,9 @@
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "Düzenle";
+
+/* A pop up message that will prompt to user before user confirms to edit the existing network. */
+"wallet.editExistingNetworkAlertMsg" = "Var olan ağı güncellemek istiyor musunuz?";
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "Ağı Düzenle";
@@ -641,10 +677,10 @@
 "wallet.ensDomainInterstitialPageButtonProceed" = "Infura sunucusunu kullanarak ilerleyin";
 
 /* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave, Ethereum Name Service (ENS) üzerinde bulunan .eth alan adlarını çözmek için Infura'yı kullanacaktır. Brave, IP adresinizi saklar. Bu özelliği açarsanız Infura, birilerinin bu .eth alan adlarını ziyaret ettiğini görür, ancak başka hiçbir veriyi görmez. Infura'nın <a href=%1$@>%2$@</a> ve <a href=%3$@>%4$@</a> belgelerine bakın.";
+"wallet.ensDomainInterstitialPageDescription" = "Ping, Ethereum Name Service (ENS) üzerinde bulunan .eth alan adlarını çözmek için Infura'yı kullanacaktır. Ping, IP adresinizi saklar. Bu özelliği açarsanız Infura, birilerinin bu .eth alan adlarını ziyaret ettiğini görür, ancak başka hiçbir veriyi görmez. Infura'nın <a href=%1$@>%2$@</a> ve <a href=%3$@>%4$@</a> belgelerine bakın.";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "Brave'de Ethereum Name Service (ENS) Desteği Etkinleştirilsin mi?";
+"wallet.ensDomainInterstitialPageTitle" = "Ping'de Ethereum Name Service (ENS) Desteği Etkinleştirilsin mi?";
 
 /* Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Offchain aramasıyla devam et";
@@ -653,7 +689,7 @@
 "wallet.ensOffchainDomainInterstitialPageDescription" = "Bu .eth alan adı, offchain olarak depolanmıştır ve üçüncü taraf ağ geçidi tarafından çözülecektir. ENS offchain aramasını etkinleştirirseniz üçüncü taraf ağ geçidi .eth alan adını ziyaret etmeye çalıştığınızı görecektir. <a href=%1$@>%2$@</a>.";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
-"wallet.ensOffchainDomainInterstitialPageTitle" = "Brave'de Ethereum Name Service (ENS) offchain araması etkinleştirilsin mi?";
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Ping'de Ethereum Name Service (ENS) offchain araması etkinleştirilsin mi?";
 
 /* Button title when requesting to do an ENS off chain lookup. */
 "wallet.ensOffchainGatewayButton" = "ENS Alan Adını Kullan";
@@ -662,7 +698,7 @@
 "wallet.ensOffchainGatewayDesc" = "Bir ENS adresi girmişsiniz gibi görünüyor. Bu talebi çözmek için bir üçüncü taraf çözümleyici kullanmamız gerekecek. Bu işlem, .eth alan adınızın sızmamasını ve işleminizin güvenli olmasını sağlar.";
 
 /* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayTitle" = "Brave, .eth alan adlarını çözmek için offchain ağ geçitlerini kullanmayı destekler.";
+"wallet.ensOffchainGatewayTitle" = "Ping, .eth alan adlarını çözmek için offchain ağ geçitlerini kullanmayı destekler.";
 
 /* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
 "wallet.ensOffchainResolveMethodDescription" = "ENS offchain araması gizlilik hususları hakkında [daha fazla bilgi edinin](%@)";
@@ -699,6 +735,9 @@
 
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "Token sembolünü girin";
+
+/* A title displayed in an alert above the error message or description. */
+"wallet.errorAlertTitle" = "Hata";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
 "wallet.ethAccountDescription" = "Ethereum + EVM Zincirleri";
@@ -850,6 +889,9 @@
 /* A label shown inside of a box when there is no input data for a given Solana transaction */
 "wallet.inputDataPlaceholderSolana" = "Fonksiyon Tipi: %d";
 
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
+"wallet.inputLabel" = "Giriş";
+
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "Yetersiz bakiye";
 
@@ -864,24 +906,6 @@
 
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "Dahili bir hata oluştu";
-
-/* A title will displayed in the IPFS error page when IPFS is disabled. */
-"wallet.ipfsErrorTitle" = "Bu siteye ulaşılamıyor";
-
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.ipfsPublicGatewayAddressNFTTitle" = "NFT için IPFS Ortak Ağ Geçidi Adresi";
-
-/* The navigation title of the screen for users to customize IPFS public gateway. */
-"wallet.ipfsPublicGatewayAddressTitle" = "IPFS Ortak Ağ Geçidi Adresi";
-
-/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
-"wallet.ipfsResolveMethodDescription" = "IPFS ağ geçidinin gizlilik hususları hakkında [daha fazla bilgi edinin](%@).";
-
-/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
-"wallet.ipfsResourcesOptionsTitle" = "IPFS Kaynaklarını Çöz";
-
-/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsHeader" = "IPFS";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "Daha fazla bilgi edinin";
@@ -1000,7 +1024,7 @@
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.newSiteConnectScreenTitle" = "Bağlan";
 
-/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapbrave next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Sonraki";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
@@ -1043,7 +1067,7 @@
 "wallet.nftDetailTokenStandard" = "Token Standardı";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
-"wallet.nftDiscoveryCalloutDescription" = "Ping Cüzdan, NFT'lerinizi otomatik olarak görüntülemek için üçüncü taraf bir hizmet kullanabilir. Brave, bu hizmeti sağlamak için cüzdan adreslerinizi SimpleHash ile paylaşacaktır. Daha fazla bilgi alın.";
+"wallet.nftDiscoveryCalloutDescription" = "Ping Cüzdan, NFT'lerinizi otomatik olarak görüntülemek için üçüncü taraf bir hizmet kullanabilir. Ping, bu hizmeti sağlamak için cüzdan adreslerinizi SimpleHash ile paylaşacaktır. Daha fazla bilgi alın.";
 
 /* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
 "wallet.nftDiscoveryCalloutDescriptionLearnMore" = "Daha fazla bilgi edinin";
@@ -1059,9 +1083,6 @@
 
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "NFT'yi içe aktar";
-
-/* Description of the NFT Gateway setting */
-"wallet.nftGatewayLongDescription" = "Geçerli IPFS ağ geçidi sağlanmalıdır. Sağlanan ağ geçidinin IPFS kaynaklarını yükleme özelliği kontrol edilecektir.";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
 "wallet.nftHidden" = "Gizli";
@@ -1117,9 +1138,6 @@
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "Varlık Yok";
 
-/* The empty state displayed when the user has not yet added any custom networks. */
-"wallet.noNetworks" = "Hiçbir Ağ Eklenmedi";
-
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "İkincil hesap yok.";
 
@@ -1137,6 +1155,9 @@
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Diğer cüzdan eylemleri";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index. */
+"wallet.outputLabel" = "Çıkış";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
 "wallet.passwordDoesNotMeetRequirementsError" = "Şifreler en az 8 karakterden oluşmalıdır.";
@@ -1178,7 +1199,7 @@
 "wallet.portfolioPageTitle" = "Portföy";
 
 /* The message displayed when the user takes a screenshot of their private key */
-"wallet.privateKeyScreenshotDetectedMessage" = "Uyarı: Özel anahtarınızın ekran görüntüsü bir bulut dosya hizmetine yedeklenebilir ve fotoğraflarınıza erişimi olan herhangi bir uygulama tarafından okunabilir. Brave, bu ekran görüntüsünü saklamamanızı ve mümkün olduğunca çabuk şekilde silmenizi önerir.";
+"wallet.privateKeyScreenshotDetectedMessage" = "Uyarı: Özel anahtarınızın ekran görüntüsü bir bulut dosya hizmetine yedeklenebilir ve fotoğraflarınıza erişimi olan herhangi bir uygulama tarafından okunabilir. Ping, bu ekran görüntüsünü saklamamanızı ve mümkün olduğunca çabuk şekilde silmenizi önerir.";
 
 /* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.protocolFeeLabel" = "Protokol Ücreti: %@";
@@ -1205,7 +1226,7 @@
 "wallet.rampNetworkProviderShortName" = "Ramp";
 
 /* The message displayed when the user takes a screenshot of their recovery phrase */
-"wallet.recoveryPhraseScreenshotDetectedMessage" = "Uyarı: Kurtarma ifadenizin ekran görüntüsü bir bulut dosya hizmetine yedeklenebilir ve fotoğraflarınıza erişimi olan herhangi bir uygulama tarafından okunabilir. Brave, bu ekran görüntüsünü saklamamanızı ve mümkün olduğunca çabuk şekilde silmenizi önerir.";
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Uyarı: Kurtarma ifadenizin ekran görüntüsü bir bulut dosya hizmetine yedeklenebilir ve fotoğraflarınıza erişimi olan herhangi bir uygulama tarafından okunabilir. Ping, bu ekran görüntüsünü saklamamanızı ve mümkün olduğunca çabuk şekilde silmenizi önerir.";
 
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "Piyasa fiyatını yenileyin";
@@ -1237,6 +1258,9 @@
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Şifreyi yeniden gir";
 
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Eski sürüm Ping kripto cüzdanlarından içe aktarım yapmak istiyor musunuz?";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Cüzdanı Geri Yükleyin";
 
@@ -1266,6 +1290,9 @@
 
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "Mevcut Cüzdanı İçe Aktarın";
+
+/* The title for the button to retry a failed transaction. */
+"wallet.retryTransactionButtonTitle" = "İşlemi Tekrar Deneyin";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "Banka hesabınızla anında satın alın. Daha düşük ücretler.";
@@ -1357,6 +1384,9 @@
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "Bir hesaptan diğerine kripto gönderin veya aktarın.";
 
+/* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
+"wallet.sendErrorBtcAddressNotValid" = "Geçerli bir BTC adresi değil";
+
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "Alan adının bağlı bir %@ adresi yok";
 
@@ -1387,8 +1417,8 @@
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "Gönderildi";
 
-/* Title of the set IPFS gateway button */
-"wallet.setGatewayButtonTitle" = "Ayarla";
+/* One of the context menu option for user to tap to set a default network in wallet settings. */
+"wallet.setDefaultNetwork" = "Varsayılan Olarak Ayarla";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Ayarlar";
@@ -1445,7 +1475,7 @@
 "wallet.setupCryptoCreateNewTitle" = "Yeni bir cüzdana mı ihtiyacınız var?";
 
 /* The disclaimer text at the bottom of the first step of onboarding flow. */
-"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Ping ve Ping logosu, Brave'in tescilli ticari markalarıdır. Diğer ürün isimleri ve logoları, ilgili kurumların tescilli ticari markaları olabilir. Tüm hakları saklıdır.";
+"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Ping ve Ping logosu, Ping'in tescilli ticari markalarıdır. Diğer ürün isimleri ve logoları, ilgili kurumların tescilli ticari markaları olabilir. Tüm hakları saklıdır.";
 
 /* The subtitle displayed in the section for user that need to restore an existed wallet */
 "wallet.setupCryptoRestoreSubTitle" = "Mevcut cüzdanınızı içe aktarın.";
@@ -1467,9 +1497,6 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Özel Anahtarı Göster";
-
-/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
-"wallet.showTestNetworksTitle" = "Test Ağlarını Göster";
 
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "Sıfır Bakiyeleri Göster";
@@ -1522,43 +1549,43 @@
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "İşlemi İmzala";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the address. */
 "wallet.siweAddressLabel" = "Adres";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the chain ID. */
 "wallet.siweChainIDLabel" = "Chain ID";
 
-/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+/* The title of the details view for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweDetailsTitle" = "Detaylar";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the expiration time. */
 "wallet.siweExpirationTimeLabel" = "Son Kullanma Tarihi";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the issued at date. */
 "wallet.siweIssuedAtLabel" = "Yayınlanma Tarihi";
 
 /* The label displayed above the Sign In With Ethereum message. */
 "wallet.siweMessageLabel" = "Mesaj";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the nonce. */
 "wallet.siweNonceLabel" = "Bir Kerelik Anahtar";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the origin. */
 "wallet.siweOriginLabel" = "Origin";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "Kaynaklar";
 
-/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+/* The label displayed on the button to sign in for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweSignInButtonTitle" = "Oturum Aç";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the statement. */
 "wallet.siweStatementLabel" = "Açıklama";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the URI. */
 "wallet.siweURILabel" = "URI";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the version. */
 "wallet.siweVersionLabel" = "Sürüm";
 
 /* The button title to skip recovery phrase backup */
@@ -1567,11 +1594,11 @@
 /* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
 "wallet.snsDomainInterstitialPageButtonProceed" = "Bir SNS sunucusu kullanarak ilerleyin";
 
-/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave, .sol alan adlarını çözmek için bir üçüncü taraf yazılımı kullanacak. Brave, IP adresinizi gizler. Bunu etkinleştirirseniz, üçüncü taraf yazılımı birilerinin bu .sol alanlarını ziyaret etmeye çalıştığını görecek fakat başka bir şey göremeyecektir. Hangi üçüncü taraf yazılımlarını kullandığımız ve bu yazılımların gizlilik politikaları hakkında daha fazla bilgi için lütfen <a href=%@>yardım sayfamıza</a> bakın.";
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Ping, .sol alan adlarını çözmek için bir üçüncü taraf yazılımı kullanacak. Ping, IP adresinizi gizler. Bunu etkinleştirirseniz, üçüncü taraf yazılımı birilerinin bu .sol alanlarını ziyaret etmeye çalıştığını görecek fakat başka bir şey göremeyecektir. Hangi üçüncü taraf yazılımlarını kullandığımız ve bu yazılımların gizlilik politikaları hakkında daha fazla bilgi için lütfen <a href=%@>yardım sayfamıza</a> bakın.";
 
 /* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
-"wallet.snsDomainInterstitialPageTitle" = "Brave'de Solana Name Service (SNS) Desteği Etkinleştirilsin mi?";
+"wallet.snsDomainInterstitialPageTitle" = "Ping'de Solana Name Service (SNS) Desteği Etkinleştirilsin mi?";
 
 /* A description of an Solana account, displayed in Accounts tab. */
 "wallet.solAccountDescription" = "Solana + SVM Zincirleri";
@@ -1679,7 +1706,7 @@
 "wallet.solanaSignTransactionDetails" = "Detaylar";
 
 /* The warning message to let users understand the risk of using Ping Wallet to sign any transaction. */
-"wallet.solanaSignTransactionWarning" = "Brave'in imzalamanız halinde ne olacağını doğrulayamayacağını unutmayın. Bir imza, hesabınıza ve adınıza yapılacak, hesabınızın ve kripto varlıklarınızın tam kontrolünü talepte bulunan siteye devretmek de dahil olmak üzere (fakat bununla sınırlı olmaksızın) neredeyse her türlü değişikliği yetkilendirebilir. Sadece bu eylemi gerçekleştirmek istediğinizden eminseniz ve talepte bulunan siteye güveniyorsanız imzalayın.";
+"wallet.solanaSignTransactionWarning" = "Ping'in imzalamanız halinde ne olacağını doğrulayamayacağını unutmayın. Bir imza, hesabınıza ve adınıza yapılacak, hesabınızın ve kripto varlıklarınızın tam kontrolünü talepte bulunan siteye devretmek de dahil olmak üzere (fakat bununla sınırlı olmaksızın) neredeyse her türlü değişikliği yetkilendirebilir. Sadece bu eylemi gerçekleştirmek istediğinizden eminseniz ve talepte bulunan siteye güveniyorsanız imzalayın.";
 
 /* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
 "wallet.solanaSwapTransactionTitle" = "Takas İşlemi";
@@ -1711,11 +1738,17 @@
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaUpgradeNonceAccountInstructionName" = "Tek Seferlik Hesabı Yükselt";
 
+/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaWithdrawNonceAccountInstructionName" = "Tek Seferlik Hesaptan Para Çekin";
+
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "İtibari değer veya ada göre sırala";
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Varlıkları Sırala";
+
+/* The title for the button to speed up a submitted transaction. */
+"wallet.speedUpTransactionButtonTitle" = "Hızlandır";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "Kredi kartı, banka kartı veya banka hesabıyla ödeyin.";
@@ -1729,7 +1762,7 @@
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "İşlem Gönderildi";
 
-/* As in swapping cryptocurrency from one asset to another */
+/* As in swapbrave cryptocurrency from one asset to another */
 "wallet.swap" = "Takas";
 
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
@@ -1753,7 +1786,7 @@
 /* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountTitle" = "Takas edilecek %@ miktarını girin";
 
-/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave from. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoFromTitle" = "Şundan:";
 
 /* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
@@ -1765,7 +1798,7 @@
 /* The title of the button for users to click when they want to swap between two cryptos */
 "wallet.swapCryptoSwapButtonTitle" = "Takas";
 
-/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave to. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoToTitle" = "Şuna:";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
@@ -1781,7 +1814,7 @@
 "wallet.swapDexAggrigatorDisclaimer" = "%1$@ bir işlemi gerçekleştirmek için (teklif alımları dahil) %2$@ adresini ve IP adresini işleyecektir. %3$@ bu verileri SADECE işlemi gerçekleştirmek amacıyla kullanacaktır.";
 
 /* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
-"wallet.swapDexAggrigatorNote" = "Brave, bir DEX toplayıcısı olarak %@ platformunu kullanır.";
+"wallet.swapDexAggrigatorNote" = "Ping, bir DEX toplayıcısı olarak %@ platformunu kullanır.";
 
 /* The 'Limit' order type. Limit orders only execute when the price requirements are met */
 "wallet.swapLimitOrderType" = "Limit";
@@ -1946,10 +1979,10 @@
 "wallet.transakProviderShortName" = "Transak";
 
 /* Description displayed when users chose Ping to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave, Unstoppable Domains'te yer alan .crypto (ve aynı zamanda %1$@) alan adlarını çözmek için Infura'yı kullanacaktır. Brave, IP adresinizi saklar. Bu özelliği açarsanız Infura, birilerinin bu alan adlarını ziyaret ettiğini görür, ancak başka hiçbir veriyi görmez. Infura'nın <a href=%2$@>%3$@</a> ve <a href=%4$@>%5$@</a> belgelerine bakın.";
+"wallet.udDomainInterstitialPageDescription" = "Ping, Unstoppable Domains'te yer alan .crypto (ve aynı zamanda %1$@) alan adlarını çözmek için Infura'yı kullanacaktır. Ping, IP adresinizi saklar. Bu özelliği açarsanız Infura, birilerinin bu alan adlarını ziyaret ettiğini görür, ancak başka hiçbir veriyi görmez. Infura'nın <a href=%2$@>%3$@</a> ve <a href=%4$@>%5$@</a> belgelerine bakın.";
 
 /* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
-"wallet.udDomainInterstitialPageTitle" = "Brave'de Unstoppable Domains desteği etkinleştirilsin mi?";
+"wallet.udDomainInterstitialPageTitle" = "Ping'de Unstoppable Domains desteği etkinleştirilsin mi?";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
 "wallet.udResolveMethodDescription" = "Unstoppable Domains'in gizlilik hususları hakkında [daha fazla bilgi edinin](%@).";
@@ -1971,6 +2004,9 @@
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@'de %1$@";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
+"wallet.valueLabel" = "Değer";
 
 /* The error message when input phrase does not match the correct one. */
 "wallet.verifyRecoveryPhraseError" = "Kurtarma ifadesi eşleşmiyor.";
@@ -2017,7 +2053,7 @@
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.walletSettings" = "Cüzdan Ayarları";
 
-/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when groubrave Portfolio assets. */
 "wallet.walletTypeNone" = "Hiçbiri";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
@@ -2050,18 +2086,6 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Solana Name Service (SNS) Alan Adlarını Çöz";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
-"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (InterPlanetary File System), eşler arası veri depolama ve teslimatına yönelik ortak bir ağdır. Bu protokolün, HTTP(S)'den farklı gizlilik hususları vardır. <a href=%1$@>%2$@</a>";
-
-/* A brief explaination of resolving IPFS scheme url using a public gateway. */
-"wallet.web3IPFSInterstitialIPFSPublicGateway" = "IP adresinizi ve talep ettiğiniz içeriği, olası üçüncü taraf gözlemcilerden korur, ancak ortak ağ geçidi operatöründen korumaz. Bir ağ geçidi üzerinden size sunulan içeriğin talep ettiğiniz içerik olmasını sağlamaktan ağ geçidi operatörü sorumludur. Ayrıca cihazınız ortak IPFS ağına katkıda bulunmaz.";
-
-/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
-"wallet.web3IPFSInterstitialIPFSTitle" = "IPFS tercihinizi ayarlayın";
-
-/* The title of the button that user will click to let Ping to resolve IPFS shceme url. */
-"wallet.web3IPFSInterstitialProceedButton" = "Ortak Bir Ağ Geçidi Kullan";
-
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Siteler Ethereum Cüzdanınıza Erişim İsteyebilir";
 
@@ -2088,12 +2112,6 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Üçüncü taraf API'leri kullanarak otomatik olarak sahip olduğunuz NFT'leri Cüzdanınıza ekleyin. [Daha fazla bilgi](%@)";
-
-/* Description of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertDescription" = "Geçersiz url sağlandı. Ağ geçidinin, IPFS kaynaklarını çözebilmesi gerekir.";
-
-/* Title of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertTitle" = "Ağ geçidi ayarlanamadı";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z'den A'ya";

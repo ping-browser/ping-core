@@ -13,7 +13,15 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 27;
+const int kBraveCurrentDataVersion = 30;
+
+// The version is important to increment because Chromium will cache the list
+// of search engines that are shown. When the version is incremented, Chromium
+// will conditionally merge changes from the new version of the list.
+//
+// For more info, see:
+// https://source.chromium.org/chromium/chromium/src/+/main:components/search_engines/util.cc;l=53-125;drc=17b1d05d2ccda19c3ebd903075227bc8e851acf0
+
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 const int kBraveFirstTrackedDataVersion = 6;
 
@@ -37,7 +45,7 @@ PrepopulatedEngine MakeBravePrepopulatedEngine(const char16_t* const name,
 // Maps BravePrepopulatedEngineID to Chromium's PrepopulatedEngine.
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
     brave_engines_map = {
-        {PREPOPULATED_ENGINE_ID_GOOGLE, &brave_search},
+        {PREPOPULATED_ENGINE_ID_GOOGLE, &google},
         {PREPOPULATED_ENGINE_ID_YANDEX, &brave_yandex},
         {PREPOPULATED_ENGINE_ID_BING, &brave_bing},
         {PREPOPULATED_ENGINE_ID_NAVER, &naver},
@@ -48,7 +56,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
         {PREPOPULATED_ENGINE_ID_QWANT, &qwant},
         {PREPOPULATED_ENGINE_ID_STARTPAGE, &startpage},
         {PREPOPULATED_ENGINE_ID_ECOSIA, &brave_ecosia},
-        {PREPOPULATED_ENGINE_ID_BRAVE, &google}, //changed &brave_search to &google and brave is now replaced by google from all the places. TODO:permanent solution for it
+        {PREPOPULATED_ENGINE_ID_BRAVE, &brave_search},
 };
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
@@ -194,7 +202,13 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
     "desktop",
 #endif
     "UTF-8",
-    "https://search.brave.com/api/suggest?q={searchTerms}",
+    "https://search.brave.com/api/"
+    "suggest?q={searchTerms}&rich=true&source="
+#if BUILDFLAG(IS_ANDROID)
+    "android",
+#else
+    "desktop",
+#endif
     SEARCH_ENGINE_OTHER,
     PREPOPULATED_ENGINE_ID_BRAVE);
 

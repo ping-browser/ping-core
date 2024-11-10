@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/p3a/brave_p3a_utils.h"
 
 #include "base/callback_list.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
@@ -15,7 +16,6 @@
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
 P3AMetricLogType const P3AMetricLogTypeSlow =
     static_cast<P3AMetricLogType>(p3a::MetricLogType::kSlow);
@@ -43,7 +43,7 @@ NSString* const P3ACreativeMetricPrefix =
 @end
 
 @implementation BraveP3AUtils {
-  PrefService* _localState;
+  raw_ptr<PrefService> _localState;
   scoped_refptr<p3a::P3AService> _p3aService;
 }
 

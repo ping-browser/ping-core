@@ -19,7 +19,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 
@@ -73,6 +73,8 @@ std::optional<std::string> EncodeTransactionParams(
   }
 
   tx_params.Set("userPublicKey", params.user_public_key);
+  tx_params.Set("dynamicComputeUnitLimit", true);
+  tx_params.Set("prioritizationFeeLamports", "auto");
 
   base::Value::Dict quote;
   quote.Set("inputMint", params.quote->input_mint);
@@ -119,18 +121,18 @@ std::optional<std::string> EncodeTransactionParams(
   // FIXME - GetJSON should be refactored to accept a base::Value::Dict
   std::string result = GetJSON(base::Value(std::move(tx_params)));
 
-  result = std::string(json::convert_string_value_to_uint64(
-      "/quoteResponse/slippageBps", result, false));
+  result = json::convert_string_value_to_uint64("/quoteResponse/slippageBps",
+                                                result, false);
 
   if (params.quote->platform_fee) {
-    result = std::string(json::convert_string_value_to_uint64(
-        "/quoteResponse/platformFee/feeBps", result, false));
+    result = json::convert_string_value_to_uint64(
+        "/quoteResponse/platformFee/feeBps", result, false);
   }
 
   for (int i = 0; i < static_cast<int>(params.quote->route_plan.size()); i++) {
-    result = std::string(json::convert_string_value_to_uint64(
+    result = json::convert_string_value_to_uint64(
         base::StringPrintf("/quoteResponse/routePlan/%d/percent", i), result,
-        false));
+        false);
   }
 
   return result;
@@ -144,7 +146,7 @@ namespace {
 
 std::optional<std::string> EncodeChainId(const std::string& value) {
   if (value == mojom::kSolanaMainnet) {
-    return "SOL";
+    return kLiFiSolanaMainnetChainID;
   }
 
   uint256_t val;
@@ -171,9 +173,15 @@ base::Value::Dict EncodeToolDetails(
 std::optional<base::Value::Dict> EncodeToken(
     const mojom::BlockchainTokenPtr& token) {
   base::Value::Dict result;
-  result.Set("address", token->contract_address.empty()
-                            ? kLiFiNativeEVMAssetContractAddress
-                            : token->contract_address);
+
+  if (token->contract_address.empty()) {
+    result.Set("address", token->coin == mojom::CoinType::SOL
+                              ? kLiFiNativeSVMAssetContractAddress
+                              : kLiFiNativeEVMAssetContractAddress);
+  } else {
+    result.Set("address", token->contract_address);
+  }
+
   result.Set("decimals", token->decimals);
   result.Set("symbol", token->symbol);
 
@@ -199,12 +207,8 @@ std::string EncodeStepType(const mojom::LiFiStepType type) {
     return "cross";
   }
 
-  if (type == mojom::LiFiStepType::kNative) {
+  if (type == mojom::LiFiStepType::kLiFi) {
     return "lifi";
-  }
-
-  if (type == mojom::LiFiStepType::kProtocol) {
-    return "protocol";
   }
 
   NOTREACHED_NORETURN();
@@ -442,5 +446,75 @@ std::optional<std::string> EncodeTransactionParams(mojom::LiFiStepPtr step) {
 }
 
 }  // namespace lifi
+
+namespace squid {
+
+namespace {
+
+std::optional<std::string> EncodeChainId(const std::string& value) {
+  uint256_t val;
+  if (!HexValueToUint256(value, &val)) {
+    return std::nullopt;
+  }
+
+  if (val > std::numeric_limits<uint64_t>::max()) {
+    return std::nullopt;
+  }
+
+  return base::NumberToString(static_cast<uint64_t>(val));
+}
+
+std::optional<std::string> EncodeParams(mojom::SwapQuoteParamsPtr params) {
+  base::Value::Dict result;
+  if (auto chain_id = EncodeChainId(params->from_chain_id)) {
+    result.Set("fromChain", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("fromAddress", params->from_account_id->address);
+  result.Set("fromToken", params->from_token.empty()
+                              ? kNativeEVMAssetContractAddress
+                              : params->from_token);
+  result.Set("fromAmount", params->from_amount);
+
+  if (auto chain_id = EncodeChainId(params->to_chain_id)) {
+    result.Set("toChain", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("toAddress", params->to_account_id->address);
+  result.Set("toToken", params->to_token.empty()
+                            ? kNativeEVMAssetContractAddress
+                            : params->to_token);
+
+  double slippage_percentage = 0.0;
+  if (base::StringToDouble(params->slippage_percentage, &slippage_percentage)) {
+    result.Set("slippage", slippage_percentage);
+  }
+
+  base::Value::Dict slippage_config;
+  slippage_config.Set("autoMode", 1);
+  result.Set("slippageConfig", std::move(slippage_config));
+
+  result.Set("enableBoost", true);
+  result.Set("quoteOnly", false);
+
+  return GetJSON(base::Value(std::move(result)));
+}
+
+}  // namespace
+
+std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
+  return EncodeParams(std::move(params));
+}
+
+std::optional<std::string> EncodeTransactionParams(
+    mojom::SwapQuoteParamsPtr params) {
+  return EncodeParams(std::move(params));
+}
+
+}  // namespace squid
 
 }  // namespace brave_wallet

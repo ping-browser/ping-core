@@ -6,7 +6,7 @@ import * as React from 'react'
 
 // Styled Components
 import {
-  BottomCardWrapper,
+  Background,
   BottomCard,
   CloseButton,
   CloseIcon
@@ -14,26 +14,31 @@ import {
 import { Row } from '../style'
 
 interface Props {
-  onClose: () => void
+  onClose?: () => void
+  isOpen: boolean
   children?: React.ReactNode
 }
 
 export const BottomSheet = (props: Props) => {
-  const { onClose, children } = props
+  const { onClose, isOpen, children } = props
 
   return (
-    <BottomCardWrapper>
-      <BottomCard fullWidth={true}>
-        <Row
+    <>
+      <Background isOpen={isOpen} />
+      <BottomCard
+        fullWidth={true}
+        isOpen={isOpen}
+      >
+        {onClose && <Row
           padding='16px 16px 0px 16px'
           justifyContent='flex-end'
         >
           <CloseButton onClick={onClose}>
             <CloseIcon />
           </CloseButton>
-        </Row>
+        </Row>}
         {children}
       </BottomCard>
-    </BottomCardWrapper>
+    </>
   )
 }

@@ -143,14 +143,12 @@ export const PortfolioNftAsset = () => {
     <WalletPageWrapper
       wrapContentInBox={true}
       noCardPadding={false}
-      hideDivider={false}
       cardHeader={
         <NftAssetHeader
           onBack={history.goBack}
           assetName={selectedAssetFromParams?.name}
           tokenId={selectedAssetFromParams?.tokenId}
-          showSendButton={showSendButton}
-          onSend={onSend}
+          onSend={showSendButton ? onSend : undefined}
         />
       }
     >

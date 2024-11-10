@@ -7,20 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_SERVICE_H_
 
 #include <string>
-#include <vector>
 
-#include "base/containers/flat_map.h"
-#include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -30,14 +23,12 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
-class JsonRpcService;
-
 class SwapService : public KeyedService, public mojom::SwapService {
  public:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
-  SwapService(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-              JsonRpcService* json_rpc_service);
+  explicit SwapService(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~SwapService() override;
   SwapService(const SwapService&) = delete;
   SwapService& operator=(const SwapService&) = delete;
@@ -55,6 +46,9 @@ class SwapService : public KeyedService, public mojom::SwapService {
   void IsSwapSupported(const std::string& chain_id,
                        IsSwapSupportedCallback callback) override;
 
+  void GetLiFiStatus(const std::string& tx_hash,
+                     GetLiFiStatusCallback callback) override;
+
   static GURL GetZeroExQuoteURL(const mojom::SwapQuoteParams& params,
                                 const std::optional<std::string>& fee_param);
   static GURL GetZeroExTransactionURL(
@@ -65,6 +59,8 @@ class SwapService : public KeyedService, public mojom::SwapService {
   static GURL GetJupiterTransactionURL(const std::string& chain_id);
   static GURL GetLiFiQuoteURL();
   static GURL GetLiFiTransactionURL();
+  static GURL GetLiFiStatusURL(const std::string& tx_hash);
+  static GURL GetSquidURL();
 
  private:
   void OnGetZeroExQuote(mojom::SwapFeesPtr swap_fee,
@@ -76,19 +72,25 @@ class SwapService : public KeyedService, public mojom::SwapService {
   void OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
                       GetQuoteCallback callback,
                       APIRequestResult api_request_result);
+  void OnGetSquidQuote(mojom::SwapFeesPtr swap_fee,
+                       GetQuoteCallback callback,
+                       APIRequestResult api_request_result);
   void OnGetZeroExTransaction(GetTransactionCallback callback,
                               APIRequestResult api_request_result);
   void OnGetJupiterTransaction(GetTransactionCallback callback,
                                APIRequestResult api_request_result);
   void OnGetLiFiTransaction(GetTransactionCallback callback,
                             APIRequestResult api_request_result);
+  void OnGetSquidTransaction(GetTransactionCallback callback,
+                             APIRequestResult api_request_result);
+  void OnGetLiFiStatus(GetLiFiStatusCallback callback,
+                       APIRequestResult api_request_result);
 
   api_request_helper::APIRequestHelper api_request_helper_;
 
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;  // NOT OWNED
   mojo::ReceiverSet<mojom::SwapService> receivers_;
 
-  base::WeakPtrFactory<SwapService> weak_ptr_factory_;
+  base::WeakPtrFactory<SwapService> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

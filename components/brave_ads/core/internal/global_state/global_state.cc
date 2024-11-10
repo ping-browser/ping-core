@@ -5,7 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
+#include <utility>
+
 #include "base/check.h"
+#include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
@@ -14,14 +19,16 @@
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state_holder.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/public/client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
-GlobalState::GlobalState(AdsClient* ads_client)
+GlobalState::GlobalState(
+    AdsClient* const ads_client,
+    std::unique_ptr<TokenGeneratorInterface> token_generator)
     : ads_client_(ads_client),
       global_state_holder_(std::make_unique<GlobalStateHolder>(this)) {
   CHECK(ads_client_);
@@ -32,10 +39,11 @@ GlobalState::GlobalState(AdsClient* ads_client)
   confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
-  history_manager_ = std::make_unique<HistoryManager>();
+  ad_history_manager_ = std::make_unique<AdHistoryManager>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
+  ads_core_ = std::make_unique<AdsCore>(std::move(token_generator));
 }
 
 GlobalState::~GlobalState() {
@@ -45,6 +53,7 @@ GlobalState::~GlobalState() {
 // static
 GlobalState* GlobalState::GetInstance() {
   CHECK(GlobalStateHolder::GetGlobalState());
+
   return GlobalStateHolder::GetGlobalState();
 }
 
@@ -95,10 +104,10 @@ DiagnosticManager& GlobalState::GetDiagnosticManager() {
   return *diagnostic_manager_;
 }
 
-HistoryManager& GlobalState::GetHistoryManager() {
+AdHistoryManager& GlobalState::GetHistoryManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK(history_manager_);
-  return *history_manager_;
+  CHECK(ad_history_manager_);
+  return *ad_history_manager_;
 }
 
 NotificationAdManager& GlobalState::GetNotificationAdManager() {
@@ -119,19 +128,40 @@ UserActivityManager& GlobalState::GetUserActivityManager() {
   return *user_activity_manager_;
 }
 
+AdsCore& GlobalState::GetAdsCore() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(ads_core_);
+  return *ads_core_;
+}
+
 mojom::SysInfo& GlobalState::SysInfo() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return sys_info_;
+  return mojom_sys_info_;
 }
 
 mojom::BuildChannelInfo& GlobalState::BuildChannel() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return build_channel_;
+  return mojom_build_channel_;
 }
 
 mojom::Flags& GlobalState::Flags() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return flags_;
+  return mojom_flags_;
+}
+
+void GlobalState::PostDelayedTask(base::OnceClosure task,
+                                  base::TimeDelta delay) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&GlobalState::PostDelayedTaskCallback,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(task)),
+      delay);
+}
+
+void GlobalState::PostDelayedTaskCallback(base::OnceClosure task) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::move(task).Run();
 }
 
 }  // namespace brave_ads

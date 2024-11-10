@@ -8,22 +8,19 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsGetSignedTokensUrlRequestUtilTest : public UnitTestBase {
- protected:
-  TokenGeneratorMock token_generator_mock_;
-};
+class BraveAdsGetSignedTokensUrlRequestUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest, ParseCaptchaId) {
   // Arrange
@@ -49,9 +46,9 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
        BuildAndAddConfirmationTokens) {
   // Act
   BuildAndAddConfirmationTokens(cbr::test::GetUnblindedTokens(),
-                                cbr::test::GetPublicKey(), test::GetWallet());
+                                cbr::test::GetPublicKey(), test::Wallet());
 
-  // Act & Assert
+  // Assert
   EXPECT_FALSE(GetConfirmationTokens().IsEmpty());
 }
 

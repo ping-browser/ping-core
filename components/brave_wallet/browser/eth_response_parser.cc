@@ -19,9 +19,7 @@
 #include "net/base/data_url.h"
 #include "tools/json_schema_compiler/util.h"
 
-namespace brave_wallet {
-
-namespace eth {
+namespace brave_wallet::eth {
 
 bool ParseStringResult(const base::Value& json_value, std::string* value) {
   DCHECK(value);
@@ -235,20 +233,27 @@ std::optional<std::string> ParseEthCall(const base::Value& json_value) {
 
 std::optional<std::vector<std::string>> DecodeEthCallResponse(
     const std::string& data,
-    const std::vector<std::string>& abi_types) {
+    const eth_abi::Type& abi_type) {
   std::vector<uint8_t> response_bytes;
   if (!PrefixedHexStringToBytes(data, &response_bytes)) {
     return std::nullopt;
   }
 
-  auto decoded = ABIDecode(abi_types, response_bytes);
+  auto decoded = ABIDecode(abi_type, response_bytes);
   if (decoded == std::nullopt) {
     return std::nullopt;
   }
 
-  const auto& args = std::get<1>(*decoded);
-  if (args.size() != abi_types.size()) {
+  if (decoded->size() != abi_type.tuple_types.size()) {
     return std::nullopt;
+  }
+
+  std::vector<std::string> args;
+  for (const auto& arg : *decoded) {
+    // Ignore non-string values
+    if (arg.is_string()) {
+      args.push_back(arg.GetString());
+    }
   }
 
   return args;
@@ -386,6 +391,4 @@ bool ParseDataURIAndExtractJSON(const GURL url, std::string* json) {
   return true;
 }
 
-}  // namespace eth
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::eth

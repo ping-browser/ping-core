@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveNews
 import BraveVPN
 import BrowserIntentsModels
@@ -11,6 +12,7 @@ import Data
 import Growth
 import Intents
 import MobileCoreServices
+import PlaylistUI
 import Preferences
 import Shared
 import SwiftUI
@@ -178,6 +180,15 @@ public class ActivityShortcutManager: NSObject {
       switch BraveVPN.vpnState {
       case .notPurchased, .expired:
         guard let enableVPNController = BraveVPN.vpnState.enableVPNDestinationVC else { return }
+        enableVPNController.openAuthenticationVPNInNewTab = { [weak bvc] in
+          guard let bvc = bvc else { return }
+
+          bvc.openURLInNewTab(
+            .brave.braveVPNRefreshCredentials,
+            isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
+            isPrivileged: false
+          )
+        }
 
         bvc.openInsideSettingsNavigation(with: enableVPNController)
       case .purchased(let connected):
@@ -220,8 +231,7 @@ public class ActivityShortcutManager: NSObject {
       bvc.popToBVC()
 
       let tab = bvc.tabManager.selectedTab
-      PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { playlistController in
-        playlistController.modalPresentationStyle = .fullScreen
+      PlaylistCoordinator.shared.getPlaylistController(tab: tab) { playlistController in
         PlaylistP3A.recordUsage()
         bvc.present(playlistController, animated: true)
       }

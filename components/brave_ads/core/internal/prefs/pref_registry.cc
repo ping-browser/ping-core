@@ -6,31 +6,26 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 
 namespace brave_ads {
 
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(prefs::kShouldShowOnboardingNotification, true);
+void RegisterLocalStatePrefs(PrefRegistrySimple* const registry) {
+  // Add local state prefs to be registered here.
+}
 
-  registry->RegisterIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
-                                0);
-
-  registry->RegisterBooleanPref(prefs::kOptedInToNotificationAds, false);
-
-  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateX,
-                               0.0);
-  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateY,
-                               0.0);
-  registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
-                                false);
-
+void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
+  // Ads prefs.
   registry->RegisterStringPref(prefs::kDiagnosticId, "");
 
+  registry->RegisterBooleanPref(prefs::kOptedInToNotificationAds, false);
   registry->RegisterInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
+  registry->RegisterBooleanPref(prefs::kOptedInToSearchResultAds, true);
+
   registry->RegisterBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
-  registry->RegisterStringPref(prefs::kSubdivisionTargetingSubdivision, "AUTO");
+  registry->RegisterStringPref(
+      prefs::kSubdivisionTargetingUserSelectedSubdivision, "AUTO");
   registry->RegisterStringPref(
       prefs::kSubdivisionTargetingAutoDetectedSubdivision, "");
 
@@ -45,17 +40,30 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterListPref(prefs::kNotificationAds);
   registry->RegisterTimePref(prefs::kServeAdAt, base::Time());
 
-  registry->RegisterTimePref(prefs::kNextTokenRedemptionAt, base::Time::Now());
+  registry->RegisterTimePref(prefs::kNextPaymentTokenRedemptionAt,
+                             base::Time::Now());
+
+  registry->RegisterDictionaryPref(prefs::kAdReactions);
+  registry->RegisterDictionaryPref(prefs::kSegmentReactions);
+  registry->RegisterListPref(prefs::kSaveAds);
+  registry->RegisterListPref(prefs::kMarkedAsInappropriate);
 
   registry->RegisterBooleanPref(prefs::kHasMigratedClientState, false);
   registry->RegisterBooleanPref(prefs::kHasMigratedConfirmationState, false);
-  registry->RegisterBooleanPref(prefs::kHasMigratedConversionState, false);
-  registry->RegisterBooleanPref(prefs::kHasMigratedNotificationState, false);
-  registry->RegisterBooleanPref(prefs::kHasMigratedRewardsState, false);
   registry->RegisterBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
                                 false);
 
   registry->RegisterStringPref(prefs::kBrowserVersionNumber, "");
+
+  // Ads service prefs.
+  registry->RegisterBooleanPref(prefs::kShouldShowOnboardingNotification, true);
+
+  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateX,
+                               0.0);
+  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateY,
+                               0.0);
+  registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
+                                false);
 }
 
 }  // namespace brave_ads

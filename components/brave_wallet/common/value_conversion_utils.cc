@@ -15,18 +15,10 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "net/base/url_util.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
+#include "brave/net/base/url_util.h"
 
 namespace {
-
-// Allow only HTTPS or localhost HTTP URLs in params of AddEthereumChain dApp
-// requests.
-bool IsValidURL(const std::string& url_string) {
-  GURL url(url_string);
-  return url.is_valid() &&
-         (url.SchemeIs(url::kHttpsScheme) ||
-          (net::IsLocalhost(url) && url.SchemeIs(url::kHttpScheme)));
-}
 
 // Common parts of base::Value parsing shared between Eip3085 payload spec and
 // brave settings pserstence.
@@ -152,12 +144,6 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
         GetFirstValidChainURLIndex(chain.rpc_endpoints);
   }
 
-  if (chain.coin == mojom::CoinType::ETH) {
-    chain.is_eip1559 = params_dict->FindBool("is_eip1559").value_or(false);
-  } else {
-    chain.is_eip1559 = false;
-  }
-
   return chain.Clone();
 }
 
@@ -179,7 +165,7 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
       params_dict->FindList("blockExplorerUrls");
   if (explorerUrlsListValue) {
     for (const auto& entry : *explorerUrlsListValue) {
-      if (!entry.is_string() || !IsValidURL(entry.GetString())) {
+      if (!entry.is_string() || !IsHTTPSOrLocalhostURL(entry.GetString())) {
         continue;
       }
       chain.block_explorer_urls.push_back(entry.GetString());
@@ -189,7 +175,7 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   const auto* iconUrlsValue = params_dict->FindList("iconUrls");
   if (iconUrlsValue) {
     for (const auto& entry : *iconUrlsValue) {
-      if (!entry.is_string() || !IsValidURL(entry.GetString())) {
+      if (!entry.is_string() || !IsHTTPSOrLocalhostURL(entry.GetString())) {
         continue;
       }
       chain.icon_urls.push_back(entry.GetString());
@@ -199,7 +185,7 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   const auto* rpcUrlsValue = params_dict->FindList("rpcUrls");
   if (rpcUrlsValue) {
     for (const auto& entry : *rpcUrlsValue) {
-      if (!entry.is_string() || !IsValidURL(entry.GetString())) {
+      if (!entry.is_string() || !IsHTTPSOrLocalhostURL(entry.GetString())) {
         continue;
       }
       chain.rpc_endpoints.emplace_back(entry.GetString());
@@ -208,8 +194,6 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
 
   chain.active_rpc_endpoint_index =
       GetFirstValidChainURLIndex(chain.rpc_endpoints);
-
-  chain.is_eip1559 = false;
 
   return chain.Clone();
 }
@@ -220,10 +204,6 @@ base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   dict.Set("coin", static_cast<int>(chain.coin));
   dict.Set("chainId", chain.chain_id);
   dict.Set("chainName", chain.chain_name);
-
-  if (chain.coin == mojom::CoinType::ETH) {
-    dict.Set("is_eip1559", chain.is_eip1559);
-  }
 
   base::Value::List blockExplorerUrlsValue;
   if (!chain.block_explorer_urls.empty()) {
@@ -360,6 +340,22 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(
     token_ptr->coingecko_id = *coingecko_id;
   }
 
+  if (IsSPLToken(token_ptr)) {
+    auto spl_token_program_int = value.FindInt("spl_token_program");
+    if (!spl_token_program_int) {
+      token_ptr->spl_token_program = mojom::SPLTokenProgram::kUnknown;
+    } else {
+      auto spl_token_program =
+          static_cast<mojom::SPLTokenProgram>(*spl_token_program_int);
+      token_ptr->spl_token_program = mojom::IsKnownEnumValue(spl_token_program)
+                                         ? spl_token_program
+                                         : mojom::SPLTokenProgram::kUnknown;
+    }
+  } else {
+    token_ptr->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  }
+  token_ptr->is_compressed = value.FindBool("is_compressed").value_or(false);
+
   return token_ptr;
 }
 
@@ -382,6 +378,8 @@ base::Value::Dict BlockchainTokenToValue(
   value.Set("coingecko_id", token->coingecko_id);
   value.Set("coin", static_cast<int>(token->coin));
   value.Set("chain_id", token->chain_id);
+  value.Set("spl_token_program", static_cast<int>(token->spl_token_program));
+  value.Set("is_compressed", token->is_compressed);
   return value;
 }
 
@@ -428,7 +426,7 @@ int GetFirstValidChainURLIndex(const std::vector<GURL>& chain_urls) {
   }
   size_t index = 0;
   for (const GURL& url : chain_urls) {
-    if (url.is_valid() && url.SchemeIsHTTPOrHTTPS() &&
+    if (net::IsHTTPSOrLocalhostURL(url) &&
         !base::Contains(url.spec(), "$%7BINFURA_API_KEY%7D") &&
         !base::Contains(url.spec(), "$%7BALCHEMY_API_KEY%7D") &&
         !base::Contains(url.spec(), "$%7BAPI_KEY%7D") &&
@@ -438,6 +436,51 @@ int GetFirstValidChainURLIndex(const std::vector<GURL>& chain_urls) {
     index++;
   }
   return 0;
+}
+
+bool ReadUint32StringTo(const base::Value::Dict& dict,
+                        std::string_view key,
+                        uint32_t& to) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return false;
+  }
+  return base::StringToUint(*str, &to);
+}
+
+bool ReadStringTo(const base::Value::Dict& dict,
+                  std::string_view key,
+                  std::string& to) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return false;
+  }
+  to = *str;
+  return true;
+}
+
+bool ReadUint64StringTo(const base::Value::Dict& dict,
+                        std::string_view key,
+                        uint64_t& to) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return false;
+  }
+  return base::StringToUint64(*str, &to);
+}
+
+bool ReadHexByteArrayTo(const base::Value::Dict& dict,
+                        std::string_view key,
+                        std::vector<uint8_t>& to) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return false;
+  }
+  if (str->empty()) {
+    to.clear();
+    return true;
+  }
+  return base::HexStringToBytes(*str, &to);
 }
 
 }  // namespace brave_wallet

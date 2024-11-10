@@ -3,9 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react'
-import { Provider } from 'react-redux'
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, waitFor } from '@testing-library/react'
 
 import { useGetTransactionsQuery } from './api.slice'
 
@@ -14,7 +12,10 @@ import {
   mockFilecoinAccountInfo,
   mockSolanaAccountInfo
 } from '../constants/mocks'
-import { createMockStore } from '../../utils/test-utils'
+import {
+  createMockStore,
+  renderHookOptionsWithMockStore
+} from '../../utils/test-utils'
 import {
   createMockTransactionInfo //
 } from '../../stories/mock-data/mock-transaction-info'
@@ -24,14 +25,6 @@ import {
   mockBasicAttentionToken,
   mockBitcoinErc20Token
 } from '../../stories/mock-data/mock-asset-options'
-
-function renderHookOptionsWithCustomStore(store: any) {
-  return {
-    wrapper: ({ children }: { children?: React.ReactChildren }) => (
-      <Provider store={store}>{children}</Provider>
-    )
-  }
-}
 
 const mockSolanaSendTokenTx = createMockTransactionInfo({
   chainId: BraveWallet.SOLANA_MAINNET,
@@ -87,17 +80,21 @@ describe('api slice: useGetTransactionsQuery', () => {
       }
     )
 
-    const { result, waitForValueToChange } = renderHook(
+    const { result } = renderHook(
       () =>
         useGetTransactionsQuery({
           accountId: mockEthErc20SendTx.fromAccountId,
           coinType: BraveWallet.CoinType.ETH,
           chainId: null
         }),
-      renderHookOptionsWithCustomStore(store)
+      renderHookOptionsWithMockStore(store)
     )
 
-    await waitForValueToChange(() => result.current.isLoading)
+    // loading
+    await waitFor(() =>
+      expect(result.current.data && !result.current.isLoading).toBeTruthy()
+    )
+
     const { data: txs, isLoading, error } = result.current
 
     expect(isLoading).toBe(false)
@@ -123,17 +120,21 @@ describe('api slice: useGetTransactionsQuery', () => {
       }
     )
 
-    const { result, waitForValueToChange } = renderHook(
+    const { result } = renderHook(
       () =>
         useGetTransactionsQuery({
           accountId: null,
           coinType: null,
           chainId: null
         }),
-      renderHookOptionsWithCustomStore(store)
+      renderHookOptionsWithMockStore(store)
     )
 
-    await waitForValueToChange(() => result.current.isLoading)
+    // loading
+    await waitFor(() =>
+      expect(result.current.data && !result.current.isLoading).toBeTruthy()
+    )
+
     const { data: txs = [], isLoading, error } = result.current
 
     const txIds = txs?.map(({ id }) => id)

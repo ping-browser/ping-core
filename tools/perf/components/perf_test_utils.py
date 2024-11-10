@@ -4,18 +4,21 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 import logging
 import os
+import re
 import subprocess
 import tempfile
+import time
 import platform
 
 from threading import Timer
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 from urllib.request import urlopen
 
 import components.path_util as path_util
 
-with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
-  from lib.util import extract_zip
+
+def IsSha1Hash(s: str) -> bool:
+  return re.match(r'[a-f0-9]{40}', s) is not None
 
 
 def ToChromiumPlatformName(target_os: str) -> str:
@@ -105,12 +108,19 @@ def GetProcessOutput(args: List[str],
 
 
 def DownloadFile(url: str, output: str):
-  logging.info('Downloading %s to %s', url, output)
-  try:
-    f = urlopen(url)
-  except Exception as e:
-    raise RuntimeError(f'Can\'t download {url}') from e
-  data = f.read()
+
+  def load_data():
+    for _ in range(3):
+      try:
+        logging.info('Downloading %s to %s', url, output)
+        f = urlopen(url)
+        return f.read()
+      except Exception:
+        logging.error('Download attempt failed')
+        time.sleep(5)
+    raise RuntimeError(f'Can\'t download {url}')
+
+  data = load_data()
   os.makedirs(os.path.dirname(output), exist_ok=True)
   with open(output, 'wb') as output_file:
     output_file.write(data)
@@ -119,15 +129,6 @@ def DownloadFile(url: str, output: str):
 def DownloadArchiveAndUnpack(output_directory: str, url: str):
   _, f = tempfile.mkstemp(dir=output_directory)
   DownloadFile(url, f)
+  with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
+    from lib.util import extract_zip  # pylint: disable=import-outside-toplevel
   extract_zip(f, output_directory)
-
-
-def GetFileAtRevision(filepath: str, revision: str) -> Optional[str]:
-  if os.path.isabs(filepath):
-    filepath = os.path.relpath(filepath, path_util.GetBraveDir())
-  normalized_path = filepath.replace('\\', '/')
-  success, content = GetProcessOutput(
-      ['git', 'show', f'{revision}:{normalized_path}'],
-      cwd=path_util.GetBraveDir(),
-      output_to_debug=False)
-  return content if success else None

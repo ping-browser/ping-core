@@ -20,14 +20,14 @@ extension BraveHistoryAPI {
     addHistory(historyNode)
   }
 
-  func frc() -> HistoryV2FetchResultsController? {
-    return Historyv2Fetcher(historyAPI: self)
-  }
-
   func suffix(_ maxLength: Int, _ completion: @escaping ([HistoryNode]) -> Void) {
+    let options = HistorySearchOptions(
+      maxCount: UInt(max(20, maxLength)),
+      duplicateHandling: .removePerDay
+    )
     search(
       withQuery: nil,
-      maxCount: UInt(max(20, maxLength)),
+      options: options,
       completion: { historyResults in
         completion(historyResults.map { $0 })
       }
@@ -38,10 +38,13 @@ extension BraveHistoryAPI {
     guard !query.isEmpty else {
       return
     }
-
+    let options = HistorySearchOptions(
+      maxCount: 200,
+      duplicateHandling: query.isEmpty ? .removePerDay : .removeAll
+    )
     search(
       withQuery: query,
-      maxCount: 200,
+      options: options,
       completion: { historyResults in
         completion(historyResults.map { $0 })
       }
@@ -73,53 +76,6 @@ extension BraveHistoryAPI {
           completion()
         }
       }
-    }
-  }
-
-  // MARK: Private
-
-  private struct AssociatedObjectKeys {
-    static var serviceStateListener: Int = 0
-  }
-
-  private var observer: HistoryServiceListener? {
-    get {
-      objc_getAssociatedObject(self, &AssociatedObjectKeys.serviceStateListener)
-        as? HistoryServiceListener
-    }
-    set {
-      objc_setAssociatedObject(
-        self,
-        &AssociatedObjectKeys.serviceStateListener,
-        newValue,
-        .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-      )
-    }
-  }
-}
-
-// MARK: Brave-Core Only
-
-extension BraveHistoryAPI {
-
-  func waitForHistoryServiceLoaded(_ completion: @escaping () -> Void) {
-    if isBackendLoaded {
-      DispatchQueue.main.async {
-        completion()
-      }
-    } else {
-      observer = add(
-        HistoryServiceStateObserver({ [weak self] in
-          if case .serviceLoaded = $0 {
-            self?.observer?.destroy()
-            self?.observer = nil
-
-            DispatchQueue.main.async {
-              completion()
-            }
-          }
-        })
-      )
     }
   }
 }

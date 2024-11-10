@@ -262,6 +262,17 @@ void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
 }
 
 void Contribution::Start(mojom::ContributionQueuePtr info) {
+  CHECK(info);
+
+  // For auto-contributions, ensure that AC is still enabled before starting the
+  // contribution flow.
+  if (info->type == mojom::RewardsType::AUTO_CONTRIBUTE &&
+      !engine_->state()->GetAutoContributeEnabled()) {
+    engine_->LogError(FROM_HERE) << "AC is disabled, skipping contribution";
+    MarkContributionQueueAsComplete(info->id, false);
+    return;
+  }
+
   auto fetch_callback = base::BindOnce(
       &Contribution::OnBalance, weak_factory_.GetWeakPtr(), std::move(info));
   engine_->wallet()->FetchBalance(std::move(fetch_callback));
@@ -649,7 +660,6 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
     return;
   }
 
-  NOTREACHED();
   engine_->LogError(FROM_HERE) << "Wallet type not supported";
 }
 

@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Brave”?";
+"e13lS3-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Ping”?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Brave”?";
+"e13lS3-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Ping”?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Možete li potvrditi jeste li htjeli „Preuzimanja”?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Brave”?";
+"e13lS3-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Ping”?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Možete li potvrditi jeste li htjeli „Pretraživanje”?";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Brave”.";
+"L1fziM-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Ping”.";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Brave”.";
+"L1fziM-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Ping”.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Sljedeći broj mogućnosti: ${count} podudara se s „Preuzimanja”.";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Brave”.";
+"L1fziM-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Ping”.";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Sljedeći broj mogućnosti: ${count} podudara se s „Pretraživanje”.";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Brave”?";
+"r2EI05-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Ping”?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Brave”?";
+"r2EI05-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Ping”?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Možete li potvrditi jeste li htjeli „Preuzimanja”?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Brave”?";
+"r2EI05-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Ping”?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Možete li potvrditi jeste li htjeli „Pretraživanje”?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Brave”.";
+"tNCrcE-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Ping”.";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Brave”.";
+"tNCrcE-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Ping”.";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "Sljedeći broj mogućnosti: ${count} podudara se s „Preuzimanja”.";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Brave”.";
+"tNCrcE-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Ping”.";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Sljedeći broj mogućnosti: ${count} podudara se s „Pretraživanje”.";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Brave”.";
+"TxuMja-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Ping”.";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Brave”.";
+"TxuMja-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Ping”.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Sljedeći broj mogućnosti: ${count} podudara se s „Preuzimanja”.";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Brave”.";
+"TxuMja-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Ping”.";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Sljedeći broj mogućnosti: ${count} podudara se s „Pretraživanje”.";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Brave”?";
+"YQiQuz-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Ping”?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Brave”?";
+"YQiQuz-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Ping”?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Možete li potvrditi jeste li htjeli „Preuzimanja”?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Brave”?";
+"YQiQuz-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Ping”?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Možete li potvrditi jeste li htjeli „Pretraživanje”?";

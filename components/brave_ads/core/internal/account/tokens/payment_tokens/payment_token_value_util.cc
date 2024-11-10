@@ -11,6 +11,8 @@
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 
@@ -55,9 +57,9 @@ base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
 PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
   PaymentTokenList payment_tokens;
 
-  for (const auto& item : list) {
-    const auto* const item_dict = item.GetIfDict();
-    if (!item_dict) {
+  for (const auto& value : list) {
+    const auto* const dict = value.GetIfDict();
+    if (!dict) {
       BLOG(0, "Payment token should be a dictionary");
       continue;
     }
@@ -65,8 +67,9 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
     PaymentTokenInfo payment_token;
 
     // Transaction id
-    if (const auto* const value = item_dict->FindString(kTransactionIdKey)) {
-      payment_token.transaction_id = *value;
+    if (const auto* const transaction_id =
+            dict->FindString(kTransactionIdKey)) {
+      payment_token.transaction_id = *transaction_id;
     } else {
       // Migrate legacy confirmations
       payment_token.transaction_id =
@@ -74,8 +77,9 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
     }
 
     // Unblinded token
-    if (const auto* const value = item_dict->FindString(kUnblindedTokenKey)) {
-      payment_token.unblinded_token = cbr::UnblindedToken(*value);
+    if (const auto* const unblinded_token =
+            dict->FindString(kUnblindedTokenKey)) {
+      payment_token.unblinded_token = cbr::UnblindedToken(*unblinded_token);
       if (!payment_token.unblinded_token.has_value()) {
         BLOG(0, "Invalid unblinded token");
         continue;
@@ -86,8 +90,8 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
     }
 
     // Public key
-    if (const auto* const value = item_dict->FindString(kPublicKey)) {
-      payment_token.public_key = cbr::PublicKey(*value);
+    if (const auto* const public_key = dict->FindString(kPublicKey)) {
+      payment_token.public_key = cbr::PublicKey(*public_key);
       if (!payment_token.public_key.has_value()) {
         BLOG(0, "Invalid payment token public key");
         continue;
@@ -98,13 +102,15 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
     }
 
     // Confirmation type
-    if (const auto* const value = item_dict->FindString(kConfirmationTypeKey)) {
-      payment_token.confirmation_type = ToConfirmationType(*value);
+    if (const auto* const confirmation_type =
+            dict->FindString(kConfirmationTypeKey)) {
+      payment_token.confirmation_type =
+          ToMojomConfirmationType(*confirmation_type);
     }
 
     // Ad type
-    if (const auto* const value = item_dict->FindString(kAdTypeKey)) {
-      payment_token.ad_type = ToAdType(*value);
+    if (const auto* const ad_type = dict->FindString(kAdTypeKey)) {
+      payment_token.ad_type = ToMojomAdType(*ad_type);
     }
 
     payment_tokens.push_back(payment_token);

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser_actions.h b/chrome/browser/ui/browser_actions.h
+index c94699d65b7bc06580c08d719ffeb60a3d4b71ca..cf814d5eb54589d4e5b4080b0f49f32ec6e9625c 100644
+--- a/chrome/browser/ui/browser_actions.h
++++ b/chrome/browser/ui/browser_actions.h
+@@ -23,7 +23,7 @@ class BrowserActions {
+   explicit BrowserActions(Browser& browser);
+   BrowserActions(const BrowserActions&) = delete;
+   BrowserActions& operator=(const BrowserActions&) = delete;
+-  ~BrowserActions();
++  virtual ~BrowserActions();
+ 
+   static std::u16string GetCleanTitleAndTooltipText(std::u16string string);
+ 

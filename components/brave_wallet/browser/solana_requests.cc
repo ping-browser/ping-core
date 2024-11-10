@@ -11,11 +11,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
-namespace brave_wallet {
-
-namespace solana {
+namespace brave_wallet::solana {
 
 std::string getBalance(const std::string& pubkey) {
   return GetJsonRpcString("getBalance", pubkey);
@@ -53,8 +51,8 @@ std::string sendTransaction(
 
   base::Value::Dict dictionary =
       GetJsonRpcDictionary("sendTransaction", std::move(params));
-  return std::string(json::convert_string_value_to_uint64(
-      "/params/1/maxRetries", GetJSON(dictionary), true));
+  return json::convert_string_value_to_uint64("/params/1/maxRetries",
+                                              GetJSON(dictionary), true);
 }
 
 std::string getLatestBlockhash() {
@@ -98,7 +96,19 @@ std::string getAccountInfo(const std::string& pubkey) {
 }
 
 std::string getFeeForMessage(const std::string& message) {
-  return GetJsonRpcString("getFeeForMessage", message);
+  base::Value::List params;
+  params.Append(message);
+
+  base::Value::Dict configuration;
+  // dApps may supply a blockhash with a confirmed commitment level,
+  // so fetching a fee for those transactions requires us using
+  // a confirmed commitment level.
+  configuration.Set("commitment", "confirmed");
+  params.Append(std::move(configuration));
+
+  base::Value::Dict dictionary =
+      GetJsonRpcDictionary("getFeeForMessage", std::move(params));
+  return GetJSON(dictionary);
 }
 
 std::string getBlockHeight() {
@@ -109,7 +119,8 @@ std::string getBlockHeight() {
 //
 // "base58" as encoding is slow and deprecated. Prefer using "base64" instead.
 std::string getTokenAccountsByOwner(const std::string& pubkey,
-                                    const std::string& encoding) {
+                                    const std::string& encoding,
+                                    const std::string& program_id) {
   CHECK(IsValidEncodingString(encoding));
 
   base::Value::List params;
@@ -117,7 +128,7 @@ std::string getTokenAccountsByOwner(const std::string& pubkey,
 
   base::Value::Dict program;
   base::Value::Dict encoding_dict;
-  program.Set("programId", mojom::kSolanaTokenProgramId);
+  program.Set("programId", program_id);
   encoding_dict.Set("encoding", encoding);
   params.Append(std::move(program));
   params.Append(std::move(encoding_dict));
@@ -142,6 +153,25 @@ std::string isBlockhashValid(const std::string& blockhash,
   return GetJSON(dictionary);
 }
 
-}  // namespace solana
+std::string simulateTransaction(const std::string& unsigned_tx) {
+  base::Value::List params;
+  params.Append(unsigned_tx);
 
-}  // namespace brave_wallet
+  base::Value::Dict configuration;
+  configuration.Set("encoding", "base64");
+  // dApps may supply a blockhash with a confirmed commitment level,
+  // so simulating that transaction requires us using
+  // a confirmed commitment level.
+  configuration.Set("commitment", "confirmed");
+  params.Append(std::move(configuration));
+
+  base::Value::Dict dictionary =
+      GetJsonRpcDictionary("simulateTransaction", std::move(params));
+  return GetJSON(dictionary);
+}
+
+std::string getRecentPrioritizationFees() {
+  return GetJsonRpcString("getRecentPrioritizationFees");
+}
+
+}  // namespace brave_wallet::solana

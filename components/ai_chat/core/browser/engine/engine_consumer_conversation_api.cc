@@ -26,27 +26,16 @@ namespace {
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
 
-ConversationEvent GetAssociatedContentConversationEvent(
-    const std::string& content,
-    const bool is_video) {
-  ConversationEvent event;
-  event.role = mojom::CharacterType::HUMAN;
-  event.content = content;
-  // TODO(petemill): Differentiate video XML / VTT
-  event.type = is_video ? ConversationEventType::VideoTranscriptXML
-                        : ConversationEventType::PageText;
-  return event;
-}
-
 }  // namespace
 
 EngineConsumerConversationAPI::EngineConsumerConversationAPI(
-    const mojom::Model& model,
+    const mojom::LeoModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager) {
-  DCHECK(!model.name.empty());
-  api_ = std::make_unique<ConversationAPIClient>(model.name, url_loader_factory,
-                                                 credential_manager);
+  DCHECK(!model_options.name.empty());
+  api_ = std::make_unique<ConversationAPIClient>(
+      model_options.name, url_loader_factory, credential_manager);
+  max_associated_content_length_ = model_options.max_associated_content_length;
 }
 
 EngineConsumerConversationAPI::~EngineConsumerConversationAPI() = default;
@@ -58,19 +47,22 @@ void EngineConsumerConversationAPI::ClearAllQueries() {
 void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     std::string text,
     const std::string& question,
+    const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   std::vector<ConversationEvent> conversation = {
       {mojom::CharacterType::HUMAN, ConversationEventType::UserText, text},
       {mojom::CharacterType::HUMAN, ConversationEventType::RequestRewrite,
        question}};
-  api_->PerformRequest(std::move(conversation), std::move(received_callback),
+  api_->PerformRequest(std::move(conversation), selected_language,
+                       std::move(received_callback),
                        std::move(completed_callback));
 }
 
 void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
+    const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   std::vector<ConversationEvent> conversation{
       GetAssociatedContentConversationEvent(page_content, is_video),
@@ -81,8 +73,8 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
       &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_->PerformRequest(std::move(conversation), base::NullCallback(),
-                       std::move(on_response));
+  api_->PerformRequest(std::move(conversation), selected_language,
+                       base::NullCallback(), std::move(on_response));
 }
 
 void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
@@ -106,15 +98,10 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
+    const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  if (conversation_history.empty()) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
-    return;
-  }
-
-  const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
-  if (last_turn->character_type != mojom::CharacterType::HUMAN) {
+  if (!CanPerformCompletionRequest(conversation_history)) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
@@ -135,14 +122,20 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     }
     ConversationEvent event;
     event.role = message->character_type;
-    event.content = (message == last_turn) ? human_input : message->text;
+
+    const std::string& text = (message->edits && !message->edits->empty())
+                                  ? message->edits->back()->text
+                                  : message->text;
+    const auto& last_turn = conversation_history.back();
+    event.content = (message == last_turn) ? human_input : text;
+
     // TODO(petemill): Shouldn't the server handle the map of mojom::ActionType
     // to prompts? (e.g. SUMMARIZE_PAGE, PARAPHRASE, etc.)
     event.type = ConversationEventType::ChatMessage;
     conversation.push_back(std::move(event));
   }
 
-  api_->PerformRequest(std::move(conversation),
+  api_->PerformRequest(std::move(conversation), selected_language,
                        std::move(data_received_callback),
                        std::move(completed_callback));
 }
@@ -153,6 +146,22 @@ void EngineConsumerConversationAPI::SanitizeInput(std::string& input) {
 
 bool EngineConsumerConversationAPI::SupportsDeltaTextResponses() const {
   return true;
+}
+
+ConversationEvent
+EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
+    const std::string& content,
+    const bool is_video) {
+  const std::string& truncated_page_content =
+      content.substr(0, max_associated_content_length_);
+
+  ConversationEvent event;
+  event.role = mojom::CharacterType::HUMAN;
+  event.content = truncated_page_content;
+  // TODO(petemill): Differentiate video transcript / XML / VTT
+  event.type = is_video ? ConversationEventType::VideoTranscript
+                        : ConversationEventType::PageText;
+  return event;
 }
 
 }  // namespace ai_chat

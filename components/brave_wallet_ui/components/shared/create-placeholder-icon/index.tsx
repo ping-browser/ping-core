@@ -7,7 +7,6 @@
 
 import * as React from 'react'
 import { background } from 'ethereum-blockies'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
@@ -18,25 +17,19 @@ import {
   isRemoteImageURL,
   isValidIconExtension,
   isDataURL,
-  isIpfs,
   isComponentInStorybook,
   stripChromeImageURL
 } from '../../../utils/string-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
 
-// Hooks
-import {
-  useGetIpfsGatewayTranslatedNftUrlQuery //
-} from '../../../common/slices/api.slice'
-
 // Styled components
-import { IconWrapper, PlaceholderText } from './style'
+import { AssetIconSizes, IconWrapper, PlaceholderText } from './style'
 
 // Options
 import { makeNativeAssetLogo } from '../../../options/asset-options'
 
 interface Config {
-  size: 'big' | 'medium' | 'small' | 'tiny'
+  size: AssetIconSizes
   marginLeft?: number
   marginRight?: number
 }
@@ -54,8 +47,6 @@ export type IconAsset = Pick<
 
 interface Props {
   asset: IconAsset | undefined
-  /** @deprecated Not used */
-  network?: Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'> | null
 }
 
 const isStorybook = isComponentInStorybook()
@@ -75,7 +66,7 @@ export function withPlaceholderIcon<
   const { size, marginLeft, marginRight } = config
 
   return function (funcProps: Props & PROPS_FOR_FUNCTION) {
-    const { asset, network, ...wrappedComponentProps } = funcProps
+    const { asset, ...wrappedComponentProps } = funcProps
 
     const isNative = asset && isNativeAsset(asset)
 
@@ -89,11 +80,6 @@ export function withPlaceholderIcon<
 
     const isNonFungibleToken = asset?.isNft || asset?.isErc721
 
-    // queries
-    const { data: ipfsUrl } = useGetIpfsGatewayTranslatedNftUrlQuery(
-      tokenImageURL || skipToken
-    )
-
     // memos + computed
     const isValidIcon = React.useMemo(() => {
       if (isStorybook) {
@@ -104,13 +90,17 @@ export function withPlaceholderIcon<
 
       if (isRemoteURL || isDataUri) {
         return tokenImageURL?.includes('data:image/') ||
-          isIpfs(tokenImageURL) ||
           isNonFungibleToken
           ? true
           : isValidIconExtension(new URL(asset?.logo || '').pathname)
       }
       return false
-    }, [asset?.logo, isRemoteURL, tokenImageURL, isNonFungibleToken])
+    }, [
+      asset?.logo,
+      isRemoteURL,
+      tokenImageURL,
+      isNonFungibleToken
+    ])
 
     const needsPlaceholder =
       (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
@@ -127,10 +117,10 @@ export function withPlaceholderIcon<
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return isStorybook ? ipfsUrl || '' : `chrome://image?${ipfsUrl}`
+        return isStorybook ? tokenImageURL || '' : `chrome://image?${tokenImageURL}`
       }
       return ''
-    }, [isRemoteURL, ipfsUrl])
+    }, [isRemoteURL, tokenImageURL])
 
     // render
     if (!asset) {

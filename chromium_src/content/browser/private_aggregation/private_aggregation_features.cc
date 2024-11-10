@@ -10,7 +10,7 @@
 namespace content {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kPrivateAggregationApiBundledEnhancements,
+    {kPrivateAggregationApiDebugModeRequires3pcEligibility,
      base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

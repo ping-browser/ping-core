@@ -23,17 +23,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/GuardianFirewall/GuardianConnect",
       "state" : {
-        "revision" : "3c828f38094debd22d217ee61c0ecf05d76cd741",
-        "version" : "1.9.1"
+        "revision" : "014e6b17580f28d493a793dcdedb7db6371b3ed0",
+        "version" : "1.9.3"
       }
     },
     {
-      "identity" : "lottie-ios",
+      "identity" : "lottie-spm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-ios",
+      "location" : "https://github.com/airbnb/lottie-spm",
       "state" : {
-        "revision" : "4a6058cbbdfe4f74aeae92c8bd51ad3b0de2a1ee",
-        "version" : "3.3.0"
+        "revision" : "b842598f1295f3ffa1475b1580672d1fe5b83580",
+        "version" : "4.5.0"
       }
     },
     {
@@ -93,8 +93,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mkrd/Swift-BigInt",
       "state" : {
-        "revision" : "b5f483488bca316cbb078ae16f865fa0c21f874a",
-        "version" : "2.2.0"
+        "revision" : "b07e961f4c999671cf8c2dc80e740899e8946013",
+        "version" : "2.3.0"
       }
     },
     {
@@ -156,7 +156,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jitsi/webrtc",
       "state" : {
-        "revision" : "f20affccefa9c096a64ca15066f4b786a2ada1f6"
+        "revision" : "7c9f8e712da4d399f85f0a9bfec17f0a68ceb1fd"
       }
     },
     {

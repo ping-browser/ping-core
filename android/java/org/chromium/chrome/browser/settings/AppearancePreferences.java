@@ -15,6 +15,8 @@ import androidx.preference.Preference;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -25,6 +27,7 @@ import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
+import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -47,13 +50,16 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
     public static final String PREF_BRAVE_ENABLE_SPEEDREADER = "brave_enable_speedreader";
     public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
+    public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
+
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.prefs_appearance);
+        mPageTitle.set(getString(R.string.prefs_appearance));
         SettingsUtils.addPreferencesFromResource(this, R.xml.appearance_preferences);
         boolean isTablet =
                 DeviceFormFactor.isNonMultiDisplayContextOnTablet(
@@ -94,9 +100,7 @@ public class AppearancePreferences extends BravePreferenceFragment
         ChromeSwitchPreference showBraveRewardsIconPref =
                 (ChromeSwitchPreference) findPreference(PREF_SHOW_BRAVE_REWARDS_ICON);
         if (showBraveRewardsIconPref != null) {
-            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            showBraveRewardsIconPref.setChecked(
-                    sharedPreferences.getBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, false));
+            showBraveRewardsIconPref.setChecked(NtpUtil.shouldShowRewardsIcon());
             showBraveRewardsIconPref.setOnPreferenceChangeListener(this);
         }
 
@@ -169,6 +173,22 @@ public class AppearancePreferences extends BravePreferenceFragment
                         .setChecked(BraveMultiWindowUtils.shouldEnableMultiWindows());
             }
         }
+
+        ChromeSwitchPreference showUndoButtonOnTabClosed =
+                (ChromeSwitchPreference) findPreference(PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
+        if (showUndoButtonOnTabClosed != null) {
+            showUndoButtonOnTabClosed.setOnPreferenceChangeListener(this);
+            ((ChromeSwitchPreference) showUndoButtonOnTabClosed)
+                    .setChecked(
+                            ChromeSharedPreferences.getInstance()
+                                    .readBoolean(
+                                            BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, true));
+        }
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override
@@ -249,6 +269,10 @@ public class AppearancePreferences extends BravePreferenceFragment
                 }
             }
             BraveMultiWindowUtils.updateEnableMultiWindows((boolean) newValue);
+        } else if (PREF_SHOW_UNDO_WHEN_TABS_CLOSED.equals(key)) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
+                            BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, (boolean) newValue);
         }
         if (shouldRelaunch) {
             BraveRelaunchUtils.askForRelaunch(getActivity());

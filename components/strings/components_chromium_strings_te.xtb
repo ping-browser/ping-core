@@ -19,7 +19,7 @@
           మరియు "మీ LAN కోసం ప్రాక్సీ సర్వర్‌ను ఉపయోగించండి" చెక్ బాక్స్‌ ఎంపికను తీసివేయండి.</translation>
 <translation id="303960458633076466">Ping ద్వారా ఈ పేజీ బ్లాక్ చేయబడింది</translation>
 <translation id="2017237562285586622">మీ ఫైర్‌వాల్ లేదా యాంటీవైరస్ సెట్టింగ్‌ల్లో నెట్‌వర్క్‌ను యాక్సెస్ చేయడానికి
-        Braveను అనుమతించండి.</translation>
+        Pingను అనుమతించండి.</translation>
 <translation id="8619622797841001082">Ping మెనూ &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
@@ -27,9 +27,11 @@
           &gt;
           <ph name="PROXIES_TITLE"/>కు వెళ్లండి
           మరియు మీ కాన్ఫిగరేషన్ "ప్రాక్సీ వద్దు" లేదా "నేరుగా" లాగా సెట్ చేయబడిందని నిర్ధారించుకోండి.</translation>
-<translation id="2765022094254723779">ఇతర <ph name="BEGIN_LINK_OSS"/>ఓపెన్ సోర్స్ సాఫ్ట్‌వేర్<ph name="END_LINK_OSS"/> ద్వారా కూడా Braveను రూపొందించడం సాధ్యమయ్యింది.</translation>
-<translation id="9156965752763025780">మీ మార్పులు మీరు Braveని మరుసటిసారి ప్రారంభించినప్పుడు ప్రభావాన్ని చూపుతాయి.</translation>
-<translation id="6477625882876869143"><ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> ఓపెన్ సోర్స్ ప్రాజెక్ట్ ద్వారా Braveను రూపొందించడం సాధ్యమయ్యింది.</translation>
+<translation id="2765022094254723779">ఇతర <ph name="BEGIN_LINK_OSS"/>ఓపెన్ సోర్స్ సాఫ్ట్‌వేర్<ph name="END_LINK_OSS"/> ద్వారా కూడా Pingను రూపొందించడం సాధ్యమయ్యింది.</translation>
+<translation id="9156965752763025780">మీ మార్పులు మీరు Pingని మరుసటిసారి ప్రారంభించినప్పుడు ప్రభావాన్ని చూపుతాయి.</translation>
+<translation id="8828443087767259398">పెయిరింగ్‌ను కొనసాగించడానికి Pingకు 
+ బ్లూటూత్ యాక్సెస్ అవసరం. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
+<translation id="6477625882876869143"><ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> ఓపెన్ సోర్స్ ప్రాజెక్ట్ ద్వారా Pingను రూపొందించడం సాధ్యమయ్యింది.</translation>
 <translation id="4068928808254189629">Ping మెనూ &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;

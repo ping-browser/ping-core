@@ -53,16 +53,10 @@ struct FocusP3AScreenView: View {
       .background(Color(braveSystemName: .pageBackground))
       .background {
         NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+          FocusSystemSettingsView(screenType: .onboarding, shouldDismiss: $shouldDismiss)
         }
       }
-      .osAvailabilityModifiers { content in
-        if #available(iOS 16.0, *) {
-          content.toolbar(.hidden, for: .navigationBar)
-        } else {
-          content.navigationBarHidden(true)
-        }
-      }
+      .toolbar(.hidden, for: .navigationBar)
     } else {
       VStack {
         consentp3aContentView
@@ -72,16 +66,10 @@ struct FocusP3AScreenView: View {
       .background(Color(braveSystemName: .pageBackground))
       .background {
         NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+          FocusSystemSettingsView(screenType: .onboarding, shouldDismiss: $shouldDismiss)
         }
       }
-      .osAvailabilityModifiers { content in
-        if #available(iOS 16.0, *) {
-          content.toolbar(.hidden, for: .navigationBar)
-        } else {
-          content.navigationBarHidden(true)
-        }
-      }
+      .toolbar(.hidden, for: .navigationBar)
     }
   }
 

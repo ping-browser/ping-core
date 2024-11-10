@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Ez lehetővé teszi a fényképek készítését és feltöltését.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Ez hitelesíti az Ön hozzáférését a Brave-hez";
+"NSFaceIDUsageDescription" = "Ez hitelesíti az Ön hozzáférését a Ping-hez";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "A meglátogatott webhelyek kérhetik a tartózkodási helyét.";

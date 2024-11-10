@@ -24,6 +24,14 @@ FORWARD_DECLARE_TEST(EthTransactionTest, GetSignedTransaction);
 FORWARD_DECLARE_TEST(EthTransactionTest, TransactionAndValue);
 FORWARD_DECLARE_TEST(Eip2930TransactionUnitTest, GetSignedTransaction);
 
+// TODO(apaymyshev): make use of that enum instead of magic numbers.
+// https://eips.ethereum.org/EIPS/eip-2718
+enum EthTransactionType : uint8_t {
+  kLegacy = 0,
+  kEip2930 = 1,  // https://eips.ethereum.org/EIPS/eip-2930#definitions
+  kEip1559 = 2   // https://eips.ethereum.org/EIPS/eip-1559#specification
+};
+
 class EthTransaction {
  public:
   EthTransaction();
@@ -55,9 +63,9 @@ class EthTransaction {
   void set_data(const std::vector<uint8_t>& data) { data_ = data; }
   void set_gas_price(uint256_t gas_price) { gas_price_ = gas_price; }
   void set_gas_limit(uint256_t gas_limit) { gas_limit_ = gas_limit; }
-  bool ProcessVRS(const std::string& v,
-                  const std::string& r,
-                  const std::string& s);
+  bool ProcessVRS(const std::vector<uint8_t>& v,
+                  const std::vector<uint8_t>& r,
+                  const std::vector<uint8_t>& s);
   bool IsToCreationAddress() const { return to_.IsEmpty(); }
 
   // return

@@ -13,15 +13,14 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
   @Published var token: BraveWallet.BlockchainToken
   @Published var isVisible: Bool {
     didSet {
-      // update user asset's visibility. `assetManager` will broadcast to all its user assets data
-      // observers to update views. `assetManager` will also fetch user asset's balance
-      assetManager.updateUserAsset(
-        for: token,
-        visible: isVisible,
-        isSpam: false,
-        isDeletedByUser: false,
-        completion: nil
-      )
+      Task { @MainActor in
+        await assetManager.updateUserAsset(
+          for: token,
+          visible: isVisible,
+          isSpam: token.isSpam,
+          isDeletedByUser: false
+        )
+      }
     }
   }
   var network: BraveWallet.NetworkInfo
@@ -30,7 +29,7 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
   private let rpcService: BraveWalletJsonRpcService
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
-  private(set) var isCustomToken: Bool
+  private(set) var isRemovable: Bool
 
   var isObserving: Bool = false
 
@@ -40,7 +39,7 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
     token: BraveWallet.BlockchainToken,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType,
-    isCustomToken: Bool,
+    isRemovable: Bool,
     isVisible: Bool
   ) {
     self.rpcService = rpcService
@@ -48,7 +47,7 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
     self.token = token
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
-    self.isCustomToken = isCustomToken
+    self.isRemovable = isRemovable
     self.isVisible = isVisible
   }
 
@@ -56,8 +55,11 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
     lhs.token == rhs.token && lhs.isVisible == rhs.isVisible
   }
 
-  @MainActor func fetchERC721Metadata() async -> NFTMetadata? {
-    return await rpcService.fetchNFTMetadata(for: token, ipfsApi: self.ipfsApi)
+  @MainActor func fetchERC721Metadata() async -> BraveWallet.NftMetadata? {
+    return await rpcService.fetchNFTMetadata(
+      for: token,
+      ipfsApi: ipfsApi
+    )
   }
 }
 
@@ -70,6 +72,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
       update()
     }
   }
+  @Published var isAddingAsset: Bool = false
 
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let rpcService: BraveWalletJsonRpcService
@@ -82,6 +85,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
   private var timer: Timer?
   private var keyringServiceObserver: KeyringServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
+  private var updateTask: Task<(), Never>?
 
   var isObserving: Bool {
     keyringServiceObserver != nil && walletServiceObserver != nil
@@ -135,10 +139,12 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
         }
       }
     )
+    assetManager.addUserAssetDataObserver(self)
   }
 
   func update() {
-    Task { @MainActor in
+    self.updateTask?.cancel()
+    self.updateTask = Task { @MainActor in
       // setup network filters if not currently setup
       if self.networkFilters.isEmpty {
         self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map {
@@ -148,14 +154,21 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
       let networks: [BraveWallet.NetworkInfo] = self.networkFilters.filter(\.isSelected).map(
         \.model
       )
-      let allUserAssets = assetManager.getAllUserAssetsInNetworkAssets(
+      let allUserAssetsExcludeDeleted = await assetManager.getAllUserAssetsInNetworkAssets(
         networks: networks,
         includingUserDeleted: false
       )
-      var allTokens = await self.blockchainRegistry.allTokens(in: networks)
+      let allHiddenAssets = await assetManager.getUserAssets(
+        networks: networks,
+        visible: false
+      )
+      let allTokens = await self.blockchainRegistry.allTokens(
+        in: networks,
+        includingUserDeleted: false
+      )
       // Filter `allTokens` to remove any tokens existing in `allUserAssets`. This is possible for ERC721 tokens in the registry without a `tokenId`, which requires the user to add as a custom token
-      let allUserTokens = allUserAssets.flatMap(\.tokens)
-      allTokens = allTokens.map { assetsForNetwork in
+      let allUserTokens = allUserAssetsExcludeDeleted.flatMap(\.tokens)
+      let updatedAllTokens: [NetworkAssets] = allTokens.map { assetsForNetwork in
         NetworkAssets(
           network: assetsForNetwork.network,
           tokens: assetsForNetwork.tokens.filter { token in
@@ -164,18 +177,26 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
           sortOrder: assetsForNetwork.sortOrder
         )
       }
+      let allHiddenTokens: [BraveWallet.BlockchainToken] = allHiddenAssets.flatMap(\.tokens)
 
-      let visibleIds = allUserAssets.flatMap(\.tokens).filter(\.visible).map { $0.id + $0.chainId }
-      assetStores = (allUserAssets + allTokens)
+      let visibleIds: [String] =
+        allUserAssetsExcludeDeleted
+        .flatMap(\.tokens)
+        .filter { asset in
+          !allHiddenTokens.contains { hiddenToken in
+            hiddenToken.id.caseInsensitiveCompare(asset.id) == .orderedSame
+          }
+        }
+        .map(\.id)
+      assetStores = (allUserAssetsExcludeDeleted + updatedAllTokens)
         .sorted(by: { $0.sortOrder < $1.sortOrder })
         .flatMap { assetsForNetwork in
           assetsForNetwork.tokens.map { token in
-            var isCustomToken: Bool {
+            var isRemovable: Bool {
               if token.contractAddress.isEmpty {
                 return false
               }
-              // Any token with a tokenId should be considered a custom token.
-              if !token.tokenId.isEmpty {
+              if token.isErc721 || token.isErc1155 || token.isNft {
                 return true
               }
               return !allTokens.flatMap(\.tokens).contains(where: {
@@ -190,36 +211,48 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
               token: token,
               ipfsApi: self.ipfsApi,
               userAssetManager: assetManager,
-              isCustomToken: isCustomToken,
-              isVisible: visibleIds.contains(where: { $0 == (token.id + token.chainId) })
+              isRemovable: isRemovable,
+              isVisible: visibleIds.contains(where: {
+                $0.caseInsensitiveCompare(token.id) == .orderedSame
+              })
             )
           }
         }
     }
   }
 
-  func addUserAsset(
-    _ asset: BraveWallet.BlockchainToken,
-    completion: @escaping (_ success: Bool) -> Void
-  ) {
-    if let existedAsset = assetManager.getUserAsset(asset), !existedAsset.isDeletedByUser {
-      completion(false)
-    } else {
-      assetManager.addUserAsset(asset) { [weak self] in
-        self?.update()
-        completion(true)
-      }
+  @MainActor func addUserAsset(
+    _ token: BraveWallet.BlockchainToken
+  ) async -> Bool {
+    isAddingAsset = true
+    let success = await assetManager.addUserAsset(token, isAutoDiscovery: false)
+    isAddingAsset = false
+    if success {
+      update()
     }
+    return success
   }
 
-  func removeUserAsset(
-    token: BraveWallet.BlockchainToken,
-    completion: @escaping (_ success: Bool) -> Void
-  ) {
-    assetManager.removeUserAsset(token) { [weak self] in
-      self?.update()
-      completion(true)
+  @MainActor func removeUserAsset(
+    token: BraveWallet.BlockchainToken
+  ) async -> Bool {
+    guard
+      let storeToRemoveIndex = assetStores.firstIndex(where: {
+        $0.token.id == token.id
+      }),
+      let storeToRemove = assetStores[safe: storeToRemoveIndex]
+    else {
+      return false
     }
+    // `assetStores` updates
+    assetStores.remove(at: storeToRemoveIndex)
+    // asset manager updates
+    let success = await assetManager.removeUserAsset(token)
+    // if asset manager udpates failed, add the token back to `assetStores`
+    if !success {
+      assetStores.insert(storeToRemove, at: storeToRemoveIndex)
+    }
+    return success
   }
 
   func tokenInfo(
@@ -259,17 +292,63 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  @MainActor func isDuplicate(
+    address: String,
+    tokenId: String,
+    network: BraveWallet.NetworkInfo,
+    isNFT: Bool
+  ) async -> Bool {
+    let allUserAssetsExcludeDeleted = await assetManager.getAllUserAssetsInNetworkAssets(
+      networks: [network],
+      includingUserDeleted: false
+    )
+    let allTokens = await self.blockchainRegistry.allTokens(
+      in: [network],
+      includingUserDeleted: false
+    )
+    var existedInUserAsset = false
+    var existedInTokenRegistry = false
+    if !isNFT || network.coin != .eth {
+      existedInUserAsset =
+        allUserAssetsExcludeDeleted.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+        }) != nil
+      existedInTokenRegistry =
+        allTokens.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+        }) != nil
+    } else {
+      var tokenIdToHex = "0x"
+      if let tokenIdValue = Int16(tokenId) {
+        tokenIdToHex = "0x\(String(format: "%02x", tokenIdValue))"
+      }
+      existedInUserAsset =
+        allUserAssetsExcludeDeleted.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+            && $0.tokenId == tokenIdToHex
+        }) != nil
+      existedInTokenRegistry =
+        allTokens.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+            && $0.tokenId == tokenIdToHex
+        }) != nil
+    }
+    return existedInUserAsset || existedInTokenRegistry
+  }
+
   @MainActor func networkInfo(
     by chainId: String,
     coin: BraveWallet.CoinType
   ) async -> BraveWallet.NetworkInfo? {
-    let allNetworks = await rpcService.allNetworks(coin: coin)
-    return allNetworks.first { $0.chainId.caseInsensitiveCompare(chainId) == .orderedSame }
+    let allNetworks = await rpcService.allNetworks()
+    return allNetworks.first {
+      $0.coin == coin && $0.chainId.caseInsensitiveCompare(chainId) == .orderedSame
+    }
   }
 
   @MainActor func allAssets() async -> [AssetViewModel] {
     let allNetworks = await rpcService.allNetworksForSupportedCoins()
-    let allUserAssets = assetManager.getAllUserAssetsInNetworkAssets(
+    let allUserAssets = await assetManager.getAllUserAssetsInNetworkAssets(
       networks: allNetworks,
       includingUserDeleted: false
     )
@@ -301,9 +380,9 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  @MainActor func allNFTMetadata() async -> [String: NFTMetadata] {
+  @MainActor func allNFTMetadata() async -> [String: BraveWallet.NftMetadata] {
     let allNetworks = await rpcService.allNetworksForSupportedCoins()
-    let allUserAssets = assetManager.getAllUserAssetsInNetworkAssets(
+    let allUserAssets = await assetManager.getAllUserAssetsInNetworkAssets(
       networks: allNetworks,
       includingUserDeleted: true
     )
@@ -315,5 +394,14 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
       tokens: allUserTokens.filter { $0.isErc721 || $0.isNft },
       ipfsApi: ipfsApi
     )
+  }
+}
+
+extension UserAssetsStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+  }
+
+  public func userAssetUpdated() {
+    update()
   }
 }

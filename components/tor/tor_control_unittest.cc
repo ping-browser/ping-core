@@ -3,21 +3,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
 
 #include "brave/components/tor/tor_control.h"
 
+#include <memory>
+
 #include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_task_environment.h"
+#include "net/base/io_buffer.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace tor {
 namespace {
-class MockTorControlDelegate : public TorControl::Delegate {
+class MockTorControlDelegate final : public TorControl::Delegate {
  public:
   MOCK_METHOD0(OnTorControlReady, void());
   MOCK_METHOD1(OnTorControlClosed, void(bool));
@@ -29,6 +37,13 @@ class MockTorControlDelegate : public TorControl::Delegate {
   MOCK_METHOD2(OnTorRawAsync, void(const std::string&, const std::string&));
   MOCK_METHOD2(OnTorRawMid, void(const std::string&, const std::string&));
   MOCK_METHOD2(OnTorRawEnd, void(const std::string&, const std::string&));
+
+  base::WeakPtr<tor::TorControl::Delegate> AsWeakPtr() override {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
+ private:
+  base::WeakPtrFactory<tor::TorControl::Delegate> weak_ptr_factory_{this};
 };
 }  // namespace
 
@@ -105,6 +120,67 @@ TEST(TorControlTest, ParseKV) {
                        << "\nvalue: " << value;
     }
   }
+}
+
+TEST(TorControlTest, ReadDone) {
+  content::BrowserTaskEnvironment task_environment;
+  scoped_refptr<base::SequencedTaskRunner> io_task_runner =
+      content::GetIOThreadTaskRunner({});
+  MockTorControlDelegate delegate;
+  std::unique_ptr<TorControl> control =
+      std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
+  base::RunLoop run_loop;
+  io_task_runner->PostTask(
+      FROM_HERE, base::BindLambdaForTesting([&run_loop, &control, &delegate] {
+        constexpr char test_str[] =
+            "250-SOCKSPORT=9050\r\n250 ORPORT=0\r\n250 OK";
+        control->reading_ = true;
+        // StartRead()
+        control->read_start_ = 0;
+        control->async_events_[tor::TorControlEvent::NETWORK_LIVENESS] = 1;
+        control->readiobuf_ = base::MakeRefCounted<net::GrowableIOBuffer>();
+        control->readiobuf_->SetCapacity(sizeof test_str - 1);
+        std::memcpy(control->readiobuf_->data(), test_str, sizeof test_str - 1);
+
+        // Not yet seen CRLF
+        // Read this time: 250-SOCKSP
+        // Read so far: 250-SOCKSP
+        control->ReadDone(10);
+        EXPECT_EQ(control->readiobuf_->offset(), 10);
+        EXPECT_EQ(control->read_start_, 0);
+
+        // First CRLF
+        // Read this time: ORT=9050\r\n
+        // Read so far: 250-SOCKSPORT=9050\r\n
+        // ReadLine("250-SOCKSPORT=9050")
+        EXPECT_CALL(delegate, OnTorRawMid("250", "SOCKSPORT=9050")).Times(1);
+        control->ReadDone(10);
+        EXPECT_EQ(control->readiobuf_->offset(), 20);
+        EXPECT_EQ(control->read_start_, 20);
+
+        // Second CRLF
+        // Read this time: 250 ORPORT=0\r\n2
+        // Read so far: 250 ORPORT=0\r\n2
+        // ReadLine("250 ORPORT=0")
+        EXPECT_CALL(delegate, OnTorRawEnd("250", "ORPORT=0")).Times(1);
+        control->ReadDone(15);
+        EXPECT_EQ(control->readiobuf_->offset(), 35);
+        EXPECT_EQ(control->read_start_, 34);
+
+        // Buffer will be full
+        // Read this time: 50 OK
+        // Read so far: 250 OK
+        control->ReadDone(5);
+        EXPECT_EQ(control->readiobuf_->offset(), 6);
+        EXPECT_EQ(control->read_start_, 0);
+        EXPECT_EQ(base::as_string_view(
+                      control->readiobuf_->everything().subspan(0, 6)),
+                  "250 OK");
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+  // Wait for owner sequence
+  base::RunLoop().RunUntilIdle();
 }
 
 TEST(TorControlTest, ReadLine) {

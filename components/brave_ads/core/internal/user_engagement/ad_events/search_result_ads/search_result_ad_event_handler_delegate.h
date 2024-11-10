@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_DELEGATE_H_
 
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -26,10 +26,10 @@ class SearchResultAdEventHandlerDelegate {
   virtual void OnDidFireSearchResultAdClickedEvent(
       const SearchResultAdInfo& ad) {}
 
-  // Invoked when the search result `ad` event fails for `event_type`.
+  // Invoked when the search result `ad` event fails for `mojom_ad_event_type`.
   virtual void OnFailedToFireSearchResultAdEvent(
       const SearchResultAdInfo& ad,
-      const mojom::SearchResultAdEventType event_type) {}
+      const mojom::SearchResultAdEventType mojom_ad_event_type) {}
 
  protected:
   virtual ~SearchResultAdEventHandlerDelegate() = default;

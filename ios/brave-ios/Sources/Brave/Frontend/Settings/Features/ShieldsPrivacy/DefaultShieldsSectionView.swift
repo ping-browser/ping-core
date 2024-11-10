@@ -3,15 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import BraveShared
 import BraveShields
 import BraveUI
 import Data
 import DesignSystem
+import OSLog
 import Preferences
 import Strings
 import SwiftUI
 
-struct DefaultShieldsViewView: View {
+struct DefaultShieldsSectionView: View {
   enum CookieAlertType: String, Identifiable {
     case confirm
     case failed
@@ -36,21 +39,52 @@ struct DefaultShieldsViewView: View {
           subtitle: Strings.Shields.trackersAndAdsBlockingDescription
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
-      Picker(selection: $settings.httpsUpgradeLevel) {
-        ForEach(HTTPSUpgradeLevel.allCases) { level in
-          Text(level.localizedTitle)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .tag(level)
+      if FeatureList.kBraveHttpsByDefault.enabled {
+        if FeatureList.kHttpsOnlyMode.enabled {
+          Picker(selection: $settings.httpsUpgradeLevel) {
+            ForEach(HTTPSUpgradeLevel.allCases) { level in
+              Text(level.localizedTitle)
+                .foregroundColor(Color(.secondaryBraveLabel))
+                .tag(level)
+            }
+          } label: {
+            LabelView(
+              title: Strings.Shields.upgradeConnectionsToHTTPS,
+              subtitle: nil
+            )
+          }
+        } else {
+          ToggleView(
+            title: Strings.Shields.upgradeConnectionsToHTTPS,
+            toggle: Binding(
+              get: {
+                settings.httpsUpgradeLevel.isEnabled
+              },
+              set: { newValue in
+                settings.httpsUpgradeLevel =
+                  !newValue
+                  ? .disabled : (ShieldPreferences.httpsUpgradePriorEnabledLevel ?? .standard)
+              }
+            )
+          )
         }
-      } label: {
-        LabelView(
-          title: Strings.Shields.upgradeConnectionsToHTTPS,
-          subtitle: nil
+      } else {
+        ToggleView(
+          title: Strings.HTTPSEverywhere,
+          subtitle: Strings.HTTPSEverywhereDescription,
+          toggle: Binding(
+            get: {
+              settings.httpsUpgradeLevel.isEnabled
+            },
+            set: { newValue in
+              settings.httpsUpgradeLevel =
+                !newValue
+                ? .disabled : (ShieldPreferences.httpsUpgradePriorEnabledLevel ?? .standard)
+            }
+          )
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       ToggleView(
         title: Strings.autoRedirectAMPPages,
@@ -76,7 +110,9 @@ struct DefaultShieldsViewView: View {
           if newValue {
             cookieAlertType = .confirm
           } else {
-            toggleCookieSetting(with: false)
+            Task {
+              await toggleCookieSetting(with: false)
+            }
           }
         }
       )
@@ -89,7 +125,9 @@ struct DefaultShieldsViewView: View {
             primaryButton: .default(
               Text(Strings.blockAllCookiesAction),
               action: {
-                toggleCookieSetting(with: true)
+                Task {
+                  await toggleCookieSetting(with: true)
+                }
               }
             ),
             secondaryButton: .cancel(
@@ -124,43 +162,57 @@ struct DefaultShieldsViewView: View {
         toggle: $settings.cookieConsentBlocking
       )
 
+      if FeatureList.kBraveShredFeature.enabled {
+        Picker(selection: $settings.shredLevel) {
+          ForEach(SiteShredLevel.allCases) { level in
+            Text(level.localizedTitle)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .tag(level)
+          }
+        } label: {
+          LabelView(
+            title: Strings.Shields.autoShred,
+            subtitle: nil
+          )
+        }
+      }
+
       NavigationLink {
         FilterListsView()
       } label: {
         LabelView(
-          title: Strings.contentFiltering,
-          subtitle: Strings.contentFilteringDescription
+          title: Strings.Shields.contentFiltering,
+          subtitle: Strings.Shields.contentFilteringDescription
         )
-      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
     } header: {
       Text(Strings.shieldsDefaults)
     } footer: {
       Text(Strings.shieldsDefaultsFooter)
-    }
+    }.listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 
-  private func toggleCookieSetting(with status: Bool) {
-    let success = FileManager.default.setFolderAccess([
-      (.cookie, status),
-      (.webSiteData, status),
-    ])
+  private func toggleCookieSetting(with status: Bool) async {
+    do {
+      try await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: status)
+      try await AsyncFileManager.default.setWebDataAccess(atPath: .websiteData, lock: status)
 
-    if success {
       if Preferences.Privacy.blockAllCookies.value != status {
         Preferences.Privacy.blockAllCookies.value = status
       }
-    } else if status {
-      // Revert the changes. Not handling success here to avoid a loop.
-      FileManager.default.setFolderAccess([
-        (.cookie, false),
-        (.webSiteData, false),
-      ])
+    } catch {
+      Logger.module.error("Failed to change web data access to \(status)")
+      if status {
+        // Revert the changes. Not handling success here to avoid a loop.
+        try? await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: false)
+        try? await AsyncFileManager.default.setWebDataAccess(atPath: .websiteData, lock: false)
 
-      if Preferences.Privacy.blockAllCookies.value != false {
-        Preferences.Privacy.blockAllCookies.value = false
+        if Preferences.Privacy.blockAllCookies.value != false {
+          Preferences.Privacy.blockAllCookies.value = false
+        }
+
+        cookieAlertType = .failed
       }
-
-      cookieAlertType = .failed
     }
   }
 }

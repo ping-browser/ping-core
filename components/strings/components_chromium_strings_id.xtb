@@ -31,6 +31,8 @@
           dan pastikan konfigurasi Anda disetel ke "tanpa proxy" atau "langsung".</translation>
 <translation id="2765022094254723779">Ping juga terwujud karena adanya <ph name="BEGIN_LINK_OSS"/>software open source<ph name="END_LINK_OSS"/> lainnya.</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Ping.</translation>
+<translation id="8828443087767259398">Ping memerlukan akses Bluetooth untuk melanjutkan 
+ penyambungan. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Ping terwujud karena adanya project open source <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Buka
           menu Ping &gt;

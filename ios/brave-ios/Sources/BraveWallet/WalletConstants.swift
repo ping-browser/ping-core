@@ -68,7 +68,6 @@ public struct WalletConstants {
 
   /// The currently supported test networks.
   static let supportedTestNetworkChainIds = [
-    BraveWallet.GoerliChainId,
     BraveWallet.SepoliaChainId,
     BraveWallet.LocalhostChainId,
     BraveWallet.SolanaDevnet,
@@ -140,6 +139,9 @@ public struct WalletConstants {
     ".crypto", ".x", ".nft", ".dao", ".wallet",
     ".blockchain", ".bitcoin", ".zil", ".altimist", ".anime",
     ".klever", ".manga", ".polygon", ".unstoppable", ".pudgy",
+    ".tball", ".stepn", ".secret", ".raiin", ".pog", ".clay",
+    ".metropolis", ".witg", ".ubu", ".kryptic", ".farms", ".dfz",
+    ".kresus", ".binanceus", ".austin", ".bitget", ".wrkx",
   ]
 
   /// The supported IPFS schemes
@@ -202,11 +204,5 @@ public struct WalletConstants {
   /// The link for for users to learn more about sign transactions
   static let signTransactionRiskLink: URL = URL(
     string: "https://support.ping-browser.com/hc/en-us/articles/4409513799693"
-  )!
-
-  /// The link for for users to learn more about IPFS
-  public static let ipfsLearnMoreLink: URL = URL(
-    string:
-      "https://support.ping-browser.com/hc/en-us/articles/360051406452-How-does-IPFS-Impact-my-Privacy-"
   )!
 }

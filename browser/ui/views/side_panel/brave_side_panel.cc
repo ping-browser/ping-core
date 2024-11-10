@@ -66,7 +66,7 @@ BraveSidePanel::HorizontalAlignment BraveSidePanel::GetHorizontalAlignment() {
 }
 
 bool BraveSidePanel::IsRightAligned() {
-  return horizontal_alignment_ == kHorizontalAlignRight;
+  return horizontal_alignment_ == kAlignRight;
 }
 
 void BraveSidePanel::UpdateBorder() {
@@ -201,7 +201,8 @@ void BraveSidePanel::OnViewPropertyChanged(View* observed_view,
     SidePanelContentState new_value = static_cast<SidePanelContentState>(
         observed_view->GetProperty(kSidePanelContentStateKey));
     if (new_value != static_cast<SidePanelContentState>(old_value)) {
-      SetVisible(new_value == SidePanelContentState::kReadyToShow);
+      SetVisible(new_value == SidePanelContentState::kReadyToShow ||
+                 new_value == SidePanelContentState::kShowImmediately);
     }
   }
 }

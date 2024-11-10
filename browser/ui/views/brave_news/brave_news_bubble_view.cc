@@ -13,6 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/ui/views/brave_news/brave_news_bubble_controller.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -30,6 +31,7 @@
 #include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
@@ -73,11 +75,17 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                          content::WebContents* contents)
     : views::BubbleDialogDelegateView(action_view,
                                       views::BubbleBorder::TOP_RIGHT,
-                                      views::BubbleBorder::STANDARD_SHADOW),
+                                      views::BubbleBorder::STANDARD_SHADOW,
+                                      /*autosize=*/true),
       contents_(contents) {
   DCHECK(contents);
 
-  SetButtons(ui::DIALOG_BUTTON_NONE);
+  auto* controller =
+      brave_news::BraveNewsBubbleController::FromWebContents(contents);
+  CHECK(controller);
+  controller_ = controller->AsWeakPtr();
+
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetAccessibleWindowRole(ax::mojom::Role::kDialog);
   set_adjust_if_offscreen(true);
 
@@ -119,7 +127,9 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
           base::BindRepeating(&BraveNewsBubbleView::OpenManageFeeds,
                               base::Unretained(this)),
           l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS)));
-  manage_feeds_button->SetKind(views::MdTextButton::Kind::kTertiary);
+  // Use tonal style here.
+  manage_feeds_button->set_use_default_for_tonal(false);
+  manage_feeds_button->SetStyle(ui::ButtonStyle::kTonal);
   manage_feeds_button->SetProperty(views::kMarginsKey,
                                    gfx::Insets::TLBR(10, 0, 0, 0));
   manage_feeds_button->SetProperty(
@@ -142,6 +152,14 @@ void BraveNewsBubbleView::OpenManageFeeds() {
        WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
        false},
       /*navigation_handle_callback=*/{});
+}
+
+void BraveNewsBubbleView::OnWidgetDestroyed(views::Widget*) {
+  if (!controller_) {
+    return;
+  }
+
+  controller_->OnBubbleClosed();
 }
 
 void BraveNewsBubbleView::OnThemeChanged() {

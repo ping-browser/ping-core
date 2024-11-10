@@ -5,11 +5,11 @@
 
 #include "brave/browser/skus/skus_service_factory.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
@@ -57,7 +57,8 @@ SkusServiceFactory::SkusServiceFactory()
 
 SkusServiceFactory::~SkusServiceFactory() = default;
 
-KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+SkusServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   // Return null if feature is disabled
   if (!base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
@@ -65,12 +66,12 @@ KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
   }
 
   // Skus functionality not supported in private / Tor / guest windows
-  if (!brave::IsRegularProfile(context)) {
+  if (!Profile::FromBrowserContext(context)->IsRegularProfile()) {
     return nullptr;
   }
   skus::MigrateSkusSettings(user_prefs::UserPrefs::Get(context),
                             g_browser_process->local_state());
-  return new skus::SkusServiceImpl(
+  return std::make_unique<skus::SkusServiceImpl>(
       g_browser_process->local_state(),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess());

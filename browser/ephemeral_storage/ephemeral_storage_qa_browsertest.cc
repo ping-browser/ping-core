@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
@@ -78,7 +84,7 @@ class TabActivationWaiter : public TabStripModelObserver {
 
 }  // namespace
 
-const char kEphemeralStorageTestPage[] = "/storage/ephemeral-storage.html";
+constexpr char kEphemeralStorageTestPage[] = "/storage/ephemeral-storage.html";
 
 typedef enum StorageResult {
   kSuccess,
@@ -153,6 +159,12 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    embedded_test_server()->ServeFilesFromDirectory(
+        test_data_dir.Append(FILE_PATH_LITERAL("ephemeral-storage")));
+    content::SetupCrossSiteRedirector(embedded_test_server());
+    ASSERT_TRUE(embedded_test_server()->Start());
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
   }
@@ -170,18 +182,6 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
-  }
-
-  void SetUp() override {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(
-        test_data_dir.Append(FILE_PATH_LITERAL("ephemeral-storage")));
-    content::SetupCrossSiteRedirector(embedded_test_server());
-    ASSERT_TRUE(embedded_test_server()->Start());
-
-    InProcessBrowserTest::SetUp();
   }
 
   HostContentSettingsMap* content_settings() {

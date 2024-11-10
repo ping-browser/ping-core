@@ -124,14 +124,14 @@ final class AdBlockGroupsManagerTests: XCTestCase {
     // A source provider and groups manager
     let aggressiveFileInfo = AdBlockEngineManager.FileInfo(
       filterListInfo: GroupedAdBlockEngine.FilterListInfo(
-        source: .filterListURL(uuid: UUID().uuidString),
+        source: .filterList(componentId: UUID().uuidString),
         version: "0"
       ),
       localFileURL: Self.sampleFilterListURL
     )
     let standardFileInfo = AdBlockEngineManager.FileInfo(
       filterListInfo: GroupedAdBlockEngine.FilterListInfo(
-        source: .filterListURL(uuid: UUID().uuidString),
+        source: .filterList(componentId: UUID().uuidString),
         version: "0"
       ),
       localFileURL: Self.sampleFilterListURL
@@ -297,13 +297,6 @@ class TestSourceProvider: AdBlockGroupsManager.SourceProvider {
     case .aggressive:
       return aggressiveFileInfos.map(\.filterListInfo.source)
     }
-  }
-
-  /// Return all engabled sources for the given engine type
-  func enabledSources(
-    for engineType: GroupedAdBlockEngine.EngineType
-  ) -> [GroupedAdBlockEngine.Source] {
-    return enabledSources
   }
 
   func legacyCacheFiles(

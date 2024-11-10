@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
 namespace base {
 class Time;
@@ -28,7 +28,6 @@ class Transactions final : public TableInterface {
  public:
   void Save(const TransactionList& transactions, ResultCallback callback);
 
-  void GetAll(GetTransactionsCallback callback) const;
   void GetForDateRange(base::Time from_time,
                        base::Time to_time,
                        GetTransactionsCallback callback) const;
@@ -36,19 +35,20 @@ class Transactions final : public TableInterface {
   void Reconcile(const PaymentTokenList& payment_tokens,
                  ResultCallback callback) const;
 
-  void Delete(ResultCallback callback) const;
+  void PurgeExpired(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* transaction) override;
-  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
+  void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
+  void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+               int to_version) override;
 
  private:
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                      const TransactionList& transactions);
+  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+              const TransactionList& transactions);
 
-  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
-                                     const TransactionList& transactions) const;
+  std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                             const TransactionList& transactions) const;
 };
 
 }  // namespace brave_ads::database::table

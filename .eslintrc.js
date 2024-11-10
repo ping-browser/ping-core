@@ -21,7 +21,7 @@ module.exports = {
     'es6': true,
     'jest/globals': true
   },
-  'plugins': ['jest', 'licenses', 'react-hooks'],
+  'plugins': ['jest', 'licenses', 'no-unsanitized', 'react-hooks'],
   'globals': {
     'chrome': 'readonly'
   },
@@ -29,6 +29,8 @@ module.exports = {
     'project': './tsconfig-lint.json'
   },
   'rules': {
+    'no-unsanitized/method': 'error',
+    'no-unsanitized/property': 'error',
     'licenses/header': [
       2,
       {
@@ -160,6 +162,19 @@ module.exports = {
       'rules': {
         'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
         'react-hooks/exhaustive-deps': 'warn' // Checks effect dependencies
+      }
+    },
+    // opt-out stories for rules of hooks, or we can't use useState in the render functions
+    // https://github.com/storybookjs/eslint-plugin-storybook/pull/149
+    // Note: Just using that plugin doesn't help as we opt back in to the rules
+    // of hooks for wallet.
+    {
+      'files': [
+        'components/**/*.stories.tsx',
+        'components/**/stories/*.tsx',
+      ],
+      'rules': {
+        'react-hooks/rules-of-hooks': 'off', // Don't check hooks
       }
     }
   ]

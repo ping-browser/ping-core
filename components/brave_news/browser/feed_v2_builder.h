@@ -14,7 +14,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
@@ -23,7 +23,7 @@
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/history/core/browser/history_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -33,6 +33,9 @@ namespace brave_news {
 
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
+using HashCallback = base::OnceCallback<void(const std::string&)>;
+
+class FeedGenerationInfo;
 
 class FeedV2Builder {
  public:
@@ -40,7 +43,7 @@ class FeedV2Builder {
       PublishersController& publishers_controller,
       ChannelsController& channels_controller,
       SuggestionsController& suggestions_controller,
-      history::HistoryService& history_service,
+      BackgroundHistoryQuerier& history_querier,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   FeedV2Builder(const FeedV2Builder&) = delete;
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
@@ -48,26 +51,25 @@ class FeedV2Builder {
 
   void AddListener(mojo::PendingRemote<mojom::FeedListener> listener);
 
-  void BuildFollowingFeed(const BraveNewsSubscriptions& subscriptions,
+  void BuildFollowingFeed(const SubscriptionsSnapshot& subscriptions,
                           BuildFeedCallback callback);
-  void BuildChannelFeed(const BraveNewsSubscriptions& subscriptions,
+  void BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
                         const std::string& channel,
                         BuildFeedCallback callback);
-  void BuildPublisherFeed(const BraveNewsSubscriptions& subscriptions,
+  void BuildPublisherFeed(const SubscriptionsSnapshot& subscriptions,
                           const std::string& publisher_id,
                           BuildFeedCallback callback);
-  void BuildAllFeed(const BraveNewsSubscriptions& subscriptions,
+  void BuildAllFeed(const SubscriptionsSnapshot& subscriptions,
                     BuildFeedCallback callback);
-  void EnsureFeedIsUpdating(const BraveNewsSubscriptions& subscriptions);
 
-  void GetSignals(const BraveNewsSubscriptions& subscriptions,
+  void GetSignals(const SubscriptionsSnapshot& subscriptions,
                   GetSignalsCallback callback);
 
-  void RecheckFeedHash(const BraveNewsSubscriptions& subscriptions);
+  void GetLatestHash(const SubscriptionsSnapshot& subscriptions,
+                     bool refetch_data,
+                     HashCallback callback);
 
  private:
-  struct FeedGenerationInfo;
-
   // FeedGenerator's will be called on a different thread. The data in
   // |FeedGenerationInfo| is a copy and can be safely modified.
   using FeedGenerator =
@@ -98,9 +100,9 @@ class FeedV2Builder {
   struct UpdateRequest {
     UpdateSettings settings;
     std::vector<UpdateCallback> callbacks;
-    BraveNewsSubscriptions subscriptions;
+    SubscriptionsSnapshot subscriptions;
 
-    explicit UpdateRequest(BraveNewsSubscriptions subscriptions,
+    explicit UpdateRequest(SubscriptionsSnapshot subscriptions,
                            UpdateSettings settings,
                            UpdateCallback callback);
     ~UpdateRequest();
@@ -123,10 +125,11 @@ class FeedV2Builder {
 
   static mojom::FeedV2Ptr GenerateBasicFeed(FeedGenerationInfo info,
                                             PickArticles pick_hero,
-                                            PickArticles pick_article);
+                                            PickArticles pick_article,
+                                            PickArticles pick_peeking);
   static mojom::FeedV2Ptr GenerateAllFeed(FeedGenerationInfo info);
 
-  void UpdateData(const BraveNewsSubscriptions& subscriptions,
+  void UpdateData(const SubscriptionsSnapshot& subscriptions,
                   UpdateSettings settings,
                   UpdateCallback callback);
 
@@ -146,7 +149,7 @@ class FeedV2Builder {
 
   void NotifyUpdateCompleted();
 
-  void GenerateFeed(const BraveNewsSubscriptions& subscriptions,
+  void GenerateFeed(const SubscriptionsSnapshot& subscriptions,
                     UpdateSettings settings,
                     mojom::FeedV2TypePtr type,
                     FeedGenerator generator,

@@ -4,16 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import {
+  BraveWallet,
+  HardwareWalletResponseCodeType
+} from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
-import { HardwareVendor } from '../../api/hardware_keyrings'
-import { HardwareWalletResponseCodeType } from '../../hardware/types'
 
 // actions
 import { PanelActions } from '../../../panel/actions'
 
 // utils
 import {
+  getHasPendingRequests,
   handleEndpointError,
   navigateToConnectHardwareWallet
 } from '../../../utils/api-utils'
@@ -22,14 +24,13 @@ import { getLocale } from '../../../../common/locale'
 import {
   dialogErrorFromLedgerErrorCode,
   dialogErrorFromTrezorErrorCode,
-  signMessageWithHardwareKeyring
+  signEthMessageWithHardwareKeyring
 } from '../../async/hardware'
-import { toByteArrayStringUnion } from '../../../utils/mojo-utils'
 
 interface ProcessSignMessageRequestArgs {
   approved: boolean
   id: number
-  signature?: BraveWallet.ByteArrayStringUnion | undefined
+  hwSignature?: BraveWallet.EthereumSignatureBytes | undefined
   error?: string | undefined
 }
 
@@ -91,7 +92,7 @@ export const signingEndpoints = ({
         try {
           const { data: api } = baseQuery(undefined)
 
-          await processSignMessageRequest(api, arg)
+          await processSignMessageRequestInternal(api, arg)
 
           return {
             data: true
@@ -122,7 +123,11 @@ export const signingEndpoints = ({
             await api.braveWalletService.getPendingSignMessageErrors()
 
           if (!errors.length) {
-            api.panelHandler?.closeUI()
+            const hasPendingRequests = await getHasPendingRequests()
+
+            if (!hasPendingRequests) {
+              api.panelHandler?.closeUI()
+            }
           }
 
           return {
@@ -153,6 +158,10 @@ export const signingEndpoints = ({
         try {
           const { data: api } = baseQuery(undefined)
 
+          if (arg.account.accountId.coin !== BraveWallet.CoinType.ETH) {
+            throw new Error('Not an ETH account')
+          }
+
           if (!isHardwareAccount(arg.account.accountId)) {
             api.braveWalletService.notifySignMessageRequestProcessed(
               false,
@@ -161,10 +170,9 @@ export const signingEndpoints = ({
               getLocale('braveWalletHardwareAccountNotFound')
             )
 
-            const { requests: signMessageRequests } =
-              await api.braveWalletService.getPendingSignMessageRequests()
+            const hasPendingRequests = await getHasPendingRequests()
 
-            if (!signMessageRequests?.length) {
+            if (!hasPendingRequests) {
               api.panelHandler?.closeUI()
             }
 
@@ -175,17 +183,14 @@ export const signingEndpoints = ({
             navigateToConnectHardwareWallet(api.panelHandler, store)
           }
 
-          const coin = arg.account.accountId.coin
           const info = arg.account.hardware
 
           if (!info) {
             throw new Error('No hardware account information found')
           }
 
-          const signed = await signMessageWithHardwareKeyring(
-            // eslint-disable-next-line max-len
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-            info.vendor as HardwareVendor,
+          const signed = await signEthMessageWithHardwareKeyring(
+            info.vendor,
             info.path,
             arg.request
           )
@@ -204,7 +209,7 @@ export const signingEndpoints = ({
             }
 
             const deviceError =
-              info.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR
+              info.vendor === BraveWallet.HardwareVendor.kTrezor
                 ? dialogErrorFromTrezorErrorCode(signed.code)
                 : dialogErrorFromLedgerErrorCode(signed.code)
 
@@ -221,20 +226,13 @@ export const signingEndpoints = ({
             }
           }
 
-          await processSignMessageRequest(
+          await processSignMessageRequestInternal(
             api,
             signed.success
               ? {
                   approved: signed.success,
                   id: arg.request.id,
-                  signature:
-                    coin === BraveWallet.CoinType.SOL
-                      ? toByteArrayStringUnion({
-                          bytes: [...(signed.payload as Buffer)]
-                        })
-                      : toByteArrayStringUnion({
-                          str: signed.payload as string
-                        })
+                  hwSignature: signed.signature
                 }
               : {
                   approved: signed.success,
@@ -244,7 +242,12 @@ export const signingEndpoints = ({
           )
 
           store.dispatch(PanelActions.navigateToMain())
-          api.panelHandler?.closeUI()
+
+          const hasPendingRequests = await getHasPendingRequests()
+
+          if (!hasPendingRequests) {
+            api.panelHandler?.closeUI()
+          }
 
           return {
             data: {
@@ -265,7 +268,7 @@ export const signingEndpoints = ({
 }
 
 // internals
-async function processSignMessageRequest(
+async function processSignMessageRequestInternal(
   api: {
     braveWalletService: BraveWallet.BraveWalletServiceRemote
     panelHandler?: BraveWallet.PanelHandlerRemote
@@ -275,14 +278,13 @@ async function processSignMessageRequest(
   api.braveWalletService.notifySignMessageRequestProcessed(
     arg.approved,
     arg.id,
-    arg.signature || null,
+    arg.hwSignature || null,
     arg.error || null
   )
 
-  const { requests: signMessageRequests } =
-    await api.braveWalletService.getPendingSignMessageRequests()
+  const hasPendingRequests = await getHasPendingRequests()
 
-  if (!signMessageRequests.length) {
+  if (!hasPendingRequests) {
     api.panelHandler?.closeUI()
   }
 }

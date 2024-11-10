@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -14,8 +13,6 @@ brave_browser_net_sources = [
   "//brave/browser/net/brave_ad_block_csp_network_delegate_helper.h",
   "//brave/browser/net/brave_ad_block_tp_network_delegate_helper.cc",
   "//brave/browser/net/brave_ad_block_tp_network_delegate_helper.h",
-  "//brave/browser/net/brave_ads_status_header_network_delegate_helper.cc",
-  "//brave/browser/net/brave_ads_status_header_network_delegate_helper.h",
   "//brave/browser/net/brave_block_safebrowsing_urls.cc",
   "//brave/browser/net/brave_block_safebrowsing_urls.h",
   "//brave/browser/net/brave_common_static_redirect_network_delegate_helper.cc",
@@ -34,6 +31,8 @@ brave_browser_net_sources = [
   "//brave/browser/net/brave_service_key_network_delegate_helper.h",
   "//brave/browser/net/brave_site_hacks_network_delegate_helper.cc",
   "//brave/browser/net/brave_site_hacks_network_delegate_helper.h",
+  "//brave/browser/net/brave_speech_to_text_network_delegate_helper.cc",
+  "//brave/browser/net/brave_speech_to_text_network_delegate_helper.h",
   "//brave/browser/net/brave_static_redirect_network_delegate_helper.cc",
   "//brave/browser/net/brave_static_redirect_network_delegate_helper.h",
   "//brave/browser/net/brave_stp_util.cc",
@@ -46,6 +45,8 @@ brave_browser_net_sources = [
   "//brave/browser/net/global_privacy_control_network_delegate_helper.h",
   "//brave/browser/net/resource_context_data.cc",
   "//brave/browser/net/resource_context_data.h",
+  "//brave/browser/net/search_ads_header_network_delegate_helper.cc",
+  "//brave/browser/net/search_ads_header_network_delegate_helper.h",
   "//brave/browser/net/url_context.cc",
   "//brave/browser/net/url_context.h",
 ]
@@ -64,6 +65,7 @@ brave_browser_net_deps = [
   "//brave/components/brave_referrals/browser",
   "//brave/components/brave_rewards/common",
   "//brave/components/brave_search/common",
+  "//brave/components/brave_service_keys",
   "//brave/components/brave_shields/adblock/rs:rust_lib",
   "//brave/components/brave_shields/adblock/rs:rust_lib_cxx_generated_gen",
   "//brave/components/brave_shields/content/browser",
@@ -77,9 +79,10 @@ brave_browser_net_deps = [
   "//brave/components/constants:brave_service_key_helper",
   "//brave/components/decentralized_dns/content",
   "//brave/components/decentralized_dns/core",
-  "//brave/components/ipfs/buildflags",
   "//brave/components/localhost_permission",
   "//brave/components/query_filter",
+  "//brave/components/speech_to_text",
+  "//brave/components/speech_to_text:buildflags",
   "//brave/components/update_client:buildflags",
   "//brave/extensions:common",
   "//chrome/browser:browser_process",
@@ -105,17 +108,6 @@ brave_browser_net_deps = [
 
 if (enable_extensions) {
   brave_browser_net_deps += [ "//extensions/common:common_constants" ]
-}
-
-if (enable_ipfs) {
-  brave_browser_net_sources += [
-    "//brave/browser/net/ipfs_redirect_network_delegate_helper.cc",
-    "//brave/browser/net/ipfs_redirect_network_delegate_helper.h",
-  ]
-  brave_browser_net_deps += [
-    "//brave/components/ipfs",
-    "//chrome/common:channel_info",
-  ]
 }
 
 if (enable_brave_webtorrent) {

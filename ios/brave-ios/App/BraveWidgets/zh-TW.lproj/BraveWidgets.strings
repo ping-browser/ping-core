@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "您要的是「書籤」，對嗎？";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "您要的是「Brave 播放清單」，對嗎？";
+"e13lS3-FGO5qW" = "您要的是「Ping 播放清單」，對嗎？";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "您要的是「Brave 錢包」，對嗎？";
+"e13lS3-jXiFQY" = "您要的是「Ping 錢包」，對嗎？";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "您要的是「下載」，對嗎？";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "您要的是「新隱私分頁」，對嗎？";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "您要的是「Brave 新聞」，對嗎？";
+"e13lS3-XCyA8c" = "您要的是「Ping 新聞」，對嗎？";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "您要的是「搜尋」，對嗎？";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "有 ${count} 個選項符合「書籤」。";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "有 ${count} 個選項符合「Brave 播放清單」。";
+"L1fziM-FGO5qW" = "有 ${count} 個選項符合「Ping 播放清單」。";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "有 ${count} 個選項符合「Brave 錢包」。";
+"L1fziM-jXiFQY" = "有 ${count} 個選項符合「Ping 錢包」。";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "有 ${count} 個選項符合「下載」。";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "有 ${count} 個符合「Brave 新聞」的選項。";
+"L1fziM-XCyA8c" = "有 ${count} 個符合「Ping 新聞」的選項。";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "有 ${count} 個選項符合「搜尋」。";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "您要的是「書籤」，對嗎？";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "您要的是「Brave 播放清單」，對嗎？";
+"r2EI05-FGO5qW" = "您要的是「Ping 播放清單」，對嗎？";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "您要的是「Brave 錢包」，對嗎？";
+"r2EI05-jXiFQY" = "您要的是「Ping 錢包」，對嗎？";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "您要的是「下載」，對嗎？";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "您要的是「新隱私分頁」，對嗎？";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "您要的是「Brave 新聞」，對嗎？";
+"r2EI05-XCyA8c" = "您要的是「Ping 新聞」，對嗎？";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "您要的是「搜尋」，對嗎？";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "有 ${count} 個選項符合「書籤」。";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "有 ${count} 個選項符合「Brave 播放清單」。";
+"tNCrcE-FGO5qW" = "有 ${count} 個選項符合「Ping 播放清單」。";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "有 ${count} 個選項符合「Brave 錢包」。";
+"tNCrcE-jXiFQY" = "有 ${count} 個選項符合「Ping 錢包」。";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "有 ${count} 個選項符合「下載」。";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "有 ${count} 個符合「Brave 新聞」的選項。";
+"tNCrcE-XCyA8c" = "有 ${count} 個符合「Ping 新聞」的選項。";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "有 ${count} 個選項符合「搜尋」。";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "有 ${count} 個選項符合「書籤」。";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "有 ${count} 個選項符合「Brave 播放清單」。";
+"TxuMja-FGO5qW" = "有 ${count} 個選項符合「Ping 播放清單」。";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "有 ${count} 個選項符合「Brave 錢包」。";
+"TxuMja-jXiFQY" = "有 ${count} 個選項符合「Ping 錢包」。";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "有 ${count} 個選項符合「下載」。";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "有 ${count} 個符合「Brave 新聞」的選項。";
+"TxuMja-XCyA8c" = "有 ${count} 個符合「Ping 新聞」的選項。";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "有 ${count} 個選項符合「搜尋」。";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "您要的是「書籤」，對嗎？";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "您要的是「Brave 播放清單」，對嗎？";
+"YQiQuz-FGO5qW" = "您要的是「Ping 播放清單」，對嗎？";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "您要的是「Brave 錢包」，對嗎？";
+"YQiQuz-jXiFQY" = "您要的是「Ping 錢包」，對嗎？";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "您要的是「下載」，對嗎？";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "您要的是「新隱私分頁」，對嗎？";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "您要的是「Brave 新聞」，對嗎？";
+"YQiQuz-XCyA8c" = "您要的是「Ping 新聞」，對嗎？";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "您要的是「搜尋」，對嗎？";

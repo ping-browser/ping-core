@@ -71,8 +71,8 @@ std::string HandleComponentData(const base::FilePath& installed_dir) {
   std::string contents;
 
   if (json_path.empty()) {
-    NOTREACHED() << __func__ << ": Can't find valid manifest file in "
-                             << installed_dir;
+    NOTREACHED_IN_MIGRATION()
+        << __func__ << ": Can't find valid manifest file in " << installed_dir;
     return contents;
   }
 
@@ -167,7 +167,7 @@ void NTPBackgroundImagesService::CheckImagesComponentUpdate(
   DVLOG(2) << __func__ << ": Check NTP Images component update";
 
   last_update_check_time_ = base::Time::Now();
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
+  BraveOnDemandUpdater::GetInstance()->EnsureInstalled(component_id);
 }
 
 void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {

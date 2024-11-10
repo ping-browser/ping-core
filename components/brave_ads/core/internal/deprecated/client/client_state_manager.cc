@@ -9,59 +9,19 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/history/history_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "build/build_config.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
 namespace {
-
 constexpr size_t kMaximumPurchaseIntentSignalHistoryEntriesPerSegment = 100;
-
-FilteredAdvertiserList::iterator FindFilteredAdvertiser(
-    const std::string& advertiser_id,
-    FilteredAdvertiserList* filtered_advertisers) {
-  CHECK(!advertiser_id.empty());
-  CHECK(filtered_advertisers);
-
-  return base::ranges::find(*filtered_advertisers, advertiser_id,
-                            &FilteredAdvertiserInfo::id);
-}
-
-FilteredCategoryList::iterator FindFilteredCategory(
-    const std::string& category,
-    FilteredCategoryList* filtered_categories) {
-  CHECK(!category.empty());
-  CHECK(filtered_categories);
-
-  return base::ranges::find(*filtered_categories, category,
-                            &FilteredCategoryInfo::name);
-}
-
-mojom::UserReactionType ToggleLikeUserReactionType(
-    const mojom::UserReactionType user_reaction_type) {
-  return user_reaction_type == mojom::UserReactionType::kLike
-             ? mojom::UserReactionType::kNeutral
-             : mojom::UserReactionType::kLike;
-}
-
-mojom::UserReactionType ToggleDislikeUserReactionType(
-    const mojom::UserReactionType user_reaction_type) {
-  return user_reaction_type == mojom::UserReactionType::kDislike
-             ? mojom::UserReactionType::kNeutral
-             : mojom::UserReactionType::kDislike;
-}
-
 }  // namespace
 
 ClientStateManager::ClientStateManager() = default;
@@ -73,54 +33,13 @@ ClientStateManager& ClientStateManager::GetInstance() {
   return GlobalState::GetInstance()->GetClientStateManager();
 }
 
-const FilteredAdvertiserList& ClientStateManager::GetFilteredAdvertisers()
-    const {
-  CHECK(is_initialized_);
-
-  return client_.ad_preferences.filtered_advertisers;
-}
-
-const FilteredCategoryList& ClientStateManager::GetFilteredCategories() const {
-  CHECK(is_initialized_);
-
-  return client_.ad_preferences.filtered_categories;
-}
-
-const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
-  CHECK(is_initialized_);
-
-  return client_.ad_preferences.flagged_ads;
-}
-
 void ClientStateManager::LoadState(InitializeCallback callback) {
   BLOG(3, "Loading client state");
 
-  Load(kClientStateFilename,
-       base::BindOnce(&ClientStateManager::LoadCallback,
-                      weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
-#if !BUILDFLAG(IS_IOS)
-  CHECK(is_initialized_);
-
-  client_.history_items.push_front(history_item);
-
-  const base::Time distant_past = base::Time::Now() - kHistoryTimeWindow.Get();
-
-  base::EraseIf(client_.history_items,
-                [distant_past](const HistoryItemInfo& history_item) {
-                  return history_item.created_at < distant_past;
-                });
-
-  SaveState();
-#endif
-}
-
-const HistoryItemList& ClientStateManager::GetHistory() const {
-  CHECK(is_initialized_);
-
-  return client_.history_items;
+  GetAdsClient()->Load(
+      kClientJsonFilename,
+      base::BindOnce(&ClientStateManager::LoadCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
@@ -148,212 +67,6 @@ ClientStateManager::GetPurchaseIntentSignalHistory() const {
   CHECK(is_initialized_);
 
   return client_.purchase_intent_signal_history;
-}
-
-mojom::UserReactionType ClientStateManager::ToggleLikeAd(
-    const AdContentInfo& ad_content) {
-  CHECK(is_initialized_);
-
-  const auto iter = FindFilteredAdvertiser(
-      ad_content.advertiser_id, &client_.ad_preferences.filtered_advertisers);
-  if (iter != client_.ad_preferences.filtered_advertisers.cend()) {
-    client_.ad_preferences.filtered_advertisers.erase(iter);
-  }
-
-  const mojom::UserReactionType toggled_user_reaction_type =
-      ToggleLikeUserReactionType(ad_content.user_reaction_type);
-
-  for (auto& item : client_.history_items) {
-    if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
-      item.ad_content.user_reaction_type = toggled_user_reaction_type;
-    }
-  }
-
-  SaveState();
-
-  return toggled_user_reaction_type;
-}
-
-mojom::UserReactionType ClientStateManager::ToggleDislikeAd(
-    const AdContentInfo& ad_content) {
-  CHECK(is_initialized_);
-
-  const mojom::UserReactionType toggled_user_reaction_type =
-      ToggleDislikeUserReactionType(ad_content.user_reaction_type);
-
-  const auto iter = FindFilteredAdvertiser(
-      ad_content.advertiser_id, &client_.ad_preferences.filtered_advertisers);
-
-  if (toggled_user_reaction_type == mojom::UserReactionType::kNeutral) {
-    if (iter != client_.ad_preferences.filtered_advertisers.cend()) {
-      client_.ad_preferences.filtered_advertisers.erase(iter);
-    }
-  } else {
-    if (iter == client_.ad_preferences.filtered_advertisers.cend()) {
-      FilteredAdvertiserInfo filtered_advertiser;
-      filtered_advertiser.id = ad_content.advertiser_id;
-
-      client_.ad_preferences.filtered_advertisers.push_back(
-          filtered_advertiser);
-    }
-  }
-
-  for (auto& item : client_.history_items) {
-    if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
-      item.ad_content.user_reaction_type = toggled_user_reaction_type;
-    }
-  }
-
-  SaveState();
-
-  return toggled_user_reaction_type;
-}
-
-mojom::UserReactionType ClientStateManager::GetUserReactionTypeForAdvertiser(
-    const std::string& advertiser_id) {
-  const auto iter = base::ranges::find_if(
-      client_.history_items,
-      [&advertiser_id](const HistoryItemInfo& history_item) -> bool {
-        return history_item.ad_content.advertiser_id == advertiser_id;
-      });
-
-  if (iter == client_.history_items.cend()) {
-    return mojom::UserReactionType::kNeutral;
-  }
-
-  return iter->ad_content.user_reaction_type;
-}
-
-mojom::UserReactionType ClientStateManager::ToggleLikeCategory(
-    const CategoryContentInfo& category_content) {
-  CHECK(is_initialized_);
-
-  const auto iter = FindFilteredCategory(
-      category_content.category, &client_.ad_preferences.filtered_categories);
-  if (iter != client_.ad_preferences.filtered_categories.cend()) {
-    client_.ad_preferences.filtered_categories.erase(iter);
-  }
-
-  const mojom::UserReactionType toggled_user_reaction_type =
-      ToggleLikeUserReactionType(category_content.user_reaction_type);
-
-  for (auto& item : client_.history_items) {
-    if (item.category_content.category == category_content.category) {
-      item.category_content.user_reaction_type = toggled_user_reaction_type;
-    }
-  }
-
-  SaveState();
-
-  return toggled_user_reaction_type;
-}
-
-mojom::UserReactionType ClientStateManager::ToggleDislikeCategory(
-    const CategoryContentInfo& category_content) {
-  CHECK(is_initialized_);
-
-  const mojom::UserReactionType toggled_user_reaction_type =
-      ToggleDislikeUserReactionType(category_content.user_reaction_type);
-
-  const auto iter = FindFilteredCategory(
-      category_content.category, &client_.ad_preferences.filtered_categories);
-
-  if (toggled_user_reaction_type == mojom::UserReactionType::kNeutral) {
-    if (iter != client_.ad_preferences.filtered_categories.cend()) {
-      client_.ad_preferences.filtered_categories.erase(iter);
-    }
-  } else {
-    if (iter == client_.ad_preferences.filtered_categories.cend()) {
-      FilteredCategoryInfo filtered_category;
-      filtered_category.name = category_content.category;
-      client_.ad_preferences.filtered_categories.push_back(filtered_category);
-    }
-  }
-
-  for (auto& item : client_.history_items) {
-    if (item.category_content.category == category_content.category) {
-      item.category_content.user_reaction_type = toggled_user_reaction_type;
-    }
-  }
-
-  SaveState();
-
-  return toggled_user_reaction_type;
-}
-
-mojom::UserReactionType ClientStateManager::GetUserReactionTypeForSegment(
-    const std::string& segment) {
-  const auto iter = base::ranges::find_if(
-      client_.history_items,
-      [&segment](const HistoryItemInfo& history_item) -> bool {
-        return history_item.category_content.category == segment;
-      });
-
-  if (iter == client_.history_items.cend()) {
-    return mojom::UserReactionType::kNeutral;
-  }
-
-  return iter->category_content.user_reaction_type;
-}
-
-bool ClientStateManager::ToggleSaveAd(const AdContentInfo& ad_content) {
-  CHECK(is_initialized_);
-
-  const bool is_saved = !ad_content.is_saved;
-  if (is_saved) {
-    SavedAdInfo saved_ad;
-    saved_ad.creative_instance_id = ad_content.creative_instance_id;
-    client_.ad_preferences.saved_ads.push_back(saved_ad);
-  } else {
-    const auto iter = base::ranges::find(client_.ad_preferences.saved_ads,
-                                         ad_content.creative_instance_id,
-                                         &SavedAdInfo::creative_instance_id);
-
-    if (iter != client_.ad_preferences.saved_ads.cend()) {
-      client_.ad_preferences.saved_ads.erase(iter);
-    }
-  }
-
-  for (auto& item : client_.history_items) {
-    if (item.ad_content.creative_instance_id ==
-        ad_content.creative_instance_id) {
-      item.ad_content.is_saved = is_saved;
-    }
-  }
-
-  SaveState();
-
-  return is_saved;
-}
-
-bool ClientStateManager::ToggleMarkAdAsInappropriate(
-    const AdContentInfo& ad_content) {
-  CHECK(is_initialized_);
-
-  const bool is_flagged = !ad_content.is_flagged;
-  if (is_flagged) {
-    FlaggedAdInfo flagged_ad;
-    flagged_ad.creative_set_id = ad_content.creative_set_id;
-    client_.ad_preferences.flagged_ads.push_back(flagged_ad);
-  } else {
-    client_.ad_preferences.flagged_ads.erase(
-        base::ranges::remove(client_.ad_preferences.flagged_ads,
-                             ad_content.creative_set_id,
-                             &FlaggedAdInfo::creative_set_id),
-        client_.ad_preferences.flagged_ads.end());
-  }
-
-  const auto iter = base::ranges::find_if(
-      client_.history_items, [&ad_content](const HistoryItemInfo& item) {
-        return item.ad_content.creative_set_id == ad_content.creative_set_id;
-      });
-  if (iter != client_.history_items.cend()) {
-    iter->ad_content.is_flagged = is_flagged;
-  }
-
-  SaveState();
-
-  return is_flagged;
 }
 
 void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
@@ -387,20 +100,14 @@ void ClientStateManager::SaveState() {
 
   BLOG(9, "Saving client state");
 
-  Save(kClientStateFilename, client_.ToJson(),
-       base::BindOnce([](const bool success) {
-         if (!success) {
-           // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-           // potential defects using `DumpWithoutCrashing`.
-           SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                     "Failed to save client state");
-           base::debug::DumpWithoutCrashing();
+  GetAdsClient()->Save(kClientJsonFilename, client_.ToJson(),
+                       base::BindOnce([](const bool success) {
+                         if (!success) {
+                           return BLOG(0, "Failed to save client state");
+                         }
 
-           return BLOG(0, "Failed to save client state");
-         }
-
-         BLOG(9, "Successfully saved client state");
-       }));
+                         BLOG(9, "Successfully saved client state");
+                       }));
 }
 
 void ClientStateManager::LoadCallback(InitializeCallback callback,
@@ -414,13 +121,7 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Failed to parse client state");
-      base::debug::DumpWithoutCrashing();
-
-      BLOG(3, "Failed to parse client state: " << *json);
+      BLOG(1, "Failed to parse client state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);
     }

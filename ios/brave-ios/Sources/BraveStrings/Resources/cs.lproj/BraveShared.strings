@@ -5,7 +5,7 @@
 "AboutBraveShields" = "O Štítech Ping";
 
 /* The body of the screen explaining Ping Shields */
-"AboutBraveShieldsBody" = "Webové stránky často obsahují soubory cookie a skripty, které se snaží identifikovat vás a vaše zařízení. Chtějí zjistit, kdo jste, a sledovat vás po celém webu –⁠⁠⁠⁠⁠⁠ chtějí sledovat, co děláte na každé webové stránce.\n\nBrave blokuje tyto věci, takže můžete prohlížet webové stránky, aniž byste byli sledováni.";
+"AboutBraveShieldsBody" = "Webové stránky často obsahují soubory cookie a skripty, které se snaží identifikovat vás a vaše zařízení. Chtějí zjistit, kdo jste, a sledovat vás po celém webu –⁠⁠⁠⁠⁠⁠ chtějí sledovat, co děláte na každé webové stránce.\n\nPing blokuje tyto věci, takže můžete prohlížet webové stránky, aniž byste byli sledováni.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "To vám umožní uložit obrázek do vašeho fotoaparátu.";
@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Ping by chtěl získat přístup k vašim fotografiím";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Přidat záložku";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Přidat záložku";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Přidat vlastní seznam filtrů";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Přidá další seznamy vytvořené a spravované komunitou, které věříte.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Přihlaste se pouze k odběru seznamů od subjektů, kterým důvěřuje**. Váš prohlížeč bude pravidelně kontrolovat aktualizace seznamu z adresy URL, kterou zadáte.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Přidat k oblíbeným";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokování monitoru";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Oznámení bloku „Přepnout na aplikaci";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokování vyskakovacích oken";
 
@@ -173,7 +158,7 @@
 "BraveRewardsTitle" = "Ping Rewards";
 
 /* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Ping Search nesleduje vás, vaše dotazy ani kliknutí.";
+"braveSearchPromotion.bannerDescription" = "Vyhledávač Ping vás neprofiluje.";
 
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Možná později";
@@ -214,13 +199,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Pokud se tato stránka jeví jako nefunkční, zkuste štíty deaktivovat";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Štíty Ping";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Dolů";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Nahoru ";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -287,7 +272,7 @@
 "callout.p3aCalloutTitle" = "Pomozte vylepšit Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Sdílejte zcela soukromé a anonymní informace o produktu.";
+"callout.p3aCalloutToggleTitle" = "Sdílet soukromé a anonymní informace o produktu.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Získejte ochranu soukromí Ping na svém počítači nebo tabletu a synchronizujte záložky a rozšíření mezi zařízeními.";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Zavřít";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Opravdu chcete zavřít všechny ostatní otevřené karty?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Zavřít všechny ostatní karty";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Opravdu chcete zavřít všechny otevřené karty?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Potvrdit";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Filtrování obsahu";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Aktivuje vlastní filtry, které blokují regionální a jazykově specifické trackery a jiné nepříjemnosti";
 
 /* Cookie settings option title */
 "CookieControl" = "Kontrola souborů cookie ";
@@ -514,6 +499,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopírovat odkaz";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Zkopírovat informace o kartách do schránky.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Zkopírovat do schránky";
 
@@ -525,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Aktuálně používané vyhledávače";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Vlastní seznam filtrů";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Vlastní seznamy filtrů";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Adresa URL vlastního seznamu filtrů";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Přidat";
@@ -628,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Zavřít výchozí popisek prohlížeče";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Výchozí seznamy filtrů";
-
 /* Name for default Ping theme. */
 "defaultThemeName" = "Výchozí nastavení Ping";
 
@@ -663,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Zařízení %1$ @ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Zrušit změny";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Opravdu si přejete zrušit tyto změny? Veškeré úpravy budou ztraceny.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Zrušit změny?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Bezpečnostní certifikát";
@@ -798,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funkce";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Zadaná adresa URL je neplatná";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Pro vlastní seznamy filtrů jsou povoleny pouze zabezpečené adresy URL (https)";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Přidat";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Další oblíbené komunitní seznamy. Zapnutí příliš mnoha filtrů sníží rychlost procházení.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Stažení se nezdařilo";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Čeká na stažení";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Edit";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Zadejte odkaz na seznam filtrů";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Naposledy aktualizováno %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Zde zadejte adresu URL seznamu filtrů ";
 
 /* Share action title */
 "FindInPage" = "Najít na stránce";
@@ -1105,7 +1060,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Převzít Tokeny";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "Procházením s Ping jste získali %@.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1274,7 +1229,7 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Blokováním trackerů a reklam využívají webové stránky méně dat a načítají se mnohem rychleji.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Podívejte se na rozdíl Brave:\nŽádné reklamy. Žádné trackery. Mnohem rychlejší načítání stránky.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Podívejte se na rozdíl Ping:\nŽádné reklamy. Žádné trackery. Mnohem rychlejší načítání stránky.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Napište název nebo adresu URL webové stránky.";
@@ -1453,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Continue";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
+/* A subtitle shown on the setting that toggles analytics on Ping. */
 "p3a.settingSubtitle" = "Tyto soukromé odpovědi pomáhají Ping odhadnout celkové využití určitých funkcí a vylepšit je pro vás.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Povolit analýzu produktů se zachováním soukromí (P3A)";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1422,15 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Vaše připojení k této stránce není bezpečné.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Připojení ke stránce nebylo ověřeno. ";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Vaše připojení k této stránce se nepodařilo plně ověřit. Můžete pokračovat nebo zkusit načíst stránku znova a navázat zabezpečené připojení. ";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Přihlásit se na stránku";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Zobrazit certifikát";
@@ -1775,7 +1739,7 @@
 "playList.undoRemoveButtonTitle" = "Zpět ";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Přidá tlačítko seznamu skladeb (vypadá jako 4 řádky se symbolem +) vedle lišty adres v prohlížeči Brave. Toto tlačítko vám umožňuje rychlý přístup k otevření seznamu skladeb nebo přidání/odebrání médií.";
+"playlist.urlBarButtonOptionFooter" = "Přidá tlačítko seznamu skladeb (vypadá jako 4 řádky se symbolem +) vedle lišty adres v prohlížeči Ping. Toto tlačítko vám umožňuje rychlý přístup k otevření seznamu skladeb nebo přidání/odebrání médií.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Povolit tlačítko rychlého přístupu";
@@ -1891,7 +1855,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Synchronizovat nyní";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Zavřít nabídku štíty";
 
 /* Settings privacy section title */
@@ -1975,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Zapnout oznámení";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "Rekapitulace toho, jak vás tento týden Ping chránil online.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Týdenní zpráva o soukromí";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Data Centra soukromí jsou uložena lokálně a nikdy nejsou nikam odesílána.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Centrum soukromí";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2083,7 +2047,7 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Rychlé vyhledávače";
 
-/* Open the App Store to rate Brave. */
+/* Open the App Store to rate Ping. */
 "RateBrave" = "Ohodnotit Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
@@ -2240,7 +2204,7 @@
 "ReportBrokenSiteBody1" = "Dejte vývojářům Ping vědět, že tyto stránky se zabezpečením Shields nefungují správně:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Poznámka: Zpráva odeslaná na servery Ping bude zahrnovat adresu stránky, číslo verze prohlížeče Brave, nastavení štítů, stav VPN a nastavení jazyka.";
+"ReportBrokenSiteBody2" = "Poznámka: Zpráva odeslaná na servery Ping bude zahrnovat adresu stránky, číslo verze prohlížeče Ping, nastavení štítů, stav VPN a nastavení jazyka.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Submit";
@@ -2279,7 +2243,7 @@
 "RestoreTabOnCrashAlertTitle" = "Ping se nečekaně zavřel.";
 
 /* Body for Ping Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "S odměnami Ping si můžete zobrazit reklamy chránící soukromí ze sítě Reklamy Brave. Žádné trackery. Žádné zpomalení. A vaše data zůstávají naprosto v bezpečí.";
+"rewards.braveTalkRewardsOptInBody" = "S odměnami Ping si můžete zobrazit reklamy chránící soukromí ze sítě Reklamy Ping. Žádné trackery. Žádné zpomalení. A vaše data zůstávají naprosto v bezpečí.";
 
 /* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Zapnout Rewards";
@@ -2309,7 +2273,7 @@
 "rewards.optInDisclaimer" = "Kliknutím souhlasíte s %1$@ a %2$@. Můžete je kdykoliv zakázat v Nastavení.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Podporujte automaticky tvůrce obsahu a vydavatele povolením soukromých reklam Brave. Soukromé reklamy Ping jsou reklamy respektující soukromí, které se vracejí tvůrcům obsahu.";
+"rewards.settingsToggleMessage" = "Podporujte automaticky tvůrce obsahu a vydavatele povolením soukromých reklam Ping. Soukromé reklamy Ping jsou reklamy respektující soukromí, které se vracejí tvůrcům obsahu.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Povolit Ping Rewards";
@@ -2464,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Sdílet";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Sdílet vnitřní odměny";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Podporováno";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Vnitřní odměny";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2478,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Uložit";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Uložit změny";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Uložené přihlašovací údaje";
@@ -2668,11 +2635,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Nastavení kvality";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Tento soukromý ping umožňuje Ping odhadnout počet aktivních uživatelů.";
+/* Description to explain the daily usage brave toggle */
+"settings.sendUsagePingDescription" = "Tento soukromý brave umožňuje Ping odhadnout počet aktivních uživatelů.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Automatické odesílání denního pingu do služby Ping";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Automatické odesílání denního braveu do služby Ping";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nelze načíst stránku.";
@@ -2753,7 +2723,7 @@
 "ShieldsDefaultsFooter" = "Toto jsou výchozí nastavení štítů pro nové stránky. Jejich změna neovlivní vaše stávající nastavení pro jednotlivé stránky.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Tuto stránku prohlížíte bez ochrany soukromí od Brave. Se zapnutými Štíty nefunguje?";
+"ShieldsDownDisclaimer" = "Tuto stránku prohlížíte bez ochrany soukromí od Ping. Se zapnutými Štíty nefunguje?";
 
 /* shields overview message */
 "ShieldsOverview" = "Štíty stránky vám umožňují kontrolovat, kdy jsou reklamy a trackery blokovány pro každou stránku, kterou navštívíte. Pokud chcete vidět reklamy na konkrétní stránce, můžete je povolit zde.";
@@ -2858,7 +2828,7 @@
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Otevřít webovou stránku";
 
 /* Description for opening Ping Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Tato možnost otevře nastavení Brave. Chcete-li změnit různé možnosti Siri, vyberte prosím položku nabídky „Siri a vyhledávání“ a přizpůsobte své volby.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Tato možnost otevře nastavení Ping. Chcete-li změnit různé možnosti Siri, vyberte prosím položku nabídky „Siri a vyhledávání“ a přizpůsobte své volby.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Otevřít nastavení";
@@ -3013,6 +2983,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Odstranit synchronizační účet";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Odstranění účtu odebere vaše šifrovaná data ze serverů Ping a deaktivuje synchronizaci na všech vašich připojených zařízeních.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Neodstraní však data, která jsou v těchto zařízeních uložena lokálně.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Toto vymazání je trvalé a neexistuje žádný způsob, jak data obnovit. Pokud se rozhodnete znovu začít používat synchronizaci, budete si muset vytvořit nový účet a každé zařízení znovu postupně přidat.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Při načítání zařízení v synchronizačním řetězci se něco pokazilo.";
 
@@ -3050,13 +3029,13 @@
 "SyncAddDeviceScan" = "Synchronizovat řetězcový QR kód";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Na vašem druhém mobilním zařízení přejděte na Synchronizovat v panelu Nastavení a klepněte na tlačítko „Skenovat synchronizační kód“. Pomocí fotoaparátu naskenujte níže uvedený QR kód.\n\nZacházejte s tímto kódem jako s heslem. Pokud se ho někdo zmocní, může číst a upravovat vaše synchronizovaná data.";
+"SyncAddDeviceScanDescription" = "Na vašem druhém mobilním zařízení přejděte na Synchronizovat v panelu Nastavení a klepněte na tlačítko „Skenovat synchronizační kód“. Pomocí fotoaparátu naskenujte níže uvedený QR kód.\n\nS tímto kódem zacházejte jako s heslem. Pokud se ho někdo zmocní, může číst a upravovat vaše synchronizovaná data.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Zadejte synchronizační kód";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Na svém zařízení přejděte na Synchronizovat na panelu Nastavení a klepněte na tlačítko „%@“. Zadejte níže uvedená kódová slova synchronizačního řetězce.\n\n Zacházejte s tímto kódem jako s heslem. Pokud se ho někdo zmocní, může číst a upravovat vaše synchronizovaná data.";
+"SyncAddDeviceWordsDescription" = "Na svém zařízení přejděte na Synchronizovat na panelu Nastavení a klepněte na tlačítko „%@“. Zadejte níže uvedená kódová slova synchronizačního řetězce.\n\n S tímto kódem zacházejte jako s heslem. Pokud se ho někdo zmocní, může číst a upravovat vaše synchronizovaná data.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Zadejte kódová slova";
@@ -3070,11 +3049,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Zvolte typ zařízení, se kterým se chcete synchronizovat.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Platnost kódu vypršela. Kliknutím na tlačítko níže si vytvořte nový.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Tento dočasný kód je platný po dobu příštích %@.";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Počítač";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Odstranit synchronizační účet";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Zdá se, že tento kód byl vytvořen na zařízení, které má starší verzi Ping. Aktualizujte prosím na nejnovější verzi Ping na svém druhém zařízení a poté vytvořte nový synchronizační kód.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Zařízení a nastavení";
@@ -3337,7 +3325,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "Zprávy";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Sledujte témata, která vás zajímají";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3379,7 +3367,7 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "No tě pic…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Spravovat zdroje pro váš kanál";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,7 +3389,7 @@
 "today.insecureSourcesHeader" = "Nezabezpečené zdroje – přidávejte na vlastní nebezpečí";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Sledujte v rámci jednoho kanálu své oblíbené zdroje. Stačí otevřít kartu v Brave, posunout dolů a... tadá!\nNovinky Ping jsou podporovány soukromými a anonymizovanými reklamami.";
+"today.introCardBody" = "Sledujte v rámci jednoho kanálu své oblíbené zdroje. Stačí otevřít kartu v Ping, posunout dolů a... tadá!\nNovinky Ping jsou podporovány soukromými a anonymizovanými reklamami.";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "Zapněte si zprávy Ping a nenechte si ujít žádný příběh";
@@ -3412,7 +3400,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Více informací o vašich datech";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "Další nabídky Ping";
 
 /* No comment provided by engineer. */
@@ -3436,6 +3424,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Propagované";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Ohodnoťte Ping v App Store";
+
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Skrýt";
 
@@ -3446,7 +3437,7 @@
 "today.rateBraveCardSubtitle" = "Řekněte nám, co si myslíte!";
 
 /* Title shown on the Rate Ping Card */
-"today.rateBraveCardTitle" = "Líbí se vám Brave?";
+"today.rateBraveCardTitle" = "Líbí se vám Ping?";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Obnovit";
@@ -3538,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Ping neukládá ani nesdílí vaše hlasové vyhledávání.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "zapnout";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Chcete zůstat chráněni? Před ukončením předplatného stačí obnovit. Jako poděkování za obnovení vám dokonce dáme 20% slevu na další 3 měsíce.";
 
@@ -3559,140 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Ale ne! Vaše předplatné VPN Ping brzy vyprší.";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "Koupit";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Ping Firewall + VPN";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "Na 1 předplatné ochrana až 5 zařízení";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "Zvolte zeměpisnou polohu/zemi";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "Ping nikdy nezaznamenává vaši aktivitu";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "Chraňte každou aplikaci a vaše zaříz.";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "Bezpečnější na domácí i veřejné Wi-Fi";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "Blesková rychlost až 100 Mb/s";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Verze aplikace";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Mobilní operátor";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Ping vás nesleduje a ani neví, jak používáte naši aplikaci, takže nevíme, jak jste nastavili VPN. Sdílejte prosím informace o problému, se kterým se potýkáte, a my se budeme snažit jej vyřešit, jakmile to bude možné.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Nelze odeslat e-mail. Zkontrolujte prosím vaši konfiguraci e-mailu.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Vyberte prosím informace, které jste ochotni s námi sdílet.\n\nČím více informací s námi zpočátku sdílíte, tím snazší bude pro naše pracovníky podpory vám pomoci vyřešit váš problém.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Podpora poskytovaná s pomocí týmu Guardian.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "Název hostitele sítě VPN";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Problém";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Problém se spolehlivostí připojení";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "Po připojení není k dispozici internet";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Ostatní";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Nelze se připojit k síti VPN (jiná chyba)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Pomalé připojení";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Webové stránky nefungují";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Chybové protokoly";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Typ sítě";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Platforma";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Pokračovat na e-mail";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Typ předplatného";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "Časové pásmo iOS";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Ping Firewall + problém VPN";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "Aktivovat";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Nelze se připojit k App Store, zkuste to prosím za několik minut znovu.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Chyba App Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Všechny plány obsahují %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "bezplatná 7denní zkušební verze";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "vyzkoušejte 7 dní zdarma";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Všechna předplatná jsou automaticky obnovena, ale lze je před obnovením zrušit.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Tento profil umožňuje VPN se kdykoliv automaticky připojovat a zabezpečovat provoz napříč vaším zařízením. Toto připojení VPN bude šifrováno a směrováno přes inteligentní firewall Brave, aby blokovalo potenciálně škodlivá a invazivní připojení.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Nainstalovat profil VPN";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Ping nyní nainstaluje profil VPN.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "Síť VPN je nyní povolena";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Instalace sítě VPN";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "Vyzkoušejte ZDARMA";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Obnovuje se každý měsíc";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Měsíční předplatné";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Platnost vypršela";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Blokuje nežádoucí síťová připojení";
@@ -3715,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Zajišťuje";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Vyberte prosím váš preferovaný transportní protokol. Po přepnutí budou vaše stávající přihlašovací údaje VPN vymazány a budete znovu připojeni, pokud je momentálně navázáno připojení VPN.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Přepnutí protokolu tunelu se nezdařilo, zkuste to prosím znovu později.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Chyba serveru";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Transportní protokol";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "Protokol tunelu VPN byl změněn.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Oblast serveru, která je vám nejblíže, bude automaticky vybrána, na základě časového pásma vašeho systému. Tohle se doporučuje, aby byla zajištěna vysoká rychlost internetu.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Automaticky";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Přepnout servery se nezdařilo, zkuste to prosím znovu později.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Chyba serveru";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Oblast serveru";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Oblast VPN se změnila.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Nelze resetovat konfiguraci VPN. Zkuste to prosím znovu. Pokud problém přetrvává, kontaktujte podporu o pomoc.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Zkusit znovu";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Resetování se nezdařilo";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Konfigurace VPN byla úspěšně resetována.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Resetování bylo úspěšné";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Obnovit ";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "Chcete-li obnovit vaši relaci VPN, přihlaste se prosím ke svému účtu Ping.";
@@ -3777,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Relace vypršela.";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Upgradujte na síť VPN, chraňte své připojení a blokujte všude invazivní sledovací programy.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Kontaktujte technickou podporu";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Nepodařilo se načíst seznam serverů. Zkuste to prosím znovu později.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "Podpora sítě VPN";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Propojit nákup s účtem Ping";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Propojte váš nákup v App Store se svým účtem Ping a používejte tak VPN Ping na jiných zařízeních.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Správa předplatného";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Uplatnit kód nabídky";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Obnovení konfigurace";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Hostitel";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Poloha";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Server";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Konec platnosti";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Předplatné";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Status";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Transportní protokol";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Zakázáno";
@@ -3851,10 +3617,10 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Jste připraveni zabezpečit každou aplikaci ve vašem telefonu? Vraťte se k VPN Ping a získejte 20% slevu na další 3 měsíce.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping vždy blokovala trackery v každé aplikaci, a to i mimo prohlížeč Brave. Nyní můžete vidět, kdo se vás pokusil sledovat, a to pomocí Centra soukromí Ping.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping vždy blokovala trackery v každé aplikaci, a to i mimo prohlížeč Ping. Nyní můžete vidět, kdo se vás pokusil sledovat, a to pomocí Centra soukromí Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Věděli jste, že VPN Ping vás chrání i mimo prohlížeč Brave?";
+"vpn.subscribeVPNProtectionPopOverTitle" = "Věděli jste, že VPN Ping vás chrání i mimo prohlížeč Ping?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Aktualizovat";
@@ -3874,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Aktualizovat platbu";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Aktualizovat způsob platby";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Dokonce i na pozadí vás Ping bude i nadále chránit.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN jsou ZAPNUTY";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "Při inicializaci VPN došlo k problému. Zkuste to prosím znovu nebo zkuste resetovat konfiguraci na stránce nastavení VPN.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Chyba";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN od Ping vyžadují pro správnou funkčnost, aby byl v zařízení nainstalován profil VPN.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Povolení zamítnuto";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Nelze uplatnit kód nabídky. Zkuste to prosím znovu, nebo zkontrolujte podrobnosti o kódu nabídky a pak to zkuste znovu.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Nelze dokončit nákup. Zkuste to prosím znovu, nebo zkontrolujte své platební údaje na Apple a následně to zkuste znovu.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Chyba";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Předplatné bude účtováno prostřednictvím vašeho účtu iTunes.\n\nJakákoli nevyužitá část bezplatné zkušební verze, pokud je nabídnuta, propadne při zakoupení předplatného.\n\nVaše předplatné se automaticky obnoví, pokud nebude zrušeno alespoň 24 hodin před koncem aktuálního období.\n\nVaše předplatné můžete spravovat v Nastavení.\n\nPoužíváním Ping souhlasíte s podmínkami použití a zásadami ochrany osobních údajů.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Uplatnit kód";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Oblast serveru";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Aktuální nastavení: %@";
@@ -3916,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "Oblast VPN";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Tímto resetujete konfiguraci Firewall + VPN od Ping a opravíte všechny chyby. Tento proces může trvat minutu.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Obnovit konfiguraci";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Reset";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Měsíční předplatné";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Roční předplatné";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Aktualizujte prosím váš způsob platby";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Obnovovat ročně, abyste ušetřili %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Nejlepší cena";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Jeden rok";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Datum vytvoření peněženky";
@@ -3970,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Nebyla uložena žádná data webových stránek";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Odstranit vše";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Remove";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Odstranit %ld položky/položek";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3709,9 @@
 /* History tableview section header */
 "Yesterday" = "Včera";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Povolit videa YouTube ve vysoké kvalitě";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Povolení této experimentální funkce přehraje video v maximální dostupné kvalitě a použije další data.";
 
@@ -4008,6 +3720,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Zapnuto";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Kvalita přehrávání YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Povolit přes Wi-Fi";

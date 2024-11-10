@@ -39,6 +39,8 @@ source_set("ads") {
     "//components/prefs",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/profile",
+    "//sql:sql",
   ]
 
   frameworks = [
@@ -52,13 +54,13 @@ ios_objc_mojom_wrappers("brave_ads_mojom_wrappers") {
   mojom_target = "//brave/components/brave_ads/core/mojom"
   sources = [ "//brave/components/brave_ads/core/mojom/brave_ads.mojom" ]
   exclude_types = [
-    "DBCommandInfo",
-    "DBCommandBindingInfo",
-    "DBCommandResponseInfo",
-    "DBCommandResult",
-    "DBRecordInfo",
+    "DBActionInfo",
+    "DBBindColumnInfo",
+    "DBTransactionResultInfo",
+    "DBRowsUnion",
+    "DBRowInfo",
     "DBTransactionInfo",
-    "DBValue",
+    "DBColumnValueUnion",
   ]
 
   # The module name is `BraveAds` now which matches the class we already have

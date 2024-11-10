@@ -24,7 +24,6 @@
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/notification_service.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -46,13 +45,13 @@
 
 namespace {
 
-const char kTestHost[] = "a.test.com";
-const char kTestAmpPage[] = "/test_amp_page";
-const char kTestRedirectingAmpPage1[] = "/redirecting_amp_page_1";
-const char kTestRedirectingAmpPage2[] = "/redirecting_amp_page_2";
-const char kTestSimpleNonAmpPage[] = "/simple_page";
-const char kTestCanonicalPage[] = "/simple_canonical_page";
-const char kTestAmpBodyScaffolding[] =
+constexpr char kTestHost[] = "a.test.com";
+constexpr char kTestAmpPage[] = "/test_amp_page";
+constexpr char kTestRedirectingAmpPage1[] = "/redirecting_amp_page_1";
+constexpr char kTestRedirectingAmpPage2[] = "/redirecting_amp_page_2";
+constexpr char kTestSimpleNonAmpPage[] = "/simple_page";
+constexpr char kTestCanonicalPage[] = "/simple_canonical_page";
+constexpr char kTestAmpBodyScaffolding[] =
     R"(
     <html amp>
     <head>
@@ -61,7 +60,7 @@ const char kTestAmpBodyScaffolding[] =
     </html>
     )";
 constexpr uint32_t kTestReadBufferSize = 65536;  // bytes
-const char kTestAmpCanonicalLink[] = "<link rel='canonical' href='%s'>";
+constexpr char kTestAmpCanonicalLink[] = "<link rel='canonical' href='%s'>";
 
 // HELPERS
 std::unique_ptr<net::test_server::HttpResponse> BuildHttpResponse(
@@ -119,16 +118,20 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
 
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+  }
+
+  void SetUp() override {
     EXPECT_TRUE(https_server_->InitializeAndListen());
+    InProcessBrowserTest::SetUp();
   }
 
   void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     prefs_ = browser()->profile()->GetPrefs();
 
     content::SetupCrossSiteRedirector(https_server_.get());
-    InProcessBrowserTest::SetUpOnMainThread();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -167,7 +170,7 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
                       const std::string& content_type,
                       const net::test_server::HttpRequest& request)
         -> std::unique_ptr<net::test_server::HttpResponse> {
-      [&request]() {
+      [&request] {
         // This should never happen, abort test
         ASSERT_EQ(request.headers.find("X-Brave-De-AMP"),
                   request.headers.end());

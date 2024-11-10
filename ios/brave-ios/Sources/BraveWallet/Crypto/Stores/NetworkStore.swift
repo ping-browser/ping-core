@@ -158,6 +158,8 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
             if let selectedNetwork = await self?.rpcService.network(coin: account.coin, origin: nil)
             {
               self?.defaultSelectedChainId = selectedNetwork.chainId
+              self?.isSwapSupported =
+                await self?.swapService.isSwapSupported(chainId: selectedNetwork.chainId) ?? false
             }
           }
           if let origin = self?.origin, self?.selectedChainForOrigin.coin != account.coin {
@@ -203,8 +205,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     for chainId in WalletConstants.supportedTestNetworkChainIds {
       var coin: BraveWallet.CoinType = .eth
       switch chainId {
-      case BraveWallet.GoerliChainId,
-        BraveWallet.SepoliaChainId,
+      case BraveWallet.SepoliaChainId,
         BraveWallet.FilecoinEthereumTestnetChainId:
         coin = .eth
       case BraveWallet.SolanaDevnet,
@@ -405,7 +406,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     _ network: BraveWallet.NetworkInfo
   ) async -> (accepted: Bool, errMsg: String) {
     isAddingNewNetwork = true
-    if allChains.filter({ $0.coin == .eth }).contains(where: {
+    if allChains.contains(where: {
       $0.id.lowercased() == network.id.lowercased()
     }) {
       let removeStatus = await rpcService.removeChain(chainId: network.chainId, coin: network.coin)
@@ -413,12 +414,12 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
         return (false, "Not able to remove network chainId (\(network.chainId)")
       }
       // delete local stored user assets that in this custom network
-      assetManager.removeGroup(for: network.walletUserAssetGroupId, completion: nil)
+      await assetManager.removeGroup(for: network.walletUserAssetGroupId)
 
       let (_, addStatus, errMsg) = await rpcService.addChain(network)
       guard addStatus == .success else {
         // if adding is not succeeded, we have to add back the old network info
-        if let oldNetwork = allChains.filter({ $0.coin == .eth }).first(where: {
+        if let oldNetwork = allChains.first(where: {
           $0.id.lowercased() == network.id.lowercased()
         }) {
           let (_, addOldStatus, _) = await rpcService.addChain(oldNetwork)
@@ -426,7 +427,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
             isAddingNewNetwork = false
             return (false, errMsg)
           }
-          customNetworkNativeAssetMigration(network)
+          await customNetworkNativeAssetMigration(network)
           isAddingNewNetwork = false
           await updateChainList()
           return (false, errMsg)
@@ -435,7 +436,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
           return (false, errMsg)
         }
       }
-      customNetworkNativeAssetMigration(network)
+      await customNetworkNativeAssetMigration(network)
       isAddingNewNetwork = false
       await updateChainList()
       return (true, "")
@@ -445,51 +446,48 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
         isAddingNewNetwork = false
         return (false, errMsg)
       }
-      customNetworkNativeAssetMigration(network)
+      await customNetworkNativeAssetMigration(network)
       isAddingNewNetwork = false
       await updateChainList()
       return (true, "")
     }
   }
 
-  public func removeCustomNetwork(
-    _ network: BraveWallet.NetworkInfo,
-    completion: @escaping (_ success: Bool) -> Void
-  ) {
+  @MainActor public func removeCustomNetwork(
+    _ network: BraveWallet.NetworkInfo
+  ) async -> Bool {
     guard network.coin == .eth else {
-      completion(false)
-      return
+      return false
     }
-    rpcService.removeChain(chainId: network.chainId, coin: network.coin) { [self] success in
-      if success {
-        // check if its the current network, set mainnet the active net
-        if network.id.lowercased() == defaultSelectedChainId.lowercased() {
-          rpcService.setNetwork(
-            chainId: BraveWallet.MainnetChainId,
-            coin: .eth,
-            origin: nil,
-            completion: { _ in }
-          )
-        }
-        // delete local stored user assets' balances that in this custom network
-        assetManager.removeUserAssetsAndBalance(for: network, completion: nil)
-        Task {
-          await updateChainList()
-        }
+
+    let success = await rpcService.removeChain(chainId: network.chainId, coin: network.coin)
+    if success {
+      // check if its the current network, set mainnet the active net
+      if network.id.lowercased() == defaultSelectedChainId.lowercased() {
+        await rpcService.setNetwork(
+          chainId: BraveWallet.MainnetChainId,
+          coin: .eth,
+          origin: nil
+        )
       }
-      completion(success)
+      // delete local stored user assets' balances that in this custom network
+      await assetManager.removeUserAssetsAndBalances(for: network)
+      await updateChainList()
     }
+    return success
   }
 
   @MainActor func selectedNetwork(for coin: BraveWallet.CoinType) async -> BraveWallet.NetworkInfo {
     await rpcService.network(coin: coin, origin: nil)
   }
 
-  func customNetworkNativeAssetMigration(
-    _ network: BraveWallet.NetworkInfo,
-    completion: (() -> Void)? = nil
-  ) {
-    assetManager.addUserAsset(network.nativeToken, completion: completion)
+  @MainActor func customNetworkNativeAssetMigration(
+    _ network: BraveWallet.NetworkInfo
+  ) async {
+    await assetManager.addUserAsset(
+      network.nativeToken,
+      isAutoDiscovery: false
+    )
   }
 
   func network(for token: BraveWallet.BlockchainToken) -> BraveWallet.NetworkInfo? {

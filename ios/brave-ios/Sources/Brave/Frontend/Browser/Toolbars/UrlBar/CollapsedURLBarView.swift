@@ -6,6 +6,7 @@
 import BraveCore
 import BraveStrings
 import Foundation
+import Shared
 import SnapKit
 import UIKit
 
@@ -89,7 +90,7 @@ class CollapsedURLBarView: UIView {
       configuration.image = UIImage(braveSystemNamed: "leo.warning.triangle-filled")
     case .unknown:
       configuration.baseForegroundColor = UIColor(braveSystemName: .iconDefault)
-      configuration.image = UIImage(braveSystemNamed: "leo.warning.circle-filled")
+      configuration.image = UIImage(braveSystemNamed: "leo.info.filled")
     }
     return configuration
   }
@@ -103,9 +104,16 @@ class CollapsedURLBarView: UIView {
   var currentURL: URL? {
     didSet {
       urlLabel.text = currentURL.map {
-        URLFormatter.formatURLOrigin(
-          forDisplayOmitSchemePathAndTrivialSubdomains: $0.absoluteString
-        )
+        if let internalURL = InternalURL($0), internalURL.isBasicAuthURL {
+          Strings.PageSecurityView.signIntoWebsiteURLBarTitle
+        } else if URLOrigin(url: $0).url != nil || URIFixup.getURL($0.absoluteString) != nil {
+          URLFormatter.formatURLOrigin(
+            forDisplayOmitSchemePathAndTrivialSubdomains: URLOrigin(url: $0).url?.absoluteString
+              ?? $0.absoluteString
+          )
+        } else {
+          String()
+        }
       }
     }
   }

@@ -6,11 +6,10 @@
 #include <string>
 
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_info.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util_constants.h"
-#include "brave/components/brave_ads/core/internal/flags/environment/environment_types_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
+#include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/flags/environment/environment_types_test_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -22,29 +21,30 @@ namespace brave_ads {
 namespace {
 
 struct ParamInfo final {
-  CommandLineSwitchInfo command_line_switch;
+  test::CommandLineSwitchInfo command_line_switch;
   mojom::EnvironmentType expected_environment_type;
 } const kTests[] = {
-    {{kRewardsSwitch, "staging=true"}, mojom::EnvironmentType::kStaging},
-    {{kRewardsSwitch, "staging=1"}, mojom::EnvironmentType::kStaging},
-    {{kRewardsSwitch, "staging=false"}, mojom::EnvironmentType::kProduction},
-    {{kRewardsSwitch, "staging=foobar"}, mojom::EnvironmentType::kProduction},
+    {{"rewards", "staging=true"}, mojom::EnvironmentType::kStaging},
+    {{"rewards", "staging=1"}, mojom::EnvironmentType::kStaging},
+    {{"rewards", "staging=false"}, mojom::EnvironmentType::kProduction},
+    {{"rewards", "staging=foobar"}, mojom::EnvironmentType::kProduction},
     {{}, kDefaultEnvironmentType}};
 
 }  // namespace
 
 class BraveAdsEnvironmentCommandLineSwitchParserUtilTest
-    : public UnitTestBase,
+    : public test::TestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
-    AppendCommandLineSwitches({GetParam().command_line_switch});
+    test::AppendCommandLineSwitches({GetParam().command_line_switch});
   }
 };
 
 TEST_P(BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
        ParseEnvironmentCommandLineSwitch) {
   // Act & Assert
+  ASSERT_TRUE(GlobalState::HasInstance());
   EXPECT_EQ(GetParam().expected_environment_type,
             GlobalState::GetInstance()->Flags().environment_type);
 }
@@ -55,7 +55,7 @@ std::string TestParamToString(
       test::ToString(test_param.param.expected_environment_type);
 
   const std::string sanitized_command_line_switch =
-      SanitizeCommandLineSwitch(test_param.param.command_line_switch);
+      test::ToString(test_param.param.command_line_switch);
 
   return base::ReplaceStringPlaceholders(
       "$1EnvironmentFor$2",

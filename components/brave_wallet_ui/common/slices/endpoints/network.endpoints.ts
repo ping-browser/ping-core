@@ -9,13 +9,18 @@ import { mapLimit } from 'async'
 import { BraveWallet } from '../../../constants/types'
 
 // types
-import { WalletApiEndpointBuilderParams } from '../api-base.slice'
+import {
+  ACCOUNT_TAG_IDS,
+  NETWORK_TAG_IDS,
+  WalletApiEndpointBuilderParams
+} from '../api-base.slice'
 
 // utils
-import { handleEndpointError } from '../../../utils/api-utils'
-import { IsEip1559Changed } from '../../constants/action_types'
+import {
+  getHasPendingRequests,
+  handleEndpointError
+} from '../../../utils/api-utils'
 import { NetworksRegistry, getNetworkId } from '../entities/network.entity'
-import { ACCOUNT_TAG_IDS } from './account.endpoints'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { LOCAL_STORAGE_KEYS } from '../../constants/local-storage-keys'
 import {
@@ -23,18 +28,6 @@ import {
   parseJSONFromLocalStorage,
   setLocalStorageItem
 } from '../../../utils/local-storage-utils'
-
-export const NETWORK_TAG_IDS = {
-  REGISTRY: 'REGISTRY',
-  SELECTED: 'SELECTED',
-  SWAP_SUPPORTED: 'SWAP_SUPPORTED',
-  CUSTOM_ASSET_SUPPORTED: 'CUSTOM_ASSET_SUPPORTED'
-} as const
-
-interface IsEip1559ChangedMutationArg {
-  id: string
-  isEip1559: boolean
-}
 
 export const networkEndpoints = ({
   mutation,
@@ -46,39 +39,12 @@ export const networkEndpoints = ({
     getAllKnownNetworks: query<BraveWallet.NetworkInfo[], void>({
       queryFn: async (_arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { data: api, cache } = baseQuery(undefined)
+          const { data: api } = baseQuery(undefined)
 
-          const { isBitcoinEnabled, isZCashEnabled } =
-            cache.walletInfo || (await cache.getWalletInfo())
+          const { networks } = await api.jsonRpcService.getAllNetworks()
 
-          const { networks: ethNetworks } =
-            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
-          const { networks: solNetworks } =
-            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.SOL)
-          const { networks: filNetworks } =
-            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.FIL)
-          const btcNetworks = isBitcoinEnabled
-            ? (
-                await api.jsonRpcService.getAllNetworks(
-                  BraveWallet.CoinType.BTC
-                )
-              ).networks
-            : []
-          const zecNetworks = isZCashEnabled
-            ? (
-                await api.jsonRpcService.getAllNetworks(
-                  BraveWallet.CoinType.ZEC
-                )
-              ).networks
-            : []
           return {
-            data: [
-              ...ethNetworks,
-              ...solNetworks,
-              ...filNetworks,
-              ...btcNetworks,
-              ...zecNetworks
-            ]
+            data: [...networks]
           }
         } catch (error) {
           return handleEndpointError(
@@ -406,18 +372,6 @@ export const networkEndpoints = ({
         { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
       ]
     }),
-    isEip1559Changed: mutation<IsEip1559ChangedMutationArg, IsEip1559Changed>({
-      queryFn: async (arg, _, __, baseQuery) => {
-        // invalidate base cache of networks
-        baseQuery(undefined).cache.clearNetworksRegistry()
-
-        const { chainId, isEip1559 } = arg
-        return {
-          data: { id: chainId, isEip1559 }
-        }
-      },
-      invalidatesTags: ['Network']
-    }),
     refreshNetworkInfo: mutation<boolean, void>({
       queryFn: async (arg, api, extraOptions, baseQuery) => {
         // invalidate base cache of networks
@@ -453,12 +407,10 @@ export const networkEndpoints = ({
             arg.isApproved
           )
 
-          // close the panel if there are
-          // no follow-up requests to switch to the new chain
-          const { requests } =
-            await api.jsonRpcService.getPendingSwitchChainRequests()
+          // close the panel if there are no additional pending requests
+          const hasPendingRequests = await getHasPendingRequests()
 
-          if (!requests.length) {
+          if (!hasPendingRequests) {
             api.panelHandler?.closeUI()
           }
 
@@ -495,7 +447,11 @@ export const networkEndpoints = ({
             arg.isApproved
           )
 
-          api.panelHandler?.closeUI()
+          const hasPendingRequests = await getHasPendingRequests()
+
+          if (!hasPendingRequests) {
+            api.panelHandler?.closeUI()
+          }
 
           return {
             data: true

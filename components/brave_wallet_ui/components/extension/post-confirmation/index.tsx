@@ -11,39 +11,31 @@ import { useHistory } from 'react-router'
 import { BraveWallet, TransactionInfoLookup } from '../../../constants/types'
 
 // Utils
-import { getLocale } from '$web-common/locale'
-import {
-  findTransactionToken,
-  getETHSwapTransactionBuyAndSellTokens,
-  getFormattedTransactionTransferredValue,
-  getTransactionErc721TokenId,
-  getTransactionIntent
-} from '../../../utils/tx-utils'
-import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { makeTransactionDetailsRoute } from '../../../utils/routes-utils'
 
 // Hooks
-import { useTransactionsNetwork } from '../../../common/hooks/use-transactions-network'
-import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useGetTransactionQuery } from '../../../common/slices/api.slice'
-import { useUnsafeUISelector } from '../../../common/hooks/use-safe-selector'
-import {
-  useAccountQuery,
-  useGetCombinedTokensListQuery
-} from '../../../common/slices/api.slice.extra'
 
 // Actions
 import * as WalletPanelActions from '../../../panel/actions/wallet_panel_actions'
 
 // Components
-import { Panel } from '../panel/index'
-import { TransactionSubmittedOrSigned } from './submitted_or_signed'
-import { TransactionComplete } from './complete'
-import { TransactionFailed } from './failed'
+import {
+  TransactionSubmittedOrSigned //
+} from './submitted_or_signed/submitted_or_signed'
+import { TransactionComplete } from './complete/complete'
+import {
+  TransactionFailedOrCanceled //
+} from './failed_or_canceled/failed_or_canceled'
+import {
+  CancelTransaction //
+} from './cancel_transaction/cancel_transaction'
+
+// Styled Components
 import { Loader } from './common/common.style'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
-import { UISelectors } from '../../../common/selectors'
+import { Column } from '../../shared/style'
 
 interface Props {
   transactionLookup: TransactionInfoLookup
@@ -53,65 +45,18 @@ export function TransactionStatus({ transactionLookup }: Props) {
   // history
   const history = useHistory()
 
-  // redux
-  const transactionProviderErrorRegistry = useUnsafeUISelector(
-    UISelectors.transactionProviderErrorRegistry
-  )
-
   // queries
   const { data: tx } = useGetTransactionQuery(transactionLookup ?? skipToken)
-  const { account: txAccount } = useAccountQuery(tx?.fromAccountId)
 
-  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
+  // State
+  const [showCancelTransaction, setShowCancelTransaction] =
+    React.useState(false)
 
   // hooks
   const dispatch = useDispatch()
-  const transactionNetwork = useTransactionsNetwork(tx || undefined)
-  const { transactionsQueueLength } = usePendingTransactions()
-
-  // memos
-  const networkAsset = React.useMemo(() => {
-    return makeNetworkAsset(transactionNetwork)
-  }, [transactionNetwork])
-
-  const transactionIntent = React.useMemo(() => {
-    if (!tx) {
-      return ''
-    }
-
-    const token = findTransactionToken(tx, combinedTokensList)
-
-    const { buyAmount, sellAmount, buyToken, sellToken } =
-      getETHSwapTransactionBuyAndSellTokens({
-        tokensList: combinedTokensList,
-        tx,
-        nativeAsset: networkAsset
-      })
-
-    const { normalizedTransferredValue } =
-      getFormattedTransactionTransferredValue({
-        tx,
-        txAccount,
-        txNetwork: transactionNetwork,
-        token,
-        sellToken
-      })
-
-    return getTransactionIntent({
-      tx,
-      normalizedTransferredValue,
-      buyAmount,
-      buyToken,
-      erc721TokenId: getTransactionErc721TokenId(tx),
-      sellAmount,
-      sellToken,
-      token,
-      transactionNetwork
-    })
-  }, [tx, combinedTokensList, networkAsset, txAccount, transactionNetwork])
 
   // methods
-  const viewTransactionDetail = React.useCallback(() => {
+  const onClickViewInActivity = React.useCallback(() => {
     if (!tx?.id) {
       return
     }
@@ -128,14 +73,19 @@ export function TransactionStatus({ transactionLookup }: Props) {
 
   const onClose = () =>
     dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
-  const completePrimaryCTAText =
-    transactionsQueueLength === 0
-      ? getLocale('braveWalletButtonClose')
-      : getLocale('braveWalletButtonNext')
 
   // render
   if (!tx) {
     return <Skeleton />
+  }
+
+  if (showCancelTransaction) {
+    return (
+      <CancelTransaction
+        onBack={() => setShowCancelTransaction(false)}
+        transaction={tx}
+      />
+    )
   }
 
   if (
@@ -144,9 +94,10 @@ export function TransactionStatus({ transactionLookup }: Props) {
   ) {
     return (
       <TransactionSubmittedOrSigned
-        headerTitle={transactionIntent}
         transaction={tx}
         onClose={onClose}
+        onShowCancelTransaction={() => setShowCancelTransaction(true)}
+        onClickViewInActivity={onClickViewInActivity}
       />
     )
   }
@@ -154,57 +105,28 @@ export function TransactionStatus({ transactionLookup }: Props) {
   if (tx.txStatus === BraveWallet.TransactionStatus.Confirmed) {
     return (
       <TransactionComplete
-        headerTitle={transactionIntent}
-        description={getLocale('braveWalletTransactionCompleteDescription')}
-        isPrimaryCTADisabled={false}
+        transaction={tx}
         onClose={onClose}
-        onClickSecondaryCTA={viewTransactionDetail}
-        onClickPrimaryCTA={onClose}
-        primaryCTAText={completePrimaryCTAText}
+        onClickViewInActivity={onClickViewInActivity}
       />
     )
   }
 
   if (tx.txStatus === BraveWallet.TransactionStatus.Error) {
-    const providerError = transactionProviderErrorRegistry[tx.id]
-    const errorCode =
-      providerError?.code.providerError ??
-      providerError?.code.zcashProviderError ??
-      providerError?.code.bitcoinProviderError ??
-      providerError?.code.solanaProviderError ??
-      providerError?.code.filecoinProviderError ??
-      BraveWallet.ProviderError.kUnknown
-
-    const errorDetailContent =
-      providerError && `${errorCode}: ${providerError.message}`
-    const customDescription =
-      errorCode ===
-      BraveWallet.ZCashProviderError.kMultipleTransactionsNotSupported
-        ? providerError.message
-        : undefined
-
     return (
-      <TransactionFailed
-        headerTitle={transactionIntent}
-        isPrimaryCTADisabled={false}
-        errorDetailTitle={getLocale(
-          'braveWalletTransactionFailedModalSubtitle'
-        )}
-        errorDetailContent={errorDetailContent}
-        customDescription={customDescription}
+      <TransactionFailedOrCanceled
+        transaction={tx}
         onClose={onClose}
-        onClickPrimaryCTA={onClose}
       />
     )
   }
 
   return (
-    <Panel
-      navAction={onClose}
-      title={transactionIntent}
-      headerStyle='slim'
+    <Column
+      fullHeight={true}
+      fullWidth={true}
     >
       <Loader />
-    </Panel>
+    </Column>
   )
 }

@@ -13,12 +13,13 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/url_request_builders/redeem_payment_tokens_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/user_data/redeem_payment_tokens_user_data_builder.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_ads {
@@ -52,7 +53,7 @@ void RedeemPaymentTokens::RedeemAfterDelay() {
 
   const base::Time redeem_at = timer_.Start(
       FROM_HERE, CalculateDelayBeforeRedeemingTokens(),
-      base::BindOnce(&RedeemPaymentTokens::Redeem, base::Unretained(this)));
+      base::BindOnce(&RedeemPaymentTokens::Redeem, weak_factory_.GetWeakPtr()));
   SetNextTokenRedemptionAt(redeem_at);
 
   BLOG(1, "Redeem payment tokens " << FriendlyDateAndTime(redeem_at));
@@ -70,33 +71,28 @@ void RedeemPaymentTokens::Redeem() {
 
   is_redeeming_ = true;
 
-  BuildRedeemPaymentTokensUserData(
-      GetAllPaymentTokens(),
-      base::BindOnce(&RedeemPaymentTokens::BuildUserDataCallback,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void RedeemPaymentTokens::BuildUserDataCallback(base::Value::Dict user_data) {
   const PaymentTokenList& payment_tokens = GetAllPaymentTokens();
 
   RedeemPaymentTokensUrlRequestBuilder url_request_builder(
-      wallet_, payment_tokens, std::move(user_data));
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+      wallet_, payment_tokens,
+      BuildRedeemPaymentTokensUserData(payment_tokens));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  UrlRequest(std::move(url_request),
-             base::BindOnce(&RedeemPaymentTokens::RedeemCallback,
-                            weak_factory_.GetWeakPtr(), payment_tokens));
+  GetAdsClient()->UrlRequest(
+      std::move(mojom_url_request),
+      base::BindOnce(&RedeemPaymentTokens::RedeemCallback,
+                     weak_factory_.GetWeakPtr(), payment_tokens));
 }
 
 void RedeemPaymentTokens::RedeemCallback(
     const PaymentTokenList& payment_tokens,
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const auto result = HandleUrlResponse(url_response);
+  const auto result = HandleRedeemPaymentTokensUrlResponse(mojom_url_response);
   if (!result.has_value()) {
     const auto& [failure, should_retry] = result.error();
 
@@ -110,9 +106,9 @@ void RedeemPaymentTokens::RedeemCallback(
 
 // static
 base::expected<void, std::tuple<std::string, bool>>
-RedeemPaymentTokens::HandleUrlResponse(
-    const mojom::UrlResponseInfo& url_response) {
-  if (url_response.status_code != net::HTTP_OK) {
+RedeemPaymentTokens::HandleRedeemPaymentTokensUrlResponse(
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  if (mojom_url_response.status_code != net::HTTP_OK) {
     return base::unexpected(std::make_tuple("Failed to redeem payment tokens",
                                             /*should_retry=*/true));
   }

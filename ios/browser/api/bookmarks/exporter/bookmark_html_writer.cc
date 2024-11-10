@@ -23,6 +23,7 @@
 #include "base/functional/callback.h"
 #include "base/location.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -35,11 +36,10 @@
 #include "components/favicon_base/favicon_types.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/strings/grit/components_strings.h"
-#include "ios/chrome/browser/bookmarks/model/legacy_bookmark_model.h"
-#include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
+#include "components/sync/base/features.h"
+#include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using bookmarks::BookmarkCodec;
@@ -51,10 +51,10 @@ const int kFaviconSize = 16;
 
 namespace {
 
-const char kBookmarkFaviconFetcherKey[] = "bookmark-favicon-fetcher";
+constexpr char kBookmarkFaviconFetcherKey[] = "bookmark-favicon-fetcher";
 
 // File header.
-const char kHeader[] =
+constexpr char kHeader[] =
     "<!DOCTYPE NETSCAPE-Bookmark-file-1>\r\n"
     "<!-- This is an automatically generated file.\r\n"
     "     It will be read and overwritten.\r\n"
@@ -66,37 +66,37 @@ const char kHeader[] =
     "<DL><p>\r\n";
 
 // Newline separator.
-const char kNewline[] = "\r\n";
+constexpr char kNewline[] = "\r\n";
 
 // The following are used for bookmarks.
 
 // Start of a bookmark.
-const char kBookmarkStart[] = "<DT><A HREF=\"";
+constexpr char kBookmarkStart[] = "<DT><A HREF=\"";
 // After kBookmarkStart.
-const char kAddDate[] = "\" ADD_DATE=\"";
+constexpr char kAddDate[] = "\" ADD_DATE=\"";
 // After kAddDate.
-const char kIcon[] = "\" ICON=\"";
+constexpr char kIcon[] = "\" ICON=\"";
 // After kIcon.
-const char kBookmarkAttributeEnd[] = "\">";
+constexpr char kBookmarkAttributeEnd[] = "\">";
 // End of a bookmark.
-const char kBookmarkEnd[] = "</A>";
+constexpr char kBookmarkEnd[] = "</A>";
 
 // The following are used when writing folders.
 
 // Start of a folder.
-const char kFolderStart[] = "<DT><H3 ADD_DATE=\"";
+constexpr char kFolderStart[] = "<DT><H3 ADD_DATE=\"";
 // After kFolderStart.
-const char kLastModified[] = "\" LAST_MODIFIED=\"";
+constexpr char kLastModified[] = "\" LAST_MODIFIED=\"";
 // After kLastModified when writing the bookmark bar.
-const char kBookmarkBar[] = "\" PERSONAL_TOOLBAR_FOLDER=\"true\">";
+constexpr char kBookmarkBar[] = "\" PERSONAL_TOOLBAR_FOLDER=\"true\">";
 // After kLastModified when writing a user created folder.
-const char kFolderAttributeEnd[] = "\">";
+constexpr char kFolderAttributeEnd[] = "\">";
 // End of the folder.
-const char kFolderEnd[] = "</H3>";
+constexpr char kFolderEnd[] = "</H3>";
 // Start of the children of a folder.
-const char kFolderChildren[] = "<DL><p>";
+constexpr char kFolderChildren[] = "<DL><p>";
 // End of the children for a folder.
-const char kFolderChildrenEnd[] = "</DL><p>";
+constexpr char kFolderChildrenEnd[] = "</DL><p>";
 
 // Number of characters to indent by.
 const size_t kIndentSize = 4;
@@ -137,7 +137,7 @@ class BookmarkFaviconFetcher : public base::SupportsUserData::Data {
       const favicon_base::FaviconRawBitmapResult& bitmap_result);
 
   // The Profile object used for accessing FaviconService, bookmarks model.
-  ChromeBrowserState* browser_state_;
+  raw_ptr<ChromeBrowserState> browser_state_;
 
   // All URLs that are extracted from bookmarks. Used to fetch favicons
   // for each of them. After favicon is fetched top url is removed from list.
@@ -152,7 +152,7 @@ class BookmarkFaviconFetcher : public base::SupportsUserData::Data {
   // Path where html output is stored.
   base::FilePath path_;
 
-  BookmarksExportObserver* observer_;
+  raw_ptr<BookmarksExportObserver> observer_;
 };
 
 // Class responsible for the actual writing. Takes ownership of favicons_map.
@@ -274,7 +274,8 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
   bool Write(const std::string& text) {
     if (!text.length())
       return true;
-    size_t wrote = file_->WriteAtCurrentPos(text.c_str(), text.length());
+    size_t wrote =
+        UNSAFE_TODO(file_->WriteAtCurrentPos(text.c_str(), text.length()));
     bool result = (wrote == text.length());
     if (!result) {
       PLOG(ERROR) << "Could not write text to " << path_;
@@ -301,7 +302,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         break;
 
       default:
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
     }
 
     return Write(utf8_string);
@@ -329,7 +330,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     if (!title_ptr || !date_added_string || !type_string ||
         (*type_string != BookmarkCodec::kTypeURL &&
          *type_string != BookmarkCodec::kTypeFolder)) {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return false;
     }
 
@@ -337,7 +338,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     if (*type_string == BookmarkCodec::kTypeURL) {
       const std::string* url_string = value.FindString(BookmarkCodec::kURLKey);
       if (!url_string) {
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
         return false;
       }
 
@@ -368,7 +369,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     const base::Value::List* child_values =
         value.FindList(BookmarkCodec::kChildrenKey);
     if (!last_modified_date || !child_values) {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return false;
     }
     if (folder_type != BookmarkNode::OTHER_NODE &&
@@ -398,7 +399,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     // Write the children.
     for (const base::Value& child_value : *child_values) {
       if (!child_value.is_dict()) {
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
         return false;
       }
       if (!WriteNode(child_value.GetDict(), BookmarkNode::FOLDER)) {
@@ -427,7 +428,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
   std::unique_ptr<BookmarkFaviconFetcher::URLFaviconMap> favicons_map_;
 
   // Observer to be notified on finish.
-  BookmarksExportObserver* observer_;
+  raw_ptr<BookmarksExportObserver> observer_;
 
   // File we're writing to.
   std::unique_ptr<base::File> file_;
@@ -451,7 +452,7 @@ class BookmarkWriter {
 
   base::Value::Dict bookmarks_;
   base::FilePath path_;
-  BookmarksExportObserver* observer_;
+  raw_ptr<BookmarksExportObserver> observer_;
   std::unique_ptr<BookmarkFaviconFetcher::URLFaviconMap> favicons_map_;
 };
 
@@ -467,22 +468,21 @@ BookmarkFaviconFetcher::BookmarkFaviconFetcher(
 }
 
 void BookmarkFaviconFetcher::ExportBookmarks() {
-  ExtractUrls(ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-                  browser_state_)
-                  ->bookmark_bar_node());
-  ExtractUrls(ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-                  browser_state_)
-                  ->other_node());
-  ExtractUrls(ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-                  browser_state_)
-                  ->mobile_node());
-  if (!bookmark_urls_.empty())
+  // bookmark_bar, mobile and other are children of the root node.
+  ExtractUrls(ios::BookmarkModelFactory::GetForBrowserState(browser_state_)
+                  ->root_node());
+  if (!bookmark_urls_.empty()) {
     FetchNextFavicon();
-  else
+  } else {
     ExecuteWriter();
+  }
 }
 
 void BookmarkFaviconFetcher::ExtractUrls(const BookmarkNode* node) {
+  DCHECK(node);
+  if (node == nullptr) {
+    return;
+  }
   if (node->is_url()) {
     std::string url = node->url().spec();
     if (!url.empty())
@@ -497,16 +497,15 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
   // BookmarkModel isn't thread safe (nor would we want to lock it down
   // for the duration of the write), as such we make a copy of the
   // BookmarkModel using BookmarkCodec then write from that.
+  bookmarks::BookmarkModel* bookmark_model =
+      ios::BookmarkModelFactory::GetForBrowserState(browser_state_);
   BookmarkCodec codec;
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
       base::BindOnce(
           &Writer::DoWrite,
-          base::MakeRefCounted<Writer>(
-              ios::LocalOrSyncableBookmarkModelFactory::
-                  GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
-                      browser_state_),
-              path_, favicons_map_.release(), observer_)));
+          base::MakeRefCounted<Writer>(bookmark_model, path_,
+                                       favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!
 }

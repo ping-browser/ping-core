@@ -119,6 +119,27 @@ export const walletEndpoints = ({
       providesTags: ['IsMetaMaskInstalled']
     }),
 
+    getActiveOrigin: query<BraveWallet.OriginInfo, void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { braveWalletService } = api
+
+          const { originInfo } = await braveWalletService.getActiveOrigin()
+          return {
+            data: originInfo
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'unable to get active origin',
+            error
+          )
+        }
+      },
+      providesTags: ['ActiveOrigin']
+    }),
+
     createWallet: mutation<true, { password: string }>({
       queryFn: async (
         arg,
@@ -131,6 +152,9 @@ export const walletEndpoints = ({
           const { keyringService } = api
 
           const result = await keyringService.createWallet(arg.password)
+          if (!result.mnemonic) {
+            throw new Error('Unable to create wallet')
+          }
 
           dispatch(
             WalletPageActions.walletCreated({ mnemonic: result.mnemonic })
@@ -239,9 +263,14 @@ export const walletEndpoints = ({
           const { password } = arg
 
           if (password) {
-            const { mnemonic } =
-              await keyringService.getMnemonicForDefaultKeyring(password)
-            dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic }))
+            const { mnemonic } = await keyringService.getWalletMnemonic(
+              password
+            )
+            dispatch(
+              WalletPageActions.recoveryWordsAvailable({
+                mnemonic: mnemonic ?? ''
+              })
+            )
             return {
               data: true
             }

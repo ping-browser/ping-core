@@ -18,8 +18,7 @@ enum PendingRequest: Equatable {
   case signMessageError([BraveWallet.SignMessageError])
   case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
   case decrypt(BraveWallet.DecryptRequest)
-  case signTransaction([BraveWallet.SignTransactionRequest])
-  case signAllTransactions([BraveWallet.SignAllTransactionsRequest])
+  case signSolTransactions([BraveWallet.SignSolTransactionsRequest])
 }
 
 extension PendingRequest: Identifiable {
@@ -41,10 +40,8 @@ extension PendingRequest: Identifiable {
       return "getEncryptionPublicKey-\(request.accountId.uniqueKey)-\(request.requestId)"
     case .decrypt(let request):
       return "decrypt-\(request.accountId.uniqueKey)-\(request.requestId)"
-    case .signTransaction(let requests):
-      return "signTransaction-\(requests.map(\.id))"
-    case .signAllTransactions(let requests):
-      return "signAllTransactions-\(requests.map(\.id))"
+    case .signSolTransactions(let requests):
+      return "signSolTransactions-\(requests.map(\.id))"
     }
   }
 }
@@ -57,8 +54,7 @@ enum WebpageRequestResponse: Equatable {
   case signMessageError(errorId: String)
   case getEncryptionPublicKey(approved: Bool, requestId: String)
   case decrypt(approved: Bool, requestId: String)
-  case signTransaction(approved: Bool, id: Int32)
-  case signAllTransactions(approved: Bool, id: Int32)
+  case signSolTransactions(approved: Bool, id: Int32)
 }
 
 public class CryptoStore: ObservableObject, WalletObserverStore {
@@ -80,7 +76,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   @Published var isPresentingPendingRequest: Bool = false {
     didSet {
       if !isPresentingPendingRequest {
-        confirmationStore = nil
+        closeConfirmationStore()
+        closeSignMessageRequestStore()
       }
     }
   }
@@ -230,10 +227,11 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
 
     Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.observe(from: self)
 
-    isUpdatingUserAssets = true
-    userAssetManager.migrateUserAssets { [weak self] in
-      self?.isUpdatingUserAssets = false
-      self?.updateAssets()
+    Task { @MainActor in
+      isUpdatingUserAssets = true
+      await userAssetManager.migrateUserAssets()
+      isUpdatingUserAssets = false
+      updateAssets()
     }
   }
 
@@ -257,22 +255,23 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         // supported coin type / keyring will be migrated inside `CryptoStore`'s init()
       },
       _walletRestored: { [weak self] in
-        // This observer method will only get called when user restore a wallet
-        // from the lock screen
-        // We will need to
-        // 1. reset wallet user asset migration flag
-        // 2. wipe user assets local storage
-        // 3. migrate user assets with new keyring
-        guard let isUpdatingUserAssets = self?.isUpdatingUserAssets, !isUpdatingUserAssets else {
-          return
-        }
-        self?.isUpdatingUserAssets = true
-        Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
-        self?.userAssetManager.removeUserAssetsAndBalance(for: nil) {
-          self?.userAssetManager.migrateUserAssets(completion: {
-            self?.updateAssets()
-            self?.isUpdatingUserAssets = false
-          })
+        Task { @MainActor [self] in
+          // This observer method will only get called when user restore a wallet
+          // from the lock screen
+          // We will need to
+          // 1. reset wallet user asset migration flag
+          // 2. wipe user assets local storage
+          // 3. migrate user assets with new keyring
+          guard let isUpdatingUserAssets = self?.isUpdatingUserAssets, !isUpdatingUserAssets else {
+            return
+          }
+          self?.isUpdatingUserAssets = true
+          Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
+          Preferences.Wallet.migrateWalletUserAssetToCoreCompleted.reset()
+          await self?.userAssetManager.removeUserAssetsAndBalances(for: nil)
+          await self?.userAssetManager.migrateUserAssets()
+          self?.updateAssets()
+          self?.isUpdatingUserAssets = false
         }
       },
       _locked: { [weak self] in
@@ -288,20 +287,22 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         // Failsafe incase two CryptoStore's are initialized (see brave-ios #7804) and asset
         // migration is slow. Makes sure auto-discovered assets during asset migration to
         // CoreData are added after.
-        guard let self else { return }
-        if !self.isUpdatingUserAssets {
-          let dispatchGroup = DispatchGroup()
-          for asset in discoveredAssets {
-            dispatchGroup.enter()
-            self.userAssetManager.addUserAsset(asset) {
-              dispatchGroup.leave()
+        Task { @MainActor [self] in
+          if let updatingUserAssets = self?.isUpdatingUserAssets, !updatingUserAssets {
+            await withTaskGroup(of: Void.self) { group in
+              for asset in discoveredAssets {
+                group.addTask {
+                  await self?.userAssetManager.addUserAsset(
+                    asset,
+                    isAutoDiscovery: true
+                  )
+                }
+              }
             }
+            self?.updateAutoDiscoveredAssets()
+          } else {
+            self?.autoDiscoveredAssets.append(contentsOf: discoveredAssets)
           }
-          dispatchGroup.notify(queue: .main) {
-            self.updateAutoDiscoveredAssets()
-          }
-        } else {
-          self.autoDiscoveredAssets.append(contentsOf: discoveredAssets)
         }
       }
     )
@@ -334,11 +335,15 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         Task { @MainActor [self] in
           if let addNetworkDappRequestCompletion = self?.addNetworkDappRequestCompletion[chainId] {
             if error.isEmpty {
-              let allNetworks = await self?.rpcService.allNetworks(coin: .eth)
-              if let network = allNetworks?.first(where: { $0.chainId == chainId }) {
-                self?.userAssetManager.addUserAsset(network.nativeToken) {
-                  self?.updateAssets()
-                }
+              let allNetworks = await self?.rpcService.allNetworks()
+              if let network = allNetworks?.first(where: {
+                $0.coin == .eth && $0.chainId == chainId
+              }) {
+                await self?.userAssetManager.addUserAsset(
+                  network.nativeToken,
+                  isAutoDiscovery: false
+                )
+                self?.updateAssets()
               }
             }
             addNetworkDappRequestCompletion(error.isEmpty ? nil : error)
@@ -427,6 +432,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       assetRatioService: assetRatioService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: prefilledToken,
       ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
@@ -573,6 +579,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       ethTxManagerProxy: ethTxManagerProxy,
       keyringService: keyringService,
       solTxManagerProxy: solTxManagerProxy,
+      bitcoinWalletService: bitcoinWalletService,
       ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
     )
@@ -588,7 +595,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private var nftDetailStore: NFTDetailStore?
   func nftDetailStore(
     for nft: BraveWallet.BlockchainToken,
-    nftMetadata: NFTMetadata?,
+    nftMetadata: BraveWallet.NftMetadata?,
     owner: BraveWallet.AccountInfo?
   ) -> NFTDetailStore {
     if let store = nftDetailStore, store.nft.id == nft.id {
@@ -693,6 +700,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func prepare(isInitialOpen: Bool = false) {
     Task { @MainActor in
       if isInitialOpen {
+        await userAssetManager.alignTokenVisibilityServiceAndCD()
         walletService.discoverAssetsOnAllSupportedChains(bypassRateLimit: true)
       }
 
@@ -728,9 +736,9 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func fetchPendingTransactions() async -> [BraveWallet.TransactionInfo] {
     let allAccounts = await keyringService.allAccounts().accounts
     var allNetworksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
+    let allNetworks = await rpcService.allNetworks()
     for coin in WalletConstants.supportedCoinTypes() {
-      let allNetworks = await rpcService.allNetworks(coin: coin)
-      allNetworksForCoin[coin] = allNetworks
+      allNetworksForCoin[coin] = allNetworks.filter({ $0.coin == coin })
     }
     return await txService.pendingTransactions(
       networksForCoin: allNetworksForCoin,
@@ -742,14 +750,10 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func fetchPendingWebpageRequest() async -> PendingRequest? {
     if let chainRequest = await rpcService.pendingAddChainRequests().first {
       return .addChain(chainRequest)
-    } else if case let signTransactionRequests =
-      await walletService.pendingSignTransactionRequests(), !signTransactionRequests.isEmpty
+    } else if case let signSolTransactionsRequests =
+      await walletService.pendingSignSolTransactionsRequests(), !signSolTransactionsRequests.isEmpty
     {
-      return .signTransaction(signTransactionRequests)
-    } else if case let signAllTransactionsRequests =
-      await walletService.pendingSignAllTransactionsRequests(), !signAllTransactionsRequests.isEmpty
-    {
-      return .signAllTransactions(signAllTransactionsRequests)
+      return .signSolTransactions(signSolTransactionsRequests)
     } else if case let signMessageErrors = await walletService.pendingSignMessageErrors(),
       !signMessageErrors.isEmpty
     {
@@ -818,20 +822,21 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       }
       return
     case .addSuggestedToken(let approved, let token):
-      if approved {
-        userAssetManager.addUserAsset(token) { [weak self] in
-          self?.updateAssets()
+      Task { @MainActor in
+        if approved {
+          await userAssetManager.addUserAsset(token, isAutoDiscovery: false)
+          updateAssets()
         }
+        walletService.notifyAddSuggestTokenRequestsProcessed(
+          approved: approved,
+          contractAddresses: [token.contractAddress]
+        )
       }
-      walletService.notifyAddSuggestTokenRequestsProcessed(
-        approved: approved,
-        contractAddresses: [token.contractAddress]
-      )
     case .signMessage(let approved, let id):
       walletService.notifySignMessageRequestProcessed(
         approved: approved,
         id: id,
-        signature: nil,
+        hwSignature: nil,
         error: nil
       )
     case .signMessageError(let errorId):
@@ -840,18 +845,11 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       walletService.notifyGetPublicKeyRequestProcessed(requestId: requestId, approved: approved)
     case .decrypt(let approved, let requestId):
       walletService.notifyDecryptRequestProcessed(requestId: requestId, approved: approved)
-    case .signTransaction(let approved, let id):
-      walletService.notifySignTransactionRequestProcessed(
+    case .signSolTransactions(let approved, let id):
+      walletService.notifySignSolTransactionsRequestProcessed(
         approved: approved,
         id: id,
-        signature: nil,
-        error: nil
-      )
-    case .signAllTransactions(let approved, let id):
-      walletService.notifySignAllTransactionsRequestProcessed(
-        approved: approved,
-        id: id,
-        signatures: nil,
+        hwSignatures: [],
         error: nil
       )
     }
@@ -903,7 +901,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         var activeAccountsForCoin = Int32(0)
         let accounts = accountsForCoin[coin] ?? []
         for account in accounts {
-          if let balancesForAccount = userAssetManager.getBalances(
+          if let balancesForAccount = userAssetManager.getAssetBalances(
             for: nil,
             account: account.id
           ) {
@@ -933,14 +931,17 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
 
 extension CryptoStore: PreferencesObserver {
   public func preferencesDidChange(for key: String) {
-    // we are only observing `Preferences.Wallet.migrateCoreToWalletUserAssetCompleted`
-    if Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value, !autoDiscoveredAssets.isEmpty
-    {
-      for asset in autoDiscoveredAssets {
-        userAssetManager.addUserAsset(asset, completion: nil)
+    Task { @MainActor in
+      // we are only observing `Preferences.Wallet.migrateCoreToWalletUserAssetCompleted`
+      if Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value,
+        !autoDiscoveredAssets.isEmpty
+      {
+        for asset in autoDiscoveredAssets {
+          await userAssetManager.addUserAsset(asset, isAutoDiscovery: true)
+        }
+        autoDiscoveredAssets.removeAll()
+        updateAssets()
       }
-      autoDiscoveredAssets.removeAll()
-      updateAssets()
     }
   }
 }

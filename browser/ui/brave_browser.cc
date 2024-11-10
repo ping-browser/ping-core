@@ -9,18 +9,29 @@
 #include <optional>
 #include <utility>
 
+#include "base/check_is_test.h"
+#include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/brave_file_select_utils.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/file_select_listener.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 #include "url/gurl.h"
 
 #if defined(TOOLKIT_VIEWS)
@@ -48,8 +59,9 @@ bool BraveBrowser::ShouldUseBraveWebViewRoundedCorners(Browser* browser) {
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 #if defined(TOOLKIT_VIEWS)
-  if (!sidebar::CanUseSidebar(this))
+  if (!sidebar::CanUseSidebar(this)) {
     return;
+  }
   // Below call order is important.
   // When reaches here, Sidebar UI is setup in BraveBrowserView but
   // not initialized. It's just empty because sidebar controller/model is not
@@ -69,22 +81,53 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
   Browser::ScheduleUIUpdate(source, changed_flags);
 
 #if defined(TOOLKIT_VIEWS)
-  if (tab_strip_model_->GetIndexOfWebContents(source) == TabStripModel::kNoTab)
+  if (tab_strip_model_->GetIndexOfWebContents(source) ==
+      TabStripModel::kNoTab) {
     return;
+  }
 
   // We need to update sidebar UI only when current active tab state is changed.
   if (changed_flags & content::INVALIDATE_TYPE_URL) {
     if (source == tab_strip_model_->GetActiveWebContents()) {
-      if (sidebar_controller_)
-        sidebar_controller_->sidebar()->UpdateSidebarItemsState();
+      // sidebar() can return a nullptr in unit tests.
+      if (sidebar_controller_) {
+        if (sidebar_controller_->sidebar()) {
+          sidebar_controller_->sidebar()->UpdateSidebarItemsState();
+        } else {
+          CHECK_IS_TEST();
+        }
+      }
     }
   }
 #endif
 }
 
+void BraveBrowser::OnTabClosing(content::WebContents* contents) {
+  Browser::OnTabClosing(contents);
+
+  if (!AreAllTabsSharedPinnedTabs()) {
+    return;
+  }
+
+  if (chrome::FindAllTabbedBrowsersWithProfile(profile()).size() > 1) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(
+                       [](base::WeakPtr<BraveBrowser> browser) {
+                         if (browser) {
+                           // We don't want close confirm dialog to show up. In
+                           // this case, Shared pinned tabs will be moved to
+                           // another window, so we don't have to warn users.
+                           browser->confirmed_to_close_ = true;
+                           chrome::CloseWindow(browser.get());
+                         }
+                       },
+                       weak_ptr_factory_.GetWeakPtr()));
+  }
+}
+
 void BraveBrowser::TabStripEmpty() {
   if (unload_controller_.is_attempting_to_close_browser() ||
-      !is_type_normal()) {
+      !is_type_normal() || ignore_enable_closing_last_tab_pref_) {
     Browser::TabStripEmpty();
     return;
   }
@@ -92,6 +135,33 @@ void BraveBrowser::TabStripEmpty() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), -1,
                                 true, std::nullopt));
+}
+
+void BraveBrowser::RunFileChooser(
+    content::RenderFrameHost* render_frame_host,
+    scoped_refptr<content::FileSelectListener> listener,
+    const blink::mojom::FileChooserParams& params) {
+#if BUILDFLAG(IS_ANDROID)
+  Browser::RunFileChooser(render_frame_host, listener, params);
+#else
+  auto new_params = params.Clone();
+  if (new_params->title.empty()) {
+    // Fill title of file chooser with origin of the frame.
+
+    // Note that save mode param is for PPAPI. 'Save As...' or downloading
+    // something doesn't reach here. They show 'select file dialog' from
+    // DownloadFilePicker::DownloadFilePicker directly.
+    // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/public/mojom/choosers/file_chooser.mojom;l=27;drc=047c7dc4ee1ce908d7fea38ca063fa2f80f92c77
+    CHECK(render_frame_host);
+    new_params->title = brave::GetFileSelectTitle(
+        content::WebContents::FromRenderFrameHost(render_frame_host),
+        render_frame_host->GetLastCommittedOrigin(),
+        params.mode == blink::mojom::FileChooserParams::Mode::kSave
+            ? brave::FileSelectTitleType::kSave
+            : brave::FileSelectTitleType::kOpen);
+  }
+  Browser::RunFileChooser(render_frame_host, listener, *new_params);
+#endif
 }
 
 bool BraveBrowser::ShouldDisplayFavicon(
@@ -124,22 +194,26 @@ void BraveBrowser::OnTabStripModelChanged(
   Browser::OnTabStripModelChanged(tab_strip_model, change, selection);
 
 #if defined(TOOLKIT_VIEWS)
-  if (!sidebar_controller_)
+  // sidebar() can return a nullptr in unit tests.
+  if (!sidebar_controller_ || !sidebar_controller_->sidebar()) {
     return;
+  }
   // We need to update sidebar UI whenever active tab is changed or
   // inactive tab is added/removed.
   if (change.type() == TabStripModelChange::Type::kInserted ||
       change.type() == TabStripModelChange::Type::kRemoved ||
-      selection.active_tab_changed())
+      selection.active_tab_changed()) {
     sidebar_controller_->sidebar()->UpdateSidebarItemsState();
+  }
 #endif
 }
 
 void BraveBrowser::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
   // Clear user's choice because user cancelled window closing by some
   // warning(ex, download is in-progress).
-  if (result == WarnBeforeClosingResult::kDoNotClose)
+  if (result == WarnBeforeClosingResult::kDoNotClose) {
     confirmed_to_close_ = false;
+  }
   Browser::FinishWarnBeforeClosing(result);
 }
 
@@ -148,8 +222,9 @@ void BraveBrowser::BeforeUnloadFired(content::WebContents* source,
                                      bool* proceed_to_fire_unload) {
   // Clear user's choice when user cancelled window closing by beforeunload
   // handler.
-  if (!proceed)
+  if (!proceed) {
     confirmed_to_close_ = false;
+  }
   Browser::BeforeUnloadFired(source, proceed, proceed_to_fire_unload);
 }
 
@@ -185,24 +260,42 @@ void BraveBrowser::UpdateTargetURL(content::WebContents* source,
 
 bool BraveBrowser::ShouldAskForBrowserClosingBeforeHandlers() {
   // returning false to suppress this warning for Ping
-  return false;
-  
-  // if (g_suppress_dialog_for_testing)
-  //   return false;
+    return false;
 
-  // // Don't need to ask when application closing is in-progress.
-  // if (BrowserCloseManager::BrowserClosingStarted())
-  //   return false;
+//  if (g_suppress_dialog_for_testing)
+//    return false;
+//
+//  // Don't need to ask when application closing is in-progress.
+//  if (BrowserCloseManager::BrowserClosingStarted())
+//    return false;
+//
+//  if (confirmed_to_close_)
+//    return false;
+//
+//  PrefService* prefs = profile()->GetPrefs();
+//  if (!prefs->GetBoolean(kEnableWindowClosingConfirm))
+//    return false;
+//
+//  // Only launch confirm dialog while closing when browser has multiple tabs.
+//  return tab_strip_model()->count() > 1;
+}
 
-  // if (confirmed_to_close_)
-  //   return false;
+bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    return false;
+  }
 
-  // PrefService* prefs = profile()->GetPrefs();
-  // if (!prefs->GetBoolean(kEnableWindowClosingConfirm))
-  //   return false;
+  if (!is_type_normal()) {
+    return false;
+  }
 
-  // // Only launch confirm dialog while closing when browser has multiple tabs.
-  // return tab_strip_model()->count() > 1;
+  if (!profile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab)) {
+    return false;
+  }
+
+  return tab_strip_model()->count() > 0 &&
+         tab_strip_model()->count() ==
+             tab_strip_model()->IndexOfFirstNonPinnedTab();
 }
 
 BraveBrowserWindow* BraveBrowser::brave_window() {

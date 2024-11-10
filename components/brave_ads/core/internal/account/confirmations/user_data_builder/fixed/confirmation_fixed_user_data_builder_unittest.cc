@@ -6,56 +6,57 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/fixed/confirmation_fixed_user_data_builder.h"
 
 #include "base/test/values_test_util.h"
-#include "base/values.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsFixedUserDataBuilderTest : public UnitTestBase {
+class BraveAdsFixedUserDataBuilderTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    MockConfirmationUserData();
+    test::MockConfirmationUserData();
 
-    AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
+    AdvanceClockTo(test::TimeFromUTCString("November 18 2020 12:34:56.789"));
   }
 };
 
 TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
-  // Act & Assert
-  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
-      R"(
-          {
-            "buildChannel": "release",
-            "catalog": [
-              {
-                "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
-              }
-            ],
-            "countryCode": "US",
-            "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
-            "platform": "windows",
-            "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
-            "segment": "untargeted",
-            "studies": [],
-            "topSegment": [],
-            "versionNumber": "1.2.3.4"
-          })");
-  EXPECT_EQ(expected_user_data, BuildFixedUserData(transaction));
+  // Act
+  const base::Value::Dict fixed_user_data = BuildFixedUserData(transaction);
+
+  // Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "buildChannel": "release",
+                      "catalog": [
+                        {
+                          "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                        }
+                      ],
+                      "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                      "platform": "windows",
+                      "rotatingHash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                      "segment": "untargeted",
+                      "studies": [],
+                      "versionNumber": "1.2.3.4"
+                    })"),
+            fixed_user_data);
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
@@ -63,14 +64,15 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
   // Act
-  const base::Value::Dict user_data = BuildFixedUserData(transaction);
+  const base::Value::Dict fixed_user_data = BuildFixedUserData(transaction);
 
   // Assert
-  EXPECT_TRUE(user_data.empty());
+  EXPECT_THAT(fixed_user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

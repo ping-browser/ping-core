@@ -5,15 +5,12 @@
 
 #include "brave/browser/profiles/brave_profile_manager.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -21,44 +18,88 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profiles_state.h"
-#include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
-#include "chrome/grit/generated_resources.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/url_data_source.h"
-#include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
-#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/ipfs_service.h"
-#endif  // BUILDFLAG(ENABLE_IPFS)
-
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_constants.h"
 #endif
 
+using brave_shields::ControlType;
 using content::BrowserThread;
+using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
+using ntp_background_images::prefs::
+    kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
+
+namespace {
+
+// Checks if the user previously had HTTPS-Only Mode enabled. If so,
+// set the HttpsUpgrade default setting to strict.
+void MigrateHttpsUpgradeSettings(Profile* profile) {
+  // If user flips the HTTPS by Default feature flag
+  auto* prefs = profile->GetPrefs();
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  if (!map) {
+    return;
+  }
+  if (brave_shields::IsHttpsByDefaultFeatureEnabled()) {
+    // Migrate forwards from HTTPS-Only Mode to HTTPS Upgrade Strict setting.
+    if (prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) {
+      brave_shields::SetHttpsUpgradeControlType(map, ControlType::BLOCK,
+                                                GURL());
+      prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, false);
+    }
+  } else {
+    // Migrate backwards from HTTPS Upgrade Strict setting to HTTPS-Only Mode.
+    if (brave_shields::GetHttpsUpgradeControlType(map, GURL()) ==
+        ControlType::BLOCK) {
+      prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+      brave_shields::SetHttpsUpgradeControlType(
+          map, ControlType::BLOCK_THIRD_PARTY, GURL());
+    }
+  }
+}
+
+void RecordInitialP3AValues(Profile* profile) {
+  // Preference is unregistered for some reason in profile_manager_unittest
+  // TODO(bsclifton): create a proper testing profile
+  if (!profile->GetPrefs()->FindPreference(kNewTabPageShowBackgroundImage) ||
+      !profile->GetPrefs()->FindPreference(
+          kNewTabPageShowSponsoredImagesBackgroundImage)) {
+    return;
+  }
+  ntp_background_images::RecordSponsoredImagesEnabledP3A(profile->GetPrefs());
+  if (profile->IsRegularProfile()) {
+    brave_shields::MaybeRecordInitialShieldsSettings(
+        profile->GetPrefs(),
+        HostContentSettingsMapFactory::GetForProfile(profile));
+  }
+}
+
+}  // namespace
 
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
@@ -92,14 +133,11 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
 #endif
 
   ProfileManager::InitProfileUserPrefs(profile);
-  brave::RecordInitialP3AValues(profile);
+  RecordInitialP3AValues(profile);
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
   perf::MaybeEnableBraveFeatureForPerfTesting(profile);
-  brave::MigrateHttpsUpgradeSettings(profile);
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IpfsService::MigrateProfilePrefs(profile->GetPrefs());
-#endif
+  MigrateHttpsUpgradeSettings(profile);
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
@@ -109,12 +147,6 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
     return;
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  brave_wallet::BraveWalletAutoPinServiceFactory::GetServiceForContext(profile);
-#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IpfsServiceFactory::GetForContext(profile);
-#endif  // BUILDFLAG(ENABLE_IPFS)
   brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   gcm::BraveGCMChannelStatus* status =
@@ -122,7 +154,6 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   DCHECK(status);
   status->UpdateGCMDriverStatus();
 #endif
-  brave_news::BraveNewsControllerFactory::GetForContext(profile);
   brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);
   brave::URLSanitizerServiceFactory::GetForBrowserContext(profile);
   misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);

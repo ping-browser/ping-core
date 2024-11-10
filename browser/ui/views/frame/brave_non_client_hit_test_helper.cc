@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "ui/base/hit_test.h"
@@ -19,16 +20,10 @@ int NonClientHitTest(BrowserView* browser_view,
   }
 
   const auto children_count = browser_view->toolbar()->children().size();
-  int container_view_index = 0;
-  if (features::IsChromeRefresh2023()) {
-    // Upstream has two more children |background_view_left_| and
-    // |background_view_right_| behind the container view.
-    DCHECK_EQ(3u, children_count);
-    container_view_index = 2;
-  } else {
-    // All toolbar elements are children of the container view in the toolbar.
-    DCHECK_EQ(1u, children_count);
-  }
+  // Upstream has two more children |background_view_left_| and
+  // |background_view_right_| behind the container view.
+  DCHECK_EQ(3u, children_count);
+  const int container_view_index = 2;
 
   int hit_test_result = views::GetHitTestComponent(
       browser_view->toolbar()->children()[container_view_index],
@@ -54,6 +49,12 @@ int NonClientHitTest(BrowserView* browser_view,
     return hit_test_result;
   }
 
+  // Below checking is only for dragging with tab when vertical tab is
+  // enabled and title is hidden.
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_view->browser())) {
+    return HTNOWHERE;
+  }
+
   // Now we have only resizable areas.
   if (point_in_widget.x() <= kResizableArea &&
       point_in_widget.y() <= kResizableArea) {
@@ -65,35 +66,11 @@ int NonClientHitTest(BrowserView* browser_view,
     return HTTOPRIGHT;
   }
 
-  if (point_in_widget.x() <= kResizableArea &&
-      point_in_widget.y() >= (widget_bounds.bottom() - kResizableArea)) {
-    return HTBOTTOMLEFT;
-  }
-
-  if (point_in_widget.x() >= (widget_bounds.right() - kResizableArea) &&
-      point_in_widget.y() >= (widget_bounds.bottom() - kResizableArea)) {
-    return HTBOTTOMRIGHT;
-  }
-
-  if (point_in_widget.x() <= kResizableArea) {
-    return HTLEFT;
-  }
-
-  if (point_in_widget.x() >= (widget_bounds.right() - kResizableArea)) {
-    return HTRIGHT;
-  }
-
   if (point_in_widget.y() <= kResizableArea) {
     return HTTOP;
   }
 
-  if (point_in_widget.y() <= (widget_bounds.bottom() - kResizableArea)) {
-    return HTBOTTOM;
-  }
-
-  NOTREACHED()
-      << "This shouldn't happen. Maybe due to inclusive/exclusive comparison?";
-  return hit_test_result;
+  return HTNOWHERE;
 }
 
 }  // namespace brave

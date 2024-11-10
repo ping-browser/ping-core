@@ -3,27 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
+#include <jni.h>
+
+#include <string>
 
 #include "base/android/jni_string.h"
-#include "brave/components/brave_adaptive_captcha/pref_names.h"
+#include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/decentralized_dns/core/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -31,11 +27,6 @@
 #include "components/prefs/pref_service.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/pref_names.h"
-#endif
 
 using base::android::ConvertUTF8ToJavaString;
 using base::android::JavaParamRef;
@@ -81,6 +72,7 @@ std::string GetWebRTCIPHandlingPreference(WebRTCIPHandlingPolicy policy) {
 namespace chrome {
 namespace android {
 
+// This file is deprecated, prefs should be accessed directly from Java
 void JNI_BravePrefServiceBridge_SetCookiesBlockType(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type) {
@@ -140,21 +132,21 @@ jboolean JNI_BravePrefServiceBridge_GetDesktopModeEnabled(JNIEnv* env) {
 jlong JNI_BravePrefServiceBridge_GetTrackersBlockedCount(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   return profile->GetPrefs()->GetUint64(kTrackersBlocked);
 }
 
 jlong JNI_BravePrefServiceBridge_GetAdsBlockedCount(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   return profile->GetPrefs()->GetUint64(kAdsBlocked);
 }
 
 jlong JNI_BravePrefServiceBridge_GetDataSaved(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   return profile->GetPrefs()->GetUint64(
       brave_perf_predictor::prefs::kBandwidthSavedBytes);
 }
@@ -166,7 +158,7 @@ void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(
   if (count <= 0) {
     return;
   }
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   profile->GetPrefs()->SetUint64(
       kTrackersBlocked,
       count + profile->GetPrefs()->GetUint64(kTrackersBlocked));
@@ -179,7 +171,7 @@ void JNI_BravePrefServiceBridge_SetOldAdsBlockedCount(
   if (count <= 0) {
     return;
   }
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   profile->GetPrefs()->SetUint64(
       kAdsBlocked, count + profile->GetPrefs()->GetUint64(kAdsBlocked));
 }
@@ -191,7 +183,7 @@ void JNI_BravePrefServiceBridge_SetOldHttpsUpgradesCount(
   if (count <= 0) {
     return;
   }
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   profile->GetPrefs()->SetUint64(
       kHttpsUpgrades, count + profile->GetPrefs()->GetUint64(kHttpsUpgrades));
 }

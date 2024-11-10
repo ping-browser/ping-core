@@ -2,12 +2,13 @@ use_relative_paths = True
 
 vars = {
   'download_prebuilt_sparkle': True,
+  'checkout_dmg_tool': False,
 }
 
 deps = {
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
   "vendor/omaha": {
-    "url": "https://github.com/brave/omaha.git@e57534eb50ed4a676d430c6199b1dc68edfeacd8",
+    "url": "https://github.com/brave/omaha.git@32383a4dc9c50a88e42be0e03e5b2f2ba7ad058b",
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
@@ -16,11 +17,15 @@ deps = {
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
-  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@3180519fd678a317f3616bbe9497a184321d582f",
+  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@7159cb52cf674da3aed53ad0ab757513703a06eb",
   "third_party/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@8105bce5b384c72cf08b25b7c5343622754e7337", # v25.0
   "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
+  "third_party/libdmg-hfsplus": {
+    "url": "https://github.com/fanquake/libdmg-hfsplus.git@1cc791e4173da9cb0b0cc16c5a1aaa25d5eb5efa",
+    "condition": 'checkout_mac and host_os != "mac" and checkout_dmg_tool',
+  },
   "third_party/rapidjson/src": "https://github.com/Tencent/rapidjson.git@06d58b9e848c650114556a23294d0b6440078c61",
   "third_party/reclient_configs/src": "https://github.com/EngFlow/reclient-configs.git@21c8fe69ff771956c179847b8c1d9fd216181967",
   'third_party/android_deps/libs/com_google_android_play_core': {
@@ -39,6 +44,7 @@ deps = {
     "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
     "condition": "checkout_mac",
   },
+  "components/brave_wallet/browser/zcash/rust/librustzcash/src": "https://github.com/brave/librustzcash.git@4d44f5dc3429dce7df37359b8b3c4716807770ea",
 }
 
 recursedeps = [
@@ -76,7 +82,17 @@ hooks = [
     'name': 'download_sparkle',
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
-    'action': ['vpython3', 'build/mac/download_sparkle.py', '1.24.3'],
+    'action': ['vpython3', 'build/download_dep.py',
+               'sparkle/sparkle-1.24.3.tar.gz',
+               '//build/mac_files/sparkle_binaries'],
+  },
+  {
+    'name': 'download_omaha4',
+    'pattern': '.',
+    'condition': 'checkout_mac',
+    'action': ['vpython3', 'build/download_dep.py',
+               'omaha4/BraveUpdater-128.1.70.58.zip',
+               '//build/mac_files/omaha4'],
   },
   {
     'name': 'update_pip',
@@ -102,13 +118,17 @@ hooks = [
     'name': 'wireguard_nt',
     'pattern': '.',
     'condition': 'checkout_win',
-    'action': ['vpython3', 'build/win/download_brave_vpn_wireguard_binaries.py', '0.10.1', 'brave-vpn-wireguard-nt-dlls'],
+    'action': ['vpython3', 'build/download_dep.py',
+               'brave-vpn-wireguard-dlls/brave-vpn-wireguard-nt-dlls-0.10.1.zip',
+               '//brave/third_party/brave-vpn-wireguard-nt-dlls'],
   },
   {
     'name': 'wireguard_tunnel',
     'pattern': '.',
     'condition': 'checkout_win',
-    'action': ['vpython3', 'build/win/download_brave_vpn_wireguard_binaries.py', 'v0.5.3', 'brave-vpn-wireguard-tunnel-dlls'],
+    'action': ['vpython3', 'build/download_dep.py',
+               'brave-vpn-wireguard-dlls/brave-vpn-wireguard-tunnel-dlls-v0.5.3.zip',
+               '//brave/third_party/brave-vpn-wireguard-tunnel-dlls'],
   },
   {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS
@@ -138,6 +158,24 @@ hooks = [
     'condition': 'host_os == "mac"',
     'action': ['python3', 'build/apple/download_swift_format.py', '510.1.0', '0ddbb486640cde862fa311dc0f7387e6c5171bdcc0ee0c89bc9a1f8a75e8bfaf']
   },
+  {
+    # Generate .clang-format.
+    'name': 'generate_clang_format',
+    'pattern': '.',
+    'action': ['vpython3', 'build/util/generate_clang_format.py', '../.clang-format', '.clang-format']
+  },
+  {
+    'name': 'update_midl_files',
+    'pattern': '.',
+    'condition': 'checkout_win',
+    'action': ['python3', 'build/util/update_midl_files.py']
+  },
+  {
+    'name': 'build_libdmg_hfsplus',
+    'pattern': '.',
+    "condition": 'checkout_mac and host_os != "mac" and checkout_dmg_tool',
+    'action': ['build/mac/cross-compile/build-libdmg-hfsplus.py', 'third_party/libdmg-hfsplus']
+  },
 ]
 
 include_rules = [
@@ -159,18 +197,3 @@ include_rules = [
   "-brave/third_party/bitcoin-core",
   "-brave/third_party/argon2",
 ]
-
-# Temporary workaround for massive nummber of incorrect test includes
-specific_include_rules = {
-  ".*test.*(\.cc|\.mm|\.h)": [
-    "+bat",
-    "+brave",
-    "+chrome",
-    "+components",
-    "+content",
-    "+extensions",
-    "+mojo",
-    "+services",
-    "+third_party",
-  ],
-}

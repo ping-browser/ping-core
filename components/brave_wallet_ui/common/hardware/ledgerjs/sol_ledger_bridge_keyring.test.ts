@@ -4,36 +4,31 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import SolanaLedgerBridgeKeyring from './sol_ledger_bridge_keyring'
-import { MockLedgerTransport } from './ledger_bridge_keyring.test'
-import { BraveWallet } from '../../../constants/types'
 import {
-  GetAccountsHardwareOperationResult,
-  SignHardwareOperationResult,
-  SolDerivationPaths
+  AccountFromDevice,
+  HardwareOperationResultAccounts,
+  HardwareOperationError,
+  HardwareOperationResultSolanaSignature,
+  SolLedgerDefaultHardwareImportScheme
 } from '../types'
-import { LedgerCommand, LedgerError, UnlockResponse } from './ledger-messages'
 import {
+  LedgerCommand,
+  UnlockResponse,
   SolGetAccountResponse,
-  SolGetAccountResponsePayload,
-  SolSignTransactionResponse
-} from './sol-ledger-messages'
+  SolSignTransactionResponse,
+  LedgerResponse
+} from './ledger-messages'
+import { MockLedgerTransport } from './mock_ledger_transport'
 
-// To use the MockLedgerTransport, we must overwrite
-// the protected `transport` attribute, which yields a typescript
-// error unless we use bracket notation, i.e. keyring['transport']
-// instead of keyring.transport. As a result we silence the dot-notation
-// tslint rule for the file.
-//
-/* eslint-disable @typescript-eslint/dot-notation */
 const createKeyring = () => {
   let keyring = new SolanaLedgerBridgeKeyring()
   const transport = new MockLedgerTransport(window, window.origin)
-  keyring['transport'] = transport
+  keyring.setTransportForTesting(transport)
   const iframe = document.createElement('iframe')
   document.body.appendChild(iframe)
-  keyring['bridge'] = iframe
+  keyring.setBridgeForTesting(iframe)
 
-  return keyring
+  return { keyring, transport }
 }
 
 const unlockErrorResponse: UnlockResponse = {
@@ -42,8 +37,8 @@ const unlockErrorResponse: UnlockResponse = {
   command: LedgerCommand.Unlock,
   payload: {
     success: false,
-    message: 'LedgerError',
-    statusCode: 101
+    error: 'LedgerError',
+    code: 101
   }
 }
 
@@ -54,178 +49,157 @@ const unlockSuccessResponse: UnlockResponse = {
   payload: { success: true }
 }
 
-test('Check ledger bridge type', () => {
-  const keyring = createKeyring()
-  if (!keyring['transport']) {
-    fail('transport should be defined')
-  }
-  return expect(keyring.type()).toStrictEqual(
-    BraveWallet.LEDGER_HARDWARE_VENDOR
-  )
-})
-
 test('getAccounts unlock error', async () => {
-  const keyring = createKeyring()
-  if (!keyring['transport']) {
-    fail('transport should be defined')
-  }
-  keyring['transport']['addSendCommandResponse'](unlockErrorResponse)
-  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(
-    -2,
-    1
+  const { keyring, transport } = createKeyring()
+  transport.addSendCommandResponse(unlockErrorResponse)
+  const result: HardwareOperationResultAccounts = await keyring.getAccounts(
+    0,
+    1,
+    SolLedgerDefaultHardwareImportScheme
   )
-  const expectedResult: GetAccountsHardwareOperationResult =
-    unlockErrorResponse.payload
+
+  const expectedResult: HardwareOperationError = {
+    success: false,
+    code: 101,
+    error: 'LedgerError'
+  }
   expect(result).toEqual(expectedResult)
 })
 
 test('getAccounts success', async () => {
-  const keyring = createKeyring()
-  if (!keyring['transport']) {
-    fail('transport should be defined')
-  }
-  keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
+  const { keyring, transport } = createKeyring()
 
-  const getAccountsResponsePayload1: SolGetAccountResponsePayload = {
+  transport.addSendCommandResponse(unlockSuccessResponse)
+
+  const getAccountsResponsePayload1: LedgerResponse<{
+    address: Buffer
+  }> = {
     success: true,
     address: Buffer.from("address for 44'/501'/0'/0'")
   }
-  keyring['transport']['addSendCommandResponse']({
+  transport.addSendCommandResponse({
+    id: LedgerCommand.GetAccount,
+    origin: window.origin,
+    command: LedgerCommand.GetAccount,
     payload: getAccountsResponsePayload1
   })
-  const getAccountsResponsePayload2: SolGetAccountResponsePayload = {
+  const getAccountsResponsePayload2: LedgerResponse<{
+    address: Buffer
+  }> = {
     success: true,
     address: Buffer.from("address for 44'/501'/1'/0'")
   }
-  keyring['transport']['addSendCommandResponse']({
+  transport.addSendCommandResponse({
+    id: LedgerCommand.GetAccount,
+    origin: window.origin,
+    command: LedgerCommand.GetAccount,
     payload: getAccountsResponsePayload2
   })
 
-  const result = await keyring.getAccounts(-2, 1, SolDerivationPaths.Default)
+  const result = await keyring.getAccounts(
+    0,
+    2,
+    SolLedgerDefaultHardwareImportScheme
+  )
+
+  const expectedResult: AccountFromDevice[] = [
+    {
+      address: '3yyGpgRsxQWmrP8UZUjC87APcNdwPLuNEdLr',
+      derivationPath: "44'/501'/0'/0'"
+    },
+    {
+      address: '3yyGpgRsxQWmrP8UZUjC87APcNdwPM1umTV8',
+      derivationPath: "44'/501'/1'/0'"
+    }
+  ]
   expect(result).toEqual({
     success: true,
-    payload: [
-      {
-        address: '',
-        addressBytes: Buffer.from("address for 44'/501'/0'/0'"),
-        derivationPath: "44'/501'/0'/0'",
-        name: 'Ledger',
-        hardwareVendor: 'Ledger',
-        deviceId:
-          '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
-        coin: BraveWallet.CoinType.SOL,
-        keyringId: BraveWallet.KeyringId.kSolana
-      },
-      {
-        address: '',
-        addressBytes: Buffer.from("address for 44'/501'/1'/0'"),
-        derivationPath: "44'/501'/1'/0'",
-        name: 'Ledger',
-        hardwareVendor: 'Ledger',
-        deviceId:
-          '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
-        coin: BraveWallet.CoinType.SOL,
-        keyringId: BraveWallet.KeyringId.kSolana
-      }
-    ]
+    accounts: expectedResult
   })
 })
 
 test('getAccounts ledger error after successful unlock', async () => {
-  const keyring = createKeyring()
-  if (!keyring['transport']) {
-    fail('transport should be defined')
-  }
-  if (!keyring['transport']) {
-    fail('transport should be defined')
-  }
-  keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
+  const { keyring, transport } = createKeyring()
+
+  transport.addSendCommandResponse(unlockSuccessResponse)
   const getAccountResponseLedgerError: SolGetAccountResponse = {
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
     payload: {
       success: false,
-      message: 'LedgerError',
-      statusCode: 101
+      error: 'LedgerError',
+      code: 101
     }
   }
 
-  keyring['transport']['addSendCommandResponse']({
-    payload: getAccountResponseLedgerError
-  })
-  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(
-    -2,
+  transport.addSendCommandResponse(getAccountResponseLedgerError)
+  const result: HardwareOperationResultAccounts = await keyring.getAccounts(
+    0,
     1,
-    SolDerivationPaths.LedgerLive
+    SolLedgerDefaultHardwareImportScheme
   )
 
-  // TODO why is this different from the eth counterpart test
-  expect(result).toEqual({
+  const expectedResult: HardwareOperationError = {
     success: false,
-    error: {
-      id: LedgerCommand.GetAccount,
-      origin: window.origin,
-      command: LedgerCommand.GetAccount,
-      payload: { success: false, message: 'LedgerError', statusCode: 101 }
-    },
-    code: undefined
-  })
+    error: 'LedgerError',
+    code: 101
+  }
+
+  expect(result).toEqual(expectedResult)
 })
 
 test('signTransaction unlock error', async () => {
-  const keyring = createKeyring()
-  if (!keyring['transport']) {
-    fail('transport should be defined')
-  }
-  keyring['transport']['addSendCommandResponse'](unlockErrorResponse)
+  const { keyring, transport } = createKeyring()
+
+  transport.addSendCommandResponse(unlockErrorResponse)
   const result = await keyring.signTransaction(
     "44'/501'/1'/0'",
     Buffer.from('transaction')
   )
-  const expectedResult: SignHardwareOperationResult =
-    unlockErrorResponse.payload
-  expect(result).toEqual(expectedResult)
+  expect(result).toEqual({
+    success: false,
+    error: 'LedgerError',
+    code: 101
+  })
 })
 
 test('signTransaction success', async () => {
-  const keyring = createKeyring()
-  if (!keyring['transport']) {
-    fail('transport should be defined')
-  }
-  keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
+  const { keyring, transport } = createKeyring()
+
+  transport.addSendCommandResponse(unlockSuccessResponse)
   const signTransactionResponse: SolSignTransactionResponse = {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
     payload: {
       success: true,
-      signature: Buffer.from('signature')
+      untrustedSignatureBytes: Buffer.from('signature')
     }
   }
-  keyring['transport']['addSendCommandResponse'](signTransactionResponse)
-  const result: SignHardwareOperationResult = await keyring.signTransaction(
+  transport.addSendCommandResponse(signTransactionResponse)
+  const result = await keyring.signTransaction(
     "44'/501'/1'/0'",
     Buffer.from('transaction')
   )
 
-  const expectedResult: SignHardwareOperationResult = {
+  const expectedResult: HardwareOperationResultSolanaSignature = {
     success: true,
-    payload: Buffer.from('signature')
+    signature: {
+      bytes: [...Buffer.from('signature')]
+    }
   }
   expect(result).toEqual(expectedResult)
 })
 
 test('signTransaction ledger error after successful unlock', async () => {
-  const keyring = createKeyring()
-  if (!keyring['transport']) {
-    fail('transport should be defined')
-  }
-  keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
-  const ledgerError: LedgerError = {
+  const { keyring, transport } = createKeyring()
+
+  transport.addSendCommandResponse(unlockSuccessResponse)
+  const ledgerError: LedgerResponse = {
     success: false,
-    message: 'LedgerError',
-    statusCode: 101
+    error: 'LedgerError',
+    code: 101
   }
   const signTransactionResponseLedgerError: SolSignTransactionResponse = {
     id: LedgerCommand.SignTransaction,
@@ -233,15 +207,13 @@ test('signTransaction ledger error after successful unlock', async () => {
     command: LedgerCommand.SignTransaction,
     payload: ledgerError
   }
-  keyring['transport']['addSendCommandResponse'](
-    signTransactionResponseLedgerError
-  )
-  const result: SignHardwareOperationResult = await keyring.signTransaction(
+  transport.addSendCommandResponse(signTransactionResponseLedgerError)
+  const result = await keyring.signTransaction(
     "44'/501'/1'/0'",
     Buffer.from('transaction')
   )
 
-  const expectedResult: SignHardwareOperationResult = {
+  const expectedResult: HardwareOperationError = {
     success: false,
     error: 'LedgerError',
     code: 101

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_test_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -15,7 +15,7 @@ namespace brave_ads {
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest, IsSearchEngineResultsPage) {
   // Act & Assert
-  for (const auto& url : GetSearchEngineResultsPageUrls()) {
+  for (const auto& url : test::GetSearchEngineResultsPageUrls()) {
     EXPECT_TRUE(IsSearchEngineResultsPage(url));
   }
 }
@@ -33,10 +33,9 @@ TEST(BraveAdsSearchEngineResultsPageUtilTest,
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
   // Act & Assert
-  for (const auto& url : GetSearchEngineResultsPageUrls()) {
-    const std::optional<std::string> search_term_query_value =
-        ExtractSearchTermQueryValue(url);
-    if (search_term_query_value) {
+  for (const auto& url : test::GetSearchEngineResultsPageUrls()) {
+    if (const std::optional<std::string> search_term_query_value =
+            ExtractSearchTermQueryValue(url)) {
       EXPECT_EQ("foobar", search_term_query_value);
     }
   }

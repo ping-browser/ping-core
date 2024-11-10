@@ -5,14 +5,10 @@
 
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
-#include "base/feature_list.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -21,38 +17,23 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "chrome/browser/content_settings/cookie_settings_factory.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "chrome/common/pref_names.h"
 #include "components/browsing_data/core/pref_names.h"
-#include "components/content_settings/core/browser/cookie_settings.h"
-#include "components/content_settings/core/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "extensions/buildflags/buildflags.h"
-#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
-#endif
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ethereum_remote_client/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -239,10 +220,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kEnableClosingLastTab] =
       settings_api::PrefType::kBoolean;
-  // Hangouts pref
-  (*s_brave_allowlist)[kHangoutsEnabled] = settings_api::PrefType::kBoolean;
-  // IPFS Companion pref
-  (*s_brave_allowlist)[kIPFSCompanionEnabled] =
+  (*s_brave_allowlist)[kShowFullscreenReminder] =
       settings_api::PrefType::kBoolean;
 
   // Brave Wallet pref
@@ -265,28 +243,13 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kBraveWalletPrivateWindowsEnabled] =
       settings_api::PrefType::kBoolean;
 
-  // IPFS pref
-#if BUILDFLAG(ENABLE_IPFS)
-  (*s_brave_allowlist)[kIPFSResolveMethod] = settings_api::PrefType::kNumber;
-  (*s_brave_allowlist)[kIPFSAutoFallbackToGateway] =
-      settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kIPFSPublicGatewayAddress] =
-      settings_api::PrefType::kString;
-  (*s_brave_allowlist)[kIPFSPublicNFTGatewayAddress] =
-      settings_api::PrefType::kString;
-  (*s_brave_allowlist)[kIPFSAutoRedirectToConfiguredGateway] =
-      settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kIPFSAlwaysStartMode] = settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kIpfsStorageMax] = settings_api::PrefType::kNumber;
-#endif
-
 // Leo Assistant pref
 #if BUILDFLAG(ENABLE_AI_CHAT)
   (*s_brave_allowlist)[ai_chat::prefs::kBraveChatAutocompleteProviderEnabled] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[ai_chat::prefs::kDefaultModelKey] =
-      settings_api::PrefType::kString;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatContextMenuEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatShowToolbarButton] =
       settings_api::PrefType::kBoolean;
 #endif
 
@@ -323,9 +286,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kEnableMediaRouterOnRestart] =
       settings_api::PrefType::kBoolean;
 
-  // NFT pinning pref
-  (*s_brave_allowlist)[kAutoPinEnabled] = settings_api::PrefType::kBoolean;
-
 #if defined(TOOLKIT_VIEWS)
   // Vertical tab strip prefs
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsEnabled] =
@@ -338,6 +298,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowScrollbar] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kVerticalTabsExpandedStatePerWindow] =
+      settings_api::PrefType::kBoolean;
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -347,24 +309,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
 #endif
 
-  return *s_brave_allowlist;
-}
+#if !BUILDFLAG(IS_ANDROID)
+  (*s_brave_allowlist)[brave_tabs::kSharedPinnedTab] =
+      settings_api::PrefType::kBoolean;
+#endif
 
-std::optional<api::settings_private::PrefObject> BravePrefsUtil::GetPref(
-    const std::string& name) {
-  auto pref = PrefsUtil::GetPref(name);
-  // Simulate "Enforced" mode for kCookieControlsMode pref when Cookies are
-  // fully blocked via Shields. This will effectively disable the "Third-party
-  // cookies" mode selector on Settings page.
-  if (pref && name == prefs::kCookieControlsMode &&
-      pref->enforcement == api::settings_private::Enforcement::kNone &&
-      brave_shields::GetCookieControlType(
-          HostContentSettingsMapFactory::GetForProfile(profile()),
-          CookieSettingsFactory::GetForProfile(profile()).get(),
-          GURL()) == brave_shields::ControlType::BLOCK) {
-    pref->enforcement = api::settings_private::Enforcement::kEnforced;
-  }
-  return pref;
+  return *s_brave_allowlist;
 }
 
 }  // namespace extensions

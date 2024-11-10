@@ -1,21 +1,20 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index fd76726742d9f27d517ce2c23bb2eac8210e7261..06f591c90885d50eab2acd88b78fd36fbca6b99c 100644
+index f2fbfe0e43379d8508c4b79c71352778d1767591..0da961b74fd8704bf66a8fd9bf2a4a31f725de6e 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
-@@ -557,7 +557,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
-   if (!IsAllowed(setting)) {
+@@ -528,6 +528,7 @@ CookieSettingsBase::DecideAccess(
      return BlockAllCookies{};
    }
--
-+  BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS
-   if (!ShouldBlockThirdPartyCookies() &&
-       !Are3pcsForceDisabledByOverride(overrides)) {
-     return AllowAllCookies{
-@@ -663,6 +663,7 @@ CookieSettingsBase::GetCookieSettingInternal(
-   const ContentSetting cookie_setting = GetContentSetting(
-       url, first_party_url, ContentSettingsType::COOKIES, &setting_info);
  
-+  BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL
-   const bool is_explicit_setting =
-       !setting_info.primary_pattern.MatchesAllHosts() ||
-       !setting_info.secondary_pattern.MatchesAllHosts();
++  BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS
+   if (!is_third_party_request) {
+     return AllowAllCookies{ThirdPartyCookieAllowMechanism::kNone};
+   }
+@@ -703,6 +704,7 @@ CookieSettingsBase::GetCookieSettingInternal(
+     CHECK(is_third_party_request, base::NotFatalUntil::M128);
+     CHECK(global_setting_or_embedder_blocks_third_party_cookies,
+           base::NotFatalUntil::M128);
++    BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL_IS_EXPLICIT_SETTING
+     CHECK(!is_explicit_setting, base::NotFatalUntil::M128);
+ 
+     FireStorageAccessHistogram(StorageAccessResult::ACCESS_BLOCKED);

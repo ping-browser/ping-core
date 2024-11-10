@@ -13,7 +13,9 @@
 #include "base/containers/span.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/sys_byteorder.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
@@ -607,16 +609,6 @@ GetTokenInstructionAccountParams() {
   return *params;
 }
 
-std::optional<uint8_t> DecodeUint8(base::span<const uint8_t> input,
-                                   size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint8_t)) {
-    return std::nullopt;
-  }
-
-  offset += sizeof(uint8_t);
-  return input[offset - sizeof(uint8_t)];
-}
-
 std::optional<std::string> DecodeUint8String(base::span<const uint8_t> input,
                                              size_t& offset) {
   auto ret = DecodeUint8(input, offset);
@@ -636,26 +628,6 @@ std::optional<std::string> DecodeAuthorityTypeString(
   return std::nullopt;
 }
 
-std::optional<uint32_t> DecodeUint32(base::span<const uint8_t> input,
-                                     size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
-    return std::nullopt;
-  }
-
-  // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint32_t));
-  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
-
-  offset += sizeof(uint32_t);
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint32_le;
-#else
-  return base::ByteSwap(uint32_le);
-#endif
-}
-
 std::optional<std::string> DecodeUint32String(base::span<const uint8_t> input,
                                               size_t& offset) {
   auto ret = DecodeUint32(input, offset);
@@ -667,22 +639,14 @@ std::optional<std::string> DecodeUint32String(base::span<const uint8_t> input,
 
 std::optional<uint64_t> DecodeUint64(base::span<const uint8_t> input,
                                      size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint64_t)) {
+  if (offset >= input.size() || input.size() - offset < 8u) {
     return std::nullopt;
   }
 
   // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint64_t));
-  uint64_t uint64_le = *reinterpret_cast<const uint64_t*>(s.data());
-
-  offset += sizeof(uint64_t);
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint64_le;
-#else
-  return base::ByteSwap(uint64_le);
-#endif
+  auto value = input.subspan(offset).first<8u>();
+  offset += 8u;
+  return base::U64FromLittleEndian(value);
 }
 
 std::optional<std::string> DecodeUint64String(base::span<const uint8_t> input,
@@ -692,17 +656,6 @@ std::optional<std::string> DecodeUint64String(base::span<const uint8_t> input,
     return std::nullopt;
   }
   return base::NumberToString(*ret);
-}
-
-std::optional<std::string> DecodePublicKey(base::span<const uint8_t> input,
-                                           size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < kSolanaPubkeySize) {
-    return std::nullopt;
-  }
-
-  offset += kSolanaPubkeySize;
-  return Base58Encode(std::vector<uint8_t>(
-      input.begin() + offset - kSolanaPubkeySize, input.begin() + offset));
 }
 
 std::optional<std::string> DecodeOptionalPublicKey(
@@ -838,7 +791,8 @@ const std::vector<ParamNameTypeTuple>* DecodeInstructionType(
           GetSystemInstructionAccountParams().at(*ins_type);
       return ret;
     }
-  } else if (program_id == mojom::kSolanaTokenProgramId) {
+  } else if (program_id == mojom::kSolanaTokenProgramId ||
+             program_id == mojom::kSolanaToken2022ProgramId) {
     if (auto ins_type = DecodeTokenInstructionType(data, offset)) {
       auto* ret = &GetTokenInstructionParams().at(*ins_type);
       decoded_data.token_ins_type = std::move(ins_type);
@@ -857,7 +811,8 @@ std::optional<SolanaInstructionDecodedData> Decode(
     base::span<const uint8_t> data,
     const std::string& program_id) {
   if (program_id != mojom::kSolanaSystemProgramId &&
-      program_id != mojom::kSolanaTokenProgramId) {
+      program_id != mojom::kSolanaTokenProgramId &&
+      program_id != mojom::kSolanaToken2022ProgramId) {
     return std::nullopt;
   }
 
@@ -879,6 +834,38 @@ std::optional<SolanaInstructionDecodedData> Decode(
   return decoded_data;
 }
 
+std::optional<uint8_t> DecodeUint8(base::span<const uint8_t> input,
+                                   size_t& offset) {
+  if (offset >= input.size() || input.size() - offset < sizeof(uint8_t)) {
+    return std::nullopt;
+  }
+
+  auto result = input[offset];
+  offset += sizeof(uint8_t);
+  return result;
+}
+
+std::optional<uint32_t> DecodeUint32(base::span<const uint8_t> input,
+                                     size_t& offset) {
+  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
+    return std::nullopt;
+  }
+  auto value = input.subspan(offset).first<4u>();
+  offset += 4u;
+  return base::U32FromLittleEndian(value);
+}
+
+std::optional<std::string> DecodePublicKey(base::span<const uint8_t> input,
+                                           size_t& offset) {
+  if (offset >= input.size() || input.size() - offset < kSolanaPubkeySize) {
+    return std::nullopt;
+  }
+
+  offset += kSolanaPubkeySize;
+  return Base58Encode(std::vector<uint8_t>(
+      input.begin() + offset - kSolanaPubkeySize, input.begin() + offset));
+}
+
 std::vector<InsParamPair> GetAccountParamsForTesting(
     std::optional<mojom::SolanaSystemInstruction> sys_ins_type,
     std::optional<mojom::SolanaTokenInstruction> token_ins_type) {
@@ -890,7 +877,7 @@ std::vector<InsParamPair> GetAccountParamsForTesting(
     return GetTokenInstructionAccountParams().at(*token_ins_type);
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return std::vector<InsParamPair>();
 }
 
@@ -916,6 +903,44 @@ std::optional<mojom::SolanaSystemInstruction> GetSystemInstructionType(
 
   size_t offset = 0;
   return DecodeSystemInstructionType(data, offset);
+}
+
+std::optional<mojom::SolanaComputeBudgetInstruction>
+GetComputeBudgetInstructionType(const std::vector<uint8_t>& data,
+                                const std::string& program_id) {
+  if (program_id != mojom::kSolanaComputeBudgetProgramId) {
+    return std::nullopt;
+  }
+
+  if (data.empty()) {
+    return std::nullopt;
+  }
+
+  uint8_t ins_type = data[0];  // First byte is the instruction type
+  auto mojo_ins_type =
+      static_cast<mojom::SolanaComputeBudgetInstruction>(ins_type);
+  if (!mojom::IsKnownEnumValue(mojo_ins_type)) {
+    return std::nullopt;
+  }
+
+  return mojo_ins_type;
+}
+
+bool IsCompressedNftTransferInstruction(const std::vector<uint8_t>& data,
+                                        const std::string& program_id) {
+  if (program_id != mojom::kSolanaBubbleGumProgramId) {
+    return false;
+  }
+
+  if (data.size() <
+      solana::bubblegum_program::kTransferInstructionDiscriminator.size()) {
+    return false;
+  }
+
+  return std::equal(
+      solana::bubblegum_program::kTransferInstructionDiscriminator.begin(),
+      solana::bubblegum_program::kTransferInstructionDiscriminator.end(),
+      data.begin());
 }
 
 }  // namespace brave_wallet::solana_ins_data_decoder

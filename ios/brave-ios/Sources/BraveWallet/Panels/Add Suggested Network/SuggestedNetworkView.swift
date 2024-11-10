@@ -197,7 +197,9 @@ struct SuggestedNetworkView: View {
               .padding(.vertical, 6)
             }
             Button {
-              isPresentingNetworkDetails = .init(from: chain, mode: .view)
+              isPresentingNetworkDetails = .init(
+                mode: .view(chain)
+              )
             } label: {
               Text(Strings.Wallet.viewDetails)
                 .foregroundColor(Color(.braveBlurpleTint))
@@ -369,7 +371,7 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
         mode: .addNetwork(
           .init(
             originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
-            networkInfo: .mockGoerli
+            networkInfo: .mockSepolia
           )
         ),
         cryptoStore: .previewStore,
@@ -381,8 +383,11 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
         mode: .switchNetworks(
           .init(
             requestId: UUID().uuidString,
-            originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
-            chainId: BraveWallet.GoerliChainId
+            originInfo: .init(
+              originSpec: "https://polygon.technology/",
+              eTldPlusOne: "polygon.technology"
+            ),
+            chainId: BraveWallet.NetworkInfo.mockPolygon.chainId
           )
         ),
         cryptoStore: .previewStore,

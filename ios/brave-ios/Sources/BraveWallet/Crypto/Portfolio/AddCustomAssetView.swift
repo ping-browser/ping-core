@@ -45,8 +45,12 @@ struct AddCustomAssetView: View {
   @State private var showError = false
   @State private var showAdvanced = false
   @State private var isPresentingNetworkSelection = false
+  @State private var showDuplicationTokenError = false
 
   private var addButtonDisabled: Bool {
+    if showDuplicationTokenError {
+      return true
+    }
     switch selectedTokenType {
     case .token:
       return nameInput.isEmpty || symbolInput.isEmpty || decimalsInput.isEmpty
@@ -71,6 +75,15 @@ struct AddCustomAssetView: View {
     return true
   }
 
+  private var duplicationTokenErrorView: some View {
+    Section {
+      Text(Strings.Wallet.duplicationTokenError)
+        .fontWeight(.semibold)
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
+        .listRowBackground(Color.clear)
+    }
+  }
+
   var body: some View {
     NavigationView {
       Form {
@@ -84,6 +97,28 @@ struct AddCustomAssetView: View {
             }
             .pickerStyle(.segmented)
           }
+        }
+        Section(
+          header: WalletListHeaderView(title: Text(Strings.Wallet.customTokenNetworkHeader))
+        ) {
+          HStack {
+            Button {
+              isPresentingNetworkSelection = true
+            } label: {
+              Text(
+                networkSelectionStore.networkSelectionInForm?.chainName
+                  ?? Strings.Wallet.customTokenNetworkButtonTitle
+              )
+              .foregroundColor(
+                networkSelectionStore.networkSelectionInForm == nil
+                  ? Color(braveSystemName: .textDisabled) : Color(.braveLabel)
+              )
+            }
+            Spacer()
+            Image(systemName: "chevron.down.circle")
+              .foregroundColor(Color(.braveBlurpleTint))
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(
@@ -108,33 +143,19 @@ struct AddCustomAssetView: View {
                   decimalsInput = "\(token.decimals)"
                 }
               }
+              Task { @MainActor in
+                showDuplicationTokenError = await userAssetStore.isDuplicate(
+                  address: newValue,
+                  tokenId: tokenId,
+                  network: network,
+                  isNFT: selectedTokenType == .nft
+                )
+              }
             }
             .autocapitalization(.none)
             .autocorrectionDisabled()
             .disabled(userAssetStore.isSearchingToken)
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }
-        Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.customTokenNetworkHeader))
-        ) {
-          HStack {
-            Button {
-              isPresentingNetworkSelection = true
-            } label: {
-              Text(
-                networkSelectionStore.networkSelectionInForm?.chainName
-                  ?? Strings.Wallet.customTokenNetworkButtonTitle
-              )
-              .foregroundColor(
-                networkSelectionStore.networkSelectionInForm == nil
-                  ? .gray.opacity(0.6) : Color(.braveLabel)
-              )
-            }
-            Spacer()
-            Image(systemName: "chevron.down.circle")
-              .foregroundColor(Color(.braveBlurpleTint))
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenName))
@@ -182,6 +203,11 @@ struct AddCustomAssetView: View {
             }
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
+
+          if showDuplicationTokenError {
+            duplicationTokenErrorView
+          }
+
           Section {
             Button {
               withAnimation(.easeInOut(duration: 0.25)) {
@@ -241,9 +267,26 @@ struct AddCustomAssetView: View {
               HStack {
                 TextField(Strings.Wallet.enterTokenId, text: $tokenId)
                   .keyboardType(.numberPad)
+                  .onChange(of: tokenId) { newValue in
+                    guard !newValue.isEmpty,
+                      let network = networkSelectionStore.networkSelectionInForm
+                    else { return }
+                    Task { @MainActor in
+                      showDuplicationTokenError = await userAssetStore.isDuplicate(
+                        address: addressInput,
+                        tokenId: newValue,
+                        network: network,
+                        isNFT: selectedTokenType == .nft
+                      )
+                    }
+                  }
               }
               .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
+          }
+
+          if showDuplicationTokenError {
+            duplicationTokenErrorView
           }
         }
       }
@@ -267,14 +310,20 @@ struct AddCustomAssetView: View {
               .foregroundColor(Color(.braveBlurpleTint))
           }
         }
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
-          Button {
-            resignFirstResponder()
-            addCustomToken()
-          } label: {
-            Text(Strings.Wallet.add)
+        if userAssetStore.isAddingAsset {
+          ToolbarItemGroup(placement: .navigationBarTrailing) {
+            ProgressView()
           }
-          .disabled(addButtonDisabled)
+        } else {
+          ToolbarItemGroup(placement: .navigationBarTrailing) {
+            Button {
+              resignFirstResponder()
+              addCustomToken()
+            } label: {
+              Text(Strings.Wallet.add)
+            }
+            .disabled(addButtonDisabled)
+          }
         }
       }
       .alert(isPresented: $showError) {
@@ -298,7 +347,8 @@ struct AddCustomAssetView: View {
               NetworkSelectionView(
                 keyringStore: keyringStore,
                 networkStore: networkStore,
-                networkSelectionStore: networkSelectionStore
+                networkSelectionStore: networkSelectionStore,
+                networkSelectionType: .addCustomAsset
               )
             }
             .accentColor(Color(.braveBlurpleTint))
@@ -346,69 +396,76 @@ struct AddCustomAssetView: View {
     logo = ""
     coingeckoId = ""
     networkSelectionStore.networkSelectionInForm = nil
+    showDuplicationTokenError = false
   }
 
   private func addCustomToken() {
-    let network = networkSelectionStore.networkSelectionInForm ?? networkStore.defaultSelectedChain
-    let token: BraveWallet.BlockchainToken
-    switch selectedTokenType {
-    case .token:
-      token = BraveWallet.BlockchainToken(
-        contractAddress: addressInput,
-        name: nameInput,
-        logo: logo,
-        isErc20: network.coin != .sol,
-        isErc721: false,
-        isErc1155: false,
-        isNft: false,
-        isSpam: false,
-        symbol: symbolInput,
-        decimals: Int32(decimalsInput)
-          ?? Int32((networkSelectionStore.networkSelectionInForm?.decimals ?? 18)),
-        visible: true,
-        tokenId: "",
-        coingeckoId: coingeckoId,
-        chainId: network.chainId,
-        coin: network.coin
-      )
-    case .nft:
-      var tokenIdToHex = ""
-      if let tokenIdValue = Int16(tokenId) {
-        tokenIdToHex = "0x\(String(format: "%02x", tokenIdValue))"
-      }
-      if let knownERC721Token = tokenNeedsTokenId {
-        knownERC721Token.tokenId = tokenIdToHex
-        if let userSelectedNetworkId = networkSelectionStore.networkSelectionInForm?.chainId {
-          knownERC721Token.chainId = userSelectedNetworkId
-        }
-        if knownERC721Token.name != nameInput {
-          knownERC721Token.name = nameInput
-        }
-        if knownERC721Token.symbol != symbolInput {
-          knownERC721Token.symbol = symbolInput
-        }
-        token = knownERC721Token
-      } else {
+    Task { @MainActor in
+      let network =
+        networkSelectionStore.networkSelectionInForm ?? networkStore.defaultSelectedChain
+      let token: BraveWallet.BlockchainToken
+      switch selectedTokenType {
+      case .token:
         token = BraveWallet.BlockchainToken(
           contractAddress: addressInput,
           name: nameInput,
-          logo: "",
-          isErc20: false,
-          isErc721: network.coin != .sol && !tokenIdToHex.isEmpty,
+          logo: logo,
+          isCompressed: false,
+          isErc20: network.coin != .sol,
+          isErc721: false,
           isErc1155: false,
-          isNft: true,
+          splTokenProgram: .unknown,
+          isNft: false,
           isSpam: false,
           symbol: symbolInput,
-          decimals: 0,
+          decimals: Int32(decimalsInput)
+            ?? Int32((networkSelectionStore.networkSelectionInForm?.decimals ?? 18)),
           visible: true,
-          tokenId: tokenIdToHex,
+          tokenId: "",
           coingeckoId: coingeckoId,
           chainId: network.chainId,
           coin: network.coin
         )
+      case .nft:
+        var tokenIdToHex = ""
+        if let tokenIdValue = Int16(tokenId) {
+          tokenIdToHex = "0x\(String(format: "%02x", tokenIdValue))"
+        }
+        if let knownERC721Token = tokenNeedsTokenId {
+          knownERC721Token.tokenId = tokenIdToHex
+          if let userSelectedNetworkId = networkSelectionStore.networkSelectionInForm?.chainId {
+            knownERC721Token.chainId = userSelectedNetworkId
+          }
+          if knownERC721Token.name != nameInput {
+            knownERC721Token.name = nameInput
+          }
+          if knownERC721Token.symbol != symbolInput {
+            knownERC721Token.symbol = symbolInput
+          }
+          token = knownERC721Token
+        } else {
+          token = BraveWallet.BlockchainToken(
+            contractAddress: addressInput,
+            name: nameInput,
+            logo: "",
+            isCompressed: false,
+            isErc20: false,
+            isErc721: network.coin != .sol && !tokenIdToHex.isEmpty,
+            isErc1155: false,
+            splTokenProgram: .unknown,
+            isNft: true,
+            isSpam: false,
+            symbol: symbolInput,
+            decimals: 0,
+            visible: true,
+            tokenId: tokenIdToHex,
+            coingeckoId: coingeckoId,
+            chainId: network.chainId,
+            coin: network.coin
+          )
+        }
       }
-    }
-    userAssetStore.addUserAsset(token) { [self] success in
+      let success = await userAssetStore.addUserAsset(token)
       if success {
         presentationMode.dismiss()
       } else {

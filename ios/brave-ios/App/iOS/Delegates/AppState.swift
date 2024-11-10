@@ -53,8 +53,12 @@ public class AppState {
           // initialization. This is because Database container may change. See bugs #3416, #3377.
           didBecomeActive = true
           DataController.shared.initializeOnce()
-          Migration.postCoreDataInitMigrations()
+          DataController.sharedInMemory.initializeOnce()
           Migration.migrateLostTabsActiveWindow()
+        }
+
+        if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
+          NetworkMonitor.shared.start()
         }
         break
       case .active:
@@ -66,21 +70,6 @@ public class AppState {
       }
     }
   }
-
-  private(set) public lazy var diskImageStore = { () -> DiskImageStore? in
-    do {
-      return try DiskImageStore(
-        files: profile.files,
-        namespace: "TabManagerScreenshots",
-        quality: UIConstants.screenshotQuality
-      )
-    } catch {
-      log.error(
-        "Failed to create an image store for files: \(self.profile.files.rootPath) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)"
-      )
-    }
-    return nil
-  }()
 
   private init() {
     // Setup Constants
@@ -181,7 +170,10 @@ public class AppState {
     var switches: [BraveCoreSwitch] = []
     // Check prefs for additional switches
     let activeSwitches = Set(Preferences.BraveCore.activeSwitches.value)
+    let customSwitches = Set(Preferences.BraveCore.customSwitches.value)
     let switchValues = Preferences.BraveCore.switchValues.value
+
+    // Add regular known switches
     for activeSwitch in activeSwitches {
       let key = BraveCoreSwitchKey(rawValue: activeSwitch)
       if key.isValueless {
@@ -190,6 +182,19 @@ public class AppState {
         switches.append(.init(key: key, value: value))
       }
     }
+
+    // Add custom user defined switches
+    for customSwitch in customSwitches {
+      let key = BraveCoreSwitchKey(rawValue: customSwitch)
+      if let value = switchValues[customSwitch] {
+        if value.isEmpty {
+          switches.append(.init(key: key))
+        } else {
+          switches.append(.init(key: key, value: value))
+        }
+      }
+    }
+
     switches.append(.init(key: .rewardsFlags, value: BraveRewards.Configuration.current().flags))
 
     // Initialize BraveCore
@@ -203,7 +208,6 @@ public class AppState {
       (SessionRestoreHandler.path, SessionRestoreHandler()),
       (ErrorPageHandler.path, ErrorPageHandler()),
       (ReaderModeHandler.path, ReaderModeHandler(profile: profile)),
-      (IPFSSchemeHandler.path, IPFSSchemeHandler()),
       (Web3DomainHandler.path, Web3DomainHandler()),
       (BlockedDomainHandler.path, BlockedDomainHandler()),
       (HTTPBlockedHandler.path, HTTPBlockedHandler()),

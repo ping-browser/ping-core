@@ -644,7 +644,7 @@
 "wallet.ensDomainInterstitialPageDescription" = "Ping ENS के नाम को Infura का उपयोग करेगा। Ping आपका IP पता छिपाएगा। यदि आप इसे सक्षम करते हैं, तो Infura को आपके .eth नाम देखने का पता चलेगा, लेकिन कोई अन्य जानकारी नहीं मिलेगी। <a href=%1$@>%2$@</a> और <a href=%3$@>%4$@</a> Infura की शर्तें और गोपनीयता नीति देखें।";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "Brave में Ethereum Name Service (ENS) डोमेन समर्थन सक्रिय करें?";
+"wallet.ensDomainInterstitialPageTitle" = "Ping में Ethereum Name Service (ENS) डोमेन समर्थन सक्रिय करें?";
 
 /* Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "ऑफ़लाइन रिज़ोल्व के साथ जारी करें";
@@ -653,7 +653,7 @@
 "wallet.ensOffchainDomainInterstitialPageDescription" = "यह .eth डोमेन ऑफ़लाइन संदर्भ में संग्रहीत है और एक तीसरे पार्टी गेटवे द्वारा निर्धारित होगा। यदि आप ENS की ऑफ़लाइन रिज़ोल्व सक्रिय करते हैं, तो तीसरे पार्टी गेटवे को पता चलेगा कि आप .eth डोमेन को देखने का प्रयास कर रहे हैं। <a href=%@>%@</a> की जानकारी के लिए।";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
-"wallet.ensOffchainDomainInterstitialPageTitle" = "Brave में Ethereum Name Service (ENS) ऑफ़लाइन डोमेन समर्थन सक्रिय करें?";
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Ping में Ethereum Name Service (ENS) ऑफ़लाइन डोमेन समर्थन सक्रिय करें?";
 
 /* Button title when requesting to do an ENS off chain lookup. */
 "wallet.ensOffchainGatewayButton" = "ENS डोमेन का उपयोग करें";
@@ -1000,7 +1000,7 @@
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.newSiteConnectScreenTitle" = "कनेक्ट";
 
-/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as "1 of 4" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as "1 of 4" where tapbrave next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "अगला";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
@@ -1522,43 +1522,43 @@
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "लेन-देन साइन करें";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the address. */
 "wallet.siweAddressLabel" = "पता";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the chain ID. */
 "wallet.siweChainIDLabel" = "श्रृंखला आईडी";
 
-/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+/* The title of the details view for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweDetailsTitle" = "विवरण";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the expiration time. */
 "wallet.siweExpirationTimeLabel" = "समाप्ति समय";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the issued at date. */
 "wallet.siweIssuedAtLabel" = "जारी किया गया";
 
 /* The label displayed above the Sign In With Ethereum message. */
 "wallet.siweMessageLabel" = "संदेश";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the nonce. */
 "wallet.siweNonceLabel" = "नॉन्स";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the origin. */
 "wallet.siweOriginLabel" = "उत्पत्ति";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "संसाधन";
 
-/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+/* The label displayed on the button to sign in for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweSignInButtonTitle" = "साइन इन";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the statement. */
 "wallet.siweStatementLabel" = "बयान";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the URI. */
 "wallet.siweURILabel" = "यूआरआई";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the version. */
 "wallet.siweVersionLabel" = "संस्करण";
 
 /* The button title to skip recovery phrase backup */
@@ -1567,7 +1567,7 @@
 /* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
 "wallet.snsDomainInterstitialPageButtonProceed" = "एक SNS सर्वर के साथ जारी रखें";
 
-/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
 "wallet.snsDomainInterstitialPageDescription" = "पिंग एक तीसरा व्यक्ति उपयोग करेगा साल नामों को हल करने के लिए। पिंग आपके आईपी पते को छिपाएगा। इस विकल्प को सक्षम करने पर तीसरे व्यक्ति को यह दिखेगा कि किसी को .sol नाम के डोमेन का पता लगाने का प्रयास किया गया है, लेकिन किसी अन्य जानकारी का उपयोग नहीं किया गया। अधिक जानकारी के लिए और जानें कि हम इस्तेमाल करते हैं, हमारी प्राइवेसी नीति के बारे में कृपया हमारे <a href=%@>मदद पृष्ठ</a> को देखें।";
 
 /* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
@@ -1729,7 +1729,7 @@
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "लेन-देन भेज दी गई";
 
-/* As in swapping cryptocurrency from one asset to another */
+/* As in swapbrave cryptocurrency from one asset to another */
 "wallet.swap" = "विनिमय करें";
 
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
@@ -1753,7 +1753,7 @@
 /* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountTitle" = "%@ की राशि दर्ज करें जो विनिमय करना चाहते हैं";
 
-/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave from. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoFromTitle" = "से";
 
 /* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
@@ -1765,7 +1765,7 @@
 /* The title of the button for users to click when they want to swap between two cryptos */
 "wallet.swapCryptoSwapButtonTitle" = "विनिमय करें";
 
-/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave to. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoToTitle" = "को";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
@@ -1949,7 +1949,7 @@
 "wallet.udDomainInterstitialPageDescription" = "Ping Unstoppable Domains के .crypto (और %1$@ के रूप में) डोमेन को हल करने के लिए Infura का उपयोग करेगा। Ping आपका IP पता मास्क करेगा। इस विकल्प को सक्रिय करने के लिए, Infura को यह दिखाई देगा कि किसी ने इन डोमेनों तक पहुंचने का प्रयास किया है, लेकिन उसे कोई अन्य जानकारी नहीं मिलेगी। <a href=%2$@>%3$@</a> और Infura की <a href=%4$@>%5$@</a> देखें।";
 
 /* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
-"wallet.udDomainInterstitialPageTitle" = "Brave में Unstoppable Domains डोमेन समर्थन सक्रिय करें?";
+"wallet.udDomainInterstitialPageTitle" = "Ping में Unstoppable Domains डोमेन समर्थन सक्रिय करें?";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
 "wallet.udResolveMethodDescription" = "गोपनीयता संरक्षण के संदर्भ में Unstoppable Domains की विचारधारा के बारे में अधिक जानें। [यहां](%@) पर जाएं।";
@@ -2017,7 +2017,7 @@
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.walletSettings" = "वॉलेट सेटिंग्स";
 
-/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when groubrave Portfolio assets. */
 "wallet.walletTypeNone" = "कोई नहीं";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */

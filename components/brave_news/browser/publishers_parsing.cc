@@ -14,9 +14,9 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_news/api/publisher.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -38,7 +38,7 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
     }
     auto& entry = *parsed_publisher;
 
-    GURL site_url = [&entry]() {
+    GURL site_url = [&entry] {
       if (base::StartsWith(entry.site_url, "https://")) {
         return GURL(entry.site_url);
       } else {
@@ -111,6 +111,7 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
 
 void ParseDirectPublisherList(const std::vector<DirectFeed>& direct_feeds,
                               std::vector<mojom::PublisherPtr>* publishers) {
+  DVLOG(1) << __FUNCTION__;
   for (const auto& feed : direct_feeds) {
     auto publisher = mojom::Publisher::New();
     publisher->feed_source = feed.url;

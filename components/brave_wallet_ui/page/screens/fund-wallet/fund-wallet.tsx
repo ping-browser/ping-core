@@ -187,13 +187,6 @@ function AssetSelection({ isAndroid }: Props) {
     (opt) => getAssetIdKey(opt) === selectedOnRampAssetId
   )
 
-  const { data: selectedNetwork = AllNetworksOption } = useGetNetworkQuery(
-    selectedAsset ||
-      (selectedNetworkFilter.chainId === AllNetworksOption.chainId
-        ? skipToken
-        : selectedNetworkFilter)
-  )
-
   const { data: options } = useGetOnRampAssetsQuery()
 
   // methods
@@ -304,7 +297,6 @@ function AssetSelection({ isAndroid }: Props) {
         cardHeader={
           <PageTitleHeader
             title={pageTitle}
-            showBackButton
             onBack={() => setShowFiatSelection(false)}
           />
         }
@@ -350,7 +342,6 @@ function AssetSelection({ isAndroid }: Props) {
               onAmountChange={setBuyAmount}
               buyAmount={buyAmount}
               selectedAsset={selectedAsset}
-              selectedNetwork={selectedNetwork}
               autoFocus={true}
               onShowCurrencySelection={() => setShowFiatSelection(true)}
               selectedFiatCurrencyCode={selectedCurrency}
@@ -661,7 +652,6 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
       cardHeader={
         <PageTitleHeader
           title={pageTitle}
-          showBackButton
           onBack={history.goBack}
         />
       }

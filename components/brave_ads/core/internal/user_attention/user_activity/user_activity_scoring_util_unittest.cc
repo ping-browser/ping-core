@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring_util.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
@@ -14,10 +14,10 @@
 
 namespace brave_ads {
 
-class BraveAdsUserActivityScoringUtilTest : public UnitTestBase {
+class BraveAdsUserActivityScoringUtilTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         kUserActivityFeature, {{"triggers", "0D=1.0;08=1.0"},
@@ -33,11 +33,10 @@ TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserActive) {
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Act
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(WasUserActive());
 }
 
@@ -47,11 +46,11 @@ TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactive) {
 }
 
 TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
-  // Act
+  // Arrange
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(WasUserActive());
 }
 
@@ -60,13 +59,13 @@ TEST_F(BraveAdsUserActivityScoringUtilTest,
   // Arrange
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
+
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Act
   AdvanceClockBy(kUserActivityTimeWindow.Get() + base::Milliseconds(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(WasUserActive());
 }
 

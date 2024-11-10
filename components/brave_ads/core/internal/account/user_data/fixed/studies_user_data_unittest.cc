@@ -7,40 +7,48 @@
 
 #include "base/metrics/field_trial.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsStudiesUserDataTest : public UnitTestBase {};
+class BraveAdsStudiesUserDataTest : public test::TestBase {};
 
-TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForRewardsUser) {
+TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {
   // Arrange
-  const scoped_refptr<base::FieldTrial> field_trial_1 =
+  ASSERT_EQ(0U, base::FieldTrialList::GetFieldTrialCount());
+
+  // Act
+  const base::Value::Dict user_data = BuildStudiesUserData();
+
+  // Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "studies": []
+                    })"),
+            user_data);
+}
+
+TEST_F(BraveAdsStudiesUserDataTest,
+       BuildStudiesUserDataForSingleFieldTrialAndRewardsUser) {
+  // Arrange
+  const scoped_refptr<base::FieldTrial> field_trial =
       base::FieldTrialList::CreateFieldTrial("BraveAds.FooStudy", "GroupA");
-  field_trial_1->group_name();
+  field_trial->group_name();
 
-  const scoped_refptr<base::FieldTrial> field_trial_2 =
-      base::FieldTrialList::CreateFieldTrial("BraveAds.BarStudy", "GroupB");
-  field_trial_2->group_name();
+  ASSERT_EQ(1U, base::FieldTrialList::GetFieldTrialCount());
 
-  const scoped_refptr<base::FieldTrial> field_trial_3 =
-      base::FieldTrialList::CreateFieldTrial("FooBarStudy", "GroupC");
-  field_trial_3->group_name();
+  // Act
+  const base::Value::Dict user_data = BuildStudiesUserData();
 
-  ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
-
-  // Act & Assert
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "studies": [
-                        {
-                          "group": "GroupB",
-                          "name": "BraveAds.BarStudy"
-                        },
                         {
                           "group": "GroupA",
                           "name": "BraveAds.FooStudy"
@@ -48,13 +56,12 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForRewardsUser) {
                       ]
                     }
                 )"),
-            BuildStudiesUserData());
+            user_data);
 }
 
-TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
+TEST_F(BraveAdsStudiesUserDataTest,
+       BuildStudiesUserDataForMultipleFieldTrialsAndRewardsUser) {
   // Arrange
-  test::DisableBraveRewards();
-
   const scoped_refptr<base::FieldTrial> field_trial_1 =
       base::FieldTrialList::CreateFieldTrial("BraveAds.FooStudy", "GroupA");
   field_trial_1->group_name();
@@ -63,24 +70,35 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
       base::FieldTrialList::CreateFieldTrial("BraveAds.BarStudy", "GroupB");
   field_trial_2->group_name();
 
-  const scoped_refptr<base::FieldTrial> field_trial_3 =
-      base::FieldTrialList::CreateFieldTrial("FooBarStudy", "GroupC");
-  field_trial_3->group_name();
+  ASSERT_EQ(2U, base::FieldTrialList::GetFieldTrialCount());
 
-  ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
+  // Act
+  const base::Value::Dict user_data = BuildStudiesUserData();
 
-  // Act & Assert
-  EXPECT_TRUE(BuildStudiesUserData().empty());
-}
-
-TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {
-  // Act & Assert
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "studies": []
                     })"),
-            BuildStudiesUserData());
+            user_data);
+}
+
+TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  const scoped_refptr<base::FieldTrial> field_trial =
+      base::FieldTrialList::CreateFieldTrial("BraveAds.FooStudy", "GroupA");
+  field_trial->group_name();
+
+  ASSERT_EQ(1U, base::FieldTrialList::GetFieldTrialCount());
+
+  // Act
+  const base::Value::Dict user_data = BuildStudiesUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

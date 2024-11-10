@@ -1,5 +1,6 @@
 include_rules = [
-  "+third_party/abseil-cpp/absl/random",
+  "+components/content_settings/core/common",
+  "+third_party/abseil-cpp/absl/random/random.h",
   "+third_party/blink/public/platform",
   "+third_party/blink/public/common",
   "+third_party/blink/renderer/execution_context",

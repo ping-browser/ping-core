@@ -5,21 +5,21 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_util.h"
 
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_info.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_input_variable_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsCreativeAdModelBasedPredictorUtilTest : public UnitTestBase {};
+class BraveAdsCreativeAdModelBasedPredictorUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
        ComputeCreativeAdModelBasedPredictors) {
@@ -27,19 +27,19 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/
                                         true);
   creative_ad_1.segment = "parent-child";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/
                                         true);
   creative_ad_2.segment = "xyzzy-thud";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/
                                         true);
   creative_ad_3.segment = "parent";
   creative_ads.push_back(creative_ad_3);
@@ -50,17 +50,19 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       InterestUserModelInfo{SegmentList{"parent"}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad_2, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, Now() - base::Hours(3),
-      /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad_2, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kViewedImpression,
+                         /*created_at=*/test::Now() - base::Hours(3),
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
+  // Act
   const CreativeAdModelBasedPredictorList<CreativeNotificationAdInfo>
       creative_ad_predictors = ComputeCreativeAdModelBasedPredictors(
           creative_ads, user_model, ad_events);
 
-  // Act & Assert
+  // Assert
   CreativeAdModelBasedPredictorList<CreativeNotificationAdInfo>
       expected_creative_ad_predictors;
 
@@ -79,7 +81,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .value = false;
   expected_creative_ad_predictor_1.input_variable.interest_segment
       .parent_matches.value = true;
-  expected_creative_ad_predictor_1.score = 3.0;
+  expected_creative_ad_predictor_1.score = 2.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_1);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
@@ -99,7 +101,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .parent_matches.value = false;
   expected_creative_ad_predictor_2.input_variable.last_seen_ad.value =
       base::Hours(3);
-  expected_creative_ad_predictor_2.score = 0.125;
+  expected_creative_ad_predictor_2.score = 0.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_2);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
@@ -117,7 +119,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .value = true;
   expected_creative_ad_predictor_3.input_variable.interest_segment
       .parent_matches.value = true;
-  expected_creative_ad_predictor_3.score = 3.0;
+  expected_creative_ad_predictor_3.score = 2.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_3);
 
   EXPECT_EQ(expected_creative_ad_predictors, creative_ad_predictors);

@@ -9,8 +9,8 @@
 #include "base/strings/sys_string_conversions.h"
 #include "components/profile_metrics/browser_profile_type.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #import "ios/web/js_messaging/web_view_web_state_map.h"
 #import "ios/web/public/browser_state.h"
@@ -178,10 +178,9 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
 @implementation ChromeWebViewController
 - (instancetype)initWithPrivateBrowsing:(bool)isPrivateBrowsing {
   if ((self = [super init])) {
-    ios::ChromeBrowserStateManager* browser_state_manager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
-
-    browser_state_ = browser_state_manager->GetLastUsedBrowserState()
+    browser_state_ = GetApplicationContext()
+                         ->GetProfileManager()
+                         ->GetLastUsedProfileDeprecatedDoNotUse()
                          ->GetOriginalChromeBrowserState();
 
     if (isPrivateBrowsing) {
@@ -267,7 +266,7 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
   // The WebState is owned by the current instance, and the observer bridge
   // is unregistered before the WebState is destroyed, so this event should
   // never happen.
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 // MARK: - CRWWebStateDelegate implementation

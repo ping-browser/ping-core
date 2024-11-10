@@ -51,7 +51,7 @@ extension BrowserViewController {
     case .bottomBar:
       presentBottomBarCallout(skipSafeGuards: skipSafeGuards)
     case .defaultBrowser:
-      presentDefaultBrowserScreenCallout()
+      presentDefaultBrowserScreenCallout(skipSafeGuards: skipSafeGuards)
     case .rewards:
       presentBraveRewardsScreenCallout(skipSafeGuards: skipSafeGuards)
     case .vpnPromotion:
@@ -135,37 +135,59 @@ extension BrowserViewController {
     present(popup, animated: false)
   }
 
-  private func presentDefaultBrowserScreenCallout() {
-    let onboardingController = WelcomeViewController(
-      state: WelcomeViewCalloutState.defaultBrowserCallout(
-        info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
-          title: Strings.Callout.defaultBrowserCalloutTitle,
-          details: Strings.Callout.defaultBrowserCalloutDescription,
-          primaryButtonTitle: Strings.Callout.defaultBrowserCalloutPrimaryButtonTitle,
-          secondaryButtonTitle: Strings.Callout.defaultBrowserCalloutSecondaryButtonTitle,
-          primaryButtonAction: { [weak self] in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-              return
+  private func presentDefaultBrowserScreenCallout(skipSafeGuards: Bool = false) {
+    if !Locale.current.isNewOnboardingRegion {
+      let onboardingController = WelcomeViewController(
+        state: WelcomeViewCalloutState.defaultBrowserCallout(
+          info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
+            title: Strings.Callout.defaultBrowserCalloutTitle,
+            details: Strings.Callout.defaultBrowserCalloutDescription,
+            primaryButtonTitle: Strings.Callout.defaultBrowserCalloutPrimaryButtonTitle,
+            secondaryButtonTitle: Strings.Callout.defaultBrowserCalloutSecondaryButtonTitle,
+            primaryButtonAction: { [weak self] in
+              guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+              }
+
+              Preferences.General.defaultBrowserCalloutDismissed.value = true
+              self?.isOnboardingOrFullScreenCalloutPresented = true
+
+              UIApplication.shared.open(settingsUrl)
+              self?.dismiss(animated: false)
+            },
+            secondaryButtonAction: { [weak self] in
+              self?.isOnboardingOrFullScreenCalloutPresented = true
+
+              self?.dismiss(animated: false)
             }
+          )
+        ),
+        p3aUtilities: braveCore.p3aUtils,
+        attributionManager: attributionManager
+      )
+      present(onboardingController, animated: true)
+      return
+    }
 
-            Preferences.General.defaultBrowserCalloutDismissed.value = true
-            self?.isOnboardingOrFullScreenCalloutPresented = true
+    if !skipSafeGuards {
+      let isLikelyDefault = DefaultBrowserHelper.isBraveLikelyDefaultBrowser()
 
-            UIApplication.shared.open(settingsUrl)
-            self?.dismiss(animated: false)
-          },
-          secondaryButtonAction: { [weak self] in
-            self?.isOnboardingOrFullScreenCalloutPresented = true
+      guard !isLikelyDefault else {
+        return
+      }
+    }
 
-            self?.dismiss(animated: false)
-          }
-        )
-      ),
-      p3aUtilities: braveCore.p3aUtils,
-      attributionManager: attributionManager
-    )
+    let defaultBrowserCallout = UIHostingController(
+      rootView: FocusSystemSettingsView(
+        screenType: .callout,
+        shouldDismiss: Binding.constant(false)
+      )
+    ).then {
+      $0.isModalInPresentation = true
+      $0.modalPresentationStyle = .overFullScreen
+    }
 
-    present(onboardingController, animated: true)
+    present(defaultBrowserCallout, animated: true)
   }
 
   private func presentBraveRewardsScreenCallout(skipSafeGuards: Bool = false) {
@@ -196,7 +218,7 @@ extension BrowserViewController {
       }
 
       if Preferences.VPN.popupShowed.value
-        || !VPNProductInfo.isComplete
+        || !BraveVPNProductInfo.isComplete
       {
         FullScreenCalloutType.vpnPromotion.preferenceValue.value = false
         return
@@ -339,7 +361,7 @@ extension BrowserViewController {
     case .purchased:
       presentVPNLinkReceiptCallout(skipSafeGuards: true)
     case .expired, .notPurchased:
-      if VPNProductInfo.isComplete {
+      if BraveVPNProductInfo.isComplete {
         presentCorrespondingVPNViewController()
       } else {
         // This is flaky. We fetch VPN prices from Apple asynchronously and it makes no sense to
@@ -347,7 +369,7 @@ extension BrowserViewController {
         // If not we do not show anything.
         // This can happen if the app is not in memory and we have to fresh launch it upon tapping on the in app event.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-          if VPNProductInfo.isComplete {
+          if BraveVPNProductInfo.isComplete {
             presentCorrespondingVPNViewController()
           }
         }

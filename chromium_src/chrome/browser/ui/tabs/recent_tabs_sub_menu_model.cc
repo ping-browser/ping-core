@@ -9,16 +9,10 @@
 
 namespace {
 
-const char kBraveStubSessionTag[] = "brave_stub_more_session_tag";
-const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
+constexpr char kBraveStubSessionTag[] = "brave_stub_more_session_tag";
+constexpr char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 
 }  //  namespace
-
-// Patched because this inserting should be done before BuildLocalEntries() in
-// ctor and only once.
-#define BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD         \
-  InsertItemWithStringIdAt(history_separator_index_++, \
-                           IDC_CLEAR_BROWSING_DATA, IDS_CLEAR_BROWSING_DATA);
 
 #define BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES      \
   if (tabs_in_session.size() > kMaxSessionsToShow) {                        \
@@ -49,7 +43,6 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 
 #undef GetAllForeignSessions
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
-#undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD
 
 #include "brave/browser/ui/toolbar/brave_recent_tabs_sub_menu_model.h"
 
@@ -60,7 +53,13 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 BraveRecentTabsSubMenuModel::BraveRecentTabsSubMenuModel(
     ui::AcceleratorProvider* accelerator_provider,
     Browser* browser)
-    : RecentTabsSubMenuModel(accelerator_provider, browser) {}
+    : RecentTabsSubMenuModel(accelerator_provider, browser) {
+  // We disable history clusters feature, so this command won't work.
+  std::optional<size_t> show_history_clusters_index =
+      GetIndexOfCommandId(IDC_SHOW_HISTORY_CLUSTERS_SIDE_PANEL);
+  CHECK(show_history_clusters_index);
+  RemoveItemAt(show_history_clusters_index.value());
+}
 
 BraveRecentTabsSubMenuModel::~BraveRecentTabsSubMenuModel() {}
 

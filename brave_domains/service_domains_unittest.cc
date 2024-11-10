@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/brave_domains/service_domains.h"
+
 #include <cstring>
 
 #include "base/command_line.h"
@@ -16,16 +17,15 @@
 #include "build/build_config.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
 namespace brave_domains {
 
 namespace {
 
 // Setup expected answers based on the buildflag values
-const char kProductionValue[] = BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
-const char kStagingValue[] = BUILDFLAG(BRAVE_SERVICES_STAGING_DOMAIN);
-const char kDevValue[] = BUILDFLAG(BRAVE_SERVICES_DEV_DOMAIN);
+constexpr char kProductionValue[] = BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
+constexpr char kStagingValue[] = BUILDFLAG(BRAVE_SERVICES_STAGING_DOMAIN);
+constexpr char kDevValue[] = BUILDFLAG(BRAVE_SERVICES_DEV_DOMAIN);
 
 }  // namespace
 

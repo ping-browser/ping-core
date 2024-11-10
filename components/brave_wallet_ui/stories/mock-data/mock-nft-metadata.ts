@@ -5,67 +5,84 @@
 import { NFTMetadataReturnType } from '../../constants/types'
 import MoonCatIcon from '../../assets/png-icons/mooncat.png'
 import MooncatProjectIcon from '../../assets/png-icons/mooncat-project-icon.png'
+import { mockMoonCatNFT } from './mock-asset-options'
 
-export const mockNFTMetadata: NFTMetadataReturnType[] = [
-  {
-    chainName: 'Ethereum',
-    tokenType: 'ERC721',
-    tokenID: '0x42a5',
-    metadataUrl: 'ipfs://bafy1',
-    imageURL: MoonCatIcon,
-    imageMimeType: 'image/png',
-    animationURL: undefined,
-    animationMimeType: undefined,
-    floorFiatPrice: '2123.42',
-    floorCryptoPrice: '0.64922',
-    contractInformation: {
-      address: '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69',
-      name: 'MoonCatsRescue',
-      description:
-        'After a whirlwind adventure four years in the making, 25440 MoonCats have been rescued and are acclimating to their life on the blockchain.',
-      website: 'https://mooncat.community',
-      twitter: 'https://twitter.com/ponderware',
-      facebook: '',
-      logo: MooncatProjectIcon
+export const mockMoonCatMetadata: NFTMetadataReturnType = {
+  chainName: 'Ethereum',
+  tokenType: 'ERC721',
+  tokenID: mockMoonCatNFT.tokenId,
+  metadataUrl: 'ipfs://bafy1',
+  imageURL: MoonCatIcon,
+  imageMimeType: 'image/png',
+  animationURL: undefined,
+  animationMimeType: undefined,
+  floorFiatPrice: '2123.42',
+  floorCryptoPrice: '0.64922',
+  contractInformation: {
+    address: mockMoonCatNFT.contractAddress,
+    name: 'MoonCatsRescue',
+    description:
+      'After a whirlwind adventure four years in the making, ' +
+      '25440 MoonCats have been rescued ' +
+      'and are acclimating to their life on the blockchain.',
+    website: 'https://mooncat.community',
+    twitter: 'https://twitter.com/ponderware',
+    facebook: '',
+    logo: MooncatProjectIcon
+  },
+  attributes: [
+    {
+      traitType: 'Feet',
+      value: 'Bleached Sand Sneakers'
     },
-    attributes: [
-      {
-        traitType: 'Feet',
-        value: 'Bleached Sand Sneakers'
-      },
-      {
-        traitType: 'Legs',
-        value: 'White Skirt'
-      },
-      {
-        traitType: 'Upper Body',
-        value: 'Dark Blue / White Sweater and Shirt'
-      },
-      {
-        traitType: 'Sleeves',
-        value: 'Long Sleeves'
-      },
-      {
-        traitType: 'Eyes',
-        value: 'Brown Glasses'
-      },
-      {
-        traitType: 'Bag',
-        value: 'Black Chest Bag'
-      },
-      {
-        traitType: 'Right Arm',
-        value: 'Swinging'
-      },
-      {
-        traitType: 'Left Arm',
-        value: 'Swinging'
-      },
-      {
-        traitType: 'Background',
-        value: 'Blue'
-      }
-    ]
+    {
+      traitType: 'Legs',
+      value: 'White Skirt'
+    },
+    {
+      traitType: 'Upper Body',
+      value: 'Dark Blue / White Sweater and Shirt'
+    },
+    {
+      traitType: 'Sleeves',
+      value: 'Long Sleeves'
+    },
+    {
+      traitType: 'Eyes',
+      value: 'Brown Glasses'
+    },
+    {
+      traitType: 'Bag',
+      value: 'Black Chest Bag'
+    },
+    {
+      traitType: 'Right Arm',
+      value: 'Swinging'
+    },
+    {
+      traitType: 'Left Arm',
+      value: 'Swinging'
+    },
+    {
+      traitType: 'Background',
+      value: 'Blue'
+    }
+  ],
+  collection: {
+    family: 'MoonCatsRescue',
+    name: 'MoonCatsRescue'
+  }
+}
+export const mockNFTMetadata: NFTMetadataReturnType[] = [
+  // Image
+  mockMoonCatMetadata,
+  {
+    ...mockMoonCatMetadata,
+    tokenID: '0x1',
+    contractInformation: {
+      ...mockMoonCatMetadata.contractInformation,
+      address: 'moon'
+    }
   },
   // AUDIO
   {

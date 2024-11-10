@@ -26,7 +26,7 @@
 "dismissStep4OnboardingButtonTitle" = "Lukk";
 
 /* A title shown on the first 2 steps of onboarding for Ping Playlist. Ping Playlist is a product name */
-"introducingBravePlaylist" = "Vi lanserer Brave-spillelisten";
+"introducingBravePlaylist" = "Vi lanserer Ping-spillelisten";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointSubtitleOne" = "Lag spillelister av innholdet du liker best. Spar mobildata. Og spill av uten annonser.";
@@ -38,7 +38,7 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Ikke avbryt flyten – legg til videoer mens du surfer, og se på dem senere.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Legg til videoer i Brave-spillelisten. Spill dem av når du vil – også uten nett.";
+"playlistInfoFeaturePointTitleOne" = "Legg til videoer i Ping-spillelisten. Spill dem av når du vil – også uten nett.";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Avspillingene fungerer bedre i Spillelisten";

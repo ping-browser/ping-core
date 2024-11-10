@@ -7,10 +7,12 @@
 
 #include <optional>
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 
@@ -26,11 +28,11 @@ bool DoesSupportCountryCode() {
 
 CountryCode::CountryCode()
     : cached_country_code_(brave_l10n::GetDefaultISOCountryCodeString()) {
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 }
 
 CountryCode::~CountryCode() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,7 +44,7 @@ void CountryCode::OnNotifyDidInitializeAds() {
 void CountryCode::OnNotifyPrefDidChange(const std::string& path) {
   if (path == brave_l10n::prefs::kCountryCode) {
     CacheCountryCode();
-  } else if (path == brave_rewards::prefs::kEnabled) {
+  } else if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path)) {
     MaybeSetCountryCode();
   }
 }

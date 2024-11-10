@@ -31,6 +31,8 @@
           og kontrollér, at din konfiguration er indstillet til "ingen proxy" eller "direkte".</translation>
 <translation id="2765022094254723779">Ping leveres også ved hjælp af andet <ph name="BEGIN_LINK_OSS"/>open source-software<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Ping.</translation>
+<translation id="8828443087767259398">Ping skal have adgang til Bluetooth for at fortsætte 
+ parringen. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Ping leveres ved hjælp af open source-projektet <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Gå til
           Ping-menuen &gt;

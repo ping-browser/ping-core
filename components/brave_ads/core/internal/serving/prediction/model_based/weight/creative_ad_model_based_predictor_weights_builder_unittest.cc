@@ -5,17 +5,19 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_builder.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
 class BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest
-    : public UnitTestBase {};
+    : public test::TestBase {};
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
        BuildCreativeInlineContentAdModelBasedPredictorWeights) {
@@ -36,7 +38,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
   expected_weights.interest_segment.child = 0.0;
   expected_weights.interest_segment.parent = 0.0;
   expected_weights.untargeted_segment = 0.0001;
-  expected_weights.last_seen_ad = 1.0;
+  expected_weights.last_seen_ad = 0.0;
   EXPECT_EQ(expected_weights, weights);
 }
 
@@ -59,7 +61,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
   expected_weights.interest_segment.child = 0.0;
   expected_weights.interest_segment.parent = 0.0;
   expected_weights.untargeted_segment = 0.0001;
-  expected_weights.last_seen_ad = 1.0;
+  expected_weights.last_seen_ad = 0.0;
   EXPECT_EQ(expected_weights, weights);
 }
 
@@ -82,7 +84,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
   expected_weights.interest_segment.child = 1.0;
   expected_weights.interest_segment.parent = 1.0;
   expected_weights.untargeted_segment = 0.0001;
-  expected_weights.last_seen_ad = 1.0;
+  expected_weights.last_seen_ad = 0.0;
   EXPECT_EQ(expected_weights, weights);
 }
 

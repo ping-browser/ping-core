@@ -78,19 +78,11 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               keyringStore: keyringStore,
               onDismiss: onDismiss
             )
-          case .signTransaction(let requests):
+          case .signSolTransactions(let requests):
             SignTransactionView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
-              request: .signTransaction(requests),
-              cryptoStore: cryptoStore,
-              onDismiss: onDismiss
-            )
-          case .signAllTransactions(let requests):
-            SignTransactionView(
-              keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore,
-              request: .signAllTransactions(requests),
+              requests: requests,
               cryptoStore: cryptoStore,
               onDismiss: onDismiss
             )
@@ -102,11 +94,5 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
       }
     }
     .navigationViewStyle(.stack)
-    .onDisappear {
-      // `onDisappear` on individual views will trigger for navigation pushes.
-      // Close stores when navigation covers manual dismiss & onDismiss() cases.
-      cryptoStore.closeConfirmationStore()
-      cryptoStore.closeSignMessageRequestStore()
-    }
   }
 }

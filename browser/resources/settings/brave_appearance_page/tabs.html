@@ -23,6 +23,11 @@
     </settings-checkbox>
     <settings-checkbox
       class="list-item"
+      pref="{{prefs.brave.tabs.vertical_tabs_expanded_state_per_window}}"
+      label="$i18n{appearanceSettingsTabsVerticalTabExpandedStatePerWindow}">
+    </settings-checkbox>
+    <settings-checkbox
+      class="list-item"
       pref="{{prefs.brave.tabs.vertical_tabs_show_scrollbar}}"
       label="$i18n{appearanceSettingsTabsVerticalTabShowScrollbar}">
     </settings-checkbox>
@@ -44,9 +49,7 @@
         name="true"
         no-extension-indicator>
       </controlled-radio-button>
-  </settings-radio-group>
-
-
+    </settings-radio-group>
   </div>
 </template> <!-- vertical_tabs_enabled.value -->
 
@@ -75,9 +78,27 @@
   </settings-dropdown-menu>
 </div>
 
+<!-- Shared Pinned Tabs -->
+<template is="dom-if" if="[[isSharedPinnedTabsEnabled_()]]">
+  <settings-toggle-button
+    pref="{{prefs.brave.tabs.shared_pinned_tab}}"
+    class="cr-row"
+    label="$i18n{appearanceSettingsSharedPinnedTab}">
+  </settings-toggle-button>
+</template>
+
 <!-- Tab memory usage -->
 <settings-toggle-button id="hoverCardMemoryUsageToggle"
   pref="{{prefs.browser.hovercard.memory_usage_enabled}}"
   class="cr-row"
   label="$i18n{showHoverCardMemoryUsageStandalone}">
+</settings-toggle-button>
+
+<!-- Inactive tabs appearance  -->
+<settings-toggle-button
+  pref="{{prefs.performance_tuning.discard_ring_treatment.enabled}}"
+  class="cr-row"
+  label="$i18n{discardRingTreatmentEnabledLabel}"
+  sub-label-with-link="$i18n{discardRingTreatmentEnabledDescriptionWithLearnLink}"
+  on-sub-label-link-clicked="onDiscardRingTreatmentLearnMoreLinkClick_">
 </settings-toggle-button>

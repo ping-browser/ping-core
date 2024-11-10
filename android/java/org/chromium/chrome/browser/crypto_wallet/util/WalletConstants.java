@@ -79,14 +79,19 @@ public final class WalletConstants {
     public static final String SOL_DAPP_NONCE_ACCOUNT = "nonce_account";
     public static final String SOL_DAPP_NEW_ACCOUNT = "new_account";
 
-    public static List<Integer> SOLANA_TRANSACTION_TYPES = Arrays.asList(
-            TransactionType.SOLANA_SYSTEM_TRANSFER, TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
-            TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION,
-            TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
-            TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION, TransactionType.SOLANA_SWAP);
+    public static List<Integer> SOLANA_TRANSACTION_TYPES =
+            Arrays.asList(
+                    TransactionType.SOLANA_SYSTEM_TRANSFER,
+                    TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
+                    TransactionType
+                            .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION,
+                    TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
+                    TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION,
+                    TransactionType.SOLANA_SWAP);
 
     public static List<Integer> SOLANA_DAPPS_TRANSACTION_TYPES =
-            Arrays.asList(TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
+            Arrays.asList(
+                    TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
                     TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION);
 
     // Solana instruction types
@@ -101,7 +106,6 @@ public final class WalletConstants {
 
     public static final Map<String, Integer> KNOWN_TEST_CHAINS_MAP =
             Map.of(
-                    BraveWalletConstants.GOERLI_CHAIN_ID, CoinType.ETH, //
                     BraveWalletConstants.SEPOLIA_CHAIN_ID, CoinType.ETH, //
                     BraveWalletConstants.LOCALHOST_CHAIN_ID, CoinType.ETH, //
                     BraveWalletConstants.SOLANA_TESTNET, CoinType.SOL, //
@@ -112,4 +116,7 @@ public final class WalletConstants {
 
     public static final List<String> KNOWN_TEST_CHAIN_IDS =
             new ArrayList<>(KNOWN_TEST_CHAINS_MAP.keySet());
+
+    public static final List<Integer> SUPPORTED_COIN_TYPES_ON_DAPPS =
+            Arrays.asList(CoinType.ETH, CoinType.SOL);
 }

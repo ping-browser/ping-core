@@ -10,44 +10,31 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "build/build_config.h"
+#include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#endif
-
 namespace {
 
-std::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
+std::optional<uint32_t> DecodeUint32(base::span<const uint8_t> input,
                                      size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
+  if (offset >= input.size() || input.size() - offset < 4u) {
     return std::nullopt;
   }
 
-  // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint32_t));
-  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
-
-  offset += sizeof(uint32_t);
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint32_le;
-#else
-  return base::ByteSwap(uint32_le);
-#endif
+  auto value = input.subspan(offset).first<4u>();
+  offset += 4u;
+  return base::U32FromLittleEndian(value);
 }
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -95,7 +82,8 @@ void NftMetadataFetcher::GetEthTokenMetadata(
     const std::string& chain_id,
     const std::string& interface_id,
     GetEthTokenMetadataCallback callback) {
-  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  auto network_url = json_rpc_service_->network_manager()->GetNetworkURL(
+      chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
         "", "", mojom::ProviderError::kInvalidParams,
@@ -178,12 +166,8 @@ void NftMetadataFetcher::FetchMetadata(
   // IPFS and HTTPS URIs require an additional request to fetch the metadata.
   std::string metadata_json;
   std::string scheme = url.scheme();
-#if BUILDFLAG(ENABLE_IPFS)
   if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
       scheme != ipfs::kIPFSScheme) {
-#else
-  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme) {
-#endif
     std::move(callback).Run(
         "", static_cast<int>(mojom::JsonRpcError::kInternalError),
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -205,17 +189,13 @@ void NftMetadataFetcher::FetchMetadata(
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
     return;
   }
-
-#if BUILDFLAG(ENABLE_IPFS)
   if (scheme == ipfs::kIPFSScheme &&
-      !ipfs::TranslateIPFSURI(url, &url, ipfs::GetDefaultNFTIPFSGateway(prefs_),
-                              false)) {
+      !ipfs::TranslateIPFSURI(url, &url, false)) {
     std::move(callback).Run(
         "", static_cast<int>(mojom::JsonRpcError::kParsingError),
         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
-#endif
 
   auto internal_callback =
       base::BindOnce(&NftMetadataFetcher::OnGetTokenMetadataPayload,
@@ -353,7 +333,7 @@ void NftMetadataFetcher::CompleteGetSolTokenMetadata(
 // https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Data.html)
 // as a GURL.
 std::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
-    const std::vector<uint8_t>& data) {
+    base::span<const uint8_t> data) {
   size_t offset = 0;
   offset = offset + /* Skip first byte for metadata.key */ 1 +
            /* Skip next 32 bytes for `metadata.update_authority` */ 32 +

@@ -1,17 +1,13 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.crypto_wallet.model;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
@@ -53,19 +49,6 @@ public class TxNonSwipeableViewPager extends ViewPager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        View firstChild = getChildAt(0);
-        if (firstChild != null) {
-            firstChild.measure(widthMeasureSpec, heightMeasureSpec);
-            super.onMeasure(widthMeasureSpec,
-                    MeasureSpec.makeMeasureSpec(
-                            firstChild.getMeasuredHeight(), MeasureSpec.EXACTLY));
-            return;
-        }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     public static class ViewPagerScroller extends Scroller {

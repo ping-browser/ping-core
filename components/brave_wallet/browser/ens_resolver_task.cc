@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/compiler_specific.h"
 #include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
@@ -289,7 +290,7 @@ void EnsResolverTask::FetchEnsResolver() {
 
 void EnsResolverTask::OnFetchEnsResolverDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -335,7 +336,7 @@ void EnsResolverTask::FetchEnsip10Support() {
 
 void EnsResolverTask::OnFetchEnsip10SupportDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -371,7 +372,7 @@ void EnsResolverTask::FetchEnsRecord() {
 
 void EnsResolverTask::OnFetchEnsRecordDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -422,7 +423,7 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
 
 void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -527,7 +528,7 @@ void EnsResolverTask::FetchOffchainData() {
 }
 
 void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -543,8 +544,8 @@ void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
   offchain_lookup_attemps_left_--;
   DCHECK_GE(offchain_lookup_attemps_left_, 0);
   DCHECK_EQ(offchain_lookup_data_->callback_function.size(), 4u);
-  eth_abi::Span4 callback_selector(
-      offchain_lookup_data_->callback_function.begin(), 4u);
+  UNSAFE_TODO(eth_abi::Span4 callback_selector(
+      offchain_lookup_data_->callback_function.begin(), 4u));
 
   offchain_callback_call_ = eth_abi::TupleEncoder()
                                 .AddBytes(*bytes_result)
@@ -568,7 +569,7 @@ void EnsResolverTask::FetchOffchainCallback() {
 
 void EnsResolverTask::OnFetchOffchainCallbackDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -608,9 +609,10 @@ void EnsResolverTask::OnFetchOffchainCallbackDone(
 
 void EnsResolverTask::RequestInternal(const std::string& json_payload,
                                       RequestIntermediateCallback callback) {
-  api_request_helper_->Request("POST", network_url_, json_payload,
-                               "application/json", std::move(callback),
-                               MakeCommonJsonRpcHeaders(json_payload));
+  api_request_helper_->Request(
+      "POST", network_url_, json_payload, "application/json",
+      std::move(callback),
+      MakeCommonJsonRpcHeaders(json_payload, network_url_));
 }
 
 }  // namespace brave_wallet

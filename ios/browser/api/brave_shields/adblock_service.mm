@@ -6,6 +6,7 @@
 #include <Foundation/Foundation.h>
 
 #include "base/apple/foundation_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -15,7 +16,6 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
-#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
@@ -92,7 +92,7 @@ void AdBlockResourceObserver::OnResourcesLoaded(
 }  // namespace brave_shields
 
 @interface AdblockService () {
-  component_updater::ComponentUpdateService* _cus;  // NOT OWNED
+  raw_ptr<component_updater::ComponentUpdateService> _cus;  // NOT OWNED
   std::unique_ptr<brave_shields::AdBlockListP3A> _adblockListP3A;
   std::unique_ptr<brave_shields::AdBlockFilterListCatalogProvider>
       _catalogProvider;
@@ -158,9 +158,11 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   NSMutableArray* lists = [[NSMutableArray alloc] init];
 
   for (const auto& entry : catalog) {
-    [lists addObject:[[AdblockFilterListCatalogEntry alloc]
-                         initWithFilterListCatalogEntry:
-                             brave_shields::FilterListCatalogEntry(entry)]];
+    if (entry.SupportsCurrentPlatform()) {
+      [lists addObject:[[AdblockFilterListCatalogEntry alloc]
+                           initWithFilterListCatalogEntry:
+                               brave_shields::FilterListCatalogEntry(entry)]];
+    }
   }
 
   return lists;
@@ -194,6 +196,10 @@ void AdBlockResourceObserver::OnResourcesLoaded(
 
 - (bool)isFilterListEnabledForUUID:(NSString*)uuid {
   return _serviceManager->IsFilterListEnabled(base::SysNSStringToUTF8(uuid));
+}
+
+- (void)updateFilterLists:(void (^)(bool))callback {
+  _serviceManager->UpdateFilterLists(base::BindOnce(callback));
 }
 
 @end

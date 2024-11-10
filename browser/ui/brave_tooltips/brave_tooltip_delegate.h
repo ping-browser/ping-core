@@ -12,18 +12,15 @@
 
 namespace brave_tooltips {
 
-class BraveTooltipDelegate
-    : public base::SupportsWeakPtr<BraveTooltipDelegate> {
+class BraveTooltipDelegate {
  public:
   virtual ~BraveTooltipDelegate() = default;
 
   // Called when the tooltip is shown
   virtual void OnTooltipShow(const std::string& tooltip_id) {}
 
-  // Called when the tooltip is closed. If closed by a user explicitly
-  // then |by_user| should be true, otherwise false
-  virtual void OnTooltipClose(const std::string& tooltip_id,
-                              const bool by_user) {}
+  // Called when the tooltip is closed
+  virtual void OnTooltipClose(const std::string& tooltip_id) {}
 
   // Called when the underlying widget for the tooltip is destroyed
   virtual void OnTooltipWidgetDestroyed(const std::string& tooltip_id) {}
@@ -33,6 +30,9 @@ class BraveTooltipDelegate
 
   // Called when the Cancel button is pressed
   virtual void OnTooltipCancelButtonPressed(const std::string& tooltip_id) {}
+
+  // Returns a WeakPtr to the implementation instance.
+  virtual base::WeakPtr<BraveTooltipDelegate> AsWeakPtr() = 0;
 };
 
 }  // namespace brave_tooltips

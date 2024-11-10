@@ -23,8 +23,8 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mCallbackController");
         makeProtectedField(sToolbarManagerClassName, "mCallbackController");
 
-        deleteField(sBraveToolbarManagerClassName, "mBrowserControlsSizer");
-        makeProtectedField(sToolbarManagerClassName, "mBrowserControlsSizer");
+        deleteField(sBraveToolbarManagerClassName, "mBottomControlsStacker");
+        makeProtectedField(sToolbarManagerClassName, "mBottomControlsStacker");
 
         deleteField(sBraveToolbarManagerClassName, "mFullscreenManager");
         makeProtectedField(sToolbarManagerClassName, "mFullscreenManager");
@@ -37,9 +37,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveToolbarManagerClassName, "mScrimCoordinator");
         makeProtectedField(sToolbarManagerClassName, "mScrimCoordinator");
-
-        deleteField(sBraveToolbarManagerClassName, "mShowStartSurfaceSupplier");
-        makeProtectedField(sToolbarManagerClassName, "mShowStartSurfaceSupplier");
 
         deleteField(sBraveToolbarManagerClassName, "mMenuButtonCoordinator");
         makeProtectedField(sToolbarManagerClassName, "mMenuButtonCoordinator");
@@ -74,17 +71,8 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mIncognitoStateProvider");
         makeProtectedField(sToolbarManagerClassName, "mIncognitoStateProvider");
 
-        deleteField(sBraveToolbarManagerClassName, "mTabGroupUi");
-        makeProtectedField(sToolbarManagerClassName, "mTabGroupUi");
-
         deleteField(sBraveToolbarManagerClassName, "mBottomSheetController");
         makeProtectedField(sToolbarManagerClassName, "mBottomSheetController");
-
-        deleteField(sBraveToolbarManagerClassName, "mActivityLifecycleDispatcher");
-        makeProtectedField(sToolbarManagerClassName, "mActivityLifecycleDispatcher");
-
-        deleteField(sBraveToolbarManagerClassName, "mIsWarmOnResumeSupplier");
-        makeProtectedField(sToolbarManagerClassName, "mIsWarmOnResumeSupplier");
 
         deleteField(sBraveToolbarManagerClassName, "mTabContentManager");
         makeProtectedField(sToolbarManagerClassName, "mTabContentManager");
@@ -92,8 +80,8 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mTabCreatorManager");
         makeProtectedField(sToolbarManagerClassName, "mTabCreatorManager");
 
-        deleteField(sBraveToolbarManagerClassName, "mSnackbarManager");
-        makeProtectedField(sToolbarManagerClassName, "mSnackbarManager");
+        deleteField(sBraveToolbarManagerClassName, "mModalDialogManagerSupplier");
+        makeProtectedField(sToolbarManagerClassName, "mModalDialogManagerSupplier");
 
         deleteField(sBraveToolbarManagerClassName, "mTabObscuringHandler");
         makeProtectedField(sToolbarManagerClassName, "mTabObscuringHandler");

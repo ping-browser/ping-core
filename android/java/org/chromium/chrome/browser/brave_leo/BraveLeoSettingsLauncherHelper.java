@@ -12,7 +12,8 @@ import org.jni_zero.CalledByNative;
 
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
-import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.WindowAndroid;
@@ -41,20 +42,19 @@ public class BraveLeoSettingsLauncherHelper {
         if (BraveLeoPrefUtils.getIsSubscriptionActive(Profile.fromWebContents(webContents))) {
             BraveLeoUtils.openManageSubscription();
         } else {
-            BraveLeoUtils.openURL(ACCOUNT_PAGE_URL);
+            TabUtils.openURLWithBraveActivity(ACCOUNT_PAGE_URL);
         }
     }
 
     @CalledByNative
     private static void openURL(String url) {
-        BraveLeoUtils.openURL(url);
+        TabUtils.openURLWithBraveActivity(url);
     }
 
     @CalledByNative
-    private static void handleVoiceRecognition(
-            WebContents chatWindowWebContents, WebContents contextWebContents) {
+    private static void handleVoiceRecognition(WebContents webContents, String conversation_uuid) {
         new BraveLeoVoiceRecognitionHandler(
-                        chatWindowWebContents.getTopLevelNativeWindow(), contextWebContents)
+                        webContents.getTopLevelNativeWindow(), webContents, conversation_uuid)
                 .startVoiceRecognition();
     }
 
@@ -72,6 +72,6 @@ public class BraveLeoSettingsLauncherHelper {
     }
 
     private static SettingsLauncher getLauncher() {
-        return sLauncher != null ? sLauncher : new SettingsLauncherImpl();
+        return sLauncher != null ? sLauncher : SettingsLauncherFactory.createSettingsLauncher();
     }
 }

@@ -3,33 +3,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../../../constants/types'
-import { getLocale } from '../../../../common/locale'
 import { LedgerEthereumKeyring } from '../interfaces'
 import {
-  GetAccountsHardwareOperationResult,
-  LedgerDerivationPaths,
-  SignHardwareOperationResult
+  HardwareOperationResultAccounts,
+  HardwareImportScheme,
+  AccountFromDevice,
+  fromUntrustedEthereumSignatureVRS,
+  fromUntrustedEthereumSignatureBytes,
+  HardwareOperationResultEthereumSignatureVRS,
+  HardwareOperationResultEthereumSignatureBytes
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
-  LedgerError
-} from './ledger-messages'
-import {
   EthGetAccountResponse,
-  EthGetAccountResponsePayload,
   EthSignTransactionResponse,
-  EthSignTransactionResponsePayload,
   EthSignPersonalMessageResponse,
-  EthSignPersonalMessageResponsePayload,
-  EthSignEip712MessageResponse,
-  EthSignEip712MessageResponsePayload
-} from './eth-ledger-messages'
+  EthSignEip712MessageResponse
+} from './ledger-messages'
 
-import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
-import { getPathForEthLedgerIndex } from '../../../utils/derivation_path_utils'
 
 export default class EthereumLedgerBridgeKeyring
   extends LedgerBridgeKeyring
@@ -39,40 +33,30 @@ export default class EthereumLedgerBridgeKeyring
     super(onAuthorized)
   }
 
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.ETH
-  }
-
-  keyringId = (): BraveWallet.KeyringId => {
-    return BraveWallet.KeyringId.kDefault
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.EthLedger
   }
 
   getAccounts = async (
     from: number,
-    to: number,
-    scheme: LedgerDerivationPaths
-  ): Promise<GetAccountsHardwareOperationResult> => {
+    count: number,
+    scheme: HardwareImportScheme
+  ): Promise<HardwareOperationResultAccounts> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
     }
-    from = from >= 0 ? from : 0
     const paths = []
-    const addZeroPath = from > 0 || to < 0
-    if (addZeroPath) {
-      // Add zero address to calculate device id.
-      paths.push(this.getPathForIndex(0, scheme))
+    for (let i = 0; i < count; i++) {
+      paths.push(scheme.pathTemplate(from + i))
     }
-    for (let i = from; i <= to; i++) {
-      paths.push(this.getPathForIndex(i, scheme))
-    }
-    return this.getAccountsFromDevice(paths, addZeroPath, scheme)
+    return this.getAccountsFromDevice(paths)
   }
 
   signTransaction = async (
     path: string,
     rawTxHex: string
-  ): Promise<SignHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultEthereumSignatureVRS> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -91,29 +75,30 @@ export default class EthereumLedgerBridgeKeyring
       return this.createErrorFromCode(data)
     }
     if (!data.payload.success) {
-      const ledgerError = data.payload as LedgerError
+      return { ...data.payload }
+    }
+
+    const ethereumSignatureVRS = fromUntrustedEthereumSignatureVRS(
+      data.payload.signature
+    )
+    if (!ethereumSignatureVRS) {
       return {
         success: false,
-        error: ledgerError.message,
-        code: ledgerError.statusCode
+        error: 'Invalid signature',
+        code: undefined
       }
     }
 
-    const responsePayload = data.payload as EthSignTransactionResponsePayload
     return {
       success: true,
-      payload: {
-        v: responsePayload.v,
-        r: responsePayload.r,
-        s: responsePayload.s
-      }
+      signature: ethereumSignatureVRS
     }
   }
 
   signPersonalMessage = async (
     path: string,
     message: string
-  ): Promise<SignHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultEthereumSignatureBytes> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -133,32 +118,31 @@ export default class EthereumLedgerBridgeKeyring
       return this.createErrorFromCode(data)
     }
     if (!data.payload.success) {
-      const ledgerError = data.payload as LedgerError
+      return { ...data.payload }
+    }
+
+    const ethereumSignatureBytes = fromUntrustedEthereumSignatureBytes(
+      data.payload.signature
+    )
+    if (!ethereumSignatureBytes) {
       return {
         success: false,
-        error: ledgerError.message,
-        code: ledgerError.statusCode
+        error: 'Invalid signature',
+        code: undefined
       }
     }
 
-    const responsePayload =
-      data.payload as EthSignPersonalMessageResponsePayload
-    const signature = this.createMessageSignature(responsePayload)
-    if (!signature) {
-      return {
-        success: false,
-        error: getLocale('braveWalletLedgerValidationError')
-      }
+    return {
+      success: true,
+      signature: ethereumSignatureBytes
     }
-
-    return { success: true, payload: signature }
   }
 
   signEip712Message = async (
     path: string,
     domainSeparatorHex: string,
     hashStructMessageHex: string
-  ): Promise<SignHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultEthereumSignatureBytes> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -178,51 +162,30 @@ export default class EthereumLedgerBridgeKeyring
       return this.createErrorFromCode(data)
     }
     if (!data.payload.success) {
-      const ledgerError = data.payload as LedgerError
+      return { ...data.payload }
+    }
+
+    const ethereumSignatureBytes = fromUntrustedEthereumSignatureBytes(
+      data.payload.signature
+    )
+    if (!ethereumSignatureBytes) {
       return {
         success: false,
-        error: ledgerError.message,
-        code: ledgerError.statusCode
+        error: 'Invalid signature',
+        code: undefined
       }
     }
 
-    const responsePayload = data.payload as EthSignEip712MessageResponsePayload
-    const signature = this.createMessageSignature(responsePayload)
-    if (!signature) {
-      return {
-        success: false,
-        error: getLocale('braveWalletLedgerValidationError')
-      }
+    return {
+      success: true,
+      signature: ethereumSignatureBytes
     }
-
-    return { success: true, payload: signature }
-  }
-
-  private readonly createMessageSignature = (
-    result:
-      | EthSignPersonalMessageResponsePayload
-      | EthSignPersonalMessageResponsePayload
-  ) => {
-    // Convert the recovery identifier to standard ECDSA if using bitcoin
-    // secp256k1 convention.
-    let v = result.v < 27 ? result.v.toString(16) : (result.v - 27).toString(16)
-
-    // Pad v with a leading zero if value is under `16` (i.e., single character
-    // hex).
-    if (v.length < 2) {
-      v = `0${v}`
-    }
-    const signature = `0x${result.r}${result.s}${v}`
-    return signature
   }
 
   private readonly getAccountsFromDevice = async (
-    paths: string[],
-    skipZeroPath: boolean,
-    scheme: LedgerDerivationPaths
-  ): Promise<GetAccountsHardwareOperationResult> => {
-    let accounts = []
-    const zeroPath = this.getPathForIndex(0, scheme)
+    paths: string[]
+  ): Promise<HardwareOperationResultAccounts> => {
+    let accounts: AccountFromDevice[] = []
     for (const path of paths) {
       const data = await this.sendCommand<EthGetAccountResponse>({
         command: LedgerCommand.GetAccount,
@@ -238,39 +201,18 @@ export default class EthereumLedgerBridgeKeyring
       }
 
       if (!data.payload.success) {
-        const ledgerError = data.payload as LedgerError
-        return {
-          success: false,
-          error: ledgerError,
-          code: ledgerError.statusCode
-        }
+        return { ...data.payload }
       }
-      const responsePayload = data.payload as EthGetAccountResponsePayload
-
-      if (path === zeroPath) {
-        this.deviceId = await hardwareDeviceIdFromAddress(
-          responsePayload.address
-        )
-        if (skipZeroPath) {
-          // If requested addresses do not have zero indexed adress we add it
-          // intentionally to calculate device id and should not add it to
-          // returned accounts
-          continue
-        }
-      }
+      const responsePayload = data.payload
 
       accounts.push({
         address: responsePayload.address,
-        derivationPath: path,
-        name: this.type(),
-        hardwareVendor: this.type(),
-        deviceId: this.deviceId,
-        coin: this.coin(),
-        keyringId: this.keyringId()
+        derivationPath: path
       })
     }
-    return { success: true, payload: accounts }
+    return {
+      success: true,
+      accounts: accounts
+    }
   }
-
-  private readonly getPathForIndex = getPathForEthLedgerIndex
 }

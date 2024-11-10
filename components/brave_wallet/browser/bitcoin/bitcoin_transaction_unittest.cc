@@ -13,7 +13,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -21,12 +21,12 @@ using testing::_;
 
 namespace brave_wallet {
 namespace {
-const char kTxid1[] =
+constexpr char kTxid1[] =
     "aa388f50b725767653e150ad8990ec11a2146d75acafbe492af08213849fe2c5";
-const char kTxid2[] =
+constexpr char kTxid2[] =
     "bd1c9cfb126a519f3ee593bbbba41a0f9d55b4d267e9483673a848242bc5c2be";
-const char kAddress1[] = "tb1qya3rarek59486w345v45tv6nra4fy2xxgky26x";
-const char kAddress2[] = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
+constexpr char kAddress1[] = "tb1qya3rarek59486w345v45tv6nra4fy2xxgky26x";
+constexpr char kAddress2[] = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
 
 }  // namespace
 
@@ -59,6 +59,17 @@ TEST(BitcoinTransaction, TxInput_Value) {
   EXPECT_EQ(parsed->script_sig, input.script_sig);
   EXPECT_EQ(parsed->witness, input.witness);
   EXPECT_EQ(parsed->n_sequence(), 0xfffffffd);
+  EXPECT_FALSE(parsed->raw_outpoint_tx);
+
+  input.raw_outpoint_tx = {3, 2, 1};
+  parsed = input.FromValue(input.ToValue());
+  ASSERT_TRUE(parsed);
+  EXPECT_EQ(*parsed->raw_outpoint_tx, input.raw_outpoint_tx);
+
+  input.raw_outpoint_tx->clear();
+  parsed = input.FromValue(input.ToValue());
+  ASSERT_TRUE(parsed);
+  ASSERT_FALSE(parsed->raw_outpoint_tx);
 }
 
 TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
@@ -77,7 +88,7 @@ TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
   )";
 
   auto rpc_utxo = bitcoin_rpc::UnspentOutput::FromValue(base::test::ParseJson(
-      std::string(json::convert_all_numbers_to_string(rpc_utxo_json, ""))));
+      json::convert_all_numbers_to_string(rpc_utxo_json, "")));
   ASSERT_TRUE(rpc_utxo);
 
   auto input = BitcoinTransaction::TxInput::FromRpcUtxo(kAddress1, *rpc_utxo);

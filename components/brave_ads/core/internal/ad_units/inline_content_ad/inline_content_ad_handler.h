@@ -19,12 +19,11 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
 
-class Account;
 class AntiTargetingResource;
 class SiteVisit;
 class SubdivisionTargeting;
@@ -35,8 +34,7 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
                                      public InlineContentAdServingDelegate,
                                      public TabManagerObserver {
  public:
-  InlineContentAdHandler(Account& account,
-                         SiteVisit& site_visit,
+  InlineContentAdHandler(SiteVisit& site_visit,
                          const SubdivisionTargeting& subdivision_targeting,
                          const AntiTargetingResource& anti_targeting_resource);
 
@@ -53,7 +51,7 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    mojom::InlineContentAdEventType event_type,
+                    mojom::InlineContentAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback callback);
 
  private:
@@ -83,7 +81,6 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
 
   InlineContentAdEventHandler event_handler_;
 
-  const raw_ref<Account> account_;
   const raw_ref<SiteVisit> site_visit_;
 
   InlineContentAdServing serving_;

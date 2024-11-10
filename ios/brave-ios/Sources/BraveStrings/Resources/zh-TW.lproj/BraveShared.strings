@@ -5,7 +5,7 @@
 "AboutBraveShields" = "關於 Ping Shields";
 
 /* The body of the screen explaining Ping Shields */
-"AboutBraveShieldsBody" = "網站通常會透過 Cookie 和指令碼嘗試識別您和您使用的裝置，藉此掌握您的身分及瞭解您使用網路的情形，進而追蹤您在每個網站上的行為。\n\nBrave 會封鎖這些項目，讓您能在不受追蹤的情況下自在瀏覽。";
+"AboutBraveShieldsBody" = "網站通常會透過 Cookie 和指令碼嘗試識別您和您使用的裝置，藉此掌握您的身分及瞭解您使用網路的情形，進而追蹤您在每個網站上的行為。\n\nPing 會封鎖這些項目，讓您能在不受追蹤的情況下自在瀏覽。";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "這可讓您將影像儲存至您的相機膠卷。";
@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Ping 希望能存取您的相片";
 
-/* Button to add a bookmark */
-"AddBookmark" = "新增書籤";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "新增書籤";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "新增自訂篩選清單";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "新增由您信任的社群所建立及維護的額外清單。";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**僅訂閱來自您信任的實體的清單**。您的瀏覽器將會定期檢查您輸入網址的清單更新。";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "新增至我的最愛";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "封鎖監控";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "封鎖「切換至應用程式」通知";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "封鎖彈出式視窗";
 
@@ -173,7 +158,7 @@
 "BraveRewardsTitle" = "Ping Rewards";
 
 /* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Ping 搜尋不會追蹤您、您的查詢內容或點擊項目。";
+"braveSearchPromotion.bannerDescription" = "Ping 搜尋不會建立您的使用者輪廓。";
 
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "稍後再說";
@@ -214,13 +199,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "如果這個網站貌似無法正常運作，請嘗試關閉 Shields";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Ping Shields";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "關閉";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "開啟";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -278,7 +263,7 @@
 "callout.defaultBrowserTitle" = "隱私不再遙不可及。";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "這有助於我們瞭解哪些 Ping 功能的使用率最高。您隨時可以在 Ping 設定中的「Brave Shields 和其他隱私設定」下變更。";
+"callout.p3aCalloutDescription" = "這有助於我們瞭解哪些 Ping 功能的使用率最高。您隨時可以在 Ping 設定中的「Ping Shields 和其他隱私設定」下變更。";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "深入瞭解保護隱私的產品分析 (P3A)。";
@@ -287,7 +272,7 @@
 "callout.p3aCalloutTitle" = "協助提升 Ping 品質。";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "分享完全不公開的匿名產品深入分析。";
+"callout.p3aCalloutToggleTitle" = "分享不公開和匿名的產品深入分析。";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "在您的電腦或平板電腦上享有 Ping 隱私保護，並且讓各裝置上的書籤和擴充功能保持同步。";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "關閉";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "確定要關閉其他所有開啟的分頁嗎？";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "關閉其他所有分頁";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "確定要關閉所有開啟的分頁嗎？";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "確認";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "內容過濾";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容";
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie 控制項";
@@ -514,6 +499,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "複製連結";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "將分頁資訊複製到剪貼簿。";
+
 /* Copy codewords title */
 "CopyToClipboard" = "複製到剪貼簿";
 
@@ -525,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "目前使用的搜尋引擎";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "自訂篩選清單";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "自訂篩選清單";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "自訂篩選清單網址";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "新增";
@@ -614,10 +593,10 @@
 "defaultBrowserCallout.introPrimaryText" = "使用 Ping 開啟所有連結以保護隱私";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "dBrave Shields 會在您造訪網站時，封鎖網站上的追蹤程式和廣告，為您節省數據用量和寶貴時間";
+"defaultBrowserCallout.introSecondaryText" = "dPing Shields 會在您造訪網站時，封鎖網站上的追蹤程式和廣告，為您節省數據用量和寶貴時間";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "開啟「設定」，點選「預設瀏覽器應用程序」，然後選取「Brave」。";
+"defaultBrowserCallout.introTertiaryText" = "開啟「設定」，點選「預設瀏覽器應用程序」，然後選取「Ping」。";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "將 Ping 設為預設瀏覽器";
@@ -627,9 +606,6 @@
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "關閉預設瀏覽器標註";
-
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "預設篩選清單";
 
 /* Name for default Ping theme. */
 "defaultThemeName" = "Ping 預設";
@@ -663,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "裝置 %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "忽略變更";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "確定要忽略這些變更嗎？任何修改內容將會遺失。";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "是否忽略變更？";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "安全認證";
@@ -737,7 +722,7 @@
 "ErrorPageReloadButtonTitle" = "重新載入";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ 一般使用加密保護您的資訊。Brave 這次嘗試連線至 %2$@ 時，網站傳回異常的錯誤憑證。攻擊者正在嘗試假冒 %3$@，或 Wi-Fi 登入畫面中斷連線時，就可能發生這種情況。您的資訊仍安全無虞，因 Ping 在交換資料前已停止連線。<br />由於網站使用憑證綁定，您無法立即造訪 %4$@。網路錯誤和攻擊通常為暫時性，因此這個頁面可能稍後就恢復正常。";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ 一般使用加密保護您的資訊。Ping 這次嘗試連線至 %2$@ 時，網站傳回異常的錯誤憑證。攻擊者正在嘗試假冒 %3$@，或 Wi-Fi 登入畫面中斷連線時，就可能發生這種情況。您的資訊仍安全無虞，因 Ping 在交換資料前已停止連線。<br />由於網站使用憑證綁定，您無法立即造訪 %4$@。網路錯誤和攻擊通常為暫時性，因此這個頁面可能稍後就恢復正常。";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "此伺服器無法證明它是 %@；您裝置的作業系統不信任其安全憑證。原因可能是設定錯誤，或攻擊者嘗試攔截您的連線。";
@@ -798,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "功能";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "輸入的網址無效";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "自訂篩選清單只允許使用安全的 (https) 網址";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "新增";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "其他熱門社群清單。請注意，啟用太多過濾器可能會導致瀏覽速度變慢。";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "下載失敗";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "等待下載";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "編輯";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "輸入過濾器清單 URL";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "最後一次更新在 %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "在此處輸入篩選清單網址";
 
 /* Share action title */
 "FindInPage" = "在頁面中尋找";
@@ -1105,7 +1060,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "領取代幣";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "您使用 Ping 瀏覽期間，一共賺取了 %@。";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1187,7 +1142,7 @@
 "OBPrivacyConsentClipboardPermission" = "允許 Ping 查看我的剪貼簿，尋找相符的推薦代碼";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "您可能為了支持推薦者而下載 Brave。為偵測您的推薦者，Brave 會查看您的剪貼簿一次，尋找相符的推薦代碼。Brave 只會檢查代碼，不會傳輸其他任何個人資料。如果您不允許查看，您的推薦者將無法獲得 Ping 獎勵。";
+"OBPrivacyConsentDetail" = "您可能為了支持推薦者而下載 Ping。為偵測您的推薦者，Ping 會查看您的剪貼簿一次，尋找相符的推薦代碼。Ping 只會檢查代碼，不會傳輸其他任何個人資料。如果您不允許查看，您的推薦者將無法獲得 Ping 獎勵。";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "不允許查看";
@@ -1453,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "繼續";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
+/* A subtitle shown on the setting that toggles analytics on Ping. */
 "p3a.settingSubtitle" = "這些私密回覆可協助 Ping 估計特定功能的整體使用量，並改善您的使用體驗。";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "允許保護隱私的產品分析 (P3A)";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1422,15 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "您與此網站之間的連線不安全。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "網站連線未驗證。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "您前往此網站的連線無法完全驗證。您可以繼續進行，或者嘗試重新載入頁面以建立安全的連線。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "登入網站";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "查看認證";
@@ -1891,7 +1855,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "立即同步";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "關閉 Shields 選單";
 
 /* Settings privacy section title */
@@ -1975,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "開啟通知";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "回顧本週 Ping 如何在線上保護您。";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "每週隱私報告";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "隱私中心資料會儲存在本機，不會傳送至其他地方。";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "隱私中心";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2066,10 +2030,10 @@
 "PrivateBrowsingOnlyWarning" = "「僅限私人瀏覽」模式將關閉所有當前分頁，將您登出所有網站。";
 
 /* Private tab details */
-"PrivateTabBody" = "Ping 不會儲存隱私分頁，但這並不代表您在網路上為匿名狀態。您使用隱私分頁造訪的網站不會顯示在您的瀏覽記錄中，且一旦您關閉分頁，網站的 Cookie 也將一律刪除，也就是說，Brave 不會留下任何瀏覽記錄。不過，下載項目仍會儲存。即便使用隱私分頁，您的行動網路業者 (或是您所連線的 Wi-Fi 網路或 VPN 擁有者) 仍能看見您造訪哪些網站，而這些網站亦將取得您的公開 IP 位址。";
+"PrivateTabBody" = "Ping 不會儲存隱私分頁，但這並不代表您在網路上為匿名狀態。您使用隱私分頁造訪的網站不會顯示在您的瀏覽記錄中，且一旦您關閉分頁，網站的 Cookie 也將一律刪除，也就是說，Ping 不會留下任何瀏覽記錄。不過，下載項目仍會儲存。即便使用隱私分頁，您的行動網路業者 (或是您所連線的 Wi-Fi 網路或 VPN 擁有者) 仍能看見您造訪哪些網站，而這些網站亦將取得您的公開 IP 位址。";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "使用隱私分頁只會變更 Ping 可在您裝置上執行的作業，無法改變他人行為。\n\n當您造訪網站時，網站能得知您的 IP 位址。根據這項資訊，網站可以大略猜出您的所在位置，通常能知道您所在的城市，有時猜測的位置會更精確。網站也會知道您明確提供的所有內容，像是搜尋內容。當您登入網站時，網站也會知道您是該帳戶的所有人。若關閉隱私分頁，Brave 會捨棄那些將您保持登入的 Cookie，因此系統依然會將您隨即登出。\n\n將您連線至網際網路的公司 (您的 ISP 業者) 可以查看您在網路上的所有活動。這通常會是您的行動網路業者。如果您連線至 Wi-Fi 網路，該網路的所有者可以看到您的活動；如果您是使用 VPN，則是營運該 VPN 的一方。您的 ISP 業者可以在您造訪網站時，瞭解您瀏覽了哪些網站。如果這些網站使用 HTTPS，ISP 業者只能大略猜測您在網站上的活動；但如果網站僅使用 HTTP，則 ISP 業者可以看到所有活動，包括搜尋內容、讀取的頁面以及點選的連結。\n\n如果您的裝置是由雇主所管理，他們可能會追蹤您的裝置使用情形。即使您使用隱私分頁，雇主仍可知道您曾瀏覽過哪些網站。能存取您裝置的其他人士，可能也會安裝軟體以監控您的活動。這類情形下，即使使用隱私分頁，也無法保護您。";
+"PrivateTabDetails" = "使用隱私分頁只會變更 Ping 可在您裝置上執行的作業，無法改變他人行為。\n\n當您造訪網站時，網站能得知您的 IP 位址。根據這項資訊，網站可以大略猜出您的所在位置，通常能知道您所在的城市，有時猜測的位置會更精確。網站也會知道您明確提供的所有內容，像是搜尋內容。當您登入網站時，網站也會知道您是該帳戶的所有人。若關閉隱私分頁，Ping 會捨棄那些將您保持登入的 Cookie，因此系統依然會將您隨即登出。\n\n將您連線至網際網路的公司 (您的 ISP 業者) 可以查看您在網路上的所有活動。這通常會是您的行動網路業者。如果您連線至 Wi-Fi 網路，該網路的所有者可以看到您的活動；如果您是使用 VPN，則是營運該 VPN 的一方。您的 ISP 業者可以在您造訪網站時，瞭解您瀏覽了哪些網站。如果這些網站使用 HTTPS，ISP 業者只能大略猜測您在網站上的活動；但如果網站僅使用 HTTP，則 ISP 業者可以看到所有活動，包括搜尋內容、讀取的頁面以及點選的連結。\n\n如果您的裝置是由雇主所管理，他們可能會追蹤您的裝置使用情形。即使您使用隱私分頁，雇主仍可知道您曾瀏覽過哪些網站。能存取您裝置的其他人士，可能也會安裝軟體以監控您的活動。這類情形下，即使使用隱私分頁，也無法保護您。";
 
 /* Private tab information link */
 "PrivateTabLink" = "深入了解隱私分頁。";
@@ -2083,7 +2047,7 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "快速搜尋引擎";
 
-/* Open the App Store to rate Brave. */
+/* Open the App Store to rate Ping. */
 "RateBrave" = "為 Ping 評分";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
@@ -2240,7 +2204,7 @@
 "ReportBrokenSiteBody1" = "讓 Ping 的開發人員知悉此網站無法在 Shields 中正常運作：";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "注意：傳送至 Ping 伺服器的報告會包括網址、Brave 版本號碼、Shields 設定、VPN 狀態和語言設定。";
+"ReportBrokenSiteBody2" = "注意：傳送至 Ping 伺服器的報告會包括網址、Ping 版本號碼、Shields 設定、VPN 狀態和語言設定。";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "提交";
@@ -2273,7 +2237,7 @@
 "RestoreTabNegativeButtonTitle" = "否";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "很抱歉，Brave 當機或未正確關閉。\n要還原分頁嗎？";
+"RestoreTabOnCrashAlertMessage" = "很抱歉，Ping 當機或未正確關閉。\n要還原分頁嗎？";
 
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Ping 意外關閉。";
@@ -2309,7 +2273,7 @@
 "rewards.optInDisclaimer" = "按下即表示您同意 %1$@ 和 %2$@。可在設定中隨時取消。";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "啟用 Ping Private Ads，即可自動支持內容創作者和發佈者。Brave Private Ads 是回饋內容創作者並兼顧隱私的廣告。";
+"rewards.settingsToggleMessage" = "啟用 Ping Private Ads，即可自動支持內容創作者和發佈者。Ping Private Ads 是回饋內容創作者並兼顧隱私的廣告。";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "啟用 Ping Rewards";
@@ -2464,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "分享";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "分享 Rewards Internals";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "已支持";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Rewards Internals";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2478,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "儲存";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "儲存變更";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "已儲存的登入資訊";
@@ -2612,7 +2579,7 @@
 "SendCrashReportAlertMessage" = "傳送當機報告協助 Ping 修正問題？";
 
 /* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "糟糕，Brave 當機了！";
+"SendCrashReportAlertTitle" = "糟糕，Ping 當機了！";
 
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "傳送報告";
@@ -2668,11 +2635,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "品質設定";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "這種私人的 ping 讓 Ping 可以估計活躍使用者。";
+/* Description to explain the daily usage brave toggle */
+"settings.sendUsagePingDescription" = "這種私人的 brave 讓 Ping 可以估計活躍使用者。";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Ping";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "自動傳送每日使用 brave 到 Ping";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "無法載入頁面。";
@@ -3013,6 +2983,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "刪除 Sync 帳戶";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "刪除帳戶會從 Ping 伺服器移除加密資料，且所有連結的裝置都會停用 Sync。";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "不過，儲存在這些本機裝置的資料不會刪除。";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "一旦刪除即永久刪除，資料將無法復原。如果您決定再次使用 Sync，您將需要建立新帳戶，並逐一重新新增每部裝置。";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "擷取同步鏈中的裝置時發生錯誤。";
 
@@ -3050,13 +3029,13 @@
 "SyncAddDeviceScan" = "Sync Chain 二維碼";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "在第二部行動裝置上，瀏覽到「設定」面板中的「同步」，並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n\n不妨將此代碼視為密碼。要是他人取得此代碼，將能讀取及修改您同步的資料。";
+"SyncAddDeviceScanDescription" = "在另一部行動裝置上，瀏覽到「設定」面板中的「同步」，並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n\n請將此代碼視為密碼。如果他人取得此代碼，將能讀取及修改您同步的資料。";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "輸入同步代碼";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "在裝置上，瀏覽到「設定」面板中的「同步」，並點選「%@」按鈕。輸入下方顯示的同步鏈代碼字組。\n\n不妨將此代碼視為密碼。要是他人取得此代碼，將能讀取及修改您同步的資料。";
+"SyncAddDeviceWordsDescription" = "在您的裝置上，瀏覽到「設定」面板中的「同步」，並點選「%@」按鈕。輸入下方顯示的同步鏈代碼字組。\n\n請將此代碼視為密碼。如果他人取得此代碼，將能讀取及修改您同步的資料。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "輸入代碼字組";
@@ -3070,11 +3049,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "選擇您想要同步的裝置類型。";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "代碼已過期。請點選下方按鈕來產生新代碼。";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "這個暫時代碼於接下來 %@內有效。";
+
 /* Computer device button title */
 "SyncComputerDevice" = "電腦";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "刪除 Sync 帳戶";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "此代碼似乎是使用執行舊版 Ping 的裝置所建立的。請在您的其他裝置上將 Ping 更新至最新版本，然後建立新的同步代碼。";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "裝置與設定";
@@ -3284,7 +3272,7 @@
 "themeQRCodeShareButton" = "分享...";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "與好友分享 Brave！";
+"themeQRCodeShareTitle" = "與好友分享 Ping！";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "自動";
@@ -3337,7 +3325,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "News";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "關注您感興趣的主題";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3379,7 +3367,7 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "糟糕…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "管理您的摘要來源";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,7 +3389,7 @@
 "today.insecureSourcesHeader" = "來源不安全 - 新增後需自行承擔風險";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "透過單一摘要關注您喜愛的來源。只要在 Ping 中開啟分頁、向下捲動，一切搞定！\nBrave 新聞支援匿名投放私人廣告。";
+"today.introCardBody" = "透過單一摘要關注您喜愛的來源。只要在 Ping 中開啟分頁、向下捲動，一切搞定！\nPing 新聞支援匿名投放私人廣告。";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "開啟 Ping 新聞，絕不錯過每一條消息";
@@ -3412,7 +3400,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "深入了解您的資料";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "更多 Ping Offer";
 
 /* No comment provided by engineer. */
@@ -3435,6 +3423,9 @@
 
 /* A button title that is placed on promoted cards */
 "today.promoted" = "推廣內容";
+
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "在 App Store 為 Ping 評分";
 
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "隱藏";
@@ -3538,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Ping 不會儲存或分享您的語音搜尋。";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "啟用";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "想要保持受保護嗎？只需在訂閱結束前續訂。為了感謝您的續訂，我們還會在接下來的 3 個月提供 20% 的折扣。";
 
@@ -3559,140 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "糟了！ 您的 Ping VPN 訂閱即將到期。";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "購買";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Ping Firewall + VPN";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "1 筆訂閱即可保護 5 個裝置";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "選擇您的地理/國家/地區位置";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "Ping 絕不會記錄您的活動";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "保護所有應用程式和整個裝置";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "家用和公共 Wi-Fi 更安全";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "速度飛快，高達 100 Mbps";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "應用程式版本";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "行動通訊業者";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Ping 不會追蹤您，也不會知道您使用應用程式的情形，因此不會得知您的 VPN 設定方式。請與我們分享所發生問題的相關資訊，我們會在最短時間內盡力解決問題。";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "無法傳送電子郵件。請檢查電子郵件設定。";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "請選取您願意提供的資訊。\n\n您主動提供的資訊越多，越有利於我們的支援人員協助您解決問題。";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "支援服務由 Guardian 團隊協助提供。";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "VPN 主機名稱";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "問題";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "連線穩定性問題";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "沒有可用的網際網路連線";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "其他";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "無法連線至 VPN (其他錯誤)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "連線速度緩慢";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "網站無法運作";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "錯誤記錄";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "網路類型";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "平台";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "繼續寄送電子郵件";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "訂閱類型";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "iOS 時區";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Ping Firewall + VPN 問題";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "啟用";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "無法連線至 App Store，請稍候再試。";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "App Store 錯誤";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "所有方案都包含 %@！";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "免費的 7 天試用期";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "免費試用 7 天";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "所有訂閱都會自動續約，但可在續約前取消。";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "此設定檔可允許 VPN 自動連線，並隨時保障您裝置上的流量安全。此 VPN 連線會經過加密，並採用 Ping 智慧型防火牆的路由規則，有效封鎖潛在的有害與侵入式連線。";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "安裝 VPN 設定檔";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Ping 現在要開始安裝 VPN 設定檔。";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "VPN 現已啟用";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "安裝 VPN";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "免費試用";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "每月自動續約";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "按月訂閱";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "過期";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "封鎖不需要的網路連線";
@@ -3715,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "技術提供：";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "請選擇您喜歡的傳輸通訊協定。切換後，您現有的 VPN 憑證將被清除，如果目前已建立 VPN 連線，您將會重新連線。";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "通道協定切換失敗，請稍後重試。";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "發生伺服器錯誤";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "傳輸通訊協定";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "VPN 通道通訊協定已變更。";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "系統會根據您所設定的時區，自動為您選取最靠近的伺服器區域。這項建議功能旨在確保網際網路的速度不受影響。";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "自動";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "無法切換伺服器，請稍後再試。";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "發生伺服器錯誤";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "伺服器區域";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPN 區域已完成變更。";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "無法重設 VPN 設定，請再試一次。如果問題仍未解決，請聯絡支援團隊尋求協助。";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "再試一次";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "重設失敗";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "已成功重設 VPN 設定。";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "重設成功";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "還原";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "請登入 Ping 帳戶，重新整理您的 VPN 工作階段。";
@@ -3777,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "工作階段已過期";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "升級為 VPN 以保護您的連線，並封鎖無所不在的追蹤程式，捍衛個人隱私。";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "與技術支援人員聯絡";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "無法擷取伺服器清單，請稍後再試。";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "VPN 支援";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "將購買交易連結至您的 Ping 帳戶";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "將您的 App Store 購買交易連結至 Ping 帳戶，以便在其他裝置上使用 Ping VPN。";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "管理訂閱";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "兌換優惠代碼";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "重設組態";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "主機";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "位置";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "伺服器";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "到期日";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "訂閱";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "狀態";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "傳輸通訊協定";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "已停用";
@@ -3874,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "更新付款資訊";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "更新付款方式";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "即使在背景運作，Brave 也會繼續為您提供防護。";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN 已開啟";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "初始化 VPN 時發生問題。請再試一次，或嘗試在 VPN 設定頁面中重設組態。";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "錯誤";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Ping Firewall + VPN 需要 VPN 設定檔，才能安裝到您的裝置上，發揮效用。";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "權限遭拒";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "無法兌換優惠代碼。請再試一次，或檢查您的優惠代碼詳細資訊後重試。";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "無法完成購買。請再試一次，或到 Apple 帳戶查看付款詳細資訊後重試。";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "錯誤";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "我們會透過你的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Ping 即表示您同意使用條款及隱私權政策。";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "兌換代碼";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "伺服器區域";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "目前的設定：%@";
@@ -3916,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "VPN 區域";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "此程序會重設您的 Ping Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "重設組態";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "重設";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "按月訂閱";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "按年訂閱";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "請更新您的付款方式";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "每年自動續約，立即省下 %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "最超值";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "1 年";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "錢包建立日期";
@@ -3970,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "尚未儲存任何網站資料";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "全部移除";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "移除";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "移除 %ld 個項目";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3709,9 @@
 /* History tableview section header */
 "Yesterday" = "昨天";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "啟用高畫質 YouTube 影片";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "啟用此實驗性功能將以可用的最高畫質播放影片，並將使用額外的數據流量。";
 
@@ -4008,6 +3720,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "開啟";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube 播放品質";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "允許透過 Wi-Fi";

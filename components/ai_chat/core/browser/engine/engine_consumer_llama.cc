@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "absl/types/optional.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
@@ -26,7 +25,6 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -172,7 +170,7 @@ std::string BuildLlamaGenerateRewriteSuggestionPrompt(
 }
 
 std::string BuildLlamaGenerateQuestionsPrompt(bool is_video,
-                                              const std::string content,
+                                              const std::string& content,
                                               bool is_mixtral) {
   std::string content_template;
   if (is_video) {
@@ -201,7 +199,7 @@ std::string BuildLlamaPrompt(
     const std::optional<std::string>& selected_text,
     const bool& is_video,
     const bool& is_mixtral,
-    const std::string user_message) {
+    const std::string& user_message) {
   // Always use a generic system message
   std::string system_message =
       l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);
@@ -266,9 +264,16 @@ std::string BuildLlamaPrompt(
 
   // Use the first two messages to build the first sequence,
   // which includes the system prompt.
+
+  auto get_latest_text =
+      [](const ai_chat::mojom::ConversationTurnPtr& turn) -> std::string {
+    return (turn->edits && !turn->edits->empty()) ? turn->edits->back()->text
+                                                  : turn->text;
+  };
+
   std::string prompt = BuildLlamaFirstSequence(
-      today_system_message, first_user_message, conversation_history[1]->text,
-      std::nullopt, is_mixtral);
+      today_system_message, first_user_message,
+      get_latest_text(conversation_history[1]), std::nullopt, is_mixtral);
 
   // Loop through the rest of the history two at a time building subsequent
   // sequences. Ignore the last item since that's the current entry.
@@ -279,7 +284,8 @@ std::string BuildLlamaPrompt(
                             kSelectedTextPromptPlaceholder,
                             *conversation_history[i]->selected_text})
             : conversation_history[i]->text;
-    const std::string& assistant_message = conversation_history[i + 1]->text;
+    const std::string& assistant_message =
+        get_latest_text(conversation_history[i + 1]);
     prompt += BuildLlamaSubsequentSequence(
         prev_user_message, assistant_message,
         (is_mixtral) ? std::optional(kMixtralAssistantTag) : std::nullopt,
@@ -316,19 +322,19 @@ std::string BuildLlamaPrompt(
 namespace ai_chat {
 
 EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
-    const mojom::Model& model,
+    const mojom::LeoModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager) {
-  DCHECK(!features::kConversationAPIEnabled.Get());
-  DCHECK(!model.name.empty());
+  DCHECK(!model_options.name.empty());
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(
-      model.name, stop_sequences, url_loader_factory, credential_manager);
+      model_options.name, std::move(stop_sequences),
+      std::move(url_loader_factory), credential_manager);
 
-  max_page_content_length_ = model.max_page_content_length;
+  max_associated_content_length_ = model_options.max_associated_content_length;
 
-  is_mixtral_ = base::StartsWith(model.name, "mixtral");
+  is_mixtral_ = base::StartsWith(model_options.name, "mixtral");
 }
 
 EngineConsumerLlamaRemote::~EngineConsumerLlamaRemote() = default;
@@ -340,10 +346,12 @@ void EngineConsumerLlamaRemote::ClearAllQueries() {
 void EngineConsumerLlamaRemote::GenerateRewriteSuggestion(
     std::string text,
     const std::string& question,
+    const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   SanitizeInput(text);
-  const std::string& truncated_text = text.substr(0, max_page_content_length_);
+  const std::string& truncated_text =
+      text.substr(0, max_associated_content_length_);
 
   std::string prompt = BuildLlamaGenerateRewriteSuggestionPrompt(
       truncated_text, question, is_mixtral_);
@@ -356,9 +364,10 @@ void EngineConsumerLlamaRemote::GenerateRewriteSuggestion(
 void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
+    const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   const std::string& truncated_page_content =
-      page_content.substr(0, max_page_content_length_);
+      page_content.substr(0, max_associated_content_length_);
   std::string prompt;
   std::vector<std::string> stop_sequences;
   prompt = BuildLlamaGenerateQuestionsPrompt(is_video, truncated_page_content,
@@ -367,7 +376,7 @@ void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
   stop_sequences.push_back("</ul>");
   DCHECK(api_);
   api_->QueryPrompt(
-      prompt, stop_sequences,
+      prompt, std::move(stop_sequences),
       base::BindOnce(
           &EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -425,25 +434,23 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
+    const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  if (conversation_history.empty()) {
+  if (!CanPerformCompletionRequest(conversation_history)) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
-  const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
-  if (last_turn->character_type != mojom::CharacterType::HUMAN) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
-    return;
-  }
+
+  const auto& last_turn = conversation_history.back();
   std::optional<std::string> selected_text = std::nullopt;
   if (last_turn->selected_text.has_value()) {
     selected_text =
-        last_turn->selected_text->substr(0, max_page_content_length_);
+        last_turn->selected_text->substr(0, max_associated_content_length_);
   }
   const std::string& truncated_page_content = page_content.substr(
-      0, selected_text ? max_page_content_length_ - selected_text->size()
-                       : max_page_content_length_);
+      0, selected_text ? max_associated_content_length_ - selected_text->size()
+                       : max_associated_content_length_);
   std::string prompt =
       BuildLlamaPrompt(conversation_history, truncated_page_content,
                        selected_text, is_video, is_mixtral_, human_input);

@@ -28,7 +28,7 @@ extern void LocalizeEngineList(int country_id,
 
 namespace {
 
-const char kCountryIDAtInstall[] = "countryid_at_install";
+constexpr char kCountryIDAtInstall[] = "countryid_at_install";
 
 std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
     int prepopulate_id,
@@ -45,13 +45,15 @@ std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
 
 class BraveTemplateURLServiceUtilTest : public testing::Test {
  public:
-  BraveTemplateURLServiceUtilTest() : search_engine_choice_service_(prefs_) {}
+  BraveTemplateURLServiceUtilTest()
+      : search_engine_choice_service_(prefs_, &local_state_) {}
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
   }
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  TestingPrefServiceSimple local_state_;
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
 };
 
@@ -147,6 +149,6 @@ TEST_F(BraveTemplateURLServiceUtilTest,
 
   // Verify count and order.
   TestDefaultOrder(template_urls,
-                   {":d", ":q", ":g", ":b", ":sp", ":ya", "@bookmarks",
-                    "@history", "@tabs", "@gemini"});
+                   {":br", ":d", ":q", ":g", ":b", ":sp", ":e", ":ya",
+                    "@bookmarks", "@history", "@tabs", "@gemini"});
 }

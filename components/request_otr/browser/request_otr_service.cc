@@ -16,6 +16,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 namespace request_otr {
@@ -42,7 +43,7 @@ void RequestOTRService::OnRulesReady(const std::string& json_content) {
   rules_.clear();
   host_cache_.clear();
   rules_ = std::move(parsed_rules.value().first);
-  host_cache_ = parsed_rules.value().second;
+  host_cache_ = std::move(parsed_rules).value().second;
   DVLOG(1) << host_cache_.size() << " unique hosts, " << rules_.size()
            << " rules parsed from " << kRequestOTRConfigFile;
 }

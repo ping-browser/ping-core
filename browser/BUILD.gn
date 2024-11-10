@@ -32,7 +32,6 @@ source_set("browser_process") {
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/greaselion/browser/buildflags",
-    "//brave/components/ipfs/buildflags",
     "//brave/components/request_otr/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
@@ -51,7 +50,6 @@ group("browser") {
     # these are layering violation and need to be fixed
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
-    "//brave/components/ipfs/test:*",
   ]
 
   if (enable_sparkle) {
@@ -66,6 +64,16 @@ group("browser") {
   # dependencies in brave/ (//chrome/browser does not depend on this target
   # so //brave/browser becomes essentially an alias for //chrome/browser now).
   public_deps = [ "//chrome/browser" ]
+}
+
+if (is_mac) {
+  source_set("mac_features") {
+    sources = [
+      "mac_features.cc",
+      "mac_features.h",
+    ]
+    deps = [ "//base" ]
+  }
 }
 
 source_set("unit_tests") {

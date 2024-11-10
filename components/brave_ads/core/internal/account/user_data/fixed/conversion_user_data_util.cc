@@ -8,6 +8,7 @@
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_constants.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
@@ -27,6 +28,12 @@ base::Value::Dict BuildConversionActionTypeUserData(
 
 std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
     const ConversionInfo& conversion) {
+  if (!UserHasJoinedBraveRewards()) {
+    // Do not support verifiable conversions for users who have not joined Brave
+    // Rewards.
+    return std::nullopt;
+  }
+
   if (!conversion.verifiable) {
     return std::nullopt;
   }
@@ -39,6 +46,7 @@ std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
                 << conversion.verifiable->id << " and "
                 << conversion.verifiable->advertiser_public_key_base64
                 << " advertiser public key");
+
     return std::nullopt;
   }
 
@@ -48,11 +56,12 @@ std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
           .Set(kVerifiableConversionEnvelopeAlgorithmKey,
                GetVerifiableConversionEnvelopeAlgorithm())
           .Set(kVerifiableConversionEnvelopeCipherTextKey,
-               sealed_verifiable_conversion_envelope->ciphertext)
+               sealed_verifiable_conversion_envelope->ciphertext_base64)
           .Set(kVerifiableConversionEnvelopeEphemeralPublicKeyKey,
-               sealed_verifiable_conversion_envelope->ephemeral_public_key)
+               sealed_verifiable_conversion_envelope
+                   ->ephemeral_key_pair_public_key_base64)
           .Set(kVerifiableConversionEnvelopeNonceKey,
-               sealed_verifiable_conversion_envelope->nonce));
+               sealed_verifiable_conversion_envelope->nonce_base64));
 }
 
 }  // namespace brave_ads

@@ -12,6 +12,7 @@
 
 #undef RegisterComponentsForUpdate
 
+#include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "chrome/browser/browser_process.h"
@@ -25,8 +26,8 @@ void RegisterComponentsForUpdate() {
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(cus,
                                              g_browser_process->local_state());
-  psst::RegisterPsstComponent(
-      cus, base::BindOnce(&component_updater::BraveOnDemandUpdate));
+  psst::RegisterPsstComponent(cus);
+  ai_chat::ManageLocalModelsComponentRegistration(cus);
 }
 
 }  // namespace component_updater

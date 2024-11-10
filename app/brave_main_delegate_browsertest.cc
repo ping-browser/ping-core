@@ -8,19 +8,14 @@
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/embedder_support/switches.h"
 #include "content/public/test/browser_test.h"
 
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
-#include "chrome/test/base/in_process_browser_test.h"
-#endif
-
 using BraveMainDelegateBrowserTest = PlatformBrowserTest;
 
-const char kBraveOriginTrialsPublicKey[] =
+constexpr char kBraveOriginTrialsPublicKey[] =
     "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
     "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
 

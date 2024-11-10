@@ -9,6 +9,7 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -23,19 +24,23 @@
 using brave_shields::ControlType;
 
 namespace {
-const char kEmbeddedTestServerDirectory[] = "speech";
-const char kTitleScript[] = "document.title";
+constexpr char kEmbeddedTestServerDirectory[] = "speech";
+constexpr char kTitleScript[] = "document.title";
 }  // namespace
 
 class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
  public:
+  BraveSpeechSynthesisFarblingBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        webcompat::features::kBraveWebcompatExceptionsService);
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
@@ -69,6 +74,9 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
   content::WebContents* web_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 // Tests results of farbling voices list
@@ -128,4 +136,16 @@ IN_PROC_BROWSER_TEST_F(BraveSpeechSynthesisFarblingBrowserTest, FarbleVoices) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   auto max_voices_z = EvalJs(web_contents(), kTitleScript);
   EXPECT_EQ("", max_voices_z);
+
+  // Farbling level: default, but webcompat exception enabled
+  SetFingerprintingDefault(domain_z);
+  brave_shields::SetWebcompatEnabled(
+      content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS,
+      true, embedded_test_server()->GetURL(domain_z, "/"), nullptr);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
+  std::string off_voices_z2 =
+      EvalJs(web_contents(), kTitleScript).ExtractString();
+  ASSERT_NE("failed", off_voices_z2);
+  // The voices list should be the same on every domain if farbling is off.
+  EXPECT_EQ(off_voices_b, off_voices_z2);
 }

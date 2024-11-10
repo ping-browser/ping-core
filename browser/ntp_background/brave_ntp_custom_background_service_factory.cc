@@ -9,7 +9,6 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_delegate.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -37,14 +36,16 @@ BraveNTPCustomBackgroundServiceFactory::BraveNTPCustomBackgroundServiceFactory()
 BraveNTPCustomBackgroundServiceFactory::
     ~BraveNTPCustomBackgroundServiceFactory() = default;
 
-KeyedService* BraveNTPCustomBackgroundServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveNTPCustomBackgroundServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   // Custom NTP background is only used in normal profile.
-  if (!brave::IsRegularProfile(context)) {
+  if (!Profile::FromBrowserContext(context)->IsRegularProfile()) {
     return nullptr;
   }
 
-  return new ntp_background_images::BraveNTPCustomBackgroundService(
+  return std::make_unique<
+      ntp_background_images::BraveNTPCustomBackgroundService>(
       std::make_unique<BraveNTPCustomBackgroundServiceDelegate>(
           Profile::FromBrowserContext(context)));
 }

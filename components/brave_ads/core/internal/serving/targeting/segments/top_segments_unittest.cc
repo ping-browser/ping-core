@@ -7,7 +7,7 @@
 
 #include <cstddef>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -18,18 +18,30 @@ namespace {
 constexpr size_t kSegmentsMaxCount = 2;
 }  // namespace
 
-class BraveAdsTopSegmentsTest : public UnitTestBase {};
+class BraveAdsTopSegmentsTest : public test::TestBase {};
 
 TEST_F(BraveAdsTopSegmentsTest, GetTopChildSegments) {
   // Arrange
   const SegmentList segments = {"parent_1-child", "parent_2-child",
                                 "parent_3-child"};
 
-  // Act & Assert
+  // Act
+  const SegmentList top_segments = GetTopSegments(segments, kSegmentsMaxCount,
+                                                  /*parent_only=*/false);
+
+  // Assert
   const SegmentList expected_top_segments = {"parent_1-child",
                                              "parent_2-child"};
-  EXPECT_EQ(expected_top_segments, GetTopSegments(segments, kSegmentsMaxCount,
-                                                  /*parent_only=*/false));
+  EXPECT_EQ(expected_top_segments, top_segments);
+}
+
+TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopChildSegments) {
+  // Act
+  const SegmentList top_segments = GetTopSegments(
+      /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false);
+
+  // Assert
+  EXPECT_THAT(top_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopSegmentsTest, GetTopParentSegments) {
@@ -37,19 +49,22 @@ TEST_F(BraveAdsTopSegmentsTest, GetTopParentSegments) {
   const SegmentList segments = {"parent_1-child", "parent_2-child",
                                 "parent_3-child"};
 
-  // Act & Assert
+  // Act
+  const SegmentList top_segments = GetTopSegments(segments, kSegmentsMaxCount,
+                                                  /*parent_only=*/true);
+
+  // Assert
   const SegmentList expected_top_segments = {"parent_1", "parent_2"};
-  EXPECT_EQ(expected_top_segments, GetTopSegments(segments, kSegmentsMaxCount,
-                                                  /*parent_only=*/true));
+  EXPECT_EQ(expected_top_segments, top_segments);
 }
 
-TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopSegments) {
+TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopParentSegments) {
   // Act
   const SegmentList top_segments = GetTopSegments(
       /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false);
 
   // Assert
-  EXPECT_TRUE(top_segments.empty());
+  EXPECT_THAT(top_segments, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

@@ -6,15 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
-#include "base/types/expected.h"
-#include "base/version.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "build/build_config.h"
@@ -274,6 +271,13 @@ class RewardsService : public KeyedService {
   virtual void ConnectExternalWallet(const std::string& path,
                                      const std::string& query,
                                      ConnectExternalWalletCallback) = 0;
+
+  // Completes an external wallet login flow for the specified wallet provider
+  // using a collection of parameters returned from the provider's login page.
+  virtual void ConnectExternalWallet(
+      const std::string& provider,
+      const base::flat_map<std::string, std::string>& args,
+      ConnectExternalWalletCallback) = 0;
 
   virtual void GetAllContributions(
       GetAllContributionsCallback callback) = 0;

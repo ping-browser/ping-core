@@ -14,46 +14,48 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
 
-class Account;
 class SiteVisit;
 struct SearchResultAdInfo;
 
-class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
+class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
  public:
-  SearchResultAd(Account& account, SiteVisit& site_visit);
+  explicit SearchResultAdHandler(SiteVisit& site_visit);
 
-  SearchResultAd(const SearchResultAd&) = delete;
-  SearchResultAd& operator=(const SearchResultAd&) = delete;
+  SearchResultAdHandler(const SearchResultAdHandler&) = delete;
+  SearchResultAdHandler& operator=(const SearchResultAdHandler&) = delete;
 
-  SearchResultAd(SearchResultAd&&) noexcept = delete;
-  SearchResultAd& operator=(SearchResultAd&&) noexcept = delete;
+  SearchResultAdHandler(SearchResultAdHandler&&) noexcept = delete;
+  SearchResultAdHandler& operator=(SearchResultAdHandler&&) noexcept = delete;
 
-  ~SearchResultAd() override;
+  ~SearchResultAdHandler() override;
 
-  void TriggerEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                    mojom::SearchResultAdEventType event_type,
+  static void DeferTriggeringAdViewedEventForTesting();
+
+  // You must call this if `DeferTriggeringAdViewedEventForTesting` is called.
+  static void TriggerDeferredAdViewedEventForTesting();
+
+  void TriggerEvent(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                    mojom::SearchResultAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback callback);
 
-  static void DeferTriggeringOfAdViewedEvent();
-  static void TriggerDeferredAdViewedEvent();
-
  private:
-  void FireServedEventCallback(mojom::SearchResultAdInfoPtr ad_mojom,
-                               TriggerAdEventCallback callback,
-                               bool success,
-                               const std::string& placement_id,
-                               mojom::SearchResultAdEventType event_type);
+  void FireServedEventCallback(
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+      TriggerAdEventCallback callback,
+      bool success,
+      const std::string& placement_id,
+      mojom::SearchResultAdEventType mojom_ad_event_type);
 
-  void MaybeTriggerAdViewedEventFromQueue(TriggerAdEventCallback callback);
-  void FireAdViewedEventCallback(TriggerAdEventCallback callback,
-                                 bool success,
-                                 const std::string& placement_id,
-                                 mojom::SearchResultAdEventType event_type);
+  void MaybeTriggerDeferredAdViewedEvent(TriggerAdEventCallback callback);
+  void FireAdViewedEventCallback(
+      TriggerAdEventCallback callback,
+      bool success,
+      const std::string& placement_id,
+      mojom::SearchResultAdEventType mojom_ad_event_type);
 
   // SearchResultAdEventHandlerDelegate:
   void OnDidFireSearchResultAdServedEvent(
@@ -63,17 +65,16 @@ class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
   void OnDidFireSearchResultAdClickedEvent(
       const SearchResultAdInfo& ad) override;
 
-  const raw_ref<Account> account_;
-
   const raw_ref<SiteVisit> site_visit_;
 
   SearchResultAdEventHandler event_handler_;
 
-  base::circular_deque<mojom::SearchResultAdInfoPtr> ad_viewed_event_queue_;
+  base::circular_deque<mojom::CreativeSearchResultAdInfoPtr>
+      ad_viewed_event_queue_;
 
   bool trigger_ad_viewed_event_in_progress_ = false;
 
-  base::WeakPtrFactory<SearchResultAd> weak_factory_{this};
+  base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};
 };
 
 }  // namespace brave_ads

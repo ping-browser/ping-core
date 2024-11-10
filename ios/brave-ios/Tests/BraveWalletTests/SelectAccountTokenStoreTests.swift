@@ -10,13 +10,13 @@ import XCTest
 
 @testable import BraveWallet
 
-@MainActor class SelectAccountTokenStoreTests: XCTestCase {
+class SelectAccountTokenStoreTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable> = .init()
 
   private let allUserAssets: [BraveWallet.BlockchainToken] = [
     .previewToken.copy(asVisibleAsset: true),
-    .mockUSDCToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.GoerliChainId },
+    .mockUSDCToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.SepoliaChainId },
     .mockSolToken.copy(asVisibleAsset: true),
     .mockSpdToken.copy(asVisibleAsset: false),  // not visible
     .mockSolanaNFTToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.SolanaTestnet },
@@ -31,7 +31,7 @@ import XCTest
         sortOrder: 0
       ),
       NetworkAssets(
-        network: .mockGoerli,
+        network: .mockSepolia,
         tokens: [allUserAssets[1]],
         sortOrder: 1
       ),
@@ -58,28 +58,13 @@ import XCTest
     ]
   }
 
-  private let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-    .eth: [
-      .mockMainnet,
-      .mockGoerli,
-    ],
-    .sol: [
-      .mockSolana,
-      .mockSolanaTestnet,
-    ],
-    .fil: [
-      .mockFilecoinMainnet,
-      .mockFilecoinTestnet,
-    ],
-  ]
-
   private let mockEthAccount2: BraveWallet.AccountInfo = .init(
     accountId: .init(
       coin: .eth,
       keyringId: BraveWallet.KeyringId.default,
       kind: .derived,
       address: "mock_eth_id_2",
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       uniqueKey: "mock_eth_id_2"
     ),
     address: "mock_eth_id_2",
@@ -87,12 +72,12 @@ import XCTest
     hardware: nil
   )
 
-  private let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+  private let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
   private let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
 
   /// Test `update()` will update `accountSections` for each account, and verify
   /// `filteredAccountSections` displays non-zero balance by default.
-  func testUpdate() async {
+  @MainActor func testUpdate() async {
     let mockETHBalance: Double = 0.896
     let mockETHPrice: String = "3059.99"  // ETH value = $2741.75104
     let mockUSDCBalance: Double = 4
@@ -101,11 +86,17 @@ import XCTest
     let mockSOLBalance: Double = 3.8765  // lamports rounded
     let mockSOLPrice: String = "200"  // SOL value = $775.30
     let mockNFTBalance: Double = 1
-    let mockNFTMetadata: NFTMetadata = .init(
-      imageURLString: "sol.mock.image.url",
+    let mockNFTMetadata: BraveWallet.NftMetadata = .init(
       name: "sol mock nft name",
       description: "sol mock nft description",
-      attributes: nil
+      image: "sol.mock.image.url",
+      imageData: "sol.mock.image.data",
+      externalUrl: "sol.mock.external.url",
+      attributes: [],
+      backgroundColor: "sol.mock.backgroundColor",
+      animationUrl: "sol.mock.animation.url",
+      youtubeUrl: "sol.mock.youtube.url",
+      collection: "sol.mock.collection"
     )
     let mockFILBalance: Double = 1
     let mockFILPrice: String = "4.06"  // FIL value = $4.06
@@ -170,11 +161,8 @@ import XCTest
         )
       )
     }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = { coin, completion in
-      completion(self.allNetworks[coin] ?? [])
-    }
-    rpcService._hiddenNetworks = { $1([]) }
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks.removeAll()
     rpcService._balance = { accountAddress, coin, _, completion in
       if coin == .eth {
         completion(ethBalanceWei, .success, "")  // eth balance for both eth accounts
@@ -189,28 +177,18 @@ import XCTest
       }
       completion("0", .success, "")  // usdc balance for `mockEthAccount`
     }
+    rpcService._nftBalances = { _, nftIdentifiers, _, completion in
+      completion([mockNFTBalance as NSNumber], "")
+    }
+    rpcService._nftMetadatas = { coin, _, completion in
+      if coin == .sol {
+        completion([mockNFTMetadata], "")
+      } else {
+        completion([], "Error")
+      }
+    }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
       completion(mockSOLLamportBalance, .success, "")  // sol balance
-    }
-    rpcService._splTokenAccountBalance = { _, _, _, completion in
-      // sol nft balance
-      completion("\(mockNFTBalance)", UInt8(0), "\(mockNFTBalance)", .success, "")
-    }
-    rpcService._solTokenMetadata = { tokenChainId, tokenMintAddress, completion in
-      guard tokenChainId == self.allUserAssets[4].chainId,
-        tokenMintAddress == self.allUserAssets[4].contractAddress
-      else {
-        completion("", "", .internalError, "")
-        return
-      }
-      let metadata = """
-        {
-          "image": "\(mockNFTMetadata.imageURLString ?? "")",
-          "name": "\(mockNFTMetadata.name ?? "")",
-          "description": "\(mockNFTMetadata.description ?? "")"
-        }
-        """
-      completion("", metadata, .success, "")
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -219,7 +197,7 @@ import XCTest
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       self.allUserAssetsInNetworkAssets
     }
-    mockAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { networks, _ in
+    mockAssetManager._getUserAssets = { networks, _ in
       var result: [NetworkAssets] = []
       for network in networks {
         let visibleTokens = self.allUserAssets.filter {
@@ -239,12 +217,15 @@ import XCTest
       )
     }
 
+    let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+
     let store = SelectAccountTokenStore(
       didSelect: { _, _ in },
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )
@@ -298,7 +279,7 @@ import XCTest
         )  // USDC
         XCTAssertEqual(
           accountSections[safe: 1]?.tokenBalances[safe: 1]?.network.chainId,
-          BraveWallet.GoerliChainId
+          BraveWallet.SepoliaChainId
         )
         XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.balance, mockUSDCBalance)
         XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.price, "$4.00")
@@ -392,7 +373,7 @@ import XCTest
         XCTAssertEqual(
           accountSections[safe: 1]?.tokenBalances[safe: 1]?.token,
           self.allUserAssets[1]
-        )  // USDC (Goerli)
+        )  // USDC (Sepolia)
 
         // Solana Account 1
         XCTAssertEqual(accountSections[safe: 2]?.account, .mockSolAccount)
@@ -447,10 +428,10 @@ import XCTest
         )  // FIL
       }.store(in: &cancellables)
 
-    // Test with network filters applied (only Filecoin Mainnnet, Filecoin Testnet selected)
+    // Test with network filters applied (only Filecoin Mainnet, Filecoin Testnet selected)
     store.networkFilters = [
       .init(isSelected: false, model: .mockMainnet),
-      .init(isSelected: false, model: .mockGoerli),
+      .init(isSelected: false, model: .mockSepolia),
       .init(isSelected: false, model: .mockSolana),
       .init(isSelected: false, model: .mockSolanaTestnet),
       .init(isSelected: true, model: .mockFilecoinMainnet),

@@ -10,7 +10,6 @@ import Foundation
 import MediaPlayer
 import Shared
 import Then
-import UserAgent
 import os.log
 
 public enum MediaPlaybackError: Error {
@@ -41,7 +40,6 @@ public class MediaPlayer: NSObject {
   private(set) public var pictureInPictureController: AVPictureInPictureController?
   private(set) public var repeatState: RepeatMode = .none
   private(set) public var shuffleState: ShuffleMode = .none
-  private(set) var previousRate: Float = 0.0
 
   public var isPlaying: Bool {
     // It is better NOT to keep tracking of isPlaying OR rate > 0.0
@@ -168,19 +166,12 @@ public class MediaPlayer: NSObject {
   public func play() {
     if !isPlaying {
       player.play()
-
-      if #unavailable(iOS 16) {
-        player.rate = previousRate > 0.0 ? previousRate : 1.0
-      }
       playSubscriber.send(EventNotification(mediaPlayer: self, event: .play))
     }
   }
 
   public func pause() {
     if isPlaying {
-      if #unavailable(iOS 16) {
-        previousRate = player.rate
-      }
       player.pause()
       pauseSubscriber.send(EventNotification(mediaPlayer: self, event: .pause))
     }
@@ -188,9 +179,6 @@ public class MediaPlayer: NSObject {
 
   public func stop() {
     if isPlaying {
-      if #unavailable(iOS 16) {
-        previousRate = player.rate
-      }
       player.pause()
       player.replaceCurrentItem(with: nil)
       stopSubscriber.send(EventNotification(mediaPlayer: self, event: .stop))
@@ -350,13 +338,8 @@ public class MediaPlayer: NSObject {
   }
 
   public func setPlaybackRate(rate: Float) {
-    if #available(iOS 16, *) {
-      player.defaultRate = rate
-      player.rate = rate
-    } else {
-      previousRate = player.rate
-      player.rate = rate
-    }
+    player.defaultRate = rate
+    player.rate = rate
 
     changePlaybackRateSubscriber.send(
       EventNotification(
@@ -674,45 +657,6 @@ extension MediaPlayer {
 
       self.seek(to: event.positionTime)
     }.store(in: &notificationObservers)
-
-    // The following code is simulating on iOS <= 15: https://developer.apple.com/documentation/avfoundation/avplayer/3929373-defaultrate
-    // When entering `PictureInPicture`, we have no way of knowing if the user has PAUSED or PLAYED the video/audio while in PIP
-    // The only way to know, is to observe the `rate`.
-    // However, setting the rate back to the default rate will recursively call the observer that's observing PIP.
-    // So we need to do some weird hacks below.
-    // On iOS 16+, we can use `defaultRate` variable instead of storing `previousRate`
-    if #unavailable(iOS 16) {
-      var isRecursivelySettingRate = false
-      rateObserver = player.observe(\.rate, options: [.new, .prior]) { [weak self] player, rate in
-        guard let self = self else { return }
-
-        if !isRecursivelySettingRate {
-          if rate.isPrior {
-            if player.rate != 0 {
-              previousRate = player.rate
-            }
-            return
-          }
-
-          if self.pictureInPictureController?.isPictureInPictureActive == true {
-            if rate.newValue == 1 && self.previousRate != rate.newValue {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                isRecursivelySettingRate = true
-                player.rate = self.previousRate
-                isRecursivelySettingRate = false
-              }
-            }
-          }
-        }
-
-        changePlaybackRateSubscriber.send(
-          EventNotification(
-            mediaPlayer: self,
-            event: .changePlaybackRate
-          )
-        )
-      }
-    }
   }
 
   /// Registers picture in picture notifications
@@ -740,87 +684,5 @@ extension MediaPlayer {
         )
       )
     }
-  }
-}
-
-extension AVPlayerItem {
-  private var isReadyToPlay: Bool {
-    var error: NSError?
-    if case .loaded = self.asset.statusOfValue(forKey: "tracks", error: &error) {
-      return true
-    }
-    return false
-  }
-
-  /// Returns whether or not the assetTrack has audio tracks OR the asset has audio tracks
-  public func isAudioTracksAvailable() -> Bool {
-    tracks.filter({ $0.assetTrack?.mediaType == .audio }).isEmpty == false
-  }
-
-  /// Returns whether or not the assetTrack has video tracks OR the asset has video tracks
-  /// If called on optional, assume true
-  /// We do this because for m3u8 HLS streams,
-  /// tracks may not always be available and the particle effect will show even on videos..
-  /// It's best to assume this type of media is a video stream.
-  public func isVideoTracksAvailable() -> Bool {
-    if !isReadyToPlay {
-      return true
-    }
-
-    if tracks.isEmpty && asset.tracks.isEmpty {
-      return true  // Assume video
-    }
-
-    // All tracks are null (not loaded yet)
-    if tracks.allSatisfy({ $0.assetTrack == nil }) {
-      return true  // Assume video
-    }
-
-    // If the only current track types are audio
-    if !tracks.allSatisfy({ $0.assetTrack?.mediaType == .audio }) {
-      return true  // Assume video
-    }
-
-    let hasVideoTracks =
-      !tracks.filter({ $0.assetTrack?.mediaType == .video }).isEmpty
-      || asset.isVideoTracksAvailable()
-
-    // Ultra hack
-    // Some items `fade` in/out or have an audio track that fades out but no video track
-    // In this case, assume video as it is potentially still a video, just with blank frames
-    if !hasVideoTracks && currentTime().seconds <= 1.0
-      || fabs(duration.seconds - currentTime().seconds) <= 3.0
-    {
-      return true
-    }
-
-    return hasVideoTracks
-  }
-}
-
-extension AVAsset {
-  /// Returns whether or not the asset has audio tracks
-  public func isAudioTracksAvailable() -> Bool {
-    !tracks.filter({ $0.mediaType == .audio }).isEmpty
-  }
-
-  /// Returns whether or not the  asset has video tracks
-  /// If called on optional, assume true
-  /// We do this because for m3u8 HLS streams,
-  /// tracks may not always be available and the particle effect will show even on videos..
-  /// It's best to assume this type of media is a video stream.
-  public func isVideoTracksAvailable() -> Bool {
-    !tracks.filter({ $0.mediaType == .video }).isEmpty
-  }
-
-  public static var defaultOptions: [String: Any] {
-    let userAgent = UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile
-    var options: [String: Any] = [:]
-    if #available(iOS 16, *) {
-      options[AVURLAssetHTTPUserAgentKey] = userAgent
-    } else {
-      options["AVURLAssetHTTPHeaderFieldsKey"] = ["User-Agent": userAgent]
-    }
-    return options
   }
 }

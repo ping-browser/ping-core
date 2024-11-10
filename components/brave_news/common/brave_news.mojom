@@ -31,6 +31,7 @@ enum ClusterType {
 
 struct FeedItemMetadata {
   string category_name;
+  array<string> channels;
   mojo_base.mojom.Time publish_time;
   string title;
   string description;
@@ -270,6 +271,10 @@ interface FeedListener {
 
 interface ConfigurationListener {
   Changed(Configuration new_configuration);
+};
+
+interface BraveNewsInternals {
+  GetVisitedSites() => (array<string> urls);
 };
 
 // Browser-side handler

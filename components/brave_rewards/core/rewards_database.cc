@@ -49,9 +49,6 @@ void HandleBinding(sql::Statement* statement,
       statement->BindNull(binding.index);
       return;
     }
-    default: {
-      NOTREACHED();
-    }
   }
 }
 
@@ -87,9 +84,6 @@ mojom::DBRecordPtr CreateRecord(
       case mojom::DBCommand::RecordBindingType::BOOL_TYPE: {
         value = mojom::DBValue::NewBoolValue(statement->ColumnBool(column));
         break;
-      }
-      default: {
-        NOTREACHED();
       }
     }
     record->fields.push_back(std::move(value));
@@ -169,7 +163,6 @@ mojom::DBCommandResponsePtr RewardsDatabase::RunTransaction(
         break;
       }
       case mojom::DBCommand::Type::CLOSE: {
-        NOTREACHED();
         status = mojom::DBCommandResponse::Status::COMMAND_ERROR;
         break;
       }
@@ -246,7 +239,7 @@ mojom::DBCommandResponse::Status RewardsDatabase::Execute(
     return mojom::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
-  bool result = db_.Execute(command->command.c_str());
+  bool result = db_.Execute(command->command);
 
   if (!result) {
     LOG(ERROR) << "DB Execute error: " << db_.GetErrorMessage();
@@ -266,7 +259,7 @@ mojom::DBCommandResponse::Status RewardsDatabase::Run(
     return mojom::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
-  sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
+  sql::Statement statement(db_.GetUniqueStatement(command->command));
 
   for (auto const& binding : command->bindings) {
     HandleBinding(&statement, *binding.get());
@@ -292,7 +285,7 @@ mojom::DBCommandResponse::Status RewardsDatabase::Read(
     return mojom::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
-  sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
+  sql::Statement statement(db_.GetUniqueStatement(command->command));
 
   for (auto const& binding : command->bindings) {
     HandleBinding(&statement, *binding.get());

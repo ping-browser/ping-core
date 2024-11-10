@@ -47,7 +47,7 @@
 "e13lS3-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Var det \"Brave-spellista\" du sökte efter?";
+"e13lS3-FGO5qW" = "Var det \"Ping-spellista\" du sökte efter?";
 
 /* (No Comment) */
 "e13lS3-jXiFQY" = "Var det \"Ping Wallet\" du sökte efter?";
@@ -74,7 +74,7 @@
 "EUS9FL" = "Widgetgenväg";
 
 /* (No Comment) */
-"FGO5qW" = "Brave-spellista";
+"FGO5qW" = "Ping-spellista";
 
 /* (No Comment) */
 "gpCwrM" = "Statistikkonfigurering";
@@ -89,7 +89,7 @@
 "joEZJM" = "2";
 
 /* (No Comment) */
-"jXiFQY" = "Brave-plånbok";
+"jXiFQY" = "Ping-plånbok";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "Det finns ${count} alternativ som matchar ”Ny flik”.";
@@ -98,7 +98,7 @@
 "L1fziM-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Det finns ${count} alternativ som matchar \"Brave-spellista\".";
+"L1fziM-FGO5qW" = "Det finns ${count} alternativ som matchar \"Ping-spellista\".";
 
 /* (No Comment) */
 "L1fziM-jXiFQY" = "Det finns ${count} alternativ som matchar \"Ping Wallet\".";
@@ -137,7 +137,7 @@
 "r2EI05-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Var det \"Brave-spellista\" du sökte efter?";
+"r2EI05-FGO5qW" = "Var det \"Ping-spellista\" du sökte efter?";
 
 /* (No Comment) */
 "r2EI05-jXiFQY" = "Var det \"Ping Wallet\" du sökte efter?";
@@ -176,7 +176,7 @@
 "tNCrcE-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Det finns ${count} alternativ som matchar \"Brave-spellista\".";
+"tNCrcE-FGO5qW" = "Det finns ${count} alternativ som matchar \"Ping-spellista\".";
 
 /* (No Comment) */
 "tNCrcE-jXiFQY" = "Det finns ${count} alternativ som matchar \"Ping Wallet\".";
@@ -209,7 +209,7 @@
 "TxuMja-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Det finns ${count} alternativ som matchar \"Brave-spellista\".";
+"TxuMja-FGO5qW" = "Det finns ${count} alternativ som matchar \"Ping-spellista\".";
 
 /* (No Comment) */
 "TxuMja-jXiFQY" = "Det finns ${count} alternativ som matchar \"Ping Wallet\".";
@@ -263,7 +263,7 @@
 "YQiQuz-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Ville du ha \"Brave-spellista\"?";
+"YQiQuz-FGO5qW" = "Ville du ha \"Ping-spellista\"?";
 
 /* (No Comment) */
 "YQiQuz-jXiFQY" = "Var det \"Ping Wallet\" du sökte efter?";

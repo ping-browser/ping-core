@@ -31,7 +31,6 @@ class COMPONENT_EXPORT(STORAGE_BROWSER) BlobURLStoreImpl
  public:
   using BlobURLStoreImpl_ChromiumImpl::BlobURLStoreImpl_ChromiumImpl;
 
-  void Resolve(const GURL& url, ResolveCallback callback) override;
   void ResolveAsURLLoaderFactory(
       const GURL& url,
       mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
@@ -40,6 +39,9 @@ class COMPONENT_EXPORT(STORAGE_BROWSER) BlobURLStoreImpl
       const GURL& url,
       mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
       ResolveForNavigationCallback callback) override;
+
+ private:
+  bool IsBlobResolvable(const GURL& url) const;
 };
 
 }  // namespace storage

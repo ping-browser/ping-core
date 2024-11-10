@@ -11,7 +11,7 @@
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
 <translation id="5165042248369837294">ट्विटरला एम्बेड केलेल्या ट्विटस परवानगी द्या</translation>
 <translation id="958971637207126733">लिंक्डइन एम्बेड केलेल्या पोस्टना परवानगी द्या</translation>
-<translation id="6302422639282249274">Brave (ब्रेव्ह) पुरस्कार व्यवस्थापित करा</translation>
+<translation id="6302422639282249274">Ping (ब्रेव्ह) पुरस्कार व्यवस्थापित करा</translation>
 <translation id="2709516037105925701">ऑटोफिल</translation>
 <translation id="1468415711258933398">मानक टॅब</translation>
 <translation id="3377025655491224618">गुप्त टॅब</translation>
@@ -32,7 +32,7 @@
 <translation id="4150201353443180367">डिस्प्ले करा</translation>
 <translation id="4275663329226226506">माध्यम</translation>
 <translation id="2433507940547922241">स्वरूप</translation>
-<translation id="7207456302801184289">Brave मध्ये स्वागत आहे</translation>
+<translation id="7207456302801184289">Ping मध्ये स्वागत आहे</translation>
 <translation id="8281886186245836920">वगळा</translation>
 <translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="7658239707568436148">रद्द करा</translation>
@@ -40,7 +40,7 @@
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
 <translation id="5234764350956374838">डिसमिस करा</translation>
 <translation id="8428213095426709021">सेटिंग्ज</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="3149880132460839085">Ping Sync</translation>
 <translation id="5817918615728894473">जोडा</translation>
 <translation id="2175927920773552910">QR कोड</translation>
 <translation id="8730621377337864115">पूर्ण झाले</translation>
@@ -57,6 +57,7 @@
 <translation id="987264212798334818">सामान्य</translation>
 <translation id="1116694919640316211">बद्दल</translation>
 <translation id="7961015016161918242">कधीही नाही</translation>
+<translation id="6196640612572343990">तृतीय-पक्ष कुकीज अवरोधित करा</translation>
 <translation id="5657156137487675418">सर्व कुकीजना परवानगी द्या</translation>
 <translation id="8987927404178983737">महिना</translation>
 <translation id="1383876407941801731">शोधा</translation>
@@ -65,10 +66,7 @@
 <translation id="8798099450830957504">डीफॉल्ट</translation>
 <translation id="1483493594462132177">पाठवा</translation>
 <translation id="2359808026110333948">सुरू ठेवा</translation>
-<translation id="6896758677409633944">कॉपी करा</translation>
 <translation id="7665369617277396874">खाते जोडा</translation>
-<translation id="3943857333388298514">पेस्ट करा</translation>
-<translation id="6518133107902771759">सत्यापित करा</translation>
 <translation id="3157931365184549694">पुनर्संचयित करा</translation>
 <translation id="4917385247580444890">मजबूत</translation>
 <translation id="8297006494302853456">कमकुवत</translation>
@@ -117,8 +115,10 @@
 <translation id="7544853251252956727">शफल करा</translation>
 <translation id="1173894706177603556">नाव बदला</translation>
 <translation id="7765158879357617694">हलवा</translation>
+<translation id="6896758677409633944">कॉपी करा</translation>
 <translation id="4195643157523330669">नवीन टॅबमध्ये उघडा</translation>
 <translation id="4243710787042215766">गुप्त टॅबमध्ये उघडा</translation>
 <translation id="8261506727792406068">हटवा</translation>
 <translation id="901834265349196618">ईमेल</translation>
+<translation id="4776146737004271126">Android सेटिंग्ज उघडा</translation>
 </translationbundle>

@@ -25,7 +25,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -48,9 +47,11 @@ class MojoDataPipeSender {
   }
 
   void OnWritable(MojoResult) {
-    uint32_t sending_bytes = data_.size() - sent_bytes_;
-    MojoResult result = handle_->WriteData(
-        data_.c_str() + sent_bytes_, &sending_bytes, MOJO_WRITE_DATA_FLAG_NONE);
+    base::span<const uint8_t> bytes = base::as_byte_span(data_);
+    bytes = bytes.subspan(sent_bytes_);
+    size_t actually_written_bytes = 0;
+    MojoResult result = handle_->WriteData(bytes, MOJO_WRITE_DATA_FLAG_NONE,
+                                           actually_written_bytes);
     switch (result) {
       case MOJO_RESULT_OK:
         break;
@@ -62,10 +63,10 @@ class MojoDataPipeSender {
         // Just wait until OnWritable() is called by the watcher.
         return;
       default:
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
         return;
     }
-    sent_bytes_ += sending_bytes;
+    sent_bytes_ += actually_written_bytes;
     if (data_.size() == sent_bytes_) {
       std::move(done_callback_).Run();
     }
@@ -170,10 +171,10 @@ class MockDelegate : public blink::URLLoaderThrottle::Delegate {
     source_body_handle_.reset();
   }
 
-  uint32_t ReadResponseBody(uint32_t size) {
+  size_t ReadResponseBody(size_t size) {
     std::vector<uint8_t> buffer(size);
     MojoResult result = destination_loader_client_.response_body().ReadData(
-        buffer.data(), &size, MOJO_READ_DATA_FLAG_NONE);
+        MOJO_READ_DATA_FLAG_NONE, buffer, size);
     switch (result) {
       case MOJO_RESULT_OK:
         return size;
@@ -182,7 +183,7 @@ class MockDelegate : public blink::URLLoaderThrottle::Delegate {
       case MOJO_RESULT_SHOULD_WAIT:
         return 0;
       default:
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
     }
     return 0;
   }

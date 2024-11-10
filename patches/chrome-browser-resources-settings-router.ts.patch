@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/router.ts b/chrome/browser/resources/settings/router.ts
-index 45c20848955e5faf57160b858cce11da646fcf7b..7acb1de8b0b8cc658e7042f41a4346eb59cdc92b 100644
+index 1fb0b38fef0dcee31015a939fd31202e0294bca7..3abf7c2b1083ad32841b1ef5064da971f6ab1fb7 100644
 --- a/chrome/browser/resources/settings/router.ts
 +++ b/chrome/browser/resources/settings/router.ts
-@@ -113,6 +113,7 @@ export interface SettingsRoutes {
-   SYSTEM: Route;
-   TRACKING_PROTECTION: Route;
-   TRIGGERED_RESET_DIALOG: Route;
-+  GET_STARTED: Route; SHIELDS: Route; SOCIAL_BLOCKING: Route; EXTENSIONS: Route; EXTENSIONS_V2: Route; BRAVE_SYNC: Route; BRAVE_SYNC_SETUP: Route; BRAVE_IPFS: Route; BRAVE_WALLET: Route; BRAVE_WEB3: Route; BRAVE_NEW_TAB: Route; THEMES: Route; BRAVE_SITE_SETTINGS_COOKIES_DETAILS: Route;
+@@ -120,6 +120,7 @@ export interface SettingsRoutes {
+   IMPORT_DATA: Route;
+   SIGN_OUT: Route;
+   // </if>
++  GET_STARTED: Route; SHIELDS: Route; SOCIAL_BLOCKING: Route; EXTENSIONS: Route; EXTENSIONS_V2: Route; BRAVE_SYNC: Route; BRAVE_SYNC_SETUP: Route; BRAVE_WALLET: Route; BRAVE_WEB3: Route; BRAVE_NEW_TAB: Route; THEMES: Route;
  }
  
  /** Class for navigable routes. */

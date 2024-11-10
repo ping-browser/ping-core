@@ -9,6 +9,7 @@ import BraveCore
 import BraveNews
 import BraveShared
 import BraveShields
+import BraveStore
 import BraveVPN
 import BraveWallet
 import Combine
@@ -127,10 +128,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       Preferences.BraveNews.isShowingOptIn.value = languageShouldShowOptIn
     }
 
-    SystemUtils.onFirstRun()
-
     // Clean Logger for Secure content state
     DebugLogger.cleanLogger(for: .secureState)
+
+    // Clean Logger for URP (no longer used)
+    DebugLogger.cleanUrpLogs()
 
     return true
   }
@@ -140,6 +142,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     AppState.shared.state = .launching(options: launchOptions ?? [:], active: true)
+
+    // Run migrations that need access to Data
+    Migration.postDataLoadMigration()
 
     // IAPs can trigger on the app as soon as it launches,
     // for example when a previous transaction was not finished and is in pending state.
@@ -160,7 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     UIView.applyAppearanceDefaults()
 
     if Preferences.Rewards.isUsingBAP.value == nil {
-      Preferences.Rewards.isUsingBAP.value = Locale.current.regionCode == "JP"
+      Preferences.Rewards.isUsingBAP.value = Locale.current.region?.identifier == "JP"
     }
 
     // If a shortcut was launched, display its information and take the appropriate action
@@ -223,11 +228,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     Preferences.General.isFirstLaunch.value = false
 
-    // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
-    // There was a bug that when you skipped onboarding, default search engine preference
-    // was not set.
-    if Preferences.Search.defaultEngineName.value == nil {
-      AppState.shared.profile.searchEngines.searchEngineSetup()
+    Task {
+      await AppState.shared.profile.searchEngines.loadSearchEngines()
+      // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
+      // There was a bug that when you skipped onboarding, default search engine preference
+      // was not set.
+      if Preferences.Search.defaultEngineName.value == nil {
+        AppState.shared.profile.searchEngines.searchEngineSetup()
+      }
     }
 
     if isFirstLaunch {
@@ -240,6 +248,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
       // Always load YouTube in Brave for new users
       Preferences.General.keepYouTubeInBrave.value = true
+
+      // Enable Search Suggestions for BraveSearch default countries
+      Preferences.Search.showSuggestions.value =
+        AppState.shared.profile.searchEngines.isBraveSearchDefaultRegion
+
+      Preferences.Search.shouldShowSuggestionsOptIn.value =
+        !AppState.shared.profile.searchEngines.isBraveSearchDefaultRegion
     }
 
     if Preferences.URP.referralLookupOutstanding.value == nil {
@@ -270,6 +285,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         weekOfInstall: weekOfInstall
       )
     }
+
+    LanguageMetrics.recordPrimaryLanguageP3A()
 
     Task(priority: .low) {
       await self.cleanUpLargeTemporaryDirectory()
@@ -344,8 +361,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // readable from extensions, so they can just use the cached identifier.
 
     SDWebImageDownloader.shared.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-
-    WebcompatReporter.userAgent = userAgent
 
     // Record the user agent for use by search suggestion clients.
     SearchViewController.userAgent = userAgent
@@ -426,6 +441,14 @@ extension AppDelegate {
     _ application: UIApplication,
     didDiscardSceneSessions sceneSessions: Set<UISceneSession>
   ) {
+    // Do not discard sessions on iPhones!
+    // There is a bug in the OS where this will be called randomly
+    // especially after launching and closing the app hundreds of times
+    // while also locking the device.
+    if !UIApplication.shared.supportsMultipleScenes {
+      return
+    }
+
     // Called when the user discards a scene session.
     // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.

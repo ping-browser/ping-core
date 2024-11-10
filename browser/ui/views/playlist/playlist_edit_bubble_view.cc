@@ -26,6 +26,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/base/ui_base_types.h"
 #include "ui/color/color_id.h"
 #include "ui/gfx/geometry/insets.h"
@@ -82,7 +83,7 @@ PlaylistEditBubbleView::PlaylistEditBubbleView(
   // What this looks like:
   // https://user-images.githubusercontent.com/5474642/243532057-4bbbe779-47a1-4c3a-bd34-ce1334cf1d1d.png
   set_margins({});
-  SetButtons(ui::DIALOG_BUTTON_NONE);
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetLayoutManager(std::make_unique<views::BoxLayout>(
                        views::BoxLayout::Orientation::kVertical,
                        gfx::Insets::VH(4, 16),
@@ -114,13 +115,8 @@ void PlaylistEditBubbleView::ResetChildViews() {
   RemoveAllChildViews();
 
   constexpr int kIconSize = 16;
-  // TODO(sko) There was feedback that "Added to Play Later" is pretty
-  // confusing. For now we show "Added to Playlist" for clarity. When we
-  // come to the conclusion, revert this to use
-  // PlaylistTabHelper::GetSavedFolderName() if it's needed
   AddChildView(std::make_unique<Row>(
-      l10n_util::GetStringFUTF16(IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER,
-                                 u"Playlist"),
+      l10n_util::GetStringUTF16(IDS_PLAYLIST_ADDED_TO_PLAYLIST),
       ui::ImageModel::FromVectorIcon(kLeoCheckCircleFilledIcon,
                                      kColorBravePlaylistAddedIcon, kIconSize)));
   bool added_separator = false;
@@ -134,7 +130,7 @@ void PlaylistEditBubbleView::ResetChildViews() {
 
   const auto& saved_items = tab_helper_->saved_items();
 
-  if (saved_items.front()->parents.size()) {
+  if (!saved_items.empty() && saved_items.front()->parents.size()) {
     add_separator_if_needed();
     AddChildView(std::make_unique<Row>(
         l10n_util::GetStringUTF16(IDS_PLAYLIST_OPEN_IN_PLAYLIST),

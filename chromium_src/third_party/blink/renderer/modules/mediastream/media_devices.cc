@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/compiler_specific.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
-#include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/renderer/modules/mediastream/media_device_info.h"
 
 using blink::ExecutionContext;
@@ -17,15 +17,17 @@ void FarbleMediaDevices(ExecutionContext* context,
   // |media_devices| is guaranteed not to be null here.
   if (media_devices->size() <= 2)
     return;
-  if (GetBraveFarblingLevelFor(context, BraveFarblingLevel::OFF) ==
-      BraveFarblingLevel::OFF)
+  if (GetBraveFarblingLevelFor(
+          context, ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES,
+          BraveFarblingLevel::OFF) == BraveFarblingLevel::OFF) {
     return;
+  }
   // Shuffle the list of devices pseudo-randomly, based on the
   // domain+session key, starting with the second device.
   FarblingPRNG prng =
       BraveSessionCache::From(*context).MakePseudoRandomGenerator();
   MediaDeviceInfoVector::iterator it_begin = media_devices->begin();
-  std::shuffle(++it_begin, media_devices->end(), prng);
+  UNSAFE_TODO(std::shuffle(++it_begin, media_devices->end(), prng));
 }
 
 }  // namespace brave

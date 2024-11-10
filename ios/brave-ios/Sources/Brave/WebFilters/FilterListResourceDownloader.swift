@@ -31,6 +31,18 @@ import os.log
 
   /// Start the adblock service to get adblock file updates
   public func start(with adBlockService: AdblockService) {
+    if let resourcesPath = adBlockService.resourcesPath {
+      // Do an initial load of resources
+      AdBlockGroupsManager.shared.didUpdateResourcesComponent(
+        resourcesFileURL: resourcesPath
+      )
+    }
+
+    subscribeToResourceChanges(with: adBlockService)
+    subscribeToFilterListChanges(with: adBlockService)
+  }
+
+  private func subscribeToResourceChanges(with adBlockService: AdblockService) {
     Task {
       for await resourcesFileURL in adBlockService.resourcesComponentStream() {
         AdBlockGroupsManager.shared.didUpdateResourcesComponent(
@@ -38,9 +50,6 @@ import os.log
         )
       }
     }
-
-    FilterListCustomURLDownloader.shared.startIfNeeded()
-    subscribeToFilterListChanges(with: adBlockService)
   }
 
   /// Subscribe to filter list changes so we keep the engines up to date
@@ -91,7 +100,7 @@ import os.log
       delayTasks.removeValue(forKey: engineType)
       let fileInfos = adBlockService.fileInfos(for: engineType)
       AdBlockGroupsManager.shared.update(fileInfos: fileInfos)
-      AdBlockGroupsManager.shared.compileEngineIfFilesAreReady(for: engineType)
+      AdBlockGroupsManager.shared.compileIfFilesAreReady(for: engineType)
     }
   }
 
@@ -106,7 +115,7 @@ import os.log
   ) {
     let fileInfos = adBlockService.fileInfos(for: engineType)
     AdBlockGroupsManager.shared.update(fileInfos: fileInfos)
-    AdBlockGroupsManager.shared.compileEngineIfFilesAreReady(for: engineType)
+    AdBlockGroupsManager.shared.compileIfFilesAreReady(for: engineType)
   }
 }
 
@@ -135,31 +144,19 @@ extension AdblockService {
       })
     }
   }
+}
 
-  /// Get a list of files for the given engine type if the path exists
-  @MainActor fileprivate func fileInfos(
-    for engineType: GroupedAdBlockEngine.EngineType
-  ) -> [AdBlockEngineManager.FileInfo] {
-    return filterListCatalogEntries.compactMap { entry in
-      guard entry.engineType == engineType else { return nil }
-      let source = entry.engineSource
+extension AdblockFilterListCatalogEntry {
+  /// Create file info for this entry
+  func fileInfo(for localFileURL: URL) -> AdBlockEngineManager.FileInfo {
+    let version = localFileURL.deletingLastPathComponent().lastPathComponent
 
-      guard
-        let localFileURL = installPath(forFilterListUUID: entry.uuid),
-        FileManager.default.fileExists(atPath: localFileURL.relativePath)
-      else {
-        return nil
-      }
-
-      let version = localFileURL.deletingLastPathComponent().lastPathComponent
-
-      return AdBlockEngineManager.FileInfo(
-        filterListInfo: GroupedAdBlockEngine.FilterListInfo(
-          source: source,
-          version: version
-        ),
-        localFileURL: localFileURL
-      )
-    }
+    return AdBlockEngineManager.FileInfo(
+      filterListInfo: GroupedAdBlockEngine.FilterListInfo(
+        source: engineSource,
+        version: version
+      ),
+      localFileURL: localFileURL
+    )
   }
 }

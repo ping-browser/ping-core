@@ -8,14 +8,13 @@
 #include <string>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/instance_id.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -24,20 +23,17 @@ void RebuildAdEventCache() {
   database_table.GetUnexpired(
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         if (!success) {
-          return BLOG(1, "Failed to get ad events");
+          return BLOG(0, "Failed to get ad events");
         }
 
         const std::string& id = GetInstanceId();
 
-        ResetAdEventCacheForInstanceId(id);
+        GetAdsClient()->ResetAdEventCacheForInstanceId(id);
 
         for (const auto& ad_event : ad_events) {
           if (!ad_event.IsValid()) {
-            // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-            // potential defects using `DumpWithoutCrashing`.
-            SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                      "Invalid ad event");
-            base::debug::DumpWithoutCrashing();
+            BLOG(0, "Invalid ad event");
+
             continue;
           }
 
@@ -49,12 +45,13 @@ void RebuildAdEventCache() {
 void CacheAdEvent(const AdEventInfo& ad_event) {
   CHECK(ad_event.IsValid());
 
-  CacheAdEventForInstanceId(GetInstanceId(), ad_event.type,
-                            ad_event.confirmation_type, *ad_event.created_at);
+  GetAdsClient()->CacheAdEventForInstanceId(GetInstanceId(), ad_event.type,
+                                            ad_event.confirmation_type,
+                                            *ad_event.created_at);
 }
 
 void ResetAdEventCache() {
-  ResetAdEventCacheForInstanceId(GetInstanceId());
+  GetAdsClient()->ResetAdEventCacheForInstanceId(GetInstanceId());
 }
 
 }  // namespace brave_ads

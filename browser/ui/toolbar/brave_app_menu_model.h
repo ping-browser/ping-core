@@ -14,15 +14,16 @@
 
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
 #include "ui/base/models/simple_menu_model.h"
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-namespace ipfs {
-class IpnsKeysManager;
-}  // namespace ipfs
-#endif
+#if defined(TOOLKIT_VIEWS)
+#include "brave/components/sidebar/browser/sidebar_service.h"
+#endif  // defined(TOOLKIT_VIEWS)
+
+namespace ui {
+class ButtonMenuItemModel;
+}
 
 class BraveAppMenuModel : public AppMenuModel {
  public:
@@ -34,6 +35,11 @@ class BraveAppMenuModel : public AppMenuModel {
 
   BraveAppMenuModel(const BraveAppMenuModel&) = delete;
   BraveAppMenuModel& operator=(const BraveAppMenuModel&) = delete;
+
+#if defined(TOOLKIT_VIEWS)
+  static sidebar::SidebarService::ShowSidebarOption
+  ConvertIDCToSidebarShowOptions(int id);
+#endif  // defined(TOOLKIT_VIEWS)
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveAppMenuModelBrowserTest, BraveIpfsMenuTest);
@@ -56,31 +62,20 @@ class BraveAppMenuModel : public AppMenuModel {
   // History, bookmarks, downloads and extensions.
   void BuildBrowserSection();
 
-  // Insert profile, sidebar, sync and cast entries into existing more tools sub
-  // menu.
+  // Insert profile, sidebar, sync and cast entries into existing more tools
+  // sub menu.
   void BuildMoreToolsSubMenu();
 
   // About brave, help center and report broken site items.
   void BuildHelpSubMenu();
 
-  // We relocate some upstream items. Need to remove them before adding them to
-  // another location.
+  // We relocate some upstream items. Need to remove them before adding them
+  // to another location.
   void RemoveUpstreamMenus();
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  int AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
-                           ipfs::IpnsKeysManager* manager,
-                           int key_command_id);
-  void ExecuteIPFSCommand(int id, const std::string& key);
-  int AddIpfsImportMenuItem(int action_command_id,
-                            int string_id,
-                            int keys_command_id);
-  int GetSelectedIPFSCommandId(int id) const;
-  ui::SimpleMenuModel ipfs_submenu_model_;
-  ui::SimpleMenuModel ipns_submenu_model_;
-  std::unordered_map<int, std::unique_ptr<ui::SimpleMenuModel>>
-      ipns_keys_submenu_models_;
-#endif
+#if defined(TOOLKIT_VIEWS)
+  std::unique_ptr<ui::ButtonMenuItemModel> sidebar_show_option_model_;
+#endif  // defined(TOOLKIT_VIEWS)
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_APP_MENU_MODEL_H_

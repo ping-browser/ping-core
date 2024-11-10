@@ -175,6 +175,7 @@ public struct AIChatAdvancedSettingsView: View {
       Section {
         OptionToggleView(
           title: Strings.AIChat.advancedSettingsAutocompleteTitle,
+          subtitle: Strings.AIChat.advancedSettingsAutocompleteDescription,
           option: Preferences.AIChat.autocompleteSuggestionsEnabled
         )
 
@@ -184,7 +185,7 @@ public struct AIChatAdvancedSettingsView: View {
           LabelView(
             title: Strings.AIChat.advancedSettingsDefaultModelTitle,
             subtitle: model.models.first(where: { $0.key == model.defaultAIModelKey })?.displayName
-              ?? model.currentModel.displayName
+              ?? model.currentModel?.displayName
           )
         }.listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
@@ -312,7 +313,12 @@ public struct AIChatAdvancedSettingsView: View {
                   await model.refreshPremiumStatus()
                   await viewModel.fetchCredentialSummary()
                 }
-              })
+              },
+              refreshCredentials: {
+                openURL(.brave.braveLeoRefreshCredentials)
+                dismiss()
+              }
+            )
           }
           .alert(isPresented: $appStoreConnectionErrorPresented) {
             Alert(
@@ -345,7 +351,9 @@ public struct AIChatAdvancedSettingsView: View {
             title: Text(Strings.AIChat.resetLeoDataErrorTitle),
             message: Text(Strings.AIChat.resetLeoDataErrorDescription),
             primaryButton: .destructive(Text(Strings.AIChat.resetLeoDataAlertButtonTitle)) {
-              model.clearAndResetData()
+              Task { @MainActor in
+                await model.clearAndResetData()
+              }
             },
             secondaryButton: .cancel()
           )

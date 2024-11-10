@@ -24,7 +24,9 @@ struct NetworkListView: View {
   }
 
   private func removeNetwork(_ network: BraveWallet.NetworkInfo) {
-    networkStore.removeCustomNetwork(network) { _ in }
+    Task { @MainActor in
+      await networkStore.removeCustomNetwork(network)
+    }
   }
 
   private var customNetworks: [BraveWallet.NetworkInfo] {
@@ -42,7 +44,9 @@ struct NetworkListView: View {
 
   @ViewBuilder func networkRow(_ network: BraveWallet.NetworkInfo) -> some View {
     Button {
-      isPresentingNetworkDetails = .init(from: network)
+      isPresentingNetworkDetails = .init(
+        mode: .edit(network)
+      )
     } label: {
       HStack {
         VStack(alignment: .leading, spacing: 4) {
@@ -99,7 +103,9 @@ struct NetworkListView: View {
           Menu {
             VStack {
               Button {
-                isPresentingNetworkDetails = .init(from: network)
+                isPresentingNetworkDetails = .init(
+                  mode: .edit(network)
+                )
               } label: {
                 Text(Strings.Wallet.editButtonTitle)
               }

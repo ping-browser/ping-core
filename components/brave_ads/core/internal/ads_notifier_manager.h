@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -29,15 +29,15 @@ class AdsNotifierManager final {
 
   static AdsNotifierManager& GetInstance();
 
-  void AddObserver(std::unique_ptr<AdsObserverInterface> observer);
+  void AddObserver(std::unique_ptr<AdsObserverInterface> ads_observer);
 
   void NotifyAdRewardsDidChange() const;
 
   void NotifyBrowserUpgradeRequiredToServeAds() const;
 
-  void NotifyIneligibleRewardsWalletToServeAds() const;
+  void NotifyIneligibleWalletToServeAds() const;
 
-  void NotifyRemindUser(mojom::ReminderType type) const;
+  void NotifyRemindUser(mojom::ReminderType mojom_reminder_type) const;
 
  private:
   std::vector<std::unique_ptr<AdsObserverInterface>> observers_;

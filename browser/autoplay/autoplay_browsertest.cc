@@ -25,10 +25,10 @@
 #include "media/base/media_switches.h"
 #include "net/dns/mock_host_resolver.h"
 
-const char kVideoPlaying[] = "Video playing";
-const char kVideoPlayingDetect[] =
+constexpr char kVideoPlaying[] = "Video playing";
+constexpr char kVideoPlayingDetect[] =
     "document.getElementById('status').textContent;";
-const char kEmbeddedTestServerDirectory[] = "autoplay";
+constexpr char kEmbeddedTestServerDirectory[] = "autoplay";
 
 class AutoplayBrowserTest : public InProcessBrowserTest {
  public:
@@ -38,7 +38,6 @@ class AutoplayBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);

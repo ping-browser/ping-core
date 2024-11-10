@@ -5,6 +5,8 @@
 
 #include "storage/browser/blob/blob_url_store_impl.h"
 
+#include "storage/browser/blob/blob_url_utils.h"
+
 #define BlobURLStoreImpl BlobURLStoreImpl_ChromiumImpl
 
 #include "src/storage/browser/blob/blob_url_store_impl.cc"
@@ -13,24 +15,11 @@
 
 namespace storage {
 
-void BlobURLStoreImpl::Resolve(const GURL& url, ResolveCallback callback) {
-  // If a URL is not mapped to the current `storage_key_`, it's likely stored
-  // with a different StorageKey (partitioned) and should not be resolved.
-  if (registry_ && !registry_->IsUrlMapped(url, storage_key_)) {
-    std::move(callback).Run(mojo::NullRemote(), std::nullopt);
-    return;
-  }
-
-  BlobURLStoreImpl_ChromiumImpl::Resolve(url, std::move(callback));
-}
-
 void BlobURLStoreImpl::ResolveAsURLLoaderFactory(
     const GURL& url,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
     ResolveAsURLLoaderFactoryCallback callback) {
-  // If a URL is not mapped to the current `storage_key_`, it's likely stored
-  // with a different StorageKey (partitioned) and should not be resolved.
-  if (registry_ && !registry_->IsUrlMapped(url, storage_key_)) {
+  if (!IsBlobResolvable(url)) {
     std::move(callback).Run(std::nullopt, std::nullopt);
     return;
   }
@@ -43,15 +32,26 @@ void BlobURLStoreImpl::ResolveForNavigation(
     const GURL& url,
     mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
     ResolveForNavigationCallback callback) {
-  // If a URL is not mapped to the current `storage_key_`, it's likely stored
-  // with a different StorageKey (partitioned) and should not be resolved.
-  if (registry_ && !registry_->IsUrlMapped(url, storage_key_)) {
+  if (!IsBlobResolvable(url)) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
   BlobURLStoreImpl_ChromiumImpl::ResolveForNavigation(url, std::move(token),
                                                       std::move(callback));
+}
+
+bool BlobURLStoreImpl::IsBlobResolvable(const GURL& url) const {
+  // Check if the URL is mapped to a BlobURLStore with the current
+  // `storage_key_` or if it's an extension-generated blob.
+  const GURL& clean_url = BlobUrlUtils::UrlHasFragment(url)
+                              ? BlobUrlUtils::ClearUrlFragment(url)
+                              : url;
+  constexpr std::string_view kChromeExtensionScheme = "chrome-extension";
+  return (registry_ && registry_->IsUrlMapped(clean_url, storage_key_)) ||
+         (url.SchemeIsBlob() &&
+          (url::Origin::Create(url).scheme() == kChromeExtensionScheme ||
+           storage_key_.origin().scheme() == kChromeExtensionScheme));
 }
 
 }  // namespace storage

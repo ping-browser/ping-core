@@ -125,7 +125,7 @@ base::FilePath MediaDetectorComponentInstallerPolicy::GetRelativeInstallDir()
 
 void MediaDetectorComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  hash->assign(component_hash_, component_hash_ + kHashSize);
+  hash->assign(component_hash_, UNSAFE_TODO(component_hash_ + kHashSize));
 }
 
 std::string MediaDetectorComponentInstallerPolicy::GetName() const {
@@ -142,7 +142,7 @@ bool MediaDetectorComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void OnRegisteredToComponentUpdateService() {
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(kComponentID);
+  BraveOnDemandUpdater::GetInstance()->EnsureInstalled(kComponentID);
 }
 
 }  // namespace

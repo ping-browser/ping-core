@@ -12,7 +12,7 @@ import UIKit
 import os.log
 
 /// A class for rendering a Bundled FavIcon onto a `UIImage`
-public class BundledFaviconRenderer {
+public actor BundledFaviconRenderer {
 
   /// Folder where custom favicons are stored.
   static let faviconOverridesDirectory = "favorite_overrides"
@@ -21,7 +21,11 @@ public class BundledFaviconRenderer {
 
   @MainActor
   public static func loadIcon(url: URL) async throws -> Favicon {
-    guard let icon = customIcon(for: url) ?? bundledIcon(for: url) else {
+    var icon = await customIcon(for: url)
+    if icon == nil {
+      icon = await bundledIcon(for: url)
+    }
+    guard let icon else {
       // No need to render a monogram
       throw FaviconError.noBundledImages
     }
@@ -40,8 +44,14 @@ public class BundledFaviconRenderer {
   ///
   /// If the app does not contain a custom icon for the site provided `nil`
   /// will be returned
-  private static func customIcon(for url: URL) -> (image: UIImage, backgroundColor: UIColor)? {
-    guard let folder = FileManager.default.getOrCreateFolder(name: Self.faviconOverridesDirectory)
+  private static func customIcon(for url: URL) async -> (image: UIImage, backgroundColor: UIColor)?
+  {
+    guard
+      let folder = try? await AsyncFileManager.default.url(
+        for: .applicationSupportDirectory,
+        appending: Self.faviconOverridesDirectory,
+        create: true
+      )
     else {
       return nil
     }
@@ -53,7 +63,9 @@ public class BundledFaviconRenderer {
       let colorString = try String(contentsOf: backgroundPath)
       let colorFromHex = UIColor(colorString: colorString)
 
-      if FileManager.default.fileExists(atPath: folder.appendingPathComponent(fileName).path) {
+      if await AsyncFileManager.default.fileExists(
+        atPath: folder.appendingPathComponent(fileName).path
+      ) {
         let imagePath = folder.appendingPathComponent(fileName)
         if let image = UIImage(contentsOfFile: imagePath.path) {
           return (image, colorFromHex)
@@ -67,11 +79,59 @@ public class BundledFaviconRenderer {
   }
 
   // MARK: - Bundled Icons
+
+  private static var loadBundledIconsTask: Task<Void, Never>?
+  private static func loadBundledIcons() async {
+    if let loadBundledIconsTask {
+      await loadBundledIconsTask.value
+      return
+    }
+    let loadBundledIconsTask = Task {
+      guard let filePath = Bundle.module.path(forResource: "top_sites", ofType: "json") else {
+        Logger.module.error("Failed to get bundle path for \"top_sites.json\"")
+        return
+      }
+      do {
+        let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
+        let json = try JSONDecoder().decode([TopSite].self, from: file)
+        var icons: [String: (color: UIColor, url: String)] = [:]
+        json.forEach({
+          guard let url = $0.domain,
+            let color = $0.backgroundColor?.lowercased(),
+            let path = $0.imageURL?.replacingOccurrences(of: ".png", with: "")
+          else {
+            return
+          }
+          let filePath = Bundle.module.path(forResource: "TopSites/" + path, ofType: "png")
+          if let filePath = filePath {
+            if color == "#fff" {
+              icons[url] = (.white, filePath)
+            } else {
+              icons[url] = (
+                UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath
+              )
+            }
+          }
+        })
+        bundledIcons = icons
+      } catch {
+        Logger.module.error(
+          "Failed to get default icons at \(filePath): \(error.localizedDescription)"
+        )
+      }
+    }
+    Self.loadBundledIconsTask = loadBundledIconsTask
+    await loadBundledIconsTask.value
+  }
   /// Icon attributes for icons that are bundled in the app by default.
   ///
   /// If the app does not contain the icon for the site provided `nil` will be
   /// returned
-  private static func bundledIcon(for url: URL) -> (image: UIImage, backgroundColor: UIColor)? {
+  private static func bundledIcon(for url: URL) async -> (image: UIImage, backgroundColor: UIColor)?
+  {
+    if bundledIcons.isEmpty {
+      await loadBundledIcons()
+    }
     // Problem: Sites like amazon exist with .ca/.de and many other tlds.
     // Solution: They are stored in the default icons list as "amazon" instead of "amazon.com" this allows us to have favicons for every tld."
     // Here, If the site is in the multiRegionDomain array look it up via its second level domain (amazon) instead of its baseDomain (amazon.com)
@@ -94,41 +154,7 @@ public class BundledFaviconRenderer {
 
   private static let multiRegionDomains = ["craigslist", "google", "amazon"]
 
-  private static let bundledIcons: [String: (color: UIColor, url: String)] = {
-    guard let filePath = Bundle.module.path(forResource: "top_sites", ofType: "json") else {
-      Logger.module.error("Failed to get bundle path for \"top_sites.json\"")
-      return [:]
-    }
-    do {
-      let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
-      let json = try JSONDecoder().decode([TopSite].self, from: file)
-      var icons: [String: (color: UIColor, url: String)] = [:]
-      json.forEach({
-        guard let url = $0.domain,
-          let color = $0.backgroundColor?.lowercased(),
-          let path = $0.imageURL?.replacingOccurrences(of: ".png", with: "")
-        else {
-          return
-        }
-        let filePath = Bundle.module.path(forResource: "TopSites/" + path, ofType: "png")
-        if let filePath = filePath {
-          if color == "#fff" {
-            icons[url] = (.white, filePath)
-          } else {
-            icons[url] = (
-              UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath
-            )
-          }
-        }
-      })
-      return icons
-    } catch {
-      Logger.module.error(
-        "Failed to get default icons at \(filePath): \(error.localizedDescription)"
-      )
-      return [:]
-    }
-  }()
+  private static var bundledIcons: [String: (color: UIColor, url: String)] = [:]
 
   private struct TopSite: Codable {
     let domain: String?

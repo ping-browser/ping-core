@@ -7,6 +7,7 @@
 
 #include "base/base64.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "tweetnacl.h"  // NOLINT
 
@@ -17,8 +18,9 @@ namespace brave_ads::crypto {
 namespace {
 
 constexpr char kMessage[] = "The quick brown fox jumps over the lazy dog";
-constexpr char kPublicKey[] = "5LmgyD6OG0qcVeRgTzk3IWbzSWjemE4KpjTRtRW4eRk=";
-constexpr char kSecretKey[] =
+constexpr char kPublicKeyBase64[] =
+    "5LmgyD6OG0qcVeRgTzk3IWbzSWjemE4KpjTRtRW4eRk=";
+constexpr char kSecretKeyBase64[] =
     R"(oyd1rHNB5xHU6TzPSO/MUUfUJNHiol1ExFHMMKV/7dvkuaDIPo4bSpxV5GBPOTchZvNJaN6YTgqmNNG1Fbh5GQ==)";
 
 }  // namespace
@@ -34,7 +36,7 @@ TEST(BraveAdsCryptoUtilTest, Sha256) {
 
 TEST(BraveAdsCryptoUtilTest, Sha256WithEmptyString) {
   // Act
-  const std::vector<uint8_t> sha256 = Sha256({});
+  const std::vector<uint8_t> sha256 = Sha256(/*value=*/"");
 
   // Assert
   EXPECT_EQ("47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
@@ -51,49 +53,56 @@ TEST(BraveAdsCryptoUtilTest, GenerateSignKeyPairFromSeed) {
   const std::optional<KeyPairInfo> key_pair =
       GenerateSignKeyPairFromSeed(*seed);
   ASSERT_TRUE(key_pair);
+  ASSERT_THAT(key_pair->public_key,
+              ::testing::SizeIs(crypto_sign_ed25519_PUBLICKEYBYTES));
+  ASSERT_THAT(key_pair->secret_key,
+              ::testing::SizeIs(crypto_sign_ed25519_SECRETKEYBYTES));
 
   // Assert
-  EXPECT_EQ(crypto_sign_ed25519_PUBLICKEYBYTES,
-            static_cast<int>(key_pair->public_key.size()));
-  EXPECT_EQ(crypto_sign_ed25519_SECRETKEYBYTES,
-            static_cast<int>(key_pair->secret_key.size()));
   EXPECT_TRUE(key_pair->IsValid());
 }
 
 TEST(BraveAdsCryptoUtilTest, GenerateBoxKeyPair) {
   // Act
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
+  ASSERT_THAT(key_pair.public_key,
+              ::testing::SizeIs(crypto_box_PUBLICKEYBYTES));
+  ASSERT_THAT(key_pair.secret_key,
+              ::testing::SizeIs(crypto_box_SECRETKEYBYTES));
 
   // Assert
-  EXPECT_EQ(crypto_box_PUBLICKEYBYTES,
-            static_cast<int>(key_pair.public_key.size()));
-  EXPECT_EQ(crypto_box_SECRETKEYBYTES,
-            static_cast<int>(key_pair.secret_key.size()));
   EXPECT_TRUE(key_pair.IsValid());
 }
 
 TEST(BraveAdsCryptoUtilTest, GenerateRandomNonce) {
-  // Act
-  const std::vector<uint8_t> nonce = GenerateRandomNonce();
-
-  // Assert
-  EXPECT_EQ(crypto_box_NONCEBYTES, static_cast<int>(nonce.size()));
+  // Act & Assert
+  EXPECT_THAT(GenerateRandomNonce(), ::testing::SizeIs(crypto_box_NONCEBYTES));
 }
 
 TEST(BraveAdsCryptoUtilTest, Sign) {
-  // Act & Assert
-  const std::optional<std::string> signature = Sign(kMessage, kSecretKey);
+  // Act
+  const std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
+
+  // Assert
   EXPECT_TRUE(signature);
-  EXPECT_TRUE(Verify(kMessage, kPublicKey, *signature));
 }
 
-TEST(BraveAdsCryptoUtilTest, Encrypt) {
+TEST(BraveAdsCryptoUtilTest, Verify) {
+  // Act
+  const std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
+  ASSERT_TRUE(signature);
+
+  // Assert
+  EXPECT_TRUE(Verify(kMessage, kPublicKeyBase64, *signature));
+}
+
+TEST(BraveAdsCryptoUtilTest, EncryptAndDecrypt) {
   // Arrange
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
   const std::vector<uint8_t> nonce = GenerateRandomNonce();
-  const std::vector<uint8_t> plaintext(kMessage,
-                                       kMessage + std::size(kMessage));
+  const std::vector<uint8_t> plaintext(
+      kMessage, UNSAFE_TODO(kMessage + std::size(kMessage)));
 
   // Act
   const std::vector<uint8_t> ciphertext = Encrypt(

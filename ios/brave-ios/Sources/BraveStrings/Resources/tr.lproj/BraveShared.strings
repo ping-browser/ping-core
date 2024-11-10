@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Ping Fotoğraflarınıza erişmek istiyor";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Yer İşareti Ekle";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Yer İşareti Ekle";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Özel Filtre Listesi Ekle";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Güvenilir topluluğunuz tarafından oluşturulan ve sürdürülen ilave listeler ekleyin.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Yalnızca güvendiğiniz işletmelerin listelerine abone olun**. Tarayıcınız, girdiğiniz URL'deki liste güncellemelerini düzenli olarak kontrol edecektir.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Sık Kullanılanlara Ekle";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Engelleme İzleyicisi";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "\"Uygulamaya Git\" Bildirimlerini engelle";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Açılır Pencereleri Engelle";
 
@@ -173,7 +158,7 @@
 "BraveRewardsTitle" = "Ping Ödülleri";
 
 /* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Ping Arama sizi, sorgularınızı veya tıklamalarınızı takip etmez.";
+"braveSearchPromotion.bannerDescription" = "Ping Arama, profilinizi çıkarmaz.";
 
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Belki daha sonra";
@@ -214,13 +199,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Bu site bozuk görünüyorsa, Kalkanları indirerek deneyin";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Ping Kalkanları";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Aşağı";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Yukarı";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -233,7 +218,7 @@
 "BraveSyncInternalsTitle" = "Senkronizasyon Hata Ayıklama";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "Başlamak için, senkronize etmeyi planladığınız tüm cihazlarda Brave'in yüklü olması gerekir. Bunları birbirine zincirlemek için, tüm cihazlarınızı güvenli bir şekilde birbirine bağlarken kullanacağınız bir eşitleme zinciri başlatın.";
+"BraveSyncWelcome" = "Başlamak için, senkronize etmeyi planladığınız tüm cihazlarda Ping'in yüklü olması gerekir. Bunları birbirine zincirlemek için, tüm cihazlarınızı güvenli bir şekilde birbirine bağlarken kullanacağınız bir eşitleme zinciri başlatın.";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Ping Sohbet";
@@ -242,7 +227,7 @@
 "BrowserLock" = "Tarayıcı Kilidi";
 
 /* Description for setting to enable the browser lock privacy feature */
-"BrowserLockDescription" = "Touch ID, Face ID veya sistem geçiş koduyla Brave'in kilidini açın.";
+"BrowserLockDescription" = "Touch ID, Face ID veya sistem geçiş koduyla Ping'in kilidini açın.";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Arama Geçmişi";
@@ -260,10 +245,10 @@
 "callout.bottomBarCalloutTitle" = "Ping Sekmeleri Çubuğunu Özelleştir";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Brave'i Varsayılan Tarayıcınız Olarak Ayarlamak İster misiniz?";
+"callout.defaultBrowserCalloutButtonDescription" = "Ping'i Varsayılan Tarayıcınız Olarak Ayarlamak İster misiniz?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Ping varsayılan olarak ayarlandığında, tıkladığınız her bağlantı Brave'in gizlilik korumasıyla açılır.";
+"callout.defaultBrowserCalloutDescription" = "Ping varsayılan olarak ayarlandığında, tıkladığınız her bağlantı Ping'in gizlilik korumasıyla açılır.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Varsayılan Olarak Ayarla";
@@ -284,13 +269,13 @@
 "callout.p3aCalloutLinkTitle" = "Gizlilik Korumalı Ürün Analizlerimiz (P3A) hakkında daha fazlasını öğrenin.";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Brave'i daha iyi hale getirmeye yardım edin.";
+"callout.p3aCalloutTitle" = "Ping'i daha iyi hale getirmeye yardım edin.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Tamamen Gizli ve Anonim Ürün İçgörülerini Paylaşın";
+"callout.p3aCalloutToggleTitle" = "Gizli ve Anonim Ürün İçgörülerini Paylaşın.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "Bilgisayarınızda veya tabletinizde Brave'in gizliliğinin keyfini çıkarın, cihazlarınız arasında yer işaretlerinizi ve eklentilerinizi senkronize edin.";
+"callout.privacyEverywhereCalloutDescription" = "Bilgisayarınızda veya tabletinizde Ping'in gizliliğinin keyfini çıkarın, cihazlarınız arasında yer işaretlerinizi ve eklentilerinizi senkronize edin.";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Şimdi Senkronize Et";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Kapat";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Diğer tüm açık sekmeleri kapatmak istediğinizden emin misiniz?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Diğer Tüm Sekmeleri Kapat";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Tüm açık sekmeleri kapatmak istediğinizden emin misiniz?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Onayla";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "İçerik Filtreleme";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Bölge ve dile özgü izleyicileri ve Rahatsızlık verici şeyleri engelleyen özel filtreleri etkinleştirin";
 
 /* Cookie settings option title */
 "CookieControl" = "Çerez Denetimi";
@@ -514,6 +499,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Bağlantıyı Kopyala";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Sekmelerle ilgili bilgileri panoya kopyalayın.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Panoya kopyala";
 
@@ -525,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Şu anda kullanılan arama motorları";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Özel Filtre Listesi";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Özel Filtre Listeleri";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Özel Filtre Listesi URL'si";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Ekle";
@@ -617,19 +596,16 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Kalkanları, izleyicileri ve reklamları engeller, veri kurtarır ve ziyaret ettiğiniz her sitede size zaman kazandırır";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Ayarlar'ı açın, Varsayılan Tarayıcı Uygulaması'nı dokunun ve Brave'i seçin.";
+"defaultBrowserCallout.introTertiaryText" = "Ayarlar'ı açın, Varsayılan Tarayıcı Uygulaması'nı dokunun ve Ping'i seçin.";
 
 /* Notification body to promote setting Ping app as default browser */
-"defaultBrowserCallout.notificationBody" = "Brave'u varsayılan tarayıcınız olarak ayarlama";
+"defaultBrowserCallout.notificationBody" = "Ping'u varsayılan tarayıcınız olarak ayarlama";
 
 /* Notification title to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Her bağlantıda Ping koruması elde edin";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Varsayılan tarayıcı belirtecini kapat";
-
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Varsayılan Filtre Listeleri";
 
 /* Name for default Ping theme. */
 "defaultThemeName" = "Varsayılan Ping";
@@ -663,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Aygıt %1$@ ( %2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Değişikliklerden Vazgeç";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Bu değişikliklerden vazgeçmek istediğinizden emin misiniz? Yaptığınız düzenlemeler kaybolacaktır.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Değişikliklerden Vazgeçilsin mi?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Güvenlik Sertifikası";
@@ -798,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Özellik";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Girdiğiniz URL geçersiz";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Özel filtre listeleri için yalnızca güvenli (https) URL'lere izin verilir";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Ekle";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Ek popüler topluluklar listeleri. Çok fazla filtre etkinleştirmenin tarama hızını düşürebileceğini unutmayın.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "İndirilemedi";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Bekleyen indirme işlemi";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Düzenle";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Filtre listesi URL'sini girin";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Son güncelleme %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Filtre listesi URL'sini buraya girin";
 
 /* Share action title */
 "FindInPage" = "Sayfada Bul";
@@ -1105,7 +1060,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Talep Belirteçleri";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "Ping ile gezinti yaparak %@ kazandınız.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1184,10 +1139,10 @@
 "OBJoinButton" = "birleştirmek";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Brave'in panomda eşleşen bir başvuru kodu olup olmadığını denetlemesine izin ver";
+"OBPrivacyConsentClipboardPermission" = "Ping'in panomda eşleşen bir başvuru kodu olup olmadığını denetlemesine izin ver";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Brave'i sizi yönlendiren kişiyi desteklemek için indirmiş olabilirsiniz. Sizi yönlendiren kişiyi algılamak için Brave, panonuzda bir kerelik eşleşen başvuru kodu denetimi gerçekleştirir. Bu kontrol yalnızca kodla sınırlıdır ve başka hiçbir kişisel veri iletilmeyecektir.  Eğer vazgeçerseniz, sizi yönlendiren kişi Brave'den ödül almaz.";
+"OBPrivacyConsentDetail" = "Ping'i sizi yönlendiren kişiyi desteklemek için indirmiş olabilirsiniz. Sizi yönlendiren kişiyi algılamak için Ping, panonuzda bir kerelik eşleşen başvuru kodu denetimi gerçekleştirir. Bu kontrol yalnızca kodla sınırlıdır ve başka hiçbir kişisel veri iletilmeyecektir.  Eğer vazgeçerseniz, sizi yönlendiren kişi Ping'den ödül almaz.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Bu denetime izin verme";
@@ -1247,7 +1202,7 @@
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ ve %2$lld ile diğer reklamlar ve izleyiciler engellendi";
 
 /* The footnote indicating what Ping shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Shields ile Brave'in her sayfada engellediği tüm zararlı içerikleri görün";
+"onboarding.blockedAdsOnboardingFootnoteText" = "Shields ile Ping'in her sayfada engellediği tüm zararlı içerikleri görün";
 
 /* The text describing user where they should press in order to open Shield panel */
 "onboarding.blockedAdsOnboardingInstructionsText" = "Ping Shields'ı görmek için dokunun";
@@ -1274,13 +1229,13 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "İzleyiciler ve reklamlar engellendiğinde, web siteleri daha az veri kullanır ve çok daha hızlı yüklenir.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Brave'in farkını görün\nReklam yok. İzleyici yok. Çok daha hızlı yüklenen sayfalar.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Ping'in farkını görün\nReklam yok. İzleyici yok. Çok daha hızlı yüklenen sayfalar.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Bir web sitesi adı veya URL yazın";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Brave'e hoş geldiniz";
+"onboarding.welcomeScreenTitle" = "Ping'e hoş geldiniz";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Devam et";
@@ -1352,7 +1307,7 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "Başlamak için bir senkronizasyon zinciri ayarlayın ve Senkronizasyon Ayarlarından \"Sekmeleri Aç\"a geçin.";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Brave'in Ayarlardaki senkronizasyonlarını yönetin.";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Ping'in Ayarlardaki senkronizasyonlarını yönetin.";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Diğer cihazlarınızdan gösterilecek etkin bir oturum bulunmuyor.";
@@ -1453,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Devam et";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Bu gizli yanıtlar, Brave'in belirli özelliklerin genel kullanımını tahmin ederek sizin için daha iyi hale getirmesine yardımcı olur.";
+/* A subtitle shown on the setting that toggles analytics on Ping. */
+"p3a.settingSubtitle" = "Bu gizli yanıtlar, Ping'in belirli özelliklerin genel kullanımını tahmin ederek sizin için daha iyi hale getirmesine yardımcı olur.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Gizlilik Korumalı Ürün Analizine İzin Ver (P3A)";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1422,15 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Bu siteye bağlantınız güvenli değil.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Site bağlantısı doğrulanamadı.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Bu siteye olan bağlantınız tamamen doğrulanamadı. Devam edebilir veya güvenli bağlantı kurmak için sayfayı yeniden yüklemeyi deneyebilirsiniz.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Sitede oturum aç";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Sertifikayı Görüntüle";
@@ -1508,7 +1472,7 @@
 "PersistentPrivateBrowsing" = "Kalıcı Gizli Gezinti";
 
 /* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Brave'in, uygulamayı kapatsanız / yeniden açsanız bile özel gezinti sekmelerini geri yüklemesine olanak tanır";
+"PersistentPrivateBrowsingAlertMessage" = "Ping'in, uygulamayı kapatsanız / yeniden açsanız bile özel gezinti sekmelerini geri yüklemesine olanak tanır";
 
 /* Persistent private browsing alert title to existing users */
 "PersistentPrivateBrowsingAlertTitle" = "Özel Sekmeleri Geri Yükle";
@@ -1891,7 +1855,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Şimdi Senkronize Et";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Kalkanlar Menüsünü Kapat";
 
 /* Settings privacy section title */
@@ -1975,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Bildirimleri aç";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "Brave'in sizi bu hafta çevrimiçi olarak nasıl koruduğunun bir özeti.";
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "Ping'in sizi bu hafta çevrimiçi olarak nasıl koruduğunun bir özeti.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Haftalık Gizlilik Raporu";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Gizlilik Bilgisi verileri yerel olarak saklanır ve hiçbir yere gönderilmez.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Gizlilik Merkezi";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2066,10 +2030,10 @@
 "PrivateBrowsingOnlyWarning" = "Yalnızca Gizli Tarama modu tüm mevcut sekmelerinizi ve tüm sitelerdeki oturumlarınızı kapatır.";
 
 /* Private tab details */
-"PrivateTabBody" = "Gizli Sekmeler Brave'e kaydedilmez, ancak bu sizi internette anonim hale getirmez. Gizli bir sekmede ziyaret ettiğiniz siteler geçmişinizde gösterilmez ve bunları kapattığınızda çerezleri her zaman kaybolur - Brave'de bunlardan hiçbir iz kalmaz. Ancak, indirmeler kaydedilir.\nMobil operatörünüz (veya bağlı olduğunuz Wi-Fi ağının veya VPN'in sahibi) hangi siteleri ziyaret ettiğinizi görebilir ve bu siteler Gizli Sekmelerde bile herkese açık IP adresinizi öğrenir.";
+"PrivateTabBody" = "Gizli Sekmeler Ping'e kaydedilmez, ancak bu sizi internette anonim hale getirmez. Gizli bir sekmede ziyaret ettiğiniz siteler geçmişinizde gösterilmez ve bunları kapattığınızda çerezleri her zaman kaybolur - Ping'de bunlardan hiçbir iz kalmaz. Ancak, indirmeler kaydedilir.\nMobil operatörünüz (veya bağlı olduğunuz Wi-Fi ağının veya VPN'in sahibi) hangi siteleri ziyaret ettiğinizi görebilir ve bu siteler Gizli Sekmelerde bile herkese açık IP adresinizi öğrenir.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Gizli Sekmeleri kullanmak yalnızca Brave'in cihazınızda yaptıklarını değiştirir, başka hiç kimsenin davranışını değiştirmez.\n\nSiteler IP adresinizi onları her ziyaret ettiğinizde öğrenir. Bundan genellikle nerede olduğunuzu, tipik olarak bulunduğunuz şehri tahmin edebilir. Bazen bu konum tahmini çok daha spesifik olabilir. Siteler ayrıca arama terimleri gibi özel olarak onlara ilettiğiniz her şeyi bilir. Bir siteye giriş yaptığınızda, söz konusu hesabın sahibi olduğunuzu anlarlar. Gizli Sekmeleri kapattığınızda yine de oturumunuz kapatılacaktır, çünkü Ping oturumunuzun açık kalmasını sağlayan çerezi silecektir.\n\nSizi internete bağlayan taraf (İSS'niz) tüm ağ etkinliğinizi görebilir. Genellikle, bu mobil operatörünüzdür. Bir Wi-Fi ağına bağlıysanız, bu ağın sahibidir ve bir VPN kullanıyorsanız, o VPN'i işleten taraftır. İSS'niz hangi siteleri ziyaret ettiğinizi siz siteleri ziyaret ederken görebilir. Bu siteler HTTPS kullanıyorsa, bu sitelerde ne yaptığınız hakkında bilgiye dayalı bir tahminden daha fazlasını yapamazlar. Ancak bir site yalnızca HTTP kullanıyorsa İSS'niz her şeyi görebilir: arama terimleriniz, hangi sayfaları okuduğunuz ve hangi bağlantıları takip ettiğiniz.\n\nCihazınızı bir işveren yönetiyorsa, o da cihazınızla ne yaptığınızı takip edebilir. Gizli Sekmeleri kullanmak muhtemelen hangi siteleri ziyaret ettiğinizi bilmelerini engellemez. Cihazınıza erişimi olan başka biri de etkinliğinizi izleyen bir yazılım yüklemiş olabilir ve Gizli Sekmeler sizi bundan korumaz.";
+"PrivateTabDetails" = "Gizli Sekmeleri kullanmak yalnızca Ping'in cihazınızda yaptıklarını değiştirir, başka hiç kimsenin davranışını değiştirmez.\n\nSiteler IP adresinizi onları her ziyaret ettiğinizde öğrenir. Bundan genellikle nerede olduğunuzu, tipik olarak bulunduğunuz şehri tahmin edebilir. Bazen bu konum tahmini çok daha spesifik olabilir. Siteler ayrıca arama terimleri gibi özel olarak onlara ilettiğiniz her şeyi bilir. Bir siteye giriş yaptığınızda, söz konusu hesabın sahibi olduğunuzu anlarlar. Gizli Sekmeleri kapattığınızda yine de oturumunuz kapatılacaktır, çünkü Ping oturumunuzun açık kalmasını sağlayan çerezi silecektir.\n\nSizi internete bağlayan taraf (İSS'niz) tüm ağ etkinliğinizi görebilir. Genellikle, bu mobil operatörünüzdür. Bir Wi-Fi ağına bağlıysanız, bu ağın sahibidir ve bir VPN kullanıyorsanız, o VPN'i işleten taraftır. İSS'niz hangi siteleri ziyaret ettiğinizi siz siteleri ziyaret ederken görebilir. Bu siteler HTTPS kullanıyorsa, bu sitelerde ne yaptığınız hakkında bilgiye dayalı bir tahminden daha fazlasını yapamazlar. Ancak bir site yalnızca HTTP kullanıyorsa İSS'niz her şeyi görebilir: arama terimleriniz, hangi sayfaları okuduğunuz ve hangi bağlantıları takip ettiğiniz.\n\nCihazınızı bir işveren yönetiyorsa, o da cihazınızla ne yaptığınızı takip edebilir. Gizli Sekmeleri kullanmak muhtemelen hangi siteleri ziyaret ettiğinizi bilmelerini engellemez. Cihazınıza erişimi olan başka biri de etkinliğinizi izleyen bir yazılım yüklemiş olabilir ve Gizli Sekmeler sizi bundan korumaz.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Gizli Sekmeler hakkında bilgi edinin.";
@@ -2083,8 +2047,8 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Hızlı Arama Motorları";
 
-/* Open the App Store to rate Brave. */
-"RateBrave" = "Brave'i Değerlendirin";
+/* Open the App Store to rate Ping. */
+"RateBrave" = "Ping'i Değerlendirin";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Metin boyutunu büyüt";
@@ -2237,7 +2201,7 @@
 "ReportBrokenContactMeSuggestions" = "E-posta, Twitter, vb.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Brave'in geliştiricilerine bu sitenin Kalkanlar ile düzgün çalışmadığını bildirin:";
+"ReportBrokenSiteBody1" = "Ping'in geliştiricilerine bu sitenin Kalkanlar ile düzgün çalışmadığını bildirin:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
 "ReportBrokenSiteBody2" = "Not: Ping sunucularına gönderilen rapor site adresini, Ping sürüm numarasını, Kalkanlar ayarlarını, VPN durumunu ve dil ayarlarını içerecektir.";
@@ -2276,7 +2240,7 @@
 "RestoreTabOnCrashAlertMessage" = "Ne yazık ki Ping çöktü veya düzgün şekilde kapatılmadı.\nSekmeleriniz geri yüklensin mi?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave, Beklenmedik Bir Şekilde Kapandı.";
+"RestoreTabOnCrashAlertTitle" = "Ping, Beklenmedik Bir Şekilde Kapandı.";
 
 /* Body for Ping Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Ping Rewards ile Ping Ads ağından gizlilik korumalı reklamları görüntüleyebilirsiniz. İzleyici yok. Yavaşlama yok. Üstelik verileriniz tamamen güvende kalır.";
@@ -2464,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Paylaş";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Dahili Ödülleri Paylaş";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Desteklenen";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Dahili Ödüller";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2478,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Kaydet";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Değişiklikleri kaydet";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Kaydedilen Girişler";
@@ -2609,7 +2576,7 @@
 "sendButtonTitle" = "Gönder";
 
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
-"SendCrashReportAlertMessage" = "Brave'in sorunu çözebilmesi için bir çökme raporu göndermek ister misiniz?";
+"SendCrashReportAlertMessage" = "Ping'in sorunu çözebilmesi için bir çökme raporu göndermek ister misiniz?";
 
 /* Title for prompt displayed to user after the app crashes */
 "SendCrashReportAlertTitle" = "Hop! Ping çöktü!";
@@ -2642,7 +2609,7 @@
 "settings.autocloseTabsSetting" = "Sekmeleri Kapat";
 
 /* Description of autoclose tabs feature. */
-"settings.autocloseTabsSettingFooter" = "Brave'in yakın zamanda görüntülenmeyen sekmeleri otomatik olarak kapatmasına izin ver.";
+"settings.autocloseTabsSettingFooter" = "Ping'in yakın zamanda görüntülenmeyen sekmeleri otomatik olarak kapatmasına izin ver.";
 
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "En Yüksek Kalitede Oynatma";
@@ -2657,7 +2624,7 @@
 "settings.media.rootSetting" = "Medya";
 
 /* A toggle label which lets the user always open YouTube urls in Ping */
-"settings.openYouTubeInBrave" = "YouTube bağlantılarını Brave'de aç";
+"settings.openYouTubeInBrave" = "YouTube bağlantılarını Ping'de aç";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Ekran Süresini Etkinleştir";
@@ -2668,11 +2635,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Kalite Ayarları";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Bu özel ping, Brave'in aktif kullanıcıları tahmin etmesine olanak tanır.";
+/* Description to explain the daily usage brave toggle */
+"settings.sendUsagePingDescription" = "Bu özel brave, Ping'in aktif kullanıcıları tahmin etmesine olanak tanır.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Günlük kullanım ping'ini Brave'e otomatik olarak gönder";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Günlük kullanım brave'ini Ping'e otomatik olarak gönder";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Sayfa yüklenemedi.";
@@ -2753,7 +2723,7 @@
 "ShieldsDefaultsFooter" = "Bunlar, yeni siteler için varsayılan Kalkan ayarlarıdır. Bunları değiştirmek mevcut site başına ayarlarınızı etkilemez.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Brave'in gizlilik koruması olmadan bu siteye göz atıyorsunuz. Kalkanlar açıkken düzgün çalışmıyor mu?";
+"ShieldsDownDisclaimer" = "Ping'in gizlilik koruması olmadan bu siteye göz atıyorsunuz. Kalkanlar açıkken düzgün çalışmıyor mu?";
 
 /* shields overview message */
 "ShieldsOverview" = "Site Kalkanları, ziyaret ettiğiniz her site için reklamların ve izleyicilerin ne zaman engellendiğini kontrol etmenizi sağlar. Reklamları belirli bir sitede görmeyi tercih ediyorsanız, reklamları burada etkinleştirebilirsiniz.";
@@ -2951,7 +2921,7 @@
 "ShowTabsBar" = "Sekme Çubuğu";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "Brave'in geliştiricilerine bu sitede bir sorun olduğunu bildirin. Düzeltmek için elimizden geleni yapacağız!";
+"SiteReportedBody" = "Ping'in geliştiricilerine bu sitede bir sorun olduğunu bildirin. Düzeltmek için elimizden geleni yapacağız!";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Teşekkürler";
@@ -3013,6 +2983,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Senkronizasyon Hesabını Sil";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Hesabınızı silmek, şifrelenmiş verilerinizi Ping sunucularından kaldırır ve bağlı tüm cihazlarınızda Senkronizasyonu devre dışı bırakır.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Ancak bu işlem, bu cihazlarda yerel olarak depolanan verileri silmez.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Silme işlemi kalıcıdır ve verileri kurtarmanın hiçbir yolu yoktur. Senkronizasyonu tekrar kullanmaya karar verirseniz, yeni bir hesap oluşturmanız ve tüm cihazları tek tek yeniden eklemeniz gerekecektir.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Senkronizasyon zincirindeki cihazlar alınırken bir şeyler ters gitti.";
 
@@ -3070,11 +3049,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Eşitlemek istediğiniz aygıt türünü seçin.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Kodun süresi doldu. Aşağıdaki butona tıklayarak yeni bir tane oluşturun.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Bu geçici kod, %@ boyunca geçerlidir";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Bilgisayar";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Senkronizasyon Hesabını Sil";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Görünüşe göre bu kod Ping'in eski bir sürümünü çalıştıran bir cihazda oluşturulmuş. Lütfen diğer cihazınızda Ping'i en yeni sürümüne güncelleyin ve bundan sonra yeni bir senkronizasyon kodu oluşturun.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Aygıtlar ve Ayarlar";
@@ -3113,7 +3101,7 @@
 "SyncRemoveDeviceDefaultName" = "aygıt";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Şu anda eşitlenen veriler korunur, ancak Brave's Sync önbelleğinde bulunan tüm veriler silinir. Cihaz verilerini yeniden eşitlemek için yeni bir eşitleme zinciri başlatmanız gerekir.";
+"SyncRemoveLastDeviceMessage" = "Şu anda eşitlenen veriler korunur, ancak Ping's Sync önbelleğinde bulunan tüm veriler silinir. Cihaz verilerini yeniden eşitlemek için yeni bir eşitleme zinciri başlatmanız gerekir.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Eşitleme Zincirini Sil";
@@ -3284,7 +3272,7 @@
 "themeQRCodeShareButton" = "Paylaş...";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Brave'i arkadaşlarınızla paylaşın!";
+"themeQRCodeShareTitle" = "Ping'i arkadaşlarınızla paylaşın!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Otomatik";
@@ -3337,7 +3325,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "Haberler";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "İlginizi çeken konuları takip edin";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3379,7 +3367,7 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hop...";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Akışınızdaki kaynakları yönetin";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,7 +3389,7 @@
 "today.insecureSourcesHeader" = "Güvensiz Kaynaklar - Riski göze alıyorsanız ekleyin";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Favori kaynaklarınızı tek akıştan takip edin. Sadece Brave'de bir sekme açın, aşağı kaydırın ve... işte oldu!\nBrave News özel, anonim reklamlarla desteklenir.";
+"today.introCardBody" = "Favori kaynaklarınızı tek akıştan takip edin. Sadece Ping'de bir sekme açın, aşağı kaydırın ve... işte oldu!\nPing News özel, anonim reklamlarla desteklenir.";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "Ping News'i açın ve hiçbir haberi kaçırmayın";
@@ -3412,7 +3400,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Verileriniz hakkında daha fazla bilgi edinin";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "Daha Fazla Ping Teklifi";
 
 /* No comment provided by engineer. */
@@ -3436,17 +3424,20 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Desteklenen";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "App Store'da Ping'i Değerlendirin";
+
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Gizle";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
-"today.rateBraveCardRateActionTitle" = "Brave'i Değerlendirin";
+"today.rateBraveCardRateActionTitle" = "Ping'i Değerlendirin";
 
 /* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "Bize ne düşündüğünü söyle!";
 
 /* Title shown on the Rate Ping Card */
-"today.rateBraveCardTitle" = "Brave'den memnun musunuz?";
+"today.rateBraveCardTitle" = "Ping'den memnun musunuz?";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Yenile";
@@ -3536,10 +3527,7 @@
 "voice.search.microphone.title.required" = "Mikrofon Erişimi Gerekli";
 
 /* Disclaimer for screen to search using voice. */
-"voice.search.screen.disclaimer" = "Brave, sesli aramalarınızı kaydetmez veya paylaşmaz.";
-
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "etkinleştir";
+"voice.search.screen.disclaimer" = "Ping, sesli aramalarınızı kaydetmez veya paylaşmaz.";
 
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Korumanızı sürdürmek mi istiyorsunuz? Aboneliğinizi süresi dolmadan yenilemeniz yeterli. Yenilediğiniz için bir teşekkür olarak, önümüzdeki 3 ay için %20 indirim uygulayacağız.";
@@ -3554,145 +3542,19 @@
 "vpn.autoRenewFreeMonthPopOverTitle" = "Ping VPN Aboneliğinizi hemen otomatik olarak yenileyin ve 1 ay ücretsiz kullanımdan faydalanın!";
 
 /* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Bu, Brave'in telefonunuzdaki tüm uygulamalar için sunduğu ekstra korumayı kaybedeceğiniz anlamına geliyor.";
+"vpn.autoRenewSoonExpirePopOverDescription" = "Bu, Ping'in telefonunuzdaki tüm uygulamalar için sunduğu ekstra korumayı kaybedeceğiniz anlamına geliyor.";
 
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Olamaz! Ping VPN aboneliğinizin süresi dolmak üzere.";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "Satın Al";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Ping Güvenlik Duvarı + VPN";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "1 abonelikle 5 cihazı koruyun";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "Coğrafi/ülke konumunuzu seçin";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "Brave, sizin aktivitenizi asla kaydetmez";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "Her uygulamayı ve tüm cihazınızı koruyun";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "Ev veya ortak Wi-Fi için daha güvenlidir";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "Çok hızlıdır, 100 Mbps'ye kadar";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Uygulama Sürümü";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Hücresel Taşıyıcı";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Ping sizi takip etmediği veya uygulamanızı nasıl kullandığınızı bilmediği için VPN'İ nasıl kurduğunuzu bilemeyiz. Lütfen yaşadığınız sorunu paylaşın, en kısa süre içinde çözmeye çalışacağız.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "E-posta gönderilemiyor. Lütfen e-posta yapılandırmanızı kontrol edin.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Lütfen bizimle rahatlıkla paylaşabileceğiniz bilgileri seçin.\n\nBaşlangıçta bizimle ne kadar çok bilgi paylaşırsanız, destek personelimizin sorununuzu çözmenize yardımcı olması o kadar kolay olacaktır.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Koruma ekibinin yardımıyla sağlanan destek.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "VPN Ana Bilgisayar Adı";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Sorun";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Bağlantı güvenilirliği sorunu";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "Bağlandığında internet yok";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Diğer";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "VPN'e bağlanılamıyor (Diğer hata)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Yavaş bağlantı";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Web sitesi çalışmıyor";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Hata Günlükleri";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Ağ Türü";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Platform";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "E-postaya Devam Et";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Abonelik Türü";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "iOS Saat Dilimi";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Ping Güvenlik Duvarı + VPN Sorunu";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "Etkinleştir";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "App Store'a bağlanılamadı, lütfen birkaç dakika içinde yeniden deneyin.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "App Store Hatası";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Tüm planlar %@ içerir!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "ücretsiz 7 günlük deneme";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "7 gün ücretsiz deneyin";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Tüm abonelikler otomatik olarak yenilenir, ancak yenilemeden önce iptal edilebilir.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Bu profil, VPN'in cihazınızdaki trafiği her zaman otomatik olarak bağlamasını ve güvenli hale almasını sağlar. Bu VPN bağlantısı, zararlı ve istilacı olabilecek bağlantıları engellemek için Brave'in akıllı güvenlik duvarı üzerinden şifrelenecek ve yönlendirilecektir.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "VPN Profili Yükle";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Ping şimdi bir VPN profili yükleyecek.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "VPN artık etkin";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "VPN yükle";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "ÜCRETSİz deneyin";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Aylık olarak yeniler";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Aylık Abonelik";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Süresi Dolmuş";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "İstenmeyen ağ bağlantılarını engeller";
@@ -3715,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Destekleyen";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Lütfen tercih ettiğiniz aktarım protokolünü seçin. Değiştirdikten sonra mevcut VPN kimlik bilgileriniz temizlenir ve kurulu bir VPN bağlantısı varsa tekrar bağlanırsınız.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Tünel protokolü değiştirilemedi, lütfen daha sonra tekrar deneyin.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Sunucu Hatası";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Aktarım Protokolü";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "VPN Tünel Protokolü değiştirildi.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Sistem saat diliminize bağlı olarak, size en yakın sunucu bölgesi otomatik olarak seçilir. Bu, yüksek internet hızları sağlamak için önerilir.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Otomatik";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Sunucu değiştirilemedi, lütfen daha sonra yeniden deneyin.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Sunucu Hatası";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Sunucu Bölgesi";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPN bölgesi değişti.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "VPN yapılandırması sıfırlanamıyor. Lütfen tekrar deneyin. Sorun devam ederse, yardım için destekle iletişime geçin.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Tekrar Dene";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Sıfırlama Başarısız";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "VPN yapılandırması başarıyla sıfırlandı.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Sıfırlama Başarılı";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Geri yükle";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "VPN oturumunuzu yenilemek için lütfen Ping Hesabınızda oturum açın.";
@@ -3777,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Oturumun süresi doldu";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Bağlantınızı korumak ve her yerde istilacı izleyicileri engellemek için bir VPN'e yükseltin.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Teknik Desteğe Başvurun";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Sunucu listesi alınamadı, lütfen daha sonra yeniden deneyin.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "VPN Desteği";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Satın alımı Ping hesabınıza bağlayın";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Ping VPN'i ve diğer cihazlarda kullanmak için App Store satın alımınızı Ping hesabınıza bağlayın";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Aboneliği Yönet";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Teklif Kodunu Kullan";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Yapılandırmayı Sıfırla";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Host";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Yer";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Sunucu";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Sona erme tarihi";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Abonelik";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Durum";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Aktarım Protokolü";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Devre Dışı";
@@ -3874,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Ödemeyi Güncelle";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ödeme Yöntemini Güncelle";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Arka planda bile Ping seni korumaya devam edecek.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Ping Güvenlik Duvarı + VPN Açık";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "VPN başlatilirken bir sorun meydana geldi. Lütfen yeniden deneyin veya VPN ayarları sayfasında yapılandırmayı sıfırlamayı deneyin.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Hata";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Ping Güvenlik Duvarı + VPN'in çalışması için cihazınıza bir VPN profilinin yüklenmesi gerekir. ";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "İzin reddedildi";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Teklif kodu kullanılamadı. Lütfen tekrar deneyin veya teklif kodu ayrıntılarınızı kontrol edip tekrar deneyin.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Satın alma işlemi tamamlanamıyor. Lütfen yeniden deneyin veya Apple'daki ödeme bilgilerinizi kontrol edin ve yeniden deneyin.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Hata";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Abonelikler iTunes hesabınız üzerinden ücretlendirilir.\n\nÜcretsiz deneme sürümünün kullanılmayan herhangi bir kısmı, teklif edilirse, bir abonelik satın ettiğinizde kaybedilir.\n\nGeçerli dönemin bitiminden en az 24 saat önce iptal edilmediği sürece aboneliğiniz otomatik olarak yenilenir.\n\nAboneliklerinizi Ayarlar'dan yönetebilirsiniz.\n\nBrave'i kullanarak Kullanım Koşullarını ve Gizlilik Politikasını kabul etmiş olursunuz.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Kodu Kullan";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Sunucu Bölgesi";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Mevcut Ayar: %@";
@@ -3916,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "VPN Bölgesi";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Bu, Ping Güvenlik Duvarı + VPN yapılandırmanızı sıfırlar ve hataları düzeltir. Bu işlem bir dakika sürebilir.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Yapılandırmayı sıfırla";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Sıfırla";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Aylık abonelik";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Yıllık abonelik";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Lütfen ödeme yönteminizi güncelleyin";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Yıllık yenileme tasarrufu % @";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "En iyi fiyat";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Bir yıl";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Cüzdan Oluşturma Tarihi";
@@ -3970,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Kaydedilmiş Web Sitesi Verisi Yok";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Tümünü Kaldır";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Kaldır";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "%ld öğeyi kaldır";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3709,9 @@
 /* History tableview section header */
 "Yesterday" = "Dün";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Yüksek Kaliteli YouTube Videolarını Etkinleştirin";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Bu deneysel özelliği etkinleştirmek, videoyu kullanılabilecek maksimum kalitede oynatacak ve ilave veri kullanacaktır.";
 
@@ -4008,6 +3720,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Açık";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube Oynatma Kalitesi";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Wi-Fi Üzerinden İzin Ver";

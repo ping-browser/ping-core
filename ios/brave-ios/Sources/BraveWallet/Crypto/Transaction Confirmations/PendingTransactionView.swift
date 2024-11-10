@@ -74,10 +74,10 @@ struct PendingTransactionView: View {
     }
   }
 
-  /// View showing the currently selected account with a blockie
-  @ViewBuilder private var accountView: some View {
+  /// View showing the currently selected account with a blockie. Used for `erc20Approve` txType only.
+  @ViewBuilder private var erc20ApproveAccountView: some View {
     HStack {
-      let address = confirmationStore.activeParsedTransaction.fromAddress
+      let address = confirmationStore.activeParsedTransaction.fromAccountInfo.blockieSeed
       AddressView(address: address) {
         Text(address.truncatedAddress)
           .fontWeight(.semibold)
@@ -243,14 +243,22 @@ struct PendingTransactionView: View {
         erc20ApproveHeader
       } else {
         TransactionHeader(
-          fromAccountAddress: confirmationStore.activeParsedTransaction.fromAddress,
+          fromAccountInfo: confirmationStore.activeParsedTransaction.fromAccountInfo,
           fromAccountName: confirmationStore.activeParsedTransaction.namedFromAddress,
           toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
           toAccountName: confirmationStore.activeParsedTransaction.namedToAddress,
+          isContractAddress: confirmationStore.isContractAddress,
           originInfo: confirmationStore.originInfo,
           transactionType: transactionType,
           value: "\(confirmationStore.value) \(confirmationStore.symbol)",
-          fiat: confirmationStore.fiat
+          fiat: confirmationStore.fiat,
+          contractAddressTapped: { contractAddress in
+            let network = confirmationStore.activeParsedTransaction.network
+            guard let url = network.contractAddressURL(contractAddress) else {
+              return
+            }
+            openWalletURL(url)
+          }
         )
       }
 
@@ -331,6 +339,7 @@ struct PendingTransactionView: View {
                 VStack(alignment: .leading) {
                   Text(
                     confirmationStore.activeParsedTransaction.coin == .sol
+                      || confirmationStore.activeParsedTransaction.coin == .btc
                       ? Strings.Wallet.transactionFee : Strings.Wallet.gasFee
                   )
                   .foregroundColor(Color(.bravePrimary))
@@ -345,6 +354,7 @@ struct PendingTransactionView: View {
                     .multilineTextAlignment(.trailing)
                   Text(confirmationStore.gasFiat)
                     .font(.footnote)
+                    .multilineTextAlignment(.trailing)
                 }
               }
               .font(.callout)
@@ -384,6 +394,7 @@ struct PendingTransactionView: View {
                   VStack(alignment: .trailing) {
                     Text(
                       confirmationStore.activeParsedTransaction.coin == .sol
+                        || confirmationStore.activeParsedTransaction.coin == .btc
                         ? Strings.Wallet.amountAndFee : Strings.Wallet.amountAndGas
                     )
                     .font(.footnote)
@@ -451,17 +462,21 @@ struct PendingTransactionView: View {
 
   @ViewBuilder private var rejectConfirmButtons: some View {
     Button {
-      confirmationStore.reject(transaction: confirmationStore.activeParsedTransaction.transaction) {
-        _ in
+      Task {
+        await confirmationStore.reject(
+          transaction: confirmationStore.activeParsedTransaction.transaction
+        )
       }
     } label: {
       Label(Strings.Wallet.rejectTransactionButtonTitle, systemImage: "xmark")
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     Button {
-      confirmationStore.isTxSubmitting = true
-      confirmationStore.confirm(transaction: confirmationStore.activeParsedTransaction.transaction)
-      { _ in }
+      Task {
+        await confirmationStore.confirm(
+          transaction: confirmationStore.activeParsedTransaction.transaction
+        )
+      }
     } label: {
       Label(Strings.Wallet.confirm, systemImage: "checkmark.circle.fill")
     }
@@ -469,6 +484,10 @@ struct PendingTransactionView: View {
     .disabled(
       !confirmationStore.isBalanceSufficient || confirmationStore.activeTxStatus == .approved
     )
+    .transaction { transaction in
+      transaction.animation = nil
+      transaction.disablesAnimations = true
+    }
   }
 
   var body: some View {
@@ -484,7 +503,8 @@ struct PendingTransactionView: View {
           VStack(alignment: .trailing) {
             transactionsButton
             if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
-              accountView  // for other txTypes, account is shown in `TransactionHeader`
+              // for other txTypes, account is shown in `TransactionHeader`
+              erc20ApproveAccountView
             }
           }
         }
@@ -508,7 +528,8 @@ struct PendingTransactionView: View {
         // Cancel / Confirm buttons
         if confirmationStore.unapprovedTxs.count > 1 {
           Button {
-            confirmationStore.rejectAllTransactions { success in
+            Task {
+              let success = await confirmationStore.rejectAllTransactions()
               if success {
                 onDismiss()
               }

@@ -10,9 +10,10 @@
 
 #include "base/check.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
 
@@ -20,84 +21,82 @@ namespace {
 
 constexpr char kTableName[] = "dayparts";
 
-size_t BindParameters(mojom::DBCommandInfo* command,
-                      const CreativeAdList& creative_ads) {
-  CHECK(command);
+size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
+                   const CreativeAdList& creative_ads) {
+  CHECK(mojom_db_action);
+  CHECK(!creative_ads.empty());
 
-  size_t count = 0;
+  size_t row_count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     for (const auto& daypart : creative_ad.dayparts) {
-      BindString(command, index++, creative_ad.campaign_id);
-      BindString(command, index++, daypart.days_of_week);
-      BindInt(command, index++, daypart.start_minute);
-      BindInt(command, index++, daypart.end_minute);
+      BindColumnString(mojom_db_action, index++, creative_ad.campaign_id);
+      BindColumnString(mojom_db_action, index++, daypart.days_of_week);
+      BindColumnInt(mojom_db_action, index++, daypart.start_minute);
+      BindColumnInt(mojom_db_action, index++, daypart.end_minute);
 
-      ++count;
+      ++row_count;
     }
   }
 
-  return count;
+  return row_count;
 }
 
 }  // namespace
 
-void Dayparts::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                              const CreativeAdList& creative_ads) {
-  CHECK(transaction);
+void Dayparts::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+                      const CreativeAdList& creative_ads) {
+  CHECK(mojom_db_transaction);
 
   if (creative_ads.empty()) {
     return;
   }
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::RUN;
-  command->sql = BuildInsertOrUpdateSql(&*command, creative_ads);
-  transaction->commands.push_back(std::move(command));
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 void Dayparts::Delete(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
 
-  DeleteTable(&*transaction, GetTableName());
+  DeleteTable(mojom_db_transaction, GetTableName());
 
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
 std::string Dayparts::GetTableName() const {
   return kTableName;
 }
 
-void Dayparts::Create(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
+void Dayparts::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      R"(
-          CREATE TABLE dayparts (
-            campaign_id TEXT NOT NULL,
-            days_of_week TEXT NOT NULL,
-            start_minute INT NOT NULL,
-            end_minute INT NOT NULL,
-            PRIMARY KEY (
-              campaign_id,
-              days_of_week,
-              start_minute,
-              end_minute
-            ) ON CONFLICT REPLACE
-          );)";
-  transaction->commands.push_back(std::move(command));
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE dayparts (
+        campaign_id TEXT NOT NULL,
+        days_of_week TEXT NOT NULL,
+        start_minute INT NOT NULL,
+        end_minute INT NOT NULL,
+        PRIMARY KEY (
+          campaign_id,
+          days_of_week,
+          start_minute,
+          end_minute
+        ) ON CONFLICT REPLACE
+      );)");
 }
 
-void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
+void Dayparts::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                        const int to_version) {
-  CHECK(transaction);
+  CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 35: {
-      MigrateToV35(transaction);
+    case 45: {
+      MigrateToV45(mojom_db_transaction);
       break;
     }
   }
@@ -105,21 +104,23 @@ void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Dayparts::MigrateToV35(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
+void Dayparts::MigrateToV45(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
   // We can safely recreate the table because it will be repopulated after
   // downloading the catalog.
-  DropTable(transaction, GetTableName());
-  Create(transaction);
+  DropTable(mojom_db_transaction, GetTableName());
+  Create(mojom_db_transaction);
 }
 
-std::string Dayparts::BuildInsertOrUpdateSql(
-    mojom::DBCommandInfo* command,
+std::string Dayparts::BuildInsertSql(
+    const mojom::DBActionInfoPtr& mojom_db_action,
     const CreativeAdList& creative_ads) const {
-  CHECK(command);
+  CHECK(mojom_db_action);
+  CHECK(!creative_ads.empty());
 
-  const size_t binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
 
   return base::ReplaceStringPlaceholders(
       R"(
@@ -129,8 +130,8 @@ std::string Dayparts::BuildInsertOrUpdateSql(
             start_minute,
             end_minute
           ) VALUES $2;)",
-      {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count=*/4, binded_parameters_count)},
+      {GetTableName(),
+       BuildBindColumnPlaceholders(/*column_count=*/4, row_count)},
       nullptr);
 }
 

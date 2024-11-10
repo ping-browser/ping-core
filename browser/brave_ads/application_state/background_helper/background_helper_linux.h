@@ -7,15 +7,13 @@
 #define BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_BACKGROUND_HELPER_BACKGROUND_HELPER_LINUX_H_
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
-#include "chrome/browser/ui/browser_list_observer.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/browser/application_state/background_helper.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 
 namespace brave_ads {
 
-class BackgroundHelperLinux
-    : public BackgroundHelper,
-      public base::SupportsWeakPtr<BackgroundHelperLinux>,
-      public BrowserListObserver {
+class BackgroundHelperLinux final : public BackgroundHelper,
+                                    public BrowserListObserver {
  public:
   BackgroundHelperLinux(const BackgroundHelperLinux&) = delete;
   BackgroundHelperLinux& operator=(const BackgroundHelperLinux&) = delete;
@@ -35,8 +33,10 @@ class BackgroundHelperLinux
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;
 
-  // BackgroundHelper impl
+  // BackgroundHelper:
   bool IsForeground() const override;
+
+  base::WeakPtrFactory<BackgroundHelperLinux> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads

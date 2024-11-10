@@ -2,7 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { select } from '@storybook/addon-knobs'
+
+import { boolean, select } from '@storybook/addon-knobs'
 import * as React from 'react'
 import { createStore } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
@@ -19,7 +20,9 @@ import SellPanel from '../components/sell-panel'
 import SettingsPanel from '../components/settings-panel'
 import LoadingPanel from '../components/loading-panel'
 import ContactSupport from '../components/contact-support'
+import PurchaseFailedPanel from '../components/purchase-failed-panel'
 import './mock-data/api'
+import '@brave/leo/tokens/css/variables.css'
 
 export default {
   title: 'VPN/Panels',
@@ -34,7 +37,8 @@ export default {
       // We're not adding a reducer here because UI in storybook
       // shouldn't trigger any actions therefore shouldn't modify any state
       const store = createStore(state => state, {
-        hasError: false,
+        hasError: boolean('hasError', false),
+        expired: boolean('expired', false),
         isSelectingRegion: false,
         connectionStatus: select('Current Status', ConnectionState, ConnectionState.DISCONNECTED),
         regions: mockRegionList,
@@ -66,6 +70,14 @@ export const _Error = () => {
   )
 }
 
+export const _PurchaseFailed = () => {
+  return (
+    <S.PanelFrame>
+      <PurchaseFailedPanel />
+    </S.PanelFrame>
+  )
+}
+
 export const _SelectLocation = () => {
   return (
     <S.PanelFrame>
@@ -76,7 +88,7 @@ export const _SelectLocation = () => {
 
 export const _SellPanel = () => {
   return (
-    <S.PanelFrame>
+    <S.PanelFrame width='360px'>
       <SellPanel />
     </S.PanelFrame>
   )

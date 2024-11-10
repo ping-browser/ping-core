@@ -16,16 +16,16 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/application_state/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
@@ -39,9 +39,7 @@
 #include "ui/base/idle/idle.h"
 
 class GURL;
-class NotificationDisplayService;
 class PrefService;
-class Profile;
 
 namespace base {
 class OneShotTimer;
@@ -54,32 +52,37 @@ class RewardsService;
 
 namespace network {
 class SimpleURLLoader;
+class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace brave_ads {
 
+class AdsServiceObserver;
 class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
 class Database;
 class DeviceId;
+class ResourceComponent;
 struct NewTabPageAdInfo;
 
-class AdsServiceImpl : public AdsService,
-                       public bat_ads::mojom::BatAdsClient,
-                       public bat_ads::mojom::BatAdsObserver,
-                       BackgroundHelper::Observer,
-                       public ResourceComponentObserver,
-                       public brave_rewards::RewardsServiceObserver,
-                       public base::SupportsWeakPtr<AdsServiceImpl> {
+class AdsServiceImpl final : public AdsService,
+                             public bat_ads::mojom::BatAdsClient,
+                             public bat_ads::mojom::BatAdsObserver,
+                             BackgroundHelper::Observer,
+                             public ResourceComponentObserver,
+                             public brave_rewards::RewardsServiceObserver {
  public:
   explicit AdsServiceImpl(
-      Profile* profile,
+      std::unique_ptr<Delegate> delegate,
+      PrefService* prefs,
       PrefService* local_state,
-      brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-          adaptive_captcha_service,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader,
+      std::string_view channel_name,
+      const base::FilePath& profile_path,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
       std::unique_ptr<DeviceId> device_id,
       std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
+      brave_ads::ResourceComponent* resource_component,
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service);
 
@@ -91,14 +94,18 @@ class AdsServiceImpl : public AdsService,
 
   ~AdsServiceImpl() override;
 
+  void AddObserver(AdsServiceObserver* observer) override;
+  void RemoveObserver(AdsServiceObserver* observer) override;
+
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   bool IsBatAdsServiceBound() const;
 
-  void RegisterResourceComponents() const;
-  void RegisterResourceComponentsForCurrentCountryCode() const;
+  void RegisterResourceComponents();
+  void RegisterResourceComponentsForCurrentCountryCode();
+  void RegisterResourceComponentsForDefaultLanguageCode();
 
   void Migrate();
 
@@ -106,6 +113,7 @@ class AdsServiceImpl : public AdsService,
   bool UserHasOptedInToBraveNewsAds() const;
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
+  bool UserHasOptedInToSearchResultAds() const;
 
   void InitializeNotificationsForCurrentProfile();
 
@@ -125,12 +133,15 @@ class AdsServiceImpl : public AdsService,
   void InitializeRewardsWallet(size_t current_start_number);
   void InitializeRewardsWalletCallback(
       size_t current_start_number,
-      brave_rewards::mojom::RewardsWalletPtr wallet);
-  void InitializeBatAds(brave_rewards::mojom::RewardsWalletPtr rewards_wallet);
+      brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
+  void InitializeBatAds(
+      brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
   void InitializeBatAdsCallback(bool success);
 
-  void ShutdownAndResetState();
-  void ShutdownAndResetStateCallback(bool /*success*/);
+  void NotifyAdsServiceInitialized() const;
+
+  void ShutdownAndClearData();
+  void ShutdownAndClearDataCallback(bool success);
 
   void SetSysInfo();
   void SetBuildChannel();
@@ -139,7 +150,7 @@ class AdsServiceImpl : public AdsService,
   bool ShouldShowOnboardingNotification();
   void MaybeShowOnboardingNotification();
 
-  void ShowReminder(mojom::ReminderType type);
+  void ShowReminder(mojom::ReminderType mojom_reminder_type);
 
   void CloseAdaptiveCaptcha();
 
@@ -150,13 +161,14 @@ class AdsServiceImpl : public AdsService,
   void InitializeBraveNewsAdsPrefChangeRegistrar();
   void InitializeNewTabPageAdsPrefChangeRegistrar();
   void InitializeNotificationAdsPrefChangeRegistrar();
+  void InitializeSearchResultAdsPrefChangeRegistrar();
   void OnOptedInToAdsPrefChanged(const std::string& path);
   void OnCountryCodePrefChanged(const std::string& path);
   void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();
   void NotifyRewardsWalletDidUpdate(
-      brave_rewards::mojom::RewardsWalletPtr wallet);
+      brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.
@@ -191,82 +203,90 @@ class AdsServiceImpl : public AdsService,
                           UrlRequestCallback callback,
                           std::unique_ptr<std::string> response_body);
 
+  void ShowScheduledCaptchaCallback(const std::string& payment_id,
+                                    const std::string& captcha_id);
+  void SnoozeScheduledCaptchaCallback();
+
   void OnNotificationAdPositionChanged();
+
+  void ShutdownAdsService();
 
   // KeyedService:
   void Shutdown() override;
 
   // AdsService:
-  void AddBatAdsObserver(
-      mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) override;
+  void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
+                             bat_ads_observer_pending_remote) override;
+
+  bool IsBrowserUpgradeRequiredToServeAds() const override;
 
   int64_t GetMaximumNotificationAdsPerHour() const override;
-
-  void ShowScheduledCaptcha(const std::string& payment_id,
-                            const std::string& captcha_id) override;
-  void SnoozeScheduledCaptcha() override;
 
   void OnNotificationAdShown(const std::string& placement_id) override;
   void OnNotificationAdClosed(const std::string& placement_id,
                               bool by_user) override;
   void OnNotificationAdClicked(const std::string& placement_id) override;
 
+  void ClearData() override;
+
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  bool IsBrowserUpgradeRequiredToServeAds() const override;
-
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdAsDictCallback callback) override;
-  void TriggerInlineContentAdEvent(const std::string& placement_id,
-                                   const std::string& creative_instance_id,
-                                   mojom::InlineContentAdEventType event_type,
-                                   TriggerAdEventCallback callback) override;
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::InlineContentAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
 
-  std::optional<NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
+  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAdForDisplay()
       override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
-  void TriggerNewTabPageAdEvent(const std::string& placement_id,
-                                const std::string& creative_instance_id,
-                                mojom::NewTabPageAdEventType event_type,
-                                TriggerAdEventCallback callback) override;
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::NewTabPageAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type,
+      mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
-  void TriggerSearchResultAdEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                                  mojom::SearchResultAdEventType event_type,
-                                  TriggerAdEventCallback callback) override;
+  void MaybeGetSearchResultAd(const std::string& placement_id,
+                              MaybeGetSearchResultAdCallback callback) override;
+  void TriggerSearchResultAdEvent(
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+      mojom::SearchResultAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(
-      mojom::AdType ad_type,
+      mojom::AdType mojom_ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
-  void GetHistory(base::Time from_time,
-                  base::Time to_time,
-                  GetHistoryCallback callback) override;
+  void GetAdHistory(base::Time from_time,
+                    base::Time to_time,
+                    GetAdHistoryForUICallback callback) override;
 
-  void ToggleLikeAd(base::Value::Dict value,
-                    ToggleLikeAdCallback callback) override;
-  void ToggleDislikeAd(base::Value::Dict value,
-                       ToggleDislikeAdCallback callback) override;
-  void ToggleLikeCategory(base::Value::Dict value,
-                          ToggleLikeCategoryCallback callback) override;
-  void ToggleDislikeCategory(base::Value::Dict value,
-                             ToggleDislikeCategoryCallback callback) override;
-  void ToggleSaveAd(base::Value::Dict value,
-                    ToggleSaveAdCallback callback) override;
-  void ToggleMarkAdAsInappropriate(
-      base::Value::Dict value,
-      ToggleMarkAdAsInappropriateCallback callback) override;
+  void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                    ToggleReactionCallback callback) override;
+  void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                       ToggleReactionCallback callback) override;
+  void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
+                         ToggleReactionCallback callback) override;
+  void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
+                            ToggleReactionCallback callback) override;
+  void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
+                    ToggleReactionCallback callback) override;
+  void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
+                                   ToggleReactionCallback callback) override;
 
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
@@ -278,8 +298,10 @@ class AdsServiceImpl : public AdsService,
   void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
-                          bool is_error_page,
+                          bool is_new_navigation,
+                          bool is_restoring,
                           bool is_visible) override;
+  void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
 
   void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
@@ -304,22 +326,23 @@ class AdsServiceImpl : public AdsService,
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void CacheAdEventForInstanceId(const std::string& id,
-                                 const std::string& type,
-                                 const std::string& confirmation_type,
-                                 base::Time time) override;
-  void GetCachedAdEvents(const std::string& ad_type,
-                         const std::string& confirmation_type,
+  void CacheAdEventForInstanceId(
+      const std::string& id,
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type,
+      base::Time time) override;
+  void GetCachedAdEvents(mojom::AdType mojom_ad_type,
+                         mojom::ConfirmationType mojom_confirmation_type,
                          GetCachedAdEventsCallback callback) override;
   void ResetAdEventCacheForInstanceId(const std::string& id) override;
 
-  void GetBrowsingHistory(int max_count,
-                          int recent_day_range,
-                          GetBrowsingHistoryCallback callback) override;
+  void GetSiteHistory(int max_count,
+                      int recent_day_range,
+                      GetSiteHistoryCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
-  void UrlRequest(mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                   UrlRequestCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/26194) Decouple
@@ -331,24 +354,24 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/26195) Decouple load
   // resources business logic.
-  void LoadComponentResource(const std::string& id,
+  void LoadResourceComponent(const std::string& id,
                              int version,
-                             LoadComponentResourceCallback callback) override;
+                             LoadResourceComponentCallback callback) override;
   void LoadDataResource(const std::string& name,
                         LoadDataResourceCallback callback) override;
 
-  void GetScheduledCaptcha(const std::string& payment_id,
-                           GetScheduledCaptchaCallback callback) override;
-  void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                        const std::string& captcha_id) override;
+  void ShowScheduledCaptcha(const std::string& payment_id,
+                            const std::string& captcha_id) override;
 
-  void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
+  void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
                         RunDBTransactionCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A
   // business logic.
   void RecordP2AEvents(const std::vector<std::string>& events) override;
 
+  void FindProfilePref(const std::string& path,
+                       FindProfilePrefCallback callback) override;
   void GetProfilePref(const std::string& path,
                       GetProfilePrefCallback callback) override;
   void SetProfilePref(const std::string& path, base::Value value) override;
@@ -356,12 +379,16 @@ class AdsServiceImpl : public AdsService,
   void HasProfilePrefPath(const std::string& path,
                           HasProfilePrefPathCallback callback) override;
 
+  void FindLocalStatePref(const std::string& path,
+                          FindLocalStatePrefCallback callback) override;
   void GetLocalStatePref(const std::string& path,
                          GetLocalStatePrefCallback callback) override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
   void ClearLocalStatePref(const std::string& path) override;
   void HasLocalStatePrefPath(const std::string& path,
                              HasLocalStatePrefPathCallback callback) override;
+
+  void GetVirtualPrefs(GetVirtualPrefsCallback callback) override;
 
   void Log(const std::string& file,
            int32_t line,
@@ -371,15 +398,15 @@ class AdsServiceImpl : public AdsService,
   // bat_ads::mojom::BatAdsObserver:
   void OnAdRewardsDidChange() override {}
   void OnBrowserUpgradeRequiredToServeAds() override;
-  void OnIneligibleRewardsWalletToServeAds() override {}
-  void OnRemindUser(mojom::ReminderType type) override;
+  void OnIneligibleWalletToServeAds() override {}
+  void OnRemindUser(mojom::ReminderType mojom_reminder_type) override;
 
   // BackgroundHelper::Observer:
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
   // ResourceComponentObserver:
-  void OnDidUpdateResourceComponent(const std::string& manifest_version,
+  void OnResourceComponentDidChange(const std::string& manifest_version,
                                     const std::string& id) override;
   void OnDidUnregisterResourceComponent(const std::string& id) override;
 
@@ -389,6 +416,8 @@ class AdsServiceImpl : public AdsService,
   void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
+
+  bool is_shutting_down_ = false;
 
   bool browser_upgrade_required_to_serve_ads_ = false;
 
@@ -422,15 +451,21 @@ class AdsServiceImpl : public AdsService,
 
   SimpleURLLoaderList url_loaders_;
 
-  const raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  const raw_ptr<PrefService> prefs_ = nullptr;  // NOT OWNED
 
   const raw_ptr<PrefService> local_state_ = nullptr;  // NOT OWNED
+
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_ = nullptr;
+
+  const std::string channel_name_;
+
+  base::ScopedObservation<brave_ads::ResourceComponent,
+                          ResourceComponentObserver>
+      resource_component_observation_{this};
 
   const raw_ptr<history::HistoryService> history_service_ =
       nullptr;  // NOT OWNED
 
-  const raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
-      adaptive_captcha_service_ = nullptr;  // NOT OWNED
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 
   const std::unique_ptr<DeviceId> device_id_;
@@ -439,16 +474,16 @@ class AdsServiceImpl : public AdsService,
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
-  const base::FilePath base_path_;
+  const base::FilePath ads_service_path_;
 
-  const raw_ptr<NotificationDisplayService> display_service_ =
-      nullptr;  // NOT OWNED
-  const raw_ptr<brave_rewards::RewardsService> rewards_service_{
-      nullptr};  // NOT OWNED
+  base::ScopedObservation<brave_rewards::RewardsService,
+                          brave_rewards::RewardsServiceObserver>
+      rewards_service_observation_{this};
+
+  base::ObserverList<AdsServiceObserver> observers_;
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};
-
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote_;
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_associated_receiver_;
@@ -457,6 +492,8 @@ class AdsServiceImpl : public AdsService,
       bat_ads_client_notifier_remote_;
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
       bat_ads_client_notifier_pending_receiver_;
+
+  base::WeakPtrFactory<AdsServiceImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads

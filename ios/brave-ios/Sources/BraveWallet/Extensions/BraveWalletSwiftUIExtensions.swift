@@ -65,9 +65,11 @@ extension BraveWallet.NetworkInfo: Identifiable {
       contractAddress: "",
       name: symbolName,
       logo: nativeTokenLogoName ?? "",
+      isCompressed: false,
       isErc20: false,
       isErc721: false,
       isErc1155: false,
+      splTokenProgram: .unsupported,
       isNft: false,
       isSpam: false,
       symbol: symbol,
@@ -106,7 +108,6 @@ extension BraveWallet.NetworkInfo: Identifiable {
 
   private func assetIconNameByChainId(_ chainId: String) -> String? {
     if chainId.caseInsensitiveCompare(BraveWallet.MainnetChainId) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.GoerliChainId) == .orderedSame
       || chainId.caseInsensitiveCompare(BraveWallet.SepoliaChainId) == .orderedSame
     {
       return AssetImageName.ethereum.rawValue

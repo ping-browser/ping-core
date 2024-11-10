@@ -13,11 +13,14 @@ namespace webcompat_reporter {
 inline constexpr char kFPBlockSettingField[] = "fpBlockSetting";
 inline constexpr char kAdBlockSettingField[] = "adBlockSetting";
 inline constexpr char kAdBlockListsField[] = "adBlockLists";
+inline constexpr char kAdBlockComponentsVersionField[] =
+    "adBlockComponentsInfo";
 inline constexpr char kShieldsEnabledField[] = "shieldsEnabled";
 inline constexpr char kLanguagesField[] = "languages";
 inline constexpr char kLanguageFarblingField[] = "languageFarblingEnabled";
 inline constexpr char kBraveVPNEnabledField[] = "braveVPNEnabled";
 inline constexpr char kChannelField[] = "channel";
+inline constexpr char kVersionField[] = "version";
 
 inline constexpr char kSiteURLField[] = "url";
 inline constexpr char kDomainField[] = "domain";

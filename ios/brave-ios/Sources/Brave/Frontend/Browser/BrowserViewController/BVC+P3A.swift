@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import Data
 import Foundation
@@ -13,6 +14,100 @@ import Shared
 import os.log
 
 extension BrowserViewController {
+  enum CreateTabActionLocation {
+    case toolbar
+    case tabTray
+  }
+
+  func recordCreateTabAction(location: CreateTabActionLocation?) {
+    var tabCreationTotalStorage = P3ATimedStorage<Int>.tabCreationTotalStorage
+    var tabCreationFromToolbarStorage = P3ATimedStorage<Int>.tabCreationFromToolbarStorage
+
+    if let location, !privateBrowsingManager.isPrivateBrowsing {
+      tabCreationTotalStorage.add(value: 1, to: Date())
+      if location == .toolbar {
+        tabCreationFromToolbarStorage.add(value: 1, to: Date())
+      }
+    }
+
+    let toolbarCount = tabCreationFromToolbarStorage.combinedValue
+    let total = tabCreationTotalStorage.combinedValue
+
+    if total == 0 {
+      return
+    }
+
+    UmaHistogramRecordValueToBucket(
+      "Brave.Core.NewTabMethods",
+      buckets: [
+        .r(0..<25),
+        .r(25..<50),
+        .r(50..<75),
+        .r(75...),
+      ],
+      value: Int((Double(toolbarCount) / Double(total)) * 100)
+    )
+  }
+
+  func recordURLBarSubmitLocationP3A(from tab: Tab?) {
+    var urlSubmissionTotalStorage = P3ATimedStorage<Int>.urlSubmissionTotalStorage
+    var urlSubmissionNewTabStorage = P3ATimedStorage<Int>.urlSubmissionNewTabStorage
+
+    if let tab, !tab.isPrivate {
+      let isNewTab = tab.url.flatMap { InternalURL($0) }?.isAboutHomeURL == true
+      if isNewTab {
+        urlSubmissionNewTabStorage.add(value: 1, to: Date())
+      }
+      urlSubmissionTotalStorage.add(value: 1, to: Date())
+    }
+
+    let newTabCount = urlSubmissionNewTabStorage.combinedValue
+    let total = urlSubmissionTotalStorage.combinedValue
+
+    if total == 0 {
+      return
+    }
+
+    UmaHistogramRecordValueToBucket(
+      "Brave.Core.LocationNewEntries",
+      buckets: [
+        .r(0..<25),
+        .r(25..<50),
+        .r(50..<75),
+        .r(75...),
+      ],
+      value: Int((Double(newTabCount) / Double(total)) * 100)
+    )
+  }
+
+  func recordWeeklyUsage() {
+    var weeklyUsage = P3ATimedStorage<Int>.weeklyUsage
+    weeklyUsage.replaceTodaysRecordsIfLargest(value: 1)
+    let calendar = Calendar(identifier: .gregorian)
+    let mondayWeekday = 2
+    let isTodayMonday = calendar.component(.weekday, from: .now) == mondayWeekday
+    guard
+      let thisMonday = isTodayMonday
+        ? calendar.startOfDay(for: .now)
+        : calendar.nextDate(
+          after: .now,
+          matching: .init(weekday: mondayWeekday),
+          matchingPolicy: .nextTime,
+          direction: .backward
+        ),
+      let lastMonday = calendar.nextDate(
+        after: thisMonday,
+        matching: .init(weekday: mondayWeekday),
+        matchingPolicy: .nextTime,
+        direction: .backward
+      )
+    else {
+      return
+    }
+    let answer = weeklyUsage.combinedValue(in: lastMonday..<thisMonday)
+    // buckets are 0...7 but no reason to declare them in this case
+    UmaHistogramExactLinear("Brave.Core.WeeklyUsage", answer, 8)
+  }
 
   func recordDefaultBrowserLikelyhoodP3A(openedHTTPLink: Bool = false) {
     let isInstalledInThePastWeek: Bool = {
@@ -38,14 +133,15 @@ extension BrowserViewController {
     UmaHistogramEnumeration("Brave.IOS.IsLikelyDefault", sample: answer)
   }
 
-  func maybeRecordInitialShieldsP3A() {
-    if Preferences.Shields.initialP3AStateReported.value { return }
-    defer { Preferences.Shields.initialP3AStateReported.value = true }
-    recordShieldsUpdateP3A(shield: .adblockAndTp)
-    recordShieldsUpdateP3A(shield: .fpProtection)
-  }
-
-  func recordShieldsUpdateP3A(shield: BraveShield) {
+  @MainActor func maybeRecordInitialShieldsP3A() {
+    // Increment this version if metrics in this function change
+    // so that all metrics can be re-reported after update.
+    let kCurrentReportRevision = 1
+    guard kCurrentReportRevision > Preferences.Shields.initialP3AStateReportedRevision.value else {
+      return
+    }
+    recordGlobalAdBlockShieldsP3A()
+    recordGlobalFingerprintingShieldsP3A()
     let buckets: [Bucket] = [
       0,
       .r(1...5),
@@ -54,42 +150,76 @@ extension BrowserViewController {
       .r(21...30),
       .r(31...),
     ]
-    switch shield {
-    case .adblockAndTp:
-      // Q51 On how many domains has the user set the adblock setting to be lower (block less) than the default?
-      let adsBelowGlobalCount = Domain.totalDomainsWithAdblockShieldsLoweredFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainAdsSettingsBelowGlobal",
-        buckets: buckets,
-        value: adsBelowGlobalCount
-      )
-      // Q52 On how many domains has the user set the adblock setting to be higher (block more) than the default?
-      let adsAboveGlobalCount = Domain.totalDomainsWithAdblockShieldsIncreasedFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainAdsSettingsAboveGlobal",
-        buckets: buckets,
-        value: adsAboveGlobalCount
-      )
-    case .fpProtection:
-      // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
-      let fingerprintingBelowGlobalCount =
-        Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainFingerprintSettingsBelowGlobal",
-        buckets: buckets,
-        value: fingerprintingBelowGlobalCount
-      )
-      // Q54 On how many domains has the user set the FP setting to be higher (block more) than the default?
-      let fingerprintingAboveGlobalCount =
-        Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainFingerprintSettingsAboveGlobal",
-        buckets: buckets,
-        value: fingerprintingAboveGlobalCount
-      )
-    case .allOff, .noScript:
-      break
+    recordShieldsLevelUpdateP3A(buckets: buckets)
+    recordFinterprintProtectionP3A(buckets: buckets)
+
+    Preferences.Shields.initialP3AStateReportedRevision.value = kCurrentReportRevision
+  }
+
+  @MainActor private func recordShieldsLevelUpdateP3A(buckets: [Bucket]) {
+    // Q51 On how many domains has the user set the adblock setting to be lower (block less) than the default?
+    let adsBelowGlobalCount = Domain.totalDomainsWithAdblockShieldsLoweredFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainAdsSettingsBelowGlobal",
+      buckets: buckets,
+      value: adsBelowGlobalCount
+    )
+    // Q52 On how many domains has the user set the adblock setting to be higher (block more) than the default?
+    let adsAboveGlobalCount = Domain.totalDomainsWithAdblockShieldsIncreasedFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainAdsSettingsAboveGlobal",
+      buckets: buckets,
+      value: adsAboveGlobalCount
+    )
+  }
+
+  func recordFinterprintProtectionP3A(buckets: [Bucket]) {
+    // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
+    let fingerprintingBelowGlobalCount =
+      Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainFingerprintSettingsBelowGlobal",
+      buckets: buckets,
+      value: fingerprintingBelowGlobalCount
+    )
+    // Q54 On how many domains has the user set the FP setting to be higher (block more) than the default?
+    let fingerprintingAboveGlobalCount =
+      Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainFingerprintSettingsAboveGlobal",
+      buckets: buckets,
+      value: fingerprintingAboveGlobalCount
+    )
+  }
+
+  func recordGlobalAdBlockShieldsP3A() {
+    // Q46 What is the global ad blocking shields setting?
+    enum Answer: Int, CaseIterable {
+      case disabled = 0
+      case standard = 1
+      case aggressive = 2
     }
+
+    let answer = { () -> Answer in
+      switch ShieldPreferences.blockAdsAndTrackingLevel {
+      case .disabled: return .disabled
+      case .standard: return .standard
+      case .aggressive: return .aggressive
+      }
+    }()
+
+    UmaHistogramEnumeration("Brave.Shields.AdBlockSetting", sample: answer)
+  }
+
+  func recordGlobalFingerprintingShieldsP3A() {
+    // Q47 What is the global fingerprinting shields setting?
+    enum Answer: Int, CaseIterable {
+      case disabled = 0
+      case standard = 1
+      case aggressive = 2
+    }
+    let answer: Answer = Preferences.Shields.fingerprintingProtection.value ? .standard : .disabled
+    UmaHistogramEnumeration("Brave.Shields.FingerprintBlockSetting", sample: answer)
   }
 
   func recordDataSavedP3A(change: Int) {
@@ -152,31 +282,25 @@ extension BrowserViewController {
   }
 
   func recordAccessibilityDocumentsDirectorySizeP3A() {
-    func fetchDocumentsAndDataSize() -> Int? {
-      let fileManager = FileManager.default
+    @Sendable func fetchDocumentsAndDataSize() async -> Int? {
+      let fileManager = AsyncFileManager.default
 
       var directorySize = 0
 
-      if let documentsDirectory = FileManager.default.urls(
-        for: .documentDirectory,
-        in: .userDomainMask
-      ).first {
-        do {
-          if let documentsDirectorySize = try fileManager.directorySize(at: documentsDirectory) {
-            directorySize += Int(documentsDirectorySize / 1024 / 1024)
-          }
-        } catch {
-          Logger.module.error("Cant fetch document directory size")
-          return nil
-        }
+      do {
+        let documentsDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectorySize = try await fileManager.sizeOfDirectory(at: documentsDirectory)
+        directorySize += Int(documentsDirectorySize / 1024 / 1024)
+      } catch {
+        Logger.module.error("Cant fetch document directory size")
+        return nil
       }
 
       let temporaryDirectory = FileManager.default.temporaryDirectory
 
       do {
-        if let temporaryDirectorySize = try fileManager.directorySize(at: temporaryDirectory) {
-          directorySize += Int(temporaryDirectorySize / 1024 / 1024)
-        }
+        let temporaryDirectorySize = try await fileManager.sizeOfDirectory(at: temporaryDirectory)
+        directorySize += Int(temporaryDirectorySize / 1024 / 1024)
       } catch {
         Logger.module.error("Cant fetch temporary directory size")
         return nil
@@ -194,12 +318,14 @@ extension BrowserViewController {
     ]
 
     // Q103 What is the document directory size in MB?
-    if let documentsSize = fetchDocumentsAndDataSize() {
-      UmaHistogramRecordValueToBucket(
-        "Brave.Core.DocumentsDirectorySizeMB",
-        buckets: buckets,
-        value: documentsSize
-      )
+    Task { @MainActor in
+      if let documentsSize = await fetchDocumentsAndDataSize() {
+        UmaHistogramRecordValueToBucket(
+          "Brave.Core.DocumentsDirectorySizeMB",
+          buckets: buckets,
+          value: documentsSize
+        )
+      }
     }
   }
 
@@ -246,11 +372,11 @@ extension BrowserViewController {
       case ntpAndPush = 3
     }
     var answer: Answer = .none
-    if rewards.ads.isEnabled && Preferences.NewTabPage.backgroundSponsoredImages.value {
+    if rewards.ads.isEnabled && Preferences.NewTabPage.backgroundMediaType.isSponsored {
       answer = .ntpAndPush
     } else if rewards.ads.isEnabled {
       answer = .pushOnly
-    } else if Preferences.NewTabPage.backgroundSponsoredImages.value {
+    } else if Preferences.NewTabPage.backgroundMediaType.isSponsored {
       answer = .ntpOnly
     }
     UmaHistogramEnumeration("Brave.Rewards.AdTypesEnabled", sample: answer)
@@ -286,6 +412,15 @@ extension BrowserViewController {
       )
     }
   }
+
+  func maybeRecordBraveSearchDailyUsage(url: URL) {
+    let braveSearchHost = "search.brave.com"
+    let braveSearchPath = "/search"
+    if url.host() != braveSearchHost || url.path() != braveSearchPath {
+      return
+    }
+    UmaHistogramBoolean("Brave.Search.BraveDaily", true)
+  }
 }
 
 extension P3AFeatureUsage {
@@ -310,5 +445,20 @@ extension P3ATimedStorage where Value == Int {
   }
   fileprivate static var forwardNavigationActionPerformed: Self {
     .init(name: "forward-navigation-action-performed", lifetimeInDays: 7)
+  }
+  fileprivate static var weeklyUsage: Self {
+    .init(name: "browser-weekly-usage", lifetimeInDays: 14)
+  }
+  fileprivate static var urlSubmissionTotalStorage: Self {
+    .init(name: "url-bar-existing-tabs", lifetimeInDays: 7)
+  }
+  fileprivate static var urlSubmissionNewTabStorage: Self {
+    .init(name: "url-bar-new-tabs", lifetimeInDays: 7)
+  }
+  fileprivate static var tabCreationTotalStorage: Self {
+    .init(name: "tabs-created-total", lifetimeInDays: 7)
+  }
+  fileprivate static var tabCreationFromToolbarStorage: Self {
+    .init(name: "tabs-created-from-toolbar", lifetimeInDays: 7)
   }
 }

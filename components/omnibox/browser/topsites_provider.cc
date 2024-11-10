@@ -615,6 +615,6 @@ void TopSitesProvider::AddMatch(const std::u16string& match_string,
   match.destination_url = GURL(base::StrCat({kScheme, match_string}));
   match.contents = match_string;
   match.contents_class = styles;
-  match.keyword = u"brave";
+  match.keyword = u"ping";
   matches_.push_back(match);
 }

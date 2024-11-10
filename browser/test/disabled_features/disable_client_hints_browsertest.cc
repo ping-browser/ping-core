@@ -29,12 +29,12 @@
 #include "third_party/blink/public/common/features.h"
 
 namespace {
-const char kNoClientHintsHeaders[] = "/simple.html";
-const char kClientHints[] = "/ch.html";
-const char kClientHintsDelegationMerge[] = "/ch_delegation_merge.html";
-const char KClientHintsMetaHTTPEquivAcceptCH[] =
+constexpr char kNoClientHintsHeaders[] = "/simple.html";
+constexpr char kClientHints[] = "/ch.html";
+constexpr char kClientHintsDelegationMerge[] = "/ch_delegation_merge.html";
+constexpr char kClientHintsMetaHTTPEquivAcceptCH[] =
     "/ch-meta-http-equiv-accept-ch.html";
-const char KClientHintsMetaNameAcceptCH[] = "/ch-meta-name-accept-ch.html";
+constexpr char kClientHintsMetaNameAcceptCH[] = "/ch-meta-name-accept-ch.html";
 
 const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     // Individual hints features
@@ -79,7 +79,6 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   }
 
   void SetUpOnMainThread() override {
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
 
@@ -95,9 +94,9 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
     client_hints_delegation_merge_url_ =
         https_server_.GetURL(kClientHintsDelegationMerge);
     client_hints_meta_http_equiv_accept_ch_url_ =
-        https_server_.GetURL(KClientHintsMetaHTTPEquivAcceptCH);
+        https_server_.GetURL(kClientHintsMetaHTTPEquivAcceptCH);
     client_hints_meta_name_accept_ch_url_ =
-        https_server_.GetURL(KClientHintsMetaNameAcceptCH);
+        https_server_.GetURL(kClientHintsMetaNameAcceptCH);
 
     host_resolver()->AddRule("*", "127.0.0.1");
     InProcessBrowserTest::SetUpOnMainThread();
@@ -177,9 +176,17 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   void PopulateAllowedClientHints() {
     const auto& hints_map = network::GetClientHintToNameMap();
     allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAArch));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUABitness));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAFullVersionList));
+    allowed_hints_.push_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAModel));
     allowed_hints_.push_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAPlatformVersion));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAWoW64));
   }
 
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
@@ -225,7 +232,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
   }
 
   const size_t expected_default_client_hints_count = 3u;
-  const size_t expected_allowed_client_hints_count = 2u;
+  const size_t expected_allowed_client_hints_count = 6u;
 
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), no_client_hints_headers_url()));

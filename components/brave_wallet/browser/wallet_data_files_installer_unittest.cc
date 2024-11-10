@@ -9,24 +9,28 @@
 #include <utility>
 
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/scoped_path_override.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/mock_component_updater_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -62,7 +66,8 @@ class MockWalletDataFilesInstallerDelegateImpl
   raw_ptr<component_updater::ComponentUpdateService> cus_;
 };
 
-class MockBraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
+class MockBraveWalletServiceDelegateImpl
+    : public TestBraveWalletServiceDelegate {
  public:
   MockBraveWalletServiceDelegateImpl() = default;
   ~MockBraveWalletServiceDelegateImpl() override = default;
@@ -100,22 +105,11 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
     RegisterProfilePrefsForMigration(prefs_.registry());
     RegisterLocalStatePrefsForMigration(local_state_.registry());
 
-    keyring_service_ =
-        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
-    json_rpc_service_ = std::make_unique<brave_wallet::JsonRpcService>(
-        shared_url_loader_factory_, &prefs_);
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(),
-        nullptr,  // BitcoinWalletService
-        nullptr,  // ZCashWalletService
-        keyring_service_.get(), &prefs_, temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
-        std::make_unique<MockBraveWalletServiceDelegateImpl>(),
-        keyring_service_.get(), json_rpc_service_.get(), tx_service_.get(),
-        nullptr, nullptr, &prefs_, &local_state_, false);
+        std::make_unique<MockBraveWalletServiceDelegateImpl>(), &prefs_,
+        &local_state_);
+    keyring_service_ = brave_wallet_service_->keyring_service();
 
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
     installer().SetDelegate(
@@ -128,7 +122,10 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
                                           net::HTTP_REQUEST_TIMEOUT);
         }));
 
-    ASSERT_TRUE(install_dir_.CreateUniqueTempDir());
+    base::PathService::Get(component_updater::DIR_COMPONENT_USER,
+                           &install_dir_);
+    install_dir_ = install_dir_.AppendASCII(kWalletBaseDirectory);
+    base::CreateDirectory(install_dir_);
   }
 
   void TearDown() override {
@@ -149,11 +146,13 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   void CreateWallet() {
     base::RunLoop run_loop;
     keyring_service_->CreateWallet(
-        kMnemonicDivideCruise, kTestWalletPassword,
-        base::BindLambdaForTesting([&run_loop](const std::string& mnemonic) {
-          ASSERT_FALSE(mnemonic.empty());
-          run_loop.Quit();
-        }));
+        kTestWalletPassword,
+        base::BindLambdaForTesting(
+            [&run_loop](const std::optional<std::string>& mnemonic) {
+              ASSERT_TRUE(mnemonic);
+              ASSERT_FALSE(mnemonic->empty());
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
@@ -183,7 +182,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
   PrefService* local_state() { return &local_state_; }
-  base::FilePath install_dir() { return install_dir_.GetPath(); }
+  base::FilePath install_dir() { return install_dir_; }
   component_updater::MockComponentUpdateService* updater() {
     return cus_.get();
   }
@@ -193,23 +192,19 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
   BlockchainRegistry* registry() { return BlockchainRegistry::GetInstance(); }
 
-  void SetOnDemandUpdateCallbackWithComponentReady(const base::FilePath& path) {
-    EXPECT_CALL(on_demand_updater_,
-                OnDemandUpdate(kComponentId, testing::_, testing::_))
-        .WillOnce(
-            [path, this](const std::string& id,
-                         component_updater::OnDemandUpdater::Priority priority,
-                         component_updater::Callback callback) {
-              // Unblock CreateWallet once the component is registered.
-              installer().OnComponentReady(path);
-            });
+  void SetOnDemandInstallCallbackWithComponentReady(
+      const base::FilePath& path) {
+    EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+        .WillOnce([path, this](const std::string& id,
+                               component_updater::Callback callback) {
+          // Unblock CreateWallet once the component is registered.
+          installer().OnComponentReady(path);
+        });
   }
 
-  void SetOnDemandUpdateCallbackWithComponentUpdateError() {
-    EXPECT_CALL(on_demand_updater_,
-                OnDemandUpdate(kComponentId, testing::_, testing::_))
+  void SetOnDemandInstallCallbackWithComponentUpdateError() {
+    EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
         .WillOnce([this](const std::string& id,
-                         component_updater::OnDemandUpdater::Priority priority,
                          component_updater::Callback callback) {
           installer().OnEvent(update_client::UpdateClient::Observer::Events::
                                   COMPONENT_UPDATE_ERROR,
@@ -224,6 +219,8 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
  private:
+  base::ScopedPathOverride scoped_path_override_{
+      component_updater::DIR_COMPONENT_USER};
   base::test::TaskEnvironment task_environment_;
   brave_component_updater::MockOnDemandUpdater on_demand_updater_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -231,13 +228,10 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
-  std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<JsonRpcService> json_rpc_service_;
-  std::unique_ptr<TxService> tx_service_;
+  raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
-  base::ScopedTempDir install_dir_;
-  base::ScopedTempDir temp_dir_;
+  base::FilePath install_dir_;
 };
 
 TEST_F(WalletDataFilesInstallerUnitTest,
@@ -262,7 +256,7 @@ TEST_F(WalletDataFilesInstallerUnitTest, OnDemandInstallAndParsing_EmptyPath) {
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
-  SetOnDemandUpdateCallbackWithComponentReady(base::FilePath());
+  SetOnDemandInstallCallbackWithComponentReady(base::FilePath());
   RunUntilIdle();
   CreateWallet();
 
@@ -275,7 +269,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
-  SetOnDemandUpdateCallbackWithComponentReady(install_dir());
+  SetOnDemandInstallCallbackWithComponentReady(install_dir());
   CreateWallet();
 
   RunUntilIdle();
@@ -291,7 +285,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
-  SetOnDemandUpdateCallbackWithComponentReady(install_dir());
+  SetOnDemandInstallCallbackWithComponentReady(install_dir());
 
   WriteCoingeckoIdsMapToFile();
   ASSERT_TRUE(
@@ -324,7 +318,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
-  SetOnDemandUpdateCallbackWithComponentUpdateError();
+  SetOnDemandInstallCallbackWithComponentUpdateError();
   CreateWallet();
 
   RunUntilIdle();
@@ -336,7 +330,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
-  SetOnDemandUpdateCallbackWithComponentReady(install_dir());
+  SetOnDemandInstallCallbackWithComponentReady(install_dir());
   WriteCoingeckoIdsMapToFile();
 
   RestoreWallet();
@@ -352,7 +346,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
-  SetOnDemandUpdateCallbackWithComponentReady(install_dir());
+  SetOnDemandInstallCallbackWithComponentReady(install_dir());
   WriteCoingeckoIdsMapToFile();
 
   ImportFromExternalWallet();

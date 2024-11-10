@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 436fef54b1e679fb9e3149963d1b44842ce0f143..cdba8db2f475311d719fbfb081d521ada51253cf 100644
+index 3297c631e40aa95ed19907dd89f3cc1204e6c5b8..b5ccfb47f15069c10b4d14aa515e8d78d1952535 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1422,6 +1422,7 @@ static_library("extensions") {
-   } else {
-     sources += [ "api/braille_display_private/braille_controller_stub.cc" ]
+@@ -1543,6 +1543,7 @@ source_set("extensions") {
+       "//components/enterprise/data_controls/core/browser",
+     ]
    }
 +  deps += brave_extensions_resources
  }
  
- proto_library("cws_item_service_proto") {
+ # KeyedService factories initialization.

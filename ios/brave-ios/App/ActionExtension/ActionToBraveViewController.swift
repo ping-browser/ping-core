@@ -20,15 +20,13 @@ class ActionToBraveViewController: UIViewController {
     for item in extensionContext?.inputItems as? [NSExtensionItem] ?? [] {
       for provider in item.attachments ?? [] {
 
-        // Opening browser with search url
-        if provider.hasItemConformingToTypeIdentifier(UTType.text.identifier) {
-          loadAttachmentFor(type: .query, using: provider)
-          break
-        }
-
         // Opening browser with site
         if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier) {
           loadAttachmentFor(type: .url, using: provider)
+          break
+        } else {
+          // Opening browser with search url
+          loadAttachmentFor(type: .query, using: provider)
           break
         }
       }
@@ -88,7 +86,7 @@ class ActionToBraveViewController: UIViewController {
   private func createURL(for schemeType: SchemeType, with value: String) -> URL? {
     var queryItem: URLQueryItem
     var components = URLComponents()
-    components.scheme = Bundle.main.infoDictionary?["BRAVE_URL_SCHEME"] as? String ?? "brave"
+    components.scheme = Bundle.main.infoDictionary?["BRAVE_URL_SCHEME"] as? String ?? "ping"
 
     switch schemeType {
     case .query:
@@ -107,10 +105,9 @@ class ActionToBraveViewController: UIViewController {
     var responder = self as UIResponder?
 
     while let currentResponder = responder {
-      let selector = sel_registerName("openURL:")
-      if currentResponder.responds(to: selector) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-          Thread.detachNewThreadSelector(selector, toTarget: currentResponder, with: (url as NSURL))
+      if let application = currentResponder as? UIApplication {
+        DispatchQueue.main.async {
+          application.open(url, options: [:], completionHandler: nil)
         }
       }
       responder = currentResponder.next

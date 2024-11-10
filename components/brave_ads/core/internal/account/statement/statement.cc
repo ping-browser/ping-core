@@ -18,40 +18,43 @@
 namespace brave_ads {
 
 void BuildStatement(BuildStatementCallback callback) {
-  const base::Time from_time = GetTimeInDistantPast();
-  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
-
   GetTransactionsForDateRange(
-      from_time, to_time,
+      /*from_time=*/base::Time(), /*to_time=*/LocalTimeAtEndOfThisMonth(),
       base::BindOnce(
           [](BuildStatementCallback callback, const bool success,
              const TransactionList& transactions) {
             if (!success) {
               BLOG(0, "Failed to get transactions");
+
               return std::move(callback).Run(/*statement=*/nullptr);
             }
 
-            mojom::StatementInfoPtr statement = mojom::StatementInfo::New();
+            mojom::StatementInfoPtr mojom_statement =
+                mojom::StatementInfo::New();
 
-            const auto [min_last_month, max_last_month] =
-                GetEstimatedEarningsForLastMonth(transactions);
-            statement->min_earnings_last_month = min_last_month;
-            statement->max_earnings_last_month = max_last_month;
+            const auto [min_earnings_previous_month,
+                        max_earnings_previous_month] =
+                GetEstimatedEarningsForPreviousMonth(transactions);
+            mojom_statement->min_earnings_previous_month =
+                min_earnings_previous_month;
+            mojom_statement->max_earnings_previous_month =
+                max_earnings_previous_month;
 
-            const auto [min_this_month, max_this_month] =
+            const auto [min_earnings_this_month, max_earnings_this_month] =
                 GetEstimatedEarningsForThisMonth(transactions);
-            statement->min_earnings_this_month = min_this_month;
-            statement->max_earnings_this_month = max_this_month;
+            mojom_statement->min_earnings_this_month = min_earnings_this_month;
+            mojom_statement->max_earnings_this_month = max_earnings_this_month;
 
-            statement->next_payment_date = GetNextPaymentDate(transactions);
+            mojom_statement->next_payment_date =
+                GetNextPaymentDate(transactions);
 
-            statement->ads_received_this_month =
+            mojom_statement->ads_received_this_month =
                 GetAdsReceivedThisMonth(transactions);
 
-            statement->ads_summary_this_month =
+            mojom_statement->ads_summary_this_month =
                 GetAdsSummaryThisMonth(transactions);
 
-            std::move(callback).Run(std::move(statement));
+            std::move(callback).Run(std::move(mojom_statement));
           },
           std::move(callback)));
 }

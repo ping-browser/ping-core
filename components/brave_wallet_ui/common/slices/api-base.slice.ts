@@ -42,7 +42,7 @@ export function createWalletApiBase() {
       'PriceHistory',
       'PricesHistory',
       'Transactions',
-      'TransactionSimulationsEnabled',
+      'TransactionSimulationsOptIn',
       'UserBlockchainTokens',
       'NftDiscoveryEnabledStatus',
       'BraveRewards-Info',
@@ -56,7 +56,6 @@ export function createWalletApiBase() {
       'CoingeckoId',
       'AutoPinEnabled',
       'SimpleHashSpamNFTs',
-      'LocalIPFSNodeStatus',
       'TokenInfo',
       'EthTokenDecimals',
       'EthTokenSymbol',
@@ -72,11 +71,11 @@ export function createWalletApiBase() {
       'PendingSwitchChainRequests',
       'PendingDecryptRequest',
       'PendingEncryptRequest',
-      'PendingSignTransactionRequests',
-      'PendingSignAllTransactionsRequests',
+      'PendingSignSolTransactionsRequests',
       'PinnableNftIds',
       'PendingSignMessageRequests',
-      'PendingSignMessageErrors'
+      'PendingSignMessageErrors',
+      'ActiveOrigin'
     ],
     endpoints: ({ mutation, query }) => ({})
   })
@@ -85,7 +84,7 @@ export function createWalletApiBase() {
 export const ACCOUNT_TAG_IDS = {
   REGISTRY: 'REGISTRY',
   SELECTED: 'SELECTED'
-}
+} as const
 
 export const NETWORK_TAG_IDS = {
   HIDDEN: 'HIDDEN',
@@ -97,6 +96,10 @@ export const NETWORK_TAG_IDS = {
   SELECTED: 'SELECTED',
   SWAP_SUPPORTED: 'SWAP_SUPPORTED',
   VISIBLE: 'VISIBLE'
+} as const
+
+export const TOKEN_TAG_IDS = {
+  REGISTRY: 'REGISTRY'
 } as const
 
 export type WalletApiBase = ReturnType<typeof createWalletApiBase>

@@ -12,10 +12,8 @@
 #include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/rand_util.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -27,17 +25,6 @@ namespace brave_shields {
 namespace {
 
 constexpr size_t kHashSize = 32;
-const char kAdBlockResourceComponentName[] = "Brave Ad Block Resources Library";
-const char kAdBlockResourceComponentId[] = "blhkcadgbdffefgjpldgmejkjljinmle";
-const char kAdBlockResourceComponentBase64PublicKey[] =
-       "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArZUCk8AVlgg5PKFweivKwThDmwfCdIPQ5fdoRBzoPKwjXHGSm9ZVglL5Y2S3v8vnI1pf55zANO/cW6pVze8SAuXmQh234UglhDaeJfzjkZemIBqKxdeWX004Im7CuPTXPk2Obb1k6jZz6YHFY/nl+Cg7bDbAkT/zCQc5mIPYpNlA/S5hSFR1vQ0TBLNUd2vR8E7wZmqggUYU7F1aMA2MWIVwqYkOvqjzj55UrKYIquqGKe2eih8Aoyqks00Yh8mSpmJs43PeuBO3Wv44Sz6GNUtB6wch4e1cQwccVoyB8YYLFy3LKrybtOL1mI2KB0UdAXGwGh0f9CgjTvh1M44rOQIDAQAB";
-       
-const char kAdBlockFilterListCatalogComponentName[] =
-    "Brave Ad Block List Catalog";
-const char kAdBlockFilterListCatalogComponentId[] =
-    "bjneejakfglnppfnebmlgaolhghnplaa";
-const char kAdBlockFilterListCatalogComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiO2W67NWAbLMfHvBkFreLc6ulCFv509BL4nmK6Tmpd0wNJwMYtjHDkAjOaCZoQrcMGf+LSIf6NspzFoVjJry/lIaA0wfHrfZeQZXKsCo/+J30+KTGK0CzNzhg0QWZiuFb3dxfeAu7JPkA9kUsawHoXKl8cGTUFz25/M8kX8LbzU/7Nlwbadqr/F7hvOygZXo2BgfBBOzDGGWMVZUEKVe8o4oSXOfv2P6bUTi87XqGe2XY8312YpGQOfA+rVG7vYVuZagfy/MYN07N4rKRK2PXWr6oGdiAJlVqEraB7cr9LjcoTn2dzVKh5ps1T9EIYX6HBSrOyriDbDqhDdZLtbflQIDAQAB";
 
 class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
@@ -132,7 +119,7 @@ base::FilePath AdBlockComponentInstallerPolicy::GetRelativeInstallDir() const {
 
 void AdBlockComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  hash->assign(component_hash_, component_hash_ + kHashSize);
+  hash->assign(component_hash_, UNSAFE_TODO(component_hash_ + kHashSize));
 }
 
 std::string AdBlockComponentInstallerPolicy::GetName() const {
@@ -149,7 +136,11 @@ bool AdBlockComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void OnRegistered(const std::string& component_id) {
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
+  // Unlike other components, which are only installed but not updated in
+  // `OnRegistered`, we do always want to update the ad block component upon
+  // registration.
+  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+      component_id, component_updater::OnDemandUpdater::Priority::FOREGROUND);
 }
 
 }  // namespace
@@ -168,16 +159,6 @@ void RegisterAdBlockDefaultResourceComponent(
           kAdBlockResourceComponentName, callback));
   installer->Register(
       cus, base::BindOnce(&OnRegistered, kAdBlockResourceComponentId));
-}
-
-void CheckAdBlockComponentsUpdate() {
-  auto runner = base::SequencedTaskRunner::GetCurrentDefault();
-
-  runner->PostDelayedTask(FROM_HERE, base::BindOnce([]() {
-                            BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
-                                kAdBlockResourceComponentId);
-                          }),
-                          base::Seconds(base::RandInt(0, 10)));
 }
 
 void RegisterAdBlockFilterListCatalogComponent(

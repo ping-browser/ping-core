@@ -10,20 +10,20 @@
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_ads {
@@ -64,42 +64,42 @@ void CatalogUrlRequest::Fetch() {
   is_fetching_ = true;
 
   CatalogUrlRequestBuilder url_request_builder;
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  UrlRequest(std::move(url_request),
-             base::BindOnce(&CatalogUrlRequest::FetchCallback,
-                            weak_factory_.GetWeakPtr()));
+  GetAdsClient()->UrlRequest(std::move(mojom_url_request),
+                             base::BindOnce(&CatalogUrlRequest::FetchCallback,
+                                            weak_factory_.GetWeakPtr()));
 }
 
 void CatalogUrlRequest::FetchCallback(
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(7, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(7, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
   is_fetching_ = false;
 
-  if (url_response.status_code == net::kHttpUpgradeRequired) {
+  if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
     BLOG(1, "Failed to request catalog as a browser upgrade is required");
     return AdsNotifierManager::GetInstance()
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
 
-  if (url_response.status_code == net::HTTP_NOT_MODIFIED) {
+  if (mojom_url_response.status_code == net::HTTP_NOT_MODIFIED) {
     BLOG(1, "Catalog is up to date");
     return FetchAfterDelay();
   }
 
-  if (url_response.status_code != net::HTTP_OK) {
+  if (mojom_url_response.status_code != net::HTTP_OK) {
     return FailedToFetchCatalog();
   }
 
   BLOG(1, "Parsing catalog");
   const std::optional<CatalogInfo> catalog =
-      json::reader::ReadCatalog(url_response.body);
+      json::reader::ReadCatalog(mojom_url_response.body);
   if (!catalog) {
-    BLOG(1, "Failed to parse catalog");
+    BLOG(0, "Failed to parse catalog");
     return FailedToFetchCatalog();
   }
 

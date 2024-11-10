@@ -4,10 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { setIconBasePath } from '@brave/leo/react/icon'
+import '@brave/leo/tokens/css/variables.css'
 
 import '$web-components/app.global.scss'
 import { loadTimeData } from '../../../common/loadTimeData'
@@ -15,7 +16,6 @@ import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import vpnDarkTheme from './theme/vpn-dark'
 import vpnLightTheme from './theme/vpn-light'
 import Container from './container'
-import { PanelWrapper } from './style'
 import store from './state/store'
 import getPanelBrowserAPI from './api/panel_browser_api'
 
@@ -23,6 +23,8 @@ setIconBasePath('//resources/brave-icons')
 
 function App () {
   React.useEffect(() => {
+    getPanelBrowserAPI().panelHandler.showUI()
+
     const onVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         getPanelBrowserAPI().panelHandler.showUI()
@@ -42,9 +44,7 @@ function App () {
         dark={vpnDarkTheme}
         light={vpnLightTheme}
       >
-        <PanelWrapper>
-          <Container />
-        </PanelWrapper>
+        <Container />
       </BraveCoreThemeProvider>
     </Provider>
   )
@@ -52,10 +52,8 @@ function App () {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  render(<App />, document.getElementById('mountPoint'),
-  () => {
-    getPanelBrowserAPI().panelHandler.showUI()
-  })
+  const root = createRoot(document.getElementById('mountPoint')!)
+  root.render(<App />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

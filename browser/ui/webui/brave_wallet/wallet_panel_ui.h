@@ -14,11 +14,15 @@
 #include "brave/browser/ui/webui/brave_wallet/panel_handler/wallet_panel_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
-#include "content/public/browser/web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+namespace content {
+class BrowserContext;
+}
 
 class WalletPanelUI : public TopChromeWebUIController,
                       public brave_wallet::mojom::PanelHandlerFactory {
@@ -43,7 +47,6 @@ class WalletPanelUI : public TopChromeWebUIController,
  private:
   // brave_wallet::mojom::PanelHandlerFactory:
   void CreatePanelHandler(
-      mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
@@ -68,16 +71,16 @@ class WalletPanelUI : public TopChromeWebUIController,
           solana_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
           fil_tx_manager_proxy,
+      mojo::PendingReceiver<brave_wallet::mojom::BtcTxManagerProxy>
+          bitcoin_tx_manager_proxy_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
           brave_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
           brave_wallet_p3a,
-      mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
-          brave_wallet_pin_service_receiver,
-      mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-          brave_wallet_auto_pin_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
-          brave_wallet_ipfs_service_receiver) override;
+          brave_wallet_ipfs_service_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
+          meld_integration_service) override;
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
@@ -88,6 +91,17 @@ class WalletPanelUI : public TopChromeWebUIController,
       panel_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class WalletPanelUIConfig : public DefaultTopChromeWebUIConfig<WalletPanelUI> {
+ public:
+  WalletPanelUIConfig();
+
+  // WebUIConfig::
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+
+  // TopChromeWebUIConfig::
+  bool ShouldAutoResizeHost() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_

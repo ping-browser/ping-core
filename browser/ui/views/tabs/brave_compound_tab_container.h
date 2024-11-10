@@ -38,7 +38,8 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   void TransferTabBetweenContainers(int from_model_index,
                                     int to_model_index) override;
   void Layout(PassKey) override;
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   gfx::Size GetMinimumSize() const override;
   views::SizeBounds GetAvailableSize(const views::View* child) const override;
   Tab* AddTab(std::unique_ptr<Tab> tab,
@@ -60,8 +61,7 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   BrowserRootView::DropTarget* GetDropTarget(
       gfx::Point loc_in_local_coords) override;
   std::optional<BrowserRootView::DropIndex> GetDropIndex(
-      const ui::DropTargetEvent& event,
-      bool allow_replacement) override;
+      const ui::DropTargetEvent& event) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);

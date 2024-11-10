@@ -6,10 +6,11 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,19 +18,18 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kInvalidJsonFilename[] = "invalid.json";
+constexpr char kLegacyClientMigrationJsonFilename[] =
+    "legacy_client_migration.json";
 }  // namespace
 
-class BraveAdsLegacyClientMigrationTest : public UnitTestBase {
- protected:
-  void SetUpMocks() override {
-    SetProfileBooleanPrefValue(prefs::kHasMigratedClientState, false);
-  }
-};
+class BraveAdsLegacyClientMigrationTest : public test::TestBase {};
 
 TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kClientStateFilename));
+  test::SetProfileBooleanPrefValue(prefs::kHasMigratedClientState, false);
+
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
+      kLegacyClientMigrationJsonFilename));
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
@@ -39,10 +39,26 @@ TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
   EXPECT_TRUE(HasMigratedClientState());
 }
 
-TEST_F(BraveAdsLegacyClientMigrationTest, ResetInvalidState) {
+TEST_F(BraveAdsLegacyClientMigrationTest, AlreadyMigrated) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
-                                             kClientStateFilename));
+  test::SetProfileBooleanPrefValue(prefs::kHasMigratedClientState, true);
+
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(kClientJsonFilename));
+
+  // Act & Assert
+  base::MockCallback<InitializeCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  MigrateClientState(callback.Get());
+
+  EXPECT_TRUE(HasMigratedClientState());
+}
+
+TEST_F(BraveAdsLegacyClientMigrationTest, ResetMalformedClientState) {
+  // Arrange
+  test::SetProfileBooleanPrefValue(prefs::kHasMigratedClientState, false);
+
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
+      test::kMalformedJsonFilename, kClientJsonFilename));
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;

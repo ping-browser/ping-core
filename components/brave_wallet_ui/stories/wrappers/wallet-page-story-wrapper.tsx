@@ -22,10 +22,14 @@ import {
   UIState
 } from '../../constants/types'
 
+// theme
+import LightDarkThemeProvider from '../../../common/BraveCoreThemeProvider'
+import walletDarkTheme from '../../theme/wallet-dark'
+import walletLightTheme from '../../theme/wallet-light'
+
 // Mocks
-import { ApiProxyContext } from '../../common/context/api-proxy.context'
 import { WalletApiDataOverrides } from '../../constants/testing_types'
-import getAPIProxy from '../../common/async/bridge' // aut-mocked by complier
+import '../locale'
 
 export interface WalletPageStoryProps {
   walletStateOverride?: Partial<WalletState>
@@ -35,8 +39,6 @@ export interface WalletPageStoryProps {
   apiOverrides?: WalletApiDataOverrides
   initialRoute?: WalletRoutes
 }
-
-const mockedProxy = getAPIProxy()
 
 export const WalletPageStory: React.FC<
   React.PropsWithChildren<WalletPageStoryProps>
@@ -69,20 +71,24 @@ export const WalletPageStory: React.FC<
   ])
 
   React.useEffect(() => {
-    store && store.dispatch(WalletActions.initialize({}))
+    store && store.dispatch(WalletActions.initialize())
   }, [store])
 
   // render
   return (
-    <MemoryRouter
-      initialEntries={[initialRoute || WalletRoutes.OnboardingWelcome]}
+    <LightDarkThemeProvider
+      initialThemeType={'Light'}
+      dark={walletDarkTheme}
+      light={walletLightTheme}
     >
-      <Provider store={store}>
-        <ApiProxyContext.Provider value={mockedProxy}>
-          {children}
-        </ApiProxyContext.Provider>
-      </Provider>
-    </MemoryRouter>
+      <MemoryRouter
+        initialEntries={[initialRoute || WalletRoutes.OnboardingWelcome]}
+      >
+        <Provider store={store}>
+            {children}
+        </Provider>
+      </MemoryRouter>
+    </LightDarkThemeProvider>
   )
 }
 

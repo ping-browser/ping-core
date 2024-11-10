@@ -7,7 +7,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -76,7 +77,6 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII("brave-wallet");
@@ -85,7 +85,8 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(https_server()->Start());
 
     keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
+        BraveWalletServiceFactory::GetServiceForContext(browser()->profile())
+            ->keyring_service();
   }
 
   content::WebContents* web_contents() {

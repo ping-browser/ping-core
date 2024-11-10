@@ -90,13 +90,12 @@ export function useZeroEx(params: SwapParams) {
                     .format(),
                 toToken: toToken.contractAddress,
                 slippagePercentage: slippageTolerance,
-                routePriority:
-                  fromToken.chainId === toToken.chainId
-                    ? BraveWallet.RoutePriority.kCheapest
-                    : BraveWallet.RoutePriority.kRecommended
+                routePriority: BraveWallet.RoutePriority.kCheapest,
+                provider: BraveWallet.SwapProvider.kZeroEx
               },
               jupiterTransactionParams: undefined,
-              lifiTransactionParams: undefined
+              lifiTransactionParams: undefined,
+              squidTransactionParams: undefined
             },
             'zeroExTransactionParams'
           )
@@ -121,7 +120,7 @@ export function useZeroEx(params: SwapParams) {
           fromAccount,
           to,
           value: new Amount(value).toHex(),
-          gas: new Amount(estimatedGas).toHex(),
+          gasLimit: new Amount(estimatedGas).toHex(),
           data: hexStrToNumberArray(data),
           network: fromNetwork
         })

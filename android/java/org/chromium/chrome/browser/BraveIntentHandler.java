@@ -17,7 +17,6 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.content_public.browser.BrowserStartupController;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 
 public class BraveIntentHandler {
     private static final String TAG = "BraveIntentHandler";
@@ -38,6 +37,7 @@ public class BraveIntentHandler {
         String url = IntentHandler.getUrlFromVoiceSearchResult(intent);
         if (url == null) url = getUrlForCustomTab(intent);
         if (url == null) url = getUrlForWebapp(intent);
+        if (url == null) url = IntentHandler.getUrlFromShareIntent(intent);
         if (url == null) url = intent.getDataString();
         if (url == null) url = getUrlFromText(intent);
         if (url == null) url = getWebSearchUrl(intent);
@@ -74,7 +74,7 @@ public class BraveIntentHandler {
                                     .getUrlForSearchQuery(query);
                         }
                     });
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             Log.e(TAG, "Could not retrieve search query: " + e);
         }
         return null;

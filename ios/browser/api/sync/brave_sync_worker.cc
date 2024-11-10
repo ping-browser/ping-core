@@ -30,7 +30,7 @@
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/web/public/thread/web_thread.h"
@@ -227,14 +227,14 @@ std::string BraveSyncWorker::GetQrCodeJsonFromHexSeed(
 }
 
 brave_sync::QrCodeDataValidationResult
-BraveSyncWorker::GetQrCodeValidationResult(const std::string json) {
+BraveSyncWorker::GetQrCodeValidationResult(const std::string& json) {
   DCHECK(!json.empty());
   return brave_sync::QrCodeDataValidator::ValidateQrDataJson(json);
 }
 
 brave_sync::TimeLimitedWords::ValidationStatus
 BraveSyncWorker::GetWordsValidationResult(
-    const std::string time_limited_words) {
+    const std::string& time_limited_words) {
   DCHECK(!time_limited_words.empty());
   auto words_with_status =
       brave_sync::TimeLimitedWords::Parse(time_limited_words);

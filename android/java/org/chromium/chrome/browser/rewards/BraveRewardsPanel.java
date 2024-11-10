@@ -111,7 +111,6 @@ public class BraveRewardsPanel
     private static final String SUPPORT_URL = "https://ping-browser.com/faqs-and-help";
     private static final String BRAVE_REWARDS_PAGE = "https://ping-browser.com/faqs-and-help";
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://ping-browser.com/faqs-and-help";
-    private static final String BRAVE_REWARDS_RESET_PAGE = "ping://rewards#reset";
 
     private static final String TAG = "BraveRewards";
     private static final int UPDATE_BALANCE_INTERVAL = 60000; // In milliseconds
@@ -835,7 +834,7 @@ public class BraveRewardsPanel
                         @Override
                         public void onClick(View v) {
                             mBraveRewardsNativeWorker.deleteNotification(mCurrentNotificationId);
-                            assert (BraveReflectionUtil.EqualTypes(
+                            assert (BraveReflectionUtil.equalTypes(
                                     mActivity.getClass(), BraveActivity.class));
                             BraveActivity.class
                                     .cast(mActivity)
@@ -1161,7 +1160,7 @@ public class BraveRewardsPanel
                         mActivity,
                         R.color.rewards_panel_notification_secondary_text_color,
                         (textView) -> {
-                            TabUtils.openUrlInNewTab(false, BRAVE_REWARDS_RESET_PAGE);
+                            TabUtils.openUrlInNewTab(false, BraveActivity.BRAVE_REWARDS_RESET_PAGE);
                             dismiss();
                         });
         NoUnderlineClickableSpan tosClickableSpan =
@@ -1390,7 +1389,6 @@ public class BraveRewardsPanel
         mWalletBalanceProgress.setVisibility(View.VISIBLE);
         mBraveRewardsNativeWorker.fetchBalance();
         mBraveRewardsNativeWorker.getRecurringDonations();
-        mBraveRewardsNativeWorker.getAutoContributeProperties();
         mBraveRewardsNativeWorker.getAdsAccountStatement();
 
         mBraveRewardsNativeWorker.getCurrentBalanceReport();
@@ -1830,9 +1828,10 @@ public class BraveRewardsPanel
             String actionText = mActivity.getString(R.string.retry_text);
             if (errorMessage.equals(WALLET_GENERATION_DISABLED_ERROR)) {
                 title = mActivity.getString(R.string.wallet_generation_disabled_error_title);
-                text = String.format(
-                        mActivity.getString(R.string.wallet_generation_disabled_error_text),
-                        mActivity.getResources().getString(R.string.learn_more));
+                text =
+                        String.format(
+                                mActivity.getString(R.string.wallet_generation_disabled_error_text),
+                                mActivity.getResources().getString(R.string.learn_more));
                 SpannableString spannableWithLearnMore = learnMoreSpannableString(text);
                 responseModalText.setMovementMethod(LinkMovementMethod.getInstance());
                 responseModalText.setText(spannableWithLearnMore);
@@ -2072,20 +2071,29 @@ public class BraveRewardsPanel
             mSwitchAutoContribute.setOnCheckedChangeListener(mAutoContributeSwitchListener);
         }
         updatePublisherStatus(mBraveRewardsNativeWorker.getPublisherStatus(mCurrentTabId));
+        mBraveRewardsNativeWorker.getAutoContributeProperties();
     }
 
     @Override
     public void onGetAutoContributeProperties() {
         if (mBraveRewardsNativeWorker != null) {
-            int shouldShow =
-                    mBraveRewardsNativeWorker.isAutoContributeEnabled() ? View.VISIBLE : View.GONE;
-            mPopupView.findViewById(R.id.attention_layout).setVisibility(shouldShow);
-            mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(shouldShow);
-            mPopupView
-                    .findViewById(R.id.auto_contribute_summary_seperator)
-                    .setVisibility(shouldShow);
-            mPopupView.findViewById(R.id.auto_contribute_summary_layout).setVisibility(shouldShow);
+            int publisherStatus = mBraveRewardsNativeWorker.getPublisherStatus(mCurrentTabId);
+            boolean shouldShow =
+                    (mBraveRewardsNativeWorker.isAutoContributeEnabled()
+                            && publisherStatus != PublisherStatus.NOT_VERIFIED
+                            && publisherStatus != PublisherStatus.WEB3_ENABLED);
+            setAutoContributionvisibility(shouldShow);
         }
+    }
+
+    private void setAutoContributionvisibility(boolean shouldShow) {
+        int visibility = shouldShow ? View.VISIBLE : View.GONE;
+        mPopupView.findViewById(R.id.attention_layout).setVisibility(visibility);
+        mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(visibility);
+        mPopupView.findViewById(R.id.divider_line).setVisibility(visibility);
+        mPopupView.findViewById(R.id.divider_line2).setVisibility(visibility);
+        mPopupView.findViewById(R.id.auto_contribute_summary_seperator).setVisibility(visibility);
+        mPopupView.findViewById(R.id.auto_contribute_summary_layout).setVisibility(visibility);
     }
 
     @Override
@@ -2115,7 +2123,6 @@ public class BraveRewardsPanel
     }
 
     private void updatePublisherStatus(int pubStatus) {
-        String verifiedText = "";
         TextView publisherVerified = mPopupView.findViewById(R.id.publisher_verified);
         publisherVerified.setAlpha(1f);
         ImageView refreshPublisher = mPopupView.findViewById(R.id.refresh_publisher);
@@ -2134,42 +2141,48 @@ public class BraveRewardsPanel
                         mBraveRewardsNativeWorker.refreshPublisher(pubId);
                     }
                 }));
-        if (pubStatus != PublisherStatus.NOT_VERIFIED) {
-            verifiedText =
-                    mPopupView.getResources().getString(R.string.brave_ui_verified_publisher);
-            publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.rewards_verified_tick_icon, 0, 0, 0);
-        } else {
-            verifiedText =
-                    mPopupView.getResources().getString(R.string.brave_ui_not_verified_publisher);
-            publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.rewards_unverified_tick_icon, 0, 0, 0);
-            TextView btnSendTip = mPopupView.findViewById(R.id.btn_send_tip);
-            btnSendTip.setEnabled(false);
-            btnSendTip.setClickable(false);
-            btnSendTip.setBackgroundDrawable(
-                    ResourcesCompat.getDrawable(ContextUtils.getApplicationContext().getResources(),
-                            R.drawable.send_contribution_button_background, /* theme= */ null));
-            mPopupView.findViewById(R.id.attention_layout).setVisibility(View.GONE);
-            mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(View.GONE);
-            mPopupView.findViewById(R.id.divider_line).setVisibility(View.GONE);
-            mPopupView.findViewById(R.id.divider_line2).setVisibility(View.GONE);
-            mPopupView.findViewById(R.id.monthly_contribution_layout).setVisibility(View.GONE);
-            mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
-                    .setVisibility(View.GONE);
-            mPopupView.findViewById(R.id.auto_contribute_summary_layout).setVisibility(View.GONE);
-            TextView infoCreatorNotVerified =
-                    mPopupView.findViewById(R.id.info_creator_not_verified);
-            infoCreatorNotVerified.setVisibility(View.VISIBLE);
+        TextView btnSendTip = mPopupView.findViewById(R.id.btn_send_tip);
+        TextView infoCreatorNotVerified = mPopupView.findViewById(R.id.info_creator_not_verified);
+        boolean isVerified = (pubStatus != PublisherStatus.NOT_VERIFIED);
+        String verifiedText =
+                mPopupView
+                        .getResources()
+                        .getString(
+                                isVerified
+                                        ? R.string.brave_ui_verified_publisher
+                                        : R.string.brave_ui_not_verified_publisher);
+        publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
+                (isVerified
+                        ? R.drawable.rewards_verified_tick_icon
+                        : R.drawable.rewards_unverified_tick_icon),
+                0,
+                0,
+                0);
+        btnSendTip.setEnabled(isVerified);
+        btnSendTip.setClickable(isVerified);
+        btnSendTip.setBackgroundDrawable(
+                ResourcesCompat.getDrawable(
+                        ContextUtils.getApplicationContext().getResources(),
+                        (isVerified
+                                ? R.drawable.blue_48_rounded_bg
+                                : R.drawable.send_contribution_button_background),
+                        /* theme= */ null));
+        infoCreatorNotVerified.setVisibility(isVerified ? View.GONE : View.VISIBLE);
+        publisherVerified.setText(verifiedText);
+        publisherVerified.setVisibility(View.VISIBLE);
+        if (!isVerified) {
             String notVerifiedText =
-                    String.format(mActivity.getString(R.string.info_creator_not_verified),
+                    String.format(
+                            mActivity.getString(R.string.info_creator_not_verified),
                             mActivity.getResources().getString(R.string.learn_more));
             SpannableString spannableLearnMore = learnMoreSpannableString(notVerifiedText);
             infoCreatorNotVerified.setMovementMethod(LinkMovementMethod.getInstance());
             infoCreatorNotVerified.setText(spannableLearnMore);
         }
-        publisherVerified.setText(verifiedText);
-        publisherVerified.setVisibility(View.VISIBLE);
+        if (pubStatus == PublisherStatus.NOT_VERIFIED
+                || pubStatus == PublisherStatus.WEB3_ENABLED) {
+            setAutoContributionvisibility(false);
+        }
     }
 
     @Override

@@ -42,6 +42,13 @@ export const isValidPanelNavigationOption = (
   )
 }
 
+// const BridgeOption: NavOption = {
+//   id: 'bridge',
+//   name: 'braveWalletBridge',
+//   icon: 'web3-bridge',
+//   route: WalletRoutes.Bridge
+// }
+
 export const BuySendSwapDepositOptions: NavOption[] = [
   // {
   //   id: 'buy',
@@ -55,12 +62,13 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     icon: 'send',
     route: WalletRoutes.Send
   },
-  // {
-  //   id: 'swap',
-  //   name: 'braveWalletSwap',
-  //   icon: 'currency-exchange',
-  //   route: WalletRoutes.Swap
-  // },
+//   {
+//     id: 'swap',
+//     name: 'braveWalletSwap',
+//     icon: 'currency-exchange',
+//     route: WalletRoutes.Swap
+//   },
+  // BridgeOption,
   {
     id: 'deposit',
     name: 'braveWalletDepositCryptoButton',
@@ -76,6 +84,27 @@ const ActivityNavOption: NavOption = {
   route: WalletRoutes.Activity
 }
 
+const PortfolioActivityNavOption: NavOption = {
+  id: 'activity',
+  name: 'braveWalletActivity',
+  icon: 'activity',
+  route: WalletRoutes.PortfolioActivity
+}
+
+const AssetsNavOption: NavOption = {
+  id: 'assets',
+  name: 'braveWalletAccountsAssets',
+  icon: 'coins',
+  route: WalletRoutes.PortfolioAssets
+}
+
+// const ExploreNavOption: NavOption = {
+//   id: 'explore',
+//   name: 'braveWalletTopNavExplore',
+//   icon: 'discover',
+//   route: WalletRoutes.Explore
+// }
+
 export const PanelNavOptions: NavOption[] = [
   {
     id: 'portfolio',
@@ -83,19 +112,13 @@ export const PanelNavOptions: NavOption[] = [
     icon: 'coins',
     route: WalletRoutes.Portfolio
   },
-  ActivityNavOption,
   {
     id: 'accounts',
     name: 'braveWalletTopNavAccounts',
     icon: 'user-accounts',
     route: WalletRoutes.Accounts
   },
-  {
-    id: 'market',
-    name: 'braveWalletTopNavMarket',
-    icon: 'discover',
-    route: WalletRoutes.Market
-  }
+  // ExploreNavOption
 ]
 
 export const NavOptions: NavOption[] = [
@@ -112,12 +135,7 @@ export const NavOptions: NavOption[] = [
     icon: 'user-accounts',
     route: WalletRoutes.Accounts
   },
-  // {
-  //   id: 'market',
-  //   name: 'braveWalletTopNavMarket',
-  //   icon: 'discover',
-  //   route: WalletRoutes.Market
-  // }
+  // ExploreNavOption
 ]
 
 export const AllNavOptions: NavOption[] = [
@@ -127,17 +145,37 @@ export const AllNavOptions: NavOption[] = [
 ]
 
 export const PortfolioNavOptions: NavOption[] = [
-  {
-    id: 'assets',
-    name: 'braveWalletAccountsAssets',
-    icon: 'coins',
-    route: WalletRoutes.PortfolioAssets
-  },
+  AssetsNavOption,
   {
     id: 'nfts',
     name: 'braveWalletTopNavNFTS',
     icon: 'grid04',
     route: WalletRoutes.PortfolioNFTs
+  }
+]
+
+export const PortfolioPanelNavOptions: NavOption[] = [
+  ...PortfolioNavOptions,
+  PortfolioActivityNavOption
+]
+
+export const PortfolioPanelNavOptionsNoNFTsTab: NavOption[] = [
+  AssetsNavOption,
+  PortfolioActivityNavOption
+]
+
+export const ExploreNavOptions: NavOption[] = [
+  {
+    id: 'market',
+    name: 'braveWalletTopNavMarket',
+    icon: 'discover',
+    route: WalletRoutes.Market
+  },
+  {
+    id: 'web3',
+    name: 'braveWalletWeb3',
+    icon: 'discover',
+    route: WalletRoutes.Web3
   }
 ]
 
@@ -211,26 +249,4 @@ export const AccountDetailsOptions: NavOption[] = [
     icon: '',
     route: AccountPageTabs.AccountTransactionsSub
   }
-]
-
-export const SendSwapBridgeOptions: NavOption[] = [
-  {
-    id: 'send',
-    name: 'braveWalletSend',
-    icon: 'send',
-    route: WalletRoutes.Send
-  },
-  {
-    id: 'swap',
-    name: 'braveWalletSwap',
-    icon: 'currency-exchange',
-    route: WalletRoutes.Swap
-  }
-  // Bridge is not yet implemented
-  // {
-  //   id: 'bridge',
-  //   name: 'braveWalletBridge',
-  //   icon: 'bridge',
-  //   route: WalletRoutes.Bridge
-  // }
 ]

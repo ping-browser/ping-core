@@ -17,15 +17,14 @@ import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
-  getAccountType,
   groupAccountsById,
   sortAccountsByName
 } from '../../../../utils/account-utils'
 import { makeAccountRoute } from '../../../../utils/routes-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { getPriceIdForToken } from '../../../../utils/pricing-utils'
 
 // Styled Components
-import { SectionTitle } from './style'
+import { SectionTitle, AccountsListWrapper } from './style'
 
 import { Column, Row } from '../../../shared/style'
 
@@ -86,16 +85,22 @@ export const Accounts = () => {
   }, [accounts])
 
   const trezorAccounts = React.useMemo(() => {
-    const foundTrezorAccounts = accounts.filter(
-      (account) => getAccountType(account) === 'Trezor'
-    )
+    const foundTrezorAccounts = accounts.filter((account) => {
+      return (
+        account.accountId.kind === BraveWallet.AccountKind.kHardware &&
+        account.hardware?.vendor === BraveWallet.HardwareVendor.kTrezor
+      )
+    })
     return groupAccountsById(foundTrezorAccounts, 'deviceId')
   }, [accounts])
 
   const ledgerAccounts = React.useMemo(() => {
-    const foundLedgerAccounts = accounts.filter(
-      (account) => getAccountType(account) === 'Ledger'
-    )
+    const foundLedgerAccounts = accounts.filter((account) => {
+      return (
+        account.accountId.kind === BraveWallet.AccountKind.kHardware &&
+        account.hardware?.vendor === BraveWallet.HardwareVendor.kLedger
+      )
+    })
     return groupAccountsById(foundLedgerAccounts, 'deviceId')
   }, [accounts])
 
@@ -131,7 +136,7 @@ export const Accounts = () => {
 
   const trezorList = React.useMemo(() => {
     return trezorKeys.map((key) => (
-      <Column
+      <AccountsListWrapper
         fullWidth={true}
         alignItems='flex-start'
         key={key}
@@ -149,7 +154,7 @@ export const Accounts = () => {
             />
           )
         )}
-      </Column>
+      </AccountsListWrapper>
     ))
   }, [
     trezorKeys,
@@ -167,7 +172,7 @@ export const Accounts = () => {
 
   const ledgerList = React.useMemo(() => {
     return ledgerKeys.map((key) => (
-      <Column
+      <AccountsListWrapper
         fullWidth={true}
         alignItems='flex-start'
         key={key}
@@ -185,7 +190,7 @@ export const Accounts = () => {
             />
           )
         )}
-      </Column>
+      </AccountsListWrapper>
     ))
   }, [
     ledgerKeys,
@@ -205,14 +210,15 @@ export const Accounts = () => {
     <WalletPageWrapper
       wrapContentInBox
       cardHeader={<AccountsHeader />}
+      useCardInPanel={true}
     >
       <Row
-        padding='8px'
+        padding='0px 8px 8px 8px'
         justifyContent='flex-start'
       >
         <SectionTitle>{getLocale('braveWalletAccounts')}</SectionTitle>
       </Row>
-      <Column
+      <AccountsListWrapper
         fullWidth={true}
         alignItems='flex-start'
         margin='0px 0px 24px 0px'
@@ -228,7 +234,7 @@ export const Accounts = () => {
             isLoadingSpotPrices={isLoadingSpotPrices}
           />
         ))}
-      </Column>
+      </AccountsListWrapper>
 
       {importedAccounts.length !== 0 && (
         <>
@@ -240,7 +246,7 @@ export const Accounts = () => {
               {getLocale('braveWalletAccountsSecondary')}
             </SectionTitle>
           </Row>
-          <Column
+          <AccountsListWrapper
             fullWidth={true}
             alignItems='flex-start'
             margin='0px 0px 24px 0px'
@@ -256,7 +262,7 @@ export const Accounts = () => {
                 isLoadingSpotPrices={isLoadingSpotPrices}
               />
             ))}
-          </Column>
+          </AccountsListWrapper>
         </>
       )}
 
@@ -291,7 +297,7 @@ export const Accounts = () => {
               {getLocale('braveWalletConnectedAccounts')}
             </SectionTitle>
           </Row>
-          <Column
+          <AccountsListWrapper
             fullWidth={true}
             alignItems='flex-start'
             margin='0px 0px 24px 0px'
@@ -305,7 +311,7 @@ export const Accounts = () => {
               spotPriceRegistry={spotPriceRegistry}
               isLoadingSpotPrices={isLoadingSpotPrices}
             />
-          </Column>
+          </AccountsListWrapper>
         </>
       )}
     </WalletPageWrapper>

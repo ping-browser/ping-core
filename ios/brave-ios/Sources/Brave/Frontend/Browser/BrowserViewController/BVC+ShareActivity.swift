@@ -103,13 +103,9 @@ extension BrowserViewController {
         callback: { [weak self] in
           guard let self = self else { return }
 
-          if #available(iOS 16.0, *),
-            let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction
-          {
+          if let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction {
             findInteraction.searchText = ""
             findInteraction.presentFindNavigator(showingReplace: false)
-          } else {
-            self.updateFindInPageVisibility(visible: true)
           }
         }
       )
@@ -201,33 +197,37 @@ extension BrowserViewController {
                 }
                 switch result {
                 case .success(let pdfData):
-                  // Create a valid filename
-                  let validFilenameSet = CharacterSet(charactersIn: ":/")
-                    .union(.newlines)
-                    .union(.controlCharacters)
-                    .union(.illegalCharacters)
-                  let filename = webView.title?.components(separatedBy: validFilenameSet).joined()
-                  let url = URL(fileURLWithPath: NSTemporaryDirectory())
-                    .appendingPathComponent("\(filename ?? "Untitled").pdf")
-                  do {
-                    try pdfData.write(to: url)
-                    let pdfActivityController = UIActivityViewController(
-                      activityItems: [url],
-                      applicationActivities: nil
-                    )
-                    if let popoverPresentationController = pdfActivityController
-                      .popoverPresentationController
-                    {
-                      popoverPresentationController.sourceView = sourceView
-                      popoverPresentationController.sourceRect = sourceRect
-                      popoverPresentationController.permittedArrowDirections = arrowDirection
-                      popoverPresentationController.delegate = self
+                  Task {
+                    // Create a valid filename
+                    let validFilenameSet = CharacterSet(charactersIn: ":/")
+                      .union(.newlines)
+                      .union(.controlCharacters)
+                      .union(.illegalCharacters)
+                    let filename = webView.title?.components(separatedBy: validFilenameSet).joined()
+                    let url = URL(fileURLWithPath: NSTemporaryDirectory())
+                      .appendingPathComponent("\(filename ?? "Untitled").pdf")
+                    do {
+                      try await Task.detached {
+                        try pdfData.write(to: url)
+                      }.value
+                      let pdfActivityController = UIActivityViewController(
+                        activityItems: [url],
+                        applicationActivities: nil
+                      )
+                      if let popoverPresentationController = pdfActivityController
+                        .popoverPresentationController
+                      {
+                        popoverPresentationController.sourceView = sourceView
+                        popoverPresentationController.sourceRect = sourceRect
+                        popoverPresentationController.permittedArrowDirections = arrowDirection
+                        popoverPresentationController.delegate = self
+                      }
+                      self.present(pdfActivityController, animated: true)
+                    } catch {
+                      Logger.module.error(
+                        "Failed to write PDF to disk: \(error.localizedDescription, privacy: .public)"
+                      )
                     }
-                    self.present(pdfActivityController, animated: true)
-                  } catch {
-                    Logger.module.error(
-                      "Failed to write PDF to disk: \(error.localizedDescription, privacy: .public)"
-                    )
                   }
 
                 case .failure(let error):

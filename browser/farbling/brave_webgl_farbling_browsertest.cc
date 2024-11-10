@@ -28,8 +28,8 @@
 
 using brave_shields::ControlType;
 
-const char kEmbeddedTestServerDirectory[] = "webgl";
-const char kTitleScript[] = "document.title";
+constexpr char kEmbeddedTestServerDirectory[] = "webgl";
+constexpr char kTitleScript[] = "document.title";
 
 class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -39,7 +39,6 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
@@ -159,6 +158,17 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest,
         SplitStringAsInts(EvalJs(contents(), kTitleScript).ExtractString());
     ASSERT_EQ(farbled_values.size(), 12UL);
     ASSERT_EQ(DiffsAsString(real_values, farbled_values), expected_diff);
+
+    // Farbling level: default, but webcompat exception enabled
+    // Get the actual WebGL2 parameter values.
+    SetFingerprintingDefault(domain);
+    brave_shields::SetWebcompatEnabled(
+        content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, true,
+        url, nullptr);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    std::vector<int64_t> real_values2 =
+        SplitStringAsInts(EvalJs(contents(), kTitleScript).ExtractString());
+    ASSERT_EQ(real_values2.size(), 12UL);
   }
 }
 
@@ -211,4 +221,16 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetExtension) {
   SetFingerprintingDefault(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), actual);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetAttachedShaders) {
+  std::string domain = "a.com";
+  GURL url = embedded_test_server()->GetURL(domain, "/getAttachedShaders.html");
+  // In default fingerprinting mode...
+  SetFingerprintingDefault(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  //... getAttachedShaders() should not be null:
+  // https://github.com/brave/brave-browser/issues/37044
+  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
+            "[object WebGLShader]");
 }

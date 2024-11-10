@@ -12,7 +12,6 @@
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 
-class PrefRegistrySimple;
 class PrefService;
 
 namespace brave_news::p3a {
@@ -25,8 +24,10 @@ inline constexpr char kWeeklySessionCountHistogramName[] =
     "Brave.Today.WeeklySessionCount";
 inline constexpr char kTotalCardViewsHistogramName[] =
     "Brave.Today.WeeklyTotalCardViews";
-inline constexpr char kWeeklyDisplayAdsViewedHistogramName[] =
-    "Brave.Today.WeeklyDisplayAdsViewedCount";
+inline constexpr char kRewardsAdsViewsHistogramName[] =
+    "Brave.Today.RewardsAdViews";
+inline constexpr char kNonRewardsAdsViewsHistogramName[] =
+    "Brave.Today.NonRewardsAdViews";
 inline constexpr char kDirectFeedsTotalHistogramName[] =
     "Brave.Today.DirectFeedsTotal.3";
 inline constexpr char kWeeklyAddedDirectFeedsHistogramName[] =
@@ -56,10 +57,6 @@ class NewsMetrics : public BraveNewsPrefManager::PrefObserver {
 
   NewsMetrics(const NewsMetrics&) = delete;
   NewsMetrics& operator=(const NewsMetrics&) = delete;
-
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
-  static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
   void RecordAtInit();
   void RecordAtSessionStart();

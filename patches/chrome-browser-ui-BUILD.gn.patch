@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index d6c14b3d70a7556c55d24e2da8d2d0ae2347f9e3..d3e3c1a3fab7a11331ab8a38e9284a277850e47c 100644
+index bc6e4008f2c5a5aa47406e4ec69b804b356c7383..949fba72967d38a7696692ca73bfc48e25175918 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -740,6 +740,7 @@ static_library("ui") {
- 
-     "//chrome/browser/permissions",
+@@ -758,6 +758,7 @@ static_library("ui") {
+     # TODO(crbug.com/): It includes //c/b/ui/browser_dialogs.h and //c/b/ui/url_identity.h
+     "//chrome/browser/ui/file_system_access:impl",
    ]
 +  public_deps += [ "//brave/browser/ui" ] allow_circular_includes_from += [ "//brave/browser/ui" ]
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -4715,7 +4716,10 @@ static_library("ui") {
+@@ -3823,7 +3824,10 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
@@ -20,5 +20,5 @@ index d6c14b3d70a7556c55d24e2da8d2d0ae2347f9e3..d3e3c1a3fab7a11331ab8a38e9284a27
 +        sources += [ "webui/help/version_updater_basic.cc" ]
 +      }
      }
-   } else {  # 'OS!="win"
-     if (toolkit_views) {
+   }
+ 

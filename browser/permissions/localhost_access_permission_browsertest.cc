@@ -43,9 +43,9 @@ using net::test_server::EmbeddedTestServer;
 
 namespace {
 
-const char kTestEmbeddingDomain[] = "a.com";
-const char kTestTargetPath[] = "/logo.png";
-const char kSimplePage[] = "/simple.html";
+constexpr char kTestEmbeddingDomain[] = "a.com";
+constexpr char kTestTargetPath[] = "/logo.png";
+constexpr char kSimplePage[] = "/simple.html";
 
 }  // namespace
 
@@ -71,7 +71,6 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     // Embedding website server
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_->ServeFilesFromDirectory(test_data_dir);

@@ -44,7 +44,7 @@ std::string GetDomain(const std::string& prefix,
     return prefix + ".brave.software";
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 
   return "";
 }
@@ -60,6 +60,11 @@ std::string GetEnvironmentForDomain(const std::string& domain) {
     return kEnvDevelopment;
   NOTIMPLEMENTED();
   return "";
+}
+
+bool DomainIsForProduct(const std::string& domain, const std::string& product) {
+  std::string::size_type index = domain.find(product + ".", 0);
+  return index == 0;
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

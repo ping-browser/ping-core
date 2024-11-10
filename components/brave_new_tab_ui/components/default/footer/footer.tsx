@@ -3,36 +3,25 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 // Feature-specific components
 import {
-  // IconButton,
-  // IconButtonContainer,
-  // IconButtonSideText,
-  IconLink,
-  // Label,
-  // Link,
+  Label,
+  Link,
   Navigation,
-  // PhotoName
+  IconButton,
+  IconButtonContainer,
+  IconButtonSideText,
+  PhotoName
 } from '..'
 import * as S from '../page'
-
-// Items
-import {
-  BookmarkBook,
-  HistoryIcon,
-  // SettingsIcon,
-  SettingsAdvancedIcon
-} from 'brave-ui/components/icons'
-
-// import BraveTalkIcon from './braveTalkIcon'
 
 // Helpers
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   textDirection: string
-  supportsBraveTalk: boolean
   backgroundImageInfo: NewTab.BackgroundWallpaper | undefined
   showPhotoInfo: boolean
   onClickSettings: () => any
@@ -40,17 +29,16 @@ export interface Props {
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
   render () {
-    // const {
-    //   // textDirection,
-    //   // supportsBraveTalk,
-    //   backgroundImageInfo,
-    //   showPhotoInfo,
-    //   // onClickSettings
-    // } = this.props
+    const {
+      textDirection,
+      backgroundImageInfo,
+      showPhotoInfo,
+      onClickSettings
+    } = this.props
 
     return (
       <>
-        {/* { showPhotoInfo && backgroundImageInfo?.type === 'brave' &&
+        { !true && showPhotoInfo && backgroundImageInfo?.type === 'brave' &&
           <S.GridItemCredits>
             <PhotoName>
               {`${getLocale('photoBy')} `}
@@ -62,31 +50,17 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
               }
             </PhotoName>
           </S.GridItemCredits>
-        } */}
+        }
         <S.GridItemNavigation>
           <Navigation>
-            {/* <IconButtonContainer textDirection={textDirection}>
+            <IconButtonContainer textDirection={textDirection}>
               <IconButtonSideText textDirection={textDirection}>
                 <IconButton onClick={onClickSettings}>
-                  <SettingsIcon />
+                  <Icon name='tune' />
                 </IconButton>
                 {getLocale('customize')}
               </IconButtonSideText>
-            </IconButtonContainer> */}
-            <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
-              <SettingsAdvancedIcon />
-            </IconLink>
-            <IconLink title={getLocale('bookmarksPageTitle')} href='chrome://bookmarks'>
-              <BookmarkBook />
-            </IconLink>
-            <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
-              <HistoryIcon />
-            </IconLink>
-            {/* { supportsBraveTalk &&
-              <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
-                <BraveTalkIcon />
-              </IconLink>
-            } */}
+            </IconButtonContainer>
           </Navigation>
         </S.GridItemNavigation>
       </>

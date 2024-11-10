@@ -10,11 +10,14 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
+class Browser;
 class CommandUpdater;
 
 namespace gfx {
@@ -22,7 +25,6 @@ struct VectorIcon;
 }
 
 namespace playlist {
-class PlaylistBubblesController;
 class PlaylistTabHelper;
 }  // namespace playlist
 
@@ -33,14 +35,20 @@ class PlaylistActionIconView : public PageActionIconView,
  public:
   PlaylistActionIconView(
       CommandUpdater* command_updater,
+      Browser* browser,
       IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
       PageActionIconView::Delegate* page_action_icon_delegate);
   PlaylistActionIconView(const PlaylistActionIconView&) = delete;
   PlaylistActionIconView& operator=(const PlaylistActionIconView&) = delete;
   ~PlaylistActionIconView() override;
 
-  void ShowPlaylistBubble();
+  void ShowPlaylistBubble(
+      playlist::PlaylistBubblesController::BubbleType type =
+          playlist::PlaylistBubblesController::BubbleType::kInfer);
   base::WeakPtr<PlaylistActionIconView> AsWeakPtr();
+
+  // PageActionIconView:
+  void SetVisible(bool visible) override;
 
  private:
   // PageActionIconView:
@@ -62,6 +70,8 @@ class PlaylistActionIconView : public PageActionIconView,
   const playlist::PlaylistTabHelper* GetPlaylistTabHelper() const;
   playlist::PlaylistTabHelper* GetPlaylistTabHelper();
   void UpdateState();
+
+  BooleanPrefMember playlist_enabled_;
 
   enum class State { kNone, kSaved, kFound } state_ = State::kNone;
 

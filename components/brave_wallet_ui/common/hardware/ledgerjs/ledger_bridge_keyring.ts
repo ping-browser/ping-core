@@ -3,11 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { BraveWallet } from '../../../constants/types'
+import { BridgeType } from '../untrusted_shared_types'
 import { getLocale } from '../../../../common/locale'
-import { HardwareVendor } from '../../api/hardware_keyrings'
-import { HardwareOperationResult } from '../types'
+import { HardwareOperationError, HardwareOperationResult } from '../types'
 import {
   LEDGER_BRIDGE_URL,
   LedgerCommand,
@@ -24,7 +22,6 @@ const randomUUID = () =>
 // LedgerBridgeKeyring is the parent class for the various BridgeKeyrings, e.g.
 // SolanaLedgerBridgeKeyring
 export default class LedgerBridgeKeyring {
-  protected deviceId: string
   protected onAuthorized?: () => void
   protected transport?: LedgerTrustedMessagingTransport
   protected bridge?: HTMLIFrameElement
@@ -35,12 +32,16 @@ export default class LedgerBridgeKeyring {
     this.frameId = randomUUID()
   }
 
-  coin = (): BraveWallet.CoinType => {
-    throw new Error('Unimplemented.')
+  setTransportForTesting = (transport: LedgerTrustedMessagingTransport) => {
+    this.transport = transport
   }
 
-  type = (): HardwareVendor => {
-    return LEDGER_HARDWARE_VENDOR
+  setBridgeForTesting = (bridge: HTMLIFrameElement) => {
+    this.bridge = bridge
+  }
+
+  bridgeType = (): BridgeType => {
+    throw new Error('Unimplemented.')
   }
 
   unlock = async (): Promise<HardwareOperationResult> => {
@@ -56,8 +57,11 @@ export default class LedgerBridgeKeyring {
     ) {
       return this.createErrorFromCode(data)
     }
+    if (!data.payload.success) {
+      return { ...data.payload }
+    }
 
-    return data.payload
+    return { success: true }
   }
 
   sendCommand = async <T>(
@@ -88,8 +92,7 @@ export default class LedgerBridgeKeyring {
       element.src =
         new URL(targetUrl).origin +
         `?targetUrl=${encodeURIComponent(window.origin)}` +
-        '&coinType=' +
-        this.coin()
+        `&bridgeType=${this.bridgeType()}`
       element.style.display = 'none'
       element.allow = 'hid'
       element.setAttribute('sandbox', 'allow-scripts allow-same-origin')
@@ -103,7 +106,7 @@ export default class LedgerBridgeKeyring {
 
   protected readonly createErrorFromCode = (
     code: LedgerBridgeErrorCodes
-  ): HardwareOperationResult => {
+  ): HardwareOperationError => {
     const deviceName = getLocale('braveWalletConnectHardwareLedger')
 
     switch (code) {

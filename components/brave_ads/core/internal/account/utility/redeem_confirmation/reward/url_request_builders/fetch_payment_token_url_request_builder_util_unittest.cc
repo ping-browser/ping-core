@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -16,7 +16,7 @@ TEST(BraveAdsFetchPaymentTokenUrlRequestBuilderUtilTest, GetPath) {
   // Act & Assert
   EXPECT_EQ(
       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-      BuildFetchPaymentTokenUrlPath(kTransactionId));
+      BuildFetchPaymentTokenUrlPath(test::kTransactionId));
 }
 
 }  // namespace brave_ads

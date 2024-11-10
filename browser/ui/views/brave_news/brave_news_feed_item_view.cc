@@ -89,8 +89,8 @@ void BraveNewsFeedItemView::Update() {
                     : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
 
   subscribe_button_->SetLoading(loading_);
-  subscribe_button_->SetKind(is_subscribed ? views::MdTextButton::kSecondary
-                                           : views::MdTextButton::kPrimary);
+  subscribe_button_->SetStyle(is_subscribed ? ui::ButtonStyle::kDefault
+                                            : ui::ButtonStyle::kProminent);
   subscribe_button_->SetIcon(
       is_subscribed ? &kLeoHeartFilledIcon : &kLeoHeartOutlineIcon,
       kFollowButtonIconSize);
@@ -102,8 +102,12 @@ void BraveNewsFeedItemView::OnPressed() {
     return;
   }
 
-  tab_helper_->ToggleSubscription(feed_url_);
+  // Set true to |loading_| before asking to tab helper because
+  // we could get `OnAvailableFeedsChanged()` in this turn.
+  // Otherwise, |loading_| can have true even after
+  // OnAvailableFeedsChanged() is called by tab_helper.
   loading_ = true;
+  tab_helper_->ToggleSubscription(feed_url_);
   Update();
 }
 

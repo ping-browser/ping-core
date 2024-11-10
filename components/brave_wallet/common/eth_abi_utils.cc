@@ -67,7 +67,7 @@ std::optional<Span32> ToSpan32(Span data) {
     return std::nullopt;
   }
 
-  return Span32(data.data(), kRowLength);
+  return UNSAFE_TODO(Span32(data.data(), kRowLength));
 }
 
 Span ExtractRows(Span data, size_t row, size_t row_count) {
@@ -361,7 +361,7 @@ std::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
 std::optional<std::vector<uint8_t>>
 ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos) {
   if (fixed_size == 0 || fixed_size > 32) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return std::nullopt;
   }
 
@@ -566,6 +566,76 @@ void TupleEncoder::EncodeTo(std::vector<uint8_t>& destination) const {
 
     bytes_added += AppendBytesWithPadding(destination, elements_[i].tail);
   }
+}
+
+Type::Type(TypeKind kind)
+    : kind(kind), m(std::nullopt), array_type(nullptr), tuple_types() {}
+Type::Type(TypeKind kind, size_t m)
+    : kind(kind), m(m), array_type(nullptr), tuple_types() {}
+Type::~Type() = default;
+Type::Type(Type&& other) noexcept
+    : kind(other.kind),
+      m(other.m),
+      array_type(std::move(other.array_type)),
+      tuple_types(std::move(other.tuple_types)) {}
+
+TypeBuilder::TypeBuilder(TypeKind kind) : type_{kind} {}
+TypeBuilder::TypeBuilder(TypeKind kind, size_t m) : type_{kind, m} {}
+
+TypeBuilder& TypeBuilder::SetArrayType(Type array_type) {
+  type_.array_type = std::make_unique<Type>(std::move(array_type));
+  return *this;
+}
+
+TypeBuilder& TypeBuilder::AddTupleType(Type tuple_type) {
+  type_.tuple_types.push_back(std::move(tuple_type));
+  return *this;
+}
+
+Type TypeBuilder::build() {
+  return std::move(type_);
+}
+
+TypeBuilder Array(size_t m) {
+  return TypeBuilder(TypeKind::kArray, m);
+}
+
+Type Address() {
+  return Type{TypeKind::kAddress};
+}
+
+Type Uint(size_t m) {
+  CHECK(m > 0 && m <= 256 && m % 8 == 0) << "Invalid M for uint<M> type: " << m;
+  return Type{TypeKind::kUintM, m};
+}
+
+Type Uint() {
+  return Type{TypeKind::kUintM, 256};
+}
+
+Type Bool() {
+  return Type{TypeKind::kBool};
+}
+
+Type Bytes() {
+  return Type{TypeKind::kBytes};
+}
+
+Type Bytes(size_t m) {
+  CHECK(m > 0 && m <= 32) << "Invalid M for bytes<M> type: " << m;
+  return Type{TypeKind::kBytes, m};
+}
+
+Type String() {
+  return Type{TypeKind::kString};
+}
+
+TypeBuilder Array() {
+  return TypeBuilder(TypeKind::kArray);
+}
+
+TypeBuilder Tuple() {
+  return TypeBuilder(TypeKind::kTuple);
 }
 
 }  // namespace brave_wallet::eth_abi

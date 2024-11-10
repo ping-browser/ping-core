@@ -55,9 +55,6 @@
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT_RIGHT" file="brave/sidebar_item_highlight_right.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_READING_LIST_PANEL_HEADER" file="brave/sidebar_reading_list_panel_header.png" />
       </if>
-      <if expr="enable_ipfs and not is_android">
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_IPFS_LOGO" file="brave/ipfs_logo.png" />
-      </if>
 
       <if expr="not is_android">
         <structure type="chrome_scaled_image" name="IDR_TOR_WINDOW_FRAME_GRAPHIC" file="brave/tor_window_frame_graphic.png" />
@@ -106,11 +103,10 @@
         <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_ICON" file="brave/brave_web_discovery_infobar_icon.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC" file="brave/brave_search_conversion_banner_graphic.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK" file="brave/brave_search_conversion_banner_graphic_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG" file="brave/brave_search_conversion_banner_graphic_ddg.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_DARK" file="brave/brave_search_conversion_banner_graphic_ddg_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BUTTON_BRAVE_SEARCH_ICON" file="brave/brave_search_conversion_button_brave_search_icon.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_LOGO_IN_SEARCH_PROMOTION" file="brave/brave_search_logo_in_search_promotion.png" />
-      </if>
-
-      <if expr="enable_brave_player and not is_android">
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_PLAYER_ACTION_VIEW_ICON" file="brave/brave_player_action_icon.png" />
       </if>
     </structures>
   </release>

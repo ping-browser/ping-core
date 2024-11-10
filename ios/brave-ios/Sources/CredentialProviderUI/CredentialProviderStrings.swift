@@ -38,9 +38,9 @@ extension Strings {
     public static let credentialListTitle = NSLocalizedString(
       "CredentialProvider.credentialListTitle",
       bundle: .module,
-      value: "Brave Passwords",
+      value: "Ping Passwords",
       comment:
-        "The title shown at the top of a list of credentials. 'Brave' in this case is the company name"
+        "The title shown at the top of a list of credentials. 'Ping' in this case is the company name"
     )
     public static let loginsForWebsite = NSLocalizedString(
       "CredentialProvider.loginsForWebsite",

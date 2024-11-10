@@ -21,18 +21,23 @@ BraveBookmarkBarView::BraveBookmarkBarView(Browser* browser,
           &BraveBookmarkBarView::OnShowAllBookmarksButtonPrefChanged,
           base::Unretained(this)));
 
-  if (bookmark_model_->loaded()) {
-    UpdateOtherAndManagedButtonsVisibility();
-  }
+  MaybeUpdateOtherAndManagedButtonsVisibility();
 }
 
 BraveBookmarkBarView::~BraveBookmarkBarView() = default;
+
+void BraveBookmarkBarView::MaybeUpdateOtherAndManagedButtonsVisibility() {
+  if (bookmark_model_ && bookmark_model_->loaded()) {
+    UpdateOtherAndManagedButtonsVisibility();
+  }
+}
 
 bool BraveBookmarkBarView::UpdateOtherAndManagedButtonsVisibility() {
   bool result = BookmarkBarView::UpdateOtherAndManagedButtonsVisibility();
   if (all_bookmarks_button_ && all_bookmarks_button_->GetVisible() &&
       !show_all_bookmarks_button_pref_.GetValue()) {
     all_bookmarks_button_->SetVisible(false);
+    UpdateBookmarksSeparatorVisibility();
     return true;
   }
   return result;

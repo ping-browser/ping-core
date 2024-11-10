@@ -12,10 +12,7 @@ import { BraveWallet, Url } from '../../../constants/types'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { mockEthAccount } from '../../../stories/mock-data/mock-wallet-accounts'
 import { PanelWrapper } from '../../../panel/style'
-import {
-  LongWrapper,
-  StyledExtensionWrapperLonger
-} from '../../../stories/style'
+import { LongWrapper } from '../../../stories/style'
 import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
 let mockURLPath = new Url()
@@ -67,69 +64,67 @@ const evilUnicodeSignMessageData = {
   message: evilUnicodeMessage
 }
 
-export const _SignPanel = () => {
-  return (
-    <WalletPageStory>
-      <PanelWrapper isLonger>
-        <LongWrapper>
-          <SignPanel
-            showWarning={true}
-            signMessageData={[evilUnicodeSignMessageData, signMessageData]}
-          />
-        </LongWrapper>
-      </PanelWrapper>
-    </WalletPageStory>
-  )
+export const _SignPanel = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <PanelWrapper isLonger>
+          <LongWrapper>
+            <SignPanel
+              showWarning={true}
+              signMessageData={[evilUnicodeSignMessageData, signMessageData]}
+            />
+          </LongWrapper>
+        </PanelWrapper>
+      </WalletPageStory>
+    )
+  }
 }
 
-_SignPanel.story = {
-  name: 'Sign Panel'
-}
-
-export const _SignData = () => {
-  const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [
-    {
-      id: 0,
-      accountId: {
-        coin: BraveWallet.CoinType.ETH,
-        keyringId: BraveWallet.KeyringId.kDefault,
-        kind: BraveWallet.AccountKind.kDerived,
-        address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-        bitcoinAccountIndex: 0,
-        uniqueKey: '0x3f29A1da97149722eB09c526E4eAd698895b426_id'
-      },
-      originInfo: mockOriginInfo,
-      coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.MAINNET_CHAIN_ID,
-      signData: {
-        ethStandardSignData: undefined,
-        ethSignTypedData: {
-          message: 'Sign below to authenticate with CryptoKitties.',
-          domain: '',
-          domainHash: undefined,
-          primaryHash: undefined,
-          meta: undefined
+export const _SignData = {
+  render: () => {
+    const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [
+      {
+        id: 0,
+        accountId: {
+          coin: BraveWallet.CoinType.ETH,
+          keyringId: BraveWallet.KeyringId.kDefault,
+          kind: BraveWallet.AccountKind.kDerived,
+          address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+          accountIndex: 0,
+          uniqueKey: '0x3f29A1da97149722eB09c526E4eAd698895b426_id'
         },
-        ethSiweData: undefined,
-        solanaSignData: undefined
+        originInfo: mockOriginInfo,
+        coin: BraveWallet.CoinType.ETH,
+        chainId: BraveWallet.MAINNET_CHAIN_ID,
+        signData: {
+          ethStandardSignData: undefined,
+          ethSignTypedData: {
+            message: 'Sign below to authenticate with CryptoKitties.',
+            domain: '',
+            domainHash: undefined,
+            primaryHash: undefined,
+            meta: undefined
+          },
+          ethSiweData: undefined,
+          solanaSignData: undefined
+        }
       }
-    }
-  ]
+    ]
 
-  return (
-    <WalletPanelStory>
-      <StyledExtensionWrapperLonger>
-        <SignPanel
-          signMessageData={signMessageDataPayload}
-          showWarning={true}
-        />
-      </StyledExtensionWrapperLonger>
-    </WalletPanelStory>
-  )
+    return (
+      <WalletPanelStory>
+        <PanelWrapper isLonger={true}>
+          <LongWrapper>
+            <SignPanel
+              signMessageData={signMessageDataPayload}
+              showWarning={true}
+            />
+          </LongWrapper>
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_SignData.story = {
-  name: 'Sign Transaction'
-}
-
-export default _SignPanel
+export default { component: SignPanel }

@@ -7,6 +7,7 @@ import BraveShared
 import BraveVPN
 import Foundation
 import Shared
+import SwiftUI
 import UIKit
 
 /// Handles displaying controllers such as settings, bookmarks, etc. on top of
@@ -60,24 +61,36 @@ class BrowserNavigationHelper {
   }
 
   func openDownloads(_ completion: @escaping (Bool) -> Void) {
-    FileManager.default.openBraveDownloadsFolder(completion)
+    UIApplication.shared.openBraveDownloadsFolder(completion)
   }
 
   func openHistory(isModal: Bool = false) {
     guard let bvc = bvc else { return }
-    let vc = HistoryViewController(
-      isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing,
-      isModallyPresented: isModal,
-      historyAPI: bvc.braveCore.historyAPI,
-      tabManager: bvc.tabManager
+    let vc = UIHostingController(
+      rootView: HistoryView(
+        model: HistoryModel(
+          api: bvc.braveCore.historyAPI,
+          tabManager: bvc.tabManager,
+          toolbarUrlActionsDelegate: bvc,
+          dismiss: { [weak bvc] in bvc?.dismiss(animated: true) },
+          askForAuthentication: bvc.askForLocalAuthentication
+        )
+      )
     )
-    vc.toolbarUrlActionsDelegate = bvc
-
     open(vc, doneButton: DoneButton(style: .done, position: .right))
   }
 
   func openVPNBuyScreen(iapObserver: BraveVPNInAppPurchaseObserver) {
     guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
+    vc.openAuthenticationVPNInNewTab = { [weak bvc] in
+      guard let bvc = bvc else { return }
+
+      bvc.openURLInNewTab(
+        .brave.braveVPNRefreshCredentials,
+        isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
+        isPrivileged: false
+      )
+    }
 
     open(vc, doneButton: DoneButton(style: .done, position: .left))
   }

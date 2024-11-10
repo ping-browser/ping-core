@@ -8,13 +8,16 @@
 #include <cstddef>
 #include <iterator>
 #include <utility>
+#include <vector>
 
+#include "base/base64.h"
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
+#include "base/strings/strcat.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
 
@@ -22,33 +25,54 @@ namespace {
 
 constexpr char kTableName[] = "creative_new_tab_page_ad_wallpapers";
 
-size_t BindParameters(mojom::DBCommandInfo* command,
-                      const CreativeNewTabPageAdList& creative_ads) {
-  CHECK(command);
+std::string ConditionMatchersToString(
+    const NewTabPageAdConditionMatchers& condition_matchers) {
+  std::vector<std::string> condition_matchers_as_string;
+  condition_matchers_as_string.reserve(condition_matchers.size());
 
-  size_t count = 0;
+  for (const auto& [pref_name, condition] : condition_matchers) {
+    // We base64 encode the `pref_name` and `condition` to avoid any issues with
+    // pref paths and conditions that contain either `|` or `;`.
+
+    const std::string condition_matcher = base::StrCat(
+        {base::Base64Encode(pref_name), "|", base::Base64Encode(condition)});
+    condition_matchers_as_string.push_back(condition_matcher);
+  }
+
+  return base::JoinString(condition_matchers_as_string, ";");
+}
+
+size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
+                   const CreativeNewTabPageAdList& creative_ads) {
+  CHECK(mojom_db_action);
+  CHECK(!creative_ads.empty());
+
+  size_t row_count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     for (const auto& wallpaper : creative_ad.wallpapers) {
-      BindString(command, index++, creative_ad.creative_instance_id);
-      BindString(command, index++, wallpaper.image_url.spec());
-      BindInt(command, index++, wallpaper.focal_point.x);
-      BindInt(command, index++, wallpaper.focal_point.y);
+      BindColumnString(mojom_db_action, index++,
+                       creative_ad.creative_instance_id);
+      BindColumnString(mojom_db_action, index++, wallpaper.image_url.spec());
+      BindColumnInt(mojom_db_action, index++, wallpaper.focal_point.x);
+      BindColumnInt(mojom_db_action, index++, wallpaper.focal_point.y);
+      BindColumnString(mojom_db_action, index++,
+                       ConditionMatchersToString(wallpaper.condition_matchers));
     }
 
-    count += creative_ad.wallpapers.size();
+    row_count += creative_ad.wallpapers.size();
   }
 
-  return count;
+  return row_count;
 }
 
 }  // namespace
 
-void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
-    mojom::DBTransactionInfo* transaction,
+void CreativeNewTabPageAdWallpapers::Insert(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     const CreativeNewTabPageAdList& creative_ads) {
-  CHECK(transaction);
+  CHECK(mojom_db_transaction);
 
   CreativeNewTabPageAdList filtered_creative_ads;
   base::ranges::copy_if(creative_ads, std::back_inserter(filtered_creative_ads),
@@ -60,18 +84,19 @@ void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
     return;
   }
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::RUN;
-  command->sql = BuildInsertOrUpdateSql(&*command, filtered_creative_ads);
-  transaction->commands.push_back(std::move(command));
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, filtered_creative_ads);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 void CreativeNewTabPageAdWallpapers::Delete(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
 
-  DeleteTable(&*transaction, GetTableName());
+  DeleteTable(mojom_db_transaction, GetTableName());
 
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
 std::string CreativeNewTabPageAdWallpapers::GetTableName() const {
@@ -79,36 +104,34 @@ std::string CreativeNewTabPageAdWallpapers::GetTableName() const {
 }
 
 void CreativeNewTabPageAdWallpapers::Create(
-    mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      R"(
-          CREATE TABLE creative_new_tab_page_ad_wallpapers (
-            creative_instance_id TEXT NOT NULL,
-            image_url TEXT NOT NULL,
-            focal_point_x INT NOT NULL,
-            focal_point_y INT NOT NULL,
-            PRIMARY KEY (
-              creative_instance_id,
-              image_url,
-              focal_point_x,
-              focal_point_y
-            ) ON CONFLICT REPLACE
-          );)";
-  transaction->commands.push_back(std::move(command));
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE creative_new_tab_page_ad_wallpapers (
+        creative_instance_id TEXT NOT NULL,
+        image_url TEXT NOT NULL,
+        focal_point_x INT NOT NULL,
+        focal_point_y INT NOT NULL,
+        condition_matchers TEXT NOT NULL,
+        PRIMARY KEY (
+          creative_instance_id,
+          image_url,
+          focal_point_x,
+          focal_point_y,
+          condition_matchers
+        ) ON CONFLICT REPLACE
+      );)");
 }
 
 void CreativeNewTabPageAdWallpapers::Migrate(
-    mojom::DBTransactionInfo* transaction,
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     const int to_version) {
-  CHECK(transaction);
+  CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 35: {
-      MigrateToV35(transaction);
+    case 45: {
+      MigrateToV45(mojom_db_transaction);
       break;
     }
   }
@@ -116,22 +139,23 @@ void CreativeNewTabPageAdWallpapers::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CreativeNewTabPageAdWallpapers::MigrateToV35(
-    mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
+void CreativeNewTabPageAdWallpapers::MigrateToV45(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
   // We can safely recreate the table because it will be repopulated after
   // downloading the catalog.
-  DropTable(transaction, GetTableName());
-  Create(transaction);
+  DropTable(mojom_db_transaction, GetTableName());
+  Create(mojom_db_transaction);
 }
 
-std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateSql(
-    mojom::DBCommandInfo* command,
+std::string CreativeNewTabPageAdWallpapers::BuildInsertSql(
+    const mojom::DBActionInfoPtr& mojom_db_action,
     const CreativeNewTabPageAdList& creative_ads) const {
-  CHECK(command);
+  CHECK(mojom_db_action);
+  CHECK(!creative_ads.empty());
 
-  const size_t binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
 
   return base::ReplaceStringPlaceholders(
       R"(
@@ -139,10 +163,11 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateSql(
             creative_instance_id,
             image_url,
             focal_point_x,
-            focal_point_y
+            focal_point_y,
+            condition_matchers
           ) VALUES $2;)",
-      {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count=*/4, binded_parameters_count)},
+      {GetTableName(),
+       BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
       nullptr);
 }
 

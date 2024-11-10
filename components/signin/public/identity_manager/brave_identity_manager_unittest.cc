@@ -41,10 +41,10 @@
 namespace signin {
 namespace {
 
-const char kTestGaiaId[] = "dummyId";
-const char kTestGaiaId2[] = "dummyId2";
-const char kTestEmail[] = "me@gmail.com";
-const char kTestEmail2[] = "me2@gmail.com";
+constexpr char kTestGaiaId[] = "dummyId";
+constexpr char kTestGaiaId2[] = "dummyId2";
+constexpr char kTestEmail[] = "me@gmail.com";
+constexpr char kTestEmail2[] = "me2@gmail.com";
 
 }  // namespace
 
@@ -122,8 +122,6 @@ class BraveIdentityManagerTest : public testing::Test {
     // the account id stored in prefs::kGoogleServicesAccountId.
     base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
     cmd_line->AppendSwitch(switches::kClearTokenService);
-
-    primary_account_manager->Initialize();
 
     IdentityManager::InitParameters init_params;
 

@@ -85,10 +85,8 @@ bool ShouldSkipResource(const GURL& resource_url) {
 
 BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     content::RenderFrame* render_frame,
-    bool should_whitelist,
     std::unique_ptr<Delegate> delegate)
     : ContentSettingsAgentImpl(render_frame,
-                               should_whitelist,
                                std::move(delegate)) {
   render_frame->GetAssociatedInterfaceRegistry()
       ->AddInterface<brave_shields::mojom::BraveShields>(base::BindRepeating(
@@ -98,14 +96,18 @@ BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
 
 BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() = default;
 
-bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
+bool BraveContentSettingsAgentImpl::IsScriptTemporarilyAllowed(
     const GURL& script_url) {
-  // Check if scripts from this origin are temporily allowed or not.
+  // Check if scripts from this origin are temporarily allowed or not.
   // Also matches the full script URL to support data URL cases which we use
   // the full URL to allow it.
-  bool allow = base::Contains(temporarily_allowed_scripts_,
+  if (!shields_settings_) {
+    return false;
+  }
+  bool allow = base::Contains(shields_settings_->origins_to_allow_scripts,
                               url::Origin::Create(script_url).Serialize()) ||
-               base::Contains(temporarily_allowed_scripts_, script_url.spec());
+               base::Contains(shields_settings_->origins_to_allow_scripts,
+                              script_url.spec());
   if (!allow) {
     // Also check rules in the main frame, because this frame rules may be out
     // of sync.
@@ -113,14 +115,17 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
     if (main_frame && main_frame != render_frame()) {
       allow = static_cast<BraveContentSettingsAgentImpl*>(
                   ContentSettingsAgentImpl::Get(main_frame))
-                  ->IsScriptTemporilyAllowed(script_url);
+                  ->IsScriptTemporarilyAllowed(script_url);
     }
   }
   return allow;
 }
 
 bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
-  return reduce_language_enabled_;
+  if (!shields_settings_) {
+    return false;
+  }
+  return shields_settings_->reduce_language;
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(
@@ -149,12 +154,13 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
   const GURL secondary_url(url::Origin(frame->GetSecurityOrigin()).GetURL());
   bool allow = ContentSettingsAgentImpl::AllowScript(enabled_per_settings);
   auto is_shields_down = IsBraveShieldsDown(frame, secondary_url);
-  auto is_script_temprily_allowed = IsScriptTemporilyAllowed(secondary_url);
-  allow = allow || is_shields_down || is_script_temprily_allowed;
+  auto is_script_temporarily_allowed =
+      IsScriptTemporarilyAllowed(secondary_url);
+  allow = allow || is_shields_down || is_script_temporarily_allowed;
   if (!allow) {
     blocked_script_url_ = secondary_url;
   } else if (!is_shields_down) {
-    if (is_script_temprily_allowed) {
+    if (is_script_temporarily_allowed) {
       BraveSpecificDidAllowJavaScriptOnce(secondary_url);
     }
   }
@@ -189,21 +195,16 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   bool allow = ContentSettingsAgentImpl::AllowScriptFromSource(
       enabled_per_settings, script_url);
 
-  // scripts with whitelisted protocols, such as chrome://extensions should
-  // be allowed
-  bool should_white_list = IsAllowlistedForContentSettings(
-      blink::WebSecurityOrigin::Create(script_url),
-      render_frame()->GetWebFrame()->GetDocument().Url());
   auto is_shields_down =
       IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url);
-  auto is_script_temprily_allowed = IsScriptTemporilyAllowed(secondary_url);
-  allow = allow || should_white_list || is_shields_down ||
-          is_script_temprily_allowed;
+  auto is_script_temporarily_allowed =
+      IsScriptTemporarilyAllowed(secondary_url);
+  allow = allow || is_shields_down || is_script_temporarily_allowed;
 
   if (!allow) {
     blocked_script_url_ = secondary_url;
   } else if (!is_shields_down) {
-    if (is_script_temprily_allowed) {
+    if (is_script_temporarily_allowed) {
       BraveSpecificDidAllowJavaScriptOnce(secondary_url);
     }
   }
@@ -330,7 +331,11 @@ void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
   cached_ephemeral_storage_origins_.clear();
 }
 
-BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
+brave_shields::mojom::ShieldsSettingsPtr
+BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
+    ContentSettingsType webcompat_settings_type) {
+  GetOrCreateBraveShieldsRemote()->OnWebcompatFeatureInvoked(
+      webcompat_settings_type);
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
@@ -342,17 +347,38 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
       setting = brave_shields::GetBraveFPContentSettingFromRules(
           content_setting_rules_->fingerprinting_rules, GetOriginOrURL(frame));
     }
+    if (setting != CONTENT_SETTING_ALLOW) {
+      auto webcompat_setting =
+          brave_shields::GetBraveWebcompatContentSettingFromRules(
+              content_setting_rules_->webcompat_rules, GetOriginOrURL(frame),
+              webcompat_settings_type);
+      if (webcompat_setting == CONTENT_SETTING_ALLOW) {
+        setting = CONTENT_SETTING_ALLOW;
+      }
+    }
   }
 
+  BraveFarblingLevel farbling_level = BraveFarblingLevel::BALANCED;
   if (setting == CONTENT_SETTING_BLOCK) {
     DVLOG(1) << "farbling level MAXIMUM";
-    return BraveFarblingLevel::MAXIMUM;
+    farbling_level = BraveFarblingLevel::MAXIMUM;
   } else if (setting == CONTENT_SETTING_ALLOW) {
     DVLOG(1) << "farbling level OFF";
-    return BraveFarblingLevel::OFF;
+    farbling_level = BraveFarblingLevel::OFF;
   } else {
     DVLOG(1) << "farbling level BALANCED";
-    return BraveFarblingLevel::BALANCED;
+    farbling_level = BraveFarblingLevel::BALANCED;
+  }
+
+  if (shields_settings_) {
+    auto shields_settings = shields_settings_.Clone();
+    shields_settings->farbling_level = farbling_level;
+    return shields_settings;
+  } else {
+    // TODO(goodov): Parent or Incumbent frame should be used in this case.
+    DCHECK(!HasContentSettingsRules());
+    return brave_shields::mojom::ShieldsSettings::New(
+        farbling_level, std::vector<std::string>(), false);
   }
 }
 
@@ -395,13 +421,9 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
   return allow;
 }
 
-void BraveContentSettingsAgentImpl::SetAllowScriptsFromOriginsOnce(
-    const std::vector<std::string>& origins) {
-  temporarily_allowed_scripts_ = origins;
-}
-
-void BraveContentSettingsAgentImpl::SetReduceLanguageEnabled(bool enabled) {
-  reduce_language_enabled_ = enabled;
+void BraveContentSettingsAgentImpl::SetShieldsSettings(
+    brave_shields::mojom::ShieldsSettingsPtr shields_settings) {
+  shields_settings_ = std::move(shields_settings);
 }
 
 void BraveContentSettingsAgentImpl::BindBraveShieldsReceiver(

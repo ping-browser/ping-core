@@ -7,6 +7,11 @@ package org.chromium.chrome.browser.billing;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -36,6 +41,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +52,7 @@ public class InAppPurchaseWrapper {
             "https://play.google.com/store/account/subscriptions";
     private static final String TAG = "InAppPurchaseWrapper";
     private static final String LEO_MONTHLY_SUBSCRIPTION = "brave.leo.monthly";
+    private static final String LEO_YEARLY_SUBSCRIPTION = "brave.leo.yearly";
 
     private static final String VPN_NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
     private static final String VPN_NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
@@ -63,7 +70,7 @@ public class InAppPurchaseWrapper {
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object sMutex = new Object();
 
-    private enum SubscriptionType {
+    public enum SubscriptionType {
         MONTHLY,
         YEARLY
     }
@@ -97,13 +104,25 @@ public class InAppPurchaseWrapper {
         return mMonthlyProductDetailsVPN;
     }
 
-    private MutableLiveData<ProductDetails> mMutableYearlyProductDetails = new MutableLiveData();
-    private LiveData<ProductDetails> mYearlyProductDetails = mMutableYearlyProductDetails;
-    private void setYearlyProductDetails(ProductDetails productDetails) {
-        mMutableYearlyProductDetails.postValue(productDetails);
+    private MutableLiveData<ProductDetails> mMutableYearlyProductDetailsVPN = new MutableLiveData();
+    private LiveData<ProductDetails> mYearlyProductDetailsVPN = mMutableYearlyProductDetailsVPN;
+    private MutableLiveData<ProductDetails> mMutableYearlyProductDetailsLeo = new MutableLiveData();
+    private LiveData<ProductDetails> mYearlyProductDetailsLeo = mMutableYearlyProductDetailsLeo;
+
+    private void setYearlyProductDetails(
+            ProductDetails productDetails, SubscriptionProduct product) {
+        if (product.equals(SubscriptionProduct.LEO)) {
+            mMutableYearlyProductDetailsLeo.postValue(productDetails);
+        } else if (product.equals(SubscriptionProduct.VPN)) {
+            mMutableYearlyProductDetailsVPN.postValue(productDetails);
+        }
     }
-    public LiveData<ProductDetails> getYearlyProductDetails() {
-        return mYearlyProductDetails;
+
+    public LiveData<ProductDetails> getYearlyProductDetails(SubscriptionProduct product) {
+        if (product.equals(SubscriptionProduct.LEO)) {
+            return mYearlyProductDetailsLeo;
+        }
+        return mYearlyProductDetailsVPN;
     }
 
     private InAppPurchaseWrapper() {}
@@ -194,7 +213,9 @@ public class InAppPurchaseWrapper {
                         : VPN_NIGHTLY_YEARLY_SUBSCRIPTION;
             }
         } else if (product.equals(SubscriptionProduct.LEO)) {
-            return LEO_MONTHLY_SUBSCRIPTION;
+            return subscriptionType == SubscriptionType.MONTHLY
+                    ? LEO_MONTHLY_SUBSCRIPTION
+                    : LEO_YEARLY_SUBSCRIPTION;
         } else {
             assert false;
             return "";
@@ -204,16 +225,16 @@ public class InAppPurchaseWrapper {
     public void queryProductDetailsAsync(SubscriptionProduct product) {
         Map<String, ProductDetails> productDetails = new HashMap<>();
         List<QueryProductDetailsParams.Product> products = new ArrayList<>();
-        products.add(QueryProductDetailsParams.Product.newBuilder()
-                             .setProductId(getProductId(product, SubscriptionType.MONTHLY))
-                             .setProductType(BillingClient.ProductType.SUBS)
-                             .build());
-        if (!product.equals(SubscriptionProduct.LEO)) {
-            products.add(QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId(getProductId(product, SubscriptionType.YEARLY))
-                    .setProductType(BillingClient.ProductType.SUBS)
-                    .build());
-        }
+        products.add(
+                QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(getProductId(product, SubscriptionType.MONTHLY))
+                        .setProductType(BillingClient.ProductType.SUBS)
+                        .build());
+        products.add(
+                QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(getProductId(product, SubscriptionType.YEARLY))
+                        .setProductType(BillingClient.ProductType.SUBS)
+                        .build());
         QueryProductDetailsParams queryProductDetailsParams =
                 QueryProductDetailsParams.newBuilder().setProductList(products).build();
 
@@ -241,13 +262,11 @@ public class InAppPurchaseWrapper {
                                                         getProductId(
                                                                 product, SubscriptionType.MONTHLY)),
                                                 product);
-                                        if (!product.equals(SubscriptionProduct.LEO)) {
-                                            setYearlyProductDetails(
-                                                    productDetails.get(
-                                                            getProductId(
-                                                                    product,
-                                                                    SubscriptionType.YEARLY)));
-                                        }
+                                        setYearlyProductDetails(
+                                                productDetails.get(
+                                                        getProductId(
+                                                                product, SubscriptionType.YEARLY)),
+                                                product);
                                     } else {
                                         Log.e(
                                                 TAG,
@@ -418,7 +437,8 @@ public class InAppPurchaseWrapper {
     }
 
     private boolean isLeoProduct(List<String> productIds) {
-        return productIds.contains(LEO_MONTHLY_SUBSCRIPTION);
+        return productIds.contains(LEO_MONTHLY_SUBSCRIPTION)
+                || productIds.contains(LEO_YEARLY_SUBSCRIPTION);
     }
 
     private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
@@ -512,22 +532,60 @@ public class InAppPurchaseWrapper {
         return null;
     }
 
-    public String getFormattedProductPrice(ProductDetails productDetails) {
+    public SpannableString getFormattedProductPrice(
+            Context context, ProductDetails productDetails, int stringRes) {
         ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
         if (pricingPhase != null) {
             double price = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS);
             String priceString = String.format(Locale.getDefault(), "%.2f", price);
-            return pricingPhase.getPriceCurrencyCode() + " " + priceString;
+            String currencySymbol =
+                    Currency.getInstance(pricingPhase.getPriceCurrencyCode()).getSymbol();
+            String priceWithSymbol = currencySymbol + priceString;
+            String finalPrice =
+                    context.getResources()
+                            .getString(
+                                    stringRes,
+                                    pricingPhase.getPriceCurrencyCode() + " " + priceWithSymbol);
+            SpannableString priceSpannable = new SpannableString(finalPrice);
+            int index = finalPrice.indexOf(priceWithSymbol);
+            priceSpannable.setSpan(
+                    new TextAppearanceSpan(context, R.style.LargeSemibold),
+                    index,
+                    index + priceWithSymbol.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            priceSpannable.setSpan(
+                    new ForegroundColorSpan(context.getColor(android.R.color.white)),
+                    index,
+                    index + priceWithSymbol.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return priceSpannable;
         }
         return null;
     }
 
-    public String getFormattedFullProductPrice(ProductDetails productDetails) {
+    public SpannableString getFormattedFullProductPrice(
+            Context context, ProductDetails productDetails) {
         ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
         if (pricingPhase != null) {
             double yearlyPrice = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS) * 12;
             String priceString = String.format(Locale.getDefault(), "%.2f", yearlyPrice);
-            return pricingPhase.getPriceCurrencyCode() + priceString;
+            String currencySymbol =
+                    Currency.getInstance(pricingPhase.getPriceCurrencyCode()).getSymbol();
+            String priceWithSymbol = currencySymbol + priceString;
+            String finalPrice = pricingPhase.getPriceCurrencyCode() + " " + priceWithSymbol;
+            SpannableString priceSpannable = new SpannableString(finalPrice);
+            int index = finalPrice.indexOf(priceWithSymbol);
+            priceSpannable.setSpan(
+                    new TextAppearanceSpan(context, R.style.LargeSemibold),
+                    index,
+                    index + priceWithSymbol.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            priceSpannable.setSpan(
+                    new ForegroundColorSpan(context.getColor(android.R.color.white)),
+                    index,
+                    index + priceWithSymbol.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return priceSpannable;
         }
         return null;
     }

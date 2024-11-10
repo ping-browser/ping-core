@@ -13,13 +13,17 @@ import os.log
 /// and ensures information is always returned on the correct thread on the engine.
 public actor GroupedAdBlockEngine {
   public enum Source: Codable, Hashable, CustomDebugStringConvertible {
-    case filterList(componentId: String, uuid: String)
+    case filterList(componentId: String)
     case filterListURL(uuid: String)
+    case filterListText
+    case slimList
 
     public var debugDescription: String {
       switch self {
-      case .filterList(let componentId, _): return componentId
+      case .filterList(let componentId): return componentId
       case .filterListURL(let uuid): return uuid
+      case .filterListText: return "filter-list-text"
+      case .slimList: return "slim-list"
       }
     }
   }
@@ -35,17 +39,32 @@ public actor GroupedAdBlockEngine {
     }
   }
 
+  /// The type of engine (`standard` or `aggressive`) which determines wether or not 1st party content will be blocked.
+  ///
+  /// Aggressive engines will block 1st party content whereas the standard engine will not
   public enum EngineType: Hashable, CaseIterable, CustomDebugStringConvertible {
     case standard
     case aggressive
 
+    /// Tells us if this engine is always aggressive or if we need to switch between standard and aggressive
     var isAlwaysAggressive: Bool {
       switch self {
       case .standard: return false
       case .aggressive: return true
       }
     }
-    
+
+    /// Tells us wether or not the content blockers should be combined for this type
+    ///
+    /// - Note: This is only possible for the default (i.e. `standard`) engine
+    /// as we control the filter lists for this type and we can guarantee they don't surpas 150k network rules.
+    var combineContentBlockers: Bool {
+      switch self {
+      case .standard: return true
+      case .aggressive: return false
+      }
+    }
+
     public var debugDescription: String {
       switch self {
       case .aggressive: return "aggressive"
@@ -63,14 +82,21 @@ public actor GroupedAdBlockEngine {
     }
   }
 
-  public struct FilterListGroup: Hashable, Equatable, CustomDebugStringConvertible {
+  public struct FilterListGroup: Hashable, Equatable {
     let infos: [FilterListInfo]
     let localFileURL: URL
     let fileType: GroupedAdBlockEngine.FileType
 
-    public var debugDescription: String {
+    public func makeDebugDescription(for engineType: GroupedAdBlockEngine.EngineType) -> String {
       return infos.enumerated()
-        .map({ " #\($0) \($1.debugDescription)" })
+        .map({
+          let string = " #\($0) \($1.debugDescription)"
+          if $1.source.onlyExceptions(for: engineType) {
+            return "\(string) (exceptions)"
+          } else {
+            return string
+          }
+        })
         .joined(separator: "\n")
     }
   }
@@ -197,8 +223,8 @@ public actor GroupedAdBlockEngine {
     cachedFrameScriptTypes = FifoDict()
   }
 
-  func useResources(from info: ResourcesInfo) throws {
-    try engine.useResources(fromFileURL: info.localFileURL)
+  func useResources(from info: ResourcesInfo) async throws {
+    try await engine.useResources(fromFileURL: info.localFileURL)
     resourcesInfo = info
   }
 
@@ -216,7 +242,7 @@ public actor GroupedAdBlockEngine {
     let state = Self.signpost.beginInterval(
       "compileEngine",
       id: signpostID,
-      "\(type.debugDescription) (\(group.fileType.debugDescription)): \(group.debugDescription)"
+      "\(type.debugDescription) (\(group.fileType.debugDescription))"
     )
 
     do {

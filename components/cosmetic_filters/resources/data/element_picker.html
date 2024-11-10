@@ -1,0 +1,108 @@
+<style>
+  :host {
+    background: transparent;
+    color: black;
+    font: 14px sans-serif;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: "Noto Sans", Arial, sans-serif;
+  }
+
+  :host :focus {
+    outline: none;
+  }
+
+  #rules-box {
+    height: 8em;
+    margin-bottom: 5px;
+    background-color: #fff;
+    border-radius: .1em;
+  }
+
+  #rules-box>textarea {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    resize: none;
+    border: none;
+    padding: 5px;
+    overflow: auto;
+    overflow-wrap: break-word;
+  }
+
+  section {
+    color-scheme: light only;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    border-radius: .1em;
+    bottom: 4px;
+    box-sizing: border-box;
+    min-width: 24em;
+    padding: 4px;
+    position: fixed;
+    right: 4px;
+    width: calc(20% - 4px);
+    opacity: 0.2;
+  }
+
+  section input {
+    width: 50%;
+  }
+
+  #buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  button {
+    background-color: #ccc;
+    cursor: pointer;
+    padding: 4px 6px;
+    margin: 0 0 0 2px;
+  }
+
+  svg {
+    cursor: crosshair;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+  }
+
+  #darken {
+    fill: rgba(0, 0, 0, 0.5);
+  }
+
+  .target {
+    stroke: #FF6200;
+    stroke-width: 0.5px;
+    fill: rgba(255, 130, 63, 0.25);
+  }
+</style>
+<svg xmlns="http://www.w3.org/2000/svg" id="picker-ui">
+  <defs>
+    <mask id="highlight-mask">
+      <rect x="0" y="0" width="100%" height="100%" fill="white">
+    </mask>
+  </defs>
+  <rect id="darken" x="0" y="0" width="100%" height="100%" mask="url(#highlight-mask)">
+</svg>
+<section>
+  <div id="rules-box">
+    <textarea></textarea>
+  </div>
+  <div>
+    <div>
+      <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
+    </div>
+    <div id="buttons">
+      <button id="btnCreate">Create</button>
+      <button id="btnManage">Manage filters</button>
+      <button id="btnQuit" >Quit</button>
+    </div>
+  </div>
+</section>

@@ -32,11 +32,6 @@ inline constexpr char kWidevineLearnMoreUrl[] =
 inline constexpr char kDevChannelDeprecationLearnMoreUrl[] =
     "https://ping-browser.com/faqs-and-help";
 
-// This is introduced to replace |kDownloadChromeUrl| in
-// outdated_upgrade_bubble_view.cc"
-// |kDownloadChromeUrl| couldn't be replaced with char array because array
-// should be initialized with initialize list or string literal.
-// So, this macro is used.
-#define kDownloadBraveUrl "https://ping-browser.com/download-ping"
+inline constexpr char kDownloadBraveUrl[] = "https://www.ping-browser.com/download";
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_URL_CONSTANTS_H_

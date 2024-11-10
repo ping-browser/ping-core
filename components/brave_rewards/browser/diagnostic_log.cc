@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 
 #include <memory>
@@ -11,8 +17,8 @@
 #include "base/files/file_util.h"
 #include "base/i18n/time_formatting.h"
 #include "base/strings/stringprintf.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
+#include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace {
 
@@ -20,8 +26,8 @@ const int64_t kChunkSize = 1024;
 const size_t kDividerLength = 80;
 
 std::string FormatTime(const base::Time& time) {
-  return base::UTF16ToUTF8(
-      base::LocalizedTimeFormatWithPattern(time, "MMM dd, YYYY h::mm::ss.S a"));
+  return base::UnlocalizedTimeFormatWithPattern(
+      time, "MMM dd, YYYY h:mm:ss.S a zzz", icu::TimeZone::getGMT());
 }
 
 std::string GetLogVerboseLevelName(int verbose_level) {
@@ -337,6 +343,11 @@ void DiagnosticLog::Write(const std::string& log_entry,
       filename.c_str(), line, log_entry.c_str());
 
   Write(formatted_log_entry, std::move(callback));
+}
+
+base::WeakPtr<DiagnosticLog> DiagnosticLog::AsWeakPtr() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return weak_ptr_factory_.GetWeakPtr();
 }
 
 void DiagnosticLog::Delete(StatusCallback callback) {

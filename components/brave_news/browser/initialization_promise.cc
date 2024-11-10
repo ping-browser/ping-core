@@ -16,20 +16,21 @@
 #include "base/memory/raw_ref.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 
 namespace brave_news {
 
 constexpr int kBackoffs[] = {1, 5, 10};
 constexpr size_t kNumBackoffs = std::size(kBackoffs);
 
-InitializationPromise::InitializationPromise(
-    size_t max_retries,
-    BraveNewsPrefManager& pref_manager,
-    PublishersController& publishers_controller)
+InitializationPromise::InitializationPromise(size_t max_retries,
+                                             BraveNewsPrefManager& pref_manager,
+                                             GetLocale get_locale)
     : pref_manager_(pref_manager),
-      publishers_controller_(publishers_controller),
+      get_locale_(get_locale),
       max_retries_(max_retries) {}
 
 InitializationPromise::~InitializationPromise() = default;
@@ -66,9 +67,8 @@ void InitializationPromise::Initialize() {
     return;
   }
 
-  publishers_controller_->GetLocale(
-      subscriptions, base::BindOnce(&InitializationPromise::OnGotLocale,
-                                    weak_ptr_factory_.GetWeakPtr()));
+  get_locale_.Run(base::BindOnce(&InitializationPromise::OnGotLocale,
+                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void InitializationPromise::OnGotLocale(const std::string& locale) {
@@ -94,9 +94,10 @@ void InitializationPromise::OnGotLocale(const std::string& locale) {
 
   // Determine how long we should wait based on the number of times we've
   // retried.
-  int retry_delay = no_retry_delay_for_testing_
-                        ? 0
-                        : kBackoffs[std::min(attempts_, kNumBackoffs - 1)];
+  int retry_delay =
+      no_retry_delay_for_testing_
+          ? 0
+          : UNSAFE_TODO(kBackoffs[std::min(attempts_, kNumBackoffs - 1)]);
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&InitializationPromise::Initialize,

@@ -7,34 +7,32 @@
 
 #include <memory>
 
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
+#include "brave/components/brave_ads/core/internal/targeting/targeting_test_helper.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsIntentSegmentsTest : public UnitTestBase {
+class BraveAdsIntentSegmentsTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    targeting_ = std::make_unique<test::TargetingHelper>();
+    targeting_helper_ =
+        std::make_unique<test::TargetingHelper>(task_environment_);
 
-    LoadResource();
+    NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
+                                     test::kCountryComponentId);
   }
 
-  void LoadResource() {
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
-    task_environment_.RunUntilIdle();
-  }
-
-  std::unique_ptr<test::TargetingHelper> targeting_;
+  std::unique_ptr<test::TargetingHelper> targeting_helper_;
 };
 
 TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegments) {
@@ -42,12 +40,13 @@ TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegments) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kPurchaseIntentFeature);
 
-  targeting_->MockIntent();
+  targeting_helper_->MockIntent();
 
   // Act & Assert
-  const SegmentList expected_intent_segments =
-      test::TargetingHelper::IntentExpectation().segments;
-  EXPECT_EQ(expected_intent_segments, BuildIntentSegments());
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(test::TargetingHelper::IntentExpectation().segments));
+  BuildIntentSegments(callback.Get());
 }
 
 TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegmentsIfNoTargeting) {
@@ -55,11 +54,10 @@ TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegmentsIfNoTargeting) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kPurchaseIntentFeature);
 
-  // Act
-  const SegmentList segments = BuildIntentSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback, Run(/*segments=*/::testing::IsEmpty()));
+  BuildIntentSegments(callback.Get());
 }
 
 TEST_F(BraveAdsIntentSegmentsTest,
@@ -68,13 +66,12 @@ TEST_F(BraveAdsIntentSegmentsTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  targeting_->MockIntent();
+  targeting_helper_->MockIntent();
 
-  // Act
-  const SegmentList segments = BuildIntentSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback, Run(/*segments=*/::testing::IsEmpty()));
+  BuildIntentSegments(callback.Get());
 }
 
 }  // namespace brave_ads

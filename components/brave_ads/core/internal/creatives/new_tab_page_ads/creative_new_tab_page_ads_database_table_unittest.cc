@@ -6,17 +6,18 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
+class BraveAdsCreativeNewTabPageAdsDatabaseTableTest : public test::TestBase {
  protected:
   database::table::CreativeNewTabPageAds database_table_;
 };
@@ -44,9 +45,10 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, Save) {
   // Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            SegmentList{"architecture", "arts & entertainment"},
-                            testing::UnorderedElementsAreArray(creative_ads)));
+  EXPECT_CALL(
+      callback,
+      Run(/*success=*/true, SegmentList{"architecture", "arts & entertainment"},
+          ::testing::UnorderedElementsAreArray(creative_ads)));
   database_table_.GetForActiveCampaigns(callback.Get());
 }
 
@@ -63,10 +65,11 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, SaveInBatches) {
   // Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            SegmentList{"architecture", "arts & entertainment",
-                                        "automotive"},
-                            testing::UnorderedElementsAreArray(creative_ads)));
+  EXPECT_CALL(
+      callback,
+      Run(/*success=*/true,
+          SegmentList{"architecture", "arts & entertainment", "automotive"},
+          ::testing::UnorderedElementsAreArray(creative_ads)));
   database_table_.GetForActiveCampaigns(callback.Get());
 }
 
@@ -92,12 +95,12 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
   creative_ads.push_back(creative_ad_2);
 
@@ -148,17 +151,17 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForMultipleSegments) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_3.segment = "automotive";
   creative_ads.push_back(creative_ad_3);
 
@@ -182,11 +185,11 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   CreativeNewTabPageAdList creative_ads;
 
   const CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNewTabPageAds(creative_ads);
@@ -208,9 +211,9 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/false, kMissingCreativeInstanceId,
+  EXPECT_CALL(callback, Run(/*success=*/false, test::kMissingCreativeInstanceId,
                             CreativeNewTabPageAdInfo{}));
-  database_table_.GetForCreativeInstanceId(kMissingCreativeInstanceId,
+  database_table_.GetForCreativeInstanceId(test::kMissingCreativeInstanceId,
                                            callback.Get());
 }
 
@@ -219,15 +222,15 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetNonExpired) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
-  creative_ad_1.start_at = DistantPast();
-  creative_ad_1.end_at = Now();
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
+  creative_ad_1.start_at = test::DistantPast();
+  creative_ad_1.end_at = test::Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
-  creative_ad_2.start_at = DistantPast();
-  creative_ad_2.end_at = DistantFuture();
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
+  creative_ad_2.start_at = test::DistantPast();
+  creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNewTabPageAds(creative_ads);

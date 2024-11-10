@@ -20,6 +20,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -155,7 +156,7 @@ std::string ControlTypeToString(ControlType type) {
     case ControlType::DEFAULT:
       return "default";
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return "invalid";
   }
 }
@@ -170,7 +171,7 @@ ControlType ControlTypeFromString(const std::string& string) {
   } else if (string == "default") {
     return ControlType::DEFAULT;
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return ControlType::DEFAULT;
   }
 }
@@ -395,6 +396,12 @@ bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
     return false;
   }
 
+  // Don't reduce language if there's a webcompat exception
+  if (brave_shields::IsWebcompatEnabled(
+          map, ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, url)) {
+    return false;
+  }
+
   return true;
 }
 
@@ -489,7 +496,7 @@ void SetCookieControlType(HostContentSettingsMap* map,
                 content_settings::CookieControlsMode::kBlockThirdParty));
         break;
       default:
-        NOTREACHED() << "Invalid ControlType for cookies";
+        NOTREACHED_IN_MIGRATION() << "Invalid ControlType for cookies";
     }
     return;
   }
@@ -524,7 +531,7 @@ void SetCookieControlType(HostContentSettingsMap* map,
                                        : CONTENT_SETTING_BLOCK);
       break;
     case ControlType::DEFAULT:
-      NOTREACHED() << "Invalid ControlType for cookies";
+      NOTREACHED_IN_MIGRATION() << "Invalid ControlType for cookies";
   }
 }
 
@@ -573,7 +580,8 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
   base::Value web_setting = map->GetWebsiteSetting(
       url, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
   bool was_default =
-      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
+      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts() ||
+      setting_info.source == content_settings::SettingSource::kRemoteList;
 
   ContentSetting content_setting;
   if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
@@ -630,7 +638,7 @@ bool IsBraveShieldsManaged(PrefService* prefs,
   DCHECK(map);
   content_settings::SettingInfo info;
   map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
-  return info.source == content_settings::SettingSource::SETTING_SOURCE_POLICY;
+  return info.source == content_settings::SettingSource::kPolicy;
 }
 
 bool IsHttpsByDefaultFeatureEnabled() {
@@ -845,6 +853,65 @@ ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
   ContentSettingsForOneType cosmetic_rules =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING);
   return GetAdsSettingCountFromRules(cosmetic_rules);
+}
+
+void SetWebcompatEnabled(HostContentSettingsMap* map,
+                         ContentSettingsType webcompat_settings_type,
+                         bool enabled,
+                         const GURL& url,
+                         PrefService* local_state) {
+  DCHECK(map);
+
+  if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
+    return;
+  }
+
+  auto primary_pattern = GetPatternFromURL(url);
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  ContentSetting setting =
+      enabled ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
+  map->SetContentSettingCustomScope(primary_pattern,
+                                    ContentSettingsPattern::Wildcard(),
+                                    webcompat_settings_type, setting);
+  RecordShieldsSettingChanged(local_state);
+}
+
+bool IsWebcompatEnabled(HostContentSettingsMap* map,
+                        ContentSettingsType webcompat_settings_type,
+                        const GURL& url) {
+  DCHECK(map);
+
+  if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
+    return false;
+  }
+
+  ContentSetting setting =
+      map->GetContentSetting(url, url, webcompat_settings_type);
+
+  return setting == CONTENT_SETTING_ALLOW;
+}
+
+mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
+                                      const GURL& primary_url) {
+  const bool shields_up = GetBraveShieldsEnabled(map, primary_url);
+  if (!shields_up) {
+    return brave_shields::mojom::FarblingLevel::OFF;
+  }
+
+  auto fingerprinting_type = GetFingerprintingControlType(map, primary_url);
+  switch (fingerprinting_type) {
+    case ControlType::ALLOW:
+      return brave_shields::mojom::FarblingLevel::OFF;
+    case ControlType::BLOCK:
+      return brave_shields::mojom::FarblingLevel::MAXIMUM;
+    case ControlType::BLOCK_THIRD_PARTY:
+      NOTREACHED();
+    case ControlType::DEFAULT:
+      return brave_shields::mojom::FarblingLevel::BALANCED;
+  }
 }
 
 }  // namespace brave_shields

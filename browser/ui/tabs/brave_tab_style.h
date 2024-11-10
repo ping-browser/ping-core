@@ -42,15 +42,15 @@ class BraveTabStyle : public TabStyleBase {
     if (!tabs::features::HorizontalTabsUpdateEnabled()) {
       return TabStyleBase::GetContentsInsets();
     }
-    return gfx::Insets::VH(
-        0, brave_tabs::kHorizontalTabPadding + brave_tabs::kHorizontalTabInset);
+    return gfx::Insets::VH(0, brave_tabs::GetHorizontalTabPadding() +
+                                  brave_tabs::kHorizontalTabInset);
   }
 
   int GetPinnedWidth() const override {
     if (!tabs::features::HorizontalTabsUpdateEnabled()) {
       return TabStyleBase::GetPinnedWidth();
     }
-    return brave_tabs::kHorizontalTabHeight +
+    return brave_tabs::GetHorizontalTabHeight() +
            brave_tabs::kHorizontalTabInset * 2;
   }
 
@@ -63,6 +63,17 @@ class BraveTabStyle : public TabStyleBase {
     // area, i.e. the draggable part of the window frame.
     return 4;
   }
+
+  gfx::Size GetSeparatorSize() const override {
+    return gfx::Size(1, GetLayoutConstant(TAB_SEPARATOR_HEIGHT));
+  }
+
+  gfx::Insets GetSeparatorMargins() const override {
+    return gfx::Insets::TLBR(0, GetSeparatorSize().width() * -1, 0,
+                             GetSeparatorSize().width() * -1);
+  }
+
+  int GetSeparatorCornerRadius() const override { return 0; }
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STYLE_H_

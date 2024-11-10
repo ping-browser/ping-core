@@ -308,7 +308,8 @@ extension URL {
     let majorsiteList = [
       "twitter", "youtube", "twitch",
       "soundcloud", "github", "netflix",
-      "imdb", "mail.proton",
+      "imdb", "mail.proton", "amazon",
+      "x",
     ]
 
     let searchSiteList = [
@@ -363,7 +364,7 @@ extension URL {
     ])
 
     /// Additional sites for Japanese locale
-    if Locale.current.regionCode == "JP" {
+    if Locale.current.region?.identifier == "JP" {
       let japanList = Set<String>([
         "nicovideo.jp", "video.fc2.com", "musicpv.jp",
         "openrec.tv", "mirrativ.com", "mildom.com",
@@ -468,6 +469,7 @@ public struct InternalURL {
     case readermode = "reader-mode"
     case blocked
     case httpBlocked = "http-blocked"
+    case basicAuth = "basic-auth"
 
     func matches(_ string: String) -> Bool {
       return string.range(
@@ -554,6 +556,10 @@ public struct InternalURL {
 
   public var isReaderModePage: Bool {
     return InternalURL.Path.readermode.matches(url.path)
+  }
+
+  public var isBasicAuthURL: Bool {
+    return InternalURL.Path.basicAuth.matches(url.path)
   }
 
   public var originalURLFromErrorPage: URL? {

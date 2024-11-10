@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -183,9 +184,11 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandTileTabs:
       [[fallthrough]];
     case BraveTabMenuModel::CommandBreakTile:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandSwapTabsInTile:
       return true;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       break;
   }
 
@@ -217,9 +220,8 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
 
       auto all_muted = model_->all_muted();
       for (auto* contents : contentses) {
-        chrome::SetTabAudioMuted(contents, !all_muted,
-                                 TabMutedReason::AUDIO_INDICATOR,
-                                 /*extension_id=*/std::string());
+        SetTabAudioMuted(contents, !all_muted, TabMutedReason::AUDIO_INDICATOR,
+                         /*extension_id=*/std::string());
       }
       return;
     }
@@ -239,8 +241,11 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandBreakTile:
       BreakSelectedTile();
       return;
+    case BraveTabMenuModel::CommandSwapTabsInTile:
+      SwapTabsInTile();
+      return;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 }
@@ -275,6 +280,10 @@ void BraveTabContextMenuContents::TileSelectedTabs() {
 
 void BraveTabContextMenuContents::BreakSelectedTile() {
   brave::BreakTiles(browser_, GetTabIndicesForSplitViewCommand());
+}
+
+void BraveTabContextMenuContents::SwapTabsInTile() {
+  brave::SwapTabsInTile(browser_);
 }
 
 std::vector<int> BraveTabContextMenuContents::GetTabIndicesForSplitViewCommand()

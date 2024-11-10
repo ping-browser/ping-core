@@ -76,7 +76,6 @@ import {
 import {
   WalletPageWrapper //
 } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import { ComposerControls } from '../../composer_ui/composer_controls/composer_controls'
 import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
   PanelActionHeader //
@@ -117,7 +116,9 @@ export const SendScreen = React.memo((props: Props) => {
   )
 
   // State
-  const [sendAmount, setSendAmount] = React.useState<string>('')
+  const [sendAmount, setSendAmount] = React.useState<string>(
+    selectedSendOption === '#nft' ? '1' : ''
+  )
   const [sendingMaxAmount, setSendingMaxAmount] = React.useState<boolean>(false)
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState<string>('')
   const [resolvedDomainAddress, setResolvedDomainAddress] =
@@ -305,7 +306,9 @@ export const SendScreen = React.memo((props: Props) => {
             fromAccount,
             to: toAddress,
             value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
-            contractAddress: tokenFromParams.contractAddress
+            gasLimit: '',
+            contractAddress: tokenFromParams.contractAddress,
+            data: []
           })
           resetSendFields()
           return
@@ -317,8 +320,10 @@ export const SendScreen = React.memo((props: Props) => {
             fromAccount,
             to: toAddress,
             value: '',
+            gasLimit: '',
             contractAddress: tokenFromParams.contractAddress,
-            tokenId: tokenFromParams.tokenId ?? ''
+            tokenId: tokenFromParams.tokenId ?? '',
+            data: []
           })
           resetSendFields()
           return
@@ -336,7 +341,9 @@ export const SendScreen = React.memo((props: Props) => {
             fromAccount,
             to: toAddress,
             value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
-            contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225'
+            gasLimit: '',
+            contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225',
+            data: []
           })
           resetSendFields()
           return
@@ -348,7 +355,9 @@ export const SendScreen = React.memo((props: Props) => {
           to: toAddress,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex()
+            .toHex(),
+          gasLimit: '',
+          data: []
         })
         resetSendFields()
         return
@@ -382,7 +391,9 @@ export const SendScreen = React.memo((props: Props) => {
                   .multiplyByDecimals(tokenFromParams.decimals)
                   .toHex()
               : new Amount(sendAmount).toHex(),
-            splTokenMintAddress: tokenFromParams.contractAddress
+            splTokenMintAddress: tokenFromParams.contractAddress,
+            decimals: tokenFromParams.decimals,
+            isCompressedNft: tokenFromParams.isCompressed
           })
           resetSendFields()
           return
@@ -470,8 +481,6 @@ export const SendScreen = React.memo((props: Props) => {
         noCardPadding={true}
         hideNav={isAndroid || isPanel}
         hideHeader={isAndroid}
-        noMinCardHeight={true}
-        hideDivider={true}
         cardHeader={
           isPanel ? (
             <PanelActionHeader
@@ -481,7 +490,10 @@ export const SendScreen = React.memo((props: Props) => {
           ) : undefined
         }
       >
-        <>
+        <Column
+          fullWidth={true}
+          fullHeight={true}
+        >
           <FromAsset
             onInputChange={handleFromAssetValueChange}
             onClickSelectToken={openSelectTokenModal}
@@ -493,9 +505,9 @@ export const SendScreen = React.memo((props: Props) => {
             isLoadingBalances={isLoadingBalances}
             tokenBalancesRegistry={tokenBalancesRegistry}
           />
-          <ComposerControls />
           <ToSectionWrapper
             fullWidth={true}
+            fullHeight={true}
             justifyContent='flex-start'
             tokenColor={tokenColor}
           >
@@ -504,7 +516,7 @@ export const SendScreen = React.memo((props: Props) => {
               fullHeight={true}
               justifyContent='space-between'
               alignItems='center'
-              padding='48px 0px 0px 0px'
+              padding='32px 0px 0px 0px'
             >
               <Column
                 fullWidth={true}
@@ -515,14 +527,17 @@ export const SendScreen = React.memo((props: Props) => {
                   width='100%'
                   alignItems='center'
                   justifyContent='flex-start'
-                  padding='0px 16px'
                   marginBottom={10}
                 >
-                  <ToText>{getLocale('braveWalletSwapTo')}</ToText>
+                  <ToText
+                    textSize='14px'
+                    isBold={false}
+                  >
+                    {getLocale('braveWalletSwapTo')}
+                  </ToText>
                 </ToRow>
                 <InputRow
                   width='100%'
-                  padding='16px'
                   justifyContent='flex-start'
                 >
                   <SelectAddressButton
@@ -538,10 +553,7 @@ export const SendScreen = React.memo((props: Props) => {
                   />
                 )}
               </Column>
-              <ReviewButtonRow
-                width='100%'
-                padding='0px 16px'
-              >
+              <ReviewButtonRow width='100%'>
                 <LeoSquaredButton
                   onClick={submitSend}
                   size='large'
@@ -565,7 +577,7 @@ export const SendScreen = React.memo((props: Props) => {
               </ReviewButtonRow>
             </Column>
           </ToSectionWrapper>
-        </>
+        </Column>
       </WalletPageWrapper>
       {showSelectAddressModal && (
         <SelectAddressModal

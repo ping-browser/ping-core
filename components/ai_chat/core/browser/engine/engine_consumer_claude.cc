@@ -26,7 +26,6 @@
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
@@ -70,10 +69,13 @@ std::string GetConversationHistoryString(
     if (turn == conversation_history.back()) {
       continue;
     }
+    const std::string& text = (turn->edits && !turn->edits->empty())
+                                  ? turn->edits->back()->text
+                                  : turn->text;
     turn_strings.push_back((turn->character_type == CharacterType::HUMAN
                                 ? kHumanPromptPlaceholder
                                 : kAIPromptPlaceholder) +
-                           turn->text);
+                           text);
     if (turn->selected_text) {
       DCHECK(turn->character_type == CharacterType::HUMAN);
       turn_strings.back() =
@@ -158,17 +160,17 @@ void CheckPrompt(std::string& prompt) {
 }  // namespace
 
 EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
-    const mojom::Model& model,
+    const mojom::LeoModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager) {
-  DCHECK(!features::kConversationAPIEnabled.Get());
-  DCHECK(!model.name.empty());
+  DCHECK(!model_options.name.empty());
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(
-      model.name, stop_sequences, url_loader_factory, credential_manager);
+      model_options.name, std::move(stop_sequences),
+      std::move(url_loader_factory), credential_manager);
 
-  max_page_content_length_ = model.max_page_content_length;
+  max_associated_content_length_ = model_options.max_associated_content_length;
 }
 
 EngineConsumerClaudeRemote::~EngineConsumerClaudeRemote() = default;
@@ -180,10 +182,12 @@ void EngineConsumerClaudeRemote::ClearAllQueries() {
 void EngineConsumerClaudeRemote::GenerateRewriteSuggestion(
     std::string text,
     const std::string& question,
+    const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   SanitizeInput(text);
-  const std::string& truncated_text = text.substr(0, max_page_content_length_);
+  const std::string& truncated_text =
+      text.substr(0, max_associated_content_length_);
 
   std::string prompt = base::StrCat(
       {kHumanPromptSequence,
@@ -201,9 +205,10 @@ void EngineConsumerClaudeRemote::GenerateRewriteSuggestion(
 void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
+    const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   const std::string& truncated_page_content =
-      page_content.substr(0, max_page_content_length_);
+      page_content.substr(0, max_associated_content_length_);
   std::string prompt;
   std::vector<std::string> stop_sequences;
   prompt = base::StrCat(
@@ -220,7 +225,7 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
   stop_sequences.push_back("</response>");
 
   api_->QueryPrompt(
-      prompt, stop_sequences,
+      prompt, std::move(stop_sequences),
       base::BindOnce(
           &EngineConsumerClaudeRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -248,27 +253,23 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
+    const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  if (conversation_history.empty()) {
+  if (!CanPerformCompletionRequest(conversation_history)) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
 
-  const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
-  if (last_turn->character_type != CharacterType::HUMAN) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
-    return;
-  }
-
+  const auto& last_turn = conversation_history.back();
   std::optional<std::string> selected_text = std::nullopt;
   if (last_turn->selected_text.has_value()) {
     selected_text =
-        last_turn->selected_text->substr(0, max_page_content_length_);
+        last_turn->selected_text->substr(0, max_associated_content_length_);
   }
   const std::string& truncated_page_content = page_content.substr(
-      0, selected_text ? max_page_content_length_ - selected_text->size()
-                       : max_page_content_length_);
+      0, selected_text ? max_associated_content_length_ - selected_text->size()
+                       : max_associated_content_length_);
   std::string prompt =
       BuildClaudePrompt(human_input, truncated_page_content, selected_text,
                         is_video, conversation_history);

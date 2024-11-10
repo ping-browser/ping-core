@@ -7,7 +7,7 @@
 
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 
-import {pageVisibility as chromiumPageVisibility, setPageVisibilityForTesting} from '../page_visibility.js'
+import {pageVisibility as chromiumPageVisibility, resetPageVisibilityForTesting} from '../page_visibility.js'
 
 const alwaysTrue = {
   get: () => true
@@ -27,7 +27,6 @@ function getPageVisibility () {
       braveSync: false,
       getStarted: false,
       newTab: false,
-      braveIPFS: false,
       braveWallet: false,
       braveWeb3: false,
       leoAssistant: false,
@@ -77,4 +76,4 @@ function getPageVisibility () {
 // Even though we are modifying chromium's override, the es module eval timing may
 // result in the unoverriden value being obtained.
 export const pageVisibility = getPageVisibility()
-setPageVisibilityForTesting(pageVisibility)
+resetPageVisibilityForTesting(pageVisibility)

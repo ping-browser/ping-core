@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate.h"
@@ -19,11 +19,10 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 
-class TokenGeneratorInterface;
 struct IssuersInfo;
 
 class UserRewards final : public AdsClientNotifierObserver,
@@ -31,8 +30,7 @@ class UserRewards final : public AdsClientNotifierObserver,
                           public RedeemPaymentTokensDelegate,
                           public RefillConfirmationTokensDelegate {
  public:
-  explicit UserRewards(TokenGeneratorInterface* token_generator,
-                       WalletInfo wallet);
+  explicit UserRewards(WalletInfo wallet);
 
   UserRewards(const UserRewards&) = delete;
   UserRewards& operator=(const UserRewards&) = delete;
@@ -78,6 +76,8 @@ class UserRewards final : public AdsClientNotifierObserver,
   void OnCaptchaRequiredToRefillConfirmationTokens(
       const std::string& captcha_id) override;
 
+  raw_ptr<UserRewardsDelegate> delegate_ = nullptr;
+
   IssuersUrlRequest issuers_url_request_;
   RefillConfirmationTokens refill_confirmation_tokens_;
   RedeemPaymentTokens redeem_payment_tokens_;
@@ -85,8 +85,6 @@ class UserRewards final : public AdsClientNotifierObserver,
   WalletInfo wallet_;
 
   const database::table::Transactions transactions_database_table_;
-
-  raw_ptr<UserRewardsDelegate> delegate_ = nullptr;
 };
 
 }  // namespace brave_ads

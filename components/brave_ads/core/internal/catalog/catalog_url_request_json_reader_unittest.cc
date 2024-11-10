@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_geo_target_info.h"
@@ -21,10 +20,11 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -99,20 +99,11 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
       "Test New Tab Page Ad Campaign 1";
   catalog_creative_new_tab_page_ad.payload.target_url =
       GURL("https://brave.com/1/new_tab_page_ad");
-  CatalogNewTabPageAdWallpaperInfo wallpaper_1;
-  wallpaper_1.image_url = GURL("https://brave.com/1/test2.jpg");
-  CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_1;
-  focal_point_1.x = 1200;
-  focal_point_1.y = 1400;
-  wallpaper_1.focal_point = focal_point_1;
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_1);
-  CatalogNewTabPageAdWallpaperInfo wallpaper_2;
-  wallpaper_2.image_url = GURL("https://brave.com/1/test3.jpg");
-  CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_2;
-  focal_point_2.x = 1200;
-  focal_point_2.y = 1400;
-  wallpaper_2.focal_point = focal_point_2;
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_2);
+  CatalogNewTabPageAdWallpaperInfo wallpaper;
+  wallpaper.image_url = GURL("https://brave.com/1/test2.jpg");
+  wallpaper.focal_point =
+      CatalogNewTabPageAdWallpaperFocalPointInfo{.x = 1'200, .y = 1'400};
+  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper);
 
   catalog_creative_new_tab_page_ads.push_back(catalog_creative_new_tab_page_ad);
 
@@ -169,7 +160,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   catalog_conversion.url_pattern = "https://www.brave.com/1/*";
   catalog_conversion.observation_window = base::Days(30);
   catalog_conversion.expire_at =
-      DistantFuture() + catalog_conversion.observation_window;
+      test::DistantFuture() + catalog_conversion.observation_window;
   catalog_conversions.push_back(catalog_conversion);
 
   // Creative Sets
@@ -225,8 +216,8 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   catalog_campaign.id = "27a624a1-9c80-494a-bf1b-af327b563f85";
   catalog_campaign.priority = 1;
   catalog_campaign.pass_through_rate = 1.0;
-  catalog_campaign.start_at = DistantPastAsIso8601();
-  catalog_campaign.end_at = DistantFutureAsIso8601();
+  catalog_campaign.start_at = test::DistantPastAsIso8601();
+  catalog_campaign.end_at = test::DistantFutureAsIso8601();
   catalog_campaign.daily_cap = 10;
   catalog_campaign.advertiser_id = "a437c7f3-9a48-4fe8-b37b-99321bea93fe";
   catalog_campaign.creative_sets = catalog_creative_sets;
@@ -297,20 +288,12 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
       "Test New Tab Page Ad Campaign 2";
   catalog_creative_new_tab_page_ad.payload.target_url =
       GURL("https://brave.com/2/new_tab_page_ad");
-  CatalogNewTabPageAdWallpaperInfo wallpaper_1;
-  wallpaper_1.image_url = GURL("https://brave.com/2/test2.jpg");
-  CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_1;
-  focal_point_1.x = 1'000;
-  focal_point_1.y = 1'200;
-  wallpaper_1.focal_point = focal_point_1;
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_1);
-  CatalogNewTabPageAdWallpaperInfo wallpaper_2;
-  wallpaper_2.image_url = GURL("https://brave.com/2/test3.jpg");
-  CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_2;
-  focal_point_2.x = 500;
-  focal_point_2.y = 600;
-  wallpaper_2.focal_point = focal_point_2;
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_2);
+  CatalogNewTabPageAdWallpaperInfo wallpaper;
+  wallpaper.image_url = GURL("https://brave.com/2/test2.jpg");
+  wallpaper.focal_point =
+      CatalogNewTabPageAdWallpaperFocalPointInfo{.x = 1'000, .y = 1'200};
+  wallpaper.condition_matchers.emplace("brave.today.opted_in", "1");
+  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper);
 
   catalog_creative_new_tab_page_ads.push_back(catalog_creative_new_tab_page_ad);
 
@@ -367,7 +350,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   catalog_conversion.url_pattern = "https://www.brave.com/2/*";
   catalog_conversion.observation_window = base::Days(7);
   catalog_conversion.expire_at =
-      DistantFuture() + catalog_conversion.observation_window;
+      test::DistantFuture() + catalog_conversion.observation_window;
   catalog_conversions.push_back(catalog_conversion);
 
   // Creative Sets
@@ -413,8 +396,8 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   catalog_campaign.id = "856fc4bc-a21b-4582-bab7-a20d412359aa";
   catalog_campaign.priority = 2;
   catalog_campaign.pass_through_rate = 0.5;
-  catalog_campaign.start_at = DistantPastAsIso8601();
-  catalog_campaign.end_at = DistantFutureAsIso8601();
+  catalog_campaign.start_at = test::DistantPastAsIso8601();
+  catalog_campaign.end_at = test::DistantFutureAsIso8601();
   catalog_campaign.daily_cap = 25;
   catalog_campaign.advertiser_id = "7523854c-5f28-4153-9da8-d9da6804ed58";
   catalog_campaign.creative_sets = catalog_creative_sets;
@@ -426,59 +409,71 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
 
 }  // namespace
 
-class BraveAdsCatalogUrlRequestJsonReaderTest : public UnitTestBase {};
+class BraveAdsCatalogUrlRequestJsonReaderTest : public test::TestBase {};
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithSingleCampaign) {
   // Arrange
   const std::optional<std::string> contents =
-      MaybeReadFileToStringAndReplaceTags(kCatalogWithSingleCampaignFilename);
+      test::MaybeReadFileToStringAndReplaceTags(
+          test::kCatalogWithSingleCampaignJsonFilename);
   ASSERT_TRUE(contents);
 
-  // Act & Assert
-  CatalogInfo expected_catalog;
-  expected_catalog.id = kCatalogId;
-  expected_catalog.version = 9;
-  expected_catalog.ping = base::Milliseconds(7'200'000);
-  expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
-  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*contents));
+  // Act
+  const std::optional<CatalogInfo> catalog =
+      json::reader::ReadCatalog(*contents);
+  ASSERT_TRUE(catalog);
+
+  // Assert
+  EXPECT_THAT(*catalog, ::testing::FieldsAre(
+                            test::kCatalogId, /*version*/ 9,
+                            /*ping*/ base::Milliseconds(7'200'000),
+                            CatalogCampaignList{BuildCatalogCampaign1()}));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithMultipleCampaigns) {
   // Arrange
   const std::optional<std::string> contents =
-      MaybeReadFileToStringAndReplaceTags(
-          kCatalogWithMultipleCampaignsFilename);
+      test::MaybeReadFileToStringAndReplaceTags(
+          test::kCatalogWithMultipleCampaignsJsonFilename);
   ASSERT_TRUE(contents);
 
-  // Act & Assert
-  CatalogInfo expected_catalog;
-  expected_catalog.id = kCatalogId;
-  expected_catalog.version = 9;
-  expected_catalog.ping = base::Milliseconds(7'200'000);
-  expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
-  expected_catalog.campaigns.push_back(BuildCatalogCampaign2());
-  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*contents));
+  // Act
+  const std::optional<CatalogInfo> catalog =
+      json::reader::ReadCatalog(*contents);
+  ASSERT_TRUE(catalog);
+
+  // Assert
+  EXPECT_THAT(*catalog, ::testing::FieldsAre(
+                            test::kCatalogId, /*version*/ 9,
+                            /*ping*/ base::Milliseconds(7'200'000),
+                            CatalogCampaignList{BuildCatalogCampaign1(),
+                                                BuildCatalogCampaign2()}));
 }
 
-TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseCatalogWithNoCampaigns) {
   // Arrange
   const std::optional<std::string> contents =
-      MaybeReadFileToStringAndReplaceTags(kEmptyCatalogFilename);
+      test::MaybeReadFileToStringAndReplaceTags(
+          test::kCatalogWithNoCampaignsJsonFilename);
   ASSERT_TRUE(contents);
 
-  // Act & Assert
-  CatalogInfo expected_catalog;
-  expected_catalog.id = kCatalogId;
-  expected_catalog.version = 9;
-  expected_catalog.ping = base::Milliseconds(7'200'000);
-  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*contents));
+  // Act
+  const std::optional<CatalogInfo> catalog =
+      json::reader::ReadCatalog(*contents);
+  ASSERT_TRUE(catalog);
+
+  // Assert
+  EXPECT_THAT(*catalog,
+              ::testing::FieldsAre(test::kCatalogId, /*version*/ 9,
+                                   /*ping*/ base::Milliseconds(7'200'000),
+                                   /*campaigns*/ ::testing::IsEmpty()));
 }
 
-TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, InvalidCatalog) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, MalformedCatalog) {
   // Act & Assert
-  EXPECT_FALSE(json::reader::ReadCatalog(kInvalidCatalogJson));
+  EXPECT_FALSE(json::reader::ReadCatalog(test::kMalformedJson));
 }
 
 }  // namespace brave_ads
