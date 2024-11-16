@@ -67,9 +67,6 @@ class BraveCustomNotesPageHandler
   void LoadNotesFromPrefs();
   void SaveNotesToPrefs();
   void UpdatePageWithNotes();
-  
-  void OnSummarizeComplete(int32_t note_id, const std::string& summary);
-  void OnRephraseComplete(int32_t note_id, const std::string& rephrased);
 
   raw_ptr<Profile> profile_;
   raw_ptr<content::WebContents> web_contents_;

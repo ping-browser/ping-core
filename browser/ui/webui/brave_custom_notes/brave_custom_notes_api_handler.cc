@@ -69,6 +69,10 @@ std::unique_ptr<network::SimpleURLLoader> CreateLoader(
       std::move(resource_request), 
       kTrafficAnnotation);
 
+  // Set timeout duration
+  constexpr base::TimeDelta kRequestTimeout = base::Seconds(60);
+  loader->SetTimeoutDuration(kRequestTimeout);
+
   // Building JSON body for the request
   base::Value::Dict system_message;
   if (mode == "summarize") {
@@ -110,6 +114,7 @@ std::unique_ptr<network::SimpleURLLoader> CreateLoader(
 
   return loader;
 }
+
 
 }  // namespace
 

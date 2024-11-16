@@ -30,6 +30,7 @@ namespace {
 const char kCustomNotesKey[] = "custom_notes";
 }  // namespace
 
+// Helper class for handling API Callbacks
 class BraveCustomNotesPageHandler::APICallbackHelper {
  public:
   explicit APICallbackHelper(base::WeakPtr<BraveCustomNotesPageHandler> handler,
@@ -37,21 +38,12 @@ class BraveCustomNotesPageHandler::APICallbackHelper {
       : handler_(handler),
         note_id_(note_id) {}
 
-  void OnSummarizeComplete(const std::string& summary) {
-    if (handler_)
-      handler_->OnSummarizeComplete(note_id_, summary);
-  }
-
-  void OnRephraseComplete(const std::string& rephrased) {
-    if (handler_)
-      handler_->OnRephraseComplete(note_id_, rephrased);
-  }
-
  private:
   base::WeakPtr<BraveCustomNotesPageHandler> handler_;
   int32_t note_id_;
 };
 
+// Constructor for initialising dependencies and loading notes from preferences
 BraveCustomNotesPageHandler::BraveCustomNotesPageHandler(
     Profile* profile,
     content::WebContents* web_contents,
@@ -62,11 +54,12 @@ BraveCustomNotesPageHandler::BraveCustomNotesPageHandler(
       receiver_(this, std::move(receiver)),
       api_handler_(std::make_unique<BraveCustomNotesAPIHandler>(url_loader_factory)),
       weak_ptr_factory_(this) {
-  LoadNotesFromPrefs();
+  LoadNotesFromPrefs(); // Loads existing notes at startup time
 }
 
 BraveCustomNotesPageHandler::~BraveCustomNotesPageHandler() = default;
 
+// Setting up the communication with the client page
 void BraveCustomNotesPageHandler::SetClientPage(
     mojo::PendingRemote<brave_custom_notes::mojom::CustomNotesPage> page) {
   page_.Bind(std::move(page));
@@ -83,6 +76,7 @@ void BraveCustomNotesPageHandler::CreateNote(const std::string& title,
   notes_.push_back(std::move(new_note));
   SaveNotesToPrefs();
 
+  // Notifies client of success
   std::move(callback).Run(true);
 
   if (page_) {
@@ -128,45 +122,6 @@ void BraveCustomNotesPageHandler::EditNote(int32_t note_id,
   }
 }
 
-void BraveCustomNotesPageHandler::SummarizeNoteContent(
-    int32_t note_id, SummarizeNoteContentCallback callback) {
-  auto it = std::find_if(notes_.begin(), notes_.end(),
-                         [note_id](const auto& note) { return note->id == note_id; });
-
-  if (it != notes_.end()) {
-    LOG(INFO) << "Starting async summarize for note ID: " << note_id;
-    pending_summarize_callbacks_[note_id] = std::move(callback);
-
-    api_handler_->CallSummarizeAPI(
-        (*it)->content,
-        base::BindOnce(&BraveCustomNotesPageHandler::OnSummarizeComplete,
-                       weak_ptr_factory_.GetWeakPtr(), note_id));
-  } else {
-    LOG(WARNING) << "Note ID not found for summarize: " << note_id;
-    std::move(callback).Run(false, "Note not found");
-  }
-}
-
-
-void BraveCustomNotesPageHandler::RephraseNoteContent(
-    int32_t note_id, RephraseNoteContentCallback callback) {
-  auto it = std::find_if(notes_.begin(), notes_.end(),
-                         [note_id](const auto& note) { return note->id == note_id; });
-
-  if (it != notes_.end()) {
-    LOG(INFO) << "Starting async rephrase for note ID: " << note_id;
-    pending_rephrase_callbacks_[note_id] = std::move(callback);
-
-    api_handler_->CallRephraseAPI(
-        (*it)->content,
-        base::BindOnce(&BraveCustomNotesPageHandler::OnRephraseComplete,
-                       weak_ptr_factory_.GetWeakPtr(), note_id));
-  } else {
-    LOG(WARNING) << "Note ID not found for rephrase: " << note_id;
-    std::move(callback).Run(false, "Note not found");
-  }
-}
-
 std::optional<std::string> BraveCustomNotesPageHandler::ExtractContentFromJson(
     const std::string& json_response) {
   // Parse the JSON response
@@ -205,33 +160,69 @@ std::optional<std::string> BraveCustomNotesPageHandler::ExtractContentFromJson(
   return *content;
 }
 
-void BraveCustomNotesPageHandler::OnSummarizeComplete(
-    int32_t note_id, const std::string& json_response) {
-  LOG(INFO) << "Raw JSON response for Summarizer: " << json_response;
+void BraveCustomNotesPageHandler::SummarizeNoteContent(
+    int32_t note_id, SummarizeNoteContentCallback callback) {
+  auto it = std::find_if(notes_.begin(), notes_.end(),
+                         [note_id](const auto& note) { return note->id == note_id; });
 
-  std::optional<std::string> content = ExtractContentFromJson(json_response);
+  if (it != notes_.end()) {
+    LOG(INFO) << "Starting async summarize for note ID: " << note_id;
 
-  auto callback_it = pending_summarize_callbacks_.find(note_id);
-  if (callback_it != pending_summarize_callbacks_.end()) {
-    std::move(callback_it->second).Run(content.has_value(), content.value_or(""));
-    pending_summarize_callbacks_.erase(callback_it);
+    api_handler_->CallSummarizeAPI(
+        (*it)->content,
+        base::BindOnce(
+            [](int32_t note_id, 
+               SummarizeNoteContentCallback callback,
+               BraveCustomNotesPageHandler* handler,
+               const std::string& json_response) {
+              LOG(INFO) << "Raw JSON response for Summarizer: " << json_response;
+
+              std::optional<std::string> content = handler->ExtractContentFromJson(json_response);
+
+              if (content) {
+                std::move(callback).Run(true, *content);
+              } else {
+                LOG(WARNING) << "Summarization failed for note ID: " << note_id;
+                std::move(callback).Run(false, "Failed to extract summary");
+              }
+            },
+            note_id, std::move(callback), this));
   } else {
-    LOG(WARNING) << "No pending summarize callback for note ID: " << note_id;
+    LOG(WARNING) << "Note ID not found for summarize: " << note_id;
+    std::move(callback).Run(false, "Note not found");
   }
 }
 
-void BraveCustomNotesPageHandler::OnRephraseComplete(
-    int32_t note_id, const std::string& json_response) {
-  LOG(INFO) << "Raw JSON response for Rephraser: " << json_response;
+void BraveCustomNotesPageHandler::RephraseNoteContent(
+    int32_t note_id, RephraseNoteContentCallback callback) {
+  auto it = std::find_if(notes_.begin(), notes_.end(),
+                         [note_id](const auto& note) { return note->id == note_id; });
 
-  std::optional<std::string> content = ExtractContentFromJson(json_response);
+  if (it != notes_.end()) {
+    LOG(INFO) << "Starting async rephrase for note ID: " << note_id;
 
-  auto callback_it = pending_rephrase_callbacks_.find(note_id);
-  if (callback_it != pending_rephrase_callbacks_.end()) {
-    std::move(callback_it->second).Run(content.has_value(), content.value_or(""));
-    pending_rephrase_callbacks_.erase(callback_it);
+    api_handler_->CallRephraseAPI(
+        (*it)->content,
+        base::BindOnce(
+            [](int32_t note_id, 
+               RephraseNoteContentCallback callback,
+               BraveCustomNotesPageHandler* handler,
+               const std::string& json_response) {
+              LOG(INFO) << "Raw JSON response for Rephraser: " << json_response;
+
+              std::optional<std::string> content = handler->ExtractContentFromJson(json_response);
+
+              if (content) {
+                std::move(callback).Run(true, *content);
+              } else {
+                LOG(WARNING) << "Rephrasing failed for note ID: " << note_id;
+                std::move(callback).Run(false, "Failed to extract rephrased content");
+              }
+            },
+            note_id, std::move(callback), this));
   } else {
-    LOG(WARNING) << "No pending rephrase callback for note ID: " << note_id;
+    LOG(WARNING) << "Note ID not found for rephrase: " << note_id;
+    std::move(callback).Run(false, "Note not found");
   }
 }
 
