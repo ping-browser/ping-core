@@ -59,6 +59,7 @@ class BraveCustomNotesPageHandler
                            SummarizeNoteContentCallback callback) override;
   void RephraseNoteContent(int32_t note_id,
                           RephraseNoteContentCallback callback) override;
+  std::optional<std::string> ExtractContentFromJson(const std::string& json_response);
 
  private:
   class APICallbackHelper;

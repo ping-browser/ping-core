@@ -27,19 +27,19 @@ class BraveCustomNotesAPIHandler {
   BraveCustomNotesAPIHandler(const BraveCustomNotesAPIHandler&) = delete;
   BraveCustomNotesAPIHandler& operator=(const BraveCustomNotesAPIHandler&) = delete;
 
-  // Public methods to call the Summarize and Rephrase API endpoints
-  void CallSummarizeAPI(const std::string& content, std::string* summary);
-  void CallRephraseAPI(const std::string& content, std::string* rephrased_content);
+  void CallSummarizeAPI(
+    const std::string& content,
+    base::OnceCallback<void(const std::string&)> callback);
+
+void CallRephraseAPI(
+    const std::string& content,
+    base::OnceCallback<void(const std::string&)> callback);
 
  private:
   // Private method to handle the success response from Summarize API
   void OnSummarizeAPIResponse(network::SimpleURLLoader* loader,
                              std::string* summary,
                              std::unique_ptr<std::string> response_body);
-
-  void OnAPIResponse(network::SimpleURLLoader* loader,
-                     std::string* output_content,
-                     std::unique_ptr<std::string> response_body);
 
   // Private method to handle the success response from Rephrase API
   void OnRephraseAPIResponse(network::SimpleURLLoader* loader,

@@ -4,6 +4,8 @@
  * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_custom_notes/brave_custom_notes_handler.h"
+#include "base/json/json_reader.h"
+#include "base/values.h" 
 
 #include <algorithm>
 #include <string>
@@ -129,110 +131,107 @@ void BraveCustomNotesPageHandler::EditNote(int32_t note_id,
 void BraveCustomNotesPageHandler::SummarizeNoteContent(
     int32_t note_id, SummarizeNoteContentCallback callback) {
   auto it = std::find_if(notes_.begin(), notes_.end(),
-                        [note_id](const auto& note) { return note->id == note_id; });
+                         [note_id](const auto& note) { return note->id == note_id; });
 
   if (it != notes_.end()) {
-    // Log the start of the summarization process
-    LOG(INFO) << "Starting to summarize note with ID: " << note_id;
-
-    // Store the callback for later use
+    LOG(INFO) << "Starting async summarize for note ID: " << note_id;
     pending_summarize_callbacks_[note_id] = std::move(callback);
-    
-    // Create a string to store the summary
-    auto summary = std::make_unique<std::string>();
-    
-    // Create a helper to handle the API callback
-    auto helper = std::make_unique<APICallbackHelper>(
-        weak_ptr_factory_.GetWeakPtr(), note_id);
-    
-    // Log the note content being passed to the summarization API
-    LOG(INFO) << "Note content being summarized: " << (*it)->content;
 
-    // Call the API with the note content
-    api_handler_->CallSummarizeAPI((*it)->content, summary.get());
-    
-    // Store the output string
-    pending_summaries_[note_id] = std::move(summary);
-
+    api_handler_->CallSummarizeAPI(
+        (*it)->content,
+        base::BindOnce(&BraveCustomNotesPageHandler::OnSummarizeComplete,
+                       weak_ptr_factory_.GetWeakPtr(), note_id));
   } else {
-    LOG(WARNING) << "Failed to find note with ID: " << note_id;
+    LOG(WARNING) << "Note ID not found for summarize: " << note_id;
     std::move(callback).Run(false, "Note not found");
   }
 }
 
-// Inside the RephraseNoteContent function
+
 void BraveCustomNotesPageHandler::RephraseNoteContent(
     int32_t note_id, RephraseNoteContentCallback callback) {
   auto it = std::find_if(notes_.begin(), notes_.end(),
-                        [note_id](const auto& note) { return note->id == note_id; });
+                         [note_id](const auto& note) { return note->id == note_id; });
 
   if (it != notes_.end()) {
-    // Log the start of the rephrasing process
-    LOG(INFO) << "Starting to rephrase note with ID: " << note_id;
-
-    // Store the callback for later use
+    LOG(INFO) << "Starting async rephrase for note ID: " << note_id;
     pending_rephrase_callbacks_[note_id] = std::move(callback);
-    
-    // Create a string to store the rephrased content
-    auto rephrased = std::make_unique<std::string>();
-    
-    // Create a helper to handle the API callback
-    auto helper = std::make_unique<APICallbackHelper>(
-        weak_ptr_factory_.GetWeakPtr(), note_id);
-    
-    // Log the note content being passed to the rephrasing API
-    LOG(INFO) << "Note content being rephrased: " << (*it)->content;
 
-    // Call the API with the note content
-    api_handler_->CallRephraseAPI((*it)->content, rephrased.get());
-    
-    // Store the output string
-    pending_rephrased_[note_id] = std::move(rephrased);
+    api_handler_->CallRephraseAPI(
+        (*it)->content,
+        base::BindOnce(&BraveCustomNotesPageHandler::OnRephraseComplete,
+                       weak_ptr_factory_.GetWeakPtr(), note_id));
   } else {
-    LOG(WARNING) << "Failed to find note with ID: " << note_id;
+    LOG(WARNING) << "Note ID not found for rephrase: " << note_id;
     std::move(callback).Run(false, "Note not found");
   }
 }
 
-// Inside the OnSummarizeComplete function
-void BraveCustomNotesPageHandler::OnSummarizeComplete(
-    int32_t note_id,
-    const std::string& summary) {
-  auto callback_it = pending_summarize_callbacks_.find(note_id);
-  auto summary_it = pending_summaries_.find(note_id);
-  
-  if (callback_it != pending_summarize_callbacks_.end() &&
-      summary_it != pending_summaries_.end()) {
-    // Log the completion of the summarization process
-    LOG(INFO) << "Summarization complete for note with ID: " << note_id;
-    LOG(INFO) << "Summary: " << summary;
+std::optional<std::string> BraveCustomNotesPageHandler::ExtractContentFromJson(
+    const std::string& json_response) {
+  // Parse the JSON response
+  absl::optional<base::Value> parsed_json = base::JSONReader::Read(json_response);
+  if (!parsed_json || !parsed_json->is_dict()) {
+    LOG(ERROR) << "Failed to parse JSON or response is not a dictionary.";
+    return std::nullopt;
+  }
 
-    std::move(callback_it->second).Run(true, summary);
+  const base::Value::Dict& json_dict = parsed_json->GetDict();
+  const base::Value::List* choices = json_dict.FindList("choices");
+
+  if (!choices || choices->empty()) {
+    LOG(ERROR) << "No choices field found or it is empty.";
+    return std::nullopt;
+  }
+
+  const base::Value::Dict* first_choice = (*choices)[0].GetIfDict();
+  if (!first_choice) {
+    LOG(ERROR) << "First choice is not a dictionary.";
+    return std::nullopt;
+  }
+
+  const base::Value::Dict* message = first_choice->FindDict("message");
+  if (!message) {
+    LOG(ERROR) << "No message field found in the first choice.";
+    return std::nullopt;
+  }
+
+  const std::string* content = message->FindString("content");
+  if (!content) {
+    LOG(ERROR) << "No content field found in the message.";
+    return std::nullopt;
+  }
+
+  return *content;
+}
+
+void BraveCustomNotesPageHandler::OnSummarizeComplete(
+    int32_t note_id, const std::string& json_response) {
+  LOG(INFO) << "Raw JSON response for Summarizer: " << json_response;
+
+  std::optional<std::string> content = ExtractContentFromJson(json_response);
+
+  auto callback_it = pending_summarize_callbacks_.find(note_id);
+  if (callback_it != pending_summarize_callbacks_.end()) {
+    std::move(callback_it->second).Run(content.has_value(), content.value_or(""));
     pending_summarize_callbacks_.erase(callback_it);
-    pending_summaries_.erase(summary_it);
   } else {
-    LOG(WARNING) << "Summarization callback or summary not found for note with ID: " << note_id;
+    LOG(WARNING) << "No pending summarize callback for note ID: " << note_id;
   }
 }
 
-// Inside the OnRephraseComplete function
 void BraveCustomNotesPageHandler::OnRephraseComplete(
-    int32_t note_id,
-    const std::string& rephrased) {
-  auto callback_it = pending_rephrase_callbacks_.find(note_id);
-  auto rephrased_it = pending_rephrased_.find(note_id);
-  
-  if (callback_it != pending_rephrase_callbacks_.end() &&
-      rephrased_it != pending_rephrased_.end()) {
-    // Log the completion of the rephrasing process
-    LOG(INFO) << "Rephrasing complete for note with ID: " << note_id;
-    LOG(INFO) << "Rephrased content: " << rephrased;
+    int32_t note_id, const std::string& json_response) {
+  LOG(INFO) << "Raw JSON response for Rephraser: " << json_response;
 
-    std::move(callback_it->second).Run(true, rephrased);
+  std::optional<std::string> content = ExtractContentFromJson(json_response);
+
+  auto callback_it = pending_rephrase_callbacks_.find(note_id);
+  if (callback_it != pending_rephrase_callbacks_.end()) {
+    std::move(callback_it->second).Run(content.has_value(), content.value_or(""));
     pending_rephrase_callbacks_.erase(callback_it);
-    pending_rephrased_.erase(rephrased_it);
   } else {
-    LOG(WARNING) << "Rephrasing callback or rephrased content not found for note with ID: " << note_id;
+    LOG(WARNING) << "No pending rephrase callback for note ID: " << note_id;
   }
 }
 
