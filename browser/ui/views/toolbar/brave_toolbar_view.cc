@@ -41,6 +41,10 @@
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
 #include "ui/views/window/hit_test_utils.h"
+#include "base/values.h"
+#include "components/prefs/pref_service.h"
+#include <vector>
+#include "brave/browser/ui/tabs/gmail_fetcher.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_utils.h"
@@ -243,6 +247,17 @@ void BraveToolbarView::Init() {
   wallet_->UpdateImageAndText();
 
   UpdateWalletButtonVisibility();
+
+  custom_button_ = container_view->AddChildViewAt(
+      std::make_unique<views::LabelButton>(
+          base::BindRepeating(&BraveToolbarView::ShowCustomPopup, base::Unretained(this)),
+          u"Custom Button"),
+      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+
+  custom_button_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
+  custom_button_->SetAccessibleName(u"Open Popup");
+  custom_button_->SetVisible(true);
+
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Don't check policy status since we're going to
@@ -519,6 +534,36 @@ void BraveToolbarView::UpdateWalletButtonVisibility() {
   }
 
   wallet_->SetVisible(false);
+}
+
+void BraveToolbarView::ShowCustomPopup() {
+
+      // Get the current profile
+    Profile* profile = browser()->profile();
+    // LOG(INFO) << "---*profile*--- "<< profile << " --------";
+
+    // Create an instance of GmailFetcher
+    auto gmail_fetcher = std::make_unique<GmailFetcher>(base::raw_ptr<Profile>(profile));
+    // LOG(INFO) << "---*gmail_fetcher*--- "<< gmail_fetcher << " --------";
+
+    // Call FetchGmail to load Gmail URL
+    gmail_fetcher->FetchGmail();
+  // Create a simple popup dialog (for demonstration purposes).
+
+  // views::DialogDelegate::CreateDialogWidget(
+  //   views::Builder<views::DialogDelegateView>()
+  //       .SetTitle(u"Custom Note Popup")
+  //       .SetLayoutManager(std::make_unique<views::BoxLayout>(
+  //           views::BoxLayout::Orientation::kVertical))
+  //       .AddChildren(
+  //           views::Builder<views::Textfield>(), // Add text input for note
+  //           views::Builder<views::LabelButton>()
+  //               .SetText(u"Add Note"),
+  //           views::Builder<views::LabelButton>()
+  //               .SetText(u"Delete All Notes")
+  //       )
+  //       .Build(),
+  //   browser_view_->GetWidget()->GetNativeWindow(), nullptr)->Show();
 }
 
 BEGIN_METADATA(BraveToolbarView)

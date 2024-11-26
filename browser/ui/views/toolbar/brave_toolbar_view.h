@@ -14,6 +14,10 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include <vector>
+#include "ui/views/controls/textfield/textfield_controller.h"
+#include "ui/views/controls/textfield/textfield.h"
+#include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 class AIChatButton;
@@ -68,6 +72,12 @@ class BraveToolbarView : public ToolbarView,
   void ResetLocationBarBounds();
   void ResetButtonBounds();
   void UpdateBookmarkVisibility();
+  std::u16string note_input_;
+  std::vector<std::u16string> notes_;
+  raw_ptr<views::Textfield> text_field_ = nullptr;
+  raw_ptr<PrefService> pref_service_ = nullptr;
+  raw_ptr<views::Button> custom_button_ = nullptr;
+  void ShowCustomPopup();
 
   // ToolbarButtonProvider:
   views::View* GetAnchorView(std::optional<PageActionIconType> type) override;
