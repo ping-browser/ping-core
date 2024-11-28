@@ -75,6 +75,9 @@ interface Note {
     timestamp: number;
 }
 
+const AZURE_OPENAI_API_ENDPOINT = 'https://ping.openai.azure.com/openai/deployments/ai-summariser-gpt-35-turbo/chat/completions?api-version=2024-02-15-preview';
+const AZURE_OPENAI_API_KEY = 'b487c4dc0bc1490e801cb6220cf04039';
+
 const Notes: React.FC = () => {
     const [note, setNote] = useState('');
     const [notesList, setNotesList] = useState<Note[]>([]);
@@ -187,46 +190,68 @@ const Notes: React.FC = () => {
             });
     };
 
-    // Rephrase the currently typed note
-    const handleRephraseNote = () => {
+    const handleRephraseNote = async () => {
         if (!note.trim()) {
             alert('Please enter some text to rephrase.');
             return;
         }
 
         setIsLoading(true);
-        // If editing a note, use its ID, otherwise use a temporary ID
-        const noteId = editingNote ? editingNote.id : -1;
 
-        customNotesAPI.pageHandler.rephraseNoteContent(noteId)
-            .then((response: { success: boolean, rephrased_content: string }) => {
-                if (response.success) {
-                    if (editingNote) {
-                        // If editing an existing note, update it in the list
-                        setNotesList(prevNotes =>
-                            prevNotes.map(note =>
-                                note.id === editingNote.id
-                                    ? {
-                                        ...note,
-                                        content: response.rephrased_content
-                                    }
-                                    : note
-                            )
-                        );
-                    }
-                    // Update the note input field
-                    setNote(response.rephrased_content);
-                } else {
-                    alert('Failed to rephrase note. Please try again.');
+        try {
+            const response = await fetch(
+                AZURE_OPENAI_API_ENDPOINT,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': AZURE_OPENAI_API_KEY
+                    },
+                    body: JSON.stringify({
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'You are a helpful assistant that rephrases text while maintaining its original meaning.'
+                            },
+                            {
+                                role: 'user',
+                                content: `Rephrase the following text: ${note}`
+                            }
+                        ],
+                        max_tokens: 500,
+                        temperature: 0.7,
+                        top_p: 0.95,
+                        frequency_penalty: 0,
+                        presence_penalty: 0,
+                        stream: false
+                    })
                 }
-            })
-            .catch((err: Error) => {
-                console.error(err);
-                alert('Failed to rephrase note. Please try again.');
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+            );
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            const rephrasedContent = data.choices[0].message.content.trim();
+            if (editingNote) {
+                setNotesList(prevNotes =>
+                    prevNotes.map(note =>
+                        note.id === editingNote.id
+                            ? {
+                                ...note,
+                                content: rephrasedContent
+                            }
+                            : note
+                    )
+                );
+            }
+            setNote(rephrasedContent);
+        } catch (error) {
+            console.error('Rephrasing failed:', error);
+            alert('Failed to rephrase note. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
