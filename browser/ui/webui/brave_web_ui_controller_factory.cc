@@ -271,6 +271,16 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   return nullptr;
 }
 
+bool ChromeWebUIControllerFactory::IsWebUIAllowedToMakeNetworkRequests(
+    const GURL& url) {
+  std::string host = url.host_piece();
+  if (host == kBraveCustomNotesHost) {
+    return true;
+  }
+  return ChromeWebUIControllerFactory::IsWebUIAllowedToMakeNetworkRequests(url);
+}
+
+
 bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
                              const GURL& url) {
   if (url.host_piece() != kRewardsPageHost &&
