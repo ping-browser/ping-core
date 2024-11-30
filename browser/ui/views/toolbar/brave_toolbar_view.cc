@@ -41,6 +41,10 @@
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
 #include "ui/views/window/hit_test_utils.h"
+#include "base/values.h"
+#include "components/prefs/pref_service.h"
+#include <vector>
+#include "brave/browser/ui/tabs/gmail_fetcher.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_utils.h"
@@ -243,6 +247,17 @@ void BraveToolbarView::Init() {
   wallet_->UpdateImageAndText();
 
   UpdateWalletButtonVisibility();
+
+  custom_button_ = container_view->AddChildViewAt(
+      std::make_unique<views::LabelButton>(
+          base::BindRepeating(&BraveToolbarView::FetchGmailOnClick, base::Unretained(this)),
+          u"Custom Button"),
+      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+
+  custom_button_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
+  custom_button_->SetAccessibleName(u"Open Popup");
+  custom_button_->SetVisible(true);
+
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Don't check policy status since we're going to
@@ -519,6 +534,26 @@ void BraveToolbarView::UpdateWalletButtonVisibility() {
   }
 
   wallet_->SetVisible(false);
+}
+
+void BraveToolbarView::FetchGmailOnClick() {
+
+    Profile* profile = browser()->profile();
+
+    // Create an instance of GmailFetcher directly as a raw pointer
+    auto* gmail_fetcher = new GmailFetcher(base::raw_ptr<Profile>(profile));
+
+    LOG(INFO) << "Created GmailFetcher with profile: " << profile;
+
+    // Set navigation success callback
+    gmail_fetcher->SetNavigationSuccessCallback([gmail_fetcher](const GURL& url) {
+        LOG(INFO) << "GmailFetcher navigation succeeded for URL: " << url.spec();
+        gmail_fetcher->DestroyGmailContents();
+        delete gmail_fetcher; 
+    });
+
+    // Trigger navigation
+    gmail_fetcher->FetchGmail();
 }
 
 BEGIN_METADATA(BraveToolbarView)
