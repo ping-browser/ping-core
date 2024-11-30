@@ -250,7 +250,7 @@ void BraveToolbarView::Init() {
 
   custom_button_ = container_view->AddChildViewAt(
       std::make_unique<views::LabelButton>(
-          base::BindRepeating(&BraveToolbarView::ShowCustomPopup, base::Unretained(this)),
+          base::BindRepeating(&BraveToolbarView::FetchGmailOnClick, base::Unretained(this)),
           u"Custom Button"),
       *container_view->GetIndexOf(GetAppMenuButton()) - 1);
 
@@ -536,34 +536,24 @@ void BraveToolbarView::UpdateWalletButtonVisibility() {
   wallet_->SetVisible(false);
 }
 
-void BraveToolbarView::ShowCustomPopup() {
+void BraveToolbarView::FetchGmailOnClick() {
 
-      // Get the current profile
     Profile* profile = browser()->profile();
-    // LOG(INFO) << "---*profile*--- "<< profile << " --------";
 
-    // Create an instance of GmailFetcher
-    auto gmail_fetcher = std::make_unique<GmailFetcher>(base::raw_ptr<Profile>(profile));
-    // LOG(INFO) << "---*gmail_fetcher*--- "<< gmail_fetcher << " --------";
+    // Create an instance of GmailFetcher directly as a raw pointer
+    auto* gmail_fetcher = new GmailFetcher(base::raw_ptr<Profile>(profile));
 
-    // Call FetchGmail to load Gmail URL
+    LOG(INFO) << "Created GmailFetcher with profile: " << profile;
+
+    // Set navigation success callback
+    gmail_fetcher->SetNavigationSuccessCallback([gmail_fetcher](const GURL& url) {
+        LOG(INFO) << "GmailFetcher navigation succeeded for URL: " << url.spec();
+        gmail_fetcher->DestroyGmailContents();
+        delete gmail_fetcher; 
+    });
+
+    // Trigger navigation
     gmail_fetcher->FetchGmail();
-  // Create a simple popup dialog (for demonstration purposes).
-
-  // views::DialogDelegate::CreateDialogWidget(
-  //   views::Builder<views::DialogDelegateView>()
-  //       .SetTitle(u"Custom Note Popup")
-  //       .SetLayoutManager(std::make_unique<views::BoxLayout>(
-  //           views::BoxLayout::Orientation::kVertical))
-  //       .AddChildren(
-  //           views::Builder<views::Textfield>(), // Add text input for note
-  //           views::Builder<views::LabelButton>()
-  //               .SetText(u"Add Note"),
-  //           views::Builder<views::LabelButton>()
-  //               .SetText(u"Delete All Notes")
-  //       )
-  //       .Build(),
-  //   browser_view_->GetWidget()->GetNativeWindow(), nullptr)->Show();
 }
 
 BEGIN_METADATA(BraveToolbarView)

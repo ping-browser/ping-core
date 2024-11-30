@@ -77,7 +77,7 @@ class BraveToolbarView : public ToolbarView,
   raw_ptr<views::Textfield> text_field_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;
   raw_ptr<views::Button> custom_button_ = nullptr;
-  void ShowCustomPopup();
+  void FetchGmailOnClick();
 
   // ToolbarButtonProvider:
   views::View* GetAnchorView(std::optional<PageActionIconType> type) override;
