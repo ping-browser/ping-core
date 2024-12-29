@@ -7,13 +7,13 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsConfirmationQueueItemBuilderUtilTest : public UnitTestBase {};
+class BraveAdsConfirmationQueueItemBuilderUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsConfirmationQueueItemBuilderUtilTest,
        RetryProcessingConfirmationAfter) {
@@ -21,8 +21,12 @@ TEST_F(BraveAdsConfirmationQueueItemBuilderUtilTest,
   const ScopedRandTimeDeltaSetterForTesting scoped_rand_time_delta(
       base::Seconds(7));
 
-  // Act & Assert
-  EXPECT_EQ(base::Seconds(7), RetryProcessingConfirmationAfter());
+  // Act
+  const base::TimeDelta retry_processing_confirmation_after =
+      RetryProcessingConfirmationAfter();
+
+  // Assert
+  EXPECT_EQ(base::Seconds(7), retry_processing_confirmation_after);
 }
 
 }  // namespace brave_ads

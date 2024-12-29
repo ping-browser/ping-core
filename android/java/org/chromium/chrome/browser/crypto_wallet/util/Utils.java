@@ -107,8 +107,8 @@ public class Utils {
     public static final int SOL_DEFAULT_DECIMALS = 9;
 
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
-    public static final String BRAVE_SUPPORT_URL = "https://support.brave.com";
-    public static final String BRAVE_TERMS_OF_USE_URL = "https://brave.com/terms-of-use/";
+    public static final String BRAVE_SUPPORT_URL = "https://ping-browser.com/faqs-and-help";
+    public static final String BRAVE_TERMS_OF_USE_URL = "https://ping-browser.com/terms-of-use-1";
     public static final String NAME = "name";
     public static final String COIN_TYPE = "coinType";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
@@ -126,9 +126,10 @@ public class Utils {
 
     private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
 
-    public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
-        String[] recoveryPhraseArray = recoveryPhrase.split(" ");
-        return new ArrayList<String>(Arrays.asList(recoveryPhraseArray));
+    @NonNull
+    public static List<String> getRecoveryPhraseAsList(@NonNull final String recoveryPhrase) {
+        final String[] recoveryPhraseArray = recoveryPhrase.split(" ");
+        return new ArrayList<>(Arrays.asList(recoveryPhraseArray));
     }
 
     public static String getRecoveryPhraseFromList(List<String> recoveryPhrases) {
@@ -173,7 +174,8 @@ public class Utils {
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = clipboard.getPrimaryClip();
         String pasteData = "";
-        if (clipData != null && clipData.getDescription().hasMimeType(MIMETYPE_TEXT_PLAIN)
+        if (clipData != null
+                && clipData.getDescription().hasMimeType(MIMETYPE_TEXT_PLAIN)
                 && clipData.getItemCount() > 0) {
             return clipData.getItemAt(0).getText().toString();
         }
@@ -267,18 +269,6 @@ public class Utils {
         return allNetworks.get(0);
     }
 
-    public static NetworkInfo[] getNetworkInfosByChainIds(
-            String[] chainId, NetworkInfo[] allNetworks) {
-        List<NetworkInfo> list = new ArrayList<NetworkInfo>();
-        for (NetworkInfo network : allNetworks) {
-            if (Arrays.asList(chainId).contains(network.chainId)) {
-                list.add(network);
-            }
-        }
-
-        return list.toArray(new NetworkInfo[0]);
-    }
-
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     public static String getDecimalsDepNumber(int decimals) {
         String strDecimals = "1";
@@ -335,17 +325,16 @@ public class Utils {
     }
 
     /**
-     * Converts a given string to a big integer and multiplies the value of the object by
-     * ten raised to the power of decimals.
+     * Converts a given string to a big integer and multiplies the value of the object by ten raised
+     * to the power of decimals.
      *
      * @param number Number to be multiplied, represented as a string.
      * @param decimals Number of decimals to multiply by.
      * @return The result of multiplying the number by ten raised to the power of decimals,
-     * expressed as a {@code BigInteger}.
+     *     expressed as a {@code BigInteger}.
      * @throws ParseException If the input string cannot be parsed as a {@code BigDecimal}.
-     *
-     * <b>Note:</b>: Supposedly, when converting to Wei the result shall always end up with an
-     * integer.
+     *     <p><b>Note:</b>: Supposedly, when converting to Wei the result shall always end up with
+     *     an integer.
      */
     public static BigInteger multiplyByDecimals(@NonNull final String number, final int decimals)
             throws ParseException {
@@ -556,18 +545,25 @@ public class Utils {
      * Set the image either on {@code ImageView} or {@code TextView} based on given values. Try to
      * set @{code iconId} icon first otherwise create icon from token directory. Draw icon with
      * caret if @{code iconPath} is invalid.
+     *
      * @param executor to run tasks in background
      * @param handler to run tasks on UI
      * @param context to access resources
      * @param iconPath to icon in token directory
      * @param iconId of a image in resources. Set icon if {@code iconPath} is null. Pass @{code
-     *         Integer.MIN_VALUE} to avoid setting any default icon.
+     *     Integer.MIN_VALUE} to avoid setting any default icon.
      * @param iconImg to set image if not null
      * @param textView to set image if not null
      * @param drawCaratDown true to draw a down caret before icon
      */
-    public static void setBitmapResource(ExecutorService executor, Handler handler, Context context,
-            String iconPath, int iconId, ImageView iconImg, TextView textView,
+    public static void setBitmapResource(
+            ExecutorService executor,
+            Handler handler,
+            Context context,
+            String iconPath,
+            int iconId,
+            ImageView iconImg,
+            TextView textView,
             boolean drawCaratDown) {
         if (iconPath == null) {
             if (iconImg != null) {
@@ -579,55 +575,69 @@ public class Utils {
 
             return;
         }
-        executor.execute(() -> {
-            Uri logoFileUri = Uri.parse(iconPath);
-            int resizeFactorTemp = 110;
-            if (textView != null) {
-                resizeFactorTemp = 70;
-            }
-            final int resizeFactor = resizeFactorTemp;
-            try (InputStream inputStream =
+        executor.execute(
+                () -> {
+                    Uri logoFileUri = Uri.parse(iconPath);
+                    int resizeFactorTemp = 110;
+                    if (textView != null) {
+                        resizeFactorTemp = 70;
+                    }
+                    final int resizeFactor = resizeFactorTemp;
+                    try (InputStream inputStream =
                             context.getContentResolver().openInputStream(logoFileUri)) {
-                final Bitmap bitmap =
-                        Utils.resizeBitmap(BitmapFactory.decodeStream(inputStream), resizeFactor);
-                handler.post(() -> {
-                    if (iconImg != null) {
-                        iconImg.setImageBitmap(bitmap);
-                    } else if (textView != null) {
-                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                                new BitmapDrawable(context.getResources(), bitmap), null,
-                                drawCaratDown ? ApiCompatibilityUtils.getDrawable(
-                                        context.getResources(), R.drawable.ic_carat_down)
-                                              : null,
-                                null);
+                        final Bitmap bitmap =
+                                Utils.resizeBitmap(
+                                        BitmapFactory.decodeStream(inputStream), resizeFactor);
+                        handler.post(
+                                () -> {
+                                    if (iconImg != null) {
+                                        iconImg.setImageBitmap(bitmap);
+                                    } else if (textView != null) {
+                                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                                new BitmapDrawable(context.getResources(), bitmap),
+                                                null,
+                                                drawCaratDown
+                                                        ? ApiCompatibilityUtils.getDrawable(
+                                                                context.getResources(),
+                                                                R.drawable.ic_carat_down)
+                                                        : null,
+                                                null);
+                                    }
+                                });
+                    } catch (Exception exc) {
+                        org.chromium.base.Log.e("Utils", exc.getMessage());
+                        if (textView != null) {
+                            Drawable iconDrawable = AppCompatResources.getDrawable(context, iconId);
+                            Bitmap bitmap =
+                                    Bitmap.createBitmap(
+                                            iconDrawable.getIntrinsicWidth(),
+                                            iconDrawable.getIntrinsicHeight(),
+                                            Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(bitmap);
+                            iconDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                            iconDrawable.draw(canvas);
+                            Bitmap icon = Utils.resizeBitmap(bitmap, resizeFactor);
+                            Drawable carat =
+                                    ApiCompatibilityUtils.getDrawable(
+                                            context.getResources(), R.drawable.ic_carat_down);
+                            handler.post(
+                                    () -> {
+                                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                                new BitmapDrawable(context.getResources(), icon),
+                                                null,
+                                                drawCaratDown ? carat : null,
+                                                null);
+                                    });
+                        } else {
+                            handler.post(
+                                    () -> {
+                                        if (iconImg != null && iconId != Integer.MIN_VALUE) {
+                                            iconImg.setImageResource(iconId);
+                                        }
+                                    });
+                        }
                     }
                 });
-            } catch (Exception exc) {
-                org.chromium.base.Log.e("Utils", exc.getMessage());
-                if (textView != null) {
-                    Drawable iconDrawable = AppCompatResources.getDrawable(context, iconId);
-                    Bitmap bitmap = Bitmap.createBitmap(iconDrawable.getIntrinsicWidth(),
-                            iconDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                    Canvas canvas = new Canvas(bitmap);
-                    iconDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                    iconDrawable.draw(canvas);
-                    Bitmap icon = Utils.resizeBitmap(bitmap, resizeFactor);
-                    Drawable carat = ApiCompatibilityUtils.getDrawable(
-                            context.getResources(), R.drawable.ic_carat_down);
-                    handler.post(() -> {
-                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                                new BitmapDrawable(context.getResources(), icon), null,
-                                drawCaratDown ? carat : null, null);
-                    });
-                } else {
-                    handler.post(() -> {
-                        if (iconImg != null && iconId != Integer.MIN_VALUE) {
-                            iconImg.setImageResource(iconId);
-                        }
-                    });
-                }
-            }
-        });
     }
 
     public static void overlayBitmaps(
@@ -635,16 +645,19 @@ public class Utils {
         if (addresses == null || addresses.length != 2) {
             return;
         }
-        executor.execute(() -> {
-            Bitmap bitmap1 = Blockies.createIcon(addresses[0], true, true);
-            Bitmap bitmap2 = scaleDown(Blockies.createIcon(addresses[1], true, true), (float) 0.6);
-            final Bitmap bitmap = overlayBitmapToCenter(bitmap1, bitmap2);
-            handler.post(() -> {
-                if (iconImg != null) {
-                    iconImg.setImageBitmap(bitmap);
-                }
-            });
-        });
+        executor.execute(
+                () -> {
+                    Bitmap bitmap1 = Blockies.createIcon(addresses[0], true, true);
+                    Bitmap bitmap2 =
+                            scaleDown(Blockies.createIcon(addresses[1], true, true), (float) 0.6);
+                    final Bitmap bitmap = overlayBitmapToCenter(bitmap1, bitmap2);
+                    handler.post(
+                            () -> {
+                                if (iconImg != null) {
+                                    iconImg.setImageBitmap(bitmap);
+                                }
+                            });
+                });
     }
 
     public static Bitmap scaleDown(Bitmap realImage, float ratio) {
@@ -670,26 +683,44 @@ public class Utils {
         return overlayBitmap;
     }
 
-    public static void setBlockiesBitmapCustomAsset(ExecutorService executor, Handler handler,
-            ImageView iconImg, String source, String symbol, float scale, TextView textView,
-            Context context, boolean drawCaratDown, float scaleDown, boolean circular) {
-        executor.execute(() -> {
-            final Bitmap bitmap = drawTextToBitmap(
-                    scaleDown(Blockies.createIcon(source, true, circular), scaleDown),
-                    symbol.isEmpty() ? "" : symbol.substring(0, 1), scale, scaleDown);
-            handler.post(() -> {
-                if (iconImg != null) {
-                    iconImg.setImageBitmap(bitmap);
-                } else if (textView != null) {
-                    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            new BitmapDrawable(context.getResources(), bitmap), null,
-                            drawCaratDown ? ApiCompatibilityUtils.getDrawable(
-                                    context.getResources(), R.drawable.ic_carat_down)
-                                          : null,
-                            null);
-                }
-            });
-        });
+    public static void setBlockiesBitmapCustomAsset(
+            ExecutorService executor,
+            Handler handler,
+            ImageView iconImg,
+            String source,
+            String symbol,
+            float scale,
+            TextView textView,
+            Context context,
+            boolean drawCaratDown,
+            float scaleDown,
+            boolean circular) {
+        executor.execute(
+                () -> {
+                    final Bitmap bitmap =
+                            drawTextToBitmap(
+                                    scaleDown(
+                                            Blockies.createIcon(source, true, circular), scaleDown),
+                                    symbol.isEmpty() ? "" : symbol.substring(0, 1),
+                                    scale,
+                                    scaleDown);
+                    handler.post(
+                            () -> {
+                                if (iconImg != null) {
+                                    iconImg.setImageBitmap(bitmap);
+                                } else if (textView != null) {
+                                    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                            new BitmapDrawable(context.getResources(), bitmap),
+                                            null,
+                                            drawCaratDown
+                                                    ? ApiCompatibilityUtils.getDrawable(
+                                                            context.getResources(),
+                                                            R.drawable.ic_carat_down)
+                                                    : null,
+                                            null);
+                                }
+                            });
+                });
     }
 
     public static Bitmap drawTextToBitmap(
@@ -708,27 +739,42 @@ public class Utils {
         return bitmap;
     }
 
-    public static void setTextGeneratedBlockies(ExecutorService executor, Handler handler,
-            ImageView iconImg, String blockieSourceText, boolean makeLowerCase,
+    public static void setTextGeneratedBlockies(
+            ExecutorService executor,
+            Handler handler,
+            ImageView iconImg,
+            String blockieSourceText,
+            boolean makeLowerCase,
             boolean isCircular) {
-        executor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(blockieSourceText, makeLowerCase, isCircular);
-            handler.post(() -> {
-                if (iconImg != null) {
-                    iconImg.setImageBitmap(bitmap);
-                }
-            });
-        });
+        executor.execute(
+                () -> {
+                    final Bitmap bitmap =
+                            Blockies.createIcon(blockieSourceText, makeLowerCase, isCircular);
+                    handler.post(
+                            () -> {
+                                if (iconImg != null) {
+                                    iconImg.setImageBitmap(bitmap);
+                                }
+                            });
+                });
     }
 
-    public static void setTextGeneratedBlockies(ExecutorService executor, Handler handler,
-            ImageView iconImg, String blockieSourceText, boolean makeLowerCase) {
+    public static void setTextGeneratedBlockies(
+            ExecutorService executor,
+            Handler handler,
+            ImageView iconImg,
+            String blockieSourceText,
+            boolean makeLowerCase) {
         setTextGeneratedBlockies(
                 executor, handler, iconImg, blockieSourceText, makeLowerCase, true);
     }
 
-    public static void setBlockiesBitmapResourceFromAccount(ExecutorService executor,
-            Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase,
+    public static void setBlockiesBitmapResourceFromAccount(
+            ExecutorService executor,
+            Handler handler,
+            ImageView iconImg,
+            AccountInfo accountInfo,
+            boolean makeLowerCase,
             boolean isCircular) {
         // TODO(apaymyshev): need to hash uniqueKey string for bitcoin accounts(same as for desktop)
         String source =
@@ -736,23 +782,33 @@ public class Utils {
         setTextGeneratedBlockies(executor, handler, iconImg, source, makeLowerCase, isCircular);
     }
 
-    public static void setBlockiesBitmapResourceFromAccount(ExecutorService executor,
-            Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase) {
+    public static void setBlockiesBitmapResourceFromAccount(
+            ExecutorService executor,
+            Handler handler,
+            ImageView iconImg,
+            AccountInfo accountInfo,
+            boolean makeLowerCase) {
         // TODO(apaymyshev): need to hash uniqueKey string for bitcoin accounts(same as for desktop)
         setBlockiesBitmapResourceFromAccount(
                 executor, handler, iconImg, accountInfo, makeLowerCase, true);
     }
 
-    public static void setBlockiesBackground(ExecutorService executor, Handler handler, View view,
-            String source, boolean makeLowerCase) {
-        executor.execute(() -> {
-            final Drawable background = Blockies.createBackground(source, makeLowerCase);
-            handler.post(() -> {
-                if (view != null) {
-                    view.setBackground(background);
-                }
-            });
-        });
+    public static void setBlockiesBackground(
+            ExecutorService executor,
+            Handler handler,
+            View view,
+            String source,
+            boolean makeLowerCase) {
+        executor.execute(
+                () -> {
+                    final Drawable background = Blockies.createBackground(source, makeLowerCase);
+                    handler.post(
+                            () -> {
+                                if (view != null) {
+                                    view.setBackground(background);
+                                }
+                            });
+                });
     }
 
     public static Bitmap resizeBitmap(Bitmap source, int maxLength) {
@@ -805,30 +861,6 @@ public class Utils {
         }
     }
 
-    public static String getContractAddress(String chainId, String symbol, String contractAddress) {
-        if (!chainId.equals(BraveWalletConstants.GOERLI_CHAIN_ID)) {
-            return contractAddress;
-        }
-        if (symbol.equals("USDC")) {
-            return "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557";
-        } else if (symbol.equals("DAI")) {
-            return "0x73967c6a0904aa032c103b4104747e88c566b1a2";
-        }
-
-        return contractAddress;
-    }
-
-    public static String getGoerliContractAddress(String mainnetContractAddress) {
-        String lowerCaseAddress = mainnetContractAddress.toLowerCase(Locale.getDefault());
-        if (lowerCaseAddress.equals("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48")) {
-            return "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557";
-        } else if (lowerCaseAddress.equals("0x6b175474e89094c44da98b954eedeac495271d0f")) {
-            return "0x73967c6a0904aa032c103b4104747e88c566b1a2";
-        }
-
-        return "";
-    }
-
     /*
      * Java port of the same function in components/brave_wallet_ui/options/asset-options.ts.
      */
@@ -854,7 +886,6 @@ public class Utils {
         @DrawableRes int logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
-            case BraveWalletConstants.GOERLI_CHAIN_ID:
             case BraveWalletConstants.SEPOLIA_CHAIN_ID:
                 logo = R.drawable.ic_eth_color;
                 break;
@@ -927,7 +958,6 @@ public class Utils {
         String logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
-            case BraveWalletConstants.GOERLI_CHAIN_ID:
             case BraveWalletConstants.SEPOLIA_CHAIN_ID:
                 logo = "eth.png";
                 break;
@@ -999,19 +1029,11 @@ public class Utils {
         return Utils.getNetworkIconName(network.chainId, network.coin);
     }
 
-    // Replace USDC and DAI contract addresses for Goerli network
-    public static BlockchainToken[] fixupTokensRegistry(BlockchainToken[] tokens, String chainId) {
-        for (BlockchainToken token : tokens) {
-            token.contractAddress =
-                    getContractAddress(chainId, token.symbol, token.contractAddress);
-        }
-        return tokens;
-    }
-
     public static AccountInfo findAccountByAddress(AccountInfo[] accounts, String address) {
         for (AccountInfo acc : accounts) {
-            if (acc.address.toLowerCase(Locale.getDefault())
-                            .equals(address.toLowerCase(Locale.getDefault()))) {
+            if (acc.address
+                    .toLowerCase(Locale.getDefault())
+                    .equals(address.toLowerCase(Locale.getDefault()))) {
                 return acc;
             }
         }
@@ -1047,8 +1069,10 @@ public class Utils {
         } else if (coinType == CoinType.SOL) {
             int iPos = blockExplorerUrl.indexOf("?cluster=");
             if (iPos != -1) {
-                blockExplorerUrl = blockExplorerUrl.substring(0, iPos - 1) + toAppend
-                        + blockExplorerUrl.substring(iPos);
+                blockExplorerUrl =
+                        blockExplorerUrl.substring(0, iPos - 1)
+                                + toAppend
+                                + blockExplorerUrl.substring(iPos);
             } else {
                 blockExplorerUrl += toAppend;
             }
@@ -1210,9 +1234,7 @@ public class Utils {
         return title + " #" + id;
     }
 
-    /**
-     * Make a unique token title string in lower case.
-     */
+    /** Make a unique token title string in lower case. */
     public static String tokenToString(BlockchainToken token) {
         if (token == null) return "";
 
@@ -1223,32 +1245,38 @@ public class Utils {
     }
 
     /**
-     * Gets tokens, prices and balances, all at the same time for a given token type.
-     * See {@link TokenUtils.TokenType}.
+     * Gets tokens, prices and balances, all at the same time for a given token type. See {@link
+     * TokenUtils.TokenType}.
      *
      * @param activityRef Weak reference to Brave Wallet base activity.
      * @param tokenType Token type used for filtering (e.g. {@code TokenType.NON_NFTS}).
      * @param allNetworks List of all networks, used to log P3A records.
      * @param selectedNetwork Currently selected network.
      * @param accountInfos Array of account info.
-     * @param filterByTokens Tokens used for fetching prices and balances.
-     *                       It may be {@code null} for fetching all tokens of a given token type.
-     *                       When {@code userAssetsOnly} is {@code true}, it should be set as
-     *                       {@code null}.
+     * @param filterByTokens Tokens used for fetching prices and balances. It may be {@code null}
+     *     for fetching all tokens of a given token type. When {@code userAssetsOnly} is {@code
+     *     true}, it should be set as {@code null}.
      * @param userAssetsOnly {@code true} for fetching only user assets. It should be used with
-     *         {@code filterByTokens} set as {@code null}.
+     *     {@code filterByTokens} set as {@code null}.
      * @param callback Callback containing four parameters: asset prices, token list, assets
-     *         balances, blockchain token balances.
-     *
-     * <b>Note:</b>: Use this method wisely, and only if tokens, prices and balances are needed
-     * at the same time.
+     *     balances, blockchain token balances.
+     *     <p><b>Note:</b>: Use this method wisely, and only if tokens, prices and balances are
+     *     needed at the same time.
      */
-    public static void getTxExtraInfo(WeakReference<BraveWalletBaseActivity> activityRef,
-            TokenUtils.TokenType tokenType, List<NetworkInfo> allNetworks,
-            NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
-            BlockchainToken[] filterByTokens, boolean userAssetsOnly,
-            Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[], HashMap<String, Double>,
-                    HashMap<String, HashMap<String, Double>>> callback) {
+    public static void getTxExtraInfo(
+            WeakReference<BraveWalletBaseActivity> activityRef,
+            TokenUtils.TokenType tokenType,
+            List<NetworkInfo> allNetworks,
+            NetworkInfo selectedNetwork,
+            AccountInfo[] accountInfos,
+            BlockchainToken[] filterByTokens,
+            boolean userAssetsOnly,
+            Callbacks.Callback4<
+                            HashMap<String, Double>,
+                            BlockchainToken[],
+                            HashMap<String, Double>,
+                            HashMap<String, HashMap<String, Double>>>
+                    callback) {
         BraveWalletBaseActivity activity = activityRef.get();
         if (activity == null || activity.isFinishing()) {
             return;
@@ -1257,22 +1285,32 @@ public class Utils {
         BlockchainRegistry blockchainRegistry = activity.getBlockchainRegistry();
         AssetRatioService assetRatioService = activity.getAssetRatioService();
         JsonRpcService jsonRpcService = activity.getJsonRpcService();
-        assert braveWalletService != null && blockchainRegistry != null && assetRatioService != null
-                && jsonRpcService != null : "Invalid service initialization";
+        assert braveWalletService != null
+                        && blockchainRegistry != null
+                        && assetRatioService != null
+                        && jsonRpcService != null
+                : "Invalid service initialization";
 
         if (JavaUtils.anyNull(
-                    braveWalletService, blockchainRegistry, assetRatioService, jsonRpcService)) {
+                braveWalletService, blockchainRegistry, assetRatioService, jsonRpcService)) {
             return;
         }
 
         AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(3);
 
-        TokenUtils.getUserOrAllTokensFiltered(braveWalletService, blockchainRegistry,
-                selectedNetwork, selectedNetwork.coin, tokenType, userAssetsOnly, tokens -> {
+        TokenUtils.getUserOrAllTokensFiltered(
+                braveWalletService,
+                blockchainRegistry,
+                selectedNetwork,
+                selectedNetwork.coin,
+                tokenType,
+                userAssetsOnly,
+                tokens -> {
                     final BlockchainToken[] fullTokenList = tokens;
                     if (filterByTokens != null) {
                         if (userAssetsOnly) {
-                            Log.w("Utils",
+                            Log.w(
+                                    "Utils",
                                     "userAssetsOnly usually shouldn't be used with filterByTokens");
                         }
                         tokens = filterByTokens;
@@ -1283,44 +1321,59 @@ public class Utils {
                                     multiResponse.singleResponseComplete);
                     AssetsPricesHelper.fetchPrices(assetRatioService, tokens, fetchPricesContext);
 
-                    AsyncUtils
-                            .GetNativeAssetsBalancesResponseContext getNativeAssetsBalancesContext =
-                            new AsyncUtils.GetNativeAssetsBalancesResponseContext(
-                                    multiResponse.singleResponseComplete);
-                    BalanceHelper.getNativeAssetsBalances(jsonRpcService, selectedNetwork,
-                            accountInfos, getNativeAssetsBalancesContext);
+                    AsyncUtils.GetNativeAssetsBalancesResponseContext
+                            getNativeAssetsBalancesContext =
+                                    new AsyncUtils.GetNativeAssetsBalancesResponseContext(
+                                            multiResponse.singleResponseComplete);
+                    BalanceHelper.getNativeAssetsBalances(
+                            jsonRpcService,
+                            selectedNetwork,
+                            accountInfos,
+                            getNativeAssetsBalancesContext);
 
                     AsyncUtils.GetBlockchainTokensBalancesResponseContext
                             getBlockchainTokensBalancesContext =
-                            new AsyncUtils.GetBlockchainTokensBalancesResponseContext(
-                                    multiResponse.singleResponseComplete);
-                    BalanceHelper.getBlockchainTokensBalances(jsonRpcService, selectedNetwork,
-                            accountInfos, tokens, getBlockchainTokensBalancesContext);
+                                    new AsyncUtils.GetBlockchainTokensBalancesResponseContext(
+                                            multiResponse.singleResponseComplete);
+                    BalanceHelper.getBlockchainTokensBalances(
+                            jsonRpcService,
+                            selectedNetwork,
+                            accountInfos,
+                            tokens,
+                            getBlockchainTokensBalancesContext);
 
-                    multiResponse.setWhenAllCompletedAction(() -> {
-                        callback.call(fetchPricesContext.assetPrices, fullTokenList,
-                                getNativeAssetsBalancesContext.nativeAssetsBalances,
-                                getBlockchainTokensBalancesContext.blockchainTokensBalances);
-                        logP3ARecords(JavaUtils.asArray(getNativeAssetsBalancesContext),
-                                JavaUtils.asArray(getBlockchainTokensBalancesContext), activityRef,
-                                allNetworks, selectedNetwork);
-                    });
+                    multiResponse.setWhenAllCompletedAction(
+                            () -> {
+                                callback.call(
+                                        fetchPricesContext.assetPrices,
+                                        fullTokenList,
+                                        getNativeAssetsBalancesContext.nativeAssetsBalances,
+                                        getBlockchainTokensBalancesContext
+                                                .blockchainTokensBalances);
+                                logP3ARecords(
+                                        JavaUtils.asArray(getNativeAssetsBalancesContext),
+                                        JavaUtils.asArray(getBlockchainTokensBalancesContext),
+                                        activityRef,
+                                        allNetworks,
+                                        selectedNetwork);
+                            });
                 });
     }
 
     /**
      * Gets P3A networks (i.e. networks with chain Id contained in {@link
      * WalletConstants.KNOWN_TEST_CHAIN_IDS)} excluding testnet chains by default. Testnet chain
-     * counting can be enabled using the switch
-     * `--p3a-count-wallet-test-networks`.
+     * counting can be enabled using the switch `--p3a-count-wallet-test-networks`.
+     *
      * @param allNetworks Given network list that will be filtered.
      * @param callback Callback containing a filtered list of P3A networks.
      */
     public static void getP3ANetworks(
             List<NetworkInfo> allNetworks, Callbacks.Callback1<List<NetworkInfo>> callback) {
         ArrayList<NetworkInfo> relevantNetworks = new ArrayList<NetworkInfo>();
-        boolean countTestNetworks = CommandLine.getInstance().hasSwitch(
-                BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
+        boolean countTestNetworks =
+                CommandLine.getInstance()
+                        .hasSwitch(BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
         for (NetworkInfo network : allNetworks) {
             // Exclude testnet chain data by default.
             // Testnet chain counting can be enabled via the
@@ -1396,12 +1449,14 @@ public class Utils {
 
     private static void logP3ARecords(
             AsyncUtils.GetNativeAssetsBalancesResponseContext[] nativeAssetsBalancesResponses,
-            AsyncUtils
-                    .GetBlockchainTokensBalancesResponseContext[] blockchainTokensBalancesResponses,
-            WeakReference<BraveWalletBaseActivity> activityRef, List<NetworkInfo> allNetworks,
+            AsyncUtils.GetBlockchainTokensBalancesResponseContext[]
+                    blockchainTokensBalancesResponses,
+            WeakReference<BraveWalletBaseActivity> activityRef,
+            List<NetworkInfo> allNetworks,
             NetworkInfo selectedNetwork) {
         BraveWalletBaseActivity activity = activityRef.get();
-        if (activity == null || activity.isFinishing()
+        if (activity == null
+                || activity.isFinishing()
                 || JavaUtils.anyNull(activity.getBraveWalletP3A())) {
             return;
         }

@@ -79,7 +79,9 @@
   if ((self = [super init])) {
     self.cancelled = false;
 
-    import_thread_ = web::GetIOThreadTaskRunner({});
+    import_thread_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   }
   return self;
 }
@@ -215,7 +217,7 @@
   // Filter out the URLs with unsupported schemes.
   const char* const kInvalidSchemes[] = {"wyciwyg", "place", "about", "chrome"};
   for (size_t i = 0; i < std::size(kInvalidSchemes); ++i) {
-    if (url.SchemeIs(kInvalidSchemes[i])) {
+    if (UNSAFE_TODO(url.SchemeIs(kInvalidSchemes[i]))) {
       return false;
     }
   }

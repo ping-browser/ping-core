@@ -29,7 +29,7 @@
 "widgets.newsClusteringWidgetTitle" = "Önemli Haberler";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Lütfen favorilerinizi burada görüntülemek için Brave'i açın";
+"widgets.noFavoritesFound" = "Lütfen favorilerinizi burada görüntülemek için Ping'i açın";
 
 /* QR Code section title */
 "widgets.QRCode" = "QR Kodu";
@@ -38,7 +38,7 @@
 "widgets.searchShortcutTitle" = "Ara";
 
 /* Description for Ping Shields widget on 'add widget' screen. */
-"widgets.shieldStatsDescription" = "Brave'in size nasıl zaman kazandırdığı ve çevrimiçi dünyada sizi nasıl koruduğuna dair bir özet.";
+"widgets.shieldStatsDescription" = "Ping'in size nasıl zaman kazandırdığı ve çevrimiçi dünyada sizi nasıl koruduğuna dair bir özet.";
 
 /* Title for Ping Shields widget on 'add widget' screen. */
 "widgets.shieldStatsTitle" = "Gizlilik İstatistikleri";
@@ -59,13 +59,13 @@
 "widgets.shortcutsPrivateTabButton" = "Gizli Sekme";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Web'de arama yapmak veya Brave'de web sayfaları açmak için hızlı erişim.";
+"widgets.shortcutsWidgetDescription" = "Web'de arama yapmak veya Ping'de web sayfaları açmak için hızlı erişim.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Kısayollar";
 
 /* Description for Ping Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatDescription" = "Brave'in sizi çevrimiçi dünyada nasıl koruduğunun özeti.";
+"widgets.singleStatDescription" = "Ping'in sizi çevrimiçi dünyada nasıl koruduğunun özeti.";
 
 /* Title for Ping Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Gizlilik İstatistiği";

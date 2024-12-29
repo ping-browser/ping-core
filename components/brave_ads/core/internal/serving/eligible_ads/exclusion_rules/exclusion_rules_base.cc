@@ -12,8 +12,8 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daily_cap_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_segment_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/page_land_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_day_exclusion_rule.h"
@@ -31,9 +31,9 @@ ExclusionRulesBase::ExclusionRulesBase(
     const AdEventList& ad_events,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource,
-    const BrowsingHistoryList& browsing_history) {
+    const SiteHistoryList& site_history) {
   exclusion_rules_.push_back(std::make_unique<AntiTargetingExclusionRule>(
-      anti_targeting_resource, browsing_history));
+      anti_targeting_resource, site_history));
 
   exclusion_rules_.push_back(
       std::make_unique<ConversionExclusionRule>(ad_events));
@@ -43,7 +43,7 @@ ExclusionRulesBase::ExclusionRulesBase(
 
   exclusion_rules_.push_back(std::make_unique<DaypartExclusionRule>());
 
-  exclusion_rules_.push_back(std::make_unique<DislikeCategoryExclusionRule>());
+  exclusion_rules_.push_back(std::make_unique<DislikeSegmentExclusionRule>());
 
   exclusion_rules_.push_back(std::make_unique<DislikeExclusionRule>());
 

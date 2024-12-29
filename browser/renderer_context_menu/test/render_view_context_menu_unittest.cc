@@ -26,6 +26,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/clipboard/clipboard.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -126,14 +127,27 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     ProtocolHandlerRegistryFactory::GetInstance()->SetTestingFactory(
         profile_.get(), base::BindRepeating(&BuildProtocolHandlerRegistry));
   }
-  void TearDown() override { registry_.reset(); }
+
+  void TearDown() override {
+    registry_.reset();
+    web_contents_.reset();
+    client_.reset();
+    browser_.reset();
+    profile_.reset();
+
+    // We run into a DCHECK on Windows. The scenario is addressed explicitly
+    // in Chromium's source for MessageWindow::WindowClass::~WindowClass().
+    // See base/win/message_window.cc for more information.
+    ui::Clipboard::DestroyClipboardForCurrentThread();
+  }
+
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
 
  private:
   content::BrowserTaskEnvironment browser_task_environment;
+  ScopedTestingLocalState testing_local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
-  ScopedTestingLocalState testing_local_state_;
   std::unique_ptr<Browser> browser_;
   std::unique_ptr<ChromeAutocompleteProviderClient> client_;
   std::unique_ptr<content::WebContents> web_contents_;

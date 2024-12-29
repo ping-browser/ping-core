@@ -54,6 +54,19 @@ public class NetworkUtils {
         }
     }
 
+    /**
+     * Returns {@code true} if two networks are equal.The comparison is done checking chain name,
+     * chain ID, coin, symbol and symbol name.
+     */
+    public static boolean areEqual(
+            @NonNull final NetworkInfo network1, @NonNull final NetworkInfo network2) {
+        return network1.chainName.equals(network2.chainName)
+                && network1.chainId.equals(network2.chainId)
+                && network1.coin == network2.coin
+                && network1.symbol.equals(network2.symbol)
+                && network1.symbolName.equals(network2.symbolName);
+    }
+
     public static boolean isAllNetwork(@Nullable final NetworkInfo networkInfo) {
         if (networkInfo == null) return false;
         return networkInfo.chainId.equals("all");
@@ -68,6 +81,7 @@ public class NetworkUtils {
 
     /**
      * Gets the network info object of given chainId and symbol.
+     *
      * @param networks All networks available.
      * @param chainId Chain Id of the network to be found.
      * @param coin Coin type of the network to be found.
@@ -79,7 +93,8 @@ public class NetworkUtils {
         if (networks.isEmpty() || TextUtils.isEmpty(chainId)) {
             return null;
         }
-        return JavaUtils.find(networks,
+        return JavaUtils.find(
+                networks,
                 networkInfo -> networkInfo.chainId.equals(chainId) && networkInfo.coin == coin);
     }
 

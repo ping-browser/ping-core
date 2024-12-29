@@ -17,6 +17,7 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery
 } from '../../../../common/slices/api.slice'
+import { reduceInt } from '../../../../utils/string-utils'
 
 // Components
 import {
@@ -37,15 +38,18 @@ import {
   Button,
   IconsWrapper,
   ButtonWrapper,
-  IconAndName,
-  NameAndBalanceText,
-  NetworkAndFiatText,
   DisabledLabel,
   PercentChangeText,
   PercentChangeIcon,
   AccountsIcon,
   InfoButton,
-  InfoIcon
+  InfoIcon,
+  TokenBalanceText,
+  FiatBalanceText,
+  TokenNameText,
+  TokenNameRow,
+  LeftSide,
+  NameAndBalanceColumn
 } from './token_list_item.style'
 import {
   Column,
@@ -90,6 +94,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
     const { data: defaultFiatCurrency = 'usd' } =
       useGetDefaultFiatCurrencyQuery()
 
+    // Memos
     const fiatBalance = React.useMemo(() => {
       return balance && spotPrice
         ? new Amount(balance)
@@ -98,22 +103,18 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
         : Amount.empty()
     }, [balance, spotPrice, token])
 
-    const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
-
     const tokenDisplayName = React.useMemo(() => {
       if (token.isNft) {
         const id = token.tokenId
-          ? `#${new Amount(token.tokenId).toNumber()}`
+          ? `#${reduceInt(new Amount(token.tokenId).format())}`
           : ''
-        return `${token.name} ${id}`
+        return `${token.name || token.symbol} ${id}`
       }
-      if (disabledText) {
-        return token.name.length > 12
-          ? `${token.name.substring(0, 10)}...`
-          : token.name
-      }
-      return token.name
-    }, [token, disabledText])
+      return token.name || token.symbol
+    }, [token])
+
+    // Computed
+    const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
 
     const tokenHasBalance = balance && new Amount(balance).gt(0)
 
@@ -121,6 +122,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
       ? Number(spotPrice.assetTimeframeChange) < 0
       : false
 
+    // Render
     return (
       <Column
         fullWidth={true}
@@ -169,18 +171,12 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
             onClick={onClick}
             disabled={!!disabledText}
           >
-            <IconAndName justifyContent='flex-start'>
+            <LeftSide justifyContent='flex-start'>
               <IconsWrapper>
                 {token.isNft || token.isErc721 || token.isErc1155 ? (
-                  <NftIconWithPlaceholder
-                    asset={token}
-                    network={tokensNetwork}
-                  />
+                  <NftIconWithPlaceholder asset={token} />
                 ) : (
-                  <AssetIconWithPlaceholder
-                    asset={token}
-                    network={tokensNetwork}
-                  />
+                  <AssetIconWithPlaceholder asset={token} />
                 )}
                 <NetworkIconWrapper>
                   <CreateNetworkIcon
@@ -189,40 +185,52 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   />
                 </NetworkIconWrapper>
               </IconsWrapper>
-              <Column alignItems='flex-start'>
-                <Row width='unset'>
-                  <NameAndBalanceText
+              <NameAndBalanceColumn
+                alignItems='flex-start'
+                width='100%'
+              >
+                <TokenNameRow
+                  justifyContent='flex-start'
+                  width='100%'
+                  padding='0px 8px 0px 0px'
+                >
+                  <TokenNameText
                     textSize='14px'
                     isBold={true}
                     textAlign='left'
+                    textColor='primary'
                   >
                     {tokenDisplayName}
-                  </NameAndBalanceText>
+                  </TokenNameText>
                   {disabledText && (
                     <>
                       <HorizontalSpace space='8px' />
                       <DisabledLabel>{getLocale(disabledText)}</DisabledLabel>
                     </>
                   )}
-                </Row>
-                <NetworkAndFiatText
+                </TokenNameRow>
+                <TokenBalanceText
                   textSize='12px'
                   isBold={false}
                   textAlign='left'
+                  textColor='secondary'
                 >
                   {formatTokenBalanceWithSymbol(
                     balance ?? '',
                     token.decimals,
                     token.symbol
                   )}
-                </NetworkAndFiatText>
-              </Column>
-            </IconAndName>
+                </TokenBalanceText>
+              </NameAndBalanceColumn>
+            </LeftSide>
             {!token.isNft &&
               !token.isErc721 &&
               !token.isErc1155 &&
               tokenHasBalance && (
-                <Column alignItems='flex-end'>
+                <Column
+                  alignItems='flex-end'
+                  width='25%'
+                >
                   {isLoadingSpotPrice ? (
                     <>
                       <LoadingSkeleton
@@ -239,13 +247,14 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                     <>
                       <Row width='unset'>
                         {tokenHasMultipleAccounts && <AccountsIcon />}
-                        <NameAndBalanceText
+                        <FiatBalanceText
                           textSize='14px'
                           isBold={true}
                           textAlign='right'
+                          textColor='primary'
                         >
                           {formattedFiatBalance}
-                        </NameAndBalanceText>
+                        </FiatBalanceText>
                       </Row>
                       <Row width='unset'>
                         <PercentChangeIcon

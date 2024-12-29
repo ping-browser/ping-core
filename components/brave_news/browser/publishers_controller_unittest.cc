@@ -11,18 +11,18 @@
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
-#include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/test/wait_for_callback.h"
 #include "brave/components/brave_news/browser/urls.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "chrome/test/base/testing_profile.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -84,12 +84,15 @@ class BraveNewsPublishersControllerTest : public testing::Test {
  public:
   BraveNewsPublishersControllerTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
-                            test_url_loader_factory_.GetSafeWeakWrapper()),
-        pref_manager_(*profile_.GetPrefs()),
-        publishers_controller_(&api_request_helper_) {
-    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
-    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
-                                    true);
+                            test_url_loader_factory_.GetSafeWeakWrapper()) {
+    prefs::RegisterProfilePrefs(pref_service_.registry());
+
+    pref_manager_ = std::make_unique<BraveNewsPrefManager>(pref_service_);
+    // Ensure Brave News is enabled.
+    pref_manager_->SetConfig(mojom::Configuration::New(true, true, true));
+
+    publishers_controller_ =
+        std::make_unique<PublishersController>(&api_request_helper_);
   }
 
   std::string GetSourcesUrl() {
@@ -98,19 +101,19 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   }
 
   void SetSubscribedSources(const std::vector<std::string>& publisher_ids) {
-    ScopedDictPrefUpdate update(profile_.GetPrefs(), prefs::kBraveNewsSources);
+    ScopedDictPrefUpdate update(&pref_service_, prefs::kBraveNewsSources);
     for (const auto& id : publisher_ids) {
       update->Set(id, true);
     }
   }
 
   bool CombinedSourceExists(const std::string& publisher_id) {
-    const auto& value = profile_.GetPrefs()->GetDict(prefs::kBraveNewsSources);
+    const auto& value = pref_service_.GetDict(prefs::kBraveNewsSources);
     return value.FindBool(publisher_id).has_value();
   }
 
   bool DirectSourceExists(const std::string& publisher_id) {
-    return base::Contains(pref_manager_.GetSubscriptions().direct_feeds(),
+    return base::Contains(pref_manager_->GetSubscriptions().direct_feeds(),
                           publisher_id, &DirectFeed::id);
   }
 
@@ -118,12 +121,36 @@ class BraveNewsPublishersControllerTest : public testing::Test {
     auto [publishers] = WaitForCallback(base::BindOnce(
         [](BraveNewsPublishersControllerTest* test,
            GetPublishersCallback callback) {
-          test->publishers_controller_.GetOrFetchPublishers(
-              test->pref_manager_.GetSubscriptions(), std::move(callback),
+          test->publishers_controller_->GetOrFetchPublishers(
+              test->pref_manager_->GetSubscriptions(), std::move(callback),
               true);
         },
         base::Unretained(this)));
     return std::move(publishers);
+  }
+
+  mojom::PublisherPtr GetPublisherForSite(const GURL& url) {
+    auto [publisher] = WaitForCallback(base::BindOnce(
+        [](BraveNewsPublishersControllerTest* test, const GURL& url,
+           GetPublisherCallback callback) {
+          test->publishers_controller_->GetPublisherForSite(
+              test->pref_manager_->GetSubscriptions(), url,
+              std::move(callback));
+        },
+        base::Unretained(this), url));
+    return std::move(publisher);
+  }
+
+  mojom::PublisherPtr GetPublisherForFeed(const GURL& url) {
+    auto [publisher] = WaitForCallback(base::BindOnce(
+        [](BraveNewsPublishersControllerTest* test, const GURL& url,
+           GetPublisherCallback callback) {
+          test->publishers_controller_->GetPublisherForFeed(
+              test->pref_manager_->GetSubscriptions(), url,
+              std::move(callback));
+        },
+        base::Unretained(this), url));
+    return std::move(publisher);
   }
 
  protected:
@@ -132,15 +159,15 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder data_decoder_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   api_request_helper::APIRequestHelper api_request_helper_;
-  TestingProfile profile_;
-  BraveNewsPrefManager pref_manager_;
-  PublishersController publishers_controller_;
+
+  sync_preferences::TestingPrefServiceSyncable pref_service_;
+  std::unique_ptr<BraveNewsPrefManager> pref_manager_;
+  std::unique_ptr<PublishersController> publishers_controller_;
 };
 
 TEST_F(BraveNewsPublishersControllerTest, CanReceiveFeeds) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
-  LOG(ERROR) << "Sources URL: " << GetSourcesUrl();
   auto result = GetPublishers();
   ASSERT_EQ(3u, result.size());
   EXPECT_TRUE(base::Contains(result, "111"));
@@ -152,8 +179,7 @@ TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherBySiteUrl) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
-  auto* publisher = publishers_controller_.GetPublisherForSite(
-      GURL("https://tp5.example.com"));
+  auto publisher = GetPublisherForSite(GURL("https://tp5.example.com"));
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
@@ -163,16 +189,14 @@ TEST_F(BraveNewsPublishersControllerTest,
                                        net::HTTP_OK);
   GetPublishers();
 
-  EXPECT_EQ(nullptr, publishers_controller_.GetPublisherForSite(
-                         GURL("https://not-a-site.com")));
+  EXPECT_FALSE(GetPublisherForSite(GURL("https://not-a-site.com")));
 }
 
 TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherByFeedUrl) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
-  auto* publisher = publishers_controller_.GetPublisherForFeed(
-      GURL("https://tp5.example.com/feed"));
+  auto publisher = GetPublisherForFeed(GURL("https://tp5.example.com/feed"));
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
@@ -210,19 +234,17 @@ TEST_F(BraveNewsPublishersControllerTest,
         "enabled": false
     }])",
                                        net::HTTP_OK);
-  auto [locale] =
-      WaitForCallback(base::BindOnce(&PublishersController::GetLocale,
-                                     base::Unretained(&publishers_controller_),
-                                     pref_manager_.GetSubscriptions()));
+  auto [locale] = WaitForCallback(
+      base::BindOnce(&PublishersController::GetLocale,
+                     base::Unretained(publishers_controller_.get()),
+                     pref_manager_->GetSubscriptions()));
 
   EXPECT_EQ("en_US", locale);
 
-  auto* publisher = publishers_controller_.GetPublisherForSite(
-      GURL("https://tp1.example.com/feed"));
+  auto publisher = GetPublisherForSite(GURL("https://tp1.example.com/feed"));
   EXPECT_EQ("111", publisher->publisher_id);
 
-  publisher = publishers_controller_.GetPublisherForFeed(
-      GURL("https://tp1.example.com/feed"));
+  publisher = GetPublisherForFeed(GURL("https://tp1.example.com/feed"));
   EXPECT_EQ("111", publisher->publisher_id);
 }
 
@@ -262,19 +284,17 @@ TEST_F(BraveNewsPublishersControllerTest,
                                        net::HTTP_OK);
   GetPublishers();
 
-  auto [locale] =
-      WaitForCallback(base::BindOnce(&PublishersController::GetLocale,
-                                     base::Unretained(&publishers_controller_),
-                                     pref_manager_.GetSubscriptions()));
+  auto [locale] = WaitForCallback(
+      base::BindOnce(&PublishersController::GetLocale,
+                     base::Unretained(publishers_controller_.get()),
+                     pref_manager_->GetSubscriptions()));
 
   EXPECT_EQ("en_US", locale);
 
-  auto* publisher = publishers_controller_.GetPublisherForSite(
-      GURL("https://tp1.example.com/"));
+  auto publisher = GetPublisherForSite(GURL("https://tp1.example.com/"));
   EXPECT_EQ("222", publisher->publisher_id);
 
-  publisher = publishers_controller_.GetPublisherForFeed(
-      GURL("https://tp1.example.com/feed"));
+  publisher = GetPublisherForFeed(GURL("https://tp1.example.com/feed"));
   EXPECT_EQ("222", publisher->publisher_id);
 }
 
@@ -313,19 +333,17 @@ TEST_F(BraveNewsPublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
                                        net::HTTP_OK);
   GetPublishers();
 
-  auto [locale] =
-      WaitForCallback(base::BindOnce(&PublishersController::GetLocale,
-                                     base::Unretained(&publishers_controller_),
-                                     pref_manager_.GetSubscriptions()));
+  auto [locale] = WaitForCallback(
+      base::BindOnce(&PublishersController::GetLocale,
+                     base::Unretained(publishers_controller_.get()),
+                     pref_manager_->GetSubscriptions()));
 
   EXPECT_EQ("en_US", locale);
 
-  auto* publisher = publishers_controller_.GetPublisherForSite(
-      GURL("https://tp1.example.com/"));
+  auto publisher = GetPublisherForSite(GURL("https://tp1.example.com/"));
   EXPECT_EQ("111", publisher->publisher_id);
 
-  publisher = publishers_controller_.GetPublisherForFeed(
-      GURL("https://tp1.example.com/feed"));
+  publisher = GetPublisherForFeed(GURL("https://tp1.example.com/feed"));
   EXPECT_EQ("111", publisher->publisher_id);
 }
 
@@ -335,8 +353,7 @@ TEST_F(BraveNewsPublishersControllerTest,
                                        net::HTTP_OK);
   GetPublishers();
 
-  EXPECT_EQ(nullptr, publishers_controller_.GetPublisherForFeed(
-                         GURL("https://tp5.example.com")));
+  EXPECT_FALSE(GetPublisherForFeed(GURL("https://tp5.example.com")));
 }
 
 TEST_F(BraveNewsPublishersControllerTest, CacheCanBeCleared) {
@@ -344,15 +361,13 @@ TEST_F(BraveNewsPublishersControllerTest, CacheCanBeCleared) {
                                        net::HTTP_OK);
   GetPublishers();
 
-  EXPECT_NE(nullptr, publishers_controller_.GetPublisherForFeed(
-                         GURL("https://tp5.example.com/feed")));
+  EXPECT_TRUE(GetPublisherForFeed(GURL("https://tp5.example.com/feed")));
 
-  publishers_controller_.ClearCache();
+  publishers_controller_->ClearCache();
 
   // When there's nothing in the cache, we shouldn't be able to look up a
   // publisher by feed.
-  EXPECT_EQ(nullptr, publishers_controller_.GetPublisherForFeed(
-                         GURL("https://tp5.example.com/feed")));
+  EXPECT_FALSE(GetPublisherForFeed(GURL("https://tp5.example.com/feed")));
 }
 
 TEST_F(BraveNewsPublishersControllerTest, LocaleDefaultsToENUS) {
@@ -372,10 +387,10 @@ TEST_F(BraveNewsPublishersControllerTest, LocaleDefaultsToENUS) {
     }])",
                                        net::HTTP_OK);
 
-  auto [locale] =
-      WaitForCallback(base::BindOnce(&PublishersController::GetLocale,
-                                     base::Unretained(&publishers_controller_),
-                                     pref_manager_.GetSubscriptions()));
+  auto [locale] = WaitForCallback(
+      base::BindOnce(&PublishersController::GetLocale,
+                     base::Unretained(publishers_controller_.get()),
+                     pref_manager_->GetSubscriptions()));
 
   EXPECT_EQ("en_US", locale);
 }

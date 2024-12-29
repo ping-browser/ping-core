@@ -13,8 +13,7 @@ import {
 import {
   BraveWallet,
   WalletState,
-  WalletInitializedPayload,
-  RefreshOpts
+  WalletInitializedPayload
 } from '../../constants/types'
 import {
   DefaultBaseCryptocurrencyChanged,
@@ -25,25 +24,22 @@ const defaultState: WalletState = {
   hasInitialized: false,
   allowedNewWalletAccountTypeNetworkIds: [],
   isBitcoinEnabled: false,
+  isBitcoinImportEnabled: false,
+  isBitcoinLedgerEnabled: false,
   isZCashEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
   addUserAssetError: false,
-  activeOrigin: {
-    eTldPlusOne: '',
-    originSpec: ''
-  },
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
-  isNftPinningFeatureEnabled: false,
   isAnkrBalancesFeatureEnabled: false,
   isRefreshingNetworksAndTokens: false
 }
 
 // async actions
 export const WalletAsyncActions = {
-  initialize: createAction<RefreshOpts>('initialize'),
-  refreshAll: createAction<RefreshOpts>('refreshAll'),
+  initialize: createAction('initialize'),
+  refreshAll: createAction('refreshAll'),
   selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
   walletCreated: createAction('walletCreated'),
@@ -59,9 +55,7 @@ export const WalletAsyncActions = {
     createAction<DefaultBaseCryptocurrencyChanged>(
       'defaultBaseCryptocurrencyChanged'
     ),
-  refreshNetworksAndTokens: createAction<RefreshOpts>(
-    'refreshNetworksAndTokens'
-  ),
+  refreshNetworksAndTokens: createAction('refreshNetworksAndTokens'),
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory'
   ),
@@ -74,13 +68,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     name: 'wallet',
     initialState,
     reducers: {
-      activeOriginChanged(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.OriginInfo>
-      ) {
-        state.activeOrigin = payload
-      },
-
       initialized(
         state: WalletState,
         { payload }: PayloadAction<WalletInitializedPayload>
@@ -88,10 +75,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.hasInitialized = true
         state.isWalletCreated = payload.walletInfo.isWalletCreated
         state.isBitcoinEnabled = payload.walletInfo.isBitcoinEnabled
+        state.isBitcoinImportEnabled = payload.walletInfo.isBitcoinImportEnabled
+        state.isBitcoinLedgerEnabled = payload.walletInfo.isBitcoinLedgerEnabled
         state.isZCashEnabled = payload.walletInfo.isZCashEnabled
         state.isWalletLocked = payload.walletInfo.isWalletLocked
-        state.isNftPinningFeatureEnabled =
-          payload.walletInfo.isNftPinningFeatureEnabled
         state.isAnkrBalancesFeatureEnabled =
           payload.walletInfo.isAnkrBalancesFeatureEnabled
       },

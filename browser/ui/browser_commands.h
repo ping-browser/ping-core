@@ -9,6 +9,7 @@
 #include <optional>
 #include <vector>
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -26,6 +27,11 @@ void NewOffTheRecordWindowTor(Browser* browser);
 void NewOffTheRecordWindowTor(Profile* profile);
 
 void NewTorConnectionForSite(Browser*);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void ToggleAIChat(Browser* browser);
+#endif
+
 void ShowWalletBubble(Browser* browser);
 void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);
@@ -34,7 +40,6 @@ void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
 void ToggleBraveVPNTrayIcon();
 void OpenBraveVPNUrls(Browser* browser, int command_id);
-void OpenIpfsFilesWebUI(Browser* browser);
 // Copies an url sanitized by URLSanitizerService.
 void CopySanitizedURL(Browser* browser, const GURL& url);
 // Copies an url cleared through:
@@ -117,12 +122,14 @@ bool CanOpenNewSplitViewForTab(
     Browser* browser,
     std::optional<tabs::TabHandle> tab = std::nullopt);
 void NewSplitViewForTab(Browser* browser,
-                        std::optional<tabs::TabHandle> tab = std::nullopt);
+                        std::optional<tabs::TabHandle> tab = std::nullopt,
+                        const GURL& url = GURL());
 // In case |indices| empty, selected tabs will be used.
 void TileTabs(Browser* browser, const std::vector<int>& indices = {});
 void BreakTiles(Browser* browser, const std::vector<int>& indices = {});
 bool IsTabsTiled(Browser* browser, const std::vector<int>& indices = {});
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices = {});
+void SwapTabsInTile(Browser* browser);
 
 }  // namespace brave
 

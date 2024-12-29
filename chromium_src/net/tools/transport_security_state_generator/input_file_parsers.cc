@@ -39,7 +39,6 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     // Brave
     { "name": "adblock-data.s3.brave.com", "pins": "brave"},
     { "name": "ai-chat.bsg.brave.com", "pins": "brave"},
-    { "name": "feedback.brave.com", "pins": "brave"},
     { "name": "brave-core-ext.s3.brave.com", "pins": "brave"},
     { "name": "brave-today-cdn.brave.com", "pins": "brave"},
     { "name": "clients4.brave.com", "pins": "brave"},
@@ -48,16 +47,10 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "devtools.brave.com", "pins": "brave"},
     { "name": "dict.brave.com", "pins": "brave"},
     { "name": "extensionupdater.brave.com", "pins": "brave"},
+    { "name": "feedback.brave.com", "pins": "brave"},
     { "name": "gaia.brave.com", "pins": "brave"},
     { "name": "go-updater.brave.com", "pins": "brave"},
     { "name": "mobile-data.s3.brave.com", "pins": "brave"},
-    { "name": "p2a.brave.com", "pins": "brave"},
-    { "name": "p2a-json.brave.com", "pins": "brave"},
-    { "name": "p3a.brave.com", "pins": "brave"},
-    { "name": "p3a-creative.brave.com", "pins": "brave"},
-    { "name": "p3a-json.brave.com", "pins": "brave"},
-    { "name": "p3a.bravesoftware.com", "pins": "brave"},
-    { "name": "p3a-dev.bravesoftware.com", "pins": "brave"},
     { "name": "pcdn.brave.com", "pins": "brave"},
     { "name": "redirector.brave.com", "pins": "brave"},
     { "name": "safebrowsing.brave.com", "pins": "brave"},
@@ -72,6 +65,17 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "translate.brave.com", "pins": "brave"},
     { "name": "translate-static.brave.com", "pins": "brave"},
     { "name": "variations.brave.com", "pins": "brave"},
+
+    // P2A/P3A
+    { "name": "collector.bsg.brave.com", "pins": "brave"},
+    { "name": "p2a.brave.com", "pins": "brave"},
+    { "name": "p2a-json.brave.com", "pins": "brave"},
+    { "name": "p3a.brave.com", "pins": "brave"},
+    { "name": "p3a-creative.brave.com", "pins": "brave"},
+    { "name": "p3a-json.brave.com", "pins": "brave"},
+    { "name": "p3a.bravesoftware.com", "pins": "brave"},
+    { "name": "p3a-dev.bravesoftware.com", "pins": "brave"},
+    { "name": "star-randsrv.bsg.brave.com", "pins": "brave"},
 
     // Creators
     { "name": "creators.basicattentiontoken.org", "pins": "brave"},
@@ -133,17 +137,17 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
     // Critical endpoints that should remain unpinned so that they
     // always work.
     {
-      "name": "laptop-updates.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
       "name": "updates.bravesoftware.com",
       "mode": "force-https",
       "policy": "custom"
     },
     {
       "name": "updates-cdn.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "usage-ping.brave.com",
       "mode": "force-https",
       "policy": "custom"
     },
@@ -156,11 +160,6 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
     },
     {
       "name": "ai-chat.bsg.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "feedback.brave.com",
       "mode": "force-https",
       "policy": "custom"
     },
@@ -201,6 +200,11 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
     },
     {
       "name": "extensionupdater.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "feedback.brave.com",
       "mode": "force-https",
       "policy": "custom"
     },
@@ -550,9 +554,9 @@ bool ParseCertificatesFile(std::string_view certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
   constexpr std::string_view brave_certs = R"brave_certs(
-# Last updated: Wed May  8 18:36:42 UTC 2024
+# Last updated: Tue Oct 15 19:33:12 UTC 2024
 PinsListTimestamp
-1715193402
+1729020792
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/

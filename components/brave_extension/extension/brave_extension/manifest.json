@@ -12,23 +12,11 @@
     "128": "assets/img/icon-128.png",
     "256": "assets/img/icon-256.png"
   },
-  "web_accessible_resources": [
-    "elementPicker.html",
-    "elementPicker.js"
-  ],
-  "background": {
+  "background":{
     "scripts": [
       "out/brave_extension_background.bundle.js"
     ],
     "persistent": true
-  },
-  "externally_connectable": {
-    "ids": [
-      "*"
-    ],
-    "matches": [
-      "chrome://newtab/*"
-    ]
   },
   "commands": {
     "toggle-contrast": {
@@ -39,7 +27,6 @@
       "description": "Toggle contrast mode"
     }
   },
-  
   "content_scripts": [
     {
       "matches": [
@@ -47,7 +34,7 @@
         "https://*/*"
       ],
       "js": [
-        "out/content_element_picker.bundle.js"
+        "out/high_contrast.bundle.js"
       ],
       "run_at": "document_start",
       "all_frames": true

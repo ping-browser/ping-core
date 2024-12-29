@@ -6,24 +6,27 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsVersionNumberUserDataTest : public UnitTestBase {};
+class BraveAdsVersionNumberUserDataTest : public test::TestBase {};
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
        BuildVersionNumberUserDataForRewardsUser) {
-  // Act & Assert
-  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
-      R"(
-          {
-            "versionNumber": "1.2.3.4"
-          })");
-  EXPECT_EQ(expected_user_data, BuildVersionNumberUserData());
+  // Act
+  const base::Value::Dict user_data = BuildVersionNumberUserData();
+
+  // Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "versionNumber": "1.2.3.4"
+                    })"),
+            user_data);
 }
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
@@ -31,8 +34,11 @@ TEST_F(BraveAdsVersionNumberUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  // Act & Assert
-  EXPECT_TRUE(BuildVersionNumberUserData().empty());
+  // Act
+  const base::Value::Dict user_data = BuildVersionNumberUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

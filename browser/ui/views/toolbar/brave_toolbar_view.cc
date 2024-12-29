@@ -17,7 +17,9 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -30,7 +32,10 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
+#include "chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/hit_test.h"
@@ -43,10 +48,15 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/window/hit_test_utils.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/browser/ui/views/toolbar/ai_chat_button.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
 #if !BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/brave_vpn/vpn_utils.h"
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
@@ -139,14 +149,14 @@ void BraveToolbarView::Init() {
   // This will allow us to move this window by dragging toolbar.
   // See brave_non_client_hit_test_helper.h
   views::SetHitTestComponent(this, HTCAPTION);
-  if (features::IsChromeRefresh2023()) {
-    // Upstream has two more children |background_view_left_| and
-    // |background_view_right_| behind the container view.
-    DCHECK_EQ(3u, children().size());
-  } else {
-    DCHECK_EQ(1u, children().size());
-  }
-  views::SetHitTestComponent(children()[0], HTCAPTION);
+
+  DCHECK(location_bar_);
+  // Get ToolbarView's container_view as a parent of location_bar_ because
+  // container_view's type in ToolbarView is internal to toolbar_view.cc.
+  views::View* container_view = location_bar_->parent();
+  DCHECK(container_view);
+
+  views::SetHitTestComponent(container_view, HTCAPTION);
 
   // For non-normal mode, we don't have to more.
   if (display_mode_ != DisplayMode::NORMAL) {
@@ -155,6 +165,14 @@ void BraveToolbarView::Init() {
   }
 
   Profile* profile = browser()->profile();
+
+  // We don't use divider between extensions container and other toolbar
+  // buttons. Upstream conditionally creates |toolbar_divider_|, they check
+  // whether it's null or not. So safe to make remove here.
+  if (toolbar_divider_) {
+    container_view->RemoveChildView(toolbar_divider_.get());
+    toolbar_divider_ = nullptr;
+  }
 
   // Track changes in profile count
   if (IsAvatarButtonHideable(profile)) {
@@ -215,11 +233,6 @@ void BraveToolbarView::Init() {
         browser, command, ui::DispositionFromEventFlags(event.flags()));
   };
 
-  DCHECK(location_bar_);
-  // Get ToolbarView's container_view as a parent of location_bar_ because
-  // container_view's type in ToolbarView is internal to toolbar_view.cc.
-  views::View* container_view = location_bar_->parent();
-  DCHECK(container_view);
   bookmark_ = container_view->AddChildViewAt(
       std::make_unique<BraveBookmarkButton>(
           base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB)),
@@ -228,12 +241,20 @@ void BraveToolbarView::Init() {
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
 
+  side_panel_ = container_view->AddChildViewAt(
+      std::make_unique<SidePanelButton>(browser()),
+      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+
   wallet_ = container_view->AddChildViewAt(
       std::make_unique<WalletButton>(GetAppMenuButton(), profile),
       *container_view->GetIndexOf(GetAppMenuButton()) - 1);
   wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                     ui::EF_MIDDLE_MOUSE_BUTTON);
   wallet_->UpdateImageAndText();
+
+  side_panel_ = container_view->AddChildViewAt(
+      std::make_unique<SidePanelButton>(browser()),
+      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
 
   wallet_ = container_view->AddChildViewAt(
       std::make_unique<WalletButton>(GetAppMenuButton(), profile),
@@ -254,9 +275,28 @@ void BraveToolbarView::Init() {
   custom_button_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
   custom_button_->SetAccessibleName(u"Open Popup");
   custom_button_->SetVisible(true);
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Don't check policy status since we're going to
+  // setup a watcher for policy pref.
+  if ((false) && ai_chat::IsAllowedForContext(browser_->profile(), false)) {
+    ai_chat_button_ = container_view->AddChildViewAt(
+        std::make_unique<AIChatButton>(browser()),
+        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    show_ai_chat_button_.Init(
+        ai_chat::prefs::kBraveAIChatShowToolbarButton,
+        browser_->profile()->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateAIChatButtonVisibility,
+                            base::Unretained(this)));
+    hide_ai_chat_button_by_policy_.Init(
+        ai_chat::prefs::kEnabledByPolicy, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateAIChatButtonVisibility,
+                            base::Unretained(this)));
+    UpdateAIChatButtonVisibility();
+  }
+#endif
 
 #if !BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsAllowedForContext(profile)) {
+  if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
     brave_vpn_ = container_view->AddChildViewAt(
         std::make_unique<BraveVPNButton>(browser()),
         *container_view->GetIndexOf(GetAppMenuButton()) - 1);
@@ -280,6 +320,16 @@ void BraveToolbarView::Init() {
 
   brave_initialized_ = true;
   UpdateHorizontalPadding();
+
+  // We want to hide pin action buttons(side panel's pin button) in toolbar.
+  // As toolbar is shared for different types of windows, this action button
+  // container could be null. So Upstream code has assumption that
+  // |pinned_toolbar_actions_container_| could be null.
+  // If it's changed, we should check again.
+  if (pinned_toolbar_actions_container_) {
+    RemoveChildView(pinned_toolbar_actions_container_.get());
+    pinned_toolbar_actions_container_ = nullptr;
+  }
 }
 
 #if !BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -326,6 +376,16 @@ void BraveToolbarView::OnThemeChanged() {
   if (display_mode_ == DisplayMode::NORMAL && wallet_) {
     wallet_->UpdateImageAndText();
   }
+}
+
+views::View* BraveToolbarView::GetAnchorView(
+    std::optional<PageActionIconType> type) {
+  return ToolbarView::GetAnchorView(type);
+}
+
+views::View* BraveToolbarView::GetAnchorView(
+    std::optional<PageActionIconType> type) {
+  return ToolbarView::GetAnchorView(type);
 }
 
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
@@ -419,7 +479,12 @@ void BraveToolbarView::ViewHierarchyChanged(
     const views::ViewHierarchyChangedDetails& details) {
   ToolbarView::ViewHierarchyChanged(details);
 
-  if (details.is_add && details.parent == children()[0]) {
+  // Upstream has two more children |background_view_left_| and
+  // |background_view_right_| behind the container view.
+  const int container_view_index = 2;
+
+  if (details.is_add && children().size() > container_view_index &&
+      details.parent == children()[container_view_index]) {
     // Mark children of the container view as client area so that they are not
     // perceived as caption area. See brave_non_client_hit_test_helper.h
     views::SetHitTestComponent(details.child, HTCLIENT);
@@ -563,6 +628,13 @@ void BraveToolbarView::ContentsChanged(views::Textfield* sender,
                                        const std::u16string& new_contents) {
   // note_input_ = new_contents;  // Update note content as it is typed
 }
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveToolbarView::UpdateAIChatButtonVisibility() {
+  bool should_show = ai_chat::IsAllowedForContext(browser()->profile()) &&
+                     show_ai_chat_button_.GetValue();
+  ai_chat_button_->SetVisible(should_show);
+}
+#endif
 
 void BraveToolbarView::UpdateWalletButtonVisibility() {
   Profile* profile = browser()->profile();

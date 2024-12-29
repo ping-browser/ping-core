@@ -12,7 +12,6 @@
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
 #include "base/logging.h"
-#include "base/notreached.h"
 #include "brave/components/brave_rewards/core/constants.h"
 
 namespace brave_rewards::internal {
@@ -20,14 +19,15 @@ namespace brave_rewards::internal {
 namespace {
 
 // Do not change these values as they are required to transition legacy state
-const char kAllowNonVerifiedSitesInListKey[] = "allow_non_verified";
+constexpr char kAllowNonVerifiedSitesInListKey[] = "allow_non_verified";
 // There is a spelling error with min_pubslisher_duration, however we cannot
 // change this otherwise we will break legacy installs. This will be resolved as
 // part of https://github.com/brave/brave-browser/issues/7024
-const char kMinPageTimeBeforeLoggingAVisitKey[] = "min_pubslisher_duration";
-const char kMinVisitsForPublisherRelevancy[] = "min_visits";
-const char kMonthlyBalancesKey[] = "monthly_balances";
-const char kProcessedPendingPublishersKey[] = "processed_pending_publishers";
+constexpr char kMinPageTimeBeforeLoggingAVisitKey[] = "min_pubslisher_duration";
+constexpr char kMinVisitsForPublisherRelevancy[] = "min_visits";
+constexpr char kMonthlyBalancesKey[] = "monthly_balances";
+constexpr char kProcessedPendingPublishersKey[] =
+    "processed_pending_publishers";
 
 }  // namespace
 
@@ -99,7 +99,6 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
     min_page_time_before_logging_a_visit =
         static_cast<uint64_t>(*min_page_time_value_double);
   } else {
-    NOTREACHED();
     return false;
   }
 
@@ -114,7 +113,6 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
     min_visits_for_publisher_relevancy =
         static_cast<unsigned int>(*min_visits_value_double);
   } else {
-    NOTREACHED();
     return false;
   }
 
@@ -122,27 +120,23 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
   if (auto value = dict.FindBool(kAllowNonVerifiedSitesInListKey)) {
     allow_non_verified_sites_in_list = *value;
   } else {
-    NOTREACHED();
     return false;
   }
 
   // Monthly Balances
   const auto* monthly_balances_list = dict.FindList(kMonthlyBalancesKey);
   if (!monthly_balances_list) {
-    NOTREACHED();
     return false;
   }
 
   for (const auto& item : *monthly_balances_list) {
     const auto* monthly_balance_value = item.GetIfDict();
     if (!monthly_balance_value) {
-      NOTREACHED();
       continue;
     }
 
     for (const auto [key, value] : *monthly_balance_value) {
       if (!value.is_dict()) {
-        NOTREACHED();
         continue;
       }
       ReportBalanceProperties report_balance;
@@ -158,7 +152,6 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
   if (const auto* value = dict.FindList(kProcessedPendingPublishersKey)) {
     for (const auto& processed_pending_publisher_value : *value) {
       if (!processed_pending_publisher_value.is_string()) {
-        NOTREACHED();
         continue;
       }
 

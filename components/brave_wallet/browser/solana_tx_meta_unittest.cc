@@ -57,7 +57,9 @@ TEST(SolanaTxMetaUnitTest, IsRetriable) {
   // Test partial signed transaction with normal blockhash.
   auto partial_signed_param = param.Clone();
   partial_signed_param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
-      std::vector<uint8_t>(kSolanaSignatureSize, 1), kFromAccount));
+      mojom::SolanaSignature::New(
+          std::vector<uint8_t>(kSolanaSignatureSize, 1)),
+      kFromAccount));
   meta.tx()->set_sign_tx_param(partial_signed_param.Clone());
   EXPECT_FALSE(meta.IsRetriable());
 
@@ -171,7 +173,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
           std::vector<std::string>(
               {from_account, to_account, mojom::kSolanaSystemProgramId}),
           std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
-          nullptr));
+          nullptr, nullptr));
 }
 
 TEST(SolanaTxMetaUnitTest, ToValue) {

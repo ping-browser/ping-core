@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 322df3814a9e6f234e3ba4cdabfa7f3dbf60fa7a..46622f07ea7d9b6523e012e2b4a5ff5ce6d31768 100644
+index 3dd02e4175a3884266dd55c648976ea64837f794..f3bc36af4f342fd81a4ef8c6ee9f5e492befc933 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3916,6 +3916,7 @@ const FeatureEntry::FeatureVariation kDefaultBrowserPromptRefreshVariations[] =
+@@ -4231,6 +4231,7 @@ const FeatureEntry::FeatureVariation
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
@@ -10,11 +10,3 @@ index 322df3814a9e6f234e3ba4cdabfa7f3dbf60fa7a..46622f07ea7d9b6523e012e2b4a5ff5c
  // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
  // //tools/flags/generate_unexpire_flags.py.
  #include "build/chromeos_buildflags.h"
-@@ -11395,6 +11396,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
- 
- bool ShouldSkipConditionalFeatureEntry(const flags_ui::FlagsStorage* storage,
-                                        const FeatureEntry& entry) {
-+  BRAVE_SHOULD_SKIP_CONDITIONAL_FEATURE_ENTRY
- #if BUILDFLAG(IS_CHROMEOS_ASH)
-   version_info::Channel channel = chrome::GetChannel();
-   // enable-projector-server-side-speech-recognition is only available if

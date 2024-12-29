@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 
@@ -29,13 +31,13 @@ class SolanaKeyring : public HDKeyring {
 
   std::optional<AddedAccountInfo> AddNewHDAccount() override;
   void RemoveLastHDAccount() override;
-  std::string ImportAccount(const std::vector<uint8_t>& keypair) override;
+  std::string ImportAccount(base::span<const uint8_t> keypair) override;
   bool RemoveImportedAccount(const std::string& address) override;
 
   std::string EncodePrivateKeyForExport(const std::string& address) override;
 
   std::vector<uint8_t> SignMessage(const std::string& address,
-                                   const std::vector<uint8_t>& message);
+                                   base::span<const uint8_t> message);
 
   static std::optional<std::string> CreateProgramDerivedAddress(
       const std::vector<std::vector<uint8_t>>& seeds,
@@ -48,7 +50,8 @@ class SolanaKeyring : public HDKeyring {
 
   static std::optional<std::string> GetAssociatedTokenAccount(
       const std::string& spl_token_mint_address,
-      const std::string& wallet_address);
+      const std::string& wallet_address,
+      mojom::SPLTokenProgram spl_token_program);
 
   static std::optional<std::string> GetAssociatedMetadataAccount(
       const std::string& token_mint_address);

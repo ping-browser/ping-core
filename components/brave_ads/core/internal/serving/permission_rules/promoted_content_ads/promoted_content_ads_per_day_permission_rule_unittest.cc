@@ -3,18 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_day_permission_rule.h"
 
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
-};
+class BraveAdsPromotedContentAdsPerDayPermissionRuleTest
+    : public test::TestBase {};
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
@@ -25,8 +29,11 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  test::RecordAdEvents(AdType::kPromotedContentAd,
-                       ConfirmationType::kServedImpression,
+  const CreativePromotedContentAdInfo creative_ad =
+      test::BuildCreativePromotedContentAd(
+          /*should_generate_random_uuids=*/false);
+  const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        /*count=*/kMaximumPromotedContentAdsPerDay.Get() - 1);
 
   // Act & Assert
@@ -36,8 +43,11 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  test::RecordAdEvents(AdType::kPromotedContentAd,
-                       ConfirmationType::kServedImpression,
+  const CreativePromotedContentAdInfo creative_ad =
+      test::BuildCreativePromotedContentAd(
+          /*should_generate_random_uuids=*/false);
+  const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        /*count=*/kMaximumPromotedContentAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1));
@@ -49,8 +59,11 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        ShouldNotAllowIfExceedsCapWithin1Day) {
   // Arrange
-  test::RecordAdEvents(AdType::kPromotedContentAd,
-                       ConfirmationType::kServedImpression,
+  const CreativePromotedContentAdInfo creative_ad =
+      test::BuildCreativePromotedContentAd(
+          /*should_generate_random_uuids=*/false);
+  const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        /*count=*/kMaximumPromotedContentAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));

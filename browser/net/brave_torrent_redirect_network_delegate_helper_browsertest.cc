@@ -16,7 +16,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/navigation_entry.h"
-#include "content/public/browser/notification_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/page_type.h"
 #include "content/public/test/browser_test.h"
@@ -88,15 +87,6 @@ class BraveTorrentRedirectNetworkDelegateHelperTest
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
-  }
-
-  void NavigateToURLAndWaitForRedirects(const GURL& original_url) {
-    ui_test_utils::UrlLoadObserver load_complete(
-        original_url, content::NotificationService::AllSources());
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
-    EXPECT_EQ(contents()->GetPrimaryMainFrame()->GetLastCommittedURL(),
-              original_url);
-    load_complete.Wait();
   }
 
  private:

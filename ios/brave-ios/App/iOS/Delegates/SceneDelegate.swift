@@ -57,7 +57,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       braveCore: AppState.shared.braveCore,
       profile: AppState.shared.profile,
       attributionManager: attributionManager,
-      diskImageStore: AppState.shared.diskImageStore,
       migration: AppState.shared.migration,
       rewards: AppState.shared.rewards,
       newsFeedDataSource: AppState.shared.newsFeedDataSource,
@@ -116,7 +115,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // as it is only possible to have a single car-play instance.
     // Once we move to iOS 14+, this is easy to fix as we just pass car-play a `MediaStreamer`
     // instance instead of a `BrowserViewController`.
-    PlaylistCarplayManager.shared.do {
+    PlaylistCoordinator.shared.do {
       $0.browserController = browserViewController
     }
 
@@ -134,7 +133,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       // The reason p3a user consent is necesserray to call search ad install attribution API methods
       if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
         // If P3A is not enabled, send the organic install code at daily pings which is BRV001
-        // User has not opted in to share completely private and anonymous product insights
+        // User has not opted in to share private and anonymous product insights
         if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
           Task { @MainActor in
             do {
@@ -305,20 +304,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       return
     }
 
-    contexts.forEach({
+    for context in contexts {
       guard
         let routerpath = NavigationPath(
-          url: $0.url,
+          url: context.url,
           isPrivateBrowsing: scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing
             == true
         )
       else {
-        Logger.module.error("[SCENE] - Invalid Navigation Path: \($0.url)")
+        Logger.module.error("[SCENE] - Invalid Navigation Path: \(context.url)")
         return
       }
 
+      if case .url(let navigationPathURL, _) = routerpath, let pathURL = navigationPathURL,
+        pathURL.isFileURL
+      {
+        defer {
+          pathURL.stopAccessingSecurityScopedResource()
+        }
+
+        let canAccessFileURL = pathURL.startAccessingSecurityScopedResource()
+
+        if !canAccessFileURL {
+          //File can not be accessed pass the url text to search engine
+          scene.browserViewController?.submitSearchText(pathURL.absoluteString)
+          continue
+        }
+      }
+
       scene.browserViewController?.handleNavigationPath(path: routerpath)
-    })
+    }
   }
 
   func scene(_ scene: UIScene, didUpdate userActivity: NSUserActivity) {
@@ -489,7 +504,7 @@ extension SceneDelegate {
 
   private func switchToTabForIntentURL(_ scene: UIWindowScene, intentURL: String?) {
     if let browserViewController = scene.browserViewController {
-      guard let siteURL = intentURL, let url = URL(string: siteURL) else {
+      guard let siteURL = intentURL, let url = URL(string: siteURL), url.isWebPage() else {
         browserViewController.openBlankNewTab(
           attemptLocationFieldFocus: false,
           isPrivate: Preferences.Privacy.privateBrowsingOnly.value
@@ -543,7 +558,6 @@ extension SceneDelegate {
     braveCore: BraveCoreMain,
     profile: Profile,
     attributionManager: AttributionManager,
-    diskImageStore: DiskImageStore?,
     migration: Migration?,
     rewards: Brave.BraveRewards,
     newsFeedDataSource: BraveNews.FeedDataSource,
@@ -605,7 +619,6 @@ extension SceneDelegate {
       windowId: windowId,
       profile: profile,
       attributionManager: attributionManager,
-      diskImageStore: diskImageStore,
       braveCore: braveCore,
       rewards: rewards,
       migration: migration,

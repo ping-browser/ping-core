@@ -13,7 +13,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/autofill/content/browser/content_autofill_driver.h"
-#include "components/autofill/content/browser/content_autofill_driver_factory.h"
 #include "components/autofill/core/browser/browser_autofill_manager.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -26,7 +25,6 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
@@ -56,8 +54,8 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(client->IsFillingEnabled(url), enabled);
     // Other info.
     autofill::ContentAutofillDriver* cross_driver =
-        autofill::ContentAutofillDriverFactory::FromWebContents(active_contents)
-            ->DriverForFrame(active_contents->GetPrimaryMainFrame());
+        autofill::ContentAutofillDriver::GetForRenderFrameHost(
+            active_contents->GetPrimaryMainFrame());
     ASSERT_TRUE(cross_driver);
     EXPECT_EQ(static_cast<autofill::BrowserAutofillManager*>(
                   &cross_driver->GetAutofillManager())

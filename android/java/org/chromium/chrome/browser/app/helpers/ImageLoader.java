@@ -52,6 +52,7 @@ import org.chromium.components.image_fetcher.ImageFetcher.Params;
 import org.chromium.components.image_fetcher.ImageFetcherConfig;
 import org.chromium.components.image_fetcher.ImageFetcherFactory;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.net.NetId;
 import org.chromium.url.GURL;
 
 import java.io.IOException;
@@ -114,8 +115,10 @@ public class ImageLoader {
 
             WebContentsFactory webContentsFactory = new WebContentsFactory();
             WebContents webContents =
-                    webContentsFactory.createWebContentsWithWarmRenderer(profile, true);
-            webContents.downloadImage(new GURL(validUrl), // Url
+                    webContentsFactory.createWebContentsWithWarmRenderer(
+                            profile, true, NetId.INVALID);
+            webContents.downloadImage(
+                    new GURL(validUrl), // Url
                     false, // isFavIcon
                     WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD, // maxBitmapSize
                     false, // bypassCache
@@ -141,28 +144,49 @@ public class ImageLoader {
                                     new BitmapDrawable(resources, bestBitmap);
                             imageFetcherFacade = new ImageFetcherFacade(bitmapDrawable);
                         }
-                        loadImage(imageFetcherFacade, requestManager, isCircular, roundedCorners,
-                                imageView, customTarget, callback);
+                        loadImage(
+                                imageFetcherFacade,
+                                requestManager,
+                                isCircular,
+                                roundedCorners,
+                                imageView,
+                                customTarget,
+                                callback);
                     });
         } else {
-            ImageFetcher imageFetcher = ImageFetcherFactory.createImageFetcher(
-                    ImageFetcherConfig.NETWORK_ONLY, profile.getProfileKey());
+            ImageFetcher imageFetcher =
+                    ImageFetcherFactory.createImageFetcher(
+                            ImageFetcherConfig.NETWORK_ONLY, profile.getProfileKey());
             if (isGif(url)) {
                 imageFetcher.fetchGif(
-                        Params.create(new GURL(url), UNUSED_CLIENT_NAME), gifImage -> {
+                        Params.create(new GURL(url), UNUSED_CLIENT_NAME),
+                        gifImage -> {
                             ImageFetcherFacade imageFetcherFacade =
                                     new ImageFetcherFacade(gifImage.getData());
-                            loadImage(imageFetcherFacade, requestManager, isCircular,
-                                    roundedCorners, imageView, customTarget, callback);
+                            loadImage(
+                                    imageFetcherFacade,
+                                    requestManager,
+                                    isCircular,
+                                    roundedCorners,
+                                    imageView,
+                                    customTarget,
+                                    callback);
                         });
             } else {
                 imageFetcher.fetchImage(
-                        Params.create(new GURL(url), UNUSED_CLIENT_NAME), bitmap -> {
+                        Params.create(new GURL(url), UNUSED_CLIENT_NAME),
+                        bitmap -> {
                             BitmapDrawable bitmapDrawable = new BitmapDrawable(resources, bitmap);
                             ImageFetcherFacade imageFetcherFacade =
                                     new ImageFetcherFacade(bitmapDrawable);
-                            loadImage(imageFetcherFacade, requestManager, isCircular,
-                                    roundedCorners, imageView, customTarget, callback);
+                            loadImage(
+                                    imageFetcherFacade,
+                                    requestManager,
+                                    isCircular,
+                                    roundedCorners,
+                                    imageView,
+                                    customTarget,
+                                    callback);
                         });
             }
         }

@@ -12,9 +12,9 @@
 
 #include "base/files/file.h"
 #include "base/files/file_path.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
@@ -62,7 +62,7 @@ constexpr char kTextCMCCrash[] =
 
 }  // namespace
 
-class BraveAdsTextProcessingTest : public UnitTestBase {};
+class BraveAdsTextProcessingTest : public test::TestBase {};
 
 TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
   // Arrange
@@ -94,7 +94,7 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
       reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
   ASSERT_TRUE(linear_text_classification::flat::VerifyModelBuffer(verifier));
 
-  const auto* raw_model =
+  const auto* const raw_model =
       linear_text_classification::flat::GetModel(buffer.data());
   ASSERT_TRUE(raw_model);
   LinearModel linear_model(raw_model);
@@ -104,7 +104,7 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
   const std::optional<PredictionMap> data_point_3_predictions =
       linear_model.Predict(data_point_3);
   ASSERT_TRUE(data_point_3_predictions);
-  ASSERT_EQ(3U, data_point_3_predictions->size());
+  EXPECT_THAT(*data_point_3_predictions, ::testing::SizeIs(3));
 
   const pipeline::TextProcessing pipeline = pipeline::TextProcessing(
       std::move(transformations), std::move(linear_model));
@@ -113,13 +113,13 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
   const std::optional<PredictionMap> predictions =
       pipeline.GetTopPredictions(kTestString);
   ASSERT_TRUE(predictions);
-  ASSERT_TRUE(!predictions->empty());
+  ASSERT_GT(predictions->size(), 0U);
   ASSERT_LE(predictions->size(), 3U);
 
   // Assert
   for (const auto& prediction : *predictions) {
-    EXPECT_TRUE(prediction.second > -kTolerance &&
-                prediction.second < 1.0 + kTolerance);
+    EXPECT_GT(prediction.second, -kTolerance);
+    EXPECT_LT(prediction.second, 1.0 + kTolerance);
   }
 }
 
@@ -133,7 +133,7 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
                                                  "junk"};
 
   const base::FilePath path =
-      TestDataPath().AppendASCII(kValidSpamClassificationPipeline);
+      test::DataPath().AppendASCII(kValidSpamClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -156,7 +156,7 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
     const PredictionMap& prediction_map = prediction_maps[i];
     for (const auto& pred : prediction_map) {
       const double other_prediction = pred.second;
-      EXPECT_TRUE(prediction_map.at(train_labels[i]) >= other_prediction);
+      EXPECT_GE(prediction_map.at(train_labels[i]), other_prediction);
     }
   }
 }
@@ -164,7 +164,7 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
 TEST_F(BraveAdsTextProcessingTest, InitValidLinearModelTest) {
   // Arrange
   const base::FilePath path =
-      TestDataPath().AppendASCII(kValidSegmentClassificationPipeline);
+      test::DataPath().AppendASCII(kValidSegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -177,7 +177,7 @@ TEST_F(BraveAdsTextProcessingTest, InitValidLinearModelTest) {
 TEST_F(BraveAdsTextProcessingTest, InitValidNeuralModelTest) {
   // Arrange
   const base::FilePath path =
-      TestDataPath().AppendASCII(kOnlyRequiredFieldsNeuralModelPipeline);
+      test::DataPath().AppendASCII(kOnlyRequiredFieldsNeuralModelPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -192,7 +192,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
   const std::string input_text = "This is a spam email.";
 
   const base::FilePath path =
-      TestDataPath().AppendASCII(kEmptySegmentClassificationPipeline);
+      test::DataPath().AppendASCII(kEmptySegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -213,7 +213,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptyTransformationsModelTest) {
   const std::string input_text = "This is a spam email.";
 
   const base::FilePath path =
-      TestDataPath().AppendASCII(kEmptyTransformationsPipeline);
+      test::DataPath().AppendASCII(kEmptyTransformationsPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -237,7 +237,7 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
       "Another messase from mom with no real subject", "Yadayada"};
 
   const base::FilePath path =
-      TestDataPath().AppendASCII(kWrongTransformationOrderPipeline);
+      test::DataPath().AppendASCII(kWrongTransformationOrderPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -256,7 +256,7 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
 TEST_F(BraveAdsTextProcessingTest, MissingRequiredFieldModelTest) {
   // Arrange
   const base::FilePath path =
-      TestDataPath().AppendASCII(kMissingRequiredFieldClassificationPipeline);
+      test::DataPath().AppendASCII(kMissingRequiredFieldClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -268,7 +268,7 @@ TEST_F(BraveAdsTextProcessingTest, MissingRequiredFieldModelTest) {
 
 TEST_F(BraveAdsTextProcessingTest, InvalidModelTest) {
   // Arrange
-  const base::FilePath path = TestDataPath().AppendASCII(kInvalidModel);
+  const base::FilePath path = test::DataPath().AppendASCII(kInvalidModel);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -280,7 +280,7 @@ TEST_F(BraveAdsTextProcessingTest, InvalidModelTest) {
 
 TEST_F(BraveAdsTextProcessingTest, kNotExistingFile) {
   // Arrange
-  const base::FilePath path = TestDataPath().AppendASCII(kNotExistingFile);
+  const base::FilePath path = test::DataPath().AppendASCII(kNotExistingFile);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -295,7 +295,7 @@ TEST_F(BraveAdsTextProcessingTest, NotInitializedFileTest) {
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_FALSE(text_processing_pipeline.SetPipeline(base::File()));
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(/*file=*/{}));
 }
 
 TEST_F(BraveAdsTextProcessingTest, WrongLanguageModelTest) {
@@ -303,7 +303,7 @@ TEST_F(BraveAdsTextProcessingTest, WrongLanguageModelTest) {
   brave_l10n::test::ScopedDefaultLocale default_locale("es");
 
   const base::FilePath path =
-      TestDataPath().AppendASCII(kValidSegmentClassificationPipeline);
+      test::DataPath().AppendASCII(kValidSegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -319,7 +319,7 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   constexpr char kTestPage[] = "ethereum bitcoin bat zcash crypto tokens!";
 
   const base::FilePath path =
-      TestDataPath().AppendASCII(kValidSegmentClassificationPipeline);
+      test::DataPath().AppendASCII(kValidSegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -332,11 +332,11 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   ASSERT_TRUE(predictions);
 
   // Assert
-  EXPECT_FALSE(predictions->empty());
+  EXPECT_GT(predictions->size(), 0U);
   EXPECT_LT(predictions->size(), kMaxPredictionsSize);
   EXPECT_TRUE(predictions->count("crypto-crypto"));
   for (const auto& prediction : *predictions) {
-    EXPECT_TRUE(prediction.second <= predictions->at("crypto-crypto"));
+    EXPECT_LE(prediction.second, predictions->at("crypto-crypto"));
   }
 }
 
@@ -346,7 +346,7 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   constexpr size_t kMaxPredictionsSize = 100;
 
   const base::FilePath path =
-      TestDataPath().AppendASCII(kValidSegmentClassificationPipeline);
+      test::DataPath().AppendASCII(kValidSegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -354,7 +354,7 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
   const std::optional<std::string> contents =
-      MaybeReadFileToString(kTextCMCCrash);
+      test::MaybeReadFileToString(kTextCMCCrash);
   ASSERT_TRUE(contents);
 
   // Act
@@ -367,7 +367,7 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   EXPECT_LT(predictions->size(), kMaxPredictionsSize);
   EXPECT_TRUE(predictions->count("crypto-crypto"));
   for (const auto& prediction : *predictions) {
-    EXPECT_TRUE(prediction.second <= predictions->at("crypto-crypto"));
+    EXPECT_LE(prediction.second, predictions->at("crypto-crypto"));
   }
 }
 

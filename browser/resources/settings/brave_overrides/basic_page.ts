@@ -11,11 +11,9 @@ import '../brave_content_page/playlist.js'
 import '../brave_content_page/speedreader.js'
 import '../brave_data_collection_page/brave_data_collection_page.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
-import '../brave_ipfs_page/brave_ipfs_page.js'
 import '../brave_new_tab_page/brave_new_tab_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.js'
 import '../brave_sync_page/brave_sync_page.js'
-import '../brave_site_settings/brave_site_data_details_subpage.js'
 import '../brave_tor_page/brave_tor_subpage.js'
 import '../brave_wallet_page/brave_wallet_page.js'
 import '../brave_web3_domains_page/brave_web3_domains_page.js'
@@ -23,6 +21,7 @@ import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
+import '../brave_leo_assistant_page/model_list_section.js'
 
 import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 
@@ -124,21 +123,6 @@ RegisterPolymerTemplateModifications({
       } else {
         privacyGuidePromoSection.remove()
       }
-      const safetyCheckTemplate = actualTemplate.content.querySelector(
-        'template[is="dom-if"][if="[[showSafetyCheckPage_(pageVisibility.safetyCheck)]]"]')
-      if (!safetyCheckTemplate) {
-        console.error(
-          '[Brave Settings Overrides] Could not find safetyCheck template')
-      } else {
-        const safetyCheckSettingsSection = safetyCheckTemplate.content.
-          querySelector('#safetyCheckSettingsSection')
-        if (!safetyCheckSettingsSection) {
-          console.error('[Brave Settings Overrides] Could not find '
-            + 'safetyCheckSettingsSection element to hide')
-        } else {
-          safetyCheckSettingsSection.remove()
-        }
-      }
       const sectionGetStarted = document.createElement('template')
       sectionGetStarted.setAttribute('is', 'dom-if')
       sectionGetStarted.setAttribute('restamp', 'true')
@@ -200,19 +184,6 @@ RegisterPolymerTemplateModifications({
         'extensions',
         'braveDefaultExtensions',
         'settings-brave-default-extensions-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-      const sectionIPFS = document.createElement('template')
-      sectionIPFS.setAttribute('is', 'dom-if')
-      sectionIPFS.setAttribute('restamp', 'true')
-      sectionIPFS.setAttribute('if', '[[showPage_(pageVisibility.braveIPFS)]]')
-      sectionIPFS.content.appendChild(createNestedSectionElement(
-        'ipfs',
-        'web3',
-        'braveIPFS',
-        'settings-brave-ipfs-page',
         {
           prefs: '{{prefs}}'
         }
@@ -323,6 +294,20 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+      const sectionLeoCustomModels = document.createElement('template')
+      sectionLeoCustomModels.setAttribute('is', 'dom-if')
+      sectionLeoCustomModels.setAttribute('restamp', 'true')
+      sectionLeoCustomModels
+        .setAttribute('if', '[[showPage_(pageVisibility.leoAssistant)]]')
+      sectionLeoCustomModels.content.appendChild(createNestedSectionElement(
+        'leoAssistant',
+        'leoAssistant',
+        'braveLeoAssistantByomLabel',
+        'model-list-section',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
 
       const sectionContent = document.createElement('template')
       sectionContent.setAttribute('is', 'dom-if')
@@ -384,21 +369,11 @@ RegisterPolymerTemplateModifications({
       // Remove all hidden performance options from basic page.
       // We moved performance elements into system settings.
       const performanceTemplate = actualTemplate.content.querySelector(
-        'template[if="[[showPerformancePage_(pageVisibility.performance)]]"]')
+        'template[if="[[showPage_(pageVisibility.performance)]]"]')
       if (performanceTemplate) {
         performanceTemplate.remove()
-      }
-
-      const batteryTemplate = actualTemplate.content.querySelector(
-        'template[if="[[showBatteryPage_(pageVisibility.performance)]]"]')
-      if (batteryTemplate) {
-        batteryTemplate.remove()
-      }
-
-      const speedTemplate = actualTemplate.content.querySelector(
-        'template[if="[[showSpeedPage_(pageVisibility.performance)]]"]')
-      if (speedTemplate) {
-        speedTemplate.remove()
+      } else {
+        console.error('[Settings] Could not find performance section')
       }
 
       // Get Started at top
@@ -436,8 +411,6 @@ RegisterPolymerTemplateModifications({
       if (sectionWallet) {
         last = last.insertAdjacentElement('afterend', sectionWallet)
       }
-      // Insert IPFS
-      last = last.insertAdjacentElement('afterend', sectionIPFS)
       // Insert Web3 Domains
       last = last.insertAdjacentElement('afterend', sectionWeb3Domains)
       // Insert Tor
@@ -446,6 +419,8 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionDataCollection)
       // Insert Leo Assistant
       // last = last.insertAdjacentElement('afterend', sectionLeoAssist)
+      // Insert Custom Models List
+      // last.insertAdjacentElement('afterend', sectionLeoCustomModels)
 
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')

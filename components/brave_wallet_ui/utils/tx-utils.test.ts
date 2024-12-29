@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+import { getLocale } from '../../common/locale'
 import {
   getMockedTransactionInfo,
   mockAccount,
@@ -43,6 +44,7 @@ import {
   getIsRevokeApprovalTx,
   getTransactionGas,
   getTransactionStatusString,
+  getTransactionTypeName,
   toTxDataUnion
 } from './tx-utils'
 
@@ -128,16 +130,6 @@ describe('getTransactionGas()', () => {
 
 describe('getETHSwapTransactionBuyAndSellTokens', () => {
   it('should detect the correct but/swap tokens of a transaction', () => {
-    const fillPath = `${
-      mockBasicAttentionToken.contractAddress //
-    }${
-      // only the first token has the "0x" prefix
-      mockBitcoinErc20Token.contractAddress.replace('0x', '') //
-    }`
-
-    const sellAmountArg = '1'
-    const minBuyAmountArg = '2'
-
     const { buyAmountWei, sellAmountWei, buyToken, sellToken } =
       getETHSwapTransactionBuyAndSellTokens({
         tokensList: mockErc20TokensList,
@@ -151,8 +143,7 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
           id: 'swap',
           originInfo: undefined,
           submittedTime: { microseconds: Date.now() },
-          // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
-          txArgs: [fillPath, sellAmountArg, minBuyAmountArg],
+          txArgs: [],
           txDataUnion: {
             ethTxData1559: {
               baseData: {
@@ -174,7 +165,18 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
           txHash: '123',
           txParams: [],
           txStatus: BraveWallet.TransactionStatus.Unapproved,
-          txType: BraveWallet.TransactionType.ETHSwap
+          txType: BraveWallet.TransactionType.ETHSwap,
+          isRetriable: false,
+          swapInfo: {
+            fromCoin: mockBasicAttentionToken.coin,
+            fromChainId: mockBasicAttentionToken.chainId,
+            fromAsset: mockBasicAttentionToken.contractAddress,
+            fromAmount: '1',
+            toCoin: mockBitcoinErc20Token.coin,
+            toChainId: mockBitcoinErc20Token.chainId,
+            toAsset: mockBitcoinErc20Token.contractAddress,
+            toAmount: '2'
+          } as BraveWallet.SwapInfo
         },
         nativeAsset: makeNetworkAsset(mockNetwork)
       })
@@ -187,8 +189,8 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
     expect(buyToken?.contractAddress).toBe(
       mockBitcoinErc20Token.contractAddress
     )
-    expect(buyAmountWei.value?.toString()).toEqual(minBuyAmountArg)
-    expect(sellAmountWei.value?.toString()).toEqual(sellAmountArg)
+    expect(buyAmountWei.format()).toEqual('2')
+    expect(sellAmountWei.format()).toEqual('1')
   })
 })
 
@@ -735,5 +737,120 @@ describe('findTransactionToken', () => {
         )?.symbol
       ).toBe('BAT')
     })
+  })
+})
+
+describe('getTransactionTypeName', () => {
+  test.each([
+    {
+      txType: BraveWallet.TransactionType.ERC1155SafeTransferFrom,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSafeTransferFrom'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC20Approve,
+      expectedString: getLocale('braveWalletTransactionTypeNameErc20Approve')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC20Transfer,
+      expectedString: getLocale('braveWalletTransactionTypeNameTokenTransfer')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC721SafeTransferFrom,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSafeTransferFrom'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC721TransferFrom,
+      expectedString: getLocale('braveWalletTransactionTypeNameNftTransfer')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ETHFilForwarderTransfer,
+      expectedString: getLocale('braveWalletTransactionTypeNameForwardFil')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ETHSend,
+      expectedString: getLocale('braveWalletTransactionIntentSend').replace(
+        '$1',
+        'ETH'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ETHSwap,
+      expectedString: getLocale('braveWalletSwap')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.Other,
+      expectedString: getLocale('braveWalletTransactionTypeNameOther')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaCompressedNftTransfer,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameCompressedNftTransfer'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSignAndSendDappTransaction'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaDappSignTransaction,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSignDappTransaction'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+      expectedString: getLocale('braveWalletTransactionTypeNameTokenTransfer')
+    },
+
+    {
+      txType:
+        BraveWallet.TransactionType
+          .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSplTokenTransferWithAssociatedTokenAccountCreation'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaSwap,
+      expectedString: getLocale('braveWalletSwap')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaSystemTransfer,
+      expectedString: getLocale('braveWalletTransactionIntentSend').replace(
+        '$1',
+        'SOL'
+      )
+    }
+  ])(
+    'renders the correct localized function name per tx type',
+    ({ expectedString, txType }) => {
+      expect(getTransactionTypeName(txType)).toBe(expectedString)
+    }
+  )
+
+  test('should return "Other" for unknown tx type', () => {
+    expect(getTransactionTypeName(999)).toBe(
+      getLocale('braveWalletTransactionTypeNameOther')
+    )
   })
 })

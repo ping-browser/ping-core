@@ -3,34 +3,43 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation.h"
 
 #include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_ads {
@@ -61,6 +70,7 @@ void RedeemRewardConfirmation::CreateAndRedeem(
 RedeemRewardConfirmation::RedeemRewardConfirmation(
     base::WeakPtr<RedeemConfirmationDelegate> delegate) {
   CHECK(delegate);
+
   delegate_ = std::move(delegate);
 }
 
@@ -89,13 +99,12 @@ void RedeemRewardConfirmation::CreateConfirmation(
   BLOG(1, "Create reward confirmation");
 
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
-
-  UrlRequest(
-      std::move(url_request),
+  GetAdsClient()->UrlRequest(
+      std::move(mojom_url_request),
       base::BindOnce(&RedeemRewardConfirmation::CreateConfirmationCallback,
                      std::move(redeem_confirmation), confirmation));
 }
@@ -104,9 +113,9 @@ void RedeemRewardConfirmation::CreateConfirmation(
 void RedeemRewardConfirmation::CreateConfirmationCallback(
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
   FetchPaymentTokenAfter(kFetchPaymentTokenAfter.Get(),
                          std::move(redeem_confirmation), confirmation);
@@ -119,8 +128,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenAfter(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "Fetch payment token in " << delay);
 
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE,
+  GlobalState::GetInstance()->PostDelayedTask(
       base::BindOnce(&RedeemRewardConfirmation::FetchPaymentToken,
                      std::move(redeem_confirmation), confirmation),
       delay);
@@ -133,12 +141,12 @@ void RedeemRewardConfirmation::FetchPaymentToken(
   BLOG(1, "Fetch payment token");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  UrlRequest(
-      std::move(url_request),
+  GetAdsClient()->UrlRequest(
+      std::move(mojom_url_request),
       base::BindOnce(&RedeemRewardConfirmation::FetchPaymentTokenCallback,
                      std::move(redeem_confirmation), confirmation));
 }
@@ -147,12 +155,12 @@ void RedeemRewardConfirmation::FetchPaymentToken(
 void RedeemRewardConfirmation::FetchPaymentTokenCallback(
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
   const auto handle_url_response_result =
-      HandleFetchPaymentTokenUrlResponse(confirmation, url_response);
+      HandleFetchPaymentTokenUrlResponse(confirmation, mojom_url_response);
   if (!handle_url_response_result.has_value()) {
     const auto& [failure, should_retry] = handle_url_response_result.error();
 
@@ -177,32 +185,32 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
 base::expected<PaymentTokenInfo, std::tuple<std::string, bool>>
 RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
     const ConfirmationInfo& confirmation,
-    const mojom::UrlResponseInfo& url_response) {
-  if (url_response.status_code == net::HTTP_NOT_FOUND) {
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  if (mojom_url_response.status_code == net::HTTP_NOT_FOUND) {
     return base::unexpected(
         std::make_tuple("Confirmation not found", /*should_retry=*/true));
   }
 
-  if (url_response.status_code == net::HTTP_BAD_REQUEST) {
+  if (mojom_url_response.status_code == net::HTTP_BAD_REQUEST) {
     return base::unexpected(
         std::make_tuple("Credential is invalid", /*should_retry=*/false));
   }
 
-  if (url_response.status_code == net::HTTP_ACCEPTED) {
+  if (mojom_url_response.status_code == net::HTTP_ACCEPTED) {
     return base::unexpected(
         std::make_tuple("Payment token is not ready", /*should_retry=*/true));
   }
 
-  if (url_response.status_code != net::HTTP_OK) {
+  if (mojom_url_response.status_code != net::HTTP_OK) {
     return base::unexpected(std::make_tuple("Failed to fetch payment token",
                                             /*should_retry=*/true));
   }
 
   const std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(url_response.body);
+      base::JSONReader::ReadDict(mojom_url_response.body);
   if (!dict) {
     return base::unexpected(std::make_tuple(
-        base::StrCat({"Failed to parse response: ", url_response.body}),
+        base::StrCat({"Failed to parse response: ", mojom_url_response.body}),
         /*should_retry=*/true));
   }
 
@@ -233,26 +241,26 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                                             /*should_retry=*/false));
   }
 
-  if (!PublicKeyExistsForIssuerType(IssuerType::kPayments, *public_key)) {
+  if (!TokenIssuerPublicKeyExistsForType(TokenIssuerType::kPayments,
+                                         *public_key)) {
     return base::unexpected(
         std::make_tuple("Payments public key does not exist",
                         /*should_retry=*/true));
   }
 
-  const auto result = ParseVerifyAndUnblindTokens(
-      *payment_token_dict, {confirmation.reward->token},
-      {confirmation.reward->blinded_token}, *public_key);
-  if (!result.has_value()) {
-    BLOG(0, result.error());
+  const std::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
+      ParseVerifyAndUnblindTokens(
+          *payment_token_dict, {confirmation.reward->token},
+          {confirmation.reward->blinded_token}, *public_key);
+  if (!unblinded_tokens) {
     return base::unexpected(
         std::make_tuple("Failed to parse, verify and unblind payment tokens",
                         /*should_retry=*/false));
   }
-  const auto& unblinded_tokens = result.value();
 
   PaymentTokenInfo payment_token;
   payment_token.transaction_id = confirmation.transaction_id;
-  payment_token.unblinded_token = unblinded_tokens.front();
+  payment_token.unblinded_token = unblinded_tokens->front();
   payment_token.public_key = *public_key;
   payment_token.confirmation_type = confirmation.type;
   payment_token.ad_type = confirmation.ad_type;

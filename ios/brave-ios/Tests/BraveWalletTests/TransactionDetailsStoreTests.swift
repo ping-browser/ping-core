@@ -37,8 +37,7 @@ class TransactionDetailsStoreTests: XCTestCase {
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = { $1([.mockSepolia]) }
+    let rpcService = MockJsonRpcService()
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
       let mockAssetPrices: [BraveWallet.AssetPrice] = [
@@ -54,7 +53,7 @@ class TransactionDetailsStoreTests: XCTestCase {
     txService._addObserver = { _ in }
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     let userAssetManager = TestableWalletUserAssetManager()
-    userAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { _, _ in
+    userAssetManager._getUserAssets = { _, _ in
       return [
         NetworkAssets(
           network: .mockSepolia,

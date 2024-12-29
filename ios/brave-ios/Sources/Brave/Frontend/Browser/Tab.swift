@@ -58,13 +58,22 @@ protocol TabDelegate {
   func showWalletNotification(_ tab: Tab, origin: URLOrigin)
   func updateURLBarWalletButton()
   func isTabVisible(_ tab: Tab) -> Bool
-  func reloadIPFSSchemeUrl(_ url: URL)
   func didReloadTab(_ tab: Tab)
 }
 
 @objc
 protocol URLChangeDelegate {
   func tab(_ tab: Tab, urlDidChangeTo url: URL)
+}
+
+struct RewardsTabChangeReportingState {
+  /// Set to true when the resulting page was restored from session state.
+  var wasRestored = false
+  /// Set to true when the resulting page navigation is not a reload or a
+  /// back/forward type.
+  var isNewNavigation = true
+  /// HTTP status code of the resulting page.
+  var httpStatusCode = -1
 }
 
 enum TabSecureContentState: String {
@@ -241,14 +250,16 @@ class Tab: NSObject {
   fileprivate var lastRequest: URLRequest?
   var restoring: Bool = false
   var pendingScreenshot = false
+  var isDisplayingBasicAuthPrompt = false
 
-  /// The type of action triggering a navigation.
-  var navigationType: WKNavigationType?
+  // This variable is used to keep track of current page. It is used to detect
+  // and report same document navigations to Brave Rewards library.
+  var rewardsXHRLoadURL: URL?
 
   /// This object holds on to information regarding the current web page
   ///
   /// The page data is cleared when the user leaves the page (i.e. when the main frame url changes)
-  var currentPageData: PageData?
+  @MainActor var currentPageData: PageData?
 
   /// The url set after a successful navigation. This will also set the `url` property.
   ///
@@ -291,6 +302,10 @@ class Tab: NSObject {
         url = URL(string: internalUrl.stripAuthorization)
       }
 
+      if isDisplayingBasicAuthPrompt {
+        url = URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
+      }
+
       // Setting URL in SyncTab is adding pending item to navigation manager on brave-core side
       if let url = url, !isPrivate, !url.isLocal, !InternalURL.isValid(url: url),
         !url.isInternalURL(for: .readermode)
@@ -301,10 +316,13 @@ class Tab: NSObject {
   }
 
   var mimeType: String?
-  var isEditing: Bool = false
-  var shouldNotifyAdsServiceTabDidChange = true
+  var isEditing = false
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
+
+  /// The rewards reporting state which is filled during a page navigation.
+  // It is reset to initial values when the page navigation is finished.
+  var rewardsReportingState = RewardsTabChangeReportingState()
 
   /// This is the request that was upgraded to HTTPS
   /// This allows us to rollback the upgrade when we encounter a 4xx+
@@ -393,7 +411,11 @@ class Tab: NSObject {
       }
 
       if let webView = webView {
-        NightModeScriptHandler.executeScript(for: webView, isNightModeEnabled: isNightModeEnabled)
+        if isNightModeEnabled {
+          DarkReaderScriptHandler.enable(for: webView)
+        } else {
+          DarkReaderScriptHandler.disable(for: webView)
+        }
       }
 
       self.setScript(script: .nightMode, enabled: isNightModeEnabled)
@@ -567,7 +589,7 @@ class Tab: NSObject {
       lastTitle = sessionInfo.title
       webView.interactionState = sessionInfo.interactionState
       restoring = false
-      shouldNotifyAdsServiceTabDidChange = false
+      rewardsReportingState.wasRestored = true
       self.sessionData = nil
     } else if let request = lastRequest {
       webView.load(request)
@@ -775,11 +797,8 @@ class Tab: NSObject {
     if let webView = webView {
       lastRequest = request
       sslPinningError = nil
-      if let url = request.url {
-        if url.isFileURL, request.isPrivileged {
-          return webView.loadFileURL(url, allowingReadAccessTo: url)
-        }
 
+      if let url = request.url {
         // Donate Custom Intent Open Website
         if url.isSecureWebPage(), !isPrivate {
           ActivityShortcutManager.shared.donateCustomIntent(
@@ -819,11 +838,7 @@ class Tab: NSObject {
     if let url = webView?.url, let internalUrl = InternalURL(url),
       let page = internalUrl.originalURLFromErrorPage
     {
-      if page.isIPFSScheme {
-        tabDelegate?.reloadIPFSSchemeUrl(page)
-      } else {
-        webView?.replaceLocation(with: page)
-      }
+      webView?.replaceLocation(with: page)
       return
     }
 
@@ -991,29 +1006,6 @@ class Tab: NSObject {
 
   func isDescendentOf(_ ancestor: Tab) -> Bool {
     return sequence(first: parent) { $0?.parent }.contains { $0 == ancestor }
-  }
-
-  func injectUserScriptWith(
-    fileName: String,
-    type: String = "js",
-    injectionTime: WKUserScriptInjectionTime = .atDocumentEnd,
-    mainFrameOnly: Bool = true,
-    contentWorld: WKContentWorld
-  ) {
-    guard let webView = self.webView else {
-      return
-    }
-    if let path = Bundle.module.path(forResource: fileName, ofType: type),
-      let source = try? String(contentsOfFile: path)
-    {
-      let userScript = WKUserScript(
-        source: source,
-        injectionTime: injectionTime,
-        forMainFrameOnly: mainFrameOnly,
-        in: contentWorld
-      )
-      webView.configuration.userContentController.addUserScript(userScript)
-    }
   }
 
   func observeURLChanges(delegate: URLChangeDelegate) {

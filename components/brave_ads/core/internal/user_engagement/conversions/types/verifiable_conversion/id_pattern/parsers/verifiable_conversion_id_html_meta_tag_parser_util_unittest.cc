@@ -5,14 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/id_pattern/parsers/verifiable_conversion_id_html_meta_tag_parser_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
 class BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest
-    : public UnitTestBase {};
+    : public test::TestBase {};
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest,
        ParseVerifableConversionIdFromHtmlMetaTag) {
@@ -32,7 +32,7 @@ TEST_F(BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest,
 TEST_F(BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest,
        DoNotParseVerifableConversionIdFromEmptyHtmlMetaTag) {
   // Act & Assert
-  EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtmlMetaTag(/*html=*/{}));
+  EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtmlMetaTag(/*html=*/""));
 }
 
 }  // namespace brave_ads

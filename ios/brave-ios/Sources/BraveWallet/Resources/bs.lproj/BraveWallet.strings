@@ -10,8 +10,8 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "Pojedinosti o računu";
 
-/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
-"wallet.accountNameLengthError" = "Naziv računa može imati najviše 30 znakova";
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\") */
+"wallet.accountNameLengthError" = "Naziv računa može imati %lld zn. ili manje";
 
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "Privatni ključ";
@@ -93,6 +93,9 @@
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "Dodaj mrežu";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address. */
+"wallet.addressLabel" = "Adresa";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
 "wallet.addSuggestedTokenSubtitle" = "Želite li uvesti ovaj token?";
@@ -181,6 +184,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "Sada možete preskočiti ovaj korak, ali svejedno morate izraditi sigurnosnu kopiju rečenice za oporavak kako biste zajamčili sigurnost računa.";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "Izradi sigurnosnu kopiju sada";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "Sigurnosno kopiraj novčanik";
 
@@ -215,7 +221,7 @@
 "wallet.biometricsSetupFaceId" = "Identifikacija licem";
 
 /* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
-"wallet.biometricsSetupSubTitle" = "Želite li upotrijebiti %@ za otključavanje Novčanika Brave?";
+"wallet.biometricsSetupSubTitle" = "Želite li upotrijebiti %@ za otključavanje Novčanika Ping?";
 
 /* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
 "wallet.biometricsSetupTitle" = "Otključavanje Novčanika Ping načinom %@";
@@ -223,8 +229,11 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Identifikacija dodirom";
 
+/* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\") */
+"wallet.bitcoinImportExtendedKeyWarning" = "Podržani su samo produženi ključevi %@.";
+
 /* The title for Ping Fee label in Swap. The fee percentage is displayed beside the label. */
-"wallet.braveFeeLabel" = "Naknada preglednika Brave: %@";
+"wallet.braveFeeLabel" = "Naknada preglednika Ping: %@";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee' */
 "wallet.braveSwapFeeDisclaimer" = "Ponudom se uključuje naknada od %@ za preglednik Ping.";
@@ -232,11 +241,41 @@
 /* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "Besplatno";
 
+/* A description of an Bitcoin account, displayed in Accounts tab. */
+"wallet.btcAccountDescription" = "Bitcoin";
+
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "Dostupna sredstva za uporabu.";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "Dostupno";
+
+/* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
+"wallet.btcOrdinalsUnsupportedWarning" = "Novčanik Ping trenutačno ne podržava Bitcoin NFT (ordinale). Slanje BTC-a s adrese koja ima ordinale može rezultirati nenamjernim prijenosom ordinala.";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "Promjena stanja Vašeg novčanika na čekanju.";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "Neka stanja mogu biti nedostupna";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "Na čekanju";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "Vaša raspoloživa sredstva plus sve još nepotvrđene transakcije.";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "Ukupno";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Kupi";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Kupujte kriptovalute aplikacijom Apply Pay, kreditnom ili debitnom karticom.";
+
+/* The title for the button to cancel a submitted transaction. */
+"wallet.cancelTransactionButtonTitle" = "Otkaži transakciju";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Datum";
@@ -264,6 +303,12 @@
 
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "Rang";
+
+/* One of the coin types for users to create an account to store BTC assets */
+"wallet.coinTypeBitcoin" = "Bitcoin";
+
+/* A description for Bitcoin coin type. */
+"wallet.coinTypeBitcoinDescription" = "Pohranite imovinu BTC";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "Ethereum";
@@ -373,12 +418,6 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Novčanik Ping";
 
-/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
-"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Prilagođavanje pristupnika IPFS-a za NFT";
-
-/* The navigation title of the screen for users to customize ipfs public gateway address. */
-"wallet.customizeIPFSPublicGatewayNavTitle" = "Prilagođavanje pristupnika IPFS-a";
-
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "URL-ovi tražilice Block Explorer";
 
@@ -418,11 +457,11 @@
 /* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
 "wallet.customNetworkInvalidAddressErrMsg" = "Nevaljana adresa.";
 
+/* The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkNotSecureErrMsg" = "Nije sigurno.";
+
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "URL-ovi RPC-a";
-
-/* The title of custom network list screen */
-"wallet.customNetworksTitle" = "Prilagođene mreže";
 
 /* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
 "wallet.customNetworkSymbolNamePlaceholder" = "Upiši naziv valute";
@@ -532,23 +571,11 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "Zahtjev za dešifriranjem";
 
-/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
-"wallet.defaultEthAccountName" = "Račun Ethereum %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\") */
+"wallet.defaultAccountName" = "Račun %1$@ %2$lld";
 
-/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
-"wallet.defaultFilAccountName" = "Račun Filecoin %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
-"wallet.defaultSecondaryEthAccountName" = "Sekundarni račun Ethereum %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
-"wallet.defaultSecondaryFilAccountName" = "Sekundarni račun Filecoin %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
-"wallet.defaultSecondarySolAccountName" = "Sekundarni račun Solana %lld";
-
-/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
-"wallet.defaultSolAccountName" = "Račun Solana %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\") */
+"wallet.defaultTestnetAccountName" = "Račun %1$@ Testnet %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Izbriši";
@@ -559,6 +586,12 @@
 /* The button title for user to click to copy the account address for deposit. */
 "wallet.depositAddressCopy" = "Kopiraj";
 
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "Imovina pologa";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "Ovo je novčanik Ethereum kojim se podržava mreža Ethereum i mreža 2. razine kao što je %@";
+
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Poništi odabir za sve";
 
@@ -567,6 +600,9 @@
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "Uredi";
+
+/* A pop up message that will prompt to user before user confirms to edit the existing network. */
+"wallet.editExistingNetworkAlertMsg" = "Želite li ažurirati postojeću mrežu?";
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "Uredi mrežu";
@@ -644,7 +680,7 @@
 "wallet.ensDomainInterstitialPageDescription" = "U pregledniku Ping upotrebljava se platforma Infura za rješavanje naziva domena .eth koje se nalaze u sustavu imenovanja tehnologije Ethereum (ENS). Preglednikom Ping skriva se vaša adresa IP. Ako to omogućite, putem platforme Infura moguće je vidjeti da netko pokušava posjetiti te domene .eth, ali ništa više. Pogledajte <a href=%1$@>%2$@</a> i <a href=%3$@>%4$@</a> platforme Infura.";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "Omogućiti podršku za sustav Ethereum Name Service (ENS) u pregledniku Brave?";
+"wallet.ensDomainInterstitialPageTitle" = "Omogućiti podršku za sustav Ethereum Name Service (ENS) u pregledniku Ping?";
 
 /* Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Nastavi s traženjem van tehnologije blokova";
@@ -653,7 +689,7 @@
 "wallet.ensOffchainDomainInterstitialPageDescription" = "Ovaj naziv domene .eth pohranjen je izvan lanca i rješava se pristupnikom treće strane. Ako omogućite pretraživanje ENS-a izvan lanca, putem pristupnika treće strane može se vidjeti da pokušavate posjetiti domenu .eth. <a href=%1$@>%2$@</a> .";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
-"wallet.ensOffchainDomainInterstitialPageTitle" = "Omogućiti podršku za traženje sustava za imenovanje tehnologije Ethereum (ENS) van tehnologije blokova u pregledniku Brave?";
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Omogućiti podršku za traženje sustava za imenovanje tehnologije Ethereum (ENS) van tehnologije blokova u pregledniku Ping?";
 
 /* Button title when requesting to do an ENS off chain lookup. */
 "wallet.ensOffchainGatewayButton" = "Upotrijebi domenu ENS";
@@ -699,6 +735,9 @@
 
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "Upišite simbol tokena";
+
+/* A title displayed in an alert above the error message or description. */
+"wallet.errorAlertTitle" = "Pogreška";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
 "wallet.ethAccountDescription" = "Ethereum + EVM Chains";
@@ -850,6 +889,9 @@
 /* A label shown inside of a box when there is no input data for a given Solana transaction */
 "wallet.inputDataPlaceholderSolana" = "Vrsta funkcije: %d";
 
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
+"wallet.inputLabel" = "Ulaz";
+
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "Nedovoljno raspoloživo stanje";
 
@@ -864,24 +906,6 @@
 
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "Došlo je do pogreške";
-
-/* A title will displayed in the IPFS error page when IPFS is disabled. */
-"wallet.ipfsErrorTitle" = "Ovo mrežno mjesto nije dostupno";
-
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.ipfsPublicGatewayAddressNFTTitle" = "Adresa javnog pristupnika IPFS-a za NFT";
-
-/* The navigation title of the screen for users to customize IPFS public gateway. */
-"wallet.ipfsPublicGatewayAddressTitle" = "Adresa javnog pristupnika IPFS-a";
-
-/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
-"wallet.ipfsResolveMethodDescription" = "[Doznajte više](%@) o razmatranjima privatnosti pristupnika IPFS.";
-
-/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
-"wallet.ipfsResourcesOptionsTitle" = "Rješavanje resursa IPFS-a";
-
-/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsHeader" = "IPFS";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "Saznaj više";
@@ -1000,7 +1024,7 @@
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.newSiteConnectScreenTitle" = "Poveži se";
 
-/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapbrave next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Sljedeće";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
@@ -1060,9 +1084,6 @@
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "Uvezi NFT";
 
-/* Description of the NFT Gateway setting */
-"wallet.nftGatewayLongDescription" = "Treba pružiti valjan pristupnik IPFS-a. Navedeni pristupnik provjerava se radi mogućnosti učitavanja resursa IPFS-a.";
-
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
 "wallet.nftHidden" = "Skriveno";
 
@@ -1082,10 +1103,10 @@
 "wallet.nftRemoveFromWallet" = "Ne prikazuj u novčaniku";
 
 /* The description of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertDescription" = "NFT se uklanja iz novčanika Brave, ali ostaje na lancu podatkovnih blokova. Ako ga uklonite, a zatim se predomislite, morate ga ponovno ručno uvesti.";
+"wallet.nftRemoveFromWalletAlertDescription" = "NFT se uklanja iz novčanika Ping, ali ostaje na lancu podatkovnih blokova. Ako ga uklonite, a zatim se predomislite, morate ga ponovno ručno uvesti.";
 
 /* The title of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertTitle" = "Ukloniti iz novčanika Brave?";
+"wallet.nftRemoveFromWalletAlertTitle" = "Ukloniti iz novčanika Ping?";
 
 /* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
 "wallet.nftsDescription" = "Broj NFT-ova: %d";
@@ -1117,9 +1138,6 @@
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "Nema imovine";
 
-/* The empty state displayed when the user has not yet added any custom networks. */
-"wallet.noNetworks" = "Nema dodanih mreža";
-
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "Nema sekundarnih računa.";
 
@@ -1137,6 +1155,9 @@
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Druge radnje novčanika";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index. */
+"wallet.outputLabel" = "Izlaz";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
 "wallet.passwordDoesNotMeetRequirementsError" = "Zaporka mora imati najmanje osam znakova.";
@@ -1237,6 +1258,9 @@
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Ponovno upiši lozinku";
 
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Uvoziti iz starijih kriptonovčanika Ping?";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Obnavljanje novčanika";
 
@@ -1266,6 +1290,9 @@
 
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "Uvoz postojećeg novčanika";
+
+/* The title for the button to retry a failed transaction. */
+"wallet.retryTransactionButtonTitle" = "Ponovni pokušaj transakcije";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "Obavljajte trenutne kupnje svojim bankovnim računom. Niže naknade.";
@@ -1357,6 +1384,9 @@
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "Šaljite ili prenosite kriptovalute s jednog računa na drugi.";
 
+/* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
+"wallet.sendErrorBtcAddressNotValid" = "Nije valjana adresa BTC";
+
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "Domena nema povezanu adresu %@";
 
@@ -1387,8 +1417,8 @@
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "Poslano";
 
-/* Title of the set IPFS gateway button */
-"wallet.setGatewayButtonTitle" = "Postavi";
+/* One of the context menu option for user to tap to set a default network in wallet settings. */
+"wallet.setDefaultNetwork" = "Postavi kao zadano";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Postavke";
@@ -1430,7 +1460,7 @@
 "wallet.settingsResetWalletAlertMessage" = "Ova se radnja ne može poništiti. Vaša rečenica za oporavak jedini je način da ponovno dobijete pristup računu za svoje kriptoimovine.";
 
 /* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetWalletAlertTitle" = "Jeste li sigurni da želite ponovno postaviti Novčanik Brave?";
+"wallet.settingsResetWalletAlertTitle" = "Jeste li sigurni da želite ponovno postaviti Novčanik Ping?";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
 "wallet.setupCryptoButtonBackButtonTitle" = "Dobro došli";
@@ -1445,7 +1475,7 @@
 "wallet.setupCryptoCreateNewTitle" = "Treba li vam novi novčanik?";
 
 /* The disclaimer text at the bottom of the first step of onboarding flow. */
-"wallet.setupCryptoDisclaimer" = "©2023. Ping Software Inc. Ping i logotip Ping registrirani su žigovi društva Brave. Ostali nazivi proizvoda i logotipi mogu biti žigovi odgovarajućih društava. Sva prava pridržana.";
+"wallet.setupCryptoDisclaimer" = "©2023. Ping Software Inc. Ping i logotip Ping registrirani su žigovi društva Ping. Ostali nazivi proizvoda i logotipi mogu biti žigovi odgovarajućih društava. Sva prava pridržana.";
 
 /* The subtitle displayed in the section for user that need to restore an existed wallet */
 "wallet.setupCryptoRestoreSubTitle" = "Uvezite svoj postojeći novčanik.";
@@ -1467,9 +1497,6 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Prikaži privatni ključ";
-
-/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
-"wallet.showTestNetworksTitle" = "Pokaži testne mreže";
 
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "Pokaži nulta stanja";
@@ -1522,43 +1549,43 @@
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "Potpisivanje transakcije";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the address. */
 "wallet.siweAddressLabel" = "Adresa";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the chain ID. */
 "wallet.siweChainIDLabel" = "Identifikacijska oznaka bloka";
 
-/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+/* The title of the details view for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweDetailsTitle" = "Detalji";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the expiration time. */
 "wallet.siweExpirationTimeLabel" = "Vrijeme isteka";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the issued at date. */
 "wallet.siweIssuedAtLabel" = "Izdano:";
 
 /* The label displayed above the Sign In With Ethereum message. */
 "wallet.siweMessageLabel" = "Poruka";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the nonce. */
 "wallet.siweNonceLabel" = "Broj transakcija s iste adrese";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the origin. */
 "wallet.siweOriginLabel" = "Podrijetlo";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "Resursi";
 
-/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+/* The label displayed on the button to sign in for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweSignInButtonTitle" = "Prijava";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the statement. */
 "wallet.siweStatementLabel" = "Izjava";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the URI. */
 "wallet.siweURILabel" = "URI";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the version. */
 "wallet.siweVersionLabel" = "Inačica";
 
 /* The button title to skip recovery phrase backup */
@@ -1567,11 +1594,11 @@
 /* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
 "wallet.snsDomainInterstitialPageButtonProceed" = "Nastavite uporabom poslužitelja SNS";
 
-/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
 "wallet.snsDomainInterstitialPageDescription" = "Društvo Ping koristi se trećom stranom za rješavanje naziva domena .sol. Preglednikom Ping skriva se vaša adresa IP. Ako to omogućite, treća strana može vidjeti da netko pokušava posjetiti te domene .sol, ali ništa više. Za više informacija o trećim stranama kojima se koristimo i njihovim pravilnicima o zaštiti privatnosti posjetite našu <a href=%@>stranicu za pomoć</a>.";
 
 /* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
-"wallet.snsDomainInterstitialPageTitle" = "Omogućiti podršku za Solana Name Service (SNS) u pregledniku Brave?";
+"wallet.snsDomainInterstitialPageTitle" = "Omogućiti podršku za Solana Name Service (SNS) u pregledniku Ping?";
 
 /* A description of an Solana account, displayed in Accounts tab. */
 "wallet.solAccountDescription" = "Solana + SVM Chains";
@@ -1711,11 +1738,17 @@
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaUpgradeNonceAccountInstructionName" = "Nadogradnja računa nonce";
 
+/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaWithdrawNonceAccountInstructionName" = "Povlačenje s računa nonce";
+
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "Rasporedite prema stalnoj vrijednosti ili nazivu";
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Razvrstaj imovinu";
+
+/* The title for the button to speed up a submitted transaction. */
+"wallet.speedUpTransactionButtonTitle" = "Ubrzaj";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "Platite kreditnom karticom, debitnom karticom, bankovnim računom";
@@ -1729,7 +1762,7 @@
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "Transakcija je poslana";
 
-/* As in swapping cryptocurrency from one asset to another */
+/* As in swapbrave cryptocurrency from one asset to another */
 "wallet.swap" = "Swap";
 
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
@@ -1753,7 +1786,7 @@
 /* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountTitle" = "Upisivanje iznosa u valuti %@ za razmjenu";
 
-/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave from. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoFromTitle" = "Pošiljatelj";
 
 /* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
@@ -1765,7 +1798,7 @@
 /* The title of the button for users to click when they want to swap between two cryptos */
 "wallet.swapCryptoSwapButtonTitle" = "Swap";
 
-/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave to. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoToTitle" = "Primatelj";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
@@ -1949,7 +1982,7 @@
 "wallet.udDomainInterstitialPageDescription" = "U pregledniku Ping upotrebljava se platforma Infura za rješavanje naziva domena .crypto (i %1$@) koje se nalaze na platformi Unstoppable Domains. Preglednikom Ping skriva se vaša adresa IP. Ako to omogućite, putem platforme Infura moguće je vidjeti da netko pokušava posjetiti te domene, ali ništa više. Pogledajte <a href=%2$@>%3$@</a> i <a href=%4$@>%5$@</a> platforme Infura.";
 
 /* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
-"wallet.udDomainInterstitialPageTitle" = "Omogući podršku za nezaustavljive domene u pregledniku Brave?";
+"wallet.udDomainInterstitialPageTitle" = "Omogući podršku za nezaustavljive domene u pregledniku Ping?";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
 "wallet.udResolveMethodDescription" = "[Doznajte više](%@) o razmatranjima privatnosti platforme Unstoppable Domains.";
@@ -1971,6 +2004,9 @@
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ u mreži %2$@";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
+"wallet.valueLabel" = "Vrijednost";
 
 /* The error message when input phrase does not match the correct one. */
 "wallet.verifyRecoveryPhraseError" = "Rečenica za oporavak ne podudara se.";
@@ -2017,7 +2053,7 @@
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.walletSettings" = "Postavke novčanika";
 
-/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when groubrave Portfolio assets. */
 "wallet.walletTypeNone" = "Nema";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
@@ -2050,18 +2086,6 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Rješavanje naziva domena za Solana Name Service (SNS)";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
-"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (InterPlanetary File System) je javna mreža za ravnopravno pohranjivanje podataka i dostavljanje. Ovaj protokol ima drukčije stavke privatnosti od protokola HTTP(S). <a href=%1$@>%2$@</a>";
-
-/* A brief explaination of resolving IPFS scheme url using a public gateway. */
-"wallet.web3IPFSInterstitialIPFSPublicGateway" = "Štiti se vaša adresa IP i sadržaj koji tražite od potencijalnih trećih promatrača, ali ne od operatera javnog pristupnika. Operater pristupnika odgovoran je za jamčenje da je sadržaj koji vam se pruža putem pristupnika onaj sadržaj koji tražite. Jednako tako, vašim se računalom ne doprinosi javnoj mreži IPFS.";
-
-/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
-"wallet.web3IPFSInterstitialIPFSTitle" = "Postavi osobne postavke IPFS-a";
-
-/* The title of the button that user will click to let Ping to resolve IPFS shceme url. */
-"wallet.web3IPFSInterstitialProceedButton" = "Upotrijebi javni pristupnik";
-
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Mrežna mjesta mogu zatražiti pristupanje vašem novčaniku Ethereum";
 
@@ -2088,12 +2112,6 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Automatski dodajte NFT-ove koje imate u Novčanik s pomoću API-ja treće strane. [Doznajte više](%@)";
-
-/* Description of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertDescription" = "Pružen je nevaljan URL. Pristupnikom se trebaju moći riješiti resursi IPFS-a.";
-
-/* Title of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertTitle" = "Neuspješno postavljanje pristupnika";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Od Z do A";

@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 
 #include <memory>
@@ -20,7 +26,7 @@
 using testing::ElementsAre;
 
 namespace {
-const char kMnemonic[] =
+constexpr char kMnemonic[] =
     "home various adjust motion canvas stand combine gravity cluster behave "
     "despair dove";
 }
@@ -34,12 +40,14 @@ TEST(EthereumKeyringUnitTest, ConstructRootHDKey) {
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   EthereumKeyring keyring(seed);
-  EXPECT_EQ(keyring.root_.get()->GetPrivateExtendedKey(),
-            "xprvA1YGbmYkUq9KMyPwADQehauc1vG7TSbNLc1dwYbvU7VzyAr7TPhj9VoJJoP2CV"
-            "5kDmXXSZvbJ79ieLnD7Pt4rhbuaQjVr2JE3vcDBAvDoUg");
-  EXPECT_EQ(keyring.root_.get()->GetPublicExtendedKey(),
-            "xpub6EXd1H5eKChcaTUQGEwf4irLZx6bruKDhpwEjw1Y2T2yqyBFzw1yhJ7nA5EeBK"
-            "ozqYKB8jHxmhe7bEqyBEdPNWyPgCm2aZfs9tbLVYujvL3");
+  EXPECT_EQ(
+      keyring.root_.get()->GetPrivateExtendedKey(ExtendedKeyVersion::kXprv),
+      "xprvA1YGbmYkUq9KMyPwADQehauc1vG7TSbNLc1dwYbvU7VzyAr7TPhj9VoJJoP2CV5kDmXX"
+      "SZvbJ79ieLnD7Pt4rhbuaQjVr2JE3vcDBAvDoUg");
+  EXPECT_EQ(
+      keyring.root_.get()->GetPublicExtendedKey(ExtendedKeyVersion::kXpub),
+      "xpub6EXd1H5eKChcaTUQGEwf4irLZx6bruKDhpwEjw1Y2T2yqyBFzw1yhJ7nA5EeBKozqYKB"
+      "8jHxmhe7bEqyBEdPNWyPgCm2aZfs9tbLVYujvL3");
 }
 
 TEST(EthereumKeyringUnitTest, EncodePrivateKeyForExport) {

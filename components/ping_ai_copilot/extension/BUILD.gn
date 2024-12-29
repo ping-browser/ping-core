@@ -8,8 +8,12 @@ import("//brave/components/common/typescript.gni")
 transpile_web_ui("generate_ping_ai_copilot") {
   entry_points = [
     [
-      "ping_ai_copilot_content",
-      rebase_path("content/content_scripts/content.js")
+      "ping_ai_copilot_aiSummarizer",
+      rebase_path("content/content_scripts/aiSummarizer.js")
+    ],
+    [
+      "ping_ai_copilot_rephraser",
+      rebase_path("content/content_scripts/rephraser.js")
     ],
     [
       "ping_ai_copilot_background",

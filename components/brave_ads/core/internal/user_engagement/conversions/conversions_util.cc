@@ -10,49 +10,58 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util_internal.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
-bool CanConvertAdEvent(const AdEventInfo& ad_event) {
-  // Only convert view-through and click-through ad events.
-  if (ad_event.confirmation_type != ConfirmationType::kViewedImpression &&
-      ad_event.confirmation_type != ConfirmationType::kClicked) {
+bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
+  if (!CanConvertAdEvent(ad_event)) {
     return false;
   }
 
   switch (ad_event.type) {
-    case AdType::kInlineContentAd:
-    case AdType::kPromotedContentAd: {
+    case mojom::AdType::kInlineContentAd:
+    case mojom::AdType::kPromotedContentAd: {
       return UserHasOptedInToBraveNewsAds();
     }
 
-    case AdType::kNewTabPageAd: {
-      return UserHasOptedInToNewTabPageAds();
+    case mojom::AdType::kNewTabPageAd: {
+      // Only if:
+      // - The user has opted into new tab page ads and has either joined Brave
+      //   Rewards or new tab page ad events should always be triggered.
+      return UserHasOptedInToNewTabPageAds() &&
+             (UserHasJoinedBraveRewards() ||
+              ShouldAlwaysTriggerNewTabPageAdEvents());
     }
 
-    case AdType::kNotificationAd: {
+    case mojom::AdType::kNotificationAd: {
       return UserHasOptedInToNotificationAds();
     }
 
-    case AdType::kSearchResultAd: {
-      // Always.
-      return true;
+    case mojom::AdType::kSearchResultAd: {
+      // Only if:
+      // - The user has opted into search result ads and has either joined Brave
+      //   Rewards or search result ad events should always be triggered.
+      return UserHasOptedInToSearchResultAds() &&
+             (UserHasJoinedBraveRewards() ||
+              ShouldAlwaysTriggerSearchResultAdEvents());
     }
 
-    case AdType::kUndefined: {
+    case mojom::AdType::kUndefined: {
       break;
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for AdType: "
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: "
                         << base::to_underlying(ad_event.type);
 }
 
-bool HasObservationWindowForAdEventExpired(
-    const base::TimeDelta observation_window,
-    const AdEventInfo& ad_event) {
-  return ad_event.created_at < base::Time::Now() - observation_window;
+bool DidAdEventOccurWithinObservationWindow(
+    const AdEventInfo& ad_event,
+    const base::TimeDelta observation_window) {
+  return ad_event.created_at >= base::Time::Now() - observation_window;
 }
 
 }  // namespace brave_ads

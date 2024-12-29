@@ -30,7 +30,7 @@ class AIChatCredentialManager;
 class EngineConsumerConversationAPI : public EngineConsumer {
  public:
   explicit EngineConsumerConversationAPI(
-      const mojom::Model& model,
+      const mojom::LeoModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager);
   EngineConsumerConversationAPI(const EngineConsumerConversationAPI&) = delete;
@@ -42,17 +42,20 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   void GenerateQuestionSuggestions(
       const bool& is_video,
       const std::string& page_content,
+      const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
       const bool& is_video,
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
+      const std::string& selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) override;
   void GenerateRewriteSuggestion(
       std::string text,
       const std::string& question,
+      const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
@@ -64,11 +67,16 @@ class EngineConsumerConversationAPI : public EngineConsumer {
     api_ = std::move(api_for_testing);
   }
   ConversationAPIClient* GetAPIForTesting() { return api_.get(); }
+  void UpdateModelOptions(const mojom::ModelOptions& options) override {}
 
  private:
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);
+
+  ConversationAPIClient::ConversationEvent
+  GetAssociatedContentConversationEvent(const std::string& content,
+                                        const bool is_video);
 
   std::unique_ptr<ConversationAPIClient> api_ = nullptr;
   base::WeakPtrFactory<EngineConsumerConversationAPI> weak_ptr_factory_{this};

@@ -3,9 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStore
 import BraveStrings
 import BraveUI
 import DesignSystem
+import SafariServices
 import StoreKit
 import SwiftUI
 import Then
@@ -30,7 +32,7 @@ struct AIChatPaywallView: View {
   private var selectedTierType: AIChatSubscriptionTier = .monthly
 
   @State
-  private var availableTierTypes: [AIChatSubscriptionTier] = [.monthly]
+  private var availableTierTypes: [AIChatSubscriptionTier] = [.monthly, .yearly]
 
   @ObservedObject
   private(set) var storeSDK = BraveStoreSDK.shared
@@ -39,10 +41,19 @@ struct AIChatPaywallView: View {
   private var paymentStatus: AIChatPaymentStatus = .success
 
   @State
+  private var isMonthlyIntroOfferAvailable: Bool = false
+
+  @State
+  private var isYearlyIntroOfferAvailable: Bool = false
+
+  @State
   private var isShowingPurchaseAlert = false
 
   @State
   private var shouldDismiss: Bool = false
+
+  @State
+  private var shouldRefreshCredentials = false
 
   // Timer used for resetting the restore action to prevent infinite loading
   @State
@@ -50,22 +61,24 @@ struct AIChatPaywallView: View {
 
   var premiumUpgrageSuccessful: ((AIChatSubscriptionTier) -> Void)?
 
+  var refreshCredentials: (() -> Void)?
+
   var body: some View {
     NavigationView {
       VStack(spacing: 8.0) {
         ScrollView {
-          VStack(spacing: 0.0) {
+          VStack(spacing: 16.0) {
             PremiumUpsellTitleView(
               upsellType: .premium,
               isPaywallPresented: true
             )
-            .padding(16.0)
-
             PremiumUpsellDetailView(isPaywallPresented: true)
               .padding([.top, .horizontal], 8.0)
-              .padding(.bottom, 24.0)
+              .padding(.bottom, 8.0)
             tierSelection
-              .padding([.bottom, .horizontal], 8.0)
+              .padding(.horizontal, 8.0)
+            AIChatRefreshCredentialsView(shouldRefreshCredentials: $shouldRefreshCredentials)
+              .padding(.bottom, 8.0)
           }
           .navigationTitle(Strings.AIChat.paywallViewTitle)
           .navigationBarTitleDisplayMode(.inline)
@@ -101,7 +114,7 @@ struct AIChatPaywallView: View {
           vc.navigationItem.do {
             let appearance = UINavigationBarAppearance().then {
               $0.configureWithDefaultBackground()
-              $0.backgroundColor = UIColor(braveSystemName: .primitivePrimary90)
+              $0.backgroundColor = UIColor(braveSystemName: .primitivePrimary10)
               $0.titleTextAttributes = [.foregroundColor: UIColor.white]
               $0.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
             }
@@ -114,7 +127,7 @@ struct AIChatPaywallView: View {
           .padding(.bottom, 16.0)
       }
       .background(
-        Color(braveSystemName: .primitivePrimary90)
+        Color(braveSystemName: .primitivePrimary10)
           .edgesIgnoringSafeArea(.all)
           .overlay(
             Image("leo-product", bundle: .module),
@@ -135,8 +148,18 @@ struct AIChatPaywallView: View {
           dismiss()
         }
       }
+      .onChange(of: shouldRefreshCredentials) { shouldRefreshCredentials in
+        dismiss()
+        refreshCredentials?()
+      }
     }
     .navigationViewStyle(.stack)
+    .onDisappear {
+      iapRestoreTimer?.cancel()
+    }
+    .task {
+      await fetchIntroOfferStatus()
+    }
   }
 
   private var tierSelection: some View {
@@ -166,7 +189,7 @@ struct AIChatPaywallView: View {
         .font(.footnote)
         .frame(maxWidth: .infinity, alignment: .leading)
         .fixedSize(horizontal: false, vertical: true)
-        .foregroundStyle(Color(braveSystemName: .primitivePrimary20))
+        .foregroundStyle(Color(braveSystemName: .primitivePrimary90))
         .padding([.horizontal], 16.0)
         .padding([.vertical], 12.0)
     }
@@ -176,7 +199,7 @@ struct AIChatPaywallView: View {
     VStack(spacing: 16.0) {
       Rectangle()
         .frame(height: 1.0)
-        .foregroundColor(Color(braveSystemName: .primitivePrimary70))
+        .foregroundColor(Color(braveSystemName: .primitivePrimary25))
 
       Button(
         action: {
@@ -189,10 +212,18 @@ struct AIChatPaywallView: View {
                 .tint(Color.white)
                 .padding()
             } else {
-              Text(Strings.AIChat.paywallPurchaseActionTitle)
-                .font(.body.weight(.semibold))
-                .foregroundColor(Color(.white))
-                .padding()
+              let isIntroOfferAvailable =
+                (selectedTierType == .monthly && isMonthlyIntroOfferAvailable)
+                || (selectedTierType == .yearly && isYearlyIntroOfferAvailable)
+
+              Text(
+                isIntroOfferAvailable
+                  ? Strings.AIChat.paywallPurchaseActionIntroOfferTitle
+                  : Strings.AIChat.paywallPurchaseActionTitle
+              )
+              .font(.body.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .padding()
             }
           }
           .frame(maxWidth: .infinity)
@@ -260,11 +291,27 @@ struct AIChatPaywallView: View {
 
     // Adding 30 seconds time-out for restore
     iapRestoreTimer = Task.delayed(bySeconds: 30.0) { @MainActor in
+      try Task.checkCancellation()
+
       paymentStatus = .failure
 
       // Show Alert for failure of restore
       isShowingPurchaseAlert = true
     }
+  }
+
+  private func fetchIntroOfferStatus() async {
+    paymentStatus = .ongoing
+
+    isMonthlyIntroOfferAvailable = await storeSDK.isIntroOfferAvailable(
+      for: BraveStoreProduct.leoMonthly
+    )
+
+    isYearlyIntroOfferAvailable = await storeSDK.isIntroOfferAvailable(
+      for: BraveStoreProduct.leoYearly
+    )
+
+    paymentStatus = .success
   }
 }
 
@@ -306,7 +353,7 @@ private struct AIChatPremiumTierSelectionView: View {
                 "\(product.priceFormatStyle.locale.currencyCode ?? "")\(product.priceFormatStyle.locale.currencySymbol ?? "")"
               )
               .font(.subheadline)
-              .foregroundColor(Color(braveSystemName: .primitivePrimary30))
+              .foregroundColor(Color(braveSystemName: .primitivePrimary80))
 
               Text(
                 product.price.frontSymbolCurrencyFormatted(
@@ -321,7 +368,7 @@ private struct AIChatPremiumTierSelectionView: View {
                 " / \(type == .monthly ? Strings.AIChat.paywallMonthlyPriceDividend : Strings.AIChat.paywallYearlyPriceDividend)"
               )
               .font(.subheadline)
-              .foregroundColor(Color(braveSystemName: .primitivePrimary30))
+              .foregroundColor(Color(braveSystemName: .primitivePrimary80))
             }
           } else {
             ProgressView()
@@ -331,7 +378,7 @@ private struct AIChatPremiumTierSelectionView: View {
         .padding()
         .background(
           Color(
-            braveSystemName: selectedTierType == type ? .primitivePrimary60 : .primitivePrimary80
+            braveSystemName: selectedTierType == type ? .primitivePrimary40 : .primitivePrimary20
           )
         )
         .overlay(
@@ -348,3 +395,67 @@ private struct AIChatPremiumTierSelectionView: View {
     .buttonStyle(.plain)
   }
 }
+
+private struct AIChatRefreshCredentialsView: View {
+  @Binding var shouldRefreshCredentials: Bool
+
+  var body: some View {
+    VStack(spacing: 8) {
+      Text(Strings.Paywall.alreadyPurchasedTitle)
+        .font(.callout.weight(.semibold))
+        .foregroundColor(Color(braveSystemName: .primitivePrimary90))
+
+      Button(
+        action: {
+          shouldRefreshCredentials = true
+        },
+        label: {
+          HStack {
+            Text(Strings.Paywall.refreshCredentialsButtonTitle)
+              .font(.subheadline.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .padding()
+          }
+          .frame(maxWidth: .infinity)
+          .contentShape(ContainerRelativeShape())
+        }
+      )
+      .overlay(
+        ContainerRelativeShape()
+          .strokeBorder(
+            Color(braveSystemName: .dividerInteractive),
+            lineWidth: 1.0
+          )
+      )
+      .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+      .padding([.horizontal], 16.0)
+    }
+  }
+}
+
+#if DEBUG
+#Preview("LeoPaywall") {
+  AIChatPaywallView()
+}
+
+#Preview("LeoPremiumTier") {
+  VStack {
+    AIChatPremiumTierSelectionView(
+      title: "Monthly",
+      description: nil,
+      product: nil,
+      type: .yearly,
+      selectedTierType: Binding.constant(.yearly)
+    )
+
+    AIChatPremiumTierSelectionView(
+      title: "Yearly",
+      description: "%17 Discount",
+      product: nil,
+      type: .monthly,
+      selectedTierType: Binding.constant(.yearly)
+    )
+
+  }
+}
+#endif

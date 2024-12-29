@@ -15,13 +15,10 @@ import { PanelActions } from '../../panel/actions'
 
 // utils
 import Amount from '../../utils/amount'
-import { getPriceIdForToken } from '../../utils/api-utils'
-import { isHardwareAccount, getAccountType } from '../../utils/account-utils'
+import { getPriceIdForToken } from '../../utils/pricing-utils'
+import { isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
-import {
-  getCoinFromTxDataUnion,
-  hasEIP1559Support
-} from '../../utils/network-utils'
+import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { UISelectors } from '../selectors'
 import {
   accountHasInsufficientFundsForGas,
@@ -31,7 +28,8 @@ import {
   findTransactionToken,
   isEthereumTransaction,
   isZCashTransaction,
-  isBitcoinTransaction
+  isBitcoinTransaction,
+  isEIP1559Transaction
 } from '../../utils/tx-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 
@@ -57,6 +55,7 @@ import {
   useGetCombinedTokensListQuery,
   useAccountQuery
 } from '../slices/api.slice.extra'
+import { useSwapTransactionParser } from './use-swap-tx-parser'
 import {
   defaultQuerySubscriptionOptions,
   querySubscriptionOptions60s
@@ -77,11 +76,12 @@ export const useSelectedPendingTransaction = () => {
   )
 
   // queries
-  const { pendingTransactions } = usePendingTransactionsQuery({
-    accountId: null,
-    chainId: null,
-    coinType: null
-  })
+  const { pendingTransactions, isLoading: isLoadingPendingTransactions } =
+    usePendingTransactionsQuery({
+      accountId: null,
+      chainId: null,
+      coinType: null
+    })
 
   // computed
   const selectedPendingTransaction = !pendingTransactions.length
@@ -91,7 +91,7 @@ export const useSelectedPendingTransaction = () => {
       ) ?? pendingTransactions[0]
 
   // render
-  return selectedPendingTransaction
+  return { selectedPendingTransaction, isLoading: isLoadingPendingTransactions }
 }
 
 export const usePendingTransactions = () => {
@@ -184,9 +184,10 @@ export const usePendingTransactions = () => {
     isLoading: isLoadingGasEstimates,
     isError: hasEvmFeeEstimatesError
   } = useGetGasEstimation1559Query(
-    txAccount &&
-      transactionsNetwork &&
-      hasEIP1559Support(getAccountType(txAccount), transactionsNetwork)
+    transactionsNetwork &&
+      transactionsNetwork.coin === BraveWallet.CoinType.ETH &&
+      transactionInfo &&
+      isEIP1559Transaction(transactionInfo)
       ? transactionsNetwork.chainId
       : skipToken,
     defaultQuerySubscriptionOptions
@@ -279,17 +280,19 @@ export const usePendingTransactions = () => {
       : skipToken
   )
 
+  const { sellToken, sellAmountWei } = useSwapTransactionParser(transactionInfo)
+
   const { data: sellTokenBalance } = useGetAccountTokenCurrentBalanceQuery(
-    txAccount && transactionDetails?.sellToken
+    txAccount && sellToken
       ? {
           accountId: txAccount.accountId,
           token: {
-            coin: transactionDetails.sellToken.coin,
-            chainId: transactionDetails.sellToken.chainId,
-            contractAddress: transactionDetails.sellToken.contractAddress,
-            isErc721: transactionDetails.sellToken.isErc721,
-            isNft: transactionDetails.sellToken.isNft,
-            tokenId: transactionDetails.sellToken.tokenId
+            coin: sellToken.coin,
+            chainId: sellToken.chainId,
+            contractAddress: sellToken.contractAddress,
+            isErc721: sellToken.isErc721,
+            isNft: sellToken.isNft,
+            tokenId: sellToken.tokenId
           }
         }
       : skipToken
@@ -301,7 +304,7 @@ export const usePendingTransactions = () => {
           accountNativeBalance: nativeBalance || '',
           accountTokenBalance: transferTokenBalance || '',
           gasFee,
-          sellAmountWei: transactionDetails?.sellAmountWei || Amount.empty(),
+          sellAmountWei,
           sellTokenBalance: sellTokenBalance || '',
           tx: transactionInfo
         })
@@ -310,7 +313,7 @@ export const usePendingTransactions = () => {
     gasFee,
     nativeBalance,
     sellTokenBalance,
-    transactionDetails?.sellAmountWei,
+    sellAmountWei,
     transactionInfo,
     transferTokenBalance
   ])
@@ -352,11 +355,6 @@ export const usePendingTransactions = () => {
         BraveWallet.TransactionType.SolanaDappSignTransaction
       ].includes(transactionInfo.txType)
     : false
-
-  const isAssociatedTokenAccountCreation =
-    transactionInfo?.txType ===
-    BraveWallet.TransactionType
-      .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
 
   // methods
   const onEditAllowanceSave = React.useCallback(
@@ -624,7 +622,8 @@ export const usePendingTransactions = () => {
     isERC721TransferFrom,
     isSolanaDappTransaction,
     isSolanaTransaction: transactionDetails?.isSolanaTransaction || false,
-    isAssociatedTokenAccountCreation,
+    isAssociatedTokenAccountCreation:
+      transactionDetails?.isAssociatedTokenAccountCreation || false,
     isFilecoinTransaction: transactionDetails?.isFilecoinTransaction || false,
     onEditAllowanceSave,
     queueNextTransaction,

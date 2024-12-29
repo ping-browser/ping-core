@@ -23,11 +23,10 @@
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_info.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
-#include "brave/components/brave_ads/core/internal/history/history_feature.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
+#include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
+#include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
@@ -44,6 +43,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "components/variations/variations_switches.h"
@@ -57,7 +57,7 @@ namespace {
 constexpr char kFooBarSwitch[] = "foobar";
 
 struct ParamInfo final {
-  CommandLineSwitchInfo command_line_switch;
+  test::CommandLineSwitchInfo command_line_switch;
   bool expected_did_override_from_command_line;
 } const kTests[] = {
     {{kFooBarSwitch, {}}, false},
@@ -93,7 +93,7 @@ struct ParamInfo final {
      true},
     {{switches::kEnableFeatures, kEligibleAdFeature.name}, true},
     {{switches::kEnableFeatures, kExclusionRulesFeature.name}, true},
-    {{switches::kEnableFeatures, kHistoryFeature.name}, true},
+    {{switches::kEnableFeatures, kAdHistoryFeature.name}, true},
     {{switches::kEnableFeatures, kInlineContentAdFeature.name}, true},
     {{switches::kEnableFeatures, kInlineContentAdServingFeature.name}, true},
     {{switches::kEnableFeatures, kIssuersFeature.name}, true},
@@ -105,7 +105,7 @@ struct ParamInfo final {
     {{switches::kEnableFeatures, kPromotedContentAdFeature.name}, true},
     {{switches::kEnableFeatures, kPurchaseIntentFeature.name}, true},
     {{switches::kEnableFeatures, kRedeemPaymentTokensFeature.name}, true},
-    {{switches::kEnableFeatures, kReminderFeature.name}, true},
+    {{switches::kEnableFeatures, kRemindersFeature.name}, true},
     {{switches::kEnableFeatures, kSearchResultAdFeature.name}, true},
     {{switches::kEnableFeatures, kSubdivisionFeature.name}, true},
     {{switches::kEnableFeatures, kTextClassificationFeature.name}, true},
@@ -147,7 +147,7 @@ struct ParamInfo final {
     {{variations::switches::kForceFieldTrialParams,
       kExclusionRulesFeature.name},
      true},
-    {{variations::switches::kForceFieldTrialParams, kHistoryFeature.name},
+    {{variations::switches::kForceFieldTrialParams, kAdHistoryFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
       kInlineContentAdFeature.name},
@@ -180,7 +180,7 @@ struct ParamInfo final {
     {{variations::switches::kForceFieldTrialParams,
       kRedeemPaymentTokensFeature.name},
      true},
-    {{variations::switches::kForceFieldTrialParams, kReminderFeature.name},
+    {{variations::switches::kForceFieldTrialParams, kRemindersFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
       kSearchResultAdFeature.name},
@@ -199,13 +199,13 @@ struct ParamInfo final {
 }  // namespace
 
 class BraveAdsDidOverrideFeaturesFromCommandLineUtilTest
-    : public UnitTestBase,
+    : public test::TestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    AppendCommandLineSwitches({param.command_line_switch});
+    test::AppendCommandLineSwitches({param.command_line_switch});
 
     std::unique_ptr<base::FeatureList> feature_list =
         std::make_unique<base::FeatureList>();
@@ -231,7 +231,7 @@ std::string TestParamToString(
           : "DidNotOverride";
 
   const std::string sanitized_command_line_switch =
-      SanitizeCommandLineSwitch(test_param.param.command_line_switch);
+      test::ToString(test_param.param.command_line_switch);
 
   return base::ReplaceStringPlaceholders(
       "Set$1FeaturesFor$2",

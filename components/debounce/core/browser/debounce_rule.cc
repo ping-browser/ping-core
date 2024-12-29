@@ -14,6 +14,8 @@
 #include "base/base64url.h"
 #include "base/json/json_reader.h"
 #include "base/strings/escape.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/types/expected.h"
 #include "components/prefs/pref_service.h"
@@ -26,12 +28,12 @@
 
 namespace {
 // debounce.json keys
-const char kInclude[] = "include";
-const char kExclude[] = "exclude";
-const char kAction[] = "action";
-const char kPrependScheme[] = "prepend_scheme";
-const char kParam[] = "param";
-const char kPref[] = "pref";
+constexpr char kInclude[] = "include";
+constexpr char kExclude[] = "exclude";
+constexpr char kAction[] = "action";
+constexpr char kPrependScheme[] = "prepend_scheme";
+constexpr char kParam[] = "param";
+constexpr char kPref[] = "pref";
 
 // Max memory per regex: 4kb. This is just an upper bound
 const int64_t kMaxMemoryPerRegexPattern = 2 << 11;
@@ -50,6 +52,36 @@ std::string_view CanonicalizeHostForMatching(std::string_view host_piece) {
     host_piece.remove_suffix(1);
   }
   return host_piece;
+}
+
+// Extract the host from |url| using a simple parsing algorithm
+// WARNING: this is a special-purpose function whose output should not be used.
+std::string NaivelyExtractHostnameFromUrl(const std::string& url) {
+  CHECK(GURL(url).SchemeIsHTTPOrHTTPS());
+
+  const std::string kHttp =
+      base::StrCat({url::kHttpScheme, url::kStandardSchemeSeparator});
+  const std::string kHttps =
+      base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator});
+  std::string mutable_url = url;
+
+  if (base::StartsWith(mutable_url, kHttps,
+                       base::CompareCase::INSENSITIVE_ASCII)) {
+    mutable_url = mutable_url.substr(kHttps.length());
+  } else if (base::StartsWith(mutable_url, kHttp,
+                              base::CompareCase::INSENSITIVE_ASCII)) {
+    mutable_url = mutable_url.substr(kHttp.length());
+  }
+
+  // Known limitation: this will not work properly with origins which consist
+  // of IPv6 hostnames.
+  const std::vector<std::string> parts = base::SplitString(
+      mutable_url, ":/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (parts.size() > 0) {
+    return parts[0];
+  }
+
+  return std::string();
 }
 
 }  // namespace
@@ -156,8 +188,11 @@ DebounceRule::ParseRules(const std::string& contents) {
   if (!root) {
     return base::unexpected("Failed to parse debounce configuration");
   }
-  std::vector<std::string> hosts;
-  std::vector<std::unique_ptr<DebounceRule>> rules;
+
+  std::pair<std::vector<std::unique_ptr<DebounceRule>>,
+            base::flat_set<std::string>>
+      result;
+  auto& [rules, hosts] = result;
   base::JSONValueConverter<DebounceRule> converter;
   for (base::Value& it : root->GetList()) {
     std::unique_ptr<DebounceRule> rule = std::make_unique<DebounceRule>();
@@ -169,14 +204,13 @@ DebounceRule::ParseRules(const std::string& contents) {
         const std::string etldp1 =
             DebounceRule::GetETLDForDebounce(pattern.host());
         if (!etldp1.empty()) {
-          hosts.push_back(std::move(etldp1));
+          hosts.insert(std::move(etldp1));
         }
       }
     }
     rules.push_back(std::move(rule));
   }
-  return std::pair<std::vector<std::unique_ptr<DebounceRule>>,
-                   base::flat_set<std::string>>(std::move(rules), hosts);
+  return result;
 }
 
 bool DebounceRule::CheckPrefForRule(const PrefService* prefs) const {
@@ -309,7 +343,8 @@ bool DebounceRule::Apply(const GURL& original_url,
     }
   }
 
-  GURL new_url(unescaped_value);
+  std::string new_url_spec = unescaped_value;
+  GURL new_url(new_url_spec);
   // Important: If there is a prepend_scheme in the rule BUT the URL is already
   // valid i.e. has a scheme, we treat this as an erroneous rule and do not
   // apply it.
@@ -325,7 +360,7 @@ bool DebounceRule::Apply(const GURL& original_url,
     std::string scheme = (prepend_scheme_ == kDebounceSchemePrependHttp)
                              ? url::kHttpScheme
                              : url::kHttpsScheme;
-    auto new_url_spec =
+    new_url_spec =
         base::StringPrintf("%s://%s", scheme.c_str(), unescaped_value.c_str());
     new_url = GURL(new_url_spec);
     if (new_url.is_valid()) {
@@ -340,6 +375,12 @@ bool DebounceRule::Apply(const GURL& original_url,
 
   // Failsafe: never redirect to the same site.
   if (IsSameETLDForDebounce(original_url, new_url)) {
+    return false;
+  }
+
+  // If the hostname of the new url as extracted via our simple parser doesn't
+  // match the host as parsed via GURL, this rule does not apply
+  if (NaivelyExtractHostnameFromUrl(new_url_spec) != new_url.host()) {
     return false;
   }
 

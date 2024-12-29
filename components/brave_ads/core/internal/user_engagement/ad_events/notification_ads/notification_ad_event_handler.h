@@ -9,17 +9,18 @@
 #include <string>
 
 #include "base/check_op.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_handler_delegate.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
-using FireNotificationAdEventHandlerCallback =
-    base::OnceCallback<void(bool success,
-                            const std::string& placement_id,
-                            const mojom::NotificationAdEventType event_type)>;
+using FireNotificationAdEventHandlerCallback = base::OnceCallback<void(
+    bool success,
+    const std::string& placement_id,
+    const mojom::NotificationAdEventType mojom_ad_event_type)>;
 
 struct NotificationAdInfo;
 
@@ -44,29 +45,29 @@ class NotificationAdEventHandler final
   }
 
   void FireEvent(const std::string& placement_id,
-                 mojom::NotificationAdEventType event_type,
+                 mojom::NotificationAdEventType mojom_ad_event_type,
                  FireNotificationAdEventHandlerCallback callback);
 
  private:
   void FireEventCallback(const NotificationAdInfo& ad,
-                         mojom::NotificationAdEventType event_type,
+                         mojom::NotificationAdEventType mojom_ad_event_type,
                          FireNotificationAdEventHandlerCallback callback,
                          bool success) const;
 
   void SuccessfullyFiredEvent(
       const NotificationAdInfo& ad,
-      mojom::NotificationAdEventType event_type,
+      mojom::NotificationAdEventType mojom_ad_event_type,
       FireNotificationAdEventHandlerCallback callback) const;
   void FailedToFireEvent(const std::string& placement_id,
-                         mojom::NotificationAdEventType event_type,
+                         mojom::NotificationAdEventType mojom_ad_event_type,
                          FireNotificationAdEventHandlerCallback callback) const;
 
   void NotifyDidFireNotificationAdEvent(
       const NotificationAdInfo& ad,
-      mojom::NotificationAdEventType event_type) const;
+      mojom::NotificationAdEventType mojom_ad_event_type) const;
   void NotifyFailedToFireNotificationAdEvent(
       const std::string& placement_id,
-      mojom::NotificationAdEventType event_type) const;
+      mojom::NotificationAdEventType mojom_ad_event_type) const;
 
   raw_ptr<NotificationAdEventHandlerDelegate> delegate_ = nullptr;
 

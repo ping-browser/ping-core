@@ -3,12 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 
 #include <limits>
 #include <optional>
 #include <utility>
 
+#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -125,14 +132,14 @@ std::string EthSignTypedDataHelper::EncodeTypes(
 }
 
 std::vector<uint8_t> EthSignTypedDataHelper::GetTypeHash(
-    const std::string primary_type_name) const {
+    const std::string& primary_type_name) const {
   const std::string type_hash =
       KeccakHash(EncodeTypes(primary_type_name), false);
   return std::vector<uint8_t>(type_hash.begin(), type_hash.end());
 }
 
 std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
-EthSignTypedDataHelper::HashStruct(const std::string primary_type_name,
+EthSignTypedDataHelper::HashStruct(const std::string& primary_type_name,
                                    const base::Value::Dict& data) const {
   auto encoded_data = EncodeData(primary_type_name, data);
   if (!encoded_data) {
@@ -298,10 +305,14 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
         return std::nullopt;
       }
     } else if (value_str) {
-      if (!value_str->empty() &&
-          !HexValueToUint256(*value_str, &encoded_value) &&
-          !Base10ValueToUint256(*value_str, &encoded_value)) {
-        return std::nullopt;
+      if (!value_str->empty()) {
+        if (!HexValueToUint256(*value_str, &encoded_value)) {
+          if (auto v = Base10ValueToUint256(*value_str)) {
+            encoded_value = *v;
+          } else {
+            return std::nullopt;
+          }
+        }
       }
     } else {
       return std::nullopt;
@@ -332,10 +343,14 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
         return std::nullopt;
       }
     } else if (value_str) {
-      if (!value_str->empty() &&
-          !HexValueToInt256(*value_str, &encoded_value) &&
-          !Base10ValueToInt256(*value_str, &encoded_value)) {
-        return std::nullopt;
+      if (!value_str->empty()) {
+        if (!HexValueToInt256(*value_str, &encoded_value)) {
+          if (auto v = Base10ValueToInt256(*value_str)) {
+            encoded_value = *v;
+          } else {
+            return std::nullopt;
+          }
+        }
       }
     } else {
       return std::nullopt;
@@ -383,8 +398,8 @@ EthSignTypedDataHelper::GetTypedDataPrimaryHash(
 // static
 std::optional<std::vector<uint8_t>>
 EthSignTypedDataHelper::GetTypedDataMessageToSign(
-    const std::vector<uint8_t>& domain_hash,
-    const std::vector<uint8_t>& primary_hash) {
+    base::span<const uint8_t> domain_hash,
+    base::span<const uint8_t> primary_hash) {
   if (domain_hash.empty() || primary_hash.empty()) {
     return std::nullopt;
   }

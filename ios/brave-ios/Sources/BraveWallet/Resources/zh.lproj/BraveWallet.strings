@@ -10,8 +10,8 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "账户详细信息";
 
-/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
-"wallet.accountNameLengthError" = "帐户名称长度不超过 30 个字符";
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\") */
+"wallet.accountNameLengthError" = "账户名称的长度不得超过 %lld 個字元";
 
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "隐私密钥";
@@ -93,6 +93,9 @@
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "新增网络";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address. */
+"wallet.addressLabel" = "地址";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
 "wallet.addSuggestedTokenSubtitle" = "您想导入此令牌？";
@@ -181,6 +184,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "现在可以跳过这一步，但仍需备份恢复密语，以确保账户安全。";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "立即备份";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "备份钱包";
 
@@ -223,6 +229,9 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Touch ID";
 
+/* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\") */
+"wallet.bitcoinImportExtendedKeyWarning" = "仅支援 %@ 延伸金钥。";
+
 /* The title for Ping Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.braveFeeLabel" = "Ping 费用： %@";
 
@@ -232,11 +241,41 @@
 /* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "免费";
 
+/* A description of an Bitcoin account, displayed in Accounts tab. */
+"wallet.btcAccountDescription" = "比特币";
+
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "您可以使用的资金。";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "可用";
+
+/* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
+"wallet.btcOrdinalsUnsupportedWarning" = "Ping Wallet 目前不支持比特币 NFT（Oridinals）。通过包含 Ordinals 的地址发送 BTC 可能会导致 Ordinals 转移。";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "您的钱包余额即将发生变动。";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "部分余额可能不可用。";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "待处理";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "您可用的资金以及尚未确认的交易。";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "总计";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "购买";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "通过 Wyre 使用 Apple Pay、信用卡或借记卡购买加密货币。";
+
+/* The title for the button to cancel a submitted transaction. */
+"wallet.cancelTransactionButtonTitle" = "取消交易";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "日期";
@@ -264,6 +303,12 @@
 
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "排名";
+
+/* One of the coin types for users to create an account to store BTC assets */
+"wallet.coinTypeBitcoin" = "比特币";
+
+/* A description for Bitcoin coin type. */
+"wallet.coinTypeBitcoinDescription" = "存储 BTC 资产";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "以太坊";
@@ -373,12 +418,6 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Ping 钱包";
 
-/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
-"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "为 NFT 自定义 IPFS 网关";
-
-/* The navigation title of the screen for users to customize ipfs public gateway address. */
-"wallet.customizeIPFSPublicGatewayNavTitle" = "自定义 IPFS 网关";
-
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "阻止浏览器 URL";
 
@@ -418,11 +457,11 @@
 /* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
 "wallet.customNetworkInvalidAddressErrMsg" = "地址无效。";
 
+/* The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkNotSecureErrMsg" = "不安全。";
+
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "RPC URL";
-
-/* The title of custom network list screen */
-"wallet.customNetworksTitle" = "自定义网络";
 
 /* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
 "wallet.customNetworkSymbolNamePlaceholder" = "输入货币名称";
@@ -518,7 +557,7 @@
 "wallet.decimalsPrecision" = "小数位数";
 
 /* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "警告：您的消息截图可能会备份到云文件服务，并且可以被任何具有照片访问权限的应用程序读取。Brave 建议您不要保存此屏幕截图，尽快将其删除。";
+"wallet.decryptMessageScreenshotDetectedMessage" = "警告：您的消息截图可能会备份到云文件服务，并且可以被任何具有照片访问权限的应用程序读取。Ping 建议您不要保存此屏幕截图，尽快将其删除。";
 
 /* The title of the button to approve a decrypt request from a dapps website. */
 "wallet.decryptRequestApprove" = "允许";
@@ -532,23 +571,11 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "解密请求";
 
-/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
-"wallet.defaultEthAccountName" = "以太坊账户 %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\") */
+"wallet.defaultAccountName" = "%1$@ 账户 %2$lld";
 
-/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
-"wallet.defaultFilAccountName" = "Filecoin 账户 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
-"wallet.defaultSecondaryEthAccountName" = "次要以太坊账户 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
-"wallet.defaultSecondaryFilAccountName" = "次要 Filecoin 账户 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
-"wallet.defaultSecondarySolAccountName" = "次要 Solana 账户 %lld";
-
-/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
-"wallet.defaultSolAccountName" = "Solana 账户 %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\") */
+"wallet.defaultTestnetAccountName" = "%1$@ 测试网账户 %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "删除";
@@ -559,6 +586,12 @@
 /* The button title for user to click to copy the account address for deposit. */
 "wallet.depositAddressCopy" = "复制";
 
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "存款资产";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "这是以太坊钱包，支持以太坊网络和 2 级网络，如 %@";
+
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "取消选择所有";
 
@@ -567,6 +600,9 @@
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "编辑";
+
+/* A pop up message that will prompt to user before user confirms to edit the existing network. */
+"wallet.editExistingNetworkAlertMsg" = "要更新現有網路嗎？";
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "编辑网络";
@@ -641,7 +677,7 @@
 "wallet.ensDomainInterstitialPageButtonProceed" = "使用 Infura 服务器继续操作";
 
 /* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Ping 将使用 Infura 来解决以太坊名称服务（ENS）的 .eth 域名。Brave 将隐藏你的 IP 地址。如果你启用这个功能，Infura 将看到有人试图访问这些 .eth 域名，但没有其他内容。查看 Infura 的 <a href=%1$@>%2$@</a> 和 <a href=%3$@>%4$@</a>。";
+"wallet.ensDomainInterstitialPageDescription" = "Ping 将使用 Infura 来解决以太坊名称服务（ENS）的 .eth 域名。Ping 将隐藏你的 IP 地址。如果你启用这个功能，Infura 将看到有人试图访问这些 .eth 域名，但没有其他内容。查看 Infura 的 <a href=%1$@>%2$@</a> 和 <a href=%3$@>%4$@</a>。";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "在 Ping 中启用支援以太坊域名服务 (ENS)？";
@@ -699,6 +735,9 @@
 
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "输入代币符号";
+
+/* A title displayed in an alert above the error message or description. */
+"wallet.errorAlertTitle" = "错误";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
 "wallet.ethAccountDescription" = "Ethereum + EVM 鏈";
@@ -850,6 +889,9 @@
 /* A label shown inside of a box when there is no input data for a given Solana transaction */
 "wallet.inputDataPlaceholderSolana" = "功能类型：%d";
 
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
+"wallet.inputLabel" = "输入";
+
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "余额不足";
 
@@ -864,24 +906,6 @@
 
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "发生内部错误";
-
-/* A title will displayed in the IPFS error page when IPFS is disabled. */
-"wallet.ipfsErrorTitle" = "无法访问此网站";
-
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.ipfsPublicGatewayAddressNFTTitle" = "用于 NFT 的 IPFS 公共网关地址";
-
-/* The navigation title of the screen for users to customize IPFS public gateway. */
-"wallet.ipfsPublicGatewayAddressTitle" = "IPFS 公共网关地址";
-
-/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
-"wallet.ipfsResolveMethodDescription" = "[了解更多](%@) IPFS 链下查询的隐私注意事项。";
-
-/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
-"wallet.ipfsResourcesOptionsTitle" = "解析 IPFS 资源";
-
-/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsHeader" = "IPFS";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "了解更多";
@@ -1000,7 +1024,7 @@
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.newSiteConnectScreenTitle" = "连接";
 
-/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapbrave next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "下一笔";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
@@ -1043,7 +1067,7 @@
 "wallet.nftDetailTokenStandard" = "代币标准";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
-"wallet.nftDiscoveryCalloutDescription" = "Ping 钱包可使用第三方服务自动显示您的 NFT。Brave 将与 SimpleHash 共享您的钱包地址，以提供此服务。了解更多。";
+"wallet.nftDiscoveryCalloutDescription" = "Ping 钱包可使用第三方服务自动显示您的 NFT。Ping 将与 SimpleHash 共享您的钱包地址，以提供此服务。了解更多。";
 
 /* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
 "wallet.nftDiscoveryCalloutDescriptionLearnMore" = "了解更多";
@@ -1059,9 +1083,6 @@
 
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "导入 NFT";
-
-/* Description of the NFT Gateway setting */
-"wallet.nftGatewayLongDescription" = "应该提供有效的 IPFS 网关。所提供的网关将检查是否有能力加载 IPFS 资源。";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
 "wallet.nftHidden" = "已隱藏";
@@ -1117,9 +1138,6 @@
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "无资产";
 
-/* The empty state displayed when the user has not yet added any custom networks. */
-"wallet.noNetworks" = "未添加网络";
-
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "无次要账户。";
 
@@ -1137,6 +1155,9 @@
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "其他钱包操作";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index. */
+"wallet.outputLabel" = "输出";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
 "wallet.passwordDoesNotMeetRequirementsError" = "密码长度至少为 8 个字符。";
@@ -1178,7 +1199,7 @@
 "wallet.portfolioPageTitle" = "投资组合";
 
 /* The message displayed when the user takes a screenshot of their private key */
-"wallet.privateKeyScreenshotDetectedMessage" = "警告：您的私钥的屏幕截图可能会备份到云文件服务，并且可以被任何具有照片访问权限的应用程序读取。Brave 建议您不要保存此屏幕截图，尽快将其删除。";
+"wallet.privateKeyScreenshotDetectedMessage" = "警告：您的私钥的屏幕截图可能会备份到云文件服务，并且可以被任何具有照片访问权限的应用程序读取。Ping 建议您不要保存此屏幕截图，尽快将其删除。";
 
 /* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.protocolFeeLabel" = "协议费用：%@";
@@ -1205,7 +1226,7 @@
 "wallet.rampNetworkProviderShortName" = "Ramp";
 
 /* The message displayed when the user takes a screenshot of their recovery phrase */
-"wallet.recoveryPhraseScreenshotDetectedMessage" = "警告：您的恢复密语的屏幕截图可能会备份到云文件服务，并且可以被任何具有照片访问权限的应用程序读取。Brave 建议您不要保存此屏幕截图，尽快将其删除。";
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "警告：您的恢复密语的屏幕截图可能会备份到云文件服务，并且可以被任何具有照片访问权限的应用程序读取。Ping 建议您不要保存此屏幕截图，尽快将其删除。";
 
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "刷新市场价格";
@@ -1237,6 +1258,9 @@
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "重新输入密码";
 
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "从旧版 Ping 加密钱包导入？";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "还原钱包";
 
@@ -1266,6 +1290,9 @@
 
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "汇入一个现有的钱包";
+
+/* The title for the button to retry a failed transaction. */
+"wallet.retryTransactionButtonTitle" = "重试交易";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "通过您的银行账户进行即时购买。费用较低。";
@@ -1357,6 +1384,9 @@
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "发送代币，或将代币从一个账户转入另一账户。";
 
+/* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
+"wallet.sendErrorBtcAddressNotValid" = "不是有效的 BTC 位址";
+
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "网域没有已连结的 %@ 地址";
 
@@ -1387,8 +1417,8 @@
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "已发送";
 
-/* Title of the set IPFS gateway button */
-"wallet.setGatewayButtonTitle" = "設定";
+/* One of the context menu option for user to tap to set a default network in wallet settings. */
+"wallet.setDefaultNetwork" = "设为预设";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "设置";
@@ -1454,7 +1484,7 @@
 "wallet.setupCryptoRestoreTitle" = "已经有一个钱包？";
 
 /* The subtitle displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoSubtitle" = "掌控您的加密货币和 NFT。Brave 钱包支持以太坊、EVM 链、Solana 等。";
+"wallet.setupCryptoSubtitle" = "掌控您的加密货币和 NFT。Ping 钱包支持以太坊、EVM 链、Solana 等。";
 
 /* The title displayed on the 'setup crypto' onboarding screen */
 "wallet.setupCryptoTitle" = "浏览器本地化。\n自我监管。\n多链。";
@@ -1467,9 +1497,6 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "显示隐私密钥";
-
-/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
-"wallet.showTestNetworksTitle" = "显示测试网络";
 
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "显示零余额";
@@ -1502,7 +1529,7 @@
 "wallet.signInWithBraveWallet" = "用 Ping 钱包登录";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
-"wallet.signInWithBraveWalletMessage" = "您正在登录 %1$@。Brave 钱包将与 %2$@ 共享您的钱包地址。";
+"wallet.signInWithBraveWalletMessage" = "您正在登录 %1$@。Ping 钱包将与 %2$@ 共享您的钱包地址。";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "检测到连续换行符！";
@@ -1522,43 +1549,43 @@
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "签署交易";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the address. */
 "wallet.siweAddressLabel" = "地址";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the chain ID. */
 "wallet.siweChainIDLabel" = "鏈 ID";
 
-/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+/* The title of the details view for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweDetailsTitle" = "详细信息";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the expiration time. */
 "wallet.siweExpirationTimeLabel" = "到期時間";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the issued at date. */
 "wallet.siweIssuedAtLabel" = "发布日期";
 
 /* The label displayed above the Sign In With Ethereum message. */
 "wallet.siweMessageLabel" = "訊息";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the nonce. */
 "wallet.siweNonceLabel" = "Nonce";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the origin. */
 "wallet.siweOriginLabel" = "來源";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "資源";
 
-/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+/* The label displayed on the button to sign in for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweSignInButtonTitle" = "登录";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the statement. */
 "wallet.siweStatementLabel" = "聲明";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the URI. */
 "wallet.siweURILabel" = "URI";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the version. */
 "wallet.siweVersionLabel" = "版本";
 
 /* The button title to skip recovery phrase backup */
@@ -1567,8 +1594,8 @@
 /* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
 "wallet.snsDomainInterstitialPageButtonProceed" = "继续使用 SNS 服务器";
 
-/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Ping 将使用第三方解析 .sol 域名。Brave 会隐藏您的 IP 地址。如果启用此功能，第三方将看到有人试图访问这些 .sol 域名，但不会看到任何其他信息。有关我们使用的第三方及其隐私政策的更多信息，请参阅我们的<a href=%@>帮助页面</a>。";
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Ping 将使用第三方解析 .sol 域名。Ping 会隐藏您的 IP 地址。如果启用此功能，第三方将看到有人试图访问这些 .sol 域名，但不会看到任何其他信息。有关我们使用的第三方及其隐私政策的更多信息，请参阅我们的<a href=%@>帮助页面</a>。";
 
 /* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "是否在 Ping 中启用 Solana Name Service（SNS）的支持？";
@@ -1679,7 +1706,7 @@
 "wallet.solanaSignTransactionDetails" = "详细信息";
 
 /* The warning message to let users understand the risk of using Ping Wallet to sign any transaction. */
-"wallet.solanaSignTransactionWarning" = "请注意，Brave 无法验证您签名后会发生什么。签名可以授权他人进行帐户的几乎任何操作，包括（但不限于）将您的帐户和加密资产的完全控制权交给提出请求的网站。因此只有在您确定要采取此操作并信任请求的网站时才签名。";
+"wallet.solanaSignTransactionWarning" = "请注意，Ping 无法验证您签名后会发生什么。签名可以授权他人进行帐户的几乎任何操作，包括（但不限于）将您的帐户和加密资产的完全控制权交给提出请求的网站。因此只有在您确定要采取此操作并信任请求的网站时才签名。";
 
 /* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
 "wallet.solanaSwapTransactionTitle" = "兑换交易";
@@ -1711,11 +1738,17 @@
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaUpgradeNonceAccountInstructionName" = "升级随机账户";
 
+/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaWithdrawNonceAccountInstructionName" = "从 Nonce 账户提款";
+
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "按法定值或名称排序";
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "资产分类";
+
+/* The title for the button to speed up a submitted transaction. */
+"wallet.speedUpTransactionButtonTitle" = "加速";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "使用信用卡、签帐金融卡或银行账户支付。";
@@ -1729,7 +1762,7 @@
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "交易已提交";
 
-/* As in swapping cryptocurrency from one asset to another */
+/* As in swapbrave cryptocurrency from one asset to another */
 "wallet.swap" = "兑换";
 
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
@@ -1753,7 +1786,7 @@
 /* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountTitle" = "输入要兑换的 %@ 金额";
 
-/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave from. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoFromTitle" = "自";
 
 /* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
@@ -1765,7 +1798,7 @@
 /* The title of the button for users to click when they want to swap between two cryptos */
 "wallet.swapCryptoSwapButtonTitle" = "兑换";
 
-/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave to. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoToTitle" = "至";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
@@ -1946,7 +1979,7 @@
 "wallet.transakProviderShortName" = "Transak";
 
 /* Description displayed when users chose Ping to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Ping 将使用 Infura 来解析 Unstoppable Domains 上的.crypto（还有 %1$@）域名。Brave 将隐藏你的 IP 地址。如果你启用这个功能，Infura 将看到有人试图访问这些域名，但没有其他内容。查看 Infura 的 <a href=%2$@>%3$@</a> 和 <a href=%4$@>%5$@</a>。";
+"wallet.udDomainInterstitialPageDescription" = "Ping 将使用 Infura 来解析 Unstoppable Domains 上的.crypto（还有 %1$@）域名。Ping 将隐藏你的 IP 地址。如果你启用这个功能，Infura 将看到有人试图访问这些域名，但没有其他内容。查看 Infura 的 <a href=%2$@>%3$@</a> 和 <a href=%4$@>%5$@</a>。";
 
 /* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "在 Ping 中启用支援 Unstoppable Domains？";
@@ -1971,6 +2004,9 @@
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@上的 %1$@";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
+"wallet.valueLabel" = "价值";
 
 /* The error message when input phrase does not match the correct one. */
 "wallet.verifyRecoveryPhraseError" = "复原密语不相符";
@@ -2017,7 +2053,7 @@
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.walletSettings" = "電子錢包設定";
 
-/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when groubrave Portfolio assets. */
 "wallet.walletTypeNone" = "无";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
@@ -2050,18 +2086,6 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "解析 Solana 名称服务 (SNS) 域名";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
-"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS（InterPlanetary File System）是用于点对点数据存储和传递的公共网络。这个协议和 HTTP(S) 具有不同的隐私考虑。<a href=%1$@>%2$@</a>";
-
-/* A brief explaination of resolving IPFS scheme url using a public gateway. */
-"wallet.web3IPFSInterstitialIPFSPublicGateway" = "保护你的 IP 地址和你所请求的内容不被潜在的第三方观察者发现，但不受公共网关运营商的影响。 网关运营商负责确保通过网关提供给你的内容是你请求的内容。另外，你的设备不参与公共 IPFS 网络。";
-
-/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
-"wallet.web3IPFSInterstitialIPFSTitle" = "设定您的 IPFS 喜好设定";
-
-/* The title of the button that user will click to let Ping to resolve IPFS shceme url. */
-"wallet.web3IPFSInterstitialProceedButton" = "使用公共网关";
-
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "网站可以请求访问您的 Ethereum 钱包";
 
@@ -2088,12 +2112,6 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "使用第三方 API 将您拥有的 NFT 自动新增至钱包。[了解更多](%@)";
-
-/* Description of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertDescription" = "提供了无效的链接。网关应能够解析 IPFS 资源。";
-
-/* Title of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertTitle" = "无法设置网关";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z 至 A";

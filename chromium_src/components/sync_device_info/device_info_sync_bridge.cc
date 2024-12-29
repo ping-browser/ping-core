@@ -6,6 +6,7 @@
 #include "components/sync_device_info/device_info_sync_bridge.h"
 
 #include "brave/components/sync_device_info/brave_device_info.h"
+#include "components/sync/base/deletion_origin.h"
 
 #define BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS \
   specifics->mutable_brave_fields()->set_is_self_delete_supported(true);
@@ -45,10 +46,10 @@ const int kFailedAttemtpsToAckDeviceDelete = 5;
 
 std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
     const DeviceInfoSpecifics& specifics) {
-  ModelTypeSet data_types;
+  DataTypeSet data_types;
   for (const int field_number :
        specifics.invalidation_fields().interested_data_type_ids()) {
-    ModelType data_type = GetModelTypeFromSpecificsFieldNumber(field_number);
+    DataType data_type = GetDataTypeFromSpecificsFieldNumber(field_number);
     if (!IsRealDataType(data_type)) {
       DLOG(WARNING) << "Unknown field number " << field_number;
       continue;
@@ -64,12 +65,15 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
       DeriveOsFromDeviceType(specifics.device_type(), specifics.manufacturer()),
       DeriveFormFactorFromDeviceType(specifics.device_type()),
       specifics.signin_scoped_device_id(), specifics.manufacturer(),
-      specifics.model(), ProtoTimeToTime(specifics.last_updated_timestamp()),
+      specifics.model(), specifics.full_hardware_class(),
+      ProtoTimeToTime(specifics.last_updated_timestamp()),
       GetPulseIntervalFromSpecifics(specifics),
       specifics.feature_fields().send_tab_to_self_receiving_enabled(),
+      specifics.feature_fields().send_tab_to_self_receiving_type(),
       SpecificsToSharingInfo(specifics),
       SpecificsToPhoneAsASecurityKeyInfo(specifics),
       specifics.invalidation_fields().instance_id_token(), data_types,
+      SpecificsToFloatingWorkspaceLastSigninTime(specifics),
       specifics.has_brave_fields() &&
           specifics.brave_fields().has_is_self_delete_supported() &&
           specifics.brave_fields().is_self_delete_supported());
@@ -80,7 +84,8 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
 void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
                                             base::OnceClosure callback) {
   std::unique_ptr<WriteBatch> batch = store_->CreateWriteBatch();
-  change_processor()->Delete(client_id, batch->GetMetadataChangeList());
+  change_processor()->Delete(client_id, DeletionOrigin::Unspecified(),
+                             batch->GetMetadataChangeList());
   DeleteSpecifics(client_id, batch.get());
   batch->GetMetadataChangeList()->ClearMetadata(client_id);
   CommitAndNotify(std::move(batch), /*should_notify=*/true);

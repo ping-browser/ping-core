@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 
 struct ReaderModeUtils {
@@ -18,11 +19,11 @@ struct ReaderModeUtils {
     _ readabilityResult: ReadabilityResult,
     initialStyle: ReaderModeStyle,
     titleNonce: String
-  ) -> String? {
-    guard let stylePath = Bundle.module.path(forResource: "Reader", ofType: "css"),
-      let css = try? String(contentsOfFile: stylePath, encoding: .utf8),
-      let tmplPath = Bundle.module.path(forResource: "Reader", ofType: "html"),
-      let tmpl = try? String(contentsOfFile: tmplPath, encoding: .utf8)
+  ) async -> String? {
+    guard let stylePath = Bundle.module.url(forResource: "Reader", withExtension: "css"),
+      let css = await AsyncFileManager.default.utf8Contents(at: stylePath),
+      let tmplPath = Bundle.module.url(forResource: "Reader", withExtension: "html"),
+      let tmpl = await AsyncFileManager.default.utf8Contents(at: tmplPath)
     else { return nil }
 
     // This MUST be the first line/replacement!
@@ -42,17 +43,21 @@ struct ReaderModeUtils {
         with: readabilityResult.credits.javaScriptEscapedString?.unquotedIfNecessary
           ?? readabilityResult.credits.htmlEntityEncodedString
       )
-      .replacingOccurrences(of: "%READER-CONTENT%", with: readabilityResult.content)
       .replacingOccurrences(
         of: "%READER-DIRECTION%",
         with: readabilityResult.direction.javaScriptEscapedString?.unquotedIfNecessary
           ?? readabilityResult.direction.htmlEntityEncodedString
       )
       .replacingOccurrences(of: "%READER-MESSAGE%", with: "")
+
+      // PAGE UNESCAPED REPLACEMENTS MUST BE DONE AFTER THIS LINE
       .replacingOccurrences(
         of: "%READER-ORIGINAL-PAGE-META-TAGS%",
         with: readabilityResult.cspMetaTags.joined(separator: "  \n")
       )
+
+      // DO NOT DO ANY REPLACEMENTS AFTER THIS LINE
+      .replacingOccurrences(of: "%READER-CONTENT%", with: readabilityResult.content)
   }
 }
 

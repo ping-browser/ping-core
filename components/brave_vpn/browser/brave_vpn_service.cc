@@ -19,6 +19,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -56,7 +57,6 @@ BraveVpnService::BraveVpnService(
   DCHECK(connection_manager);
   connection_manager_ = connection_manager;
   observed_.Observe(connection_manager_);
-
   policy_pref_change_registrar_.Init(profile_prefs_);
   policy_pref_change_registrar_.Add(
       prefs::kManagedBraveVPNDisabled,
@@ -111,6 +111,15 @@ void BraveVpnService::CheckInitialState() {
     }
   }
 }
+
+#if BUILDFLAG(IS_ANDROID)
+mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>
+BraveVpnService::MakeRemote() {
+  mojo::PendingRemote<brave_vpn::mojom::ServiceHandler> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+#endif  // BUILDFLAG(IS_ANDROID)
 
 std::string BraveVpnService::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
@@ -183,6 +192,7 @@ void BraveVpnService::OnRegionDataReady(bool success) {
 void BraveVpnService::OnSelectedRegionChanged(const std::string& region_name) {
   const auto region_ptr = GetRegionPtrWithNameFromRegionList(
       region_name, connection_manager_->GetRegionDataManager().GetRegions());
+  region_ptr->is_automatic = IsCurrentRegionSelectedAutomatically(region_ptr);
   for (const auto& obs : observers_) {
     obs->OnSelectedRegionChanged(region_ptr.Clone());
   }
@@ -238,31 +248,28 @@ void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
   std::move(callback).Run(state);
 }
 
-void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::vector<mojom::RegionPtr> regions;
-  for (const auto& region :
-       connection_manager_->GetRegionDataManager().GetRegions()) {
-    regions.push_back(region.Clone());
-  }
-  std::move(callback).Run(std::move(regions));
-}
-
 void BraveVpnService::GetSelectedRegion(GetSelectedRegionCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
 
   auto region_name =
       connection_manager_->GetRegionDataManager().GetSelectedRegion();
-  std::move(callback).Run(GetRegionPtrWithNameFromRegionList(
-      region_name, connection_manager_->GetRegionDataManager().GetRegions()));
+  auto region_ptr = GetRegionPtrWithNameFromRegionList(
+      region_name, connection_manager_->GetRegionDataManager().GetRegions());
+  region_ptr->is_automatic = IsCurrentRegionSelectedAutomatically(region_ptr);
+  std::move(callback).Run(std::move(region_ptr));
 }
 
 void BraveVpnService::SetSelectedRegion(mojom::RegionPtr region_ptr) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  VLOG(2) << __func__ << " : " << region_ptr->name_pretty;
+  VLOG(2) << __func__ << " : " << region_ptr->name;
   connection_manager_->SetSelectedRegion(region_ptr->name);
+}
+
+void BraveVpnService::ClearSelectedRegion() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  connection_manager_->SetSelectedRegion("");
 }
 
 void BraveVpnService::GetProductUrls(GetProductUrlsCallback callback) {
@@ -378,9 +385,54 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
 
   SetPurchasedState(env, PurchasedState::SESSION_EXPIRED);
 }
+
+bool BraveVpnService::IsCurrentRegionSelectedAutomatically(
+    const brave_vpn::mojom::RegionPtr& region) {
+  const auto selected_region_name =
+      local_prefs_->GetString(prefs::kBraveVPNSelectedRegionV2);
+
+  if (region->region_precision == brave_vpn::mojom::kRegionPrecisionCountry &&
+      selected_region_name.empty()) {
+    return true;
+  }
+
+  return false;
+}
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
+void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 #if BUILDFLAG(IS_ANDROID)
+  api_request_->GetServerRegions(
+      base::BindOnce(&BraveVpnService::OnFetchRegionList,
+                     base::Unretained(this), std::move(callback)),
+      brave_vpn::mojom::kRegionPrecisionCityByCountry);
+#else
+  std::vector<mojom::RegionPtr> regions;
+  for (const auto& region :
+       connection_manager_->GetRegionDataManager().GetRegions()) {
+    regions.push_back(region.Clone());
+  }
+  std::move(callback).Run(std::move(regions));
+#endif
+}
+
+#if BUILDFLAG(IS_ANDROID)
+void BraveVpnService::OnFetchRegionList(GetAllRegionsCallback callback,
+                                        const std::string& region_list,
+                                        bool success) {
+  std::optional<base::Value> value = base::JSONReader::Read(region_list);
+  if (value && value->is_list()) {
+    auto new_regions = ParseRegionList(value->GetList());
+    std::vector<mojom::RegionPtr> regions;
+    for (const auto& region : new_regions) {
+      regions.push_back(region.Clone());
+    }
+    std::move(callback).Run(std::move(regions));
+  }
+}
+
 void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
   std::string purchase_token_string = "";
   std::string package_string = "com.brave.browser";
@@ -440,6 +492,11 @@ void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
 
 void BraveVpnService::LoadPurchasedState(const std::string& domain) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!skus::DomainIsForProduct(domain, "vpn")) {
+    VLOG(2) << __func__ << ": LoadPurchasedState called for non-vpn product";
+    return;
+  }
+
   auto requested_env = skus::GetEnvironmentForDomain(domain);
   if (GetCurrentEnvironment() == requested_env &&
       GetPurchasedInfoSync().state == PurchasedState::LOADING) {
@@ -505,10 +562,15 @@ void BraveVpnService::RequestCredentialSummary(const std::string& domain) {
 }
 
 void BraveVpnService::OnCredentialSummary(const std::string& domain,
-                                          const std::string& summary_string) {
+                                          skus::mojom::SkusResultPtr summary) {
+  if (!skus::DomainIsForProduct(domain, "vpn")) {
+    VLOG(2) << __func__ << ": CredentialSummary called for non-vpn product";
+    return;
+  }
+
   auto env = skus::GetEnvironmentForDomain(domain);
   std::string summary_string_trimmed;
-  base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
+  base::TrimWhitespaceASCII(summary->message, base::TrimPositions::TRIM_ALL,
                             &summary_string_trimmed);
   if (summary_string_trimmed.length() == 0) {
     // no credential found; person needs to login
@@ -518,7 +580,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
   }
 
   std::optional<base::Value> records_v = base::JSONReader::Read(
-      summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
+      summary->message, base::JSONParserOptions::JSON_PARSE_RFC);
 
   // Early return when summary is invalid or it's empty dict.
   if (!records_v || !records_v->is_dict()) {
@@ -565,13 +627,12 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
 
 void BraveVpnService::OnPrepareCredentialsPresentation(
     const std::string& domain,
-    const std::string& credential_as_cookie) {
+    skus::mojom::SkusResultPtr credential_as_cookie) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto env = skus::GetEnvironmentForDomain(domain);
   // Credential is returned in cookie format.
   net::CookieInclusionStatus status;
-  net::ParsedCookie credential_cookie(credential_as_cookie,
-                                      /*block_truncated=*/true, &status);
+  net::ParsedCookie credential_cookie(credential_as_cookie->message, &status);
   // TODO(bsclifton): have a better check / logging.
   // should these failed states be considered NOT_PURCHASED?
   // or maybe it can be considered FAILED status?
@@ -642,8 +703,10 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
     const bool token_no_longer_valid =
         subscriber_credential == kTokenNoLongerValid;
 
-    // If current skus-credential is from retried, don't retry to get newer
-    // skus-credential again.
+    // If we get an error "token no longer valid", this means the credential
+    // has been consumed and is no good.
+    //
+    // We can try one more time to get a fresh credential (total of two tries).
     if (token_no_longer_valid && !IsRetriedSkusCredential(local_prefs_)) {
       VLOG(2) << __func__
               << " : Re-trying to fetch subscriber-credential by fetching "
@@ -653,13 +716,23 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
       return;
     }
 
-    // If we got same error with another skus-credential, give up as we can't
-    // issue another skus-credential. It's limited resource.
+    // If we get here, we've already tried two credentials (the retry failed).
     if (token_no_longer_valid && IsRetriedSkusCredential(local_prefs_)) {
       VLOG(2) << __func__
               << " : Got TokenNoLongerValid again with retried skus credential";
     }
 
+    // When this path is reached:
+    // - The cached credential is considered good but vendor side has an error.
+    //   That could be a network outage or a server side error on vendor side.
+    // OR
+    // - The cached credential is consumed and we've now tried two different
+    //   credentials.
+    //
+    // We set the state as FAILED and do not attempt to get another credential.
+    // Cached credential will eventually expire and user will fetch a new one.
+    //
+    // This logic can be updated if we issue more than two credentials per day.
     auto message_id = token_no_longer_valid
                           ? IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID
                           : IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED;
@@ -838,17 +911,16 @@ void BraveVpnService::Shutdown() {
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
-void BraveVpnService::GetAllServerRegions(ResponseCallback callback) {
-  api_request_->GetAllServerRegions(std::move(callback));
-}
-
 void BraveVpnService::GetTimezonesForRegions(ResponseCallback callback) {
   api_request_->GetTimezonesForRegions(std::move(callback));
 }
 
-void BraveVpnService::GetHostnamesForRegion(ResponseCallback callback,
-                                            const std::string& region) {
-  api_request_->GetHostnamesForRegion(std::move(callback), region);
+void BraveVpnService::GetHostnamesForRegion(
+    ResponseCallback callback,
+    const std::string& region,
+    const std::string& region_precision) {
+  api_request_->GetHostnamesForRegion(std::move(callback), region,
+                                      region_precision);
 }
 
 void BraveVpnService::GetProfileCredentials(

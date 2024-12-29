@@ -21,8 +21,8 @@ struct AdvancedShieldsSettingsView: View {
   }
 
   var body: some View {
-    List {
-      // DefaultShieldsViewView(settings: settings)
+    Form {
+      DefaultShieldsSectionView(settings: settings)
       ClearDataSectionView(settings: settings)
 
       Section {
@@ -41,24 +41,24 @@ struct AdvancedShieldsSettingsView: View {
           )
         }
         .buttonStyle(.plain)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .sheet(isPresented: $showManageWebsiteData) {
           ManageWebsiteDataView()
         }
 
-        // NavigationLink {
-        //   PrivacyReportSettingsView()
-        // } label: {
-        //   LabelView(
-        //     title: Strings.PrivacyHub.privacyReportsTitle,
-        //     subtitle: nil
-        //   )
-        // }.listRowBackground(Color(.secondaryBraveGroupedBackground))
-      }
+        NavigationLink {
+          PrivacyReportSettingsView()
+        } label: {
+          LabelView(
+            title: Strings.PrivacyHub.privacyReportsTitle,
+            subtitle: nil
+          )
+        }
+      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       OtherPrivacySettingsSectionView(settings: settings)
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.braveShieldsAndPrivacy)
     .environment(

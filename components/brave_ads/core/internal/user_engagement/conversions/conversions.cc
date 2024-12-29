@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
 
-#include <map>
-
 #include "base/check.h"
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
@@ -26,7 +24,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -39,13 +37,15 @@ Conversions::~Conversions() {
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void Conversions::AddObserver(ConversionsObserver* observer) {
+void Conversions::AddObserver(ConversionsObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
-void Conversions::RemoveObserver(ConversionsObserver* observer) {
+void Conversions::RemoveObserver(ConversionsObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 
@@ -74,7 +74,7 @@ void Conversions::GetCreativeSetConversionsCallback(
     const bool success,
     const CreativeSetConversionList& creative_set_conversions) {
   if (!success) {
-    return BLOG(1, "Failed to get creative set conversions");
+    return BLOG(0, "Failed to get creative set conversions");
   }
 
   if (creative_set_conversions.empty()) {
@@ -100,7 +100,7 @@ void Conversions::GetAdEventsCallback(
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    return BLOG(1, "Failed to get ad events");
+    return BLOG(0, "Failed to get ad events");
   }
 
   CheckForConversions(redirect_chain, html, creative_set_conversions,
@@ -152,8 +152,15 @@ void Conversions::CheckForConversions(
     }
     const auto& [creative_set_id, creative_set_conversion_bucket] = *iter;
 
-    // Yes, so can we convert this ad event?
-    if (!CanConvertAdEvent(ad_event)) {
+    // Have we exceeded the limit for creative set conversions?
+    if (creative_set_conversion_cap > 0 &&
+        creative_set_conversion_counts[creative_set_id] ==
+            creative_set_conversion_cap) {
+      continue;
+    }
+
+    // Yes, so are we allowed to convert this ad event?
+    if (!IsAllowedToConvertAdEvent(ad_event)) {
       // No, so skip this ad event.
       continue;
     }
@@ -163,20 +170,23 @@ void Conversions::CheckForConversions(
     for (const auto& creative_set_conversion :
          GetCreativeSetConversionsWithinObservationWindow(
              creative_set_conversion_bucket, ad_event)) {
-      Convert(ad_event, MaybeBuildVerifiableConversion(
-                            redirect_chain, html, resource_.get().id_patterns,
-                            creative_set_conversion));
+      std::optional<VerifiableConversionInfo> verifiable_conversion;
+      if (const std::optional<ConversionResourceInfo>& conversion_resource =
+              resource_.get()) {
+        // Attempt to build a verifiable conversion only if the conversion
+        // resource is available.
+        verifiable_conversion = MaybeBuildVerifiableConversion(
+            redirect_chain, html, conversion_resource->id_patterns,
+            creative_set_conversion);
+      }
+
+      Convert(ad_event, verifiable_conversion);
 
       did_convert = true;
 
       // Have we exceeded the limit for creative set conversions?
-      if (creative_set_conversion_cap == 0) {
-        // There is no limit, so continue converting.
-        continue;
-      }
-
-      creative_set_conversion_counts[creative_set_id]++;
-      if (creative_set_conversion_counts[creative_set_id] >=
+      ++creative_set_conversion_counts[creative_set_id];
+      if (creative_set_conversion_counts[creative_set_id] ==
           creative_set_conversion_cap) {
         // Yes, so stop converting.
         break;
@@ -184,14 +194,14 @@ void Conversions::CheckForConversions(
     }
 
     if (did_convert) {
-      // Remove the bucket for this creative set so that we debounce conversions
-      // for the remainder of the ad events.
+      // Remove the bucket for this creative set so that we deduplicate
+      // conversions for the remainder of the ad events.
       creative_set_conversion_buckets.erase(creative_set_id);
     }
   }
 
   if (!did_convert) {
-    BLOG(1, "There are no conversions");
+    BLOG(1, "There were no conversion matches");
   }
 }
 
@@ -199,7 +209,7 @@ void Conversions::Convert(
     const AdEventInfo& ad_event,
     const std::optional<VerifiableConversionInfo>& verifiable_conversion) {
   RecordAdEvent(
-      RebuildAdEvent(ad_event, ConfirmationType::kConversion,
+      RebuildAdEvent(ad_event, mojom::ConfirmationType::kConversion,
                      /*created_at=*/base::Time::Now()),
       base::BindOnce(&Conversions::ConvertCallback, weak_factory_.GetWeakPtr(),
                      ad_event, verifiable_conversion));
@@ -210,7 +220,8 @@ void Conversions::ConvertCallback(
     const std::optional<VerifiableConversionInfo>& verifiable_conversion,
     const bool success) {
   if (!success) {
-    BLOG(1, "Failed to record ad conversion event");
+    BLOG(0, "Failed to record ad conversion event");
+
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);
   }
 

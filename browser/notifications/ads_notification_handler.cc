@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -64,7 +65,7 @@ void AdsNotificationHandler::OpenSettings(Profile* profile,
     return;
   }
 
-  DCHECK(origin.has_query());
+  CHECK(origin.has_query());
   const std::string id = origin.query();
 
   ads_service->OnNotificationAdClicked(id);

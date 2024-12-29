@@ -54,9 +54,12 @@ public class BraveLeoUtils {
     }
 
     public static void openLeoQuery(
-            WebContents webContents, String query, boolean openLeoChatWindow) {
+            WebContents webContents,
+            String conversationUuid,
+            String query,
+            boolean openLeoChatWindow) {
         try {
-            BraveLeoUtilsJni.get().openLeoQuery(webContents, query);
+            BraveLeoUtilsJni.get().openLeoQuery(webContents, conversationUuid, query);
             if (openLeoChatWindow) {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 activity.openBraveLeo();
@@ -66,9 +69,7 @@ public class BraveLeoUtils {
         }
     }
 
-    public static String getDefaultModelName(ModelWithSubtitle[] models) {
-        String defaultModelKey = BraveLeoPrefUtils.getDefaultModel();
-
+    public static String getDefaultModelName(ModelWithSubtitle[] models, String defaultModelKey) {
         for (ModelWithSubtitle model : models) {
             if (model.model.key.equals(defaultModelKey)) {
                 return model.model.displayName;
@@ -91,16 +92,6 @@ public class BraveLeoUtils {
         }
     }
 
-    public static void openURL(String url) {
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.openNewOrSelectExistingTab(url, true);
-            TabUtils.bringChromeTabbedActivityToTheTop(activity);
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "openURL error", e);
-        }
-    }
-
     public static void goPremium(Activity activity) {
         Intent braveLeoPlansIntent = new Intent(activity, BraveLeoPlansActivity.class);
         braveLeoPlansIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -118,6 +109,6 @@ public class BraveLeoUtils {
 
     @NativeMethods
     public interface Natives {
-        void openLeoQuery(WebContents webContents, String query);
+        void openLeoQuery(WebContents webContents, String conversationUuid, String query);
     }
 }

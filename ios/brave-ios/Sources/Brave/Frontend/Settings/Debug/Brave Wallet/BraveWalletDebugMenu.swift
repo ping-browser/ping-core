@@ -13,14 +13,14 @@ struct BraveWalletDebugMenu: View {
   @ObservedObject var enableBitcoinTestnet = Preferences.Wallet.isBitcoinTestnetEnabled
 
   var body: some View {
-    List {
+    Form {
       Section {
         Toggle("Enable Bitcoin Testnet", isOn: $enableBitcoinTestnet.value)
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       }
     }
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-    .navigationTitle("Brave Wallet Debug")
+    .navigationTitle("Ping Wallet Debug")
     .navigationBarTitleDisplayMode(.inline)
   }
 }

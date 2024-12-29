@@ -7,21 +7,22 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsCreatedAtTimestampUserDataTest : public UnitTestBase {
+class BraveAdsCreatedAtTimestampUserDataTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
+    AdvanceClockTo(test::TimeFromUTCString("November 18 2020 12:34:56.789"));
   }
 };
 
@@ -29,16 +30,21 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
        BuildCreatedAtTimestampUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/true);
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data =
+      BuildCreatedAtTimestampUserData(transaction);
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "createdAtTimestamp": "2020-11-18T12:00:00.000Z"
                     })"),
-            BuildCreatedAtTimestampUserData(transaction));
+            user_data);
 }
 
 TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
@@ -47,11 +53,16 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/true);
 
-  // Act & Assert
-  EXPECT_TRUE(BuildCreatedAtTimestampUserData(transaction).empty());
+  // Act
+  const base::Value::Dict user_data =
+      BuildCreatedAtTimestampUserData(transaction);
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

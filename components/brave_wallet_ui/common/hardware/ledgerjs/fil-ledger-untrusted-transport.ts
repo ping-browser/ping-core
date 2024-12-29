@@ -4,19 +4,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { CoinType } from '@glif/filecoin-address'
+import { TransportStatusError } from '@ledgerhq/errors'
 import { LotusMessage, SignedLotusMessage } from '@glif/filecoin-message'
 import {
   LedgerProvider,
   TransportWrapper
 } from '@glif/filecoin-wallet-provider'
-import { BraveWallet } from '../../../constants/types'
 import {
   FilGetAccountCommand,
   FilGetAccountResponse,
   FilSignTransactionCommand,
-  FilSignTransactionResponse
-} from './fil-ledger-messages'
-import {
+  FilSignTransactionResponse,
   LedgerBridgeErrorCodes,
   LedgerCommand,
   UnlockResponse
@@ -29,7 +27,6 @@ export class FilecoinLedgerUntrustedMessagingTransport //
 {
   transportWrapper?: TransportWrapper
   provider?: LedgerProvider
-  deviceId: string
 
   constructor(targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
@@ -58,19 +55,16 @@ export class FilecoinLedgerUntrustedMessagingTransport //
           origin: command.origin,
           payload: {
             success: false,
-            statusCode: LedgerBridgeErrorCodes.BridgeNotReady
+            error: '',
+            code: LedgerBridgeErrorCodes.BridgeNotReady
           }
         }
       }
 
-      const coinType =
-        command.network === BraveWallet.FILECOIN_TESTNET
-          ? CoinType.TEST
-          : CoinType.MAIN
       const accounts = await this.provider!.getAccounts(
         command.from,
-        command.to,
-        coinType
+        command.from + command.count,
+        command.isTestnet ? CoinType.TEST : CoinType.MAIN
       )
 
       return {
@@ -79,16 +73,20 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         origin: command.origin,
         payload: {
           success: true,
-          accounts: accounts,
-          deviceId: this.deviceId
+          accounts: accounts
         }
       }
-    } catch (e) {
+    } catch (error) {
       return {
         command: LedgerCommand.GetAccount,
         id: LedgerCommand.GetAccount,
         origin: command.origin,
-        payload: e
+        payload: {
+          success: false,
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
+        }
       }
     }
   }
@@ -104,7 +102,8 @@ export class FilecoinLedgerUntrustedMessagingTransport //
           origin: command.origin,
           payload: {
             success: false,
-            statusCode: LedgerBridgeErrorCodes.BridgeNotReady
+            error: '',
+            code: LedgerBridgeErrorCodes.BridgeNotReady
           }
         }
       }
@@ -132,15 +131,20 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         origin: command.origin,
         payload: {
           success: true,
-          lotusMessage: signed
+          untrustedSignedTxJson: JSON.stringify(signed)
         }
       }
-    } catch (e) {
+    } catch (error) {
       return {
         command: LedgerCommand.SignTransaction,
         id: LedgerCommand.SignTransaction,
         origin: command.origin,
-        payload: e
+        payload: {
+          success: false,
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
+        }
       }
     }
   }
@@ -167,9 +171,6 @@ export class FilecoinLedgerUntrustedMessagingTransport //
       if (!(await provider.ready())) {
         return false
       }
-
-      let accounts = await provider.getAccounts(0, 1, CoinType.TEST)
-      this.deviceId = accounts[0]
 
       this.provider = provider
 

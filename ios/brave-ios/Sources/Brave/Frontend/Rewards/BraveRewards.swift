@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Combine
 import DeviceCheck
 import Foundation
@@ -11,7 +12,7 @@ import Growth
 import Preferences
 import Shared
 
-public class BraveRewards: NSObject {
+public class BraveRewards: PreferencesObserver {
 
   /// Whether or not Brave Rewards is available/can be enabled
   public static var isAvailable: Bool {
@@ -33,8 +34,6 @@ public class BraveRewards: NSObject {
 
     ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
 
-    super.init()
-
     braveNewsObservation = Preferences.BraveNews.isEnabled.$value
       .receive(on: DispatchQueue.main)
       .sink { [weak self] value in
@@ -46,6 +45,13 @@ public class BraveRewards: NSObject {
     if Preferences.Rewards.adsEnabledTimestamp.value == nil, ads.isEnabled {
       Preferences.Rewards.adsEnabledTimestamp.value = Date()
     }
+
+    ads.notifyBraveNewsIsEnabledPreferenceDidChange(Preferences.BraveNews.isEnabled.value)
+    Preferences.BraveNews.isEnabled.observe(from: self)
+  }
+
+  public func preferencesDidChange(for key: String) {
+    ads.notifyBraveNewsIsEnabledPreferenceDidChange(Preferences.BraveNews.isEnabled.value)
   }
 
   func startRewardsService(_ completion: (() -> Void)?) {
@@ -74,7 +80,7 @@ public class BraveRewards: NSObject {
         let seed = wallet.recoverySeed.map(\.uint8Value)
         walletInfo = .init(
           paymentId: wallet.paymentId,
-          recoverySeed: Data(seed).base64EncodedString()
+          recoverySeedBase64: Data(seed).base64EncodedString()
         )
       }
       // If ads is already initialized just toggle rewards ads and update the wallet info
@@ -82,7 +88,7 @@ public class BraveRewards: NSObject {
         if let walletInfo {
           self.ads.notifyRewardsWalletDidUpdate(
             walletInfo.paymentId,
-            base64Seed: walletInfo.recoverySeed
+            base64Seed: walletInfo.recoverySeedBase64
           )
         }
         if let toggleAds {
@@ -103,8 +109,7 @@ public class BraveRewards: NSObject {
   private var braveNewsObservation: AnyCancellable?
 
   private var shouldShutdownAds: Bool {
-    ads.isServiceRunning() && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value
-      && !BraveAds.shouldAlwaysRunService()
+    ads.isServiceRunning() && !shouldStartAds
   }
 
   /// Propose that the ads service should be shutdown based on whether or not that all features
@@ -147,6 +152,15 @@ public class BraveRewards: NSObject {
     }
   }
 
+  public var shouldStartAds: Bool {
+    // Start Brave Ads if one of the following is true:
+    // - Brave Rewards is enabled.
+    // - Brave News is enabled.
+    // - `ShouldAlwaysRunBraveAdsService` feature is enabled.
+    return ads.isEnabled || Preferences.BraveNews.isEnabled.value
+      || BraveAds.shouldAlwaysRunService()
+  }
+
   private(set) var isTurningOnRewards: Bool = false
 
   private func createWalletIfNeeded(_ completion: (() -> Void)? = nil) {
@@ -163,17 +177,44 @@ public class BraveRewards: NSObject {
     }
   }
 
-  func reset() {
-    try? FileManager.default.removeItem(
+  func reset() async {
+    try? await AsyncFileManager.default.removeItem(
       at: configuration.storageURL.appendingPathComponent("ledger")
     )
     if ads.isServiceRunning(), !Preferences.BraveNews.isEnabled.value {
-      ads.shutdownService { [self] in
-        try? FileManager.default.removeItem(
-          at: configuration.storageURL.appendingPathComponent("ads")
-        )
-        if ads.isEnabled {
-          ads.initialize { _ in }
+      await withCheckedContinuation { continuation in
+        ads.shutdownService {
+          continuation.resume()
+        }
+      }
+      try? await AsyncFileManager.default.removeItem(
+        at: configuration.storageURL.appendingPathComponent("ads")
+      )
+      if ads.isEnabled {
+        await withCheckedContinuation { continuation in
+          ads.initialize { _ in
+            continuation.resume()
+          }
+        }
+      }
+    }
+  }
+
+  // MARK: - Brave Ads Data
+
+  /// Clear Brave Ads Data.
+  @MainActor func clearAdsData() async {
+    await withCheckedContinuation { continuation in
+      ads.shutdownService { [ads] in
+        ads.clearData {
+          continuation.resume()
+        }
+      }
+    }
+    if shouldStartAds {
+      await withCheckedContinuation { continuation in
+        ads.initialize { _ in
+          continuation.resume()
         }
       }
     }
@@ -187,8 +228,8 @@ public class BraveRewards: NSObject {
     isSelected: Bool,
     isPrivate: Bool
   ) {
-    // Don't report update for tabs that haven't finished loading.
     guard let url = tab.redirectChain.last else {
+      // Don't report update for tabs that haven't finished loading.
       return
     }
 
@@ -201,38 +242,56 @@ public class BraveRewards: NSObject {
       ads.notifyTabDidChange(
         tabId,
         redirectChain: tab.redirectChain,
-        isErrorPage: InternalURL(url)?.isErrorPage ?? false,
+        isNewNavigation: tab.rewardsReportingState.isNewNavigation,
+        isRestoring: tab.rewardsReportingState.wasRestored,
         isSelected: isSelected
       )
     }
   }
 
-  /// Report that a page has loaded in the current browser tab, and the HTML is available for analysis
-  ///
-  /// - note: Send nil for `adsInnerText` if the load happened due to tabs restoring
-  ///         after app launch
+  /// Report that a page has loaded in the current browser tab, and the
+  /// text/HTML content is available for analysis.
   func reportLoadedPage(
-    redirectChain: [URL],
-    tabId: Int,
-    html: String,
-    adsInnerText: String?
+    tab: Tab,
+    htmlContent: String?,
+    textContent: String?
   ) {
-    guard let url = redirectChain.last else {
+    guard let url = tab.redirectChain.last else {
+      // Don't report update for tabs that haven't finished loading.
       return
     }
 
-    tabRetrieved(tabId, url: url, html: html)
-    if let innerText = adsInnerText, ads.isServiceRunning() {
-      ads.notifyTabHtmlContentDidChange(
+    let tabId = Int(tab.rewardsId)
+
+    tabRetrieved(tabId, url: url, html: htmlContent)
+    if ads.isServiceRunning() {
+      ads.notifyTabDidLoad(
         tabId,
-        redirectChain: redirectChain.isEmpty ? [url] : redirectChain,
-        html: html
+        httpStatusCode: tab.rewardsReportingState.httpStatusCode
       )
-      ads.notifyTabTextContentDidChange(
-        tabId,
-        redirectChain: redirectChain.isEmpty ? [url] : redirectChain,
-        text: innerText
-      )
+
+      let kHttpClientErrorResponseStatusCodeClass = 4
+      let kHttpServerErrorResponseStatusCodeClass = 5
+      let responseStatusCodeClass = tab.rewardsReportingState.httpStatusCode / 100
+
+      if !tab.rewardsReportingState.wasRestored
+        && tab.rewardsReportingState.isNewNavigation
+        && responseStatusCodeClass != kHttpClientErrorResponseStatusCodeClass
+        && responseStatusCodeClass != kHttpServerErrorResponseStatusCodeClass
+      {
+        ads.notifyTabHtmlContentDidChange(
+          tabId,
+          redirectChain: tab.redirectChain,
+          html: htmlContent ?? ""
+        )
+        if let textContent {
+          ads.notifyTabTextContentDidChange(
+            tabId,
+            redirectChain: tab.redirectChain,
+            text: textContent
+          )
+        }
+      }
     }
     rewardsAPI?.reportLoadedPage(url: url, tabId: UInt32(tabId))
   }

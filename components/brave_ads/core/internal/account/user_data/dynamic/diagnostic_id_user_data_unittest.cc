@@ -6,30 +6,33 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/dynamic/diagnostic_id_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsDiagnosticIdUserDataTest : public UnitTestBase {};
+class BraveAdsDiagnosticIdUserDataTest : public test::TestBase {};
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
        BuildDiagnosticIdUserDataForRewardsUser) {
   // Arrange
-  SetProfileStringPrefValue(prefs::kDiagnosticId,
-                            "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  test::SetProfileStringPrefValue(prefs::kDiagnosticId, test::kDiagnosticId);
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2"
                     })"),
-            BuildDiagnosticIdUserData());
+            user_data);
 }
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
@@ -37,29 +40,37 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  SetProfileStringPrefValue(prefs::kDiagnosticId,
-                            "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  test::SetProfileStringPrefValue(prefs::kDiagnosticId, test::kDiagnosticId);
 
-  // Act & Assert
-  EXPECT_TRUE(BuildDiagnosticIdUserData().empty());
+  // Act
+  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
        DoNotBuildDiagnosticUserDataIfDiagnosticIdIsInvalid) {
   // Arrange
-  SetProfileStringPrefValue(prefs::kDiagnosticId, "INVALID");
+  test::SetProfileStringPrefValue(prefs::kDiagnosticId, "INVALID");
 
-  // Act & Assert
-  EXPECT_TRUE(BuildDiagnosticIdUserData().empty());
+  // Act
+  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
        DoNotBuildDiagnosticIdUserDataIfDiagnosticIdIsEmpty) {
   // Arrange
-  SetProfileStringPrefValue(prefs::kDiagnosticId, "");
+  test::SetProfileStringPrefValue(prefs::kDiagnosticId, "");
 
-  // Act & Assert
-  EXPECT_TRUE(BuildDiagnosticIdUserData().empty());
+  // Act
+  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

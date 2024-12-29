@@ -23,7 +23,7 @@ struct NFTAssetViewModel: Identifiable, Equatable {
   var network: BraveWallet.NetworkInfo
   /// Balance for the NFT for each account address. The key is the account address.
   var balanceForAccounts: [String: Int]
-  var nftMetadata: NFTMetadata?
+  var nftMetadata: BraveWallet.NftMetadata?
 
   public var id: String {
     token.id + network.chainId
@@ -154,7 +154,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
   /// Cache of metadata for NFTs. The key is the token's `id`.
-  private var metadataCache: [String: NFTMetadata] = [:]
+  private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
   /// Spam from SimpleHash in form of `NetworkAssets`
   private var simpleHashSpamNFTs: [NetworkAssets] = [] {
     didSet {
@@ -291,80 +291,106 @@ public class NFTStore: ObservableObject, WalletObserverStore {
 
       // First display grids with placeholder since we haven't fetched balance
       // or metadata
-      let unionedSpamNFTs = computeSpamNFTs(
+      let unionedSpamNFTs = await computeSpamNFTs(
         selectedNetworks: selectedNetworks,
         selectedAccounts: selectedAccounts,
         simpleHashSpamNFTs: simpleHashSpamNFTs
       )
-      let (userNFTGroups, allUserNFTs) = buildNFTGroupModels(
-        groupBy: filters.groupBy,
-        spams: unionedSpamNFTs,
-        selectedAccounts: selectedAccounts,
-        selectedNetworks: selectedNetworks
-      )
+      let (userNFTGroups, allUserNFTs) =
+        await buildNFTGroupModels(
+          groupBy: filters.groupBy,
+          spams: unionedSpamNFTs,
+          selectedAccounts: selectedAccounts,
+          selectedNetworks: selectedNetworks
+        )
       self.userNFTGroups = userNFTGroups
 
       // Then, we fetch balance and update the UI
       // if we're not hiding unowned or grouping by account, balance isn't needed
       if filters.isHidingUnownedNFTs || filters.groupBy == .accounts {
         let allAccounts = filters.accounts.map(\.model)
-        nftBalancesCache = await withTaskGroup(
+
+        let fetchedNFTBlances = await withTaskGroup(
           of: [String: [String: Int]].self,
-          body: { @MainActor [nftBalancesCache, rpcService] group in
-            for nft in allUserNFTs {  // for all NFTs that have not yet been fetched its balance
-              guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId })
-              else {
-                continue
-              }
-              group.addTask { @MainActor in
-                let updatedBalances = await withTaskGroup(
-                  of: [String: Int].self,
-                  body: { @MainActor group in
-                    for account in allAccounts where account.coin == nft.coin {
-                      if !forceUpdateNFTBalances,
-                        let cachedBalance = nftBalancesCache[nft.id]?[account.id]
-                      {  // cached balance
-                        return [account.id: cachedBalance]
-                      } else {  // no balance for this account
-                        group.addTask { @MainActor in
-                          let balanceForToken = await rpcService.balance(
-                            for: nft,
-                            in: account,
-                            network: networkForNFT
-                          )
-                          return [account.id: Int(balanceForToken ?? 0)]
-                        }
-                      }
-                    }
-                    return await group.reduce(
-                      into: [String: Int](),
-                      { partialResult, new in
-                        partialResult.merge(with: new)
-                      }
+          body: { @MainActor [rpcService, assetManager] group in
+            for nft in allUserNFTs {
+              if let nftBalances = assetManager.getAssetBalances(
+                for: nft,
+                account: nil
+              ),
+                !nftBalances.isEmpty,
+                !forceUpdateNFTBalances
+              {
+                var result: [String: Int] = [:]
+                for balancePerAccount in nftBalances {
+                  result.merge(with: [
+                    balancePerAccount.accountAddress:
+                      (balancePerAccount.balance as NSString).integerValue
+                  ])
+                }
+                nftBalancesCache.merge(with: [nft.id: result])
+              } else {
+                // 1. Force to fetch NFT balance
+                // 2. Spam NFT
+                // 3. We have a user asset from CD but wallet has never
+                // fetched it's balance. Should never happen. But we will fetch its
+                // balance and cache it in CD.
+                // 4. Test Cases will come here, we will fetch balance using
+                // a mock `rpcService` and `bitcoinWalletService
+                guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId })
+                else {
+                  continue
+                }
+                group.addTask { @MainActor in
+                  var nftBalances: [String: Int] = [:]
+                  for account in allAccounts where account.coin == nft.coin {
+                    var balanceForNFT: Int?
+                    let balanceInDouble = await rpcService.balance(
+                      for: nft,
+                      in: account,
+                      network: networkForNFT
+                    )
+                    balanceForNFT = Int(balanceInDouble ?? 0)
+                    nftBalances.merge(with: [account.id: balanceForNFT ?? 0])
+                    await assetManager.updateAssetBalance(
+                      for: nft,
+                      account: account.id,
+                      balance: "\(balanceForNFT ?? 0)"
                     )
                   }
-                )
-                var tokenBalances = nftBalancesCache[nft.id] ?? [:]
-                tokenBalances.merge(with: updatedBalances)
-                return [nft.id: tokenBalances]
+                  return [nft.id: nftBalances]
+                }
               }
             }
+
             return await group.reduce(
-              into: [String: [String: Int]](),
+              into: [:],
               { partialResult, new in
                 partialResult.merge(with: new)
               }
             )
           }
         )
+        for nft in allUserNFTs {
+          if let updatedBalancesForNFT = fetchedNFTBlances[nft.id] {
+            // if balance fetch failed that we already have cached, don't overwrite existing
+            if var existing = self.nftBalancesCache[nft.id] {
+              existing.merge(with: updatedBalancesForNFT)
+              self.nftBalancesCache[nft.id] = existing
+            } else {
+              self.nftBalancesCache[nft.id] = updatedBalancesForNFT
+            }
+          }
+        }
       }
       guard !Task.isCancelled else { return }
-      let (userNFTGroupsWithBalance, _) = buildNFTGroupModels(
-        groupBy: filters.groupBy,
-        spams: unionedSpamNFTs,
-        selectedAccounts: selectedAccounts,
-        selectedNetworks: selectedNetworks
-      )
+      let (userNFTGroupsWithBalance, _) =
+        await buildNFTGroupModels(
+          groupBy: filters.groupBy,
+          spams: unionedSpamNFTs,
+          selectedAccounts: selectedAccounts,
+          selectedNetworks: selectedNetworks
+        )
       self.userNFTGroups = userNFTGroupsWithBalance
 
       // Last, we fet fetch nft metadata for NFTs that do not have metadata loaded
@@ -377,17 +403,21 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       metadataCache.merge(with: fetchedMetadata)
 
       guard !Task.isCancelled else { return }
-      let (userNFTGroupsWithMetadata, _) = buildNFTGroupModels(
-        groupBy: filters.groupBy,
-        spams: unionedSpamNFTs,
-        selectedAccounts: selectedAccounts,
-        selectedNetworks: selectedNetworks
-      )
+      let (userNFTGroupsWithMetadata, _) =
+        await buildNFTGroupModels(
+          groupBy: filters.groupBy,
+          spams: unionedSpamNFTs,
+          selectedAccounts: selectedAccounts,
+          selectedNetworks: selectedNetworks
+        )
       self.userNFTGroups = userNFTGroupsWithMetadata
     }
   }
 
-  func updateNFTMetadataCache(for token: BraveWallet.BlockchainToken, metadata: NFTMetadata) {
+  func updateNFTMetadataCache(
+    for token: BraveWallet.BlockchainToken,
+    metadata: BraveWallet.NftMetadata
+  ) {
     metadataCache[token.id] = metadata
     var updatedGroups: [NFTGroupViewModel] = []
     for group in userNFTGroups {
@@ -515,15 +545,15 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     return allNetworkNFTs
   }
 
-  private func computeSpamNFTs(
+  @MainActor private func computeSpamNFTs(
     selectedNetworks: [BraveWallet.NetworkInfo],
     selectedAccounts: [BraveWallet.AccountInfo],
     simpleHashSpamNFTs: [NetworkAssets]
-  ) -> [NetworkAssets] {
+  ) async -> [NetworkAssets] {
     // all user marked deleted NFTs
-    let allUserMarkedDeletedNFTs = assetManager.getAllUserDeletedNFTs()
+    let allUserMarkedDeletedUserAssets = assetManager.getAllUserDeletedUserAssets()
     // all spam NFTs marked by user
-    let allUserMarkedSpamNFTs = assetManager.getAllUserNFTs(
+    let allUserMarkedSpamNFTs = await assetManager.getAllUserNFTs(
       networks: selectedNetworks,
       isSpam: true
     )
@@ -531,19 +561,17 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     // not-spam or deleted by user
     var updatedSimpleHashSpamNFTs: [NetworkAssets] = []
     for simpleHashSpamNFTsOnNetwork in simpleHashSpamNFTs {
-      let userMarkedNotSpamTokensOnNetwork = assetManager.getAllUserNFTs(
+      let userMarkedNotSpamTokensOnNetwork = await assetManager.getAllUserNFTs(
         networks: [simpleHashSpamNFTsOnNetwork.network],
         isSpam: false
       ).flatMap(\.tokens)
       let filteredSimpleHashSpamTokens = simpleHashSpamNFTsOnNetwork.tokens.filter {
         simpleHashSpamToken in
         return !userMarkedNotSpamTokensOnNetwork.contains { token in
-          token.id == simpleHashSpamToken.id
+          token.id.caseInsensitiveCompare(simpleHashSpamToken.id) == .orderedSame
         }
-          && !allUserMarkedDeletedNFTs.contains(where: { deletedNFT in
-            deletedNFT.contractAddress == simpleHashSpamToken.contractAddress
-              && deletedNFT.chainId == simpleHashSpamToken.chainId
-              && deletedNFT.tokenId == simpleHashSpamToken.tokenId
+          && !allUserMarkedDeletedUserAssets.contains(where: { deletedUserAsset in
+            deletedUserAsset.id.caseInsensitiveCompare(simpleHashSpamToken.id) == .orderedSame
           })
       }
       updatedSimpleHashSpamNFTs.append(
@@ -581,37 +609,44 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     return computedSpamNFTs
   }
 
-  private func buildNFTGroupModels(
+  @MainActor private func buildNFTGroupModels(
     groupBy: GroupBy,
     spams: [NetworkAssets],
     selectedAccounts: [BraveWallet.AccountInfo],
     selectedNetworks: [BraveWallet.NetworkInfo]
-  ) -> ([NFTGroupViewModel], [BraveWallet.BlockchainToken]) {
-
+  ) async -> ([NFTGroupViewModel], [BraveWallet.BlockchainToken]) {
     // user visible NFTs
-    let userVisibleNFTs = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
-      networks: selectedNetworks,
-      visible: true
-    )
-    .map { networkAssets in
-      NetworkAssets(
-        network: networkAssets.network,
-        tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
-        sortOrder: networkAssets.sortOrder
+    let userVisibleNFTs =
+      await assetManager.getUserAssets(
+        networks: selectedNetworks,
+        visible: true
       )
-    }
-    // user hidden NFTs
-    let userHiddenNFTs = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
-      networks: selectedNetworks,
-      visible: false
-    )
-    .map { networkAssets in
-      NetworkAssets(
-        network: networkAssets.network,
-        tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
-        sortOrder: networkAssets.sortOrder
+      .map { networkAssets in
+        NetworkAssets(
+          network: networkAssets.network,
+          tokens: networkAssets.tokens.filter { $0.isNft || $0.isErc721 },
+          sortOrder: networkAssets.sortOrder
+        )
+      }
+    // user hidden NFTs but exclude deleted
+    let allDeletedUserAssets = assetManager.getAllUserDeletedUserAssets()
+    let userHiddenNFTs =
+      await assetManager.getUserAssets(
+        networks: selectedNetworks,
+        visible: false
       )
-    }
+      .map { networkAssets in
+        NetworkAssets(
+          network: networkAssets.network,
+          tokens: networkAssets.tokens.filter { token in
+            (token.isNft || token.isErc721)
+              && !allDeletedUserAssets.contains(where: {
+                $0.id.caseInsensitiveCompare(token.id) == .orderedSame
+              })
+          },
+          sortOrder: networkAssets.sortOrder
+        )
+      }
 
     let allUserNFTsInNetworks = generateAllNFTsInNetworks(
       userVisibleNFTs: userVisibleNFTs,
@@ -698,31 +733,25 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   func updateNFTStatus(
     _ token: BraveWallet.BlockchainToken,
     visible: Bool,
-    isSpam: Bool,
-    isDeletedByUser: Bool
+    isSpam: Bool
   ) {
-    assetManager.updateUserAsset(
-      for: token,
-      visible: visible,
-      isSpam: isSpam,
-      isDeletedByUser: isDeletedByUser
-    ) { [weak self] in
-      guard let self else { return }
-      let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
-      let selectedNetworks = self.filters.networks.filter(\.isSelected).map(\.model)
-
-      let unionedSpamNFTs = computeSpamNFTs(
-        selectedNetworks: selectedNetworks,
-        selectedAccounts: selectedAccounts,
-        simpleHashSpamNFTs: simpleHashSpamNFTs
+    Task { @MainActor in
+      await assetManager.updateUserAsset(
+        for: token,
+        visible: visible,
+        isSpam: isSpam,
+        isDeletedByUser: false
       )
 
-      (userNFTGroups, _) = buildNFTGroupModels(
-        groupBy: filters.groupBy,
-        spams: unionedSpamNFTs,
-        selectedAccounts: selectedAccounts,
-        selectedNetworks: selectedNetworks
-      )
+      update()
+    }
+  }
+
+  func removeNFT(_ token: BraveWallet.BlockchainToken) {
+    Task { @MainActor in
+      await assetManager.removeUserAsset(token)
+
+      update()
     }
   }
 

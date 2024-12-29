@@ -6,20 +6,27 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
-import { Url } from 'gen/url/mojom/url.mojom.m.js'
-import getPageHandlerInstance, * as mojom from '../../api/page_handler'
-import MarkdownRenderer from '../markdown_renderer'
-import styles from './style.module.scss'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
+import * as mojom from '../../api/'
+import { useAIChat } from '../../state/ai_chat_context'
+import MarkdownRenderer from '../markdown_renderer'
+import styles from './style.module.scss'
 
 function SearchSummary (props: { searchQueries: string[] }) {
+  const context = useAIChat()
+
   const handleOpenSearchQuery = React.useCallback((e: React.MouseEvent, query: string) => {
     e.preventDefault()
     const queryUrl = new Url()
     queryUrl.url = `https://search.brave.com/search?q=${encodeURIComponent(query)}`
-    getPageHandlerInstance().pageHandler.openURL(queryUrl)
+    context.uiHandler?.openURL(queryUrl)
   }, [])
+
+  const handleLearnMore = () => {
+    context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
+  }
 
   const message = formatMessage(getLocale('searchQueries'), {
     placeholders: {
@@ -37,7 +44,7 @@ function SearchSummary (props: { searchQueries: string[] }) {
     <div className={styles.searchSummary}>
       <Icon name="brave-icon-search-color" />
       <span>
-        {message}
+        {message} <a className={styles.searchLearnMoreLink} href='#' onClick={handleLearnMore}>{getLocale('learnMore')}</a>
       </span>
     </div>
   )
@@ -60,7 +67,12 @@ export default function AssistantResponse(props: { entry: mojom.ConversationTurn
       }
       if (event.searchStatusEvent && props.isEntryInProgress && !hasCompletionStarted) {
         return (
-          <div className={styles.searchInProgress}><ProgressRing />Improving answer with Brave Search…</div>
+          <div className={styles.actionInProgress}><ProgressRing />Improving answer with Brave Search…</div>
+        )
+      }
+      if (event.pageContentRefineEvent && props.isEntryInProgress && !hasCompletionStarted) {
+        return (
+          <div className={styles.actionInProgress}><ProgressRing />{getLocale('pageContentRefinedInProgress')}</div>
         )
       }
       // TODO(petemill): Consider displaying in-progress queries if the API

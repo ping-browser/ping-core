@@ -26,8 +26,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.modal.BraveWalletPanel;
 import org.chromium.chrome.browser.crypto_wallet.modal.DAppsDialog;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -122,18 +120,19 @@ public class DAppsWalletController implements ConnectionErrorHandler {
         if (Utils.shouldShowCryptoOnboarding()) {
             showOnBoardingOrUnlock();
         } else {
-            mKeyringService.isLocked(isLocked -> {
-                if (isLocked) {
-                    showOnBoardingOrUnlock();
-                } else {
-                    boolean isFoundPendingDAppsTx = false;
-                    // TODO: check if pending dapps transaction are available and implement an
-                    // action accrodingly
-                    if (!isFoundPendingDAppsTx) {
-                        createAndShowWalletPanel();
-                    }
-                }
-            });
+            mKeyringService.isLocked(
+                    isLocked -> {
+                        if (isLocked) {
+                            showOnBoardingOrUnlock();
+                        } else {
+                            boolean isFoundPendingDAppsTx = false;
+                            // TODO: check if pending dapps transaction are available and implement
+                            // an action accrodingly
+                            if (!isFoundPendingDAppsTx) {
+                                createAndShowWalletPanel();
+                            }
+                        }
+                    });
         }
     }
 
@@ -217,14 +216,14 @@ public class DAppsWalletController implements ConnectionErrorHandler {
         if (mKeyringService != null) {
             return;
         }
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService = BraveWalletServiceFactory.getInstance().getKeyringService(this);
     }
 
     private void initJsonRpcService() {
         if (mJsonRpcService != null) {
             return;
         }
-        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+        mJsonRpcService = BraveWalletServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     private void initBraveWalletService() {

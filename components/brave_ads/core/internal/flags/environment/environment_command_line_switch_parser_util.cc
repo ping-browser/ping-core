@@ -7,18 +7,19 @@
 
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 
 namespace brave_ads {
 
 std::optional<mojom::EnvironmentType> ParseEnvironmentCommandLineSwitch() {
-  const brave_rewards::RewardsFlags& flags =
+  const brave_rewards::RewardsFlags& rewards_flags =
       brave_rewards::RewardsFlags::ForCurrentProcess();
-  if (!flags.environment) {
+  if (!rewards_flags.environment) {
     return std::nullopt;
   }
 
-  switch (*flags.environment) {
+  switch (*rewards_flags.environment) {
     case brave_rewards::RewardsFlags::Environment::kDevelopment:
     case brave_rewards::RewardsFlags::Environment::kStaging: {
       return mojom::EnvironmentType::kStaging;
@@ -30,7 +31,7 @@ std::optional<mojom::EnvironmentType> ParseEnvironmentCommandLineSwitch() {
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for Environment: "
-                        << base::to_underlying(*flags.environment);
+                        << base::to_underlying(*rewards_flags.environment);
 }
 
 }  // namespace brave_ads

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_content_browser_client.h"
+
 #include <memory>
 #include <vector>
 
@@ -11,7 +13,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/brave_paths.h"
@@ -38,6 +39,7 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
+#include "extensions/common/manifest_handlers/background_info.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/origin.h"
 
@@ -61,6 +63,7 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
     extensions::ComponentLoader::EnableBackgroundExtensionsForTesting();
     InProcessBrowserTest::SetUp();
   }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -70,7 +73,6 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
@@ -111,6 +113,19 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
   }
 
   void TearDown() override { browser_content_client_.reset(); }
+
+  void NavigateToURLAndWaitForRewrites(content::WebContents* contents,
+                                       const GURL& original_url,
+                                       const GURL& final_url) {
+    ui_test_utils::UrlLoadObserver load_complete(final_url);
+    browser()->OpenURL(
+        content::OpenURLParams(original_url, content::Referrer(),
+                               WindowOpenDisposition::CURRENT_TAB,
+                               ui::PAGE_TRANSITION_TYPED, false),
+        /*navigation_handle_callback=*/{});
+    load_complete.Wait();
+    EXPECT_EQ(contents->GetLastCommittedURL(), final_url);
+  }
 
   const GURL& magnet_html_url() { return magnet_html_url_; }
   const GURL& magnet_url() { return magnet_url_; }
@@ -175,7 +190,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
   std::vector<std::string> pages{
-      "ipfs-internals",
       "rewards",
   };
 
@@ -252,26 +266,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteChromeSync) {
   for (const std::string& scheme : schemes) {
     content::WebContents* contents =
         browser()->tab_strip_model()->GetActiveWebContents();
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(
-        browser(), GURL(scheme + chrome::kChromeUISyncHost)));
-    ASSERT_TRUE(WaitForLoadStop(contents));
+    NavigateToURLAndWaitForRewrites(contents,
+                                    GURL(scheme + chrome::kChromeUISyncHost),
+                                    GURL("chrome://sync"));
 
     EXPECT_STREQ(base::UTF16ToUTF8(
                      browser()->location_bar_model()->GetFormattedFullURL())
                      .c_str(),
                  "brave://sync");
-    EXPECT_STREQ(contents->GetController()
-                     .GetLastCommittedEntry()
-                     ->GetVirtualURL()
-                     .spec()
-                     .c_str(),
-                 "chrome://sync/");
-    EXPECT_STREQ(contents->GetController()
-                     .GetLastCommittedEntry()
-                     ->GetURL()
-                     .spec()
-                     .c_str(),
-                 "chrome://settings/braveSync");
+    EXPECT_EQ(
+        contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
+        GURL("chrome://sync"));
+    EXPECT_EQ(contents->GetController().GetLastCommittedEntry()->GetURL(),
+              GURL("chrome://settings/braveSync"));
   }
 }
 
@@ -284,10 +291,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteAdblock) {
   for (const std::string& scheme : schemes) {
     content::WebContents* contents =
         browser()->tab_strip_model()->GetActiveWebContents();
-    ASSERT_TRUE(
-        ui_test_utils::NavigateToURL(browser(), GURL(scheme + "adblock")));
-    ASSERT_TRUE(WaitForLoadStop(contents));
-
+    NavigateToURLAndWaitForRewrites(contents, GURL(scheme + "adblock"),
+                                    GURL("chrome://settings/shields/filters"));
     EXPECT_STREQ(base::UTF16ToUTF8(
                      browser()->location_bar_model()->GetFormattedFullURL())
                      .c_str(),
@@ -622,29 +627,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
 }
 #endif
 
-#if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-                       HangoutsEnabledByDefault) {
-  ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
-  extensions::ExtensionRegistry* registry =
-      extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_TRUE(registry->enabled_extensions().Contains(hangouts_extension_id));
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-                       PRE_HangoutsDisabledDoesNotLoadComponent) {
-  browser()->profile()->GetPrefs()->SetBoolean(kHangoutsEnabled, false);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-                       HangoutsDisabledDoesNotLoadComponent) {
-  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
-  extensions::ExtensionRegistry* registry =
-      extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_FALSE(registry->enabled_extensions().Contains(hangouts_extension_id));
-}
-#endif
-
 class BraveContentBrowserClientReferrerTest
     : public BraveContentBrowserClientTest {
  public:
@@ -726,4 +708,28 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
   client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
                               &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
+}
+
+// Confirm only expected extension has been installed.
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CheckExpectedExtensions) {
+  // Info: This checkup will not cover on-demand component extension
+  // installation.
+  std::set<std::string> expected_extensions = {
+      brave_extension_id,
+      extensions::kWebStoreAppId,
+      extension_misc::kPdfExtensionId,
+  };
+
+  extensions::ExtensionRegistry* registry =
+      extensions::ExtensionRegistry::Get(browser()->profile());
+  std::set<std::string> installed_extensions =
+      registry->GenerateInstalledExtensionsSet().GetIDs();
+
+  EXPECT_EQ(expected_extensions, installed_extensions);
+
+  const auto* brave_extension =
+      registry->GetInstalledExtension(brave_extension_id);
+
+  // Brave Extension background page should be disabled by default.
+  EXPECT_FALSE(extensions::BackgroundInfo::HasBackgroundPage(brave_extension));
 }

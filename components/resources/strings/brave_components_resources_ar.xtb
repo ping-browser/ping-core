@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
-<translation id="1800311840305731850">لا يمكن تحميل صفحات IPFS</translation>
-<translation id="5712742401570874902">لا يُسمح بصفحات IPFS في النوافذ الخاصة.</translation>
-<translation id="5749639013106315553">تم تعطيل IPFS. حدد طريقة حل IPFS في الإعدادات لفتح هذا الموقع.</translation>
 <translation id="5288293905681750318">المتتبعات والإعلانات محجوبة</translation>
 <translation id="2313532038420432247">ترقيات HTTPS</translation>
 <translation id="788493840831967104">الوقت الذي تم توفيره</translation>
@@ -26,16 +23,13 @@
 <translation id="8776285424728638733">غيغابايت</translation>
 <translation id="8427933533533814946">صورة بواسطة</translation>
 <translation id="7108338896283013870">إخفاء</translation>
-<translation id="7115515527894388910">تعديل التفضيلات</translation>
-<translation id="7606029853066610626">عرض وإدارة الإشارات المرجعية</translation>
-<translation id="5550994254534676787">اعرض سجل التصفح الخاص بك</translation>
 <translation id="985862351129593673">لوحة تحكم مخصصة</translation>
 <translation id="7180865173735832675">تخصيص</translation>
 <translation id="8522669544471808198">إظهار صور الخلفية</translation>
-<translation id="5801450813341024983">‏خلفيات Brave</translation>
+<translation id="5801450813341024983">‏خلفيات Ping</translation>
 <translation id="1416884769823233410">استخدام الخاصة بك</translation>
 <translation id="6246790815526961700">الرفع من جهاز</translation>
-<translation id="7275773481201277457">إظهار إحصائيات Brave</translation>
+<translation id="7275773481201277457">إظهار إحصائيات Ping</translation>
 <translation id="6836061097810262923">إظهار الساعة</translation>
 <translation id="5912396950572065471">التنسيق</translation>
 <translation id="604124094241169006">تلقائي</translation>
@@ -57,44 +51,54 @@
 <translation id="430556192781857057">يتم اقتراح أفضل المواقع بناءً على المواقع الإلكترونية التي تقوم بزبارتها كثيراً</translation>
 <translation id="1773147648972887693">عرض المواقع التي تمت زيارتها بشكل متكرر</translation>
 <translation id="4546260624932151782">عرض قائمة التفضيلات</translation>
+<translation id="8975314993825375476">قائمة مخصصة</translation>
+<translation id="5525668735313040116">ابحث في الويب بشكل خاص</translation>
+<translation id="1629390138158333592">البحث في الويب</translation>
+<translation id="4016940744851230999">إظهار أداة البحث في صفحة علامة التبويب الجديدة</translation>
+<translation id="7092560902264458951">تمكين محركات البحث في صفحة علامة التبويب الجديدة</translation>
+<translation id="6849526088357652209">تخصيص المحركات المتاحة</translation>
+<translation id="5131747739868436035">إخفاء البحث</translation>
+<translation id="423209533815462685">هل ترغب في تمكين اقتراحات البحث؟</translation>
+<translation id="2086952631598737687">عندما تقوم بالبحث، سيتم إرسال ما تكتبه إلى محرك البحث الخاص بك للحصول على اقتراحات أفضل.</translation>
+<translation id="3435896845095436175">تمكين</translation>
+<translation id="780301667611848630">لا، شكرًا</translation>
 <translation id="1230746063445072175">هل تريد خصوصية أفضل؟</translation>
 <translation id="6699628638740071563">حان وقت الاستغناء عن Google.</translation>
-<translation id="2045455461902775806">البحث في Brave لا يتحيز إلى بعض النتائج أو يراقبها كما أنه لا يتتبعك أو يتتبع استفساراتك أو نقراتك.</translation>
-<translation id="6811221529729056895">جرب البحث في Brave الآن</translation>
-<translation id="5525668735313040116">البحث في الويب بشكل خاص</translation>
-<translation id="3446024864193919737">عرض مكافآت Brave</translation>
+<translation id="5588534392045217394">لا يتحيّز Ping Search إلى بعض النتائج أو يراقبها، ولا يقوم بعمل ملف تعريف لك.</translation>
+<translation id="6811221529729056895">جرب البحث في Ping الآن</translation>
+<translation id="3446024864193919737">عرض مكافآت Ping</translation>
 <translation id="5585019845078534178">البطاقات</translation>
 <translation id="3870475560794762985">عرض الصور الدعائية</translation>
 <translation id="2414654907269324670">أنت تكسب BAT مقابل صور الرعاة الدعائية.</translation>
 <translation id="4942016616604700968">تمكين المكافآت</translation>
 <translation id="5684562942023496754">يمكنك ربح المال مقابل مشاهدة صور الرعاة الدعائية.</translation>
-<translation id="8934374643857605034">بصفتك مستخدمًا لـ Brave Rewards، يمكنك ربح BAT لمشاهدة صور الرعاة الدعائية.</translation>
-<translation id="1570714748649804013">بصفتك مستخدمًا لـ Brave Rewards، فإنك تربح BAT مقابل صور الرعاة الدعائية التي تراها. سيؤدي تعطيل الصور الموجودة ضمن الرعاية الدعائية إلى تقليل المبلغ الذي تربحه.</translation>
-<translation id="8998727244653964783">يمكنك ربح BAT مقابل مشاهدة صور الرعاة الدعائية عند توصيل الحساب المُستضاف باستخدام Brave Rewards. وفي غضون ذلك، تساعد في دعم منشئي المحتوى بصور الرعاة الدعائية.</translation>
-<translation id="5512383650263136662">يمكنك ربح BAT مقابل مشاهدة صور الرعاة الدعائية باستخدام Brave Rewards. ألست من مستخدمي Rewards؟ لا يزال تشغيل صور الرعاة الدعائية يدعم رسالة Brave.</translation>
+<translation id="8934374643857605034">بصفتك مستخدمًا لـ Ping Rewards، يمكنك ربح BAT لمشاهدة صور الرعاة الدعائية.</translation>
+<translation id="1570714748649804013">بصفتك مستخدمًا لـ Ping Rewards، فإنك تربح BAT مقابل صور الرعاة الدعائية التي تراها. سيؤدي تعطيل الصور الموجودة ضمن الرعاية الدعائية إلى تقليل المبلغ الذي تربحه.</translation>
+<translation id="8998727244653964783">يمكنك ربح BAT مقابل مشاهدة صور الرعاة الدعائية عند توصيل الحساب المُستضاف باستخدام Ping Rewards. وفي غضون ذلك، تساعد في دعم منشئي المحتوى بصور الرعاة الدعائية.</translation>
+<translation id="5512383650263136662">يمكنك ربح BAT مقابل مشاهدة صور الرعاة الدعائية باستخدام Ping Rewards. ألست من مستخدمي Rewards؟ لا يزال تشغيل صور الرعاة الدعائية يدعم رسالة Ping.</translation>
 <translation id="2875302873837723333">المواقع الأولى</translation>
-<translation id="8173998484743827990">احصائيات Brave</translation>
+<translation id="8173998484743827990">احصائيات Ping</translation>
 <translation id="383680190590774040">الساعة</translation>
-<translation id="3333887201479867589">مكافآت Brave</translation>
+<translation id="1383876407941801731">البحث</translation>
+<translation id="3333887201479867589">مكافآت Ping</translation>
 <translation id="3159285901314605198">صورة الخلفية</translation>
 <translation id="385051799172605136">الرجوع إلى الوراء</translation>
 <translation id="4225429340218993596">ألوان متصلة</translation>
 <translation id="7610541582755894669">تدرجات</translation>
 <translation id="1606851618930975029">تحديث في كل علامة تبويب جديدة</translation>
 <translation id="7040134046053881468">افتح لوحة المكافآت</translation>
-<translation id="9024104284526126630">يمكنك بدء مكالمة خاصة في Brave.</translation>
 <translation id="370665806235115550">جارٍ التحميل...</translation>
 <translation id="4634933166298842522">إدارة الاشتراكات</translation>
 <translation id="4108314971463891922">متابعة</translation>
 <translation id="3861486700625780712">إلغاء المتابعة</translation>
 <translation id="8909741410750517071">تابع هذا المصدر بنقرة واحدة.</translation>
-<translation id="1982678174789043774">احصل على آخر الأخبار في Brave News.</translation>
+<translation id="1982678174789043774">احصل على آخر الأخبار في Ping News.</translation>
 <translation id="7894417427965898400">إدارة الموجز</translation>
 <translation id="9164544612367905452">جاري إحضار…</translation>
 <translation id="1276592121036104130">تحميل محتوى جديد</translation>
-<translation id="2875288128871360696">انتقل إلى Brave News</translation>
-<translation id="8510120023634509743">إعادة تعيين مصادر Brave News</translation>
-<translation id="75825199302994272">هل تريد إعادة تعيين جميع اختيارات ناشر Brave News إلى وضعها الافتراضي؟</translation>
+<translation id="2875288128871360696">انتقل إلى Ping News</translation>
+<translation id="8510120023634509743">إعادة تعيين مصادر Ping News</translation>
+<translation id="75825199302994272">هل تريد إعادة تعيين جميع اختيارات ناشر Ping News إلى وضعها الافتراضي؟</translation>
 <translation id="954001034349395856">جميع المصادر</translation>
 <translation id="8890516388109605451">المصادر</translation>
 <translation id="5158129253322921540">قم بتعطيل المحتوى المُنشأ من قبل <ph name="PUBLISHER_NAME"/></translation>
@@ -104,12 +108,12 @@
 <translation id="7791543448312431591">إضافة</translation>
 <translation id="7679334366167089823">اربح عملات رمزية عند مشاهدة إعلانات تحترم الخصوصية.</translation>
 <translation id="7191394989411626168">من خلال إيقاف تشغيل البطاقات، سيتم إخفاء جميع البطاقات المرئية حالياً. ومع ذلك، قد يتم إخطارك بالبطاقات الجديدة.</translation>
-<translation id="6820526586005233839">تم إيقاف إعلانات Brave</translation>
-<translation id="5190407395832551012">للحفاظ على  Brave Rewards من سوء الاستخدام، سنطلب عشوائيًّا من المستخدمين حلّ كلمة تحقق. انقر على “حلّ” لاستئناف الإعلانات.</translation>
+<translation id="6820526586005233839">تم إيقاف إعلانات Ping</translation>
+<translation id="5190407395832551012">للحفاظ على  Ping Rewards من سوء الاستخدام، سنطلب عشوائيًّا من المستخدمين حلّ كلمة تحقق. انقر على “حلّ” لاستئناف الإعلانات.</translation>
 <translation id="1693773514029371138">حلّ</translation>
 <translation id="6991128190741664836">لاحقاً</translation>
-<translation id="8112367589167674370">Brave Talk</translation>
-<translation id="8488282162676695335">محفظة Brave</translation>
+<translation id="8112367589167674370">Ping Talk</translation>
+<translation id="8488282162676695335">محفظة Ping</translation>
 <translation id="8820817407110198400">الإشارات المرجعية</translation>
 <translation id="1644574205037202324">السجل</translation>
 <translation id="2702801445560668637">قائمة القراءة</translation>
@@ -119,23 +123,23 @@
 <translation id="8730621377337864115">تم</translation>
 <translation id="730042046912793465">هذا</translation>
 <translation id="2055363275850890030">نافذة خاصة</translation>
-<translation id="9133213713928851646">لا يتذكر Brave أبدا ما تفعله أنت في نافذة خاصة. لن تظهر المواقع التي تزورها في سجلك، وتختفي ملفات تعريف الارتباط عند الانتهاء. رغم ذلك، فإن النوافذ الخاصة لا تجعلك مجهول الهوية تماما على الإنترنت.</translation>
-<translation id="4085423007106063912">لا يتذكر Brave أبدًا ما تفعله في نافذة خاصة. لن تظهر المواقع التي تزورها في سجلك. تختفي ملفات تعريف الارتباط وبيانات النموذج وبيانات الموقع عند إغلاق النافذة.</translation>
+<translation id="9133213713928851646">لا يتذكر Ping أبدا ما تفعله أنت في نافذة خاصة. لن تظهر المواقع التي تزورها في سجلك، وتختفي ملفات تعريف الارتباط عند الانتهاء. رغم ذلك، فإن النوافذ الخاصة لا تجعلك مجهول الهوية تماما على الإنترنت.</translation>
+<translation id="4085423007106063912">لا يتذكر Ping أبدًا ما تفعله في نافذة خاصة. لن تظهر المواقع التي تزورها في سجلك. تختفي ملفات تعريف الارتباط وبيانات النموذج وبيانات الموقع عند إغلاق النافذة.</translation>
 <translation id="1700746046668116047">لاحظ أن نشاطك قد يظل مرئيًا لمزود خدمة الإنترنت أو مراقبي الشبكة السلبيين أو صاحب العمل (إذا كنت تستخدم جهاز عمل أو شبكة). لمزيد من الخصوصية ، افتح نافذة خاصة باستخدام Tor.</translation>
 <translation id="8759753423332885148">اعرف المزيد.</translation>
 <translation id="8611976753572844841">نافذة خاصة مزودة باتصال بشبكة Tor</translation>
-<translation id="1645589858096839236">لا يحفظ Brave أبدًا نشاط التصفح من نافذة خاصة. باستخدام اتصال بشبكة Tor، يصعب على المواقع رؤية عنوان الـ IP الخاص بك الحقيقي كما يتعذر على مراقبي الشبكة رؤية المواقع التي تقوم بزيارتها. ولكن إذا كان أمنك الشخصي يعتمد على كون هويتك مخفية، فاستخدم متصفح Tor بدلًا من ذلك.</translation>
+<translation id="1645589858096839236">لا يحفظ Ping أبدًا نشاط التصفح من نافذة خاصة. باستخدام اتصال بشبكة Tor، يصعب على المواقع رؤية عنوان الـ IP الخاص بك الحقيقي كما يتعذر على مراقبي الشبكة رؤية المواقع التي تقوم بزيارتها. ولكن إذا كان أمنك الشخصي يعتمد على كون هويتك مخفية، فاستخدم متصفح Tor بدلًا من ذلك.</translation>
 <translation id="7919374705736538787">بحث خاص باستخدام</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
-<translation id="218839872518145456">بالبحث الخاص، ستستخدم Brave DuckDuckGo للبحث في النوافذ الخاصة. DuckDuckGo لا يتتبع سجل البحث الخاص بك، حتى تتمكن من البحث بشكل خاص.</translation>
+<translation id="218839872518145456">بالبحث الخاص، ستستخدم Ping DuckDuckGo للبحث في النوافذ الخاصة. DuckDuckGo لا يتتبع سجل البحث الخاص بك، حتى تتمكن من البحث بشكل خاص.</translation>
 <translation id="1925197199485958903">في النوافذ الخاصة مع Tor، DuckDuckGo هو محرك البحث الافتراضي. من الصعب استخدام بعض محركات البحث الشائعة الأخرى مع Tor. DuckDuckGo لا يتبع سجل البحث الخاص بك ؛ ومع Tor، لا يعرف عنوان IP الخاص بك.</translation>
 <translation id="4371533307685765155">بحث بـ DuckDuckGo</translation>
 <translation id="548478195417408221">اجعل النوافذ الخاصة أكثر خصوصية</translation>
 <translation id="3294503279952534143">هذه النافذة الخاصة أكثر خصوصية</translation>
 <translation id="6126226144537295436">مزود باتصال بشبكة Tor</translation>
 <translation id="8541421872680304667">يقوم Tor بإخفاء عنوان الـ IP الخاص بك عن المواقع التي تقوم بزيارتها، عن طريق توجيه تصفحك عبر عدة خوادم خاصة بشبكة Tor قبل أن يصل إلى وجهتك. يمكن أن يقوم Tor بإبطاء التصفح وقد يقوم بمنع بعض المواقع من العمل على الإطلاق.</translation>
-<translation id="8897548669448660973">يؤدي استخدام النوافذ الخاصة فقط إلى تغيير ما يقوم به Brave في جهازك لا يغير سلوك أي شخص آخر. يقوم Tor بإخفاء عنوان الـ IP الخاص بك عن المواقع التي تقوم بزياراتها ويجعل الأمر أكثر صعوبةً إلى حدٍ ما، ولكن الأمر لا يكون مستحيلًا على مزود خدمة الإنترنت أو صاحب العمل لمعرفة المواقع التي تقوم بزيارتها. افتح نافذة خاصة باستخدام Tor من القائمة، أو باستخدام [[ key ]].</translation>
-<translation id="6975708438781948564">اعرف المزيد عن Tor في Brave</translation>
+<translation id="8897548669448660973">يؤدي استخدام النوافذ الخاصة فقط إلى تغيير ما يقوم به Ping في جهازك لا يغير سلوك أي شخص آخر. يقوم Tor بإخفاء عنوان الـ IP الخاص بك عن المواقع التي تقوم بزياراتها ويجعل الأمر أكثر صعوبةً إلى حدٍ ما، ولكن الأمر لا يكون مستحيلًا على مزود خدمة الإنترنت أو صاحب العمل لمعرفة المواقع التي تقوم بزيارتها. افتح نافذة خاصة باستخدام Tor من القائمة، أو باستخدام [[ key ]].</translation>
+<translation id="6975708438781948564">اعرف المزيد عن Tor في Ping</translation>
 <translation id="4712050378540986986">حالة متصفّح Tor</translation>
 <translation id="1939334281379458295">تم توصيل برنامج Tor بنجاح</translation>
 <translation id="8030169304546394654">قُطع الاتصال</translation>
@@ -144,7 +148,7 @@
 <translation id="2795840524629682765">فشل اتصال Tor</translation>
 <translation id="1149108864689950951">جارٍ توصيل برنامج Tor... [[percentage]]%</translation>
 <translation id="3651192084771403430">هل تواجه مشكلات في الاتصال؟ جرب <ph name="BEGIN_LINK"/>إيقاف تشغيل<ph name="END_LINK"/> النافذة الخاصة ذات برنامج Tor وشغلها مرة أخرى في الإعدادات.</translation>
-<translation id="8834376622642889380">افتح <ph name="BEGIN_LINK"/>إعدادات Brave<ph name="END_LINK"/>، وقم بتعطيل نافذة التصفح المتخفٍ في متصفح Tor، ثم أعد تمكينها.</translation>
+<translation id="8834376622642889380">افتح <ph name="BEGIN_LINK"/>إعدادات Ping<ph name="END_LINK"/>، وقم بتعطيل نافذة التصفح المتخفٍ في متصفح Tor، ثم أعد تمكينها.</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>لا تزال تواجه مشكلة؟<ph name="END_BOLD"/>حاول استخدام<ph name="BEGIN_BRIDGES_LINK"/>جسور<ph name="END_BRIDGES_LINK"/>أو<ph name="BEGIN_SUPPORT_LINK"/>تواصل مع الدعم<ph name="END_SUPPORT_LINK"/>.</translation>
 <translation id="8388043004918289671">تواصل مع الدعم.</translation>
 <translation id="4272382368346338917">المرشحات الإضافية</translation>
@@ -164,33 +168,36 @@
 <translation id="5334844597069022743">عرض المصدر</translation>
 <translation id="4720556299488643018">إلغاء الاشتراك</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
-<translation id="8510478288840333677">إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
-<translation id="3110968385867124099">لا يمكن الإبلاغ عن هذه الصفحة نظرًا لأنه لم يتم عرضها عبر HTTP/HTTPS.</translation>
-<translation id="7907023135990310743">هذه الصفحة هي عبارة عن صفحة ويب محلية وليست مؤهلة لإعداد التقارير.</translation>
-<translation id="3645455863322075098">هذه الصفحة عبارة عن صفحة خطأ وليست مؤهلة لإعداد التقارير.</translation>
-<translation id="105644511106871142">شكرًا لك على تقديم المساعدة في جعل Brave أفضل للجميع. لن يرسل هذا التقرير سوى المعلومات اللازمة لنا لإصلاح هذا الموقع.</translation>
+<translation id="8510478288840333677">إخطار مطوري Ping بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
+<translation id="3110968385867124099">يتعذر الإبلاغ عن هذه الصفحة لأنه لم يتم عرضها عبر HTTP/HTTPS.</translation>
+<translation id="7907023135990310743">هذه الصفحة هي صفحة ويب محلية وليست مؤهلة لإعداد التقارير.</translation>
+<translation id="3645455863322075098">هذه الصفحة صفحة خطأ وليست مؤهلة لإعداد التقارير.</translation>
+<translation id="105644511106871142">نشكرك على تقديم المساعدة في أن يصبح Ping أفضل للجميع. لن يرسل هذا التقرير سوى المعلومات اللازمة لنا لإصلاح هذا الموقع.</translation>
 <translation id="6476216365964140603">التفاصيل الإضافية (اختياري):</translation>
 <translation id="6145852496180774737">تواصل معي على: (اختياري)</translation>
 <translation id="7616645803364270729">البريد الإلكتروني، تويتر، إلخ.</translation>
 <translation id="721949491455392748">تضمين لقطة شاشة للصفحة الحالية</translation>
 <translation id="8459191579769999214">عرض لقطة شاشة</translation>
 <translation id="5299848999918506028">شكراً لك!</translation>
-<translation id="76550953340008122">شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!</translation>
-<translation id="4046860372562593546">إدارة Brave Ads</translation>
-<translation id="5136973036012418831">تحكم في أنواع Brave Ads التي تراها وعدد مرات مشاهدتها.</translation>
+<translation id="76550953340008122">شكراً لإخطارك مطوري Ping بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!</translation>
+<translation id="4046860372562593546">إدارة Ping Ads</translation>
+<translation id="5136973036012418831">تحكم في أنواع Ping Ads التي تراها وعدد مرات مشاهدتها.</translation>
 <translation id="4759608598194750161">كلما شاهدت المزيد، تمكنت من ربح المزيد من المال.</translation>
 <translation id="7526443283522395161">إعلانات صفحة علامة التبويب الجديدة</translation>
 <translation id="7968650944098083708">إعلانات الإشعارات</translation>
-<translation id="6390952132783970876">إعلانات Brave News</translation>
-<translation id="7516281787184495886">يحتوي Brave News على إعلانات لا يمكن تعطيلها بشكل مستقل.</translation>
-<translation id="8008378848677625233">Brave News معطل حاليًا.</translation>
+<translation id="8289546216379862569">البحث في الإعلانات</translation>
+<translation id="4758111936363146244">تظهر إعلانات بحث Ping على <ph name="BEGIN_LINK"/>بحث Ping<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">لا يمكنك كسب عملات BAT من إعلانات بحث Ping بعد، ولكنك تساعد في دعم Ping بتشغيلها.</translation>
+<translation id="6390952132783970876">إعلانات Ping News</translation>
+<translation id="7516281787184495886">يحتوي Ping News على إعلانات لا يمكن تعطيلها بشكل مستقل.</translation>
+<translation id="8008378848677625233">Ping News معطل حاليًا.</translation>
 <translation id="6112368337882254910">مساهمة تلقائية</translation>
 <translation id="557705068184766514">طريقة تلقائية لدعم المواقع ومنشئي المحتوى. حدد مبلغ المساهمة الشهرية وتصفح بشكل عادي. <ph name="BEGIN_LINK"/>سيتلقى منشئو المحتوى والمواقع الموثوقة<ph name="END_LINK"/> التي تزورها مساهمات منك كل شهر بناءً على مقدار الوقت الذي تقضيه في المحتوى الخاص بهم.</translation>
 <translation id="6688567880783357035">الأرباح منذ بداية الشهر الحالي</translation>
 <translation id="949044897316791211">تاريخ دفع الأرباح التالي</translation>
 <translation id="2211646556917925490">إجمالي الإعلانات المستلمة هذا الشهر</translation>
 <translation id="4229016885653790965">عذرًا! لم تتم إتاحة الإعلانات في منطقتك بعد.</translation>
-<translation id="2539279826042558064">مكافآت Brave و Ads غير متوفرة على جهازك في الوقت الحالي.</translation>
+<translation id="2539279826042558064">مكافآت Ping و Ads غير متوفرة على جهازك في الوقت الحالي.</translation>
 <translation id="5736977383725358876">تكرار ظهور إعلانات الإشعارات</translation>
 <translation id="7701040980221191251">بلا</translation>
 <translation id="480668534656787076">بحد أقصى  1 في الساعة</translation>
@@ -200,7 +207,7 @@
 <translation id="7136536490586989815">بحد أقصى 5 في الساعة</translation>
 <translation id="5751102711563374080">بحد أقصى 10 في الساعة</translation>
 <translation id="2356652719351432565">ملاءمة الإعلان الإقليمي</translation>
-<translation id="3216275550298493597">يتيح هذا الخيار Brave أن يظهر لك إعلانات خاصة بمنطقتك.</translation>
+<translation id="3216275550298493597">يتيح هذا الخيار Ping أن يظهر لك إعلانات خاصة بمنطقتك.</translation>
 <translation id="8446884382197647889">مزيد من المعلومات</translation>
 <translation id="3783399046165388366">كشف تلقائي على صورة <ph name="SUBDIVISION"/></translation>
 <translation id="8010081455002666927">اكتشاف تلقائي</translation>
@@ -234,50 +241,9 @@
 <translation id="3082557070674409251">تم النقر عليه</translation>
 <translation id="7119308337584989771">تم رفضه</translation>
 <translation id="6805660603861526473">تمت مشاهدته</translation>
-<translation id="8826352442759228526">لا يمكن التحقق من مكافآت Brave الخاصة بك لأنك وصلت إلى الحد الأقصى للتحقق على الجهاز.</translation>
-<translation id="1221593978088944142">خطأ: تم الوصول إلى حد الجهاز</translation>
-<translation id="6895088073061692390">للأسف، تم وضع علامة على ملفك الشخصي على Brave Rewards نظرًا لأن عمليات الفحص التلقائية لدينا وجدت بعض أنشطة Brave Ads غير المتوقعة.</translation>
-<translation id="4229056297802204697">أثناء وضع علامة على ملفك الشخصي، قد تستمر في رؤية الإعلانات، ولكنك لن تكون مؤهلاً لتلقي الأرباح. ولن تتمكن أيضًا من ربط الحساب المستضاف بـ Brave Rewards.</translation>
-<translation id="5124846913141379164">يمكن أن يتم وضع علامة على ملفك الشخصي بطريق الخطأ، ولا يلزم اتخاذ أي إجراء فوري من جانبك. قد تتم إزالة العلامة الموجودة على ملفك الشخصي في المستقبل.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>تعرف على المزيد حول عملية Brave للإبلاغ عن ملفات تعريف Rewards.<ph name="END_LINK"/></translation>
-<translation id="5028274575541726856">خطأ: تم وضع علامة على الملف التعريفي Brave Rewards</translation>
-<translation id="2607420597216860026">يرجى المحاولة مرة أخرى بعد الانتهاء من التحقق من الهوية في <ph name="PROVIDER"/>.</translation>
-<translation id="3183954159462541696">خطأ: أنت تحتاج إلى حساب تم التحقق منه لتسجيل الدخول</translation>
-<translation id="1859789048900659918">حسنًا، يبدو أن بلد Brave Rewards لا يتطابق مع بلد<ph name="PROVIDER"/> الحساب الذي تحاول الاتصال به.</translation>
-<translation id="8925428135452218262">خطأ: البلد غير متطابق</translation>
-<translation id="5260522591743022748">عفوًا، يبدو أن مكافآت Brave الخاصة بك تم التحقق منها بالفعل باستخدام حساب <ph name="PROVIDER"/> آخر. يرجى محاولة التحقق مرة أخرى باستخدام حسابك السابق.</translation>
-<translation id="5111921830714291902">خطأ: حساب مختلف</translation>
-<translation id="5225019866741699134">يبدو أن الاتصال <ph name="PROVIDER"/>بمكافآت Brave غير متاح مؤقتًا. يُرجى المحاولة مرة أخرى لاحقًا.</translation>
-<translation id="6105073131081187815">يمكنك عرض <ph name="BEGIN_LINK"/>حالة الخدمة هنا <ph name="END_LINK"/>.</translation>
-<translation id="2400786541309111904">خطأ: الاتصال بالمسؤول المحدد غير متاح مؤقتًا</translation>
-<translation id="1024520300696337331">يتعذّر ربط حساب <ph name="PROVIDER"/> الخاص بك بملفك التعريفي في Brave Rewards في هذا الوقت. تم تسجيل حساب <ph name="PROVIDER"/> الخاص بك في بلد غير مدعوم حاليًا للربط بـ Brave Rewards.</translation>
-<translation id="619384413404021992">راجع القائمة الحالية <ph name="LINK_BEGIN"/>للمناطق المدعومة وتعرّف على المزيد<ph name="END_LINK"/> حول ربط حساب مُستضاف بـ Brave Rewards.</translation>
-<translation id="7193389978208728181">خطأ: المنطقة غير مدعومة حاليًا</translation>
-<translation id="5382684862562314222">لم يتم دعم BAT حتى الآن في منطقتك بعد، في Uphold.</translation>
-<translation id="9074594632540931067">خطأ: BAT غير متوفر</translation>
-<translation id="5376524136040178759">وفقًا لـ Uphold، توجد حاليًا بعض القيود على حساب Uphold الخاص بك. يُرجى تسجيل الدخول إلى حساب Uphold الخاص بك والتحقق مما إذا كانت هناك أي إشعارات أو متطلبات حساب متبقية لاستكمالها، ثم أعد المحاولة مرة أخرى. على سبيل المثال، قد يلزمك إرسال مزيد من المعلومات إلى Uphold.</translation>
-<translation id="6996157559236886133">خطأ: وظائف محدودة لحساب Uphold</translation>
-<translation id="3274650021044762770">حدثت مشكلة أثناء التحقق من صحة طلب المتصفح الخاص بك لتوصيل مكافآت Brave الخاصة بك بحساب <ph name="PROVIDER"/>. يمكنك <ph name="BEGIN_LINK"/>التواصل مع الدعم<ph name="END_LINK"/> لمزيد من المساعدة.</translation>
-<translation id="1316066811927496401">خطأ: تعذر التحقق من صحة الطلب</translation>
-<translation id="7352651011704765696">حدث خطأ ما</translation>
-<translation id="8285276813470932793">لم نتمكن من إكمال طلبك، يُرجى إعادة المحاولة، <ph name="LINK_BEGIN"/>والاتصال بالدعم<ph name="LINK_END"/> إذا استمرت المشكلة.</translation>
 <translation id="8167256685618982116">بتفعيل <ph name="TITLE"/>، فأنت توافق على <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
-<translation id="8817096698141999876">الحسابات المُستضافة (يتطلب التحقق من الهوية)</translation>
-<translation id="1539433155512862005">الحسابات المُستضافة هي حسابات ذات خدمات تابعة لجهات خارجية موثوقة والتي تحتفظ بـ BAT الخاص بك نيابةً عنك.</translation>
-<translation id="6834831484510296932">الحماية الذاتية</translation>
-<translation id="4208917415153655958">تمنحك الحماية الذاتية تحكمًا استثنائيًا في برنامج BAT الخاص بك، إلى جانب المسؤولية الكاملة عن أمانه.</translation>
-<translation id="1953496742859481929">من خلال اختيار محفظة ذاتية الحماية، ستُدفع المكافآت كـ SPL-BAT على شبكة Solana.</translation>
-<translation id="6751803821780922506">اختر المكان الذي ترغب في تلقي BAT</translation>
-<translation id="3162035476318501831">تعرف على المزيد حول المناطق والدعم.</translation>
-<translation id="7329170127335794328">غير متوفر حاليًا في بلدك</translation>
-<translation id="966956302643313970">للبدء في كسب مكافآت Basic Attention Token (رمز الانتباه الأساسي) (BAT)، قم بربط أحد الحسابات. سيتم تحويل BAT الذي تكسبه تلقائيًا إلى حسابك كل شهر.</translation>
-<translation id="4009439571146350519">أو أي محفظة أخرى تدعم Solana</translation>
-<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>شروط الاستخدام<ph name="TOS_LINK_END"/>و<ph name="PP_LINK_BEGIN"/>سياسة الخصوصية<ph name="PP_LINK_END"/>.</translation>
-<translation id="1692293127547800972">هناك خطأ ما. حاول مرة أخرى</translation>
-<translation id="756341217015623253">تسجيل الدخول أو الاشتراك</translation>
-<translation id="2653844658857826081">جديد</translation>
 <translation id="1892970806832316900">معلّق حتى <ph name="DATE"/></translation>
-<translation id="7849926087559412554">عذرًا! تعذّر على متصفحك استقبال Brave Private Ads.</translation>
+<translation id="7849926087559412554">عذرًا! تعذّر على متصفحك استقبال Ping Private Ads.</translation>
 <translation id="5177429570315095022">يحتاج متصفحك إلى التحديث لمواصلة مشاهدة الإعلانات.</translation>
 <translation id="4593680147181354667">معرف التشخيص</translation>
 <translation id="3995471429906554168">معلومات التشخيص</translation>
@@ -321,24 +287,6 @@
 <translation id="7168491065836975228">المكافآت الداخلية</translation>
 <translation id="1992397118740194946">لم يتم تعيينه</translation>
 <translation id="758790787422117549">معرف الشخصية</translation>
-<translation id="1919345977826869612">الإعلانات</translation>
-<translation id="3671566813999349838">المبلغ</translation>
-<translation id="751223241692981112">تم الاستلام في</translation>
-<translation id="3913089081619091801">استلام الهوية</translation>
-<translation id="972516647724462985">تنتهي الصلاحية في</translation>
-<translation id="3970114302595058915">المُعرف</translation>
-<translation id="8511126279042126492">عروض المستخدمين القدّم</translation>
-<translation id="4250680216510889253">لا</translation>
-<translation id="1426410128494586442">نعم</translation>
-<translation id="8102423594645796250">العروض</translation>
-<translation id="7805768142964895445">الحالة</translation>
-<translation id="5565735124758917034">نشط</translation>
-<translation id="2196753816869469810">Attested</translation>
-<translation id="1098052486217676340">تم</translation>
-<translation id="8000774832235490222">فوق</translation>
-<translation id="2448312741937722512">النوع</translation>
-<translation id="5334568292977026472">UGP</translation>
-<translation id="3798449238516105146">الإصدار</translation>
 <translation id="7180611975245234373">تحديث</translation>
 <translation id="1456696701804096710">عدد مرات إعادة المحاولة:</translation>
 <translation id="8118649457152178086">بلد المكآفات:</translation>
@@ -362,20 +310,21 @@
 <translation id="3368922792935385530">متصل</translation>
 <translation id="5058161306698404465">بيئة الإنشاء:</translation>
 <translation id="5856438412804207598">البيئة الحالية:</translation>
-<translation id="5916290544882167205">Brave Software. تعتبر Brave علامة تجارية مسجلة لشركة Brave Software. قد تكون أسماء المواقع علامات تجارية أو علامات تجارية مسجلة لصاحب الموقع.</translation>
-<translation id="9026369588205476247">لحماية خصوصيتك، لا يتم حفظ بيان مكافآت Brave أو تسجيله في أي مكان آخر بخلاف جهازك (هذا الكمبيوتر). لا يمكن استرداده من Brave في حالة فقدان البيانات من جهازك.</translation>
+<translation id="5916290544882167205">Ping Software. تعتبر Ping علامة تجارية مسجلة لشركة Ping Software. قد تكون أسماء المواقع علامات تجارية أو علامات تجارية مسجلة لصاحب الموقع.</translation>
+<translation id="9026369588205476247">لحماية خصوصيتك، لا يتم حفظ بيان مكافآت Ping أو تسجيله في أي مكان آخر بخلاف جهازك (هذا الكمبيوتر). لا يمكن استرداده من Ping في حالة فقدان البيانات من جهازك.</translation>
+<translation id="1919345977826869612">الإعلانات</translation>
 <translation id="3587482841069643663">الكل</translation>
 <translation id="4241224519481557898">الفئة</translation>
 <translation id="3080423471207781945">الحد الأقصى للإعلانات التي يتم تلقيها في الساعة:</translation>
 <translation id="7847825746023377505">لم يتم عرض الإعلانات في <ph name="TOTAL_DAYS"/> من الأيام.</translation>
 <translation id="7902420836933072528">الإعلانات التي تلقيتها في عدد  [[totalDays]]من الأيام الماضية</translation>
 <translation id="8863685593846905344">إضافة إلى السجل</translation>
-<translation id="2777306694585938662">تم استلام مكافآت الإعلانات</translation>
 <translation id="5212777575344695266">وضع علامة كإعلان غير لائق</translation>
 <translation id="2111256234277361810">ضع علامة كإعلان غير لائق ✓</translation>
-<translation id="8988332871810963281">لا يوجد حالياً أي سجل إعلانات Brave</translation>
+<translation id="8988332871810963281">لا يوجد حالياً أي سجل إعلانات Ping</translation>
 <translation id="5345727496083327478">لن تتلقى إعلانات من هذه الفئة بعد الآن</translation>
 <translation id="2631006050119455616">تم الحفظ</translation>
+<translation id="3671566813999349838">المبلغ</translation>
 <translation id="6976444672879155794">المساهمة التلقائية [[processor]]</translation>
 <translation id="8804164990146287819">سياسة الخصوصية</translation>
 <translation id="7262285991915892790">اسحب أيقونة BAT إلى</translation>
@@ -385,22 +334,13 @@
 <translation id="4932733599132424254">التاريخ</translation>
 <translation id="3552003743293281224">الإيرادات النقدية</translation>
 <translation id="3866249974567520381">الوصف</translation>
-<translation id="8605272644314973683">مكافآت Brave</translation>
+<translation id="8605272644314973683">مكافآت Ping</translation>
 <translation id="298067735430872465">أرباح من الإعلانات</translation>
 <translation id="1418534671788496616">عرض تاريخ الإيداع</translation>
 <translation id="3412655388715513818">استبعاد هذا الموقع</translation>
 <translation id="418343137736963579">إجمالي عدد المواقع التي استبعدتها من المساهمة التلقائية:</translation>
-<translation id="8802504113265057166">سيتم إرجاع[[currency]] التي لا تُستخدم بحلول تاريخ انتهاء الصلاحية إلى Brave User Growth Pool.</translation>
-<translation id="279567716178902927">تاريخ انتهاء صلاحية المكافأة</translation>
 <translation id="1389143276807887637">الاستيراد</translation>
 <translation id="5737831580668469027">المساهمات الشهرية!</translation>
-<translation id="2487641031722095938">هذا يوم سعدك!</translation>
-<translation id="6255773350565723852">هديتك المالية في طريقها إليك.</translation>
-<translation id="3453206261112715431">الحصول على أموال مجانًا</translation>
-<translation id="4448429859987034344">تهانيناً!</translation>
-<translation id="4677106999274433911">لقد نجحت في تحصيل مكافآت الإعلانات.</translation>
-<translation id="8304661078305276044">مكافآت الإعلانات</translation>
-<translation id="1770001816413426741">فترة المكافآت</translation>
 <translation id="2280319752798785157">المساهمة الشهرية</translation>
 <translation id="8307851765167460403">لا توجد أنشطة حتى الآن…</translation>
 <translation id="3630697955794050612">إيقاف</translation>
@@ -416,7 +356,6 @@
 <translation id="3448261046185459858">يمكنك إزالة أي موقع يتلقى مساهمات شهرية من داخل لوحة المساهمات.</translation>
 <translation id="5082474983463379713">يرجى الملاحظة:</translation>
 <translation id="1430915738399379752">طباعة</translation>
-<translation id="135956957367307069">لا يزال طلبك قيد المعالجة. يرجى الانتظار.</translation>
 <translation id="2600847485413879104">المكافآت التوكن الأساسي لتبادل العملات المشفرة</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -427,31 +366,27 @@
 <translation id="2799223571221894425">إعادة تشغيل</translation>
 <translation id="1110535155349301542">إزالة</translation>
 <translation id="8204292894173669182">إزالة من قائمة المحفوظات</translation>
-<translation id="5939518447894949180">إعادة الضبط</translation>
-<translation id="3349204812119681938">إعادة تعيين Brave Rewards</translation>
 <translation id="5669281110673664811">مسح قائمة الاستبعاد</translation>
 <translation id="1797334173232638045">تم نقل مواقعك المثبّتة إلى</translation>
 <translation id="3074127054582480056">تنبيه</translation>
-<translation id="4915997950539925115">من خلال إعادة التعيين، سيتم حذف ملفك الشخصي الحالي على Brave Rewards، ولن يتم تمكين Brave Rewards بعد الآن. إذا قمت بتمكين Brave Rewards مرة أخرى لاحقًا، فستبدأ بملف تعريف جديد. اقرأ مقالة الدعم <ph name="LINK_BEGIN"/> حول إعادة تعيين <ph name="LINK_END"/> للحصول على مزيد من التفاصيل.</translation>
-<translation id="4806029412510565611">أفهم أنه سيتم حذف ملف تعريف Brave Rewards الحالي وبيانات Brave Rewards من جهازي، وقد قرأت<ph name="LINK_BEGIN"/>مقالة الدعم حول إعادة التعيين<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">ملخص المكافآت</translation>
 <translation id="2913994227901456490">الاطلاع على جميع العناصر وعددها [[numItems]]</translation>
 <translation id="6685434227783226855">إرسال مساهمتي</translation>
 <translation id="8428213095426709021">الإعدادات</translation>
 <translation id="1792148354504719133">الموقع</translation>
 <translation id="6432779622695508363">نصيحة عن الإعجاب</translation>
-<translation id="6367285596431004439">تم استلام منحة الرموز المميزة</translation>
 <translation id="2726674968268546964">الرموز المميزة</translation>
 <translation id="5015443703424816075">عملة رمزية</translation>
 <translation id="1634828734222219955">الإجمالي</translation>
 <translation id="3535654229833214438">المعاملات</translation>
-<translation id="8772672608371898774">ناشر تم التحقق منه لدى Brave</translation>
+<translation id="2448312741937722512">النوع</translation>
+<translation id="8772672608371898774">ناشر تم التحقق منه لدى Ping</translation>
 <translation id="5050370287908180130">عرض البيان الشهري للتفاصيل</translation>
 <translation id="7853202427316060426">النشاط</translation>
 <translation id="7232682712743566408">رصيد المكافآت</translation>
-<translation id="4258022280942725182">مكافآت Brave الخاصة بك</translation>
+<translation id="4258022280942725182">مكافآت Ping الخاصة بك</translation>
 <translation id="6727483290601442544">عرض التفاصيل</translation>
-<translation id="4206899127409458763">إنشاء ملف مكافآت Brave الخاصة بك</translation>
+<translation id="4206899127409458763">إنشاء ملف مكافآت Ping الخاصة بك</translation>
 <translation id="8706157865312453070">المواقع المستبعَدة</translation>
 <translation id="2501059654604370822">إزالة من القائمة المستبعدة</translation>
 <translation id="9075700728717335924">لقد قمت باستبعاد</translation>
@@ -460,132 +395,65 @@
 <translation id="5113531205597573951">المواقع المشاهَدة</translation>
 <translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
 <translation id="7642372245223412840">الاتصال بـ bitFlyer</translation>
-<translation id="6143701117592994599">سيتيح لك ربط Brave Rewards بحساب bitFlyer كسب BAT وسحب أرباحك من BAT من Brave Rewards.</translation>
-<translation id="4354564238172327160">كن أحد منشئي Brave!</translation>
+<translation id="6143701117592994599">سيتيح لك ربط Ping Rewards بحساب bitFlyer كسب BAT وسحب أرباحك من BAT من Ping Rewards.</translation>
+<translation id="4354564238172327160">كن أحد منشئي Ping!</translation>
 <translation id="4639659520811817892">تفضل بزيارة creators.brave.com لتسجل اليوم وتبدأ في كسب عملات BAT من معجبيك ومتابعيك.</translation>
-<translation id="4816455138209470435">يدعم Brave YouTube، Twitch، Vimeo، وغير ذلك الكثير!</translation>
+<translation id="4816455138209470435">يدعم Ping YouTube، Twitch، Vimeo، وغير ذلك الكثير!</translation>
 <translation id="7404779623219601861">تبديل BAT ببطاقات هدايا</translation>
 <translation id="6215565499749144110">مع شبكة TAP فبإمكانك تبديل BAT ببطاقات هدايا ذات علامات تجارية شهيرة.</translation>
 <translation id="6074001074364432111">*يتطلب التسجيل حساب Uphold.</translation>
 <translation id="7703007724342399482">احصل على استرداد لقيمة العملة المشفرة بنسبة 2% مع بطاقة Uphold</translation>
 <translation id="1109729143147368573">أنفق عملاتك المشفرة وأصولك الأخرى لدى ما يقرب من 50 مليون تاجر وماكينات صراف آلي في جميع أنحاء العالم. أنفق عملات المشفرة للحصول على عملات المشفرة!</translation>
 <translation id="3787061634640932557">تعديل البطاقات</translation>
-<translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
+<translation id="2070991379950719711">ابدأ في استخدام Ping Rewards</translation>
+<translation id="6297791103122079275">محادثة</translation>
 <translation id="5977237145327845546">ابدأ مكالمة مرئية خاصة مع أصدقائك وزملائك.</translation>
 <translation id="8863928195533744356">ابدأ الاتصال</translation>
 <translation id="3651550649176056334">حول بياناتك</translation>
 <translation id="1544192797660353713">المحفظة</translation>
-<translation id="616639131065447379">أهلاً بك في Brave Crypto Wallets</translation>
-<translation id="1740464057879304704">تتيح لك Crypto Wallets التعامل مع العملات المشفرة والأصول ذات الصلة في Brave. تدعم Crypto Wallets الرموز المميزة لإيثيريوم مثل ETH وBAT، بالإضافة إلى المقتنيات، وتتيح لك التعامل مع Ðapps/التطبيقات اللامركزية والعقود الذكية الأخرى. كل هذا مخصص للأشخاص الذين هم على دراية بالإيثيريوم وأنظمة سلسلة الكتل الأخرى - أو أولئك المتحمسون للتعلم.</translation>
-<translation id="4855440621031541830">استخدم Crypto Wallets فقط إذا كنت تقر بأنك وحدك مسؤول عن جميع المخاطر المرتبطة بهذا الاستخدام، وأن Brave Software لا تتحمل أي مسؤولية أو تبعة عن أي خسائر بما في ذلك الخسائر العرضية أو التبعية التي قد تتعرض لها نتيجةً لهذا الاستخدام.</translation>
+<translation id="616639131065447379">أهلاً بك في Ping Crypto Wallets</translation>
+<translation id="1740464057879304704">تتيح لك Crypto Wallets التعامل مع العملات المشفرة والأصول ذات الصلة في Ping. تدعم Crypto Wallets الرموز المميزة لإيثيريوم مثل ETH وBAT، بالإضافة إلى المقتنيات، وتتيح لك التعامل مع Ðapps/التطبيقات اللامركزية والعقود الذكية الأخرى. كل هذا مخصص للأشخاص الذين هم على دراية بالإيثيريوم وأنظمة سلسلة الكتل الأخرى - أو أولئك المتحمسون للتعلم.</translation>
+<translation id="4855440621031541830">استخدم Crypto Wallets فقط إذا كنت تقر بأنك وحدك مسؤول عن جميع المخاطر المرتبطة بهذا الاستخدام، وأن Ping Software لا تتحمل أي مسؤولية أو تبعة عن أي خسائر بما في ذلك الخسائر العرضية أو التبعية التي قد تتعرض لها نتيجةً لهذا الاستخدام.</translation>
 <translation id="3187473319809074178">كل هذا منفصل تماماً عن</translation>
 <translation id="8327818101454798856">لذا فإذا كنت تنوي دعم مواقعك المفضلة فانتقل إلى هناك فضلاً عن ذلك.</translation>
 <translation id="412480955826088549">جاري تحميل المكون ...</translation>
 <translation id="4894106830958548828">أفهم</translation>
 <translation id="326118736933420687">إنك الآن تقوم بعرض صفحة WebTorrent</translation>
+<translation id="2729085694451916573">سلسلة اختبار لـ <ph name="PART_ONE"/>العناصر النائبة<ph name="PART_ONE_END"/><ph name="PART_TWO"/>معرفة المزيد<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
-<translation id="4492298165410552103">هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Brave؟</translation>
-<translation id="5015092481905019948">سيستخدم متصفح Brave <ph name="PROVIDER_NAME"/> لحل أسماء نطاقات <ph name="DOMAIN_LIST"/> على<ph name="DOMAIN_PROVIDER_NAME"/>. يُخفي متصفح Brave عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن <ph name="PROVIDER_NAME"/> سيلاحظ أن شخصًا ما يحاول زيارة هذه النطاقات لكن لا شيء آخر. راجع شروط استخدام <ph name="BEGIN_PROVIDER_TOU_LINK"/><ph name="END_PROVIDER_TOU_LINK"/>  <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>وسياسة الخصوصية<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
+<translation id="4492298165410552103">هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Ping؟</translation>
+<translation id="5015092481905019948">سيستخدم متصفح Ping <ph name="PROVIDER_NAME"/> لحل أسماء نطاقات <ph name="DOMAIN_LIST"/> على<ph name="DOMAIN_PROVIDER_NAME"/>. يُخفي متصفح Ping عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن <ph name="PROVIDER_NAME"/> سيلاحظ أن شخصًا ما يحاول زيارة هذه النطاقات لكن لا شيء آخر. راجع شروط استخدام <ph name="BEGIN_PROVIDER_TOU_LINK"/><ph name="END_PROVIDER_TOU_LINK"/>  <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>وسياسة الخصوصية<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">خدمة اسم إيثريوم</translation>
 <translation id="2789190492285945209">خدمة اسم إيثريوم (ENS)</translation>
-<translation id="4335039108389860301">هل تريد تمكين دعم خدمة اسم إيثريوم (ENS) في متصفح Brave؟</translation>
+<translation id="4335039108389860301">هل تريد تمكين دعم خدمة اسم إيثريوم (ENS) في متصفح Ping؟</translation>
 <translation id="807404806385418949">بحث لخدمة اسم إيثريوم خارج السلسلة</translation>
-<translation id="4049590838234508776">هل تريد تمكين دعم بحث خدمة اسم إيثريوم (ENS) خارج السلسة في متصفح Brave؟</translation>
+<translation id="4049590838234508776">هل تريد تمكين دعم بحث خدمة اسم إيثريوم (ENS) خارج السلسة في متصفح Ping؟</translation>
 <translation id="5944991147217767764">يتم تخزين اسم النطاق .eth خارج السلسلة وسيتم حله من خلال بوابات الجهات الخارجية. إذا قمت بتمكين بحث خدمة اسم إيثريوم (ENS) خارج السلسة، فستتمكن بوابات الجهات الخارجية من التعرف من أنك تحاول زيارة نطاقeth. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>تعرّف على مزيد من المعلومات<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">تابع البحث خارج السلسلة</translation>
 <translation id="531747189990625622">خدمة اسم Solana</translation>
-<translation id="1090584614351290462">هل ترعب في تمكين دعم خدمة اسم Solana (SNS) في Brave؟</translation>
-<translation id="7769345036263036863">سيستخدم متصفح Brave طرفًا ثالثًا لحل أسماء نطاقات <ph name="DOMAIN_LIST"/>. يُخفي متصفح Brave عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن الطرف الثالث سيلاحظ أن شخصًا ما يحاول زيارة نطاقات <ph name="DOMAIN_LIST"/> هذه لكن لا شيء آخر. للحصول على مزيد من المعلومات حول الأطراف الثالثة التي نستخدمها وسياسات الخصوصية التي تقرها تلك الأطراف، يُرجى الاطلاع على <ph name="BEGIN_SNS_WIKI_LINK"/>صفحة المساعدة<ph name="END_SNS_WIKI_LINK"/>.</translation>
+<translation id="1090584614351290462">هل ترعب في تمكين دعم خدمة اسم Solana (SNS) في Ping؟</translation>
+<translation id="7769345036263036863">سيستخدم متصفح Ping طرفًا ثالثًا لحل أسماء نطاقات <ph name="DOMAIN_LIST"/>. يُخفي متصفح Ping عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن الطرف الثالث سيلاحظ أن شخصًا ما يحاول زيارة نطاقات <ph name="DOMAIN_LIST"/> هذه لكن لا شيء آخر. للحصول على مزيد من المعلومات حول الأطراف الثالثة التي نستخدمها وسياسات الخصوصية التي تقرها تلك الأطراف، يُرجى الاطلاع على <ph name="BEGIN_SNS_WIKI_LINK"/>صفحة المساعدة<ph name="END_SNS_WIKI_LINK"/>.</translation>
 <translation id="884864496166128252">المتابعة باستخدام خادم <ph name="PROVIDER_NAME"/></translation>
 <translation id="4388873516324656141">المتابعة باستخدام خادم SNS</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="59174027418879706">تم التمكين</translation>
 <translation id="2468755552460246661">نطاق تم حظره</translation>
 <translation id="6393849031898466746">قد يحاول هذا الموقع تتبعك عبر المواقع الأخرى</translation>
-<translation id="983774928604730749">قام Brave بمنع الموقع التالي من التحميل:</translation>
-<translation id="8629537573456243518">نظرًا لطلبك حجب المتتبعين والإعلانات بشكل قاطع، يحجب متصفح Brave هذا الموقع قبل إجراء أول اتصال بالشبكة.</translation>
+<translation id="983774928604730749">قام Ping بمنع الموقع التالي من التحميل:</translation>
+<translation id="8629537573456243518">نظرًا لطلبك حجب المتتبعين والإعلانات بشكل قاطع، يحجب متصفح Ping هذا الموقع قبل إجراء أول اتصال بالشبكة.</translation>
 <translation id="2459038234784107183">لا تحذرني من هذا الموقع مرة أخرى</translation>
 <translation id="8242426110754782860">متابعة</translation>
 <translation id="2501278716633472235">الرجوع</translation>
 <translation id="8377779554871767775">موقع ويب يتضمن محتوى حساسًا</translation>
 <translation id="5396996252458181259">قد يشتمل هذا الموقع على محتوى حساس.</translation>
 <translation id="8415427685483394219">هل ترغب في زيارة هذا الموقع في وضع حماية الخصوصية؟</translation>
-<translation id="5754874269349119401">يرغب Brave في حمايتك عند زيارة المواقع التي تتضمن محتوى حساسًا. ولن تظهر المواقع التي تزورها في وضع "حماية الخصوصية" في سجلات المتصفح ولن يتم حفظ ملفات تعريف الارتباط الخاصة بها.</translation>
+<translation id="5754874269349119401">يرغب Ping في حمايتك عند زيارة المواقع التي تتضمن محتوى حساسًا. ولن تظهر المواقع التي تزورها في وضع "حماية الخصوصية" في سجلات المتصفح ولن يتم حفظ ملفات تعريف الارتباط الخاصة بها.</translation>
 <translation id="1307431692088049276">لا تسألني مرةً أخرى</translation>
-<translation id="6329829767845427007">يمكنك تغيير هذا الوضع لاحقًا من إعدادات Brave في "قسم الخصوصية والأمان"</translation>
+<translation id="6329829767845427007">يمكنك تغيير هذا الوضع لاحقًا من إعدادات Ping في "قسم الخصوصية والأمان"</translation>
 <translation id="951201617124425694">المتابعة في وضع "حماية الخصوصية"</translation>
 <translation id="4087894168792701548">المتابعة في الوضع "العادي"</translation>
 <translation id="5874287397425241890">أنت تتصفح موقع الويب هذا في وضع "حماية الخصوصية".</translation>
 <translation id="1036348656032585052">إيقاف</translation>
-<translation id="9020818404803201080">الأقران المتصلون:</translation>
-<translation id="2903493209154104877">العناوين</translation>
-<translation id="3207122385716480167">إحصائيات Repo</translation>
-<translation id="2595187693729756455">معلومات العقدة</translation>
-<translation id="5789886980848929155">حالة عقدة IPFS</translation>
-<translation id="6599816589121202398">واجهة برمجة التطبيقات</translation>
-<translation id="1327977588028644528">المدخل</translation>
-<translation id="2551123942222622809">سرب</translation>
-<translation id="5201810533706869030">الأشياء</translation>
-<translation id="8028993641010258682">الحجم</translation>
-<translation id="7870625241353817260">StorageMax</translation>
-<translation id="3202131003361292969">المسار</translation>
-<translation id="2892680660204660712">معرف النظير</translation>
-<translation id="7536543993364605970">نسخة الوكيل</translation>
-<translation id="3693482323085649439">العقدة قيد التشغيل</translation>
-<translation id="6315833555896070573">العقدة لا تعمل</translation>
-<translation id="1272079795634619415">إيقاف</translation>
-<translation id="5895138241574237353">إعادة التشغيل</translation>
-<translation id="6762417584993757344">غير مثبت</translation>
-<translation id="4159076046325416152">جاري تثبيت IPFS ...</translation>
-<translation id="3854747677478661601">قم بإجراء عملية مسح لجمع الملفات المهملة</translation>
-<translation id="7376842608449050673">خطأ في جمع البيانات المهملة</translation>
-<translation id="8523162996646111972">(تفاصيل)</translation>
-<translation id="6121825639998459476">التثبيت والبدء</translation>
-<translation id="72868071984333667">تعرف على المزيد حول IPFS والخصوصية</translation>
-<translation id="3793279629218362523">إدارة معرف النظير ومفاتيح نظام IPNS</translation>
-<translation id="6776260067907986254">عقدتي</translation>
-<translation id="8999763401170835879">لقد حدث خطأ ما، يرجى إعادة البدء مرة أخرى</translation>
-<translation id="5433704526290922623">لقد حدث خطأ ما، يرجى محاولة تثبيت العقدة مرة أخرى</translation>
-<translation id="8428368469058794536">خدمة "أي بي إف إس / IPFS"</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="8725066075913043281">إعادة المحاولة</translation>
-<translation id="1886162073868201257">خطأ في تشغيل خدمة IPFS</translation>
-<translation id="5357895013476183089">IPFS غير متصل</translation>
-<translation id="7662930734991751511">لا يمكن تحميل موارد شبكة تخزين اللامركزية IPFS (نظام الملفات بين الكواكب) باستخدام عقدة IPFS المحلية من متصفح Brave</translation>
-<translation id="1141556610026845297">فشل في استخدام عقدة IPFS المحلية لتحميل موارد IPFS المطلوبة. انقر فوق زر "متابعة" لاستخدام البوابة العامة بدلاً من ذلك، وللعودة تلقائياً إلى البوابة العامة في المستقبل.</translation>
-<translation id="3373798179786163193">تابع استخدام البوابة العامة</translation>
-<translation id="1974060860693918893">الإعدادات المتقدّمة</translation>
-<translation id="9096577886148726047">إخفاء الإعدادات المتقدمة</translation>
-<translation id="182581792765792826">لا يمكن لمتصفح Brave تحميل موارد IPFS المطلوبة إما لأن عقدة IPFS المحلية من Brave لم تبدأ، أو بسبب عدم وجود نظراء متصلين متاحين في الوقت الحالي. إذا اخترت "متابعة"، فسيعود متصفح Brave تلقائيًا إلى البوابة العامة الافتراضية عندما يفشل استخدام عقدة IPFS المحلية من Brave. يمكنك تغيير هذا الإعداد في أي وقت من إعدادات Brave.</translation>
-<translation id="8026038288183400906">تفضيل IPFS</translation>
-<translation id="2058855456574089690">قم بإعداد تفضيلات IPFS الخاصة بك</translation>
-<translation id="4780526507945807546">استخدم عقدة IPFS المحلية من متصفح Brave</translation>
-<translation id="8148464361648742409">استخدم عنوان بوابة عام</translation>
-<translation id="5123478056123923857">IPFS (نظام الملفات بين الكواكب) هي الشبكة العامة لتخزين وتسليم البيانات من نظير إلى نظير. هذا البروتوكول له اعتبارات خصوصية مختلفة عن HTTP(S).</translation>
-<translation id="1216911189668016151">يساهم جهاز الكمبيوتر الخاص بك في الشبكة العامة، ولكن قد يتم كشف عنوان IP وأي محتوى تطلبه أو تقدمه. يتم التحقق من المحتوى الذي تطلبه عبر IPFS قبل تقديمه إليك. قد لا تستخدم طلبات الشبكة وكيل المتصفح وإعدادات DNS.</translation>
-<translation id="8664689531113048642">يحمي عنوان IP الخاص بك والمحتوى ’ الذي تطلبه من مراقبين محتملين تابعين لجهات خارجية، ولكن ليس من مشغل البوابة العام. يعتبر مشغل البوابة مسؤولاً عن ضمان أن المحتوى الذي يتم تقديمه لك عبر البوابة هو المحتوى الذي طلبته. أيضاً، لا يساهم جهاز الكمبيوتر الخاص بك في شبكة IPFS العامة.</translation>
-<translation id="3977809385703587108">يمكنك تغيير تفضيلاتك مرة أخرى في</translation>
-<translation id="3340978935015468852">الإعدادات</translation>
-<translation id="4148957013307229264">جارِ التثبيت ...</translation>
-<translation id="4219228508273972445">جارٍ البحث عن أقران ...</translation>
-<translation id="1902096227388293745">لا يوجد نظراء متاحون، جارِ إعادة المحاولة ...(<ph name="ATTEMPTS_NUMBER"/> محاولات متبقية)</translation>
-<translation id="1675751799495331928">لقد تجاوزنا الحد الأقصى للمحاولات، حاول مرة أخرى لاحقاً.</translation>
-<translation id="4499666752625407848">حدث خطأ أثناء التحديث.</translation>
-<translation id="62991515067726424">تم تحميل هذا المحتوى عبر بروتوكول IPFS</translation>
-<translation id="7263366446813126341">نظام الملفات اللامركزي (IPFS) هو شبكة عامة لتخزين البيانات من نظير إلى نظير وتسليمها. يمكنك معرفة المزيد حول تكامل Brave أو تكوين إعدادات IPFS الخاصة بك في أي وقت.</translation>
-<translation id="3175567740517780285">إعدادات IPFS</translation>
-<translation id="8914505352873092008">انتقل إلى صفحة إعدادات IPFS</translation>
-<translation id="3465468510001693544">تشخيصات IPFS</translation>
-<translation id="2527518382346359563">انتقل إلى صفحة تشخيصات IPFS</translation>
-<translation id="8192016636169857406">مستندات IPFS</translation>
-<translation id="6863052043162730918">انتقل إلى صفحة مستندات IPFS</translation>
-<translation id="3862600063748690056">اكتمل استيراد IPFS</translation>
-<translation id="8263749381887932384">اكتمل استيراد IPFS جزئيًا</translation>
-<translation id="2145699434318651911">فشل استيراد IPFS</translation>
-<translation id="5525148540855044244">تم نسخ الرابط القابل للمشاركة: <ph name="SHAREABLE_LINK"/></translation>
-<translation id="3741998951694470470">فشل إحضار البيانات للاستيراد</translation>
-<translation id="7900950536120202771">خطأ داخلي في عقدة IPFS</translation>
-<translation id="1036635552229153800">تم تحميل البيانات بنجاح، ولكن لم تنتقل إلى دليل العناصر المستوردة من brave. يمكنك القيام بذلك يدويًا في صفحة إعدادات الاستيراد.</translation>
 <translation id="572392919096807438">تذكر قراري</translation>
 <translation id="7978789143098237970">حتى أغلق هذا الموقع</translation>
 <translation id="3523195733429162409">لمدة 24 ساعة</translation>
@@ -597,6 +465,10 @@
 <translation id="5770656036486891920">تريد <ph name="URL"/> استخدام ملفات تعريف ارتباط الجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
 <translation id="6053826678715267477">السماح بالوصول إلى موارد Localhost</translation>
 <translation id="2973562729984406132">يرغب <ph name="URL"/> في الوصول إلى موارد Localhost</translation>
+<translation id="5939518447894949180">إعادة الضبط</translation>
+<translation id="3349204812119681938">إعادة تعيين Ping Rewards</translation>
+<translation id="4915997950539925115">عند إعادة التعيين، سيُحذف ملفك الشخصي الحالي على Ping Rewards، ولن يتم تمكين Ping Rewards بعد الآن. إذا قمت بتمكين Ping Rewards مرة أخرى لاحقًا، فستبدأ بملف تعريف جديد. اقرأ مقالة الدعم <ph name="LINK_BEGIN"/> حول إعادة تعيين <ph name="LINK_END"/> للحصول على مزيد من التفاصيل.</translation>
+<translation id="4806029412510565611">أفهم أنه سيتم حذف ملف تعريف Ping Rewards الحالي وبيانات Ping Rewards من جهازي، وقد قرأت<ph name="LINK_BEGIN"/>مقالة الدعم حول إعادة التعيين<ph name="LINK_END"/>.</translation>
 <translation id="7717357606512850995">تحقق من الحالة</translation>
 <translation id="6473937687348632190">اكتملت مدفعوعات مكافآت <ph name="MONTH"/>.</translation>
 <translation id="1711367267038576241">ستبدأ معالجة دفعات مكافآت <ph name="MONTH"/> بحلول <ph name="DATE"/>.</translation>
@@ -612,32 +484,34 @@
 <translation id="3026978804849658576">عرض البيان</translation>
 <translation id="1848737374354350807">الرصيد</translation>
 <translation id="6516984207843289176">الاتصال بالحساب</translation>
-<translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>هل أنت مستعد لبدء الربح؟<ph name="BOLD_END"/> قم بربط أو إنشاء حساب مع أحد شركائنا.</translation>
-<translation id="902298128239575729">إرسال المساهمات مع Brave Rewards</translation>
-<translation id="6276721355724491595">ستتمكن من إرسال مساهمات عند الطلب إلى منشئي المحتوى المفضلين لديك باستخدام رصيد Brave Rewards الخاص بك بمجرد أن يكون لديك حساب مُستضاف متصل.</translation>
+<translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>هل أنت مستعد للبدء في تحقيق الربح؟<ph name="BOLD_END"/> قم بربط حساب حتى يكون لدينا مكان لإرسال أرباحك.</translation>
+<translation id="902298128239575729">إرسال المساهمات مع Ping Rewards</translation>
+<translation id="6276721355724491595">ستتمكن من إرسال مساهمات عند الطلب إلى منشئي المحتوى المفضلين لديك باستخدام رصيد Ping Rewards الخاص بك بمجرد أن يكون لديك حساب مُستضاف متصل.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
-      =1 {لقد زرت هذا الشهر # منشئ المحتوى المدعوم من Brave Rewards}
-      other {لقد زرت هذا الشهر # من منشئي المحتوى المدعومين من Brave Rewards}
+      =1 {لقد زرت هذا الشهر # منشئ المحتوى المدعوم من Ping Rewards}
+      other {لقد زرت هذا الشهر # من منشئي المحتوى المدعومين من Ping Rewards}
     }</translation>
-<translation id="6067959437127691361">يساعد استخدام Brave Rewards في دعم منشئي المحتوى ويتيح لك ربح BAT.</translation>
-<translation id="1187367336925051518">مكافآت <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
-<translation id="3274366539954332481">لقد وصلت مكافآت إعلانات <ph name="MONTH"/> الخاصة بك!</translation>
-<translation id="7861645265922445992">المطالبة بالمكافآت</translation>
-<translation id="9013419433042554094">المطالبة بالرموز المميزة</translation>
+<translation id="3264975266761862670">هل أنت مستعد لبدء الكسب؟</translation>
+<translation id="2784412028126205842">ربط حساب الدفع</translation>
+<translation id="766126983336630294">{ADS_VIEWED, plural,
+      =0 {لقد شاهدت<ph name="COUNT_BEGIN"/># إعلانات<ph name="COUNT_END"/> هذا الشهر}
+      =1 {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># الإعلان<ph name="COUNT_END"/> الذي شاهدته هذا الشهر.}
+      other {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># إعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
+    }</translation>
+<translation id="6067959437127691361">يساعد استخدام Ping Rewards في دعم منشئي المحتوى ويتيح لك ربح BAT.</translation>
+<translation id="944736176598169208">Rewards</translation>
 <translation id="2359808026110333948">متابعة</translation>
-<translation id="885805571521218129">يمثل هذا نطاق أرباحك المقدرة للإعلانات التابعة لموقع Brave لهذا الشهر.</translation>
+<translation id="885805571521218129">يمثل هذا نطاق أرباحك المقدرة للإعلانات التابعة لموقع Ping لهذا الشهر.</translation>
 <translation id="3863981251715594911">كيف يعمل؟</translation>
-<translation id="4782365133987903299">لديك <ph name="DAYS"/> قبل المطالبة</translation>
-<translation id="7931127789630755251">اكسب الرموز المميزة من خلال مشاهدة الإعلانات الخاصة في موقع Brave.</translation>
+<translation id="7931127789630755251">اكسب الرموز المميزة من خلال مشاهدة الإعلانات الخاصة في موقع Ping.</translation>
 <translation id="2278423362884506724">قم بدعم صانعي المحتوى واستخدم الرموز المميزة الخاصة بك لشراء بطاقات هدايا، ومبادلتها بعملات أخرى، ومزايا أخرى أيضًا.</translation>
 <translation id="6278643716658443228">إعدادات المكافآت</translation>
 <translation id="2862978891748913252">حدّد بلدك</translation>
-<translation id="3717922248131893262">لمواصلة استخدام Brave Rewards، حدد بلدك حتى نتمكن من عرض الخيارات والإعلانات المناسبة لمنطقتك. <ph name="LINK_BEGIN"/>سياسة الخصوصية<ph name="LINK_END"/></translation>
+<translation id="3717922248131893262">لمواصلة استخدام Ping Rewards، حدد بلدك حتى نتمكن من عرض الخيارات والإعلانات المناسبة لمنطقتك. <ph name="LINK_BEGIN"/>سياسة الخصوصية<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">ابدأ في استخدام Rewards</translation>
-<translation id="2221902203895354376">منحة الرموز المميزة متاحة!</translation>
 <translation id="2956070106555335453">ملخص</translation>
 <translation id="2369994359029526515">مُنشِئ غير مُصدَّق</translation>
-<translation id="3984338085370091436">لم يتم التحقق من هذا المنشئ بعد مع Brave Creators. ستتمكن من إرسال المساهمات إليهم بمجرد التحقق منها.</translation>
+<translation id="3984338085370091436">لم يتم التحقق من هذا المنشئ بعد مع Ping Creators. ستتمكن من إرسال المساهمات إليهم بمجرد التحقق منها.</translation>
 <translation id="6020176662032623904">مُنشِئ مُصدَّق</translation>
 <translation id="8635423276837443905">تحديث حالة التحقق من المنشئ</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> على <ph name="PLATFORM"/></translation>
@@ -646,65 +520,71 @@
 <translation id="6965382102122355670">موافق</translation>
 <translation id="6727102863431372879">تعيين</translation>
 <translation id="8853725596990766789">تغيير المبلغ</translation>
-<translation id="1609556006143307897">أنت تساعد في دعم مُنشئي المحتوى</translation>
+<translation id="5899814466108868020">أنت تساعد في دعم Ping ومجتمع BAT</translation>
 <translation id="654447476965480878">تعرف على المزيد حول ربح BAT</translation>
 <translation id="4105212447337987768">في <ph name="DATE"/>، سنتوقف عن دعم أرصدة BAT الافتراضية الحالية. قم بربط حساب مُستضاف قبل هذا التاريخ حتى نتمكن من تحويل رصيدك المُكتسب إلى الحساب لمُستضاف الخاص بك، وإلا فسيتم فقدان رصيدك.</translation>
 <translation id="707569835145765061">الإجراء المطلوب: قم بربط حساب مُستضاف وإلا ستفقد vBAT الخاصة بك</translation>
-<translation id="1258144146756156541">أكّد على أنك إنسان</translation>
-<translation id="1555514580945108302">عذرًا، ولكن هذا غير صحيح. حاول مرة أخرى.</translation>
-<translation id="8078414184292711961">اسحب أيقونة BAT إلى <ph name="HINT"/> الهدف.</translation>
-<translation id="2151535059686617995">إنه يوم سعدك!</translation>
-<translation id="4560448935659791043">لقد ربحتَ مكافأة إعلانات!</translation>
-<translation id="6333727259565526314">مكافأتك في طريقها إليك.</translation>
-<translation id="39734939514946950">مبلغ مكافأتك</translation>
-<translation id="717952606991220586">عذرًا، حدث خطأ ما. الرجاء المحاولة مرة أخرى لاحقًا.</translation>
-<translation id="7210234701206674260">إن مكافآت Brave لديه مشكلة. الرجاء المحاولة مرة أخرى لاحقًا.</translation>
 <translation id="3358400027937159351">لقد ساهمت بقيمة<ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">تم تسجيل خروجك</translation>
 <translation id="3035648636451344428">يحدث ذلك من وقت إلى آخر لإبقاء حسابك على <ph name="PROVIDER"/> آمنًا. في أثناء تسجيل الخروج، ستستمر في تلقي المدفوعات، إلا انك لن تتمكن من رؤية رصيدك أو إرسال إسهامات من حسابك على <ph name="PROVIDER"/>.</translation>
+<translation id="9074594632540931067">خطأ: BAT غير متوفر</translation>
+<translation id="5382684862562314222">لم يتم دعم BAT حتى الآن في منطقتك بعد، في Uphold.</translation>
+<translation id="6996157559236886133">خطأ: وظائف محدودة لحساب Uphold</translation>
 <translation id="1677961202754619328">وفقًا لـمنصة Uphold، هناك حاليًا بعض القيود على حساب Uphold الخاص بك. يُرجى تسجيل الدخول إلى حساب Uphold الخاص بك والتحقق مما إذا كانت هناك أي إشعارات أو متطلبات حساب متبقية مطلوب إكمالها، ثم حاول مرة أخرى.</translation>
 <translation id="9029009481113741943">تسجيل الدخول مجددًا</translation>
 <translation id="2429828319207652823">كانت هناك مشكلة في معالجة مساهمتك.</translation>
 <translation id="6390041270339783491">فشل الإسهام الشهري</translation>
 <translation id="7047578174221019462">جرت معالجة إسهاماتك الشهرية.</translation>
-<translation id="2529827670795983639">يبدو أن هذا الإحراء لا يُجدي. ستظل Brave Ads متوقفة مؤقتًا. تواصل معنا إذا احتجت إلى مساعدة في كلمة التحقق.</translation>
+<translation id="2529827670795983639">يبدو أن هذا الإحراء لا يُجدي. ستظل Ping Ads متوقفة مؤقتًا. تواصل معنا إذا احتجت إلى مساعدة في كلمة التحقق.</translation>
 <translation id="261607053214862521">تجاوزت الحد الأقصى للمحاولات</translation>
 <translation id="2323171459178104277">تم الحلّ!</translation>
-<translation id="1512837998731269583">ستُستأنف الإعلانات والمكاسب الآن. نشكرك على مساعدتنا في حماية Brave Reward والإعلانات القائمة على الخصوصية.</translation>
+<translation id="1512837998731269583">ستُستأنف الإعلانات والمكاسب الآن. نشكرك على مساعدتنا في حماية Ping Reward والإعلانات القائمة على الخصوصية.</translation>
 <translation id="3247549836099021862">التواصل مع الدعم</translation>
 <translation id="5234764350956374838">رفض</translation>
 <translation id="7859066142771796818">استفد من هذه الرموز المميزة من خلال استخدامها لشراء بطاقات هدايا، وبادلها بعملات أخرى، وادعم صانعي المحتوى، واستفد من مزايا أخرى أيضًا.</translation>
-<translation id="5425006356459378415">مكافآت Brave غير متوفرة</translation>
-<translation id="909076461795862330">لسوء الحظ، حدث خطأ أثناء محاولة إعداد مكافآت Brave. يُرجى إعادة المحاولة.</translation>
+<translation id="7352651011704765696">حدث خطأ ما</translation>
+<translation id="5425006356459378415">مكافآت Ping غير متوفرة</translation>
+<translation id="909076461795862330">لسوء الحظ، حدث خطأ أثناء محاولة إعداد مكافآت Ping. يُرجى إعادة المحاولة.</translation>
 <translation id="3180990265682133881">لسوء الحظ، حدث خطأ أثناء محاولة ضبط بلدك. يُرجى إعادة المحاولة.</translation>
-<translation id="5931798071481566121">تم تعطيل عمليات تسجيل الدخول الجديدة في مكافآت Brave حاليًا في منطقتك. ولكن يمكنك دائمًا إعادة المحاولة لاحقًا.<ph name="LINK_BEGIN"/>تعرّف على المزيد<ph name="LINK_END"/></translation>
+<translation id="5931798071481566121">تم تعطيل عمليات تسجيل الدخول الجديدة في مكافآت Ping حاليًا في منطقتك. ولكن يمكنك دائمًا إعادة المحاولة لاحقًا.<ph name="LINK_BEGIN"/>تعرّف على المزيد<ph name="LINK_END"/></translation>
 <translation id="6439128034594289376">واو! أنت جاهز تمامًا!</translation>
 <translation id="6136350726756049410">الآن يمكنك الحصول على مكافأة عند مشاهدة الإعلانات، لذا فأنت تساهم في جعل الموقع مكانًا أفضل للجميع. مما يعد أمرًا رائعًا!</translation>
-<translation id="5547108999862247665">كيف تعمل خاصية المكافآت الخاصة بموقع (Brave (Brave Rewards؟</translation>
+<translation id="5547108999862247665">كيف تعمل خاصية المكافآت الخاصة بموقع (Ping (Ping Rewards؟</translation>
 <translation id="3970520675790340955">اختر بلدك حتى نتمكن من عرض الخيارات والإعلانات المناسبة لمنطقتك.</translation>
 <translation id="6945221475159498467">تحديد</translation>
 <translation id="3279158300746391749">اضغط على رمز BAT <ph name="BAT_ICON"/> في شريط عنوان URL للبدء.</translation>
 <translation id="8465790416279415448">بالمتابعة؛ أنت توافق على <ph name="TOS_LINK_BEGIN"/>شروط الخدمة<ph name="TOS_LINK_END"/> و <ph name="PP_LINK_BEGIN"/>سياسة الخصوصية<ph name="PP_LINK_END"/>.</translation>
-<translation id="1015443539415537847">عذرًا، مكافآت Brave غير متوفرة</translation>
-<translation id="5007776270364097327">لسوء الحظ، يبدو أنك في منطقة لا يتوفر فيها مكافآت Brave.</translation>
+<translation id="8981626318554555706">حدد منطقتك</translation>
+<translation id="6923445315496949274">حدد منطقتك حتى نتمكن من عرض الخيارات وميزة الإعلانات المناسبة لمنطقتك.</translation>
+<translation id="840952951051929644">من خلال تمكين المكافآت، توافق على <ph name="TOS_LINK_BEGIN"/>شروط الخدمة<ph name="TOS_LINK_END"/> و<ph name="PP_LINK_BEGIN"/>سياسة الخصوصية<ph name="PP_LINK_END"/>.</translation>
+<translation id="5259608623172605993">احصل على مكافأة نظير الإعلانات الخاصة التي تشاهدها في Ping</translation>
+<translation id="3099020087817489135">احصل على مزايا  وخصومات خاصة</translation>
+<translation id="3991575120992914717">تشغيل Ping Rewards</translation>
+<translation id="1015443539415537847">عذرًا، مكافآت Ping غير متوفرة</translation>
+<translation id="5007776270364097327">لسوء الحظ، يبدو أنك في منطقة لا يتوفر فيها مكافآت Ping.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>اطلع على المزيد<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">لا تقلق</translation>
 <translation id="5027616819996705541">لا يزال بإمكانك التصفح بخصوصية!</translation>
 <translation id="1886682615222609631">الأرباح حتى الآن</translation>
+<translation id="7649070708921625228">مساعدة</translation>
+<translation id="6042308850641462728">المزيد</translation>
+<translation id="6245259297588415877">منشئو المحتوى</translation>
+<translation id="1736419249208073774">استكشاف</translation>
+<translation id="932327136139879170">الصفحة الرئيسية</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
 <translation id="4185473179105062442">استقبل BAT مباشرة على عنوان تشفير ذاتي الحماية</translation>
 <translation id="5802986777701714573">لقد أضفنا طريقة جديدة لك لتلقي مكافآتك الشهرية من BAT. اربط حساب لدى أحد شركائنا أو استخدم خيار الحماية الذاتية الجديد لبدء الربح الآن.</translation>
 <translation id="3251885322612056119">شروط الخدمة المحدثة</translation>
-<translation id="7454675823870922788">قمنا بتحديث شروط الخدمة الخاصة بـ Brave Rewards. لقد أجرينا هذه التحديثات لتوضيح شروطنا والتأكد من أنها تغطي الميزات الجديدة. إذا واصلت استخدام برنامج Brave Rewards، فإنك توافق على شروط الخدمة المُحدّثة. إذا لم توافق على ذلك، فيمكنك <ph name="LINK_BEGIN"/> إعادة تعيين<ph name="LINK_END"/> Brave Rewards، مما سيؤدي إلى تعطيل الميزة.</translation>
-<translation id="5192526308598085294">راجع شروط خدمة <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/></translation>
+<translation id="7454675823870922788">قمنا بتحديث شروط الخدمة الخاصة بـ Ping Rewards. وأجرينا هذه التحديثات لتوضيح شروطنا والتأكد من أنها تغطي الميزات الجديدة. إذا واصلت استخدام برنامج Ping Rewards، فإنك توافق على شروط الخدمة المُحدّثة. إذا لم توافق على ذلك، فيمكنك <ph name="LINK_BEGIN"/> إعادة تعيين<ph name="LINK_END"/> Ping Rewards، مما سيؤدي إلى تعطيل الميزة.</translation>
+<translation id="5192526308598085294">راجع شروط خدمة <ph name="LINK_BEGIN"/>Ping Rewards<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">موافق</translation>
 <translation id="86107454835395919">تعيين كمساهمة شهرية</translation>
-<translation id="6621880242105464352">يجمع Brave <ph name="FEE_PCT"/> من المبلغ المرسل كرسوم معالجة.</translation>
+<translation id="6621880242105464352">يجمع Ping <ph name="FEE_PCT"/> من المبلغ المرسل كرسوم معالجة.</translation>
 <translation id="1420756770787071946">دعم هذا المنشئ</translation>
 <translation id="1483493594462132177">إرسال</translation>
 <translation id="6632987674051304487">قم بالإرسال باستخدام <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">استخدام محفظة Web3</translation>
-<translation id="4530198836725543997">قام هذا المنشئ بالتسجيل في Brave ويمكنه تلقي مساهمات من مستخدمي Brave Rewards.</translation>
+<translation id="4530198836725543997">قام هذا المنشئ بالتسجيل في Ping ويمكنه تلقي مساهمات من مستخدمي Ping Rewards.</translation>
 <translation id="4529874892536380156">اجعل هذه مساهمة شهرية متكررة. يمكنك إلغاؤها في أي وقت.</translation>
 <translation id="1177863135347784049">مخصص</translation>
 <translation id="5907051927340164207">أنت ترسلُ بالفعل مساهمات شهرية إلى منشئ المحتوى هذا</translation>
@@ -714,17 +594,18 @@
 <translation id="8379442066667303579">لا يزال بإمكانك إرسال المساهمات المشفرة إلى منشئ المحتوى هذا باستخدام محفظة Web3 الخاصة بك.</translation>
 <translation id="5738476099155572155">إرسال المساهمات المشفرة</translation>
 <translation id="1162617592412598913">تم تسجيل الخروج من <ph name="PROVIDER"/></translation>
-<translation id="1782485249139199535">يبدو أنك قمت بتسجيل الخروج من <ph name="PROVIDER"/> الخاص بـ Brave Rewards. سجل الدخول مرة أخرى للمتابعة.</translation>
+<translation id="1782485249139199535">يبدو أنك قمت بتسجيل الخروج من <ph name="PROVIDER"/> الخاص بـ Ping Rewards. سجل الدخول مرة أخرى للمتابعة.</translation>
 <translation id="4379244534135194459">يمكنك أيضًا إرسال المساهمات المشفرة إلى منشئ المحتوى هذا باستخدام محفظة Web3 الخاصة بك.</translation>
 <translation id="2718860759172031728">تسجيل الدخول إلى <ph name="PROVIDER"/></translation>
 <translation id="6268134562674951939">ليس لديك ما يكفي من الرموز المميزة</translation>
-<translation id="5562948772940025260">يمكنك فقط إرسال ما يصل إلى BAT <ph name="AMOUNT"/> باستخدام رصيد Brave Rewards الخاص بك.</translation>
+<translation id="5562948772940025260">يمكنك فقط إرسال ما يصل إلى BAT <ph name="AMOUNT"/> باستخدام رصيد Ping Rewards الخاص بك.</translation>
 <translation id="4827581232860040208">حدثت مشكلة أثناء إرسال مساهمتك</translation>
 <translation id="3259723213051400722">يُرجى إعادة المحاولة.</translation>
+<translation id="8725066075913043281">حاول مجدداً</translation>
 <translation id="5379685283876547860">تم إرسال المساهمة!</translation>
 <translation id="7063168612616047608">نشكرك جزيل الشكر على دعم منشئي المحتوى المفضلين لديك</translation>
 <translation id="1041398280582063935">شارك دعمك</translation>
-<translation id="4001190813297686107">لقد ساهمتُ للتو <ph name="AMOUNT"/> BAT باستخدام متصفح Brave! تعرّف على كيفية دعم منشئي المحتوى والمواقع المفضلة لديك أيضًا: https://brave.com/rewards</translation>
+<translation id="4001190813297686107">لقد ساهمتُ للتو <ph name="AMOUNT"/> BAT باستخدام متصفح Ping! تعرّف على كيفية دعم منشئي المحتوى والمواقع المفضلة لديك أيضًا: https://brave.com/rewards</translation>
 <translation id="1950340257946519340">حدث خطأ غير متوقع</translation>
 <translation id="2605703631071131439">يُرجى إعادة فتح لوحة المساهمة للمحاولة مرة أخرى.</translation>
 <translation id="8855543392451028706">مرحبًا! يمكن للمستخدمين دعم منشئ المحتوى هذا عن طريق إرسال مساهمات إليهم. إنها طريقة لتوجيه الشكر لهم على إنشاء محتوى رائع.</translation>
@@ -733,6 +614,85 @@
 <translation id="1053740665683265460">استخدم محفظتك على Web3 لإرسال مساهمة لمرة واحدة إلى منشئ  المحتوى هذا وإظهار تقديرك له</translation>
 <translation id="6859705040495339375">إرسال من خلال محفظة Web3</translation>
 <translation id="7615852194054434287">يبدو أن منشئ المحتوى هذا لم يُجَهز لتلقي المساهمات عبر محافظ Web3 بعد.</translation>
+<translation id="8817096698141999876">الحسابات المُستضافة (يتطلب التحقق من الهوية)</translation>
+<translation id="1539433155512862005">الحسابات المُستضافة هي حسابات ذات خدمات تابعة لجهات خارجية موثوقة والتي تحتفظ بـ BAT الخاص بك نيابةً عنك.</translation>
+<translation id="6834831484510296932">الحماية الذاتية</translation>
+<translation id="4208917415153655958">تمنحك الحماية الذاتية تحكمًا استثنائيًا في برنامج BAT الخاص بك، إلى جانب المسؤولية الكاملة عن أمانه.</translation>
+<translation id="9118326146754987354">في حالة الحفظ الذاتي، سيتم دفع أرباح BAT على هيئة SPL-BAT على شبكة Solana.</translation>
+<translation id="6751803821780922506">اختر المكان الذي ترغب في تلقي BAT</translation>
+<translation id="3162035476318501831">تعرف على المزيد حول المناطق والدعم.</translation>
+<translation id="7329170127335794328">غير متوفر حاليًا في بلدك</translation>
+<translation id="966956302643313970">للبدء في كسب مكافآت Basic Attention Token (رمز الانتباه الأساسي) (BAT)، قم بربط أحد الحسابات. سيتم تحويل BAT الذي تكسبه تلقائيًا إلى حسابك كل شهر.</translation>
+<translation id="4009439571146350519">أو أي محفظة أخرى تدعم Solana</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>شروط الاستخدام<ph name="TOS_LINK_END"/>و<ph name="PP_LINK_BEGIN"/>سياسة الخصوصية<ph name="PP_LINK_END"/>.</translation>
+<translation id="1692293127547800972">هناك خطأ ما. حاول مرة أخرى</translation>
+<translation id="756341217015623253">تسجيل الدخول أو الاشتراك</translation>
+<translation id="2653844658857826081">جديد</translation>
+<translation id="1165039591588034296">خطأ</translation>
+<translation id="5826530373788377342">لقد وصلت إلى الحد الأقصى لعدد الأجهزة لهذا <ph name="PROVIDER"/> الحساب.</translation>
+<translation id="6700131426769360592">تم الوصول إلى حد الجهاز</translation>
+<translation id="6895088073061692390">للأسف، تم وضع علامة على ملفك الشخصي على Ping Rewards نظرًا لأن عمليات الفحص التلقائية لدينا وجدت بعض أنشطة Ping Ads غير المتوقعة.</translation>
+<translation id="4229056297802204697">أثناء وضع علامة على ملفك الشخصي، قد تستمر في رؤية الإعلانات، ولكنك لن تكون مؤهلاً لتلقي الأرباح. ولن تتمكن أيضًا من ربط الحساب المستضاف بـ Ping Rewards.</translation>
+<translation id="5124846913141379164">يمكن أن يتم وضع علامة على ملفك الشخصي بطريق الخطأ، ولا يلزم اتخاذ أي إجراء فوري من جانبك. قد تتم إزالة العلامة الموجودة على ملفك الشخصي في المستقبل.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>تعرف على المزيد حول عملية Ping للإبلاغ عن ملفات تعريف Rewards.<ph name="END_LINK"/></translation>
+<translation id="4699218748197721830">تم وضع علامة على ملف تعريف Ping Rewards</translation>
+<translation id="2607420597216860026">يرجى المحاولة مرة أخرى بعد الانتهاء من التحقق من الهوية في <ph name="PROVIDER"/>.</translation>
+<translation id="5037332159336402972">تحتاج إلى حساب مُفعّل منه لتسجيل الدخول</translation>
+<translation id="1859789048900659918">حسنًا، يبدو أن بلد Ping Rewards لا يتطابق مع بلد<ph name="PROVIDER"/> الحساب الذي تحاول الاتصال به.</translation>
+<translation id="3080649636035373911">البلد غير متطابق</translation>
+<translation id="5260522591743022748">عفوًا، يبدو أن مكافآت Ping الخاصة بك تم التحقق منها بالفعل باستخدام حساب <ph name="PROVIDER"/> آخر. يرجى محاولة التحقق مرة أخرى باستخدام حسابك السابق.</translation>
+<translation id="6408621361472415607">حساب مختلف</translation>
+<translation id="5225019866741699134">يبدو أن الاتصال <ph name="PROVIDER"/>بمكافآت Ping غير متاح مؤقتًا. يُرجى المحاولة مرة أخرى لاحقًا.</translation>
+<translation id="6105073131081187815">يمكنك عرض <ph name="BEGIN_LINK"/>حالة الخدمة هنا <ph name="END_LINK"/>.</translation>
+<translation id="3969419585013689529">الاتصال بالمسؤول المحدد غير متاح مؤقتًا</translation>
+<translation id="1024520300696337331">يتعذّر ربط حساب <ph name="PROVIDER"/> الخاص بك بملفك التعريفي في Ping Rewards في هذا الوقت. تم تسجيل حساب <ph name="PROVIDER"/> الخاص بك في بلد غير مدعوم حاليًا للربط بـ Ping Rewards.</translation>
+<translation id="619384413404021992">راجع القائمة الحالية <ph name="LINK_BEGIN"/>للمناطق المدعومة وتعرّف على المزيد<ph name="END_LINK"/> حول ربط حساب مُستضاف بـ Ping Rewards.</translation>
+<translation id="7933193151688235283">المنطقة غير مدعومة حاليًا</translation>
+<translation id="5376524136040178759">وفقًا لـ Uphold، توجد حاليًا بعض القيود على حساب Uphold الخاص بك. يُرجى تسجيل الدخول إلى حساب Uphold الخاص بك والتحقق مما إذا كانت هناك أي إشعارات أو متطلبات حساب متبقية لاستكمالها، ثم أعد المحاولة مرة أخرى. على سبيل المثال، قد يلزمك إرسال مزيد من المعلومات إلى Uphold.</translation>
+<translation id="6349168810769273818">وظائف محدودة لحساب Uphold</translation>
+<translation id="1279668677171152085">حدثت مشكلة أثناء التحقق من طلبك لربط حساب <ph name="PROVIDER"/> الخاص بك بـ Ping Rewards. يمكنك <ph name="BEGIN_LINK"/>الاتصال بالدعم<ph name="END_LINK"/> للحصول على مزيد من المساعدة.</translation>
+<translation id="8761736799800527591">تعذّر التحقق من صحة الطلب</translation>
+<translation id="8285276813470932793">لم نتمكن من إكمال طلبك، يُرجى إعادة المحاولة، <ph name="LINK_BEGIN"/>والاتصال بالدعم<ph name="LINK_END"/> إذا استمرت المشكلة.</translation>
+<translation id="135956957367307069">لا يزال طلبك قيد المعالجة. يرجى الانتظار.</translation>
+<translation id="9033500121333471466">وضع علامة كإعلان غير لائق</translation>
+<translation id="4477865412359526485">لا يوجد حاليًا أي سجل لإعلانات Ping.</translation>
+<translation id="4256040774643144761">سجل الإعلانات</translation>
+<translation id="1188389905162088150">الإعلانات التي تلقيتها خلال 30 يومًا الماضية</translation>
+<translation id="4296467068886908539">الحد الأقصى <ph name="NUM"/>/ساعة</translation>
+<translation id="3266055641283174315">نوع الإعلان</translation>
+<translation id="8706824117053903390">عدد المشاهدات هذا الشهر</translation>
+<translation id="5105890735834548623">إعدادات الإعلانات</translation>
+<translation id="96989662637180657">تظهر إعلانات Ping Search على <ph name="LINK_BEGIN"/>Ping Search<ph name="LINK_END"/>.</translation>
+<translation id="3138160233953903250">إعدادات الإعلانات</translation>
+<translation id="2446517297521536638">يمكنك التحكم في أنواع إعلانات Ping التي تشاهدها وعدد مرات ظهورها. حيث كلما زاد عدد الإعلانات التي تشاهدها، زادت أرباحك.</translation>
+<translation id="5860033963881614850">إيقاف</translation>
+<translation id="5916664084637901428">تشغيل</translation>
+<translation id="4284417062730522399"><ph name="NUM"/> الإعلانات التي تم تلقيّها هذا الشهر</translation>
+<translation id="7697696066810593560">لقد ربحت <ph name="NUM"/> حتى الآن هذا الشهر</translation>
+<translation id="6733193230212030816">من المقدر أن تكسب ما يتراوح بين: <ph name="RANGE"/></translation>
+<translation id="7924320838799747606">رصيدك</translation>
+<translation id="8714473477079007268">محفظة <ph name="PROVIDER"/></translation>
+<translation id="3175337080016717494">حساب الدفع</translation>
+<translation id="453760933181416879">الانتقال إلى حسابي</translation>
+<translation id="8290994471756102241">تم تسجيل الخروج</translation>
+<translation id="8414447476773253869">قم بتسجيل الدخول إلى <ph name="PROVIDER"/> لمعرفة رصيدك</translation>
+<translation id="615483366383024791">حساب الدفع</translation>
+<translation id="1060062421977823695">سيتم دفع أرباح BAT الخاصة بك إلى حساب الدفع هذا.</translation>
+<translation id="2544805415966048917">سترسل</translation>
+<translation id="6708522254106492579">ما يصل إلى <ph name="AMOUNT"/> BAT</translation>
+<translation id="7666058404763778706">طريقة تلقائية لدعم المواقع الإلكترونية ومنشئي المحتوى، بناءً على مقدار الوقت الذي تقضيه في المحتوى الخاص بهم.</translation>
+<translation id="4319242254058427792">تم تعطيل المساهمة التلقائية</translation>
+<translation id="1091835891554961609">سيظهر هنا منشئو المحتوى المعتمدون الذين تزورهم أثناء التصفح.</translation>
+<translation id="7714706530499503523">ترسل ميزة المساهمة التلقائية مساهمات شهرية تلقائيًا إلى المبدعين الذين تم التحقق منهم باستخدام Ping، استنادًا إلى مقدار الوقت الذي تقضيه في المحتوى الخاص بهم.</translation>
+<translation id="2358028754328876971">كيف تعمل المساهمة التلقائية؟</translation>
+<translation id="2870560284913253234">الموقع</translation>
+<translation id="1184072843013036520">احصل على المنتجات ذات العلامة التجارية Ping.</translation>
+<translation id="1170674812179664523">متجر بضائع Ping</translation>
+<translation id="8673202990286883068">المزايا التي تتمتع بها</translation>
+<translation id="3699766258844277472">لم تجري إعداد أي مساهمات متكررة بعد.</translation>
+<translation id="957921474773060718">المساهمة التالية:</translation>
+<translation id="351973834053818251">المساهمة المتكررة</translation>
+<translation id="7751260505918304024">عرض الكل</translation>
 <translation id="7090992647511817643">الحساب</translation>
 <translation id="4822132585477111396">معرّف السلسلة</translation>
 <translation id="3269475789479462358">النطاق</translation>
@@ -749,7 +709,12 @@
 <translation id="1128992132632883337">حدث خطأ في تحليل الاستجابة</translation>
 <translation id="5382339341735118861">حدث خطأ عام في معالجة الطلب</translation>
 <translation id="7123780456696055383">المورد المطلوب غير متاح</translation>
-<translation id="1680597601664421644">استيراد مساعد الذاكرة غير صالح لمحفظة Brave</translation>
+<translation id="1680597601664421644">استيراد مساعد الذاكرة غير صالح لمحفظة Ping</translation>
+<translation id="372898731091371291">ما نوع المحفظة الذي ترغب في استيراده؟</translation>
+<translation id="1430728084670406473">محفظة Ethereum/Solana/Filecoin</translation>
+<translation id="8659668419772278776">استيراد عبارة الاسترجاع الخاصة بك من محفظة حالية</translation>
+<translation id="8110492767853188065">محفظة الأجهزة</translation>
+<translation id="7437218084485869007">توصيل محفظة الأجهزة لديك بـ Ping</translation>
 <translation id="4641919696349069826">هناك طلب قيد التقدم بالفعل</translation>
 <translation id="872806943696014633">بيانات المعاملة مفقودة</translation>
 <translation id="7068183357903252127">يجب تحديد بيانات المعاملة "الجهة المرسل إليها" أو "البيانات"</translation>
@@ -773,9 +738,7 @@
 <translation id="5486744676117070166">تعذر الحصول على القيمة لمرة واحدة التالية</translation>
 <translation id="6180576227145734714">يجب أن تكون بيانات المعاملة "الجهة المرسل إليها" عنوانًا صالحًا عند تحديدها</translation>
 <translation id="6688162556547723415">الطريقة المطلوبة و/أو الحساب غير معتمد بواسطة المستخدم.</translation>
-<translation id="1383876407941801731">البحث</translation>
 <translation id="8767749833522980474">عملة مشفرة</translation>
-<translation id="944736176598169208">Rewards</translation>
 <translation id="6122742277607781713">ملف تعريف شخصي</translation>
 <translation id="7020503656406658141">الأسعار</translation>
 <translation id="3586775666459823714">الرموز المميزة غير القابلة للاستبدال (NFT)</translation>
@@ -814,42 +777,86 @@
 <translation id="2329227154184107678">مراجعة الطلب</translation>
 <translation id="3220443877821207794">مراجعة الإرسال</translation>
 <translation id="8530071505111489657">لا توجد رموز مميزة متاحة</translation>
-<translation id="615791330696335475">البحث عن الرمز المميز من خلال الاسم</translation>
+<translation id="9021834401351805394">البحث حسب الاسم أو لصق العنوان</translation>
 <translation id="5009335307032488349">البحث عن NFT بالاسم، بالمعرف</translation>
 <translation id="8667560635828712526">حدد قيمة المساهمة</translation>
-<translation id="4853960199138416955">لا تدعم Brave Wallet حاليًا Bitcoin NFTs (الأرقام الترتيبية). قد يؤدي إرسال BTC من عنوان يحتوي على أرقام ترتيبية إلى نقل الأرقام الترتيبية الخاصة به عن غير قصد.</translation>
+<translation id="4853960199138416955">لا تدعم Ping Wallet حاليًا Bitcoin NFTs (الأرقام الترتيبية). قد يؤدي إرسال BTC من عنوان يحتوي على أرقام ترتيبية إلى نقل الأرقام الترتيبية الخاصة به عن غير قصد.</translation>
+<translation id="29976300677902325">اختر مستلمًا</translation>
+<translation id="7231620608040154667">العناوين الخاصة بي</translation>
+<translation id="4504682768625050939">ادخل نطاقًا  أو عنوانًا عامًا.</translation>
+<translation id="5292796745632149097">إرسال إلى</translation>
+<translation id="7022684620581223496">امتداد نطاق غير صالح</translation>
+<translation id="7620616707541471029">اختر حسابًا للمتابعة</translation>
+<translation id="7099260104593926742">سعر السوق</translation>
+<translation id="6954838107964168963">مملوك</translation>
+<translation id="1976851706319678835">ليست مملوكة</translation>
+<translation id="7372882109707907136">المبلغ/24 ساعة</translation>
+<translation id="8141607516466809432">اختر الأصل الذي تريد ربطه</translation>
+<translation id="6517332033658428773">مراجعة التبديل</translation>
+<translation id="8692596799753687794">اختر مزود عرض الأسعار</translation>
+<translation id="463712644600982655">يُقدِّم كل مُجمِّع أسعارًا باستخدام السيولة من واجهة برمجة التطبيقات (API) الخاصة به. وهم يجمعون معلومات الأسعار من البورصات المختلفة ويُقدِّمون الأسعار بناءً على هذه البيانات.</translation>
+<translation id="3253225298092156258">غير متوفر</translation>
+<translation id="473775607612524610">تحديث</translation>
+<translation id="4389658703251593158">هذا الإقران غير مدعوم بواسطة <ph name="PROVIDER_NAME"/></translation>
+<translation id="1176173785350238153">تغيير مزود الخدمة</translation>
+<translation id="1442774416207457340">توجيه</translation>
+<translation id="8669403359205745187">الحد الأقصى لهبوط السعر</translation>
+<translation id="4537396160118360541">عندما يكون الانحراف بين سعر المعاملة التي قدّمتها والسعر في وقت المعاملة على السلسلة أكبر من هذه القيمة المحددة، فستفشل المعاملة.</translation>
+<translation id="9102352924723221579">تأثير السعر عبارة عن مدى قدرة تداولك على تحريك سعر السوق. وبعض الرموز ذات السيولة المنخفضة أكثر حساسية للتداولات، ومن ثم يمكن حتى للتداولات الصغيرة تغيير السعر كثيرًا.</translation>
+<translation id="6830526162796484210">القيم المُقترحة:</translation>
+<translation id="3882803104394170658">أزواج الأصول الرئيسية: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="8918807203406722697">أزواج العملات المستقرة: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="7056655731948492143">غير ذلك: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="6231782223312638214">مقترح</translation>
+<translation id="8525485643657418753">أرخص</translation>
+<translation id="1224275271335624810">الأسرع</translation>
+<translation id="4071446933408069155">على <ph name="NETWORK_NAME"/></translation>
+<translation id="3751611888003301070">توجيهات</translation>
+<translation id="3799091982455573025">التبديل على <ph name="NETWORK_NAME"/> عبر <ph name="EXCHANGE_NAME"/></translation>
+<translation id="5136093123841570193">الاتصال من <ph name="FRIST_NETWORK_NAME"/> إلى <ph name="SECOND_NETWORK_NAME"/></translation>
+<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} خطوة}
+      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} خطوات}
+    }</translation>
+<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> عبر <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
+<translation id="3735740477244556633">ترتيب بحسب</translation>
+<translation id="6484605214219822434">مراجعة الاتصال</translation>
+<translation id="3365052891357224017">الوقت المقدر</translation>
+<translation id="7448445168067324096">سعر الصرف</translation>
+<translation id="1888985051832898007"><ph name="ONE_TOKEN_VALUE"/> مقابل <ph name="EXCHANGE_VALUE"/></translation>
+<translation id="6728663400147327751">المستلم</translation>
 <translation id="9209024278910716955">الشراء غير مدعوم للشبكة المحددة</translation>
 <translation id="4982630604810554641">جارِ البحث عن النطاق...</translation>
-<translation id="5467044307473123584">تدعم منصة Brave استخدام بوابات خارج السلسلة لحل نطاقات .eth.</translation>
+<translation id="5467044307473123584">تدعم منصة Ping استخدام بوابات خارج السلسلة لحل نطاقات .eth.</translation>
 <translation id="4896417414446851895">يبدو أنك أدخلت عنوان ENS. سنحتاج إلى استخدام محلل تابع لجهة خارجية لحل هذا الطلب، والذي قد يكون قادرًا على رؤية عنوان IP والنطاق لديك.</translation>
 <translation id="8646078615727397565">استخدم نطاق ENS</translation>
 <translation id="1191686659164947414">قد تكون المعاملة في المقدمة</translation>
-<translation id="8914256532272191486">ستُنفذ مبادلتك ضمن الحد الأقصى لمقدار الانحراف الذي تحدده هنا. على سبيل المثال، يعني الانحراف بنسبة 1% أنك على استعداد لقبول ما يصل إلى 1% أقل بسبب ظروف السوق.</translation>
-<translation id="632241521608275119">تحمُّل الانزلاق</translation>
-<translation id="2493281414634883751">ادخل قيمة بين 0.5% و99%</translation>
 <translation id="4500473291496079954">ينتهي في</translation>
 <translation id="2236833281018938257">عنوان المحفظة أو عنوان URL</translation>
 <translation id="928500657730628112">عنوان المحفظة</translation>
-<translation id="6812967455478797345">يستخدم Brave <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> كمجمع DEX.</translation>
+<translation id="6812967455478797345">يستخدم Ping <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> كمجمع DEX.</translation>
 <translation id="151946611346774041">سيجري 0x معالجة عنوان الإيثيريوم وعنوان الـ IP لتنفيذ المعاملة (بما في ذلك الحصول على عروض الأسعار). سيستخدم 0x هذه البيانات لأغراض معالجة المعاملات فقط.</translation>
 <translation id="7465227658364622464">سيقوم جوبيتر بمعالجة عنوان Solana وعنوان IP لتنفيذ معاملة (بما في ذلك الحصول على عروض أسعار). سيستخدم جوبيتر هذه البيانات فقط لأغراض معالجة المعاملات.</translation>
-<translation id="712738518060477110">يتضمن عرض الأسعار <ph name="SWAP_FEE_PERCENTAGE"/> كرسوم لـ Brave.</translation>
+<translation id="712738518060477110">يتضمن عرض الأسعار <ph name="SWAP_FEE_PERCENTAGE"/> كرسوم لـ Ping.</translation>
 <translation id="8368540604723748428">عدد المنازل العشرية أكثر مما يجب</translation>
 <translation id="6575120282593094155">ليس لديك حساب <ph name="ACCOUNT_TYPE"/>. هل تريد إنشاء حساب؟</translation>
+<translation id="1426410128494586442">نعم</translation>
+<translation id="4250680216510889253">لا</translation>
 <translation id="1201402288615127009">التالي</translation>
-<translation id="8712637175834984815">تم</translation>
+<translation id="3214453326297774895">عرض رسالة الاسترداد الخاصة بي</translation>
 <translation id="6896758677409633944">نسخ</translation>
 <translation id="7885157704277298658">تم النسخ.</translation>
 <translation id="6518133107902771759">تحقق</translation>
-<translation id="6042308850641462728">المزيد</translation>
-<translation id="768236965975208017">آمنة، ومتعددة السلاسل، وسهلة الاستخدام. محفظة Brave الخاصة بك على بعد بضع نقرات</translation>
 <translation id="3157931365184549694">استعادة</translation>
-<translation id="2484275747844666540">إنشاء محفظة جديدة</translation>
-<translation id="3662348701117072366">استيراد المحفظة الحالية</translation>
-<translation id="7150150391368236519">ربط محفظة الأجهزة</translation>
+<translation id="414070570958255222">متصفح أصلي. بحماية ذاتية. متعدد السلاسل</translation>
+<translation id="1350120992777389959">تحكم في العملات المشفرة والرموز المميزة غير القابلة للاستبدال (NFT) الخاصة بك. تدعم محفظة Ping سلاسل Ethereum وEVM وSolana وFilecoin وBitcoin وغيرها.</translation>
+<translation id="165255193061631296">هل تحتاج إلى إنشاء محفظة جديدة؟</translation>
+<translation id="1939235910515558387">ابدأ مع محفظة Ping في غضون دقائق</translation>
+<translation id="5844138175312846408">هل لديك محفظة بالفعل؟</translation>
+<translation id="772643556080081594">أريد محفظة للعرض فقط</translation>
+<translation id="4878034296528175352">الحقوق محفوظة ©لشركة Ping Software Inc لعام 2024، إن Ping وشعار Ping علامتان تجاريتان لشركة Ping Software, Inc. قد تكون أسماء المنتجات والشعارات الأخرى علامات تجارية لشركاتها المعنية. جميع الحقوق محفوظة.</translation>
 <translation id="7501957181231305652">أو</translation>
 <translation id="375882617301124395">قم بعمل نسخة احتياطية من crypto wallet</translation>
-<translation id="180032279811483155">في الخطوة التالية، سترى’<ph name="RECOVERY_PHRASE_LENGTH"/>العبارة الاستردادية، والتي يمكنك استخدامها لاستعادة حسابات عملات التشفير الأساسية الخاصة بك. احفظها في مكان آمن، لأن العبارة الاستردادية الخاصة بك هي الطريقة الوحيدة لاستعادة الوصول إلى الحساب في حالة نسيان كلمة المرور، أو فقدان الجهاز أو سرقته، أو إذا كنت تريد تبديل المحافظ.</translation>
 <translation id="5024543173656851695">أُدرك أنه في حال فقدت كلمات الاسترداد الخاصة بي، فلن أتمكن من الوصول إلى محفظة التشفير الخاصة بي.</translation>
 <translation id="8281886186245836920">تخطّي</translation>
 <translation id="6532106788206463496">حفظ التغييرات</translation>
@@ -862,7 +869,7 @@
 <translation id="2339124864228588937">تحقق من عبارة الاسترداد</translation>
 <translation id="3747079125031086337">تحديد الكلمات في العبارة الاستردادية في مكانها الصحيح.</translation>
 <translation id="802060020117206314">لم تتطابق عبارة الاسترداد يرجى المحاولة مرة أخرى.</translation>
-<translation id="8412783472871103529">التحقق من عبارة الاسترداد الخاصة بك</translation>
+<translation id="7345730059518887993">لنتحقق</translation>
 <translation id="2226686084760581391">انقر فوق <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>، و<ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> كلمات من عبارة الاسترداد الخاصة بك.</translation>
 <translation id="7575574239720542222">عبارة الاسترداد غير متطابقة</translation>
 <translation id="8692301574305033504">إنشاء كلمة مرور جديدة</translation>
@@ -875,6 +882,8 @@
 <translation id="9111102763498581341">فتح القفل</translation>
 <translation id="5045550434625856497">كلمة مرور غير صحيحة</translation>
 <translation id="9195657745688986798">فتح المحفظة</translation>
+<translation id="2274014756904854136">اضغط مرتين على الشاشة للمتابعة</translation>
+<translation id="7795718119973968770">تم قفل محفظتك لأسباب أمنية. قم بإلغاء قفل المحفظة للمتابعة.</translation>
 <translation id="9175546523521600401">قفل المحفظة</translation>
 <translation id="765834632354589737">عمل نسخة احتياطية عن المحفظة</translation>
 <translation id="1108298724135935307">المواقع المتصلة</translation>
@@ -883,22 +892,27 @@
 <translation id="352407037922720467">علامة تبويب الرموز المميزة غير القابلة للاستبدال (NFT)</translation>
 <translation id="163697698769819510">انسخ محفظتك احتياطيًا الآن لحماية أصول التشفير الخاصة بك والتأكد من أنك لن تفقد إمكانية الوصول أبدًا.</translation>
 <translation id="1018806299114415224">اعمل نسخة احتياطية الآن</translation>
-<translation id="1400709719911593089">لم يتم تعيين Brave Wallet كمحفظة افتراضية ولن تستجيب لـ web3 DApps. تفضّل بزيارة الإعدادات لتغيير محفظتك الافتراضية.</translation>
+<translation id="1400709719911593089">لم يتم تعيين Ping Wallet كمحفظة افتراضية ولن تستجيب لـ web3 DApps. تفضّل بزيارة الإعدادات لتغيير محفظتك الافتراضية.</translation>
 <translation id="4362717653795263052">استعادة حسابات التشفير الأساسية</translation>
-<translation id="3038077262567136741">أدخل عبارة الاسترداد الخاصة بك لاستعادة حساب تشفير محفظة Brave الخاص بك.</translation>
+<translation id="3038077262567136741">أدخل عبارة الاسترداد الخاصة بك لاستعادة حساب تشفير محفظة Ping الخاص بك.</translation>
 <translation id="955918646509748368">عبارة الاسترداد التي تم إدخالها غير صالحة.</translation>
 <translation id="8107437138787377150">لصق عبارة الاسترداد من الحافظة</translation>
 <translation id="4811736040444856406">عرض عبارة الاسترداد</translation>
-<translation id="4359319875297001084">هل ترغب في توريد محافظ التفشير القديمة الخاصة بـ Brave؟</translation>
+<translation id="4359319875297001084">هل ترغب في توريد محافظ التفشير القديمة الخاصة بـ Ping؟</translation>
 <translation id="3331452756822160641">كلمة مرور جديدة</translation>
 <translation id="8624315169751085215">نسخ إلى الحافظة</translation>
+<translation id="2598171223363459366">يمكنك تخطي هذه الخطوة الآن، ولكن ستظل بحاجة لعمل نسخة احتياطية من عبارة الاسترداد الخاصة بك لضمان أمان الحساب.</translation>
+<translation id="5303015959766064022">سأعد نسخة احتياطية لاحقًا</translation>
 <translation id="6346952829206698721">لصق من الحافظة</translation>
+<translation id="2610561535971892504">انقر للنسخ</translation>
 <translation id="1121335910737476837">حسابات التفشير الأساسية</translation>
 <translation id="6969147029062037757">الحسابات المستوردة</translation>
 <translation id="3926119534765499672">محافظ الأجهزة المتصلة</translation>
 <translation id="1940465339426637378">الأصول</translation>
 <translation id="2236507293802791911">الأصول المرئية</translation>
 <translation id="3188393374551744535">رصيد الحساب</translation>
+<translation id="4180024248473947674">عرض العنوان على:</translation>
+<translation id="1251267447128999380">متصفح <ph name="BLOCKCHAIN_NETWORK_NAME"/></translation>
 <translation id="7525067979554623046">إنشاء</translation>
 <translation id="4771176409524282426">إنشاء حساب</translation>
 <translation id="2471867767872178363">إنشاء <ph name="BLOCKCHAIN_NETWORK"/>حساب</translation>
@@ -913,7 +927,7 @@
 <translation id="8275038454117074363">الاستيراد</translation>
 <translation id="232925166623833246">الاستيراد من محفظة الأجهزة</translation>
 <translation id="4324198334837993695">الأجهزة</translation>
-<translation id="3067168166931605141">اسم الحساب</translation>
+<translation id="9079725315195697532">قم بتسمية هذا الحساب</translation>
 <translation id="1011614786846182272">يمكن استخدام الحسابات من خلال Web3 DApps، ويمكن عرضها في الملف الشخصي الخاص بك. ومع ذلك، يُرجى العلم بأنه لا يمكن تخزين الحسابات الثانوية عبر العبارة الاستردادية في النسخة الاحتياطية من حسابك الأساسي.</translation>
 <translation id="1136772623587250243">لصق المفتاح الخاص من الحافظة</translation>
 <translation id="7978412674231730200">مفتاح خاص</translation>
@@ -928,18 +942,24 @@
 <translation id="6892232036314454524">قد يحدث هذا الخطأ عند فتح التطبيق الخاطئ على جهاز Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">‏‏دفتر الأستاذ</translation>
-<translation id="4247752006222818397">امنح متصفح Brave الإذن بالوصول لجهاز دفتر الأستاذ الخاص بك.</translation>
+<translation id="8012452656725205792">اسمح لـ Ping بالوصول إلى الجهاز <ph name="HARDWARE_DEVICE"/>الخاص بك.</translation>
 <translation id="4378551569595875038">جارٍ الاتصال...</translation>
 <translation id="1943188256166395881">إضافة حسابات محددة</translation>
 <translation id="8554010658308662631">تحميل المزيد</translation>
 <translation id="6998738230710304743">تحميل المزيد...</translation>
 <translation id="5592304751234049046">البحث في الحساب</translation>
+<translation id="3168978475376026497">مسار HD</translation>
 <translation id="6151024411349343484">حاول تبديل مسار HD (أعلاه) إذا لم تتمكن من العثور على الحساب الذي تبحث عنه.</translation>
 <translation id="2844691569989101734">دفتر الأستاذ العام المباشر</translation>
 <translation id="7265732100380987017">قديم (MEW / MyCrypto)</translation>
 <translation id="4549853322523631092">لم يتم العثور على نتائج.</translation>
+<translation id="7261362517244085362">تفويض محفظتك</translation>
+<translation id="7150150391368236519">ربط محفظة الأجهزة</translation>
+<translation id="5400782314657008092">ندعم، حاليَا أجهزة <ph name="HARDWARE_DEVICE"/>و<ph name="HARDWARE_DEVICE1"/>.</translation>
+<translation id="8144305264680648043">صِل محفظة الأجهزة لديك، لتتمكن من إدارة أصولك مباشرة من محفظة Ping</translation>
+<translation id="1329837291200753515">حدد سلسلة كتل"Blockchain" لاستيراد محفظة الأجهزة الخاصة بك</translation>
+<translation id="6983390509997396124">صِل جهاز<ph name="HARDWARE_DEVICE"/>الخاص بك بمحفظة Ping</translation>
 <translation id="5149944858285555235">خطأ غير معروف، يرجى إعادة توصيل محفظة جهازك والمحاولة مرة أخرى.</translation>
-<translation id="4522570452068850558">التفاصيل</translation>
 <translation id="9220525904950070496">إزالة الحساب</translation>
 <translation id="8574289650879708853">إضافة أصل مخصص</translation>
 <translation id="6600400596821238377">اسم الرمز المميز</translation>
@@ -952,14 +972,17 @@
 <translation id="5138307340667775659">تمت إضافة هذا الرمز المميز بالفعل إلى محفظتك.</translation>
 <translation id="547122651977318828">معرف الرمز (لـ ERC721 فقط)</translation>
 <translation id="7544552854944350190">معرف الرمز مطلوب</translation>
+<translation id="1974060860693918893">إعدادات متقدمة</translation>
 <translation id="3842236145820483340">مُعرّف موقع Coingecko</translation>
 <translation id="7642841516562576649">URL الأيقونات</translation>
 <translation id="2144247757675997850">إضافة أصول</translation>
 <translation id="453788800165937690">تحذير: لا تشارك مفتاح الخصوصية الخاص بك. أي شخص يحصل على مفتاح الخصوصية هذا يمكنه الاستيلاء على أصولك إلى الأبد.</translation>
 <translation id="2416098547200943834">ملاحظة: يتم توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص.<ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ملاحظة: يجب توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص. <ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
+<translation id="1505724566145200403">ملاحظة: يتم دعم المفاتيح الموسعة zprv (أو vprv لـ Testnet) فقط.</translation>
 <translation id="42126664696688958">تصدير</translation>
 <translation id="1366855498335432549">إيداع</translation>
+<translation id="790104325876206743">إعدادات الحساب</translation>
 <translation id="6322030314101903925">لا توجد أصول متاحة</translation>
 <translation id="836614343069504000">قم بإيداع أو شراء الرموز المميزة للبدء. إذا كنت لا ترى الرموز المميزة من إحدى الحسابات المستوردة، فتحقق من عوامل التصفية وإعدادات العرض. قد يلزم إضافة الرموز المميزة غير المعروفة كأصول مخصصة.</translation>
 <translation id="2902856457593699108">إظهار المفتاح</translation>
@@ -973,10 +996,7 @@
 <translation id="1448289340149908413">إيثريوم</translation>
 <translation id="1530109021798294736">الشبكة Mainnet الرئيسية</translation>
 <translation id="1613627717923045622">اختبار الشبكة</translation>
-<translation id="4022672158058543834">جويرلي</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">سلسلة Binance الذكية (BSC)</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">تحديد حساب</translation>
 <translation id="6797737193502014008">البحث عن كلمة مرور</translation>
@@ -991,7 +1011,7 @@
 <translation id="3352959425838279177">احصل على الإيثريوم من صنبور مقابل <ph name="SELECTED_NETWORK"/></translation>
 <translation id="6449626816252815844">تحديد طريقة الشراء</translation>
 <translation id="8009571545960303544">جاري طلب توقيعك</translation>
-<translation id="5294062982587710720">لاحظ أن Brave لا يمكنه التحقق مما سيحدث إذا قمت بالتوقيع. يمكن أن يخول التوقيع تقريبًا أي عملية في حسابك أو نيابة عنك ، بما في ذلك (على سبيل المثال لا الحصر) منح التحكم الكامل في حسابك وأصول التشفير للموقع الذي يقدم الطلب. قم بالتوقيع فقط إذا كنت متأكدًا من رغبتك في اتخاذ هذا الإجراء، وتثق في الموقع الطالب.</translation>
+<translation id="5294062982587710720">لاحظ أن Ping لا يمكنه التحقق مما سيحدث إذا قمت بالتوقيع. يمكن أن يخول التوقيع تقريبًا أي عملية في حسابك أو نيابة عنك ، بما في ذلك (على سبيل المثال لا الحصر) منح التحكم الكامل في حسابك وأصول التشفير للموقع الذي يقدم الطلب. قم بالتوقيع فقط إذا كنت متأكدًا من رغبتك في اتخاذ هذا الإجراء، وتثق في الموقع الطالب.</translation>
 <translation id="3474375934783434676">تسجيل الدخول على مسؤوليتك الخاصة</translation>
 <translation id="5488357322146334497">رسالة</translation>
 <translation id="3586931643579894722">إخفاء التفاصيل</translation>
@@ -1015,7 +1035,7 @@
 <translation id="7073918978411974168">البدل المقترح</translation>
 <translation id="9019403281000653275">طلب موافقة غير محدودة</translation>
 <translation id="4717431746210146708">هل تسمح لهذا الموقع بإضافة شبكة؟</translation>
-<translation id="2521480044079508357">سيسمح هذا باستخدام هذه الشبكة داخل Brave Wallet.</translation>
+<translation id="2521480044079508357">سيسمح هذا باستخدام هذه الشبكة داخل Ping Wallet.</translation>
 <translation id="1982257600591932657">اسم الشبكة</translation>
 <translation id="5052727830821470769">عنوان URL للشبكة</translation>
 <translation id="427875364838253580">عرض جميع التفاصيل</translation>
@@ -1045,6 +1065,7 @@
 <translation id="2391762656119864333">إبطال</translation>
 <translation id="9218424917282368512">تغيير الشبكة</translation>
 <translation id="7526139040829362392">تغير الحساب</translation>
+<translation id="5565735124758917034">نشط</translation>
 <translation id="8874184842967597500">غير متصل</translation>
 <translation id="4217695020908122747">الحسابات المتصلة</translation>
 <translation id="8497650996740651467">الحسابات المتاحة</translation>
@@ -1069,8 +1090,8 @@
 <translation id="9139452553033760558">لمدة أسبوع واحد</translation>
 <translation id="1658834457013045127">للأبد</translation>
 <translation id="2770851145415891830">تم الكشف عن محافظ التشفير الحالية</translation>
-<translation id="2237759620789871865">إذا كنت تفضل تخطي الاستيراد والاحتفاظ بتجربة Crypto Wallets القديمة، فما عليك سوى الانتقال إلى <ph name="LINK_BEFORE"/> إعدادات <ph name="LINK_AFTER"/> المتصفح، وقم بتغيير الافتراضي إلى Crypto Wallets. يمكنك أيضًا استيراد Brave Wallet الجديدة وتجربتها والتغيير مرة أخرى في أي وقت.</translation>
-<translation id="5590175005414413980">أدخل كلمة مرور محافظ التشفير الحالية للاستيراد إلى Brave Wallet. استمتع بطريقة أسرع وأكثر أمانًا لإدارة أصول التشفير والتفاعل مع Web3 DApps على الويب.</translation>
+<translation id="2237759620789871865">إذا كنت تفضل تخطي الاستيراد والاحتفاظ بتجربة Crypto Wallets القديمة، فما عليك سوى الانتقال إلى <ph name="LINK_BEFORE"/> إعدادات <ph name="LINK_AFTER"/> المتصفح، وقم بتغيير الافتراضي إلى Crypto Wallets. يمكنك أيضًا استيراد Ping Wallet الجديدة وتجربتها والتغيير مرة أخرى في أي وقت.</translation>
+<translation id="5590175005414413980">أدخل كلمة مرور محافظ التشفير الحالية للاستيراد إلى Ping Wallet. استمتع بطريقة أسرع وأكثر أمانًا لإدارة أصول التشفير والتفاعل مع Web3 DApps على الويب.</translation>
 <translation id="880619123281809987">اكتب كلمة مرور محافظ العملات المشفرة</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> متصل</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> غير متصل</translation>
@@ -1089,15 +1110,14 @@
 <translation id="6383204195803840504">ستظهر المعاملات هنا</translation>
 <translation id="6079696972035130497">بلا حدود</translation>
 <translation id="2916401020782528840">المعاملة غير موجودة</translation>
+<translation id="1690963073120772693">لا يمكن إعادة محاولة إجراء هذه المعاملة.</translation>
 <translation id="2833661570529295305">تم الرفض</translation>
 <translation id="8034530868111548216">تمت الموافقة</translation>
 <translation id="6015436276085482001">مرفوض</translation>
 <translation id="6666273175654835609">المقدمة</translation>
 <translation id="2331676293859649642">تم التأكيد</translation>
-<translation id="1165039591588034296">خطأ</translation>
 <translation id="8373210463207847451">تم الإلقاء</translation>
 <translation id="8214232307424031138">مسجل الدخول</translation>
-<translation id="5916664084637901428">مفعّل</translation>
 <translation id="9065572743819293042">المعاملات الأخيرة</translation>
 <translation id="1702356231547761669">تجزئة المعاملة</translation>
 <translation id="8941851657764077659">رسوم الأولوية القصوى</translation>
@@ -1125,10 +1145,10 @@
 <translation id="4512871563176965522">بدل مخصص</translation>
 <translation id="749944179568745958">هذا ليس عنوان إيثريوم (ETH) صالحًا</translation>
 <translation id="2832270987629018596">عنوان SOL غير صالح</translation>
-<translation id="882486206986535424">ليس عنوانًا صالحًا</translation>
-<translation id="8684908590733515816">لا يحتوي النطاق على عنوان <ph name="COIN_TYPE_SYMBOL"/> مرتبط</translation>
-<translation id="8971278306757462297">عنوان الاستلام هو العنوان الخاص بك</translation>
-<translation id="3506416339268164412">عنوان الاستلام هو عنوان عقد العملة الرمزية</translation>
+<translation id="2115100722958448834">عنوان <ph name="COIN_TYPE_SYMBOL"/>غير صالح.</translation>
+<translation id="240219768078450165">لا يحتوي النطاق على عنوان <ph name="COIN_TYPE_SYMBOL"/> مرتبط به</translation>
+<translation id="4932382283590063268">عنوان الاستلام هو عنوانك الخاص.</translation>
+<translation id="3124753063207986114">عنوان الاستلام هو عنوان عقد الرمز المميز الخاص.</translation>
 <translation id="7029817408221097939">العنوان الموحد غير صالح</translation>
 <translation id="6370376419663123629">العنوان لا يبدو صحيحًا</translation>
 <translation id="3767148796886402380">تحقق من عنوانك للتأكد من أنه العنوان الصحيح (على سبيل المثال، الأحرف ذات الأحرف الصغيرة أو الكبيرة).</translation>
@@ -1139,10 +1159,9 @@
 <translation id="4667144295226514387">الحد الأقصى للعملة غير موجود</translation>
 <translation id="2021522108838444624">يجب أن يتجاوز المبلغ 0</translation>
 <translation id="8464365289405373974">العنوان مطلوب</translation>
-<translation id="4884792073752467460">عنوان المستلم غير صالح</translation>
 <translation id="6326239384961270135">الجزء الشفاف مفقود</translation>
 <translation id="8585995109882455949">كيف يمكنني العثور على العنوان الصحيح؟</translation>
-<translation id="8395402412470376435">يتحقق Brave ويمنع المستخدمين من إرسال الأموال إلى عنوان خاطئ بسبب الكتابة بالأحرف الكبيرة غير الصحيحة. هذه عملية "مجموع اختباري" للتحقق من أنه عنوان إيثريوم صالح.</translation>
+<translation id="105524480632150318">يمنع متصفح Ping المستخدمين من إرسال الأموال إلى عناوين خاطئة بسبب استخدام الحروف الكبيرة بشكل غير صحيح، لذا تأكد من صحة العنوان من خلال اتباع التعليمات أدناه.</translation>
 <translation id="4583433813614292221">1. زيارة</translation>
 <translation id="8061317754447191238">تفضّل بزيارة Etherscan وألصق عنوان المحفظة الذي تريد من خلاله إرسال الرموز المميزة. ثم أدخل</translation>
 <translation id="5393164213211430081">2. نسخ وإدخال عنوان ETH</translation>
@@ -1185,8 +1204,8 @@
 <translation id="8523768065044261559">حدث خطأ أثناء معالجة المعاملة، يرجى المحاولة مرة أخرى</translation>
 <translation id="971552837551838642">رسالة خطأ في التسجيل، يرجى المحاولة مجددًا</translation>
 <translation id="8273603707418703324">رسالة خطأ في التسجيل، تم طلب رموز وصول غير معروفة، يرجى المحاولة مجددًا</translation>
-<translation id="5265455943786954050">أمر Trezor قيد التقدم بالفعل</translation>
-<translation id="7017116822583380542">تطبيق Trezor bridge غير جاهز</translation>
+<translation id="6200074323131367633">أمر <ph name="DEVICE_NAME"/>قيد التقدم بالفعل</translation>
+<translation id="4213183402991860207">جسر <ph name="DEVICE_NAME"/>غير جاهز</translation>
 <translation id="3378339846292573874">إضافة عملة رمزية مقترحة</translation>
 <translation id="2322227405137827074">هل ترغب في استيراد هذه العملة الرمزية؟</translation>
 <translation id="4378475168089649292">تقنية سلسة الكتل</translation>
@@ -1194,8 +1213,6 @@
 <translation id="9033453977881595182">مُعرّف "الرمز المميز"</translation>
 <translation id="6332387008245531841">عنوان العقد</translation>
 <translation id="4790543031293959558">رابط URL للصورة</translation>
-<translation id="3954354850384043518">جارية</translation>
-<translation id="4350065043422286972">مثبت</translation>
 <translation id="4289540628985791613">نظرة عامة</translation>
 <translation id="5585178186632632419">مملوك بواسطة</translation>
 <translation id="2686444421126615064">عرض الحساب</translation>
@@ -1205,7 +1222,7 @@
 <translation id="2962388922926051374">فشل طلب الطريقة 'eth_chainId' في <ph name="URL"/></translation>
 <translation id="8325036459845654666">تمت إضافة هذه الشبكة بالفعل.</translation>
 <translation id="554350381160981853">توقيع البيانات المصنفة مدعوم فقط في Trezor Model One ذي البرنامج الثابت 1.10.5 أو أعلى</translation>
-<translation id="1752214435563414457">مخاطر تبديل Brave</translation>
+<translation id="1752214435563414457">مخاطر تبديل Ping</translation>
 <translation id="7829441065063984927">7 أيام من هدايا العملات المشفرة، جوائز بقيمة 500 ألف دولار تقريبًا.</translation>
 <translation id="8292716346768453265">أدخل الآن!</translation>
 <translation id="1935944189549132903">جميع الأصول</translation>
@@ -1219,7 +1236,7 @@
 <translation id="5522073372365069684">الشراء باستخدام Ramp</translation>
 <translation id="6153197326949684688">بيع باستخدام <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">شراء بواسطة Sardine</translation>
-<translation id="3301984548406568819">تتم معالجة البيانات المالية وبيانات المعاملات من جانب شركائنا في onramp. لا يقوم Brave بجمع مثل هذه البيانات أو الوصول إليها.</translation>
+<translation id="3301984548406568819">تتم معالجة البيانات المالية وبيانات المعاملات من جانب شركائنا في onramp. لا يقوم Ping بجمع مثل هذه البيانات أو الوصول إليها.</translation>
 <translation id="6534275647567011533">الشراء من خلال Transak</translation>
 <translation id="5973390321030037823">الشراء من خلال الرابط</translation>
 <translation id="1932640759496708012">الشراء باستخدام Coinbase Pay</translation>
@@ -1258,6 +1275,7 @@
 <translation id="4378208228955237306">إظهار شعار الشبكة على الرموز المميزة غير القابلة للاستبدال (NFT)</translation>
 <translation id="5472199803712163015">الرموز المميزة غير القابلة للاستبدال (NFT) في البريد العشوائي</translation>
 <translation id="5722321409991816187">إظهار الرموز المميزة غير القابلة للاستبدال (NFT) في البريد العشوائي</translation>
+<translation id="2588752742385122166">إعدادات المحفظة</translation>
 <translation id="7662492121143629144">كل الحسابات</translation>
 <translation id="6954150712710630841">تم إرسال المعاملة</translation>
 <translation id="905855245798176174">تم إرسال المعاملة إلى الشبكة بنجاح وفي انتظار التأكيد.</translation>
@@ -1281,14 +1299,15 @@
 <translation id="5601436886921227795">تفاعل Dapp</translation>
 <translation id="9104177294757104789">أرسِل <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">بدّل <ph name="MAKER"/> إلى <ph name="TAKER"/></translation>
-<translation id="8613144770663526433">قم بتسجيل الدخول إلى  Brave Wallet</translation>
-<translation id="8813165409788097898">تقوم بتسجيل الدخول إلى<ph name="ORIGIN"/>. ستشارك Brave Wallet عنوان محفظتك مع <ph name="ORIGIN"/>.</translation>
+<translation id="8613144770663526433">قم بتسجيل الدخول إلى  Ping Wallet</translation>
+<translation id="8813165409788097898">تقوم بتسجيل الدخول إلى<ph name="ORIGIN"/>. ستشارك Ping Wallet عنوان محفظتك مع <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">عرض التفاصيل</translation>
 <translation id="3950820424414687140">تسجيل الدخول</translation>
 <translation id="4530494379350999373">الأصل</translation>
 <translation id="6736243959894955139">العنوان</translation>
 <translation id="3095940652251934233">البيان</translation>
 <translation id="308268297242056490">‏معرف الموارد الموحد (URI)</translation>
+<translation id="3798449238516105146">الإصدار</translation>
 <translation id="1313065465616456728">تم الإصدار في</translation>
 <translation id="7902225556763260253">وقت انتهاء الصلاحية</translation>
 <translation id="2471230424465522689">ليس قبل</translation>
@@ -1370,7 +1389,7 @@
 <translation id="4412698727486357573">مركز المساعدة</translation>
 <translation id="2095142195578664632">هل تحتاج مساعدة؟ راجع ما يلي</translation>
 <translation id="3253669416991680932">محفظة الأجهزة الحالية لا تدعم هذه العملية.</translation>
-<translation id="7457027586454688423">أدخل كلمة مرور محفظة Brave الخاصة بك</translation>
+<translation id="7457027586454688423">أدخل كلمة مرور محفظة Ping الخاصة بك</translation>
 <translation id="7553242001898162573">أدخل كلمة المرور الخاصة بك</translation>
 <translation id="2873714185189940594">هل تريد فتح تطبيق Rainbow Bridge؟</translation>
 <translation id="2069777099181262239">Rainbow Bridge هي عبارة عن خدمة مستقلة تساعدك على ربط الأصول عبر الشبكات، واستخدام عملاتك المشفرة على الشبكات الأخرى ونُظم الاتصال المشترك الأخرى لـ DApp. إن تجسير الأصول عبر شبكات أخرى ينطوي على بعض المخاطر.</translation>
@@ -1378,18 +1397,23 @@
 <translation id="3890567288132019108">تعرّف على المزيد حول التخفيف من حدة المخاطر على تطبيق Rainbow Bridge</translation>
 <translation id="1792917191129448067">قتح تطبيق Rainbow Bridge</translation>
 <translation id="1522775706527775647">الاتصال بـ Aurora</translation>
-<translation id="4903322403594141291">تعرف على المزيد حول محفظة Brave</translation>
-<translation id="3875185448438395303">على الأقل:</translation>
-<translation id="2029465635925899949">8 أحرف</translation>
-<translation id="6697810017029555732">متطابق!</translation>
+<translation id="4903322403594141291">تعرف على المزيد حول محفظة Ping</translation>
+<translation id="4427684901715566795">يجب أن تتضمن كلمة المرور:</translation>
+<translation id="8521329076169776625">8 أحرف على الأقل</translation>
+<translation id="3665035348242240953">تطابق كلمات المرور</translation>
 <translation id="8918368616587206671">قوي!</translation>
 <translation id="574392208103952083">متوسط</translation>
 <translation id="8297006494302853456">ضعيفة</translation>
+<translation id="3282258437441351851">سيتم قفل محفظة Ping تلقائيًا بعد</translation>
+<translation id="114276356113671828"><ph name="VALUE"/>من الدقائق</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/>ساعة (ساعات)</translation>
 <translation id="7084181009966710506">جارِ إنشاء محفظة...</translation>
-<translation id="6782556046178425980">قبل البدء في النسخ الاحتياطي للمحفظة</translation>
+<translation id="3259102562570606417">احفظ عبارة الاسترداد الخاصة بك</translation>
 <translation id="7119749028647909394">تُعد عبارة الاسترداد المكونة من 12 إلى 24 كلمة مفتاحًا خاصًا يمكنك استخدامه لاستعادة الوصول إلى محفظتك في حالة فقدان جهاز (أجهزة) متصل. قم بتخزينها في مكان آمن، وبالترتيب الدقيق الموضح أدناه.</translation>
-<translation id="3259018319025894691">لا يمكن لـBrave الوصول إلى عبارة الاسترداد السرية الخاصة بك. احتفظ بها في مكان آمن، ولا تشاركها مع أي شخص آخر.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>مهم: <ph name="TAG_AFTER"/>لا تشارك عبارة الاسترداد أبدًا. يمكن لأي شخص لديه هذه العبارة أن يأخذ أصولك للأبد.</translation>
+<translation id="3259018319025894691">لا يمكن لـPing الوصول إلى عبارة الاسترداد السرية الخاصة بك. احتفظ بها في مكان آمن، ولا تشاركها مع أي شخص آخر.</translation>
+<translation id="426648489149930289">احفظها في مكان آمن يتعذر على الآخرين الوصول إليه، وتجنب مشاركتها مع أي شخص.</translation>
+<translation id="119185410022731300">أدخِل الكلمة في موضع <ph name="VALUE"/>من عبارة الاسترداد لديك.</translation>
+<translation id="2193954488469999829">هل نسيت حفظها؟ قم بالرجوع</translation>
 <translation id="7509948206688764960">قم بعمل نسخة احتياطية من عبارة استرداد محفظتك</translation>
 <translation id="8052898407431791827">تم النسخ إلى الحافظة</translation>
 <translation id="4576741736874242970">انقر لرؤية عبارتك</translation>
@@ -1408,8 +1432,9 @@
 <translation id="2781276194026093899">ثاني</translation>
 <translation id="7992766987062040279">ثالث</translation>
 <translation id="2295726992010694229">-</translation>
-<translation id="8241405611628876973">مبارك! محفظة Brave الخاصة بك أصبحت جاهزة!</translation>
-<translation id="6828327990705355767">للوصول إلى محفظتك، انقر فقط فوق رمز المحفظة في أعلى يمين أي نافذة من نوافذ متصفح Brave.</translation>
+<translation id="1148624853678088576">أنت جاهز تمامًا!</translation>
+<translation id="1656439328205762155">تم إعداد محفظة Ping الخاصة بك وهي جاهزة للاستخدام الآن.</translation>
+<translation id="3342494025742308764">الانتقال إلى المحفظة</translation>
 <translation id="396152018598329740">كيفية استخدام محفظة العملات المشفرة؟</translation>
 <translation id="7512061585041489067">ما أفضل محفظة عملات مشفرة؟</translation>
 <translation id="1342755158522323177">ما متصفح العملات المشفرة؟</translation>
@@ -1417,30 +1442,37 @@
 <translation id="4674552515763857735">ما المقصود بعبارة الاسترداد؟</translation>
 <translation id="7328255859839881981">ما المقصود بـDApps؟</translation>
 <translation id="3852489285890032403">ما المقصود بالويب 3؟</translation>
-<translation id="5448233694500869445">اكتشفنا ملحق MetaMask في متصفحك</translation>
-<translation id="8436080536329710282">أدخل كلمة مرور محفظة MetaMask الخاصة بك لاستيرادها بسهولة إلى محفظة Brave.</translation>
+<translation id="2349224271234429946">استيراد محفظة MetaMask</translation>
+<translation id="6715906859822319136">يمكنك بسهولة استيراد محفظة MetaMask الخاصة بك بإدخال كلمة المرور الخاصة بك فقط.</translation>
 <translation id="7543512765962444927">اتصل بمحفظتك الحالية</translation>
 <translation id="3551682252653406110">للاتصال بمحفظة لديك بالفعل، قد تحتاج إلى إدخال عبارة الاسترداد الخاصة بك. في هذا الوقت ندعم الاستعادة/الاستيراد من محافظ Ethereum وSolana.</translation>
-<translation id="346929827081904572">استعادة من عبارة البذور</translation>
+<translation id="3961126209136843111">استيراد محفظة حالية</translation>
 <translation id="5645597512426471834">12-24 كلمة</translation>
-<translation id="8158505311297755780">اكتب عبارة استرداد Brave Wallet المكوّنة من 12 إلى 24 كلمة.</translation>
+<translation id="2321396552035646646">يمكنك لصق عبارة الاسترداد بأكملها في أي حقل.</translation>
 <translation id="5419707890586509000">استيراد من MetaMask</translation>
 <translation id="2265945811107390939">استخدم كلمة مرور MetaMask الخاصة بك لاستيراد عبارة البذور الخاصة بك</translation>
 <translation id="7060680423657442298">لا عليك، سأقوم بإنشاء محفظة جديدة</translation>
+<translation id="1932878136775815535">لدي عبارة استرداد مكونة من <ph name="LENGTH"/>كلمة</translation>
+<translation id="7877416315564177070">تحقق من عبارة الاسترداد وحاول مجددًا.</translation>
+<translation id="6503538941917874992">الاستيراد باستخدام عبارة استرداد</translation>
+<translation id="782167880151571109">تم اكتشاف محفظة Metamask!</translation>
+<translation id="3619071361843652814">اكتشاف محفظة قديمة!</translation>
+<translation id="4634124774493850572">استخدام كلمة المرور</translation>
+<translation id="7697478310235189459">كلمة <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">اكتب عبارة استرداد MetaMask المكوّنة من 12 إلى 24 كلمة.</translation>
 <translation id="7720392926833259937">اكتب كلمة مرور MetaMask</translation>
 <translation id="6657585470893396449">كلمة المرور</translation>
 <translation id="6260144012548445299">تعرف على المزيد حول محفظتي الجديدة</translation>
-<translation id="8746910870914151528">الشروط القانونية</translation>
-<translation id="5148123176978018397">يرجى الإقرار بما يلي:</translation>
-<translation id="6088314935678153800">أفهم أن هذه محفظة ذاتية الحفظ، وأنني وحدي المسؤول عن أي أموال أو أصول أو حسابات مرتبطة بها، وعن اتخاذ الإجراء المناسب لتأمين محفظتي وحمايتها وإجراء النسخ الاحتياطي لها. أفهم أن Brave لا يمكنها الوصول إلى محفظتي أو عكس المعاملات نيابة عني، وأن عبارة الاسترداد الخاصة بي هي الطريقة الوحيدة لاستعادة الوصول في حالة فقدان كلمة المرور أو سرقة الجهاز أو حدوث ظرف مماثل.</translation>
-<translation id="7781090633800450517">لقد قرأت وأوافق على <ph name="LINK_BEFORE"/>شروط الاستخدام <ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">قبل أن نبدأ</translation>
+<translation id="5333225216561354793">نطلب منك الإقرار بالبنود الواردة أدناه</translation>
+<translation id="4284971227128011550">أفهم أن هذه محفظة ذاتية الحفظ، وأنني وحدي المسؤول عن أي أموال أو أصول أو حسابات مرتبطة بها، وعن اتخاذ الإجراء المناسب لتأمين محفظتي وحمايتها وإجراء النسخ الاحتياطي لها. أفهم أن Ping لا يمكنها الوصول إلى محفظتي أو عكس المعاملات نيابة عني، وأن عبارة الاسترداد الخاصة بي هي الطريقة الوحيدة لاستعادة الوصول في حالة فقدان كلمة المرور أو سرقة الجهاز أو حدوث ظرف مماثل.</translation>
+<translation id="3604445540387095708">قرأت شروط الاستخدام <ph name="LINK_BEFORE"/>وأوافق عليها<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">شراء العملات المشفرة</translation>
 <translation id="3887541341068007345">جارٍ التحقق من ملحقات المحفظة...</translation>
-<translation id="3567994771568272606">استيراد من محافظ Brave القديمة للعملات المشفرة</translation>
+<translation id="3567994771568272606">استيراد من محافظ Ping القديمة للعملات المشفرة</translation>
 <translation id="8407091560429310499">تحديد أصل</translation>
 <translation id="756590380936155533">لإنهاء عملية الشراء <ph name="ASSET_TICKER"/> ، اختر أحد شركائنا</translation>
-<translation id="7880860489474966219">عند الانتهاء، سيتم تحويل أموالك إلى محفظة Brave الخاصة بك</translation>
+<translation id="7880860489474966219">عند الانتهاء، سيتم تحويل أموالك إلى محفظة Ping الخاصة بك</translation>
 <translation id="6182661078713714878">إيداع العملات المشفرة</translation>
 <translation id="3683305208314702347">إيداع <ph name="VALUE"/></translation>
 <translation id="5768739294929936862">إيداع العملات الرمزية Solana أو SPL</translation>
@@ -1488,35 +1520,35 @@
 <translation id="434502623875309667">تتطلب دقة العنوان طلبات شبكة خارج السلسلة. هل ترغب في المتابعة؟</translation>
 <translation id="2779500703989728346">الرمز المميز غير قابل للاستبدال (NFT)</translation>
 <translation id="1893207255459018302">لا يوجد سجل المعاملات</translation>
-<translation id="5356382676355994980">ستظهر هنا المعاملات التي تُجرى باستخدام محفظة Brave الخاصة بك.</translation>
+<translation id="5356382676355994980">ستظهر هنا المعاملات التي تُجرى باستخدام محفظة Ping الخاصة بك.</translation>
 <translation id="3033638954295674319">حدث خطأ ما أثناء جلب تفاصيل NFT. يُرجى المحاولة مرة أخرى لاحقًا.</translation>
 <translation id="5964615240954462738">تحرير الرمز المميز</translation>
 <translation id="2612436523196658045">سيتم ترجمة عنوان ETH إلى عنوان Filecoin.</translation>
 <translation id="3282354360699748542">سيتم استخدام عنوان <ph name="FILECOIN_ADDRESS"/> في مساحة اسم Filecoin للمعاملة.</translation>
 <translation id="2540568096903252632">أدخل كلمة المرور للمتابعة</translation>
-<translation id="3356580495013324916">أدخل كلمة مرور محفظة Brave لبدء في النسخ الاحتياطي للمحفظة.</translation>
+<translation id="3356580495013324916">أدخل كلمة مرور محفظة Ping لبدء في النسخ الاحتياطي للمحفظة.</translation>
 <translation id="7545441766078366279">الموافقة على <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">رصيد <ph name="TOKEN"/> غير كافٍ</translation>
 <translation id="3453833142586986467">تحديد الرمز المميز</translation>
 <translation id="4937657825850660613">جزئيًّا</translation>
 <translation id="7639814793732182496">Max</translation>
 <translation id="6584782231358487640">أدخل مبلغًا</translation>
-<translation id="821928941440539212">العثور على أفضل سعر...</translation>
+<translation id="477281933640372562">جلب عرض الأسعار</translation>
 <translation id="5450317966495183014">تلقي (تقديرات)</translation>
 <translation id="8747614139273050577">من رمز</translation>
 <translation id="1726158192333401896">إلى رمز</translation>
+<translation id="765894671068292221">عرض سعر جديد في <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
 <translation id="3835223348537121988">الرصيد:</translation>
 <translation id="5709875713144853427">تحديد رمز مميز للتبديل</translation>
 <translation id="720404198240859011">إظهار الرموز المميزة بدون رصيد</translation>
 <translation id="4886690455791686940">إخفاء الرصيد الصفري</translation>
+<translation id="615791330696335475">البحث عن الرمز المميز من خلال الاسم</translation>
 <translation id="381485723922188688">خيار</translation>
-<translation id="6680650203439190394">المعدل</translation>
 <translation id="2538996898605796431">تأثير السعر</translation>
 <translation id="8007404171238546456">الحد الأدنى المستلم بعد الانزلاق في حركة التسعير</translation>
 <translation id="767199001998615704">رسوم الشبكة</translation>
-<translation id="7057870207229052478">رسوم Brave</translation>
+<translation id="28584716826670202">رسوم Ping المضمنة</translation>
 <translation id="3624518972158401291">مجانًا</translation>
-<translation id="5038255447967558645">مزود السيولة</translation>
 <translation id="8450638959928932199">و إرسال</translation>
 <translation id="476816352791390168">لا توجد رسوم إضافية!</translation>
 <translation id="5319981934425923365">أؤكد أن العنوان أعلاه صحيح</translation>
@@ -1527,17 +1559,19 @@
 <translation id="8044899503464538266">بطيء</translation>
 <translation id="3569512916300900704">المتوسط</translation>
 <translation id="7019805045859631636">سريع</translation>
+<translation id="632241521608275119">تحمل الانزلاق</translation>
 <translation id="6778140392042462129">عمليات التبادل</translation>
 <translation id="6173494033320397682">توجيه مباشر فقط</translation>
 <translation id="2440960581098655899">إنه يؤمن التوجيه المباشر فقط كما أنه يعطل تداول التجارة المقسمة</translation>
-<translation id="6245314729809503023">تستخدم منصة Brave أفضل 60 رمزًا مميزًا للتوجيه الوسيط لتحسين الأداء</translation>
+<translation id="6245314729809503023">تستخدم منصة Ping أفضل 60 رمزًا مميزًا للتوجيه الوسيط لتحسين الأداء</translation>
 <translation id="2379187373676242615"><ph name="VALUE"/>% أرخص من CoinGecko</translation>
 <translation id="5351867352310722022">ضمن <ph name="VALUE"/>% CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% أغلى من CoinGecko</translation>
+<translation id="6599816589121202398">واجهة برمجة التطبيقات</translation>
 <translation id="7561262633951061138">الأفضل</translation>
 <translation id="8060029310790625334">مركز المساعدة</translation>
 <translation id="3143110700666266545">يستخدم هذا التطبيق واجهات برمجة تطبيقات الجهات الخارجية التالية:</translation>
-<translation id="163536108506359457">يستخدم Brave Swap <ph name="AGGREGATOR"/> كمجمع DEX لـ<ph name="NETWORKS"/> للشبكات المدعومة. سيعالج <ph name="AGGREGATOR"/> عنوان المحفظة وعنوان IP الخاص بـ <ph name="NETWORK"/> لتنفيذ المعاملة (ومنها الحصول على عروض الأسعار). سيستخدم <ph name="AGGREGATOR"/> هذه البيانات فقط لأغراض معالجة المعاملات.</translation>
+<translation id="163536108506359457">يستخدم Ping Swap <ph name="AGGREGATOR"/> كمجمع DEX لـ<ph name="NETWORKS"/> للشبكات المدعومة. سيعالج <ph name="AGGREGATOR"/> عنوان المحفظة وعنوان IP الخاص بـ <ph name="NETWORK"/> لتنفيذ المعاملة (ومنها الحصول على عروض الأسعار). سيستخدم <ph name="AGGREGATOR"/> هذه البيانات فقط لأغراض معالجة المعاملات.</translation>
 <translation id="1847885264294023691">انقر هنا <ph name="AGGREGATOR"/>للحصول على سياسة خصوصية.</translation>
 <translation id="644984757357042735">الشبكة مطلوبة</translation>
 <translation id="132243864024778443">اسم الرمز المميز مطلوب</translation>
@@ -1547,29 +1581,6 @@
 <translation id="3797613444743816037">عنوان عملة Mint</translation>
 <translation id="7951915459354237451">تم تعيين حد الرسوم أقل من الرسوم الأساسية. قد تستغرق معاملتك وقتًا طويلاً أو تفشل.</translation>
 <translation id="2227702748249086756">غير قادر على جلب تقديرات الرسوم</translation>
-<translation id="6580621526400120372">لماذا بعض الرموز المميزة غير القابلة للاستبدال (NFT) ليست مؤهلة؟</translation>
-<translation id="620930608106217992">يتم تخزين بعض بيانات الرمز المميز غير قابل للاستبدال (NFT) على خوادم مركزية مثل AWS وGoogle Cloud وما إلى ذلك. وفي هذه الحالة، يتعذّر تثبيت بيانات الرموز المميزة غير قابلة للاستبدال (NFT) الخاصة بك على شبكة IPFS.</translation>
-<translation id="4637031024914696767">من خلال تمكين ميزة IPFS في Brave، سيتم تثبيت الرموز المميزة غير القابلة للاستبدال (NFT) تلقائيًا. إنها أفضل طريقة لإجراء نسخ احتياطي آمن للرموز المميزة غير القابلة للاستبدال (NFT).</translation>
-<translation id="2319971828691864975">بدء الاستخدام مع IPFS</translation>
-<translation id="7906328323880284538">الطريقة الأكثر أمانًا لاستضافة الرموز المميزة غير القابلة للاستبدال</translation>
-<translation id="214349569547787359">قم بتمكين ميزة IPFS في Brave لإجراء نسخ احتياطي للرموز المميزة غير القابلة للاستبدال (NFT) تلقائيًا</translation>
-<translation id="4819588096619503180">IPFS هي شبكة تخزين تعتمد على المجتمع، مثل محرك الأقراص الثابتة الذي يمكن للجميع استخدامه. ولكن بدلاً من أن تتحكم بها سلطة واحدة، يعمل آلاف الأشخاص معًا لاستضافة المحتوى على IPFS. عندما تقوم "بتثبيت" شيء ما في IPFS، فإنك تضمن تخزين نسخة واحدة على الأقل من هذا المحتوى بأمان. وطالما أن شخصًا واحدًا يمتلك نسخة منها، فلا يمكن أن يختفي الملف مطلقًا.<ph name="NEWLINE"/>من خلال تمكين IPFS في Brave، سيتم تثبيت الرموز المميزة غير القابلة للاستبدال (NFT) تلقائيًا. إنها أفضل طريقة لإجراء نسخ احتياطي آمن للرموز المميزة غير القابلة للاستبدال (NFT).</translation>
-<translation id="9160750213078764355">الاطلاع على أي من الرموز المميزة غير القابلة للاستبدال الخاصة بي مؤهلة</translation>
-<translation id="6241155642582182934">قم بتمكين ميزة IPFS في Brave لإجراء نسخ احتياطي للرموز المميزة غير القابلة للاستبدال (NFT) تلقائيًا لمزيد من الأمان.</translation>
-<translation id="654964147165509548">يتم تثبيت الرموز المميزة غير القابلة للاستبدال في عقدة IPFS المحلية الخاصة بك.</translation>
-<translation id="4910182786472608576"><ph name="PINNED"/>يتم تثبيت الرموز المميزة غير القابلة للاستبدال المدعومة في عقدة IPFS المحلية الخاصة بك.</translation>
-<translation id="1607117719941506821">الرمز المميز غير قابل للاستبدال (NFT) الخاص بـ <ph name="PINNABLE"/> مؤهل</translation>
-<translation id="7056553112112778467">الرموز المميزة غير القابلة للاستبدال (NFT) الخاصة بـ <ph name="PINNABLE"/> مؤهلة</translation>
-<translation id="6852656829524945421">غير قادر على التثبيت</translation>
-<translation id="9019535252716288146">تجري تشغيل عقدة IPFS</translation>
-<translation id="5584313306739463968">عقدة IPFS المحلية لا تعمل</translation>
-<translation id="7527548209942671618">مثبّت على عقدة IPFS المحلية الخاصة بك</translation>
-<translation id="5659058832308365026">يتم تثبيت بيانات  الرمز المميز غير قابل للاستبدال (NFT) على عقدة IPFS المحلية الخاصة بك</translation>
-<translation id="4919133452617704550">لا يمكن تثبيته على عقدة IPFS المحلية</translation>
-<translation id="4220102684162429566">الأسباب الأكثر شيوعًا:</translation>
-<translation id="451509325309455">يحتوي الرمز المميز غير القابل للاستبدال على مشكلات عنوان URL لبيانات التعريف بخلاف IPFS</translation>
-<translation id="3827697793483899711">مشاكل عقدة IPFS الداخلية</translation>
-<translation id="1992846713609432783">لا توجد مساحة كافية على العقدة المحلية</translation>
 <translation id="3225624966527491351">استيراد  الرمز المميز غير قابل للاستبدال (NFT)</translation>
 <translation id="9085765419770918643">لا يوجد الرمز المميز غير قابل للاستبدال (NFT) حتى الآن</translation>
 <translation id="8445532667841598737">هل أنت مستعد لإضافة البعض؟ فقط انقر فوق الزر أدناه للاستيراد.</translation>
@@ -1581,11 +1592,12 @@
 <translation id="6948667383954749033">وضع علامة بريد غير مزعج</translation>
 <translation id="5810047320613496595">البريد المزعج</translation>
 <translation id="7257605968082307175">وضع علامة بريد مزعج</translation>
-<translation id="7600335727434653744">هل تريد الإزالة من محفظة Brave؟</translation>
-<translation id="6657860743511185539">ستتم إزالة الـ NFT من محفظة Brave ولكنها ستبقى على البلوكتشين. إذا قمت بإزالته، ثم غيرت رأيك، فستحتاج إلى استيراده مرة أخرى يدويًا.</translation>
+<translation id="1255896809210433555">إضافة الرمز المميز غير القابل للاستبدال (NFT)</translation>
+<translation id="7600335727434653744">هل تريد الإزالة من محفظة Ping؟</translation>
+<translation id="6657860743511185539">ستتم إزالة الـ NFT من محفظة Ping ولكنها ستبقى على البلوكتشين. إذا قمت بإزالته، ثم غيرت رأيك، فستحتاج إلى استيراده مرة أخرى يدويًا.</translation>
 <translation id="849880459530751909">تحرير الرمز المميز غير القابل للاستبدال</translation>
 <translation id="5925465310724910998">هل تريد عرض الرموز المميزة غير القابلة للاستبدال (NFT) تلقائيًا؟</translation>
-<translation id="5400791731776892411">يمكن لـ Brave Wallet استخدام خدمات تابعة لجهات خارجية لعرض الرموز المميزة غير القابلة للاستبدال (NFT) تلقائيًا. سيشارك Brave عناوين محفظتك مع <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> لتقديم هذه الخدمة. <ph name="BEFORE_URL"/>تعرّف على المزيد.<ph name="AFTER_URL"/></translation>
+<translation id="5400791731776892411">يمكن لـ Ping Wallet استخدام خدمات تابعة لجهات خارجية لعرض الرموز المميزة غير القابلة للاستبدال (NFT) تلقائيًا. سيشارك Ping عناوين محفظتك مع <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> لتقديم هذه الخدمة. <ph name="BEFORE_URL"/>تعرّف على المزيد.<ph name="AFTER_URL"/></translation>
 <translation id="7661959661113971834">نعم، متابعة</translation>
 <translation id="4733761855978444079">لا شكرًا، سأقوم بذلك يدويًا</translation>
 <translation id="353620741952662530">لا يوجد رموز مميزة غير قابلة للاستبدال لعرضها</translation>
@@ -1603,7 +1615,7 @@
 <translation id="1554316484739382186">المُنفق: <ph name="ADDRESS"/></translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291">حساب <ph name="PROVIDER"/></translation>
-<translation id="5360752485622434494">Brave Rewards BAT على<ph name="PROVIDER"/></translation>
+<translation id="5360752485622434494">Ping Rewards BAT على<ph name="PROVIDER"/></translation>
 <translation id="429061011725027672">لقد قمت حاليًا بتسجيل الخروج من<ph name="PROVIDER"/>. يُرجى تسجيل الدخول لعرض رصيدك.</translation>
 <translation id="4611292653554630842">تسجيل الدخول</translation>
 <translation id="1132794822159463424">عرض على <ph name="PROVIDER"/></translation>
@@ -1616,14 +1628,11 @@
 <translation id="1531836666020185856">مميزة</translation>
 <translation id="3225021799163709119">الشائع</translation>
 <translation id="6854651431635060919">حساب شبكة الاختبار</translation>
-<translation id="3800173541008902040">تمكين تفاصيل المعاملة المعززة من أجل:</translation>
-<translation id="1215089823252478557">معرفة التغيير التقديري للرصيد</translation>
+<translation id="626850389704042219">تمكين محاكاة المعاملات</translation>
+<translation id="7414944309396133072">معاينة التغير في الرصيد المقدر</translation>
 <translation id="2761574758015819991">تحديد المعاملات الضارة المحتملة</translation>
 <translation id="168533464844528463">المساعدة في اكتشاف محاولات الاحتيال</translation>
-<translation id="780301667611848630">لا، شكرًا</translation>
-<translation id="3435896845095436175">تمكين</translation>
-<translation id="7269757150305059881">تعمل Brave مع شريك لتقديم هذه الخدمة. من خلال التمكين، فإنك توافق على مشاركة المعاملات غير الموقعة وعناوين DApp URLs مع شريكنا.</translation>
-<translation id="7790932700072432983">غَيِّرْ في أي وقت في<ph name="TAG_BEFORE"/> الإعدادات<ph name="TAG_AFTER"/>.</translation>
+<translation id="2410455471299328417">يتم توفير هذه الخدمة بواسطة <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> وتخضع <ph name="TERMS_LINK_BEFORE"/>لشروط الخدمة<ph name="TERMS_LINK_AFTER"/> و<ph name="PRIVACY_POLICY_LINK_BEFORE"/>سياسة الخصوصية الخاصة بهم<ph name="PRIVACY_POLICY_LINK_AFTER"/></translation>
 <translation id="8688672835843460752">متوفِّر</translation>
 <translation id="5296640085393149413">الأموال المتاحة لك لاستخدامها.</translation>
 <translation id="3248185426436836442">معلَّق</translation>
@@ -1635,6 +1644,78 @@
 <translation id="5667702863609780570">إجراء غير آمن يهدد بفقدان البيانات</translation>
 <translation id="6405354572620970908">يبدو هذا الطلب ضارًا، وقد يجعلك عرضة للسرقة. يُرجى عدم المتابعة إلا إذا كنت تثق بالتطبيق.</translation>
 <translation id="786261184916565476">لقد عثرنا على مشكلات <ph name="VALUE"/>.</translation>
+<translation id="2826600321627372011">لم يُعثر على مسارات</translation>
+<translation id="2451778499022193433">يجب أن يتكوّن اسم الحساب من <ph name="VALUE"/> أحرف أو أقل</translation>
+<translation id="8488138412489236285">أدخل كلمة المرور (إن وجدت)</translation>
+<translation id="9166422618242592074">نوع الاستيراد</translation>
+<translation id="1913853014470037784">إخفاء NFTs غير المملوكة</translation>
+<translation id="6722771294390991852">تجميع حسب المجموعة</translation>
+<translation id="8775144690796719618">‏عنوان URL غير صالح</translation>
+<translation id="8892896831704748782">إذا لم تتمكن من رؤية الرمز المميز غير القابل للاستبدال (NFT) الذي تم اكتشافه تلقائيًا بواسطة Ping، أو كنت تريد تتبع أحد الرموز المميزة غير القابلة للاستبدال التي يملكها الآخرون، فيمكنك عندئِذٍ استيراده يدويًا.</translation>
+<translation id="6301982082639804892">عنوان العقد عند إضافة الرمز المميز غير القابل للاستبدال (NFT) إلى المحفظة هو العنوان الفريد على سلسلة الكتل حيث يوجد العقد الذكي لمجموعة الرموز المميزة غير القابلة للاستبدال (NFT). ويمكنك العثور على عنوان العقد من السوق، أو مستكشفات سلسلة الكتل، وما إلى ذلك.</translation>
+<translation id="9033155463293614176">المعرف الفريد للرمز المميز غير القابل للاستبدال (NFT) المحدد ضمن المجموعة.</translation>
+<translation id="2483152581664459180">يتعذّر جلب بيانات تعريف الرمز المميز غير القابل للاستبدال (NFT)</translation>
+<translation id="6198624822546162700">عرض الرمز المميز غير القابل للاستبدال (NFT) هذا</translation>
+<translation id="3415773516149065346">لا تملك هذا الرمز المميز غير القابل للاستبدال (NFT). وعلى الرغم من أنه لا يزال بإمكانك إضافته إلى محفظتك، فلن تتمكن من اسخدامه لإجراء أي معاملات.</translation>
+<translation id="7138457458706196245">على سبيل المثال <ph name="VALUE"/></translation>
+<translation id="2454691116905703258">يشير اسم الرمز المميز لـ NFT إلى الاسم المحدد المُعطى للرمز المميز غير القابل للاستبدال ضمن مجموعة أو مشروع معين. وهذا الاسم يميّز رمز NFT واحدًا عن الآخر ضمن المجموعة نفسها.</translation>
+<translation id="3212749868469431851">يشير رمز NFT إلى المعرّف الفريد المستخدم لتمييز مجموعة أو مشروع NFT.</translation>
+<translation id="8198838794018761504">للعرض فقط</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="3417321754118442366">لم يتم العثور على أي تطبيقات لامركزية (DApp)</translation>
+<translation id="4864082959618144988">محافظ نشطة</translation>
+<translation id="5445224754926400848">تفضّل بزيارة <ph name="VALUE"/></translation>
+<translation id="8355371587927005068">عوامل التصفية</translation>
+<translation id="803703704549420287">مسح عوامل التصفية</translation>
+<translation id="1472675084647422956">عرض المزيد</translation>
+<translation id="4522570452068850558">التفاصيل</translation>
+<translation id="7144878232160441200">إعادة المحاولة</translation>
+<translation id="9094621390791852268">فشلت معاينة المعاملة.</translation>
+<translation id="4982713341035600933">تغير الرصيد التقديري</translation>
+<translation id="7197388583016272600">تفاصيل الموافقة</translation>
+<translation id="3785613860627641047">تغيير الصلاحية</translation>
+<translation id="5135378583369915147">مسح المعاملة ضوئيًا</translation>
+<translation id="4744699166186440">Staker</translation>
+<translation id="6313747204807079184">منسحب</translation>
+<translation id="4312670848214406213">أنت تمنح شخصًا آخر الإذن بنقل الرموز المميزة نيابةً عنك.</translation>
+<translation id="5465460394116463557">يتطلب هذا الإذن بنقل العديد من الرموز المميزة، والتي عادة ما تكون محاولة للسرقة.</translation>
+<translation id="7315935420455987651">قد يكون هذا الموقع مزيفًا.</translation>
+<translation id="7772576967285233002">سيتمكن DApp هذا من نقل الرموز المميزة من حسابك لاحقًا.</translation>
+<translation id="438039795179295571">تم وضع علامة على هذا الموقع على أنه عالي الخطورة وسيحاول على الأرجح سرقة أموالك.</translation>
+<translation id="4852394547793286745">لم يتم التحقق من هذا المجال بعد. تابع فقط إذا كنت تثق بالموقع.</translation>
+<translation id="5832443872711287128">تأكد من هذا العنوان لأنه قد ينتحل شخصية جهة اتصال سابقة لك.</translation>
+<translation id="5317646355693663165">يؤدي هذا إلى نقل ملكية رصيد الرمز المميز الخاص بك إلى شخص آخر.</translation>
+<translation id="3459325260212799301">تم وضع علامة على هذا الموقع على أنه غير آمن و/أو ضار. قد يؤدي الاستمرار في استخدامه إلى خسائر.</translation>
+<translation id="5409388443146954820">سيؤدي هذا إلى الموافقة على أكثر من 200 إجراء. ما لم يتم التخطيط لذلك، فقد يكون ذلك ضارًا.</translation>
+<translation id="6187462466381633445">يتطلب هذا أكثر من 200 موافقة؛ والتي عادة ما تكون محاولة لاستنزاف أرصدتك.</translation>
+<translation id="3322526234603442338">أنت تقوم بتبادل الرموز المميزة دون مقابل. من المحتمل أن يكون هذا خطأً.</translation>
+<translation id="4773052969794445878">أنت ترسل الأموال إلى عنوان الرمز المميز حيث سيتم فقدها إلى الأبد.</translation>
+<translation id="8144820760826901598">يؤدي هذا الأمر إلى نقل ملكية حسابك وأرصدته إلى شخص آخر.</translation>
+<translation id="6023771436430346631">عدم وجود أموال كافية لتغطية رسوم شبكة الغاز.</translation>
+<translation id="4753738223346804632">لا يوجد رصيد كاف لإتمام المعاملة.</translation>
+<translation id="8661124952575076441">من المرجح أن تفشل المعاملة وتعود إلى مسارها الطبيعي. وستؤدي المحاولة إلى تكبّد تكاليف الغاز.</translation>
+<translation id="7660840414862537846">حدث خطأ غير متوقع في معاينة المعاملة. قد تكون الموافقة غير آمنة.</translation>
+<translation id="4683335916231560287">لم يتم الكشف عن أي تغييرات</translation>
+<translation id="6769279318856228158">تغيير ملكية الحساب</translation>
+<translation id="3200658657457611958">محاكاة كيفية تصرف المعاملة قبل الموافقة عليها</translation>
+<translation id="8311005737513179222">لا يتم دعم معاينة المعاملة على هذه الشبكة.</translation>
+<translation id="4282496974850444428">تظهر لك هذه الرسالة لأنك اخترت الاشتراك في خدمة معاينة المعاملة.</translation>
+<translation id="6094399032955582807">عرض الشبكات المتاحة</translation>
+<translation id="6644973832009582039">لا يتم دعم مسح رسائل EVM حاليًا</translation>
+<translation id="5222675470118670784">ما المقصود بمسح رسائل EVM؟</translation>
+<translation id="4085714860536252628">إنه يضمن الأمان والدقة من خلال فحص الرسائل المرسلة من Ethereum Virtual Machine والتي تتفاعل مع العقد الذكي الخاص بك أو أي إجراءات.</translation>
+<translation id="7800112661494546348">يشير إلى التحقق مرتين من رسالة للتأكد من أنها صحيحة قبل التوقيع عليها.</translation>
+<translation id="4750109510113597688">قد تتضمن هذه المعاملة رسوم إنشاء حساب</translation>
+<translation id="6201709949885884577">كلمة المرور مطلوبة للقيام بهذا الإجراء.</translation>
+<translation id="3435015606307655951">تحويل آمن</translation>
+<translation id="1958146856582208323">تحويل الرمز المميز</translation>
+<translation id="3550219298671597013">تحويل NFT</translation>
+<translation id="8043066678623588950">FIL نحو الأمام</translation>
+<translation id="7138678301420049075">غير ذلك</translation>
+<translation id="8703556909820882288">تحويل NFT المضغوط</translation>
+<translation id="2713141960460256091">توقيع وإرسال معاملة DApp</translation>
+<translation id="6387730345715997739">توقيع معاملة DApp</translation>
+<translation id="4150336849480030462">تحويل رمز SPL مع إنشاء حساب رمز مميز مرتبط</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -1643,10 +1724,10 @@
 <translation id="6951743416068151209">عنوان URI لوكيل متصفح تور</translation>
 <translation id="1671503397662036257">حالة اتصال تور</translation>
 <translation id="6024292492796847324">التقدم المحرز في تهيئة متصفح تور</translation>
-<translation id="8300751939969131609">قم بتشغيل Brave News، ولا تفوت أي خبر</translation>
-<translation id="7758665172236842395">تابع المصادر التي تفضلها، في موجو واحد، ليس عليك سوى فتح علامة تبويب في منصة Brave، والتمرير لأسفل، و... ها هو ذا!</translation>
-<translation id="2376542729617592331">أخبار Brave هي خدمة مدعومة بالإعلانات، وتتضمن إعلانات خاصة، وإعلانات مجهولة المصدر. <ph name="LINK_START"/> معرفة المزيد <ph name="LINK_END"/>.</translation>
-<translation id="1765217911817124376">تشغيل أخبار Brave</translation>
+<translation id="8300751939969131609">قم بتشغيل Ping News، ولا تفوت أي خبر</translation>
+<translation id="7758665172236842395">تابع المصادر التي تفضلها، في موجو واحد، ليس عليك سوى فتح علامة تبويب في منصة Ping، والتمرير لأسفل، و... ها هو ذا!</translation>
+<translation id="2376542729617592331">أخبار Ping هي خدمة مدعومة بالإعلانات، وتتضمن إعلانات خاصة، وإعلانات مجهولة المصدر. <ph name="LINK_START"/> معرفة المزيد <ph name="LINK_END"/>.</translation>
+<translation id="1765217911817124376">تشغيل أخبار Ping</translation>
 <translation id="6265592479622441247">الرجوع إلى <ph name="BEGIN_BOLD"/>لوحة التحكم<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">بحث عن موقع، أو موضوع، أو موجز RSS</translation>
 <translation id="1498364270401875204">القنوات</translation>
@@ -1665,23 +1746,24 @@
 <translation id="4750394297954878236">الإقتراحات</translation>
 <translation id="7436846601026966360">بعض المصادر التي قد تروق لك. الإقتراحات مجهولة المصدر وتتطابق على جهازك فقط.</translation>
 <translation id="7950715913905993008">عذراً...</translation>
-<translation id="7158100730468448581">لم تتمكن خدمة أخبار Brave إحضار المحتوى.</translation>
+<translation id="7158100730468448581">لم تتمكن خدمة أخبار Ping إحضار المحتوى.</translation>
 <translation id="2665462122884195298">الموجز الاخص بك فارغ</translation>
 <translation id="8461269982440806387">تابع الناشرين والقنوات لرؤيتهم في موجزك.</translation>
 <translation id="1685574186123115251">إضافة مصادر المحتوى</translation>
-<translation id="939305735877869636">Brave</translation>
+<translation id="939305735877869636">Ping</translation>
 <translation id="6261915643960475695">الأعمال التجارية</translation>
 <translation id="8265589281845759879">السيارات</translation>
+<translation id="7726519849288907308">المشاهير</translation>
 <translation id="7577010593836079522">التقافة</translation>
+<translation id="6807791860691150411">التعليم</translation>
 <translation id="3706423975342040244">الترفيه</translation>
-<translation id="3284069358246729581">الأخبار الترفيهية</translation>
 <translation id="1432147735538902155">الأزياء</translation>
 <translation id="3350377832708834609">السينما والتلفزيون</translation>
 <translation id="736592699917579616">الطعام</translation>
 <translation id="5104499318017527547">المتعة والتسلية</translation>
 <translation id="2228584369802328636">الألعاب</translation>
 <translation id="6941852195052765076">الصحة</translation>
-<translation id="932327136139879170">الصفحة الرئيسية</translation>
+<translation id="2233040275795129413">نمط الحياة</translation>
 <translation id="5178222043222938163">الموسيقى</translation>
 <translation id="1322083935398004629">السياسة</translation>
 <translation id="8739620487574841501">الأخبار الإقليمية</translation>
@@ -1689,17 +1771,15 @@
 <translation id="1264974993859112054">رياضة</translation>
 <translation id="2283599456633275070">السفر</translation>
 <translation id="7487067081878637334">التقنية</translation>
-<translation id="151743034625508713">الأخبار التقنية</translation>
-<translation id="2388279876296929435">المراجعات التقنية</translation>
 <translation id="5030268312472358928">الأخبار المهمة</translation>
 <translation id="5510475084662028636">المصادر المهمة</translation>
+<translation id="1269093011552192762">أخبار المملكة المتحدة</translation>
 <translation id="1297570508541015874">أخبار الولايات المتحدة</translation>
 <translation id="1459693405370120464">الأحوال الجوية</translation>
 <translation id="8366057325711477500">أخبار العالم</translation>
 <translation id="6709133671862442373">الأخبار</translation>
 <translation id="3553513561058684206">من أجلك</translation>
 <translation id="2217013723701900638">الناشرون</translation>
-<translation id="7751260505918304024">عرض الكل</translation>
 <translation id="5138227688689900538">عرض أقل</translation>
 <translation id="1041218419402648959">إخفاء المحتوى من <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">ريما يعجبك أيضًا</translation>
@@ -1712,8 +1792,10 @@
 <translation id="7948579849190819732">علامة التبويب الحالية</translation>
 <translation id="7056969230130642253">أنت متابع لأحدث المستجدات</translation>
 <translation id="7292242212818928219">ثمَّة محتوى جديد متاح. هل تريد إعادة التحميل؟</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">الأوامر السريعة</translation>
 <translation id="7481312909269577407">إلى الأمام</translation>
+<translation id="1272079795634619415">إيقاف</translation>
 <translation id="302781076327338683">إعادة تحميل تجاوز ذاكرة التخزين المؤقت</translation>
 <translation id="7211681214230730336">إعادة تحميل حذف بيانات ذاكرة التخزين المؤقت</translation>
 <translation id="1779766957982586368">إغلاق النافذة</translation>
@@ -1754,7 +1836,7 @@
 <translation id="3170171381379098900">فك تجميع مجموعة علامات التبويب الحالية</translation>
 <translation id="8589082712469819302">فك تجميع جميع علامات التبويب</translation>
 <translation id="6804504170598429513">إغلاق علامات التبويب غير المُجمّعة</translation>
-<translation id="5960187586089070931">إغلاق علامات التبويب غير الموجودة في المجموعة الحالية</translation>
+<translation id="5960187586089070931">إغلاق علامات التبويب غير تلك التي في المجموعة الحالية</translation>
 <translation id="7043112527867086263">تجميع علامات التبويب غير المُجمّعة</translation>
 <translation id="8290333944535778783">تمرير علامة التبويب لأعلى</translation>
 <translation id="6141382045715907645">تمرير علامة التبويب لأسفل</translation>
@@ -1789,12 +1871,12 @@
 <translation id="4276265845501430443">عرض المساعدة</translation>
 <translation id="8104889575691864804">عرض قائمة التطبيقات</translation>
 <translation id="3215896810006717687">فحص أدوات المطور</translation>
-<translation id="1761865962743604547">ترقية Brave</translation>
+<translation id="1761865962743604547">ترقية Ping</translation>
 <translation id="7012611213801651252">عرض قائمة الصور الرمزية</translation>
 <translation id="6263048902976129908">تبديل أدوات المطور</translation>
 <translation id="1386786836007298307">تبديل شريط الأدوات في وضع ملء الشاشة</translation>
 <translation id="461433814913785913">تخصيص شريط اللمس</translation>
-<translation id="5835081019037947840">تبديل أحداث javascript على apple</translation>
+<translation id="4722786500079380710">تبديل أحداث JavaScript على Apple</translation>
 <translation id="5825969867518399495">تثبيت PWA</translation>
 <translation id="7888244262238732644">عرض صفحة الإدارة</translation>
 <translation id="8114712275882140856">عرض عناوين URL الكاملة</translation>
@@ -1820,35 +1902,37 @@
 <translation id="6938154350999993769">تصحيح تبديل وضع الجهاز اللوحي</translation>
 <translation id="5854741377790551127">تصحيح شجرة عرض الطباعة</translation>
 <translation id="8199130368328220410">تبديل التسيمات التوضيحية المباشرة</translation>
-<translation id="9055778350624039365">إظهار لوحة Brave Wallet</translation>
-<translation id="2548853975094084059">إغلاق لوحة Brave Wallet</translation>
-<translation id="3765209580429944524">عرض لوحة Brave VPN</translation>
-<translation id="5989009326527614692">تبديل زر شريط أدوات Brave VPN</translation>
-<translation id="7334332308395652803">تبديل رمز علبة VPN Brave</translation>
-<translation id="4326011033480357140">إرسال ملاحظات Brave VPN</translation>
-<translation id="2345974803401546682">لمحة عن Brave VPN</translation>
-<translation id="8934783170241943640">إدارة خطة Brave VPN</translation>
-<translation id="6332027154313182926">تبديل Brave VPN</translation>
+<translation id="5509712368473990741">تبديل Leo AI</translation>
+<translation id="9055778350624039365">إظهار لوحة Ping Wallet</translation>
+<translation id="2548853975094084059">إغلاق لوحة Ping Wallet</translation>
+<translation id="3765209580429944524">عرض لوحة Ping VPN</translation>
+<translation id="5989009326527614692">تبديل زر شريط أدوات Ping VPN</translation>
+<translation id="7334332308395652803">تبديل رمز علبة VPN Ping</translation>
+<translation id="4326011033480357140">إرسال ملاحظات Ping VPN</translation>
+<translation id="2345974803401546682">لمحة عن Ping VPN</translation>
+<translation id="8934783170241943640">إدارة خطة Ping VPN</translation>
+<translation id="6332027154313182926">تبديل Ping VPN</translation>
 <translation id="6539014233195996894">تبديل وضع كتم صوت علامة التبويب</translation>
 <translation id="2682865834956428001">تبديل مكان الشريط الجانبي</translation>
 <translation id="6105745639559695088">تبديل الشريط الجانبي</translation>
 <translation id="3488252265135539275">تبديل علامات التبويب الرأسية</translation>
 <translation id="7134064542341959603">تبديل عنوان نافذة علامات التبويب الرأسية</translation>
-<translation id="3067105725259639716">تكوين أخبار Brave</translation>
+<translation id="3067105725259639716">تكوين أخبار Ping</translation>
 <translation id="6286510487460330478">تكوين الاختصارات</translation>
-<translation id="9214819486716388964">عرض Brave Talk</translation>
+<translation id="9214819486716388964">عرض Ping Talk</translation>
 <translation id="5950760360751948276">عرض شريط الإشارات المرجعية دائمًا</translation>
 <translation id="2960757369920422313">عرض شريط الإشارات المرجعية على NTP</translation>
 <translation id="522953399371747698">إخفاء شريط الإشارات المرجعية</translation>
 <translation id="134184943774258988">تبديل رؤية زر كل الإشارات المرجعية</translation>
 <translation id="2158862020143233462">تبديل طرق الحماية</translation>
-<translation id="4610630726762318759">تبديل javascript</translation>
+<translation id="3010280727642018218">تبديل JavaScript</translation>
 <translation id="188822869499214197">عرض المخطط الفقاعي لقائمة التشغيل</translation>
 <translation id="3202536111478033084">تجميع علامات التبويب على الأصل الحالي</translation>
 <translation id="6002210667729577411">نقل المجموعة إلى نافذة جديدة</translation>
 <translation id="9210143726807220086">تبديل علامات التبويب العمودية الموسعة</translation>
 <translation id="684629111155788563">إضافة كل علامات التبويب إلى مجموعة جديدة</translation>
 <translation id="9106013521852824634">الإرسال إلى نفسك</translation>
+<translation id="6973516366678963184">عرض النافذة الصغيرة الخاصة بخدمة Wayback Machine</translation>
 <translation id="1926106318101432555">فتح شريط الإشارات</translation>
 <translation id="6118819645013156507">الانتقال إلى نافذة...</translation>
 <translation id="1623204575967809688">دمج النافذة الحالية في...</translation>
@@ -1862,6 +1946,14 @@
 <translation id="1344005710343072293">يُستخدم هذا التكوين لصالح <ph name="COMMAND"/>. سيؤدي الحفظ إلى تجاوز هذا الاختصار.</translation>
 <translation id="831931573200952705">تُستخدم هذه التركيبة لأمر <ph name="COMMAND"/> ولا يمكن تعديلها.</translation>
 <translation id="3537006124004887164">تُستخدم هذه التركيبة لأمر <ph name="COMMAND"/> ولا يمكن تعديلها. جرّب تعديلها من خلال "اختصارات التطبيقات" الموجودة بإعدادات النظام.</translation>
+<translation id="712598284361781729">عرض في مقسم جديد</translation>
+<translation id="1130188644637295274">فتح في عرض مقسم</translation>
+<translation id="6459036216700972269">علامات تبويب غير منفصلة</translation>
+<translation id="4235382917338421035">تبديل مواضع علامات التبويب</translation>
+<translation id="3617523374417810198">عرض في مقسم جديد</translation>
+<translation id="8571323456914890254">فتح في عرض مقسم</translation>
+<translation id="5329136173514538969">علامات تبويب غير منفصلة</translation>
+<translation id="7595612919377246359">تبديل مواضع علامات التبويب</translation>
 <translation id="8591883849678260674">عرض الصفحة الأصلية</translation>
 <translation id="1969654232209826429">دقائق للقراءة</translation>
 <translation id="4101707289420716287">إيقاف تشغيل قارئ السرعة</translation>
@@ -1897,8 +1989,8 @@
 <translation id="8637805148029768813">تتاح ميزة الملخص في الوقت الراهن لمقالات مختارة وصفحات ويب طويلة أخرى فقط.</translation>
 <translation id="1223498995510244364">تلخيص</translation>
 <translation id="7491773233732232424">نبذة عن Leo</translation>
-<translation id="5208096220706490232">Brave Leo هو مساعد ذكي خاص يعمل بالذكاء الاصطناعي ويعمل على تحسين استخدامك للإنترنت. تستطيع استخدام Leo مجانًا مع إمكانيات وصول محدودة. يقدم Brave Leo Premium المزيد من النماذج وحدود أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. النموذج الافتراضي لجميع المستخدمين حاليًا هو Mixtral 8x7B. راجع <ph name="LINK_BEFORE"/>Brave wiki <ph name="LINK_AFTER"/>لمزيد من التفاصيل.</translation>
-<translation id="7189603330209995455">افتراضيًا، عندما تطرح على Leo سؤالاً، فإنه قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تبرزه في الصفحة إلى Brave Leo لتقديم إجابة. دقة الردود غير مضمونة، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. يستخدم Leo بيانات من Brave Search لتحسين جودة الاستجابة. لا ترسل معلومات حساسة أو خاصة، وتوخي الحذر مع أي إجابات تتعلق بالصحة أو الماليات أو السلامة الشخصية أو ما شابه ذلك. يمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات &gt; Leo.</translation>
+<translation id="5208096220706490232">Ping Leo هو مساعد ذكي خاص يعمل بالذكاء الاصطناعي ويعمل على تحسين استخدامك للإنترنت. تستطيع استخدام Leo مجانًا مع إمكانيات وصول محدودة. يقدم Ping Leo Premium المزيد من النماذج وحدود أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. النموذج الافتراضي لجميع المستخدمين حاليًا هو Mixtral 8x7B. راجع <ph name="LINK_BEFORE"/>Ping wiki <ph name="LINK_AFTER"/>لمزيد من التفاصيل.</translation>
+<translation id="7189603330209995455">افتراضيًا، عندما تطرح على Leo سؤالاً، فإنه قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تبرزه في الصفحة إلى Ping Leo لتقديم إجابة. دقة الردود غير مضمونة، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. يستخدم Leo بيانات من Ping Search لتحسين جودة الاستجابة. لا ترسل معلومات حساسة أو خاصة، وتوخي الحذر مع أي إجابات تتعلق بالصحة أو الماليات أو السلامة الشخصية أو ما شابه ذلك. يمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات &gt; Leo.</translation>
 <translation id="3038772045018370764">لا يجمع Leo المعرفات مثل عنوان IP الخاص بك الذي يمكن ربطه بك. لا تستخدم أي بيانات لتدريب نماذج الذكاء الاصطناعي ولا تحتفظ نماذج الذكاء الاصطناعي بأي بيانات شخصية (باستثناء Anthropic الذي يحتفظ بالبيانات لمدة 30 يومًا قبل حذفها). راجع <ph name="LINK_BEFORE"/>سياسة الخصوصية<ph name="LINK_AFTER"/> لمزيد من المعلومات.</translation>
 <translation id="7839853125981164613">أدخل الأمر هنا</translation>
 <translation id="4524675003624341892">اقتراح أسئلة...</translation>
@@ -1906,69 +1998,79 @@
 <translation id="7921782882718083488">تلخيص هذه الصفحة</translation>
 <translation id="7932221068776853847">قم بإيقاف الاتصال لإيقاف إرسال محتوى هذه الصفحة إلى Leo، وابدأ محادثة جديدة</translation>
 <translation id="1167803637855350748">حدثت مشكلة في الشبكة أثناء الاتصال بـ Leo، تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</translation>
-<translation id="5095201428204952524">Leo مشغول جدًا الآن. يرجى المحاولة مرة أخرى بعد بضع دقائق.</translation>
-<translation id="7144878232160441200">إعادة المحاولة</translation>
-<translation id="2505565639170795978">مرحبًا، أنا Leo. أنا مساعد يعمل بالذكاء الاصطناعي مملوك ومعزز بالكامل من قبل Brave. أنا مدعوم من Llama 13B، وهو نموذج تم إنشاؤه بواسطة Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام.</translation>
-<translation id="8030558642460377506">مرحبًا، أنا Leo. أنا مساعد الذكاء الاصطناعي المستضاف بالكامل بواسطة Brave. أنا مدعوم بـ Mixtral 8x7B، وهو نموذج تم إنشاؤه بواسطة Mistral AI للتعامل مع المهام المتقدمة.</translation>
-<translation id="2489317965865266353">مرحبًا، أنا Leo. أنا موكل من قبل Brave ومدعوم من Claude Instant، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص.</translation>
+<translation id="1996126325390835277">لقد وصلت إلى الحد الأقصى للسعر المميز. يُرجى المحاولة مرة أخرى في غضون ساعات قليلة.</translation>
+<translation id="4177458398826096846">مرحبا ، أنا Leo. أنا مساعد الذكاء الاصطناعي مستضاف بالكامل بواسطة Ping. أنا مدعوم من Llama 3 8B، وهو نموذج تم إنشاؤه بواسطة Meta ليكون فعالًا وقابلًا للتطبيق على العديد من حالات الاستخدام. <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">مرحبًا، أنا Leo. مساعد ذكاء اصطناعي مستضاف بالكامل بواسطة Ping. أنا مدعوم بـ Mixtral 8x7B، وهو نموذج تم إنشاؤه بواسطة Mistral AI للتعامل مع المهام المتقدمة.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">مرحبًا، أنا Leo. أنا موكل بواسطة Ping، ومدعوم من Claude Instant، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="8583558415545871403">مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Ping، كما أنني مدعوم بواسطة Claude 3 Haiku، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.</translation>
+<translation id="1107977270364670952">مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Ping، كما أنني مدعوم بواسطة Claude 3 Sonnet، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> بواسطة <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">محدود</translation>
+<translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">الدردشة</translation>
 <translation id="2961040541145689181">دردشة جديدة</translation>
 <translation id="7557539689487606886">الاشتراك الحصري (Premium)</translation>
 <translation id="1691256669639196606">إدارة الاشتراك</translation>
+<translation id="2304783958703511257">الإعدادات المتقدمة</translation>
 <translation id="3037594989275592390">نماذج اللغة</translation>
 <translation id="6637015365469044269">تحديث الآن</translation>
+<translation id="5543505256451301851">المحاولة مجانًا لمدة 7 أيام</translation>
 <translation id="849535826888024304">تم بلوغ الحد الأقصى من معدل الاستجابة</translation>
-<translation id="6149863263423821329">احصل على معدل استجابة أعلى من خلال الاشتراك في Premium. يمكنك أيضًا التبديل إلى نموذج Llama2 13b المجاني الأقل قوة للمتابعة.</translation>
+<translation id="2252128900328632803">لقد وصلت إلى الحد الأقصى لسعر  Leo. احصل على معدل استجابة أعلى من خلال الاشتراك في Premium، أو حاول مرة أخرى قريبًا.</translation>
 <translation id="4173478269537830374">اكتشف نماذج الذكاء الاصطناعي المختلفة</translation>
 <translation id="3245401959451976966">أطلق العنان لإبداعك</translation>
 <translation id="4165928407303989823">البقاء على الموضوع</translation>
 <translation id="2389665228467129817">الدردشة لفترة أطول</translation>
-<translation id="8556044455877152001"><ph name="PRICE_VALUE"/>دولار أمريكي /شهريًا</translation>
+<translation id="8556044455877152001">دولار أمريكي<ph name="PRICE_VALUE"/>/الشهر</translation>
 <translation id="5151923271944811339">التبديل إلى النموذج المجاني</translation>
 <translation id="5474757891469990756">أطلق قوى Leo الكاملة مع Premium:</translation>
 <translation id="5552332211527367850">أولوية الوصول إلى النماذج القوية ذات المهارات المختلفة</translation>
 <translation id="5031778211368112461">الوصول إلى النماذج الأكثر ملاءمةً للمهام الإبداعية وإنشاء المحتوى.</translation>
 <translation id="298783097210745222">احصل على إجابات أكثر دقة لمحادثات أكثر دقة.</translation>
 <translation id="4314705522985583059">احصل على حدود أسعار أعلى للمحادثات الأطول.</translation>
-<translation id="1068954060985569277">لقد انتهت صلاحية الجلسة لحساب Brave خاصتك. يرجى زيارة صفحة حسابك للتحديث، ثم العودة لاستخدام المميزات المتقدمة.</translation>
+<translation id="1068954060985569277">لقد انتهت صلاحية الجلسة لحساب Ping خاصتك. يرجى زيارة صفحة حسابك للتحديث، ثم العودة لاستخدام المميزات المتقدمة.</translation>
 <translation id="94736968936709953">تم إرسال التعليقات بنجاح</translation>
 <translation id="9109355817507033196">تم اختيار عدم الإعجاب بالإجابة</translation>
 <translation id="4049425842478222936">تم الإعجاب بالإجابة</translation>
 <translation id="6393149565874086128">إضافة تعليق</translation>
 <translation id="3521125531016408657">أعجبتني الإجابة</translation>
 <translation id="8202517001427388906">لم تعجبني الإجابة</translation>
-<translation id="1379399209929302811">إضافة تعليق بخصوص Brave AI</translation>
+<translation id="1379399209929302811">إضافة تعليق بخصوص Ping AI</translation>
 <translation id="8442999546461118871">حدد موضوع ملاحظاتك</translation>
 <translation id="9018766373792005944">ما هي فئة تعليقك؟</translation>
 <translation id="7355096922131918313">أضف تعليقًا هنا</translation>
 <translation id="3027575440738035995">يوفر Leo Premium إمكانية الوصول إلى مجموعات موسعة من نماذج اللغات للحصول على إجابات أكثر دقة. <ph name="LINK_BEFORE"/>لمزيد من المعلومات<ph name="LINK_AFTER"/></translation>
+<translation id="7488762544858401571">مُحرّر</translation>
+<translation id="1406205536570262057">تعديل الإجابة</translation>
 <translation id="2399439821649319175">غير مفيد</translation>
 <translation id="2976167228906046828">غير صحيح</translation>
 <translation id="1183055847065865059">غير آمن/ضار</translation>
-<translation id="7138678301420049075">أخرى</translation>
 <translation id="2313959174679245365">لم يتم إرسال المعدل الخاص بك، يرجى التحقق من اتصال الشبكة والمحاولة مجددًا</translation>
 <translation id="98413980871833152">لم يتم إرسال تعليقك، يرجى التحقق من اتصال الشبكة والمحاولة مجددًا</translation>
 <translation id="8742658901413346500">إن هذه المحادثة طويلة وLeo قد ينسى بعض الأشياء قريبًا. بإمكانك الحصول على محادثات أطول عن طريق التبديل للنموذج الحصري (Premium)، أو يمكنك محو سجل الدردشة لإعادة ضبطه.</translation>
 <translation id="7550152963854770123">محو سجل الدردشة</translation>
 <translation id="7494736170250048402">إرسال رسالة إلى Leo</translation>
-<translation id="4110772752544684964">الصفحة طويلة جدًا بالنسبة إلى Leo، فلن يكون قادرًا على مواكبة بعض السياقات في المحادثات.</translation>
+<translation id="8712637175834984815">تم</translation>
+<translation id="1093419424466417703">تعد الصفحة طويلة للغاية بالنسبة لـ Leo، لذا فقد يفقد بعض السياق من المحادثة، إذ تمكن Leo من قراءة نسبة <ph name="PERCENTAGE"/> فقط من محتويات الصفحة.</translation>
+<translation id="2186990448773134544">لقد تم تحسين محتوى الصفحة من خلال استخراج المعلومات الأكثر صلة من الصفحة لأنها كانت طويلة للغاية بالنسبة إلى Leo.</translation>
 <translation id="4370698775470316661">هذه المحادثة طويلة جدًا ولا يمكن أن تستمر.  قد تكون هناك نماذج أخرى متوفرة يستطيع Leo من خلالها الحفاظ على الدقة المطلوبة لإجراء محادثات أطول.</translation>
+<translation id="5719170755629028558">تحسين إجابتك بواسطة بحث Ping...</translation>
+<translation id="5794962229997281366">بحث مُحسن عن الإجابات لـ <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">دردشة حول أغراض عامة</translation>
 <translation id="8193130769524604031">مهام الدردشة المتقدمة</translation>
 <translation id="3185367320601718531">إنشاء المحادثات والنصوص</translation>
+<translation id="7979673624064378842">دردشة بسرعة البرق</translation>
+<translation id="2836330653441111204">سرعة وذكاء متوازنان</translation>
 <translation id="3965507912994218570">إعدادات Leo</translation>
 <translation id="1037324977127422019">مرحبًا، أدعى ليو!</translation>
-<translation id="8930348081963284873">مساعد ذكاء مدعوم من الذكاء الاصطناعي، تم إنشاؤه مباشرة في متصفح Brave.</translation>
+<translation id="8930348081963284873">مساعد ذكاء مدعوم من الذكاء الاصطناعي، تم إنشاؤه مباشرة في متصفح Ping.</translation>
 <translation id="3528849152231418380">هل تحتاج إلى مساعدة في موقع ويب معين؟</translation>
 <translation id="1558192229187362674">يمكنني مساعدتك على تلخيص مقالاتك، ما يؤدي إلى التوسع في محتوى موقعك وغير ذلك الكثير.</translation>
 <translation id="861953757568623294">يمكنني مساعدتك على تلخيص المقالات، ما يؤدي إلى التوسع في محتوى موقعك وغير ذلك الكثير. ألست متأكدًا من البدء؟ جرِّب ذلك:</translation>
 <translation id="5642775487085641191">هل تريد إجراء محادثة فقط؟</translation>
 <translation id="8857222718794549840">اسألني على أي شيء! يمكننا التحدُّث حول أي موضوع تريده. أنا أتعلم دومًا وأحرص على التحسُّن لتقديم أفضل الإجابات.</translation>
-<translation id="9051226419897869406">الدردشة بخصوصية مع Brave Leo</translation>
-<translation id="1173570303649278801">استخدم سياق الصفحة للرد</translation>
-<translation id="8599503173207256429">قم بالتشغيل لطرح سؤال حول هذه الصفحة. سيتم إرسال محتواها إلى ليو في متصفح Brave إلى جانب رسائلك.</translation>
+<translation id="9051226419897869406">الدردشة بخصوصية مع Ping Leo</translation>
+<translation id="637548538907281147">قم بصياغة الإجابات بناءً على محتويات الصفحة</translation>
+<translation id="8599503173207256429">قم بالتشغيل لطرح سؤال حول هذه الصفحة. سيتم إرسال محتواها إلى ليو في متصفح Ping إلى جانب رسائلك.</translation>
 <translation id="318819763888864209">تجدد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها في أي وقت قبل التجديد.</translation>
 <translation id="5091223967610958">شارك اسم المضيف للصفحة التي أنت فيها (<ph name="HOST_NAME"/>)  لمساعدتنا على تحسين مساعد Leo.</translation>
 <translation id="8732450785281947197">أدوات Leo للذكاء الاصطناعي</translation>
@@ -1991,14 +2093,19 @@
 <translation id="42981349822642051">تكبير</translation>
 <translation id="3130793786899299931">تغيير الطول</translation>
 <translation id="6320643499534852464">وسائل التواصل الاجتماعي</translation>
+<translation id="2370739752330685659">ربما لاحقًا</translation>
+<translation id="983013125018250242">أدوات Leo</translation>
+<translation id="49269513399674318">استخدام الميكروفون</translation>
+<translation id="3895031624234442305">نماذج مخصصة</translation>
+<translation id="4572010449071015143">بدء محادثة جديدة</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
-<translation id="8458987127502506209">تمكين دروع حماية  Brave</translation>
+<translation id="8458987127502506209">تمكين دروع حماية  Ping</translation>
 <translation id="7509914170164691086">دروع حماية حتى <ph name="LINK_BEFORE"/> من أجل <ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">دروع حماية أدنى <ph name="LINK_BEFORE"/> من أجل <ph name="LINK_AFTER"/></translation>
 <translation id="3907405056878805220">إذا كان من الواضح تعطل الموقع، فجرب تعطيل دروع الحماية.
-    <ph name="LINK_BEFORE"/>ملاحظة: قد يقلل هذا من حمايات خصوصية Brave. <ph name="LINK_AFTER"/></translation>
+    <ph name="LINK_BEFORE"/>ملاحظة: قد يقلل هذا من حمايات خصوصية Ping. <ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">تم حظر أدوات التتبع والإعلانات وغيرها <ph name="LINK_BEFORE"/>معرفة المزيد <ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">غير محمي بواسطة Brave Shields <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">غير محمي بواسطة Ping Shields <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">الضوابط المتقدمة</translation>
 <translation id="5799940914270080805">قد يتسبب تغيير هذه الإعدادات في تعطل المواقع.</translation>
 <translation id="9204041448536398473">إعدادات دروع الحماية العالمية</translation>
@@ -2016,7 +2123,7 @@
 <translation id="4448697385961650078">حجب المتتبعات والإعلانات</translation>
 <translation id="8593054718053894081">حجب المتتبعات والإعلانات بشدة</translation>
 <translation id="7384778069178817075">السماح بجميع المتتبعات والإعلانات</translation>
-<translation id="4941539331405513605">حجب ملفات تعريف الارتباط عبر المواقع</translation>
+<translation id="6196640612572343990">حظر ملفات تعريف الارتباط للجهات الخارجية</translation>
 <translation id="693506469193748756">لا تتذكرني فور أن أغلق هذا الموقع</translation>
 <translation id="5471580724041424345">يقوم بحذف ملفات تعريف الارتباط وبيانات الموقع الأخرى عند إغلاق أحد المواقع.</translation>
 <translation id="6883611015375728278">حظر جميع ملفات تعريف الارتباط</translation>
@@ -2029,78 +2136,95 @@
 <translation id="2570787596946026998">تواصل فقط مع HTTPS</translation>
 <translation id="1992750560347846445">موقع الإبلاغ</translation>
 <translation id="2387532482048804818">أخبرنا إذا كان الموقع لا يعمل بشكل صحيح مع Shields up</translation>
-<translation id="3795015906457257780">أنت تطلع على هذا الموقع بدون حمايات الخصوصية لـ Brave.</translation>
-<translation id="7194012750329511146">تم حظر دروع حماية Brave
+<translation id="3795015906457257780">أنت تطلع على هذا الموقع بدون حمايات الخصوصية لـ Ping.</translation>
+<translation id="7194012750329511146">تم حظر دروع حماية Ping
 <ph name="NUMBER"/> وأدوات التتبع، والإعلانات’ وغيرها الكثير</translation>
 <translation id="4292121526390005808">نصوص محجوبة</translation>
 <translation id="5046271170844958713">النصوص المسموح بها</translation>
+<translation id="199862531047218413">تم تطبيق الحماية ضد بصمات الأصابع</translation>
+<translation id="5032505924781383272">لا تشير الحماية المطبقة بالضرورة إلى أن صفحة الويب هذه تحاول الحصول على بصمة متصفحك.</translation>
+<translation id="1905384713982899903">البصمات المحظورة</translation>
+<translation id="314364527871618241">البصمات المسموح بها</translation>
 <translation id="264682546981571963">هل سئمت من إشعارات الموافقة على ملفات تعريف الارتباط؟</translation>
-<translation id="4986297793092101884">يقوم Brave بالفعل بحظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية. يمكننا حظر إشعارات الموافقة على ملفات تعريف الارتباط أيضا.</translation>
+<translation id="4986297793092101884">يقوم Ping بالفعل بحظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية. يمكننا حظر إشعارات الموافقة على ملفات تعريف الارتباط أيضا.</translation>
 <translation id="535688588637568715">نعم، حظر إشعارات الموافقة على ملفات تعريف الارتباط</translation>
-<translation id="2808175374672429053">غير مسموح باستخدام أحرف البدل في Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields حظر <ph name="COMPANY_LIST"/> أدوات تتبع على <ph name="SITE_URL"/>}
-      =1 {Brave Shields حظر <ph name="COMPANY_LIST"/> و 1 أداة تتبع أخرى على <ph name="SITE_URL"/>}
-      other {Brave Shields حظر <ph name="COMPANY_LIST"/> و {BLOCKED_COUNT} أدوات تتبع أخرى على <ph name="SITE_URL"/>}
-    }</translation>
+<translation id="2808175374672429053">غير مسموح باستخدام أحرف البدل في Ping Shields.</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
-      =1 {Brave Shields حظر 1 أداة تتبع على <ph name="SITE_URL"/>}
-      other {Brave Shields حظر {BLOCKED_COUNT} أداة تتبع أخرى على <ph name="SITE_URL"/>}
+      =1 {Ping Shields حظر 1 أداة تتبع على <ph name="SITE_URL"/>}
+      other {Ping Shields حظر {BLOCKED_COUNT} أداة تتبع أخرى على <ph name="SITE_URL"/>}
     }</translation>
-<translation id="2540598191934725677">انقر على أيقونة Brave لعرض Brave Shields.</translation>
+<translation id="2540598191934725677">انقر على أيقونة Ping لعرض Ping Shields.</translation>
 <translation id="6294662480095808915">الحصوصية. بشكل افتراضي.</translation>
-<translation id="4366423156486478559">احصل على حماية Brave على كل رابط تنقر عليه. ليس عليك سوى تعيين Brave كإعداد افتراضي وتصفح بخصوصية.</translation>
+<translation id="4366423156486478559">احصل على حماية Ping على كل رابط تنقر عليه. ليس عليك سوى تعيين Ping كإعداد افتراضي وتصفح بخصوصية.</translation>
 <translation id="3830912418080848377">إعدادات الاستيراد</translation>
 <translation id="6378406588483694938">يمكنك بسهولة استيراد الإشارات المرجعية والإضافات وحتى كلمات المرور المحفوظة من متصفحك القديم.</translation>
 <translation id="2092825239819166928">حدد ملف التعريف المراد استيراده</translation>
 <translation id="4763127492635705340">يحتوي المتصفح الذي اخترته على ملفات تعريف متعددة. حدد ملف التعريف (ملفات التعريف) الذي تريد استيراده.</translation>
 <translation id="880174232178865598">استيراد ملفات التعريف</translation>
 <translation id="2453860139492968684">اكتمل</translation>
-<translation id="2273851479262317744">تعيين Brave كمتصفح افتراضي</translation>
+<translation id="2273851479262317744">تعيين Ping كمتصفح افتراضي</translation>
 <translation id="5037676449506322593">تحديد الكل</translation>
-<translation id="5148943178722443958">ساعد في تحسين Brave.</translation>
+<translation id="5148943178722443958">ساعد في تحسين Ping.</translation>
 <translation id="1097073572755862978">أرسل تقارير التشخيص إذا واجهت حالة عطل أو توقف. <ph name="LINK_BEFORE"/>معرفة المزيد.<ph name="LINK_AFTER"/></translation>
-<translation id="5099408825243658796">شارك نتائج تحليلات المنتج الخاصة والمجهولة تمامًا حول الميزات التي يستخدمها مستخدمو Brave. <ph name="LINK_BEFORE"/>معرفة المزيد.<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">شارك نتائج تحليلات المنتج الخاصة والمجهولة حول الميزات التي يستخدمها مستخدمو Ping. <ph name="LINK_BEFORE"/>تعرَّف على المزيد.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">اكتمل الإعداد</translation>
-<translation id="3141206739023333979">يمكنك تغيير هذه الاختيارات في أي وقت في Brave من خلال <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
+<translation id="3141206739023333979">يمكنك تغيير هذه الاختيارات في أي وقت في Ping من خلال <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">اقرأ سياسة الخصوصية <ph name="LINK_BEFORE"/> الكاملة الخاصة بنا <ph name="LINK_AFTER"/></translation>
 <translation id="2801098717523961746">اختيار المظهر</translation>
-<translation id="6262510489122516114">يمكنك تغيير هذا في أي وقت في إعدادات Brave.</translation>
+<translation id="6262510489122516114">يمكنك تغيير هذا في أي وقت في إعدادات Ping.</translation>
 <translation id="546481172717459539">مطابقة إعداد النظام</translation>
 <translation id="7799817062559422778">الوضع الفاتح</translation>
 <translation id="4117637339509843559">الوضع الداكن</translation>
-<translation id="7821773512278295352">Brave Firewall + VPN: متصل</translation>
-<translation id="6019088868713395120">Brave Firewall + VPN: غير متصل</translation>
-<translation id="3541307549916475335">واجهة مستخدم لوحة Brave VPN</translation>
-<translation id="1742469581923031760">الاتصال بــ…</translation>
-<translation id="1287487756047817908">عدم الاتصال بــ …</translation>
+<translation id="6302485303316397682">هل ترغب في الحصول على نتائج بحث أفضل؟</translation>
+<translation id="7014699001826714920">انضم إلى الحركة وساهم في بحث Ping.</translation>
+<translation id="6821108091726602352">ساعدنا على إصلاح الموقع الإلكتروني من خلال المشاركة في مشروع اكتشاف الموقع في Ping، وذلك من خلال مشاركة إشارات البحث غير المعروفة تمامًا، حيث يمكنك مساعدة Ping على توسيع فهرس البحث.</translation>
+<translation id="6764845498618413165">اطلع على المزيد من المعلومات.</translation>
+<translation id="7818938154803162778">بالتأكيد، سأقدم المساعدة.</translation>
+<translation id="7821773512278295352">Ping Firewall + VPN: متصل</translation>
+<translation id="6019088868713395120">Ping Firewall + VPN: غير متصل</translation>
+<translation id="3541307549916475335">واجهة مستخدم لوحة Ping VPN</translation>
+<translation id="7143207342074048698">اتصال</translation>
+<translation id="1202549130170287307">قطع الاتصال</translation>
 <translation id="2325196879156848326">فشل الاتصال</translation>
 <translation id="745054660363064771">لا يمكن الاتصال بالخادم</translation>
 <translation id="3936826714240735937">اختر خادمًا آخر</translation>
-<translation id="1305433007676951913">تعذر على <ph name="PRODUCT_NAME"/> الاتصال بخادم <ph name="REGION_NAME"/>. يمكنك المحاولة مرة أخرى، أو اختر خادمًا آخر.</translation>
-<translation id="8703188411226330709">بدء التجربة المجانية</translation>
-<translation id="1024255913009642477">هل اشتريت VPN بالفعل؟</translation>
+<translation id="2606728814652041300">تعذّر على<ph name="PRODUCT_NAME"/> الاتصال بخادم <ph name="REGION_NAME"/> يُرجى المحاولة مرة أخرى أو اختيار دولة أخرى.</translation>
+<translation id="5753795690521538679">بدء نسخة تجريبية مجانية لمدة 7 أيام</translation>
+<translation id="3357036723290257445">هل اشتريت Ping VPN بالفعل؟</translation>
 <translation id="8814357473522731680">مشغل بواسطة</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="8652175077544655965">إغلاق الإعدادات</translation>
+<translation id="3099126540952997993">جدار الحماية + VPN</translation>
+<translation id="5908163815855240493">انتقل إلى الصفحة الرئيسية</translation>
+<translation id="7805768142964895445">الحالة</translation>
 <translation id="5747552184818312860">تاريخ انتهاء الصلاحية</translation>
-<translation id="8421945428836418371">إعادة الاتصال تلقائيًا</translation>
+<translation id="8421945428836418371">إعادة الاتصال تلقائيًا</translation>
 <translation id="434523916398030617">اتصل بالدعم الفني</translation>
 <translation id="1116694919640316211">حول</translation>
-<translation id="8670386189340362926">منع الإعلانات المتعقبة &amp; عبر جميع التطبيقات</translation>
-<translation id="4860763498907927955">يحميك من اتصالات الشبكة غير المرغوب فيها</translation>
-<translation id="3181339219453722970">اختر موقع VPN الخاص بك</translation>
-<translation id="1708407585266172412">سريع وغير محدود يصل حتى 500 ميجابت في الثانية</translation>
-<translation id="1400240082805528049">دعم على مدار الساعة طوال أيام الأسبوع</translation>
+<translation id="755045397420611731">الخصوصية والأمان الإضافيان عبر الإنترنت</translation>
+<translation id="4520128772974831415">إخفاء عنوان IP الخاص بك وتغيير موقعك</translation>
+<translation id="2044418816479192294">مئات من الخوادم حول العالم</translation>
+<translation id="7410504850864021600">سرعات اتصال فائقة</translation>
+<translation id="2422309687188612485">حماية ما يصل إلى 10 أجهزة بخطة واحدة</translation>
 <translation id="1693568075761612600">فشل إنشاء تذكرة دعم، تحقق من الاتصال.</translation>
+<translation id="1407707415819020643">حدد الخادم الخاص بك</translation>
+<translation id="7406947191797765434"><ph name="CITY_COUNT"/> مدن - <ph name="SERVER_COUNT"/> خوادم</translation>
+<translation id="7337680029337389658">1 مدينة</translation>
+<translation id="1616613632573101617"><ph name="CITY_COUNT"/> مدن</translation>
+<translation id="5647994901467053283">1 خادم</translation>
+<translation id="8828637853024704314"><ph name="SERVER_COUNT"/> خوادم</translation>
+<translation id="6527596624419285047">استخدام أفضل خادم متاح</translation>
 <translation id="8463313539532697053">انتظر لحظات بينما يتم التحميل…</translation>
-<translation id="4317307602527599178">تعذّر التحقق من حالة الشراء. قد يكون هذا بسبب مشكلة في الشبكة.</translation>
+<translation id="2542131205769293399">تعذّر التحقق من حالة عملية الشراء الخاصة بك. ربما تكون هذه مشكلة في الشبكة. حاول مرة أخرى أو اتصل بالدعم.</translation>
 <translation id="4613076894734402086">تحرير طريقة الدفع</translation>
 <translation id="427718751211990320">انقضاء تاريخ انتهاء صلاحية بيانات الاعتماد.</translation>
 <translation id="8670619630771851260">يتعذّر تحميل بيانات الاعتماد.</translation>
 <translation id="1594643509610625766">الرمز المميز لم يعد صالحًا.</translation>
-<translation id="8373427068383038263">يبدو أنه لم يتم تسديد آخر دفعة لك لـ <ph name="VALUE"/>. سيتوقف الوصول إلى هذا الاشتراك مؤقتًا حتى يتم حل مشكلة الدفع. جرّب تعديل طريقة الدفع لديك، أو اتصل بدعم Brave.</translation>
+<translation id="8373427068383038263">يبدو أنه لم يتم تسديد آخر دفعة لك لـ <ph name="VALUE"/>. سيتوقف الوصول إلى هذا الاشتراك مؤقتًا حتى يتم حل مشكلة الدفع. جرّب تعديل طريقة الدفع لديك، أو اتصل بدعم Ping.</translation>
+<translation id="5257165507296814658">إغلاق نموذج الدعم</translation>
 <translation id="1839021455997460752">عنوان بريدك الإلكتروني</translation>
+<translation id="7508253027939632101">أدخل عنوان بريدك الإلكتروني</translation>
 <translation id="8054563304616131773">يُرجى إدخال عنوان بريد إلكتروني صالح</translation>
+<translation id="365334785487370919">هذه الخانة مطلوبة</translation>
 <translation id="5154702632169343078">الموضوع</translation>
 <translation id="6625978880678465492">يُرجى اختيار سبب</translation>
 <translation id="6687228121145903051">لا يمكن الاتصال بـ VPN (خطأ آخر)</translation>
@@ -2108,6 +2232,7 @@
 <translation id="21570240866965662">اتصال بطيء</translation>
 <translation id="1219475260382643267">الموقع لا يعمل</translation>
 <translation id="1387340358507240698">صِف مشكلتك</translation>
+<translation id="5597547971954030233">صِف مشكلتك هنا</translation>
 <translation id="501818585183973587">حدد المعلومات التي ترغب في مشاركتها معنا</translation>
 <translation id="3195618332367441234">كلما زادت المعلومات التي تشاركها، سيسهل على موظفي الدعم تقديم المساعدة.</translation>
 <translation id="5682143294773821728">اسم مضيف VPN:</translation>
@@ -2115,41 +2240,39 @@
 <translation id="6676791921618140305">إصدار نظام التشغيل:</translation>
 <translation id="1156325797949437777">الدعم المُقدم بالشراكة مع Guardian.</translation>
 <translation id="8146777497879160283">فشل في كتابة تكوين VPN. قد يحدث هذا إذا لم يكن لديك إذن أو إذا لم تقم بإجراء تحديث لنظام التشغيل Windows مؤخرًا.</translation>
-<translation id="3307461350293459700">فشل اتصال شبكة VPN. يُرجى محاولة الاتصال مرة أخرى، وتأكد من النقر فوق "السماح" لتمكين تهيئة شبكة VPN الخاصة بـ Brave.</translation>
-<translation id="7261518280726313829">قد يؤدي إيقاف تشغيل DNS الآمن أو استخدام الخوادم الافتراضية على Windows إلى الكشف عن أسماء المواقع التي تزورها لمزود خدمة الإنترنت لديك. لا ينصح Brave بالقيام بذلك. هل تريد أن تقوم بذلك على أي حال؟</translation>
-<translation id="888284761945060750">تم تعطيل DNS الآمن بواسطة سياسات مؤسستك. قد يكشف استخدام Brave VPN بدون DNS الآمن عن أسماء المواقع التي تزورها لمزود خدمة الإنترنت أو مؤسستك.</translation>
-<translation id="6593224083874259773">Brave VPN على نظام التشغيل Windows</translation>
-<translation id="3153983908111684619">يتم قفل الإعداد بواسطة BraveVPN أثناء اتصاله</translation>
+<translation id="3362894458460231163">فشل اتصال VPN. يُرجى محاولة الاتصال مرة أخرى وتأكد من النقر فوق "السماح" لتمكين تكوين VPN الخاص بـ Ping.</translation>
+<translation id="7261518280726313829">قد يؤدي إيقاف تشغيل DNS الآمن أو استخدام الخوادم الافتراضية على Windows إلى الكشف عن أسماء المواقع التي تزورها لمزود خدمة الإنترنت لديك. لا ينصح Ping بالقيام بذلك. هل تريد أن تقوم بذلك على أي حال؟</translation>
+<translation id="888284761945060750">تم تعطيل DNS الآمن بواسطة سياسات مؤسستك. قد يكشف استخدام Ping VPN بدون DNS الآمن عن أسماء المواقع التي تزورها لمزود خدمة الإنترنت أو مؤسستك.</translation>
+<translation id="6593224083874259773">Ping VPN على نظام التشغيل Windows</translation>
+<translation id="3153983908111684619">يتم قفل الإعداد بواسطة PingVPN أثناء اتصاله</translation>
 <translation id="1055657720430482013">يحتوي نظام التشغيل Windows على ميزة تُسمى Smart Multi-Homed Name Resolution، والتي يمكنها كشف معلومات حول موقعك والمواقع التي تزورها.
 
-لدى Brave خدمة مساعدة تحميك من هذا الكشف عن طريق تصفية طريقة إجراء استعلامات DNS على اتصال VPN الخاص بك.
+لدى Ping خدمة مساعدة تحميك من هذا الكشف عن طريق تصفية طريقة إجراء استعلامات DNS على اتصال VPN الخاص بك.
 
 ومع ذلك، لاحظنا أن خدمة المساعد هذه لا تعمل، ولا نريد أن نتركك دون حماية. لقد قمنا بتغيير إعدادات DNS في المتصفح للحماية من هذا الكشف. ستظل الإعدادات سارية ومغلقة أثناء اتصال VPN.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="8810743613883230732">يبدو أن هناك بعض المشكلات في اتصال WireGuard. هل تريد تمكين خيار IKEv2 الاحتياطي لشبكة VPN موثوقة؟ ما عليك سوى تغيير الإعدادات.
+<translation id="7082498599369566941">يبدو أن هناك بعض المشاكل مع اتصال WireGuard. هل تريد تمكين خيار IKEv2 الاحتياطي للحصول على شبكة VPN موثوقة؟ ما عليك سوى تغيير الإعدادات.
 
 هل تحتاج إلى مساعدة فيما يتعلق بالتوافق أو التكوين؟ تواصل مع فريق الدعم الودود لدينا.
 يمكنك دائمًا الرجوع مرة أخرى إلى WireGuard على brave://settings/system.
 
-لنجعلك متصلًا دائمًا!
-
-<ph name="LEARN_MORE"/></translation>
+لنجعلك متصلًا دائمًا!</translation>
 <translation id="1657858090675311947">لا تحذرني من هذا الأمر مرة أخرى.</translation>
 <translation id="2740531572673183784">أوافق</translation>
 <translation id="7423206764347669977">تغيير الإعدادات</translation>
 <translation id="9061845622728745852">المنطقة الزمنية:</translation>
 <translation id="8295393906499561642">انتهت صلاحية الجلسة</translation>
-<translation id="3312623558576021182">يُرجى تسجيل الدخول إلى <ph name="BRAVE_ACCOUNT_BEGIN"/>حساب Brave<ph name="BRAVE_ACCOUNT_END"/> لتحديث جلسة VPN الخاصة بك.</translation>
-<translation id="6021669293402055982">Brave VPN: غير متصل</translation>
-<translation id="7861195049821776142">Brave VPN: يتم إيقاف الاتصال</translation>
-<translation id="958268166261124668">Brave VPN: متصل</translation>
-<translation id="2061807837510296780">Brave VPN: جارٍ الاتصال</translation>
-<translation id="1313124107969703758">Brave VPN: خطأ</translation>
+<translation id="3312623558576021182">يُرجى تسجيل الدخول إلى <ph name="BRAVE_ACCOUNT_BEGIN"/>حساب Ping<ph name="BRAVE_ACCOUNT_END"/> لتحديث جلسة VPN الخاصة بك.</translation>
+<translation id="6021669293402055982">Ping VPN: غير متصل</translation>
+<translation id="7861195049821776142">Ping VPN: يتم إيقاف الاتصال</translation>
+<translation id="958268166261124668">Ping VPN: متصل</translation>
+<translation id="2061807837510296780">Ping VPN: جارٍ الاتصال</translation>
+<translation id="1313124107969703758">Ping VPN: خطأ</translation>
 <translation id="8273420301954598554">الحالة: متصل</translation>
 <translation id="7155657348064536843">الحالة: غير متصل</translation>
-<translation id="2413929902277520460">Brave VPN - متصل</translation>
-<translation id="8048263175525832621">Brave VPN - غير متصل</translation>
+<translation id="2413929902277520460">Ping VPN - متصل</translation>
+<translation id="8048263175525832621">Ping VPN - غير متصل</translation>
 <translation id="1498770726476841108">إدارة الحساب</translation>
 <translation id="6825718953004242472">رمز "إزالة"</translation>
 <translation id="3287942014983548982">افتح هنا</translation>

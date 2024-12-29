@@ -17,15 +17,14 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.content_public.browser.BrowserStartupController;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 
 public class BraveIntentHandler {
     private static final String TAG = "BraveIntentHandler";
 
     public static final String CONNECTION_INFO_HELP_URL =
-            "https://support.google.com/chrome?p=android_connection_info";
+            "https://ping-browser.com/faqs-and-help";
     public static final String BRAVE_CONNECTION_INFO_HELP_URL =
-            "https://support.brave.com/hc/en-us/articles/360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
+            "https://ping-browser.com/faqs-and-help";
 
     /**
      * Helper method to extract the raw URL from the intent, without further processing.
@@ -38,6 +37,7 @@ public class BraveIntentHandler {
         String url = IntentHandler.getUrlFromVoiceSearchResult(intent);
         if (url == null) url = getUrlForCustomTab(intent);
         if (url == null) url = getUrlForWebapp(intent);
+        if (url == null) url = IntentHandler.getUrlFromShareIntent(intent);
         if (url == null) url = intent.getDataString();
         if (url == null) url = getUrlFromText(intent);
         if (url == null) url = getWebSearchUrl(intent);
@@ -74,7 +74,7 @@ public class BraveIntentHandler {
                                     .getUrlForSearchQuery(query);
                         }
                     });
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             Log.e(TAG, "Could not retrieve search query: " + e);
         }
         return null;

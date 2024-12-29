@@ -16,9 +16,11 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     contractAddress: "0x123",
     name: "mockAsset",
     logo: "",
+    isCompressed: false,
     isErc20: true,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "MA",
@@ -33,9 +35,11 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     contractAddress: "0x123",
     name: "mockAsset2",
     logo: "",
+    isCompressed: false,
     isErc20: false,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unknown,
     isNft: false,
     isSpam: false,
     symbol: "MA2",
@@ -60,8 +64,7 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     symbolName: "SOL",
     decimals: 9,
     coin: .sol,
-    supportedKeyrings: [],
-    isEip1559: false
+    supportedKeyrings: []
   )
 
   let fetchRequest = NSFetchRequest<WalletUserAssetBalance>(
@@ -103,7 +106,11 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetBalance.removeBalances(for: asset)
+      Task {
+        await WalletUserAssetBalance.removeBalances(
+          for: asset
+        )
+      }
     }
 
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 0)
@@ -115,7 +122,9 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetBalance.removeBalances(for: asset, account: account1)
+      Task {
+        await WalletUserAssetBalance.removeBalances(for: asset, account: account1)
+      }
     }
 
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 1)
@@ -128,7 +137,9 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 3)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetBalance.removeBalances(for: mockSolNetwork)
+      Task {
+        await WalletUserAssetBalance.removeBalances(for: mockSolNetwork)
+      }
     }
 
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 2)
@@ -142,7 +153,9 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 3)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetBalance.updateBalance(for: asset, balance: "9.8765", account: account1)
+      Task {
+        await WalletUserAssetBalance.updateBalance(for: asset, balance: "9.8765", account: account1)
+      }
     }
 
     DataController.viewContext.refreshAllObjects()
@@ -166,7 +179,9 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     account: String
   ) -> WalletUserAssetBalance {
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetBalance.updateBalance(for: asset, balance: balance, account: account)
+      Task {
+        await WalletUserAssetBalance.updateBalance(for: asset, balance: balance, account: account)
+      }
     }
     let request = try! DataController.viewContext.fetch(fetchRequest)
     return request.first!

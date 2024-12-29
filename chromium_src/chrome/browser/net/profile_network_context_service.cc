@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 static const char* kBraveCTExcludedHosts[] = {
     // Critical endpoints that shouldn't require SCTs so they always work
-    "laptop-updates.brave.com",
     "updates.bravesoftware.com",
     "updates-cdn.bravesoftware.com",
+    "usage-ping.brave.com",
     // Test host for manual testing
     "sct-exempted.bravesoftware.com",
 };

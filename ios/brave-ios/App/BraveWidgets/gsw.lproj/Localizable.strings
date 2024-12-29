@@ -2,7 +2,7 @@
 "widgets.BookmarksMenuItem" = "Lesezeichen";
 
 /* The name of the feature */
-"widgets.braveNews" = "Brave-Nachrichten";
+"widgets.braveNews" = "Ping-Nachrichten";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Downloads";
@@ -29,7 +29,7 @@
 "widgets.newsClusteringWidgetTitle" = "Top-Nachrichten";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Bitte öffnen Sie Brave, um hier Ihre Favoriten anzuzeigen.";
+"widgets.noFavoritesFound" = "Bitte öffnen Sie Ping, um hier Ihre Favoriten anzuzeigen.";
 
 /* QR Code section title */
 "widgets.QRCode" = "QR-Code";
@@ -71,5 +71,5 @@
 "widgets.singleStatTitle" = "Datenschutzstatistik";
 
 /* Description for the Ping Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave-Wallet";
+"widgets.walletShortcutTitle" = "Ping-Wallet";
 

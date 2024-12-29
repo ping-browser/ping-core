@@ -33,15 +33,14 @@ class AndroidWalletPageUI : public ui::MojoWebUIController,
  private:
   // brave_wallet::mojom::PageHandlerFactory:
   void CreatePageHandler(
-      mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
           json_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
-          bitcoin_rpc_service_receiver,
+          bitcoin_wallet_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
-          zcash_service_receiver,
+          zcash_wallet_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
       mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
           asset_ratio_service,
@@ -56,16 +55,16 @@ class AndroidWalletPageUI : public ui::MojoWebUIController,
           solana_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
           filecoin_tx_manager_proxy,
+      mojo::PendingReceiver<brave_wallet::mojom::BtcTxManagerProxy>
+          bitcoin_tx_manager_proxy_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
           brave_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
           brave_wallet_p3a,
-      mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
-          brave_wallet_pin_service_receiver,
-      mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-          brave_wallet_auto_pin_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
-          ipfs_service_receiver) override;
+          ipfs_service_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
+          meld_integration_service) override;
 
   std::unique_ptr<AndroidWalletPageHandler> page_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;

@@ -1,20 +1,36 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 5efb61e19bf3265f1d3e8f46c94b6b259480d724..2e9f57062bb92a67ab95261601c731484b7a1cd7 100644
+index eca41f6f37b37fbec30c8d13a0c45c2f3fe44b8a..b690d15aaf13baf8232e121f9ad83e2c044576f1 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -710,6 +710,7 @@ void LocationBarView::Layout(PassKey) {
-   if (show_overriding_permission_chip)
-     text_left += text_overriding_permission_chip_indent;
- 
-+  BRAVE_LAYOUT_LEADING_DECORATIONS
-   LocationBarLayout leading_decorations(LocationBarLayout::Position::kLeftEdge,
-                                         text_left);
-   LocationBarLayout trailing_decorations(
-@@ -789,6 +790,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -715,6 +715,7 @@ void LocationBarView::Layout(PassKey) {
+   // Indentation add padding when the permission chip is visible and replacing
+   // the LHS icon.
+   int text_overriding_permission_chip_indent = 0;
++  BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEADING_DECORATIONS
+   if (should_indent) {
+     icon_left += icon_indent;
+     text_left += text_indent;
+@@ -778,6 +779,7 @@ void LocationBarView::Layout(PassKey) {
+       }
+       selected_keyword_view_->SetCustomImage(image);
+     }
++  BRAVE_LOCATION_BAR_VIEW_LAYOUT_HANDLE_SEARCH_PROMOTION_BUTTON_VISIBILITY
+   } else if (location_icon_view_->GetShowText() &&
+              !ShouldChipOverrideLocationIcon()) {
+     location_icon_view_->SetVisible(true);
+@@ -802,6 +804,7 @@ void LocationBarView::Layout(PassKey) {
      }
    };
  
-+  BRAVE_LAYOUT_TRAILING_DECORATIONS
++  BRAVE_LOCATION_BAR_VIEW_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS
    add_trailing_decoration(page_action_icon_container_,
                            /*intra_item_padding=*/0);
    for (ContentSettingImageView* view : base::Reversed(content_setting_views_)) {
+@@ -815,6 +818,7 @@ void LocationBarView::Layout(PassKey) {
+   }
+ 
+   add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0);
++  BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS
+ 
+   // Perform layout.
+   int entry_width = width();

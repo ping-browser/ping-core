@@ -5,30 +5,25 @@
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
+#include <memory>
+
+#include "base/check_is_test.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/tor/util.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_profile_service_impl.h"
 #include "brave/components/tor/tor_utils.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/prefs/incognito_mode_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 
 namespace {
 
-bool IsIncognitoDisabledOrForced(content::BrowserContext* context) {
-  const auto availability =
-      IncognitoModePrefs::GetAvailability(user_prefs::UserPrefs::Get(context));
-  return availability == policy::IncognitoModeAvailability::kDisabled ||
-         availability == policy::IncognitoModeAvailability::kForced;
-}
 
 }  // namespace
 
@@ -62,7 +57,7 @@ void TorProfileServiceFactory::SetTorDisabled(bool disabled) {
 
 // static
 bool TorProfileServiceFactory::IsTorManaged(content::BrowserContext* context) {
-  if (IsIncognitoDisabledOrForced(context)) {
+  if (tor::IsIncognitoDisabledOrForced(context)) {
     return true;
   }
   if (g_browser_process) {
@@ -78,7 +73,7 @@ bool TorProfileServiceFactory::IsTorDisabled(content::BrowserContext* context) {
   if (Profile::FromBrowserContext(context)->IsGuestSession()) {
     return true;
   }
-  if (IsIncognitoDisabledOrForced(context)) {
+  if (tor::IsIncognitoDisabledOrForced(context)) {
     // Tor profile is derived from the incognito profile. If incognito is
     // disabled we can't create the tor profile. If incognito is forced then
     // browser forces incognito profile on creation (so created Tor profile
@@ -86,8 +81,13 @@ bool TorProfileServiceFactory::IsTorDisabled(content::BrowserContext* context) {
     return true;
   }
   if (g_browser_process) {
-    return g_browser_process->local_state()->GetBoolean(
-        tor::prefs::kTorDisabled);
+    // local_state can be null in tests
+    if (g_browser_process->local_state()) {
+      return g_browser_process->local_state()->GetBoolean(
+          tor::prefs::kTorDisabled);
+    } else {
+      CHECK_IS_TEST();
+    }
   }
   return false;
 }
@@ -118,7 +118,8 @@ TorProfileServiceFactory::TorProfileServiceFactory()
 
 TorProfileServiceFactory::~TorProfileServiceFactory() = default;
 
-KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+TorProfileServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   tor::BraveTorClientUpdater* tor_client_updater = nullptr;
   tor::BraveTorPluggableTransportUpdater* tor_pluggable_transport_updater =
@@ -128,7 +129,7 @@ KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     tor_pluggable_transport_updater =
         g_brave_browser_process->tor_pluggable_transport_updater();
   }
-  return new tor::TorProfileServiceImpl(
+  return std::make_unique<tor::TorProfileServiceImpl>(
       Profile::FromBrowserContext(context)->GetOriginalProfile(), context,
       g_browser_process->local_state(), tor_client_updater,
       tor_pluggable_transport_updater);

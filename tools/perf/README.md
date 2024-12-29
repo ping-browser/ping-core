@@ -1,20 +1,47 @@
-### How to update wpr
+# Brave performance tests
 
-* Get write access to `brave-telemetry` GCS bucket (ask @devops-team);
-* `cd src/`;
-* Remove old downloaded wprs: `rm -rf ./brave/tools/perf/page_sets/data/*.wprgo`;
-* Record new wprs: `vpython3 tools/perf/record_wpr <benchmark_name> --browser=system  --story-filter <story-filter>`;
-* Upload the archives to GCS: `ls ./brave/tools/perf/page_sets/data/*.wprgo | xargs upload_to_google_storage.py --bucket=brave-telemetry`.
-  `*.sha1` files will be generated;
-* `cd brave`;
-* Review and commit new `.sha1` files (not `.wprgo`) plus new entries in
-  `./brave/tools/perf/page_sets_data/*.json`.
+## Job URLs
 
-### Updating profiles
+* [Window](<https://ci.brave.com/job/brave-browser-test-perf-windows/>)
+* [MacOS](<https://ci.brave.com/job/brave-browser-test-perf-macos/>)
+* [Android](<https://ci.brave.com/job/brave-browser-test-perf-android/>)
 
-* Get write access to `brave-telemetry` GCS bucket (ask @devops-team);
-* Launch CI jobs with nessesary configurations and extra args = `--mode update_profile`;
-* Download the artifacts (the URL in the Console Output), extract and copy <profile_name>.zip to `./profiles/`;
-* Upload the new archives to google storage: `upload_to_google_storage.py --bucket=brave-telemetry <profiles>.zip`;
-* Stage and commit the updated `<profiles>.zip.sha1`, don't commit the origin `.zip`;
-* Make a PR to brave-core.
+## S3 migration
+
+Perf data is currently moving to AWS S3 `brave-perf-data` bucket.
+The data is accessible via <https://perf-data.s3.brave.com/{path}>.
+The current structure:
+`./perf-profiles/`: test perf profiles
+`./telemetry-perf-data/`: WPR files and other data are used by telemetry and
+                          catapult code
+
+## S3 upload
+
+1. Make sure that you setup aws cli tools.
+2. Run `brave/tools/perf/perf_utils.py s3-upload <filename>.wprgo`
+
+## GSC manual upload (legacy)
+
+`upload_to_google_storage.py --bucket=brave-telemetry <file>`
+the script will produce `.sha1` automatically.
+
+## How to update or record WPR
+
+Use `npm run perf_tests -- --mode record-wpr` instead of chromium `update_wpr` or `record_wpr`. It:
+
+* downloads and runs both Brave and Chromium, combine .wpr files (to capture all browser-specific requests);
+* adds pre-initialied profiles and Griffin/Finch experiments;
+* does some pre runs to ensure that everything is initialized (aka online profile rebase)
+* removes unwanted URLs from the final .wpr file.
+
+### Workflow
+
+* Prepare a config (use configs/record-wpr.json5 as a base). One benchmark or storySet = one .wpr.
+* Run `npm run perf_tests -- <config>.json5 --mode record-wpr --working-directory=.. --variations-repo-dir=..`;
+* Run the matching benchmark locally to tests the created .wpr;
+* Upload wpr files to the cloud storage: `ls ./brave/tools/perf/page_sets/data/*.wprgo | xargs <upload_cmd>`;
+* Commit the changes, including a new `.sha1` files, to brave-core.
+
+## Updating profiles
+
+[Instruction](./updating_test_profiles.md)

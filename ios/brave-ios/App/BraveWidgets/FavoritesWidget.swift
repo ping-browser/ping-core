@@ -33,12 +33,16 @@ private struct FavoritesProvider: TimelineProvider {
     Entry(date: Date(), favorites: [])
   }
   func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
-    let favorites = FavoritesWidgetData.loadWidgetData() ?? []
-    completion(Entry(date: Date(), favorites: favorites))
+    Task {
+      let favorites = await FavoritesWidgetData.loadWidgetData() ?? []
+      completion(Entry(date: Date(), favorites: favorites))
+    }
   }
   func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
-    let favorites = FavoritesWidgetData.loadWidgetData() ?? []
-    completion(Timeline(entries: [Entry(date: Date(), favorites: favorites)], policy: .never))
+    Task {
+      let favorites = await FavoritesWidgetData.loadWidgetData() ?? []
+      completion(Timeline(entries: [Entry(date: Date(), favorites: favorites)], policy: .never))
+    }
   }
 }
 
@@ -50,6 +54,7 @@ struct FaviconImage: View {
   var body: some View {
     Image(uiImage: image)
       .resizable()
+      .widgetAccentedRenderingModeFullColor()
       .aspectRatio(1, contentMode: .fit)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .clipped()
@@ -61,6 +66,7 @@ private struct NoFavoritesFoundView: View {
   var body: some View {
     VStack {
       Image("brave-icon")
+        .widgetAccentedRenderingModeFullColor()
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
       Text(Strings.Widgets.noFavoritesFound)
         .multilineTextAlignment(.center)

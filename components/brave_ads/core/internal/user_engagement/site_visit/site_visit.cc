@@ -7,18 +7,17 @@
 
 #include "base/check.h"
 #include "base/containers/contains.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/page_land/page_land_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 
 namespace brave_ads {
@@ -33,30 +32,38 @@ SiteVisit::~SiteVisit() {
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void SiteVisit::AddObserver(SiteVisitObserver* observer) {
+void SiteVisit::AddObserver(SiteVisitObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
-void SiteVisit::RemoveObserver(SiteVisitObserver* observer) {
+void SiteVisit::RemoveObserver(SiteVisitObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool SiteVisit::IsPageLanding(const int32_t tab_id) const {
+bool SiteVisit::IsLandingOnPage(const int32_t tab_id) const {
   return base::Contains(page_lands_, tab_id);
 }
 
-void SiteVisit::MaybeLandOnPage(const TabInfo& tab) {
+void SiteVisit::MaybeLandOnPage(const TabInfo& tab,
+                                const int http_status_code) {
+  if (!UserHasJoinedBraveRewards()) {
+    return;
+  }
+
   if (!last_clicked_ad_) {
     // No ad interactions have occurred in the current browsing session.
     return;
   }
 
-  if (!IsPageLanding(tab.id)) {
-    MaybeLandOnPageAfter(tab, *last_clicked_ad_, kPageLandAfter.Get());
+  if (!IsLandingOnPage(tab.id)) {
+    MaybeLandOnPageAfter(tab, http_status_code, *last_clicked_ad_,
+                         kPageLandAfter.Get());
   }
 
   // Reset the last clicked ad to prevent multiple landings on the same ad.
@@ -64,9 +71,10 @@ void SiteVisit::MaybeLandOnPage(const TabInfo& tab) {
 }
 
 void SiteVisit::MaybeLandOnPageAfter(const TabInfo& tab,
+                                     const int http_status_code,
                                      const AdInfo& ad,
                                      const base::TimeDelta page_land_after) {
-  CHECK(!IsPageLanding(tab.id));
+  CHECK(!IsLandingOnPage(tab.id));
 
   if (!DomainOrHostExists(tab.redirect_chain, ad.target_url)) {
     return BLOG(1, "Visited page does not match the ad landing page");
@@ -74,68 +82,79 @@ void SiteVisit::MaybeLandOnPageAfter(const TabInfo& tab,
 
   NotifyMaybeLandOnPage(ad, page_land_after);
 
+  page_lands_[tab.id].ad = ad;
+
   // Start the timer to check if the user has navigated to the landing page post
   // ad click.
-  page_lands_[tab.id].ad = ad;
   page_lands_[tab.id].timer.Start(
       FROM_HERE, page_land_after,
       base::BindRepeating(&SiteVisit::MaybeLandOnPageAfterCallback,
-                          weak_factory_.GetWeakPtr(), tab));
+                          weak_factory_.GetWeakPtr(), tab.id,
+                          http_status_code));
+
+  if (!tab.is_visible) {
+    // Suspend the page landing if the tab is not visible, i.e., the user opened
+    // the tab in the background.
+    SuspendPageLand(tab.id);
+  }
 }
 
-void SiteVisit::MaybeLandOnPageAfterCallback(const TabInfo& tab) {
-  CHECK(IsPageLanding(tab.id));
+void SiteVisit::MaybeLandOnPageAfterCallback(const int32_t tab_id,
+                                             const int http_status_code) {
+  CHECK(IsLandingOnPage(tab_id));
 
-  const AdInfo ad = page_lands_[tab.id].ad;
-  DidLandOnPage(tab.id, ad.target_url) ? LandedOnPage(tab, ad)
-                                       : DidNotLandOnPage(tab, ad);
+  const AdInfo ad = page_lands_[tab_id].ad;
 
-  StopPageLand(tab.id);
+  if (DidLandOnPage(tab_id, ad.target_url)) {
+    LandedOnPage(tab_id, http_status_code, ad);
+  } else {
+    DidNotLandOnPage(tab_id, ad);
+  }
+
+  StopPageLand(tab_id);
 }
 
-void SiteVisit::LandedOnPage(const TabInfo& tab, const AdInfo& ad) {
-  RecordAdEvent(ad, ConfirmationType::kLanded,
-                base::BindOnce(&SiteVisit::LandedOnPageCallback,
-                               weak_factory_.GetWeakPtr(), tab, ad));
+void SiteVisit::LandedOnPage(const int32_t tab_id,
+                             const int http_status_code,
+                             const AdInfo& ad) {
+  RecordAdEvent(
+      ad, mojom::ConfirmationType::kLanded,
+      base::BindOnce(&SiteVisit::LandedOnPageCallback,
+                     weak_factory_.GetWeakPtr(), tab_id, http_status_code, ad));
 }
 
-void SiteVisit::LandedOnPageCallback(const TabInfo& tab,
+void SiteVisit::LandedOnPageCallback(const int32_t tab_id,
+                                     const int http_status_code,
                                      const AdInfo& ad,
                                      const bool success) const {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to record ad page land event");
-    base::debug::DumpWithoutCrashing();
+    BLOG(0, "Failed to record ad page land event");
 
-    BLOG(1, "Failed to record ad page land event");
-    return NotifyDidNotLandOnPage(tab, ad);
+    return NotifyDidNotLandOnPage(tab_id, ad);
   }
 
-  NotifyDidLandOnPage(tab, ad);
+  NotifyDidLandOnPage(tab_id, http_status_code, ad);
 }
 
-void SiteVisit::DidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) const {
-  NotifyDidNotLandOnPage(tab, ad);
+void SiteVisit::DidNotLandOnPage(const int32_t tab_id, const AdInfo& ad) const {
+  NotifyDidNotLandOnPage(tab_id, ad);
 }
 
-void SiteVisit::MaybeCancelPageLand(const TabInfo& tab) {
-  if (!IsPageLanding(tab.id)) {
-    // The tab isn't a landing page.
+void SiteVisit::MaybeCancelPageLand(const int32_t tab_id) {
+  if (!IsLandingOnPage(tab_id)) {
     return;
   }
 
-  const AdInfo ad = page_lands_[tab.id].ad;
-  if (!DidLandOnPage(tab.id, ad.target_url)) {
+  const AdInfo ad = page_lands_[tab_id].ad;
+
+  if (!DidLandOnPage(tab_id, ad.target_url)) {
     // The user navigated away from the landing page post ad click.
-    CancelPageLand(tab.id);
+    CancelPageLand(tab_id);
   }
 }
 
 void SiteVisit::CancelPageLand(const int32_t tab_id) {
-  if (!IsPageLanding(tab_id)) {
-    // The tab isn't a landing page.
+  if (!IsLandingOnPage(tab_id)) {
     return;
   }
 
@@ -154,47 +173,42 @@ void SiteVisit::StopPageLand(const int32_t tab_id) {
 
 void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTab() {
   if (const std::optional<TabInfo> tab =
-          TabManager::GetInstance().GetVisible()) {
+          TabManager::GetInstance().MaybeGetVisible()) {
     MaybeSuspendOrResumePageLand(tab->id);
   }
 }
 
 void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
-  if (!IsPageLanding(tab_id)) {
-    // The tab isn't a landing page.
+  if (!kShouldSuspendAndResumePageLand.Get()) {
     return;
   }
 
-  const std::optional<TabInfo>& tab =
-      TabManager::GetInstance().MaybeGetForId(tab_id);
-  if (!tab) {
-    return BLOG(0, "Failed to get tab for id: " << tab_id);
+  if (!IsLandingOnPage(tab_id)) {
+    return;
   }
 
-  const bool should_resume = tab->is_visible &&
+  const bool should_resume = TabManager::GetInstance().IsVisible(tab_id) &&
                              BrowserManager::GetInstance().IsActive() &&
                              BrowserManager::GetInstance().IsInForeground();
+  if (should_resume) {
+    return ResumePageLand(tab_id);
+  }
 
-  should_resume ? ResumePageLand(*tab) : SuspendPageLand(*tab);
+  SuspendPageLand(tab_id);
 }
 
 base::TimeDelta SiteVisit::CalculateRemainingTimeToLandOnPage(
     const int32_t tab_id) {
-  CHECK(IsPageLanding(tab_id));
+  CHECK(IsLandingOnPage(tab_id));
 
   const PageLandInfo& page_land = page_lands_[tab_id];
-
-  const base::TimeDelta remaining_time =
-      page_land.timer.desired_run_time() - base::TimeTicks::Now();
-  CHECK(!remaining_time.is_negative());
-
-  return remaining_time;
+  return page_land.timer.desired_run_time() - base::TimeTicks::Now();
 }
 
-void SiteVisit::SuspendPageLand(const TabInfo& tab) {
-  CHECK(IsPageLanding(tab.id));
+void SiteVisit::SuspendPageLand(const int32_t tab_id) {
+  CHECK(IsLandingOnPage(tab_id));
 
-  PageLandInfo& page_land = page_lands_[tab.id];
+  PageLandInfo& page_land = page_lands_[tab_id];
 
   if (!page_land.timer.IsRunning()) {
     // We have already checked if the user has navigated to the landing page.
@@ -203,17 +217,17 @@ void SiteVisit::SuspendPageLand(const TabInfo& tab) {
 
   // `CalculateRemainingTimeToLandOnPage` must be called prior to stopping the
   // timer, else the remaining time will be zero.
-  page_land.remaining_time = CalculateRemainingTimeToLandOnPage(tab.id);
+  page_land.remaining_time = CalculateRemainingTimeToLandOnPage(tab_id);
 
   page_land.timer.Stop();
 
-  NotifyDidSuspendPageLand(tab, *page_land.remaining_time);
+  NotifyDidSuspendPageLand(tab_id, *page_land.remaining_time);
 }
 
-void SiteVisit::ResumePageLand(const TabInfo& tab) {
-  CHECK(IsPageLanding(tab.id));
+void SiteVisit::ResumePageLand(const int32_t tab_id) {
+  CHECK(IsLandingOnPage(tab_id));
 
-  PageLandInfo& page_land = page_lands_[tab.id];
+  PageLandInfo& page_land = page_lands_[tab_id];
 
   if (page_land.timer.IsRunning() || !page_land.remaining_time) {
     // This is triggered when a new tab is opened, since the page land has not
@@ -225,7 +239,7 @@ void SiteVisit::ResumePageLand(const TabInfo& tab) {
   page_land.timer.Start(FROM_HERE, *page_land.remaining_time,
                         page_land.timer.user_task());
 
-  NotifyDidResumePageLand(tab, *page_land.remaining_time);
+  NotifyDidResumePageLand(tab_id, *page_land.remaining_time);
 
   page_land.remaining_time.reset();
 }
@@ -238,32 +252,33 @@ void SiteVisit::NotifyMaybeLandOnPage(const AdInfo& ad,
 }
 
 void SiteVisit::NotifyDidSuspendPageLand(
-    const TabInfo& tab,
+    const int32_t tab_id,
     const base::TimeDelta remaining_time) const {
   for (SiteVisitObserver& observer : observers_) {
-    observer.OnDidSuspendPageLand(tab, remaining_time);
+    observer.OnDidSuspendPageLand(tab_id, remaining_time);
   }
 }
 
 void SiteVisit::NotifyDidResumePageLand(
-    const TabInfo& tab,
+    const int32_t tab_id,
     const base::TimeDelta remaining_time) const {
   for (SiteVisitObserver& observer : observers_) {
-    observer.OnDidResumePageLand(tab, remaining_time);
+    observer.OnDidResumePageLand(tab_id, remaining_time);
   }
 }
 
-void SiteVisit::NotifyDidLandOnPage(const TabInfo& tab,
+void SiteVisit::NotifyDidLandOnPage(const int32_t tab_id,
+                                    const int http_status_code,
                                     const AdInfo& ad) const {
   for (SiteVisitObserver& observer : observers_) {
-    observer.OnDidLandOnPage(tab, ad);
+    observer.OnDidLandOnPage(tab_id, http_status_code, ad);
   }
 }
 
-void SiteVisit::NotifyDidNotLandOnPage(const TabInfo& tab,
+void SiteVisit::NotifyDidNotLandOnPage(const int32_t tab_id,
                                        const AdInfo& ad) const {
   for (SiteVisitObserver& observer : observers_) {
-    observer.OnDidNotLandOnPage(tab, ad);
+    observer.OnDidNotLandOnPage(tab_id, ad);
   }
 }
 
@@ -303,12 +318,11 @@ void SiteVisit::OnTabDidChangeFocus(const int32_t tab_id) {
 }
 
 void SiteVisit::OnTabDidChange(const TabInfo& tab) {
-  MaybeCancelPageLand(tab);
-  MaybeLandOnPage(tab);
+  MaybeCancelPageLand(tab.id);
 }
 
-void SiteVisit::OnDidOpenNewTab(const TabInfo& tab) {
-  MaybeLandOnPage(tab);
+void SiteVisit::OnTabDidLoad(const TabInfo& tab, const int http_status_code) {
+  MaybeLandOnPage(tab, http_status_code);
 }
 
 void SiteVisit::OnDidCloseTab(const int32_t tab_id) {

@@ -27,7 +27,7 @@ ExtendedSpendingKeyImpl::DeriveHardenedChild(uint32_t index) {
   return nullptr;
 }
 
-std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
+std::optional<OrchardAddrRawPart>
 ExtendedSpendingKeyImpl::GetDiversifiedAddress(uint32_t div_index,
                                                OrchardAddressKind kind) {
   return kind == OrchardAddressKind::External
@@ -45,6 +45,10 @@ std::unique_ptr<ExtendedSpendingKey> ExtendedSpendingKey::GenerateFromSeed(
         new ExtendedSpendingKeyImpl(mk->unwrap()));
   }
   return nullptr;
+}
+
+OrchardFullViewKey ExtendedSpendingKeyImpl::GetFullViewKey() {
+  return extended_spending_key_->full_view_key();
 }
 
 }  // namespace brave_wallet::orchard

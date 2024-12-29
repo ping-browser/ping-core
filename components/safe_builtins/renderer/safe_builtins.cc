@@ -25,10 +25,10 @@ namespace brave {
 
 namespace {
 
-const char kClassName[] = "brave::SafeBuiltins";
+constexpr char kClassName[] = "brave::SafeBuiltins";
 
 // see //extensions/renderer/safe_builtins.cc for details
-const char kScript[] =
+constexpr char kScript[] =
     "(function() {\n"
     "'use strict';\n"
     "native function Apply();\n"
@@ -154,7 +154,8 @@ class ExtensionImpl : public v8::Extension {
     if (name->StringEquals(ToV8StringUnsafe(isolate, "Save"))) {
       return v8::FunctionTemplate::New(isolate, Save);
     }
-    NOTREACHED() << std::string(*v8::String::Utf8Value(isolate, name));
+    NOTREACHED_IN_MIGRATION()
+        << std::string(*v8::String::Utf8Value(isolate, name));
     return v8::Local<v8::FunctionTemplate>();
   }
 

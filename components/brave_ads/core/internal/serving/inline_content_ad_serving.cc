@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving.h"
 
-#include <cstdint>
 #include <optional>
 #include <utility>
 
@@ -42,21 +41,22 @@ InlineContentAdServing::~InlineContentAdServing() {
 
 void InlineContentAdServing::MaybeServeAd(
     const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback) const {
+    MaybeServeInlineContentAdCallback callback) {
   const auto result = CanServeAd();
   if (!result.has_value()) {
     BLOG(1, result.error());
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  const std::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+  const std::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetVisible();
   if (!tab) {
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
   NotifyOpportunityAroseToServeInlineContentAd();
 
-  GetEligibleAds(tab->id, dimensions, std::move(callback));
+  GetUserModel(tab->id, dimensions, std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -80,14 +80,22 @@ base::expected<void, std::string> InlineContentAdServing::CanServeAd() const {
   return base::ok();
 }
 
+void InlineContentAdServing::GetUserModel(
+    const int32_t tab_id,
+    const std::string& dimensions,
+    MaybeServeInlineContentAdCallback callback) {
+  BuildUserModel(base::BindOnce(&InlineContentAdServing::GetEligibleAds,
+                                weak_factory_.GetWeakPtr(), tab_id, dimensions,
+                                std::move(callback)));
+}
+
 void InlineContentAdServing::GetEligibleAds(
     const int32_t tab_id,
     const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback) const {
-  const UserModelInfo user_model = BuildUserModel();
-
+    MaybeServeInlineContentAdCallback callback,
+    UserModelInfo user_model) const {
   eligible_ads_->GetForUserModel(
-      user_model, dimensions,
+      std::move(user_model), dimensions,
       base::BindOnce(&InlineContentAdServing::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), tab_id, dimensions,
                      std::move(callback)));
@@ -119,7 +127,8 @@ void InlineContentAdServing::ServeAd(
     const InlineContentAdInfo& ad,
     MaybeServeInlineContentAdCallback callback) const {
   if (!ad.IsValid()) {
-    BLOG(1, "Failed to serve inline content ad");
+    BLOG(0, "Failed to serve inline content ad due to the ad being invalid");
+
     return FailedToServeAd(ad.dimensions, std::move(callback));
   }
 

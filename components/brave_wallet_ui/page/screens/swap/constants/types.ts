@@ -7,10 +7,15 @@ import { BraveWallet } from '../../../../constants/types'
 
 import Amount from '../../../../utils/amount'
 
-type LiquiditySource = {
+export type LiquiditySource = {
   name: string
   proportion: Amount
+  includedSteps?: BraveWallet.LiFiStep[]
+  tool?: string
+  logo?: string
 }
+
+export type RouteTagsType = 'CHEAPEST' | 'FASTEST'
 
 export type QuoteOption = {
   fromAmount: Amount
@@ -35,6 +40,10 @@ export type QuoteOption = {
   networkFee: Amount
 
   networkFeeFiat: string
+  provider: BraveWallet.SwapProvider
+  executionDuration?: string
+  tags: RouteTagsType[]
+  id?: string
 }
 
 export type SwapAndSend = {
@@ -64,6 +73,7 @@ export type SwapValidationErrorType =
   | 'insufficientFundsForGas'
   | 'insufficientAllowance'
   | 'insufficientLiquidity'
+  | 'providerNotSupported'
   | 'unknownError'
 
 export type SwapParams = {
@@ -88,4 +98,7 @@ export type SwapParamsOverrides = {
   toAmount?: string
   fromToken?: BraveWallet.BlockchainToken
   toToken?: BraveWallet.BlockchainToken
+  provider?: BraveWallet.SwapProvider
+  slippage?: string
+  selectedQuoteOptionId?: string
 }

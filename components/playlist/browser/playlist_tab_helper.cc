@@ -45,7 +45,7 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
   Observe(contents);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
 
-  playlist_enabled_pref_.Init(
+  playlist_enabled_.Init(
       kPlaylistEnabledPref,
       user_prefs::UserPrefs::Get(contents->GetBrowserContext()),
       base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledPrefChanged,
@@ -67,7 +67,7 @@ void PlaylistTabHelper::RemoveObserver(PlaylistTabHelperObserver* observer) {
 }
 
 void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
-  CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
+  CHECK(*playlist_enabled_);
   DCHECK(!is_adding_items_);
   DCHECK(items.size());
   is_adding_items_ = true;
@@ -80,7 +80,7 @@ void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
 }
 
 void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
-  CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
+  CHECK(*playlist_enabled_);
   CHECK(service_);
   DCHECK(!items.empty());
 
@@ -94,7 +94,7 @@ void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
 
 void PlaylistTabHelper::MoveItems(std::vector<mojom::PlaylistItemPtr> items,
                                   mojom::PlaylistPtr target_playlist) {
-  CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
+  CHECK(*playlist_enabled_);
   for (const auto& item : items) {
     CHECK_EQ(item->parents.size(), 1u)
         << "In case an item belongs to the multiple parent playlists, this "
@@ -107,7 +107,7 @@ void PlaylistTabHelper::MoveItems(std::vector<mojom::PlaylistItemPtr> items,
 void PlaylistTabHelper::MoveItemsToNewPlaylist(
     std::vector<mojom::PlaylistItemPtr> items,
     const std::string& new_playlist_name) {
-  CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
+  CHECK(*playlist_enabled_);
 
   auto new_playlist = mojom::Playlist::New();
   new_playlist->name = new_playlist_name;
@@ -121,37 +121,6 @@ base::WeakPtr<PlaylistTabHelper> PlaylistTabHelper::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
-std::u16string PlaylistTabHelper::GetSavedFolderName() {
-  CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
-
-  // Use saved folder's name when all saved items belong to the single same
-  // parent folder. Otherwise, returns placeholder name, which is the feature
-  // name.
-
-  CHECK(saved_items_.size()) << "Caller should check if there are saved items";
-  constexpr auto* kPlaceholderName = u"Playlist";
-  if (const auto& parents = saved_items_.front()->parents;
-      parents.empty() || parents.size() >= 2) {
-    return kPlaceholderName;
-  }
-
-  const auto parent_id = saved_items_.front()->parents.front();
-  if (std::any_of(saved_items_.begin() + 1, saved_items_.end(),
-                  [&parent_id](const auto& item) {
-                    return item->parents.empty() || item->parents.size() >= 2 ||
-                           parent_id != item->parents.front();
-                  })) {
-    return kPlaceholderName;
-  }
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (parent_id == kDefaultPlaylistID) {
-    return l10n_util::GetStringUTF16(IDS_PLAYLIST_DEFAULT_PLAYLIST_NAME);
-  }
-#endif
-
-  return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
-}
 
 void PlaylistTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -186,7 +155,8 @@ void PlaylistTabHelper::DidFinishNavigation(
 
   // We're resetting data on finish, not on start, because navigation could fail
   // or aborted.
-  ResetData();
+  ResetSavedItems();
+  ResetFoundItems();
 
   UpdateSavedItemFromCurrentContents();
 }
@@ -262,7 +232,7 @@ void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
 void PlaylistTabHelper::OnMediaFilesUpdated(
     const GURL& url,
     std::vector<mojom::PlaylistItemPtr> items) {
-  if (!*playlist_enabled_pref_) {
+  if (!*playlist_enabled_) {
     return;
   }
 
@@ -292,12 +262,18 @@ void PlaylistTabHelper::OnMediaFilesUpdated(
   }
 }
 
-void PlaylistTabHelper::ResetData() {
+void PlaylistTabHelper::ResetSavedItems() {
   saved_items_.clear();
-  found_items_.clear();
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
+  }
+}
+
+void PlaylistTabHelper::ResetFoundItems() {
+  found_items_.clear();
+
+  for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);
   }
 }
@@ -335,7 +311,7 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
 }
 
 std::vector<mojom::PlaylistItemPtr> PlaylistTabHelper::GetUnsavedItems() const {
-  CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
+  CHECK(*playlist_enabled_);
   if (found_items_.empty()) {
     return {};
   }
@@ -360,7 +336,7 @@ std::vector<mojom::PlaylistPtr> PlaylistTabHelper::GetAllPlaylists() const {
 
 void PlaylistTabHelper::OnAddedItems(
     std::vector<mojom::PlaylistItemPtr> items) {
-  if (!*playlist_enabled_pref_) {
+  if (!*playlist_enabled_) {
     return;
   }
 
@@ -380,12 +356,12 @@ void PlaylistTabHelper::OnAddedItems(
 }
 
 void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
-  if (*playlist_enabled_pref_) {
+  if (*playlist_enabled_) {
     // It's okay to call Observe() repeatedly.
     Observe(&GetWebContents());
   } else {
     Observe(nullptr);
-    ResetData();
+    ResetFoundItems();
   }
 }
 

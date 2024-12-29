@@ -12,9 +12,9 @@
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/color/leo/colors.h"
 #include "brave/browser/ui/views/overlay/brave_back_to_tab_label_button.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/overlay/close_image_button.h"
 #include "chrome/browser/ui/views/overlay/constants.h"
@@ -32,7 +32,7 @@ namespace {
 
 constexpr int kTopControlIconSize = 20;
 
-std::u16string ToString(const base::TimeDelta& time) {
+std::u16string ToString(base::TimeDelta time) {
   const int time_in_seconds = time.InSecondsF();
   const int hours = time_in_seconds / 3600;
   const int minutes = (time_in_seconds % 3600) / 60;
@@ -53,7 +53,6 @@ class Seeker : public views::Slider,
                public views::ViewTargeterDelegate {
   METADATA_HEADER(Seeker, views::Slider)
  public:
-
   static constexpr int kThumbRadius = 6;
   static constexpr int kPreferredHeight = kThumbRadius * 2;
   static constexpr int kLineHeight = 4;
@@ -74,9 +73,10 @@ class Seeker : public views::Slider,
 
   // views::Slider:
   void OnPaint(gfx::Canvas* canvas) override {
+    auto* colors = GetColorProvider();
     // Paint the background for progress line
     cc::PaintFlags flags;
-    flags.setColor(leo::kColorWhite);
+    flags.setColor(colors->GetColor(nala::kColorWhite));
     flags.setStyle(cc::PaintFlags::kFill_Style);
     flags.setAlphaf(0.4f);
     auto line_bounds = gfx::RectF(GetLocalBounds());
@@ -85,7 +85,7 @@ class Seeker : public views::Slider,
     canvas->DrawRect(line_bounds, flags);
 
     // Paint the progress line
-    flags.setColor(leo::kColorPrimitivePrimary60);
+    flags.setColor(colors->GetColor(nala::kColorPrimitivePrimary40));
     line_bounds.set_width(line_bounds.width() * GetAnimatingValue());
     flags.setAlphaf(1.0f);
     canvas->DrawRect(line_bounds, flags);
@@ -421,7 +421,7 @@ int BraveVideoOverlayWindowViews::GetNonClientComponent(
 }
 
 void BraveVideoOverlayWindowViews::OnKeyEvent(ui::KeyEvent* event) {
-  if (event->type() == ui::ET_KEY_PRESSED && media_position_) {
+  if (event->type() == ui::EventType::kKeyPressed && media_position_) {
     if (event->key_code() == ui::VKEY_LEFT) {
       controller_->SeekTo(media_position_->GetPosition() - base::Seconds(10));
     } else if (event->key_code() == ui::VKEY_RIGHT) {

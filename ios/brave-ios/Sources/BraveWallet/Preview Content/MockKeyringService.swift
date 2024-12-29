@@ -73,7 +73,7 @@ class MockKeyringService: BraveWalletKeyringService {
         keyringId: keyringId,
         kind: .imported,
         address: address,
-        bitcoinAccountIndex: 0,
+        accountIndex: 0,
         uniqueKey: address
       ),
       address: address,
@@ -87,7 +87,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(info)
   }
 
-  func createWallet(password: String, completion: @escaping (String) -> Void) {
+  func createWallet(password: String, completion: @escaping (String?) -> Void) {
     isLocked = false
     self.password = password
     addAccount(
@@ -118,7 +118,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(isBackedUp)
   }
 
-  func mnemonicForDefaultKeyring(password: String, completion: @escaping (String) -> Void) {
+  func walletMnemonic(password: String, completion: @escaping (String?) -> Void) {
     completion(mnemonic)
   }
 
@@ -147,7 +147,7 @@ class MockKeyringService: BraveWalletKeyringService {
   func restoreWallet(
     mnemonic: String,
     password: String,
-    isLegacyBraveWallet: Bool,
+    isLegacyEthSeedFormat: Bool,
     completion: @escaping (Bool) -> Void
   ) {
     self.password = password
@@ -208,7 +208,7 @@ class MockKeyringService: BraveWalletKeyringService {
         keyringId: BraveWallet.KeyringId.default,
         kind: .imported,
         address: address,
-        bitcoinAccountIndex: 0,
+        accountIndex: 0,
         uniqueKey: address
       ),
       address: address,
@@ -235,6 +235,15 @@ class MockKeyringService: BraveWalletKeyringService {
   func importFilecoinAccount(
     accountName: String,
     privateKey: String,
+    network: String,
+    completion: @escaping (BraveWallet.AccountInfo?) -> Void
+  ) {
+    completion(nil)
+  }
+
+  func importBitcoinAccount(
+    accountName: String,
+    payload: String,
     network: String,
     completion: @escaping (BraveWallet.AccountInfo?) -> Void
   ) {
@@ -373,6 +382,13 @@ class MockKeyringService: BraveWalletKeyringService {
     nil
   }
 
+  func addBitcoinHardwareAccount(
+    info: BraveWallet.HardwareWalletAccount,
+    completion: @escaping (Bool) -> Void
+  ) {
+    completion(true)
+  }
+
   func setHardwareAccountName(
     _ coin: BraveWallet.CoinType,
     keyringId: String,
@@ -419,7 +435,7 @@ class MockKeyringService: BraveWalletKeyringService {
         keyringId: keyringId,
         kind: .derived,
         address: "btc1",
-        bitcoinAccountIndex: 0,
+        accountIndex: 0,
         uniqueKey: "btc1"
       ),
       address: "btc1",
@@ -445,7 +461,7 @@ extension BraveWallet.AccountInfo {
       keyringId: BraveWallet.KeyringId.default,
       kind: .derived,
       address: "mock_eth_id",
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       uniqueKey: "mock_eth_id"
     ),
     address: "mock_eth_id",
@@ -459,7 +475,7 @@ extension BraveWallet.AccountInfo {
       keyringId: BraveWallet.KeyringId.solana,
       kind: .derived,
       address: "mock_sol_id",
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       uniqueKey: "mock_sol_id"
     ),
     address: "mock_sol_id",
@@ -473,7 +489,7 @@ extension BraveWallet.AccountInfo {
       keyringId: BraveWallet.KeyringId.filecoin,
       kind: .derived,
       address: "mock_fil_id",
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       uniqueKey: "mock_fil_id"
     ),
     address: "mock_fil_id",
@@ -487,7 +503,7 @@ extension BraveWallet.AccountInfo {
       keyringId: BraveWallet.KeyringId.filecoinTestnet,
       kind: .derived,
       address: "mock_fil_testnet_id",
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       uniqueKey: "mock_fil_testnet_id"
     ),
     address: "mock_fil_testnet_id",
@@ -501,7 +517,7 @@ extension BraveWallet.AccountInfo {
       keyringId: BraveWallet.KeyringId.bitcoin84,
       kind: .derived,
       address: "",
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       uniqueKey: "4_0_0_0"
     ),
     address: "",
@@ -515,7 +531,7 @@ extension BraveWallet.AccountInfo {
       keyringId: BraveWallet.KeyringId.bitcoin84Testnet,
       kind: .derived,
       address: "",
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       uniqueKey: "5_0_0_0"
     ),
     address: "",

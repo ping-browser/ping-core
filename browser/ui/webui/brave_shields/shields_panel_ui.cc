@@ -15,6 +15,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -60,14 +61,20 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
                      base::FeatureList::IsEnabled(
                          net::features::kBraveForgetFirstPartyStorage));
 
+  source->AddBoolean(
+      "isWebcompatExceptionsServiceEnabled",
+      base::FeatureList::IsEnabled(
+          webcompat::features::kBraveWebcompatExceptionsService));
+
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(
                     profile_, chrome::FaviconUrlFormat::kFavicon2));
 
-  webui::SetupWebUIDataSource(source,
-                              base::make_span(kBraveShieldsPanelGenerated,
-                                              kBraveShieldsPanelGeneratedSize),
-                              IDR_SHIELDS_PANEL_HTML);
+  webui::SetupWebUIDataSource(
+      source,
+      UNSAFE_TODO(base::make_span(kBraveShieldsPanelGenerated,
+                                  kBraveShieldsPanelGeneratedSize)),
+      IDR_SHIELDS_PANEL_HTML);
 }
 
 ShieldsPanelUI::~ShieldsPanelUI() = default;
@@ -92,4 +99,17 @@ void ShieldsPanelUI::CreatePanelHandler(
       static_cast<BraveBrowserWindow*>(browser_->window()), profile);
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
       std::move(data_handler_receiver), this, browser_->tab_strip_model());
+}
+
+ShieldsPanelUIConfig::ShieldsPanelUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme, kShieldsPanelHost) {
+}
+
+bool ShieldsPanelUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return true;
+}
+
+bool ShieldsPanelUIConfig::ShouldAutoResizeHost() {
+  return true;
 }

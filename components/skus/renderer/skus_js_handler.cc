@@ -20,8 +20,8 @@
 #include "gin/function_template.h"
 #include "gin/handle.h"
 #include "gin/object_template_builder.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
+#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/blink.h"
@@ -38,20 +38,20 @@ namespace skus {
 gin::WrapperInfo SkusJSHandler::kWrapperInfo = {gin::kEmbedderNativeGin};
 
 SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
-    : render_frame_(render_frame) {}
+    : content::RenderFrameObserver(render_frame) {}
 
 SkusJSHandler::~SkusJSHandler() = default;
 
 bool SkusJSHandler::EnsureConnected() {
   if (!skus_service_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame()->GetBrowserInterfaceBroker().GetInterface(
         skus_service_.BindNewPipeAndPassReceiver());
   }
   bool result = skus_service_.is_bound();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     if (!vpn_service_.is_bound()) {
-      render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+      render_frame()->GetBrowserInterfaceBroker().GetInterface(
           vpn_service_.BindNewPipeAndPassReceiver());
     }
     result = result && vpn_service_.is_bound();
@@ -100,10 +100,14 @@ void SkusJSHandler::Install(content::RenderFrame* render_frame) {
       .Check();
 }
 
+void SkusJSHandler::OnDestruct() {
+  delete this;
+}
+
 // window.chrome.braveSkus.refresh_order
 v8::Local<v8::Promise> SkusJSHandler::RefreshOrder(v8::Isolate* isolate,
                                                    std::string order_id) {
-  auto host = render_frame_->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
+  auto host = render_frame()->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
   auto connected = EnsureConnected();
   if (!connected)
     return v8::Local<v8::Promise>();
@@ -130,7 +134,7 @@ void SkusJSHandler::OnRefreshOrder(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
-    const std::string& response) {
+    skus::mojom::SkusResultPtr response) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -140,8 +144,8 @@ void SkusJSHandler::OnRefreshOrder(
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
   std::optional<base::Value> records_v = base::JSONReader::Read(
-      response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
+      response->message, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                             base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
@@ -182,7 +186,7 @@ v8::Local<v8::Promise> SkusJSHandler::FetchOrderCredentials(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  auto host = render_frame_->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
+  auto host = render_frame()->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
   skus_service_->FetchOrderCredentials(
       host, order_id,
       base::BindOnce(&SkusJSHandler::OnFetchOrderCredentials,
@@ -196,7 +200,7 @@ void SkusJSHandler::OnFetchOrderCredentials(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
-    const std::string& response) {
+    skus::mojom::SkusResultPtr response) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -205,9 +209,10 @@ void SkusJSHandler::OnFetchOrderCredentials(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   v8::Local<v8::String> result =
-      v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+      v8::String::NewFromUtf8(isolate, response->message.c_str())
+          .ToLocalChecked();
 
-  if (response.empty()) {
+  if (response->message.empty()) {
     std::ignore = resolver->Resolve(context, result);
   } else {
     std::ignore = resolver->Reject(context, result);
@@ -246,7 +251,7 @@ void SkusJSHandler::OnPrepareCredentialsPresentation(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
-    const std::string& response) {
+    skus::mojom::SkusResultPtr response) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -255,7 +260,8 @@ void SkusJSHandler::OnPrepareCredentialsPresentation(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   v8::Local<v8::String> result;
-  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+  result = v8::String::NewFromUtf8(isolate, response->message.c_str())
+               .ToLocalChecked();
 
   std::ignore = resolver->Resolve(context, result);
 }
@@ -291,7 +297,7 @@ void SkusJSHandler::OnCredentialSummary(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
-    const std::string& response) {
+    skus::mojom::SkusResultPtr response) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -301,8 +307,8 @@ void SkusJSHandler::OnCredentialSummary(
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
   std::optional<base::Value> records_v = base::JSONReader::Read(
-      response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
+      response->message, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                             base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")

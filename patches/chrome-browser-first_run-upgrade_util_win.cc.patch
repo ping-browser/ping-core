@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index a6f742b4263f987d4ee29d465dabf42d7fd8c7a9..e09369814265dd2a101c7a4d709460279e3654dc 100644
+index 6ccdc7b64a7280de0d35ad518093a181b64b29da..01e75feed101a16e80b45ffd9e76fdefc76c728e 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
-@@ -46,7 +46,7 @@
- #include "components/prefs/pref_service.h"
+@@ -58,7 +58,7 @@
+ #include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
  #include "ui/base/ui_base_switches.h"
  
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
@@ -11,8 +11,17 @@ index a6f742b4263f987d4ee29d465dabf42d7fd8c7a9..e09369814265dd2a101c7a4d70946027
  #include "chrome/updater/app/server/win/updater_legacy_idl.h"
  #endif
  
-@@ -60,7 +60,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
+@@ -71,7 +71,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
+   return true;
  }
+ 
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
+ // Holds the result of the IPC to CoCreate the process launcher.
+ struct CreateProcessLauncherResult
+     : public base::RefCountedThreadSafe<CreateProcessLauncherResult> {
+@@ -211,7 +211,7 @@ Microsoft::WRL::ComPtr<IUnknown> CreateProcessLauncher() {
+ #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
  bool InvokeGoogleUpdateForRename() {
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)

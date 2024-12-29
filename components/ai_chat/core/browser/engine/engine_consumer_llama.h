@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -30,7 +31,7 @@ using api_request_helper::APIRequestResult;
 class EngineConsumerLlamaRemote : public EngineConsumer {
  public:
   explicit EngineConsumerLlamaRemote(
-      const mojom::Model& model,
+      const mojom::LeoModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager);
   EngineConsumerLlamaRemote(const EngineConsumerLlamaRemote&) = delete;
@@ -42,17 +43,20 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
   void GenerateQuestionSuggestions(
       const bool& is_video,
       const std::string& page_content,
+      const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
       const bool& is_video,
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
+      const std::string& selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) override;
   void GenerateRewriteSuggestion(
       std::string text,
       const std::string& question,
+      const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
@@ -63,6 +67,7 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
     api_ = std::move(api_for_testing);
   }
   RemoteCompletionClient* GetAPIForTesting() { return api_.get(); }
+  void UpdateModelOptions(const mojom::ModelOptions& options) override {}
 
  private:
   void OnGenerateQuestionSuggestionsResponse(

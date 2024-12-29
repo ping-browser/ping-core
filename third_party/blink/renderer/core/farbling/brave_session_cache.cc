@@ -3,11 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/ABC): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
 #include <string_view>
 
 #include "base/command_line.h"
+#include "base/debug/alias.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
@@ -99,16 +106,21 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
   return settings;
 }
 
-BraveFarblingLevel GetBraveFarblingLevelFor(ExecutionContext* context,
-                                            BraveFarblingLevel default_value) {
+BraveFarblingLevel GetBraveFarblingLevelFor(
+    ExecutionContext* context,
+    ContentSettingsType webcompat_settings_type,
+    BraveFarblingLevel default_value) {
   BraveFarblingLevel value = default_value;
   if (context)
-    value = brave::BraveSessionCache::From(*context).GetBraveFarblingLevel();
+    value = brave::BraveSessionCache::From(*context).GetBraveFarblingLevel(
+        webcompat_settings_type);
   return value;
 }
 
-bool AllowFingerprinting(ExecutionContext* context) {
-  return (GetBraveFarblingLevelFor(context, BraveFarblingLevel::OFF) !=
+bool AllowFingerprinting(ExecutionContext* context,
+                         ContentSettingsType webcompat_settings_type) {
+  return (GetBraveFarblingLevelFor(context, webcompat_settings_type,
+                                   BraveFarblingLevel::OFF) !=
           BraveFarblingLevel::MAXIMUM);
 }
 
@@ -137,13 +149,17 @@ int FarbleInteger(ExecutionContext* context,
   return cache.FarbledInteger(key, spoof_value, min_value, max_value);
 }
 
-bool BlockScreenFingerprinting(ExecutionContext* context) {
+bool BlockScreenFingerprinting(ExecutionContext* context,
+                               bool early /* = false */) {
   if (!base::FeatureList::IsEnabled(
           blink::features::kBraveBlockScreenFingerprinting)) {
     return false;
   }
-  BraveFarblingLevel level =
-      GetBraveFarblingLevelFor(context, BraveFarblingLevel::OFF);
+  BraveFarblingLevel level = GetBraveFarblingLevelFor(
+      context,
+      early ? ContentSettingsType::BRAVE_WEBCOMPAT_NONE
+            : ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN,
+      BraveFarblingLevel::OFF);
   return level != BraveFarblingLevel::OFF;
 }
 
@@ -164,13 +180,12 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
   if (!frame) {
     return true_screen_coordinate;
   }
-  double zoom_factor = frame->PageZoomFactor();
+  double zoom_factor = frame->LayoutZoomFactor();
   return FarbleInteger(context, key, zoom_factor * client_coordinate, 0, 8);
 }
 
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
-  farbling_enabled_ = false;
   farbling_level_ = BraveFarblingLevel::OFF;
   scoped_refptr<const blink::SecurityOrigin> origin;
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
@@ -208,25 +223,23 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
   CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
-  const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
-  double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
-  uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-  if (blink::WebContentSettingsClient* settings =
-          GetContentSettingsClientFor(&context, true)) {
-    auto raw_farbling_level = settings->GetBraveFarblingLevel();
+  if (auto* settings_client = GetContentSettingsClientFor(&context, true)) {
+    auto shields_settings = settings_client->GetBraveShieldsSettings(
+        ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
+    // https://github.com/brave/brave-browser/issues/41724 debug.
+    if (!shields_settings) {
+      base::debug::Alias(settings_client);
+      base::debug::DumpWithoutCrashing();
+      return;
+    }
     farbling_level_ =
         base::FeatureList::IsEnabled(
             brave_shields::features::kBraveShowStrictFingerprintingMode)
-            ? raw_farbling_level
-            : (raw_farbling_level == BraveFarblingLevel::OFF
+            ? shields_settings->farbling_level
+            : (shields_settings->farbling_level == BraveFarblingLevel::OFF
                    ? BraveFarblingLevel::OFF
                    : BraveFarblingLevel::BALANCED);
   }
-  if (farbling_level_ != BraveFarblingLevel::OFF) {
-    audio_farbling_helper_.emplace(
-        fudge_factor, seed, farbling_level_ == BraveFarblingLevel::MAXIMUM);
-  }
-  farbling_enabled_ = true;
 }
 
 BraveSessionCache& BraveSessionCache::From(ExecutionContext& context) {
@@ -245,13 +258,29 @@ void BraveSessionCache::Init() {
 }
 
 void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
-  if (audio_farbling_helper_)
-    audio_farbling_helper_->FarbleAudioChannel(dst, count);
+  if (!audio_farbling_helper_) {
+    // This call is only expensive the first time; afterwards it returns
+    // a cached value:
+    const auto audio_farbling_level =
+        GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO);
+    if (audio_farbling_level == BraveFarblingLevel::OFF) {
+      return;
+    }
+    const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
+    double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
+    uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
+    audio_farbling_helper_.emplace(
+        fudge_factor, seed,
+        audio_farbling_level == BraveFarblingLevel::MAXIMUM);
+  }
+  audio_farbling_helper_->FarbleAudioChannel(dst, count);
 }
 
 void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {
-  if (!farbling_enabled_ || farbling_level_ == BraveFarblingLevel::OFF)
+  if (GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS) ==
+      BraveFarblingLevel::OFF) {
     return;
+  }
   PerturbPixelsInternal(data, size);
 }
 
@@ -347,8 +376,12 @@ int BraveSessionCache::FarbledInteger(FarbleKey key,
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
     const AtomicString& family_name) {
-  if (!farbling_enabled_ || !settings || !settings->IsReduceLanguageEnabled())
+  if (!settings ||
+      GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_FONT) ==
+          BraveFarblingLevel::OFF ||
+      !settings->IsReduceLanguageEnabled()) {
     return true;
+  }
   switch (farbling_level_) {
     case BraveFarblingLevel::OFF:
       break;
@@ -366,7 +399,7 @@ bool BraveSessionCache::AllowFontFamily(
       }
     }
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
   return true;
 }
@@ -375,6 +408,37 @@ FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {
   uint64_t seed =
       *reinterpret_cast<uint64_t*>(domain_key_) ^ static_cast<uint64_t>(key);
   return FarblingPRNG(seed);
+}
+
+BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
+    ContentSettingsType webcompat_content_settings) {
+  if (farbling_level_ == BraveFarblingLevel::OFF) {
+    return BraveFarblingLevel::OFF;
+  }
+  auto item = farbling_levels_.find(webcompat_content_settings);
+  if (item != farbling_levels_.end()) {
+    return item->value;
+  }
+  // The farbling level for webcompat_content_settings is not known yet,
+  // so we will make a more expensive call to learn what it is.
+  if (webcompat_content_settings > ContentSettingsType::BRAVE_WEBCOMPAT_NONE &&
+      webcompat_content_settings < ContentSettingsType::BRAVE_WEBCOMPAT_ALL) {
+    if (auto* settings_client =
+            GetContentSettingsClientFor(GetSupplementable(), true)) {
+      auto shields_settings =
+          settings_client->GetBraveShieldsSettings(webcompat_content_settings);
+      // https://github.com/brave/brave-browser/issues/41724 debug.
+      if (!shields_settings) {
+        base::debug::Alias(settings_client);
+        base::debug::DumpWithoutCrashing();
+        return farbling_level_;
+      }
+      farbling_levels_.insert(webcompat_content_settings,
+                              shields_settings->farbling_level);
+      return shields_settings->farbling_level;
+    }
+  }
+  return farbling_level_;
 }
 
 }  // namespace brave

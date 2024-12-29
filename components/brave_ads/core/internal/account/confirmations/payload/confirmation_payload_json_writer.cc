@@ -12,6 +12,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/reward_confirmation_payload_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads::json::writer {
 
@@ -31,9 +32,9 @@ std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
           .Set(kTypeKey, ToString(confirmation.type));
 
   if (confirmation.reward) {
-    base::Value::Dict reward_dict =
+    base::Value::Dict reward_confirmation_payload_dict =
         BuildRewardConfirmationPayload(*confirmation.reward);
-    dict.Merge(std::move(reward_dict));
+    dict.Merge(std::move(reward_confirmation_payload_dict));
   }
 
   dict.Merge(confirmation.user_data.dynamic.Clone());

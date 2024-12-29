@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/omnibox/buildflags/buildflags.gni")
 
 source_set("unit_tests") {
   testonly = true
@@ -20,6 +21,7 @@ source_set("unit_tests") {
     "//brave/components/omnibox/browser/omnibox_autocomplete_unittest.cc",
     "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
     "brave_autocomplete_result_unittest.cc",
+    "brave_search_suggestion_parser_unittest.cc",
     "promotion_unittest.cc",
   ]
 
@@ -29,8 +31,8 @@ source_set("unit_tests") {
     "//brave/components/brave_search_conversion",
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
+    "//brave/components/omnibox/buildflags",
     "//brave/components/search_engines",
-    "//chrome/test:test_support",
     "//components/bookmarks/browser",
     "//components/bookmarks/test",
     "//components/omnibox/browser",
@@ -40,11 +42,23 @@ source_set("unit_tests") {
     "//components/search_engines",
     "//components/sync_preferences:test_support",
     "//components/variations:test_support",
-    "//content/test:test_support",
     "//services/network:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (!is_ios) {
+    deps += [
+      "//chrome/browser/search_engines",
+      "//chrome/test:test_support",
+      "//content/test:test_support",
+      "//ui/base/clipboard:clipboard_test_support",
+    ]
+  }
+
+  if (enable_strict_query_check_for_search_suggestions) {
+    deps += [ "//brave/components/omnibox/browser/search_suggestions" ]
+  }
 
   if (enable_commander) {
     sources +=

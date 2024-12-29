@@ -10,8 +10,8 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "Detalls del compte";
 
-/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
-"wallet.accountNameLengthError" = "El nom del compte ha de tenir com a màxim 30 caràcters";
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\") */
+"wallet.accountNameLengthError" = "El nom del compte ha de tenir %lld caràcters o menys";
 
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "Clau privada";
@@ -93,6 +93,9 @@
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "Afegeix una xarxa";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address. */
+"wallet.addressLabel" = "Adreça";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
 "wallet.addSuggestedTokenSubtitle" = "Vols importar aquest token?";
@@ -181,6 +184,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "Pots ometre ara aquest pas, però encara has de fer una còpia de seguretat de la frase de recuperació per garantir la seguretat del compte.";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "Fes còpia de seguretat ara";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "Còpia de seguretat de la cartera";
 
@@ -215,7 +221,7 @@
 "wallet.biometricsSetupFaceId" = "ID facial";
 
 /* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
-"wallet.biometricsSetupSubTitle" = "Vols utilitzar %@ per desbloquejar la Cartera de Brave?";
+"wallet.biometricsSetupSubTitle" = "Vols utilitzar %@ per desbloquejar la Cartera de Ping?";
 
 /* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
 "wallet.biometricsSetupTitle" = "Desbloqueja la Cartera de Ping amb %@";
@@ -223,8 +229,11 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "ID tàctil";
 
+/* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\") */
+"wallet.bitcoinImportExtendedKeyWarning" = "Només s'admeten les claus ampliades %@.";
+
 /* The title for Ping Fee label in Swap. The fee percentage is displayed beside the label. */
-"wallet.braveFeeLabel" = "Tarifa de Brave: %@";
+"wallet.braveFeeLabel" = "Tarifa de Ping: %@";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee' */
 "wallet.braveSwapFeeDisclaimer" = "El pressupost inclou una tarifa de Ping de %@.";
@@ -232,11 +241,41 @@
 /* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "Gratuït";
 
+/* A description of an Bitcoin account, displayed in Accounts tab. */
+"wallet.btcAccountDescription" = "Bitcoin";
+
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "Fons disponibles pel seu ús.";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "Disponible";
+
+/* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
+"wallet.btcOrdinalsUnsupportedWarning" = "La cartera de Ping no és compatible actualment amb els NFT de Bitcoin (ordinals). Enviar BTC des d'una adreça que té ordinals pot provocar que els teus ordinals es transfereixin de manera involuntària.";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "Un canvi pendent al saldo de la teva cartera.";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "Alguns saldos podrien no estar disponibles";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "Pendent";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "Pendent de confirmar les transaccions i els teus fons disponibles.";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "Total";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Compra";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Compra criptomonedes amb Apple Pay, targeta de crèdit o dèbit.";
+
+/* The title for the button to cancel a submitted transaction. */
+"wallet.cancelTransactionButtonTitle" = "Cancel·la la transacció";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Data";
@@ -264,6 +303,12 @@
 
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "Classificació";
+
+/* One of the coin types for users to create an account to store BTC assets */
+"wallet.coinTypeBitcoin" = "Bitcoin";
+
+/* A description for Bitcoin coin type. */
+"wallet.coinTypeBitcoinDescription" = "Emmagatzema actius de BTC";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "Ethereum";
@@ -373,12 +418,6 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Cartera de Ping";
 
-/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
-"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Personalitza la passarel·la IPFS per a NFT";
-
-/* The navigation title of the screen for users to customize ipfs public gateway address. */
-"wallet.customizeIPFSPublicGatewayNavTitle" = "Personalitza la passarel·la IPFS";
-
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "Bloqueja l'URL de l'explorador";
 
@@ -420,9 +459,6 @@
 
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "RPC URLs";
-
-/* The title of custom network list screen */
-"wallet.customNetworksTitle" = "Xarxes personalitzades";
 
 /* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
 "wallet.customNetworkSymbolNamePlaceholder" = "Introdueix nom de la moneda";
@@ -532,23 +568,11 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "Desxifra la sol·licitud";
 
-/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
-"wallet.defaultEthAccountName" = "Compte d'Ethereum %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\") */
+"wallet.defaultAccountName" = "%1$@ Compte %2$lld";
 
-/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
-"wallet.defaultFilAccountName" = "Compte de Filecoin %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
-"wallet.defaultSecondaryEthAccountName" = "Compte secundari d'Ethereum %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
-"wallet.defaultSecondaryFilAccountName" = "Compte secundari de Filecoin %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
-"wallet.defaultSecondarySolAccountName" = "Compte secundari de Solana %lld";
-
-/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
-"wallet.defaultSolAccountName" = "Compte de Solana %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\") */
+"wallet.defaultTestnetAccountName" = "%1$@ Compte Testnet %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Suprimeix";
@@ -559,6 +583,12 @@
 /* The button title for user to click to copy the account address for deposit. */
 "wallet.depositAddressCopy" = "Copia";
 
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "Deposita actius";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "Aquesta és la cartera d'Ethereum que és compatible amb la xarxa Ethereum i xarxes de nivell 2 com ara %@";
+
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Desselecciona-ho tot";
 
@@ -567,6 +597,9 @@
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "Edita";
+
+/* A pop up message that will prompt to user before user confirms to edit the existing network. */
+"wallet.editExistingNetworkAlertMsg" = "Vols actualtzar la xarxa existent?";
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "Edita la xarxa";
@@ -644,7 +677,7 @@
 "wallet.ensDomainInterstitialPageDescription" = "Ping utilitzarà Infura per resoldre els noms de domini .eth que es troben a al Servei de Nom d'Ethereum (ENS). Ping amaga la teva adreça IP. Si actives això, Infura veurà que algú està intentant visitar aquests dominis .eth però res més. Consulta <a href=%1$@>%2$@</a> i <a href=%3$@>%4$@</a> d'Infura.";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "Vols habilitar el suport del Servei de Nom d'Ethereum (ENS) a Brave?";
+"wallet.ensDomainInterstitialPageTitle" = "Vols habilitar el suport del Servei de Nom d'Ethereum (ENS) a Ping?";
 
 /* Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Procedeix amb la cerca fora de la cadena";
@@ -699,6 +732,9 @@
 
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "Introdueix el símbol del token";
+
+/* A title displayed in an alert above the error message or description. */
+"wallet.errorAlertTitle" = "Error";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
 "wallet.ethAccountDescription" = "Cadenes Ethereum + EVM";
@@ -850,6 +886,9 @@
 /* A label shown inside of a box when there is no input data for a given Solana transaction */
 "wallet.inputDataPlaceholderSolana" = "Tipus de funció: %d";
 
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
+"wallet.inputLabel" = "Entrada";
+
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "Balanç insuficient";
 
@@ -864,24 +903,6 @@
 
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "S'ha produït un error intern";
-
-/* A title will displayed in the IPFS error page when IPFS is disabled. */
-"wallet.ipfsErrorTitle" = "No es pot accedir a aquest lloc";
-
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.ipfsPublicGatewayAddressNFTTitle" = "Adreça de passarel·la pública IPFS per a NFT";
-
-/* The navigation title of the screen for users to customize IPFS public gateway. */
-"wallet.ipfsPublicGatewayAddressTitle" = "Adreça de passarel·la pública IPFS";
-
-/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
-"wallet.ipfsResolveMethodDescription" = "[Més informació](%@) sobre les consideracions de privacitat de la passarel·la IPFS.";
-
-/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
-"wallet.ipfsResourcesOptionsTitle" = "Resoldre els recursos IPFS";
-
-/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsHeader" = "IPFS";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "Saber més";
@@ -1000,7 +1021,7 @@
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.newSiteConnectScreenTitle" = "Connecta";
 
-/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapbrave next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Següent";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
@@ -1060,9 +1081,6 @@
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "Importa els NFT";
 
-/* Description of the NFT Gateway setting */
-"wallet.nftGatewayLongDescription" = "S'ha de proporcionar una passarel·la IPFS vàlida. Es comprovarà la possibilitat de carregar recursos IPFS de la passarel·la proporcionada.";
-
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
 "wallet.nftHidden" = "Amagat";
 
@@ -1082,10 +1100,10 @@
 "wallet.nftRemoveFromWallet" = "No ho mostris a la cartera";
 
 /* The description of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertDescription" = "L'NFT s'eliminarà de la Cartera de Brave, però romandrà en la cadena de blocs. Si l'elimines i després canvies d'opinió, hauràs de tornar a importar-lo manualment.";
+"wallet.nftRemoveFromWalletAlertDescription" = "L'NFT s'eliminarà de la Cartera de Ping, però romandrà en la cadena de blocs. Si l'elimines i després canvies d'opinió, hauràs de tornar a importar-lo manualment.";
 
 /* The title of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertTitle" = "Vols suprimir la Cartera de Brave?";
+"wallet.nftRemoveFromWalletAlertTitle" = "Vols suprimir la Cartera de Ping?";
 
 /* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
 "wallet.nftsDescription" = "%d NFT";
@@ -1117,9 +1135,6 @@
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "Sense actius";
 
-/* The empty state displayed when the user has not yet added any custom networks. */
-"wallet.noNetworks" = "Sense xarxes afegides";
-
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "Sense comptes secundaris.";
 
@@ -1137,6 +1152,9 @@
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Altres accions de la cartera";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index. */
+"wallet.outputLabel" = "Sortida";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
 "wallet.passwordDoesNotMeetRequirementsError" = "Les contrasenyes han de tenir com a mínim 8 caràcters.";
@@ -1237,6 +1255,9 @@
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Torna a introduir la contrasenya";
 
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Vols importar del llegat de carteres de criptomoneda de Ping?";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Restaura la cartera";
 
@@ -1266,6 +1287,9 @@
 
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "Importa una cartera existent";
+
+/* The title for the button to retry a failed transaction. */
+"wallet.retryTransactionButtonTitle" = "Reintenta la transacció";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "Compra instantània amb el teu compte bancari. Tarifes més baixes.";
@@ -1357,6 +1381,9 @@
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "Envia criptomonedes o transferiu-les d'un compte a un altre.";
 
+/* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
+"wallet.sendErrorBtcAddressNotValid" = "No és una adreça BTC vàlida";
+
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "El domini no té una adreça %@ enllaçada";
 
@@ -1387,8 +1414,8 @@
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "Enviat";
 
-/* Title of the set IPFS gateway button */
-"wallet.setGatewayButtonTitle" = "Configura";
+/* One of the context menu option for user to tap to set a default network in wallet settings. */
+"wallet.setDefaultNetwork" = "Establir com a predeterminat";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Configuració";
@@ -1430,7 +1457,7 @@
 "wallet.settingsResetWalletAlertMessage" = "Aquesta acció no es pot revertir. La teva frase de recuperació és l'única manera de recuperar l'accés al compte dels teus actius criptogràfics.";
 
 /* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetWalletAlertTitle" = "Estàs segur que vols restablir la Cartera de Brave?";
+"wallet.settingsResetWalletAlertTitle" = "Estàs segur que vols restablir la Cartera de Ping?";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
 "wallet.setupCryptoButtonBackButtonTitle" = "Benvingut";
@@ -1445,7 +1472,7 @@
 "wallet.setupCryptoCreateNewTitle" = "Necessites una nova cartera?";
 
 /* The disclaimer text at the bottom of the first step of onboarding flow. */
-"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Ping i el logotip de Ping són marques registrades de Brave. Altres noms de productes i logotips poden ser marques comercials de les seves respectives empreses. Tots els drets reservats.";
+"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Ping i el logotip de Ping són marques registrades de Ping. Altres noms de productes i logotips poden ser marques comercials de les seves respectives empreses. Tots els drets reservats.";
 
 /* The subtitle displayed in the section for user that need to restore an existed wallet */
 "wallet.setupCryptoRestoreSubTitle" = "Importa la teva cartera existent.";
@@ -1467,9 +1494,6 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Mostra la clau privada";
-
-/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
-"wallet.showTestNetworksTitle" = "Mostra les xarxes de prova";
 
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "Amaga els saldos zero";
@@ -1522,43 +1546,43 @@
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "Signa la transacció";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the address. */
 "wallet.siweAddressLabel" = "Adreça";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the chain ID. */
 "wallet.siweChainIDLabel" = "Cadena ID";
 
-/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+/* The title of the details view for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweDetailsTitle" = "Detalls";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the expiration time. */
 "wallet.siweExpirationTimeLabel" = "Hora de caducitat";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the issued at date. */
 "wallet.siweIssuedAtLabel" = "Emès el";
 
 /* The label displayed above the Sign In With Ethereum message. */
 "wallet.siweMessageLabel" = "Missatge";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the nonce. */
 "wallet.siweNonceLabel" = "Nonce";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the origin. */
 "wallet.siweOriginLabel" = "Origen";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "Recursos";
 
-/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+/* The label displayed on the button to sign in for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweSignInButtonTitle" = "Inicia la sessió";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the statement. */
 "wallet.siweStatementLabel" = "Declaració";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the URI. */
 "wallet.siweURILabel" = "URI";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the version. */
 "wallet.siweVersionLabel" = "Versió";
 
 /* The button title to skip recovery phrase backup */
@@ -1567,11 +1591,11 @@
 /* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
 "wallet.snsDomainInterstitialPageButtonProceed" = "Continua utilitzant un servidor SNS";
 
-/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
 "wallet.snsDomainInterstitialPageDescription" = "Ping utilitzarà un tercer per resoldre els noms de domini .sol. Ping amaga la teva adreça IP. Si l'actives, el tercer veurà que algú està intentant visitar aquests dominis .sol, però res més. Per obtenir més informació sobre quins tercers fem servir i les seves polítiques de privacitat, consulta la nostra <a href=%@>pàgina d'ajuda</a>.";
 
 /* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
-"wallet.snsDomainInterstitialPageTitle" = "Vols habilitar el suport del Servei de Nom de Solana (SNS) a Brave?";
+"wallet.snsDomainInterstitialPageTitle" = "Vols habilitar el suport del Servei de Nom de Solana (SNS) a Ping?";
 
 /* A description of an Solana account, displayed in Accounts tab. */
 "wallet.solAccountDescription" = "Cadenes Solana + SVM";
@@ -1711,11 +1735,17 @@
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaUpgradeNonceAccountInstructionName" = "Actualitza el compte de nonce";
 
+/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaWithdrawNonceAccountInstructionName" = "Retira del compte Nonce";
+
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "Ordena per nom o valor fiduciari";
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Ordena els actius";
+
+/* The title for the button to speed up a submitted transaction. */
+"wallet.speedUpTransactionButtonTitle" = "Accelera";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "Paga amb crèdit, dèbit, compte bancari.";
@@ -1729,7 +1759,7 @@
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "Transacció enviada";
 
-/* As in swapping cryptocurrency from one asset to another */
+/* As in swapbrave cryptocurrency from one asset to another */
 "wallet.swap" = "Intercanvia";
 
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
@@ -1753,7 +1783,7 @@
 /* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountTitle" = "Introdueix la quantitat de %@ per intercanviar";
 
-/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave from. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoFromTitle" = "Des de";
 
 /* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
@@ -1765,7 +1795,7 @@
 /* The title of the button for users to click when they want to swap between two cryptos */
 "wallet.swapCryptoSwapButtonTitle" = "Intercanvia";
 
-/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave to. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoToTitle" = "A";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
@@ -1949,7 +1979,7 @@
 "wallet.udDomainInterstitialPageDescription" = "Ping utilitzarà Infura per resoldre els noms de domini .crypto (i també %1$@) d'Unstoppable Domains. Ping amaga la teva adreça IP. Si actives això, Infura veurà que algú està intentant visitar aquests dominis però res més. Mostra <a href=%2$@>%3$@</a> i <a href=%4$@>%5$@</a> d'Infura.";
 
 /* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
-"wallet.udDomainInterstitialPageTitle" = "Vols habilitar el suport d'Unstoppable Domains a Brave?";
+"wallet.udDomainInterstitialPageTitle" = "Vols habilitar el suport d'Unstoppable Domains a Ping?";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
 "wallet.udResolveMethodDescription" = "[Més informació](%@) sobre les consideracions de privacitat d'Unstoppable Domains.";
@@ -1971,6 +2001,9 @@
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ a %2$@";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
+"wallet.valueLabel" = "Valor";
 
 /* The error message when input phrase does not match the correct one. */
 "wallet.verifyRecoveryPhraseError" = "La frase de recuperació no coincideix.";
@@ -2017,7 +2050,7 @@
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.walletSettings" = "Configuració de la cartera";
 
-/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when groubrave Portfolio assets. */
 "wallet.walletTypeNone" = "Cap";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
@@ -2050,18 +2083,6 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Resol els noms de domini del Servei de Nom de Solana (SNS)";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
-"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (InterPlanetary File System) és la xarxa pública per emmagatzemar i distribuir dades P2P. Aquest protocol té consideracions de privacitat diferents de les de HTTP(S). <a href=%1$@>%2$@</a>";
-
-/* A brief explaination of resolving IPFS scheme url using a public gateway. */
-"wallet.web3IPFSInterstitialIPFSPublicGateway" = "Protegeix la teva adreça IP i el contingut que estàs sol·licitant de potencials observadors externs, però no de l'operador de passarel·la pública. L'operador de la passarel·la és responsable d'assegurar-se que el contingut que se t'ofereix a través d'una passarel·la és el contingut que has sol·licitat. A més, el teu dispositiu no contribueix a la xarxa pública IPFS.";
-
-/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
-"wallet.web3IPFSInterstitialIPFSTitle" = "Ajusta les teves preferències IPFS";
-
-/* The title of the button that user will click to let Ping to resolve IPFS shceme url. */
-"wallet.web3IPFSInterstitialProceedButton" = "Utilitza una passarel·la pública";
-
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Els llocs poden sol·licitar accés a la teva cartera Ethereum";
 
@@ -2088,12 +2109,6 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Afegeix automàticament els NFT que tens a la cartera mitjançant API de tercers. [Saber més](%@)";
-
-/* Description of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertDescription" = "S'ha proporcionat una URL invàlida. La passarel·la hauria de ser capaç de resoldre recursos IPFS.";
-
-/* Title of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertTitle" = "No s'ha pogut establir la passarel·la";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z a A";

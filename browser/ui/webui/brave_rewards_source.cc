@@ -17,9 +17,9 @@
 
 namespace {
 
-scoped_refptr<base::RefCountedMemory> BitmapToMemory(const SkBitmap* image) {
-  base::RefCountedBytes* image_bytes = new base::RefCountedBytes;
-  gfx::PNGCodec::EncodeBGRASkBitmap(*image, false, &image_bytes->data());
+scoped_refptr<base::RefCountedMemory> BitmapToMemory(const SkBitmap& image) {
+  scoped_refptr<base::RefCountedBytes> image_bytes(new base::RefCountedBytes());
+  gfx::PNGCodec::EncodeBGRASkBitmap(image, false, &image_bytes->as_vector());
   return image_bytes;
 }
 
@@ -78,7 +78,7 @@ void BraveRewardsSource::StartDataRequest(
             "Not implemented."
         })");
     resource_fetchers_.emplace_back(actual_url);
-    image_service->RequestImage(
+    image_service->RequestImageWithNetworkTrafficAnnotationTag(
         actual_url,
         base::BindOnce(&BraveRewardsSource::OnBitmapFetched,
                        weak_factory_.GetWeakPtr(), std::move(got_data_callback),
@@ -121,7 +121,7 @@ void BraveRewardsSource::OnBitmapFetched(
     return;
   }
 
-  std::move(got_data_callback).Run(BitmapToMemory(&bitmap).get());
+  std::move(got_data_callback).Run(BitmapToMemory(bitmap).get());
 
   auto it_url =
       find(resource_fetchers_.begin(), resource_fetchers_.end(), url);

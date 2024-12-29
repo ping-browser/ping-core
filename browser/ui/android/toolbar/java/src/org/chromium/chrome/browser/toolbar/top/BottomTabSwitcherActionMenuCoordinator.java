@@ -8,16 +8,29 @@ package org.chromium.chrome.browser.toolbar.top;
 import android.view.View.OnLongClickListener;
 
 import org.chromium.base.Callback;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 /**
- * The main coordinator for the Tab Switcher Action Menu on the bottom toolbar,
- * responsible for creating the popup menu and building a list of menu items.
+ * The main coordinator for the Tab Switcher Action Menu on the bottom toolbar, responsible for
+ * creating the popup menu and building a list of menu items.
  */
 public class BottomTabSwitcherActionMenuCoordinator extends TabSwitcherActionMenuCoordinator {
-    public static OnLongClickListener createOnLongClickListener(Callback<Integer> onItemClicked) {
+    public BottomTabSwitcherActionMenuCoordinator(
+            Profile profile, ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
+        super(profile, tabModelSelectorSupplier);
+    }
+
+    public static OnLongClickListener createOnLongClickListener(
+            Callback<Integer> onItemClicked,
+            Profile profile,
+            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
         return createOnLongClickListener(
-                new BottomTabSwitcherActionMenuCoordinator(), onItemClicked);
+                new BottomTabSwitcherActionMenuCoordinator(profile, tabModelSelectorSupplier),
+                profile,
+                onItemClicked);
     }
 
     @Override

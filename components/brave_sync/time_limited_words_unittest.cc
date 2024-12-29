@@ -18,12 +18,12 @@ namespace brave_sync {
 
 namespace {
 
-const char kValidSyncCode[] =
+constexpr char kValidSyncCode[] =
     "fringe digital begin feed equal output proof cheap "
     "exotic ill sure question trial squirrel glove celery "
     "awkward push jelly logic broccoli almost grocery drift";
 
-const char kInvalidSyncCode[] =
+constexpr char kInvalidSyncCode[] =
     "fringe digital begin feed equal output proof cheap "
     "exotic ill sure question trial squirrel glove celery "
     "awkward push jelly logic broccoli almost grocery driftZ";
@@ -259,6 +259,20 @@ TEST(TimeLimitedWordsTest, GetNotAfter) {
 
 TEST(TimeLimitedWordsTest, GetNotAfterForPureWords) {
   EXPECT_EQ(TimeLimitedWords::GetNotAfter(kValidSyncCode), base::Time());
+}
+
+TEST(TimeLimitedWordsTest, GetWordsCount) {
+  // Normal flow
+  EXPECT_EQ(TimeLimitedWords::GetWordsCount(kValidSyncCode), 24);
+  // Empty case
+  EXPECT_EQ(TimeLimitedWords::GetWordsCount(""), 0);
+  EXPECT_EQ(TimeLimitedWords::GetWordsCount(" \n\t"), 0);
+  // STR from desktop issue
+  EXPECT_EQ(TimeLimitedWords::GetWordsCount("d  d"), 2);
+  // Previously failed case
+  EXPECT_EQ(TimeLimitedWords::GetWordsCount("a\nb\tc"), 3);
+  // Additional leading and trailing whitespaces
+  EXPECT_EQ(TimeLimitedWords::GetWordsCount(" \n \t A   B \t"), 2);
 }
 
 }  // namespace brave_sync

@@ -80,6 +80,11 @@ export const ScriptsInfo = styled.div`
     }
 `
 
+export const ListDescription = styled.div`
+  background-color: ${(p) => p.theme.color.background01};
+  padding: 0px 17px 16px 17px;
+`
+
 export const ScriptsList = styled.div`
     padding: 10px 17px 10px 17px;
 `
@@ -133,5 +138,40 @@ export const BackButton = styled.button`
 
   svg > path {
     color: currentColor;
+  }
+`
+
+export const ToggleListContainer = styled.div`
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: 24px 1fr 40px;
+  grid-gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  .col-2,
+  label {
+    grid-column: 2;
+    width: 100%;
+  }
+
+  button {
+    grid-column: 2;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-size: 12px;
+    color: ${(p) => p.theme.color.text01};
+    text-indent: 8px;
+    cursor: pointer;
+
+    span {
+      margin-right: 5px;
+    }
   }
 `

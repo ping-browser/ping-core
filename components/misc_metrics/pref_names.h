@@ -43,6 +43,8 @@ inline constexpr char kMiscMetricsTotalDnsRequestStorage[] =
     "brave.misc_metrics.total_dns_requests";
 inline constexpr char kMiscMetricsUpgradedDnsRequestStorage[] =
     "brave.misc_metrics.upgraded_dns_requests";
+inline constexpr char kMiscMetricsLastDohFallback[] =
+    "brave.misc_metrics.last_doh_fallback";
 
 inline constexpr char kDailyUptimesListPrefName[] =
     "daily_uptimes";  // DEPRECATED
@@ -62,6 +64,10 @@ inline constexpr char kMiscMetricsTotalLocationBarEntriesStorage[] =
 
 inline constexpr char kMiscMetricsDayZeroVariantAtInstall[] =
     "brave.misc_metrics.day_zero_variant_at_install";
+
+inline constexpr char kMiscMetricsNTPWidgetUsageStorage[] =
+    "brave.misc_metrics.ntp_widget_usage";
+
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

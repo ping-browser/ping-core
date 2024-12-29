@@ -28,7 +28,7 @@
 <translation id="8926389886865778422">మళ్ళి అడగవద్దు</translation>
 <translation id="5234764350956374838">తొలగించు</translation>
 <translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="3149880132460839085">Ping Sync</translation>
 <translation id="5817918615728894473">జత చేయి</translation>
 <translation id="2175927920773552910">QR కోడ్</translation>
 <translation id="8730621377337864115">పూర్తయింది</translation>
@@ -45,6 +45,7 @@
 <translation id="987264212798334818">సాధారణం</translation>
 <translation id="1116694919640316211">గురించి</translation>
 <translation id="7961015016161918242">ఎప్పుడూ లేదు</translation>
+<translation id="6196640612572343990">మూడవ పక్షం కుక్కీలను బ్లాక్ చేయి</translation>
 <translation id="5657156137487675418">అన్ని కుక్కీలను అనుమతించు</translation>
 <translation id="8987927404178983737">నెల</translation>
 <translation id="1383876407941801731">వెతుకు</translation>
@@ -53,10 +54,7 @@
 <translation id="8798099450830957504">డిఫాల్ట్</translation>
 <translation id="1483493594462132177">పంపు</translation>
 <translation id="2359808026110333948">కొనసాగించు</translation>
-<translation id="6896758677409633944">కాపీ చేయి</translation>
 <translation id="7665369617277396874">ఖాతాను జోడించండి</translation>
-<translation id="3943857333388298514">అతికించు</translation>
-<translation id="6518133107902771759">ధృవీకరించు</translation>
 <translation id="3157931365184549694">పునరుద్ధరించు</translation>
 <translation id="4917385247580444890">బలమైన</translation>
 <translation id="8297006494302853456">బలహీనం</translation>
@@ -105,8 +103,10 @@
 <translation id="7544853251252956727">షఫుల్ చేయి</translation>
 <translation id="1173894706177603556">పేరుమార్చు</translation>
 <translation id="7765158879357617694">తరలించు</translation>
+<translation id="6896758677409633944">కాపీ చేయి</translation>
 <translation id="4195643157523330669">కొత్త ట్యాబ్‌లో తెరువు</translation>
 <translation id="4243710787042215766">అజ్ఞాత ట్యాబ్‌లో తెరువు</translation>
 <translation id="8261506727792406068">తొలగించు</translation>
 <translation id="901834265349196618">ఇమెయిల్</translation>
+<translation id="4776146737004271126">Android సెట్టింగ్‌లను తెరవండి</translation>
 </translationbundle>

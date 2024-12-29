@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/compiler_specific.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
@@ -101,8 +102,8 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(
 }
 
 // null request ID when unspecified is expected
-const char kDefaultRequestIdWhenUnspecified[] = "1";
-const char kRequestJsonRPC[] = "2.0";
+constexpr char kDefaultRequestIdWhenUnspecified[] = "1";
+constexpr char kRequestJsonRPC[] = "2.0";
 
 }  // namespace
 
@@ -189,36 +190,15 @@ mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
   return tx_data;
 }
 
-bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
-                        bool network_supports_eip1559,
-                        const std::vector<mojom::AccountInfoPtr>& account_infos,
-                        const mojom::AccountIdPtr& account_id) {
-  bool keyring_supports_eip1559 = true;
-  auto account_it = base::ranges::find_if(
-      account_infos, [&](const mojom::AccountInfoPtr& account) {
-        return account->account_id == account_id;
-      });
-
-  // Only ledger and trezor hardware keyrings support EIP-1559 at the moment.
-  if (account_it != account_infos.end() && (*account_it)->hardware &&
-      ((*account_it)->hardware->vendor != mojom::kLedgerHardwareVendor &&
-       (*account_it)->hardware->vendor != mojom::kTrezorHardwareVendor)) {
-    keyring_supports_eip1559 = false;
-  }
-
-  // Network or keyring without EIP1559 support.
-  if (!network_supports_eip1559 || !keyring_supports_eip1559) {
-    return false;
-  }
-
+bool ShouldCreate1559Tx(const mojom::TxData1559& tx_data_1559) {
   // Network with EIP1559 support and EIP1559 gas fields are specified.
-  if (tx_data_1559 && !tx_data_1559->max_priority_fee_per_gas.empty() &&
-      !tx_data_1559->max_fee_per_gas.empty()) {
+  if (!tx_data_1559.max_priority_fee_per_gas.empty() &&
+      !tx_data_1559.max_fee_per_gas.empty()) {
     return true;
   }
 
   // Network with EIP1559 support and legacy gas fields are specified.
-  if (tx_data_1559 && !tx_data_1559->base_data->gas_price.empty()) {
+  if (!tx_data_1559.base_data->gas_price.empty()) {
     return false;
   }
 
@@ -423,8 +403,8 @@ bool ParseEthDecryptParams(const std::string& json,
   }
 
   // IsValidHexString guarantees at least 2 bytes and starts with 0x
-  if (!base::HexStringToString(untrusted_hex_json_str->data() + 2,
-                               &untrusted_json)) {
+  if (!UNSAFE_TODO(base::HexStringToString(untrusted_hex_json_str->data() + 2,
+                                           &untrusted_json))) {
     return false;
   }
 
@@ -741,7 +721,8 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
 
   return mojom::BlockchainToken::New(
       eth_addr.ToChecksumAddress(), *symbol /* name */, logo,
-      true /* is_erc20 */, false /* is_erc721 */, false /* is_erc1155 */,
+      false /* is_compressed */, true /* is_erc20 */, false /* is_erc721 */,
+      false /* is_erc1155 */, mojom::SPLTokenProgram::kUnsupported,
       false /* is_nft */, false /* is_spam */, *symbol, decimals, true, "", "",
       base::ToLowerASCII(chain_id), mojom::CoinType::ETH);
 }

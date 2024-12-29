@@ -18,7 +18,7 @@ namespace extensions {
 namespace api {
 
 ExtensionFunction::ResponseAction Pkcs11GetSignatureFunction::Run() {
-  absl::optional<pkcs11::GetSignature::Params> params =
+  std::optional<pkcs11::GetSignature::Params> params =
   pkcs11::GetSignature::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
@@ -34,7 +34,7 @@ ExtensionFunction::ResponseAction Pkcs11GetSignatureFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction Pkcs11GetCertificateFunction::Run() {
-  absl::optional<pkcs11::GetCertificate::Params> params =
+  std::optional<pkcs11::GetCertificate::Params> params =
   pkcs11::GetCertificate::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 

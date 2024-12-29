@@ -36,10 +36,18 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
     const base::Value& json_value);
 mojom::LiFiQuotePtr ParseQuoteResponse(const base::Value& json_value);
 mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value);
+mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value);
 
 }  // namespace lifi
 
-std::optional<std::string> ConvertAllNumbersToString(const std::string& json);
+namespace squid {
+
+mojom::SquidQuotePtr ParseQuoteResponse(const base::Value& json_value);
+mojom::SquidErrorPtr ParseErrorResponse(const base::Value& json_value);
+mojom::SquidTransactionUnionPtr ParseTransactionResponse(
+    const base::Value& json_value);
+
+}  // namespace squid
 
 }  // namespace brave_wallet
 

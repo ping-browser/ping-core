@@ -16,18 +16,18 @@ struct PrivacyReportSettingsView: View {
   @State private var showClearDataPrompt: Bool = false
 
   var body: some View {
-    List {
+    Form {
       Section(footer: Text(Strings.PrivacyHub.settingsEnableShieldsFooter)) {
         Toggle(Strings.PrivacyHub.settingsEnableShieldsTitle, isOn: $shieldsDataEnabled.value)
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
-      Section(footer: Text(Strings.PrivacyHub.settingsEnableVPNAlertsFooter)) {
-        Toggle(Strings.PrivacyHub.settingsEnableVPNAlertsTitle, isOn: $vpnAlertsEnabled.value)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-      }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      // Section(footer: Text(Strings.PrivacyHub.settingsEnableVPNAlertsFooter)) {
+      //   Toggle(Strings.PrivacyHub.settingsEnableVPNAlertsTitle, isOn: $vpnAlertsEnabled.value)
+      //     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+      // }
+      // .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       Section(footer: Text(Strings.PrivacyHub.settingsSlearDataFooter)) {
         HStack {

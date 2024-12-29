@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check_is_test.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 #include "brave/browser/ui/views/brave_ads/bounds_util.h"
@@ -99,18 +100,13 @@ NotificationAdPopup::NotificationAdPopup(
 
   display::Screen* screen = display::Screen::GetScreen();
   if (screen) {
-    screen->AddObserver(this);
+    screen_observation_.Observe(screen);
   }
 
   FadeIn();
 }
 
-NotificationAdPopup::~NotificationAdPopup() {
-  display::Screen* screen = display::Screen::GetScreen();
-  if (screen) {
-    screen->RemoveObserver(this);
-  }
-}
+NotificationAdPopup::~NotificationAdPopup() = default;
 
 // static
 void NotificationAdPopup::SetDisableFadeInAnimationForTesting(
@@ -136,8 +132,7 @@ void NotificationAdPopup::OnDisplayAdded(const display::Display& new_display) {
   RecomputeAlignment();
 }
 
-void NotificationAdPopup::OnDisplayRemoved(
-    const display::Display& old_display) {
+void NotificationAdPopup::OnDisplaysRemoved(const display::Displays& displays) {
   // Called when `old_display` has been removed
   RecomputeAlignment();
 }
@@ -461,7 +456,9 @@ void NotificationAdPopup::CreateWidgetView(
   widget->InitWidget(this, widget_bounds, browser_native_window,
                      browser_native_view);
 
-  if (!g_disable_fade_in_animation_for_testing) {
+  if (g_disable_fade_in_animation_for_testing) {
+    CHECK_IS_TEST();
+  } else {
     widget->SetOpacity(0.0);
   }
   const gfx::Rect bounds = widget->GetWindowBoundsInScreen();
@@ -484,6 +481,7 @@ void NotificationAdPopup::CloseWidgetView() {
 
 void NotificationAdPopup::FadeIn() {
   if (g_disable_fade_in_animation_for_testing) {
+    CHECK_IS_TEST();
     return;
   }
 

@@ -155,7 +155,7 @@ extension BrowserViewController {
   }
 
   @objc private func showShieldsKeyCommand() {
-    presentBraveShieldsViewController()
+    presentBraveShieldsView()
   }
 
   @objc private func showDownloadsKeyCommand() {
@@ -164,14 +164,6 @@ extension BrowserViewController {
         self?.displayOpenDownloadsError()
       }
     }
-  }
-
-  @objc private func findNextCommand() {
-    findTextInPage(.next)
-  }
-
-  @objc private func findPreviousCommand() {
-    findTextInPage(.previous)
   }
 
   @objc private func moveURLCompletionKeyCommand(sender: UIKeyCommand) {
@@ -424,40 +416,6 @@ extension BrowserViewController {
       ),
     ]
 
-    // Find in Page Key Commands
-    var findTextCommands = [
-      UIKeyCommand(
-        title: Strings.Hotkey.findInPageTitle,
-        action: #selector(findInPageKeyCommand),
-        input: "f",
-        modifierFlags: .command
-      )
-    ]
-
-    // These are automatically handled in iOS 16's UIFindInteraction
-    if #unavailable(iOS 16.0) {
-      let findTextUtilitiesCommands = [
-        UIKeyCommand(
-          title: Strings.Hotkey.findNextTitle,
-          action: #selector(findNextCommand),
-          input: "g",
-          modifierFlags: [.command]
-        ),
-        UIKeyCommand(
-          title: Strings.Hotkey.findPreviousTitle,
-          action: #selector(findPreviousCommand),
-          input: "g",
-          modifierFlags: [.command, .shift]
-        ),
-      ]
-
-      let isFindingText = !(findInPageBar?.text?.isEmpty ?? true)
-
-      if isFindingText {
-        findTextCommands.append(contentsOf: findTextUtilitiesCommands)
-      }
-    }
-
     // Share With Key Command
     let shareCommands = [
       UIKeyCommand(
@@ -480,7 +438,7 @@ extension BrowserViewController {
 
     var keyCommandList =
       navigationCommands + tabNavigationCommands + bookmarkEditingCommands + shareCommands
-      + findTextCommands + additionalPriorityCommandKeys
+      + additionalPriorityCommandKeys
 
     // URL completion and Override Key commands
     let searchLocationCommands = [

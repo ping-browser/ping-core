@@ -22,25 +22,27 @@ namespace ai_chat {
 
 class AiChatBrowserTest : public InProcessBrowserTest {
  public:
-  AiChatBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
+  AiChatBrowserTest() = default;
+
+  void SetUpOnMainThread() override {
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     https_server_.ServeFilesFromDirectory(test_data_dir.AppendASCII("ai_chat"));
-    EXPECT_TRUE(https_server_.Start());
+    https_server_.StartAcceptingConnections();
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   }
 
-  void SetUpOnMainThread() override {
-    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
-    host_resolver()->AddRule("*:*", "127.0.0.1");
+  void SetUp() override {
+    ASSERT_TRUE(https_server_.InitializeAndListen());
+    InProcessBrowserTest::SetUp();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        "MAP *:443 " + https_server_.host_port_pair().ToString());
-    mock_cert_verifier_.SetUpCommandLine(command_line);
+        "MAP * " + https_server_.host_port_pair().ToString());
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -60,21 +62,23 @@ class AiChatBrowserTest : public InProcessBrowserTest {
   std::string FetchPageContent() {
     std::string content;
     base::RunLoop run_loop;
-    ai_chat::FetchPageContent(
-        browser()->tab_strip_model()->GetActiveWebContents(), "",
-        base::BindLambdaForTesting(
-            [&run_loop, &content](std::string page_content, bool is_video,
-                                  std::string invalidation_token) {
-              content = std::move(page_content);
-              run_loop.Quit();
-            }));
+    page_content_fetcher_ = std::make_unique<PageContentFetcher>(
+        browser()->tab_strip_model()->GetActiveWebContents());
+    page_content_fetcher_->FetchPageContent(
+        "", base::BindLambdaForTesting(
+                [&run_loop, &content](std::string page_content, bool is_video,
+                                      std::string invalidation_token) {
+                  content = std::move(page_content);
+                  run_loop.Quit();
+                }));
     run_loop.Run();
     return content;
   }
 
  private:
+  std::unique_ptr<PageContentFetcher> page_content_fetcher_;
   content::ContentMockCertVerifier mock_cert_verifier_;
-  net::EmbeddedTestServer https_server_;
+  net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
 IN_PROC_BROWSER_TEST_F(AiChatBrowserTest, YoutubeNavigations) {

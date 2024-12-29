@@ -11,8 +11,13 @@
 #include "chrome/browser/ui/autofill/payments/webauthn_dialog_controller_impl.h"
 #include "chrome/browser/ui/page_info/page_info_dialog.h"
 #include "components/autofill/core/browser/browser_autofill_manager.h"
+#include "components/autofill/core/browser/form_data_importer.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/autofill_prediction_improvements/chrome_autofill_prediction_improvements_client.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace autofill {
 

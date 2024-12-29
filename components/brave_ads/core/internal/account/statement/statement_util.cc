@@ -14,8 +14,9 @@
 #include "brave/components/brave_ads/core/internal/account/statement/earnings_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -27,7 +28,8 @@ TransactionList FilterTransactionsForEstimatedEarnings(
   TransactionList filtered_transactions;
   base::ranges::copy_if(transactions, std::back_inserter(filtered_transactions),
                         [](const TransactionInfo& transaction) {
-                          return transaction.ad_type != AdType::kNewTabPageAd;
+                          return transaction.ad_type !=
+                                 mojom::AdType::kNewTabPageAd;
                         });
   return filtered_transactions;
 }
@@ -35,11 +37,11 @@ TransactionList FilterTransactionsForEstimatedEarnings(
 }  // namespace
 
 base::Time GetNextPaymentDate(const TransactionList& transactions) {
-  const base::Time next_token_redemption_at =
-      GetProfileTimePref(prefs::kNextTokenRedemptionAt);
+  const base::Time next_payment_token_redemption_at =
+      GetProfileTimePref(prefs::kNextPaymentTokenRedemptionAt);
 
   const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, transactions);
+      CalculateNextPaymentDate(next_payment_token_redemption_at, transactions);
 
   return next_payment_date;
 }
@@ -59,27 +61,27 @@ std::pair<double, double> GetEstimatedEarningsForThisMonth(
   return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
-std::pair<double, double> GetEstimatedEarningsForLastMonth(
+std::pair<double, double> GetEstimatedEarningsForPreviousMonth(
     const TransactionList& transactions) {
-  const double range_low = GetReconciledEarningsForLastMonth(
+  const double range_low = GetReconciledEarningsForPreviousMonth(
       FilterTransactionsForEstimatedEarnings(transactions));
-  const double range_high = GetReconciledEarningsForLastMonth(transactions);
+  const double range_high = GetReconciledEarningsForPreviousMonth(transactions);
 
   return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
 int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {
-  const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
-  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time from_time = LocalTimeAtBeginningOfThisMonth();
+  const base::Time to_time = LocalTimeAtEndOfThisMonth();
 
   return static_cast<int32_t>(
       GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
-base::flat_map<std::string, int32_t> GetAdsSummaryThisMonth(
+base::flat_map<mojom::AdType, int32_t> GetAdsSummaryThisMonth(
     const TransactionList& transactions) {
-  const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
-  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time from_time = LocalTimeAtBeginningOfThisMonth();
+  const base::Time to_time = LocalTimeAtEndOfThisMonth();
 
   return GetAdsSummaryForDateRange(transactions, from_time, to_time);
 }

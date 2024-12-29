@@ -5,6 +5,7 @@
 
 #include "features.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -19,17 +20,18 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/ipfs/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/p3a/features.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/ios/browser/playlist/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
+#include "ios/components/security_interstitials/https_only_mode/feature.h"
+#include "net/base/features.h"
 
 @interface Feature () {
-  const base::Feature* _feature;
+  raw_ptr<const base::Feature> _feature;
 }
 @end
 
@@ -195,6 +197,16 @@
       initWithFeature:&brave_search::features::kBraveSearchDefaultAPIFeature];
 }
 
++ (Feature*)kBraveShredFeature {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveShredFeature];
+}
+
++ (Feature*)kBraveShredCacheData {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveShredCacheData];
+}
+
 + (Feature*)kBraveShowStrictFingerprintingMode {
   return
       [[Feature alloc] initWithFeature:&brave_shields::features::
@@ -213,11 +225,6 @@
 + (Feature*)kBraveWalletBitcoinFeature {
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletBitcoinFeature];
-}
-
-+ (Feature*)kBraveWalletNftPinningFeature {
-  return [[Feature alloc]
-      initWithFeature:&brave_wallet::features::kBraveWalletNftPinningFeature];
 }
 
 + (Feature*)kBraveWalletZCashFeature {
@@ -260,10 +267,6 @@
 }
 #endif
 
-+ (Feature*)kIpfsFeature {
-  return [[Feature alloc] initWithFeature:&ipfs::features::kIpfsFeature];
-}
-
 + (Feature*)kNTP {
   return [[Feature alloc]
       initWithFeature:&brave_search_conversion::features::kNTP];
@@ -293,14 +296,22 @@
       initWithFeature:&brave_component_updater::kUseDevUpdaterUrl];
 }
 
-+ (Feature*)kVBatNoticeFeature {
-  return [[Feature alloc]
-      initWithFeature:&brave_rewards::features::kVBatNoticeFeature];
-}
-
 + (Feature*)kVerboseLoggingFeature {
   return [[Feature alloc]
       initWithFeature:&brave_rewards::features::kVerboseLoggingFeature];
+}
+
++ (Feature*)kNewPlaylistUI {
+  return [[Feature alloc] initWithFeature:&playlist::features::kNewPlaylistUI];
+}
+
++ (Feature*)kBraveHttpsByDefault {
+  return [[Feature alloc] initWithFeature:&net::features::kBraveHttpsByDefault];
+}
+
++ (Feature*)kHttpsOnlyMode {
+  return [[Feature alloc]
+      initWithFeature:&security_interstitials::features::kHttpsOnlyMode];
 }
 
 @end

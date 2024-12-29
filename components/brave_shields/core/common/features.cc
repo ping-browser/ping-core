@@ -7,9 +7,11 @@
 
 #include "base/feature_list.h"
 
-namespace brave_shields {
-namespace features {
+namespace brave_shields::features {
 
+BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,
+             "AdBlockDefaultResourceUpdateInterval",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, Brave will block first-party requests that appear in a filter
 // list when Shields is in "standard" blocking mode. When disabled, Brave will
 // allow first-party requests in "standard" blocking mode regardless of whether
@@ -40,6 +42,11 @@ BASE_FEATURE(kBraveAdblockCookieListOptIn,
              base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockCosmeticFiltering,
              "BraveAdblockCosmeticFiltering",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+// Brave will apply cosmetic filters with procedural operators like
+// `:has-text(...)` and `:upward(...)`.
+BASE_FEATURE(kBraveAdblockProceduralFiltering,
+             "BraveAdblockProceduralFiltering",
              base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockScriptletDebugLogs,
              "BraveAdblockScriptletDebugLogs",
@@ -82,10 +89,18 @@ BASE_FEATURE(kBraveExtensionNetworkBlocking,
 BASE_FEATURE(kBraveReduceLanguage,
              "BraveReduceLanguage",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// When enabled, brave shred feature will be available
+BASE_FEATURE(kBraveShredFeature,
+             "BraveShredFeature",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+// When enabled, brave shred will clear all cache data when shredding.
+BASE_FEATURE(kBraveShredCacheData,
+             "BraveShredCacheData",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.
 BASE_FEATURE(kBraveShowStrictFingerprintingMode,
              "BraveShowStrictFingerprintingMode",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // when enabled, brave will prompt for permission on sites which want to connect
 // to localhost.
 BASE_FEATURE(kBraveLocalhostAccessPermission,
@@ -109,6 +124,9 @@ BASE_FEATURE(kCosmeticFilteringExtraPerfMetrics,
 BASE_FEATURE(kCosmeticFilteringJsPerformance,
              "CosmeticFilteringJsPerformance",
              base::FEATURE_ENABLED_BY_DEFAULT);
+
+constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{
+    &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 100};
 
 constexpr base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs{
@@ -136,5 +154,4 @@ constexpr base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec{
         &kAdblockOverrideRegexDiscardPolicy, "discard_unused_sec", 180};
 
-}  // namespace features
-}  // namespace brave_shields
+}  // namespace brave_shields::features

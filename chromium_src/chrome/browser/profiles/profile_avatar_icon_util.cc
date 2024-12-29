@@ -3,9 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 
 #include "base/values.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -53,6 +60,15 @@ size_t GetBraveAvatarIconStartIndex();
       colors.default_avatar_fill_color, colors.default_avatar_stroke_color,  \
       selected_avatar_idx == GetPlaceholderAvatarIndex());                   \
   avatars.Insert(avatars.begin(), base::Value(std::move(generic_avatar_info)));
+
+// It is necessary to match the declaration for this function to be referred to
+// by the translation unit, otherwise it cannot tell that the last argument can
+// have a default value.
+gfx::Image GetPlaceholderAvatarIconWithColors_ChromiumImpl(
+    SkColor fill_color,
+    SkColor stroke_color,
+    int size,
+    const PlaceholderAvatarIconParams& icon_params = {});
 
 }  // namespace profiles
 
@@ -187,9 +203,11 @@ ui::ImageModel GetGuestAvatar(int size) {
                                         size);
 }
 
-gfx::Image GetPlaceholderAvatarIconWithColors(SkColor fill_color,
-                                              SkColor stroke_color,
-                                              int size) {
+gfx::Image GetPlaceholderAvatarIconWithColors(
+    SkColor fill_color,
+    SkColor stroke_color,
+    int size,
+    const PlaceholderAvatarIconParams& icon_params) {
   return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
       GetPlaceholderAvatarIconResourceID());
 }

@@ -14,28 +14,33 @@ public struct AIChatTermsAndConditionsView: View {
   var termsAndConditionsAccepted: Bool
 
   public var body: some View {
-    VStack(spacing: 16.0) {
-      Text(Strings.AIChat.termsConditionsTitle)
-        .multilineTextAlignment(.leading)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .fixedSize(horizontal: false, vertical: true)
-        .font(.body.weight(.semibold))
-        .foregroundStyle(Color(braveSystemName: .textPrimary))
+    VStack {
+      ScrollView {
+        LazyVStack(spacing: 16.0) {
+          Text(Strings.AIChat.termsConditionsTitle)
+            .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
+            .font(.body.weight(.semibold))
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
 
-      Text(
-        LocalizedStringKey(
-          String.localizedStringWithFormat(
-            Strings.AIChat.termsConditionsDescription,
-            AIChatConstants.braveLeoWikiURL.absoluteString,
-            AIChatConstants.braveLeoPrivacyPolicyURL.absoluteString
+          Text(
+            LocalizedStringKey(
+              String.localizedStringWithFormat(
+                Strings.AIChat.termsConditionsDescription,
+                AIChatConstants.braveLeoLearnMore.absoluteString,
+                AIChatConstants.braveLeoPrivacyPolicyURL.absoluteString
+              )
+            )
           )
-        )
-      )
-      .multilineTextAlignment(.leading)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .fixedSize(horizontal: false, vertical: true)
-      .foregroundStyle(Color(braveSystemName: .textPrimary))
-      .tint(Color(braveSystemName: .primary50))
+          .multilineTextAlignment(.leading)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .fixedSize(horizontal: false, vertical: true)
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
+          .tint(Color(braveSystemName: .primary50))
+        }
+        .padding()
+      }
 
       Button(
         action: {
@@ -47,7 +52,7 @@ public struct AIChatTermsAndConditionsView: View {
             .padding([.top, .bottom], 12)
             .padding([.leading, .trailing], 16)
             .frame(maxWidth: .infinity)
-            .foregroundStyle(.white)
+            .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
             .background(
               Color(braveSystemName: .buttonBackground),
               in: Capsule()
@@ -64,6 +69,7 @@ public struct AIChatTermsAndConditionsView: View {
 struct AIChatTermsAndConditionsView_Preview: PreviewProvider {
   static var previews: some View {
     AIChatTermsAndConditionsView(termsAndConditionsAccepted: .constant(false))
+      .previewColorSchemes()
       .previewLayout(.sizeThatFits)
   }
 }

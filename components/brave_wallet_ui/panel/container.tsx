@@ -49,14 +49,10 @@ import {
   useGetPendingSignMessageErrorsQuery,
   useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
-  useGetPendingSignAllTransactionsRequestsQuery,
-  useGetPendingTokenSuggestionRequestsQuery,
-  useGetPendingSignTransactionRequestsQuery
+  useGetPendingSignSolTransactionsRequestsQuery,
+  useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
-import {
-  useAccountsQuery,
-  useSelectedAccountQuery
-} from '../common/slices/api.slice.extra'
+import { useAccountsQuery } from '../common/slices/api.slice.extra'
 import {
   useSelectedPendingTransaction //
 } from '../common/hooks/use-pending-transaction'
@@ -99,26 +95,43 @@ function Container() {
     PanelSelectors.connectingAccounts
   )
 
-  // queries & mutations
+  // queries
   const { accounts } = useAccountsQuery()
-  const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
   const { data: switchChainRequest } = useGetPendingSwitchChainRequestQuery()
   const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
-  const { data: getEncryptionPublicKeyRequest } =
-    useGetPendingGetEncryptionPublicKeyRequestQuery()
-  const { data: signTransactionRequests } =
-    useGetPendingSignTransactionRequestsQuery()
-  const { data: signAllTransactionsRequests } =
-    useGetPendingSignAllTransactionsRequestsQuery()
-  const { data: signMessageData } = useGetPendingSignMessageRequestsQuery()
-  const { data: signMessageErrorData } = useGetPendingSignMessageErrorsQuery()
-  const { data: addTokenRequests = [] } =
+  const {
+    data: getEncryptionPublicKeyRequest,
+    isLoading: isLoadingPendingPublicKeyRequest
+  } = useGetPendingGetEncryptionPublicKeyRequestQuery()
+  const {
+    data: signSolTransactionsRequests,
+    isLoading: isLoadingSignSolTransactionsRequests
+  } = useGetPendingSignSolTransactionsRequestsQuery()
+  const { data: signMessageData, isLoading: isLoadingSignMessageData } =
+    useGetPendingSignMessageRequestsQuery()
+  const {
+    data: signMessageErrorData,
+    isLoading: isLoadingSignMessageErrorData
+  } = useGetPendingSignMessageErrorsQuery()
+  const { data: addTokenRequests = [], isLoading: isLoadingAddTokenRequests } =
     useGetPendingTokenSuggestionRequestsQuery()
+  const {
+    selectedPendingTransaction,
+    isLoading: isLoadingPendingTransactions
+  } = useSelectedPendingTransaction()
 
-  const selectedPendingTransaction = useSelectedPendingTransaction()
+  // computed
+  const isLoadingPendingActions =
+    isLoadingPendingTransactions ||
+    isLoadingPendingPublicKeyRequest ||
+    isLoadingSignSolTransactionsRequests ||
+    isLoadingSignMessageData ||
+    isLoadingSignMessageErrorData ||
+    isLoadingAddTokenRequests
 
-  if (!hasInitialized) {
+  // render
+  if (!hasInitialized || isLoadingPendingActions) {
     return (
       <PanelWrapper
         width={390}
@@ -173,19 +186,14 @@ function Container() {
 
   if (
     selectedPanel === 'connectHardwareWallet' &&
-    selectedAccount &&
     (selectedPendingTransaction ||
       signMessageData?.length ||
-      signAllTransactionsRequests?.length ||
-      signTransactionRequests?.length)
+      signSolTransactionsRequests?.length)
   ) {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <ConnectHardwareWalletPanel
-            account={selectedAccount}
-            hardwareWalletCode={hardwareWalletCode}
-          />
+          <ConnectHardwareWalletPanel hardwareWalletCode={hardwareWalletCode} />
         </StyledExtensionWrapper>
       </PanelWrapper>
     )
@@ -265,10 +273,13 @@ function Container() {
 
   if (selectedPanel === 'transactionStatus' && selectedTransactionId) {
     return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <LongWrapper padding='0px'>
           <TransactionStatus transactionLookup={selectedTransactionId} />
-        </StyledExtensionWrapper>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
@@ -279,7 +290,7 @@ function Container() {
         width={390}
         height={650}
       >
-        <LongWrapper>
+        <LongWrapper padding='0px'>
           <PendingTransactionPanel
             selectedPendingTransaction={selectedPendingTransaction}
           />
@@ -288,15 +299,11 @@ function Container() {
     )
   }
 
-  if (signAllTransactionsRequests?.length || signTransactionRequests?.length) {
+  if (signSolTransactionsRequests?.length) {
     return (
       <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <PendingSignatureRequestsPanel
-            signMode={
-              signAllTransactionsRequests?.length ? 'signAllTxs' : 'signTx'
-            }
-          />
+        <LongWrapper padding='0px'>
+          <PendingSignatureRequestsPanel />
         </LongWrapper>
       </PanelWrapper>
     )

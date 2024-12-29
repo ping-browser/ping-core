@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/components/brave_sync/time_limited_words.h"
 
 #include <cmath>
@@ -29,6 +35,12 @@ static constexpr char kWordsv1SunsetDate[] = "Mon, 1 Aug 2022 00:00:00 GMT";
 static constexpr char kWordsv2Epoch[] = "Tue, 10 May 2022 00:00:00 GMT";
 
 static constexpr size_t kWordsV2Count = 25u;
+
+std::vector<std::string> SplitWords(const std::string& words_string) {
+  return base::SplitString(words_string, " \n\t",
+                           base::WhitespaceHandling::TRIM_WHITESPACE,
+                           base::SplitResult::SPLIT_WANT_NONEMPTY);
+}
 
 }  // namespace
 
@@ -142,9 +154,7 @@ TimeLimitedWords::ParseImpl(const std::string& time_limited_words,
 
   auto now = Time::Now();
 
-  std::vector<std::string> words = base::SplitString(
-      time_limited_words, " ", base::WhitespaceHandling::TRIM_WHITESPACE,
-      base::SplitResult::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> words = SplitWords(time_limited_words);
 
   size_t num_words = words.size();
 
@@ -187,7 +197,7 @@ TimeLimitedWords::ParseImpl(const std::string& time_limited_words,
     return base::unexpected(ValidationStatus::kWrongWordsNumber);
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return base::unexpected(ValidationStatus::kNotValidPureWords);
 }
 
@@ -214,11 +224,8 @@ std::string TimeLimitedWords::GenerateResultToText(
 // static
 base::Time TimeLimitedWords::GetNotAfter(
     const std::string& time_limited_words) {
-  std::vector<std::string> words = base::SplitString(
-      time_limited_words, " ", base::WhitespaceHandling::TRIM_WHITESPACE,
-      base::SplitResult::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> words = SplitWords(time_limited_words);
   size_t num_words = words.size();
-
   if (num_words != kWordsV2Count) {
     return base::Time();
   }
@@ -246,6 +253,11 @@ base::Time TimeLimitedWords::GetNotAfter(
   DCHECK_EQ(GetRoundedDaysDiff(anchor_time, not_after - base::Seconds(1)), 1);
 
   return not_after;
+}
+
+// static
+int TimeLimitedWords::GetWordsCount(const std::string& time_limited_words) {
+  return SplitWords(time_limited_words).size();
 }
 
 }  // namespace brave_sync

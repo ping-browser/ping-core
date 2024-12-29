@@ -8,15 +8,13 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 PostTransactionGemini::PostTransactionGemini(RewardsEngine& engine)
     : engine_(engine) {}
@@ -24,10 +22,10 @@ PostTransactionGemini::PostTransactionGemini(RewardsEngine& engine)
 PostTransactionGemini::~PostTransactionGemini() = default;
 
 std::string PostTransactionGemini::GetUrl(const std::string& order_id) {
-  auto url = URLHelpers::Resolve(
-      engine_->Get<EnvironmentConfig>().rewards_payment_url(),
-      {"/v1/orders/", order_id, "/transactions/gemini"});
-  return url.spec();
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_payment_url()
+      .Resolve(base::StrCat({"/v1/orders/", order_id, "/transactions/gemini"}))
+      .spec();
 }
 
 std::string PostTransactionGemini::GeneratePayload(
@@ -99,6 +97,4 @@ void PostTransactionGemini::OnRequest(PostTransactionGeminiCallback callback,
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
-}  // namespace payment
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::payment

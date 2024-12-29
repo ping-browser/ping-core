@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/studies_user_data.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -21,19 +22,19 @@ constexpr char kGroupNameKey[] = "group";
 }  // namespace
 
 base::Value::Dict BuildStudiesUserData() {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   base::Value::List list;
 
-  for (const auto& active_field_trial_group :
-       GetActiveFieldTrialStudyGroups()) {
+  if (const std::optional<base::FieldTrial::ActiveGroup>
+          active_field_trial_group = GetActiveFieldTrialStudyGroup()) {
     list.Append(base::Value::Dict()
-                    .Set(kTrialNameKey, active_field_trial_group.trial_name)
-                    .Set(kGroupNameKey, active_field_trial_group.group_name));
+                    .Set(kTrialNameKey, active_field_trial_group->trial_name)
+                    .Set(kGroupNameKey, active_field_trial_group->group_name));
   }
 
   user_data.Set(kStudiesKey, std::move(list));

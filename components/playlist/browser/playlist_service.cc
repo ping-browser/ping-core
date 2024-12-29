@@ -25,6 +25,7 @@
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
+#include "brave/components/playlist/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
@@ -66,6 +67,8 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
       base_dir_(context->GetPath().Append(kBaseDirName)),
       playlist_p3a_(local_state, browser_first_run_time),
       prefs_(user_prefs::UserPrefs::Get(context)) {
+  CHECK(base::FeatureList::IsEnabled(features::kPlaylist));
+
   media_file_download_manager_ =
       std::make_unique<PlaylistMediaFileDownloadManager>(context, this);
   thumbnail_downloader_ =
@@ -729,9 +732,8 @@ void PlaylistService::SanitizeImage(
     base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback) {
   if (!delegate_) {
     CHECK_IS_TEST();
-    auto bytes = base::MakeRefCounted<base::RefCountedBytes>(
-        reinterpret_cast<const unsigned char*>(image->data()), image->size());
-    std::move(callback).Run(bytes);
+    std::move(callback).Run(
+        new base::RefCountedBytes(base::as_byte_span(*image)));
     return;
   }
 
@@ -892,13 +894,20 @@ void PlaylistService::RecoverLocalDataForItem(
         mojom::PlaylistItemPtr new_item =
             service->GetPlaylistItem(old_item->id);
         DCHECK(new_item);
-        DCHECK(!new_item->cached);
         DCHECK_EQ(new_item->media_source, old_item->media_source);
         DCHECK_EQ(new_item->media_path, old_item->media_path);
+        const bool was_cached = new_item->cached;
+        if (was_cached)
+          new_item->cached = false;
         new_item->media_source = found_items.front()->media_source;
-        new_item->media_path = new_item->media_path;
+        new_item->media_path = new_item->media_source;
         service->UpdatePlaylistItemValue(
             new_item->id, base::Value(ConvertPlaylistItemToValue(new_item)));
+
+        if (was_cached) {
+          service->NotifyPlaylistChanged(
+              mojom::PlaylistEvent::kItemLocalDataRemoved, new_item->id);
+        }
 
         service->RecoverLocalDataForItemImpl(
             std::move(new_item),
@@ -1160,7 +1169,7 @@ base::FilePath PlaylistService::GetMediaPathForPlaylistItemItem(
 }
 
 void PlaylistService::OnGetOrphanedPaths(
-    const std::vector<base::FilePath> orphaned_paths) {
+    const std::vector<base::FilePath>& orphaned_paths) {
   if (orphaned_paths.empty()) {
     VLOG(2) << __func__ << ": No orphaned playlist";
     return;

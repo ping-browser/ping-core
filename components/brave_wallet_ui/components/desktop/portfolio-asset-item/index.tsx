@@ -213,15 +213,9 @@ export const PortfolioAssetItem = ({
               <NameAndIcon>
                 <IconsWrapper>
                   {isNonFungibleToken ? (
-                    <NftIconWithPlaceholder
-                      asset={token}
-                      network={network}
-                    />
+                    <NftIconWithPlaceholder asset={token} />
                   ) : (
-                    <AssetIconWithPlaceholder
-                      asset={token}
-                      network={network}
-                    />
+                    <AssetIconWithPlaceholder asset={token} />
                   )}
                   {!isPanel &&
                     network &&
@@ -257,10 +251,7 @@ export const PortfolioAssetItem = ({
                         isBold={true}
                         textAlign='left'
                       >
-                        {token.name}{' '}
-                        {token.isErc721 && token.tokenId
-                          ? '#' + new Amount(token.tokenId).toNumber()
-                          : ''}
+                        {token.name}
                       </AssetName>
                       <NetworkDescriptionText
                         textSize='12px'

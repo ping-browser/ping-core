@@ -7,46 +7,41 @@
 
 #include <optional>
 
-#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {
- protected:
-  TokenGeneratorMock token_generator_mock_;
-};
+class BraveAdsFetchPaymentTokenUrlRequestBuilderTest : public test::TestBase {};
 
 TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_use_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
-  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr mojom_url_request =
+      url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url = GURL(
-      "https://anonymous.ads.bravesoftware.com/v3/confirmation/"
-      "8b742869-6e4a-490c-ac31-31b49130098a/paymentToken");
-  expected_url_request->method = mojom::UrlRequestMethodType::kGet;
-  EXPECT_EQ(expected_url_request, url_request);
+  const mojom::UrlRequestInfoPtr expected_mojom_url_request =
+      mojom::UrlRequestInfo::New();
+  expected_mojom_url_request->url = GURL(
+      R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)");
+  expected_mojom_url_request->method = mojom::UrlRequestMethodType::kGet;
+  EXPECT_EQ(expected_mojom_url_request, mojom_url_request);
 }
 
 }  // namespace brave_ads

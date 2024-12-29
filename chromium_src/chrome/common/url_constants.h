@@ -36,6 +36,10 @@ inline constexpr char kAutomaticSettingsResetLearnMoreURL[] =
 inline constexpr char kAdvancedProtectionDownloadLearnMoreURL[] =
     "https://ping-browser.com/faqs-and-help";
 
+// "Chrome Settings" URL for the appearance page.
+inline constexpr char kBrowserSettingsSearchEngineURL[] =
+    "chrome://settings/search";
+
 // "Learn more" URL for Battery Saver Mode.
 inline constexpr char kBatterySaverModeLearnMoreUrl[] =
     "https://ping-browser.com/faqs-and-helph";
@@ -81,7 +85,7 @@ inline constexpr char kChromeHelpViaMenuURL[] = "https://ping-browser.com/faqs-a
 
 inline constexpr char kChromeHelpViaWebUIURL[] = "https://ping-browser.com/faqs-and-help";
 
-inline constexpr char kFirstPartySetsLearnMoreURL[] =
+inline constexpr char kRelatedWebsiteSetsLearnMoreURL[] =
     "https://ping-browser.com/faqs-and-help";
 
 // The isolated-app: scheme is used for Isolated Web Apps. A public explainer
@@ -161,6 +165,11 @@ inline constexpr char kCrashReasonFeedbackDisplayedURL[] =
     "https://ping-browser.com/faqs-and-help"
     "360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
 
+// "Learn more" URL for the inactive tabs appearance setting.
+inline constexpr char16_t kDiscardRingTreatmentLearnMoreUrl[] =
+    u"https://support.brave.com/hc/en-us/articles/"
+    u"13383683902733-How-do-I-use-the-Memory-Saver-feature-in-Brave";
+
 // "Learn more" URL for the "Do not track" setting in the privacy section.
 inline constexpr char16_t kDoNotTrackLearnMoreURL[] =
     u"https://ping-browser.com/faqs-and-help"
@@ -227,6 +236,10 @@ inline constexpr char kGoogleAccountChooserURL[] = "https://ping-browser.com/faq
 inline constexpr char kGoogleAccountDeviceActivityURL[] =
     "https://ping-browser.com/faqs-and-help";
 
+// URL of the two factor authentication setup required intersitial.
+inline constexpr char kGoogleTwoFactorIntersitialURL[] =
+    "https://support.brave.com/";
+
 // URL of the Google Password Manager.
 inline constexpr char kGooglePasswordManagerURL[] = "https://ping-browser.com/faqs-and-help";
 
@@ -255,6 +268,9 @@ inline constexpr char kLearnMoreReportingURL[] =
 
 // The URL for the Help Center page about managing third-party cookies.
 inline constexpr char kManage3pcHelpCenterURL[] = "https://ping-browser.com/faqs-and-help";
+
+// The URL for the tab group sync help center page.
+inline constexpr char kTabGroupsLearnMoreURL[] = "https://support.brave.com/";
 
 // The URL for the Learn More page about policies and enterprise enrollment.
 inline constexpr char16_t kManagedUiLearnMoreUrl[] =
@@ -312,6 +328,10 @@ inline constexpr char16_t kPaymentMethodsURLForGPayWeb[] =
 // The URL for the "Fill out forms automatically" support page.
 inline constexpr char kAddressesAndPaymentMethodsLearnMoreURL[] =
     "https://ping-browser.com/faqs-and-help";
+
+// "Learn more" URL for the performance intervention notification setting.
+inline constexpr char16_t kPerformanceInterventionLearnMoreUrl[] =
+    u"https://support.brave.com";
 
 // "Learn more" URL for the preloading section in Performance settings.
 inline constexpr char kPreloadingLearnMoreUrl[] = "https://ping-browser.com/faqs-and-help";
@@ -385,6 +405,18 @@ inline constexpr char kSyncGoogleDashboardURL[] = "https://ping-browser.com/faqs
 // The URL for the "Learn more" page for sync setup on the personal stuff page.
 inline constexpr char16_t kSyncLearnMoreURL[] = u"https://ping-browser.com/faqs-and-help";
 
+// The URL for the "Learn more" page for Help me Write.
+inline constexpr char kComposeLearnMorePageURL[] = "https://support.brave.com/";
+
+// The URL for the "Learn more" links for pages related to History search.
+// TODO(crbug.com/328300718): Update help article URL.
+inline constexpr char kHistorySearchLearnMorePageURL[] =
+    "https://support.brave.com/";
+
+// The URL for the Settings page to enable history search.
+inline constexpr char16_t kHistorySearchSettingURL[] =
+    u"chrome://settings/historySearch";
+
 // The URL for the "Learn more" link in the enterprise disclaimer for managed
 // profile in the Signin Intercept bubble.
 inline constexpr char kSigninInterceptManagedDisclaimerLearnMoreURL[] =
@@ -419,6 +451,10 @@ inline constexpr char16_t kWhoIsMyAdministratorHelpURL[] =
 // The URL for the "Learn more" link about CWS Enhanced Safe Browsing.
 inline constexpr char16_t kCwsEnhancedSafeBrowsingLearnMoreURL[] =
     u"https://ping-browser.com/faqs-and-help";
+
+// The URL path to online privacy policy.
+inline constexpr char kPrivacyPolicyOnlineURLPath[] =
+    "https://support.brave.com/";
 
 #if BUILDFLAG(IS_ANDROID)
 // "Learn more" URL for the enhanced playback notification dialog.

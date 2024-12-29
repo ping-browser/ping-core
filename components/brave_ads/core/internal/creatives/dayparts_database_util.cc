@@ -15,7 +15,7 @@ void DeleteDayparts() {
   const table::Dayparts database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      return BLOG(0, "Failed to delete dayparts");
+      BLOG(0, "Failed to delete dayparts");
     }
   }));
 }

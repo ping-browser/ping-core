@@ -6,8 +6,10 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADAPTIVE_CAPTCHA_BRAVE_ADAPTIVE_CAPTCHA_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_ADAPTIVE_CAPTCHA_BRAVE_ADAPTIVE_CAPTCHA_SERVICE_FACTORY_H_
 
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
+#include <memory>
+
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "content/public/browser/browser_context.h"
 
 class Profile;
 
@@ -38,7 +40,7 @@ class BraveAdaptiveCaptchaServiceFactory
       const BraveAdaptiveCaptchaServiceFactory&) = delete;
 
   // BrowserContextKeyedServiceFactory overrides:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };
 

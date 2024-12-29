@@ -6,181 +6,318 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "base/files/file.h"
 #include "base/files/file_path.h"
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/resources/resources_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsTextClassificationResourceTest : public UnitTestBase {
+class BraveAdsTextClassificationResourceTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     resource_ = std::make_unique<TextClassificationResource>();
-  }
-
-  bool LoadResource(const std::string& id) {
-    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion, id);
-    task_environment_.RunUntilIdle();
-    return resource_->IsInitialized();
   }
 
   std::unique_ptr<TextClassificationResource> resource_;
 };
 
-TEST_F(BraveAdsTextClassificationResourceTest, IsNotInitialized) {
+TEST_F(BraveAdsTextClassificationResourceTest, IsResourceNotLoaded) {
   // Act & Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  EXPECT_FALSE(resource_->GetManifestVersion());
+  EXPECT_FALSE(resource_->IsLoaded());
 }
 
-TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
+TEST_F(BraveAdsTextClassificationResourceTest, LoadResource) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(
-      kInvalidResourceId, kFlatBuffersTextClassificationResourceId));
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
 
   // Act & Assert
-  EXPECT_FALSE(LoadResource(kLanguageComponentId));
+  EXPECT_TRUE(resource_->IsLoaded());
+}
+
+TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMalformedResource) {
+  // Arrange
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
+      /*from_path=*/test::kMalformedResourceId,
+      /*to_path=*/kTextClassificationResourceId));
+
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+
+  // Act & Assert
+  EXPECT_FALSE(resource_->IsLoaded());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  ON_CALL(ads_client_mock_,
-          LoadComponentResource(kFlatBuffersTextClassificationResourceId,
-                                ::testing::_, ::testing::_))
+  ON_CALL(ads_client_mock_, LoadResourceComponent(kTextClassificationResourceId,
+                                                  /*version=*/::testing::_,
+                                                  /*callback=*/::testing::_))
       .WillByDefault(::testing::Invoke([](const std::string& /*id*/,
                                           const int /*version*/,
                                           LoadFileCallback callback) {
         const base::FilePath path =
-            ComponentResourcesTestDataPath().AppendASCII(kMissingResourceId);
+            test::ResourceComponentsDataPath().AppendASCII(
+                test::kMissingResourceId);
 
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
         std::move(callback).Run(std::move(file));
       }));
 
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+
   // Act & Assert
-  EXPECT_FALSE(LoadResource(kLanguageComponentId));
+  EXPECT_FALSE(resource_->IsLoaded());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       LoadResourceWhenLocaleDidChange) {
+       DoNotLoadResourceWithInvalidLanguageComponentId) {
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kInvalidLanguageComponentId);
+
+  // Act & Assert
+  EXPECT_FALSE(resource_->IsLoaded());
+}
+
+TEST_F(BraveAdsTextClassificationResourceTest,
+       DoNotLoadResourceForNonRewardsUser) {
   // Arrange
-  ASSERT_TRUE(LoadResource(kLanguageComponentId));
+  test::DisableBraveRewards();
+
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+
+  // Act & Assert
+  EXPECT_FALSE(resource_->IsLoaded());
+}
+
+TEST_F(BraveAdsTextClassificationResourceTest,
+       DoNotLoadResourceIfOptedOutOfAllAds) {
+  // Arrange
+  test::OptOutOfAllAds();
+
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+
+  // Act & Assert
+  EXPECT_FALSE(resource_->IsLoaded());
+}
+
+TEST_F(BraveAdsTextClassificationResourceTest,
+       LoadResourceForOnLocaleDidChange) {
+  // Arrange
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   // Act
   NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  EXPECT_TRUE(resource_->IsLoaded());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotLoadResourceWhenLocaleDidChangeIfOptedOutOfNotificationAds) {
+       DoNotLoadResourceForOnLocaleDidChangeIfOptedOutOfAllAds) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::OptOutOfAllAds();
 
-  ASSERT_FALSE(LoadResource(kLanguageComponentId));
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
   NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  EXPECT_FALSE(resource_->IsLoaded());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotResetResourceWhenLocaleDidChange) {
+       DoNotLoadResourceWhenOptingInToBraveNewsAds) {
   // Arrange
-  ASSERT_TRUE(LoadResource(kLanguageComponentId));
+  test::OptOutOfAllAds();
+
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
-  NotifyLocaleDidChange(/*locale=*/"en_GB");
+  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
+  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
 
   // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  EXPECT_FALSE(resource_->IsLoaded());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       LoadResourceWhenOptedInToNotificationAdsPrefDidChange) {
+       DoNotLoadResourceWhenOptingInToNewTabPageAds) {
   // Arrange
-  ASSERT_TRUE(LoadResource(kLanguageComponentId));
+  test::OptOutOfAllAds();
+
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
-  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
+  SetProfileBooleanPref(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
+  SetProfileBooleanPref(ntp_background_images::prefs::
+                            kNewTabPageShowSponsoredImagesBackgroundImage,
+                        true);
 
   // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  EXPECT_FALSE(resource_->IsLoaded());
+}
+
+TEST_F(BraveAdsTextClassificationResourceTest,
+       LoadResourceWhenOptingInToNotificationAds) {
+  // Arrange
+  test::OptOutOfAllAds();
+
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_FALSE(resource_->IsLoaded());
+
+  // Act
+  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+
+  // Assert
+  EXPECT_TRUE(resource_->IsLoaded());
+}
+
+TEST_F(BraveAdsTextClassificationResourceTest,
+       DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
+  // Arrange
+  test::OptOutOfBraveNewsAds();
+  test::OptOutOfNewTabPageAds();
+  test::OptOutOfSearchResultAds();
+
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
+
+  // Act
+  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+
+  // Assert
+  EXPECT_TRUE(resource_->IsLoaded());
+}
+
+TEST_F(BraveAdsTextClassificationResourceTest,
+       DoNotLoadResourceWhenOptingInToSearchResultAds) {
+  // Arrange
+  test::OptOutOfAllAds();
+
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_FALSE(resource_->IsLoaded());
+
+  // Act
+  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
+
+  // Assert
+  EXPECT_FALSE(resource_->IsLoaded());
 }
 
 TEST_F(
     BraveAdsTextClassificationResourceTest,
-    DoNotLoadResourceWhenOptedInToNotificationAdsPrefDidChangeIfOptedOutOfNotificationAds) {
+    DoNotResetResourceForOnResourceComponentDidChangeWithInvalidLanguageComponentId) {
   // Arrange
-  ASSERT_TRUE(LoadResource(kLanguageComponentId));
-
-  test::OptOutOfNotificationAds();
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   // Act
-  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kInvalidLanguageComponentId);
 
   // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
-}
-
-TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotResetResourceWhenOptedInToNotificationAdsPrefDidChange) {
-  // Arrange
-  ASSERT_TRUE(LoadResource(kLanguageComponentId));
-
-  // Act
-  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
-
-  // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
-}
-
-TEST_F(BraveAdsTextClassificationResourceTest,
-       LoadResourceWhenDidUpdateResourceComponent) {
-  // Act & Assert
-  EXPECT_TRUE(LoadResource(kLanguageComponentId));
+  EXPECT_TRUE(resource_->IsLoaded());
 }
 
 TEST_F(
     BraveAdsTextClassificationResourceTest,
-    DoNotLoadResourceWhenDidUpdateResourceComponentIfInvalidLanguageComponentId) {
-  // Act & Assert
-  EXPECT_FALSE(LoadResource(kInvalidLanguageComponentId));
+    DoNotResetResourceForOnResourceComponentDidChangeWithExistingManifestVersion) {
+  // Arrange
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
+
+  // Act
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+
+  // Assert
+  EXPECT_TRUE(resource_->IsLoaded());
 }
 
 TEST_F(
     BraveAdsTextClassificationResourceTest,
-    DoNotLoadResourceWhenDidUpdateResourceComponentIfOptedOutOfNotificationAds) {
+    DoNotResetResourceForOnResourceComponentDidChangeWithNewManifestVersion) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_EQ(test::kLanguageComponentManifestVersion,
+            resource_->GetManifestVersion());
 
-  // Act & Assert
-  EXPECT_FALSE(LoadResource(kLanguageComponentId));
+  // Act
+  NotifyResourceComponentDidChange(
+      test::kLanguageComponentManifestVersionUpdate,
+      test::kLanguageComponentId);
+
+  // Assert
+  EXPECT_TRUE(resource_->IsLoaded());
+  EXPECT_EQ(test::kLanguageComponentManifestVersionUpdate,
+            resource_->GetManifestVersion());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotResetResourceWhenDidUpdateResourceComponent) {
+       ResetResourceForOnNotifyDidUnregisterResourceComponent) {
   // Arrange
-  ASSERT_TRUE(LoadResource(kLanguageComponentId));
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
-  // Act & Assert
-  EXPECT_TRUE(LoadResource(kLanguageComponentId));
+  // Act
+  NotifyDidUnregisterResourceComponent(test::kLanguageComponentId);
+
+  // Assert
+  EXPECT_FALSE(resource_->IsLoaded());
+}
+
+TEST_F(
+    BraveAdsTextClassificationResourceTest,
+    DoNotResetResourceForOnNotifyDidUnregisterResourceComponentWithInvalidLanguageComponentId) {
+  // Arrange
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
+
+  // Act
+  NotifyDidUnregisterResourceComponent(test::kInvalidLanguageComponentId);
+
+  // Assert
+  EXPECT_TRUE(resource_->IsLoaded());
 }
 
 }  // namespace brave_ads

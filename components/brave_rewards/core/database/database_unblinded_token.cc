@@ -15,12 +15,11 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
-const char kTableName[] = "unblinded_tokens";
+constexpr char kTableName[] = "unblinded_tokens";
 
 }  // namespace
 
@@ -364,5 +363,4 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
                      base::Unretained(this), std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

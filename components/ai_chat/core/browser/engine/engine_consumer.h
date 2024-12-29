@@ -46,6 +46,7 @@ class EngineConsumer {
   virtual void GenerateQuestionSuggestions(
       const bool& is_video,
       const std::string& page_content,
+      const std::string& selected_language,
       SuggestedQuestionsCallback callback) = 0;
 
   virtual void GenerateAssistantResponse(
@@ -53,12 +54,14 @@ class EngineConsumer {
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
+      const std::string& selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) = 0;
 
   virtual void GenerateRewriteSuggestion(
       std::string text,
       const std::string& question,
+      const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) {}
 
@@ -75,12 +78,20 @@ class EngineConsumer {
   // from the previous run (use |true|).
   virtual bool SupportsDeltaTextResponses() const;
 
-  void SetMaxPageContentLengthForTesting(int max_page_content_length) {
-    max_page_content_length_ = max_page_content_length;
+  virtual void UpdateModelOptions(const mojom::ModelOptions& options) = 0;
+
+  void SetMaxAssociatedContentLengthForTesting(
+      uint32_t max_associated_content_length) {
+    max_associated_content_length_ = max_associated_content_length;
   }
 
  protected:
-  int max_page_content_length_ = 0;
+  // Check if we should call GenerationCompletedCallback early based on the
+  // conversation history. Ex. empty history, or if the last entry is not a
+  // human message except page refine event.
+  bool CanPerformCompletionRequest(
+      const ConversationHistory& conversation_history) const;
+  uint32_t max_associated_content_length_ = 0;
 };
 
 }  // namespace ai_chat

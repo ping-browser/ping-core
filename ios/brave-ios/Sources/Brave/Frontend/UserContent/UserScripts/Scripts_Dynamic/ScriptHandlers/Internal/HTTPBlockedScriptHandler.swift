@@ -10,11 +10,11 @@ import WebKit
 
 class HTTPBlockedScriptHandler: TabContentScript {
   private weak var tab: Tab?
-  private weak var exceptionService: HTTPSUpgradeExceptionsService?
+  private weak var tabManager: TabManager?
 
-  required init(tab: Tab, exceptionService: HTTPSUpgradeExceptionsService) {
+  required init(tab: Tab, tabManager: TabManager) {
     self.tab = tab
-    self.exceptionService = exceptionService
+    self.tabManager = tabManager
   }
 
   static let scriptName = "HTTPBlockedScript"
@@ -23,7 +23,7 @@ class HTTPBlockedScriptHandler: TabContentScript {
   static let scriptSandbox: WKContentWorld = .page
   static let userScript: WKUserScript? = nil
 
-  func userContentController(
+  @MainActor func userContentController(
     _ userContentController: WKUserContentController,
     didReceiveScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
@@ -53,7 +53,7 @@ class HTTPBlockedScriptHandler: TabContentScript {
   }
 
   private func didProceed() {
-    guard let url = tab?.upgradedHTTPSRequest?.url ?? tab?.url?.strippedInternalURL else {
+    guard let tab, let url = tab.upgradedHTTPSRequest?.url ?? tab.url?.strippedInternalURL else {
       //      assertionFailure(
       //        "There should be no way this method can be triggered if the tab is not on an internal url"
       //      )
@@ -62,27 +62,24 @@ class HTTPBlockedScriptHandler: TabContentScript {
 
     // When restoring the page, `upgradedHTTPSRequest` will be nil
     // So we default to the embedded internal page URL
-    let request = tab?.upgradedHTTPSRequest ?? URLRequest(url: url)
-    exceptionService?.addException(for: url)
-    tab?.loadRequest(request)
+    let request = tab.upgradedHTTPSRequest ?? URLRequest(url: url)
+    if let httpsUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: tab.isPrivate),
+      let host = url.host(percentEncoded: false)
+    {
+      httpsUpgradeService.allowHttp(forHost: host)
+    }
+    tab.loadRequest(request)
   }
 
-  private func didGoBack() {
-    let etldP1 =
-      tab?.upgradedHTTPSRequest?.url?.baseDomain
-      ?? tab?.url?.strippedInternalURL?.baseDomain
-
-    guard
-      let listItem = tab?.backList?.reversed().first(where: {
-        // It is not the blocked page or the internal page
-        $0.url.baseDomain != etldP1 && $0.url != tab?.webView?.url
-      })
-    else {
-      tab?.goBack()
-      return
+  @MainActor private func didGoBack() {
+    guard let tab else { return }
+    tab.upgradedHTTPSRequest = nil
+    if tab.backList?.isEmpty == true {
+      // interstitial was opened in a new tab
+      tabManager?.addTabToRecentlyClosed(tab)
+      tabManager?.removeTab(tab)
+    } else {
+      tab.goBack()
     }
-
-    tab?.upgradedHTTPSRequest = nil
-    tab?.goToBackForwardListItem(listItem)
   }
 }

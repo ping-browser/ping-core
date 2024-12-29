@@ -2,10 +2,93 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Data
 import Shared
 import SnapKit
 import UIKit
+
+// A class that Formats URL text-fields upon editing
+// This class will truncate and display the URL domain RTL.
+// This class will also animate the cursor like Safari does, upon editing.
+private class URLTextField: UITextField {
+  private var oldText: String?
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    let oldStyle =
+      defaultTextAttributes[.paragraphStyle, default: NSParagraphStyle()] as! NSParagraphStyle
+    let style = oldStyle.mutableCopy() as! NSMutableParagraphStyle
+    style.lineBreakMode = .byTruncatingHead
+    defaultTextAttributes[.paragraphStyle] = style
+
+    self.addTarget(self, action: #selector(didBeginEditing), for: .editingDidBegin)
+    self.addTarget(self, action: #selector(didEndEditing), for: .editingDidEnd)
+    self.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override var text: String? {
+    get {
+      return oldText
+    }
+
+    set {
+      if oldText != newValue {
+        oldText = newValue
+
+        let urlText = newValue ?? ""
+        let suggestedText = URLFormatter.formatURLOrigin(
+          forDisplayOmitSchemePathAndTrivialSubdomains: urlText
+        )
+        if !suggestedText.isEmpty {
+          super.text = suggestedText
+        }
+      }
+      setNeedsDisplay()
+    }
+  }
+
+  @objc
+  private func didBeginEditing() {
+    super.text = oldText
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+      let start = self.beginningOfDocument
+
+      UIView.animate(withDuration: 0.5) {
+        self.selectedTextRange = self.textRange(from: start, to: start)
+      }
+    }
+  }
+
+  @objc
+  private func didEndEditing() {
+    oldText = text
+
+    let urlText = text ?? ""
+    let suggestedText = URLFormatter.formatURLOrigin(
+      forDisplayOmitSchemePathAndTrivialSubdomains: urlText
+    )
+    if !suggestedText.isEmpty {
+      super.text = suggestedText
+    }
+  }
+
+  @objc
+  private func editingChanged() {
+    // The current design of the bookmarks screen allows the user to save a bookmark without this
+    // textField ending editing (losing first responder)
+    // So the internal text tracking will not match what the user entered unless we track their typed characters.
+    // It is much easier to keep this logic here (incapsulated) than to add it to the navigation bar button.
+    // Once we rewrite bookmarks screen to SwiftUI, we can get rid of all this stuff.
+    oldText = super.text
+  }
+}
 
 class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
 
@@ -19,7 +102,7 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
     $0.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  let urlTextField: UITextField? = UITextField().then {
+  let urlTextField: UITextField? = URLTextField().then {
     $0.placeholder = Strings.bookmarkUrlPlaceholderText
     $0.keyboardType = .URL
     $0.autocorrectionType = .no

@@ -34,7 +34,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
   private var assetPricesCache: [String: Double] = [:]
   /// Cache of metadata for NFTs. The key is the token's `id`.
-  private var metadataCache: [String: NFTMetadata] = [:]
+  private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
@@ -140,8 +140,9 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       let allAccounts = await keyringService.allAccounts()
       let allAccountInfos = allAccounts.accounts
       // setup network filters if not currently setup
+      let allNetworks = await self.rpcService.allNetworksForSupportedCoins()
       if self.networkFilters.isEmpty {
-        self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map {
+        self.networkFilters = allNetworks.map {
           .init(isSelected: true, model: $0)
         }
       }
@@ -156,7 +157,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         networksForCoin: networksForCoin,
         for: allAccountInfos
       ).filter { $0.txStatus != .rejected }
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
+      let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
         networks: allNetworksAllCoins,
         includingUserDeleted: true
       ).flatMap(\.tokens)
@@ -176,6 +177,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       self.transactionSections = buildTransactionSections(
         transactions: allTransactions,
         networksForCoin: networksForCoin,
+        allNetworks: allNetworks,
         accountInfos: allAccountInfos,
         userAssets: userAssets,
         allTokens: allTokens + tokenInfoCache,
@@ -197,6 +199,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       self.transactionSections = buildTransactionSections(
         transactions: allTransactions,
         networksForCoin: networksForCoin,
+        allNetworks: allNetworks,
         accountInfos: allAccountInfos,
         userAssets: userAssets,
         allTokens: allTokens,
@@ -237,6 +240,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       self.transactionSections = buildTransactionSections(
         transactions: allTransactions,
         networksForCoin: networksForCoin,
+        allNetworks: allNetworks,
         accountInfos: allAccountInfos,
         userAssets: userAssets,
         allTokens: allTokens,
@@ -267,11 +271,12 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   private func buildTransactionSections(
     transactions: [BraveWallet.TransactionInfo],
     networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
+    allNetworks: [BraveWallet.NetworkInfo],
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
-    nftMetadata: [String: NFTMetadata],
+    nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFees: [String: UInt64]
   ) -> [TransactionSection] {
     // Group transactions by day (only compare day/month/year)
@@ -290,14 +295,9 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         transactions
         .sorted(by: { $0.createdTime > $1.createdTime })
         .compactMap { transaction in
-          guard let networks = networksForCoin[transaction.coin],
-            let network = networks.first(where: { $0.chainId == transaction.chainId })
-          else {
-            return nil
-          }
           return TransactionParser.parseTransaction(
             transaction: transaction,
-            network: network,
+            allNetworks: allNetworks,
             accountInfos: accountInfos,
             userAssets: userAssets,
             allTokens: allTokens + tokenInfoCache,
@@ -318,7 +318,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   @MainActor private func updateSolEstimatedTxFeesCache(
     _ solTransactions: [BraveWallet.TransactionInfo]
   ) async {
-    let fees = await solTxManagerProxy.estimatedTxFees(for: solTransactions)
+    let fees = await solTxManagerProxy.solanaTxFeeEstimations(for: solTransactions)
     for (key, value) in fees {  // update cached values
       self.solEstimatedTxFeesCache[key] = value
     }

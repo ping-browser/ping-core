@@ -47,25 +47,6 @@ void BraveVpnNativeWorker::Destroy(
   delete this;
 }
 
-void BraveVpnNativeWorker::GetAllServerRegions(JNIEnv* env) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
-  if (brave_vpn_service) {
-    brave_vpn_service->GetAllServerRegions(
-        base::BindOnce(&BraveVpnNativeWorker::OnGetAllServerRegions,
-                       weak_factory_.GetWeakPtr()));
-  }
-}
-
-void BraveVpnNativeWorker::OnGetAllServerRegions(
-    const std::string& server_regions_json,
-    bool success) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveVpnNativeWorker_onGetAllServerRegions(
-      env, weak_java_brave_vpn_native_worker_.get(env),
-      base::android::ConvertUTF8ToJavaString(env, server_regions_json),
-      success);
-}
-
 void BraveVpnNativeWorker::GetTimezonesForRegions(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
@@ -86,13 +67,15 @@ void BraveVpnNativeWorker::OnGetTimezonesForRegions(
 
 void BraveVpnNativeWorker::GetHostnamesForRegion(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& region) {
+    const base::android::JavaParamRef<jstring>& region,
+    const base::android::JavaParamRef<jstring>& region_precision) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetHostnamesForRegion(
         base::BindOnce(&BraveVpnNativeWorker::OnGetHostnamesForRegion,
                        weak_factory_.GetWeakPtr()),
-        base::android::ConvertJavaStringToUTF8(env, region));
+        base::android::ConvertJavaStringToUTF8(env, region),
+        base::android::ConvertJavaStringToUTF8(env, region_precision));
   }
 }
 
@@ -236,8 +219,11 @@ void BraveVpnNativeWorker::VerifyPurchaseToken(
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->VerifyPurchaseToken(
-        base::BindOnce(&BraveVpnNativeWorker::OnVerifyPurchaseToken,
-                       weak_factory_.GetWeakPtr()),
+        base::BindOnce(
+            &BraveVpnNativeWorker::OnVerifyPurchaseToken,
+            weak_factory_.GetWeakPtr(),
+            base::android::ConvertJavaStringToUTF8(env, purchase_token),
+            base::android::ConvertJavaStringToUTF8(env, product_id)),
         base::android::ConvertJavaStringToUTF8(env, purchase_token),
         base::android::ConvertJavaStringToUTF8(env, product_id),
         base::android::ConvertJavaStringToUTF8(env, product_type),
@@ -246,12 +232,16 @@ void BraveVpnNativeWorker::VerifyPurchaseToken(
 }
 
 void BraveVpnNativeWorker::OnVerifyPurchaseToken(
+    const std::string& purchase_token,
+    const std::string& product_id,
     const std::string& json_response,
     bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveVpnNativeWorker_onVerifyPurchaseToken(
       env, weak_java_brave_vpn_native_worker_.get(env),
-      base::android::ConvertUTF8ToJavaString(env, json_response), success);
+      base::android::ConvertUTF8ToJavaString(env, json_response),
+      base::android::ConvertUTF8ToJavaString(env, purchase_token),
+      base::android::ConvertUTF8ToJavaString(env, product_id), success);
 }
 
 jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {

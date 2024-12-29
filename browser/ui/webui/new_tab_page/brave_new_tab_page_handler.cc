@@ -33,6 +33,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
@@ -276,6 +277,7 @@ void BraveNewTabPageHandler::GetSearchEngines(
       continue;
     }
     auto search_engine = brave_new_tab_page::mojom::SearchEngineInfo::New();
+    search_engine->prepopulate_id = template_url->prepopulate_id();
     search_engine->host = GURL(template_url->url()).host();
     search_engine->name = base::UTF16ToUTF8(template_url->short_name());
     search_engine->keyword = base::UTF16ToUTF8(template_url->keyword());
@@ -312,8 +314,8 @@ void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
 }
 
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
-  if (profile_->GetPrefs()->IsManagedPreference(
-          prefs::kNtpCustomBackgroundDict)) {
+  if (profile_->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
+          ThemePrefInMigration::kNtpCustomBackgroundDict))) {
     return false;
   }
 
@@ -467,8 +469,7 @@ void BraveNewTabPageHandler::OnCustomImageBackgroundsUpdated() {
 }
 
 void BraveNewTabPageHandler::FileSelected(const ui::SelectedFileInfo& file,
-                                          int index,
-                                          void* params) {
+                                          int index) {
   profile_->set_last_selected_directory(file.path().DirName());
 
   file_manager_->SaveImage(
@@ -479,8 +480,7 @@ void BraveNewTabPageHandler::FileSelected(const ui::SelectedFileInfo& file,
 }
 
 void BraveNewTabPageHandler::MultiFilesSelected(
-    const std::vector<ui::SelectedFileInfo>& files,
-    void* params) {
+    const std::vector<ui::SelectedFileInfo>& files) {
   NTPBackgroundPrefs prefs(profile_->GetPrefs());
   auto available_image_count =
       brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
@@ -490,12 +490,12 @@ void BraveNewTabPageHandler::MultiFilesSelected(
       break;
     }
 
-    FileSelected(file, 0, params);
+    FileSelected(file, 0);
     available_image_count--;
   }
 }
 
-void BraveNewTabPageHandler::FileSelectionCanceled(void* params) {
+void BraveNewTabPageHandler::FileSelectionCanceled() {
   select_file_dialog_ = nullptr;
 }
 

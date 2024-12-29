@@ -10,7 +10,8 @@
 
 #include "base/check.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
@@ -22,86 +23,81 @@ namespace {
 
 constexpr char kTableName[] = "campaigns";
 
-size_t BindParameters(mojom::DBCommandInfo* command,
-                      const CreativeAdList& creative_ads) {
-  CHECK(command);
+size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
+                   const CreativeAdList& creative_ads) {
+  CHECK(mojom_db_action);
+  CHECK(!creative_ads.empty());
 
-  size_t count = 0;
+  size_t row_count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
-    BindString(command, index++, creative_ad.campaign_id);
-    BindInt64(command, index++,
-              ToChromeTimestampFromTime(creative_ad.start_at));
-    BindInt64(command, index++, ToChromeTimestampFromTime(creative_ad.end_at));
-    BindInt(command, index++, creative_ad.daily_cap);
-    BindString(command, index++, creative_ad.advertiser_id);
-    BindInt(command, index++, creative_ad.priority);
-    BindDouble(command, index++, creative_ad.pass_through_rate);
+    BindColumnString(mojom_db_action, index++, creative_ad.campaign_id);
+    BindColumnTime(mojom_db_action, index++, creative_ad.start_at);
+    BindColumnTime(mojom_db_action, index++, creative_ad.end_at);
+    BindColumnInt(mojom_db_action, index++, creative_ad.daily_cap);
+    BindColumnString(mojom_db_action, index++, creative_ad.advertiser_id);
+    BindColumnInt(mojom_db_action, index++, creative_ad.priority);
+    BindColumnDouble(mojom_db_action, index++, creative_ad.pass_through_rate);
 
-    ++count;
+    ++row_count;
   }
 
-  return count;
+  return row_count;
 }
 
 }  // namespace
 
 void Campaigns::Delete(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
 
-  DeleteTable(&*transaction, GetTableName());
+  DeleteTable(mojom_db_transaction, GetTableName());
 
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
-void Campaigns::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                               const CreativeAdList& creative_ads) {
-  CHECK(transaction);
+void Campaigns::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+                       const CreativeAdList& creative_ads) {
+  CHECK(mojom_db_transaction);
 
   if (creative_ads.empty()) {
     return;
   }
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::RUN;
-  command->sql = BuildInsertOrUpdateSql(&*command, creative_ads);
-  transaction->commands.push_back(std::move(command));
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 std::string Campaigns::GetTableName() const {
   return kTableName;
 }
 
-void Campaigns::Create(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
+void Campaigns::Create(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      R"(
-          CREATE TABLE campaigns (
-            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            start_at TIMESTAMP NOT NULL,
-            end_at TIMESTAMP NOT NULL,
-            daily_cap INTEGER DEFAULT 0 NOT NULL,
-            advertiser_id TEXT NOT NULL,
-            priority INTEGER NOT NULL DEFAULT 0,
-            ptr DOUBLE NOT NULL DEFAULT 1
-          );)";
-  transaction->commands.push_back(std::move(command));
-
-  CreateTableIndex(transaction, GetTableName(),
-                   /*columns=*/{"start_at", "end_at"});
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE campaigns (
+        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        start_at TIMESTAMP NOT NULL,
+        end_at TIMESTAMP NOT NULL,
+        daily_cap INTEGER DEFAULT 0 NOT NULL,
+        advertiser_id TEXT NOT NULL,
+        priority INTEGER NOT NULL DEFAULT 0,
+        ptr DOUBLE NOT NULL DEFAULT 1
+      );)");
 }
 
-void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
+void Campaigns::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                         const int to_version) {
-  CHECK(transaction);
+  CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 35: {
-      MigrateToV35(transaction);
+    case 45: {
+      MigrateToV45(mojom_db_transaction);
       break;
     }
   }
@@ -109,21 +105,23 @@ void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Campaigns::MigrateToV35(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
+void Campaigns::MigrateToV45(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
   // We can safely recreate the table because it will be repopulated after
   // downloading the catalog.
-  DropTable(transaction, GetTableName());
-  Create(transaction);
+  DropTable(mojom_db_transaction, GetTableName());
+  Create(mojom_db_transaction);
 }
 
-std::string Campaigns::BuildInsertOrUpdateSql(
-    mojom::DBCommandInfo* command,
+std::string Campaigns::BuildInsertSql(
+    const mojom::DBActionInfoPtr& mojom_db_action,
     const CreativeAdList& creative_ads) const {
-  CHECK(command);
+  CHECK(mojom_db_action);
+  CHECK(!creative_ads.empty());
 
-  const size_t binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
 
   return base::ReplaceStringPlaceholders(
       R"(
@@ -136,8 +134,8 @@ std::string Campaigns::BuildInsertOrUpdateSql(
             priority,
             ptr
           ) VALUES $2;)",
-      {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count=*/7, binded_parameters_count)},
+      {GetTableName(),
+       BuildBindColumnPlaceholders(/*column_count=*/7, row_count)},
       nullptr);
 }
 

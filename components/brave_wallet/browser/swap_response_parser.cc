@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -20,21 +21,17 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
-#include "brave/components/json/rs/src/lib.rs.h"
-
-namespace {
-
-constexpr char kSwapValidationErrorCode[] = "100";
-constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
-constexpr char kJupiterNoRoutesMessage[] =
-    "No routes found for the input and output mints";
-
-}  // namespace
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 
 namespace zeroex {
 namespace {
+constexpr char kSwapValidationErrorCode[] = "100";
+constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
+constexpr char kTransferAmountExceedsAllowanceMessage[] =
+    "ERC20: transfer amount exceeds allowance";
+
 mojom::ZeroExFeePtr ParseZeroExFee(const base::Value& value) {
   if (value.is_none()) {
     return nullptr;
@@ -192,7 +189,7 @@ mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
   // }
 
   auto swap_error_response_value =
-      swap_responses::SwapErrorResponse0x::FromValue(json_value);
+      swap_responses::ZeroExErrorResponse::FromValue(json_value);
   if (!swap_error_response_value) {
     return nullptr;
   }
@@ -203,7 +200,7 @@ mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
 
   if (swap_error_response_value->validation_errors) {
     for (auto& error_item : *swap_error_response_value->validation_errors) {
-      result->validation_errors.emplace_back(mojom::ZeroExErrorItem::New(
+      result->validation_errors.emplace_back(mojom::ZeroExValidationError::New(
           error_item.field, error_item.code, error_item.reason));
     }
   }
@@ -216,12 +213,22 @@ mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
     }
   }
 
+  // This covers the case when an insufficient allowance can only be detected
+  // by the 0x Quote API, for example when swapping in ExactOut mode.
+  if (swap_error_response_value->values &&
+      base::Contains(swap_error_response_value->values->message,
+                     kTransferAmountExceedsAllowanceMessage)) {
+    result->is_insufficient_allowance = true;
+  }
+
   return result;
 }
 
 }  // namespace zeroex
 
 namespace jupiter {
+constexpr char kNoRoutesMessage[] =
+    "No routes found for the input and output mints";
 mojom::JupiterQuotePtr ParseQuoteResponse(const base::Value& json_value) {
   // {
   //   "inputMint": "So11111111111111111111111111111111111111112",
@@ -348,24 +355,11 @@ mojom::JupiterErrorPtr ParseErrorResponse(const base::Value& json_value) {
   result->message = jupiter_error_response_value->message;
 
   result->is_insufficient_liquidity =
-      base::Contains(result->message, kJupiterNoRoutesMessage);
+      base::Contains(result->message, kNoRoutesMessage);
 
   return result;
 }
 }  // namespace jupiter
-
-// Function to convert all numbers in JSON string to strings.
-//
-// For sample JSON response, refer to jupiter::ParseQuoteResponse.
-std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(json, ""));
-  if (converted_json.empty()) {
-    return std::nullopt;
-  }
-
-  return converted_json;
-}
 
 namespace lifi {
 
@@ -374,16 +368,112 @@ namespace {
 std::optional<std::string> ChainIdToHex(const std::string& value) {
   // LiFi uses the following two chain ID strings interchangeably for Solana
   // Ref: https://docs.li.fi/li.fi-api/solana/request-examples
-  if (value == "SOL" || value == "1151111081099710") {
+  if (value == "SOL" || value == kLiFiSolanaMainnetChainID) {
     return mojom::kSolanaMainnet;
   }
 
-  uint256_t out;
-  if (!Base10ValueToUint256(value, &out)) {
+  std::optional<uint256_t> out = Base10ValueToUint256(value);
+  if (!out) {
     return std::nullopt;
   }
 
-  return Uint256ValueToHex(out);
+  return Uint256ValueToHex(*out);
+}
+
+mojom::LiFiStatusCode ParseStatusCode(const swap_responses::LiFiStatus& value) {
+  switch (value) {
+    case swap_responses::LiFiStatus::kNotFound:
+      return mojom::LiFiStatusCode::kNotFound;
+
+    case swap_responses::LiFiStatus::kInvalid:
+      return mojom::LiFiStatusCode::kInvalid;
+
+    case swap_responses::LiFiStatus::kPending:
+      return mojom::LiFiStatusCode::kPending;
+
+    case swap_responses::LiFiStatus::kDone:
+      return mojom::LiFiStatusCode::kDone;
+
+    case swap_responses::LiFiStatus::kFailed:
+      return mojom::LiFiStatusCode::kFailed;
+
+    default:
+      return mojom::LiFiStatusCode::kInvalid;
+  }
+}
+
+mojom::LiFiSubstatusCode ParseSubstatusCode(
+    const swap_responses::LiFiSubstatus& value) {
+  switch (value) {
+    case swap_responses::LiFiSubstatus::kWaitSourceConfirmations:
+      return mojom::LiFiSubstatusCode::kWaitSourceConfirmations;
+
+    case swap_responses::LiFiSubstatus::kWaitDestinationTransaction:
+      return mojom::LiFiSubstatusCode::kWaitDestinationTransaction;
+
+    case swap_responses::LiFiSubstatus::kBridgeNotAvailable:
+      return mojom::LiFiSubstatusCode::kBridgeNotAvailable;
+
+    case swap_responses::LiFiSubstatus::kChainNotAvailable:
+      return mojom::LiFiSubstatusCode::kChainNotAvailable;
+
+    case swap_responses::LiFiSubstatus::kRefundInProgress:
+      return mojom::LiFiSubstatusCode::kRefundInProgress;
+
+    case swap_responses::LiFiSubstatus::kUnknownError:
+      return mojom::LiFiSubstatusCode::kUnknownError;
+
+    case swap_responses::LiFiSubstatus::kCompleted:
+      return mojom::LiFiSubstatusCode::kCompleted;
+
+    case swap_responses::LiFiSubstatus::kPartial:
+      return mojom::LiFiSubstatusCode::kPartial;
+
+    case swap_responses::LiFiSubstatus::kRefunded:
+      return mojom::LiFiSubstatusCode::kRefunded;
+
+    case swap_responses::LiFiSubstatus::kNotProcessableRefundNeeded:
+      return mojom::LiFiSubstatusCode::kNotProcessableRefundNeeded;
+
+    case swap_responses::LiFiSubstatus::kOutOfGas:
+      return mojom::LiFiSubstatusCode::kOutOfGas;
+
+    case swap_responses::LiFiSubstatus::kSlippageExceeded:
+      return mojom::LiFiSubstatusCode::kSlippageExceeded;
+
+    case swap_responses::LiFiSubstatus::kInsufficientAllowance:
+      return mojom::LiFiSubstatusCode::kInsufficientAllowance;
+
+    case swap_responses::LiFiSubstatus::kInsufficientBalance:
+      return mojom::LiFiSubstatusCode::kInsufficientBalance;
+
+    case swap_responses::LiFiSubstatus::kExpired:
+      return mojom::LiFiSubstatusCode::kExpired;
+
+    default:
+      return mojom::LiFiSubstatusCode::kUnknownError;
+  }
+}
+
+mojom::LiFiStepStatusPtr ParseStepStatus(
+    const swap_responses::LiFiStepStatus& value) {
+  auto result = mojom::LiFiStepStatus::New();
+
+  if (auto chain_id = ChainIdToHex(value.chain_id)) {
+    result->chain_id = chain_id.value();
+  } else {
+    return nullptr;
+  }
+
+  result->tx_hash = value.tx_hash;
+  result->tx_link = value.tx_link;
+  result->amount = value.amount;
+
+  if (value.token) {
+    result->contract_address = value.token->address;
+  }
+
+  return result;
 }
 
 mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
@@ -392,7 +482,8 @@ mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
   result->symbol = value.symbol;
   result->logo = value.logo_uri.value_or("");
   result->contract_address =
-      (value.address == kLiFiNativeEVMAssetContractAddress ||
+      (base::ToLowerASCII(value.address) ==
+           kLiFiNativeEVMAssetContractAddress ||
        value.address == kLiFiNativeSVMAssetContractAddress)
           ? ""
           : value.address;
@@ -427,11 +518,7 @@ std::optional<mojom::LiFiStepType> ParseStepType(const std::string& value) {
   }
 
   if (value == "lifi") {
-    return mojom::LiFiStepType::kNative;
-  }
-
-  if (value == "protocol") {
-    return mojom::LiFiStepType::kProtocol;
+    return mojom::LiFiStepType::kLiFi;
   }
 
   return std::nullopt;
@@ -562,11 +649,6 @@ mojom::LiFiQuotePtr ParseQuoteResponse(const base::Value& json_value) {
     route->to_amount_min = route_value.to_amount_min;
     route->to_address = route_value.to_address;
 
-    auto insurance = mojom::LiFiInsurance::New();
-    insurance->state = route_value.insurance.state;
-    insurance->fee_amount_usd = route_value.insurance.fee_amount_usd;
-    route->insurance = std::move(insurance);
-
     for (const auto& step_value : route_value.steps) {
       auto step = ParseStep(step_value);
       if (!step) {
@@ -575,6 +657,12 @@ mojom::LiFiQuotePtr ParseQuoteResponse(const base::Value& json_value) {
 
       route->steps.push_back(std::move(step));
     }
+
+    std::vector<std::string> tools;
+    for (const auto& step : route->steps) {
+      tools.push_back(step->tool);
+    }
+    route->unique_id = base::JoinString(tools, "-");
 
     route->tags = route_value.tags;
     result->routes.push_back(std::move(route));
@@ -624,7 +712,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
     return nullptr;
   }
 
-  auto evm_transaction = mojom::LiFiEVMTransaction::New();
+  auto evm_transaction = mojom::LiFiEvmTransaction::New();
   evm_transaction->data = value->transaction_request.data;
   evm_transaction->from = value->transaction_request.from.value();
   evm_transaction->to = value->transaction_request.to.value();
@@ -763,6 +851,261 @@ mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value) {
   return result;
 }
 
+mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value) {
+  auto value = swap_responses::LiFiStatusResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::LiFiStatus::New();
+  result->transaction_id = value->transaction_id;
+
+  if (auto sending = ParseStepStatus(value->sending)) {
+    result->sending = std::move(sending);
+  } else {
+    return nullptr;
+  }
+
+  if (auto receiving = ParseStepStatus(value->receiving)) {
+    result->receiving = std::move(receiving);
+  } else {
+    return nullptr;
+  }
+
+  result->lifi_explorer_link = value->lifi_explorer_link;
+  result->from_address = value->from_address;
+  result->to_address = value->to_address;
+  result->tool = value->tool;
+
+  result->status = ParseStatusCode(value->status);
+  result->substatus = ParseSubstatusCode(value->substatus);
+  result->substatus_message = value->substatus_message;
+
+  return result;
+}
+
 }  // namespace lifi
+
+namespace squid {
+
+namespace {
+
+std::optional<std::string> ChainIdToHex(const std::string& value) {
+  std::optional<uint256_t> out = Base10ValueToUint256(value);
+  if (!out) {
+    return std::nullopt;
+  }
+
+  return Uint256ValueToHex(*out);
+}
+
+mojom::SquidErrorType ParseErrorType(const std::string& value) {
+  if (value == "BAD_REQUEST") {
+    return mojom::SquidErrorType::kBadRequest;
+  }
+
+  if (value == "SCHEMA_VALIDATION_ERROR") {
+    return mojom::SquidErrorType::kSchemaValidationError;
+  }
+
+  return mojom::SquidErrorType::kUnknownError;
+}
+
+mojom::SquidActionType ParseActionType(const std::string& value) {
+  if (value == "wrap") {
+    return mojom::SquidActionType::kWrap;
+  }
+
+  if (value == "unwrap") {
+    return mojom::SquidActionType::kUnwrap;
+  }
+
+  if (value == "swap") {
+    return mojom::SquidActionType::kSwap;
+  }
+
+  if (value == "bridge") {
+    return mojom::SquidActionType::kBridge;
+  }
+
+  return mojom::SquidActionType::kUnknown;
+}
+
+mojom::BlockchainTokenPtr ParseToken(const swap_responses::SquidToken& value) {
+  auto result = mojom::BlockchainToken::New();
+  result->name = value.name;
+  result->symbol = value.symbol;
+  result->logo = value.logo_uri.value_or("");
+  result->contract_address =
+      base::ToLowerASCII(value.address) == kNativeEVMAssetContractAddress
+          ? ""
+          : value.address;
+
+  if (!base::StringToInt(value.decimals, &result->decimals)) {
+    return nullptr;
+  }
+
+  auto chain_id = ChainIdToHex(value.chain_id);
+  if (!chain_id) {
+    return nullptr;
+  }
+  result->chain_id = chain_id.value();
+
+  if (value.type == "evm") {
+    result->coin = mojom::CoinType::ETH;
+  } else {
+    return nullptr;
+  }
+
+  result->coingecko_id = value.coingecko_id.value_or("");
+
+  return result;
+}
+
+mojom::SquidGasCostPtr ParseGasCost(const swap_responses::SquidGasCost& value) {
+  auto result = mojom::SquidGasCost::New();
+  result->amount = value.amount;
+  result->gas_limit = value.gas_limit;
+  result->token = ParseToken(value.token);
+  return result;
+}
+
+mojom::SquidFeeCostPtr ParseFeeCost(const swap_responses::SquidFeeCost& value) {
+  auto result = mojom::SquidFeeCost::New();
+  result->amount = value.amount;
+  result->description = value.description;
+  result->name = value.name;
+  result->token = ParseToken(value.token);
+  return result;
+}
+
+mojom::SquidActionPtr ParseAction(const swap_responses::SquidAction& value) {
+  auto result = mojom::SquidAction::New();
+  result->type = ParseActionType(value.type);
+  result->description = value.description;
+  result->provider = value.provider;
+  result->logo_uri = value.logo_uri.value_or("");
+  result->from_amount = value.from_amount;
+  result->from_token = ParseToken(value.from_token);
+  result->to_amount = value.to_amount;
+  result->to_amount_min = value.to_amount_min;
+  result->to_token = ParseToken(value.to_token);
+  return result;
+}
+
+}  // namespace
+
+mojom::SquidQuotePtr ParseQuoteResponse(const base::Value& json_value) {
+  auto value = swap_responses::SquidQuoteResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::SquidQuote::New();
+  for (const auto& action_value : value->route.estimate.actions) {
+    auto action = ParseAction(action_value);
+    if (!action) {
+      return nullptr;
+    }
+
+    result->actions.push_back(std::move(action));
+  }
+
+  result->aggregate_price_impact = value->route.estimate.aggregate_price_impact;
+  result->aggregate_slippage = value->route.estimate.aggregate_slippage;
+  result->estimated_route_duration =
+      value->route.estimate.estimated_route_duration;
+  result->exchange_rate = value->route.estimate.exchange_rate;
+
+  for (const auto& gas_cost_value : value->route.estimate.gas_costs) {
+    auto gas_cost = ParseGasCost(gas_cost_value);
+    if (!gas_cost) {
+      return nullptr;
+    }
+
+    result->gas_costs.push_back(std::move(gas_cost));
+  }
+
+  for (const auto& fee_cost_value : value->route.estimate.fee_costs) {
+    auto fee_cost = ParseFeeCost(fee_cost_value);
+    if (!fee_cost) {
+      return nullptr;
+    }
+
+    result->fee_costs.push_back(std::move(fee_cost));
+  }
+
+  result->is_boost_supported = value->route.estimate.is_boost_supported;
+  result->from_amount = value->route.estimate.from_amount;
+  result->from_token = ParseToken(value->route.estimate.from_token);
+  result->to_amount = value->route.estimate.to_amount;
+  result->to_amount_min = value->route.estimate.to_amount_min;
+  result->to_token = ParseToken(value->route.estimate.to_token);
+
+  // We pass quoteOnly=false to the Squid API, so the response will always
+  // contain a transactionRequest field.
+  //
+  // This is a workaround to avoid having to make an additional request to the
+  // Squid API to get Squid router contract address.
+  if (!value->route.transaction_request) {
+    return nullptr;
+  }
+
+  result->allowance_target = value->route.transaction_request->target;
+
+  return result;
+}
+
+mojom::SquidTransactionUnionPtr ParseTransactionResponse(
+    const base::Value& json_value) {
+  auto value = swap_responses::SquidQuoteResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  if (!value->route.transaction_request) {
+    return nullptr;
+  }
+
+  auto result = mojom::SquidEvmTransaction::New();
+  result->data = value->route.transaction_request->data;
+  result->target = value->route.transaction_request->target;
+  result->value = value->route.transaction_request->value;
+  result->gas_limit = value->route.transaction_request->gas_limit;
+  result->gas_price = value->route.transaction_request->gas_price;
+  result->last_base_fee_per_gas =
+      value->route.transaction_request->last_base_fee_per_gas;
+  result->max_priority_fee_per_gas =
+      value->route.transaction_request->max_priority_fee_per_gas;
+  result->max_fee_per_gas = value->route.transaction_request->max_fee_per_gas;
+
+  auto chain_id = ChainIdToHex(value->route.estimate.from_token.chain_id);
+  if (!chain_id) {
+    return nullptr;
+  }
+  result->chain_id = chain_id.value();
+
+  return mojom::SquidTransactionUnion::NewEvmTransaction(std::move(result));
+}
+
+mojom::SquidErrorPtr ParseErrorResponse(const base::Value& json_value) {
+  // {
+  //   "message": "onChainQuoting must be a `boolean` type.",
+  //   "statusCode": "400",
+  //   "type": "SCHEMA_VALIDATION_ERROR"
+  // }
+  auto value = swap_responses::SquidErrorResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::SquidError::New();
+  result->message = value->message;
+  result->type = ParseErrorType(value->type);
+
+  return result;
+}
+
+}  // namespace squid
 
 }  // namespace brave_wallet

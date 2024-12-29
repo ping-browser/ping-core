@@ -3,6 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/ABC): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 
 #include <string_view>
@@ -1978,7 +1983,7 @@ base::span<const std::string_view> GetMainFontWhitelist() {
 bool AllowFontByFamilyName(const AtomicString& family_name,
                            WTF::String default_language) {
   auto fontWhitelist = GetMainFontWhitelist();
-  if (UNLIKELY(g_simulate_empty_font_whitelist_for_testing)) {
+  if (g_simulate_empty_font_whitelist_for_testing) [[unlikely]] {
     return false;
   }
   if (fontWhitelist.empty()) {

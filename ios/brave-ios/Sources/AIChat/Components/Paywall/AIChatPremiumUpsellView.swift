@@ -36,12 +36,7 @@ struct AIChatPremiumUpsellView: View {
     }
 
     var dismissActionTitle: String {
-      switch self {
-      case .premium:
-        return Strings.AIChat.paywallPremiumUpsellDismissAction
-      case .rateLimit:
-        return Strings.AIChat.paywallRateLimitDismissActionTitle
-      }
+      return Strings.AIChat.paywallPremiumUpsellDismissAction
     }
   }
 
@@ -92,7 +87,7 @@ struct PremiumUpsellActionView: View {
           .padding([.top, .bottom], 12.0)
           .padding([.leading, .trailing], 16.0)
           .frame(maxWidth: .infinity)
-          .foregroundStyle(.white)
+          .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
           .background(
             Color(braveSystemName: .buttonBackground),
             in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
@@ -170,7 +165,7 @@ struct PremiumUpsellDetailView: View {
       )
       .padding()
 
-      Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20)
+      Color(braveSystemName: isPaywallPresented ? .primitivePrimary25 : .primary20)
         .frame(height: 1.0)
 
       PremiumUpsellTopicView(
@@ -179,7 +174,7 @@ struct PremiumUpsellDetailView: View {
       )
       .padding()
 
-      Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20)
+      Color(braveSystemName: isPaywallPresented ? .primitivePrimary25 : .primary20)
         .frame(height: 1.0)
 
       PremiumUpsellTopicView(
@@ -188,7 +183,7 @@ struct PremiumUpsellDetailView: View {
       )
       .padding()
 
-      Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20)
+      Color(braveSystemName: isPaywallPresented ? .primitivePrimary25 : .primary20)
         .frame(height: 1.0)
 
       PremiumUpsellTopicView(
@@ -201,7 +196,7 @@ struct PremiumUpsellDetailView: View {
     .overlay(
       ContainerRelativeShape()
         .strokeBorder(
-          Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20),
+          Color(braveSystemName: isPaywallPresented ? .primitivePrimary25 : .primary20),
           lineWidth: 1.0
         )
     )
@@ -219,9 +214,9 @@ private struct PremiumUpsellTopicView: View {
     HStack {
       Image(braveSystemName: topicType.icon)
         .padding(8.0)
-        .background(Color(braveSystemName: isPaywallPresented ? .primitivePrimary30 : .primary20))
+        .background(Color(braveSystemName: isPaywallPresented ? .primitivePrimary80 : .primary20))
         .foregroundColor(
-          Color(braveSystemName: isPaywallPresented ? .primitivePrimary80 : .primary60)
+          Color(braveSystemName: isPaywallPresented ? .primitivePrimary20 : .primary60)
         )
         .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
 
@@ -241,7 +236,7 @@ private struct PremiumUpsellTopicView: View {
         Text(topicType.subTitle)
           .font(.footnote)
           .foregroundStyle(
-            Color(braveSystemName: isPaywallPresented ? .primitivePrimary30 : .textSecondary)
+            Color(braveSystemName: isPaywallPresented ? .primitivePrimary80 : .textSecondary)
           )
       }
       .lineLimit(2)
@@ -299,6 +294,7 @@ private struct PremiumUpsellTopicView: View {
 struct AIChatPremiumUpsellView_Preview: PreviewProvider {
   static var previews: some View {
     AIChatPremiumUpsellView(upsellType: .premium)
+      .previewColorSchemes()
       .previewLayout(.sizeThatFits)
   }
 }

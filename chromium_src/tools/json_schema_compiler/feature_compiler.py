@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# pylint: disable=line-too-long
-
 import brave_chromium_utils
 import override_utils
 
@@ -25,6 +23,7 @@ class BraveFeatureDefinitionExtender:
         "extensions/common/api/_behavior_features.json": True,
         "extensions/common/api/_manifest_features.json": True,
         "extensions/common/api/_permission_features.json": True,
+        "extensions/shell/common/api/_api_features.json": False,
     }
 
     def __init__(self):

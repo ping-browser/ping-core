@@ -62,7 +62,9 @@ export class BraveRewardsProxy {
         const rewardsWallet: RewardsExternalWallet | null = externalWallet
           ? {
               ...externalWallet,
-              status: externalWallet.status as WalletStatus
+              status: externalWallet.authenticated
+                ? WalletStatus.kConnected
+                : WalletStatus.kLoggedOut
             }
           : null
         resolve(rewardsWallet)
@@ -105,7 +107,6 @@ export class BraveRewardsProxy {
     chrome.braveRewards.onRewardsWalletCreated.addListener
 
   openRewardsPanel = chrome.braveRewards.openRewardsPanel
-  showRewardsSetup = chrome.braveRewards.showRewardsSetup
 
   onInitialized = (callback: () => any) =>
     chrome.braveRewards.initialized.addListener((error) => {

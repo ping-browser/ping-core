@@ -13,16 +13,16 @@ export class WalletApiProxy {
   swapService = new BraveWallet.SwapServiceRemote()
   simulationService = new BraveWallet.SimulationServiceRemote()
   assetRatioService = new BraveWallet.AssetRatioServiceRemote()
+  meldIntegrationService = new BraveWallet.MeldIntegrationServiceRemote()
   keyringService = new BraveWallet.KeyringServiceRemote()
   blockchainRegistry = new BraveWallet.BlockchainRegistryRemote()
   txService = new BraveWallet.TxServiceRemote()
   ethTxManagerProxy = new BraveWallet.EthTxManagerProxyRemote()
   solanaTxManagerProxy = new BraveWallet.SolanaTxManagerProxyRemote()
   filTxManagerProxy = new BraveWallet.FilTxManagerProxyRemote()
+  btcTxManagerProxy = new BraveWallet.BtcTxManagerProxyRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
   braveWalletP3A = new BraveWallet.BraveWalletP3ARemote()
-  braveWalletPinService = new BraveWallet.WalletPinServiceRemote()
-  braveWalletAutoPinService = new BraveWallet.WalletAutoPinServiceRemote()
   braveWalletIpfsService = new BraveWallet.IpfsServiceRemote()
 
   addJsonRpcServiceObserver(
@@ -51,22 +51,6 @@ export class WalletApiProxy {
     observer: BraveWallet.BraveWalletServiceTokenObserverReceiver
   ) {
     this.braveWalletService.addTokenObserver(
-      observer.$.bindNewPipeAndPassRemote()
-    )
-  }
-
-  addBraveWalletPinServiceObserver(
-    observer: BraveWallet.BraveWalletPinServiceObserverReceiver
-  ) {
-    this.braveWalletPinService.addObserver(
-      observer.$.bindNewPipeAndPassRemote()
-    )
-  }
-
-  addBraveWalletAutoPinServiceObserver(
-    observer: BraveWallet.WalletAutoPinServiceObserverReceiver
-  ) {
-    this.braveWalletAutoPinService.addObserver(
       observer.$.bindNewPipeAndPassRemote()
     )
   }

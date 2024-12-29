@@ -1,159 +1,130 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
-import VPNSvgUrl from '../../assets/svg-icons/vpn-icon.svg'
-import checkIconUrl from '../../assets/svg-icons/check-gradient-icon.svg'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 import sellGraphicUrl from '../../assets/svg-icons/sell-graphic.svg'
 import guardianLogoUrl from '../../assets/svg-icons/guardian-logo.svg'
+import { color, font, gradient, icon, spacing } from '@brave/leo/tokens/css/variables'
 
 export const Box = styled.div`
   width: 100%;
   height: 100%;
-  background: #381E85;
+  background: #0F0663;
   position: relative;
+  font: ${font.default.regular};
 `
 
-export const ProductTitle = styled.h1`
-  color: #F0F2FF;
-  font-family: ${(p) => p.theme.fontFamily.heading};
-  font-weight: 600;
-  font-size: 20px;
-  margin: 0 0 10px 0;
+export const ProductTitle = styled.h3`
+  color: #FFF;
+  font: ${font.heading.h3};
+  margin: 0 0 ${spacing.xl} 0;
 `
 
 export const PoweredBy = styled.div`
-  margin-bottom: 16px;
   display: flex;
   align-items: center;
 
   span {
-    font-family: ${(p) => p.theme.fontFamily.heading};
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    color: #C2C4CF;
-  }
-`
-
-export const List = styled.ul`
-  list-style-type: none;
-  padding: 0 32px;
-  margin: 0 0 16px 0;
-
-  li {
-    color: #F0F2FF;
-    font-family: ${(p) => p.theme.fontFamily.heading};
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 18px;
-    margin-bottom: 8px;
-    padding-left: 26px;
-    text-indent: -26px;
-
-    &:before {
-      content: '';
-      display: inline-block;
-      width: 16px;
-      height: 12px;
-      background-image: url(${checkIconUrl});
-      background-repeat: no-repeat;
-      background-size: cover;
-      user-select: none;
-      pointer-events: none;
-      margin-right: 10px;
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-    }
+    color: #FFF;
+    text-align: center;
   }
 `
 
 export const PanelContent = styled.section`
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
+  padding: ${spacing['3Xl']} ${spacing['2Xl']};
   flex-direction: column;
   align-items: center;
-  padding: 0 0 25px 0;
-  z-index: 2;
+  gap: ${spacing['2Xl']};
 `
 
 export const PanelHeader = styled.section`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 100%;
-  padding: 32px 32px 0 32px;
-  margin-bottom: 16px;
-  box-sizing: border-box;
 `
 
 export const SellGraphic = styled.div`
-  width: 100%;
-  height: 123px;
+  width: 336px;
+  height: 132px;
   background-image: url(${sellGraphicUrl});
-  background-repeat: no-repeat;
-  background-size: cover;
   position: absolute;
   top: 0;
+  left: 0px;
   user-select: none;
   pointer-events: none;
 `
 
-export const MainLogo = styled.div`
-  width: 41px;
-  height: 48px;
-  background-image: url(${VPNSvgUrl});
-  background-repeat: no-repeat;
-  background-size: cover;
-  user-select: none;
-  pointer-events: none;
-  margin-bottom: 16px;
+export const MainLogo = styled(Icon)`
+  --leo-icon-size: 48px;
+  --leo-icon-color: ${gradient.iconsActive};
 `
 
 export const GuardianLogo = styled.i`
-  width: 75px;
-  height: 18px;
+  width: 91px;
+  height: 20px;
   background-image: url(${guardianLogoUrl});
-  background-repeat: no-repeat;
-  background-size: cover;
   user-select: none;
   pointer-events: none;
   display: inline-block;
-  margin-left: 5px;
+  margin-left: 8px;
 `
+
+export const SellingPoints = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${spacing.m};
+  align-self: stretch;
+`
+
+export const SellingPoint = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.m};
+  align-self: stretch;
+`
+
+export const SellingPointIcon = styled(Icon)`
+  align-self: start;
+  margin: 1px;
+  --leo-icon-size: ${icon.m};
+  --leo-icon-color: ${gradient.toolbarBackground};
+`
+
+export const SellingPointLabel = styled.span`
+  color: #FFF;
+  font: ${font.default.regular};
+`
+
 export const ActionArea = styled.div`
-  padding: 0 18px;
-  width: 100%;
-  text-align: center;
-  box-sizing: border-box;
+  display: flex;
+  padding: 0px;
+  flex-direction: column;
+  align-items: center;
+  gap: ${spacing.xl};
+  align-self: stretch;
+`
 
-  a {
-    --color: #F0F2FF;
-    color: var(--color);
-    font-family: ${(p) => p.theme.fontFamily.heading};
-    font-size: 12px;
-    text-decoration-line: underline;
+export const ActionButton = styled(Button)`
+  --leo-button-color: rgba(255, 255, 255, 0.20);
+  align-self: stretch;
+`
 
-    &:focus {
-      border: 2px solid var(--color);
-      border-radius: 8px;
-    }
-  }
+export const ActionLink = styled.a`
+  color: #FFF;
+  font: ${font.small.link};
+  text-decoration-line: underline;
 
-  button {
-    width: 100%;
-    margin-bottom: 10px;
-
-    &:first-child {
-      backdrop-filter: blur(16px);
-      background: rgba(255, 255, 255, 0.24);
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.42);
-      }
-    }
+  &:focus-visible {
+    outline: 1.5px solid ${color.systemfeedback.focusDefault};
   }
 `

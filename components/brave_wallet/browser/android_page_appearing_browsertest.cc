@@ -15,8 +15,6 @@
 #include "base/test/scoped_run_loop_timeout.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -33,9 +31,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
-#include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/navigation_entry.h"
@@ -229,12 +227,10 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
     wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             GetProfile());
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(GetProfile());
-    json_rpc_service_ =
-        brave_wallet::JsonRpcServiceFactory::GetServiceForContext(GetProfile());
+    json_rpc_service_ = wallet_service_->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
+    keyring_service_ = wallet_service_->keyring_service();
     asset_ratio_service_ =
         brave_wallet::AssetRatioServiceFactory::GetServiceForContext(
             GetProfile());
@@ -288,7 +284,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   void VerifyConsoleOutputNoErrors(
       const content::ConsoleObserver& console_observer,
       const blink::mojom::ConsoleMessageLevel max_accepted_log_level,
-      const std::vector<std::string> ignore_patterns) {
+      const std::vector<std::string>& ignore_patterns) {
     const std::vector<content::WebContentsConsoleObserver::Message>&
         console_messages = console_observer.messages();
     const int expected = static_cast<int>(max_accepted_log_level);
@@ -316,7 +312,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
 
   void VerifyPage(const GURL& url,
                   const GURL& expected_url,
-                  const std::vector<std::string> ignore_patterns) {
+                  const std::vector<std::string>& ignore_patterns) {
     content::NavigationController::LoadURLParams params(url);
     params.transition_type = ui::PageTransitionFromInt(
         ui::PAGE_TRANSITION_TYPED | ui::PAGE_TRANSITION_FROM_ADDRESS_BAR);
@@ -391,7 +387,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading "
         "'onCompleteReset')",
-        "Error calling jsonRpcService.getERC20TokenBalances"};
+        "Error calling jsonRpcService.getERC20TokenBalances",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }
@@ -403,8 +400,10 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
         "Error calling jsonRpcService.getERC20TokenBalances",
-        "Error querying balance:", "Error: An internal error has occurred",
-        "Unable to fetch getTokenBalancesForChainId"};
+        "Error querying balance:",
+        "Error: An internal error has occurred",
+        "Unable to fetch getTokenBalancesForChainId",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }
@@ -414,7 +413,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
   for (const std::string& scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/send"}));
     const std::vector<std::string> ignore_patterns = {
-        "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+        "TypeError: Cannot read properties of undefined (reading 'forEach')",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }
@@ -425,7 +425,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
   for (const std::string& scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/deposit-funds"}));
     const std::vector<std::string> ignore_patterns = {
-        "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+        "TypeError: Cannot read properties of undefined (reading 'forEach')",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }
@@ -435,7 +436,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestBuyPageAppearing) {
   for (const std::string& scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/fund-wallet"}));
     const std::vector<std::string> ignore_patterns = {
-        "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+        "TypeError: Cannot read properties of undefined (reading 'forEach')",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }

@@ -189,7 +189,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
               </StyledCustomBackgroundSettings>
             )}
             <div style={{ height: '16px' }}/>
-            {braveRewardsSupported && (
+            {!true && braveRewardsSupported && (
               <SettingsRow>
                 <SponsoredImageToggle
                   onChange={toggleBrandedWallpaperOptIn}

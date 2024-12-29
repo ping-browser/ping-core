@@ -34,7 +34,7 @@ using navigation_interception::InterceptNavigationDelegate;
 class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
  public:
   BraveInterceptNavigationDelegate(JNIEnv* env,
-                                   jobject jdelegate,
+                                   const jni_zero::JavaRef<jobject>& jdelegate,
                                    PrefService* pref_service)
       : InterceptNavigationDelegate(env, jdelegate) {
     pref_service_ = pref_service;
@@ -53,7 +53,7 @@ class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
  private:
   bool ShouldPlayVideoInBrowser(const GURL& url) {
     if (!pref_service_) {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return false;
     }
 

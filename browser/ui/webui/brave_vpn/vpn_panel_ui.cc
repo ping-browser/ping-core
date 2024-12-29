@@ -34,7 +34,8 @@
 VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
   // From MojoWebUIController
-  web_ui->SetBindings(content::BINDINGS_POLICY_MOJO_WEB_UI);
+  web_ui->SetBindings(
+      content::BindingsPolicySet({content::BindingsPolicyValue::kWebUi}));
 
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kVPNPanelURL);
@@ -42,7 +43,8 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   brave_vpn::AddLocalizedStrings(source);
   webui::SetupWebUIDataSource(
       source,
-      base::make_span(kBraveVpnPanelGenerated, kBraveVpnPanelGeneratedSize),
+      UNSAFE_TODO(base::make_span(kBraveVpnPanelGenerated,
+                                  kBraveVpnPanelGeneratedSize)),
       IDR_VPN_PANEL_HTML);
 
   source->OverrideContentSecurityPolicy(
@@ -94,16 +96,15 @@ void VPNPanelUI::CreatePanelHandler(
   }
 }
 
-std::unique_ptr<content::WebUIController>
-UntrustedVPNPanelUIConfig::CreateWebUIController(content::WebUI* web_ui,
-                                                 const GURL& url) {
-  return std::make_unique<VPNPanelUI>(web_ui);
-}
-
 bool UntrustedVPNPanelUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
   return brave_vpn::IsBraveVPNEnabled(browser_context);
 }
 
+bool UntrustedVPNPanelUIConfig::ShouldAutoResizeHost() {
+  return true;
+}
+
 UntrustedVPNPanelUIConfig::UntrustedVPNPanelUIConfig()
-    : WebUIConfig(content::kChromeUIUntrustedScheme, kVPNPanelHost) {}
+    : DefaultTopChromeWebUIConfig(content::kChromeUIUntrustedScheme,
+                                  kVPNPanelHost) {}

@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_handler_delegate.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 
@@ -53,7 +53,7 @@ class NotificationAdEventHandlerDelegateMock
   MOCK_METHOD(void,
               OnFailedToFireNotificationAdEvent,
               (const std::string& placement_id,
-               const mojom::NotificationAdEventType event_type));
+               const mojom::NotificationAdEventType mojom_ad_event_type));
 };
 
 }  // namespace brave_ads

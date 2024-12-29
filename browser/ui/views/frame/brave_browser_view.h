@@ -54,12 +54,15 @@ class SidebarBrowserTest;
 }  // namespace sidebar
 
 class BraveBrowser;
+class BraveHelpBubbleHostView;
 class ContentsLayoutManager;
 class SidebarContainerView;
-class WalletButton;
-class ViewShadow;
+class SidePanelEntry;
+class SplitViewLocationBar;
+class SplitViewSeparator;
 class VerticalTabStripWidgetDelegateView;
-class BraveHelpBubbleHostView;
+class ViewShadow;
+class WalletButton;
 
 class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer,
@@ -78,6 +81,10 @@ class BraveBrowserView : public BrowserView,
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
+  void WillShowSidePanel();
+
+  // Triggers layout of web modal dialogs
+  void NotifyDialogPositionRequiresUpdate();
 
   // BrowserView overrides:
   void Layout(PassKey) override;
@@ -102,6 +109,8 @@ class BraveBrowserView : public BrowserView,
                           content::WebContents* new_contents,
                           int index,
                           int reason) override;
+  bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
+  bool IsInTabDragging() const override;
 
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
@@ -120,8 +129,13 @@ class BraveBrowserView : public BrowserView,
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
 
   // SplitViewBrowserDataObserver:
-  void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
-  void OnWillBreakTile(const SplitViewBrowserData::Tile& tile) override;
+  void OnTileTabs(const TabTile& tile) override;
+  void OnWillBreakTile(const TabTile& tile) override;
+  void OnSwapTabsInTile(const TabTile& tile) override;
+
+  views::WebView* secondary_contents_web_view() {
+    return secondary_contents_web_view_.get();
+  }
 
  private:
   class TabCyclingEventHandler;
@@ -129,6 +143,7 @@ class BraveBrowserView : public BrowserView,
   friend class sidebar::SidebarBrowserTest;
   friend class VerticalTabStripDragAndDropBrowserTest;
   friend class SplitViewBrowserTest;
+  friend class SplitViewLocationBarBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, Fullscreen);
@@ -136,6 +151,8 @@ class BraveBrowserView : public BrowserView,
                            DragTabToReorder);
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, Toolbar);
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, ToolbarLangs);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedState);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -180,8 +197,10 @@ class BraveBrowserView : public BrowserView,
 
   void UpdateSideBarHorizontalAlignment();
 
-  tabs::TabHandle GetActiveTabHandle() const;
-  bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile) const;
+  tabs::TabHandle GetActiveTabHandle();
+  bool IsActiveWebContentsTiled(const TabTile& tile);
+  void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
+                                content::WebContents* new_contents);
   void UpdateContentsWebViewVisual();
   void UpdateContentsWebViewBorder();
   void UpdateSecondaryContentsWebViewVisibility();
@@ -214,6 +233,10 @@ class BraveBrowserView : public BrowserView,
 
   raw_ptr<views::WebView> secondary_devtools_web_view_ = nullptr;
   raw_ptr<ContentsWebView> secondary_contents_web_view_ = nullptr;
+  raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
+
+  std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
+  std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<commands::AcceleratorService,

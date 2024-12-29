@@ -5,28 +5,23 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daily_cap_exclusion_rule.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-namespace {
-
-constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
-                                        "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"};
-
-}  // namespace
-
-class BraveAdsDailyCapExclusionRuleTest : public UnitTestBase {};
+class BraveAdsDailyCapExclusionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
   creative_ad.daily_cap = 2;
 
   const DailyCapExclusionRule exclusion_rule(/*ad_events=*/{});
@@ -38,14 +33,14 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
 TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                         ConfirmationType::kServedImpression, Now(),
-                         /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kServedImpression,
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -58,17 +53,17 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
        ShouldIncludeIfDoesNotExceedCapForNoMatchingCampaigns) {
   // Arrange
   CreativeAdInfo creative_ad_1;
-  creative_ad_1.campaign_id = kCampaignIds[0];
+  creative_ad_1.campaign_id = test::kCampaignId;
   creative_ad_1.daily_cap = 1;
 
   CreativeAdInfo creative_ad_2;
-  creative_ad_2.campaign_id = kCampaignIds[1];
+  creative_ad_2.campaign_id = test::kAnotherCampaignId;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      test::BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
-                         ConfirmationType::kServedImpression, Now(),
-                         /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad_2, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kServedImpression, /*created_at=*/test::Now(),
+      /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -81,14 +76,14 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
        ShouldIncludeIfDoesNotExceedCapWithin1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                         ConfirmationType::kServedImpression, Now(),
-                         /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kServedImpression,
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -103,14 +98,14 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
        ShouldIncludeIfDoesNotExceedCapAfter1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                         ConfirmationType::kServedImpression, Now(),
-                         /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kServedImpression,
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -124,14 +119,14 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
 TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                         ConfirmationType::kServedImpression, Now(),
-                         /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kServedImpression,
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

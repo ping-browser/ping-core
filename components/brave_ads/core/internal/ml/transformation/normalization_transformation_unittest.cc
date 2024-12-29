@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
@@ -18,7 +18,7 @@
 
 namespace brave_ads::ml {
 
-class BraveAdsNormalizationTransformationTest : public UnitTestBase {};
+class BraveAdsNormalizationTransformationTest : public test::TestBase {};
 
 TEST_F(BraveAdsNormalizationTransformationTest, WrongInputDataTest) {
   // Arrange
@@ -97,10 +97,7 @@ TEST_F(BraveAdsNormalizationTransformationTest, ChainingTest) {
 
   // Assert
   EXPECT_EQ(kDefaultBucketCount, vector_data->GetDimensionCount());
-  EXPECT_EQ(
-      10U,
-      vector_data->GetData().size());  // Hashes for [t, i, n, y, ti, in, ny,
-                                       // tin, iny, tiny] -- 10 in total
+  EXPECT_THAT(vector_data->GetData(), ::testing::SizeIs(10));
 }
 
 }  // namespace brave_ads::ml

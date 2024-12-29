@@ -3,11 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import WebKit
 import XCTest
 
 @testable import Brave
 
 final class AdBlockEngineManagerTests: XCTestCase {
+  @MainActor private lazy var ruleStore: WKContentRuleListStore = {
+    let testBundle = Bundle.module
+    let bundleURL = testBundle.bundleURL
+    return WKContentRuleListStore(url: bundleURL)!
+  }()
+
   func testEngineManager() async throws {
     // Given
     // Engine manager and file info and resources info
@@ -49,7 +56,7 @@ final class AdBlockEngineManagerTests: XCTestCase {
 
     // Then
     // Needs compile returns true and there is no engine
-    var needsCompile = await engineManager.checkNeedsCompile(for: fileInfos)
+    var needsCompile = await engineManager.checkNeedsEngineCompile(for: fileInfos)
     var engine = await engineManager.engine
     XCTAssertTrue(needsCompile)
     XCTAssertNil(engine)
@@ -66,14 +73,14 @@ final class AdBlockEngineManagerTests: XCTestCase {
 
     // When 2
     // We compile engine
-    await engineManager.compileImmediatelyIfNeeded(
+    await engineManager.compileAvailableEnginesIfNeeded(
       for: sources,
       resourcesInfo: resourcesInfo
     )
 
     // Then
     // Needs compile returns false and engine is correctly created
-    needsCompile = await engineManager.checkNeedsCompile(for: fileInfos)
+    needsCompile = await engineManager.checkNeedsEngineCompile(for: fileInfos)
     engine = await engineManager.engine
     let compiledResources = await engine?.resourcesInfo
     let group = await engine?.group
@@ -116,5 +123,12 @@ final class AdBlockEngineManagerTests: XCTestCase {
     engine = await engineManager3.engine
     XCTAssertFalse(loadedFromCache)
     XCTAssertNil(engine)
+  }
+
+  @MainActor private func makeContentBlockerManager() -> ContentBlockerManager {
+    return ContentBlockerManager(
+      ruleStore: ruleStore,
+      container: UserDefaults(suiteName: "tests") ?? .standard
+    )
   }
 }

@@ -18,7 +18,7 @@ import {
   getTransactionGasFee,
   isSolanaTransaction
 } from '../../../utils/tx-utils'
-import { getPriceIdForToken } from '../../../utils/api-utils'
+import { getPriceIdForToken } from '../../../utils/pricing-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
 // components
@@ -61,7 +61,7 @@ export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
   showNetworkLogo
 }) => {
   // custom hooks
-  const selectedPendingTransaction = useSelectedPendingTransaction()
+  const { selectedPendingTransaction } = useSelectedPendingTransaction()
 
   // queries
   const { data: txNetwork } = useGetNetworkQuery(

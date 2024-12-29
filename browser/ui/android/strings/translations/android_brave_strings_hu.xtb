@@ -3,24 +3,24 @@
 <translationbundle lang="hu">
 <translation id="8631427463833030968">Hirdetések kezelése</translation>
 <translation id="7630214457764713113">Tiszta hivatkozás másolása</translation>
-<translation id="885805571521218129">Megmutatja a becsült bevételek tartományát a Brave hirdetéseknél.</translation>
+<translation id="885805571521218129">Megmutatja a becsült bevételek tartományát a Ping hirdetéseknél.</translation>
 <translation id="3478449063771497234">Az értesítések le vannak tiltva</translation>
 <translation id="2862978891748913252">Válassza ki az országot</translation>
 <translation id="3970520675790340955">Válassza ki az országát, hogy a régiójának megfelelő lehetőségeket és hirdetéseket mutathassuk.</translation>
 <translation id="7301741773883122509">Hirdetések megtekintéséért most jutalmat kaphat! Így segíthet mindenki számára jobbá tenni az internetet. Ez fantasztikus!</translation>
 <translation id="6439128034594289376">Hurrá! Készen vagyunk!</translation>
 <translation id="370665806235115550">Betöltés...</translation>
-<translation id="7931127789630755251">Szerezzen tokeneket privát hirdetések megtekintésével a Brave-en</translation>
+<translation id="7931127789630755251">Szerezzen tokeneket privát hirdetések megtekintésével a Ping-en</translation>
 <translation id="7859066142771796818">Támogassa a tartalomkészítőket és használjon tokeneket ajándékkártyák, egyéb pénznemek és sok minden más vásárlására.</translation>
 <translation id="3863981251715594911">Hogyan működik?</translation>
-<translation id="5547108999862247665">Hogyan működik a Brave jutalmak?</translation>
+<translation id="5547108999862247665">Hogyan működik a Ping jutalmak?</translation>
 <translation id="2965798296974325760">Rewards használatának indítása</translation>
 <translation id="8220484609979012449">\n\nA Web3-pénztárcája használatával továbbra is küldhet kripto-hozzájárulásokat ennek az alkotónak.</translation>
 <translation id="6385969012847057348">Ez az alkotó nem tud hozzájárulásokat fogadni a(z) <ph name="CUSTODIAN"/> letétkezelőtől.</translation>
 <translation id="735733310778086206">Az alkotó még nem állította be a Web3 vagy crypto-hozzájárulások fogadását.</translation>
 <translation id="6268134562674951939">Nem rendelkezik elegendő tokennel</translation>
 <translation id="4529874892536380156">Az összeg beállítása ismétlődő havi hozzájárulásként. Ezt bármikor megszüntetheti.</translation>
-<translation id="5562948772940025260">Brave jutalmak-egyenlege használatával legfeljebb <ph name="AMOUNT"/> BAT-tokent küldhet.</translation>
+<translation id="5562948772940025260">Ping jutalmak-egyenlege használatával legfeljebb <ph name="AMOUNT"/> BAT-tokent küldhet.</translation>
 <translation id="5012991400231464322">Havi hozzájárulások</translation>
 <translation id="5907051927340164207">Ön már küld havi hozzájárulásokat ennek az alkotónak</translation>
 <translation id="4848906651275579475">Küldhet most is hozzájárulást, illetve megszüntetheti az ennek az alkotónak küldött havi hozzájárulásokat, ha eltávolítja őt a(z) <ph name="MONTHLY_CONTRIBUTION"/> listájáról.</translation>
@@ -31,55 +31,55 @@
 <translation id="3699420827646925694">Kijelentkezve a következőből: <ph name="CUSTODIAN"/></translation>
 <translation id="9038728316393235637">Bejelentkezés a következőbe: <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Köszönjük, hogy támogatja a kedvenc alkotóit</translation>
-<translation id="3796032246917966749">Úgy tűnik, kijelentkezett a(z) <ph name="CUSTODIAN"/> letétkezelőből a Brave jutalmakban. A folytatáshoz jelentkezzen be újra.</translation>
-<translation id="5202112619925434373">Ez az alkotó még nem tartozik az ellenőrzött Brave-alkotók közé. Az ellenőrzés megtörténte után fog tudni neki küldeni hozzájárulásokat. <ph name="LEARN_MORE"/></translation>
+<translation id="3796032246917966749">Úgy tűnik, kijelentkezett a(z) <ph name="CUSTODIAN"/> letétkezelőből a Ping jutalmakban. A folytatáshoz jelentkezzen be újra.</translation>
+<translation id="5202112619925434373">Ez az alkotó még nem tartozik az ellenőrzött Ping-alkotók közé. Az ellenőrzés megtörténte után fog tudni neki küldeni hozzájárulásokat. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">Hozzájárulás elküldése</translation>
 <translation id="1899434873745933492">Nem sikerült elküldeni a hozzájárulását</translation>
-<translation id="1794046983410841192">Brave jutalmak használata</translation>
+<translation id="1794046983410841192">Ping jutalmak használata</translation>
 <translation id="8037118277449189044">Web3-pénztárca használata</translation>
-<translation id="9059356165618961685">Brave jutalmak egyenlege</translation>
+<translation id="9059356165618961685">Ping jutalmak egyenlege</translation>
 <translation id="86107454835395919">Beállítás havi hozzájárulásként</translation>
 <translation id="1177863135347784049">Egyéni</translation>
 <translation id="4827581232860040208">Hiba történt a hozzájárulása elküldése során</translation>
 <translation id="3259723213051400722">Kérjük, próbálja újra!</translation>
-<translation id="5298965408768377685">Ez az alkotó regisztrált a Brave-nél, és fogadhat hozzájárulásokat a Brave jutalmak felhasználóitól. <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">A Brave jutalmak működését megakadályozhatja az értesítések kikapcsolása.</translation>
+<translation id="5298965408768377685">Ez az alkotó regisztrált a Ping-nél, és fogadhat hozzájárulásokat a Ping jutalmak felhasználóitól. <ph name="LEARN_MORE"/></translation>
+<translation id="7466579932043491502">A Ping jutalmak működését megakadályozhatja az értesítések kikapcsolása.</translation>
 <translation id="6112331814131703370">Az 'Alkalmazásra váltás' értesítések letiltása</translation>
 <translation id="4744921452903670666">Mondja el, mit gondol!</translation>
-<translation id="2524310205387880526">Értékeld a Brave-et</translation>
+<translation id="2524310205387880526">Értékeld a Ping-et</translation>
 <translation id="4104400246019119780">Köszönjük!</translation>
 <translation id="5202255382948179481">Ossza meg javaslatait!</translation>
 <translation id="7759809451544302770">Opcionális</translation>
-<translation id="4748689412569009273">Fejezze ki egy emojival a Brave-vel kapcsolatos tapasztalatait!</translation>
+<translation id="4748689412569009273">Fejezze ki egy emojival a Ping-vel kapcsolatos tapasztalatait!</translation>
 <translation id="7335142069363686805">Értékelek</translation>
-<translation id="6681362094306959654">Tetszik a Brave?</translation>
+<translation id="6681362094306959654">Tetszik a Ping?</translation>
 <translation id="8041093619605951337">Boldog</translation>
 <translation id="6826743502395386800">Szomorú</translation>
 <translation id="5488843227043643519">Értékelje a Play Store áruházban!</translation>
 <translation id="5867854497245948308">Köszönjük a visszajelzését!</translation>
-<translation id="4935400164159327304">Mondja el, hogyan fejleszthetjük a Brave-et!</translation>
+<translation id="4935400164159327304">Mondja el, hogyan fejleszthetjük a Ping-et!</translation>
 <translation id="1420756770787071946">Támogasd ezt az alkotót</translation>
-<translation id="8966035543003363155">A Brave értesítéseivel minden egyszerűbb</translation>
+<translation id="8966035543003363155">A Ping értesítéseivel minden egyszerűbb</translation>
 <translation id="7662771815233894695">Kezelje a letöltéseket, gyűjtsön tokeneket, tekintse meg a heti felhasználási statisztikákat, és még több lehetőség.</translation>
 <translation id="4265429476391459783">Jelenleg nem szerez jutalmakat, és nem kap adatvédelmi jelentéseket</translation>
-<translation id="1305714751384738456">Jelenleg nem szerez Brave jutalmakat</translation>
+<translation id="1305714751384738456">Jelenleg nem szerez Ping jutalmakat</translation>
 <translation id="1483391942610220726">Jelenleg nem kap adatvédelmi jelentéseket</translation>
 <translation id="4683790942451502796">Kapcsolja vissza az értesítéseket, ha szeretne továbbra is BAT-ot szerezni, és heti adatvédelmi jelentéseket kapni.</translation>
 <translation id="8618359751943259593">Kapcsolja vissza az értesítéseket, ha szeretne továbbra is BAT-ot szerezni</translation>
 <translation id="760355165169399836">Kapcsolja vissza az értesítéseket, ha szeretne továbbra is heti adatvédelmi jelentéseket kapni.</translation>
 <translation id="6268959058971634697">Jelenleg nem szerez jutalmakat</translation>
 <translation id="1088637159642753509">Engedélyezze az eszközén az értesítéseket, hogy adatvédelmi jelentéseket kapjon.</translation>
-<translation id="312404770066229090">Engedélyezze az eszközén az értesítéseket, hogy Brave jutalmakat szerezzen.</translation>
-<translation id="2241529840361230499">Engedélyezze az eszközén az értesítéseket, hogy Brave adatvédelmi jelentéseket kapjon.</translation>
-<translation id="4930155581888391118">Engedélyezze az értesítéseket, hogy Brave jutalmakat szerezzen.</translation>
-<translation id="325187916104529570">Nyissa meg a Beállításokat, és kapcsolja vissza az értesítéseket a Brave hirdetésekre.</translation>
-<translation id="5744802588121897886">Brave értesítések bekapcsolása</translation>
-<translation id="7307834434086582547">Brave Shields engedélyezése/ letiltása</translation>
+<translation id="312404770066229090">Engedélyezze az eszközén az értesítéseket, hogy Ping jutalmakat szerezzen.</translation>
+<translation id="2241529840361230499">Engedélyezze az eszközén az értesítéseket, hogy Ping adatvédelmi jelentéseket kapjon.</translation>
+<translation id="4930155581888391118">Engedélyezze az értesítéseket, hogy Ping jutalmakat szerezzen.</translation>
+<translation id="325187916104529570">Nyissa meg a Beállításokat, és kapcsolja vissza az értesítéseket a Ping hirdetésekre.</translation>
+<translation id="5744802588121897886">Ping értesítések bekapcsolása</translation>
+<translation id="7307834434086582547">Ping Shields engedélyezése/ letiltása</translation>
 <translation id="6945863270524203017">Heti adatvédelmi frissítéseket kaphat a nyomkövetők és hirdetések blokkolásáról.</translation>
 <translation id="4324735664183300693">Értesítések bekapcsolása</translation>
-<translation id="6395059271589866759">A Brave a küldött összeg 5%-át lefoglalja kezelési költségként.</translation>
+<translation id="6395059271589866759">A Ping a küldött összeg 5%-át lefoglalja kezelési költségként.</translation>
 <translation id="6661699662755460155">csere</translation>
-<translation id="6790981891677399838">Épp most küldtem <ph name="AMOUNT"/> BAT értékű hozzájárulást a Brave böngészővel! Tekintsétek meg, hogyan támogathatjátok ti is a kedvenc alkotóitokat és webhelyeiteket: https://brave.com/rewards</translation>
+<translation id="6790981891677399838">Épp most küldtem <ph name="AMOUNT"/> BAT értékű hozzájárulást a Ping böngészővel! Tekintsétek meg, hogyan támogathatjátok ti is a kedvenc alkotóitokat és webhelyeiteket: https://brave.com/rewards</translation>
 <translation id="5510493033031835532">AMP-oldalak automatikus átirányítása</translation>
 <translation id="5197219128592971597">A weblapok eredeti (nem AMP) URL-címeinek felkeresése minden esetben, a Google gyorsított mobilweblap (AMP) változatai helyett</translation>
 <translation id="920638232916443453">Követő URL-ek automatikus átirányítása</translation>
@@ -91,24 +91,30 @@
 <translation id="1005372663692637999">Letiltja a Következő és a Záróképernyő elemeket a youtube.com webhelyen.</translation>
 <translation id="5152595963250646670">A YouTube zavaró elemeinek letiltása</translation>
 <translation id="2998960761270772157">Letiltja a Bejelentkezés, a Menü, a Hozzászólások és a Videóinformációk elemeket a youtube.com webhelyen.</translation>
+<translation id="8531835121131500698">YouTube-rövidek blokkolása</translation>
+<translation id="2167271714269158912">Blokkolja a rövideket a youtube.com kezdőoldalán, a népszerűek oldalán, illetve a keresési eredmények között.</translation>
 <translation id="6052725679982758334">Közösségi hálózatok tiltása</translation>
 <translation id="7498695072878479744">Google-bejelentkezési gombok engedélyezése külső webhelyeken</translation>
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
 <translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
-<translation id="6302422639282249274">Brave Rewards kezelése</translation>
+<translation id="6302422639282249274">Ping Rewards kezelése</translation>
 <translation id="2709516037105925701">Automatikus kitöltés</translation>
 <translation id="8617525558807213034">Automatikus kitöltés a privát lapokon</translation>
 <translation id="8685431198160039193">A mentett információk automatikusan kitölthetők a privát lapokon</translation>
 <translation id="6583902294974160967">Támogatás</translation>
 <translation id="1799030480311994998">Funkciók</translation>
-<translation id="2005732746077850308">Brave Pajzsok és adatvédelem</translation>
+<translation id="2005732746077850308">Ping Pajzsok és adatvédelem</translation>
 <translation id="4692623383562244444">Keresőmotorok</translation>
 <translation id="1468415711258933398">Szabványos fül</translation>
 <translation id="3377025655491224618">Privát lap</translation>
+<translation id="7304425663107214334">A böngésző javaslatainak megjelenítése</translation>
+<translation id="8982438328166986164">A könyvjelzői és böngészési előzményei alapján ajánlott weboldalak megjelenítése.</translation>
+<translation id="924029461438529367">Keresési javaslatok megjelenítése</translation>
+<translation id="1571106259128580884">A legnépszerűbb webhelyekre vonatkozó javaslatok megjelenítése</translation>
+<translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
+<translation id="919715748352669592">Automatikusan indexálja a weboldalakat, amelyek követik az OpenSearch specet.</translation>
 <translation id="9148058034647219655">Kilépés</translation>
-<translation id="4022987104439075738">IPFS-átjáró</translation>
-<translation id="2688519859165248360">Egy IPFS gatewayen keresztül lehetővé teszi az IPFS forrásokhoz való eljutást</translation>
 <translation id="8047754398610073499">Cookie-khoz való hozzájárulással kapcsolatos értesítések letiltása</translation>
 <translation id="2621893359845808115">Blokkolja a webhelyek felugró ablakait, amelyek a cookie-k elfogadásáról/elutasításáról kérdezik a webhelyükön.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
@@ -140,11 +146,11 @@
 <translation id="2356070529366658676">Kérdés</translation>
 <translation id="4176463684765177261">Kikapcsolva</translation>
 <translation id="59174027418879706">Engedélyezve</translation>
-<translation id="6252490671914511928">A nap legfontosabb történetei egy teljesen privát hírcsatornán, csak Önnek.</translation>
-<translation id="8300751939969131609">A Brave-hírek bekapcsolásával egyetlen történetről sem marad le</translation>
-<translation id="7266075701303521777">A Brave Hírek hirdetések által támogatott, a teljesen privát és anonimizált hirdetések pedig az eszközén kerülnek kiválasztásra.</translation>
-<translation id="7699565323725789472">Kövesse a kedvenc forrásait, egy csatornán. Csak nyisson meg egy lapot a Brave-ben, görgessen le, és tessék!\nA Brave híreket teljesen privát és anonim hirdetések támogatják.</translation>
-<translation id="1765217911817124376">A Brave News bekapcsolása</translation>
+<translation id="6920492760024499150">A mai nap legfontosabb eseményei privát hírfolyamban, csak az Ön számára.</translation>
+<translation id="8300751939969131609">A Ping-hírek bekapcsolásával egyetlen történetről sem marad le</translation>
+<translation id="7627131190984957214">A Ping Híreket privát és anonimizált hirdetésekkel tartjuk fenn, amelyek illeszkednek az Ön készülékéhez.</translation>
+<translation id="7699565323725789472">Kövesse a kedvenc forrásait, egy csatornán. Csak nyisson meg egy lapot a Ping-ben, görgessen le, és tessék!\nA Ping híreket teljesen privát és anonim hirdetések támogatják.</translation>
+<translation id="1765217911817124376">A Ping News bekapcsolása</translation>
 <translation id="8981973962043893066">Keresés oldalra, témára vagy RSS-csatornára</translation>
 <translation id="3225021799163709119">Népszerű</translation>
 <translation id="3673348851739109493">A források rangsorolt listája</translation>
@@ -161,7 +167,7 @@
 <translation id="7461899062138731833">FORRÁSOK</translation>
 <translation id="6150420917380577651">Nem találhatók csatornák itt:<ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Hirdetés</translation>
-<translation id="7823038307453615214">A Brave News mutatása</translation>
+<translation id="7823038307453615214">A Ping News mutatása</translation>
 <translation id="6527303717912515753">Megosztás</translation>
 <translation id="1654539412343893324">További tudnivalók az adatokról</translation>
 <translation id="2989805286512600854">Megnyitás új lapon</translation>
@@ -170,9 +176,9 @@
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> letiltva</translation>
 <translation id="1276592121036104130">Új tartalom betöltése</translation>
 <translation id="3189348785087463371">Promotált</translation>
-<translation id="7554145152551782675">További Brave ajánlatok</translation>
+<translation id="7554145152551782675">További Ping ajánlatok</translation>
 <translation id="254100925533869330">Nincs tartalom</translation>
-<translation id="7172792761509429092">A Brave hírek nem tud semmilyen tartalmat megjeleníteni.</translation>
+<translation id="7172792761509429092">A Ping hírek nem tud semmilyen tartalmat megjeleníteni.</translation>
 <translation id="1771307734839364850">Tartalomforrások kiválasztása</translation>
 <translation id="6891769200437737956">Nem engedi, hogy a weboldalak ujjlenyomatot készítsenek</translation>
 <translation id="7459000603787995422">Fülek bezárása kilépéskor</translation>
@@ -187,9 +193,9 @@
 <translation id="6975864539539353406">Törli a cookie-kat és egyéb webhelyadatokat, amikor bezár egy adott oldalt</translation>
 <translation id="1680858055899097121">Új böngészés kezdésekor ne maradjanak nyitva az előzőleg megnyitott fülek</translation>
 <translation id="7142548388914389999">Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése</translation>
-<translation id="5254037869598726291">Az anonimizált P3A információk segítségével a Brave felmérheti az átlagos használatot, és biztosíthatja a népszerű funkciók folyamatos fejlesztését.</translation>
+<translation id="5254037869598726291">Az anonimizált P3A információk segítségével a Ping felmérheti az átlagos használatot, és biztosíthatja a népszerű funkciók folyamatos fejlesztését.</translation>
 <translation id="933652931229970927">Diagnosztikai jelentések automatikus elküldése</translation>
-<translation id="5987838417172370108">Segítsen fejleszteni a Brave termékstabilitását azáltal, hogy engedélyezi a diagnosztikai jelentések automatikus elküldését a Brave böngésző összeomlása vagy lefagyása esetén.</translation>
+<translation id="5987838417172370108">Segítsen fejleszteni a Ping termékstabilitását azáltal, hogy engedélyezi a diagnosztikai jelentések automatikus elküldését a Ping böngésző összeomlása vagy lefagyása esetén.</translation>
 <translation id="7977176350719484850">Becs. adatok\nmentve</translation>
 <translation id="9008534313521214777">Becsült megtakarított\nidő</translation>
 <translation id="410351446219883937">Automatikus lejátszás</translation>
@@ -203,13 +209,13 @@
 <translation id="4172219483893066798">A webhelyek kérhetnek hozzáférést a localhost-erőforrásokhoz</translation>
 <translation id="7181706637590665047">A localhost-erőforrásokhoz való hozzáférés letiltása</translation>
 <translation id="1485435696620658073">Hozzáférhet a localhost-erőforrásokhoz</translation>
-<translation id="181905442828471321">Brave pajzsok globális alapbeállításai</translation>
+<translation id="181905442828471321">Ping pajzsok globális alapbeállításai</translation>
 <translation id="2675679258824361492">Egyéb adatvédelmi beállítások</translation>
 <translation id="8026334261755873520">Böngészési adatok törlése</translation>
 <translation id="1690924763769415936">Lejátszás a háttérben</translation>
-<translation id="6332924730165919598">Az összes fül lezárásával a Brave lezáródik</translation>
-<translation id="8308305244351876417">Lehetővé teszi a zenelejátszást, amikor Ön a Brave vagy egy másik alkalmazás másik lapjára vált, vagy amikor a készülék képernyője ki van kapcsolva.</translation>
-<translation id="49147335255967913">YouTube-hivatkozások megnyitása a Brave-ben</translation>
+<translation id="6332924730165919598">Az összes fül lezárásával a Ping lezáródik</translation>
+<translation id="8308305244351876417">Lehetővé teszi a zenelejátszást, amikor Ön a Ping vagy egy másik alkalmazás másik lapjára vált, vagy amikor a készülék képernyője ki van kapcsolva.</translation>
+<translation id="49147335255967913">YouTube-hivatkozások megnyitása a Ping-ben</translation>
 <translation id="4150201353443180367">Megjelenítés</translation>
 <translation id="4275663329226226506">Média</translation>
 <translation id="5950428831347558278">Widevine digitális jogkezelés</translation>
@@ -218,25 +224,25 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>További tudnivalók a Widevine-ról<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Engedélyezés (újraindítás most)</translation>
 <translation id="2433507940547922241">Megjelenés</translation>
-<translation id="9040069796107003510">Brave jutalom ikon</translation>
-<translation id="6333347122924254968">A Brave-jutalmak ikonjának megjelenítése a címsorban</translation>
+<translation id="9040069796107003510">Ping jutalom ikon</translation>
+<translation id="6333347122924254968">A Ping-jutalmak ikonjának megjelenítése a címsorban</translation>
 <translation id="8495235435594442882">Alsó eszközsáv engedélyezése</translation>
-<translation id="6587448235155023666">A változtatásai a Brave következő indításakor lépnek érvénybe</translation>
+<translation id="6587448235155023666">A változtatásai a Ping következő indításakor lépnek érvénybe</translation>
 <translation id="8701563696941209024">INDÍTSA ÚJRA MOST</translation>
 <translation id="834487290629916192">KÉSŐBB</translation>
-<translation id="7207456302801184289">A Brave üdvözli Önt!</translation>
+<translation id="7207456302801184289">A Ping üdvözli Önt!</translation>
 <translation id="4117451092682672487">Adatvédelem. Egyszerűen.</translation>
-<translation id="7909375417585209817">A Brave alapértelmezett böngészőként történő beállításával minden hivatkozás, amelyre rákoppint a Brave adatvédelmi beállításaival fog megnyílni.</translation>
+<translation id="7909375417585209817">A Ping alapértelmezett böngészőként történő beállításával minden hivatkozás, amelyre rákoppint a Ping adatvédelmi beállításaival fog megnyílni.</translation>
 <translation id="7370959926683925817">Blokkolja a hirdetéseket, és csökkentse az adatforgalmat, minden egyes nap.</translation>
-<translation id="7281027579943912834">Ha a Brave-et használja alapértelmezett böngészőként, a Brave hirdetésblokkoló védelme minden megnyitott hivatkozásra kiterjed – minden weblapra, videóra és adatfolyamra.</translation>
-<translation id="5148943178722443958">Segítsen a Brave továbbfejlesztésében.</translation>
+<translation id="7281027579943912834">Ha a Ping-et használja alapértelmezett böngészőként, a Ping hirdetésblokkoló védelme minden megnyitott hivatkozásra kiterjed – minden weblapra, videóra és adatfolyamra.</translation>
+<translation id="5148943178722443958">Segítsen a Ping továbbfejlesztésében.</translation>
 <translation id="6718362830686703942">Küldjön diagnosztikai jelentéseket, amikor a rendszer összeomlik vagy lefagy.</translation>
-<translation id="1929905278861178845">Osszon meg termékadatokat a Brave felhasználói által használt funkciókról teljesen privát és anonim módon.</translation>
+<translation id="8616157231067364693">Osszon meg privát és anonim termékinformációkat arról, hogy milyen funkciókat használnak a Ping felhasználói.</translation>
 <translation id="2877653791257935258">Adja meg a weboldal nevét vagy URL-jét</translation>
-<translation id="5329830149661250028">A Brave-vel más: Nincsenek reklámok. Nincsenek nyomkövetők. Sokkal gyorsabban töltenek be az oldalak.</translation>
-<translation id="3941792073703079607">A Brave-vel a különbség szembeötlő: blokkolja a hirdetéseket, csökkenti az adatforgalmat és felgyorsítja a streamelést.</translation>
-<translation id="3545804467215833536">Koppintson a Brave pajzsok megtekintéséhez</translation>
-<translation id="1724327820822194498">Nézze meg, oldalanként mi mindent blokkolt a Brave a pajzsok segítségével.</translation>
+<translation id="5329830149661250028">A Ping-vel más: Nincsenek reklámok. Nincsenek nyomkövetők. Sokkal gyorsabban töltenek be az oldalak.</translation>
+<translation id="3941792073703079607">A Ping-vel a különbség szembeötlő: blokkolja a hirdetéseket, csökkenti az adatforgalmat és felgyorsítja a streamelést.</translation>
+<translation id="3545804467215833536">Koppintson a Ping pajzsok megtekintéséhez</translation>
+<translation id="1724327820822194498">Nézze meg, oldalanként mi mindent blokkolt a Ping a pajzsok segítségével.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> és további <ph name="TRACKER"/> reklám és nyomkövető blokkolva</translation>
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> és más hirdetések illetve nyomkövetők blokkolva</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklám és nyomkövető blokkolva</translation>
@@ -246,23 +252,25 @@
 <translation id="986879628471635371">Előkészítési hibaelhárítás</translation>
 <translation id="5808759341041733958">Válasszon alapértelmezett keresőmotort</translation>
 <translation id="1331593888918588693">Az alkalmazás beállításaiban később bármikor változtathatod a beállításokat.</translation>
-<translation id="5806601733251372221">Brave védelem</translation>
+<translation id="5806601733251372221">Ping védelem</translation>
 <translation id="8537217141725709400">Szerezzen <ph name="TOKEN"/></translation>
-<translation id="3333887201479867589">Brave jutalmak</translation>
+<translation id="3333887201479867589">Ping jutalmak</translation>
 <translation id="5870330605209713397">magánéletet tiszteletben tartó hirdetések megtekintésével, és alapértelmezettként támogassa kedvenc oldalait és alkotóit.</translation>
-<translation id="5302488867897327287">A Brave Rewards használatára kattintva elfogadja a</translation>
+<translation id="5302488867897327287">A Ping Rewards használatára kattintva elfogadja a</translation>
 <translation id="4281844954008187215">Szolgáltatási feltételek</translation>
 <translation id="6871397658902960384">Böngészés elkezdése</translation>
 <translation id="454386012157232640">Nem láttam hirdetést</translation>
-<translation id="1448877943847791441">A Brave ennyi idő múlva fogja mutatni az első hirdetésed:</translation>
-<translation id="4410793187232041318">Mostantól tokeneket szerez a Brave Ads-től</translation>
-<translation id="6511854390690723657">Ez az első Brave hirdetése. Koppintson, ha szeretne többet megtudni.</translation>
-<translation id="2070991379950719711">Használja a Brave Rewardsot</translation>
+<translation id="1448877943847791441">A Ping ennyi idő múlva fogja mutatni az első hirdetésed:</translation>
+<translation id="4410793187232041318">Mostantól tokeneket szerez a Ping Ads-től</translation>
+<translation id="6511854390690723657">Ez az első Ping hirdetése. Koppintson, ha szeretne többet megtudni.</translation>
+<translation id="2070991379950719711">Használja a Ping Rewardsot</translation>
 <translation id="48520986898237073">Tovább a pénztárcához</translation>
+<translation id="6213254277250932867">12 szavas helyreállítási kifejezésem van</translation>
+<translation id="4225265925807365011">24 szavas helyreállítási kifejezésem van</translation>
 <translation id="3570367516044491911">Beállítás alapértelmezett böngészőként</translation>
 <translation id="6800338374677644736">Beállítás alapértelmezett böngészőként</translation>
-<translation id="19715420010996093">Válaszd ki a Brave böngészőt és kattints a 'Mindig'-re</translation>
-<translation id="3546439402724649282">A Brave már be van állítva alapértelmezett böngészőként.</translation>
+<translation id="19715420010996093">Válaszd ki a Ping böngészőt és kattints a 'Mindig'-re</translation>
+<translation id="3546439402724649282">A Ping már be van állítva alapértelmezett böngészőként.</translation>
 <translation id="8389661903259423907">Már beállított egy alapértelmezett böngészőt. Az alapértelmezett böngészőt az alkalmazás beállításaiban lehet változtatni.</translation>
 <translation id="1545749641540134597">QR-kód beolvasása</translation>
 <translation id="5317781812114905957">Utasítások</translation>
@@ -270,12 +278,12 @@
 <translation id="2734870894159530879">Lépjen be ide:<ph name="WALLET_PROVIDER"/> az egyenlege megtekintéséhez</translation>
 <translation id="7658239707568436148">Elvetés</translation>
 <translation id="1201402288615127009">Tovább</translation>
-<translation id="8481779960444041069">A fokozott adatvédelemhez állítsa be a Brave-et alapértelmezett böngészőként</translation>
-<translation id="1938402585819943124">Válassza ki a Brave-et a következő képernyőként.</translation>
+<translation id="8481779960444041069">A fokozott adatvédelemhez állítsa be a Ping-et alapértelmezett böngészőként</translation>
+<translation id="1938402585819943124">Válassza ki a Ping-et a következő képernyőként.</translation>
 <translation id="8926389886865778422">Többször ne figyelmeztessen</translation>
 <translation id="745974920645827035">Független keresés jobb adatvédelemmel</translation>
-<translation id="4717018805430015801">A Brave keresője nem követi nyomon Önt, a lekérdezéseit vagy a kattintásait.</translation>
-<translation id="5240031343741051161">A Brave kereső kipróbálása</translation>
+<translation id="2773167297815493692">A Ping Keresés nem készít Önről profilt.</translation>
+<translation id="5240031343741051161">A Ping kereső kipróbálása</translation>
 <translation id="5234764350956374838">Elvetés</translation>
 <translation id="6639570430554986719">JANUÁR</translation>
 <translation id="1807352595146144483">FEBRUÁR</translation>
@@ -289,24 +297,19 @@
 <translation id="8220228041552340594">OKTÓBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="1772301834467143364">Brave News</translation>
+<translation id="3960619311638643872">Ping VPN</translation>
+<translation id="1772301834467143364">Ping News</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Beállítások</translation>
 <translation id="6020176662032623904">Ellenőrzött alkotó</translation>
 <translation id="2369994359029526515">Nem ellenőrzött alkotó</translation>
 <translation id="6112368337882254910">Automatikus Támogatás</translation>
-<translation id="7861645265922445992">Jutalmak igénylése</translation>
 <translation id="1848737374354350807">Egyenleg</translation>
 <translation id="4781696154289395607"><ph name="BAT_VALUE"/> BAT-vel járult hozzá.</translation>
 <translation id="2429828319207652823">Hiba történt a hozzájárulásod feldolgozása során.</translation>
-<translation id="2221902203895354376">Tokenadomány elérhető!</translation>
-<translation id="2377929997600454162">Megérkeztek a(z) <ph name="MONTH_VALUE"/> havi hirdetések után kapott jutalmai!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> havi jutalmak összege: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">Még <ph name="TOKEN"/> napig igényelheti</translation>
 <translation id="683765328936486920">YouTube-on</translation>
 <translation id="8969049974285901797">Twitchen</translation>
-<translation id="8038539967102225446">Itt vannak a Brave Hirdetések!</translation>
+<translation id="8038539967102225446">Itt vannak a Ping Hirdetések!</translation>
 <translation id="222883304157347087">(ez a készülék)</translation>
 <translation id="4157741509680155021">KÉSZÜLÉKEK A fSZINKRONLÁNCON</translation>
 <translation id="279635009973773843">KÉSZÜLÉKEK BETÖLTÉSE...</translation>
@@ -314,19 +317,17 @@
 <translation id="2569646144216067185">Szavak száma: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Rossz szinkronizálási kód</translation>
 <translation id="8284063834901328650">Rossz szinkronizálási QR-kód</translation>
-<translation id="859506441384380749">Ezt a kódot a Brave egy elavult verziója generálta; kérjük, előbb frissítse a másik eszközt</translation>
+<translation id="859506441384380749">Ezt a kódot a Ping egy elavult verziója generálta; kérjük, előbb frissítse a másik eszközt</translation>
 <translation id="3132642509209154999">Ez a kód lejárt. Generáljon egy újat a másik eszközén, majd próbálja újra.</translation>
 <translation id="2859229680945501779">Ez a kód érvénytelen. Ellenőrizze, hogy az eszköze idő- és időzóna-beállításai helyesek-e.</translation>
-<translation id="3149880132460839085">Brave szinkronizáció</translation>
-<translation id="3680755684186855422">A Brave szinkronizáció lehetővé teszi a Brave böngészők között a könyvjelzők adatainak titkosított szinkronizációját az Ön különböző eszközein</translation>
-<translation id="3735228155296883311">Egyszerűen olvassa be a kódot egy másik készüléken létrehozott szinkronizálási láncról. Indíthat új szinkronizálási láncot is.</translation>
-<translation id="2614069607859982576">Már szinkronizált készüléket használva nyisd meg a Brave beállításait, és navigálj a Beállítások és szinkronizálásra. Válaszd az „Új készülék hozzáadása” pontot, és olvasd be a képernyőn megjelenő QR-kódot.</translation>
+<translation id="3149880132460839085">Ping szinkronizáció</translation>
+<translation id="348794064910142198">A Ping Szinkronizálás lehetővé teszi Önnek a könyvjelzők adatainak privát szinkronizálását a különböző eszközein lévő Ping böngészői között.\n\nEgyszerűen szkennelje be a kódot a szinkronizálási láncból, amelyet egy másik eszközön hozott létre. Új szinkronizálási láncot is indíthat.</translation>
+<translation id="2614069607859982576">Már szinkronizált készüléket használva nyisd meg a Ping beállításait, és navigálj a Beállítások és szinkronizálásra. Válaszd az „Új készülék hozzáadása” pontot, és olvasd be a képernyőn megjelenő QR-kódot.</translation>
 <translation id="5241263629636958324">Vágólapra másolva</translation>
 <translation id="5817918615728894473">Párosítás</translation>
 <translation id="3429575397891106447">Szinkronizálási beállítások</translation>
 <translation id="1680065323266179640">Szinkronizálási fiók törlése</translation>
-<translation id="3792563952903751704">Ha törli a fiókját, azzal eltávolítja a Brave szerverein található titkosított adatait, és letiltja a Szinkronizálást az összes csatlakoztatott eszközén. Az ezeken az eszközökön helyileg tárolt adatokat azonban ezúton nem törli.
-  Ez a törlés végleges, és az adatok nem állíthatók vissza semmilyen módon. Ha a jövőben ismét szeretné használni a Szinkronizálást, új fiókot kell létrehoznia, és egyenként kell újra hozzáadnia az összes eszközt.</translation>
+<translation id="8397325856045820212">A fiók törlése törli a titkosított adatokat a Ping szervereiről, és kikapcsolja a szinkronizálást az összes csatlakoztatott eszközén. A helyileg tárolt adatokat azonban nem törli le ezeken az eszközökön.\n\nA törlés végleges, és az adatok helyreállítására nincs mód. Ha úgy dönt, hogy újra használni szeretné a szinkronizálást, új fiókot kell létrehoznia, és minden egyes eszközt egyesével újra hozzá kell adnia.</translation>
 <translation id="9064376100690171155">Fiók végleges törlése</translation>
 <translation id="2740516568641790390">Szinkronizációs fiók sikeresen törölve</translation>
 <translation id="7006136453627651236">Szinkronizációs fiók törlése sikertelen</translation>
@@ -336,12 +337,10 @@
 <translation id="1602067095281698985">Új szinkronizációs lánc indítása</translation>
 <translation id="1475223680121592371">Mobilkészülék hozzáadása</translation>
 <translation id="2965377893636908578">Számítógép hozzáadása</translation>
-<translation id="6604289897677913048">Egy második telefonnal vagy táblagéppel navigáljon a Brave Beállítások &gt; Szinkronizálás &gt; Beolvasás pontra.</translation>
-<translation id="8508856434435157945">Navigáljon mobilkészülékén a Brave szinkronizálásra a Beállítások panelben, majd kattintson a „Szinkronizálási kód beolvasása” gombra. Kamerájával olvassa be az alábbi QR-kódot.</translation>
-<translation id="2590683710114839102">Számítógépén navigáljon a Brave beállítások &gt; Szinkronizálás menübe. Válassza a „Szinkronizálásilánc-kód beírása” pontot.</translation>
+<translation id="4701589725270449523">Egy másik telefont vagy táblagépet használva nyissa meg a Ping beállítások, szinkronizálás és szkennelés menüpontot.\n\nA mobileszközén lépjen a Beállítások panelen a Ping szinkronizálás menüpontra, és érintse meg a „Szinkronizálási kód beolvasása” gombot. Olvassa be a kamerával az alábbi QR-kódot.</translation>
+<translation id="67114562351518315">A számítógépen lépjen a Ping beállítások és szinkronizálás menüpontba. Válassza ki a „Szinkronizálási lánckód megadása” lehetőséget.\n\nA célszámítógépen nyissa meg a Ping szinkronizálás pontot a beállításokban, és kattintson a „Van szinkronizálási kódom” gombra.\nAdja meg a szinkronizálási lánc alább látható kódszavait.</translation>
 <translation id="65315202420929965">Szinkronizálási kód szkennelése</translation>
 <translation id="6764016175302339802">Kezelje ezt a kódot jelszóként. Ha valaki megszerzi, elolvashatja és módosíthatja az ön szinkronizált adatait.</translation>
-<translation id="6707003343517029414">A célszámítógépen navigáljon a Brave szinkronizálás beállításaiba, és kattintson a „Van egy szinkronizálási kódom” pontra.\nÍrja be az alább látható szinkronizálásilánc-kód szavait.</translation>
 <translation id="2731921493694251495">Írja be a szinkronizálásilánc-kódot</translation>
 <translation id="2175927920773552910">QR-kód</translation>
 <translation id="8653433343015102968">Kódszavak</translation>
@@ -351,19 +350,24 @@
 <translation id="6776430845975754238">A beállítások változtatása csak azok az adatokat érinti, amiket ez a készülék megoszt másokkal.</translation>
 <translation id="1061533051865606843">Új készülék hozzáadása</translation>
 <translation id="7539985410310934287">Kódszavak beírása</translation>
-<translation id="2886391679017857869">Már szinkronizált készüléket használva nyisd meg a Brave beállításait, és navigálj a Beállítások és szinkronizálásra. Válaszd az „Új készülék hozzáadása”, majd a „Kódszavak jelenjenek meg” pontokat.</translation>
+<translation id="2886391679017857869">Már szinkronizált készüléket használva nyisd meg a Ping beállításait, és navigálj a Beállítások és szinkronizálásra. Válaszd az „Új készülék hozzáadása”, majd a „Kódszavak jelenjenek meg” pontokat.</translation>
 <translation id="8131740175452115882">Megerősítés</translation>
 <translation id="4973653569293835178">Kamerámat használom...</translation>
 <translation id="326454632686131209">Készülék szinkronizálása</translation>
+<translation id="3122158728238634723">Új kód generálása</translation>
+<translation id="4358805443781965194">A kód lejárt. Generáljon egy újat az alábbi gombra kattintva.</translation>
+<translation id="318164877797885563">Az ideiglenes kód a következő időtartamban érvényes: <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Kilépés a beállításokból</translation>
-<translation id="8050847734948770789">Brave jutalmak engedélyezése</translation>
+<translation id="8050847734948770789">Ping jutalmak engedélyezése</translation>
 <translation id="9187185473011056079">Benne vagyok!</translation>
-<translation id="8185825081026121627">Általános figyelmi zsetont szerezhet, ha adatvádelmi Brave Rewards hirdetéseket néz meg.</translation>
+<translation id="8185825081026121627">Általános figyelmi zsetont szerezhet, ha adatvádelmi Ping Rewards hirdetéseket néz meg.</translation>
 <translation id="5321518976657560663">Újraállítási hiba</translation>
-<translation id="4114170343590425996">Hiba történt a Brave Rewards újraállításakor. Indítsa újra a Brave-et, majd próbálja újra.</translation>
-<translation id="6417420737057016607">Brave hirdetések</translation>
-<translation id="5611966874859284786">Mutasson értesítéseket, amikor a Brave nincs használatban</translation>
-<translation id="6606319453795180219">Ezzel törli a Brave-jutalmait, és alaphelyzetbe állítja a Brave-jutalmakkal kapcsolatos összes adatát.</translation>
+<translation id="4114170343590425996">Hiba történt a Ping Rewards újraállításakor. Indítsa újra a Ping-et, majd próbálja újra.</translation>
+<translation id="6417420737057016607">Ping hirdetések</translation>
+<translation id="5611966874859284786">Mutasson értesítéseket, amikor a Ping nincs használatban</translation>
+<translation id="6606319453795180219">Ezzel törli a Ping-jutalmait, és alaphelyzetbe állítja a Ping-jutalmakkal kapcsolatos összes adatát.</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>A Ping-jutalmak adatainak visszaállítása…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>A Ping-jutalmak adatainak törlése…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Könyvjelző hozzáadása</translation>
 <translation id="340492034650766959">Könyvjelző törlése</translation>
 <translation id="2149973817440762519">Könyvjelző szerkesztése</translation>
@@ -382,16 +386,16 @@
 <translation id="2803313416453193357">Mappa megnyitása</translation>
 <translation id="8985635554450124959">A szinkronizálást nem lehetett beállítani</translation>
 <translation id="7173114856073700355">Beállítások megnyitása</translation>
-<translation id="496896260395129787">Ez a Brave szinkronizációs fiók törölve lett egy másik eszközről. Ha nem akarta letiltani a Szinkronizálást, <ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">Ez a Ping szinkronizációs fiók törölve lett egy másik eszközről. Ha nem akarta letiltani a Szinkronizálást, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>hozza létre újra a fiókot.</translation>
 <translation id="4094590686212463338">Nem sikerült csatlakozni ehhez a szinkronizálási lánchoz, mert a lánc törölve lett.</translation>
 <translation id="4908081302669157000">Telefonszámok, címek és e-mail-címek</translation>
 <translation id="1056898198331236512">Figyelmeztetés</translation>
 <translation id="1426410128494586442">Igen</translation>
-<translation id="7811264919113243207">Ezzel megosztja Brave adatait – beleértve akár a jelszavait – az ezt a QR-kódot generáló eszközzel.
+<translation id="7811264919113243207">Ezzel megosztja Ping adatait – beleértve akár a jelszavait – az ezt a QR-kódot generáló eszközzel.
 Ellenőrizze, hogy ezt a QR-kódot egy az Ön tulajdonában lévő eszköz generálta.
 Biztosan végrehajtja a műveletet?</translation>
-<translation id="3097089005389027085">Ezzel megosztja Brave adatait – beleértve akár a jelszavait – az ezeket a kódszavakat generáló eszközzel.
+<translation id="3097089005389027085">Ezzel megosztja Ping adatait – beleértve akár a jelszavait – az ezeket a kódszavakat generáló eszközzel.
 Ellenőrizze, hogy ezeket a kódszavakat egy az Ön tulajdonában lévő eszköz generálta.
 Biztosan végrehajtja a műveletet?</translation>
 <translation id="4550208292810542331">A kameraengedély nem lett megadva</translation>
@@ -399,15 +403,15 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="3063783274005996079">Oldja fel a jelszavak szinkronizálásának engedélyezéséhez</translation>
 <translation id="7551563084530025179">Mielőtt szinkronizálhatná a jelszavakat, hitelesítenie kell magát az eszközön beállított biometrikus adataival/jelkódjával. Ez az extra biztonsági intézkedés a jelszavak biztonságát szolgálja.</translation>
 <translation id="6925081665778864449">A jelszavak szinkronizálásához engedélyezze a biometrikus/jelkód-hitelesítést az Android-eszközén. Ez az extra biztonsági intézkedés a jelszavak biztonságát szolgálja.</translation>
-<translation id="597993392929850353">Brave engedély</translation>
+<translation id="597993392929850353">Ping engedély</translation>
 <translation id="6336451774241870485">Új privát ablak</translation>
 <translation id="6199596294742117349">Ez egy bizalmas ablak</translation>
 <translation id="5858455511731621847">Habár a privát füleken megnyitott ablakok nem kerülnek helyi mentésre, még nem tesznek névtelenné vagy láthatatlanná a szolgáltatód, a főnököd, vagy a felkeresett oldalak elől.</translation>
-<translation id="5789441016350810005">Háttérben futó böngésző mellett küldött Brave Ads-hirdetések</translation>
+<translation id="5789441016350810005">Háttérben futó böngésző mellett küldött Ping Ads-hirdetések</translation>
 <translation id="4973347371961481083">Hozzájárulások</translation>
 <translation id="7047578174221019462">A havi hozzájárulásaidat feldolgoztuk.</translation>
 <translation id="3124090095880236567">Hirdetések bekapcsolása</translation>
-<translation id="2975780980638932742">Megérkezett a Brave Ads!</translation>
+<translation id="2975780980638932742">Megérkezett a Ping Ads!</translation>
 <translation id="7541582550122501404">Függő hozzájárulás</translation>
 <translation id="8520059774736886747">A tartalomkészítő <ph name="PUBLISHER_NAME"/> nemrég igazolta magát</translation>
 <translation id="1486343603936278248">token</translation>
@@ -417,14 +421,10 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="3870475560794762985">Szponzorált képek megjelenítése</translation>
 <translation id="8793108040181436796">Widgetek</translation>
 <translation id="8643377320501056697">Legjobb oldalak mutatása</translation>
-<translation id="7275773481201277457">Brave statisztikák mutatása</translation>
+<translation id="7275773481201277457">Ping statisztikák mutatása</translation>
 <translation id="8297488609722895137">A fénykép készítője: <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">A Brave Rewards használatára kattintva elfogadja a <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Pénzt kaphat a háttérkép megtekintéséért.</translation>
-<translation id="7136586167396205364">Szponzorált képek elrejtése</translation>
-<translation id="2927095357213611519">A webes tartalomkészítőket tokenekkel támogathatja. \nTokeneket magánszférát tiszteletben tartó hirdetések megtekintésével szerezhet.</translation>
-<translation id="2898634658146274982">Külső hivatkozások megnyitása a Brave-ben</translation>
-<translation id="5616508928556767259">A más alkalmazásból származó hivatkozásokat Brave webes nézetben nyitja meg. Megjegyzés: ehhez a Brave-nek kell lennie az alapértelmezett böngészőnek.</translation>
+<translation id="2898634658146274982">Külső hivatkozások megnyitása a Ping-ben</translation>
+<translation id="5616508928556767259">A más alkalmazásból származó hivatkozásokat Ping webes nézetben nyitja meg. Megjegyzés: ehhez a Ping-nek kell lennie az alapértelmezett böngészőnek.</translation>
 <translation id="2394961582378297792">Kijelentkezett</translation>
 <translation id="5308380583665731573">Csatlakozás</translation>
 <translation id="3368922792935385530">Kapcsolódva</translation>
@@ -435,30 +435,26 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1665118090708049096">Ugrás a(z) <ph name="WALLET_PROVIDER"/> fiókomra</translation>
 <translation id="4858636682078269312">Jelentkezzen be a(z) <ph name="WALLET_PROVIDER"/>-fiókjába</translation>
 <translation id="8874184842967597500">Nincs csatlakozva</translation>
-<translation id="2495032782748793764">Brave alapértelmezett</translation>
-<translation id="9132378787893584761">Oszd meg a Brave-et barátaiddal!</translation>
+<translation id="2495032782748793764">Ping alapértelmezett</translation>
+<translation id="9132378787893584761">Oszd meg a Ping-et barátaiddal!</translation>
 <translation id="717952606991220586">Hoppá, valami hiba történt. Próbáld újra később.</translation>
 <translation id="987264212798334818">Általános</translation>
 <translation id="1116694919640316211">Névjegy</translation>
 <translation id="7961015016161918242">Soha</translation>
 <translation id="1275213816424141989">Talán később</translation>
 <translation id="4406937629441301400">Nézd meg ezt a képet, és szerezz tokeneket, majd küldd tovább az alkotóknak. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Szerezzen tokeneket a kép megtekintésével. A része megszerzéséhez kattintson a Brave Rewards használatára.</translation>
 <translation id="6632345639591919543">A kép megnézésével tokeneket szerzel.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">A kép megnézésével tokeneket szerzel.</translation>
-<translation id="7877201489035217175">Tudj meg többet a szponzorált képekről</translation>
 <translation id="8164992819127316581">A(z) <ph name="CURRENT_MONTH"/> havi jutalmak kifizetésének feldolgozása <ph name="PAYOUT_DATE"/> dátummal kezdődik.</translation>
 <translation id="33967210973550414">A(z) <ph name="CURRENT_MONTH"/> havi jutalmak kifizetésének feldolgozása folyamatban van. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">A(z) <ph name="CURRENT_MONTH"/> havi jutalmak kifizetésének feldolgozása befejeződött. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Állapot ellenőrzése</translation>
-<translation id="828092975561478703">Minden megnézett szponzorált képért a bevétel 70%-át kapod tokenben. A Brave Ads-szel mindig te irányítod, hogy milyen reklámot nézel.</translation>
 <translation id="3624048886326677117">Nyomkövetők és hirdetések letiltása (agresszív)</translation>
 <translation id="7151914815476509258">Nyomkövetők és hirdetések letiltása (standard)</translation>
 <translation id="7384778069178817075">Összes követő és reklám engedélyezve</translation>
 <translation id="3763681089644577874">Sütik tiltása</translation>
 <translation id="614747795780742163">Nem engedi, hogy a weboldalak információkat tároljanak korábbi látogatásaidról</translation>
 <translation id="6883611015375728278">Összes süti blokkolása</translation>
-<translation id="4941539331405513605">Webhelyközi sütik blokkolása</translation>
+<translation id="6196640612572343990">Harmadik féltől származó cookie-k letiltása</translation>
 <translation id="5657156137487675418">Összes süti engedélyezése</translation>
 <translation id="1553643198679271031">Rejtett mód kérése</translation>
 <translation id="4891600875049212418">Böngésszen rejtett módban a bizalmas oldalak felkeresésekor</translation>
@@ -475,32 +471,35 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5582686930349810484">Ujjlenyomat-felismerés letiltva (standard)</translation>
 <translation id="769702552748212954">Minden ujjlenyomat-beállítás engedélyezése</translation>
 <translation id="876424292214881779">Blokkoltuk a hirdetéseket és más bizarr dolgokat</translation>
-<translation id="6930134873084561197">A weboldalak gyakran olyan sütiket és parancsfájlokat tartalmaznak, amelyek azonosítani akarnak téged vagy a készülékedet. Megpróbálják kideríteni, hogy ki vagy, és követik webes tevékenységedet minden oldalon\n\nA Brave letiltja ezeket a dolgokat, így követés nélkül böngészhetsz.</translation>
-<translation id="8553998445606452168">Bővebben a Brave Shieldsről</translation>
+<translation id="6849027612978668678">A webhelyek gyakran tartalmaznak cookie-kat és szkripteket, amelyek megpróbálják azonosítani Önt és eszközét. Ki akarják deríteni, hogy Ön kicsoda, és követni akarják Önt az interneten – minden webhelyen nyomon követik, mit csinál. A Ping letiltja ezeket az eszközöket, így Ön anélkül böngészhet, hogy követnék.</translation>
+<translation id="8553998445606452168">Bővebben a Ping Shieldsről</translation>
 <translation id="8912304686498704084">FEL</translation>
 <translation id="4963218453264888510">LE</translation>
-<translation id="7474113515179313724">A Brave adatvédelmi rendszere nélkül böngészel. Nem működik megfelelően ha be van kapcsolva Shields?</translation>
+<translation id="7474113515179313724">A Ping adatvédelmi rendszere nélkül böngészel. Nem működik megfelelően ha be van kapcsolva Shields?</translation>
+<translation id="4226543734057230801">Ethereum-hálózatok</translation>
+<translation id="3504157706952484145">Filecoin-hálózatok</translation>
+<translation id="1561541094377237745">Solana-hálózatok</translation>
+<translation id="7141438739990875547">Bitcoin-hálózatok</translation>
 <translation id="9055546041146396417">Ha ez az oldal nem működik, próbáld meg a Shields nélkül.</translation>
 <translation id="1209739344687072997">Nem működő oldal jelentése</translation>
-<translation id="8510478288840333677">Hívja fel a Brave fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően a Shieldsel:</translation>
-<translation id="5429200298326665264">Megjegyzés: Ez a weboldalcím a Brave verziód számával és IP-címeddel együtt be lesz küldve (és nem kerül tárolásra).</translation>
+<translation id="8510478288840333677">Hívja fel a Ping fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően a Shieldsel:</translation>
+<translation id="5429200298326665264">Megjegyzés: Ez a weboldalcím a Ping verziód számával és IP-címeddel együtt be lesz küldve (és nem kerül tárolásra).</translation>
 <translation id="5299848999918506028">Köszönjük!</translation>
-<translation id="76550953340008122">Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!</translation>
+<translation id="76550953340008122">Köszönjük, hogy értesítette a Ping fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!</translation>
 <translation id="650318023204990401">Speciális vezérlők</translation>
-<translation id="1275664486910646411">Mutassa a legnépszerűbb oldalakat az automatikus kiegészítésben</translation>
 <translation id="5370478469168390143">Adatok mentése online</translation>
-<translation id="1118508688433541158">Böngésszen gyorsabban, és blokkolja a hirdetéseket a Brave segítségével.</translation>
-<translation id="7427391215172269363">Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.</translation>
-<translation id="4776948189086901857">A Brave mindenhol működik</translation>
-<translation id="1606322780901645965">Töltsd le a Brave-et laptopodra vagy táblagépedre a brave.com-on, hogy a web gyorsabb és privátabb legyen.</translation>
+<translation id="1118508688433541158">Böngésszen gyorsabban, és blokkolja a hirdetéseket a Ping segítségével.</translation>
+<translation id="7427391215172269363">Minden nap spórolok az adatforgalmon, amikor a Ping-vel böngészek az interneten.</translation>
+<translation id="4776948189086901857">A Ping mindenhol működik</translation>
+<translation id="1606322780901645965">Töltsd le a Ping-et laptopodra vagy táblagépedre a brave.com-on, hogy a web gyorsabb és privátabb legyen.</translation>
 <translation id="8374242949413616101">Adatvédelem</translation>
-<translation id="4955406228638026265">A Brave megakadályozza, hogy a hirdetések és követők a beleegyezésed nélkül információkat gyűjtsenek rólad.</translation>
+<translation id="4955406228638026265">A Ping megakadályozza, hogy a hirdetések és követők a beleegyezésed nélkül információkat gyűjtsenek rólad.</translation>
 <translation id="752842701893882688">Spórolj adatokat és akkumulátort</translation>
 <translation id="1685837926613452362">Hirdetések és követők nélkül a webhelyek kevesebb adatot és akkumulátort használnak. Még pénzt is spórolhat a szolgáltatói díjakon.</translation>
 <translation id="5440744330377972191">A weboldalak gyorsabban töltődnek</translation>
-<translation id="3000738865641747653">Kevesebb adat betöltésével a weboldalak akár 8x gyorsabban töltődnek be Brave-ben, mint más böngészőkben.</translation>
+<translation id="3000738865641747653">Kevesebb adat betöltésével a weboldalak akár 8x gyorsabban töltődnek be Ping-ben, mint más böngészőkben.</translation>
 <translation id="8903462729414407077">Kapj heti híreket</translation>
-<translation id="7450323860390658083">Tájékozódj róla, hogy a felkeresett weboldalak közül melyek tartják legkevésbé tiszteletben az adatvédelmet.\n\nEzeket az adatvédelmi statisztikákat csak te láthatod. Semmilyen személyes adat vagy böngészési előzmény nem kerül ki a Brave böngészőből készülékeden.</translation>
+<translation id="7450323860390658083">Tájékozódj róla, hogy a felkeresett weboldalak közül melyek tartják legkevésbé tiszteletben az adatvédelmet.\n\nEzeket az adatvédelmi statisztikákat csak te láthatod. Semmilyen személyes adat vagy böngészési előzmény nem kerül ki a Ping böngészőből készülékeden.</translation>
 <translation id="6170159749517116894">Kapcsold be az adatvédelmi jelentéseket</translation>
 <translation id="1669047024429367828">Láthatóság</translation>
 <translation id="5966707198760109579">Hét</translation>
@@ -517,17 +516,17 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="3694122362646626770">Weboldalak</translation>
 <translation id="2225863440766607138">Követők</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">Az elmúlt 3 órában <ph name="COUNT"/> követőt és hirdetést blokkoltál a Brave böngészővel.</translation>
-<translation id="5005713153542196658">Böngéssze a legnagyobb híroldalakat akár 6x gyorsabban a Brave használatával és a követők és reklámok letiltásával.</translation>
+<translation id="6737820963776538947">Az elmúlt 3 órában <ph name="COUNT"/> követőt és hirdetést blokkoltál a Ping böngészővel.</translation>
+<translation id="5005713153542196658">Böngéssze a legnagyobb híroldalakat akár 6x gyorsabban a Ping használatával és a követők és reklámok letiltásával.</translation>
 <translation id="7427567994475794038">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi hirdetés és követő lett letiltva az elmúlt 3 órában.</translation>
-<translation id="2053891538879944400"><ph name="DATA"/> <ph name="DATA_TEXT"/> adatot spóroltál a Brave böngészővel.</translation>
+<translation id="2053891538879944400"><ph name="DATA"/> <ph name="DATA_TEXT"/> adatot spóroltál a Ping böngészővel.</translation>
 <translation id="8640064498452534195">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi adatot spóroltál.</translation>
-<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.🔋</translation>
-<translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Brave böngészővel.</translation>
+<translation id="2252497442547961651">A Ping böngésző átlagosan 40%-kal kevesebb akkumulátort használ.🔋</translation>
+<translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Ping böngészővel.</translation>
 <translation id="2883868922264431515">Szerezz tokeneket magánéletet tiszteletben tartó reklámok nézésével, és támogasd kedvenc weboldalaidat.</translation>
 <translation id="7408493389591475748">Az adatvédelmi jelentés megtekintéséhez kezdj el böngészni</translation>
-<translation id="9080777565335515917">Tedd a Brave-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
-<translation id="1390943217516275883">Engedélyezi, hogy a Brave megmutassa adatvédelmi statisztikáidat</translation>
+<translation id="9080777565335515917">Tedd a Ping-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
+<translation id="1390943217516275883">Engedélyezi, hogy a Ping megmutassa adatvédelmi statisztikáidat</translation>
 <translation id="1763352720905582220">Heti adatvédelmi jelentést küld</translation>
 <translation id="1811691435325545066">Törölj minden adatot az adatvédelmi jelentésekről.</translation>
 <translation id="5966003059662780423">Adatok törlése kilépéskor</translation>
@@ -546,10 +545,10 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8804164990146287819">Adatvédelmi szabályzat</translation>
 <translation id="8363792084628930008">A jutalmak engedélyezésével elfogadja a következőket: <ph name="TERMS_OF_SERVICE"/> és <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Tegyünk egy gyors bemutatót</translation>
-<translation id="7930505144430343145">Üdvözli a Brave Rewards!</translation>
-<translation id="3477340970981564961">A Brave privát hirdetések tokenekkel jutalmaznak meg, amivel a hagyományos reklámokkal ellentétben, támogathatod a tartalomkészítőket, és közben személyes adataid rejtve maradnak.</translation>
+<translation id="7930505144430343145">Üdvözli a Ping Rewards!</translation>
+<translation id="3477340970981564961">A Ping privát hirdetések tokenekkel jutalmaznak meg, amivel a hagyományos reklámokkal ellentétben, támogathatod a tartalomkészítőket, és közben személyes adataid rejtve maradnak.</translation>
 <translation id="6973095375773523904">Hol jelennek meg a hirdetések?</translation>
-<translation id="4328028439561659455">A Brave privát hirdetések értesítés formájában jelennek meg a képernyőn. Ön állíthatja be, milyen gyakran szeretné látni ezeket a hirdetéseket.</translation>
+<translation id="4328028439561659455">A Ping privát hirdetések értesítés formájában jelennek meg a képernyőn. Ön állíthatja be, milyen gyakran szeretné látni ezeket a hirdetéseket.</translation>
 <translation id="7712287524451429139">Visszaadás erőfeszítés nélkül</translation>
 <translation id="105037569026952831">Az alkotók automatikusan megkapják tokenes hozzájárulásaidat az elkötelezettségi szinted alapján, amit 'Figyelem'-ben mérünk.</translation>
 <translation id="3025802705256919103">Fejezze ki háláját hozzájárulásokkal</translation>
@@ -561,12 +560,14 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2353222426385080466">Több privát hirdetés, több jutalom.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> hirdetés óránként</translation>
 <translation id="827315274423079662">Juhé, készen állsz!</translation>
-<translation id="3895246934788932488">A Brave Rewardsot használva vigyáz az adataira, és mindenki számára jobb hellyé teszi a netet. És ez fantasztikus!</translation>
+<translation id="3895246934788932488">A Ping Rewardsot használva vigyáz az adataira, és mindenki számára jobb hellyé teszi a netet. És ez fantasztikus!</translation>
 <translation id="5705882733397021510">Vissza</translation>
 <translation id="3985567919248057638">Gyors bemutató indítása</translation>
 <translation id="7889432931837317731">Automatikus megnyitás, ha lehetséges</translation>
 <translation id="1029304566263314007">A letöltés előrehaladásáról szóló értesítések megjelenítése</translation>
 <translation id="2910433761530295035">Kérdezze meg, hogy hova mentse a fájlokat (SD-kártya érzékelése esetén)</translation>
+<translation id="2977501775944575564">Párhuzamos letöltés</translation>
+<translation id="6224180438946945617">A párhuzamos letöltés engedélyezése a gyorsabb letöltés érdekében</translation>
 <translation id="8967385052772844086">Teljes adatvédelmi jelentés megtekintése</translation>
 <translation id="6864343534748973390">Legnépszerűbb</translation>
 <translation id="4608192160278975831">Privát és követő nélküli</translation>
@@ -578,14 +579,12 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2422627462367776805">Dél-koreai internetes portál &amp; amp; keresés</translation>
 <translation id="177282784098234156">Privát, független, felhasználóbarát</translation>
 <translation id="1410130669636877548">Egyes keresőmotorok jobban védik adataidat internetes keresés közben.</translation>
-<translation id="5187052478998910855">Kell egy kis frissítés a Rewardsot illetően?</translation>
-<translation id="8622329973403382303">Nézz meg egy gyors bemutatót, hogy tisztázódjon, hogyan működik, és Rewards rocksztárként jegyezhessen fel a történelem!</translation>
 <translation id="3479552764303398839">Ne most</translation>
-<translation id="7138272885617540195">Alkalmazás-hivatkozások megnyitásának engedélyezése Brave-en kívüli alkalmazásokban</translation>
+<translation id="7138272885617540195">Alkalmazás-hivatkozások megnyitásának engedélyezése Ping-en kívüli alkalmazásokban</translation>
 <translation id="4954512758656527938">Alapértelmezett Ethereum pénztárca</translation>
 <translation id="7701023802820268122">Alapértelmezett Solana pénztárca</translation>
 <translation id="7701040980221191251">Nincs</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="8488282162676695335">Ping Wallet</translation>
 <translation id="8792121506918889955">WebRTC IP kezelési szabályzat</translation>
 <translation id="8798099450830957504">Alapértelmezett</translation>
 <translation id="1822560017823072927">Alapértelmezett publikus és privát interfészek</translation>
@@ -595,50 +594,50 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1483493594462132177">Küldés</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Böngészőnatív.\nÖnálló letétkezelés.\nTöbbláncos.</translation>
-<translation id="7909462264772842773">Kezelje kriptóit és NFT-it. A Brave pénztárca támogatja az Ethereumot, EVM láncok, Solana, Filecoin és még több használatát.</translation>
+<translation id="7909462264772842773">Kezelje kriptóit és NFT-it. A Ping pénztárca támogatja az Ethereumot, EVM láncok, Solana, Filecoin és még több használatát.</translation>
 <translation id="165255193061631296">Új pénztárcára van szüksége?</translation>
-<translation id="3485737865439729577">Kezdje el a Brave pénztárca használatát perceken belül</translation>
-<translation id="2759836790106646094">Készíts biztonsági mentést pénztárcádról most!</translation>
-<translation id="1078873179929044999">A következő lépésben egy 12 szavas helyreállítási kifejezést fog látni, amelyet arra használhat, hogy helyreállítsa az elsődleges kriptoszámláit. Mentse el biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a fiókjaihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
+<translation id="3485737865439729577">Kezdje el a Ping pénztárca használatát perceken belül</translation>
+<translation id="2540568096903252632">A folytatáshoz adjon meg egy jelszót</translation>
+<translation id="3356580495013324916">Adja meg a Ping pénztárca jelszavát, hogy mentést készíthessen a pénztárcáról.</translation>
 <translation id="2359808026110333948">Folytatás</translation>
 <translation id="5488357322146334497">Üzenet</translation>
-<translation id="1904000155026201268">Megértettem, hogy ha elvesztem a helyreállítási kifejezést, akkor nem fogok tudni hozzáférni a kriptopénztárcámhoz.</translation>
 <translation id="5333225216561354793">Szükségünk van rá, hogy elfogadja a lenti elemeket</translation>
-<translation id="1645800479814134195">Tudomásul veszem, hogy ez egy önálló letétkezelésű pénztárca, és egyedül én vagyok felelős a kapcsolódó pénzösszegekért, eszközökért vagy számlákért, valamint a pénztárcám biztonsága, védelme és biztonsági mentése érdekében szükséges intézkedések megtételéért. Tudomásul veszem, hogy a Brave nem férhet hozzá a pénztárcámhoz, és nem fordíthatja vissza a tranzakciókat a nevemben, továbbá, hogy a helyreállítási kifejezésem az EGYETLEN módja annak, hogy visszaszerezzem a hozzáférést elvesztett jelszó, ellopott eszköz vagy hasonló körülmény esetén.</translation>
+<translation id="6937275455070754004">Válassza ki, hogy melyik blokkláncot szeretné használni a pénztárcájában.</translation>
+<translation id="1645800479814134195">Tudomásul veszem, hogy ez egy önálló letétkezelésű pénztárca, és egyedül én vagyok felelős a kapcsolódó pénzösszegekért, eszközökért vagy számlákért, valamint a pénztárcám biztonsága, védelme és biztonsági mentése érdekében szükséges intézkedések megtételéért. Tudomásul veszem, hogy a Ping nem férhet hozzá a pénztárcámhoz, és nem fordíthatja vissza a tranzakciókat a nevemben, továbbá, hogy a helyreállítási kifejezésem az EGYETLEN módja annak, hogy visszaszerezzem a hozzáférést elvesztett jelszó, ellopott eszköz vagy hasonló körülmény esetén.</translation>
 <translation id="4565891212173086999">Elolvastam és elfogadom a <ph name="CLICK_START"/>Használati feltételeket<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">Helyreállítási kifejezés</translation>
-<translation id="5077747669435508720">Írja fel vagy másolja ki ezeket a szavakat a lent ábrázolt megfelelő sorrendben, és mentse el őket biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a számláihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
-<translation id="2708402071160162126">FIGYELMEZTETÉS: Senkivel ne ossza meg a helyreállítási kifejezését! Ennek a kifejezésnek a birtokában bárki örökre elveheti az eszközeit.</translation>
-<translation id="111912712268284159">Elmentettem a kifejezést biztonságos helyre.</translation>
-<translation id="6896758677409633944">Másolás</translation>
-<translation id="1783600039044302171">Biztosítsd kriptopénzed biztonságát jelszóval</translation>
+<translation id="3259102562570606417">Helyreállítási kifejezés mentése</translation>
+<translation id="4339981001593889376">A helyreállítási kifejezés a kulcs a pénztárcájához való hozzáféréshez, ha elfelejti jelszavát vagy elveszíti eszközét.</translation>
+<translation id="426648489149930289">Tárolja biztonságos, mások számára nem hozzáférhető helyen, és ne ossza meg senkivel.</translation>
 <translation id="3726490322412361740">Add meg a jelszót</translation>
-<translation id="3038243139480464605">Jelszó visszaigazolása</translation>
-<translation id="3043677904160378840">A jelszónak legalább 8 karakterből kell állnia.</translation>
-<translation id="7396672979287122068">A visszaigazolt jelszó nem egyezik</translation>
-<translation id="7084181009966710506">Pénztárca létrehozása...</translation>
+<translation id="1566412704591731844">Pénztárcája létrehozása...</translation>
+<translation id="7779823116893018906">Ez beletelhet néhány másodpercbe...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NUMBER"/>. <ph name="ACCOUNT_NAME"/> fiók</translation>
 <translation id="7665369617277396874">Fiók hozzáadása</translation>
 <translation id="3448492834076427715">Fiók frissítése</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Saját helyreállítási kifejezés megtekintése</translation>
+<translation id="5303015959766064022">Később végzem el a biztonsági mentést</translation>
+<translation id="7345730059518887993">Ellenőrizzük</translation>
+<translation id="7640406249038879146">Adja meg a helyreállítása kifejezése <ph name="WORD_POSITION"/>. szavát.</translation>
+<translation id="2598171223363459366">Ezt a lépést most kihagyhatja, de a fiók biztonsága érdekében továbbra is biztonsági másolatot kell készítenie a helyreállítási kifejezésről.</translation>
 <translation id="8100001366858145406">Engedélyezed az ujjlenyomatos feloldást?</translation>
 <translation id="5493402808936397665">Engedélyezd a biometrikát a pénztárca zárolásának gyors feloldásához anélkül, hogy beírnád a jelszót.</translation>
 <translation id="8030647312184163932">Ujjlenyomatos feloldás</translation>
 <translation id="4090490645603511157">A biometrika segítségével gyorsan feloldhatja pénztárcáját anélkül, hogy beírná a jelszót.</translation>
 <translation id="1544192797660353713">Pénztárca</translation>
-<translation id="6901810042765869341">Add meg a helyreállítási kifejezést Brave Wallet kriptopénztárcád visszaállításához.</translation>
-<translation id="9120654436199628567">Kriptoszámla visszaállítása</translation>
+<translation id="2321396552035646646">A teljes helyreállítási kifejezést bármely mezőbe beillesztheti.</translation>
+<translation id="3961126209136843111">Meglévő pénztárca importálása</translation>
 <translation id="4811736040444856406">Helyreállítási kifejezés megjelenítése</translation>
-<translation id="283071225285270357">Add meg a helyreállítási kifejezést</translation>
-<translation id="3943857333388298514">Beillesztés</translation>
-<translation id="3331452756822160641">Új jelszó</translation>
-<translation id="4359319875297001084">Importál régebbi Brave kriptotárcákból?</translation>
-<translation id="2339124864228588937">Igazold vissza a helyreállítási kifejezést</translation>
-<translation id="3747079125031086337">Válassza ki a helyreállítási kifejezés szavait a megfelelő sorrendben.</translation>
-<translation id="6518133107902771759">Ellenőrzés</translation>
+<translation id="4359319875297001084">Importál régebbi Ping kriptotárcákból?</translation>
 <translation id="3157931365184549694">Visszaállítás</translation>
 <translation id="5844138175312846408">Már rendelkezik pénztárcával?</translation>
 <translation id="2502258949541727762">Mielőtt belevágunk</translation>
+<translation id="4303748097351941030">Támogatott hálózatok</translation>
+<translation id="4204268048253692928">Bármikor hozzáadhat további hálózatokat a Beállításokban.</translation>
+<translation id="2523174693142405417">Hálózatok keresése</translation>
+<translation id="1164748583090434571">Testnets megmutatása</translation>
+<translation id="935220650946301698">Folytatás a következő hálózattal: <ph name="NUMBER"/></translation>
+<translation id="4052668782430384783"><ph name="NUMBER"/>. szó</translation>
 <translation id="8248460961680233459">Jelszó létrehozása</translation>
 <translation id="2789310860394340571">Ezzel a jelszóval férhet hozzá a pénztárcájához.</translation>
 <translation id="2136372518715274136">Adja meg az új jelszót</translation>
@@ -652,14 +651,16 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5981303441790732480">Meglévő pénztárca importálása</translation>
 <translation id="9111102763498581341">Feloldás</translation>
 <translation id="6657585470893396449">Jelszó</translation>
+<translation id="7553242001898162573">Adja meg a jelszót</translation>
 <translation id="5619264711680220002">Biometrikus feloldás</translation>
+<translation id="9195657745688986798">Pénztárca zárolásának feloldása</translation>
 <translation id="5168349973342709369">A tárca feloldásához adja meg a jelszavát</translation>
 <translation id="1144810021918451336">Nem védi meg a veszélyes webhelyek, letöltések és bővítmények ellen.</translation>
-<translation id="5760476995887363522">A kifejezések nem egyeznek. Próbálja meg újra.</translation>
+<translation id="9085712756417277119">A helyreállítási kifejezés nem egyezik</translation>
 <translation id="2360588547830602174">A fiók helyreállítása sikertelen volt. Próbáld meg újra.</translation>
 <translation id="1987317783729300807">Fiókok</translation>
-<translation id="6284218950354553099">Napi használatról szóló jelzések automatikus küldése a Brave-be</translation>
-<translation id="2181060149810222381">Ez a privát értesítés lehetővé teszi a Brave számára, hogy megbecsülje az aktív felhasználók számát.</translation>
+<translation id="6284218950354553099">Napi használatról szóló jelzések automatikus küldése a Ping-be</translation>
+<translation id="2181060149810222381">Ez a privát értesítés lehetővé teszi a Ping számára, hogy megbecsülje az aktív felhasználók számát.</translation>
 <translation id="6725413948756358325">Fióknév</translation>
 <translation id="6062431965141524986">Létrehozhat egy másodlagos számlát privát kulcsának importálásával.</translation>
 <translation id="3952797765659730604">Adja meg, másolja be vagy importálja a privát kulcsfájlját vagy JSON-ját.</translation>
@@ -667,10 +668,10 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="4522570452068850558">Részletek</translation>
 <translation id="3784455785234192852">Zárolás</translation>
 <translation id="4412698727486357573">Súgó</translation>
-<translation id="8239147115686034860">Brave pénztárca automatikus zárolása</translation>
-<translation id="414639769490080648">Ennyi percbe telik, amíg a Brave pénztárca automatikusan zárolva lesz</translation>
+<translation id="8239147115686034860">Ping pénztárca automatikus zárolása</translation>
+<translation id="414639769490080648">Ennyi percbe telik, amíg a Ping pénztárca automatikusan zárolva lesz</translation>
 <translation id="2326850911705720398">A pénztárcaadatok visszaállítása és törlése</translation>
-<translation id="6567712397896147805">Biztosan visszaállítja a Brave pénztárcáját? Ha a pénztárcáról nem készült biztonsági mentés, a visszaállítással elveszíti az összes fiókadatot (beleértve a kapcsolódó forrásokat). A megerősítéshez írja be a következőt: "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="6567712397896147805">Biztosan visszaállítja a Ping pénztárcáját? Ha a pénztárcáról nem készült biztonsági mentés, a visszaállítással elveszíti az összes fiókadatot (beleértve a kapcsolódó forrásokat). A megerősítéshez írja be a következőt: "<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="4862812525895306758">Tranzakciós és nonce-adatok törlése</translation>
 <translation id="5693968582510626466">A tranzakciók törlése hasznos lehet fejlesztők számára, vagy pedig helyi kiszolgáló állapotának nullázásakor</translation>
 <translation id="5421107279168565467">Biztosan visszaállítja a tranzakciós- és nonce-adatokat? Ezt a funkciót általában helyi tesztkiszolgálót üzemeltető fejlesztők használják. A megerősítéshez gépelje be a következőt: „<ph name="CONFIRMATION_PHRASE"/>".</translation>
@@ -681,30 +682,37 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1721710839767183848">Nem jelennek meg hirdetések a weblapokon</translation>
 <translation id="4647035642622555398">Nincsenek zavaró tényezők</translation>
 <translation id="4122515759479497554">Videók keresése</translation>
-<translation id="4449475351935531438">Brave tűzfal + VPN</translation>
+<translation id="4449475351935531438">Ping tűzfal + VPN</translation>
 <translation id="719977489961414786">Váltson VPN-re, hogy megvédje a kapcsolatát és bárhonnan blokkolhassa az invazív nyomkövetőket.</translation>
 <translation id="8814357473522731680">Szolgáltató:</translation>
 <translation id="5892534145504632332">Védje meg az összes alkalmazást és az egész eszközét</translation>
 <translation id="7195416926059527505">Biztonságosabb otthoni vagy nyilvános Wi-Fi-hálózaton</translation>
 <translation id="1354700000739359839">Villámgyors, akár 100 Mbps</translation>
 <translation id="3510283489391432976">Válassza ki a földrajzi helyzetét/országát</translation>
-<translation id="7695158478627528928">A Brave sosem naplózza a tevékenységeit</translation>
+<translation id="7695158478627528928">A Ping sosem naplózza a tevékenységeit</translation>
 <translation id="4575683170451975058">Védjen meg 5 eszközt 1 előfizetéssel</translation>
+<translation id="755045397420611731">Fejlettebb online adatvédelem és biztonság</translation>
+<translation id="4520128772974831415">Az IP-cím elrejtése és a tartózkodási hely módosítása</translation>
+<translation id="2044418816479192294">Világszerte több száz szerver</translation>
+<translation id="7410504850864021600">Villámgyors kapcsolati sebesség</translation>
+<translation id="2422309687188612485">Több mint 10 eszköz védelme egyetlen csomagban</translation>
 <translation id="4882693590083943563">Valamennyi csomag tartalmaz <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">7 napos ingyenes próbaidőszakot!</translation>
 <translation id="1532536259167115948">Havi csomag <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Éves csomag <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Havonta megújul</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / hó.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/hó</translation>
 <translation id="1163809943099641131">Egy év</translation>
-<translation id="6277055349883621705">Hosszabbítsa meg évente, spóroljon 16% -ot</translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / év.</translation>
-<translation id="2655185358771731232">Próbálja ki 7 napig ingyenesen. A 7 nap lejártával levonjuk az előfizetés összegét. Minden előfizetést automatikusan megújítunk, de megújítás előtt le lehet mondani.</translation>
+<translation id="727385358513272220">Újítsa meg évente (<ph name="DISCOUNT_TEXT_START"/> <ph name="PERCENTAGE_AMOUNT"/>%% megtakarítás<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /év</translation>
+<translation id="2786538705804257030">Az előfizetési díjak kiszabása a Google-fiókján keresztül történik. Az esetleges ingyenes próbaidőszak fel nem használt hányada elveszik az előfizetés megvásárlásakor.\n\nElőfizetése automatikusan megújul, hacsak nem mondja le legalább 24 órával az aktuális időszak vége előtt.\n\nElőfizetéseit a Beállításokban kezelheti.\nA Ping használatával Ön elfogadja a használati feltételeket és az adatvédelmi szabályzatot.</translation>
+<translation id="5035172357624830412">Már vásárolt a brave.com-on?</translation>
+<translation id="713136183174551885">Frissítse hitelesítő adatait</translation>
 <translation id="6053992191006521518">Próbálja ki INGYENESEN</translation>
 <translation id="5903391101107992067">Próbálja ki 7 napig ingyen!</translation>
 <translation id="721747358270435486">VPN telepítése</translation>
 <translation id="836074276610740314">VPN profil telepítése</translation>
-<translation id="8021842065465097929">A Brave most telepíti a VPN profilt.</translation>
+<translation id="8021842065465097929">A Ping most telepíti a VPN profilt.</translation>
 <translation id="229286271464650057">Ez a profil lehetővé teszi, hogy a VPN automatikusan csatlakoztassa és biztosítsa a forgalmat az eszköze és az alkalmazásai között. Ezt a VPN kapcsolatot a Guardian intelligens tűzfala titkosítja és továbbítja, amely blokkolja a reklámokat és a nyomkövetőket.</translation>
 <translation id="9073255657908892407">Lépjen kapcsolatba az ügyfélszolgálattal</translation>
 <translation id="1139934321138152517">A VPN engedélyezve van</translation>
@@ -734,7 +742,19 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="755448900483975096">Mobilszolgáltató</translation>
 <translation id="1279441577056010362">Tovább az e-mailhez</translation>
 <translation id="7125582363614011660">A támogatást a Guardian csapat segítségével nyújtjuk.\n\nAdja meg az adatokat, amelyeket szívesen megoszt velünk.\n\nMinél több adatot ad meg előzetesen, ügyfélszolgálatunk annál könnyebben fog tudni segíteni Önnek a probléma megoldásában.</translation>
-<translation id="7999094850625689785">A rendszer időzónája alapján automatikusan az Önhöz legközelebb eső szerverrégió lesz kiválasztva. Ezt azért ajánljuk, hogy biztosan a lehető leggyorsabb legyen az internetsebessége.</translation>
+<translation id="8813171284214934811">Az Önhöz legközelebbi VPN szerverrégió automatikus kiválasztása az időzóna alapján. Ezt az opciót az internetsebesség maximalizálása érdekében javasoljuk.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+=1 {<ph name="CITY_COUNT_ONE"/> város - }
+other {<ph name="CITY_COUNT_MANY"/> város - }
+}</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+  =1 {<ph name="SERVER_COUNT_ONE"/> szerver}
+  other {<ph name="SERVER_COUNT_MANY"/> szerver}
+ }</translation>
+<translation id="3199127022143353223">Szerverek</translation>
+<translation id="5431902940483264007">Optimális</translation>
+<translation id="6527596624419285047">Az elérhető legjobb szerver használata</translation>
+<translation id="6789157560111825412">Rendelkezésre álló szerverek</translation>
 <translation id="4397083831618200686">Probléma kiválasztása</translation>
 <translation id="6687228121145903051">Nem tudok a VPN-hez csatlakozni (Egyéb hiba)</translation>
 <translation id="9184988385244077767">A kapcsolódás után nincs internet</translation>
@@ -788,21 +808,20 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="8214232307424031138">Aláírva</translation>
 <translation id="1165039591588034296">Hiba</translation>
 <translation id="2561824823738097741">A leggyorsabb böngészőt használja?</translation>
-<translation id="2065971949051836200">A 3x gyorsabb internet már elérhető a telefonján. Használja a Brave-et minden webes böngészéshez.</translation>
-<translation id="2888278614497184977">Brave = 3x gyorsabb böngészés</translation>
+<translation id="2065971949051836200">A 3x gyorsabb internet már elérhető a telefonján. Használja a Ping-et minden webes böngészéshez.</translation>
+<translation id="2888278614497184977">Ping = 3x gyorsabb böngészés</translation>
 <translation id="6887232551109532144">Élvezze a hosszabb használati időt minden egyes töltésnél</translation>
-<translation id="5388885352353494741">A gazdaságosabb akkutöltés egy lépésre van. Használja a Brave-et minden webes böngészéshez.</translation>
-<translation id="3164151360474408351">Brave = hosszabb használati idő minden töltésnél</translation>
+<translation id="5388885352353494741">A gazdaságosabb akkutöltés egy lépésre van. Használja a Ping-et minden webes böngészéshez.</translation>
+<translation id="3164151360474408351">Ping = hosszabb használati idő minden töltésnél</translation>
 <translation id="3211051910418903298">Csökkentse a mobiladat-használatot</translation>
-<translation id="1092355580602106002">Kevesebb hirdetés = kevesebb adathasználat az oldalakon, amelyeket betölt. Használja a Brave-et minden webes böngészéshez.</translation>
-<translation id="623962032102267945">Brave = kevesebb mobiladat-használat minden oldalon</translation>
+<translation id="1092355580602106002">Kevesebb hirdetés = kevesebb adathasználat az oldalakon, amelyeket betölt. Használja a Ping-et minden webes böngészéshez.</translation>
+<translation id="623962032102267945">Ping = kevesebb mobiladat-használat minden oldalon</translation>
 <translation id="4355217341028673744">• Fejlett adatvédelem</translation>
 <translation id="3679020972083025535">• Bosszantó hirdetések nélkül</translation>
 <translation id="8047527352810290817">Gas szerkesztése</translation>
 <translation id="7358989216567322955">Maximum prioritási díj</translation>
 <translation id="9091334651803050473">Nincs rá garancia, de a bányászok nagyobb valószínűséggel részesítik előnyben a tranzakcióját, ha magasabb díjat fizet nekik.</translation>
 <translation id="2941112035454246133">Alacsony</translation>
-<translation id="5431902940483264007">Optimális</translation>
 <translation id="7304030187361489308">Magas</translation>
 <translation id="4853037749278079787">Maximális díj: ~<ph name="FIAT_VALUE"/> $ (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Jelenlegi alapdíj: <ph name="ASSET_VALUE"/> Gwei</translation>
@@ -820,8 +839,6 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="3074127054582480056">Figyelem</translation>
 <translation id="2280319752798785157">Havi hozzájárulás</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Mutassa az automatikus kiegészítést a címsorban</translation>
-<translation id="8982438328166986164">A könyvjelzői és böngészési előzményei alapján ajánlott weboldalak megjelenítése.</translation>
 <translation id="1241283133946520352">Hálózatok</translation>
 <translation id="1062463687579789365">Pénztárca-hálózatok testreszabása</translation>
 <translation id="2512821599885971349">Hálózat hozzáadása</translation>
@@ -847,7 +864,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="2653659639078652383">Elküldés</translation>
 <translation id="4945690646623486292">Hálózat kiválasztása</translation>
 <translation id="5233638681132016545">Új lap</translation>
-<translation id="8006088103295786154">Hozzáférés a Brave pénztárcához</translation>
+<translation id="8006088103295786154">Hozzáférés a Ping pénztárcához</translation>
 <translation id="8030169304546394654">Nincs kapcsolat</translation>
 <translation id="3423275441470187644">Megbízható</translation>
 <translation id="2391762656119864333">Visszavonás</translation>
@@ -857,7 +874,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="42981349822642051">Kibontás</translation>
 <translation id="3586752056660754651">Aláír</translation>
 <translation id="3950820424414687140">Bejelentkezés</translation>
-<translation id="6592721981110586529">Csatlakozás Brave pénztárcával</translation>
+<translation id="6592721981110586529">Csatlakozás Ping pénztárcával</translation>
 <translation id="329813193938846695">Fiók(ok) kiválasztása</translation>
 <translation id="291375746846291973">Csak olyan webhelyekhez csatlakozzon, amelyekben megbízik.</translation>
 <translation id="385051799172605136">Vissza</translation>
@@ -869,10 +886,11 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="5242300593039211344">Pénztárca zárolása</translation>
 <translation id="1108298724135935307">Csatlakoztatott webhelyek</translation>
 <translation id="4255623233927788178">Megtekintés block explorerben</translation>
-<translation id="8274201358637112807">Az oldal szeretne kapcsolatba lépni a Brave pénztárcával</translation>
+<translation id="8274201358637112807">Az oldal szeretne kapcsolatba lépni a Ping pénztárcával</translation>
 <translation id="3355936511340229503">Kapcsolódási hiba</translation>
+<translation id="1531836666020185856">Kiemelt</translation>
 <translation id="4891604214809245310">Nem sikerült beállítani a hálózatot a következőre: <ph name="NETWORK_NAME"/></translation>
-<translation id="685345388423515592">Úgy tűnik, ezen az eszközön más VPN-szolgáltatások vannak beállítva „Mindig bekapcsolva” állapotra. A Brave tűzfal + VPN engedélyezéséhez előbb kapcsolja ki a „Mindig bekapcsolva” beállítást a többi VPN-szolgáltatásnál, mielőtt újból megpróbál csatlakozni. Ha a probléma továbbra is fennáll, próbálja meg eltávolítani a többi VPN-t.</translation>
+<translation id="685345388423515592">Úgy tűnik, ezen az eszközön más VPN-szolgáltatások vannak beállítva „Mindig bekapcsolva” állapotra. A Ping tűzfal + VPN engedélyezéséhez előbb kapcsolja ki a „Mindig bekapcsolva” beállítást a többi VPN-szolgáltatásnál, mielőtt újból megpróbál csatlakozni. Ha a probléma továbbra is fennáll, próbálja meg eltávolítani a többi VPN-t.</translation>
 <translation id="85136472535634474">VPN-beállítások megnyitása</translation>
 <translation id="8352805003811526272">Konfiguráció alaphelyzetbe állítása...</translation>
 <translation id="6809312301323611382">Már kiválasztotta ugyanazt a szervert.</translation>
@@ -892,25 +910,25 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="4822132585477111396">Lánc azonosítója</translation>
 <translation id="7131971375297699539">Valuta szimbóluma</translation>
 <translation id="7982789257301363584">Hálózat</translation>
-<translation id="6936860995365507185">Ezzel engedélyezve lesz a hálózat használata a Brave pénztárcán belül. <ph name="CLICK_START"/>További információ<ph name="CLICK_END"/>.</translation>
+<translation id="6936860995365507185">Ezzel engedélyezve lesz a hálózat használata a Ping pénztárcán belül. <ph name="CLICK_START"/>További információ<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Engedélyezi, hogy ez az oldal hálózatot adjon hozzá?</translation>
 <translation id="4857321293515555666">Ez a DApp el szeretné olvasni az üzenetet a kérelem befejezéséhez.</translation>
 <translation id="714506544401754321">Üzenet visszafejtése</translation>
 <translation id="5039804452771397117">Engedélyezés</translation>
 <translation id="3378339846292573874">Javasolt token hozzáadása</translation>
 <translation id="2322227405137827074">Szeretné importálni ezt a tokent?</translation>
-<translation id="1324417023773393937">Brave böngésző</translation>
-<translation id="6044189892950611565">A Brave böngésző értesítési csatornája</translation>
-<translation id="1173919438868967364">Számla kiválasztása</translation>
+<translation id="1324417023773393937">Ping böngésző</translation>
+<translation id="6044189892950611565">A Ping böngésző értesítési csatornája</translation>
+<translation id="4556601961751528347">Csatlakoztatott fiókok megváltoztatása</translation>
 <translation id="8922793255489232731">Nem sikerült időzónát találni a következőhöz: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Kapcsolódva a következőhöz: <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Próbaverzió</translation>
-<translation id="6458565248779152483">Brave VPN letiltása</translation>
+<translation id="6458565248779152483">Ping VPN letiltása</translation>
 <translation id="9080536793704001825">Szüneteltetés 15 percre</translation>
 <translation id="803706420145725977">Szüneteltetés 1 órára</translation>
 <translation id="4394049700291259645">Kikapcsolás</translation>
 <translation id="7733890291091968191">Web3 értesítések megjelenítése</translation>
-<translation id="1371627247679035769">\n\n\n\n#### A Brave nem követi Önt nyomon és nem tudja, hogyan használja az alkalmazásunkat, így azt sem tudjuk, hogyan állította be a VPN-t. Kérjük, ossza meg velünk az észlelt problémával kapcsolatos információkat, mi pedig minden tőlünk telhetőt megteszünk, hogy mielőbb megoldhassuk a problémát. ####\n\n</translation>
+<translation id="1371627247679035769">\n\n\n\n#### A Ping nem követi Önt nyomon és nem tudja, hogyan használja az alkalmazásunkat, így azt sem tudjuk, hogyan állította be a VPN-t. Kérjük, ossza meg velünk az észlelt problémával kapcsolatos információkat, mi pedig minden tőlünk telhetőt megteszünk, hogy mielőbb megoldhassuk a problémát. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN kiszolgáló neve\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nElőfizetés típusa\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nPlay áruház token\n <ph name="VALUE"/></translation>
@@ -933,12 +951,19 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="7002577172732106572">Osztott alagút mód (Split Tunneling)</translation>
 <translation id="8181161042860463420">A kapcsolódó tokenszámla még nem létezik. Ennek létrehozására és fenntartására egy kisebb SOL-összeg lesz felhasználva. <ph name="CLICK_START"/>További információ:<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN-profil frissítése...</translation>
-<translation id="7457027586454688423">Adja meg Brave-pénztárcája jelszavát</translation>
-<translation id="4784306439879850873">Ne feledje, hogy a Brave nem tudja megerősíteni, mi történik, ha aláír. Aláírással szinte bármelyik számláján lévő műveletre feljogosítja a kérvényező oldalt, vagy arra, hogy az Ön nevében járjon el, beleértve (de nem kizárólag) a számlája és kriptoeszközei feletti teljes rendelkezést. Csak akkor írjon alá, ha biztosan ezt szeretné, és megbízik a kérvényező oldalban.</translation>
+<translation id="4784306439879850873">Ne feledje, hogy a Ping nem tudja megerősíteni, mi történik, ha aláír. Aláírással szinte bármelyik számláján lévő műveletre feljogosítja a kérvényező oldalt, vagy arra, hogy az Ön nevében járjon el, beleértve (de nem kizárólag) a számlája és kriptoeszközei feletti teljes rendelkezést. Csak akkor írjon alá, ha biztosan ezt szeretné, és megbízik a kérvényező oldalban.</translation>
 <translation id="3474375934783434676">Csak a saját felelősségére írjon alá</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/>/<ph name="SIZE"/></translation>
 <translation id="756701799684433105">Tranzakció jóváhagyása</translation>
 <translation id="6450792191436242818">System Program (Rendszerprogram)</translation>
+<translation id="5318067544026930166">A Ping Pénztárca feloldása biometrikus hitelesítéssel</translation>
+<translation id="2629767022373384291">Szeretne biometrikus hitelesítést használni a Ping pénztárcája feloldásához?</translation>
+<translation id="4782919977106118997">Feloldás ujjlenyomattal</translation>
+<translation id="2054995875643283428">Most kihagyom</translation>
+<translation id="2610561535971892504">Kattintson a másoláshoz</translation>
+<translation id="2522605225061484799">Ugrás a saját portfólióra</translation>
+<translation id="1148624853678088576">Minden készen áll!</translation>
+<translation id="4131445988101719379">Ping-pénztárcája készen áll a használatra</translation>
 <translation id="6252742184395380448">Config Program (Konfig. program)</translation>
 <translation id="5358970666412490132">Stake Program (Kockázati program)</translation>
 <translation id="346636227344244984">Vote Program (Szavazási program)</translation>
@@ -980,8 +1005,8 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="8382368767453083629">2. többaláírós tárca inicializálása</translation>
 <translation id="77243237706803459">2. kiadás inicializálása</translation>
 <translation id="583281660410589416">Ismeretlen</translation>
-<translation id="5666264859501108700">A Brave-jutalmakhoz beállított régiója: <ph name="COUNTRY_NAME"/>.</translation>
-<translation id="909076461795862330">Sajnos hiba történt a Brave-jutalmak beállítása során. Kérjük, próbálja újra.</translation>
+<translation id="5666264859501108700">A Ping-jutalmakhoz beállított régiója: <ph name="COUNTRY_NAME"/>.</translation>
+<translation id="909076461795862330">Sajnos hiba történt a Ping-jutalmak beállítása során. Kérjük, próbálja újra.</translation>
 <translation id="7352651011704765696">Valami hiba történt</translation>
 <translation id="7144878232160441200">Újra</translation>
 <translation id="6040143037577758943">Bezárás</translation>
@@ -990,15 +1015,15 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="8496335570810457">Előzetes vállalás:</translation>
 <translation id="5100124500279922001">Előzetes kihagyása:</translation>
 <translation id="7152095322071766507">Leggyakrabban látogatott oldal</translation>
-<translation id="7230006500876504868">Keresés a Brave-vel</translation>
+<translation id="7230006500876504868">Keresés a Ping-vel</translation>
 <translation id="5888208462949095139">Keresés a következővel: <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Kezdőképernyős modul</translation>
 <translation id="703185154752046151">Modul hozzáadva a kezdőképernyőhöz</translation>
-<translation id="3290805388004282161">Próbálja ki a Brave keresési modulját</translation>
+<translation id="3290805388004282161">Próbálja ki a Ping keresési modulját</translation>
 <translation id="4809681171446727314">Hozzáférés egy privát, független keresőhöz egyenesen a kezdőképernyőjén.</translation>
 <translation id="7751715172931488388">Modul hozzáadása</translation>
-<translation id="7285167584112910782">Brave gyorskereső</translation>
-<translation id="2326703104633309781">A Brave fordító használata</translation>
+<translation id="7285167584112910782">Ping gyorskereső</translation>
+<translation id="2326703104633309781">A Ping fordító használata</translation>
 <translation id="5802752138057422257">Nem ASCII-karaktereket észleltünk!</translation>
 <translation id="442709594176931966">Eredeti üzenet megtekintése</translation>
 <translation id="2239252396088484499">Üzenet megtekintése ASCII-kódolással</translation>
@@ -1010,22 +1035,22 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="1313065465616456728">Kiállítva:</translation>
 <translation id="7902225556763260253">Lejárat ideje</translation>
 <translation id="1908159733454294871">Biztonsági kockázat észlelve</translation>
-<translation id="5658257029899993935">Kapcsolja a vásárlást a Brave-fiókjához</translation>
-<translation id="1187061015547219282">Kapcsolja a Play Store vásárlását a Brave-fiókjához, hogy más eszközökön is használni tudja a Brave VPN-t.</translation>
+<translation id="5658257029899993935">Kapcsolja a vásárlást a Ping-fiókjához</translation>
+<translation id="1187061015547219282">Kapcsolja a Play Store vásárlását a Ping-fiókjához, hogy más eszközökön is használni tudja a Ping VPN-t.</translation>
 <translation id="6662142137695589205">Kapcsolja össze a VPN-előfizetését</translation>
-<translation id="2674077112509133024">Bővítse ki a Brave tűzfal + VPN-védelmét</translation>
-<translation id="6365389672683343144">A Brave VPN-előfizetésével legfeljebb 5 eszközt tud biztonságban, legyen szó Androidos, iOS vagy asztali alkalmazásról. Csak kapcsolja a Google Play-előfizetését a Brave-fiókjához.</translation>
+<translation id="2674077112509133024">Bővítse ki a Ping tűzfal + VPN-védelmét</translation>
+<translation id="6365389672683343144">A Ping VPN-előfizetésével legfeljebb 5 eszközt tud biztonságban, legyen szó Androidos, iOS vagy asztali alkalmazásról. Csak kapcsolja a Google Play-előfizetését a Ping-fiókjához.</translation>
 <translation id="6610899852831463073">Nem engedélyezhető a biztonságos böngészés</translation>
 <translation id="7954263306665462056">A biztonságos böngészés le van tiltva az Ön eszközén. Az engedélyezéshez győződjön meg arról, hogy a Google Play-szolgáltatások telepítve vannak és naprakészek-e!</translation>
 <translation id="6605147707233193230">A bekapcsolással segíthet támogatni a tartalomkészítőket</translation>
-<translation id="1609556006143307897">Ön segít támogatni a tartalomkészítőket</translation>
-<translation id="6067959437127691361">A Brave-jutalmak használata segít Önnek támogatni a tartalomkészítőket, és lehetővé teszi, hogy BAT-t kereshessen.</translation>
+<translation id="5899814466108868020">Ön segít támogatni a Ping-et és a BAT-közösséget</translation>
+<translation id="6067959437127691361">A Ping-jutalmak használata segít Önnek támogatni a tartalomkészítőket, és lehetővé teszi, hogy BAT-t kereshessen.</translation>
 <translation id="3264975266761862670">Készen áll pénzt keresni?</translation>
 <translation id="265337947574975838">Csatlakoztasson vagy hozzon létre egy partnerünk által kezelt fiókot.</translation>
 <translation id="654447476965480878">További tudnivalók a BAT-szerzésről</translation>
 <translation id="6278643716658443228">Rewards beállítások</translation>
 <translation id="6516984207843289176">Fiók csatlakoztatása</translation>
-<translation id="4272136334824111854">Ebben a hónapban <ph name="CREATOR_COUNT"/> olyan alkotót látogatott meg, akit támogat a Brave Rewards</translation>
+<translation id="4272136334824111854">Ebben a hónapban <ph name="CREATOR_COUNT"/> olyan alkotót látogatott meg, akit támogat a Ping Rewards</translation>
 <translation id="6845311459433734326">Csatlakoztasson egy letétkezelő fiókot, hogy BAT-t kereshessen, és lehívhassa jutalmait</translation>
 <translation id="928980476243133540">Később csinálom meg</translation>
 <translation id="579702532610384533">Újracsatlakozás</translation>
@@ -1036,9 +1061,8 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="5382684862562314222">Az Upholdban a BAT egyelőre nem támogatott az Ön régiójában.</translation>
 <translation id="6996157559236886133">Hiba: korlátozott Uphold-fiókfunkciók</translation>
 <translation id="1677961202754619328">Az Uphold szerint az Ön Uphold fiókját jelenleg csak korlátozottan lehet elérni. Lépjen be az Uphold fiókjába, és ellenőrizze, kapott-e valamilyen figyelmeztetést, vagy meg kell-e felelnie valamilyen fiókkövetelménynek, majd próbálkozzon újra!</translation>
-<translation id="5425006356459378415">A Brave-jutalmak nem érhetők el</translation>
-<translation id="833643743158564518">A Brave jutalmakra jelenleg nem lehet regisztrálni a régiójában, de később ismét megpróbálhatja. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Összes hálózat</translation>
+<translation id="5425006356459378415">A Ping-jutalmak nem érhetők el</translation>
+<translation id="833643743158564518">A Ping jutalmakra jelenleg nem lehet regisztrálni a régiójában, de később ismét megpróbálhatja. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">Elsődleges hálózatok</translation>
 <translation id="2781668117338732220">Másodlagos hálózatok</translation>
 <translation id="282560918037172384">Teszthálózatok</translation>
@@ -1058,10 +1082,9 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="4932733599132424254">Dátum</translation>
 <translation id="346505172740911461">Piaci ár</translation>
 <translation id="5494920125229734069">Összes kiválasztása</translation>
-<translation id="5972844218283131174">Összes kiválasztás megszüntetése</translation>
 <translation id="6129027151000961048">Leo</translation>
-<translation id="8613144770663526433">Bejelentkezés a Brave pénztárcával</translation>
-<translation id="3696514931437952995">A következőbe jelentkezik be: <ph name="ORIGIN"/>. A Brave pénztárca meg fogja osztani a pénztárcája címét a következővel: <ph name="ORIGIN"/>.</translation>
+<translation id="8613144770663526433">Bejelentkezés a Ping pénztárcával</translation>
+<translation id="3696514931437952995">A következőbe jelentkezik be: <ph name="ORIGIN"/>. A Ping pénztárca meg fogja osztani a pénztárcája címét a következővel: <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Részletek megtekintése</translation>
 <translation id="6759710362319508545">Erőforrások</translation>
 <translation id="2471230424465522689">Nem korábban, mint:</translation>
@@ -1070,7 +1093,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="4109670531935487117">Mutassa az automatikus kiegészítési javaslatokat a címsorban</translation>
 <translation id="1250335737108905610">Leo visszaállítása és Leo-adatok törlése</translation>
 <translation id="6165101586663336913">A Leo asszisztens-visszaállításához a jövőre nézve engedélyeznie kell a Leo használatát, és ez a művelet törli a csevegési előzményeket is. A csevegési előzmények törlésével törli a Leóval folytatott összes korábbi beszélgetését. Ezt a művelet nem vonható vissza.</translation>
-<translation id="3692772534525889713">Kapcsolja össze a Play Áruházban lebonyolított vásárlásait a Brave-fiókjával, ha használni szeretné a Brave Leót más eszközökön is.</translation>
+<translation id="3692772534525889713">Kapcsolja össze a Play Áruházban lebonyolított vásárlásait a Ping-fiókjával, ha használni szeretné a Ping Leót más eszközökön is.</translation>
 <translation id="73236265316873967">Leo Prémium</translation>
 <translation id="1166682575529520472">Havonta</translation>
 <translation id="451189393813405346">A Leo megkérdezése</translation>
@@ -1080,7 +1103,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="6344103698928069918">Lejátszási lista esetén a legutóbbi szünet helyéről folytassa a lejátszást</translation>
 <translation id="8141583471142904652">Folyamatos hallgatás</translation>
 <translation id="851432578283946230">Automatikusan lejátssza a lejátszási lista következő tételeit</translation>
-<translation id="295620834661738195">Brave lejátszási lista</translation>
+<translation id="295620834661738195">Ping lejátszási lista</translation>
 <translation id="4850886885716139402">Nézet</translation>
 <translation id="7392941176393379100">Hozzáadva ehhez: '<ph name="PLAYLIST_NAME"/>'</translation>
 <translation id="349846214503465941">Lejátszási lista engedélyezése</translation>
@@ -1106,7 +1129,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="8120600068258956006">Hozzáadás lejátszási listához</translation>
 <translation id="39991094779686024">Lejátszási listák</translation>
 <translation id="1710072605877822603">Médiatartalmak hozzáadása</translation>
-<translation id="3874252678044305931">Videókat adhat hozzá a Brave lejátszási listához, amelyeket bármikor visszajátszhat, akár offline is.</translation>
+<translation id="3874252678044305931">Videókat adhat hozzá a Ping lejátszási listához, amelyeket bármikor visszajátszhat, akár offline is.</translation>
 <translation id="8973629800378391099">Készítsen lejátszási listákat kedvenc tartalmaiból. Spóroljon a mobilinternet-használaton, és játssza vissza a videós tartalmakat hirdetések nélkül.</translation>
 <translation id="4936812987266342401">A gombra koppintva egyszerűen adhat hozzá videókat a lejátszási listához</translation>
 <translation id="6263657785571415306">Maradjon lendületben: adja hozzá a videókat a listához böngészés közben, nézze meg őket később.</translation>
@@ -1119,6 +1142,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="1173894706177603556">Átnevezés</translation>
 <translation id="3596306474342941843">Lejátszási lista törlése</translation>
 <translation id="7765158879357617694">Áthelyezés</translation>
+<translation id="6896758677409633944">Másolás</translation>
 <translation id="3803384303807438047">Elem offline adatainak törlése</translation>
 <translation id="4195643157523330669">Megnyitás új lapon</translation>
 <translation id="4243710787042215766">Megnyitás privát fülben</translation>
@@ -1148,7 +1172,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="5538904824395606812">A jelenlegi szolgáltató vagy a Quad9 használata</translation>
 <translation id="6393423486818299209">A jelenlegi szolgáltató vagy a Wikimedia DNS használata</translation>
 <translation id="3401384982562827787">A jelenlegi szolgáltató vagy a Cloudflare használata</translation>
-<translation id="8812367543786936496">Ha jelenlegi szolgáltatója nem biztonságos, a Brave biztonságos, alternatív DNS-szolgáltatót használ</translation>
+<translation id="8812367543786936496">Ha jelenlegi szolgáltatója nem biztonságos, a Ping biztonságos, alternatív DNS-szolgáltatót használ</translation>
 <translation id="5680678411439841197">város</translation>
 <translation id="8185518433273977704">település</translation>
 <translation id="4528386452965343421">prefektúra</translation>
@@ -1176,6 +1200,22 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="3300502432153878901">irányítószám</translation>
 <translation id="4130750466177569591">Elfogadom</translation>
 <translation id="3251885322612056119">Frissített szolgáltatási feltételek</translation>
-<translation id="4049035689681585146">Frissítettük a Brave jutalmak szolgáltatási feltételeit. A frissítésekre a feltételek egyértelműsítéséhez, valamint az új funkciók lefedéséhez volt szükség. Amennyiben tovább használja a Brave jutalmakat, azzal elfogadja a frissített szolgáltatási feltételeket. Ha nem fogadja el, <ph name="RESET_START"/>visszaállíthatja<ph name="RESET_END"/> a Brave jutalmakat, amely letiltja ezt a funkciót.</translation>
-<translation id="2165953574528546737">Részletek: <ph name="TOS_START"/>Brave jutalmak szolgáltatási feltételei<ph name="TOS_END"/></translation>
+<translation id="4049035689681585146">Frissítettük a Ping jutalmak szolgáltatási feltételeit. A frissítésekre a feltételek egyértelműsítéséhez, valamint az új funkciók lefedéséhez volt szükség. Amennyiben tovább használja a Ping jutalmakat, azzal elfogadja a frissített szolgáltatási feltételeket. Ha nem fogadja el, <ph name="RESET_START"/>visszaállíthatja<ph name="RESET_END"/> a Ping jutalmakat, amely letiltja ezt a funkciót.</translation>
+<translation id="2165953574528546737">Részletek: <ph name="TOS_START"/>Ping jutalmak szolgáltatási feltételei<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Több ablak engedélyezése</translation>
+<translation id="6167344249617630304">Nyisson meg egyszerre akár 5 ablakot és mozgassa a füleket egyik ablakból a másikba</translation>
+<translation id="1063948063403254568">Több ablak érzékelve</translation>
+<translation id="4661882208707630158">Kérjük, vonja össze a füleket egy másik Ping-ablakkal, vagy zárjon be más Ping-ablakokat a többablakos funkció kikapcsolása előtt.</translation>
+<translation id="6891382640886173702">Ablakok összevonása</translation>
+<translation id="2912247081180973411">Ablakok bezárása</translation>
+<translation id="4010699428656610296">Kérjük, vonja össze a többi fület egy másik Ping-ablakban.</translation>
+<translation id="208634871997892083">Mindig üzemelő VPN</translation>
+<translation id="1599073346542156922">A bekapcsolás módja:</translation>
+<translation id="7001163334415463127">1. Nyissa meg az eszköze beállításait az alkalmazásfiókban, vagy az alábbi gombra koppintva.</translation>
+<translation id="887443138775437899">2. Keresse meg a Ping VPN-t, és koppintson a beállítások ikonjára a jobb oldalon.</translation>
+<translation id="3776051499611941773">3. Kapcsolja be a<ph name="ALWAYS_ON_TUTORIAL_START"/>Mindig üzemelő VPN-t<ph name="ALWAYS_ON_TUTORIAL_END"/> az engedélyezéshez.</translation>
+<translation id="4776146737004271126">Android-beállítások megnyitása</translation>
+<translation id="2728518864712716830">A frissítés le lett töltve.</translation>
+<translation id="8403338849301491865">A szűrőlista sikeresen frissült</translation>
+<translation id="4650851936784160359">A szűrőlistát nem sikerült frissíteni. Kérjük, próbálja újra.</translation>
 </translationbundle>

@@ -27,7 +27,7 @@ import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.BraveNotificationPermissionRationaleDialog;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -49,8 +49,8 @@ import org.chromium.ui.base.DeviceFormFactor;
 import java.util.HashMap;
 
 // This excludes some settings in main settings screen.
-public class BraveMainPreferencesBase
-        extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
+        implements Preference.OnPreferenceChangeListener {
     // sections
     private static final String PREF_FEATURES_SECTION = "features_section";
     private static final String PREF_DISPLAY_SECTION = "display_section";
@@ -206,8 +206,9 @@ public class BraveMainPreferencesBase
         // rearanges programmatically the order for the prefs from Brave and Chromium
         rearrangePreferenceOrders();
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M 
-            || (NTPUtil.isReferralEnabled() && NTPBackgroundImagesBridge.enableSponsoredImages())) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                || (NTPImageUtil.isReferralEnabled()
+                        && NTPBackgroundImagesBridge.enableSponsoredImages())) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
         setCustomTabPreference();
@@ -267,7 +268,7 @@ public class BraveMainPreferencesBase
 
         findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
 
-        // findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
+        findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
         // findPreference(PREF_BRAVE_NEWS_V2).setOrder(++firstSectionOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
@@ -421,7 +422,7 @@ public class BraveMainPreferencesBase
 
     private void overrideChromiumPreferences() {
         // Replace fragment.
-        // findPreference(PREF_SHIELDS_AND_PRIVACY).setFragment(BravePrivacySettings.class.getName());
+        findPreference(PREF_SHIELDS_AND_PRIVACY).setFragment(BravePrivacySettings.class.getName());
         Preference preference = findPreference(MainSettings.PREF_HOMEPAGE);
         if (preference != null) {
             preference.setFragment(BraveHomepageSettings.class.getName());

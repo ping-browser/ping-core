@@ -13,11 +13,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
-
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-
 #include "ui/webui/mojo_web_ui_controller.h"
 
 class WalletPageUI : public ui::MojoWebUIController,
@@ -36,7 +34,6 @@ class WalletPageUI : public ui::MojoWebUIController,
  private:
   // brave_wallet::mojom::PageHandlerFactory:
   void CreatePageHandler(
-      mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
@@ -59,16 +56,16 @@ class WalletPageUI : public ui::MojoWebUIController,
           solana_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
           filecoin_tx_manager_proxy,
+      mojo::PendingReceiver<brave_wallet::mojom::BtcTxManagerProxy>
+          bitcoin_tx_manager_proxy_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
           brave_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
           brave_wallet_p3a,
-      mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
-          brave_wallet_pin_service_receiver,
-      mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-          brave_wallet_auto_pin_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
-          brave_wallet_ipfs_service_receiver) override;
+          brave_wallet_ipfs_service_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
+          meld_integration_service) override;
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;

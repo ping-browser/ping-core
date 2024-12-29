@@ -5,10 +5,8 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import '../brave_icons.html.js'
-
-import { RegisterPolymerTemplateModifications, RegisterStyleOverride } from 'chrome://resources/brave/polymer_overriding.js'
-import { html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
+import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import 'chrome://resources/brave/leo.bundle.js'
 import { loadTimeData } from '../i18n_setup.js'
@@ -22,7 +20,7 @@ function createMenuElement(title, href, iconName, pageVisibilitySection) {
   menuEl.setAttribute('role', 'menuitem')
   menuEl.setAttribute('class', 'cr-nav-menu-item')
 
-  const icon = document.createElement('iron-icon')
+  const icon = document.createElement('cr-icon')
   icon.setAttribute('icon', iconName)
   menuEl.appendChild(icon)
 
@@ -54,18 +52,18 @@ RegisterStyleOverride(
   html`
     <style>
       :host {
-        --brave-settings-menu-margin-v: 30px;
-        --brave-settings-menu-padding: 30px;
-        --settings-nav-item-color: #424242 !important;
+        --brave-settings-menu-margin-v: 24px;
+        --brave-settings-menu-padding: 24px;
+        --settings-nav-item-color: var(--leo-color-text-primary) !important;
         position: sticky;
         top: var(--brave-settings-menu-margin-v);
-        margin: 0 var(--brave-settings-menu-margin) !important;
+        margin: 0 !important;
         max-height: calc(100vh - 56px - (var(--brave-settings-menu-margin-v) * 2) - (var(--brave-settings-menu-padding) * 2));
         min-width: 172px;
+        max-width: 250px;
         border-radius: 6px;
-        background-color: #fff;
         overflow-y: auto;
-        padding: 30px !important;
+        padding: 24px !important;
       }
 
       .cr-nav-menu-item {
@@ -75,8 +73,8 @@ RegisterStyleOverride(
         box-sizing: content-box !important;
         overflow: visible !important;
 
-        --iron-icon-width: 24px;
-        --iron-icon-height: 24px;
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
         --iron-icon-fill-color: currentColor;
       }
 
@@ -98,15 +96,14 @@ RegisterStyleOverride(
 
       @media (prefers-color-scheme: dark) {
         :host {
-          --settings-nav-item-color: #F4F4F4 !important;
+          --settings-nav-item-color: var(--leo-color-text-primary) !important;
           border-color: transparent !important;
-          background-color: #161719;
         }
       }
 
       a[href] {
-        font-weight: 400 !important;
-        margin: 0 20px 20px 0 !important;
+        font-weight: 500 !important;
+        margin: 0 20px 24px 0 !important;
         margin-inline-start: 0 !important;
         margin-inline-end: 0 !important;
         padding-bottom: 0 !important;
@@ -121,22 +118,25 @@ RegisterStyleOverride(
         border-radius: 6px !important;
       }
 
-      a[href].iron-selected {
+      a[href].selected {
         color: #DB2F04;
-        font-weight: 400 !important;
+      }
+
+      a:hover, cr-icon:hover {
+        color: #47d789 !important;
       }
 
       a:hover, iron-icon:hover {
         color: #47d789 !important;
       }
 
-      iron-icon, leo-icon {
+      cr-icon, leo-icon {
         margin-inline-end: 14px !important;
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
       }
 
-      a[href].iron-selected::before {
+      a[href].selected::before {
         content: "";
         position: absolute;
         top: 50%;
@@ -150,8 +150,12 @@ RegisterStyleOverride(
       }
 
       @media (prefers-color-scheme: dark) {
-        a[href].iron-selected {
+        a[href].selected {
           color: #FB5930;
+        }
+
+        a:hover, cr-icon:hover {
+          color: #47d789 !important;
         }
 
         a:hover, iron-icon:hover {
@@ -171,7 +175,7 @@ RegisterStyleOverride(
         border: none !important;
       }
 
-      #advancedButton > iron-icon {
+      #advancedButton > cr-icon {
         margin-inline-end: 0 !important;
       }
 
@@ -193,12 +197,12 @@ RegisterStyleOverride(
         flex-direction: row;
         align-items: flex-start;
         justify-content: flex-start;
-        color: #c5c5d3 !important;
+        color: var(--leo-color-text-tertiary) !important;
         margin: 16px 0 0 0 !important;
       }
       .brave-about-graphic {
         flex: 0;
-        flex-basis: 30%;
+        flex-basis: var(--leo-spacing-3xl);
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -240,7 +244,7 @@ RegisterPolymerTemplateModifications({
     const contentEl = createMenuElement(
       loadTimeData.getString('contentSettingsContentSection'),
       '/braveContent',
-      'content-big',
+      'window-content',
       'content',
     )
     appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
@@ -329,10 +333,10 @@ RegisterPolymerTemplateModifications({
     graphicsEl.setAttribute('class', 'brave-about-graphic')
 
     // Use per-channel logo image.
-    // const icon = document.createElement('img')
-    // icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
-    // icon.setAttribute('width', '24px')
-    // icon.setAttribute('height', '24px')
+//     const icon = document.createElement('img')
+//     icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
+//     icon.setAttribute('width', '20px')
+//     icon.setAttribute('height', '20px')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')

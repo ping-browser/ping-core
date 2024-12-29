@@ -14,11 +14,7 @@ import os
 
 struct TopNewsWidget: Widget {
   var supportedFamilies: [WidgetFamily] {
-    if #available(iOS 16.0, *) {
-      return [.systemSmall, .accessoryRectangular]
-    } else {
-      return [.systemSmall]
-    }
+    return [.systemSmall, .accessoryRectangular]
   }
 
   var body: some WidgetConfiguration {
@@ -69,7 +65,7 @@ private struct TopNewsWidgetProvider: TimelineProvider {
 
   func getSnapshot(in context: Context, completion: @escaping (TopNewsEntry) -> Void) {
     Task {
-      let topics = await model.fetchNewsTopics()
+      let topics = await model.fetchNewsTopics(Locale.autoupdatingCurrent)
       var entry: TopNewsEntry = .init(topic: topics.first)
       if let topic = entry.topic, !context.family.isLockScreen {
         if let (_, image) = await model.fetchImageThumbnailsForTopics(
@@ -85,7 +81,7 @@ private struct TopNewsWidgetProvider: TimelineProvider {
 
   func getTimeline(in context: Context, completion: @escaping (Timeline<TopNewsEntry>) -> Void) {
     Task {
-      let topics = Array(await model.fetchNewsTopics().prefix(6))
+      let topics = Array(await model.fetchNewsTopics(Locale.autoupdatingCurrent).prefix(6))
       var images: [NewsTopic.ID: UIImage] = [:]
       if !context.family.isLockScreen {
         images = await model.fetchImageThumbnailsForTopics(topics, thumbnailSize(for: context))
@@ -111,12 +107,8 @@ private struct TopNewsView: View {
   var entry: TopNewsEntry
 
   var body: some View {
-    if #available(iOS 16.0, *) {
-      if widgetFamily == .accessoryRectangular {
-        LockScreenTopNewsView(entry: entry)
-      } else {
-        WidgetTopNewsView(entry: entry)
-      }
+    if widgetFamily == .accessoryRectangular {
+      LockScreenTopNewsView(entry: entry)
     } else {
       WidgetTopNewsView(entry: entry)
     }
@@ -216,6 +208,7 @@ private struct WidgetTopNewsView: View {
         if let image = entry.image {
           Image(uiImage: image)
             .resizable()
+            .widgetAccentedRenderingModeFullColor()
             .aspectRatio(contentMode: .fill)
             .overlay(
               LinearGradient(
@@ -296,12 +289,10 @@ struct TopNewsView_PreviewProvider: PreviewProvider {
       entry: entry
     )
     .previewContext(WidgetPreviewContext(family: .systemSmall))
-    if #available(iOS 16.0, *) {
-      TopNewsView(entry: entry)
-        .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
-      TopNewsView(entry: .init(topic: nil))
-        .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
-    }
+    TopNewsView(entry: entry)
+      .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
+    TopNewsView(entry: .init(topic: nil))
+      .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
     TopNewsView(entry: .init(topic: nil))
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }

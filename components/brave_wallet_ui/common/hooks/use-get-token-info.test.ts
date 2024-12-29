@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, waitFor } from '@testing-library/react'
 
 import {
   createMockStore,
@@ -30,7 +30,7 @@ describe('useGetTokenInfo hook', () => {
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
 
-    const { result, ...hook } = renderHook(
+    const { result } = renderHook(
       () =>
         useGetTokenInfo({
           contractAddress: mockErc20TokensList[0].contractAddress,
@@ -45,7 +45,11 @@ describe('useGetTokenInfo hook', () => {
     expect(result.current.isLoading).toBe(true)
 
     // loading
-    await hook.waitFor(() => result.current.tokenInfo !== undefined)
+    await waitFor(() =>
+      expect(
+        result.current.tokenInfo !== undefined && !result.current.isLoading
+      ).toBeTruthy()
+    )
 
     // done loading
     expect(result.current.isLoading).toBe(false)
@@ -62,7 +66,7 @@ describe('useGetTokenInfo hook', () => {
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
 
-    const { result, ...hook } = renderHook(
+    const { result } = renderHook(
       () =>
         useGetTokenInfo({
           contractAddress: '0xdeadbeef',
@@ -77,10 +81,47 @@ describe('useGetTokenInfo hook', () => {
     expect(result.current.isLoading).toBe(true)
 
     // loading
-    await hook.waitFor(() => result.current.tokenInfo !== undefined)
+    await waitFor(() =>
+      expect(
+        result.current.tokenInfo !== undefined && !result.current.isLoading
+      ).toBeTruthy()
+    )
 
     // done loading
     expect(result.current.isLoading).toBe(false)
     expect(result.current.tokenInfo?.name).toEqual('Mocked Token')
+  })
+
+  it('Should return an error if token info is not found', async () => {
+    const store = createMockStore(
+      {},
+      {
+        blockchainTokens: mockErc20TokensList,
+        userAssets: mockAccountAssetOptions
+      }
+    )
+
+    const renderOptions = renderHookOptionsWithMockStore(store)
+
+    const { result } = renderHook(
+      () =>
+        useGetTokenInfo({
+          contractAddress: '0xInvalidToken',
+          network: mockNetwork
+        }),
+      renderOptions
+    )
+
+    // initial state
+    expect(result.current.tokenInfo).toBeUndefined()
+    expect(result.current.isLoading).toBeDefined()
+
+    // loading
+    await waitFor(() => expect(result.current.isLoading).toBeFalsy())
+
+    // done loading
+    expect(result.current.isLoading).toBe(false)
+    expect(result.current.tokenInfo).toBe(undefined)
+    expect(result.current.isError).toBe(true)
   })
 })

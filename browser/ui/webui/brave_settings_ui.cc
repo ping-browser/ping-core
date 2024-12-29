@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 
 #include <memory>
@@ -18,6 +24,7 @@
 #include "brave/browser/resources/settings/shortcuts_page/grit/commands_generated_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
@@ -47,7 +54,6 @@
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
-#include "third_party/blink/public/common/features.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
@@ -154,9 +160,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isIdleDetectionFeatureEnabled",
       base::FeatureList::IsEnabled(features::kIdleDetection));
-  html_source->AddBoolean(
-      "isBraveWebSerialApiEnabled",
-      base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI));
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   html_source->AddBoolean("isBraveVPNEnabled",
                           brave_vpn::IsBraveVPNEnabled(profile));
@@ -215,6 +218,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "showCommandsInOmnibox",
       base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox));
+  html_source->AddBoolean(
+      "isSharedPinnedTabsEnabled",
+      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
 }
 
 // static

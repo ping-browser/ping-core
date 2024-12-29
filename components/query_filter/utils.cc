@@ -30,6 +30,11 @@ static constexpr auto kSimpleQueryStringTrackers =
             "__hstc",
             // https://github.com/brave/brave-browser/issues/8975
             "__s",
+            // https://github.com/brave/brave-browser/issues/40716
+            "_bhlid",
+            // https://github.com/brave/brave-browser/issues/39575
+            "_branch_match_id",
+            "_branch_referrer",
             // https://github.com/brave/brave-browser/issues/33188
             "_gl",
             // https://github.com/brave/brave-browser/issues/9019
@@ -93,6 +98,8 @@ static constexpr auto kSimpleQueryStringTrackers =
             "rb_clickid",
             // https://github.com/brave/brave-browser/issues/17452
             "s_cid",
+            // https://github.com/brave/brave-browser/issues/40912
+            "srsltid",
             // https://github.com/brave/brave-browser/issues/24988
             "ss_email_id",
             // https://github.com/brave/brave-browser/issues/18020
@@ -142,9 +149,20 @@ static const auto kScopedQueryStringTrackers =
         {"si", {"youtube.com", "youtu.be"}},
     });
 
+// URLs with these hostnames will not be modified by the query filter.
+// These are exact match comparisons. Sub-domains are not
+// automatically included.
+static constexpr auto kExemptedHostnames =
+    base::MakeFixedFlatSet<std::string_view>(
+        base::sorted_unique,
+        {
+            // https://github.com/brave/brave-browser/issues/41134
+            "urldefense.com",
+        });
+
 bool IsScopedTracker(
-    const std::string_view param_name,
-    const std::string& spec,
+    std::string_view param_name,
+    std::string_view spec,
     const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
   if (!base::Contains(trackers, param_name)) {
     return false;
@@ -166,8 +184,8 @@ bool IsScopedTracker(
 
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
-std::optional<std::string> StripQueryParameter(const std::string_view query,
-                                               const std::string& spec) {
+std::optional<std::string> StripQueryParameter(std::string_view query,
+                                               std::string_view spec) {
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
   // for more information on why this approach was selected.
@@ -238,6 +256,11 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
     return std::nullopt;
   }
 
+  if (request_url.has_host() &&
+      kExemptedHostnames.count(request_url.host()) == 1) {
+    return std::nullopt;
+  }
+
   if (redirect_source_url.is_valid()) {
     if (internal_redirect) {
       // Ignore internal redirects since we trigger them.
@@ -263,8 +286,8 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
 }
 
 bool IsScopedTrackerForTesting(
-    const std::string_view param_name,
-    const std::string& spec,
+    std::string_view param_name,
+    std::string_view spec,
     const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
   return IsScopedTracker(param_name, spec, trackers);
 }

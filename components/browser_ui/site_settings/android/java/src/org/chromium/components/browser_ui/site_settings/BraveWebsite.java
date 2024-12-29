@@ -9,6 +9,7 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.build.annotations.UsedByReflection;
 import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
+import org.chromium.components.content_settings.ProviderType;
 import org.chromium.content_public.browser.BrowserContextHandle;
 
 @UsedByReflection("Website")
@@ -19,7 +20,7 @@ public class BraveWebsite {
             @ContentSettingValues int value) {
         PermissionInfo info =
                 (PermissionInfo)
-                        BraveReflectionUtil.InvokeMethod(
+                        BraveReflectionUtil.invokeMethod(
                                 Website.class, this, "getPermissionInfo", int.class, type);
         if (info != null) {
             info.setContentSetting(browserContextHandle, value);
@@ -28,7 +29,7 @@ public class BraveWebsite {
 
         ContentSettingException exception =
                 (ContentSettingException)
-                        BraveReflectionUtil.InvokeMethod(
+                        BraveReflectionUtil.invokeMethod(
                                 Website.class, this, "getContentSettingException", int.class, type);
         if (type == ContentSettingsType.AUTOPLAY) {
             if (exception == null) {
@@ -36,13 +37,13 @@ public class BraveWebsite {
                         new ContentSettingException(
                                 ContentSettingsType.AUTOPLAY,
                                 ((WebsiteAddress)
-                                                BraveReflectionUtil.InvokeMethod(
+                                                BraveReflectionUtil.invokeMethod(
                                                         Website.class, this, "getAddress"))
                                         .getHost(),
                                 value,
-                                "",
+                                ProviderType.NONE,
                                 false);
-                BraveReflectionUtil.InvokeMethod(
+                BraveReflectionUtil.invokeMethod(
                         Website.class,
                         this,
                         "setContentSettingException",
@@ -57,13 +58,13 @@ public class BraveWebsite {
                         new ContentSettingException(
                                 ContentSettingsType.BRAVE_GOOGLE_SIGN_IN,
                                 ((WebsiteAddress)
-                                                BraveReflectionUtil.InvokeMethod(
+                                                BraveReflectionUtil.invokeMethod(
                                                         Website.class, this, "getAddress"))
                                         .getHost(),
                                 value,
-                                "",
+                                ProviderType.NONE,
                                 false);
-                BraveReflectionUtil.InvokeMethod(
+                BraveReflectionUtil.invokeMethod(
                         Website.class,
                         this,
                         "setContentSettingException",
@@ -78,13 +79,13 @@ public class BraveWebsite {
                         new ContentSettingException(
                                 ContentSettingsType.BRAVE_LOCALHOST_ACCESS,
                                 ((WebsiteAddress)
-                                                BraveReflectionUtil.InvokeMethod(
+                                                BraveReflectionUtil.invokeMethod(
                                                         Website.class, this, "getAddress"))
                                         .getHost(),
                                 value,
-                                "",
+                                ProviderType.NONE,
                                 false);
-                BraveReflectionUtil.InvokeMethod(
+                BraveReflectionUtil.invokeMethod(
                         Website.class,
                         this,
                         "setContentSettingException",
@@ -95,7 +96,7 @@ public class BraveWebsite {
             }
         }
 
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 Website.class,
                 this,
                 "setContentSetting",

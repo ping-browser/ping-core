@@ -46,6 +46,7 @@ private struct ShortcutProvider: IntentTimelineProvider {
         configuration.slot1,
         configuration.slot2,
         configuration.slot3,
+        configuration.slot4,
       ]
     )
     completion(entry)
@@ -69,6 +70,7 @@ private struct ShortcutProvider: IntentTimelineProvider {
         configuration.slot1,
         configuration.slot2,
         configuration.slot3,
+        configuration.slot4,
       ]
     )
     completion(.init(entries: [entry], policy: .never))
@@ -76,6 +78,8 @@ private struct ShortcutProvider: IntentTimelineProvider {
 }
 
 private struct ShortcutLink<Content: View>: View {
+  @Environment(\.widgetRenderingMode) private var renderingMode
+
   var url: String
   var text: String
   var image: Content
@@ -97,15 +101,15 @@ private struct ShortcutLink<Content: View>: View {
               .font(.system(size: 20))
               .frame(height: 24)
             Text(verbatim: text)
-              .font(.system(size: 13, weight: .medium))
+              .font(.system(size: 10, weight: .medium))
               .multilineTextAlignment(.center)
           }
           .padding(8)
           .foregroundColor(Color(UIColor.braveLabel))
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(
-            Color(UIColor.braveBackground)
-              .clipShape(ContainerRelativeShape())
+            renderingMode == .accented ? Color.white.opacity(0.1) : Color(UIColor.braveBackground),
+            in: .containerRelative
           )
         }
       )
@@ -142,8 +146,10 @@ extension WidgetShortcut {
       return Strings.Widgets.walletShortcutTitle
     case .scanQRCode:
       return Strings.Widgets.QRCode
-    // case .braveNews:
-    //   return Strings.Widgets.braveNews
+//     case .braveNews:
+//       return Strings.Widgets.braveNews
+//     case .braveLeo:
+//       return Strings.Widgets.braveLeo
     @unknown default:
       assertionFailure()
       return ""
@@ -173,8 +179,10 @@ extension WidgetShortcut {
       return Image(braveSystemName: "leo.product.brave-wallet")
     case .scanQRCode:
       return Image(braveSystemName: "leo.qr.code")
-    // case .braveNews:
-    //   return Image(braveSystemName: "leo.product.brave-news")
+//     case .braveNews:
+//       return Image(braveSystemName: "leo.product.brave-news")
+//     case .braveLeo:
+//       return Image(braveSystemName: "leo.product.brave-leo")
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")
@@ -183,6 +191,8 @@ extension WidgetShortcut {
 }
 
 private struct ShortcutsView: View {
+  @Environment(\.widgetRenderingMode) private var renderingMode
+
   var slots: [WidgetShortcut]
 
   var body: some View {
@@ -197,13 +207,15 @@ private struct ShortcutsView: View {
               Text(Strings.Widgets.shortcutsEnterURLButton)
             } icon: {
               Image("brave-logo-no-bg-small")
+                .widgetAccentedRenderingModeFullColor()
             }
             .foregroundColor(Color(UIColor.braveLabel))
             .frame(maxWidth: .infinity)
             .frame(height: 44)
             .background(
-              Color(UIColor.braveBackground)
-                .clipShape(ContainerRelativeShape())
+              renderingMode == .accented
+                ? Color.white.opacity(0.1) : Color(UIColor.braveBackground),
+              in: .containerRelative
             )
           }
         )

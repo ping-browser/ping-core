@@ -7,12 +7,15 @@
 
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -27,18 +30,25 @@
 
 using brave_shields::ControlType;
 
-const char kEmbeddedTestServerDirectory[] = "webaudio";
-const char kTitleScript[] = "document.title;";
+constexpr char kEmbeddedTestServerDirectory[] = "webaudio";
+constexpr char kTitleScript[] = "document.title;";
 
 class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
  public:
+  BraveWebAudioFarblingBrowserTest() {
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/
+        {webcompat::features::kBraveWebcompatExceptionsService,
+         brave_shields::features::kBraveShowStrictFingerprintingMode},
+        /*disabled_features=*/{});
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
@@ -83,6 +93,7 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
   GURL top_level_page_url_;
   GURL copy_from_channel_url_;
   GURL farbling_url_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 // Tests for crash in copyFromChannel as reported in
@@ -114,6 +125,15 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   // Farbling level: off
   // web audio: original audio data
   AllowFingerprinting();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "8000");
+
+  // Farbling level: balanced (default), but webcompat exception enabled
+  // web audio: original audio data
+  SetFingerprintingDefault();
+  brave_shields::SetWebcompatEnabled(content_settings(),
+                                     ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO,
+                                     true, farbling_url(), nullptr);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "8000");
 }

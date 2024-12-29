@@ -24,9 +24,8 @@ class PlaylistContentsWrapper
       public FullscreenObserver {
  public:
   PlaylistContentsWrapper(const GURL& webui_url,
-                          content::BrowserContext* browser_context,
+                          Profile* profile,
                           int task_manager_string_id,
-                          bool webui_resizes_host,
                           bool esc_closes_ui,
                           BrowserView* browser_view,
                           PlaylistSidePanelCoordinator* coordinator);
@@ -34,8 +33,7 @@ class PlaylistContentsWrapper
 
   // WebUIContentsWrapperT<playlist::PlaylistUI>:
   bool CanEnterFullscreenModeForTab(
-      content::RenderFrameHost* requesting_frame,
-      const blink::mojom::FullscreenOptions& options) override;
+      content::RenderFrameHost* requesting_frame) override;
   void EnterFullscreenModeForTab(
       content::RenderFrameHost* requesting_frame,
       const blink::mojom::FullscreenOptions& options) override;
@@ -50,13 +48,14 @@ class PlaylistContentsWrapper
       content::WebContents* web_contents) override;
   void ExitPictureInPicture() override;
 
-  void AddNewContents(content::WebContents* source,
-                      std::unique_ptr<content::WebContents> new_contents,
-                      const GURL& target_url,
-                      WindowOpenDisposition disposition,
-                      const blink::mojom::WindowFeatures& window_features,
-                      bool user_gesture,
-                      bool* was_blocked) override;
+  content::WebContents* AddNewContents(
+      content::WebContents* source,
+      std::unique_ptr<content::WebContents> new_contents,
+      const GURL& target_url,
+      WindowOpenDisposition disposition,
+      const blink::mojom::WindowFeatures& window_features,
+      bool user_gesture,
+      bool* was_blocked) override;
 
   std::string GetTitleForMediaControls(
       content::WebContents* web_contents) override;

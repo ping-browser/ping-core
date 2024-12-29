@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/omnibox/buildflags/buildflags.gni")
 
 brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_bookmark_provider.cc",
@@ -19,6 +20,8 @@ brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
   "//brave/components/omnibox/browser/brave_search_provider.cc",
   "//brave/components/omnibox/browser/brave_search_provider.h",
+  "//brave/components/omnibox/browser/brave_search_suggestion_parser.cc",
+  "//brave/components/omnibox/browser/brave_search_suggestion_parser.h",
   "//brave/components/omnibox/browser/brave_shortcuts_provider.cc",
   "//brave/components/omnibox/browser/brave_shortcuts_provider.h",
   "//brave/components/omnibox/browser/open_here_action.cc",
@@ -36,11 +39,22 @@ brave_components_omnibox_browser_deps = [
   "//brave/components/brave_search_conversion",
   "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
+  "//brave/components/omnibox/buildflags",
   "//brave/components/resources:strings",
   "//brave/components/vector_icons",
   "//components/prefs",
   "//url",
 ]
+
+# Looks like an upstream bug:
+# https://chromium-review.googlesource.com/c/chromium/src/+/5814284/7/component
+# s/omnibox/browser/verbatim_match.cc#15. Note, that for iOS we add the header
+# content/public/common/url_constants.h to //brave/extensions:common target.
+if (is_ios) {
+  brave_components_omnibox_browser_deps += [ "//brave/extensions:common" ]
+} else {
+  brave_components_omnibox_browser_deps += [ "//content/public/common" ]
+}
 
 if (enable_ai_chat) {
   brave_components_omnibox_browser_sources += [
@@ -67,4 +81,9 @@ if (enable_commander) {
 
   brave_components_omnibox_browser_deps +=
       [ "//brave/components/commander/browser" ]
+}
+
+if (enable_strict_query_check_for_search_suggestions) {
+  brave_components_omnibox_browser_deps +=
+      [ "//brave/components/omnibox/browser/search_suggestions" ]
 }

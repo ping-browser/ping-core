@@ -6,9 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_HANDLER_H_
 
+#include <cstdint>
 #include <string>
 
-#include "base/memory/raw_ref.h"
+#include "brave/components/brave_ads/core/internal/ad_units/creative_ad_cache.h"
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler.h"
@@ -31,15 +32,13 @@
 
 namespace brave_ads {
 
-class Account;
 class SiteVisit;
 struct AdInfo;
 struct ConversionInfo;
-struct TabInfo;
 
 class AdHandler final : public ConversionsObserver, SiteVisitObserver {
  public:
-  explicit AdHandler(Account& account);
+  AdHandler();
 
   AdHandler(const AdHandler&) = delete;
   AdHandler& operator=(const AdHandler&) = delete;
@@ -51,30 +50,37 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   void MaybeServeInlineContentAd(const std::string& dimensions,
                                  MaybeServeInlineContentAdCallback callback);
-  void TriggerInlineContentAdEvent(const std::string& placement_id,
-                                   const std::string& creative_instance_id,
-                                   mojom::InlineContentAdEventType event_type,
-                                   TriggerAdEventCallback callback);
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::InlineContentAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback);
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback);
-  void TriggerNewTabPageAdEvent(const std::string& placement_id,
-                                const std::string& creative_instance_id,
-                                mojom::NewTabPageAdEventType event_type,
-                                TriggerAdEventCallback callback);
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::NewTabPageAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback);
 
-  void TriggerNotificationAdEvent(const std::string& placement_id,
-                                  mojom::NotificationAdEventType event_type,
-                                  TriggerAdEventCallback callback);
+  void TriggerNotificationAdEvent(
+      const std::string& placement_id,
+      mojom::NotificationAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback);
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type,
+      mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback);
 
-  void TriggerSearchResultAdEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                                  mojom::SearchResultAdEventType event_type,
-                                  TriggerAdEventCallback callback);
+  std::optional<mojom::CreativeSearchResultAdInfoPtr> MaybeGetSearchResultAd(
+      const std::string& placement_id);
+
+  void TriggerSearchResultAdEvent(
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+      mojom::SearchResultAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback);
 
  private:
   // ConversionsObserver:
@@ -82,17 +88,19 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   // SiteVisitObserver:
   void OnMaybeLandOnPage(const AdInfo& ad, base::TimeDelta after) override;
-  void OnDidSuspendPageLand(const TabInfo& tab,
+  void OnDidSuspendPageLand(int32_t tab_id,
                             base::TimeDelta remaining_time) override;
-  void OnDidResumePageLand(const TabInfo& tab,
+  void OnDidResumePageLand(int32_t tab_id,
                            base::TimeDelta remaining_time) override;
-  void OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) override;
-  void OnDidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) override;
+  void OnDidLandOnPage(int32_t tab_id,
+                       int32_t http_response_code,
+                       const AdInfo& ad) override;
+  void OnDidNotLandOnPage(int32_t tab_id, const AdInfo& ad) override;
   void OnCanceledPageLand(int32_t tab_id, const AdInfo& ad) override;
 
-  const raw_ref<Account> account_;
-
   Catalog catalog_;
+
+  CreativeAdCache creative_ad_cache_;
 
   Conversions conversions_;
 
@@ -114,7 +122,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   NewTabPageAdHandler new_tab_page_ad_handler_;
   NotificationAdHandler notification_ad_handler_;
   PromotedContentAdHandler promoted_content_ad_handler_;
-  SearchResultAd search_result_ad_handler_;
+  SearchResultAdHandler search_result_ad_handler_;
 };
 
 }  // namespace brave_ads

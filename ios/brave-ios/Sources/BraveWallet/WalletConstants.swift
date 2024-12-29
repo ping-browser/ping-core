@@ -28,7 +28,7 @@ public struct WalletConstants {
 
   /// The url to Brave Help Center for Wallet.
   static let braveWalletSupportURL = URL(
-    string: "https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet"
+    string: "https://support.ping-browser.com/hc/en-us/categories/360001059151-Brave-Wallet"
   )!
 
   // TODO: update wiki link
@@ -64,11 +64,10 @@ public struct WalletConstants {
     string: "https://github.com/brave/brave-browser/wiki/NFT-Discovery"
   )!
 
-  public static let braveWalletTermsOfUse = URL(string: "https://brave.com/terms-of-use/")!
+  public static let braveWalletTermsOfUse = URL(string: "https://ping-browser.com/terms-of-use/")!
 
   /// The currently supported test networks.
   static let supportedTestNetworkChainIds = [
-    BraveWallet.GoerliChainId,
     BraveWallet.SepoliaChainId,
     BraveWallet.LocalhostChainId,
     BraveWallet.SolanaDevnet,
@@ -140,6 +139,9 @@ public struct WalletConstants {
     ".crypto", ".x", ".nft", ".dao", ".wallet",
     ".blockchain", ".bitcoin", ".zil", ".altimist", ".anime",
     ".klever", ".manga", ".polygon", ".unstoppable", ".pudgy",
+    ".tball", ".stepn", ".secret", ".raiin", ".pog", ".clay",
+    ".metropolis", ".witg", ".ubu", ".kryptic", ".farms", ".dfz",
+    ".kresus", ".binanceus", ".austin", ".bitget", ".wrkx",
   ]
 
   /// The supported IPFS schemes
@@ -154,7 +156,7 @@ public struct WalletConstants {
 
   /// The link for users to learn more about Solana SPL token account creation in transaction confirmation screen
   static let splTokenAccountCreationLink = URL(
-    string: "https://support.brave.com/hc/en-us/articles/5546517853325"
+    string: "https://support.ping-browser.com/hc/en-us/articles/5546517853325"
   )!
 
   /// The list of token contract addresses that are supported to bridge to Aurora app
@@ -201,12 +203,6 @@ public struct WalletConstants {
 
   /// The link for for users to learn more about sign transactions
   static let signTransactionRiskLink: URL = URL(
-    string: "https://support.brave.com/hc/en-us/articles/4409513799693"
-  )!
-
-  /// The link for for users to learn more about IPFS
-  public static let ipfsLearnMoreLink: URL = URL(
-    string:
-      "https://support.brave.com/hc/en-us/articles/360051406452-How-does-IPFS-Impact-my-Privacy-"
+    string: "https://support.ping-browser.com/hc/en-us/articles/4409513799693"
   )!
 }

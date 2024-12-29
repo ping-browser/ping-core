@@ -25,11 +25,12 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/point.h"
@@ -38,7 +39,10 @@
 namespace {
 
 constexpr char kTestOnionPath[] = "/onion";
-constexpr char kTestOnionURL[] = "https://brave.onion";
+// URLs inside the Location or Onion-Location headers are allowed to
+// include commas and it's not a special character.
+constexpr char kTestOnionURL[] = "https://brave.onion/,https://brave2.onion";
+constexpr char kTestOnionURL2[] = "https://brave3.onion/";
 constexpr char kTestInvalidScheme[] = "/invalid_scheme";
 constexpr char kTestInvalidSchemeURL[] = "brave://brave.onion";
 constexpr char kTestNotOnion[] = "/not_onion";
@@ -55,6 +59,8 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
   http_response->set_content("<html><head></head></html>");
   if (request.GetURL().path_piece() == kTestOnionPath) {
     http_response->AddCustomHeader("onion-location", kTestOnionURL);
+    // Subsequent headers should be ignored.
+    http_response->AddCustomHeader("onion-location", kTestOnionURL2);
   } else if (request.GetURL().path_piece() == kTestInvalidScheme) {
     http_response->AddCustomHeader("onion-location", kTestInvalidSchemeURL);
   } else if (request.GetURL().path_piece() == kTestNotOnion) {
@@ -103,7 +109,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     return test_http_server_.get();
   }
 
-  OnionLocationView* GetOnionLocationView(Browser* browser) {
+  PageActionIconView* GetOnionLocationView(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     if (!browser_view) {
       return nullptr;
@@ -122,24 +128,28 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     bool is_tor = browser->profile()->IsTor();
     auto* onion_location_view = GetOnionLocationView(browser);
     ASSERT_TRUE(onion_location_view);
-    auto* onion_button = onion_location_view->GetButton();
-    ASSERT_TRUE(onion_button);
-    EXPECT_TRUE(onion_button->GetVisible());
-    EXPECT_EQ(onion_button->GetText(),
-              brave_l10n::GetLocalizedResourceUTF16String(
-                  (is_tor ? IDS_LOCATION_BAR_ONION_AVAILABLE
-                          : IDS_LOCATION_BAR_OPEN_IN_TOR)));
+    EXPECT_TRUE(onion_location_view->GetVisible());
+    EXPECT_TRUE(
+        onion_location_view->GetTextForTooltipAndAccessibleName().starts_with(
+            l10n_util::GetStringFUTF16(
+                is_tor ? IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT
+                       : IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
+                u"")));
 
     ui_test_utils::BrowserChangeObserver browser_creation_observer(
         nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
-    ui::MouseEvent pressed(ui::ET_MOUSE_PRESSED, gfx::Point(), gfx::Point(),
-                           ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
-                           ui::EF_LEFT_MOUSE_BUTTON);
-    ui::MouseEvent released(ui::ET_MOUSE_RELEASED, gfx::Point(), gfx::Point(),
-                            ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
-                            ui::EF_LEFT_MOUSE_BUTTON);
-    views::test::ButtonTestApi(onion_button).NotifyClick(pressed);
-    views::test::ButtonTestApi(onion_button).NotifyClick(released);
+
+    content::TestNavigationObserver navigation_observer(
+        url, content::MessageLoopRunner::QuitMode::IMMEDIATE, false);
+    navigation_observer.StartWatchingNewWebContents();
+    ui::MouseEvent pressed(ui::EventType::kMousePressed, gfx::Point(),
+                           gfx::Point(), ui::EventTimeForNow(),
+                           ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
+    ui::MouseEvent released(ui::EventType::kMouseReleased, gfx::Point(),
+                            gfx::Point(), ui::EventTimeForNow(),
+                            ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
+    views::test::ButtonTestApi(onion_location_view).NotifyClick(pressed);
+    views::test::ButtonTestApi(onion_location_view).NotifyClick(released);
     if (wait_for_tor_window) {
       browser_creation_observer.Wait();
     }
@@ -149,6 +159,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(tor_browser->profile()->IsTor());
     content::WebContents* tor_web_contents =
         tor_browser->tab_strip_model()->GetActiveWebContents();
+    navigation_observer.Wait();
     EXPECT_EQ(tor_web_contents->GetVisibleURL(), url);
     // We don't close the original tab
     EXPECT_EQ(browser->tab_strip_model()->count(), is_tor ? 2 : 1);
@@ -165,30 +176,37 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> test_http_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       OnionLocationHeader) {
-  auto* tor_browser = OpenTorWindow();
-  for (auto* browser : {browser(), tor_browser}) {
-    GURL url1 = test_server()->GetURL("/onion");
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url1));
-    content::WebContents* web_contents =
-        browser->tab_strip_model()->GetActiveWebContents();
-    tor::OnionLocationTabHelper* helper =
-        tor::OnionLocationTabHelper::FromWebContents(web_contents);
-    EXPECT_TRUE(helper->should_show_icon());
-    EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
-    CheckOnionLocationLabel(browser, GURL(kTestOnionURL), false);
+class OnionLocationHeaderNavigationThrottleBrowserTest
+    : public OnionLocationNavigationThrottleBrowserTest,
+      public testing::WithParamInterface<bool> {};
 
-    GURL url2 = test_server()->GetURL("/no_onion");
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url2));
-    web_contents = browser->tab_strip_model()->GetActiveWebContents();
-    helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
-    EXPECT_FALSE(helper->should_show_icon());
-    EXPECT_TRUE(helper->onion_location().is_empty());
-    auto* onion_location_view = GetOnionLocationView(browser);
-    ASSERT_TRUE(onion_location_view);
-    EXPECT_FALSE(onion_location_view->GetVisible());
-  }
+INSTANTIATE_TEST_SUITE_P(,
+                         OnionLocationHeaderNavigationThrottleBrowserTest,
+                         testing::Bool());
+
+IN_PROC_BROWSER_TEST_P(OnionLocationHeaderNavigationThrottleBrowserTest,
+                       OnionLocationHeader) {
+  auto* browser = GetParam() ? OpenTorWindow() : this->browser();
+
+  GURL url1 = test_server()->GetURL("/onion");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url1));
+  content::WebContents* web_contents =
+      browser->tab_strip_model()->GetActiveWebContents();
+  tor::OnionLocationTabHelper* helper =
+      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_TRUE(helper->should_show_icon());
+  EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
+  CheckOnionLocationLabel(browser, GURL(kTestOnionURL), false);
+
+  GURL url2 = test_server()->GetURL("/no_onion");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url2));
+  web_contents = browser->tab_strip_model()->GetActiveWebContents();
+  helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+  auto* onion_location_view = GetOnionLocationView(browser);
+  ASSERT_TRUE(onion_location_view);
+  EXPECT_FALSE(onion_location_view->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,

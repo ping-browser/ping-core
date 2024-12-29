@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <optional>
+#include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -133,21 +134,12 @@ void BraveTab::Layout(PassKey) {
 }
 
 gfx::Insets BraveTab::GetInsets() const {
-  // Supplement extra left side padding.
-  // Upstream gives extra padding to balance with right side padding space but
-  // it's gone when tab doesn't have sufficient available width. In our case,
-  // As we have more narrow left & right padding than upstream, icon seems stick
-  // to left side when extra padding is not used.
-  // We only need to do that when |extra_padding_before_content_| is false.
-  int extra_left_padding = 0;
-
-  // Add extra padding if upstream tab doesn't have it.
-  if (!extra_padding_before_content_) {
-    extra_left_padding = kExtraLeftPadding;
-  }
-
+  // As close button has more padding, it seems favicon is too close to the left
+  // edge of the tab left border comppared with close button. Give additional
+  // left padding to make both visible with same space from tab border.
+  // See https://www.github.com/brave/brave-browser/issues/30469.
   auto insets = Tab::GetInsets();
-  insets.set_left(insets.left() + extra_left_padding);
+  insets.set_left(insets.left() + kExtraLeftPadding);
   return insets;
 }
 
@@ -200,5 +192,22 @@ void BraveTab::UpdateShadowForActiveTab() {
   } else if (view_shadow_) {
     view_shadow_.reset();
     DestroyLayer();
+  }
+}
+
+void BraveTab::SetData(TabRendererData data) {
+  const bool data_changed = data != data_;
+  Tab::SetData(std::move(data));
+
+  // Our vertical tab uses CompoundTabContainer.
+  // When tab is moved from the group by pinning, it's moved to
+  // pinned TabContainerImpl before its tab group id is cleared.
+  // And it causes runtime crash as using this tab from pinned TabContainerImpl
+  // has assumption that it's not included in any group.
+  // So, clear in-advance when tab enters to pinned TabContainerImpl.
+  if (data_changed &&
+      tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
+      data_.pinned) {
+    set_group(std::nullopt);
   }
 }

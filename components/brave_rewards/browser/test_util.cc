@@ -3,14 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <utility>
-
 #include "brave/components/brave_rewards/browser/test_util.h"
 
-#include "base/files/file_util.h"
-#include "base/strings/utf_string_conversions.h"
+#include <utility>
+
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
@@ -29,7 +26,6 @@ std::unique_ptr<Profile> CreateBraveRewardsProfile(const base::FilePath& path) {
   std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs(
       factory.CreateSyncable(registry.get()));
   RegisterUserProfilePrefs(registry.get());
-  brave_rewards::RegisterProfilePrefs(registry.get());
   TestingProfile::Builder profile_builder;
   profile_builder.SetPrefService(std::move(prefs));
   profile_builder.SetPath(path);

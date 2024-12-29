@@ -25,7 +25,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/ui/util/pasteboard_util.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/url_data_source_ios.h"
@@ -51,7 +51,8 @@ web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
   source->UseStringsJs();
 
   // Add required resources.
-  source->AddResourcePaths(base::make_span(resource_map, resource_map_size));
+  source->AddResourcePaths(
+      UNSAFE_TODO(base::make_span(resource_map, resource_map_size)));
   source->SetDefaultResource(html_resource_id);
   return source;
 }
@@ -253,5 +254,6 @@ void SkusInternalsUI::CreateOrderFromReceipt(
     CreateOrderFromReceiptCallback callback) {
   EnsureMojoConnected();
 
-  skus_service_->CreateOrderFromReceipt(domain, receipt, std::move(callback));
+  skus_service_->CreateOrderFromReceipt(domain, receipt,
+                                        base::BindOnce(std::move(callback)));
 }

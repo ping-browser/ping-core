@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/history.ts b/chrome/browser/resources/history/history.ts
-index bcab0adec089ab4d4d577e4bc00b4191d6d17a20..ee4534ff04741ed659bd01a9132a5c68a45276ec 100644
+index 90cac9ef363267c6395156dec1022a3a3f617d74..d06ba2c923390e7e32b28787c806bbf4fce6ef75 100644
 --- a/chrome/browser/resources/history/history.ts
 +++ b/chrome/browser/resources/history/history.ts
 @@ -2,6 +2,7 @@
@@ -9,4 +9,4 @@ index bcab0adec089ab4d4d577e4bc00b4191d6d17a20..ee4534ff04741ed659bd01a9132a5c68
 +import './brave_overrides/index.js';
  import './app.js';
  
- export {BrowserProxyImpl} from 'chrome://resources/cr_components/history_clusters/browser_proxy.js';
+ export {BrowserProxyImpl as ShoppingBrowserProxyImpl} from 'chrome://resources/cr_components/commerce/browser_proxy.js';

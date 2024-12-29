@@ -96,7 +96,9 @@ class TabManager: NSObject {
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
   private var syncTabsTask: DispatchWorkItem?
   private var metricsHeartbeat: Timer?
+  private let historyAPI: BraveHistoryAPI?
   public let privateBrowsingManager: PrivateBrowsingManager
+  private var forgetTasks: [TabType: [String: Task<Void, Error>]] = [:]
 
   let windowId: UUID
 
@@ -117,6 +119,7 @@ class TabManager: NSObject {
     prefs: Prefs,
     rewards: BraveRewards?,
     tabGeneratorAPI: BraveTabGeneratorAPI?,
+    historyAPI: BraveHistoryAPI?,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     assert(Thread.isMainThread)
@@ -126,6 +129,7 @@ class TabManager: NSObject {
     self.navDelegate = TabManagerNavDelegate()
     self.rewards = rewards
     self.tabGeneratorAPI = tabGeneratorAPI
+    self.historyAPI = historyAPI
     self.privateBrowsingManager = privateBrowsingManager
     self.tabEventHandlers = TabEventHandlers.create(with: prefs)
     super.init()
@@ -232,6 +236,11 @@ class TabManager: NSObject {
     } else {
       return tabsForCurrentMode
     }
+  }
+
+  func tabsCountForMode(isPrivate: Bool) -> Int {
+    let tabType: TabType = isPrivate ? .private : .regular
+    return tabs(withType: tabType).count
   }
 
   private func tabs(withType type: TabType, query: String? = nil) -> [Tab] {
@@ -493,7 +502,12 @@ class TabManager: NSObject {
       )
       tab.lastTitle = url.absoluteDisplayString
       tab.url = url
-      tab.favicon = FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
+      tab.favicon = Favicon.default
+      Task { @MainActor in
+        if let icon = await FaviconFetcher.getIconFromCache(for: url) {
+          tab.favicon = icon
+        }
+      }
       tabs.append(tab)
     }
 
@@ -738,12 +752,194 @@ class TabManager: NSObject {
     }
   }
 
-  @MainActor func removeTab(_ tab: Tab) {
-    assert(Thread.isMainThread)
+  /// Forget all data for websites that have forget me enabled
+  /// Will forget all data instantly with no delay
+  @MainActor func forgetDataOnAppExitDomains() {
+    guard BraveCore.FeatureList.kBraveShredFeature.enabled else { return }
+    let shredOnAppExitURLs = Domain.allDomainsWithShredLevelAppExit()?
+      .compactMap { domain -> URL? in
+        guard let urlString = domain.url,
+          let url = URL(string: urlString),
+          !InternalURL.isValid(url: url)
+        else {
+          return nil
+        }
+        return url
+      }
+    guard let shredOnAppExitURLs, !shredOnAppExitURLs.isEmpty else { return }
+    Task {
+      await forgetData(for: shredOnAppExitURLs)
+    }
+  }
 
+  /// Forget all data for websites if the website has "Forget Me" enabled
+  ///
+  /// A delay allows us to cancel this forget in case the user goes back to this website.
+  ///
+  /// - Parameters:
+  ///   - url: The url of the website to forget
+  ///   - tab: The tab in which the website is or was open in
+  ///   - delayInSeconds: Only attempt to forget the content after a short delay (default: 30s)
+  ///   - checkOtherTabs: Check if other tabs are open for the given domain
+  @MainActor func forgetDataIfNeeded(
+    for url: URL,
+    in tab: Tab
+  ) {
+    guard FeatureList.kBraveShredFeature.enabled else { return }
+    guard let etldP1 = url.baseDomain else { return }
+    forgetTasks[tab.type]?[etldP1]?.cancel()
+    let siteDomain = Domain.getOrCreate(
+      forUrl: url,
+      persistent: !tab.isPrivate
+    )
+
+    switch siteDomain.shredLevel {
+    case .never:
+      return
+    case .appExit:
+      // Will be Shred on startup at next launch in `forgetDataOnAppExitDomains()`.
+      return
+    case .whenSiteClosed:
+      let tabs = tabs(withType: tab.type).filter { existingTab in
+        existingTab != tab
+      }
+      // Ensure that no othe tabs are open for this domain
+      guard !tabs.contains(where: { $0.url?.baseDomain == etldP1 }) else {
+        return
+      }
+      forgetDataDelayed(for: url, in: tab, delay: 30)
+    }
+  }
+
+  @MainActor func shredData(for url: URL, in tab: Tab) {
+    guard let etldP1 = url.baseDomain else { return }
+
+    // Select the next or previous tab that is not being destroyed
+    if let index = allTabs.firstIndex(where: { $0 == tab }) {
+      var nextTab: Tab?
+      // First seach down or up for a tab that is not being destroyed
+      var increasingIndex = index + 1
+      while nextTab == nil, increasingIndex < allTabs.count {
+        if allTabs[increasingIndex].url?.baseDomain != etldP1 {
+          nextTab = allTabs[increasingIndex]
+        }
+        increasingIndex += 1
+      }
+
+      var decreasingIndex = index - 1
+      while nextTab == nil, decreasingIndex > 0 {
+        if allTabs[decreasingIndex].url?.baseDomain != etldP1 {
+          nextTab = allTabs[decreasingIndex]
+        }
+        decreasingIndex -= 1
+      }
+
+      // Select the found tab
+      if let nextTab = nextTab {
+        selectTab(nextTab, previous: tab)
+      }
+    }
+
+    // Remove all unwanted tabs
+    for tab in allTabs {
+      guard tab.url?.baseDomain == etldP1 else { continue }
+      removeTab(tab)
+    }
+
+    Task {
+      // Forget all the data
+      await forgetData(for: url, in: tab)
+    }
+  }
+
+  /// Start a task to delete all data for this url
+  /// The task may be delayed in case we want to cancel it
+  @MainActor private func forgetDataDelayed(
+    for url: URL,
+    in tab: Tab,
+    delay: TimeInterval
+  ) {
+    guard let etldP1 = url.baseDomain else { return }
+    forgetTasks[tab.type] = forgetTasks[tab.type] ?? [:]
+    // Start a task to delete all data for this etldP1
+    // The task may be delayed in case we want to cancel it
+    forgetTasks[tab.type]?[etldP1] = Task {
+      try await Task.sleep(seconds: delay)
+      await self.forgetData(for: url, in: tab)
+    }
+  }
+
+  @MainActor private func forgetData(for url: URL, in tab: Tab?) async {
+    await forgetData(for: [url], dataStore: tab?.webView?.configuration.websiteDataStore)
+
+    ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
+    if let etldP1 = url.baseDomain, let tab {
+      forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+    }
+  }
+
+  @MainActor private func forgetData(for urls: [URL], dataStore: WKWebsiteDataStore? = nil) async {
+    let baseDomains = Set(urls.compactMap { $0.baseDomain })
+    guard !baseDomains.isEmpty else { return }
+
+    let dataStore = dataStore ?? WKWebsiteDataStore.default()
+    // Delete 1P data records
+    await dataStore.deleteDataRecords(
+      forDomains: baseDomains
+    )
+
+    if BraveCore.FeatureList.kBraveShredCacheData.enabled {
+      // Delete all cache data (otherwise 3P cache entries left behind
+      // are visible in Manage Website Data view brave-browser #41095)
+      let cacheTypes = Set([
+        WKWebsiteDataTypeMemoryCache, WKWebsiteDataTypeDiskCache,
+        WKWebsiteDataTypeOfflineWebApplicationCache,
+      ])
+      let cacheRecords = await dataStore.dataRecords(ofTypes: cacheTypes)
+      await dataStore.removeData(ofTypes: cacheTypes, for: cacheRecords)
+    }
+
+    // Delete the history for forgotten websites
+    if let historyAPI = self.historyAPI {
+      // if we're only forgetting 1 site, we can query history by it's domain
+      let query = urls.count == 1 ? urls.first?.baseDomain : nil
+      let nodes = await historyAPI.search(
+        withQuery: query,
+        options: HistorySearchOptions(
+          maxCount: 0,
+          hostOnly: false,
+          duplicateHandling: .keepAll,
+          begin: nil,
+          end: nil
+        )
+      ).filter { node in
+        guard let baseDomain = node.url.baseDomain else { return false }
+        return baseDomains.contains(baseDomain)
+      }
+      historyAPI.removeHistory(for: nodes)
+    }
+
+    for url in urls {
+      await FaviconFetcher.deleteCache(for: url)
+    }
+  }
+
+  /// Cancel a forget data request in case we navigate back to the tab within a certain period
+  @MainActor func cancelForgetData(for url: URL, in tab: Tab) {
+    guard let etldP1 = url.baseDomain else { return }
+    forgetTasks[tab.type]?[etldP1]?.cancel()
+    forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+  }
+
+  @MainActor func removeTab(_ tab: Tab) {
     guard let removalIndex = allTabs.firstIndex(where: { $0 === tab }) else {
       Logger.module.debug("Could not find index of tab to remove")
       return
+    }
+
+    if let url = tab.url {
+      // Check if this data needs to be forgotten
+      forgetDataIfNeeded(for: url, in: tab)
     }
 
     if tab.isPrivate {
@@ -946,10 +1142,22 @@ class TabManager: NSObject {
     delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: nil) }
   }
 
-  @MainActor func removeAllForCurrentMode() {
+  @MainActor func removeAllForCurrentMode(isActiveTabIncluded: Bool = true) {
     isBulkDeleting = true
-    removeTabs(tabsForCurrentMode)
+
+    if isActiveTabIncluded {
+      removeTabs(tabsForCurrentMode)
+    } else {
+      let tabsToDelete = tabsForCurrentMode.filter {
+        guard let currentTab = selectedTab else { return false }
+        return currentTab.id != $0.id
+      }
+      removeTabs(tabsToDelete)
+    }
+
     isBulkDeleting = false
+    // No change needed here regarding to isActiveTabIncluded
+    // Toast value is nil and TabsBarViewController is updating the from current tabs
     delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: nil) }
   }
 
@@ -989,23 +1197,6 @@ class TabManager: NSObject {
     configuration.processPool = WKProcessPool()
   }
 
-  static fileprivate func tabsStateArchivePath() -> String {
-    guard
-      let profilePath = FileManager.default.containerURL(
-        forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier
-      )?.appendingPathComponent("profile.profile").path
-    else {
-      let documentsPath = NSSearchPathForDirectoriesInDomains(
-        .documentDirectory,
-        .userDomainMask,
-        true
-      )[0]
-      return URL(fileURLWithPath: documentsPath).appendingPathComponent("tabsState.archive").path
-    }
-
-    return URL(fileURLWithPath: profilePath).appendingPathComponent("tabsState.archive").path
-  }
-
   private func preserveScreenshot(for tab: Tab) {
     assert(Thread.isMainThread)
     if isRestoring { return }
@@ -1031,6 +1222,25 @@ class TabManager: NSObject {
     savedTabs = savedTabs.filter({ $0.sessionWindow?.windowId == windowId })
     if savedTabs.isEmpty { return nil }
 
+    /// Cache on if we should shred a given domain.
+    var shouldShredDomainCache: [String: Bool] = [:]
+    /// Checks if we should shred a Tab
+    let shouldShredDomain: (_ tabURL: URL, _ isPrivate: Bool) -> Bool = { url, isPrivate in
+      var shouldShredTab = false
+      let cacheKey = "\(url.domainURL.absoluteString)\(isPrivate)"
+      if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
+        shouldShredTab = shouldShredDomain
+      } else {
+        let siteDomain = Domain.getOrCreate(
+          forUrl: url,
+          persistent: !isPrivate
+        )
+        shouldShredTab = siteDomain.shredLevel.shredOnAppExit
+        shouldShredDomainCache[cacheKey] = shouldShredTab
+      }
+      return shouldShredTab
+    }
+
     var tabToSelect: Tab?
     for savedTab in savedTabs {
       if let tabURL = savedTab.url {
@@ -1038,6 +1248,15 @@ class TabManager: NSObject {
         let request =
           InternalURL.isValid(url: tabURL)
           ? PrivilegedRequest(url: tabURL) as URLRequest : URLRequest(url: tabURL)
+
+        if FeatureList.kBraveShredFeature.enabled,
+          shouldShredDomain(tabURL, savedTab.isPrivate)
+        {
+          // Delete SessionTab to prevent restore next launch
+          SessionTab.delete(tabId: savedTab.tabId)
+          // Don't restore this tab, it will be Shred after setup
+          continue
+        }
 
         let tab = addTab(
           request,
@@ -1048,7 +1267,7 @@ class TabManager: NSObject {
         )
 
         tab.lastTitle = savedTab.title
-        tab.favicon = FaviconFetcher.getIconFromCache(for: tabURL) ?? Favicon.default
+        tab.favicon = Favicon.default
         tab.setScreenshot(savedTab.screenshot)
 
         Task { @MainActor in
@@ -1215,11 +1434,16 @@ class TabManager: NSObject {
   }
 
   /// Function to add all the tabs to recently closed before the list is removef entirely by Close All Tabs
-  func addAllTabsToRecentlyClosed() {
+  func addAllTabsToRecentlyClosed(isActiveTabIncluded: Bool) {
     var allRecentlyClosed: [SavedRecentlyClosed] = []
 
-    tabs(withType: .regular).forEach {
-      if let savedItem = createRecentlyClosedFromActiveTab($0) {
+    for tab in tabs(withType: .regular) {
+      // Do not include the active tab for case isActiveTabIncluded is false
+      if !isActiveTabIncluded, let currentTab = selectedTab, currentTab.id == tab.id {
+        continue
+      }
+
+      if let savedItem = createRecentlyClosedFromActiveTab(tab) {
         allRecentlyClosed.append(savedItem)
       }
     }
@@ -1372,7 +1596,7 @@ extension TabManager: PreferencesObserver {
       // The default tab configurations also need to change.
       configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
     case Preferences.General.nightModeEnabled.key:
-      NightModeScriptHandler.setNightMode(
+      DarkReaderScriptHandler.set(
         tabManager: self,
         enabled: Preferences.General.nightModeEnabled.value
       )
@@ -1421,5 +1645,25 @@ extension TabManager: NSFetchedResultsControllerDelegate {
         }
       }
     }
+  }
+}
+
+extension WKWebsiteDataStore {
+  @MainActor fileprivate func deleteDataRecords(forDomain domain: String) async {
+    await deleteDataRecords(forDomains: Set([domain]))
+  }
+
+  @MainActor fileprivate func deleteDataRecords(forDomains domains: Set<String>) async {
+    let records = await dataRecords(
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
+    )
+    let websiteRecords = records.filter { record in
+      domains.contains(record.displayName)
+    }
+
+    await removeData(
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+      for: websiteRecords
+    )
   }
 }

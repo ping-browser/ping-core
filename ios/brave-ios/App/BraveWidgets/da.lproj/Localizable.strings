@@ -71,5 +71,5 @@
 "widgets.singleStatTitle" = "Privatlivsstatistik";
 
 /* Description for the Ping Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave-wallet";
+"widgets.walletShortcutTitle" = "Ping-wallet";
 

@@ -41,7 +41,7 @@ extension NetworkManager {
   static func mockData(for resource: BraveS3Resource) async throws -> Data {
     try await Task<Data, Error>.detached(priority: .background) {
       switch resource {
-      case .adBlockRules:
+      case .slimList:
         let bundle = Bundle.module
         let resourceURL = bundle.url(
           forResource: "iodkpdagapdfkphljnddpjlldadblomo",
@@ -49,9 +49,6 @@ extension NetworkManager {
         )
         let data = try Data(contentsOf: resourceURL!)
         return data
-      case .deprecatedGeneralCosmeticFilters:
-        // Because of the retry timeout we don't throw any errors but return some empty data
-        return Data()
       }
     }.value
   }

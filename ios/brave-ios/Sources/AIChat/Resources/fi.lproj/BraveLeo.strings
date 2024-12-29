@@ -1,17 +1,26 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Ping-tilisi istunto on vanhentunut. Käy tilisivullasi päivittääksesi ja palaa sitten käyttämään premium-ominaisuuksia.";
+
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Lisää palautetta";
 
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Ota käyttöön näyttääksesi osoitepalkissa pikakuvakkeen Leon käynnistämiseen.";
+
 /* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Näytä automaattisia ehdotuksia osoitepalkissa";
+"aichat.advancedSettingsAutocompleteTitle" = "Näytä osoitepalkissa";
 
 /* The title for the settings to change default model for conversations */
-"aichat.advancedSettingsDefaultModelTitle" = "Uusien keskustelujen oletusmalli";
+"aichat.advancedSettingsDefaultModelTitle" = "Oletusmalli";
 
 /* The title for the header for adjusting leo ai settings */
-"aichat.advancedSettingsHeaderTitle" = "Leo on suoraan selaimeen integroitu tekoälyperusteinen älyavustaja.";
+"aichat.advancedSettingsHeaderTitle" = "Leo on tekoälyllä toimiva älykäs avustaja, joka on rakennettu suoraan selaimeen.";
+
+/* The subtitle for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Linkitä App Store -ostoksesi Ping-tiliisi, jotta voit käyttää Leoa muilla laitteilla.";
 
 /* The title for the button which links purchase to Ping Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "Linkitä ostos Brave-tiliisi";
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Linkitä ostos Ping-tiliisi";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Vanhenee";
@@ -22,11 +31,17 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Tila";
 
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Yhteyttä App Storeen ei voitu muodostaa, yritä myöhemmin uudelleen.";
+
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "App Store -virhe";
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
 "aichat.askLeoSearchSuggestionTitle" = "Kysy Leolta";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo on liian kiireinen juuri nyt. Yritä muutaman minuutin kuluttua uudelleen.";
 
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Kysy minulta mitä vaan! Voimme puhua mistä tahansa haluamastasi aiheesta. Opiskelen ja kehityn koko ajan, jotta voisin antaa parempia vastauksia.";
@@ -55,14 +70,38 @@
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Tämä keskustelu on liian pitkä, eikä se voi jatkua.\nSaatavilla voi olla muita malleja, joiden avulla Leo pystyy säilyttämään tarkkuuden pidempiä keskusteluja varten.";
 
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "Mukautetut mallit";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "Mukautetut mallit";
+
+/* The title of the section where chat models are displayed as a list. */
+"aichat.defaultModelChatSectionTitle" = "Chat";
+
+/* The title of the section where language models are displayed as a list. */
+"aichat.defaultModelLanguageSectionTitle" = "KIELIMALLIT";
+
+/* The title of the menu where user can change the default model */
+"aichat.defaultModelViewTitle" = "Oletusmalli";
+
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "Anna palautetta tässä";
 
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Mitä palautteesi koskee?";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Virheellinen";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Ei auta";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Muu";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Vaarallinen/haitallinen";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo Premium tarjoaa laajennetun valikoiman kielimalleja ja sitä myötä entistä enemmän vastauksia. [Lue lisää](https://brave.com/) – [Ohita](braveai://dismiss)";
@@ -92,19 +131,25 @@
 "aichat.infoAboutPageContext" = "Muotoile vastauksia sivun sisällön perusteella";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude Instant, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Ping, ja palvelun tarjoaa Claude 3 Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
 
-/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeInstantModelDescription" = "Anthropicin Claude Instant";
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "Anthropicin Claude Haiku";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Salamannopea chatti";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "Anthropicin Claude Sonnet";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Tasapainotettu nopeus ja älykkyys";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hei, olen Leo. Olen Braven tekoälyavustaja. Palvelun tarjoaa %@. Kysy minulta mitä tahansa, niin yritän vastata parhaani mukaan.";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hei, olen Leo. Olen Braven täysin ylläpitämä tekoälyassistentti. Palvelun tarjoaa Llama 13B, Metan luoma malli, joka on suorituskykyinen ja soveltuva moniin käyttötapauksiin.";
-
-/* The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "Metan Llama 2 13b";
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Yleiskäyttöinen chat";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "Hei, olen Leo. Olen Braven kokonaisuudessaan isännöimä tekoälyavustaja. Minua pyörittää Mixtral 8x7B, joka on Mistral AI:n edistyneiden tehtävien hoitamiseen luoma malli.";
@@ -112,17 +157,41 @@
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mistral AI:n Mixtral";
 
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "Kehittyneet chat-tehtävät";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "Chat";
 
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "Koodiesimerkki";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Paranneltu vastaus haulle";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Parannellaan vastausta Ping-haun avulla...";
+
 /* The title of the advanced settings view */
-"aichat.leoNavigationTitle" = "Leo";
+"aichat.leoNavigationTitle" = "Leo-tekoäly";
 
 /* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Siirry kysymään tietoa tästä verkkosivusta. Sen sisältö lähetetään Ping Leolle yhdessä viestisi kanssa.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Sivun kontekstitiedot";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Vinoviivatyökalut";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Ei mitään";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Tuntematon";
 
 /* The title to display when the duration of the subscription is unknown */
 "aichat.leoSubscriptionUnknownDateTitle" = "–";
@@ -169,9 +238,6 @@
 /* The error description when in app purcahse is erroneous. */
 "aichat.paywallPurchaseErrorDescription" = "Ostoa ei voi suorittaa loppuun. Yritä uudelleen tai tarkista Apple-palveluun tallennetut maksutietosi ja yritä uudelleen.";
 
-/* The title for dismiss button when rate limit is shown after sending a message */
-"aichat.paywallRateLimitDismissActionTitle" = "Jatka perusmallilla";
-
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "Hanki käyttöösi korkeampi vastausaste liittymällä Premiumiin tai yritä uudelleen myöhemmin.";
 
@@ -196,6 +262,9 @@
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Vapauta luovuutesi";
 
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Ensisijainen pääsy tehokkaisiin malleihin, joilla on erilaisia taitoja.";
+
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Tutustu erilaisiin tekoälymalleihin";
 
@@ -211,6 +280,9 @@
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "Yksi vuosi";
 
+/* The title of the badge where a model which can be used limited */
+"aichat.premiumModelStatusTitle" = "Premium";
+
 /* Title shown next to Leo in navigation bar when user has premium subcription */
 "aichat.premiumNavigationBarBadgeTitle" = "Premium";
 
@@ -220,11 +292,29 @@
 /* The text for placeholder on textfield for entering questions for AI */
 "aichat.promptPlaceHolderDescription" = "Kirjoita kehote tähän";
 
+/* The title of action for quick menu which displaying advanced settings */
+"aichat.quickMenuAdvancedSettingsActionTitle" = "Lisäasetukset";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"aichat.quickMenuGoPremiumActionTitle" = "Siirry Premiumiin";
+
+/* The title of action for quick menu which display subscription management view */
+"aichat.quickMenuManageSubscriptionActionTitle" = "Hallinnoi tilauksia";
+
+/* The title of action for quick menu which starts a new chat */
+"aichat.quickMenuNewChatActionTitle" = "Uusi chat";
+
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Virheluokituksen vastaus";
 
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Päivitä";
+
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Nollaa ja tyhjennä Leon tiedot";
+
+/* The title of a button that will reset data for leo */
+"aichat.resetLeoDataAlertButtonTitle" = "Tyhjennä";
 
 /* The description for the error whre leo data reset */
 "aichat.resetLeoDataErrorDescription" = "Haluatko varmasti nollata ja tyhjentää Leon tiedot?";
@@ -263,10 +353,13 @@
 "aichat.termsConditionsApproveActionTitle" = "Ymmärrän";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Braven Leo on yksityinen tekoälyavustaja, joka tehostaa Internetin käyttöä. Leon ilmaisversion käyttö on rajoitettua. Braven Leo Premium tarjoaa enemmän malleja, korkeammat rajat ja antaa tilaajien käyttää aikaisin uusia ominaisuuksia. Oletusmalli kaikille käyttäjille on tällä hetkellä Mixtral 8x7B. Katso lisätietoja **[Brave-wikistä] (%1$ @)**.\n\n Kun esität Leolle kysymyksen, se voi käyttää tarkastelemasi verkkosivun kontekstia tai korostamaasi tekstiä vastauksen antamiseen. Vastausten tarkkuus ei ole taattavissa, ja ne voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Leo käyttää Brave-haun tietoja parantaakseen vastausten laatua. Älä lähetä arkaluonteisia tai yksityisiä tietoja ja ole varovainen terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai vastaaviin liittyviin vastauksiin. Voit muuttaa Leon asetuksia milloin tahansa Asetukset-osiossa.\n\n Leo ei kerää tunnisteita, kuten IP-osoitettasi, jotka voidaan yhdistää sinuun. Tekoälymalli tai kolmannen osapuolen mallintoimittajat eivät säilytä henkilötietoja. Katso lisätietoja **[tietosuojakäytännöstä] (%2$ @)**.";
+"aichat.termsConditionsDescription" = "Ping Leo on yksityinen tekoälyavustaja, joka kehittää verkon käyttöäsi. Leon käyttö on ilmaista rajoitetulla käyttöoikeudella. Ping Leo Premium tarjoaa enemmän malleja, laajemmat käyttöoikeudet ja antaa tilaajille pääsyn uusiin ominaisuuksiin muita aikaisemmin. Tällä hetkellä oletusmalli kaikille käyttäjille on Mixtral 8x7B. Katso lisätiedot Braven **[Ohjekeskuksesta](%1$@)**.\n\nOletuksena, kun kysyt Leolta kysymyksen, se voi käyttää katselemasi verkkosivun tietoja tai sivulla korostamaasi tekstiä tai lähettää niitä Ping Leolle tarjotakseen vastauksen. Joissakin tapauksissa Leo voi lähettää kysymyksestäsi johdettuja hakuja Ping-hakuun ja käyttää hakutuloksia vastauksen parantamiseen. Vastausten tarkkuudesta ei anneta takeita, ja vastaukset voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisa tai yksityisiä tietoja, ja ole varovainen vastausten kanssa, jotka liittyvät terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai muuhun vastaavaan. Voit mukauttaa Leon asetuksia milloin tahansa Asetuksissa. Siirry kohtaan Asetukset > Leo.\n\nLeo ei kerää yksilöiviä tietoja, kuten IP-osoitettasi, jotka voidaan liittää sinuun. Mitään tietoja ei käytetä tekoälymallien kouluttamiseen, eivätkä tekoälymallit säilytä henkilötietoja (paitsi Anthropic, joka säilyttää tietoja 30 päivää ennen niiden poistamista). Katso lisätiedot **[tietosuojakäytännöstä](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Juttele Ping Leon kanssa yksityisesti ";
+
+/* The title of the badge where a model which can be used unlimited */
+"aichat.unlimitedModelStatusTitle" = "Rajaton";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Äänisyöte";
@@ -274,33 +367,6 @@
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Vuositilaus";
 
-/* The title of the section where chat models are displayed as a list. */
-"wallet.defaultModelChatSectionTitle" = "Chat";
-
-/* The title of the section where language models are displayed as a list. */
-"wallet.defaultModelLanguageSectionTitle" = "KIELIMALLIT";
-
-/* The title of the menu where user can change the default model */
-"wallet.defaultModelViewTitle" = "Oletusmalli";
-
-/* The title of the badge where a model which can be used limited */
-"wallet.limitedModelStatusTitle" = "Rajoitettu";
-
-/* The title of action for quick menu which displaying advanced settings */
-"wallet.quickMenuAdvancedSettingsActionTitle" = "Lisäasetukset";
-
-/* The title of action for quick menu which presents payment screen for premium */
-"wallet.quickMenuGoPremiumActionTitle" = "Siirry Premiumiin";
-
-/* The title of action for quick menu which display subscription management view */
-"wallet.quickMenuManageSubscriptionActionTitle" = "Hallinnoi tilauksia";
-
-/* The title of action for quick menu which starts a new chat */
-"wallet.quickMenuNewChatActionTitle" = "Uusi chat";
-
-/* The title of a button that will reset data for leo */
-"wallet.resetLeoDataAlertButtonTitle" = "Tyhjennä";
-
-/* The title of the badge where a model which can be used unlimited */
-"wallet.unlimitedModelStatusTitle" = "Rajaton";
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Sinä";
 

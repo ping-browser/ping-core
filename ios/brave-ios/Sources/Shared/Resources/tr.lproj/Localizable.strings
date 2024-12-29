@@ -49,7 +49,7 @@
 /* The button to open a new tab with the Downloads home panel */
 "DownloadsButtonTitle" = "İndirilenler";
 
-/* Question shown to user when tapping a link that opens the App Store app */
+/* Question shown to user when tapbrave a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "Bu bağlantıyı App Store uygulamasında açmak istiyor musunuz?";
 
 /* The button to open a new tab with the copied link */
@@ -92,7 +92,7 @@
 "ScanQRCodeInvalidDataErrorMessage" = "Veriler geçersiz";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Lütfen 'Ayarlar' -> 'Gizlilik' -> 'Kamera'dan Brave'in cihazınızın kamerasına erişmesine izin verin.";
+"ScanQRCodePermissionErrorMessage" = "Lütfen 'Ayarlar' -> 'Gizlilik' -> 'Kamera'dan Ping'in cihazınızın kamerasına erişmesine izin verin.";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "QR Kodunu Tara";
@@ -118,7 +118,7 @@
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorTitle" = "Geçiş Eklenemedi";
 
-/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+/* The message displayed to a user when they try to open a URL that cannot be handled by Ping, or any external app. */
 "UnableToOpenURLError" = "Ping geçersiz bir adrese sahip olduğundan sayfayı açamıyor.";
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */

@@ -4,25 +4,96 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//components/gcm_driver/config.gni")
 
+assert(toolkit_views)
+
+source_set("component_loader") {
+  sources = [
+    "brave_component_loader.cc",
+    "brave_component_loader.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/brave_rewards:util",
+    "//brave/browser/ethereum_remote_client/buildflags",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_extension:static_resources",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_webtorrent:static_resources",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common:constants",
+    "//components/prefs",
+    "//extensions/browser",
+    "//extensions/common",
+  ]
+
+  if (ethereum_remote_client_enabled) {
+    deps += [
+      ":ethereum_remote_client_utils",
+      "//brave/browser/ethereum_remote_client",
+    ]
+  }
+}
+
+if (ethereum_remote_client_enabled) {
+  source_set("ethereum_remote_client_utils") {
+    sources = [
+      "ethereum_remote_client_util.cc",
+      "ethereum_remote_client_util.h",
+    ]
+
+    deps = [
+      "//brave/browser/ethereum_remote_client",
+      "//brave/components/brave_wallet/browser:utils",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:buildflags",
+      "//brave/components/constants",
+      "//components/prefs",
+    ]
+  }
+}
+
+# This is split out from extensions and the rest of brave_prefs_util because it
+# has circular dependencies on //chrome/browser.
+# https://github.com/brave/brave-browser/issues/41418
+source_set("brave_prefs_util_impl") {
+  visibility = [
+    ":*",
+    "//chrome/browser",
+  ]
+  sources = [ "api/settings_private/brave_prefs_util_impl.cc" ]
+
+  deps = [
+    "//brave/components/brave_shields/content/browser",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common/extensions/api",
+    "//components/content_settings/core/browser:cookie_settings",
+    "//components/content_settings/core/common",
+    "//content/public/browser",
+    "//url",
+  ]
+}
+
 source_set("extensions") {
-  # Remove when https://github.com/brave/brave-browser/issues/10661 is resolved
-  check_includes = false
   sources = [
     "api/brave_extensions_api_client.cc",
     "api/brave_extensions_api_client.h",
     "api/brave_rewards_api.cc",
     "api/brave_rewards_api.h",
-    "api/brave_shields_api.cc",
-    "api/brave_shields_api.h",
     "api/brave_talk_api.cc",
     "api/brave_talk_api.h",
     "api/brave_theme_api.cc",
@@ -35,8 +106,6 @@ source_set("extensions") {
     "api/rewards_notifications_api.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
-    "brave_component_loader.cc",
-    "brave_component_loader.h",
     "brave_extension_management.cc",
     "brave_extension_management.h",
     "brave_extension_provider.cc",
@@ -56,58 +125,110 @@ source_set("extensions") {
   ]
 
   deps = [
+    ":brave_prefs_util_impl",
     ":resources",
     "//base",
+    "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_adaptive_captcha",
+    "//brave/browser/brave_ads",
+    "//brave/browser/brave_rewards",
+    "//brave/browser/brave_rewards",
     "//brave/browser/brave_rewards:util",
     "//brave/browser/component_updater",
-    "//brave/browser/profiles",
+    "//brave/browser/extensions/api:generated_api_registration",
+    "//brave/browser/greaselion",
+    "//brave/browser/themes",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui:ui_public_dependencies",
     "//brave/common",
     "//brave/common/extensions/api",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/core",
-    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_extension:static_resources",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
-    "//brave/components/brave_rewards/core:headers",
-    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/common/mojom",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/brave_webtorrent:static_resources",
     "//brave/components/constants",
     "//brave/components/de_amp/common",
-    "//brave/components/decentralized_dns/content",
-    "//brave/components/ipfs/buildflags",
-    "//brave/components/ntp_widget_utils/browser",
+    "//brave/components/debounce/core/common",
+    "//brave/components/decentralized_dns/core",
+    "//brave/components/greaselion/browser",
+    "//brave/components/l10n/common",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/request_otr/common",
+    "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
+    "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/extensions",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
     "//chrome/common",
+    "//components/browsing_data/core",
     "//components/gcm_driver:gcm_buildflags",
-    "//components/gcm_driver:gcm_driver",
-    "//components/omnibox/browser:browser",
     "//components/prefs",
-    "//components/services/patch/content",
-    "//components/services/unzip/content",
-    "//components/update_client:patch_impl",
-    "//components/update_client:unzip_impl",
+    "//components/prefs",
+    "//components/update_client:network_impl",
     "//content/public/browser",
-    "//extensions/browser",
-    "//extensions/common",
-    "//third_party/re2",
-    "//brave/third_party/botan",
-    "//ui/base",
-    "//url",
+    "//content/public/browser",
   ]
 
-  if (toolkit_views) {
-    deps += [ "//brave/components/sidebar/browser" ]
+  public_deps = [
+    ":component_loader",
+    "//brave/browser/ethereum_remote_client/buildflags",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_rewards/common/mojom",
+    "//extensions/browser",
+    "//brave/third_party/botan",
+  ]
+
+  if (use_gcm_from_platform) {
+    deps += [ "//components/gcm_driver" ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [ "//brave/components/brave_wayback_machine" ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
   }
 
   if (enable_speedreader) {
     deps += [ "//brave/components/speedreader" ]
+  }
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/browser" ]
+  }
+
+  if (enable_tor) {
+    deps += [
+      "//brave/browser/tor",
+      "//brave/components/tor",
+      "//brave/components/tor:pref_names",
+    ]
   }
 
   # It seems like this brave_wallet_api should be renamed to ethereum_remote_client_api.
@@ -117,38 +238,27 @@ source_set("extensions") {
     sources += [
       "api/brave_wallet_api.cc",
       "api/brave_wallet_api.h",
-      "ethereum_remote_client_util.cc",
-      "ethereum_remote_client_util.h",
     ]
 
     deps += [
+      ":ethereum_remote_client_utils",
       "//brave/browser/ethereum_remote_client",
+      "//brave/browser/ethereum_remote_client:browser",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/common:buildflags",
-      "//components/infobars/content",
       "//components/prefs",
     ]
   }
 
-  if (enable_ipfs) {
-    sources += [
-      "api/ipfs_api.cc",
-      "api/ipfs_api.h",
-    ]
-    deps += [ "//brave/components/ipfs" ]
-  }
-
   if (enable_brave_webtorrent) {
-    deps += [ "//brave/components/brave_webtorrent/browser" ]
     sources += [
       "brave_webtorrent_navigation_throttle.cc",
       "brave_webtorrent_navigation_throttle.h",
     ]
+    deps += [ "//brave/components/brave_webtorrent/browser" ]
   }
 
-  if (enable_brave_wayback_machine) {
-    deps += [ "//brave/components/brave_wayback_machine" ]
-  }
+  allow_circular_includes_from = [ ":brave_prefs_util_impl" ]
 }
 
 group("resources") {

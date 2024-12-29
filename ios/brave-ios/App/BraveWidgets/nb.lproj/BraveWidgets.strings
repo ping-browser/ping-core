@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Bare for å være sikker, ser du etter «Brave-spilleliste»?";
+"e13lS3-FGO5qW" = "Bare for å være sikker, ser du etter «Ping-spilleliste»?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Bare for å være sikker, ser du etter «Brave-lommebok»?";
+"e13lS3-jXiFQY" = "Bare for å være sikker, ser du etter «Ping-lommebok»?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Bare for å være sikker, ser du etter «Brave News»?";
+"e13lS3-XCyA8c" = "Bare for å være sikker, ser du etter «Ping News»?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";
@@ -74,7 +74,7 @@
 "EUS9FL" = "Widget-snarvei";
 
 /* (No Comment) */
-"FGO5qW" = "Brave-spilleliste";
+"FGO5qW" = "Ping-spilleliste";
 
 /* (No Comment) */
 "gpCwrM" = "Konfigurering av statistikk";
@@ -89,7 +89,7 @@
 "joEZJM" = "#2";
 
 /* (No Comment) */
-"jXiFQY" = "Brave-lommebok";
+"jXiFQY" = "Ping-lommebok";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "${count} alternativer matcher med 'Ny fane'.";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Brave-spilleliste».";
+"L1fziM-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Ping-spilleliste».";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Brave-lommebok».";
+"L1fziM-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Ping-lommebok».";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Brave News».";
+"L1fziM-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Ping News».";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Bare for å være sikker, ser du etter «Brave-spilleliste»?";
+"r2EI05-FGO5qW" = "Bare for å være sikker, ser du etter «Ping-spilleliste»?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Bare for å være sikker, ser du etter «Brave-lommebok»?";
+"r2EI05-jXiFQY" = "Bare for å være sikker, ser du etter «Ping-lommebok»?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Bare for å være sikker, ser du etter «Brave News»?";
+"r2EI05-XCyA8c" = "Bare for å være sikker, ser du etter «Ping News»?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Brave-spilleliste».";
+"tNCrcE-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Ping-spilleliste».";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Brave-lommebok».";
+"tNCrcE-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Ping-lommebok».";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Brave News».";
+"tNCrcE-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Ping News».";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Brave-spilleliste».";
+"TxuMja-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Ping-spilleliste».";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Brave-lommebok».";
+"TxuMja-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Ping-lommebok».";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Brave News».";
+"TxuMja-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Ping News».";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Bare for å være sikker, ser du etter «Brave-spilleliste»?";
+"YQiQuz-FGO5qW" = "Bare for å være sikker, ser du etter «Ping-spilleliste»?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Bare for å være sikker, ser du etter «Brave-lommebok»?";
+"YQiQuz-jXiFQY" = "Bare for å være sikker, ser du etter «Ping-lommebok»?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Bare for å være sikker, ser du etter «Brave News»?";
+"YQiQuz-XCyA8c" = "Bare for å være sikker, ser du etter «Ping News»?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";

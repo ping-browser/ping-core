@@ -16,6 +16,8 @@ enum class ConversionType {
   kBannerTypeB,
   kBannerTypeC,
   kBannerTypeD,
+  kDDGBannerTypeC,
+  kDDGBannerTypeD,
 };
 
 }  // namespace brave_search_conversion

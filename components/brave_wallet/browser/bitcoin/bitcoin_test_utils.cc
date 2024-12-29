@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 
 #include <map>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -13,7 +14,10 @@
 #include "base/strings/string_split.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -25,24 +29,58 @@ namespace brave_wallet {
 
 namespace {
 
+std::string ExtractApiRequestPath(const GURL& request_url) {
+  std::string spec = request_url.spec();
+
+  auto mainnet_url_spec = NetworkManager::GetKnownChain(mojom::kBitcoinMainnet,
+                                                        mojom::CoinType::BTC)
+                              ->rpc_endpoints[0]
+                              .spec();
+  auto testnet_url_spec = NetworkManager::GetKnownChain(mojom::kBitcoinTestnet,
+                                                        mojom::CoinType::BTC)
+                              ->rpc_endpoints[0]
+                              .spec();
+
+  if (base::StartsWith(spec, mainnet_url_spec)) {
+    return spec.substr(mainnet_url_spec.size());
+  }
+  if (base::StartsWith(spec, testnet_url_spec)) {
+    return spec.substr(testnet_url_spec.size());
+  }
+
+  return spec;
+}
+
 bool IsTxPostRequest(const network::ResourceRequest& request) {
   if (request.method != net::HttpRequestHeaders::kPostMethod) {
     return false;
   }
 
   auto parts =
-      base::SplitStringPiece(request.url.path_piece(), "/",
-                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   return parts.size() == 1 && parts[0] == "tx";
 }
 
 std::optional<std::string> IsTxStatusRequest(
     const network::ResourceRequest& request) {
   auto parts =
-      base::SplitStringPiece(request.url.path_piece(), "/",
-                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 2 && parts[0] == "tx") {
-    return std::string(parts[1]);
+    return parts[1];
+  }
+
+  return std::nullopt;
+}
+
+std::optional<std::string> IsTxHexRequest(
+    const network::ResourceRequest& request) {
+  auto parts =
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (parts.size() == 3 && parts[0] == "tx" && parts[2] == "hex") {
+    return parts[1];
   }
 
   return std::nullopt;
@@ -51,10 +89,10 @@ std::optional<std::string> IsTxStatusRequest(
 std::optional<std::string> IsAddressStatsRequest(
     const network::ResourceRequest& request) {
   auto parts =
-      base::SplitStringPiece(request.url.path_piece(), "/",
-                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 2 && parts[0] == "address") {
-    return std::string(parts[1]);
+    return parts[1];
   }
 
   return std::nullopt;
@@ -63,10 +101,10 @@ std::optional<std::string> IsAddressStatsRequest(
 std::optional<std::string> IsAddressUtxoRequest(
     const network::ResourceRequest& request) {
   auto parts =
-      base::SplitStringPiece(request.url.path_piece(), "/",
-                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 3 && parts[0] == "address" && parts[2] == "utxo") {
-    return std::string(parts[1]);
+    return parts[1];
   }
 
   return std::nullopt;
@@ -74,9 +112,7 @@ std::optional<std::string> IsAddressUtxoRequest(
 
 }  // namespace
 
-BitcoinTestRpcServer::BitcoinTestRpcServer(KeyringService* keyring_service,
-                                           PrefService* prefs)
-    : keyring_service_(keyring_service), prefs_(prefs) {
+BitcoinTestRpcServer::BitcoinTestRpcServer() {
   shared_url_loader_factory_ =
       base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
           &url_loader_factory_);
@@ -84,6 +120,13 @@ BitcoinTestRpcServer::BitcoinTestRpcServer(KeyringService* keyring_service,
   url_loader_factory_.SetInterceptor(base::BindRepeating(
       &BitcoinTestRpcServer::RequestInterceptor, base::Unretained(this)));
 }
+
+BitcoinTestRpcServer::BitcoinTestRpcServer(
+    BitcoinWalletService* bitcoin_wallet_service)
+    : BitcoinTestRpcServer() {
+  bitcoin_wallet_service->SetUrlLoaderFactoryForTesting(GetURLLoaderFactory());
+}
+
 BitcoinTestRpcServer::~BitcoinTestRpcServer() = default;
 
 scoped_refptr<network::SharedURLLoaderFactory>
@@ -108,6 +151,16 @@ bitcoin_rpc::AddressStats BitcoinTestRpcServer::TransactedAddressStats(
     const std::string& address) {
   bitcoin_rpc::AddressStats stats = EmptyAddressStats(address);
   stats.chain_stats.tx_count = "1";
+  return stats;
+}
+
+bitcoin_rpc::AddressStats BitcoinTestRpcServer::BalanceAddressStats(
+    const std::string& address,
+    uint64_t balance) {
+  bitcoin_rpc::AddressStats stats = TransactedAddressStats(address);
+  stats.chain_stats.tx_count = "1";
+  stats.chain_stats.funded_txo_sum = base::NumberToString(balance + 1000);
+  stats.chain_stats.spent_txo_sum = "1000";
   return stats;
 }
 
@@ -158,6 +211,11 @@ void BitcoinTestRpcServer::RequestInterceptor(
     return;
   }
 
+  if (auto txid = IsTxHexRequest(request)) {
+    url_loader_factory_.AddResponse(request.url.spec(), txid->substr(0, 4));
+    return;
+  }
+
   if (request.url.path_piece() == "/blocks/tip/height") {
     url_loader_factory_.AddResponse(request.url.spec(),
                                     base::ToString(mainnet_height_));
@@ -176,28 +234,6 @@ void BitcoinTestRpcServer::RequestInterceptor(
           request.url.spec(),
           base::ToString(address_stats_map_[*address].ToValue()));
       return;
-    }
-
-    if (account_id_) {
-      auto addresses = keyring_service_->GetBitcoinAddresses(account_id_);
-      auto bitcoin_acc_info =
-          keyring_service_->GetBitcoinAccountInfo(account_id_);
-      ASSERT_TRUE(bitcoin_acc_info);
-
-      for (const auto& item : *addresses) {
-        // Assume next change and receive addresses are not transacted.
-        if (item == bitcoin_acc_info->next_change_address ||
-            item == bitcoin_acc_info->next_receive_address) {
-          continue;
-        }
-
-        if (item->address_string == *address) {
-          url_loader_factory_.AddResponse(
-              request.url.spec(),
-              base::ToString(TransactedAddressStats(*address).ToValue()));
-          return;
-        }
-      }
     }
 
     url_loader_factory_.AddResponse(
@@ -220,34 +256,28 @@ void BitcoinTestRpcServer::RequestInterceptor(
     return;
   }
 
-  NOTREACHED() << request.url.spec();
+  NOTREACHED_IN_MIGRATION() << request.url.spec();
 }
 
 void BitcoinTestRpcServer::SetUpBitcoinRpc(
-    const mojom::AccountIdPtr& account_id) {
-  auto btc_mainnet =
-      GetKnownChain(prefs_, mojom::kBitcoinMainnet, mojom::CoinType::BTC);
-  btc_mainnet->rpc_endpoints[0] = GURL(mainnet_rpc_url_);
-  AddCustomNetwork(prefs_, *btc_mainnet);
-  auto btc_testnet =
-      GetKnownChain(prefs_, mojom::kBitcoinTestnet, mojom::CoinType::BTC);
-  btc_testnet->rpc_endpoints[0] = GURL(testnet_rpc_url_);
-  AddCustomNetwork(prefs_, *btc_testnet);
-
-  address_0_.clear();
-  address_6_.clear();
+    const std::optional<std::string>& mnemonic,
+    std::optional<uint32_t> account_index) {
+  address_0_.reset();
+  address_6_.reset();
   address_stats_map_.clear();
   utxos_map_.clear();
 
-  account_id_ = account_id.Clone();
+  account_index_ = account_index;
 
-  if (account_id_) {
+  if (mnemonic && account_index) {
+    keyring_ =
+        std::make_unique<BitcoinHDKeyring>(*MnemonicToSeed(*mnemonic), false);
+
     address_0_ =
-        keyring_service_
-            ->GetBitcoinAddress(account_id_, mojom::BitcoinKeyId::New(0, 0))
-            ->address_string;
-    auto& stats_0 = address_stats_map_[address_0_];
-    stats_0.address = address_0_;
+        keyring_->GetAddress(*account_index_, *mojom::BitcoinKeyId::New(0, 0))
+            .Clone();
+    auto& stats_0 = address_stats_map_[address_0_->address_string];
+    stats_0.address = address_0_->address_string;
     stats_0.chain_stats.funded_txo_sum = "10000";
     stats_0.chain_stats.spent_txo_sum = "5000";
     stats_0.chain_stats.tx_count = "1";
@@ -256,11 +286,10 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
     stats_0.mempool_stats.tx_count = "1";
 
     address_6_ =
-        keyring_service_
-            ->GetBitcoinAddress(account_id_, mojom::BitcoinKeyId::New(1, 0))
-            ->address_string;
-    auto& stats_6 = address_stats_map_[address_6_];
-    stats_6.address = address_6_;
+        keyring_->GetAddress(*account_index_, *mojom::BitcoinKeyId::New(1, 0))
+            .Clone();
+    auto& stats_6 = address_stats_map_[address_6_->address_string];
+    stats_6.address = address_6_->address_string;
     stats_6.chain_stats.funded_txo_sum = "100000";
     stats_6.chain_stats.spent_txo_sum = "50000";
     stats_6.chain_stats.tx_count = "1";
@@ -268,13 +297,13 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
     stats_6.mempool_stats.spent_txo_sum = "22222";
     stats_6.mempool_stats.tx_count = "1";
 
-    auto& utxos_0 = utxos_map_[address_0_];
+    auto& utxos_0 = utxos_map_[address_0_->address_string];
     utxos_0.emplace_back();
     utxos_0.back().txid = kMockBtcTxid1;
     utxos_0.back().vout = "1";
     utxos_0.back().value = "5000";
     utxos_0.back().status.confirmed = true;
-    auto& utxos_6 = utxos_map_[address_6_];
+    auto& utxos_6 = utxos_map_[address_6_->address_string];
     utxos_6.emplace_back();
     utxos_6.back().txid = kMockBtcTxid2;
     utxos_6.back().vout = "7";
@@ -317,14 +346,25 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
         )");
 }
 
-void BitcoinTestRpcServer::AddTransactedAddress(const std::string& address) {
-  address_stats_map()[address] = TransactedAddressStats(address);
+void BitcoinTestRpcServer::AddTransactedAddress(
+    const mojom::BitcoinAddressPtr& address) {
+  address_stats_map()[address->address_string] =
+      TransactedAddressStats(address->address_string);
 }
 
-void BitcoinTestRpcServer::AddMempoolBalance(const std::string& address,
-                                             uint64_t funded,
-                                             uint64_t spent) {
-  address_stats_map()[address] = MempoolAddressStats(address, funded, spent);
+void BitcoinTestRpcServer::AddBalanceAddress(
+    const mojom::BitcoinAddressPtr& address,
+    uint64_t balance) {
+  address_stats_map()[address->address_string] =
+      BalanceAddressStats(address->address_string, balance);
+}
+
+void BitcoinTestRpcServer::AddMempoolBalance(
+    const mojom::BitcoinAddressPtr& address,
+    uint64_t funded,
+    uint64_t spent) {
+  address_stats_map()[address->address_string] =
+      MempoolAddressStats(address->address_string, funded, spent);
 }
 
 void BitcoinTestRpcServer::FailNextTransactionBroadcast() {

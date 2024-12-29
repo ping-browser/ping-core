@@ -12,14 +12,35 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
+#include "base/values.h"
 
 namespace brave_wallet {
+
+inline constexpr size_t kEncryptorNonceSize = 12;
+inline constexpr size_t kEncryptorSaltSize = 32;
+inline const int kPbkdf2Iterations = 310000;
+inline const int kPbkdf2KeySize = 256;
 
 // Use password derived key to encrypt/decrypt using AES-256-GCM
 class PasswordEncryptor {
  public:
   ~PasswordEncryptor();
+  PasswordEncryptor(const PasswordEncryptor&) = delete;
+  PasswordEncryptor& operator=(const PasswordEncryptor&) = delete;
+
+  static std::optional<int>& GetPbkdf2IterationsForTesting();
+  static base::RepeatingCallback<std::vector<uint8_t>()>&
+  GetCreateNonceCallbackForTesting();
+  static base::RepeatingCallback<std::vector<uint8_t>()>&
+  GetCreateSaltCallbackForTesting();
+
+  static std::vector<uint8_t> CreateNonce();
+  static std::vector<uint8_t> CreateSalt();
+  static std::unique_ptr<PasswordEncryptor> CreateEncryptor(
+      const std::string& password,
+      base::span<const uint8_t> salt);
 
   // With SHA 256 digest
   static std::unique_ptr<PasswordEncryptor> DeriveKeyFromPasswordUsingPbkdf2(
@@ -30,10 +51,14 @@ class PasswordEncryptor {
 
   std::vector<uint8_t> Encrypt(base::span<const uint8_t> plaintext,
                                base::span<const uint8_t> nonce);
+  base::Value::Dict EncryptToDict(base::span<const uint8_t> plaintext,
+                                  base::span<const uint8_t> nonce);
 
   std::optional<std::vector<uint8_t>> Decrypt(
       base::span<const uint8_t> ciphertext,
       base::span<const uint8_t> nonce);
+  std::optional<std::vector<uint8_t>> DecryptFromDict(
+      const base::Value::Dict& encrypted_value);
 
   // This can only be used by wallet importer
   std::optional<std::vector<uint8_t>> DecryptForImporter(
@@ -46,8 +71,6 @@ class PasswordEncryptor {
 
   // symmetric key used to encrypt and decrypt
   std::vector<uint8_t> key_;
-  PasswordEncryptor(const PasswordEncryptor&) = delete;
-  PasswordEncryptor& operator=(const PasswordEncryptor&) = delete;
 };
 
 }  // namespace brave_wallet

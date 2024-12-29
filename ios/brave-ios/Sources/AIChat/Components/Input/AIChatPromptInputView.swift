@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveCore
 import DesignSystem
 import SpeechRecognition
 import SwiftUI
@@ -17,36 +18,115 @@ struct AIChatPromptInputView: View {
   @State
   private var isNoMicrophonePermissionPresented = false
 
-  @State
-  private var prompt: String = ""
+  @Binding
+  private var prompt: String
+
+  @Binding
+  var isShowingSlashTools: Bool
+
+  @Binding
+  var slashToolsOption:
+    (
+      group: AiChat.ActionGroup,
+      entry: AiChat.ActionEntry
+    )?
+
+  var focusedField: FocusState<AIChatView.Field?>.Binding
 
   var onSubmit: (String) -> Void
 
-  init(speechRecognizer: SpeechRecognizer, onSubmit: @escaping (String) -> Void) {
+  @Environment(\.isEnabled) private var isEnabled
+
+  init(
+    prompt: Binding<String>,
+    speechRecognizer: SpeechRecognizer,
+    isShowingSlashTools: Binding<Bool>,
+    slashToolsOption: Binding<
+      (
+        group: AiChat.ActionGroup,
+        entry: AiChat.ActionEntry
+      )?
+    >,
+    focusedField: FocusState<AIChatView.Field?>.Binding,
+    onSubmit: @escaping (String) -> Void
+  ) {
+    self._prompt = prompt
     self.speechRecognizer = speechRecognizer
+    self._isShowingSlashTools = isShowingSlashTools
+    self._slashToolsOption = slashToolsOption
+    self.focusedField = focusedField
     self.onSubmit = onSubmit
   }
 
   var body: some View {
-    HStack(spacing: 0.0) {
-      AIChatPaddedTextField(
+    VStack(alignment: .leading, spacing: 0.0) {
+      if let slashToolsOption = slashToolsOption {
+        Button {
+          self.slashToolsOption = nil
+        } label: {
+          AIChatSlashToolsLabel(group: slashToolsOption.group, entry: slashToolsOption.entry)
+            .padding([.leading, .trailing, .top])
+            .frame(alignment: .leading)
+        }
+      }
+
+      AIChatPaddedTextView(
         Strings.AIChat.promptPlaceHolderDescription,
         text: $prompt,
-        textColor: UIColor(braveSystemName: .textPrimary),
+        textColor: isEnabled
+          ? UIColor(braveSystemName: .textPrimary) : UIColor(braveSystemName: .textDisabled),
         prompt: Strings.AIChat.promptPlaceHolderDescription,
-        promptColor: UIColor(braveSystemName: .textTertiary),
+        promptColor: isEnabled
+          ? UIColor(braveSystemName: .textTertiary) : UIColor(braveSystemName: .textDisabled),
         font: .preferredFont(forTextStyle: .subheadline),
-        submitLabel: .send,
+        submitLabel: .default,
+        onBackspace: { wasEmpty in
+          if wasEmpty {
+            isShowingSlashTools = false
+            slashToolsOption = nil
+          }
+        },
+        onTextChanged: { text in
+          if text.hasPrefix("/") {
+            isShowingSlashTools = true
+          } else {
+            isShowingSlashTools = false
+          }
+        },
         onSubmit: {
           if !prompt.isEmpty {
             onSubmit(prompt)
             prompt = ""
           }
         },
-        insets: .init(width: 16.0, height: 16.0)
+        insets: UIEdgeInsets(top: 16.0, left: 15.0, bottom: 0.0, right: 16.0)
       )
+      .padding(.top, slashToolsOption == nil ? 8.0 : 0.0)
+      .focused(focusedField, equals: .input)
 
-      if prompt.isEmpty {
+      HStack(spacing: 0.0) {
+        Button(
+          action: {
+            isShowingSlashTools.toggle()
+          },
+          label: {
+            Label {
+              Text(Strings.AIChat.leoSlashToolsButtonAccessibilityTitle)
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
+            } icon: {
+              Image(braveSystemName: "leo.slash")
+                .foregroundStyle(
+                  isEnabled
+                    ? Color(braveSystemName: .iconDefault) : Color(braveSystemName: .iconDisabled)
+                )
+                .padding(.horizontal, 8.0)
+                .padding(.vertical, 4.0)
+                .padding(.bottom, 16.0)
+            }
+            .labelStyle(.iconOnly)
+          }
+        )
+
         Button {
           Task { @MainActor in
             await activateSpeechRecognition()
@@ -57,35 +137,70 @@ struct AIChatPromptInputView: View {
               .foregroundStyle(Color(braveSystemName: .textPrimary))
           } icon: {
             Image(braveSystemName: "leo.microphone")
-              .foregroundStyle(Color(braveSystemName: .iconDefault))
-              .padding()
+              .foregroundStyle(
+                isEnabled
+                  ? Color(braveSystemName: .iconDefault) : Color(braveSystemName: .iconDisabled)
+              )
+              .padding(.horizontal, 8.0)
+              .padding(.vertical, 4.0)
+              .padding(.bottom, 16.0)
           }
           .labelStyle(.iconOnly)
         }
         .opacity(speechRecognizer.isVoiceSearchAvailable ? 1.0 : 0.0)
         .disabled(!speechRecognizer.isVoiceSearchAvailable)
         .frame(width: speechRecognizer.isVoiceSearchAvailable ? nil : 0.0)
-      } else {
+
+        Spacer()
+
         Button {
           onSubmit(prompt)
           prompt = ""
         } label: {
-          Image(braveSystemName: "leo.send")
-            .foregroundStyle(Color(braveSystemName: .iconDefault))
-            .padding()
+          Image(braveSystemName: prompt.isEmpty ? "leo.send" : "leo.send.filled")
+            .foregroundStyle(
+              Color(
+                braveSystemName: (prompt.isEmpty || !isEnabled) ? .iconDisabled : .iconInteractive
+              )
+            )
+            .padding(.horizontal, 8.0)
+            .padding(.vertical, 4.0)
+            .padding(.bottom, 16.0)
         }
+        .disabled(prompt.isEmpty)
       }
+      .padding(.horizontal, 8.0)
     }
     .background(
       ContainerRelativeShape()
         .fill(Color(braveSystemName: .containerBackground))
-        .shadow(color: .black.opacity(0.10), radius: 4.0, x: 0.0, y: 1.0)
     )
     .overlay(
       ContainerRelativeShape()
-        .strokeBorder(Color(braveSystemName: .dividerStrong), lineWidth: 1.0)
+        .inset(by: -0.5)
+        .stroke(
+          LinearGradient(
+            stops: [
+              .init(color: Color(braveSystemName: .dividerSubtle), location: 0),
+              .init(color: Color(braveSystemName: .dividerSubtle), location: 0.5),
+              // avoid stroke at bottom of shape
+              .init(color: Color(braveSystemName: .containerBackground), location: 1),
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+          ),
+          lineWidth: 1.0
+        )
     )
-    .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+    .containerShape(
+      UnevenRoundedRectangle(
+        topLeadingRadius: 8.0,
+        bottomLeadingRadius: 0,
+        bottomTrailingRadius: 0,
+        topTrailingRadius: 8.0,
+        style: .continuous
+      )
+    )
     .background {
       AIChatSpeechRecognitionView(
         speechRecognizer: speechRecognizer,
@@ -109,8 +224,21 @@ struct AIChatPromptInputView: View {
 
 #if DEBUG
 struct AIChatPromptInputView_Preview: PreviewProvider {
+
+  @FocusState static var focusedField: AIChatView.Field?
+
   static var previews: some View {
-    AIChatPromptInputView(speechRecognizer: SpeechRecognizer()) {
+    let entry = AiChat.ActionEntry(details: .init(label: "Professional", type: .academicize))
+
+    let group = AiChat.ActionGroup(category: "Change Tone", entries: [entry])
+
+    AIChatPromptInputView(
+      prompt: .constant(""),
+      speechRecognizer: SpeechRecognizer(),
+      isShowingSlashTools: .constant(false),
+      slashToolsOption: .constant((group, entry)),
+      focusedField: $focusedField
+    ) {
       print("Prompt Submitted: \($0)")
     }
     .previewLayout(.sizeThatFits)

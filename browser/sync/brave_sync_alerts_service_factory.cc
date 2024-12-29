@@ -5,6 +5,8 @@
 
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/browser/sync/brave_sync_alerts_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -29,13 +31,17 @@ BraveSyncAlertsServiceFactory* BraveSyncAlertsServiceFactory::GetInstance() {
 BraveSyncAlertsServiceFactory::BraveSyncAlertsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveSyncAlertsService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(SyncServiceFactory::GetInstance());
+}
 
 BraveSyncAlertsServiceFactory::~BraveSyncAlertsServiceFactory() {}
 
-KeyedService* BraveSyncAlertsServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveSyncAlertsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new BraveSyncAlertsService(Profile::FromBrowserContext(context));
+  return std::make_unique<BraveSyncAlertsService>(
+      Profile::FromBrowserContext(context));
 }
 
 content::BrowserContext* BraveSyncAlertsServiceFactory::GetBrowserContextToUse(

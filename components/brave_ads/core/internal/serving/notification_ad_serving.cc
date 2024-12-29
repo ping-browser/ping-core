@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving.h"
 
+#include <utility>
+
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -24,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -35,11 +38,11 @@ NotificationAdServing::NotificationAdServing(
       kNotificationAdServingVersion.Get(), subdivision_targeting,
       anti_targeting_resource);
 
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 }
 
 NotificationAdServing::~NotificationAdServing() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
   delegate_ = nullptr;
 }
 
@@ -78,7 +81,7 @@ void NotificationAdServing::MaybeServeAd() {
     return FailedToServeAd();
   }
 
-  GetEligibleAds();
+  GetUserModel();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -100,14 +103,18 @@ base::expected<void, std::string> NotificationAdServing::CanServeAd() const {
   return base::ok();
 }
 
-void NotificationAdServing::GetEligibleAds() {
-  const UserModelInfo user_model = BuildUserModel();
+void NotificationAdServing::GetUserModel() {
+  BuildUserModel(base::BindOnce(&NotificationAdServing::GetEligibleAds,
+                                weak_factory_.GetWeakPtr()));
+}
 
+void NotificationAdServing::GetEligibleAds(UserModelInfo user_model) {
   NotifyOpportunityAroseToServeNotificationAd(user_model.interest.segments);
 
   eligible_ads_->GetForUserModel(
-      user_model, base::BindOnce(&NotificationAdServing::GetEligibleAdsCallback,
-                                 weak_factory_.GetWeakPtr()));
+      std::move(user_model),
+      base::BindOnce(&NotificationAdServing::GetEligibleAdsCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void NotificationAdServing::GetEligibleAdsCallback(
@@ -166,7 +173,8 @@ base::Time NotificationAdServing::MaybeServeAdAfter(
 
 void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
   if (!ad.IsValid()) {
-    BLOG(1, "Failed to serve notification ad");
+    BLOG(0, "Failed to serve notification ad due to the ad being invalid");
+
     return FailedToServeAd();
   }
 

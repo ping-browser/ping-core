@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
 #include "base/values.h"
 
@@ -33,16 +34,16 @@ class EthSignTypedDataHelper {
   void SetTypes(base::Value::Dict types);
   void SetVersion(Version version);
 
-  std::vector<uint8_t> GetTypeHash(const std::string primary_type_name) const;
+  std::vector<uint8_t> GetTypeHash(const std::string& primary_type_name) const;
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> HashStruct(
-      const std::string primary_type_name,
+      const std::string& primary_type_name,
       const base::Value::Dict& data) const;
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> EncodeData(
       const std::string& primary_type_name,
       const base::Value::Dict& data) const;
   static std::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
-      const std::vector<uint8_t>& domain_hash,
-      const std::vector<uint8_t>& primary_hash);
+      base::span<const uint8_t> domain_hash,
+      base::span<const uint8_t> primary_hash);
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
   GetTypedDataPrimaryHash(const std::string& primary_type_name,
                           const base::Value::Dict& message) const;

@@ -94,7 +94,7 @@ class CacheClearable: Clearable {
     WebImageCacheManager.shared.clearMemoryCache()
     WebImageCacheWithNoPrivacyProtectionManager.shared.clearDiskCache()
     WebImageCacheWithNoPrivacyProtectionManager.shared.clearMemoryCache()
-    FaviconFetcher.clearCache()
+    await FaviconFetcher.clearCache()
 
     await BraveWebView.sharedNonPersistentStore().removeData(
       ofTypes: localStorageClearables,
@@ -106,9 +106,11 @@ class CacheClearable: Clearable {
 // Clears our browsing history, including favicons and thumbnails.
 class HistoryClearable: Clearable {
   let historyAPI: BraveHistoryAPI
+  let httpsUpgradeService: HttpsUpgradeService?
 
-  init(historyAPI: BraveHistoryAPI) {
+  init(historyAPI: BraveHistoryAPI, httpsUpgradeService: HttpsUpgradeService?) {
     self.historyAPI = historyAPI
+    self.httpsUpgradeService = httpsUpgradeService
   }
 
   var label: String {
@@ -118,6 +120,7 @@ class HistoryClearable: Clearable {
   func clear() async throws {
     return await withCheckedContinuation { continuation in
       self.historyAPI.deleteAll {
+        self.httpsUpgradeService?.clearAllowlist(fromStart: .distantPast, end: .distantFuture)
         NotificationCenter.default.post(name: .privateDataClearedHistory, object: nil)
         continuation.resume()
       }
@@ -156,14 +159,13 @@ class DownloadsClearable: Clearable {
 
   func clear() async throws {
     do {
-      let fileManager = FileManager.default
-      let downloadsLocation = try FileManager.default.downloadsPath()
-      let filePaths = try fileManager.contentsOfDirectory(atPath: downloadsLocation.path)
+      let fileManager = AsyncFileManager.default
+      let downloadsLocation = try await fileManager.downloadsPath()
+      let filePaths = try await fileManager.contentsOfDirectory(atPath: downloadsLocation.path)
 
-      try filePaths.forEach {
-        var fileUrl = downloadsLocation
-        fileUrl.appendPathComponent($0)
-        try fileManager.removeItem(atPath: fileUrl.path)
+      for filePath in filePaths {
+        let fileUrl = downloadsLocation.appending(path: filePath)
+        try await fileManager.removeItem(atPath: fileUrl.path)
       }
     } catch {
       // Not logging the `error` because downloaded file names can be sensitive to some users.
@@ -185,7 +187,7 @@ class BraveNewsClearable: Clearable {
   }
 
   func clear() async throws {
-    feedDataSource.clearCachedFiles()
+    await feedDataSource.clearCachedFiles()
   }
 }
 
@@ -198,13 +200,13 @@ class PlayListCacheClearable: Clearable {
   }
 
   func clear() async throws {
-    PlaylistCarplayManager.shared.destroyPiP()
-    PlaylistManager.shared.deleteAllItems(cacheOnly: true)
+    PlaylistCoordinator.shared.destroyPiP()
+    await PlaylistManager.shared.deleteAllItems(cacheOnly: true)
 
     // Backup in case there is folder corruption, so we delete the cache anyway
-    if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
+    if let playlistDirectory = await PlaylistDownloadManager.playlistDirectory {
       do {
-        try FileManager.default.removeItem(at: playlistDirectory)
+        try await AsyncFileManager.default.removeItem(at: playlistDirectory)
       } catch {
         Logger.module.error("Error Deleting Playlist directory: \(error.localizedDescription)")
       }
@@ -221,13 +223,13 @@ class PlayListDataClearable: Clearable {
   }
 
   func clear() async throws {
-    PlaylistCarplayManager.shared.destroyPiP()
-    PlaylistManager.shared.deleteAllItems(cacheOnly: false)
+    PlaylistCoordinator.shared.destroyPiP()
+    await PlaylistManager.shared.deleteAllItems(cacheOnly: false)
 
     // Backup in case there is folder corruption, so we delete the cache anyway
-    if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
+    if let playlistDirectory = await PlaylistDownloadManager.playlistDirectory {
       do {
-        try FileManager.default.removeItem(at: playlistDirectory)
+        try await AsyncFileManager.default.removeItem(at: playlistDirectory)
       } catch {
         Logger.module.error("Error Deleting Playlist directory: \(error.localizedDescription)")
       }
@@ -245,5 +247,22 @@ class RecentSearchClearable: Clearable {
 
   func clear() async throws {
     RecentSearch.removeAll()
+  }
+}
+
+class BraveAdsDataClearable: Clearable {
+
+  private let rewards: BraveRewards?
+
+  init(rewards: BraveRewards?) {
+    self.rewards = rewards
+  }
+
+  var label: String {
+    return Strings.Ads.braveAdsDataToggleOption
+  }
+
+  func clear() async throws {
+    await rewards?.clearAdsData()
   }
 }

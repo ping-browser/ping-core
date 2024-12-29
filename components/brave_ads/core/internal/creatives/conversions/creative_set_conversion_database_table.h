@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
 namespace brave_ads::database::table {
 
-using GetConversionsCallback = base::OnceCallback<void(
+using GetCreativeSetConversionsCallback = base::OnceCallback<void(
     bool success,
     const CreativeSetConversionList& creative_set_conversions)>;
 
@@ -25,22 +25,22 @@ class CreativeSetConversions final : public TableInterface {
   void Save(const CreativeSetConversionList& creative_set_conversions,
             ResultCallback callback);
 
-  void GetUnexpired(GetConversionsCallback callback) const;
+  void GetUnexpired(GetCreativeSetConversionsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* transaction) override;
-  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
+  void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
+  void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+               int to_version) override;
 
  private:
-  void InsertOrUpdate(
-      mojom::DBTransactionInfo* transaction,
-      const CreativeSetConversionList& creative_set_conversions);
+  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+              const CreativeSetConversionList& creative_set_conversions);
 
-  std::string BuildInsertOrUpdateSql(
-      mojom::DBCommandInfo* command,
+  std::string BuildInsertSql(
+      const mojom::DBActionInfoPtr& mojom_db_action,
       const CreativeSetConversionList& creative_set_conversions) const;
 };
 

@@ -111,7 +111,7 @@ public class CardBuilderFeedCard {
 
     private static final String TAG = "BN";
     private static final int MARGIN_VERTICAL = 10;
-    private static final String BRAVE_OFFERS_URL = "offers.brave.com";
+    private static final String BRAVE_OFFERS_URL = "https://ping-browser.com/faqs-and-help";
 
     public CardBuilderFeedCard(BraveNewsController braveNewsController, RequestManager glide,
             LinearLayout layout, Activity activity, int position, FeedItemsCard newsItem,

@@ -37,7 +37,7 @@ NewTabPageAdServing::~NewTabPageAdServing() {
 }
 
 void NewTabPageAdServing::MaybeServeAd(
-    MaybeServeNewTabPageAdCallback callback) const {
+    MaybeServeNewTabPageAdCallback callback) {
   const auto result = CanServeAd();
   if (!result.has_value()) {
     BLOG(1, result.error());
@@ -46,7 +46,7 @@ void NewTabPageAdServing::MaybeServeAd(
 
   NotifyOpportunityAroseToServeNewTabPageAd();
 
-  GetEligibleAds(std::move(callback));
+  GetUserModel(std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -68,12 +68,18 @@ base::expected<void, std::string> NewTabPageAdServing::CanServeAd() const {
   return base::ok();
 }
 
-void NewTabPageAdServing::GetEligibleAds(
-    MaybeServeNewTabPageAdCallback callback) const {
-  const UserModelInfo user_model = BuildUserModel();
+void NewTabPageAdServing::GetUserModel(
+    MaybeServeNewTabPageAdCallback callback) {
+  BuildUserModel(base::BindOnce(&NewTabPageAdServing::GetEligibleAds,
+                                weak_factory_.GetWeakPtr(),
+                                std::move(callback)));
+}
 
+void NewTabPageAdServing::GetEligibleAds(
+    MaybeServeNewTabPageAdCallback callback,
+    UserModelInfo user_model) const {
   eligible_ads_->GetForUserModel(
-      user_model,
+      std::move(user_model),
       base::BindOnce(&NewTabPageAdServing::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -100,7 +106,8 @@ void NewTabPageAdServing::ServeAd(
     const NewTabPageAdInfo& ad,
     MaybeServeNewTabPageAdCallback callback) const {
   if (!ad.IsValid()) {
-    BLOG(1, "Failed to serve new tab page ad");
+    BLOG(0, "Failed to serve new tab page ad due to the ad being invalid");
+
     return FailedToServeAd(std::move(callback));
   }
 

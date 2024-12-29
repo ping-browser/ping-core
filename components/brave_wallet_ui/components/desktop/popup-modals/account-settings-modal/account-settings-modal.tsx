@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
 import ProgressRingReact from '@brave/leo/react/progressRing'
+import Input, { InputEventDetail } from '@brave/leo/react/input'
 
 // redux
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,6 +19,7 @@ import {
 
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
+import getAPIProxy from '../../../../common/async/bridge'
 
 // constants
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
@@ -29,7 +31,6 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 import { BraveWallet } from '../../../../constants/types'
 
 // components
-import { NavButton } from '../../../extension/buttons/nav-button/index'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'
@@ -37,7 +38,6 @@ import PasswordInput from '../../../shared/password-input/index'
 // hooks
 import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 import { useAccountOrb } from '../../../../common/hooks/use-orb'
 import {
   useGetQrCodeImageQuery,
@@ -49,15 +49,12 @@ import {
 
 // style
 import {
-  Input,
   StyledWrapper,
   QRCodeWrapper,
   AddressButton,
   ButtonRow,
   CopyIcon,
   PrivateKeyWrapper,
-  WarningText,
-  WarningWrapper,
   PrivateKeyBubble,
   ButtonWrapper,
   ErrorText,
@@ -65,9 +62,11 @@ import {
   NameAndIcon,
   AccountCircle,
   AccountName,
-  QRCodeImage
+  QRCodeImage,
+  EditWrapper,
+  Alert
 } from './account-settings-modal.style'
-import { VerticalSpacer } from '../../../shared/style'
+import { LeoSquaredButton, VerticalSpacer } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 
 interface DepositModalProps {
@@ -120,7 +119,7 @@ export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
 export const AccountSettingsModal = () => {
   // custom hooks
   const isMounted = useIsMounted()
-  const { keyringService } = useApiProxy()
+
   // redux
   const dispatch = useDispatch()
 
@@ -135,9 +134,9 @@ export const AccountSettingsModal = () => {
   )
 
   // state
-  const [accountName, setAccountName] = React.useState<string>(
-    selectedAccount?.name ?? ''
-  )
+  const [fullLengthAccountName, setFullLengthAccountName] =
+    React.useState<string>(selectedAccount?.name ?? '')
+  const accountName = fullLengthAccountName.substring(0, 30)
   const [updateError, setUpdateError] = React.useState<boolean>(false)
   const [password, setPassword] = React.useState<string>('')
   const [privateKey, setPrivateKey] = React.useState<string>('')
@@ -153,25 +152,24 @@ export const AccountSettingsModal = () => {
   // methods
   const onViewPrivateKey = React.useCallback(
     async (accountId: BraveWallet.AccountId) => {
-      const { privateKey } = await keyringService.encodePrivateKeyForExport(
-        accountId,
-        password
-      )
+      const { privateKey } =
+        await getAPIProxy().keyringService.encodePrivateKeyForExport(
+          accountId,
+          password
+        )
       if (isMounted) {
         return setPrivateKey(privateKey)
       }
     },
-    [password, keyringService, isMounted]
+    [password, isMounted]
   )
 
   const onDoneViewingPrivateKey = React.useCallback(() => {
     setPrivateKey('')
   }, [])
 
-  const handleAccountNameChanged = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setAccountName(event.target.value)
+  const handleAccountNameChanged = (detail: InputEventDetail) => {
+    setFullLengthAccountName(detail.value)
     setUpdateError(false)
   }
 
@@ -228,8 +226,8 @@ export const AccountSettingsModal = () => {
     onClose()
   }
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && accountName) {
+  const handleKeyDown = (detail: InputEventDetail) => {
+    if ((detail.innerEvent as unknown as KeyboardEvent).key === 'Enter') {
       onSubmitUpdateName()
     }
   }
@@ -262,6 +260,9 @@ export const AccountSettingsModal = () => {
     return ''
   }, [accountModalType])
 
+  // computed
+  const showNameInputErrors = accountName === ''
+
   // render
   return (
     <PopupModal
@@ -274,52 +275,59 @@ export const AccountSettingsModal = () => {
           <DepositModal selectedAccount={selectedAccount} />
         )}
         {accountModalType === 'edit' && (
-          <>
+          <EditWrapper>
             <Input
               value={accountName}
               placeholder={getLocale('braveWalletAddAccountPlaceholder')}
-              onChange={handleAccountNameChanged}
+              onInput={handleAccountNameChanged}
               onKeyDown={handleKeyDown}
-            />
+              showErrors={showNameInputErrors}
+              size='large'
+              maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+            >
+              {
+                // Label
+                getLocale('braveWalletAddAccountPlaceholder')
+              }
+            </Input>
+
             {updateError && (
               <ErrorText>
                 {getLocale('braveWalletAccountSettingsUpdateError')}
               </ErrorText>
             )}
+
             <ButtonRow>
-              <NavButton
-                onSubmit={onSubmitUpdateName}
-                disabled={!accountName}
-                text={getLocale('braveWalletAccountSettingsSave')}
-                buttonType='secondary'
-              />
+              <LeoSquaredButton
+                onClick={onSubmitUpdateName}
+                isDisabled={showNameInputErrors}
+                kind='filled'
+              >
+                {getLocale('braveWalletAccountSettingsSave')}
+              </LeoSquaredButton>
             </ButtonRow>
-          </>
+          </EditWrapper>
         )}
         {accountModalType === 'privateKey' && (
           <PrivateKeyWrapper>
-            <WarningWrapper>
-              <WarningText>
-                {getLocale('braveWalletAccountSettingsDisclaimer')}
-              </WarningText>
-            </WarningWrapper>
+            <Alert type='warning'>
+              {getLocale('braveWalletAccountSettingsDisclaimer')}
+            </Alert>
             {privateKey ? (
               <>
                 {selectedAccount?.accountId.coin ===
                   BraveWallet.CoinType.FIL && (
-                  <WarningWrapper>
-                    <WarningText>
-                      {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-                      <a
-                        target='_blank'
-                        href={FILECOIN_FORMAT_DESCRIPTION_URL}
-                        rel='noopener noreferrer'
-                      >
-                        {filPrivateKeyFormatDescriptionTextParts.duringTag}
-                      </a>
-                      {filPrivateKeyFormatDescriptionTextParts.afterTag}
-                    </WarningText>
-                  </WarningWrapper>
+                  <Alert type='warning'>
+                    {filPrivateKeyFormatDescriptionTextParts.beforeTag}
+                    <a
+                      target='_blank'
+                      href={FILECOIN_FORMAT_DESCRIPTION_URL}
+                      rel='noopener noreferrer'
+                    >
+                      {filPrivateKeyFormatDescriptionTextParts.duringTag}
+                    </a>
+                    {filPrivateKeyFormatDescriptionTextParts.afterTag}
+                  </Alert>
                 )}
                 <CopyTooltip text={privateKey}>
                   <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
@@ -339,18 +347,19 @@ export const AccountSettingsModal = () => {
               />
             )}
             <ButtonWrapper>
-              <NavButton
-                onSubmit={!privateKey ? onShowPrivateKey : onHidePrivateKey}
-                text={getLocale(
+              <LeoSquaredButton
+                onClick={!privateKey ? onShowPrivateKey : onHidePrivateKey}
+                kind='filled'
+                isDisabled={
+                  privateKey ? false : password ? !isCorrectPassword : true
+                }
+              >
+                {getLocale(
                   !privateKey
                     ? 'braveWalletAccountSettingsShowKey'
                     : 'braveWalletAccountSettingsHideKey'
                 )}
-                buttonType='primary'
-                disabled={
-                  privateKey ? false : password ? !isCorrectPassword : true
-                }
-              />
+              </LeoSquaredButton>
             </ButtonWrapper>
           </PrivateKeyWrapper>
         )}

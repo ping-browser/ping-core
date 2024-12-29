@@ -13,7 +13,6 @@
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
-
 #include "brave/build/android/jni_headers/BraveSyncWorker_jni.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
@@ -22,17 +21,15 @@
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/sync_service_factory.h"
-
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_user_settings.h"
 #include "components/unified_consent/unified_consent_metrics.h"
-
 #include "content/public/browser/browser_thread.h"
+#include "ui/base/l10n/time_format.h"
 
 // TODO(alexeybarabash): consider use of java SyncServiceImpl methods:
 //    addSyncStateChangedListener
@@ -43,6 +40,7 @@
 //    isInitialSyncFeatureSetupComplete
 
 using base::android::ConvertUTF8ToJavaString;
+using brave_sync::TimeLimitedWords;
 using content::BrowserThread;
 
 namespace {
@@ -114,6 +112,13 @@ void BraveSyncWorker::RequestSync(JNIEnv* env) {
   if (service && !sync_service_observer_.IsObservingSource(service)) {
     sync_service_observer_.AddObservation(service);
   }
+
+  // Upstream shows the notification when passphrase is required but not set,
+  // see SyncErrorNotifier.computeGoalNotificationState .
+  // Brave always set the passphrase eventually, so we don't need this
+  // notification. The same for scanning QR code and using the codewords.
+  service->GetUserSettings()
+      ->MarkPassphrasePromptMutedForCurrentProductVersion();
 
   // Mark Sync as requested by the user. It might already be requested, but
   // it's not if this is either the first time the user is setting up Sync, or
@@ -403,11 +408,10 @@ int JNI_BraveSyncWorker_GetWordsValidationResult(
       base::android::ConvertJavaStringToUTF8(time_limited_words);
   DCHECK(!str_time_limited_words.empty());
 
-  auto pure_words_with_status =
-      brave_sync::TimeLimitedWords::Parse(str_time_limited_words);
+  auto pure_words_with_status = TimeLimitedWords::Parse(str_time_limited_words);
 
   if (pure_words_with_status.has_value()) {
-    using ValidationStatus = brave_sync::TimeLimitedWords::ValidationStatus;
+    using ValidationStatus = TimeLimitedWords::ValidationStatus;
     return static_cast<int>(ValidationStatus::kValid);
   }
   return static_cast<int>(pure_words_with_status.error());
@@ -421,12 +425,70 @@ JNI_BraveSyncWorker_GetPureWordsFromTimeLimited(
       base::android::ConvertJavaStringToUTF8(time_limited_words);
   DCHECK(!str_time_limited_words.empty());
 
-  auto pure_words_with_status =
-      brave_sync::TimeLimitedWords::Parse(str_time_limited_words);
+  auto pure_words_with_status = TimeLimitedWords::Parse(str_time_limited_words);
   DCHECK(pure_words_with_status.has_value());
 
   return base::android::ConvertUTF8ToJavaString(env,
                                                 pure_words_with_status.value());
+}
+
+static int64_t JNI_BraveSyncWorker_GetNotAfterFromFromTimeLimitedWords(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& time_limited_words) {
+  std::string str_time_limited_words =
+      base::android::ConvertJavaStringToUTF8(time_limited_words);
+  DCHECK(!str_time_limited_words.empty());
+
+  auto not_after = TimeLimitedWords::GetNotAfter(str_time_limited_words);
+
+  return not_after.InMillisecondsSinceUnixEpoch() / 1000;
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveSyncWorker_GetFormattedTimeDelta(JNIEnv* env, jlong seconds) {
+  auto delta = base::Seconds(seconds);
+
+  using ui::TimeFormat;
+  std::u16string duration_string;
+  if (delta.InDays() > 0) {
+    duration_string += TimeFormat::Detailed(TimeFormat::FORMAT_DURATION,
+                                            TimeFormat::LENGTH_LONG, 0,
+                                            base::Days(delta.InDays()));
+    duration_string += u" ";
+  }
+
+  int remaining_hours =
+      delta.InHours() - delta.InDays() * base::Time::kHoursPerDay;
+  if (remaining_hours > 0) {
+    duration_string += TimeFormat::Detailed(TimeFormat::FORMAT_DURATION,
+                                            TimeFormat::LENGTH_LONG, 0,
+                                            base::Hours(remaining_hours));
+    duration_string += u" ";
+  }
+
+  int remaining_minutes =
+      delta.InMinutes() - delta.InHours() * base::Time::kMinutesPerHour;
+  if (remaining_minutes > 0) {
+    duration_string += TimeFormat::Detailed(TimeFormat::FORMAT_DURATION,
+                                            TimeFormat::LENGTH_LONG, 0,
+                                            base::Minutes(remaining_minutes));
+    duration_string += u" ";
+  }
+
+  int remaining_seconds =
+      delta.InSeconds() - delta.InMinutes() * base::Time::kSecondsPerMinute;
+  if (remaining_seconds > 0) {
+    duration_string += TimeFormat::Detailed(TimeFormat::FORMAT_DURATION,
+                                            TimeFormat::LENGTH_LONG, 0,
+                                            base::Seconds(remaining_seconds));
+    duration_string += u" ";
+  }
+
+  if (!duration_string.empty()) {
+    duration_string.resize(duration_string.length() - 1);
+  }
+
+  return base::android::ConvertUTF16ToJavaString(env, duration_string);
 }
 
 static base::android::ScopedJavaLocalRef<jstring>
@@ -437,8 +499,7 @@ JNI_BraveSyncWorker_GetTimeLimitedWordsFromPure(
       base::android::ConvertJavaStringToUTF8(pure_words);
   DCHECK(!str_pure_words.empty());
 
-  auto time_limited_words =
-      brave_sync::TimeLimitedWords::GenerateForNow(str_pure_words);
+  auto time_limited_words = TimeLimitedWords::GenerateForNow(str_pure_words);
 
   DCHECK(time_limited_words.has_value());
   return base::android::ConvertUTF8ToJavaString(env,
@@ -464,6 +525,13 @@ JNI_BraveSyncWorker_GetSeedHexFromQrJson(
   DCHECK(!GetWordsFromSeedHex(result).empty());
 
   return ConvertUTF8ToJavaString(env, result);
+}
+
+static int JNI_BraveSyncWorker_GetWordsCount(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& words) {
+  return TimeLimitedWords::GetWordsCount(
+      base::android::ConvertJavaStringToUTF8(words));
 }
 
 }  // namespace android

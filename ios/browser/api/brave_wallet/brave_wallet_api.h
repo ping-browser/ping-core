@@ -29,17 +29,22 @@ OBJC_EXPORT BraveWalletProviderScriptKey const
     BraveWalletProviderScriptKeyWalletStandard;
 
 OBJC_EXPORT
+@interface BraveWallet : NSObject
+- (instancetype)init NS_UNAVAILABLE;
+@end
+
+OBJC_EXPORT
 @interface BraveWalletAPI : NSObject
 
 @property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;
 
 - (nullable id<BraveWalletEthereumProvider>)
     ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
-               isPrivateBrowsing:(bool)isPrivateBrowsing;
+               isPrivateBrowsing:(bool)isPrivateBrowsing NS_SWIFT_UI_ACTOR;
 
 - (nullable id<BraveWalletSolanaProvider>)
     solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
-             isPrivateBrowsing:(bool)isPrivateBrowsing;
+             isPrivateBrowsing:(bool)isPrivateBrowsing NS_SWIFT_UI_ACTOR;
 
 - (NSDictionary<BraveWalletProviderScriptKey, NSString*>*)
     providerScriptsForCoinType:(BraveWalletCoinType)coinType;

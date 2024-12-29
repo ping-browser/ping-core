@@ -26,10 +26,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kBiddingAndScoringDebugReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsFormFactors, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kControlledFrame, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kFencedFramesM120FeaturesPart2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeBiddingAndAuctionServer, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeConsiderKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -37,10 +36,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
     {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPrivacySandboxAdsAPIs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivateAggregationApi, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPrivateAggregationApiMultipleCloudProviders,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     // This feature uses shared memory to reduce IPCs to access cookies, but
     // Ephemeral Storage can switch cookie storage backend at runtime, so we
     // can't use it.
@@ -60,10 +56,6 @@ BASE_FEATURE(kFileSystemAccessAPI,
 
 BASE_FEATURE(kBraveWebBluetoothAPI,
              "BraveWebBluetoothAPI",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveWebSerialAPI,
-             "BraveWebSerialAPI",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kNavigatorConnectionAttribute,
@@ -88,7 +80,7 @@ BASE_FEATURE(kBraveBlockScreenFingerprinting,
 // Enables protection against fingerprinting via high-resolution time stamps.
 BASE_FEATURE(kBraveRoundTimeStamps,
              "BraveRoundTimeStamps",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables the Global Privacy Control header and navigator APIs.
 BASE_FEATURE(kBraveGlobalPrivacyControl,

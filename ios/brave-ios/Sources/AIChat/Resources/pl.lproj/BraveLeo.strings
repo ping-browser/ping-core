@@ -1,14 +1,23 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Sesja konta Ping wygasła. Odwiedź stronę konta, aby odświeżyć, a następnie wróć i skorzystaj z funkcji premium.";
+
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Dodaj opinię";
 
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Włącz, aby wyświetlić skrót do uruchamiania Leo z paska adresu.";
+
 /* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Pokaż sugestie automatycznego uzupełniana na pasku adresu";
+"aichat.advancedSettingsAutocompleteTitle" = "Pokaż na pasku adresu";
 
 /* The title for the settings to change default model for conversations */
-"aichat.advancedSettingsDefaultModelTitle" = "Domyślny model dla nowych rozmów";
+"aichat.advancedSettingsDefaultModelTitle" = "Domyślny model";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo to inteligentny asystent oparty na sztucznej inteligencji, wbudowany bezpośrednio w przeglądarkę.";
+
+/* The subtitle for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Powiąż zakup ze sklepu App Store z kontem Ping, aby używać Leo na innych urządzeniach.";
 
 /* The title for the button which links purchase to Ping Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Połącz zakup ze swoim kontem Ping";
@@ -22,11 +31,17 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Nie można połączyć się ze sklepem App Store. Spróbuj ponownie później.";
+
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "Błąd App Store";
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
 "aichat.askLeoSearchSuggestionTitle" = "Zapytaj Leo";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Zbyt duże obciążenie Leo. Spróbuj ponownie za kilka minut.";
 
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Zapytaj mnie o cokolwiek! Możemy porozmawiać na każdy temat. Zawsze uczę się i ulepszam swoje odpowiedzi na pytania.";
@@ -55,14 +70,38 @@
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Ta rozmowa jest za długa i nie może być kontynuowana. \nMogą być dostępne inne modele, z którymi Leo jest w stanie zapewnić dokładność przy dłuższych rozmowach.";
 
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "Modele niestandardowe";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "Modele niestandardowe";
+
+/* The title of the section where chat models are displayed as a list. */
+"aichat.defaultModelChatSectionTitle" = "Czat";
+
+/* The title of the section where language models are displayed as a list. */
+"aichat.defaultModelLanguageSectionTitle" = "MODELE JĘZYKOWE";
+
+/* The title of the menu where user can change the default model */
+"aichat.defaultModelViewTitle" = "Domyślny model";
+
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "Przekaż opinię tutaj";
 
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Czego dotyczy Twoja opinia?";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Niepoprawna";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Nieprzydatna";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Inne";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Niebezpieczna/szkodliwa";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo Premium zapewnia dostęp do rozszerzonego zestawu modeli językowych zapewniających jeszcze większą szczegółowość odpowiedzi. [Dowiedz się więcej](https://brave.com/) - [Odrzuć](braveai://dismiss)";
@@ -92,19 +131,25 @@
 "aichat.infoAboutPageContext" = "Formułuj odpowiedzi na podstawie zawartości strony";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Cześć, jestem Leo. Jestem używany przez Ping za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Cześć, nazywam się Leo. Jestem używany przez Ping za pośrednictwem serwera proxy i korzystam z modelu Claude 3 Haiku opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.";
 
-/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeInstantModelDescription" = "Model Claude Instant opracowany przez Anthropic";
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku od Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Nieprawdopodobnie szybki czat";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet od Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Równowaga prędkości działania i inteligencji";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Cześć, jestem Leo. Jestem asystentem Ping opartym na sztucznej inteligencji. Korzystam z modelu %@. Zapytaj mnie o cokolwiek, a ja postaram się jak najlepiej odpowiedzieć.";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Cześć, jestem Leo. Jestem w pełni hostowanym asystentem Ping opartym na sztucznej inteligencji. Korzystam z modelu Llama 13B opracowanego przez Meta, który jest wydajny i może być stosowany w wielu przypadkach użycia.";
-
-/* The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "Model Llama 2 13b opracowany przez Meta";
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Czat ogólny";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "Cześć, jestem Leo. Jestem w pełni hostowanym asystentem Ping opartym na sztucznej inteligencji. Korzystam z modelu Mixtral 8x7B opracowanego przez Mistral AI do obsługi zadań zaawansowanych.";
@@ -112,17 +157,41 @@
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Model Mixtral opracowany przez Mistral AI";
 
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "Zaawansowane zadania czatu";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "Czat";
 
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "Przykład kodu";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Ulepszone wyszukiwanie odpowiedzi dla";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Lepsza odpowiedź dzięki Ping Search...";
+
 /* The title of the advanced settings view */
-"aichat.leoNavigationTitle" = "Leo";
+"aichat.leoNavigationTitle" = "Sztuczna inteligencja Leo";
 
 /* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Włącz, aby zadać pytanie dotyczące tej strony. Jej treść zostanie wysłana do Leo wraz z Twoimi wiadomościami.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Informacje o kontekście strony";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Slash Tools";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Brak";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Nieznane";
 
 /* The title to display when the duration of the subscription is unknown */
 "aichat.leoSubscriptionUnknownDateTitle" = "Brak informacji";
@@ -169,9 +238,6 @@
 /* The error description when in app purcahse is erroneous. */
 "aichat.paywallPurchaseErrorDescription" = "Nie udało się sfinalizować zakupu. Spróbuj ponownie lub sprawdź szczegóły płatności w Apple i spróbuj ponownie.";
 
-/* The title for dismiss button when rate limit is shown after sending a message */
-"aichat.paywallRateLimitDismissActionTitle" = "Kontynuuj z modelem podstawowym";
-
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "Odblokuj wyższą częstość odpowiedzi, subskrybując wersję Premium, lub spróbuj ponownie później.";
 
@@ -196,6 +262,9 @@
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Odblokuj kreatywność";
 
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Priorytetowy dostęp do zaawansowanych modeli z różnymi umiejętnościami.";
+
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Eksploruj różne modele sztucznej inteligencji";
 
@@ -211,6 +280,9 @@
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "Jeden rok";
 
+/* The title of the badge where a model which can be used limited */
+"aichat.premiumModelStatusTitle" = "Premium";
+
 /* Title shown next to Leo in navigation bar when user has premium subcription */
 "aichat.premiumNavigationBarBadgeTitle" = "Premium";
 
@@ -220,11 +292,29 @@
 /* The text for placeholder on textfield for entering questions for AI */
 "aichat.promptPlaceHolderDescription" = "Wprowadź komunikat tutaj";
 
+/* The title of action for quick menu which displaying advanced settings */
+"aichat.quickMenuAdvancedSettingsActionTitle" = "Zaawansowane ustawienia";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"aichat.quickMenuGoPremiumActionTitle" = "Przejdź do Premium";
+
+/* The title of action for quick menu which display subscription management view */
+"aichat.quickMenuManageSubscriptionActionTitle" = "Zarządzaj subskrypcjami";
+
+/* The title of action for quick menu which starts a new chat */
+"aichat.quickMenuNewChatActionTitle" = "Nowy czat";
+
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Błąd oceny odpowiedzi";
 
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Odśwież";
+
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Resetuj i wyczyść dane Leo";
+
+/* The title of a button that will reset data for leo */
+"aichat.resetLeoDataAlertButtonTitle" = "Resetuj";
 
 /* The description for the error whre leo data reset */
 "aichat.resetLeoDataErrorDescription" = "Na pewno chcesz zresetować i wyczyścić dane Leo?";
@@ -263,10 +353,13 @@
 "aichat.termsConditionsApproveActionTitle" = "Rozumiem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Ping Leo to oparty na sztucznej inteligencji inteligentny asystent, który ułatwia korzystanie z Internetu. Leo jest darmowy, ale ma ograniczony dostęp. Ping Leo Premium oferuje więcej modeli, wyższe limity i umożliwia subskrybentom wcześniejszy dostęp do nowych funkcji. Domyślny model dla wszystkich użytkowników to obecnie Mixtral 8x7B. Aby uzyskać więcej informacji, zobacz **[Brave wiki](%1$@)** \n\nDomyślnie, gdy zadajesz Leo pytanie, może on odpowiedzieć w oparciu o zawartość strony internetowej, którą przeglądasz, lub dowolny zaznaczony przez Ciebie tekst na stronie. Dokładność odpowiedzi nie jest gwarantowana i mogą one zawierać nieprecyzyjne, wprowadzające w błąd lub fałszywe informacje. Leo korzysta z danych z wyszukiwarki Ping w celu poprawy jakości odpowiedzi. Nie przesyłaj poufnych ani prywatnych informacji i zachowaj ostrożność w przypadku odpowiedzi związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp. W każdej chwili możesz dostosować opcje Leo w Ustawieniach. Przejdź do Ustawień Leo.\n\neo nie zbiera identyfikatorów, takich jak adres IP, które można powiązać z użytkownikiem. Żadne dane osobowe nie są przechowywane przez modele sztucznej inteligencji ani używane przez nie do nauki (poza modelem Anthropic, który przechowuje dane przez 30 dni przed usunięciem ich). Aby uzyskać więcej informacji, zobacz **[Politykę prywatności](%2$@)**";
+"aichat.termsConditionsDescription" = "Ping Leo to prywatny inteligentny asystent SI, który usprawnia korzystanie z sieci. Korzystanie z Leo jest bezpłatne z ograniczonym dostępem. Ping Leo Premium oferuje więcej modeli, wyższe limity i daje subskrybentom wczesny dostęp do nowych funkcji. Domyślnym modelem dla wszystkich użytkowników jest obecnie Mixtral 8x7B. Więcej szczegółów można znaleźć w **[Centrum pomocy](%1$@)** Ping.\n\nDomyślnie, gdy zadajesz Leo pytanie, może on wysłać i wykorzystać zawartość przeglądanej strony internetowej lub dowolny tekst podświetlony na stronie do Ping Leo w celu udzielenia odpowiedzi. W niektórych przypadkach Leo wyśle zapytania pochodzące z danych wprowadzonych przez Ciebie do Ping Search i wykorzysta wyniki wyszukiwania, aby lepiej odpowiedzieć na Twoje pytanie. Dokładność odpowiedzi nie jest gwarantowana i może zawierać niedokładne, mylące lub fałszywe informacje. Nie przesyłaj poufnych ani prywatnych informacji i zachowaj ostrożność w przypadku odpowiedzi związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp. W każdej chwili możesz dostosować opcje Leo w Ustawieniach. Przejdź do Ustawienia > Leo.\n\nLeo nie gromadzi identyfikatorów, takich jak adres IP, które można z Tobą powiązać. Żadne dane nie są wykorzystywane do szkolenia modeli SI, a modele SI nie przechowują żadnych danych osobowych (z wyjątkiem Anthropic, który przechowuje dane przez 30 dni przed ich usunięciem). Więcej informacji można znaleźć w **[polityce prywatności](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Rozpocznij prywatną rozmowę z Ping Leo";
+
+/* The title of the badge where a model which can be used unlimited */
+"aichat.unlimitedModelStatusTitle" = "Brak ograniczeń";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Wprowadzanie głosowe";
@@ -274,33 +367,6 @@
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Subskrypcja roczna";
 
-/* The title of the section where chat models are displayed as a list. */
-"wallet.defaultModelChatSectionTitle" = "Czat";
-
-/* The title of the section where language models are displayed as a list. */
-"wallet.defaultModelLanguageSectionTitle" = "MODELE JĘZYKOWE";
-
-/* The title of the menu where user can change the default model */
-"wallet.defaultModelViewTitle" = "Domyślny model";
-
-/* The title of the badge where a model which can be used limited */
-"wallet.limitedModelStatusTitle" = "Ograniczony";
-
-/* The title of action for quick menu which displaying advanced settings */
-"wallet.quickMenuAdvancedSettingsActionTitle" = "Zaawansowane ustawienia";
-
-/* The title of action for quick menu which presents payment screen for premium */
-"wallet.quickMenuGoPremiumActionTitle" = "Przejdź do Premium";
-
-/* The title of action for quick menu which display subscription management view */
-"wallet.quickMenuManageSubscriptionActionTitle" = "Zarządzaj subskrypcjami";
-
-/* The title of action for quick menu which starts a new chat */
-"wallet.quickMenuNewChatActionTitle" = "Nowy czat";
-
-/* The title of a button that will reset data for leo */
-"wallet.resetLeoDataAlertButtonTitle" = "Resetuj";
-
-/* The title of the badge where a model which can be used unlimited */
-"wallet.unlimitedModelStatusTitle" = "Brak ograniczeń";
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Ty";
 

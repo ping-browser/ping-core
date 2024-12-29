@@ -4,47 +4,49 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { BraveWallet } from '../../../constants/types'
 import {
-  mockHardwareAccounts //
+  mockAccountsFromDevice //
 } from '../../../stories/mock-data/mock-wallet-accounts'
 
 import {
   WalletPageStory //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { HardwareWalletAccountsList } from './accounts_list'
+import { Meta } from '@storybook/react'
+import {
+  DerivationScheme,
+  EthLedgerDeprecatedHardwareImportScheme,
+  EthLedgerLegacyHardwareImportScheme,
+  EthLedgerLiveHardwareImportScheme
+} from '../../../common/hardware/types'
 
-export const _HardwareAccountsList = () => {
-  return (
+export const HardwareAccountsList = {
+  render: () => (
     <WalletPageStory>
       <HardwareWalletAccountsList
-        hardwareWallet={'Ledger'}
-        accounts={mockHardwareAccounts}
-        preAddedHardwareWalletAccounts={[]}
-        onLoadMore={function (): void {
-          throw new Error('Function not implemented.')
-        }}
-        selectedDerivationPaths={[]}
-        setSelectedDerivationPaths={function (paths: string[]): void {
-          throw new Error('Function not implemented.')
-        }}
-        selectedDerivationScheme={''}
-        setSelectedDerivationScheme={function (scheme: string): void {
-          throw new Error('Function not implemented.')
-        }}
-        onAddAccounts={function (): void {
-          throw new Error('Function not implemented.')
-        }}
-        filecoinNetwork={'f'}
-        onChangeFilecoinNetwork={function (network: 'f' | 't'): void {
-          throw new Error('Function not implemented.')
-        }}
-        coin={BraveWallet.CoinType.ETH}
+        accounts={mockAccountsFromDevice.map((a, i) => {
+          return {
+            ...a,
+            shouldAddToWallet: i === 0,
+            alreadyInWallet: i !== 0
+          }
+        })}
+        onLoadMore={function (): void {}}
+        currentHardwareImportScheme={EthLedgerLiveHardwareImportScheme}
+        supportedSchemes={[
+          EthLedgerLiveHardwareImportScheme,
+          EthLedgerLegacyHardwareImportScheme,
+          EthLedgerDeprecatedHardwareImportScheme
+        ]}
+        setHardwareImportScheme={function (scheme: DerivationScheme): void {}}
+        onAddAccounts={function (): void {}}
+        onAccountChecked={function (path: string, checked: boolean): void {}}
       />
     </WalletPageStory>
   )
 }
 
-_HardwareAccountsList.storyName = 'Hardware Wallet Accounts List'
-
-export default _HardwareAccountsList
+export default {
+  title: 'Hardware Wallet Accounts List',
+  component: HardwareWalletAccountsList
+} as Meta<typeof HardwareWalletAccountsList>

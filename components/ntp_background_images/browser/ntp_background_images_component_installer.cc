@@ -132,7 +132,7 @@ base::FilePath NTPBackgroundImagesComponentInstallerPolicy::
 
 void NTPBackgroundImagesComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  hash->assign(component_hash_, component_hash_ + kHashSize);
+  hash->assign(component_hash_, UNSAFE_TODO(component_hash_ + kHashSize));
 }
 
 std::string NTPBackgroundImagesComponentInstallerPolicy::GetName() const {
@@ -149,7 +149,7 @@ bool NTPBackgroundImagesComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void OnRegistered(const std::string& component_id) {
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
+  BraveOnDemandUpdater::GetInstance()->EnsureInstalled(component_id);
 }
 
 }  // namespace

@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/compiler_specific.h"
+#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
 #include "components/bookmarks/browser/bookmark_model.h"
@@ -48,7 +49,7 @@ void BookmarkModelListener::BookmarkModelLoaded(bool ids_reassigned) {
 void BookmarkModelListener::BookmarkModelBeingDeleted() {
   // This is an inconsistent state in the application lifecycle. The bookmark
   // model shouldn't disappear.
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void BookmarkModelListener::BookmarkNodeMoved(
@@ -89,7 +90,8 @@ void BookmarkModelListener::BookmarkNodeRemoved(
     const bookmarks::BookmarkNode* parent,
     size_t old_index,
     const bookmarks::BookmarkNode* node,
-    const std::set<GURL>& removed_urls) {
+    const std::set<GURL>& removed_urls,
+    const base::Location& location) {
   IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
                                                               model:model_];
   IOSBookmarkNode* ios_parent = [[IOSBookmarkNode alloc] initWithNode:parent
@@ -133,7 +135,8 @@ void BookmarkModelListener::BookmarkNodeChildrenReordered(
 }
 
 void BookmarkModelListener::BookmarkAllUserNodesRemoved(
-    const std::set<GURL>& removed_urls) {
+    const std::set<GURL>& removed_urls,
+    const base::Location& location) {
   if ([observer_ respondsToSelector:@selector(bookmarkModelRemovedAllNodes)]) {
     [observer_ bookmarkModelRemovedAllNodes];
   }
@@ -143,7 +146,7 @@ void BookmarkModelListener::BookmarkAllUserNodesRemoved(
 
 @interface BookmarkModelListenerImpl () {
   std::unique_ptr<brave::ios::BookmarkModelListener> observer_;
-  bookmarks::BookmarkModel* bookmarkModel_;
+  raw_ptr<bookmarks::BookmarkModel> bookmarkModel_;
 }
 @end
 

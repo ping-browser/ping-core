@@ -29,6 +29,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/common/features.h"
@@ -39,16 +41,18 @@
 #include "brave/components/sidebar/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -95,10 +99,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return brave_browser()->sidebar_controller();
   }
 
-  SidePanelToolbarButton* GetSidePanelToolbarButton() const {
-    BrowserView* browser_view =
-        BrowserView::GetBrowserViewForBrowser(browser());
-    return browser_view->toolbar_button_provider()->GetSidePanelButton();
+  SidePanelButton* GetSidePanelToolbarButton() const {
+    return static_cast<BraveToolbarView*>(
+               BrowserView::GetBrowserViewForBrowser(browser())->toolbar())
+        ->side_panel_button();
   }
 
   views::View* GetVerticalTabsContainer() const {
@@ -148,7 +152,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     DCHECK(item);
 
     const gfx::Point origin(0, 0);
-    ui::MouseEvent event(ui::ET_MOUSE_PRESSED, origin, origin,
+    ui::MouseEvent event(ui::EventType::kMousePressed, origin, origin,
                          ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
     sidebar_items_contents_view->OnItemPressed(item, event);
 
@@ -180,13 +184,21 @@ class SidebarBrowserTest : public InProcessBrowserTest {
            GetSidebarControlView()->sidebar_on_left_;
   }
 
+  void ShowSidebar(bool show_side_panel) {
+    GetSidebarContainerView()->ShowSidebar(show_side_panel);
+  }
+
+  void HideSidebar(bool hide_sidebar_control) {
+    GetSidebarContainerView()->HideSidebar(hide_sidebar_control);
+  }
+
   void WaitUntil(base::RepeatingCallback<bool()> condition) {
     if (condition.Run())
       return;
 
     base::RepeatingTimer scheduler;
     scheduler.Start(FROM_HERE, base::Milliseconds(100),
-                    base::BindLambdaForTesting([this, &condition]() {
+                    base::BindLambdaForTesting([this, &condition] {
                       if (condition.Run())
                         run_loop_->Quit();
                     }));
@@ -304,13 +316,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
   // Activate item that opens in panel.
   const size_t first_panel_item_index = GetFirstPanelItemIndex();
-  controller()->ActivateItemAt(first_panel_item_index);
+  const auto& first_panel_item =
+      controller()->model()->GetAllSidebarItems()[first_panel_item_index];
+  controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Optional(first_panel_item_index));
   EXPECT_TRUE(controller()->IsActiveIndex(first_panel_item_index));
-
-  // Try to activate item at index 1.
-  // Default item at index 1 opens in new tab. So, sidebar active index is not
-  // changed. Still active index is 2.
 
   // Get first index of item that opens in panel.
   const size_t first_web_item_index = GetFirstWebItemIndex();
@@ -321,10 +333,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   // Setting std::nullopt means deactivate current active tab.
-  controller()->ActivateItemAt(std::nullopt);
+  controller()->DeactivateCurrentPanel();
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
-  controller()->ActivateItemAt(active_item_index);
+  controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
+  EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   auto* sidebar_service =
       SidebarServiceFactory::GetForProfile(browser()->profile());
@@ -469,7 +486,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Show(SidePanelEntryId::kBookmarks);
 
   // Wait till panel UI opens.
@@ -484,7 +501,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
 
   // Wait till panel UI opens.
@@ -499,7 +516,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   auto bookmark_item_index =
       model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
   panel_ui->Show(SidePanelEntryId::kBookmarks);
@@ -518,7 +535,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
   EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Open panel w/o entry id.
-  panel_ui->Show();
+  panel_ui->Toggle();
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return panel_ui->GetCurrentEntryId().has_value(); }));
   // Check bookmark panel is not opened again as it's deleted item.
@@ -580,6 +597,31 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
             widget->GetWindowBoundsInScreen().right());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, HideSidebarUITest) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* sidebar_container = GetSidebarContainerView();
+
+  // Set to on mouse over and check sidebar ui is not shown.
+  service->SetSidebarShowOption(
+      SidebarService::ShowSidebarOption::kShowOnMouseOver);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return sidebar_container->width() == 0; }));
+
+  // Ask to show sidebar ui and check it's shown.
+  ShowSidebar(false);
+  const int target_control_view_width =
+      GetSidebarControlView()->GetPreferredSize().width();
+  EXPECT_GT(target_control_view_width, 0);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return sidebar_container->width() == target_control_view_width;
+  }));
+
+  // Ask to hide sidebar ui and check it's not shown.
+  HideSidebar(true);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return sidebar_container->width() == 0; }));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
@@ -644,8 +686,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemActivatedScrollTest) {
   EXPECT_TRUE(NeedScrollForItemAt(*bookmark_item_index, scroll_view));
 
   // Open bookmark panel.
-  SidePanelUI::GetSidePanelUIForBrowser(browser())->Show(
-      SidePanelEntryId::kBookmarks);
+  browser()->GetFeatures().side_panel_ui()->Show(SidePanelEntryId::kBookmarks);
 
   // Wait till bookmarks item is visible.
   WaitUntil(base::BindLambdaForTesting([&]() {
@@ -776,7 +817,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
 
   // Show bookmarks entry and it has active index.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
@@ -805,6 +846,79 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->GetVisible(); }));
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       OpenUnManagedPanelAfterDeletingDefaultWebTypeItem) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  const auto items = model()->GetAllSidebarItems();
+  const auto wallet_item_iter =
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                         &SidebarItem::built_in_item_type);
+  ASSERT_NE(wallet_item_iter, items.cend());
+  const int wallet_item_index = std::distance(items.cbegin(), wallet_item_iter);
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->RemoveItemAt(wallet_item_index);
+  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kWallet));
+
+  // Test with upstream's side panel that runs only with chrome://new-tab-page.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://new-tab-page/")));
+  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
+  // Create another tab.
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+
+  // Open contextual panel to tab at 0.
+  tab_model()->ActivateTabAt(0);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://new-tab-page/")));
+  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+
+  // No panel when activated tab at 1 because we don't open any global panel.
+  tab_model()->ActivateTabAt(1);
+  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+
+  // Open global panel when active tab indext is 1.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+  }));
+
+  // Contextual panel should be set when activate tab at 0.
+  tab_model()->ActivateTabAt(0);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
+  }));
+
+  // Global panel should be set when activate tab at 1.
+  tab_model()->ActivateTabAt(1);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+  }));
+
+  // Check per-url contextual panel close.
+  // If current tab load another url, customize panel should be hidden.
+  tab_model()->ActivateTabAt(0);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
+  }));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+  }));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
@@ -920,13 +1034,27 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
         .Times(0);
   }
 
+  // Need to make sure template url service is loaded before testing one-shot
+  // leo panel open. As we don't want to show one-shot leo panel open for
+  // SERP, SidebarTabHelper uses template url service for checking current
+  // url is SERP page or not. If template url service is not loaded, it just
+  // does early return w/o opening leo panel.
+  // See SidebarTabHelper::PrimaryPageChanged() for more details.
+  auto* service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  search_test_utils::WaitForTemplateURLServiceToLoad(service);
+
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("https://www.brave.com/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   if (GetParam()) {
+    // Wait till browser has active panel.
+    WaitUntil(base::BindLambdaForTesting(
+        [&]() { return !!panel_ui->GetCurrentEntryId(); }));
+
     EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
   }
   testing::Mock::VerifyAndClearExpectations(&observer_);
@@ -951,32 +1079,6 @@ INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
     ::testing::Bool());
-
-class SidebarBrowserTestWithChromeRefresh2023 : public SidebarBrowserTest {
- public:
-  SidebarBrowserTestWithChromeRefresh2023() = default;
-  ~SidebarBrowserTestWithChromeRefresh2023() override = default;
-
-  void SetUp() override {
-    SidebarBrowserTest::SetUp();
-
-    feature_list_.InitAndEnableFeature(::features::kChromeRefresh2023);
-  }
-
-  base::test::ScopedFeatureList feature_list_;
-};
-
-// To check enabling kChromeRefresh2023 doesn't make crash with sidebar opening.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithChromeRefresh2023,
-                       SidebarOpeningTest) {
-  // Open side panel to check it doesn't make crash.
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
-  panel_ui->Toggle();
-
-  // Wait till panel UI opens.
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return GetSidePanel()->GetVisible(); }));
-}
 
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
  public:
@@ -1036,7 +1138,24 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
   ASSERT_TRUE(global_item_index.has_value());
   auto tab_specific_item_index = model()->GetIndexOf(kTabSpecificItemType);
   ASSERT_TRUE(tab_specific_item_index.has_value());
-  // Open 2 more tabs
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(tab_model()->GetTabCount(), 2);
+
+  // Open contextual panel from Tab 0.
+  tab_model()->ActivateTabAt(0);
+  SimulateSidebarItemClickAt(tab_specific_item_index.value());
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+
+  // Delete Tab 0 and check model doesn't have active index.
+  tab_model()->DetachAndDeleteWebContentsAt(0);
+  EXPECT_FALSE(!!model()->active_index());
+  ASSERT_EQ(tab_model()->GetTabCount(), 1);
+
+  // Create two more tab for test below.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("brave://newtab/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -1046,6 +1165,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   ASSERT_EQ(tab_model()->GetTabCount(), 3);
+
   // Open a "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
   // Tab changed flag should be cleared after ActivateTabAt() executed.
@@ -1090,7 +1210,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
 
   // Open a unmanaged "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   // Wait till sidebar show ends.
   WaitUntil(base::BindLambdaForTesting(

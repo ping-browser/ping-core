@@ -8,7 +8,6 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/publisher_utils.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/navigation_entry.h"
@@ -18,43 +17,57 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#endif
-
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #endif
 
 namespace brave_rewards {
 
+#if !BUILDFLAG(IS_ANDROID)
+class BraveBrowserListObserver : public BrowserListObserver {
+ public:
+  explicit BraveBrowserListObserver(RewardsTabHelper* tab_helper)
+      : tab_helper_(tab_helper) {}
+  ~BraveBrowserListObserver() override {}
+  void OnBrowserSetLastActive(Browser* browser) override {
+    tab_helper_->OnBrowserSetLastActive(browser);
+  }
+  void OnBrowserNoLongerActive(Browser* browser) override {
+    tab_helper_->OnBrowserNoLongerActive(browser);
+  }
+
+ private:
+  const raw_ptr<RewardsTabHelper> tab_helper_ = nullptr;  // Not owned.
+};
+#endif
+
 RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
     : content::WebContentsUserData<RewardsTabHelper>(*web_contents),
       WebContentsObserver(web_contents),
+#if !BUILDFLAG(IS_ANDROID)
+      browser_list_observer_(new BraveBrowserListObserver(this)),
+#endif
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   if (tab_id_.is_valid()) {
     rewards_service_ = RewardsServiceFactory::GetForProfile(
         Profile::FromBrowserContext(GetWebContents().GetBrowserContext()));
-  }
-
-  if (rewards_service_) {
-    rewards_service_->AddObserver(this);
+    if (rewards_service_) {
+      rewards_service_observation_.Observe(rewards_service_);
+    }
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  BrowserList::AddObserver(this);
+  BrowserList::AddObserver(browser_list_observer_.get());
 #endif
 }
 
 RewardsTabHelper::~RewardsTabHelper() {
-  if (rewards_service_) {
-    rewards_service_->RemoveObserver(this);
-  }
 #if !BUILDFLAG(IS_ANDROID)
-  BrowserList::RemoveObserver(this);
+  BrowserList::RemoveObserver(browser_list_observer_.get());
 #endif
 }
 
@@ -81,14 +94,6 @@ void RewardsTabHelper::DidFinishLoad(
   if (!rewards_service_ || render_frame_host->GetParent()) {
     return;
   }
-
-#if BUILDFLAG(ENABLE_IPFS)
-  auto ipns_url = GetWebContents().GetVisibleURL();
-  if (ipns_url.SchemeIs(ipfs::kIPNSScheme)) {
-    rewards_service_->OnLoad(tab_id_, ipns_url);
-    return;
-  }
-#endif
 
   rewards_service_->OnLoad(tab_id_, validated_url);
 }
@@ -177,10 +182,8 @@ void RewardsTabHelper::OnRewardsInitialized(RewardsService* rewards_service) {
   // When Rewards is initialized for the current profile, we need to inform the
   // utility process about the currently active tab so that it can start
   // measuring auto-contribute correctly.
-  if (rewards_service_) {
-    rewards_service_->OnShow(tab_id_);
-    rewards_service_->OnLoad(tab_id_, GetWebContents().GetLastCommittedURL());
-  }
+  rewards_service->OnShow(tab_id_);
+  rewards_service->OnLoad(tab_id_, GetWebContents().GetLastCommittedURL());
 }
 
 void RewardsTabHelper::MaybeSavePublisherInfo() {

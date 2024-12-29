@@ -4,12 +4,11 @@
 
 import { StatsContainer, StatsItem } from './stats'
 export * from './settings'
-import { AddSiteTile, AddSiteTileImage, Tile, TileActionsContainer, TileAction, TileFavicon, TileMenu, TileMenuItem, TileTitle } from './gridSites'
+import { AddSiteTile, Tile, TileActionsContainer, TileAction, TileImageContainer, TileFavicon, TileMenu, TileMenuItem, TileTitle } from './gridSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { Clock } from './clock'
 import { RewardsWidget } from './rewards'
 import { BraveTalkWidget } from './braveTalk'
-import EditCards from './editCards'
 import EditTopSite from './editTopSite'
 import SearchPromotion from './searchPromotion'
 import createWidget from './widget'
@@ -20,10 +19,10 @@ export {
   StatsContainer,
   StatsItem,
   AddSiteTile,
-  AddSiteTileImage,
   Tile,
   TileActionsContainer,
   TileAction,
+  TileImageContainer,
   TileFavicon,
   TileMenu,
   TileMenuItem,
@@ -34,7 +33,6 @@ export {
   Clock,
   RewardsWidget,
   BraveTalkWidget,
-  EditCards,
   createWidget,
   EditTopSite,
   SearchPromotion

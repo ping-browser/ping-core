@@ -127,7 +127,6 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
           cardHeader={
             <PageTitleHeader
               title={getLocale('braveWalletDepositCryptoButton')}
-              showBackButton
               onBack={history.goBack}
             />
           }
@@ -145,6 +144,7 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
           cardHeader={
             <PageTitleHeader
               title={getLocale('braveWalletDepositCryptoButton')}
+              expandRoute={WalletRoutes.DepositFundsPage}
             />
           }
         >
@@ -664,18 +664,11 @@ function DepositAccount() {
         <HorizontalSpace space={'45%'} />
       </Row>
 
-      <Row>
-        <QRCodeContainer>
-          {isLoadingQrCode || !receiveAddress || isFetchingAddress ? (
-            <LoadingRing />
-          ) : (
-            <QRCodeImage src={qrCode} />
-          )}
-        </QRCodeContainer>
-      </Row>
-
       <Column gap={'4px'}>
-        <AddressTextLabel>Address:</AddressTextLabel>
+        <AddressTextLabel>
+          {getLocale('braveWalletAddress')}
+          {':'}
+        </AddressTextLabel>
 
         {receiveAddress && !isFetchingAddress ? (
           <>
@@ -696,6 +689,16 @@ function DepositAccount() {
             width={'300px'}
           />
         )}
+
+        <Row>
+          <QRCodeContainer>
+            {isLoadingQrCode || !receiveAddress || isFetchingAddress ? (
+              <LoadingRing />
+            ) : (
+              <QRCodeImage src={qrCode} />
+            )}
+          </QRCodeContainer>
+        </Row>
       </Column>
     </Column>
   )

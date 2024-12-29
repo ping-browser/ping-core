@@ -11,8 +11,8 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -23,6 +23,7 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -45,13 +46,13 @@ void LogEvent(const UserActivityEventType event_type) {
 }  // namespace
 
 UserActivityManager::UserActivityManager() {
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
   BrowserManager::GetInstance().AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 UserActivityManager::~UserActivityManager() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
   BrowserManager::GetInstance().RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
@@ -63,6 +64,8 @@ UserActivityManager& UserActivityManager::GetInstance() {
 
 void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
   if (!UserHasJoinedBraveRewards()) {
+    // User has not joined Brave Rewards, so we don't need to track user
+    // activity.
     return;
   }
 

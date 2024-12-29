@@ -7,28 +7,28 @@
 
 #include <utility>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
-UserRewards::UserRewards(TokenGeneratorInterface* token_generator,
-                         WalletInfo wallet)
-    : refill_confirmation_tokens_(token_generator), wallet_(std::move(wallet)) {
+UserRewards::UserRewards(WalletInfo wallet) : wallet_(std::move(wallet)) {
   CHECK(wallet_.IsValid());
 
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 
   issuers_url_request_.SetDelegate(this);
   refill_confirmation_tokens_.SetDelegate(this);
@@ -36,7 +36,7 @@ UserRewards::UserRewards(TokenGeneratorInterface* token_generator,
 }
 
 UserRewards::~UserRewards() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
 
   delegate_ = nullptr;
 }
@@ -103,6 +103,12 @@ void UserRewards::OnDidRedeemPaymentTokens(
   transactions_database_table_.Reconcile(
       payment_tokens, base::BindOnce([](const bool success) {
         if (!success) {
+          // TODO(https://github.com/brave/brave-browser/issues/32066):
+          // Detect potential defects using `DumpWithoutCrashing`.
+          SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                    "Failed to reconcile transactions");
+          base::debug::DumpWithoutCrashing();
+
           return BLOG(0, "Failed to reconcile transactions");
         }
 
@@ -134,7 +140,7 @@ void UserRewards::OnDidRetryRefillingConfirmationTokens() {
 
 void UserRewards::OnCaptchaRequiredToRefillConfirmationTokens(
     const std::string& captcha_id) {
-  ShowScheduledCaptchaNotification(wallet_.payment_id, captcha_id);
+  GetAdsClient()->ShowScheduledCaptcha(wallet_.payment_id, captcha_id);
 }
 
 }  // namespace brave_ads

@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -29,8 +28,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #endif
 
-SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
-                                           const std::string& name)
+SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
   content::HostZoomMap::Get(web_ui->GetWebContents()->GetSiteInstance())
@@ -40,7 +38,7 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
   browser_ = chrome::FindLastActiveWithProfile(profile_);
 
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
-      web_ui, name, kBraveSpeedreaderToolbarGenerated,
+      web_ui, kSpeedreaderPanelHost, kBraveSpeedreaderToolbarGenerated,
       kBraveSpeedreaderToolbarGeneratedSize, IDR_SPEEDREADER_UI_HTML);
 
   for (const auto& str : speedreader::kLocalizedStrings) {
@@ -52,7 +50,7 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
 #if BUILDFLAG(ENABLE_AI_CHAT)
   source->AddBoolean("aiChatFeatureEnabled",
                      ai_chat::IsAIChatEnabled(profile_->GetPrefs()) &&
-                         brave::IsRegularProfile(profile_));
+                         profile_->IsRegularProfile());
 #else
   source->AddBoolean("aiChatFeatureEnabled", false);
 #endif
@@ -80,4 +78,17 @@ void SpeedreaderToolbarUI::CreateInterfaces(
   toolbar_data_handler_ = std::make_unique<SpeedreaderToolbarDataHandlerImpl>(
       browser_, std::move(toolbar_data_handler),
       std::move(toolbar_events_handler));
+}
+
+SpeedreaderToolbarUIConfig::SpeedreaderToolbarUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,
+                                  kSpeedreaderPanelHost) {}
+
+bool SpeedreaderToolbarUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return true;
+}
+
+bool SpeedreaderToolbarUIConfig::ShouldAutoResizeHost() {
+  return true;
 }

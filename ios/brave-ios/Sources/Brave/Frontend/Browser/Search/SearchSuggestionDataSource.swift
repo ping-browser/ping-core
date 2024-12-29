@@ -56,7 +56,8 @@ class SearchSuggestionDataSource {
   // Unless Default Search Engine is different than Quick Search Engine
   var hasQuickSearchEngines: Bool {
     let isDefaultEngineQuickEngine =
-      searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard).engineID
+      searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard)?
+      .engineID
       == quickSearchEngines.first?.engineID
 
     if quickSearchEngines.count == 1 {
@@ -93,7 +94,7 @@ class SearchSuggestionDataSource {
   var braveSearchPromotionAvailable: Bool {
     return false
     guard Preferences.Review.launchCount.value > 1,
-      searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard)
+      searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard)?
         .shortName != OpenSearchEngine.EngineNames.brave,
       let braveSearchPromotionLaunchDate = Preferences.BraveSearch.braveSearchPromotionLaunchDate
         .value,

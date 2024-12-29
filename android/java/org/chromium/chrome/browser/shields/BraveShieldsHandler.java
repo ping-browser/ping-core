@@ -4,11 +4,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.shields;
+
 import android.animation.AnimatorSet;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -17,6 +20,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
 import android.view.ContextThemeWrapper;
@@ -24,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
@@ -38,30 +43,36 @@ import androidx.appcompat.widget.SwitchCompat;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
-import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
+import org.chromium.components.browser_ui.widget.ChromeDialog;
+import org.chromium.components.version_info.BraveVersionConstants;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.widget.ChromeImageButton;
+import org.chromium.webcompat_reporter.mojom.ReportInfo;
+import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
- */
-public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback {
+/** Object responsible for handling the creation, showing, hiding of the BraveShields menu. */
+public class BraveShieldsHandler
+        implements BraveRewardsHelper.LargeIconReadyCallback, ConnectionErrorHandler {
     private static final String TAG = "BraveShieldsHandler";
     private static final int URL_SPEC_MAX_LINES = 3;
     private static final String CHROME_ERROR = "chrome-error://";
@@ -105,6 +116,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private LinearLayout mThankYouLayout;
     private LinearLayout mPrivacyReportLayout;
     private LinearLayout mReportBrokenSiteLayout;
+    private LinearLayout mReportErrorPageLayout;
     private TextView mSiteBlockCounterText;
     private TextView mShieldsDownText;
     private TextView mSiteBrokenWarningText;
@@ -113,12 +125,21 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private BraveRewardsHelper mIconFetcher;
+    private TextView mReportBrokenSiteDisclaimerView;
 
     private String mUrlSpec;
     private String mHost;
     private int mTabId;
     private Profile mProfile;
     public boolean isDisconnectEntityLoaded;
+    private CheckBox mCheckBoxScreenshot;
+    private View mDialogView;
+    private Dialog mDialog;
+    private ImageView mImageView;
+    private TextView mViewScreenshot;
+    private byte[] mScreenshotBytes;
+
+    private WebcompatReporterHandler mWebcompatReporterHandler;
 
     private static Context scanForActivity(Context cont) {
         if (cont == null) {
@@ -299,6 +320,16 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return popupWindow;
     }
 
+    @Override
+    public void onConnectionError(MojoException e) {
+        initWebcompatReporterService();
+    }
+
+    private void initWebcompatReporterService() {
+        mWebcompatReporterHandler =
+                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this);
+    }
+
     public void updateUrlSpec(String urlSpec) {
         mUrlSpec = urlSpec;
     }
@@ -382,6 +413,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         if (isShowing()) {
             mPopupWindow.dismiss();
         }
+        if (null != mWebcompatReporterHandler) {
+            mWebcompatReporterHandler.close();
+        }
     }
 
     private void initViews() {
@@ -394,6 +428,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mSiteBrokenWarningText = mPopupView.findViewById(R.id.site_broken_warning_text);
 
         mReportBrokenSiteLayout = mPopupView.findViewById(R.id.brave_shields_report_site_layout_id);
+        mReportErrorPageLayout =
+                mPopupView.findViewById(R.id.brave_shields_report_error_page_layout_id);
         mThankYouLayout = mPopupView.findViewById(R.id.brave_shields_thank_you_layout_id);
         mPrivacyReportLayout = mPopupView.findViewById(R.id.brave_shields_privacy_report_layout_id);
 
@@ -470,6 +506,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setUpSecondaryLayout();
 
         setupMainSwitchClick(mShieldMainSwitch);
+
+        initWebcompatReporterService();
     }
 
     private void shareStats() {
@@ -738,13 +776,66 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mReportSiteUrlText.setText(siteUrl);
         mReportSiteUrlText.setMovementMethod(new ScrollingMovementMethod());
 
+        mReportBrokenSiteDisclaimerView =
+                mReportBrokenSiteLayout.findViewById(R.id.report_broken_site_disclaimer_text);
+        String reportBrokenSiteDisclaimerText =
+                String.format(
+                        mContext.getResources().getString(R.string.report_broken_site_text_2),
+                        mContext.getResources().getString(R.string.report_broken_site_text_link));
+
+        mReportBrokenSiteDisclaimerView.setText(
+                BraveRewardsHelper.toSpannableString(
+                        reportBrokenSiteDisclaimerText,
+                        R.color.brave_link,
+                        R.string.report_broken_site_text_link,
+                        (context) -> {
+                            CustomTabActivity.showInfoPage(
+                                    context, BraveActivity.BRAVE_WEBCOMPAT_INFO_WIKI_URL);
+                        }));
+        mReportBrokenSiteDisclaimerView.setMovementMethod(LinkMovementMethod.getInstance());
+
         Button mCancelButton = mReportBrokenSiteLayout.findViewById(R.id.btn_cancel);
-        mCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideBraveShieldsMenu();
-            }
-        });
+        mCancelButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        hideBraveShieldsMenu();
+                    }
+                });
+
+        mViewScreenshot = mReportBrokenSiteLayout.findViewById(R.id.view_screenshot_link);
+
+        BraveShieldsScreenshotUtil braveShieldsScreenshotUtil =
+                new BraveShieldsScreenshotUtil(
+                        mContext,
+                        (byte[] pngBytes) -> {
+                            try {
+                                if (pngBytes == null || pngBytes.length == 0) {
+                                    mScreenshotBytes = null;
+                                    mViewScreenshot.setVisibility(View.GONE);
+                                    return;
+                                }
+                                mScreenshotBytes = pngBytes;
+                                setUpViewScreenshot(pngBytes);
+                            } catch (Exception e) {
+                                Log.e(TAG, "BraveShieldsScreenshot failed " + e);
+                            } finally {
+                                mCheckBoxScreenshot.setEnabled(true);
+                            }
+                        });
+
+        mCheckBoxScreenshot =
+                mReportBrokenSiteLayout.findViewById(R.id.checkbox_include_screenshot);
+        mCheckBoxScreenshot.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    mScreenshotBytes = null;
+                    if (isChecked) {
+                        mCheckBoxScreenshot.setEnabled(false);
+                        braveShieldsScreenshotUtil.capture();
+                    } else {
+                        mViewScreenshot.setVisibility(View.GONE);
+                    }
+                });
 
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(
@@ -753,14 +844,80 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     public void onClick(View view) {
                         // Profile.getLastUsedRegularProfile requires to run in UI thread,
                         // so get api key here and pass it to IO worker task
-                        String referralApiKey =
-                                NTPBackgroundImagesBridge.getInstance(mProfile).getReferralApiKey();
-                        BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
-                                new BraveShieldsUtils.BraveShieldsWorkerTask(
-                                        siteUrl, referralApiKey);
-                        mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        mWebcompatReporterHandler.submitWebcompatReport(getReportInfo(siteUrl));
                         mReportBrokenSiteLayout.setVisibility(View.GONE);
                         mThankYouLayout.setVisibility(View.VISIBLE);
+                    }
+                });
+    }
+
+    private ReportInfo getReportInfo(String siteUrl) {
+        ReportInfo reportInfo = new ReportInfo();
+        reportInfo.channel = BraveVersionConstants.CHANNEL;
+        reportInfo.braveVersion = BraveVersionConstants.VERSION;
+        reportInfo.reportUrl = siteUrl;
+        reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
+        return reportInfo;
+    }
+
+    private void setUpViewScreenshot(byte[] pngBytes) {
+        mViewScreenshot.setVisibility(View.VISIBLE);
+        mViewScreenshot.setText(getScreenshotSpinnableString(pngBytes));
+        mViewScreenshot.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private SpannableString getScreenshotSpinnableString(byte[] pngBytes) {
+        return BraveRewardsHelper.toSpannableString(
+                mContext.getResources()
+                        .getString(R.string.report_broken_site_text_view_screenshot_label),
+                R.color.brave_link,
+                R.string.report_broken_site_text_view_screenshot_label,
+                (context) -> showPreviewDialog(pngBytes));
+    }
+
+    private void showPreviewDialog(byte[] pngBytes) {
+        mDialogView =
+                ((Activity) mContext)
+                        .getLayoutInflater()
+                        .inflate(R.layout.report_broken_site_screenshot_view, null);
+
+        ChromeImageButton okButton = mDialogView.findViewById(R.id.ok_button);
+        okButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.cancel();
+                    }
+                });
+
+        mDialog = new ChromeDialog((Activity) mContext, R.style.ThemeOverlay_BrowserUI_Fullscreen);
+        mDialog.addContentView(
+                mDialogView,
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT));
+        mImageView = mDialogView.findViewById(R.id.screenshot_image);
+        mImageView.setScaleType(ImageView.ScaleType.FIT_START);
+        mImageView.setImageBitmap(BitmapFactory.decodeByteArray(pngBytes, 0, pngBytes.length));
+        mDialog.show();
+    }
+
+    private boolean isScreenshotAvailable() {
+        return mViewScreenshot != null
+                && mViewScreenshot.getVisibility() == View.VISIBLE
+                && mCheckBoxScreenshot != null
+                && mCheckBoxScreenshot.isChecked()
+                && mScreenshotBytes != null
+                && mScreenshotBytes.length > 0;
+    }
+
+    private void setupErrorPageLayout() {
+        Button closeButton = mReportErrorPageLayout.findViewById(R.id.btn_close);
+        closeButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        hideBraveShieldsMenu();
                     }
                 });
     }
@@ -770,14 +927,25 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         TextView mShieldDownText = mMainLayout.findViewById(R.id.shield_down_text);
         Button mReportBrokenSiteButton = mMainLayout.findViewById(R.id.btn_report_broken_site);
-        mReportBrokenSiteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMainLayout.setVisibility(View.GONE);
-                mReportBrokenSiteLayout.setVisibility(View.VISIBLE);
-                setUpReportBrokenSiteLayout();
-            }
-        });
+        mReportBrokenSiteButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Tab currentActiveTab = mIconFetcher.getTab();
+                        if (currentActiveTab == null) {
+                            return;
+                        }
+
+                        mMainLayout.setVisibility(View.GONE);
+                        if (!currentActiveTab.isShowingErrorPage()) {
+                            mReportBrokenSiteLayout.setVisibility(View.VISIBLE);
+                            setUpReportBrokenSiteLayout();
+                        } else {
+                            mReportErrorPageLayout.setVisibility(View.VISIBLE);
+                            setupErrorPageLayout();
+                        }
+                    }
+                });
 
         LinearLayout mSiteBlockLayout = mMainLayout.findViewById(R.id.site_block_layout);
         TextView mSiteBrokenWarningText = mMainLayout.findViewById(R.id.site_broken_warning_text);

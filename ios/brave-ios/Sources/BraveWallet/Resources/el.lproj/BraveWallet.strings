@@ -10,8 +10,8 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "Λεπτομέρειες λογαριασμού";
 
-/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
-"wallet.accountNameLengthError" = "Το όνομα λογαριασμού πρέπει να έχει έως 30 χαρακτήρες";
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\") */
+"wallet.accountNameLengthError" = "Το όνομα λογαριασμού πρέπει να έχει %lld χαρακτήρες ή λιγότερους";
 
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "Ιδιωτικό κλειδί";
@@ -93,6 +93,9 @@
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "Προσθήκη Δικτύου";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address. */
+"wallet.addressLabel" = "Διεύθυνση";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
 "wallet.addSuggestedTokenSubtitle" = "Θέλετε να εισαγάγετε αυτό το token;";
@@ -181,6 +184,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "Μπορείτε να παραλείψετε αυτό το βήμα τώρα, αλλά πρέπει να δημιουργήσετε αντίγραφα ασφαλείας της φράσης ανάκτησης για να διασφαλίσετε τον λογαριασμό.";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "Δημιουργία αντιγράφων ασφαλείας τώρα";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "Εφεδρικό πορτοφόλι";
 
@@ -215,7 +221,7 @@
 "wallet.biometricsSetupFaceId" = "Face ID";
 
 /* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
-"wallet.biometricsSetupSubTitle" = "Θέλετε να χρησιμοποιείτε το %@ για ξεκλείδωμα του Πορτοφολιού Brave;";
+"wallet.biometricsSetupSubTitle" = "Θέλετε να χρησιμοποιείτε το %@ για ξεκλείδωμα του Πορτοφολιού Ping;";
 
 /* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
 "wallet.biometricsSetupTitle" = "Ξεκλείδωμα Πορτοφολιού Ping με %@";
@@ -223,8 +229,11 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Touch ID";
 
+/* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\") */
+"wallet.bitcoinImportExtendedKeyWarning" = "Υποστηρίζονται μόνο τα κλειδιά επέκτασης %@ .";
+
 /* The title for Ping Fee label in Swap. The fee percentage is displayed beside the label. */
-"wallet.braveFeeLabel" = "Τέλος Brave: %@";
+"wallet.braveFeeLabel" = "Τέλος Ping: %@";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee' */
 "wallet.braveSwapFeeDisclaimer" = "Η προσφορά περιλαμβάνει τέλος Ping %@.";
@@ -232,11 +241,41 @@
 /* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "Δωρεάν";
 
+/* A description of an Bitcoin account, displayed in Accounts tab. */
+"wallet.btcAccountDescription" = "Bitcoin";
+
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "Διαθέσιμοι πόροι για χρήση.";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "Διαθέσιμο";
+
+/* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
+"wallet.btcOrdinalsUnsupportedWarning" = "Το Ping Wallet δεν υποστηρίζει αυτήν τη στιγμή Bitcoin NFT (ordinals). Η αποστολή BTC από μια διεύθυνση που έχει ordinals μπορεί να έχει ως αποτέλεσμα την ακούσια μεταφορά των ordinals.";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "Υπάρχει μια εκκρεμής αλλαγή στο υπόλοιπο του πορτοφολιού σας.";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "Ορισμένα υπόλοιπα ενδέχεται να μην είναι διαθέσιμα";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "Σε εκκρεμότητα";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "Οι διαθέσιμοι πόροι σας συν τυχόν συναλλαγές που δεν έχουν επιβεβαιωθεί ακόμη.";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "Σύνολο";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Αγορά";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Αγοράστε κρυπτονομίσματα με Apple Pay, πιστωτική ή χρεωστική κάρτα.";
+
+/* The title for the button to cancel a submitted transaction. */
+"wallet.cancelTransactionButtonTitle" = "Ακύρωση συναλλαγής";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Ημερομηνία";
@@ -264,6 +303,12 @@
 
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "Κατάταξη";
+
+/* One of the coin types for users to create an account to store BTC assets */
+"wallet.coinTypeBitcoin" = "Bitcoin";
+
+/* A description for Bitcoin coin type. */
+"wallet.coinTypeBitcoinDescription" = "Αποθήκευση στοιχείου BTC";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "Ethereum";
@@ -373,12 +418,6 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Πορτοφόλι Ping";
 
-/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
-"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Προσαρμογή πύλης IPFS για NFT";
-
-/* The navigation title of the screen for users to customize ipfs public gateway address. */
-"wallet.customizeIPFSPublicGatewayNavTitle" = "Προσαρμογή πύλης IPFS";
-
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "Διευθύνσεις URL Block Explorer";
 
@@ -418,11 +457,11 @@
 /* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
 "wallet.customNetworkInvalidAddressErrMsg" = "Μη έγκυρη διεύθυνση.";
 
+/* The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkNotSecureErrMsg" = "Μη ασφαλής.";
+
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "URL για RPC";
-
-/* The title of custom network list screen */
-"wallet.customNetworksTitle" = "Προσαρμοσμένα δίκτυα";
 
 /* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
 "wallet.customNetworkSymbolNamePlaceholder" = "Εισαγάγετε το όνομα κρυπτονομίσματος";
@@ -532,23 +571,11 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "Αίτημα αποκρυπτογράφησης";
 
-/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
-"wallet.defaultEthAccountName" = "Λογαριασμός Ethereum %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\") */
+"wallet.defaultAccountName" = "Λογαριασμός %2$lld %1$@";
 
-/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
-"wallet.defaultFilAccountName" = "Λογαριασμός Filecoin %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
-"wallet.defaultSecondaryEthAccountName" = "Δευτερεύων λογαριασμός Ethereum %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
-"wallet.defaultSecondaryFilAccountName" = "Δευτερεύων λογαριασμός Filecoin %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
-"wallet.defaultSecondarySolAccountName" = "Δευτερεύων λογαριασμός Solana %lld";
-
-/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
-"wallet.defaultSolAccountName" = "Λογαριασμός Solana %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\") */
+"wallet.defaultTestnetAccountName" = "Λογαριασμός %2$lld %1$@ Testnet";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Διαγραφή";
@@ -559,6 +586,12 @@
 /* The button title for user to click to copy the account address for deposit. */
 "wallet.depositAddressCopy" = "Αντιγραφή";
 
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "Στοιχεία κατάθεσης";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "Αυτό είναι το πορτοφόλι Ethereum το οποίο υποστηρίζει το Δίκτυο Ethereum και δίκτυο επιπέδου 2 όπως το %@";
+
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Αποεπιλογή όλων";
 
@@ -567,6 +600,9 @@
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "Επεξεργασία";
+
+/* A pop up message that will prompt to user before user confirms to edit the existing network. */
+"wallet.editExistingNetworkAlertMsg" = "Θέλετε να ενημερώσετε το υπάρχον δίκτυο;";
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "Επεξεργασία Δικτύου";
@@ -644,7 +680,7 @@
 "wallet.ensDomainInterstitialPageDescription" = "Το Ping θα χρησιμοποιεί το Infura για την επίλυση ονομάτων τομέα .eth που βρίσκονται στην Υπηρεσία ονομάτων Ethereum (ENS). Το Ping αποκρύπτει τη διεύθυνση IP σας. Εάν ενεργοποιήσετε αυτή την επιλογή, το Infura θα βλέπει ότι κάποιος προσπαθεί να επισκεφτεί αυτούς τους τομείς .eth, αλλά τίποτε άλλο. Ανατρέξτε στις ενότητες <a href=%1$@>%2$@</a> και <a href=%3$@>%4$@</a> του Infura.";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "Ενεργοποίηση υποστήριξης της Υπηρεσίας ονομάτων Ethereum (ENS) στο Brave;";
+"wallet.ensDomainInterstitialPageTitle" = "Ενεργοποίηση υποστήριξης της Υπηρεσίας ονομάτων Ethereum (ENS) στο Ping;";
 
 /* Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Συνέχεια με αναζήτηση εκτός αλυσίδας";
@@ -653,7 +689,7 @@
 "wallet.ensOffchainDomainInterstitialPageDescription" = "Αυτός ο τομέας .eth αποθηκεύεται εκτός αλυσίδας και θα επιλύεται από πύλη τρίτων. Αν ενεργοποιήσετε την αναζήτηση εκτός αλυσίδας ENS, η πύλη τρίτων θα βλέπει ότι προσπαθείτε να επισκεφτείτε τον τομέα .eth. <a href=%1$@>%2$@</a>.";
 
 /* Title displayed when users chose Ping to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
-"wallet.ensOffchainDomainInterstitialPageTitle" = "Ενεργοποίηση υποστήριξης της αναζήτησης εκτός αλυσίδας υπηρεσίας ονόματος Ethereum (ΥΟΕ) στο Brave;";
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Ενεργοποίηση υποστήριξης της αναζήτησης εκτός αλυσίδας υπηρεσίας ονόματος Ethereum (ΥΟΕ) στο Ping;";
 
 /* Button title when requesting to do an ENS off chain lookup. */
 "wallet.ensOffchainGatewayButton" = "Χρήση τομέα ENS";
@@ -699,6 +735,9 @@
 
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "Εισαγάγετε σύμβολο διακριτικού";
+
+/* A title displayed in an alert above the error message or description. */
+"wallet.errorAlertTitle" = "Σφάλμα";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
 "wallet.ethAccountDescription" = "Ethereum + Αλυσίδες EVM";
@@ -850,6 +889,9 @@
 /* A label shown inside of a box when there is no input data for a given Solana transaction */
 "wallet.inputDataPlaceholderSolana" = "Τύπος λειτουργίας: %d";
 
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
+"wallet.inputLabel" = "Είσοδος";
+
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "Ανεπαρκές υπόλοιπο";
 
@@ -864,24 +906,6 @@
 
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "Παρουσιάστηκε εσωτερικό σφάλμα";
-
-/* A title will displayed in the IPFS error page when IPFS is disabled. */
-"wallet.ipfsErrorTitle" = "Δεν είναι δυνατή η πρόσβαση σε αυτόν τον ιστότοπο";
-
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.ipfsPublicGatewayAddressNFTTitle" = "Διεύθυνση δημόσιας πύλης IPFS για NFT";
-
-/* The navigation title of the screen for users to customize IPFS public gateway. */
-"wallet.ipfsPublicGatewayAddressTitle" = "Διεύθυνση δημόσιας πύλης IPFS";
-
-/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
-"wallet.ipfsResolveMethodDescription" = "[Μάθετε περισσότερα](%@) σχετικά με ζητήματα απορρήτου της πύλης IPFS.";
-
-/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
-"wallet.ipfsResourcesOptionsTitle" = "Επίλυση πόρων IPFS";
-
-/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsHeader" = "IPFS";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "Μάθετε περισσότερα";
@@ -1000,7 +1024,7 @@
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.newSiteConnectScreenTitle" = "Σύνδεση";
 
-/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapbrave next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Επόμενο";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
@@ -1060,9 +1084,6 @@
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "Εισαγωγή NFT";
 
-/* Description of the NFT Gateway setting */
-"wallet.nftGatewayLongDescription" = "Θα πρέπει να παρέχεται έγκυρη πύλη IPFS. Η παρεχόμενη πύλη θα ελεγχθεί για τη δυνατότητα φόρτωσης πόρων IPFS.";
-
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
 "wallet.nftHidden" = "Σε απόκρυψη";
 
@@ -1082,10 +1103,10 @@
 "wallet.nftRemoveFromWallet" = "Να μην εμφανίζεται στο πορτοφόλι";
 
 /* The description of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertDescription" = "Το NFT θα αφαιρεθεί από το Πορτοφόλι Brave, αλλά θα παραμείνει στο blockchain. Εάν το αφαιρέσετε και μετά αλλάξετε γνώμη, θα χρειαστεί να το εισαγάγετε ξανά μη αυτόματα.";
+"wallet.nftRemoveFromWalletAlertDescription" = "Το NFT θα αφαιρεθεί από το Πορτοφόλι Ping, αλλά θα παραμείνει στο blockchain. Εάν το αφαιρέσετε και μετά αλλάξετε γνώμη, θα χρειαστεί να το εισαγάγετε ξανά μη αυτόματα.";
 
 /* The title of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertTitle" = "Κατάργηση από το πορτοφόλι Brave;";
+"wallet.nftRemoveFromWalletAlertTitle" = "Κατάργηση από το πορτοφόλι Ping;";
 
 /* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
 "wallet.nftsDescription" = "%d NFT";
@@ -1117,9 +1138,6 @@
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "Δεν υπάρχουν στοιχεία";
 
-/* The empty state displayed when the user has not yet added any custom networks. */
-"wallet.noNetworks" = "Δεν προστέθηκαν δίκτυα";
-
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "Δεν υπάρχουν δευτερεύοντες λογαριασμοί.";
 
@@ -1137,6 +1155,9 @@
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Άλλες ενέργειες πορτοφολιού";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index. */
+"wallet.outputLabel" = "Έξοδος";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
 "wallet.passwordDoesNotMeetRequirementsError" = "Οι κωδικοί πρόσβασης πρέπει να αποτελούνται από τουλάχιστον 8 χαρακτήρες.";
@@ -1237,6 +1258,9 @@
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Εισαγάγετε ξανά τον κωδικό πρόσβασης";
 
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Εισαγωγή από παλαιότερα Πορτοφόλια κρυπτονομισμάτων Ping;";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Επαναφορά πορτοφολιού";
 
@@ -1266,6 +1290,9 @@
 
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "Εισαγωγή υπάρχοντος πορτοφολιού";
+
+/* The title for the button to retry a failed transaction. */
+"wallet.retryTransactionButtonTitle" = "Επανάληψη Συναλλαγής";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "Άμεση αγορά με τον τραπεζικό σας λογαριασμό. Χαμηλότερα τέλη.";
@@ -1357,6 +1384,9 @@
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "Στείλτε κρυπτονομίσματα ή κάντε μεταφορά από έναν λογαριασμό σε έναν άλλο.";
 
+/* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
+"wallet.sendErrorBtcAddressNotValid" = "Δεν είναι έγκυρη διεύθυνση BTC";
+
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "Ο τομέας δεν έχει συνδεδεμένη διεύθυνση %@";
 
@@ -1387,8 +1417,8 @@
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "Στάλθηκε";
 
-/* Title of the set IPFS gateway button */
-"wallet.setGatewayButtonTitle" = "Ρύθμιση";
+/* One of the context menu option for user to tap to set a default network in wallet settings. */
+"wallet.setDefaultNetwork" = "Ορισμός ως προεπιλογής";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Ρυθμίσεις";
@@ -1430,7 +1460,7 @@
 "wallet.settingsResetWalletAlertMessage" = "Αυτή η ενέργεια δεν μπορεί να αντιστραφεί. Η φράση ανάκτησής σας είναι ο μόνος τρόπος για να αποκτήσετε ξανά πρόσβαση λογαριασμού στα στοιχεία κρυπτονομισμάτων σας.";
 
 /* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetWalletAlertTitle" = "Είστε βέβαιοι ότι θέλετε να επαναφέρετε το Πορτοφόλι Brave;";
+"wallet.settingsResetWalletAlertTitle" = "Είστε βέβαιοι ότι θέλετε να επαναφέρετε το Πορτοφόλι Ping;";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
 "wallet.setupCryptoButtonBackButtonTitle" = "Καλώς ήρθατε";
@@ -1445,7 +1475,7 @@
 "wallet.setupCryptoCreateNewTitle" = "Χρειάζεστε νέο πορτοφόλι;";
 
 /* The disclaimer text at the bottom of the first step of onboarding flow. */
-"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Η ονομασία Ping και το λογότυπο Ping είναι σήματα κατατεθέντα της Brave. Άλλα ονόματα προϊόντων και λογότυπα ενδέχεται να είναι εμπορικά σήματα των αντίστοιχων εταιρειών. Με επιφύλαξη παντός δικαιώματος.";
+"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Η ονομασία Ping και το λογότυπο Ping είναι σήματα κατατεθέντα της Ping. Άλλα ονόματα προϊόντων και λογότυπα ενδέχεται να είναι εμπορικά σήματα των αντίστοιχων εταιρειών. Με επιφύλαξη παντός δικαιώματος.";
 
 /* The subtitle displayed in the section for user that need to restore an existed wallet */
 "wallet.setupCryptoRestoreSubTitle" = "Εισαγάγετε το υπάρχον πορτοφόλι σας.";
@@ -1467,9 +1497,6 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Προβολή Ιδιωτικού κλειδιού";
-
-/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
-"wallet.showTestNetworksTitle" = "Εμφάνιση δοκιμαστικών δικτύων";
 
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "Εμφάνιση μηδενικών υπολοίπων";
@@ -1522,43 +1549,43 @@
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "Υπογραφή συναλλαγής";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the address. */
 "wallet.siweAddressLabel" = "Διεύθυνση";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the chain ID. */
 "wallet.siweChainIDLabel" = "Αναγνωριστικό Αλυσίδας";
 
-/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+/* The title of the details view for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweDetailsTitle" = "Λεπτομέρειες";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the expiration time. */
 "wallet.siweExpirationTimeLabel" = "Χρόνος λήξης";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the issued at date. */
 "wallet.siweIssuedAtLabel" = "Εκδόθηκε στις";
 
 /* The label displayed above the Sign In With Ethereum message. */
 "wallet.siweMessageLabel" = "Μήνυμα";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the nonce. */
 "wallet.siweNonceLabel" = "Nonce";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the origin. */
 "wallet.siweOriginLabel" = "Προέλευση";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "Πόροι";
 
-/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+/* The label displayed on the button to sign in for Sign In With Ethereum/Ping Wallet requests. */
 "wallet.siweSignInButtonTitle" = "Σύνδεση";
 
-/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+/* The label displayed in details view for Sign In With Ethereum/Ping Wallet requests beside the statement. */
 "wallet.siweStatementLabel" = "Δήλωση";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the URI. */
 "wallet.siweURILabel" = "URI";
 
-/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+/* The label displayed in details for Sign In With Ethereum/Ping Wallet requests beside the version. */
 "wallet.siweVersionLabel" = "Έκδοση";
 
 /* The button title to skip recovery phrase backup */
@@ -1567,11 +1594,11 @@
 /* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
 "wallet.snsDomainInterstitialPageButtonProceed" = "Συνεχίστε χρησιμοποιώντας διακομιστή SNS";
 
-/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
 "wallet.snsDomainInterstitialPageDescription" = "Το Ping θα χρησιμοποιεί τρίτο μέρος για την επίλυση ονομάτων τομέα .sol. Το Ping αποκρύπτει τη διεύθυνση IP σας. Εάν ενεργοποιήσετε αυτή την επιλογή, το τρίτο μέρος θα βλέπει ότι κάποιος προσπαθεί να επισκεφτεί αυτούς τους τομείς .sol, αλλά τίποτε άλλο. Για περισσότερες πληροφορίες σχετικά με το ποια τρίτα μέρη χρησιμοποιούμε και τις πολιτικές απορρήτου τους, ανατρέξτε στη <a href=%@>σελίδα βοήθειας</a>.";
 
 /* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
-"wallet.snsDomainInterstitialPageTitle" = "Ενεργοποίηση υποστήριξης της Υπηρεσίας ονομάτων Solana (SNS) στο Brave;";
+"wallet.snsDomainInterstitialPageTitle" = "Ενεργοποίηση υποστήριξης της Υπηρεσίας ονομάτων Solana (SNS) στο Ping;";
 
 /* A description of an Solana account, displayed in Accounts tab. */
 "wallet.solAccountDescription" = "Solana + Αλυσίδες SVM";
@@ -1711,11 +1738,17 @@
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaUpgradeNonceAccountInstructionName" = "Αναβάθμιση λογαριασμού nonce";
 
+/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaWithdrawNonceAccountInstructionName" = "Ανάληψη από λογαριασμό nonce";
+
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "Ταξινόμηση κατά αξία παραστατικού χρήματος ή κατά όνομα";
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Ταξινόμηση στοιχείων";
+
+/* The title for the button to speed up a submitted transaction. */
+"wallet.speedUpTransactionButtonTitle" = "Επιτάχυνση";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "Πληρώστε με χρεωστική, πιστωτική, τραπεζικό λογαριασμό.";
@@ -1724,12 +1757,12 @@
 "wallet.stripeNetworkProviderName" = "%1$@ από %2$@";
 
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
-"wallet.submittedTransactionDescription" = "Για να συνεχίσετε να χρησιμοποιείτε τις Ανταμοιβές Brave, επιλέξτε τη χώρα σας, έτσι ώστε να σας δείξουμε τις σωστές επιλογές και διαφημίσεις για την περιοχή σας";
+"wallet.submittedTransactionDescription" = "Για να συνεχίσετε να χρησιμοποιείτε τις Ανταμοιβές Ping, επιλέξτε τη χώρα σας, έτσι ώστε να σας δείξουμε τις σωστές επιλογές και διαφημίσεις για την περιοχή σας";
 
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "Η συναλλαγή υποβλήθηκε";
 
-/* As in swapping cryptocurrency from one asset to another */
+/* As in swapbrave cryptocurrency from one asset to another */
 "wallet.swap" = "Ανταλλαγή";
 
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
@@ -1753,7 +1786,7 @@
 /* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountTitle" = "Εισαγάγετε ποσό %@ για ανταλλαγή";
 
-/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave from. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoFromTitle" = "Από ";
 
 /* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
@@ -1765,7 +1798,7 @@
 /* The title of the button for users to click when they want to swap between two cryptos */
 "wallet.swapCryptoSwapButtonTitle" = "Ανταλλαγή";
 
-/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+/* A title above the cryptocurrency token/asset you are swapbrave to. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoToTitle" = "Προς";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
@@ -1949,7 +1982,7 @@
 "wallet.udDomainInterstitialPageDescription" = "Το Ping θα χρησιμοποιεί το Infura για την επίλυση ονομάτων τομέα .crypto (καθώς και %1$@) που βρίσκονται στο Unstoppable Domains. Το Ping αποκρύπτει τη διεύθυνση IP σας. Εάν ενεργοποιήσετε αυτή την επιλογή, το Infura θα βλέπει ότι κάποιος προσπαθεί να επισκεφτεί αυτούς τους τομείς, αλλά τίποτε άλλο. Ανατρέξτε στις ενότητες <a href=%2$@>%3$@</a> και <a href=%4$@>%5$@</a> του Infura.";
 
 /* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
-"wallet.udDomainInterstitialPageTitle" = "Ενεργοποιήστε την υποστήριξη των Ασταμάτητων τομέων στο Brave;";
+"wallet.udDomainInterstitialPageTitle" = "Ενεργοποιήστε την υποστήριξη των Ασταμάτητων τομέων στο Ping;";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
 "wallet.udResolveMethodDescription" = "[Μάθετε περισσότερα](%@) σχετικά με ζητήματα απορρήτου Unstoppable Domains.";
@@ -1971,6 +2004,9 @@
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ σε %2$@";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
+"wallet.valueLabel" = "Αξία";
 
 /* The error message when input phrase does not match the correct one. */
 "wallet.verifyRecoveryPhraseError" = "Η φράση ανάκτησης δεν συμφωνεί.";
@@ -2017,7 +2053,7 @@
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.walletSettings" = "Ρυθμίσεις Πορτοφολιού";
 
-/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when groubrave Portfolio assets. */
 "wallet.walletTypeNone" = "Καμία";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
@@ -2050,18 +2086,6 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Επίλυση ονομάτων τομέα Υπηρεσίας ονομάτων Solana (SNS).";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
-"wallet.web3IPFSInterstitialIPFSPrivacy" = "Το IPFS (InterPlanetary File System) είναι το δημόσιο δίκτυο για αποθήκευση και παράδοση δεδομένων peer-to-peer. Αυτό το πρωτόκολλο έχει διαφορετικές εκτιμήσεις απορρήτου από το HTTP(S). <a href=%1$@>%2$@</a>";
-
-/* A brief explaination of resolving IPFS scheme url using a public gateway. */
-"wallet.web3IPFSInterstitialIPFSPublicGateway" = "Προστατεύει τη διεύθυνση IP σας και το περιεχόμενο που ζητάτε από πιθανούς τρίτους παρατηρητές, αλλά όχι από τον διαχειριστή δημόσιας πύλης. Ο διαχειριστής πύλης έχει την ευθύνη να διασφαλίζει ότι το περιεχόμενο που σας παρέχεται μέσω μιας πύλης είναι το περιεχόμενο που ζητάτε. Επίσης, η συσκευή σας δεν συνεισφέρει στο δημόσιο δίκτυο IPFS.";
-
-/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
-"wallet.web3IPFSInterstitialIPFSTitle" = "Ορίστε την προτίμησή σας IPFS";
-
-/* The title of the button that user will click to let Ping to resolve IPFS shceme url. */
-"wallet.web3IPFSInterstitialProceedButton" = "Χρήση δημόσιας πύλης";
-
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Οι ιστότοποι μπορούν να ζητούν πρόσβαση στο πορτοφόλι σας Ethereum";
 
@@ -2088,12 +2112,6 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Προσθέστε αυτόματα NFT που σας ανήκουν στο Πορτοφόλι με χρήση API τρίτων. [Μάθετε περισσότερα](%@)";
-
-/* Description of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertDescription" = "Καταχωρήθηκε μη έγκυρη διεύθυνση URL. Η πύλη θα πρέπει να μπορεί να επιλύει πόρους IPFS.";
-
-/* Title of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertTitle" = "Η λήψη της πύλης απέτυχε";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Ω έως Α";

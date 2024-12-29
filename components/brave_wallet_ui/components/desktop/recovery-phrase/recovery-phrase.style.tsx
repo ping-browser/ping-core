@@ -26,7 +26,7 @@ export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${leo.color.gray[20]};
+    background-color: ${leo.color.neutral[20]};
     border-radius: 100px;
   }
 
@@ -124,15 +124,4 @@ export const EyeOffIcon = styled(Icon).attrs({
 })`
   --leo-icon-size: 24px;
   --leo-icon-color: ${leo.color.icon.default};
-`
-
-export const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  --leo-button-radius: 50%;
-  width: 24px;
-  height: 60px;
-  border: 1px solid ${leo.color.divider.interactive};
-  border-radius: 16px;
 `

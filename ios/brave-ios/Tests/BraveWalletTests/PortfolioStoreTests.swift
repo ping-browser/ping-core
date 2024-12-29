@@ -59,20 +59,12 @@ import XCTest
   let btcAccount1: BraveWallet.AccountInfo = .mockBtcAccount
   let btcAccount2 = (BraveWallet.AccountInfo.mockBtcAccount.copy() as! BraveWallet.AccountInfo).then
   {
-    $0.accountId.bitcoinAccountIndex = 1
+    $0.accountId.accountIndex = 1
     $0.accountId.uniqueKey = "4_0_0_1"
     $0.name = "Bitcoin Account 2"
   }
   let btcTestnetAccount: BraveWallet.AccountInfo = .mockBtcTestnetAccount
 
-  // Networks
-  let ethNetwork: BraveWallet.NetworkInfo = .mockMainnet
-  let goerliNetwork: BraveWallet.NetworkInfo = .mockGoerli
-  let solNetwork: BraveWallet.NetworkInfo = .mockSolana
-  let filMainnet: BraveWallet.NetworkInfo = .mockFilecoinMainnet
-  let filTestnet: BraveWallet.NetworkInfo = .mockFilecoinTestnet
-  let btcMainnet: BraveWallet.NetworkInfo = .mockBitcoinMainnet
-  let btcTestnet: BraveWallet.NetworkInfo = .mockBitcoinTestnet
   // ETH Asset, balance, price, history
   let mockETHBalanceAccount1: Double = 0.896
   let mockETHPrice: String = "3059.99"  // ETH value = $2741.75104
@@ -166,7 +158,7 @@ import XCTest
 
   private func setupStore() -> PortfolioStore {
     let mockSOLLamportBalance: UInt64 = 3_876_535_000  // ~3.8765 SOL
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     // config filecoin on mainnet
     let mockFilUserAssets: [BraveWallet.BlockchainToken] = [
@@ -180,7 +172,7 @@ import XCTest
       ) ?? ""
     // config filecoin on testnet
     let mockFilTestnetUserAssets: [BraveWallet.BlockchainToken] = [
-      filTestnet.nativeToken.copy(asVisibleAsset: true)
+      BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken.copy(asVisibleAsset: true)
     ]
     let mockFilTestnetBalanceInWei =
       formatter.weiString(
@@ -220,17 +212,17 @@ import XCTest
         decimals: Int(BraveWallet.BlockchainToken.mockUSDCToken.decimals)
       ) ?? ""
 
-    let mockEthGoerliUserAssets: [BraveWallet.BlockchainToken] = [
-      goerliNetwork.nativeToken.copy(asVisibleAsset: true)
+    let mockEthSepoliaUserAssets: [BraveWallet.BlockchainToken] = [
+      BraveWallet.NetworkInfo.mockSepolia.nativeToken.copy(asVisibleAsset: true)
     ]
 
     // config bitcoin on mainnet
     let mockBtcUserAssets: [BraveWallet.BlockchainToken] = [
-      btcMainnet.nativeToken.copy(asVisibleAsset: true)
+      BraveWallet.NetworkInfo.mockBitcoinMainnet.nativeToken.copy(asVisibleAsset: true)
     ]
     // config bitcoin on testnet
     let mockBtcTestnetUserAssets: [BraveWallet.BlockchainToken] = [
-      btcTestnet.nativeToken.copy(asVisibleAsset: true)
+      BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken.copy(asVisibleAsset: true)
     ]
 
     // setup test services
@@ -257,34 +249,18 @@ import XCTest
         )
       )
     }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
-    rpcService._allNetworks = { coin, completion in
-      switch coin {
-      case .eth:
-        completion([self.ethNetwork, self.goerliNetwork])
-      case .sol:
-        completion([self.solNetwork])
-      case .fil:
-        completion([self.filMainnet, self.filTestnet])
-      case .btc:
-        completion([self.btcMainnet, self.btcTestnet])
-      case .zec:
-        XCTFail("Should not fetch zcash network")
-      @unknown default:
-        XCTFail("Should not fetch unknown network")
-      }
-    }
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks = [.mockPolygon, .mockSolanaTestnet]
     rpcService._balance = { accountAddress, coin, chainId, completion in
       // eth balance
       if coin == .eth {
-        if chainId == self.ethNetwork.chainId, accountAddress == self.ethAccount1.address {
+        if chainId == BraveWallet.MainnetChainId, accountAddress == self.ethAccount1.address {
           completion(ethBalanceWei, .success, "")
         } else {
           completion("", .success, "")
         }
       } else if coin == .fil {  // .fil
-        if chainId == self.filMainnet.chainId {
+        if chainId == BraveWallet.FilecoinMainnet {
           if accountAddress == self.filAccount1.address {
             completion(mockFilBalanceInWei, .success, "")
           } else {
@@ -305,9 +281,9 @@ import XCTest
         completion(usdcAccount2BalanceWei, .success, "")
       }
     }
-    rpcService._erc721TokenBalance = { _, _, _, _, completion in
+    rpcService._nftBalances = { _, _, _, completion in
       // should not be fetching NFT balance in Portfolio
-      completion("", .internalError, "Error Message")
+      completion([], "Error Message")
     }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
       // sol balance
@@ -317,7 +293,6 @@ import XCTest
         completion(0, .success, "")
       }
     }
-    rpcService._hiddenNetworks = { $1([]) }
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -350,7 +325,7 @@ import XCTest
     }
 
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { networks, _ in
+    mockAssetManager._getUserAssets = { networks, _ in
       [
         NetworkAssets(
           network: .mockMainnet,
@@ -363,8 +338,47 @@ import XCTest
           sortOrder: 1
         ),
         NetworkAssets(
-          network: .mockGoerli,
-          tokens: mockEthGoerliUserAssets.filter(\.visible),
+          network: .mockSepolia,
+          tokens: mockEthSepoliaUserAssets.filter(\.visible),
+          sortOrder: 2
+        ),
+        NetworkAssets(
+          network: .mockFilecoinMainnet,
+          tokens: mockFilUserAssets.filter(\.visible),
+          sortOrder: 3
+        ),
+        NetworkAssets(
+          network: .mockFilecoinTestnet,
+          tokens: mockFilTestnetUserAssets.filter(\.visible),
+          sortOrder: 4
+        ),
+        NetworkAssets(
+          network: .mockBitcoinMainnet,
+          tokens: mockBtcUserAssets.filter(\.visible),
+          sortOrder: 3
+        ),
+        NetworkAssets(
+          network: .mockBitcoinTestnet,
+          tokens: mockBtcTestnetUserAssets.filter(\.visible),
+          sortOrder: 4
+        ),
+      ].filter { networkAsset in networks.contains(where: { $0 == networkAsset.network }) }
+    }
+    mockAssetManager._getUserAssets = { networks, _ in
+      [
+        NetworkAssets(
+          network: .mockMainnet,
+          tokens: mockEthUserAssets.filter(\.visible),
+          sortOrder: 0
+        ),
+        NetworkAssets(
+          network: .mockSolana,
+          tokens: mockSolUserAssets.filter(\.visible),
+          sortOrder: 1
+        ),
+        NetworkAssets(
+          network: .mockSepolia,
+          tokens: mockEthSepoliaUserAssets.filter(\.visible),
           sortOrder: 2
         ),
         NetworkAssets(
@@ -485,7 +499,7 @@ import XCTest
           return
         }
 
-        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet. No BTC on Bitcoin testnet
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Sepolia, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet. No BTC on Bitcoin testnet
         XCTAssertEqual(group.assets.count, 5)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
@@ -599,7 +613,7 @@ import XCTest
           ]
         )
 
-        // ETH Goerli (value = 0), hidden because test networks not selected by default
+        // ETH Sepolia (value = 0), hidden because test networks not selected by default
         // FIL Testnet (value = $400.00), hidden because test networks not selected by default
         // BIT Testnet (value = 0.00), hidden because Bitcoin testnet is disabled by default
         XCTAssertNil(group.assets[safe: 5])
@@ -679,9 +693,9 @@ import XCTest
         isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
         isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
         accounts: store.filters.accounts,
-        networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           // de-select all networks with balance
-          .init(isSelected: $0.chainId == goerliNetwork.chainId, model: $0)
+          .init(isSelected: $0.chainId == BraveWallet.SepoliaChainId, model: $0)
         }
       )
     )
@@ -714,7 +728,7 @@ import XCTest
         // USDC on Ethereum mainnet, SOL on Solana mainnet, ETH on Ethereum mainnet, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet. No BTC on Bitcoin testnet since Bitcoin tesnet is disabled by default
         let assetGroupNumber = bitcoinTestnetEnabled ? 8 : 7
         XCTAssertEqual(group.assets.count, assetGroupNumber)
-        // ETH Goerli (value = $0)
+        // ETH Sepolia (value = $0)
         XCTAssertEqual(
           group.assets[safe: 0]?.token.symbol,
           BraveWallet.BlockchainToken.previewToken.symbol
@@ -803,9 +817,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -842,7 +854,7 @@ import XCTest
           return
         }
         // ETH on Ethereum mainnet, SOL on Solana mainnet, FIL on Filecoin mainnet and testnet
-        XCTAssertEqual(group.assets.count, 4)  // USDC, ETH Goerli hidden for small balance
+        XCTAssertEqual(group.assets.count, 4)  // USDC, ETH Sepolia hidden for small balance
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
           group.assets[safe: 0]?.token.symbol,
@@ -897,9 +909,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -929,7 +939,7 @@ import XCTest
           XCTFail("Unexpected test result")
           return
         }
-        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on mainnet and testnet, BTC on mainnet and testnet
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Sepolia, FIL on mainnet and testnet, BTC on mainnet and testnet
         let assetGroupNumber: Int = bitcoinTestnetEnabled ? 8 : 7
         XCTAssertEqual(group.assets.count, assetGroupNumber)
         // ETH Mainnet (value ~= $2741.7510399999996)
@@ -973,7 +983,7 @@ import XCTest
           // BTC testnet (value = $0.65726)
           XCTAssertEqual(
             group.assets[safe: offset]?.token.symbol,
-            self.btcMainnet.nativeToken.symbol
+            BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken.symbol
           )
           XCTAssertEqual(
             group.assets[safe: offset]?.quantity,
@@ -994,17 +1004,17 @@ import XCTest
         // BTC mainnet (value = $0.0006)
         XCTAssertEqual(
           group.assets[safe: offset]?.token.symbol,
-          self.btcMainnet.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockBitcoinMainnet.nativeToken.symbol
         )
         XCTAssertEqual(
           group.assets[safe: offset]?.quantity,
           String(format: "%.04f", self.mockBTCBalanceAccount1)
         )
         offset += 1
-        // ETH Goerli (value = $0)
+        // ETH Sepolia (value = $0)
         XCTAssertEqual(
           group.assets[safe: offset]?.token.symbol,
-          self.goerliNetwork.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockSepolia.nativeToken.symbol
         )
         XCTAssertEqual(group.assets[safe: offset]?.quantity, String(format: "%.04f", 0))
       }.store(in: &cancellables)
@@ -1022,9 +1032,7 @@ import XCTest
         ].map {  // deselect ethAccount2
           .init(isSelected: $0 != ethAccount2, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -1060,7 +1068,7 @@ import XCTest
           XCTFail("Unexpected test result")
           return
         }
-        // ETH on Ethereum mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on mainnet and testnet BTC on mainnet and testnet
+        // ETH on Ethereum mainnet, USDC on Ethereum mainnet, ETH on Sepolia, FIL on mainnet and testnet BTC on mainnet and testnet
         XCTAssertEqual(group.assets.count, 5)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
@@ -1098,10 +1106,10 @@ import XCTest
           group.assets[safe: 3]?.quantity,
           String(format: "%.04f", self.mockUSDCBalanceAccount1 + self.mockUSDCBalanceAccount2)
         )
-        // ETH Goerli (value = $0)
+        // ETH Sepolia (value = $0)
         XCTAssertEqual(
           group.assets[safe: 4]?.token.symbol,
-          self.goerliNetwork.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockSepolia.nativeToken.symbol
         )
         XCTAssertEqual(group.assets[safe: 4]?.quantity, String(format: "%.04f", 0))
         // SOL (value = $0, SOL networks hidden)
@@ -1129,9 +1137,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           // only select Ethereum networks
           .init(isSelected: $0.coin == .eth || $0.coin == .fil, model: $0)
         }
@@ -1220,7 +1226,7 @@ import XCTest
         }
 
         XCTAssertEqual(ethAccount1Group.groupType, .account(self.ethAccount1))
-        XCTAssertEqual(ethAccount1Group.assets.count, 3)  // ETH Mainnet, USDC, ETH Goerli
+        XCTAssertEqual(ethAccount1Group.assets.count, 3)  // ETH Mainnet, USDC, ETH Sepolia
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
           ethAccount1Group.assets[safe: 0]?.token.symbol,
@@ -1239,10 +1245,10 @@ import XCTest
           ethAccount1Group.assets[safe: 1]?.quantity,
           String(format: "%.04f", self.mockUSDCBalanceAccount1)
         )
-        // ETH Goerli (value = $0)
+        // ETH Sepolia (value = $0)
         XCTAssertEqual(
           ethAccount1Group.assets[safe: 2]?.token.symbol,
-          self.goerliNetwork.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockSepolia.nativeToken.symbol
         )
         XCTAssertEqual(ethAccount1Group.assets[safe: 2]?.quantity, String(format: "%.04f", 0))
 
@@ -1283,7 +1289,7 @@ import XCTest
         )
 
         XCTAssertEqual(ethAccount2Group.groupType, .account(self.ethAccount2))
-        XCTAssertEqual(ethAccount2Group.assets.count, 3)  // ETH Mainnet, USDC, ETH Goerli
+        XCTAssertEqual(ethAccount2Group.assets.count, 3)  // ETH Mainnet, USDC, ETH Sepolia
         // USDC (value $0.01)
         XCTAssertEqual(
           ethAccount2Group.assets[safe: 0]?.token.symbol,
@@ -1299,10 +1305,10 @@ import XCTest
           BraveWallet.BlockchainToken.previewToken.symbol
         )
         XCTAssertEqual(ethAccount2Group.assets[safe: 1]?.quantity, String(format: "%.04f", 0))
-        // ETH Goerli (value = $0)
+        // ETH Sepolia (value = $0)
         XCTAssertEqual(
           ethAccount2Group.assets[safe: 2]?.token.symbol,
-          self.goerliNetwork.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockSepolia.nativeToken.symbol
         )
         XCTAssertEqual(ethAccount2Group.assets[safe: 2]?.quantity, String(format: "%.04f", 0))
 
@@ -1363,9 +1369,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -1397,7 +1401,7 @@ import XCTest
           return
         }
         XCTAssertEqual(ethAccount1Group.groupType, .account(self.ethAccount1))
-        // ETH Mainnet (USDC, ETH Goerli hidden for small balance)
+        // ETH Mainnet (USDC, ETH Sepolia hidden for small balance)
         XCTAssertEqual(ethAccount1Group.assets.count, 1)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
@@ -1495,9 +1499,7 @@ import XCTest
         ].map {
           .init(isSelected: $0 != ethAccount2, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -1536,18 +1538,15 @@ import XCTest
         let assetGroupNumber = bitcoinTestnetEnabled ? 7 : 6
         XCTAssertEqual(lastUpdatedAssetGroups.count, assetGroupNumber)
 
-        var btcMainnetIndex = 4
-        var goerliIndex = 5
+        let offset = bitcoinTestnetEnabled ? 1 : 0
         if bitcoinTestnetEnabled {
-          btcMainnetIndex = 5
-          goerliIndex = 6
 
           guard let btcTestnetGroup = lastUpdatedAssetGroups[safe: 4]
           else {
             XCTFail("Unexpected test result")
             return
           }
-          XCTAssertEqual(btcTestnetGroup.groupType, .network(self.btcTestnet))
+          XCTAssertEqual(btcTestnetGroup.groupType, .network(.mockBitcoinTestnet))
           XCTAssertEqual(btcTestnetGroup.assets.count, 1)
           // BTC testnet (value = $0)
           XCTAssertEqual(
@@ -1561,8 +1560,8 @@ import XCTest
           let solMainnetGroup = lastUpdatedAssetGroups[safe: 1],
           let filTestnetGroup = lastUpdatedAssetGroups[safe: 2],
           let filMainnetGroup = lastUpdatedAssetGroups[safe: 3],
-          let btcMainnetGroup = lastUpdatedAssetGroups[safe: btcMainnetIndex],
-          let ethGoerliGroup = lastUpdatedAssetGroups[safe: goerliIndex]
+          let btcMainnetGroup = lastUpdatedAssetGroups[safe: 4 + offset],
+          let ethSepoliaGroup = lastUpdatedAssetGroups[safe: 5 + offset]
         else {
           XCTFail("Unexpected test result")
           return
@@ -1625,7 +1624,7 @@ import XCTest
           String(format: "%.04f", self.mockFILBalanceAccount1)
         )
 
-        XCTAssertEqual(btcMainnetGroup.groupType, .network(self.btcMainnet))
+        XCTAssertEqual(btcMainnetGroup.groupType, .network(.mockBitcoinMainnet))
         XCTAssertEqual(btcMainnetGroup.assets.count, 1)
         // BTC mainnet (value = $0.0065726)
         XCTAssertEqual(
@@ -1634,14 +1633,14 @@ import XCTest
         )
         XCTAssertEqual(btcMainnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
 
-        XCTAssertEqual(ethGoerliGroup.groupType, .network(.mockGoerli))
-        XCTAssertEqual(ethGoerliGroup.assets.count, 1)  // ETH Goerli
-        // ETH Goerli (value = $0)
+        XCTAssertEqual(ethSepoliaGroup.groupType, .network(.mockSepolia))
+        XCTAssertEqual(ethSepoliaGroup.assets.count, 1)  // ETH Sepolia
+        // ETH Sepolia (value = $0)
         XCTAssertEqual(
-          ethGoerliGroup.assets[safe: 0]?.token.symbol,
+          ethSepoliaGroup.assets[safe: 0]?.token.symbol,
           BraveWallet.BlockchainToken.previewToken.symbol
         )
-        XCTAssertEqual(ethGoerliGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
+        XCTAssertEqual(ethSepoliaGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
 
         // Verify NFTs not used in Portfolio #7945
         let noAssetsAreNFTs = lastUpdatedAssetGroups.flatMap(\.assets).allSatisfy({
@@ -1664,9 +1663,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -1751,7 +1748,7 @@ import XCTest
           String(format: "%.04f", self.mockFILBalanceAccount1)
         )
         // eth mainnet group hidden as network de-selected
-        // goerli network group hidden for small balance
+        // sepolia network group hidden for small balance
         // Bitcoin network group hidden for small balance
         let lastIndex = bitcoinTestnetEnabled ? 4 : 3
         XCTAssertNil(lastUpdatedAssetGroups[safe: lastIndex])
@@ -1770,11 +1767,9 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           // hide ethNetwork
-          .init(isSelected: $0 != ethNetwork, model: $0)
+          .init(isSelected: $0 != .mockMainnet, model: $0)
         }
       )
     )

@@ -10,7 +10,6 @@
 #include <memory>
 #include <optional>
 #include <set>
-#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -27,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -129,6 +129,7 @@ EthTxManager::EthTxManager(TxService* tx_service,
           std::make_unique<EthPendingTxTracker>(GetEthTxStateManager(),
                                                 json_rpc_service,
                                                 nonce_tracker_.get())),
+      prefs_(prefs),
       json_rpc_service_(json_rpc_service),
       account_resolver_delegate_(account_resolver_delegate) {
   GetEthBlockTracker()->AddObserver(this);
@@ -156,6 +157,31 @@ void EthTxManager::AddUnapprovedTransaction(
     AddUnapproved1559Transaction(
         chain_id, std::move(tx_data_union->get_eth_tx_data_1559()), from,
         std::move(origin_val), std::move(callback));
+  }
+}
+
+void EthTxManager::AddUnapprovedEvmTransaction(
+    mojom::NewEvmTransactionParamsPtr params,
+    const std::optional<url::Origin>& origin,
+    AddUnapprovedEvmTransactionCallback callback) {
+  auto origin_val =
+      origin.value_or(url::Origin::Create(GURL("chrome://wallet")));
+
+  auto tx_data =
+      mojom::TxData::New("", "", params->gas_limit, params->to, params->value,
+                         params->data, false, std::nullopt);
+
+  if (!json_rpc_service_->network_manager()
+           ->IsEip1559Chain(params->chain_id)
+           .value_or(false)) {
+    AddUnapprovedTransaction(params->chain_id, std::move(tx_data), params->from,
+                             std::move(origin_val), std::move(callback));
+  } else {
+    auto tx_data_1559 = mojom::TxData1559::New(
+        std::move(tx_data), params->chain_id, "", "", nullptr);
+    AddUnapproved1559Transaction(params->chain_id, std::move(tx_data_1559),
+                                 params->from, std::move(origin_val),
+                                 std::move(callback));
   }
 }
 
@@ -412,24 +438,23 @@ void EthTxManager::GetNonceForHardwareTransaction(
   }
 }
 
-void EthTxManager::GetTransactionMessageToSign(
+void EthTxManager::GetEthTransactionMessageToSign(
     const std::string& tx_meta_id,
-    GetTransactionMessageToSignCallback callback) {
+    GetEthTransactionMessageToSignCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
       GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta) {
     VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   uint256_t chain_id = 0;
   if (!HexValueToUint256(meta->chain_id(), &chain_id)) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
-  auto message = meta->tx()->GetMessageToSign(chain_id, false);
-  auto encoded = brave_wallet::ToHex(message);
-  std::move(callback).Run(mojom::MessageToSignUnion::NewMessageStr(encoded));
+  std::move(callback).Run(base::ToLowerASCII(
+      base::HexEncode(meta->tx()->GetMessageToSign(chain_id, false))));
 }
 
 mojom::CoinType EthTxManager::GetCoinType() const {
@@ -457,12 +482,10 @@ void EthTxManager::OnGetNextNonceForHardware(
   std::move(callback).Run(Uint256ValueToHex(nonce));
 }
 
-void EthTxManager::ProcessHardwareSignature(
+void EthTxManager::ProcessEthHardwareSignature(
     const std::string& tx_meta_id,
-    const std::string& v,
-    const std::string& r,
-    const std::string& s,
-    ProcessHardwareSignatureCallback callback) {
+    mojom::EthereumSignatureVRSPtr hw_signature,
+    ProcessEthHardwareSignatureCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
       GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta) {
@@ -472,7 +495,8 @@ void EthTxManager::ProcessHardwareSignature(
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
     return;
   }
-  if (!meta->tx()->ProcessVRS(v, r, s)) {
+  if (!meta->tx()->ProcessVRS(hw_signature->v_bytes, hw_signature->r_bytes,
+                              hw_signature->s_bytes)) {
     VLOG(1) << __FUNCTION__
             << "Could not initialize a transaction with v,r,s for id:"
             << tx_meta_id;
@@ -502,7 +526,7 @@ void EthTxManager::ProcessHardwareSignature(
 }
 
 void EthTxManager::ContinueProcessHardwareSignature(
-    ProcessHardwareSignatureCallback callback,
+    ProcessEthHardwareSignatureCallback callback,
     bool status,
     mojom::ProviderErrorUnionPtr error_union,
     const std::string& error_message) {
@@ -567,7 +591,16 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
   }
 
   meta->tx()->set_nonce(nonce);
-  DCHECK(!keyring_service_->IsLocked(mojom::kDefaultKeyringId));
+
+  if (keyring_service_->IsLockedSync()) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewProviderError(
+            mojom::ProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   keyring_service_->SignTransactionByDefaultKeyring(*meta->from(), meta->tx(),
                                                     chain_id);
   meta->set_status(mojom::TransactionStatus::Approved);

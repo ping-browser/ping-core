@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <!-- Rewards Reset -->
+  <message name="IDS_BRAVE_UI_RESET" desc="">
+    Reset
+  </message>
+  <message name="IDS_BRAVE_UI_RESET_WALLET" desc="">
+    Reset Ping Rewards
+  </message>
+  <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT" desc="">
+    By resetting, your current Ping Rewards profile will be deleted, and Ping Rewards will no longer be enabled. If you enable Ping Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph> for more details.
+  </message>
+  <message name="IDS_BRAVE_UI_REWARDS_RESET_CONSENT" desc="">
+    I understand that my current Ping Rewards profile and Ping Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph>.
+  </message>
+
   <!-- Payout status banner -->
   <message name="IDS_REWARDS_PAYMENT_CHECK_STATUS" desc="">
     Check status
@@ -66,7 +80,7 @@
     Connect account
   </message>
   <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT" desc="">
-    <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">$2</ph> Connect or create an account with one of our partners.
+    <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">$2</ph> Connect an account so we have a place to send your earnings.
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_HEADER" desc="">
     Send contributions with Ping Rewards
@@ -80,13 +94,26 @@
       other {This month, you've visited # creators supported by Ping Rewards}
     }
   </message>
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT_2" desc="">
+    Ready to start earning?
+  </message>
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT_SUBTEXT" desc="">
+    Connect a payout account
+  </message>
+  <message name="IDS_REWARDS_UNCONNECTED_ADS_VIEWED_TEXT" desc="">
+    {ADS_VIEWED, plural,
+      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> this month}
+      =1 {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph># Ad<ph name="COUNT_END">$2</ph> you've seen this month.}
+      other {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> you've seen this month.}
+    }
+  </message>
 
   <!-- Rewards new tab page widget -->
   <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
     Using Ping Rewards helps support content creators, and lets you earn BAT.
   </message>
   <message name="IDS_REWARDS_WIDGET_BRAVE_REWARDS" desc="">
-    Ping Rewards
+    Rewards
   </message>
   <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
     Continue
@@ -169,7 +196,7 @@
     Ping Rewards
   </message>
   <message name="IDS_REWARDS_PANEL_HEADER_TEXT" desc="">
-    You are helping support content creators
+    You are helbrave support Ping and the BAT community
   </message>
   <message name="IDS_REWARDS_PANEL_REWARDS_SETTINGS" desc="">
     Rewards settings
@@ -238,7 +265,7 @@
     Solved!
   </message>
   <message name="IDS_REWARDS_CAPTCHA_SOLVED_TEXT" desc="">
-    Ads and earnings will now resume. Thanks for helping us protect Ping Rewards and privacy-based ads.
+    Ads and earnings will now resume. Thanks for helbrave us protect Ping Rewards and privacy-based ads.
   </message>
   <message name="IDS_REWARDS_CAPTCHA_CONTACT_SUPPORT" desc="">
     Contact support
@@ -288,7 +315,7 @@
     Woohoo! You’re all set!
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_TEXT" desc="">
-    Now you can get rewarded for viewing ads. You're helping make the web a better place for everyone. And that's awesome!
+    Now you can get rewarded for viewing ads. You're helbrave make the web a better place for everyone. And that's awesome!
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_HOW_DOES_BRAVE_REWARDS_WORK" desc="">
     How does Ping Rewards work?
@@ -307,6 +334,27 @@
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">
     By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+  </message>
+  <message name="IDS_REWARDS_COUNTRY_SELECT_TITLE" desc="">
+    Select your region
+  </message>
+  <message name="IDS_REWARDS_COUNTRY_SELECT_TEXT" desc="">
+    Select your region so we can show you the right options and ads for your region.
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_BUTTON_LABEL" desc="">
+    Start using Ping Rewards
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TERMS_TEXT" desc="">
+    By enabling Rewards, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_1" desc="">
+    Get paid for private ads you see in Ping
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_2" desc="">
+    Get special benefits and discounts
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TITLE" desc="">
+    Turn on Ping Rewards
   </message>
 
   <!-- Rewards unsupported region notice -->
@@ -335,6 +383,27 @@
   </message>
   <message name="IDS_REWARDS_ESTIMATED_EARNINGS_TITLE" desc="">
     Earnings so far
+  </message>
+  <message name="IDS_REWARDS_APP_ERROR_TITLE" desc="">
+    Something went wrong
+  </message>
+  <message name="IDS_REWARDS_PAGE_TITLE" desc="">
+    Rewards
+  </message>
+  <message name="IDS_REWARDS_HELP_BUTTON_LABEL" desc="">
+    Help
+  </message>
+  <message name="IDS_REWARDS_MORE_BUTTON_LABEL" desc="">
+    More
+  </message>
+  <message name="IDS_REWARDS_NAVIGATION_CREATORS_LABEL" desc="">
+    Creators
+  </message>
+  <message name="IDS_REWARDS_NAVIGATION_EXPLORE_LABEL" desc="">
+    Explore
+  </message>
+  <message name="IDS_REWARDS_NAVIGATION_HOME_LABEL" desc="">
+    Home
   </message>
 
   <!-- Self-custody invitation -->
@@ -479,6 +548,431 @@
   </message>
   <message name="IDS_REWARDS_TIP_SELF_CUSTODY_NO_WEB3_LABEL" desc="">
     It looks like this creator isn't set up to receive contributions via Web3 wallets yet.
+  </message>
+
+  <!-- Connect UI -->
+  <message name="IDS_REWARDS_CONNECT_CUSTODIAL_TITLE" desc="">
+    Custodial accounts (requires ID verification)
+  </message>
+  <message name="IDS_REWARDS_CONNECT_CUSTODIAL_TOOLTIP" desc="">
+    Custodial accounts are accounts with trusted third-party services that hold your BAT for you.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TITLE" desc="">
+    Self-custody
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TOOLTIP" desc="">
+    Self-custody gives you exclusive control over your BAT, along with complete responsibility for its security.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_NOTE" desc="">
+    With self-custody, BAT earnings will be paid out as SPL-BAT on the Solana network.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_TITLE" desc="">
+    Choose where you'd like to receive BAT
+  </message>
+  <message name="IDS_REWARDS_CONNECT_REGIONS_LEARN_MORE_TEXT" desc="">
+    Learn more about regions and support.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_PROVIDER_NOT_AVAILABLE" desc="">
+    Currently not available in your region
+  </message>
+  <message name="IDS_REWARDS_CONNECT_TEXT" desc="">
+    To begin earning Basic Attention Token (BAT) rewards, connect an account. BAT you earn will be automatically transferred to your account every month.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SOLANA_BUTTON_LABEL" desc="">
+    Ping Wallet
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SOLANA_MESSAGE" desc="">
+    Or other wallet that supports Solana
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TERMS" desc="">
+    <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Use<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_ERROR" desc="">
+    Something went wrong. Please try again
+  </message>
+  <message name="IDS_REWARDS_CONNECT_LOGIN_TEXT" desc="">
+    Log in or sign up
+  </message>
+  <message name="IDS_REWARDS_NEW_BADGE_TEXT" desc="">
+    NEW
+  </message>
+
+  <!-- Authorization modal -->
+  <message name="IDS_REWARDS_AUTHORIZE_ERROR_TITLE" desc="">
+    Error
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TEXT" desc="">
+    You've reached the maximum device limit for this <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TITLE" desc="">
+    Device limit reached
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_1" desc="">
+    Unfortunately, your Ping Rewards profile was flagged because our automated checks found some unexpected Ping Ads activity.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_2" desc="">
+    While your profile is flagged, you may continue to see ads, but won't be eligible to receive payouts. You also won't be able to connect a custodial account to Ping Rewards.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_3" desc="">
+    It's possible your profile was flagged in error, and no immediate action is required on your part. The flag on your profile may be removed in the future.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_4" desc="">
+    <ph name="BEGIN_LINK">$2</ph>Learn more about Ping's process for flagging Rewards profiles.<ph name="END_LINK">$3</ph>
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TITLE" desc="">
+    Ping Rewards profile is flagged
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_KYC_REQUIRED_TEXT" desc="">
+    Please try again after you have completed ID verification on <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_KYC_REQUIRED_TITLE" desc="">
+    You need a verified account to log in
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_COUNTRIES_TEXT" desc="">
+    Hmm, it looks like your Ping Rewards country does not match the country of the <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account you're trying to connect.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_COUNTRIES_TITLE" desc="">
+    Country mismatch
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">
+    Hmm, it looks like your Ping Rewards has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">
+    Different account
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TEXT_1" desc="">
+    It looks like connecting <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to Ping Rewards is temporarily unavailable. Please try again later.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TEXT_2" desc="">
+    You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$3</ph>.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TITLE" desc="">
+    Connecting to selected custodian temporarily unavailable
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TEXT_1" desc="">
+    Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Ping Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Ping Rewards.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TEXT_2" desc="">
+    See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$3</ph> about connecting a custodial account to Ping Rewards.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TITLE" desc="">
+    Region currently not supported
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_BAT_NOT_ALLOWED_TEXT" desc="">
+    BAT is not yet supported in your region on Uphold.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">
+    Error: BAT unavailable
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT" desc="">
+    According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again. For example, you may need to submit more information to Uphold.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE" desc="">
+    Limited Uphold account functionality
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TEXT" desc="">
+    There was a problem validating your request to connect your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account to Ping Rewards. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$3</ph> for more help.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TITLE" desc="">
+    Request could not be validated
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UNEXPECTED_ERROR_TITLE" desc="">
+    Something went wrong
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UNEXPECTED_ERROR_TEXT" desc="">
+    We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$2</ph>contact support<ph name="LINK_END">$3</ph> if the problem persists.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROCESSING_TEXT" desc="">
+    Your request is still being processed, please wait.
+  </message>
+
+  <!-- Ads History -->
+  <message name="IDS_REWARDS_ADS_HISTORY_BUTTON_LABEL" desc="">
+    30-day Ads History
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_MARK_INAPPROPRIATE_LABEL" desc="">
+    Mark as inappropriate
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_EMPTY_TEXT" desc="">
+    There is currently no Ping Ads history.
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_TITLE" desc="">
+    Ads history
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_TEXT" desc="">
+    Ads you've received in the past 30 days
+  </message>
+
+  <!-- Ads Settings -->
+  <message name="IDS_REWARDS_ADS_SETTINGS_ADS_PER_HOUR_NONE_TEXT" desc="">
+    None
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_ADS_PER_HOUR_TEXT" desc="">
+    Max <ph name="NUM">$1</ph>/hr
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_AD_TYPE_TITLE" desc="">
+    Ad type
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_AD_VIEWS_TITLE" desc="">
+    Views this month
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_BUTTON_LABEL" desc="">
+    Ads Settings
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_EARNINGS_LABEL" desc="">
+    Earnings so far this month
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_PAYOUT_DATE_LABEL" desc="">
+    Next earnings payout date
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_TOTAL_ADS_LABEL" desc="">
+    Total ads received this month
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_NEWS_OFF_TOOLTIP" desc="">
+    Ping News is currently disabled.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_NEWS_ON_TOOLTIP" desc="">
+    Ping News contains ads that cannot be independently disabled.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SEARCH_CONNECTED_TOOLTIP" desc="">
+    You cannot earn BAT from Ping Search Ads yet, but you help support Ping by having them on.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SEARCH_TOOLTIP" desc="">
+    Ping Search Ads appear on <ph name="LINK_BEGIN">$1</ph>Ping Search<ph name="LINK_END">$2</ph>.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_LABEL" desc="">
+    Regional ad relevance
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_TEXT" desc="">
+    This allows Ping to show you ads meant specifically for your region.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_DISABLED_LABEL" desc="">
+    Disabled
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_AUTO_LABEL" desc="">
+    Auto-detect
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_TITLE" desc="">
+    Ads settings
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_TEXT" desc="">
+    Control what kinds of Ping Ads you see, and how often. The more you see, the more you can earn.
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_INLINE_CONTENT_LABEL" desc="">
+    Ping News ads
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_NEW_TAB_PAGE_LABEL" desc="">
+    New tab page ads
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_NOTIFICATION_LABEL" desc="">
+    Notification ads
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_OFF_LABEL" desc="">
+    Off
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_ON_LABEL" desc="">
+    On
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_SEARCH_RESULT_LABEL" desc="">
+    Search ads
+  </message>
+
+  <message name="IDS_REWARDS_EARNINGS_ADS_RECEIVED_TEXT" desc="">
+    <ph name="NUM">$1</ph> ads received this month
+  </message>
+  <message name="IDS_REWARDS_EARNINGS_ESTIMATE_TEXT" desc="">
+    You've earned <ph name="NUM">$1</ph> so far this month
+  </message>
+  <message name="IDS_REWARDS_EARNINGS_RANGE_TOOLTIP" desc="">
+    You're estimated to earn between: <ph name="RANGE">$1</ph>
+  </message>
+
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_BALANCE_LABEL" desc="">
+    Your balance
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_CONNECTED_LABEL" desc="">
+    Connected
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_DETAILS_TITLE" desc="">
+    <ph name="PROVIDER">$1</ph> wallet
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LABEL" desc="">
+    Payout account
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LINK" desc="">
+    Go to my account
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LOGGED_OUT_TITLE" desc="">
+    Logged Out
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LOGIN_BUTTON_LABEL" desc="">
+    Log in to <ph name="PROVIDER">$1</ph>
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LOGIN_TEXT" desc="">
+    Log in to <ph name="PROVIDER">$1</ph> to see your balance
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_TITLE" desc="">
+    Payout Account
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_TOOLTIP" desc="">
+    Your BAT earnings will be paid to this payout account.
+  </message>
+
+  <message name="IDS_REWARDS_AC_AMOUNT_LABEL" desc="">
+    You will send
+  </message>
+  <message name="IDS_REWARDS_AC_AMOUNT_TEXT" desc="">
+    Up to <ph name="AMOUNT">$1</ph> BAT
+  </message>
+  <message name="IDS_REWARDS_AC_ATTENTION_LABEL" desc="">
+    Attention
+  </message>
+  <message name="IDS_REWARDS_AC_DISABLED_TEXT" desc="">
+    An automatic way to support websites and content creators, based on how much time you spend on their content.
+  </message>
+  <message name="IDS_REWARDS_AC_DISABLED_TITLE" desc="">
+    Auto-Contribute is disabled
+  </message>
+  <message name="IDS_REWARDS_AC_EMPTY_LIST_TEXT" desc="">
+    Verified creators that you visit will appear here as you browse.
+  </message>
+  <message name="IDS_REWARDS_AC_INFO_TEXT" desc="">
+    Auto-contribute automatically sends monthly contributions to creators verified with Ping, based on how much time you spend on their content.
+  </message>
+  <message name="IDS_REWARDS_AC_INFO_TITLE" desc="">
+    How does Auto-Contribute work?
+  </message>
+  <message name="IDS_REWARDS_AC_NEXT_CONTRIBUTION_LABEL" desc="">
+    Next contribution date
+  </message>
+  <message name="IDS_REWARDS_AC_SITE_COUNT_LABEL" desc="">
+    Sites viewed
+  </message>
+  <message name="IDS_REWARDS_AC_SITE_LABEL" desc="">
+    Site
+  </message>
+  <message name="IDS_REWARDS_AC_TITLE" desc="">
+    Auto-Contribute
+  </message>
+  <message name="IDS_REWARDS_BENEFITS_STORE_SUBTEXT" desc="">
+    Get Ping-branded products.
+  </message>
+  <message name="IDS_REWARDS_BENEFITS_STORE_TEXT" desc="">
+    Ping merch store
+  </message>
+  <message name="IDS_REWARDS_BENEFITS_TITLE" desc="">
+    Your benefits
+  </message>
+  <message name="IDS_REWARDS_RECURRING_LIST_EMPTY_TEXT" desc="">
+    You don't have any recurring contributions set up yet.
+  </message>
+  <message name="IDS_REWARDS_RECURRING_NEXT_CONTRIBUTION_LABEL" desc="">
+    Next contribution:
+  </message>
+  <message name="IDS_REWARDS_RECURRING_TITLE" desc="">
+    Recurring Contributions
+  </message>
+  <message name="IDS_REWARDS_REMOVE_BUTTON_LABEL" desc="">
+    Remove
+  </message>
+  <message name="IDS_REWARDS_SHOW_ALL_BUTTON_LABEL" desc="">
+    Show all
+  </message>
+
+  <message name="IDS_REWARDS_CONTRIBUTE_ABOUT_METHODS_LINK" desc="">
+    Learn more about contribution methods
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_AMOUNT_TITLE" desc="">
+    Contribution amount
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_AVAILABLE_METHODS_TEXT" desc="">
+    This creator currently only accepts contributions via the following methods:
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_BALANCE_TITLE" desc="">
+    Rewards Balance
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_BALANCE_UNAVAILABLE_TEXT" desc="">
+    Not available
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_BUTTON_LABEL" desc="">
+    Contribute
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_CHOOSE_METHOD_TEXT" desc="">
+    Choose the method you want to use to contribute to Ping Software:
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_CUSTODIAL_SUBTEXT" desc="">
+    Custodial wallet
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_ERROR_TEXT" desc="">
+    You can try again later.
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_ERROR_TITLE" desc="">
+    There was a problem sending your contribution
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_INSUFFICIENT_FUNDS_BUTTON_LABEL" desc="">
+    Insufficient Funds
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGIN_BUTTON_LABEL" desc="">
+    Log in to <ph name="PROVIDER">$1<ex>Uphold</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_TEXT" desc="">
+    It looks like you’re logged out of <ph name="PROVIDER">$1<ex>Uphold</ex></ph> for Ping Rewards. Log in again to continue.
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_TITLE" desc="">
+    Logged out of <ph name="PROVIDER">$1<ex>Uphold</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_WEB3BUTTON_LABEL" desc="">
+    Use Web3 Wallet
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_WEB3TEXT" desc="">
+    You can also send crypto contributions to this creator by using your Web3 wallet.
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_MONTHLY_LABEL" desc="">
+    Monthly
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_OTHER_LABEL" desc="">
+    Other
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_RECURRING_LABEL" desc="">
+    Recurring contribution
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SEND_AMOUNT_BUTTON_LABEL" desc="">
+    Send <ph name="AMOUNT">$1<ex>1.23</ex></ph> BAT
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SEND_BUTTON_LABEL" desc="">
+    Send
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SENDING_TEXT" desc="">
+    Sending contribution
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SUCCESS_TEXT" desc="">
+    Thanks for supporting your favorite creators
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SUCCESS_TITLE" desc="">
+    Contribution sent!
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_WEB3LABEL" desc="">
+    Web3 Wallet
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_WEB3SUBTEXT" desc="">
+    Use your Web3 wallet
+  </message>
+
+  <message name="IDS_REWARDS_ADS_REGION_NOT_SUPPORTED_TEXT" desc="">
+    Ping Private Ads are not yet available in your region.
+  </message>
+  <message name="IDS_REWARDS_ADS_BROWSER_UPGRADE_REQUIRED_TEXT" desc="">
+    Your browser needs to be updated to continue seeing ads.
+  </message>
+
+  <message name="IDS_REWARDS_WDP_CHECKBOX_LABEL" desc="">
+    Yes, I’d also like to contribute to Ping Search and opt in to <ph name="LINK_BEGIN">$1</ph>Web Discovery Project<ph name="LINK_END">$2</ph>.
+  </message>
+  <message name="IDS_REWARDS_WDP_OPT_IN_TEXT" desc="">
+    Contribute some anonymous search and browsing data to refine Ping Search with Web Discovery Project. It’s completely open-source.
+  </message>
+  <message name="IDS_REWARDS_WDP_OPT_IN_TITLE" desc="">
+    Web Discovery Project
   </message>
 
 </grit-part>

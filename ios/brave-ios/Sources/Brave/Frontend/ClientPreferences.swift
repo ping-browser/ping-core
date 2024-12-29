@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveWidgetsModels
 import Foundation
 import Preferences
 import Shared
@@ -11,6 +12,19 @@ enum TabBarVisibility: Int, CaseIterable {
   case never
   case always
   case landscapeOnly
+}
+
+enum BackgroundMediaType: Int, CaseIterable {
+  case defaultImages
+  case sponsoredImages
+  case sponsoredImagesAndVideos
+
+  public var isSponsored: Bool {
+    switch self {
+    case .sponsoredImages, .sponsoredImagesAndVideos: return true
+    case .defaultImages: return false
+    }
+  }
 }
 
 extension Preferences {
@@ -61,9 +75,9 @@ extension Preferences {
       default: false
     )
     /// Specifies whether the bookmark button is present on toolbar
-    static let showBookmarkToolbarShortcut = Option<Bool>(
+    static let toolbarShortcutButton = Option<Int?>(
       key: "general.show-bookmark-toolbar-shortcut",
-      default: UIDevice.isIpad
+      default: UIDevice.isIpad ? WidgetShortcut.bookmarks.rawValue : nil
     )
     /// Controls whether or not media should continue playing in the background
     static let mediaAutoBackgrounding = Option<Bool>(
@@ -124,9 +138,9 @@ extension Preferences {
 
   final public class Search {
     /// Whether or not to show suggestions while the user types
-    static let showSuggestions = Option<Bool>(key: "search.show-suggestions", default: false)
+    public static let showSuggestions = Option<Bool>(key: "search.show-suggestions", default: false)
     /// If the user should see the show suggetsions opt-in
-    static let shouldShowSuggestionsOptIn = Option<Bool>(
+    public static let shouldShowSuggestionsOptIn = Option<Bool>(
       key: "search.show-suggestions-opt-in",
       default: true
     )
@@ -202,18 +216,29 @@ extension Preferences {
     /// Enables the Apple's Screen Time feature.
     public static let screenTimeEnabled = Option<Bool>(
       key: "privacy.screentime-toggle",
-      default: AppConstants.buildChannel != .release
+      default: AppConstants.buildChannel != .release && !ProcessInfo.processInfo.isiOSAppOnVisionOS
     )
 
   }
   final public class NewTabPage {
     /// Whether bookmark image are enabled / shown
     static let backgroundImages = Option<Bool>(key: "newtabpage.background-images", default: true)
-    /// Whether sponsored images are included into the background image rotation
-    static let backgroundSponsoredImages = Option<Bool>(
-      key: "newtabpage.background-sponsored-images",
-      default: true
+
+    /// Determines the type of sponsored media to include in the background image rotation
+    /// - Warning: You should not access this directly but  through ``backgroundMediaType``
+    static let backgroundMediaTypeRaw = Option<Int>(
+      key: "newtabpage.background-media-type",
+      default: BackgroundMediaType.sponsoredImagesAndVideos.rawValue
     )
+
+    /// A  variable to access the ``backgroundMediaTypeRaw`` preference value
+    static var backgroundMediaType: BackgroundMediaType {
+      get {
+        BackgroundMediaType(rawValue: backgroundMediaTypeRaw.value)
+          ?? BackgroundMediaType.sponsoredImagesAndVideos
+      }
+      set { backgroundMediaTypeRaw.value = newValue.rawValue }
+    }
 
     /// The counter that indicates what background should be shown, this is used to determine when a new
     ///     sponsored image should be shown. (`1` means, first image in cycle N, should be shown).
@@ -261,7 +286,7 @@ extension Preferences {
 
     /// Tells the app whether we should show Privacy Hub in new tab page view controller
     public static let showNewTabPrivacyHub =
-      Option<Bool>(key: "newtabpage.show-newtab-privacyhub", default: false)
+      Option<Bool>(key: "newtabpage.show-newtab-privacyhub", default: true)
 
     /// First time when privacy hub hide action is tieggered user will be shown alert
     static let hidePrivacyHubAlertShown = Option<Bool>(

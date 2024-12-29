@@ -11,16 +11,14 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_delegate.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
-#include "chrome/browser/profiles/profile.h"
-
-class Profile;
 
 namespace brave_ads {
 
-class AdsTooltipsController : public AdsTooltipsDelegate,
-                              public brave_tooltips::BraveTooltipDelegate {
+class AdsTooltipsController final
+    : public AdsTooltipsDelegate,
+      public brave_tooltips::BraveTooltipDelegate {
  public:
-  explicit AdsTooltipsController(Profile* profile);
+  AdsTooltipsController();
 
   AdsTooltipsController(const AdsTooltipsController&) = delete;
   AdsTooltipsController& operator=(const AdsTooltipsController&) = delete;
@@ -43,7 +41,9 @@ class AdsTooltipsController : public AdsTooltipsDelegate,
   // brave_tooltips::BraveTooltipDelegate:
   void OnTooltipWidgetDestroyed(const std::string& tooltip_id) override;
 
-  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  base::WeakPtr<brave_tooltips::BraveTooltipDelegate> AsWeakPtr() override;
+
+  base::WeakPtrFactory<BraveTooltipDelegate> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_util.h"
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -24,8 +24,9 @@ TEST(BraveAdsConversionInfoUtilTest, ConversionTypeToString) {
 TEST(BraveAdsConversionInfoUtilTest, VerifiableConversionTypeToString) {
   // Arrange
   ConversionInfo conversion;
-  conversion.verifiable = {kVerifiableConversionId,
-                           kVerifiableConversionAdvertiserPublicKey};
+  conversion.verifiable = {
+      test::kVerifiableConversionId,
+      test::kVerifiableConversionAdvertiserPublicKeyBase64};
 
   // Act & Assert
   EXPECT_EQ("verifiable conversion", ConversionTypeToString(conversion));

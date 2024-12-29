@@ -53,7 +53,7 @@ std::string GetSyncCodeValidationString(
     case ValidationStatus::kValidForTooLong:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_VALID_FOR_TOO_LONG);
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return "";
   }
 }
@@ -92,10 +92,13 @@ void BraveSyncHandler::RegisterMessages() {
       "SyncDeleteDevice",
       base::BindRepeating(&BraveSyncHandler::HandleDeleteDevice,
                           base::Unretained(this)));
-
   web_ui()->RegisterMessageCallback(
       "SyncPermanentlyDeleteAccount",
       base::BindRepeating(&BraveSyncHandler::HandlePermanentlyDeleteAccount,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "SyncGetWordsCount",
+      base::BindRepeating(&BraveSyncHandler::HandleSyncGetWordsCount,
                           base::Unretained(this)));
 }
 
@@ -393,4 +396,14 @@ base::Value::List BraveSyncHandler::GetSyncDeviceList() {
   }
 
   return device_list;
+}
+
+void BraveSyncHandler::HandleSyncGetWordsCount(const base::Value::List& args) {
+  AllowJavascript();
+  CHECK_EQ(2U, args.size());
+  CHECK(args[1].is_string());
+  const std::string time_limited_sync_code = args[1].GetString();
+  ResolveJavascriptCallback(
+      args[0].Clone(),
+      base::Value(TimeLimitedWords::GetWordsCount(time_limited_sync_code)));
 }

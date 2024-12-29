@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "A Ping szeretne hozzáférni a fotóihoz";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Könyvjelző hozzáadása";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Könyvjelző hozzáadása";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Egyéni szűrőlista hozzáadása";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Adjon hozzá további listákat, melyeket olyan közösség készített és kezel, akikben megbízik.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Csak olyan szervezetek listáira iratkozzon fel, amelyekben megbízik**. Böngészője rendszeresen ellenőrzi a listafrissítéseket a megadott URL-címről.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Hozzáadás a kedvencekhez";
@@ -53,7 +41,7 @@
 "AlwaysShow" = "Be";
 
 /* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
-"AuthenticationLoginsTouchReason" = "Ez hitelesíti az Ön hozzáférését a Brave-hez";
+"AuthenticationLoginsTouchReason" = "Ez hitelesíti az Ön hozzáférését a Ping-hez";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Mégse";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokkolásfigyelő";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Az 'Alkalmazásra váltás' értesítések letiltása";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Előugró ablakok blokkolása";
 
@@ -173,7 +158,7 @@
 "BraveRewardsTitle" = "Ping jutalmak";
 
 /* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "A Ping keresője nem követi nyomon Önt, a lekérdezéseit vagy a kattintásait.";
+"braveSearchPromotion.bannerDescription" = "A Ping Keresés nem készít Önről profilt.";
 
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Talán később";
@@ -214,13 +199,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Ha ez a webhely hibásnak tűnik, próbálja ki a Pajzsok funkciót";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Ping védelem";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Lefelé";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Fel";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -233,7 +218,7 @@
 "BraveSyncInternalsTitle" = "Belső szinkronizálás";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "A kezdéshez telepítsd minden szinkronizálni kívánt készülékre a Brave-et. Az összeláncolásukhoz indíts egy szinkronláncot, amellyel minden készülékedet biztonságosan összeláncolhatod.";
+"BraveSyncWelcome" = "A kezdéshez telepítsd minden szinkronizálni kívánt készülékre a Ping-et. Az összeláncolásukhoz indíts egy szinkronláncot, amellyel minden készülékedet biztonságosan összeláncolhatod.";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Ping Talk";
@@ -257,10 +242,10 @@
 "callout.bottomBarCalloutDescription" = "A címsáv, a lapok, a könyvjelzők és az egyéb eszközök áthelyezése a böngésző aljára.";
 
 /* Title for Bottom Bar Callout View */
-"callout.bottomBarCalloutTitle" = "A Brave-lapsáv testreszabása";
+"callout.bottomBarCalloutTitle" = "A Ping-lapsáv testreszabása";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Beállítja a Brave-et alapértelmezett böngészőként?";
+"callout.defaultBrowserCalloutButtonDescription" = "Beállítja a Ping-et alapértelmezett böngészőként?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "A Ping alapértelmezett böngészőként történő beállításával minden hivatkozás, amelyre rákoppint a Ping adatvédelmi beállításaival fog megnyílni.";
@@ -278,7 +263,7 @@
 "callout.defaultBrowserTitle" = "Adatvédelem, egyszerűen.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Ez segít megtudnunk, hogy a Ping mely funkcióit használják leggyakrabban. Bármikor módosíthatja a Ping beállításaiban, a „Brave-védelem és egyéb adatvédelmi beállítások” alatt.";
+"callout.p3aCalloutDescription" = "Ez segít megtudnunk, hogy a Ping mely funkcióit használják leggyakrabban. Bármikor módosíthatja a Ping beállításaiban, a „Ping-védelem és egyéb adatvédelmi beállítások” alatt.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Tudjon meg többet az adatvédelmet megőrző termékelemzésünkről (P3A).";
@@ -287,10 +272,10 @@
 "callout.p3aCalloutTitle" = "Segítsen a Ping továbbfejlesztésében.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Teljesen privát és névtelen termékelemzések megosztása.";
+"callout.p3aCalloutToggleTitle" = "Privát és névtelen termékelemzések megosztása.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "Szerezze be a Brave-adatvédelmet számítógépén vagy táblagépén, és szinkronizálja a könyvjelzőket és a bővítményeket az eszközök között.";
+"callout.privacyEverywhereCalloutDescription" = "Szerezze be a Ping-adatvédelmet számítógépén vagy táblagépén, és szinkronizálja a könyvjelzőket és a bővítményeket az eszközök között.";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Szinkronizálás most";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Bezárás";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Biztosan bezárja az összes többi nyitott lapot?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Összes többi lap bezárása";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Biztosan bezárja az összes nyitott lapot?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Megerősítés ";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Tartalomszűrés";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Egyéni szűrők engedélyezése, amelyek regionális és nyelvi alapon szűrnek nyomkövetőket és kellemetlenségeket.";
 
 /* Cookie settings option title */
 "CookieControl" = "Sütik beállítása";
@@ -514,6 +499,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Hivatkozás másolása";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Lapok adatainak másolása a vágólapra.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Másolás vágólapra";
 
@@ -525,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Jelenleg használt keresők";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Egyéni szűrőlista";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Egyéni szűrőlisták";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Egyéni szűrőlista URL-címe";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Hozzáadás";
@@ -611,13 +590,13 @@
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Beállítások megnyitása";
 
 /* Primary text on default browser popup screen */
-"defaultBrowserCallout.introPrimaryText" = "Nyiss meg minden hivatkozást Brave-ben, hogy vigyázz az adataidra.";
+"defaultBrowserCallout.introPrimaryText" = "Nyiss meg minden hivatkozást Ping-ben, hogy vigyázz az adataidra.";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "A Brave-védelem blokkolja a követőket és reklámokat, menti az adatokat, és időt takarít meg Önnek minden felkeresett oldalon.";
+"defaultBrowserCallout.introSecondaryText" = "A Ping-védelem blokkolja a követőket és reklámokat, menti az adatokat, és időt takarít meg Önnek minden felkeresett oldalon.";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Nyissa meg a Beállításokat, koppintson az Alapértelmezett böngészőalkalmazásra, majd válassza ki a Brave-et.";
+"defaultBrowserCallout.introTertiaryText" = "Nyissa meg a Beállításokat, koppintson az Alapértelmezett böngészőalkalmazásra, majd válassza ki a Ping-et.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "A Ping beállítása alapértelmezett böngészőként";
@@ -627,9 +606,6 @@
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Alapértelmezett böngésző kiemelésének bezárása";
-
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Alapértelmezett szűrőlisták";
 
 /* Name for default Ping theme. */
 "defaultThemeName" = "Ping alapértelmezett";
@@ -663,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Eszköz %1$ @ (%2$ @)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Módosítások elvetése";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Biztosan elveti ezeket a módosításokat? Minden módosítás elveszik.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Elveti a módosításokat?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Biztonsági tanúsítvány";
@@ -798,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funkciók";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "A megadott URL érvénytelen";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Csak biztonságos (https) URL-ek engedélyezettek az egyéni szűrőlistákhoz";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Hozzáadás";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "További népszerű közösségi listák. Vegye figyelembe, hogyha túl sok szűrőt engedélyez, az lassíthatja a böngészőt.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Nem sikerült a letöltés";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Letöltés függőben";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Szerkesztés";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Szűrőlista URL megadása";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Utolsó frissítés: %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Ide írja be a szűrőlista URL-címét ";
 
 /* Share action title */
 "FindInPage" = "Keresés az oldalon";
@@ -1100,13 +1055,13 @@
 "nprRedirectFooter" = "Automatikusan átirányítja az NPR-hivatkozásokat a szöveges verziójukra (a text.npr.org címen).";
 
 /* Bookmark title for Ping Support */
-"ntp.braveSupportFavoriteTitle" = "Brave-támogatás";
+"ntp.braveSupportFavoriteTitle" = "Ping-támogatás";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Tokenek igénylése";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "A Brave-ben való böngészéssel a következőt szerezte: %@.";
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
+"ntp.earningsReport" = "A Ping-ben való böngészéssel a következőt szerezte: %@.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Csak így tovább!";
@@ -1115,10 +1070,10 @@
 "ntp.hideSponsoredImages" = "Szponzorált képek elrejtése";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "A „szponzorált” hátterek további márkás hátterek, amelyeket a Brave-jutalmak révén szerezhet meg.";
+"ntp.imageTypeSelectionDescription" = "A „szponzorált” hátterek további márkás hátterek, amelyeket a Ping-jutalmak révén szerezhet meg.";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "Tudjon meg többet a Brave-jutalmakról";
+"ntp.learnMoreAboutRewards" = "Tudjon meg többet a Ping-jutalmakról";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Tudj meg többet a szponzorált képekről";
@@ -1184,10 +1139,10 @@
 "OBJoinButton" = "Csatlakozás";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Engedélyezze a Brave-nek, hogy ellenőrizze a vágólapomon a megfelelő hivatkozási kódot";
+"OBPrivacyConsentClipboardPermission" = "Engedélyezze a Ping-nek, hogy ellenőrizze a vágólapomon a megfelelő hivatkozási kódot";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Lehetséges, hogy letöltötte a Ping alkalmazást az ajánló támogatására. Az ajánló megtalálásához a Ping egyszeri ellenőrzést végez a vágólapon, hogy megtalálja a megfelelő ajánlókódot. Ez az ellenőrzés csak a kódra korlátozódik, és semmilyen más személyes adat nem kerül továbbításra. Ha leiratkozik, ajánlója nem kap jutalmakat a Brave-től.";
+"OBPrivacyConsentDetail" = "Lehetséges, hogy letöltötte a Ping alkalmazást az ajánló támogatására. Az ajánló megtalálásához a Ping egyszeri ellenőrzést végez a vágólapon, hogy megtalálja a megfelelő ajánlókódot. Ez az ellenőrzés csak a kódra korlátozódik, és semmilyen más személyes adat nem kerül továbbításra. Ha leiratkozik, ajánlója nem kap jutalmakat a Ping-től.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Ne engedélyezze ezt az ellenőrzést";
@@ -1259,7 +1214,7 @@
 "onboarding.linkReceiptButton" = "Kapcsolja össze a VPN-előfizetését";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Ping VPN-előfizetésével akár 5 eszközre is kiterjeszthető a védelem, Androidon, iOS-en és asztali számítógépeken. Ehhez egyszerűen kapcsolja össze App Store-előfizetését Brave-fiókjával.";
+"onboarding.linkReceiptDescription" = "Ping VPN-előfizetésével akár 5 eszközre is kiterjeszthető a védelem, Androidon, iOS-en és asztali számítógépeken. Ehhez egyszerűen kapcsolja össze App Store-előfizetését Ping-fiókjával.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Bővítse ki a Ping tűzfal + VPN-védelmét";
@@ -1274,7 +1229,7 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "A nyomkövetők és hirdetések blokkolásával a webhelyek kevesebb adatot használnak fel, és sokkal gyorsabban töltődnek be.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "A Brave-vel más:\nNincsenek hirdetések. Nincsenek nyomkövetők. Sokkal gyorsabban töltenek be az oldalak.";
+"onboarding.omniboxOnboardingPopOverDescription" = "A Ping-vel más:\nNincsenek hirdetések. Nincsenek nyomkövetők. Sokkal gyorsabban töltenek be az oldalak.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Adja meg a weboldal nevét vagy URL-jét";
@@ -1358,7 +1313,7 @@
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Nincsenek megjeleníthető aktív munkamenetek a többi eszközről.";
 
 /* The title of the view showing no synced sessions */
-"opentabs.noSyncSessionPlaceHolderViewTitle" = "Ezen a területen láthatók a más eszközökön megnyitott Brave-lapok";
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Ezen a területen láthatók a más eszközökön megnyitott Ping-lapok";
 
 /* The title for the action to hide open session with all tabs */
 "opentabs.openSessionHideAllActionTitle" = "Elrejtés most";
@@ -1453,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Folytatás";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Ezek a privát válaszok segítenek a Brave-nek megbecsülni bizonyos funkciók használatát, valamint fejleszteni a szolgáltatást.";
+/* A subtitle shown on the setting that toggles analytics on Ping. */
+"p3a.settingSubtitle" = "Ezek a privát válaszok segítenek a Ping-nek megbecsülni bizonyos funkciók használatát, valamint fejleszteni a szolgáltatást.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1422,15 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Az Ön kapcsolata ezzel az oldallal nem biztonságos.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "A webhelykapcsolat nem ellenőrzött.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Nem sikerült teljes mértékben ellenőrizni a kapcsolatát ezzel az oldallal. Továbbléphet, vagy megpróbálhatja újratölteni az oldalt a biztonságos kapcsolat érdekében.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Bejelentkezés a weboldalra";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Tanúsítvány megtekintése";
@@ -1891,7 +1855,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Szinkronizálás most";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Pajzsok menü bezárása";
 
 /* Settings privacy section title */
@@ -1958,7 +1922,7 @@
 "privacyHub.lastWeekHeader" = "Előző hét";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "A Brave-védelem **%2$lld** oldalon blokkolta a következőt: **%1$@**";
+"privacyHub.mostFrequentTrackerAndAdBody" = "A Ping-védelem **%2$lld** oldalon blokkolta a következőt: **%1$@**";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
 "privacyHub.mostFrequentTrackerAndAdTitle" = "Leggyakoribb nyomkövető és hirdetés";
@@ -1975,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Értesítések bekapcsolása";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "Összefoglaló a Ping védelmi műveleteiről az Ön e heti online tevékenysége során.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Heti adatvédelmi jelentés";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Az Adatvédelmi központ adatait az alkalmazás helyben tárolja, és soha nem küldi el senkinek.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Adatvédelmi központ";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2042,7 +2006,7 @@
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Nyomkövető vagy hirdetés";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Brave-tűzfal + VPN-figyelmeztetések";
+"privacyHub.vpnAlertsHeader" = "Ping-tűzfal + VPN-figyelmeztetések";
 
 /* This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = "Tűzfal + VPN";
@@ -2066,7 +2030,7 @@
 "PrivateBrowsingOnlyWarning" = "A Csak privát böngészés mód bezárja az összes aktuális lapot, és kijelentkezteti Önt az összes webhelyről.";
 
 /* Private tab details */
-"PrivateTabBody" = "A Ping nem menti el a privát lapokat, de ezek nem teszik Önt névtelenné az interneten. A privát lapon meglátogatott webhelyek nem jelennek meg az előzményekben, és a cookie-jaik mindig eltűnnek, amikor bezárja őket – a Brave-ben nem marad nyomuk. A letöltések azonban mentésre kerülnek.\nMobilszolgáltatója (vagy annak a Wi-Fi-hálózatnak vagy VPN-nek a tulajdonosa, amelyhez csatlakozik) láthatja, hogy mely webhelyeket keresi fel, és ezek a webhelyek megtudják nyilvános IP-címét, még a Privát lapokon is.";
+"PrivateTabBody" = "A Ping nem menti el a privát lapokat, de ezek nem teszik Önt névtelenné az interneten. A privát lapon meglátogatott webhelyek nem jelennek meg az előzményekben, és a cookie-jaik mindig eltűnnek, amikor bezárja őket – a Ping-ben nem marad nyomuk. A letöltések azonban mentésre kerülnek.\nMobilszolgáltatója (vagy annak a Wi-Fi-hálózatnak vagy VPN-nek a tulajdonosa, amelyhez csatlakozik) láthatja, hogy mely webhelyeket keresi fel, és ezek a webhelyek megtudják nyilvános IP-címét, még a Privát lapokon is.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "A Privát lapok használata csak azt változtatja meg, amit a Ping az Ön eszközén végez, mások viselkedését nem.\n\nA webhelyek mindig megismerik az Ön IP-címét, amikor meglátogatja őket. Ebből gyakran kitalálják, hogy nagyjából hol van – jellemzően a várost. Néha ez a helymeghatározás sokkal pontosabb lehet. A webhelyek mindent tudnak, amit kifejezetten elmond nekik, például a keresési kifejezéseket. Ha bejelentkezik egy webhelyre, tudni fogják, hogy Ön a fiók tulajdonosa. A Privát lapok bezárásakor továbbra is ki lesz jelentkezve, mert a Ping eldobja a cookie-t, amely bejelentkezve tartja Önt.\n\nBárki, aki csatlakoztatja Önt az internethez (az Ön internetszolgáltatója), láthatja az összes hálózati tevékenységét. Ez gyakran az Ön mobilszolgáltatója. Ha Wi-Fi hálózathoz csatlakozik, akkor ez a hálózat tulajdonosa, ha pedig VPN-t használ, akkor az, aki a VPN-t futtatja. Internetszolgáltatója láthatja, hogy mely webhelyeket keresi fel, amikor felkeresi azokat. Ha ezek a webhelyek HTTPS-t használnak, akkor nem tehetnek többet, mint megtippelik, hogy mit csinál ezeken a webhelyeken. Viszont ha egy webhely csak HTTP-t használ, akkor az internetszolgáltató mindent láthat: a keresési kifejezéseket, az olvasott oldalakat és a követett linkeket.\n\nHa egy munkáltató kezeli az eszközt, akkor azt is nyomon követheti, hogy Ön mit csinál vele. A Privát lapok használata valószínűleg nem akadályozza meg őket abban, hogy tudják, mely webhelyeket kereste fel. Valaki más, aki hozzáfér az eszközéhez, szintén telepíthetett olyan szoftvert, amely figyeli az Ön tevékenységét, és a Privát lapok sem védenek meg ettől.";
@@ -2083,8 +2047,8 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Gyorskeresők";
 
-/* Open the App Store to rate Brave. */
-"RateBrave" = "Értékeld a Brave-et";
+/* Open the App Store to rate Ping. */
+"RateBrave" = "Értékeld a Ping-et";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Szövegméret növelése";
@@ -2279,7 +2243,7 @@
 "RestoreTabOnCrashAlertTitle" = "A Ping váratlanul bezárult.";
 
 /* Body for Ping Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "A Brave-jutalmakkal az adatvédelmet tiszteletben tartó hirdetéseket láthat, a Brave-hirdetések hálózatáról. Nincsenek nyomkövetők, nincs lassulás, az adatai pedig teljes biztonságban maradnak.";
+"rewards.braveTalkRewardsOptInBody" = "A Ping-jutalmakkal az adatvédelmet tiszteletben tartó hirdetéseket láthat, a Ping-hirdetések hálózatáról. Nincsenek nyomkövetők, nincs lassulás, az adatai pedig teljes biztonságban maradnak.";
 
 /* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Rewards bekapcsolása";
@@ -2297,7 +2261,7 @@
 "rewards.disabledBody" = "A bekapcsolással segíthet támogatni a tartalomkészítőket";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "A Brave-jutalmak használata segít támogatni a tartalomkészítőket böngészés közben.";
+"rewards.disabledStatusBody" = "A Ping-jutalmak használata segít támogatni a tartalomkészítőket böngészés közben.";
 
 /* Displayed when Ping Rewards is enabled */
 "rewards.enabledBody" = "Ön segít támogatni a tartalomkészítőket";
@@ -2342,7 +2306,7 @@
 "RewardsInternalsContributionAmount" = "Hozzájárulás összege";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Brave-tokenek";
+"RewardsInternalsContributionProcessorBraveTokens" = "Ping-tokenek";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionProcessorNone" = "Nincs";
@@ -2464,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Megosztás";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "A Jutalmak belső elemeinek megosztása";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Támogatott";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Jutalmak belső elemei";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2478,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Mentés";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Módosítások mentése";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Mentett bejelentkezések";
@@ -2600,7 +2567,7 @@
 "SearchSuggestionsSectionHeader" = "Keresési javaslatok";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
-"SearchWithBrave" = "Keresés a Brave-vel";
+"SearchWithBrave" = "Keresés a Ping-vel";
 
 /* Settings security section title */
 "Security" = "Biztonság";
@@ -2657,7 +2624,7 @@
 "settings.media.rootSetting" = "Média";
 
 /* A toggle label which lets the user always open YouTube urls in Ping */
-"settings.openYouTubeInBrave" = "YouTube-hivatkozások megnyitása a Brave-ben";
+"settings.openYouTubeInBrave" = "YouTube-hivatkozások megnyitása a Ping-ben";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Böngészési idő engedélyezése";
@@ -2668,11 +2635,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Minőségi beállítások";
 
-/* Description to explain the daily usage ping toggle */
+/* Description to explain the daily usage brave toggle */
 "settings.sendUsagePingDescription" = "Ez a privát értesítés lehetővé teszi a Ping számára, hogy megbecsülje az aktív felhasználók számát.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Napi használatról szóló értesítések automatikus küldése a Brave-be";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Napi használatról szóló értesítések automatikus küldése a Ping-be";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nem sikerült betölteni az oldalt.";
@@ -2732,7 +2702,7 @@
 "shieldEducation.shareTheNewsTitle" = "Ossza meg a hírt";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "A Brave-védelem épp segített megvédeni az Ön adatait.";
+"shieldEducation.trackerAdWarningSubTitle" = "A Ping-védelem épp segített megvédeni az Ön adatait.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Gratulálunk, Ön igazán különleges!";
@@ -2771,7 +2741,7 @@
 "ShortcutItemTitleQRCode" = "QR-kód beolvasása";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "A Brave-hírek megnyitása és a mai nap legfontosabb híreinek megtekintése";
+"shortcuts.activityTypeBraveNewsDescription" = "A Ping-hírek megnyitása és a mai nap legfontosabb híreinek megtekintése";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryDescription" = "Új böngészőlap megnyitása és az összes privát böngészési előzményadat törlése";
@@ -2813,10 +2783,10 @@
 "shortcuts.activityTypeOpenBookmarksTitle" = "A Ping böngésző könyvjelzőinek megnyitása";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "A Brave-hírek megnyitása";
+"shortcuts.activityTypeOpenBraveNewsTitle" = "A Ping-hírek megnyitása";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "A Brave-hírek megnyitása";
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "A Ping-hírek megnyitása";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenHistoryListDescription" = "A Böngészési előzmények képernyő megnyitása";
@@ -2837,7 +2807,7 @@
 "shortcuts.activityTypeOpenPlaylistTitle" = "Lejátszási lista megnyitása";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsDescription" = "A más eszközökön megnyitott Brave-lapok megnyitása";
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "A más eszközökön megnyitott Ping-lapok megnyitása";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Más eszközökön nyitott lapok megnyitása";
@@ -2870,7 +2840,7 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Böngészési előzmények törlése";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "Parancsikonok használata a Brave-VPN engedélyezéséhez a Siri – Voice Assistant segítségével";
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Parancsikonok használata a Ping-VPN engedélyezéséhez a Siri – Voice Assistant segítségével";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "VPN engedélyezése";
@@ -2882,10 +2852,10 @@
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "A Könyvjelzők megnyitása";
 
 /* Description of Open Ping News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Parancsikonok használata egy új lap megnyitásához és a Brave-hírfolyam megjelenítéséhez a Siri – Voice Assistant segítségével";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Parancsikonok használata egy új lap megnyitásához és a Ping-hírfolyam megjelenítéséhez a Siri – Voice Assistant segítségével";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "A Brave-hírek megnyitása";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "A Ping-hírek megnyitása";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "Parancsikonok használata a Böngészési előzmények képernyő megnyitásához a Siri – Voice Assistant segítségével";
@@ -2960,10 +2930,10 @@
 "SiteShieldSettings" = "Védelmek";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.";
+"socialSharing.domainSpecificDataSavedTitle" = "Minden nap spórolok az adatforgalmon, amikor a Ping-vel böngészek az interneten.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.";
+"socialSharing.shareDescriptionTitle" = "Minden nap spórolok az adatforgalmon, amikor a Ping-vel böngészek az interneten.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Szabványos fül";
@@ -3012,6 +2982,15 @@
 
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Szinkronizálási fiók törlése";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Ha törli a fiókját, azzal eltávolítja a Ping szerverein található titkosított adatait, és letiltja a Szinkronizálást az összes csatlakoztatott eszközén.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Az ezeken az eszközökön helyileg tárolt adatokat azonban ezúton nem törli.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Ez a törlés végleges, és nincs mód az adatok helyreállítására. Ha úgy dönt, hogy újra elkezdi használni a Szinkronizálást, létre kell hoznia egy új fiókot, és egyenként újra hozzá kell adnia az egyes eszközöket.";
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Hiba történt a szinkronizálási láncban szereplő eszközök lekérése közben.";
@@ -3070,11 +3049,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Válaszd ki a szinkronizálni kívánt készülék típusát.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "A kód lejárt. Generáljon egy újat az alábbi gombra kattintva.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Ez az ideiglenes kód a következő ideig érvényes: %@ ";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Számítógép";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Szinkronizálási fiók törlése";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Úgy tűnik, ezt a kódot a Ping régebbi verzióját használó eszközön hozták létre. Frissítsen a legújabb Ping-verzióra a másik eszközén, majd hozzon létre új szinkronizálási kódot.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Eszközök és beállítások";
@@ -3284,7 +3272,7 @@
 "themeQRCodeShareButton" = "Megosztás...";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Oszd meg a Brave-et barátaiddal!";
+"themeQRCodeShareTitle" = "Oszd meg a Ping-et barátaiddal!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automatikus";
@@ -3326,7 +3314,7 @@
 "today.addSourceNoFeedsFoundMessage" = "Elnézést, ez a csatornacím nem rendelkezik tartalommal.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Forrás hozzáadása a Brave-hírekhez";
+"today.addSourceShareTitle" = "Forrás hozzáadása a Ping-hírekhez";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "Elérhető RSS-hírcsatornák";
@@ -3337,7 +3325,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "Hírek";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Kövesse az Önt érdeklő témákat";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3356,7 +3344,7 @@
 "today.deals" = "Ajánlatok";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
-"today.disabledAlertBody" = "A Brave-hírekben innentől nem jelenik meg tartalom a következőtől: %@";
+"today.disabledAlertBody" = "A Ping-hírekben innentől nem jelenik meg tartalom a következőtől: %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Kikapcsolva";
@@ -3374,12 +3362,12 @@
 "today.enablePublisherContent" = "Tartalom engedélyezése innen: %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "A Brave-hírekkel jelenleg problémák tapasztalhatók. Próbálja újra.";
+"today.errorGeneralBody" = "A Ping-hírekkel jelenleg problémák tapasztalhatók. Próbálja újra.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hoppá…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Kezelje a csatornája forrásait";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,10 +3389,10 @@
 "today.insecureSourcesHeader" = "Nem biztonságos források – Saját felelősségére adja hozzá";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Kövesse kedvenc forrásait egyetlen hírfolyamban. Csak nyisson meg egy lapot a Brave-ben, görgessen le, és… íme!\nA Brave-hírek privát, anonimizált hirdetésekkel támogatott szolgáltatás.";
+"today.introCardBody" = "Kövesse kedvenc forrásait egyetlen hírfolyamban. Csak nyisson meg egy lapot a Ping-ben, görgessen le, és… íme!\nA Ping-hírek privát, anonimizált hirdetésekkel támogatott szolgáltatás.";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
-"today.introCardTitle" = "A Brave-hírek bekapcsolásával egyetlen történetről sem marad le";
+"today.introCardTitle" = "A Ping-hírek bekapcsolásával egyetlen történetről sem marad le";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "A Ping News mutatása";
@@ -3412,7 +3400,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "További tudnivalók az adatokról";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "További Ping ajánlatok";
 
 /* No comment provided by engineer. */
@@ -3436,17 +3424,20 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promotált";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Értékelje a Ping-et az App Store-ban";
+
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Elrejtés";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
-"today.rateBraveCardRateActionTitle" = "Értékeld a Brave-et";
+"today.rateBraveCardRateActionTitle" = "Értékeld a Ping-et";
 
 /* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "Mondja el, mit gondol!";
 
 /* Title shown on the Rate Ping Card */
-"today.rateBraveCardTitle" = "Tetszik a Brave?";
+"today.rateBraveCardTitle" = "Tetszik a Ping?";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Frissítés";
@@ -3538,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "A Ping nem tárolja és nem osztja meg hangalapú kereséseit.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "aktiválás";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Szeretné fenntartani a védelmet? Egyszerűen újítsa meg az előfizetés lejárta előtt. A megújításért való köszönetképpen még 20% ​​kedvezményt is nyújtunk a következő 3 hónapra.";
 
@@ -3559,140 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Ajaj, Ping VPN-előfizetése hamarosan lejár.";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "Vétel";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Ping Firewall + VPN";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "Védjen meg 5 eszközt 1 előfizetéssel";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "Válassza ki a földrajzi helyzetét/országát";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "A Ping sosem naplózza a tevékenységeit";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "Védje meg alkalmazásait és eszközét";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "Biztonságosabb otthoni vagy nyilvános Wi-Fi-hálózaton";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "Villámgyors, akár 100 Mbps";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Alkalmazás verziója";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Mobilszolgáltató";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "A Ping nem követi nyomon Önt, és nem figyeli az alkalmazás használatát, így nem tudjuk, hogyan állította be a VPN-t. Kérjük, ossza meg velünk az Ön által tapasztalt problémával kapcsolatos információkat, és mindent megteszünk, hogy a lehető leghamarabb megoldjuk azt.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Nem lehetséges elküldeni az e-mailt. Kérjük, ellenőrizze az e-mail-konfigurációt.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Kérjük, válassza ki azokat az információkat, amelyeket szívesen megoszt velünk.\n\nMinél több információt ad meg előzetesen, annál könnyebben fog tudni segíteni ügyfélszolgálatunk a probléma megoldásában.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "A támogatást a Guardian csapat segítségével nyújtjuk.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "VPN kiszolgáló neve";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Probléma";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Kapcsolat-folytonossági probléma";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "A kapcsolódás után nincs internet";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Egyéb";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Nem tudok a VPN-hez csatlakozni (Egyéb hiba)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Lassú kapcsolat";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "A weboldal nem működik";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Hibanaplók";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Hálózat típusa";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Platform";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Tovább az e-mailhez";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Előfizetés típusa";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "iOS-időzóna";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave-tűzfal + VPN-nel kapcsolatos probléma";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "Engedélyezés";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Nem sikerült csatlakozni az App Store-hoz, próbálkozzon újra néhány perc múlva.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "App Store-hiba";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Mindegyik csomag tartalmaz %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "egy 7 napos ingyenes próbaidőszakot";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "ingyenes kipróbálás 7 napig";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Minden előfizetés automatikusan megújul, de a megújítás előtt lemondható.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Ez a profil lehetővé teszi a VPN számára, hogy automatikusan csatlakozzon és folyamatosan biztosítsa a forgalmat az eszközön. Ez a VPN-kapcsolat titkosított, és a Ping intelligens tűzfalán halad át, ezáltal blokkolva a potenciálisan káros és invazív kapcsolatokat.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "VPN profil telepítése";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "A Ping most telepíti a VPN profilt.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "A VPN engedélyezve van";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "VPN telepítése";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "Próbálja ki INGYENESEN";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Havonta megújul";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Havi előfizetés";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Lejárt";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Blokkolja a nemkívánatos hálózati kapcsolatokat";
@@ -3715,59 +3577,11 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Szolgáltató:";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Válassza ki a kívánt átviteli protokollt. A váltást követően a meglévő VPN-hitelesítési adatok törlődnek, és Ön újra csatlakoztatva lesz, ha a VPN-kapcsolat jelenleg üzemel.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Nem sikerült alagútprotokollt váltani, próbálkozzon újra később.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Szerverhiba";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Átviteli protokoll";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "A VPN-alagútprotokoll módosult.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Az Önhöz legközelebb eső szerverrégió lesz automatikusan kiválasztva a rendszer időzónája alapján. Ez a gyors internetsebesség biztosítása érdekében javasolt.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Automatikus";
 
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Nem sikerült szervert váltani, próbálkozzon újra később.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Szerverhiba";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Szerverrégió";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "A VPN-régió módosult.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Nem lehet visszaállítani a VPN-konfigurációt. Kérjük, próbálja újra. Ha a probléma továbbra is fennáll, kérjen segítséget az ügyfélszolgálattól.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Próbálja újra";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "A visszaállítás nem sikerült";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "A VPN-konfiguráció visszaállítása sikeresen megtörtént.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "A visszaállítás sikerült";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Helyreállítás";
-
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Kérjük, jelentkezzen be Brave-fiókjába a VPN-munkamenet frissítéséhez.";
+"vpn.sessionExpiredDescription" = "Kérjük, jelentkezzen be Ping-fiókjába a VPN-munkamenet frissítéséhez.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Elvetés";
@@ -3777,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "A munkamenet lejárt";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Váltson VPN-re, hogy megvédje a kapcsolatát és bárhonnan blokkolhassa az invazív nyomkövetőket.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Lépjen kapcsolatba az ügyfélszolgálattal";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Nem sikerült lekérni a szerverlistát, próbálkozzon újra később.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "VPN támogatás";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Kapcsolja a vásárlást a Brave-fiókjához";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Kapcsolja össze App Store-ban vásárolt termékét Brave-fiókjával, hogy más eszközökön is használhassa a Ping VPN-t.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Előfizetés kezelése";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Ajánlatkód beváltása";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Konfiguráció visszaállítása";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Host";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Tartózkodási hely";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Szerver";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Lejár";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Előfizetés";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Állapot";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Átviteli protokoll";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Kikapcsolva";
@@ -3874,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Fizetési adatok frissítése";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Fizetési mód frissítése";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "A Ping a háttérben is megvédi Önt.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "A Brave-tűzfal + VPN BE van kapcsolva";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "Probléma lépett fel a VPN inicializálása során. Kérjük, próbálja újra, vagy próbálja meg visszaállítani a konfigurációt a VPN-beállítások oldalán.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Hiba";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "A Brave-tűzfal + VPN használatához VPN-profilt kell telepíteni az eszközre. ";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Hozzáférés megtagadva";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Nem sikerült beváltani az ajánlatkódot. Kérjük, próbálja újra, vagy ellenőrizze az ajánlatkód részleteit.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Nem sikerült befejezni a vásárlást. Kérjük, próbálja újra, vagy ellenőrizze fizetési adatait az Apple-nél, és próbálkozzon újra.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Hiba";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Az előfizetési díjak kiszabása az iTunes-fiókján keresztül történik.\n\nAz esetleges ingyenes próbaidőszak fel nem használt hányada elveszik az előfizetés megvásárlásakor.\n\nElőfizetése automatikusan megújul, hacsak nem mondja le legalább 24 órával az aktuális időszak vége előtt.\n\nElőfizetéseit a Beállításokban kezelheti.\n\nA Ping használatával Ön elfogadja a használati feltételeket és az adatvédelmi szabályzatot.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Kód beváltása";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Szerverrégió";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Aktuális beállítás: %@";
@@ -3916,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "VPN-régió";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Ezzel visszaállítja a Brave-tűzfal + VPN konfigurációját, és kijavítja az esetleges hibákat. Ez a folyamat egy percig is eltarthat.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Konfiguráció visszaállítása";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Visszaállítás";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Havi előfizetés";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Éves előfizetés";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Kérjük, frissítse fizetési módját";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Takarítson meg %@-ot éves megújítással";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Legjobb ár-érték";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Egy év";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Pénztárca létrehozási dátuma";
@@ -3970,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Nincsenek mentett webhelyadatok";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Összes eltávolítása";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Eltávolítás";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "%ld elem eltávolítása";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3709,9 @@
 /* History tableview section header */
 "Yesterday" = "Tegnap";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Jó minőségű YouTube-videók engedélyezése";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Ha engedélyezi ezt a kísérleti funkciót, akkor a rendszer a maximális elérhető minőségben fogja lejátszani a videókat, és további adatmennyiséget fog használni.";
 
@@ -4008,6 +3720,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Be";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube-lejátszási minőség";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Engedélyezés Wi-Fi esetén";

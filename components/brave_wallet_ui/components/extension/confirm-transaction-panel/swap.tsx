@@ -6,16 +6,17 @@
 import * as React from 'react'
 
 // Utils
-import { WalletSelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
+import { isBridgeTransaction } from '../../../utils/tx-utils'
 
 // Styled components
 import { HeaderTitle } from './swap.style'
+import { Column } from '../../shared/style'
 import { NetworkText, StyledWrapper, TopRow } from './style'
-import { Origin } from './common/origin'
-import { EditPendingTransactionGas } from './common/gas'
 
 // Components
+import { Origin } from './common/origin'
+import { EditPendingTransactionGas } from './common/gas'
 import { TransactionQueueSteps } from './common/queue'
 import {
   PendingTransactionActionsFooter //
@@ -28,14 +29,10 @@ import { SwapBase } from '../swap'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
-import {
-  useUnsafeWalletSelector //
-} from '../../../common/hooks/use-safe-selector'
+import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
+import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
 
 export function ConfirmSwapTransaction() {
-  // redux
-  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-
   // state
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
@@ -49,25 +46,35 @@ export function ConfirmSwapTransaction() {
     toOrb,
     updateUnapprovedTransactionNonce,
     selectedPendingTransaction,
-    onConfirm,
-    onReject,
     queueNextTransaction,
     transactionQueueNumber,
     transactionsQueueLength,
     rejectAllTransactions,
     isConfirmButtonDisabled,
     insufficientFundsError,
-    insufficientFundsForGasError
+    insufficientFundsForGasError,
+    onConfirm,
+    onReject
   } = usePendingTransactions()
+
+  // queries
+  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
+    useGetActiveOriginQuery()
 
   // computed
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
+  const isBridgeTx = selectedPendingTransaction
+    ? isBridgeTransaction(selectedPendingTransaction)
+    : false
 
   // Methods
   const onToggleAdvancedTransactionSettings = () => {
     setShowAdvancedTransactionSettings(!showAdvancedTransactionSettings)
   }
   const onToggleEditGas = () => setIsEditingGas(!isEditingGas)
+
+  const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
+    useSwapTransactionParser(selectedPendingTransaction)
 
   // render
   if (
@@ -105,20 +112,25 @@ export function ConfirmSwapTransaction() {
 
       <Origin originInfo={originInfo} />
 
-      {isWarningCollapsed && (
-        <SwapBase
-          sellToken={transactionDetails?.sellToken}
-          buyToken={transactionDetails?.buyToken}
-          sellAmount={transactionDetails?.sellAmountWei?.format()}
-          buyAmount={transactionDetails?.minBuyAmountWei?.format()}
-          senderLabel={transactionDetails?.senderLabel}
-          senderOrb={fromOrb}
-          recipientOrb={toOrb}
-          recipientLabel={transactionDetails?.recipientLabel}
-          // set to true once Swap+Send is supported
-          expectRecipientAddress={false}
-        />
-      )}
+      <SwapBase
+        sellToken={sellToken}
+        buyToken={buyToken}
+        sellAmount={
+          !sellAmountWei.isUndefined() ? sellAmountWei.format() : undefined
+        }
+        buyAmount={
+          !buyAmountWei.isUndefined() ? buyAmountWei.format() : undefined
+        }
+        senderLabel={transactionDetails?.senderLabel}
+        senderOrb={fromOrb}
+        recipientOrb={toOrb}
+        recipientLabel={transactionDetails?.recipientLabel}
+        // set to true once Swap+Send is supported
+        expectRecipientAddress={false}
+        isBridgeTx={isBridgeTx}
+        toChainId={selectedPendingTransaction?.swapInfo?.toChainId}
+        toCoin={selectedPendingTransaction?.swapInfo?.toCoin}
+      />
 
       <PendingTransactionNetworkFeeAndSettings
         onToggleAdvancedTransactionSettings={
@@ -127,18 +139,26 @@ export function ConfirmSwapTransaction() {
         onToggleEditGas={onToggleEditGas}
       />
 
-      <PendingTransactionActionsFooter
-        onConfirm={onConfirm}
-        onReject={onReject}
-        isConfirmButtonDisabled={isConfirmButtonDisabled}
-        rejectAllTransactions={rejectAllTransactions}
-        transactionDetails={transactionDetails}
-        transactionsQueueLength={transactionsQueueLength}
-        insufficientFundsForGasError={insufficientFundsForGasError}
-        insufficientFundsError={insufficientFundsError}
-        isWarningCollapsed={isWarningCollapsed}
-        setIsWarningCollapsed={setIsWarningCollapsed}
-      />
+      <Column
+        fullWidth
+        flex={1}
+        justifyContent='flex-end'
+        alignItems='flex-end'
+        alignSelf='flex-end'
+      >
+        <PendingTransactionActionsFooter
+          onConfirm={onConfirm}
+          onReject={onReject}
+          isConfirmButtonDisabled={isConfirmButtonDisabled}
+          rejectAllTransactions={rejectAllTransactions}
+          transactionDetails={transactionDetails}
+          transactionsQueueLength={transactionsQueueLength}
+          insufficientFundsForGasError={insufficientFundsForGasError}
+          insufficientFundsError={insufficientFundsError}
+          isWarningCollapsed={isWarningCollapsed}
+          setIsWarningCollapsed={setIsWarningCollapsed}
+        />
+      </Column>
     </StyledWrapper>
   )
 }

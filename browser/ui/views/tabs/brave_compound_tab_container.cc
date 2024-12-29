@@ -57,7 +57,6 @@ class ContentsView : public views::View {
 class CustomScrollView : public views::ScrollView {
   METADATA_HEADER(CustomScrollView, views::ScrollView)
  public:
-
   explicit CustomScrollView(PrefService* prefs)
       : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {
     SetDrawOverflowIndicator(false);
@@ -152,7 +151,7 @@ base::OnceClosure BraveCompoundTabContainer::LockLayout() {
   for (const auto& tab_container :
        {unpinned_tab_container_, pinned_tab_container_}) {
     closures.push_back(
-        static_cast<BraveTabContainer*>(std::to_address(tab_container))
+        static_cast<BraveTabContainer*>(base::to_address(tab_container))
             ->LockLayout());
   }
 
@@ -175,12 +174,12 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
     scroll_view_->SetBackgroundThemeColorId(kColorToolbar);
     auto* contents_view =
         scroll_view_->SetContents(std::make_unique<ContentsView>(this));
-    contents_view->AddChildView(std::to_address(unpinned_tab_container_));
+    contents_view->AddChildView(base::to_address(unpinned_tab_container_));
     DeprecatedLayoutImmediately();
   } else {
     unpinned_tab_container_->parent()->RemoveChildView(
-        std::to_address(unpinned_tab_container_));
-    AddChildView(std::to_address(unpinned_tab_container_));
+        base::to_address(unpinned_tab_container_));
+    AddChildView(base::to_address(unpinned_tab_container_));
 
     RemoveChildViewT(scroll_view_.get());
     scroll_view_ = nullptr;
@@ -263,12 +262,14 @@ void BraveCompoundTabContainer::Layout(PassKey) {
   }
 }
 
-gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
+gfx::Size BraveCompoundTabContainer::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   if (!ShouldShowVerticalTabs()) {
-    return CompoundTabContainer::CalculatePreferredSize();
+    return CompoundTabContainer::CalculatePreferredSize(available_size);
   }
 
-  auto preferred_size = CompoundTabContainer::CalculatePreferredSize();
+  auto preferred_size =
+      CompoundTabContainer::CalculatePreferredSize(available_size);
 
   // Check if we can expand height to fill the entire scroll area's viewport.
   for (auto* parent_view = parent(); parent_view;
@@ -336,10 +337,9 @@ int BraveCompoundTabContainer::GetUnpinnedContainerIdealLeadingX() const {
 }
 
 std::optional<BrowserRootView::DropIndex>
-BraveCompoundTabContainer::GetDropIndex(const ui::DropTargetEvent& event,
-                                        bool allow_replacement) {
+BraveCompoundTabContainer::GetDropIndex(const ui::DropTargetEvent& event) {
   if (!ShouldShowVerticalTabs()) {
-    return CompoundTabContainer::GetDropIndex(event, allow_replacement);
+    return CompoundTabContainer::GetDropIndex(event);
   }
 
   TabContainer* sub_drop_target = GetTabContainerAt(event.location());
@@ -354,15 +354,14 @@ BraveCompoundTabContainer::GetDropIndex(const ui::DropTargetEvent& event,
       event.data(), gfx::PointF(loc_in_sub_target),
       gfx::PointF(loc_in_sub_target), event.source_operations());
 
-  if (sub_drop_target == std::to_address(pinned_tab_container_)) {
+  if (sub_drop_target == base::to_address(pinned_tab_container_)) {
     // Pinned tab container shares an index and coordinate space, so no
     // adjustments needed.
-    return sub_drop_target->GetDropIndex(adjusted_event, allow_replacement);
+    return sub_drop_target->GetDropIndex(adjusted_event);
   } else {
     // For the unpinned container, we need to transform the output to the
     // correct index space.
-    auto sub_target_index =
-        sub_drop_target->GetDropIndex(adjusted_event, allow_replacement);
+    auto sub_target_index = sub_drop_target->GetDropIndex(adjusted_event);
     return BrowserRootView::DropIndex{
         .index = sub_target_index->index + NumPinnedTabs(),
         .relative_to_index = sub_target_index->relative_to_index,
@@ -415,7 +414,7 @@ void BraveCompoundTabContainer::PaintChildren(const views::PaintInfo& info) {
 
 void BraveCompoundTabContainer::ChildPreferredSizeChanged(views::View* child) {
   if (ShouldShowVerticalTabs() && scroll_view_ &&
-      child->Contains(std::to_address(unpinned_tab_container_))) {
+      child->Contains(base::to_address(unpinned_tab_container_))) {
     UpdateUnpinnedContainerSize();
   }
 
@@ -455,8 +454,8 @@ TabContainer* BraveCompoundTabContainer::GetTabContainerAt(
 
   auto* container =
       point_in_local_coords.y() < pinned_tab_container_->bounds().bottom()
-          ? std::to_address(pinned_tab_container_)
-          : std::to_address(unpinned_tab_container_);
+          ? base::to_address(pinned_tab_container_)
+          : base::to_address(unpinned_tab_container_);
 
   if (!container->GetWidget()) {
     // Note that this could be happen when we're detaching tabs and we're still
@@ -476,7 +475,7 @@ gfx::Rect BraveCompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
 
   if (scroll_view_) {
     return views::View::ConvertRectToTarget(
-        /*source=*/std::to_address(unpinned_tab_container_), /*target=*/this,
+        /*source=*/base::to_address(unpinned_tab_container_), /*target=*/this,
         ideal_bounds);
   }
 
@@ -524,19 +523,18 @@ void BraveCompoundTabContainer::ScrollTabToBeVisible(int model_index) {
     return;
   }
 
-  // Unfortunately, ScrollView's API doesn't work well for us. So we manually
-  // adjust scroll offset. Note that we change contents view's position as
-  // we disabled layered scroll view.
   if (visible_rect.CenterPoint().y() >=
       tab_bounds_in_contents_view.CenterPoint().y()) {
-    scroll_view_->contents()->SetPosition(
-        {0, -static_cast<int>(tab_bounds_in_contents_view.y())});
+    // Scroll Up
+    scroll_view_->ScrollToOffset(
+        gfx::PointF(0, static_cast<int>(tab_bounds_in_contents_view.y())));
   } else {
-    scroll_view_->contents()->SetPosition(
-        {0, std::min(0, scroll_view_->height() -
+    // Scroll Down
+    scroll_view_->ScrollToOffset(gfx::PointF(
+        0, -std::min(0, scroll_view_->height() -
                             static_cast<int>(
                                 tab_bounds_in_contents_view.bottom() +
-                                tabs::kMarginForVerticalTabContainers))});
+                                tabs::kMarginForVerticalTabContainers))));
   }
 }
 

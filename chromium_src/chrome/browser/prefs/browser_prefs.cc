@@ -12,15 +12,20 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_adaptive_captcha/prefs_util.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
+#include "brave/components/brave_news/common/p3a_pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -37,6 +42,10 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -72,7 +81,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #endif
 
 // This method should be periodically pruned of year+ old migrations.
@@ -163,7 +172,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   profile_prefs->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
 #endif
 
-  brave_news::p3a::NewsMetrics::MigrateObsoleteProfilePrefs(profile_prefs);
+  brave_news::p3a::prefs::MigrateObsoleteProfileNewsMetricsPrefs(profile_prefs);
 
   // Added 2023-09
   ntp_background_images::ViewCounterService::MigrateObsoleteProfilePrefs(
@@ -181,8 +190,17 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Added 2024-04
-  ai_chat::prefs::MigrateProfilePrefs(profile_prefs);
+  ai_chat::ModelService::MigrateProfilePrefs(profile_prefs);
 #endif
+
+  // Added 2024-05
+  ipfs::ClearDeprecatedIpfsPrefs(profile_prefs);
+
+  // Added 2024-07
+  profile_prefs->ClearPref(kHangoutsEnabled);
+
+  // Added 2024-10
+  brave_adaptive_captcha::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
@@ -202,6 +220,11 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   local_state->ClearPref(kDefaultBrowserPromptEnabled);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  // Added 09/2024
+  brave_vpn::MigrateLocalStatePrefs(local_state);
 #endif
 
   misc_metrics::UptimeMonitor::MigrateObsoletePrefs(local_state);

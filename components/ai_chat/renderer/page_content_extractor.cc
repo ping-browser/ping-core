@@ -3,6 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 
 #include <memory>
@@ -26,9 +32,12 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "net/base/url_util.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/web_string.h"
+#include "third_party/blink/public/web/web_document.h"
+#include "third_party/blink/public/web/web_element.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "third_party/blink/public/web/web_node.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
@@ -38,14 +47,14 @@ namespace ai_chat {
 
 namespace {
 
-const char16_t kYoutubeTranscriptUrlExtractionScript[] =
+constexpr char16_t kYoutubeTranscriptUrlExtractionScript[] =
     uR"JS(
       (function() {
         return ytplayer?.config?.args?.raw_player_response?.captions?.playerCaptionsTracklistRenderer?.captionTracks
       })()
     )JS";
 
-const char16_t kVideoTrackTranscriptUrlExtractionScript[] =
+constexpr char16_t kVideoTrackTranscriptUrlExtractionScript[] =
     // TODO(petemill): Make more informed srclang choice.
     // TODO(petemill): Observe <video>.textTracks
     uR"JS(
@@ -295,6 +304,18 @@ void PageContentExtractor::OnJSTranscriptUrlResult(
   result->content = mojom::PageContentData::NewContentUrl(transcript_url);
   result->type = std::move(type);
   std::move(callback).Run(std::move(result));
+}
+
+void PageContentExtractor::GetSearchSummarizerKey(
+    mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback) {
+  auto element =
+      render_frame()->GetWebFrame()->GetDocument().Head().QuerySelector(
+          "meta[name=summarizer-key]");
+  if (element.IsNull()) {
+    std::move(callback).Run({});
+    return;
+  }
+  std::move(callback).Run(element.GetAttribute("content").Utf8());
 }
 
 }  // namespace ai_chat

@@ -16,10 +16,7 @@ extension AttributedString {
     result.interpretedSyntax = .full
     result.failurePolicy = .returnPartiallyParsedIfPossible
     result.languageCode = nil
-
-    if #available(iOS 16, *) {
-      result.appliesSourcePositionAttributes = false
-    }
+    result.appliesSourcePositionAttributes = false
     return result
   }
 
@@ -83,7 +80,7 @@ extension AttributedString {
         for intent in intentAttribute.components {
           switch intent.kind {
           case .paragraph:
-            break
+            result.characters.insert(contentsOf: "\n", at: range.upperBound)
           case .header(let level):
             switch level {
             case 1:
@@ -107,13 +104,13 @@ extension AttributedString {
             listType = .unordered
           case .listItem(let index):
             if listType != .unordered {
-              listType = .ordered
+              listType = .unordered
             }
 
             if listType == .ordered {
-              result.characters.insert(contentsOf: "\(index).\t", at: range.lowerBound)
+              result.characters.insert(contentsOf: "\(index).  ", at: range.lowerBound)
             } else {
-              result.characters.insert(contentsOf: "•\t", at: range.lowerBound)
+              result.characters.insert(contentsOf: "•  ", at: range.lowerBound)
             }
           case .codeBlock(_):
             result[range].font = preferredFont.monospaced()  //.italic()
@@ -186,6 +183,22 @@ extension AttributedString {
     self.removeSubrange(self.startIndex..<startIndex)
 
     return self
+  }
+
+  public func split(separator: String) -> [AttributedString] {
+    var working = self
+    var splitBySeparator: [AttributedString] = []
+    while let separatorRange = working.range(of: separator) {
+      let startIndex = working.startIndex
+      // add from starting index up to the separator
+      let string = AttributedString(working[startIndex..<separatorRange.lowerBound])
+      splitBySeparator.append(string)
+      // drop what we've added and the separator
+      working.removeSubrange(startIndex..<separatorRange.upperBound)
+    }
+    // remaining after last separator found
+    splitBySeparator.append(working)
+    return splitBySeparator
   }
 }
 

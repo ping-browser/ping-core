@@ -7,8 +7,9 @@
 
 #include <optional>
 
+#include "base/check_is_test.h"
+#include "base/rand_util.h"
 #include "base/time/time.h"
-#include "brave_base/random.h"
 
 namespace brave_ads {
 
@@ -18,14 +19,20 @@ std::optional<base::TimeDelta> g_rand_time_delta_for_testing;
 
 base::TimeDelta RandTimeDelta(const base::TimeDelta time_delta) {
   if (g_rand_time_delta_for_testing) {
+    CHECK_IS_TEST();
+
     return *g_rand_time_delta_for_testing;
   }
 
-  return base::Seconds(brave_base::random::Geometric(time_delta.InSecondsF()));
+  const double random_factor = 0.5 + base::RandDouble();
+
+  return base::Seconds(time_delta.InSecondsF() * random_factor);
 }
 
 ScopedRandTimeDeltaSetterForTesting::ScopedRandTimeDeltaSetterForTesting(
     const base::TimeDelta time_delta) {
+  CHECK_IS_TEST();
+
   g_rand_time_delta_for_testing = time_delta;
 }
 

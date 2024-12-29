@@ -22,16 +22,16 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
-#include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_news/common/locales_helper.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -39,7 +39,7 @@ namespace brave_news {
 
 namespace {
 
-const char kEtagHeaderKey[] = "etag";
+constexpr char kEtagHeaderKey[] = "etag";
 
 GURL GetFeedUrl(const std::string& locale) {
   GURL feed_url("https://" + brave_news::GetHostname() + "/brave-today/feed." +
@@ -112,7 +112,7 @@ FeedFetcher::FeedFetcher(
 
 FeedFetcher::~FeedFetcher() = default;
 
-void FeedFetcher::FetchFeed(const BraveNewsSubscriptions& subscriptions,
+void FeedFetcher::FetchFeed(const SubscriptionsSnapshot& subscriptions,
                             FetchFeedCallback callback) {
   VLOG(1) << __FUNCTION__;
 
@@ -123,7 +123,7 @@ void FeedFetcher::FetchFeed(const BraveNewsSubscriptions& subscriptions,
 }
 
 void FeedFetcher::OnFetchFeedFetchedPublishers(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     FetchFeedCallback callback,
     Publishers publishers) {
   if (publishers.empty()) {
@@ -237,7 +237,7 @@ void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void FeedFetcher::IsUpdateAvailable(const BraveNewsSubscriptions& subscriptions,
+void FeedFetcher::IsUpdateAvailable(const SubscriptionsSnapshot& subscriptions,
                                     ETags etags,
                                     UpdateAvailableCallback callback) {
   VLOG(1) << __FUNCTION__;
@@ -250,7 +250,7 @@ void FeedFetcher::IsUpdateAvailable(const BraveNewsSubscriptions& subscriptions,
 }
 
 void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     ETags etags,
     UpdateAvailableCallback callback,
     Publishers publishers) {

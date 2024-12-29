@@ -5,7 +5,6 @@
 
 import Foundation
 import Growth
-import Onboarding
 import Preferences
 import Shared
 
@@ -29,7 +28,7 @@ public enum FullScreenCalloutType: CaseIterable {
     case .vpnUpdateBilling: return 0
     case .bottomBar: return 0
     case .vpnPromotion: return 4
-    case .defaultBrowser: return 10
+    case .defaultBrowser: return Locale.current.isNewOnboardingRegion ? 7 : 10
     case .rewards: return 8
     case .vpnLinkReceipt: return 0
     }
@@ -63,8 +62,9 @@ public struct FullScreenCalloutManager {
   /// It determines whether we should show show the designated callout or not and sets corresponding preferences accordingly.
   /// Returns true if the callout should be shown.
   public static func shouldShowCallout(calloutType: FullScreenCalloutType) -> Bool {
-    // If REgion is Japan check new focus onboarding is finished
-    if Locale.current.regionCode == "JP", !Preferences.FocusOnboarding.focusOnboardingFinished.value
+    // If region is onboarding_region check new focus onboarding is finished
+    if Locale.current.isNewOnboardingRegion,
+      !Preferences.FocusOnboarding.focusOnboardingFinished.value
     {
       return false
     }
@@ -80,8 +80,8 @@ public struct FullScreenCalloutManager {
     var calloutDelayInterval = calloutType.period.days
 
     // Delay period 3 days that will be added to full screen callouts
-    // This will be the case as long as new onboarding is active for JAPAN
-    if Locale.current.regionCode == "JP" {
+    // This will be the case as long as new onboarding is active for onboarding_regions
+    if Locale.current.isNewOnboardingRegion {
       calloutDelayInterval += delayAmountJpOnboarding
     }
 

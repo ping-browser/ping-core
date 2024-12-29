@@ -16,9 +16,11 @@ class WalletUserAssetTests: CoreDataTestCase {
     contractAddress: "0x123",
     name: "mockAsset",
     logo: "",
+    isCompressed: false,
     isErc20: true,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "MA",
@@ -33,9 +35,11 @@ class WalletUserAssetTests: CoreDataTestCase {
     contractAddress: "0x123",
     name: "mockAsset2",
     logo: "",
+    isCompressed: false,
     isErc20: true,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "MA",
@@ -50,9 +54,11 @@ class WalletUserAssetTests: CoreDataTestCase {
     contractAddress: "0x123",
     name: "mockAsset3",
     logo: "",
+    isCompressed: false,
     isErc20: true,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "MA",
@@ -90,12 +96,14 @@ class WalletUserAssetTests: CoreDataTestCase {
     XCTAssertFalse(userAsset.isDeletedByUser)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(
-        for: asset,
-        visible: false,
-        isSpam: true,
-        isDeletedByUser: true
-      )
+      Task {
+        await WalletUserAsset.updateUserAsset(
+          for: asset,
+          visible: false,
+          isSpam: true,
+          isDeletedByUser: true
+        )
+      }
     }
 
     DataController.viewContext.refreshAllObjects()
@@ -113,16 +121,18 @@ class WalletUserAssetTests: CoreDataTestCase {
     createAndWait(asset: asset3)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(
-        for: asset2,
-        visible: false,
-        isSpam: false,
-        isDeletedByUser: false
-      )
+      Task {
+        await WalletUserAsset.updateUserAsset(
+          for: asset2,
+          visible: false,
+          isSpam: false,
+          isDeletedByUser: false
+        )
+      }
     }
 
     DataController.viewContext.refreshAllObjects()
-    let allAssets = WalletUserAsset.getAllVisibleUserAssets()
+    let allAssets = WalletUserAsset.getAllUserAssets(visible: true)
     XCTAssertNotNil(allAssets)
     XCTAssertEqual(allAssets!.count, 2)
   }
@@ -132,12 +142,14 @@ class WalletUserAssetTests: CoreDataTestCase {
     createAndWait(asset: asset2)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(
-        for: asset2,
-        visible: false,
-        isSpam: false,
-        isDeletedByUser: true
-      )
+      Task {
+        await WalletUserAsset.updateUserAsset(
+          for: asset2,
+          visible: false,
+          isSpam: false,
+          isDeletedByUser: true
+        )
+      }
     }
 
     DataController.viewContext.refreshAllObjects()
@@ -152,7 +164,9 @@ class WalletUserAssetTests: CoreDataTestCase {
     createAndWait(asset: asset)
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.removeUserAsset(asset: asset)
+      Task {
+        await WalletUserAsset.removeUserAsset(token: asset)
+      }
     }
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 0)
   }
@@ -160,9 +174,13 @@ class WalletUserAssetTests: CoreDataTestCase {
   // MARK: - Utility
 
   @discardableResult
-  private func createAndWait(asset: BraveWallet.BlockchainToken) -> WalletUserAsset {
+  private func createAndWait(
+    asset: BraveWallet.BlockchainToken
+  ) -> WalletUserAsset {
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.addUserAsset(asset: asset)
+      Task {
+        await WalletUserAsset.addUserAsset(token: asset)
+      }
     }
     let userAsset = try! DataController.viewContext.fetch(fetchRequest).first!
     return userAsset

@@ -3,28 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../../../constants/types'
+import * as bs58 from 'bs58'
 import { LedgerSolanaKeyring } from '../interfaces'
 import {
-  GetAccountsHardwareOperationResult,
-  SignHardwareOperationResult,
-  SolDerivationPaths
+  AccountFromDevice,
+  HardwareImportScheme,
+  DerivationSchemes,
+  HardwareOperationResultAccounts,
+  HardwareOperationResultSolanaSignature
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
-  LedgerError
-} from './ledger-messages'
-import {
   SolGetAccountResponse,
-  SolGetAccountResponsePayload,
-  SolSignTransactionResponse,
-  SolSignTransactionResponsePayload
-} from './sol-ledger-messages'
+  SolSignTransactionResponse
+} from './ledger-messages'
 
-import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
-import { getPathForSolLedgerIndex } from '../../../utils/derivation_path_utils'
 
 export default class SolanaLedgerBridgeKeyring
   extends LedgerBridgeKeyring
@@ -34,50 +30,35 @@ export default class SolanaLedgerBridgeKeyring
     super(onAuthorized)
   }
 
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.SOL
-  }
-
-  keyringId = (): BraveWallet.KeyringId => {
-    return BraveWallet.KeyringId.kSolana
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.SolLedger
   }
 
   getAccounts = async (
     from: number,
-    to: number,
-    scheme: SolDerivationPaths
-  ): Promise<GetAccountsHardwareOperationResult> => {
+    count: number,
+    scheme: HardwareImportScheme
+  ): Promise<HardwareOperationResultAccounts> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
     }
     // The root path does not support an index
-    if (scheme === SolDerivationPaths.Bip44Root) {
-      return this.getAccountsFromDevice(
-        [this.getPathForIndex(0, scheme)],
-        false,
-        scheme
-      )
+    if (scheme.derivationScheme === DerivationSchemes.SolLedgerBip44Root) {
+      return this.getAccountsFromDevice([scheme.pathTemplate(0)])
     }
 
-    from = from >= 0 ? from : 0
-    const paths = []
-    const addZeroPath = from > 0 || to < 0
-    if (addZeroPath) {
-      // Add zero address to calculate device id.
-      paths.push(this.getPathForIndex(0, scheme))
+    const paths: string[] = []
+    for (let i = 0; i < count; i++) {
+      paths.push(scheme.pathTemplate(from + i))
     }
-
-    for (let i = from; i <= to; i++) {
-      paths.push(this.getPathForIndex(i, scheme))
-    }
-    return this.getAccountsFromDevice(paths, addZeroPath, scheme)
+    return this.getAccountsFromDevice(paths)
   }
 
   signTransaction = async (
     path: string,
     rawTxBytes: Buffer
-  ): Promise<SignHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultSolanaSignature> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -97,29 +78,20 @@ export default class SolanaLedgerBridgeKeyring
       return this.createErrorFromCode(data)
     }
     if (!data.payload.success) {
-      // TODO Either pass data.payload (LedgerError) or data.payload.message
-      // (LedgerError.message) consistently here and in getAccountsFromDevice.
-      // Currently we pass the entire LedgerError up to UI only for getAccounts
-      // to make statusCode available, but don't do the same here for
-      // signTransaction.
-      const ledgerError = data.payload as LedgerError
-      return {
-        success: false,
-        error: ledgerError.message,
-        code: ledgerError.statusCode
-      }
+      return { ...data.payload }
     }
-    const responsePayload = data.payload as SolSignTransactionResponsePayload
-    return { success: true, payload: responsePayload.signature }
+    return {
+      success: true,
+      // TODO(apaymyshev): should have trusted->untrusted checks?
+      signature: { bytes: [...data.payload.untrustedSignatureBytes] }
+    }
   }
 
   private readonly getAccountsFromDevice = async (
-    paths: string[],
-    skipZeroPath: boolean,
-    scheme: SolDerivationPaths
-  ): Promise<GetAccountsHardwareOperationResult> => {
-    let accounts = []
-    const zeroPath = this.getPathForIndex(0, scheme)
+    paths: string[]
+  ): Promise<HardwareOperationResultAccounts> => {
+    let accounts: AccountFromDevice[] = []
+
     for (const path of paths) {
       const data = await this.sendCommand<SolGetAccountResponse>({
         command: LedgerCommand.GetAccount,
@@ -135,40 +107,16 @@ export default class SolanaLedgerBridgeKeyring
       }
 
       if (!data.payload.success) {
-        const ledgerError = data.payload as LedgerError
-        return {
-          success: false,
-          error: ledgerError,
-          code: ledgerError.statusCode
-        }
+        return { ...data.payload }
       }
-      const responsePayload = data.payload as SolGetAccountResponsePayload
-
-      if (path === zeroPath) {
-        this.deviceId = await hardwareDeviceIdFromAddress(
-          responsePayload.address
-        )
-        if (skipZeroPath) {
-          // If requested addresses do not have zero indexed adress we add it
-          // intentionally to calculate device id and should not add it to
-          // returned accounts
-          continue
-        }
-      }
-
       accounts.push({
-        address: '',
-        addressBytes: responsePayload.address,
-        derivationPath: path,
-        name: this.type(),
-        hardwareVendor: this.type(),
-        deviceId: this.deviceId,
-        coin: this.coin(),
-        keyringId: this.keyringId()
+        address: bs58.encode(data.payload.address),
+        derivationPath: path
       })
     }
-    return { success: true, payload: accounts }
+    return {
+      success: true,
+      accounts: accounts
+    }
   }
-
-  private readonly getPathForIndex = getPathForSolLedgerIndex
 }

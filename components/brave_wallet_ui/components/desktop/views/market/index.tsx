@@ -21,6 +21,7 @@ import { WalletRoutes } from '../../../../constants/types'
 
 // Styled Components
 import { LoadIcon, LoadIconWrapper, MarketDataIframe } from './style'
+import { Column } from '../../../shared/style'
 
 // Utils
 import {
@@ -214,13 +215,18 @@ export const MarketView = () => {
           <LoadIcon />
         </LoadIconWrapper>
       ) : (
-        <MarketDataIframe
-          iframeHeight={iframeHeight}
-          ref={marketDataIframeRef}
-          onLoad={onMarketDataFrameLoad}
-          src='chrome-untrusted://market-display'
-          sandbox='allow-scripts allow-same-origin'
-        />
+        <Column
+          fullHeight
+          fullWidth
+        >
+          <MarketDataIframe
+            iframeHeight={iframeHeight}
+            ref={marketDataIframeRef}
+            onLoad={onMarketDataFrameLoad}
+            src='chrome-untrusted://market-display'
+            sandbox='allow-scripts allow-same-origin'
+          />
+        </Column>
       )}
     </>
   )

@@ -7,24 +7,19 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 // shared styles
-import { Row } from '../../../shared/style'
+import { Row, Column } from '../../../shared/style'
 
 export const OriginURLText = styled.span`
   word-break: break-word;
   text-align: left;
   margin-bottom: 4px;
-  color: ${leo.color.gray[60]};
+  color: ${leo.color.neutral[60]};
   font-size: 12px;
   margin-bottom: 0px;
 `
 
-export const ContractOriginColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+export const ContractOriginColumn = styled(Column)`
   text-align: left;
-  gap: 4px;
 `
 
 export const InlineContractRow = styled(Row)`
@@ -32,10 +27,10 @@ export const InlineContractRow = styled(Row)`
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-  gap: 4px;
   text-align: left;
-  font-size: 11px;
   vertical-align: center;
+  font: ${leo.font.xSmall.regular};
+  gap: 4px;
 `
 
 export const OriginIndicatorIconWrapper = styled.div`

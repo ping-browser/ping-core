@@ -9,9 +9,10 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "base/task/sequenced_task_runner.h"
+#include "base/task/bind_post_task.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_url_loader_impl.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 
 namespace {
 
@@ -45,27 +46,33 @@ logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
 
 namespace skus {
 
-FetchOrderCredentialsCallbackState::FetchOrderCredentialsCallbackState() =
-    default;
-FetchOrderCredentialsCallbackState::~FetchOrderCredentialsCallbackState() =
-    default;
+RustBoundPostTask::RustBoundPostTask(
+    base::OnceCallback<void(skus::mojom::SkusResultPtr)> callback)
+    : callback_(base::BindPostTaskToCurrentDefault(std::move(callback))) {}
 
-PrepareCredentialsPresentationCallbackState::
-    PrepareCredentialsPresentationCallbackState() = default;
-PrepareCredentialsPresentationCallbackState::
-    ~PrepareCredentialsPresentationCallbackState() = default;
+RustBoundPostTask::~RustBoundPostTask() = default;
 
-CredentialSummaryCallbackState::CredentialSummaryCallbackState() = default;
-CredentialSummaryCallbackState::~CredentialSummaryCallbackState() = default;
+void RustBoundPostTask::Run(SkusResult result) {
+  if (callback_) {
+    // Call the bound callback with the result from Rust
+    std::move(callback_).Run(skus::mojom::SkusResult::New(
+        result.code, static_cast<std::string>(result.msg)));
+  }
+}
 
-RefreshOrderCallbackState::RefreshOrderCallbackState() = default;
-RefreshOrderCallbackState::~RefreshOrderCallbackState() = default;
-
-SubmitReceiptCallbackState::SubmitReceiptCallbackState() {}
-SubmitReceiptCallbackState::~SubmitReceiptCallbackState() {}
-
-CreateOrderFromReceiptCallbackState::CreateOrderFromReceiptCallbackState() {}
-CreateOrderFromReceiptCallbackState::~CreateOrderFromReceiptCallbackState() {}
+void RustBoundPostTask::RunWithResponse(SkusResult result,
+                                        rust::cxxbridge1::Str response) {
+  if (callback_) {
+    // Call the bound callback with the response from Rust
+    if (result.code == skus::mojom::SkusResultCode::Ok) {
+      std::move(callback_).Run(skus::mojom::SkusResult::New(
+          skus::mojom::SkusResultCode::Ok, static_cast<std::string>(response)));
+    } else {
+      std::move(callback_).Run(skus::mojom::SkusResult::New(
+          result.code, static_cast<std::string>(result.msg)));
+    }
+  }
+}
 
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,

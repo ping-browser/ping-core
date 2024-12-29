@@ -9,8 +9,8 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/notifications/wallet_notification_service.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
@@ -28,15 +28,16 @@ WalletNotificationServiceFactory::WalletNotificationServiceFactory()
           "WalletNotificationService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(NotificationDisplayServiceFactory::GetInstance());
-  DependsOn(brave_wallet::TxServiceFactory::GetInstance());
+  DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
 }
 
 WalletNotificationServiceFactory::~WalletNotificationServiceFactory() = default;
 
-KeyedService* WalletNotificationServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+WalletNotificationServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new WalletNotificationService(
-      TxServiceFactory::GetServiceForContext(context), context);
+  return std::make_unique<WalletNotificationService>(
+      BraveWalletServiceFactory::GetServiceForContext(context), context);
 }
 
 // static

@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"
 #include "url/gurl.h"
@@ -17,19 +17,12 @@
 
 namespace brave_ads {
 
-class BraveAdsPurchaseIntentModelTest : public UnitTestBase {
+class BraveAdsPurchaseIntentModelTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     resource_ = std::make_unique<PurchaseIntentResource>();
-  }
-
-  bool LoadResource() {
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
-    task_environment_.RunUntilIdle();
-    return resource_->IsInitialized();
   }
 
   std::unique_ptr<PurchaseIntentResource> resource_;
@@ -42,15 +35,17 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
   // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
 
   // Assert
-  EXPECT_TRUE(segments.empty());
+  EXPECT_THAT(purchase_intent_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
@@ -60,56 +55,68 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   processor.Process(GURL("https://www.basicattentiontoken.org/test?bar=foo"));
 
   // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
 
   // Assert
-  EXPECT_TRUE(segments.empty());
+  EXPECT_THAT(purchase_intent_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
 
   // Assert
-  EXPECT_TRUE(segments.empty());
+  EXPECT_THAT(purchase_intent_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsIfNeverMatchedFunnelSites) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://duckduckgo.com/?q=segment+keyword+1"));
 
   // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
 
   // Assert
-  EXPECT_TRUE(segments.empty());
+  EXPECT_THAT(purchase_intent_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
   processor.Process(GURL("https://basicattentiontoken.org/test?bar=foo"));
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
-  // Act & Assert
-  const SegmentList expected_segments = {"segment 3", "segment 2"};
-  EXPECT_EQ(expected_segments, GetPurchaseIntentSegments());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  const SegmentList expected_purchase_intent_segments = {"segment 3",
+                                                         "segment 2"};
+  EXPECT_EQ(expected_purchase_intent_segments, purchase_intent_segments);
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedSegmentKeyphrases) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
 
@@ -118,23 +125,31 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   processor.Process(url);
   processor.Process(url);
 
-  // Act & Assert
-  const SegmentList expected_segments = {"segment 1"};
-  EXPECT_EQ(expected_segments, GetPurchaseIntentSegments());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  const SegmentList expected_purchase_intent_segments = {"segment 1"};
+  EXPECT_EQ(expected_purchase_intent_segments, purchase_intent_segments);
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedFunnelKeywords) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(
       GURL("https://duckduckgo.com/?q=segment+keyword+1+funnel+keyword+2"));
 
-  // Act & Assert
-  const SegmentList expected_segments = {"segment 1"};
-  EXPECT_EQ(expected_segments, GetPurchaseIntentSegments());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  const SegmentList expected_purchase_intent_segments = {"segment 1"};
+  EXPECT_EQ(expected_purchase_intent_segments, purchase_intent_segments);
 }
 
 }  // namespace brave_ads

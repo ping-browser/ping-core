@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 
@@ -143,8 +143,8 @@ std::optional<std::string> ConvertMultiUint64InObjectArrayToString(
     if (key.empty()) {
       return std::nullopt;
     }
-    converted_json = std::string(json::convert_uint64_in_object_array_to_string(
-        path_to_list, path_to_object, key, converted_json));
+    converted_json = json::convert_uint64_in_object_array_to_string(
+        path_to_list, path_to_object, key, converted_json);
     if (converted_json.empty()) {
       return std::nullopt;
     }
@@ -164,6 +164,42 @@ std::optional<std::string> ConvertInt64ToString(const std::string& path,
   if (converted_json.empty()) {
     return std::nullopt;
   }
+  return converted_json;
+}
+
+bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
+                            const std::string& key,
+                            bool nullable,
+                            uint64_t* ret) {
+  if (!ret) {
+    return false;
+  }
+
+  const base::Value* value = dict_value.Find(key);
+  if (!value) {
+    return false;
+  }
+
+  if (nullable && value->is_none()) {
+    *ret = 0;
+    return true;
+  }
+
+  auto* string_value = value->GetIfString();
+  if (!string_value || string_value->empty()) {
+    return false;
+  }
+
+  return base::StringToUint64(*string_value, ret);
+}
+
+std::optional<std::string> ConvertAllNumbersToString(const std::string& path,
+                                                     const std::string& json) {
+  auto converted_json = json::convert_all_numbers_to_string(json, path);
+  if (converted_json.empty()) {
+    return std::nullopt;
+  }
+
   return converted_json;
 }
 
@@ -264,6 +300,7 @@ ParseGetAccountBalanceResponse(const base::Value& json_value) {
     asset->is_erc721 = asset_value.token_type == "ERC721";
     asset->is_erc1155 = asset_value.token_type == "ERC1155";
     asset->is_nft = false;   // Reserved for Solana
+    asset->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
     asset->is_spam = false;  // Reserved for NFTs
     asset->visible = true;
     asset->symbol = asset_value.token_symbol;

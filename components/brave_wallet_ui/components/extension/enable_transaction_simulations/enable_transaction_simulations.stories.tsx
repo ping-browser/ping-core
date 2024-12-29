@@ -5,17 +5,28 @@
 
 import * as React from 'react'
 
+// components
 import {
   WalletPanelStory //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { EnableTransactionSimulations } from './enable_transaction_simulations'
 
-export const _EnableTransactionSimulations = () => {
-  return (
-    <WalletPanelStory walletApiDataOverrides={{}}>
-      <EnableTransactionSimulations />
-    </WalletPanelStory>
-  )
+// styles
+import { PanelWrapper } from '../../../panel/style'
+import { LongWrapper } from '../../../stories/style'
+
+export const _EnableTransactionSimulations = {
+  render: () => {
+    return (
+      <WalletPanelStory walletApiDataOverrides={{}}>
+        <PanelWrapper isLonger={true}>
+          <LongWrapper padding='0px'>
+            <EnableTransactionSimulations />
+          </LongWrapper>
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-export default _EnableTransactionSimulations
+export default { component: EnableTransactionSimulations }

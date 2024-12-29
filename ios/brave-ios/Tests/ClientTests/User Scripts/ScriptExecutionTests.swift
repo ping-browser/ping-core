@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import CryptoKit
 import SnapKit
 import WebKit
@@ -25,6 +26,12 @@ final class ScriptExecutionTests: XCTestCase {
   struct CosmeticFilteringTestDTO: Decodable {
     let hiddenIds: [String]
     let unhiddenIds: [String]
+    let removedElement: Bool
+    let removedClass: Bool
+    let removedAttribute: Bool
+    let styledElement: Bool
+    let upwardInt: Bool
+    let upwardSelector: Bool
   }
 
   @MainActor func testSiteStateListenerScript() async throws {
@@ -224,7 +231,9 @@ final class ScriptExecutionTests: XCTestCase {
     let initialStandardSelectors = Set([".test-ads-primary-standard div"])
     let initialAggressiveSelectors = Set([".test-ads-primary-aggressive div"])
     let polledAggressiveIds = ["test-ad-aggressive"]
-    let polledStandardIds = ["test-ad-1st-party", "test-ad-3rd-party", "test-ad-simple"]
+    let polledStandardIds = [
+      "test-ad-1st-party", "test-ad-3rd-party", "test-ad-3rd-party-sig-text", "test-ad-simple",
+    ]
     let nestedIds = [
       "test-ad-primary-standard-1st-party", "test-ad-primary-standard-3rd-party",
       "test-ad-primary-aggressive-1st-party", "test-ad-primary-aggressive-3rd-party",
@@ -236,9 +245,25 @@ final class ScriptExecutionTests: XCTestCase {
       switchToSelectorsPollingThreshold: 1000,
       fetchNewClassIdRulesThrottlingMs: 100,
       aggressiveSelectors: initialAggressiveSelectors,
-      standardSelectors: initialStandardSelectors.union(invalidSelectors),
-      styleSelectors: []
+      standardSelectors: initialStandardSelectors.union(invalidSelectors)
     )
+
+    AdblockEngine.setDomainResolver()
+    let engine = try AdblockEngine(
+      rules: [
+        "brave.com###test-remove-element:remove()",
+        "brave.com###test-remove-class:remove-class(test)",
+        "brave.com###test-remove-attribute:remove-attr(test)",
+        "brave.com###test-style-element:style(background-color: red !important)",
+        "brave.com###test-upward-int-target:upward(2)",
+        "brave.com###test-upward-selector-target:upward(#test-upward-selector)",
+      ].joined(separator: "\n")
+    )
+    let proceduralFilters = try engine.cosmeticFilterModel(
+      forFrameURL: URL(string: "https://brave.com")!
+    )?.proceduralActions
+
+    XCTAssertNotNil(proceduralFilters)
 
     // Attach fake message handlers for our CF script
     let selectorsMessageHandler = viewController.attachScriptHandler(
@@ -252,10 +277,6 @@ final class ScriptExecutionTests: XCTestCase {
             from: data
           )
 
-          XCTAssertEqual(
-            dto.data.ids.count,
-            polledAggressiveIds.count + polledStandardIds.count + nestedIds.count
-          )
           for id in polledAggressiveIds {
             XCTAssertTrue(dto.data.ids.contains(id))
           }
@@ -314,6 +335,13 @@ final class ScriptExecutionTests: XCTestCase {
         return nil
       })
     )
+    viewController.attachScriptHandler(
+      contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+      name: "LoggingHandler",
+      messageHandler: MockMessageHandler(callback: { message in
+        print("Script Message: \(message.body)")
+      })
+    )
 
     // Load the view and add scripts
     viewController.loadViewIfNeeded()
@@ -324,7 +352,9 @@ final class ScriptExecutionTests: XCTestCase {
     try await viewController.loadHTMLStringAndWait(htmlString)
 
     // Execute the selectors poller script
-    let script = try ScriptFactory.shared.makeScript(for: .selectorsPoller(setup))
+    let script = try ScriptFactory.shared.makeScript(
+      for: .selectorsPoller(setup, proceduralActions: Set(proceduralFilters ?? []))
+    )
     try await viewController.webView.evaluateSafeJavaScriptThrowing(
       functionName: script.source,
       contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
@@ -378,7 +408,10 @@ final class ScriptExecutionTests: XCTestCase {
     )
     XCTAssertEqual(resultsAfterPump?.unhiddenIds.contains("test-ad-1st-party"), true)
     XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-aggressive"), true)
+    // hidden because of 3rd party src
     XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-3rd-party"), true)
+    // unhidden because it contains significant amount of text
+    XCTAssertEqual(resultsAfterPump?.unhiddenIds.contains("test-ad-3rd-party-sig-text"), true)
     XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-simple"), true)
     XCTAssertEqual(
       resultsAfterPump?.hiddenIds.contains("test-ad-primary-aggressive-1st-party"),
@@ -388,5 +421,12 @@ final class ScriptExecutionTests: XCTestCase {
       resultsAfterPump?.hiddenIds.contains("test-ad-primary-aggressive-3rd-party"),
       true
     )
+    // Test for procedural filters
+    XCTAssertTrue(resultsAfterPump?.removedElement ?? false)
+    XCTAssertTrue(resultsAfterPump?.removedAttribute ?? false)
+    XCTAssertTrue(resultsAfterPump?.removedClass ?? false)
+    XCTAssertTrue(resultsAfterPump?.styledElement ?? false)
+    XCTAssertTrue(resultsAfterPump?.upwardInt ?? false)
+    XCTAssertTrue(resultsAfterPump?.upwardSelector ?? false)
   }
 }

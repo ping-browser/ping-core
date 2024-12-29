@@ -9,24 +9,22 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
-#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/ios/browser/playlist/features.h"
 #include "build/build_config.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
+#include "ios/components/security_interstitials/https_only_mode/feature.h"
+#include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -40,38 +38,20 @@
       FEATURE_VALUE_TYPE(skus::features::kSkusFeature), \
   })
 
-#define BRAVE_IPFS_FEATURE_ENTRIES                                   \
-  IF_BUILDFLAG(ENABLE_IPFS,                                          \
-               EXPAND_FEATURE_ENTRIES({                              \
-                   "brave-ipfs",                                     \
-                   "Enable IPFS",                                    \
-                   "Enable native support of IPFS.",                 \
-                   flags_ui::kOsIos,                                 \
-                   FEATURE_VALUE_TYPE(ipfs::features::kIpfsFeature), \
-               }))
-
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
       {                                                                       \
-          "enable-nft-pinning",                                               \
-          "Enable NFT pinning",                                               \
-          "Enable NFT pinning for Brave Wallet",                              \
-          flags_ui::kOsIos,                                                   \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletNftPinningFeature),         \
-      },                                                                      \
-      {                                                                       \
           "brave-wallet-zcash",                                               \
           "Enable BraveWallet ZCash support",                                 \
-          "Zcash support for native Brave Wallet",                            \
+          "Zcash support for native Ping Wallet",                            \
           flags_ui::kOsIos,                                                   \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletZCashFeature),              \
       },                                                                      \
       {                                                                       \
           "brave-wallet-bitcoin",                                             \
-          "Enable Brave Wallet Bitcoin support",                              \
-          "Bitcoin support for native Brave Wallet",                          \
+          "Enable Ping Wallet Bitcoin support",                              \
+          "Bitcoin support for native Ping Wallet",                          \
           flags_ui::kOsIos,                                                   \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletBitcoinFeature),            \
@@ -89,10 +69,47 @@
           "brave-wallet-enable-transaction-simulations",                      \
           "Enable transaction simulations",                                   \
           "Enable usage of Blowfish API for running transaction simulations " \
-          "in Brave Wallet",                                                  \
+          "in Ping Wallet",                                                  \
           flags_ui::kOsIos,                                                   \
           FEATURE_VALUE_TYPE(brave_wallet::features::                         \
                                  kBraveWalletTransactionSimulationsFeature),  \
+      })
+
+#define BRAVE_SHIELDS_FEATURE_ENTRIES                                          \
+  EXPAND_FEATURE_ENTRIES(                                                      \
+      {                                                                        \
+          "brave-shred",                                                       \
+          "Enable Brave 'Shred' Feature",                                      \
+          "Enable the Brave ‘Shred’ feature which will allow a user to "   \
+          "easily delete all site data on demand or automatically when "       \
+          "closing a site or terminating the application.",                    \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-shred-cache-data",                                            \
+          "Shred Clears All Cache Data",                                       \
+          "Shred feature will also remove all cache data, in addition to the " \
+          "data associated with the site being shred.",                        \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredCacheData),   \
+      },                                                                       \
+      {                                                                        \
+          "https-by-default",                                                  \
+          "Use HTTPS by Default",                                              \
+          "Attempt to connect to all websites using HTTPS before falling "     \
+          "back to HTTP.",                                                     \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
+      },                                                                       \
+      {                                                                        \
+          "https-only-mode",                                                   \
+          "Enable HTTPS By Default Strict Mode",                               \
+          "Connect to all websites using HTTPS and display an intersitital "   \
+          "to fallback to HTTP",                                               \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              security_interstitials::features::kHttpsOnlyMode),               \
       })
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -112,10 +129,29 @@
       flags_ui::kOsIos,                                      \
       FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory), \
   })
+#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                   \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-ai-chat-page-content-refine",                                  \
+      "Brave AI Chat Page Content Refine",                                  \
+      "Enable local text embedding for long page content in order to find " \
+      "most relevant parts to the prompt within context limit.",            \
+      flags_ui::kOsIos,                                                     \
+      FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),            \
+  })
 #else
 #define BRAVE_AI_CHAT
 #define BRAVE_AI_CHAT_HISTORY
+#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE
 #endif
+
+#define BRAVE_PLAYLIST_FEATURE_ENTRIES                        \
+  EXPAND_FEATURE_ENTRIES({                                    \
+      "brave-new-playlist-ui",                                \
+      "Enables new Playlist UI",                              \
+      "Enable the revamped Playlist experience",              \
+      flags_ui::kOsIos,                                       \
+      FEATURE_VALUE_TYPE(playlist::features::kNewPlaylistUI), \
+  })
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
@@ -203,9 +239,11 @@
               brave_ads::                                                      \
                   kShouldAlwaysTriggerBraveSearchResultAdEventsFeature),       \
       })                                                                       \
-  BRAVE_IPFS_FEATURE_ENTRIES                                                   \
+  BRAVE_SHIELDS_FEATURE_ENTRIES                                                \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
+  BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                            \
+  BRAVE_PLAYLIST_FEATURE_ENTRIES                                               \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.

@@ -32,17 +32,17 @@ import os
   public static let shared = AdBlockGroupsManager(
     standardManager: GroupedAdBlockEngine.EngineType.standard.makeDefaultManager(),
     aggressiveManager: GroupedAdBlockEngine.EngineType.aggressive.makeDefaultManager(),
-    contentBlockerManager: ContentBlockerManager.shared,
+    contentBlockerManager: ContentBlockerManager(),
     sourceProvider: DefaultSourceProvider()
   )
 
-  private let standardManager: AdBlockEngineManager
-  private let aggressiveManager: AdBlockEngineManager
-  private let contentBlockerManager: ContentBlockerManager
-  private let sourceProvider: SourceProvider
-
+  let standardManager: AdBlockEngineManager
+  let aggressiveManager: AdBlockEngineManager
+  let sourceProvider: SourceProvider
   /// The info for the resource file. This is a shared file used by all filter lists that contain scriplets. This information is used for lazy loading.
   public var resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+  /// The content blocker manager that will be used to compile and manage content blockers
+  let contentBlockerManager: ContentBlockerManager
 
   init(
     standardManager: AdBlockEngineManager,
@@ -74,14 +74,60 @@ import os
       // We need this for all filter lists so we can't compile anything until we download it
       self.resourcesInfo = resourcesInfo
 
-      if #available(iOS 16.0, *) {
-        ContentBlockerManager.log.debug(
-          "Loaded resources component from cache: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
+      ContentBlockerManager.log.debug(
+        "Loaded resources component from cache: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
+      )
+    }
+  }
+
+  /// This will load bundled data for the given content blocking modes. But only if the files are not already compiled.
+  func loadBundledDataIfNeeded() async {
+    // Compile bundled blocklists but only if we don't have anything already loaded.
+    await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach {
+      genericType in
+      let blocklistType = ContentBlockerManager.BlocklistType.generic(genericType)
+      var missingModes = await self.contentBlockerManager.missingModes(
+        for: blocklistType,
+        version: genericType.version
+      )
+
+      // When we compiled the standard engine, we don't use this stored type anymore
+      if genericType == .blockAds {
+        // This type is temproary and replaced with a downloaded filter list
+        // Check if we have the downloaded version of this replacement.
+        await blocklistType.allowedModes.asyncForEach { mode in
+          if await self.contentBlockerManager.hasRuleList(
+            for: self.standardManager.blocklistType,
+            mode: mode
+          ) {
+            missingModes.removeAll(where: { $0 == mode })
+            guard !missingModes.contains(mode) else { return }
+
+            do {
+              // Remove this as it's no longer needed
+              try await self.contentBlockerManager.removeRuleLists(
+                for: blocklistType,
+                mode: mode
+              )
+            } catch {
+              // we don't care if we failed to remove this
+            }
+          }
+        }
+      }
+
+      guard !missingModes.isEmpty else { return }
+
+      do {
+        try await self.contentBlockerManager.compileBundledRuleList(
+          for: genericType,
+          modes: missingModes
         )
-      } else {
         ContentBlockerManager.log.debug(
-          "Loaded resources component from cache: `\(resourcesInfo.localFileURL.path)`"
+          "Compiled rule lists for \(blocklistType.debugDescription)"
         )
+      } catch {
+        assertionFailure("A bundled file should not fail to compile")
       }
     }
   }
@@ -110,7 +156,7 @@ import os
         manager.add(fileInfo: fileInfo)
       }
 
-      await manager.compileImmediatelyIfNeeded(
+      await manager.compileAvailableEnginesIfNeeded(
         for: sourceProvider.enabledSources,
         resourcesInfo: self.resourcesInfo
       )
@@ -132,9 +178,8 @@ import os
   func update(
     fileInfos: [AdBlockEngineManager.FileInfo]
   ) {
-    let enabledSources = sourceProvider.enabledSources
-
     for engineType in GroupedAdBlockEngine.EngineType.allCases {
+      let enabledSources = sourceProvider.enabledSources(for: engineType)
       let manager = getManager(for: engineType)
       let sources = sourceProvider.sources(for: engineType)
       var updatedFiles = false
@@ -148,7 +193,7 @@ import os
 
         if enabledSources.contains(fileInfo.filterListInfo.source) {
           Task {
-            await ensureContentBlockers(for: fileInfo, engineType: engineType)
+            await ensureIndividualContentBlockers(for: fileInfo, engineType: engineType)
           }
         }
 
@@ -158,11 +203,62 @@ import os
 
       if updatedFiles {
         manager.compileDelayedIfNeeded(
-          for: enabledSources,
-          resourcesInfo: resourcesInfo
+          for: sourceProvider,
+          resourcesInfo: resourcesInfo,
+          contentBlockerManager: contentBlockerManager
         )
       }
     }
+  }
+
+  /// Update the file managers with the latest files and will compile the engines right away.
+  /// - Parameters:
+  ///   - fileInfos: The file infos to update on the appropriate engine manager
+  func updateImmediately(
+    fileInfos: [AdBlockEngineManager.FileInfo]
+  ) async {
+    let enabledSources = sourceProvider.enabledSources
+
+    for engineType in GroupedAdBlockEngine.EngineType.allCases {
+      let manager = getManager(for: engineType)
+      let sources = sourceProvider.sources(for: engineType)
+      var updatedFiles = false
+
+      // Compile content blockers if this filter list is enabled
+      for fileInfo in fileInfos {
+        guard sources.contains(fileInfo.filterListInfo.source) else {
+          // This file is not for this engine type
+          continue
+        }
+        if enabledSources.contains(fileInfo.filterListInfo.source) {
+          await ensureIndividualContentBlockers(for: fileInfo, engineType: engineType)
+        }
+
+        updatedFiles = true
+        manager.add(fileInfo: fileInfo)
+      }
+
+      if updatedFiles {
+        async let compileEngines: Void = manager.compileAvailableEnginesIfNeeded(
+          for: enabledSources,
+          resourcesInfo: resourcesInfo
+        )
+        async let compileContentBlockers: Void = manager.ensureGroupedContentBlockers(
+          for: enabledSources,
+          contentBlockerManager: contentBlockerManager
+        )
+        _ = await (compileEngines, compileContentBlockers)
+      }
+    }
+  }
+
+  /// Handle updated filter list info. Will compile the engine immediately.
+  /// - Parameters:
+  ///   - fileInfo: The file info to update on the appropriate engine manager
+  func updateImmediately(
+    fileInfo: AdBlockEngineManager.FileInfo
+  ) async {
+    await updateImmediately(fileInfos: [fileInfo])
   }
 
   /// Handle updated filter list info
@@ -181,6 +277,13 @@ import os
     removeFileInfos(for: [source])
   }
 
+  /// Remove the file info from the list that is no longer available and compile the engines if it is needed.
+  func removeFileInfoImmediately(
+    for source: GroupedAdBlockEngine.Source
+  ) async {
+    await removeFileInfosImmediately(for: [source])
+  }
+
   /// Remove the file infos from the list that is no longer available and compile the engines if it is needed.
   func removeFileInfos(
     for sources: [GroupedAdBlockEngine.Source]
@@ -192,9 +295,32 @@ import os
       }
 
       manager.compileDelayedIfNeeded(
-        for: sourceProvider.enabledSources,
+        for: sourceProvider,
+        resourcesInfo: resourcesInfo,
+        contentBlockerManager: contentBlockerManager
+      )
+    }
+  }
+
+  /// Remove the file infos from the list that is no longer available and compile the engines if it is needed.
+  func removeFileInfosImmediately(
+    for sources: [GroupedAdBlockEngine.Source]
+  ) async {
+    for engineType in GroupedAdBlockEngine.EngineType.allCases {
+      let manager = getManager(for: engineType)
+      for source in sources {
+        manager.removeInfo(for: source)
+      }
+
+      async let compileEngines: Void = manager.compileAvailableEnginesIfNeeded(
+        for: sourceProvider.enabledSources(for: engineType),
         resourcesInfo: resourcesInfo
       )
+      async let compileContentBlockers: Void = manager.ensureGroupedContentBlockers(
+        for: sourceProvider.enabledSources(for: engineType),
+        contentBlockerManager: contentBlockerManager
+      )
+      _ = await (compileEngines, compileContentBlockers)
     }
   }
 
@@ -202,62 +328,158 @@ import os
   /// Will not compile anything is there is already the same set of files being compiled.
   func compileEnginesIfFilesAreReady() {
     for engineType in GroupedAdBlockEngine.EngineType.allCases {
-      compileEngineIfFilesAreReady(for: engineType)
+      compileIfFilesAreReady(for: engineType)
     }
   }
 
   /// Immediately compile the engine for the given type if it has all the files ready..
   /// Will not compile anything is there is already the same set of files being compiled.
-  func compileEngineIfFilesAreReady(for engineType: GroupedAdBlockEngine.EngineType) {
-    let allEnabledSources = sourceProvider.enabledSources
-    let engineTypeSources = sourceProvider.sources(for: engineType)
-    let enabledSources = allEnabledSources.filter({ engineTypeSources.contains($0) })
+  func compileIfFilesAreReady(for engineType: GroupedAdBlockEngine.EngineType) {
     let manager = self.getManager(for: engineType)
-    guard manager.checkHasAllInfo(for: enabledSources) else { return }
+    let enabledSources = sourceProvider.enabledSources(for: engineType)
+    let compilableEngineSources = manager.compilableFiles(for: enabledSources)
+      .map({ $0.filterListInfo.source })
 
-    Task {
-      await manager.compileImmediatelyIfNeeded(
-        for: enabledSources,
-        resourcesInfo: self.resourcesInfo
-      )
+    if enabledSources.allSatisfy({ compilableEngineSources.contains($0) }) {
+      Task {
+        await manager.compileAvailableEnginesIfNeeded(
+          for: enabledSources,
+          resourcesInfo: self.resourcesInfo
+        )
+      }
+    }
+
+    if engineType.combineContentBlockers {
+      let contentBlockerSources = enabledSources.map({ $0.contentBlockerSource })
+      let compilableContentBlockerSources = manager.compilableFiles(
+        for: contentBlockerSources
+      ).map({ $0.filterListInfo.source })
+
+      if contentBlockerSources.allSatisfy({ compilableContentBlockerSources.contains($0) }) {
+        Task {
+          await manager.ensureGroupedContentBlockers(
+            for: enabledSources,
+            contentBlockerManager: contentBlockerManager
+          )
+        }
+      }
     }
   }
 
-  /// Ensure all engines and content blockers are compiled right away.
+  /// Ensure all engines are compiled right away.
   /// Will not compile anything is there is already the same set of files being compiled.
   func compileEnginesIfNeeded() async {
     await GroupedAdBlockEngine.EngineType.allCases.asyncConcurrentForEach { engineType in
       let enabledSources = self.sourceProvider.enabledSources(for: engineType)
       let manager = self.getManager(for: engineType)
-      await manager.compileImmediatelyIfNeeded(
+      await manager.compileAvailableEnginesIfNeeded(
         for: enabledSources,
         resourcesInfo: self.resourcesInfo
       )
     }
   }
 
-  /// Ensure all the content blockers are compiled for any file info found in the list of enabled sources
-  private func ensureContentBlockers(
-    for enabledSources: [GroupedAdBlockEngine.Source],
-    engineType: GroupedAdBlockEngine.EngineType
-  ) {
-    let manager = getManager(for: engineType)
-    // Compile all content blockers for the given manager
-    manager.compilableFiles(for: enabledSources).forEach { fileInfo in
-      Task {
-        await ensureContentBlockers(for: fileInfo, engineType: engineType)
-      }
+  /// Ensure all engines are compiled right away.
+  func compileEngines() async {
+    await GroupedAdBlockEngine.EngineType.allCases.asyncConcurrentForEach { engineType in
+      let enabledSources = self.sourceProvider.enabledSources(for: engineType)
+      let manager = self.getManager(for: engineType)
+      await manager.compileAvailableEngines(
+        for: enabledSources,
+        resourcesInfo: self.resourcesInfo
+      )
     }
   }
 
-  /// Ensure the content blocker is compiled for the given source
-  private func ensureContentBlockers(
+  /// Get all required rule lists for the given domain
+  public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
+    let validBlocklistTypes = self.validBlocklistTypes(for: domain)
+    let level = domain.globalBlockAdsAndTrackingLevel
+
+    return await Set(
+      validBlocklistTypes.asyncConcurrentCompactMap({ blocklistType -> WKContentRuleList? in
+        let mode = blocklistType.mode(isAggressiveMode: level.isAggressive)
+
+        do {
+          return try await self.contentBlockerManager.ruleList(for: blocklistType, mode: mode)
+        } catch {
+          // We can't log the error because some rules have empty rules. This is normal
+          // But on relaunches we try to reload the filter list and this will give us an error.
+          // Need to find a more graceful way of handling this so error here can be logged properly
+          return nil
+        }
+      })
+    )
+  }
+
+  /// A list of all valid (enabled) blocklist types for the given domain
+  private func validBlocklistTypes(for domain: Domain) -> Set<(ContentBlockerManager.BlocklistType)>
+  {
+    guard !domain.areAllShieldsOff else { return [] }
+
+    // 1. Get the generic types
+    let genericTypes = contentBlockerManager.validGenericTypes(for: domain).filter { type in
+      switch type {
+      case .blockAds:
+        // We only use this list during first install if the standard manager is not ready
+        return !contentBlockerManager.isReady(
+          for: standardManager.blocklistType,
+          mode: .standard
+        )
+      default:
+        return true
+      }
+    }
+    let genericRuleLists = genericTypes.map { genericType -> ContentBlockerManager.BlocklistType in
+      return .generic(genericType)
+    }
+
+    guard domain.globalBlockAdsAndTrackingLevel.isEnabled else {
+      return Set(genericRuleLists)
+    }
+
+    let engineBlocklistTypes = GroupedAdBlockEngine.EngineType.allCases.compactMap {
+      engineType -> ContentBlockerManager.BlocklistType? in
+      guard engineType.combineContentBlockers else { return nil }
+      return getManager(for: engineType).blocklistType
+    }
+
+    let sourceBlocklistTypes = GroupedAdBlockEngine.EngineType.allCases.flatMap {
+      engineType -> [ContentBlockerManager.BlocklistType] in
+      guard !engineType.combineContentBlockers else { return [] }
+      return sourceProvider.enabledBlocklistTypes(for: engineType)
+    }
+
+    // 2. Get the sources types
+    return Set(genericRuleLists).union(engineBlocklistTypes).union(sourceBlocklistTypes)
+  }
+
+  /// Remove all un-needed content blockers
+  public func cleaupInvalidRuleLists() async {
+    let engineGroupTypes = GroupedAdBlockEngine.EngineType.allCases
+      .flatMap({ engineType -> [ContentBlockerManager.BlocklistType] in
+        if engineType.combineContentBlockers {
+          return [getManager(for: engineType).blocklistType]
+        } else {
+          return sourceProvider.blocklistTypes(for: engineType)
+        }
+      })
+    let allBlocklistTypes = ContentBlockerManager.BlocklistType.allStaticTypes
+      .union(engineGroupTypes)
+    await contentBlockerManager.cleaupInvalidRuleLists(validTypes: allBlocklistTypes)
+  }
+
+  /// Ensure the content blocker is compiled for the given source the engine type supports it
+  private func ensureIndividualContentBlockers(
     for fileInfo: AdBlockEngineManager.FileInfo,
     engineType: GroupedAdBlockEngine.EngineType
   ) async {
+    // Only do this for content blockers that should not be grouped
+    guard !engineType.combineContentBlockers else { return }
+
     guard
       let blocklistType = fileInfo.filterListInfo.source.blocklistType(
-        isAlwaysAggressive: engineType.isAlwaysAggressive
+        engineType: engineType
       )
     else {
       return
@@ -268,12 +490,28 @@ import os
       version: fileInfo.filterListInfo.version
     )
 
-    await contentBlockerManager.compileRuleList(
-      at: fileInfo.localFileURL,
-      for: blocklistType,
-      version: fileInfo.filterListInfo.version,
-      modes: modes
-    )
+    guard !modes.isEmpty else {
+      ContentBlockerManager.log.debug(
+        "Rule lists already compiled for \(fileInfo.filterListInfo.debugDescription)"
+      )
+      return
+    }
+
+    do {
+      try await contentBlockerManager.compileRuleList(
+        at: fileInfo.localFileURL,
+        for: blocklistType,
+        version: fileInfo.filterListInfo.version,
+        modes: modes
+      )
+      ContentBlockerManager.log.debug(
+        "Compiled rule lists for \(fileInfo.filterListInfo.debugDescription)"
+      )
+    } catch {
+      ContentBlockerManager.log.error(
+        "Failed to compile rule lists for \(fileInfo.filterListInfo.debugDescription)"
+      )
+    }
   }
 
   private func getCachedResourcesInfo() -> GroupedAdBlockEngine.ResourcesInfo? {
@@ -318,15 +556,9 @@ import os
       }
     }
 
-    if #available(iOS 16.0, *) {
-      ContentBlockerManager.log.debug(
-        "Updated resources component: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
-      )
-    } else {
-      ContentBlockerManager.log.debug(
-        "Updated resources component: `\(resourcesInfo.localFileURL.path)`"
-      )
-    }
+    ContentBlockerManager.log.debug(
+      "Updated resources component: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
+    )
   }
 
   /// Checks the general and regional engines to see if the request should be blocked
@@ -341,7 +573,7 @@ import os
         requestURL: requestURL,
         sourceURL: sourceURL,
         resourceType: resourceType,
-        isAggressiveMode: domain.blockAdsAndTrackingLevel.isAggressive
+        isAggressiveMode: domain.globalBlockAdsAndTrackingLevel.isAggressive
       )
     }).contains(where: { $0 })
   }
@@ -378,7 +610,7 @@ import os
 
   /// Returns all appropriate engines for the given domain
   func cachedEngines(for domain: Domain) -> [GroupedAdBlockEngine] {
-    guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else { return [] }
+    guard domain.globalBlockAdsAndTrackingLevel.isEnabled else { return [] }
     return GroupedAdBlockEngine.EngineType.allCases.compactMap({ getManager(for: $0).engine })
   }
 
@@ -402,7 +634,7 @@ import os
   }
 
   /// Get the appropriate manager for the given engine type.
-  private func getManager(for engineType: GroupedAdBlockEngine.EngineType) -> AdBlockEngineManager {
+  func getManager(for engineType: GroupedAdBlockEngine.EngineType) -> AdBlockEngineManager {
     switch engineType {
     case .standard: return standardManager
     case .aggressive: return aggressiveManager
@@ -426,13 +658,13 @@ extension GroupedAdBlockEngine.EngineType {
 extension FilterListSetting {
   @MainActor var engineSource: GroupedAdBlockEngine.Source? {
     guard let componentId = componentId else { return nil }
-    return .filterList(componentId: componentId, uuid: uuid)
+    return .filterList(componentId: componentId)
   }
 }
 
 extension FilterList {
   @MainActor var engineSource: GroupedAdBlockEngine.Source {
-    return .filterList(componentId: entry.componentId, uuid: self.entry.uuid)
+    return .filterList(componentId: entry.componentId)
   }
 }
 
@@ -461,7 +693,7 @@ extension AdBlockEngineManager.FileInfo {
   }
 }
 
-@MainActor private class DefaultSourceProvider: AdBlockGroupsManager.SourceProvider {
+@MainActor class DefaultSourceProvider: AdBlockGroupsManager.SourceProvider {
   /// Return an array of all sources that are enabled according to user's settings
   /// - Note: This does not take into account the domain or global adblock toggle
   var enabledSources: [GroupedAdBlockEngine.Source] {
@@ -470,19 +702,23 @@ extension AdBlockEngineManager.FileInfo {
     return enabledSources
   }
 
-  /// Return an array of all sources that are enabled according to user's settings and for the given engine type
-  /// - Note: This does not take into account the domain or global adblock toggle
+  /// Return an array of all sources for the given engine type regardless of settings
   func sources(
     for engineType: GroupedAdBlockEngine.EngineType
   ) -> [GroupedAdBlockEngine.Source] {
-    var enabledSources = FilterListStorage.shared.sources(for: engineType)
-    switch engineType {
-    case .aggressive:
-      enabledSources.append(contentsOf: CustomFilterListStorage.shared.enabledSources)
-      return enabledSources
-    case .standard:
-      return enabledSources
+    var sources: [GroupedAdBlockEngine.Source] = []
+    if engineType == .standard {
+      // We add this type to the list
+      // so the file info can be put it to the appropriate engine manager.
+      // But it's never added to an engine because it's never in enabledSources.
+      // In a later step we replace the default filterList with this slimList
+      // And since the file info is available now it can use
+      // it to add it to the grouped engine manager.
+      sources.append(GroupedAdBlockEngine.Source.slimList)
     }
+    sources.append(contentsOf: FilterListStorage.shared.sources(for: engineType))
+    sources.append(contentsOf: CustomFilterListStorage.shared.sources(for: engineType))
+    return sources
   }
 
   func legacyCacheFiles(
@@ -508,5 +744,38 @@ extension AdBlockGroupsManager.SourceProvider {
     let enabledSources = self.enabledSources
     let sources = self.sources(for: engineType)
     return sources.filter({ enabledSources.contains($0) })
+  }
+
+  /// Get all enabled blocklist types for the given engine type
+  fileprivate func enabledBlocklistTypes(
+    for engineType: GroupedAdBlockEngine.EngineType
+  ) -> [ContentBlockerManager.BlocklistType] {
+    return enabledSources(for: engineType).compactMap { source in
+      return source.blocklistType(engineType: engineType)
+    }
+  }
+
+  /// Get all valid blocklist types for the given engine type
+  fileprivate func blocklistTypes(
+    for engineType: GroupedAdBlockEngine.EngineType
+  ) -> [ContentBlockerManager.BlocklistType] {
+    return sources(for: engineType).compactMap { source in
+      return source.blocklistType(engineType: engineType)
+    }
+  }
+}
+
+extension GroupedAdBlockEngine.Source {
+  /// Tells us if we allow exceptions to be pulled out for this filter list
+  func onlyExceptions(for engineType: GroupedAdBlockEngine.EngineType) -> Bool {
+    switch engineType {
+    case .aggressive:
+      return false
+    case .standard:
+      switch self {
+      case .filterList, .slimList: return false
+      case .filterListText, .filterListURL: return true
+      }
+    }
   }
 }

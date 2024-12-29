@@ -12,9 +12,9 @@ namespace webcompat_reporter {
 
 namespace {
 
-const char kAggressive[] = "aggressive";
-const char kStandard[] = "standard";
-const char kAllow[] = "allow";
+constexpr char kAggressive[] = "aggressive";
+constexpr char kStandard[] = "standard";
+constexpr char kAllow[] = "allow";
 
 }  // namespace
 
@@ -28,7 +28,7 @@ const char* GetAdBlockModeString(
     case brave_shields::mojom::AdBlockMode::ALLOW:
       return kAllow;
   }
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 const char* GetFingerprintModeString(
@@ -41,7 +41,7 @@ const char* GetFingerprintModeString(
     case brave_shields::mojom::FingerprintMode::ALLOW_MODE:
       return kAllow;
   }
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 }  // namespace webcompat_reporter

@@ -17,6 +17,7 @@ import {
 // utils
 import { getLocale } from '../../../../common/locale'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
+import { getTransactionTypeName } from '../../../utils/tx-utils'
 
 // components
 import {
@@ -26,7 +27,7 @@ import {
 // style
 import {
   BitcoinDetailColumn,
-  BitcoinDetailLine,
+  CodeDetailLine,
   CodeSnippet,
   CodeSnippetText,
   DetailColumn,
@@ -38,8 +39,6 @@ export interface Props {
   transactionInfo: SerializableTransactionInfo
   instructions?: TypedSolanaInstructionWithParams[]
 }
-
-const txKeys = Object.keys(BraveWallet.TransactionType)
 
 export const TransactionDetailBox = ({
   transactionInfo,
@@ -76,22 +75,20 @@ export const TransactionDetailBox = ({
         {btcData.inputs?.map((input, index) => {
           return (
             <div key={'input' + index}>
-              <BitcoinDetailLine>{`Input: ${index}`}</BitcoinDetailLine>
-              <BitcoinDetailLine>{`Value: ${input.value}`}</BitcoinDetailLine>
-              <BitcoinDetailLine>{`Address: ${
+              <CodeDetailLine>{`Input: ${index}`}</CodeDetailLine>
+              <CodeDetailLine>{`Value: ${input.value}`}</CodeDetailLine>
+              <CodeDetailLine>{`Address: ${
                 input.address //
-              }`}</BitcoinDetailLine>
+              }`}</CodeDetailLine>
             </div>
           )
         })}
         {btcData.outputs?.map((output, index) => {
           return (
             <div key={'output' + index}>
-              <BitcoinDetailLine>{`Output: ${index}`}</BitcoinDetailLine>
-              <BitcoinDetailLine>{`Value: ${output.value}`}</BitcoinDetailLine>
-              <BitcoinDetailLine>
-                {`Address: ${output.address}`}
-              </BitcoinDetailLine>
+              <CodeDetailLine>{`Output: ${index}`}</CodeDetailLine>
+              <CodeDetailLine>{`Value: ${output.value}`}</CodeDetailLine>
+              <CodeDetailLine>{`Address: ${output.address}`}</CodeDetailLine>
             </div>
           )
         })}
@@ -106,7 +103,9 @@ export const TransactionDetailBox = ({
         <DetailColumn>
           {zecData.inputs?.map((input, index) => {
             return (
-              <code key={index}>{`input-${input.value}-${input.address}`}</code>
+              <CodeDetailLine
+                key={index}
+              >{`input-${input.value}-${input.address}`}</CodeDetailLine>
             )
           })}
         </DetailColumn>
@@ -114,9 +113,9 @@ export const TransactionDetailBox = ({
         <DetailColumn>
           {zecData.outputs?.map((output, index) => {
             return (
-              <code
+              <CodeDetailLine
                 key={index}
-              >{`output-${output.value}-${output.address}`}</code>
+              >{`output-${output.value}-${output.address}`}</CodeDetailLine>
             )
           })}
         </DetailColumn>
@@ -165,7 +164,7 @@ export const TransactionDetailBox = ({
           <TransactionText>
             {getLocale('braveWalletTransactionDetailBoxFunction')}:
           </TransactionText>
-          <DetailText>{txKeys[txType]}</DetailText>
+          <DetailText>{getTransactionTypeName(txType)}</DetailText>
         </DetailColumn>
       ) : null}
 

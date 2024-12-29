@@ -9,6 +9,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/extend.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -190,9 +191,10 @@ bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
   return message_ == tx.message_ && raw_signatures_ == tx.raw_signatures_ &&
          wired_tx_ == tx.wired_tx_ && sign_tx_param_ == tx.sign_tx_param_ &&
          to_wallet_address_ == tx.to_wallet_address_ &&
-         spl_token_mint_address_ == tx.spl_token_mint_address_ &&
-         tx_type_ == tx.tx_type_ && lamports_ == tx.lamports_ &&
-         amount_ == tx.amount_ && send_options_ == tx.send_options_;
+         token_address_ == tx.token_address_ && tx_type_ == tx.tx_type_ &&
+         lamports_ == tx.lamports_ && amount_ == tx.amount_ &&
+         send_options_ == tx.send_options_ &&
+         tx.fee_estimation_ == fee_estimation_;
 }
 
 bool SolanaTransaction::operator!=(const SolanaTransaction& tx) const {
@@ -239,13 +241,11 @@ std::optional<std::vector<uint8_t>>
 SolanaTransaction::GetSignedTransactionBytes(
     KeyringService* keyring_service,
     const mojom::AccountIdPtr& selected_account,
-    const std::vector<uint8_t>* selected_account_signature) const {
-  if (!keyring_service && !selected_account_signature) {
-    return std::nullopt;
-  }
+    const mojom::SolanaSignaturePtr& selected_account_signature) const {
+  CHECK(keyring_service);
 
   if (selected_account_signature &&
-      selected_account_signature->size() != kSolanaSignatureSize) {
+      selected_account_signature->bytes.size() != kSolanaSignatureSize) {
     return std::nullopt;
   }
 
@@ -253,6 +253,7 @@ SolanaTransaction::GetSignedTransactionBytes(
   if (!message_signers_pair) {
     return std::nullopt;
   }
+
   auto& message_bytes = message_signers_pair->first;
   auto& signers = message_signers_pair->second;
 
@@ -275,15 +276,12 @@ SolanaTransaction::GetSignedTransactionBytes(
   for (const auto& signer : signers) {
     if (base::EqualsCaseInsensitiveASCII(selected_account->address, signer)) {
       if (selected_account_signature) {
-        transaction_bytes.insert(transaction_bytes.end(),
-                                 selected_account_signature->begin(),
-                                 selected_account_signature->end());
+        base::Extend(transaction_bytes, selected_account_signature->bytes);
       } else {
         std::vector<uint8_t> signature =
             keyring_service->SignMessageBySolanaKeyring(selected_account,
                                                         message_bytes);
-        transaction_bytes.insert(transaction_bytes.end(), signature.begin(),
-                                 signature.end());
+        base::Extend(transaction_bytes, signature);
       }
       ++num_of_sig;
       continue;
@@ -292,10 +290,8 @@ SolanaTransaction::GetSignedTransactionBytes(
       for (const auto& sig_pubkey_pair : sign_tx_param_->signatures) {
         if (sig_pubkey_pair->public_key == signer &&
             sig_pubkey_pair->signature &&
-            sig_pubkey_pair->signature->size() == kSolanaSignatureSize) {
-          transaction_bytes.insert(transaction_bytes.end(),
-                                   sig_pubkey_pair->signature->begin(),
-                                   sig_pubkey_pair->signature->end());
+            sig_pubkey_pair->signature->bytes.size() == kSolanaSignatureSize) {
+          base::Extend(transaction_bytes, sig_pubkey_pair->signature->bytes);
           ++num_of_sig;
           found = true;
           break;
@@ -311,8 +307,7 @@ SolanaTransaction::GetSignedTransactionBytes(
   DCHECK(num_of_sig == signers.size());
 
   // Message.
-  transaction_bytes.insert(transaction_bytes.end(), message_bytes.begin(),
-                           message_bytes.end());
+  base::Extend(transaction_bytes, message_bytes);
 
   if (transaction_bytes.size() > kSolanaMaxTxSize) {
     return std::nullopt;
@@ -320,15 +315,31 @@ SolanaTransaction::GetSignedTransactionBytes(
   return transaction_bytes;
 }
 
-std::string SolanaTransaction::GetSignedTransaction(
-    KeyringService* keyring_service,
-    const mojom::AccountIdPtr& account_id) const {
-  auto transaction_bytes =
-      GetSignedTransactionBytes(keyring_service, account_id);
-  if (!transaction_bytes) {
+std::string SolanaTransaction::GetUnsignedTransaction() const {
+  auto message_signers_pair = GetSerializedMessage();
+  if (!message_signers_pair) {
     return "";
   }
-  return base::Base64Encode(*transaction_bytes);
+
+  auto& message_bytes = message_signers_pair->first;
+  auto& signers = message_signers_pair->second;
+
+  std::vector<uint8_t> transaction_bytes;
+
+  CompactU16Encode(signers.size(), &transaction_bytes);
+
+  // Insert an empty (default) signature for each signer.
+  transaction_bytes.insert(transaction_bytes.end(),
+                           kSolanaSignatureSize * signers.size(), 0);
+
+  transaction_bytes.insert(transaction_bytes.end(), message_bytes.begin(),
+                           message_bytes.end());
+
+  if (transaction_bytes.size() > kSolanaMaxTxSize) {
+    return "";
+  }
+
+  return base::Base64Encode(transaction_bytes);
 }
 
 std::string SolanaTransaction::GetBase64EncodedMessage() const {
@@ -343,10 +354,11 @@ std::string SolanaTransaction::GetBase64EncodedMessage() const {
 mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
   auto solana_tx_data = message_.ToSolanaTxData();
   solana_tx_data->to_wallet_address = to_wallet_address_;
-  solana_tx_data->spl_token_mint_address = spl_token_mint_address_;
+  solana_tx_data->token_address = token_address_;
   solana_tx_data->tx_type = tx_type_;
   solana_tx_data->lamports = lamports_;
   solana_tx_data->amount = amount_;
+  solana_tx_data->fee_estimation = fee_estimation_.Clone();
 
   if (send_options_) {
     solana_tx_data->send_options = send_options_->ToMojomSendOptions();
@@ -362,9 +374,10 @@ mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
 base::Value::Dict SolanaTransaction::ToValue() const {
   base::Value::Dict dict;
   dict.Set("message", message_.ToValue());
-
   dict.Set("to_wallet_address", to_wallet_address_);
-  dict.Set("spl_token_mint_address", spl_token_mint_address_);
+  // We use the old key, spl_token_mint_address, for backwards compatibility
+  // with when it didn't also represent compressed NFT identifiers.
+  dict.Set("spl_token_mint_address", token_address_);
   dict.Set("tx_type", static_cast<int>(tx_type_));
   dict.Set("lamports", base::NumberToString(lamports_));
   dict.Set("amount", base::NumberToString(amount_));
@@ -380,19 +393,30 @@ base::Value::Dict SolanaTransaction::ToValue() const {
                            sign_tx_param_->encoded_serialized_msg);
 
     base::Value::List signatures_list;
-    for (const auto& signature : sign_tx_param_->signatures) {
+    for (const auto& signature_pubkey_pair : sign_tx_param_->signatures) {
       base::Value::Dict signature_dict;
-      signature_dict.Set(kPublicKey, signature->public_key);
-      if (signature->signature) {
-        signature_dict.Set(kSignature,
-                           base::Base64Encode(*signature->signature));
+      signature_dict.Set(kPublicKey, signature_pubkey_pair->public_key);
+      if (signature_pubkey_pair->signature) {
+        signature_dict.Set(
+            kSignature,
+            base::Base64Encode(signature_pubkey_pair->signature->bytes));
       }
-
       signatures_list.Append(std::move(signature_dict));
     }
     sign_tx_param_dict.Set(kSignatures, std::move(signatures_list));
-
     dict.Set(kSignTxParam, std::move(sign_tx_param_dict));
+  }
+
+  if (fee_estimation_) {
+    base::Value::Dict fee_estimation_dict;
+    fee_estimation_dict.Set("base_fee",
+                            base::NumberToString(fee_estimation_->base_fee));
+    fee_estimation_dict.Set(
+        "compute_units", base::NumberToString(fee_estimation_->compute_units));
+    fee_estimation_dict.Set(
+        "fee_per_compute_unit",
+        base::NumberToString(fee_estimation_->fee_per_compute_unit));
+    dict.Set("fee_estimation", std::move(fee_estimation_dict));
   }
 
   return dict;
@@ -404,7 +428,8 @@ void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
               mojom::TransactionType::
                   SolanaSPLTokenTransferWithAssociatedTokenAccountCreation) ||
          (tx_type >= mojom::TransactionType::SolanaDappSignAndSendTransaction &&
-          tx_type <= mojom::TransactionType::SolanaSwap));
+          tx_type <= mojom::TransactionType::SolanaSwap) ||
+         tx_type == mojom::TransactionType::SolanaCompressedNftTransfer);
   tx_type_ = tx_type;
 }
 
@@ -430,12 +455,13 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
   }
   tx->set_to_wallet_address(*to_wallet_address);
 
-  const auto* spl_token_mint_address =
-      value.FindString("spl_token_mint_address");
-  if (!spl_token_mint_address) {
+  // We use spl_token_mint_address as for backwards compatibility
+  // with when it didn't also represent compressed NFT identifiers.
+  const auto* token_address = value.FindString("spl_token_mint_address");
+  if (!token_address) {
     return nullptr;
   }
-  tx->set_spl_token_mint_address(*spl_token_mint_address);
+  tx->set_token_address(*token_address);
 
   auto tx_type = value.FindInt("tx_type");
   if (!tx_type) {
@@ -498,13 +524,48 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
 
       const auto* signature_string = signature_dict->FindString(kSignature);
       if (signature_string) {
-        signature->signature = base::Base64Decode(*signature_string);
+        if (auto decoded = base::Base64Decode(*signature_string)) {
+          signature->signature = mojom::SolanaSignature::New(*decoded);
+        }
       }
 
       signatures.push_back(std::move(signature));
     }
     sign_tx_param->signatures = std::move(signatures);
     tx->set_sign_tx_param(std::move(sign_tx_param));
+  }
+
+  const base::Value::Dict* fee_estimation_dict =
+      value.FindDict("fee_estimation");
+  if (fee_estimation_dict) {
+    auto fee_estimation = mojom::SolanaFeeEstimation::New();
+    const auto* base_fee_string = fee_estimation_dict->FindString("base_fee");
+    uint64_t base_fee = 0;
+    if (base_fee_string && base::StringToUint64(*base_fee_string, &base_fee)) {
+      fee_estimation->base_fee = base_fee;
+    }
+
+    const auto* compute_units_string =
+        fee_estimation_dict->FindString("compute_units");
+    uint32_t compute_units = 0;
+    if (compute_units_string &&
+        base::StringToUint(*compute_units_string, &compute_units)) {
+      fee_estimation->compute_units = compute_units;
+    }
+
+    const auto* fee_per_compute_unit_string =
+        fee_estimation_dict->FindString("fee_per_compute_unit");
+    uint64_t fee_per_compute_unit = 0;
+    if (fee_per_compute_unit_string &&
+        base::StringToUint64(*fee_per_compute_unit_string,
+                             &fee_per_compute_unit)) {
+      fee_estimation->fee_per_compute_unit = fee_per_compute_unit;
+    }
+
+    if (fee_estimation->base_fee != 0 || fee_estimation->compute_units != 0 ||
+        fee_estimation->fee_per_compute_unit != 0) {
+      tx->set_fee_estimation(std::move(fee_estimation));
+    }
   }
 
   return tx;
@@ -538,7 +599,7 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromSolanaTxData(
       std::move(static_account_keys), std::move(instructions),
       std::move(*addr_table_lookups));
   tx->set_to_wallet_address(solana_tx_data->to_wallet_address);
-  tx->set_spl_token_mint_address(solana_tx_data->spl_token_mint_address);
+  tx->set_token_address(solana_tx_data->token_address);
   tx->set_tx_type(solana_tx_data->tx_type);
   tx->set_lamports(solana_tx_data->lamports);
   tx->set_amount(solana_tx_data->amount);
@@ -588,8 +649,9 @@ bool SolanaTransaction::IsPartialSigned() const {
 
   for (const auto& sig_pubkey_pair : sign_tx_param_->signatures) {
     // Has non-empty signature.
-    if (sig_pubkey_pair->signature && !sig_pubkey_pair->signature->empty() &&
-        sig_pubkey_pair->signature !=
+    if (sig_pubkey_pair->signature &&
+        !sig_pubkey_pair->signature->bytes.empty() &&
+        sig_pubkey_pair->signature->bytes !=
             std::vector<uint8_t>(kSolanaSignatureSize, 0)) {
       return true;
     }

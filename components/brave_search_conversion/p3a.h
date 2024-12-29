@@ -22,6 +22,11 @@ inline constexpr char kSearchPromoBannerCHistogramName[] =
     "Brave.Search.Promo.BannerC";
 inline constexpr char kSearchPromoBannerDHistogramName[] =
     "Brave.Search.Promo.BannerD";
+inline constexpr char kSearchPromoDDGBannerCHistogramName[] =
+    "Brave.Search.Promo.DDGBannerC";
+inline constexpr char kSearchPromoDDGBannerDHistogramName[] =
+    "Brave.Search.Promo.DDGBannerD";
+
 inline constexpr char kSearchPromoNTPHistogramName[] =
     "Brave.Search.Promo.NewTabPage";
 inline constexpr char kSearchQueriesBeforeChurnHistogramName[] =

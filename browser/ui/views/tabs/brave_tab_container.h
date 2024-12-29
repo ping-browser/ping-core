@@ -36,7 +36,8 @@ class BraveTabContainer : public TabContainerImpl,
 
   // TabContainerImpl:
   void AddedToWidget() override;
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
   gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
                                          int former_model_index) const override;
@@ -48,18 +49,18 @@ class BraveTabContainer : public TabContainerImpl,
   void OnTabCloseAnimationCompleted(Tab* tab) override;
   void CompleteAnimationAndLayout() override;
   void PaintChildren(const views::PaintInfo& paint_info) override;
+  void SetTabSlotVisibility() override;
 
   // BrowserRootView::DropTarget
   std::optional<BrowserRootView::DropIndex> GetDropIndex(
-      const ui::DropTargetEvent& event,
-      bool allow_replacement) override;
+      const ui::DropTargetEvent& event) override;
   void HandleDragUpdate(
       const std::optional<BrowserRootView::DropIndex>& index) override;
   void HandleDragExited() override;
 
   // SplitViewBrowserDataObserver:
-  void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
-  void OnDidBreakTile(const SplitViewBrowserData::Tile& tile) override;
+  void OnTileTabs(const TabTile& tile) override;
+  void OnDidBreakTile(const TabTile& tile) override;
 
  private:
   class DropArrow : public views::WidgetObserver {
@@ -106,8 +107,7 @@ class BraveTabContainer : public TabContainerImpl,
 
   void PaintBoundingBoxForTiles(gfx::Canvas& canvas,
                                 const SplitViewBrowserData* split_view_data);
-  void PaintBoundingBoxForTile(gfx::Canvas& canvas,
-                               const SplitViewBrowserData::Tile& tile);
+  void PaintBoundingBoxForTile(gfx::Canvas& canvas, const TabTile& tile);
 
   static gfx::ImageSkia* GetDropArrowImage(
       BraveTabContainer::DropArrow::Position pos,

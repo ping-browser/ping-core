@@ -68,7 +68,7 @@ export const getNormalizedExternalRewardsWallet = (
   return {
     accountId: {
       address: '0x',
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       coin: BraveWallet.CoinType.ETH,
       keyringId: 0,
       kind: 0,
@@ -95,7 +95,6 @@ export const getNormalizedExternalRewardsNetwork = (
     supportedKeyrings: [],
     decimals: 0,
     iconUrls: [],
-    isEip1559: true,
     rpcEndpoints: [],
     symbol: externalRewardsProvider,
     symbolName: externalRewardsProvider
@@ -174,9 +173,11 @@ export const getRewardsBATToken = (
     name: 'Basic Attention Token',
     symbol: 'BAT',
     logo: 'chrome://erc-token-images/bat.png',
+    isCompressed: false,
     isErc20: true,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: BraveWallet.SPLTokenProgram.kUnsupported,
     isNft: false,
     isSpam: false,
     decimals: 18,

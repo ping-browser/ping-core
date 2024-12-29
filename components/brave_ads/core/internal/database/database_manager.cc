@@ -8,14 +8,18 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_creation.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/database/database_raze.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -28,62 +32,61 @@ DatabaseManager& DatabaseManager::GetInstance() {
   return GlobalState::GetInstance()->GetDatabaseManager();
 }
 
-void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {
+void DatabaseManager::AddObserver(DatabaseManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
-void DatabaseManager::RemoveObserver(DatabaseManagerObserver* observer) {
+void DatabaseManager::RemoveObserver(DatabaseManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 
 void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   NotifyWillCreateOrOpenDatabase();
 
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  transaction->version = database::kVersion;
-  transaction->compatible_version = database::kCompatibleVersion;
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kInitialize;
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::INITIALIZE;
-
-  transaction->commands.push_back(std::move(command));
-
-  RunDBTransaction(
-      std::move(transaction),
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_db_transaction),
       base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void DatabaseManager::CreateOrOpenCallback(
     ResultCallback callback,
-    mojom::DBCommandResponseInfoPtr command_response) {
-  if (!command_response ||
-      command_response->status !=
-          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to create or open database");
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version",
-                            database::kVersion);
-    base::debug::DumpWithoutCrashing();
-
+    mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
+  if (database::IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to create or open database");
+
     NotifyFailedToCreateOrOpenDatabase();
+
     return std::move(callback).Run(/*success=*/false);
   }
 
-  CHECK(command_response->result);
-  CHECK(command_response->result->get_value()->which() ==
-        mojom::DBValue::Tag::kIntValue);
+  CHECK(mojom_db_transaction_result->rows_union);
+  CHECK_EQ(mojom_db_transaction_result->rows_union->get_column_value_union()
+               ->which(),
+           mojom::DBColumnValueUnion::Tag::kIntValue);
   const int from_version =
-      command_response->result->get_value()->get_int_value();
+      mojom_db_transaction_result->rows_union->get_column_value_union()
+          ->get_int_value();
 
   if (from_version == 0) {
     // Fresh install.
     return Create(std::move(callback));
+  }
+
+  if (from_version <= database::kRazeDatabaseThresholdVersionNumber) {
+    return RazeAndCreate(from_version, std::move(callback));
   }
 
   NotifyDidOpenDatabase();
@@ -91,10 +94,8 @@ void DatabaseManager::CreateOrOpenCallback(
   MaybeMigrate(from_version, std::move(callback));
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 void DatabaseManager::Create(ResultCallback callback) const {
-  BLOG(1, "Create database for schema version " << database::kVersion);
+  BLOG(1, "Create database for schema version " << database::kVersionNumber);
 
   database::Create(base::BindOnce(&DatabaseManager::CreateCallback,
                                   weak_factory_.GetWeakPtr(),
@@ -103,23 +104,24 @@ void DatabaseManager::Create(ResultCallback callback) const {
 
 void DatabaseManager::CreateCallback(ResultCallback callback,
                                      const bool success) const {
-  const int to_version = database::kVersion;
-
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
     // potential defects using `DumpWithoutCrashing`.
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                               "Failed to create database");
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version", to_version);
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version",
+                            database::kVersionNumber);
     base::debug::DumpWithoutCrashing();
 
-    BLOG(1, "Failed to create database for schema version " << to_version);
+    BLOG(0, "Failed to create database for schema version "
+                << database::kVersionNumber);
+
     NotifyFailedToCreateOrOpenDatabase();
 
     return std::move(callback).Run(/*success=*/false);
   }
 
-  BLOG(1, "Created database for schema version " << to_version);
+  BLOG(1, "Created database for schema version " << database::kVersionNumber);
 
   NotifyDidCreateDatabase();
 
@@ -128,29 +130,54 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
   std::move(callback).Run(/*success=*/true);
 }
 
+void DatabaseManager::RazeAndCreate(const int from_version,
+                                    ResultCallback callback) {
+  BLOG(1, "Razing database for schema version " << from_version);
+
+  database::Raze(base::BindOnce(&DatabaseManager::RazeAndCreateCallback,
+                                weak_factory_.GetWeakPtr(), std::move(callback),
+                                from_version));
+}
+
+void DatabaseManager::RazeAndCreateCallback(ResultCallback callback,
+                                            const int from_version,
+                                            const bool success) const {
+  if (!success) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to raze database");
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "from_sqlite_schema_version",
+                            from_version);
+    base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Failed to raze database for schema version " << from_version);
+
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  BLOG(1, "Razed database for schema version " << from_version);
+
+  Create(std::move(callback));
+}
+
 void DatabaseManager::MaybeMigrate(const int from_version,
                                    ResultCallback callback) const {
-  const int to_version = database::kVersion;
+  const int to_version = database::kVersionNumber;
   if (from_version == to_version) {
     BLOG(1, "Database is up to date on schema version " << from_version);
+
     NotifyDatabaseIsReady();
+
     return std::move(callback).Run(/*success=*/true);
   }
 
   if (from_version > to_version) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "from_sqlite_schema_version",
-                            from_version);
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "to_sqlite_schema_version",
-                            to_version);
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Database downgrade not supported");
-    base::debug::DumpWithoutCrashing();
-
-    BLOG(0, "Failed to migrate database from schema version "
+    BLOG(0, "Database downgrade not supported from schema version "
                 << from_version << " to schema version " << to_version);
+
     NotifyFailedToMigrateDatabase(from_version, to_version);
+
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -168,7 +195,7 @@ void DatabaseManager::MaybeMigrate(const int from_version,
 void DatabaseManager::MigrateFromVersionCallback(const int from_version,
                                                  ResultCallback callback,
                                                  const bool success) const {
-  const int to_version = database::kVersion;
+  const int to_version = database::kVersionNumber;
 
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
@@ -181,9 +208,11 @@ void DatabaseManager::MigrateFromVersionCallback(const int from_version,
                               "Database migration failed");
     base::debug::DumpWithoutCrashing();
 
-    BLOG(1, "Failed to migrate database from schema version "
+    BLOG(0, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
+
     NotifyFailedToMigrateDatabase(from_version, to_version);
+
     return std::move(callback).Run(/*success=*/false);
   }
 

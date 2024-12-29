@@ -4,13 +4,20 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // Types
-import { BraveWallet } from '../constants/types'
+import {
+  AssetIdsByCollectionNameRegistry,
+  BraveWallet
+} from '../constants/types'
+import {
+  TokenBalancesRegistry //
+} from '../common/slices/entities/token-balance.entity'
 
 // utils
 import Amount from './amount'
 import { getRampNetworkPrefix } from './string-utils'
 import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
+import { getBalance } from './balance-utils'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
@@ -183,8 +190,10 @@ export const getAssetIdKey = (
   >
 ) => {
   return asset.tokenId
-    ? `${asset.coin}-${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`
-    : `${asset.coin}-${asset.contractAddress}-${asset.chainId}`
+    ? `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.tokenId}-${
+        asset.chainId
+      }`
+    : `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}`
 }
 
 export const findTokenByContractAddress = <
@@ -206,6 +215,18 @@ export const findTokenBySymbol = (
   return tokensList.find(
     (token) => token.symbol.toLowerCase() === tokenSymbol.toLowerCase()
   )
+}
+
+export const findTokenByAssetId = <
+  T extends Pick<
+    BraveWallet.BlockchainToken,
+    'contractAddress' | 'chainId' | 'tokenId' | 'coin'
+  >
+>(
+  assetId: string,
+  tokensList: T[]
+) => {
+  return tokensList.find((t) => getAssetIdKey(t) === assetId)
 }
 
 export const isNativeAsset = (
@@ -287,7 +308,7 @@ export function tokenNameToNftCollectionName(
     return token.name.replace(idWithSpaceRegexp, '')
   }
 
-  return token.name
+  return token.name || token.symbol
 }
 
 export const getHiddenTokenIds = (): string[] => {
@@ -308,4 +329,264 @@ export const getHiddenOrDeletedTokenIdsList = () => {
 
 export const isTokenIdRemoved = (tokenId: string, removedIds: string[]) => {
   return removedIds.includes(tokenId)
+}
+
+export function makeCountCollectionAssetsInRegistry(
+  collectionAssetsRegistry: Record<
+    string, // collection name
+    BraveWallet.BlockchainToken[]
+  >
+): (
+  total: number,
+  currentCollectionToken: BraveWallet.BlockchainToken,
+  currentIndex: number,
+  array: BraveWallet.BlockchainToken[]
+) => number {
+  return (acc, collection) => {
+    return acc + (collectionAssetsRegistry[collection.name]?.length ?? 0)
+  }
+}
+
+export function groupSpamAndNonSpamNfts(nfts: BraveWallet.BlockchainToken[]) {
+  const results: {
+    visibleUserNonSpamNfts: BraveWallet.BlockchainToken[]
+    visibleUserMarkedSpamNfts: BraveWallet.BlockchainToken[]
+  } = {
+    visibleUserNonSpamNfts: [],
+    visibleUserMarkedSpamNfts: []
+  }
+  for (const nft of nfts) {
+    if (nft.isSpam) {
+      results.visibleUserMarkedSpamNfts.push(nft)
+    } else {
+      if (nft.visible) {
+        results.visibleUserNonSpamNfts.push(nft)
+      }
+    }
+  }
+  return results
+}
+
+export function getAllSpamNftsAndIds(
+  userNonSpamNftIds: string[],
+  hiddenNftsIds: string[],
+  deletedTokenIds: string[],
+  simpleHashSpamNfts: BraveWallet.BlockchainToken[],
+  visibleUserMarkedSpamNfts: BraveWallet.BlockchainToken[]
+) {
+  // filter out NFTs user has marked not spam
+  // hidden NFTs, and deleted NFTs
+  const excludedNftIds = userNonSpamNftIds
+    .concat(hiddenNftsIds)
+    .concat(deletedTokenIds)
+  const simpleHashList = simpleHashSpamNfts.filter(
+    (nft) => !excludedNftIds.includes(getAssetIdKey(nft))
+  )
+  const simpleHashListIds = simpleHashList.map((nft) => getAssetIdKey(nft))
+  // add NFTs user has marked as NFT if they are not in the list
+  // to avoid duplicates
+  const fullSpamList = simpleHashList.concat(
+    visibleUserMarkedSpamNfts.filter(
+      (nft) => !simpleHashListIds.includes(getAssetIdKey(nft))
+    )
+  )
+
+  return [fullSpamList, fullSpamList.map((nft) => getAssetIdKey(nft))] as const
+}
+
+export const compareTokensByName = (
+  a: Pick<BraveWallet.BlockchainToken, 'name'>,
+  b: Pick<BraveWallet.BlockchainToken, 'name'>
+) => a.name.localeCompare(b.name)
+
+export function isTokenWatchOnly(
+  token: BraveWallet.BlockchainToken,
+  allAccounts: BraveWallet.AccountInfo[],
+  tokenBalancesRegistry: TokenBalancesRegistry | null | undefined,
+  spamTokenBalancesRegistry: TokenBalancesRegistry | null | undefined
+) {
+  return !allAccounts.some((account) => {
+    const balance = getBalance(account.accountId, token, tokenBalancesRegistry)
+    const spamBalance = getBalance(
+      account.accountId,
+      token,
+      spamTokenBalancesRegistry
+    )
+    return (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
+  })
+}
+
+export function getTokensWithBalanceForAccounts(
+  tokens: BraveWallet.BlockchainToken[],
+  filteredAccounts: BraveWallet.AccountInfo[],
+  allAccounts: BraveWallet.AccountInfo[],
+  tokenBalancesRegistry: TokenBalancesRegistry | null | undefined,
+  spamTokenBalancesRegistry: TokenBalancesRegistry | null | undefined,
+  hideUnowned?: boolean
+) {
+  if (hideUnowned) {
+    return tokens.filter((token) => {
+      return filteredAccounts.some((account) => {
+        const balance = getBalance(
+          account.accountId,
+          token,
+          tokenBalancesRegistry
+        )
+        const spamBalance = getBalance(
+          account.accountId,
+          token,
+          spamTokenBalancesRegistry
+        )
+        return (
+          (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
+        )
+      })
+    })
+  }
+
+  // skip balance checks if all accounts are selected
+  if (filteredAccounts.length === allAccounts.length) {
+    return tokens
+  }
+
+  return tokens.filter((token) => {
+    return (
+      filteredAccounts.some((account) => {
+        const balance = getBalance(
+          account.accountId,
+          token,
+          tokenBalancesRegistry
+        )
+        const spamBalance = getBalance(
+          account.accountId,
+          token,
+          spamTokenBalancesRegistry
+        )
+        return (
+          (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
+        )
+      }) ||
+      // not owned by any account
+      !allAccounts.some((account) => {
+        const balance = getBalance(
+          account.accountId,
+          token,
+          tokenBalancesRegistry
+        )
+        const spamBalance = getBalance(
+          account.accountId,
+          token,
+          spamTokenBalancesRegistry
+        )
+        return (
+          (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
+        )
+      })
+    )
+  })
+}
+
+export const searchNfts = (
+  searchValue: string,
+  items: BraveWallet.BlockchainToken[]
+) => {
+  if (searchValue === '') {
+    return items
+  }
+
+  return items.filter((item) => {
+    const tokenId = new Amount(item.tokenId).toNumber().toString()
+    const searchValueLower = searchValue.toLowerCase()
+    return (
+      item.name.toLocaleLowerCase().includes(searchValueLower) ||
+      item.symbol.toLocaleLowerCase().includes(searchValueLower) ||
+      tokenId.includes(searchValueLower)
+    )
+  })
+}
+
+export const searchNftCollectionsAndGetTotalNftsFound = (
+  searchValue: string,
+  collections: BraveWallet.BlockchainToken[],
+  collectionAssetsRegistry: Record<
+    string, // collection name
+    BraveWallet.BlockchainToken[]
+  >
+): {
+  foundCollections: BraveWallet.BlockchainToken[]
+  totalNftsFound: number
+} => {
+  const searchValueLower = searchValue.toLowerCase().trim()
+
+  const countCollectionAssets = makeCountCollectionAssetsInRegistry(
+    collectionAssetsRegistry
+  )
+
+  if (searchValueLower === '') {
+    return {
+      foundCollections: collections,
+      // count all nfts in categories
+      totalNftsFound: collections.reduce(countCollectionAssets, 0)
+    }
+  }
+
+  const foundCollections = collections.filter((collection) => {
+    // search collection name first
+    if (collection.name.toLocaleLowerCase().includes(searchValueLower)) {
+      return true
+    }
+
+    // search collection assets and count how many NFTs were found
+    return collectionAssetsRegistry[collection.name]?.some((asset) => {
+      const tokenId = new Amount(asset.tokenId).toNumber().toString()
+      return (
+        asset.name.toLocaleLowerCase().includes(searchValueLower) ||
+        asset.symbol.toLocaleLowerCase().includes(searchValueLower) ||
+        tokenId.includes(searchValueLower) ||
+        asset.contractAddress.toLocaleLowerCase().startsWith(searchValueLower)
+      )
+    })
+  })
+
+  return {
+    foundCollections,
+    totalNftsFound: foundCollections.reduce(countCollectionAssets, 0)
+  }
+}
+
+export function getTokenCollectionName(
+  collectionNames: string[],
+  assetIdsByCollectionNameRegistry:
+    | AssetIdsByCollectionNameRegistry
+    | undefined,
+  token: BraveWallet.BlockchainToken
+) {
+  if (!assetIdsByCollectionNameRegistry) {
+    return tokenNameToNftCollectionName(token)
+  }
+
+  return (
+    collectionNames.find((collectionName) => {
+      return assetIdsByCollectionNameRegistry[collectionName].includes(
+        // token id is not used in the collection name registry to reduce size
+        getAssetIdKey({ ...token, tokenId: '' })
+      )
+    }) || tokenNameToNftCollectionName(token)
+  )
+}
+
+export function getCoinTypeName(coin: BraveWallet.CoinType) {
+  switch (coin) {
+    case BraveWallet.CoinType.FIL:
+      return 'Filecoin'
+    case BraveWallet.CoinType.ETH:
+      return 'Ethereum'
+    case BraveWallet.CoinType.SOL:
+      return 'Solana'
+    case BraveWallet.CoinType.BTC:
+      return 'Bitcoin'
+    case BraveWallet.CoinType.ZEC:
+      return 'ZCash'
+  }
+  return ''
 }

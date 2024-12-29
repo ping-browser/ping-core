@@ -5,28 +5,30 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsSubdivisionUrlRequestBuilderTest : public UnitTestBase {};
+class BraveAdsSubdivisionUrlRequestBuilderTest : public test::TestBase {};
 
 TEST_F(BraveAdsSubdivisionUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   GetSubdivisionUrlRequestBuilder url_request_builder;
 
   // Act
-  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr mojom_url_request =
+      url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url =
+  const mojom::UrlRequestInfoPtr expected_mojom_url_request =
+      mojom::UrlRequestInfo::New();
+  expected_mojom_url_request->url =
       GURL("https://geo.ads.bravesoftware.com/v1/getstate");
-  expected_url_request->method = mojom::UrlRequestMethodType::kGet;
-  EXPECT_EQ(expected_url_request, url_request);
+  expected_mojom_url_request->method = mojom::UrlRequestMethodType::kGet;
+  EXPECT_EQ(expected_mojom_url_request, mojom_url_request);
 }
 
 }  // namespace brave_ads

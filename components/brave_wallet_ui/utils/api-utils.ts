@@ -6,53 +6,15 @@
 import { mapLimit } from 'async'
 import { Store } from 'redux'
 
-// constants
-import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
-
 // actions
 import { PanelActions } from '../panel/actions'
 
 // types
 import type WalletApiProxy from '../common/wallet_api_proxy'
-import {
-  BraveWallet,
-  SupportedCoinTypes,
-  SupportedTestNetworks,
-  externalWalletProviders
-} from '../constants/types'
+import { BraveWallet, SupportedCoinTypes } from '../constants/types'
 
-export const getPriceIdForToken = (
-  token: Pick<
-    BraveWallet.BlockchainToken,
-    'contractAddress' | 'symbol' | 'coingeckoId' | 'chainId'
-  >
-) => {
-  if (token?.coingeckoId) {
-    return token.coingeckoId.toLowerCase()
-  }
-
-  // Skip price of testnet tokens other than goerli-eth
-  if (SupportedTestNetworks.includes(token.chainId)) {
-    // Goerli ETH has a real-world value
-    if (
-      token.chainId === BraveWallet.GOERLI_CHAIN_ID &&
-      !token.contractAddress
-    ) {
-      return 'goerli-eth' // coingecko id
-    }
-    return SKIP_PRICE_LOOKUP_COINGECKO_ID
-  }
-
-  const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
-  if (
-    (isEthereumNetwork || externalWalletProviders.includes(token.chainId)) &&
-    token.contractAddress
-  ) {
-    return token.contractAddress.toLowerCase()
-  }
-
-  return token.symbol.toLowerCase()
-}
+// utils
+import getAPIProxy from '../common/async/bridge'
 
 export function handleEndpointError(
   endpointName: string,
@@ -88,13 +50,13 @@ export async function getVisibleNetworksList(api: WalletApiProxy) {
   const { jsonRpcService } = api
 
   const enabledCoinTypes = await getEnabledCoinTypes(api)
+  const { networks: allNetworks } = await jsonRpcService.getAllNetworks()
 
   const networks = (
     await mapLimit(enabledCoinTypes, 10, async (coin: number) => {
-      const { networks } = await jsonRpcService.getAllNetworks(coin)
       const { chainIds: hiddenChainIds } =
         await jsonRpcService.getHiddenNetworks(coin)
-      return networks.filter((n) => !hiddenChainIds.includes(n.chainId))
+      return allNetworks.filter((n) => !hiddenChainIds.includes(n.chainId))
     })
   ).flat(1)
 
@@ -116,4 +78,58 @@ export function navigateToConnectHardwareWallet(
 
   store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
   store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
+}
+
+export const getHasPendingRequests = async () => {
+  const { braveWalletService, jsonRpcService, txService } = getAPIProxy()
+
+  const { count: pendingTxsCount } =
+    await txService.getPendingTransactionsCount()
+  if (pendingTxsCount > 0) {
+    return true
+  }
+
+  const { requests: signSolTxsRequests } =
+    await braveWalletService.getPendingSignSolTransactionsRequests()
+  if (signSolTxsRequests.length) {
+    return true
+  }
+
+  const { requests: signMessageRequests } =
+    await braveWalletService.getPendingSignMessageRequests()
+  if (signMessageRequests.length) {
+    return true
+  }
+
+  const { requests: addTokenRequests } =
+    await braveWalletService.getPendingAddSuggestTokenRequests()
+  if (addTokenRequests.length) {
+    return true
+  }
+
+  const { requests: decryptRequests } =
+    await braveWalletService.getPendingDecryptRequests()
+  if (decryptRequests.length) {
+    return true
+  }
+
+  const { requests: publicKeyRequests } =
+    await braveWalletService.getPendingGetEncryptionPublicKeyRequests()
+  if (publicKeyRequests.length) {
+    return true
+  }
+
+  const { requests: addChainRequests } =
+    await jsonRpcService.getPendingAddChainRequests()
+  if (addChainRequests.length) {
+    return true
+  }
+
+  const { requests: switchChainRequests } =
+    await jsonRpcService.getPendingSwitchChainRequests()
+  if (switchChainRequests.length) {
+    return true
+  }
+
+  return false
 }

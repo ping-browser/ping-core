@@ -23,21 +23,6 @@ extension Preferences {
     public static let httpse = Option<String?>(key: "blockfile.httpse", default: nil)
   }
 
-  public final class ProductNotificationBenchmarks {
-    public static let videoAdBlockShown = Option<Bool>(
-      key: "product-benchmark.videoAdBlockShown",
-      default: false
-    )
-    public static let trackerTierCount = Option<Int>(
-      key: "product-benchmark.trackerTierCount",
-      default: 0
-    )
-    public static let showingSpecificDataSavedEnabled = Option<Bool>(
-      key: "product-benchmark.showingSpecificDataSavedEnabled",
-      default: false
-    )
-  }
-
   public final class Shields {
     public static let allShields = [
       googleSafeBrowsing, blockScripts, fingerprintingProtection, blockImages,
@@ -83,9 +68,9 @@ extension Preferences {
       default: false
     )
     /// Whether or not we've reported the initial state of shields for p3a
-    public static let initialP3AStateReported = Option<Bool>(
-      key: "shields.initial-p3a-state-reported",
-      default: false
+    public static let initialP3AStateReportedRevision = Option<Int>(
+      key: "shields.initial-p3a-state-reported-revision",
+      default: 0
     )
   }
 
@@ -174,6 +159,13 @@ extension Preferences {
     public static let switchValues = Option<[String: String]>(
       key: "brave-core.switches.values",
       default: [:]
+    )
+    /// Custom Switches that are passed into BraveCoreMain during launch.
+    ///
+    /// This preference stores a list of `BraveCoreSwitch` raw values
+    public static let customSwitches = Option<[String]>(
+      key: "brave-core.custom-switches",
+      default: []
     )
   }
 

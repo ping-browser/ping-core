@@ -41,7 +41,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
-  private var nftMetadataCache: [String: NFTMetadata] = [:]
+  private var nftMetadataCache: [String: BraveWallet.NftMetadata] = [:]
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
   private var assetRatiosCache: [String: Double] = [:]
 
@@ -117,9 +117,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
 
   func update() {
     Task { @MainActor in
-      let coin = transaction.coin
-      let networksForCoin = await rpcService.allNetworks(coin: coin)
-      guard let network = networksForCoin.first(where: { $0.chainId == transaction.chainId }) else {
+      let allNetworks = await rpcService.allNetworks()
+      guard let network = allNetworks.first(where: { $0.chainId == transaction.chainId }) else {
         // Transactions should be removed if their network is removed
         // https://github.com/brave/brave-browser/issues/30234
         assertionFailure(
@@ -132,11 +131,12 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         chainId: network.chainId,
         coin: network.coin
       )
-      let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(
-        networks: [network],
-        includingUserDeleted: true
-      ).flatMap(\.tokens)
-      if coin == .eth {
+      let userAssets: [BraveWallet.BlockchainToken] =
+        await assetManager.getAllUserAssetsInNetworkAssets(
+          networks: [network],
+          includingUserDeleted: true
+        ).flatMap(\.tokens)
+      if transaction.coin == .eth {
         // Gather known information about the transaction(s) tokens
         let unknownTokenInfo = [transaction].unknownTokenContractAddressChainIdPairs(
           knownTokens: userAssets + allTokens + tokenInfoCache
@@ -156,7 +156,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       let allAccounts = await keyringService.allAccounts().accounts
       guard
         let parsedTransaction = transaction.parsedTransaction(
-          network: network,
+          allNetworks: allNetworks,
           accountInfos: allAccounts,
           userAssets: userAssets,
           allTokens: allTokens + tokenInfoCache,
@@ -185,15 +185,12 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
 
       if transaction.coin == .sol, solEstimatedTxFeesCache[transaction.id] == nil {
-        let (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.estimatedTxFee(
-          chainId: network.chainId,
-          txMetaId: transaction.id
-        )
-        self.solEstimatedTxFeesCache[transaction.id] = solEstimatedTxFee
+        let txFees = await solanaTxManagerProxy.solanaTxFeeEstimations(for: [transaction])
+        solEstimatedTxFeesCache.merge(with: txFees)
       }
       guard
         let parsedTransaction = transaction.parsedTransaction(
-          network: network,
+          allNetworks: allNetworks,
           accountInfos: allAccounts,
           userAssets: userAssets,
           allTokens: allTokens + tokenInfoCache,
@@ -237,7 +234,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       )
       guard
         let parsedTransaction = transaction.parsedTransaction(
-          network: network,
+          allNetworks: allNetworks,
           accountInfos: allAccounts,
           userAssets: userAssets,
           allTokens: allTokens,

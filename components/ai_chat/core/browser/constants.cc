@@ -37,9 +37,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"introMessage-chat-claude-sonnet",
        IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET},
       {"modelNameSyntax", IDS_CHAT_UI_MODEL_NAME_SYNTAX},
-      {"modelFreemiumLabelNonPremium",
-       IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_NON_PREMIUM},
-      {"modelFreemiumLabelPremium", IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_PREMIUM},
+      {"modelPremiumLabelNonPremium",
+       IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM},
       {"modelCategory-chat", IDS_CHAT_UI_MODEL_CATEGORY_CHAT},
       {"menuNewChat", IDS_CHAT_UI_MENU_NEW_CHAT},
       {"menuGoPremium", IDS_CHAT_UI_MENU_GO_PREMIUM},
@@ -82,6 +81,10 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"feedbackPremiumNote", IDS_CHAT_UI_FEEDBACK_PREMIUM_NOTE},
       {"submitButtonLabel", IDS_CHAT_UI_SUBMIT_BUTTON_LABEL},
       {"cancelButtonLabel", IDS_CHAT_UI_CANCEL_BUTTON_LABEL},
+      {"saveButtonLabel", IDS_CHAT_UI_SAVE_BUTTON_LABEL},
+      {"editedLabel", IDS_CHAT_UI_EDITED_LABEL},
+      {"editButtonLabel", IDS_CHAT_UI_EDIT_BUTTON_LABEL},
+      {"editAnswerLabel", IDS_CHAT_UI_EDIT_ANSWER_LABEL},
       {"optionNotHelpful", IDS_CHAT_UI_OPTION_NOT_HELPFUL},
       {"optionIncorrect", IDS_CHAT_UI_OPTION_INCORRECT},
       {"optionUnsafeHarmful", IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL},
@@ -102,9 +105,13 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"errorContextLimitReaching", IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING},
       {"gotItButtonLabel", IDS_CHAT_UI_GOT_IT_BUTTON_LABEL},
       {"pageContentTooLongWarning", IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING},
+      {"pageContentRefinedWarning", IDS_CHAT_UI_PAGE_CONTENT_REFINED_WARNING},
+      {"pageContentRefinedInProgress",
+       IDS_CHAT_UI_PAGE_CONTENT_REFINED_IN_PROGRESS},
       {"errorConversationEnd", IDS_CHAT_UI_CONVERSATION_END_ERROR},
       {"searchInProgress", IDS_CHAT_UI_SEARCH_IN_PROGRESS},
       {"searchQueries", IDS_CHAT_UI_SEARCH_QUERIES},
+      {"learnMore", IDS_CHAT_UI_LEARN_MORE},
       {"leoSettingsTooltipLabel", IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL},
       {"summarizePageButtonLabel", IDS_CHAT_UI_SUMMARIZE_PAGE},
       {"welcomeGuideTitle", IDS_CHAT_UI_WELCOME_GUIDE_TITLE},
@@ -143,7 +150,11 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"shortenLabel", IDS_AI_CHAT_CONTEXT_SHORTEN},
       {"expandLabel", IDS_AI_CHAT_CONTEXT_EXPAND},
       {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL},
-      {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL}};
+      {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL},
+      {"toolsMenuButtonLabel", IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL},
+      {"useMicButtonLabel", IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL},
+      {"menuTitleCustomModels", IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS},
+      {"startConversationLabel", IDS_AI_CHAT_START_CONVERSATION_LABEL}};
 
   return kLocalizedStrings;
 }
@@ -240,7 +251,7 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList() {
             base::JoinString(
                 {change_tone_subheading,
                  l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPAND)},
-                "/ "),
+                " / "),
             mojom::ActionType::EXPAND)));
 
     action_list.push_back(std::move(group));
@@ -293,6 +304,6 @@ const base::fixed_flat_set<std::string_view, 1> kPrintPreviewRetrievalHosts =
                                                  "docs.google.com",
                                              });
 
-const char kLeoModelSupportUrl[] =
+constexpr char kLeoModelSupportUrl[] =
     "https://ping-browser.com/faqs-and-help";
 }  // namespace ai_chat

@@ -7,12 +7,16 @@ import { EntityId } from '@reduxjs/toolkit'
 
 // types
 import { BraveWallet } from '../../../constants/types'
-import { WalletApiEndpointBuilderParams } from '../api-base.slice'
+import {
+  TOKEN_TAG_IDS,
+  WalletApiEndpointBuilderParams
+} from '../api-base.slice'
 import { type BaseQueryCache } from '../../async/base-query-cache'
 
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import {
+  addLogoToToken,
   getAssetIdKey,
   getDeletedTokenIds,
   getHiddenTokenIds
@@ -24,10 +28,6 @@ import {
 } from '../entities/blockchain-token.entity'
 import { LOCAL_STORAGE_KEYS } from '../../constants/local-storage-keys'
 import { stripERC20TokenImageURL } from '../../../utils/string-utils'
-
-export const TOKEN_TAG_IDS = {
-  REGISTRY: 'REGISTRY'
-} as const
 
 export const tokenEndpoints = ({
   mutation,
@@ -393,11 +393,16 @@ export const tokenEndpoints = ({
             data: token
           }
         } catch (err) {
-          console.error(err)
           // Typically this means the token does not exist on the chain
-          return {
-            data: null
-          }
+          return handleEndpointError(
+            api.endpoint,
+            `Failed to get token info for: ${JSON.stringify(
+              { coin, chainId, contractAddress },
+              undefined,
+              2
+            )}`,
+            err
+          )
         }
       },
       providesTags: (result, err, args) =>
@@ -495,27 +500,6 @@ export const tokenEndpoints = ({
 
           cache.clearUserTokensRegistry()
 
-          const deleteResult = await braveWalletService.removeUserAsset(
-            arg.token
-          )
-
-          if (!deleteResult.success) {
-            throw new Error('Unable to delete token')
-          }
-
-          // track token if not spam
-          if (!arg.isSpam) {
-            const { success: addTokenSuccess } = await addUserToken({
-              braveWalletService,
-              cache,
-              tokenArg: { ...arg.token, isSpam: arg.isSpam }
-            })
-
-            if (!addTokenSuccess) {
-              throw new Error('Unable to add token')
-            }
-          }
-
           return {
             data: success
           }
@@ -556,7 +540,7 @@ async function addUserToken({
       const metadata = await cache.getNftMetadata(tokenArg)
 
       if (metadata?.imageURL) {
-        tokenArg.logo = metadata?.imageURL
+        tokenArg = addLogoToToken(tokenArg, metadata.imageURL)
       }
     } catch (error) {
       console.log(error)

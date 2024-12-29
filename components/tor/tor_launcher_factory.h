@@ -8,8 +8,8 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -40,6 +40,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   TorLauncherFactory& operator=(const TorLauncherFactory&) = delete;
 
   static TorLauncherFactory* GetInstance();
+  static void SetTorLauncherFactoryForTesting(TorLauncherFactory*);
 
   virtual void Init();
   virtual void LaunchTorProcess(const tor::mojom::TorConfig& config);
@@ -67,6 +68,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
                      const std::string& line) override;
   void OnTorRawMid(const std::string& status, const std::string& line) override;
   void OnTorRawEnd(const std::string& status, const std::string& line) override;
+  base::WeakPtr<tor::TorControl::Delegate> AsWeakPtr() override;
 
  private:
   friend base::NoDestructor<TorLauncherFactory>;
@@ -112,7 +114,13 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   SEQUENCE_CHECKER(sequence_checker_);
 
-  base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
+  struct InitializationMessage {
+    std::string percentage;
+    std::string summary;
+  };
+  std::optional<InitializationMessage> last_init_message_;
+
+  base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_COMPONENTS_TOR_TOR_LAUNCHER_FACTORY_H_

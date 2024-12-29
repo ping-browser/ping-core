@@ -22,6 +22,10 @@
 
 class Profile;
 
+namespace display {
+class Screen;
+}  // namespace display
+
 namespace gfx {
 class LinearAnimation;
 class Insets;
@@ -70,7 +74,7 @@ class NotificationAdPopup : public views::WidgetDelegateView,
 
   // display::DisplayObserver:
   void OnDisplayAdded(const display::Display& new_display) override;
-  void OnDisplayRemoved(const display::Display& old_display) override;
+  void OnDisplaysRemoved(const display::Displays& displays) override;
   void OnDisplayMetricsChanged(const display::Display& display,
                                uint32_t changed_metrics) override;
 
@@ -157,6 +161,9 @@ class NotificationAdPopup : public views::WidgetDelegateView,
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
+
+  base::ScopedObservation<display::Screen, display::DisplayObserver>
+      screen_observation_{this};
 };
 
 }  // namespace brave_ads

@@ -3,88 +3,86 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { BraveWallet } from '../../constants/types'
 import {
-  BraveWallet,
-  FilecoinNetwork,
-  SerializableTransactionInfo
-} from '../../constants/types'
-import { HardwareVendor } from '../api/hardware_keyrings'
-import {
-  GetAccountsHardwareOperationResult,
+  HardwareImportScheme,
   HardwareOperationResult,
-  SignHardwareOperationResult
+  HardwareOperationResultEthereumSignatureVRS,
+  HardwareOperationResultAccounts,
+  HardwareOperationResultEthereumSignatureBytes,
+  HardwareOperationResultSolanaSignature,
+  HardwareOperationResultFilecoinSignature,
+  HardwareOperationResultBitcoinSignature
 } from './types'
+import { BridgeType } from './untrusted_shared_types'
 
 export abstract class HardwareKeyring {
-  abstract coin(): BraveWallet.CoinType
-  abstract keyringId(network?: string): BraveWallet.KeyringId
-  abstract type(): HardwareVendor
+  abstract bridgeType(): BridgeType
+  abstract getAccounts(
+    from: number,
+    count: number,
+    scheme: HardwareImportScheme
+  ): Promise<HardwareOperationResultAccounts>
   abstract unlock(): Promise<HardwareOperationResult>
 }
 
 export abstract class TrezorKeyring extends HardwareKeyring {
-  abstract getAccounts(
-    from: number,
-    to: number,
-    scheme: string
-  ): Promise<GetAccountsHardwareOperationResult>
   abstract signTransaction(
     path: string,
-    txInfo: SerializableTransactionInfo,
+    txid: string,
+    ethTxData1559: BraveWallet.TxData1559,
     chainId: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureVRS>
   abstract signPersonalMessage(
     path: string,
     message: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureBytes>
   abstract signEip712Message(
     path: string,
     domainSeparatorHex: string,
     hashStructMessageHex: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureBytes>
 }
 
 export abstract class LedgerEthereumKeyring extends HardwareKeyring {
-  abstract getAccounts(
-    from: number,
-    to: number,
-    scheme: string
-  ): Promise<GetAccountsHardwareOperationResult>
+  abstract signTransaction(
+    path: string,
+    rawTxHex: string
+  ): Promise<HardwareOperationResultEthereumSignatureVRS>
   abstract signPersonalMessage(
     path: string,
     address: string,
     message: string
-  ): Promise<SignHardwareOperationResult>
-  abstract signTransaction(
-    path: string,
-    rawTxHex: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureBytes>
   abstract signEip712Message(
     path: string,
     domainSeparatorHex: string,
     hashStructMessageHex: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureBytes>
 }
 
 export abstract class LedgerFilecoinKeyring extends HardwareKeyring {
-  abstract getAccounts(
-    from: number,
-    to: number,
-    network: FilecoinNetwork
-  ): Promise<GetAccountsHardwareOperationResult>
   abstract signTransaction(
     message: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultFilecoinSignature>
+}
+
+export abstract class LedgerBitcoinKeyring extends HardwareKeyring {
+  abstract signTransaction(
+    inputTransactions: Array<{
+      txBytes: Buffer
+      outputIndex: number
+      associatedPath: string
+    }>,
+    outputScript: Buffer,
+    changePath: string | undefined,
+    lockTime: number
+  ): Promise<HardwareOperationResultBitcoinSignature>
 }
 
 export abstract class LedgerSolanaKeyring extends HardwareKeyring {
-  abstract getAccounts(
-    from: number,
-    to: number,
-    scheme: string
-  ): Promise<GetAccountsHardwareOperationResult>
   abstract signTransaction(
     path: string,
     rawTxBytes: Buffer
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultSolanaSignature>
 }

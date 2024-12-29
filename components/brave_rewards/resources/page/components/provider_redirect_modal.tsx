@@ -42,7 +42,7 @@ export function ProviderRedirectModal() {
       return (
         <ModalRedirect
           id={'redirect-modal-device-limit-reached'}
-          errorText={[getString('redirectModalDeviceLimitReachedText')]}
+          errorText={[getString('redirectModalDeviceLimitReachedText').replace('$1', providerName)]}
           titleText={getString('redirectModalDeviceLimitReachedTitle')}
           learnMore={'https://ping-browser.com/faqs-and-help'}
           buttonText={getString('redirectModalClose')}

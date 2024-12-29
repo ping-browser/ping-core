@@ -20,8 +20,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
 namespace brave_ads::database::table {
 
@@ -72,17 +72,18 @@ class CreativePromotedContentAds final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* transaction) override;
-  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
+  void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
+  void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+               int to_version) override;
 
  private:
-  void MigrateToV35(mojom::DBTransactionInfo* transaction);
+  void MigrateToV45(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                      const CreativePromotedContentAdList& creative_ads);
+  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+              const CreativePromotedContentAdList& creative_ads);
 
-  std::string BuildInsertOrUpdateSql(
-      mojom::DBCommandInfo* command,
+  std::string BuildInsertSql(
+      const mojom::DBActionInfoPtr& mojom_db_action,
       const CreativePromotedContentAdList& creative_ads) const;
 
   int batch_size_;

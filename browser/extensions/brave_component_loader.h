@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 class Profile;
@@ -41,26 +42,25 @@ class BraveComponentLoader : public ComponentLoader {
 #endif
   void AddWebTorrentExtension();
   void OnComponentReady(std::string extension_id,
-    bool allow_file_access,
-    const base::FilePath& install_dir,
-    const std::string& manifest);
+                        bool allow_file_access,
+                        const base::FilePath& install_dir,
+                        const std::string& manifest);
   void AddExtension(const std::string& id,
-      const std::string& name, const std::string& public_key);
-  // ForceAddHangoutServicesExtension ignores whether or not a preference for
-  // hangouts is set.  If the buildflag is not set, it won't add though.
-  void ForceAddHangoutServicesExtension();
+                    const std::string& name,
+                    const std::string& public_key);
 
  private:
-#if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
-  void AddHangoutServicesExtension() override;
-#endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
+  void ReinstallAsNonComponent(const std::string& extension_id);
+  void UpdateBraveExtension();
 
-  void ReinstallAsNonComponent(std::string extension_id);
+  bool UseBraveExtensionBackgroundPage();
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   std::string ethereum_remote_client_manifest_;
   base::FilePath ethereum_remote_client_install_dir_;
+
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace extensions

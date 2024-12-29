@@ -10,25 +10,23 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
+#include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/view_shadow.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
+class PromotionButtonController;
+class PromotionButtonView;
 class PlaylistActionIconView;
 class RewardsBrowserTest;
 class SkPath;
 
 #if BUILDFLAG(ENABLE_TOR)
 class OnionLocationView;
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-class IPFSLocationView;
 #endif
 
 namespace playlist {
@@ -69,32 +67,33 @@ class BraveLocationBarView : public LocationBarView {
   OnionLocationView* GetOnionLocationView() { return onion_location_view_; }
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-  IPFSLocationView* GetIPFSLocationView() { return ipfs_location_view_; }
-#endif
   // LocationBarView:
-  std::vector<views::View*> GetTrailingViews() override;
+  // Views that locates at right side of upstream's trailing views.
+  std::vector<views::View*> GetRightMostTrailingViews() override;
+  // Views that locates at left side of upstream's trailing views.
+  std::vector<views::View*> GetLeftMostTrailingViews() override;
+  views::View* GetSearchPromotionButton() const override;
   void RefreshBackground() override;
-  ui::ImageModel GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
-                                     on_icon_fetched) const override;
   void OnOmniboxBlurred() override;
 
   // views::View:
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
   void ChildVisibilityChanged(views::View* child) override;
   void AddedToWidget() override;
-
   int GetBorderRadius() const override;
+  void FocusLocation(bool is_user_initiated) override;
 
   SkPath GetFocusRingHighlightPath() const;
   ContentSettingImageView* GetContentSettingsImageViewForTesting(size_t idx);
-  bool ShouldShowIPFSLocationView() const;
   BraveActionsContainer* brave_actions_contatiner_view() {
     return brave_actions_;
   }
 
-  void ShowPlaylistBubble();
+  void ShowPlaylistBubble(
+      playlist::PlaylistBubblesController::BubbleType type =
+          playlist::PlaylistBubblesController::BubbleType::kInfer);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, AddItemsToList);
@@ -108,6 +107,8 @@ class BraveLocationBarView : public LocationBarView {
       playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
       MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia);
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
+  FRIEND_TEST_ALL_PREFIXES(BraveLocationBarViewBrowserTest,
+                           SearchConversionButtonTest);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 
@@ -116,12 +117,11 @@ class BraveLocationBarView : public LocationBarView {
 
   std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
-  raw_ptr<BraveNewsLocationView> brave_news_location_view_ = nullptr;
+  raw_ptr<BraveNewsActionIconView> brave_news_action_icon_view_ = nullptr;
+  std::unique_ptr<PromotionButtonController> promotion_controller_;
+  raw_ptr<PromotionButtonView> promotion_button_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)
   raw_ptr<OnionLocationView> onion_location_view_ = nullptr;
-#endif
-#if BUILDFLAG(ENABLE_IPFS)
-  raw_ptr<IPFSLocationView> ipfs_location_view_ = nullptr;
 #endif
 };
 

@@ -10,9 +10,7 @@ import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import {
-  BraveTalkWidget as BraveTalk,
-  Clock,
-  EditTopSite,
+  BraveTalkWidget as BraveTalk, Clock, EditTopSite,
   OverrideReadabilityColor,
   RewardsWidget as Rewards,
   SearchPromotion
@@ -28,7 +26,7 @@ import Stats from './stats'
 // Helpers
 import { getLocale } from '$web-common/locale'
 import VisibilityTimer from '$web-common/visibilityTimer'
-// import { loadTimeData } from '$web-common/loadTimeData'
+import { loadTimeData } from '$web-common/loadTimeData'
 import isReadableOnBackground from '../../helpers/colorUtil'
 
 // Types
@@ -45,14 +43,13 @@ import { BraveNewsContextProvider } from '../../../brave_news/browser/resources/
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 import GridWidget from './gridWidget'
 
-import Icon, { setIconBasePath } from '@brave/leo/react/icon'
-setIconBasePath('chrome://resources/brave-icons')
+import Icon from '@brave/leo/react/icon'
 
 import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
 
 // const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
-// const SearchWidget = React.lazy(() => import('../../components/search/SearchPlaceholder'))
+const SearchPlaceholder = React.lazy(() => import('../../components/search/SearchPlaceholder'))
 
 // const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
 
@@ -432,10 +429,6 @@ class NewTabPage extends React.Component<Props, State> {
     brandedWallpaperLogoClicked(this.props.newTabData.brandedWallpaper)
   }
 
-  openSettingsEditCards = () => {
-    this.openSettings(SettingsTabType.Cards)
-  }
-
   setForegroundStackWidget = (widget: NewTab.StackWidget) => {
     this.props.actions.setForegroundStackWidget(widget)
   }
@@ -508,7 +501,6 @@ class NewTabPage extends React.Component<Props, State> {
   renderCryptoContent() {
     const { newTabData } = this.props
     const { widgetStackOrder } = newTabData
-    // const allWidgetsHidden = this.allWidgetsHidden()
 
     if (!widgetStackOrder.length) {
       return null
@@ -517,9 +509,6 @@ class NewTabPage extends React.Component<Props, State> {
     return (
       <Page.GridItemWidgetStack>
         {this.getCryptoContent()}
-        {/* {!allWidgetsHidden &&
-          <EditCards onEditCards={this.openSettingsEditCards} />
-        } */}
       </Page.GridItemWidgetStack>
     )
   }
@@ -574,14 +563,23 @@ class NewTabPage extends React.Component<Props, State> {
         label: 'rewardsOpenPanel',
         renderIcon: () => {
           return (
-            <style.batIcon>
+            <style.rewardsMenuIcon>
               <Icon name='product-bat-outline' />
-            </style.batIcon>
+            </style.rewardsMenuIcon>
           )
         },
-        onClick: () => {
-          chrome.braveRewards.openRewardsPanel()
-        }
+        onClick: () => { chrome.braveRewards.openRewardsPanel() }
+      },
+      {
+        label: 'rewardsSettings',
+        renderIcon: () => {
+          return (
+            <style.rewardsMenuIcon>
+              <Icon name='settings' />
+            </style.rewardsMenuIcon>
+          )
+        },
+        onClick: () => { window.open('chrome://rewards', '_blank', 'noopener') }
       }
     ]
 
@@ -599,9 +597,8 @@ class NewTabPage extends React.Component<Props, State> {
         widgetTitle={getLocale('rewardsWidgetBraveRewards')}
         onLearnMore={this.learnMoreRewards}
         menuPosition={'left'}
-        isCrypto={true}
+        isCardWidget
         paddingType={'none'}
-        isCryptoTab={!showContent}
         isForeground={showContent}
         stackPosition={position}
         textDirection={textDirection}
@@ -627,7 +624,7 @@ class NewTabPage extends React.Component<Props, State> {
 
     return (
       <BraveTalk
-        isCrypto={true}
+        isCardWidget
         paddingType={'none'}
         menuPosition={'left'}
         widgetTitle={getLocale('braveTalkWidgetTitle')}
@@ -794,7 +791,6 @@ class NewTabPage extends React.Component<Props, State> {
                   )}
                 <FooterInfo
                   textDirection={newTabData.textDirection}
-                  supportsBraveTalk={newTabData.braveTalkSupported}
                   backgroundImageInfo={newTabData.backgroundWallpaper}
                   showPhotoInfo={
                     !isShowingBrandedWallpaper &&
@@ -805,19 +801,17 @@ class NewTabPage extends React.Component<Props, State> {
                 />
               </Page.FooterContent>
             </Page.Footer>
-            {newTabData.showToday && (
-              <Page.GridItemNavigationBraveNews>
-                {/* loadTimeData.getBoolean('featureFlagSearchWidget')
+              <Page.GridItemPageFooter>
+                {loadTimeData.getBoolean('featureFlagSearchWidget')
                   && <React.Suspense fallback={null}>
-                    <SearchWidget />
-                  </React.Suspense> */}
-                {/* defaultState.featureFlagBraveNewsFeedV2Enabled
+                    <SearchPlaceholder />
+                  </React.Suspense>}
+                {/* {newTabData.showToday && (defaultState.featureFlagBraveNewsFeedV2Enabled
                   ? <React.Suspense fallback={null}>
                     <BraveNewsPeek/>
                   </React.Suspense>
-                  : <BraveNewsHint /> */}
-              </Page.GridItemNavigationBraveNews>
-            )}
+                  : <BraveNewsHint />)} */}
+              </Page.GridItemPageFooter>
           </Page.Page>
           {/* { newTabData.showToday &&
         <BraveNews

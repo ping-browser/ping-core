@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import SwiftUI
 
 private struct AIChatMenuHeaderView: View {
@@ -59,6 +60,7 @@ private struct AIChatMenuItemView<RightAccessoryView: View>: View {
           .font(.footnote)
           .foregroundStyle(Color(braveSystemName: .textSecondary))
       }
+      .multilineTextAlignment(.leading)
       .frame(maxWidth: .infinity, alignment: .leading)
 
       rightAccessoryView
@@ -70,15 +72,12 @@ private struct AIChatMenuItemView<RightAccessoryView: View>: View {
 }
 
 enum AIChatMenuOptionTypes {
-  case newChat
   case goPremium
   case managePremium
   case advancedSettings
 
   var title: String {
     switch self {
-    case .newChat:
-      return Strings.AIChat.quickMenuNewChatActionTitle
     case .goPremium:
       return Strings.AIChat.quickMenuGoPremiumActionTitle
     case .managePremium:
@@ -90,8 +89,6 @@ enum AIChatMenuOptionTypes {
 
   var imageName: String {
     switch self {
-    case .newChat:
-      return "leo.erase"
     case .goPremium, .managePremium:
       return "leo.lock.open"
     case .advancedSettings:
@@ -102,7 +99,7 @@ enum AIChatMenuOptionTypes {
 
 struct AIChatMenuView: View {
   var premiumStatus: AiChat.PremiumStatus
-  var currentModel: AiChat.Model
+  var currentModel: AiChat.Model?
   var modelOptions: [AiChat.Model]
   var onModelChanged: (String) -> Void
   var onOptionSelected: (AIChatMenuOptionTypes) -> Void
@@ -112,6 +109,18 @@ struct AIChatMenuView: View {
 
   @State
   private var appStoreConnectionErrorPresented = false
+
+  private var regularModels: [AiChat.Model] {
+    modelOptions.filter({
+      $0.options.tag == .leoModelOptions
+    })
+  }
+
+  private var customModels: [AiChat.Model] {
+    modelOptions.filter({
+      $0.options.tag == .customModelOptions
+    })
+  }
 
   var body: some View {
     LazyVStack(spacing: 0.0) {
@@ -134,54 +143,29 @@ struct AIChatMenuView: View {
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
 
-      ForEach(modelOptions, id: \.key) { model in
-        Button(
-          action: {
-            onModelChanged(model.key)
-            dismiss()
-          },
-          label: {
-            AIChatMenuItemView(
-              title: model.displayName,
-              subtitle: model.displayMaker,
-              isSelected: model.key == currentModel.key
-            ) {
-              if model.access == .basicAndPremium {
-                Text(
-                  premiumStatus == .active || premiumStatus == .activeDisconnected
-                    ? Strings.AIChat.unlimitedModelStatusTitle.uppercased()
-                    : Strings.AIChat.limitedModelStatusTitle.uppercased()
-                )
-                .font(.caption2)
-                .foregroundStyle(Color(braveSystemName: .blue50))
-                .padding(.horizontal, 4.0)
-                .padding(.vertical, 2.0)
-                .background(
-                  RoundedRectangle(cornerRadius: 4.0, style: .continuous)
-                    .strokeBorder(Color(braveSystemName: .blue50), lineWidth: 1.0)
-                )
-              } else {
-                Image(braveSystemName: "leo.lock.plain")
-                  .foregroundStyle(Color(braveSystemName: .iconDefault))
-                  .opacity(model.access == .premium ? 1.0 : 0.0)
-              }
-            }
-          }
-        )
+      ForEach(regularModels, id: \.key) { model in
+        viewForModel(model)
+      }
 
-        if let lastModel = modelOptions.last, model.key != lastModel.key {
-          Color(braveSystemName: .dividerSubtle)
-            .frame(height: 1.0)
+      if !customModels.isEmpty {
+        Color(braveSystemName: .dividerSubtle)
+          .frame(height: 1.0)
+
+        Text(Strings.AIChat.customModelsMenuSectionTitle.uppercased())
+          .font(.caption2.weight(.semibold))
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .padding(.horizontal, 24.0)
+          .padding(.vertical)
+          .background(Color(braveSystemName: .pageBackground))
+
+        ForEach(customModels, id: \.key) { model in
+          viewForModel(model)
         }
       }
 
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 8.0)
-
-      menuActionItems(for: .newChat)
-
-      Color(braveSystemName: .dividerSubtle)
-        .frame(height: 1.0)
 
       // Check if leo in-app purchase is activated before or not
       if let state = BraveStoreSDK.shared.leoSubscriptionStatus?.state {
@@ -223,7 +207,72 @@ struct AIChatMenuView: View {
     }
   }
 
-  func menuActionItems(for menuOption: AIChatMenuOptionTypes) -> some View {
+  @ViewBuilder
+  private func viewForModel(_ model: AiChat.Model) -> some View {
+    Button(
+      action: {
+        onModelChanged(model.key)
+        dismiss()
+      },
+      label: {
+        AIChatMenuItemView(
+          title: model.displayName,
+          subtitle: modelPurpose(for: model),
+          isSelected: model.key == currentModel?.key
+        ) {
+          switch model.options.tag {
+          case .leoModelOptions:
+            if model.options.leoModelOptions?.access == .premium && premiumStatus != .active
+              && premiumStatus != .activeDisconnected
+            {
+              Text(
+                Strings.AIChat.premiumModelStatusTitle.uppercased()
+              )
+              .font(.caption2)
+              .foregroundStyle(Color(braveSystemName: .blue50))
+              .padding(.horizontal, 4.0)
+              .padding(.vertical, 2.0)
+              .background(
+                RoundedRectangle(cornerRadius: 4.0, style: .continuous)
+                  .strokeBorder(Color(braveSystemName: .blue50), lineWidth: 1.0)
+              )
+            }
+          case .customModelOptions, .null:
+            EmptyView()
+          @unknown default:
+            EmptyView()
+          }
+        }
+      }
+    )
+
+    if let lastModel = modelOptions.last, model.key != lastModel.key {
+      Color(braveSystemName: .dividerSubtle)
+        .frame(height: 1.0)
+    }
+  }
+
+  private func modelPurpose(for model: AiChat.Model) -> String {
+    guard let modelKey = AIChatModelKey(rawValue: model.key) else {
+      return model.displayName
+    }
+
+    switch modelKey {
+    case .chatBasic:
+      return Strings.AIChat.introMessageLlamaModelPurposeDescription
+
+    case .chatExpanded:
+      return Strings.AIChat.introMessageMixtralModelPurposeDescription
+
+    case .chatClaudeHaiku:
+      return Strings.AIChat.introMessageClaudeHaikuModelPurposeDescription
+
+    case .chatClaudeSonnet:
+      return Strings.AIChat.introMessageClaudeSonnetModelPurposeDescription
+    }
+  }
+
+  private func menuActionItems(for menuOption: AIChatMenuOptionTypes) -> some View {
     Button {
       if menuOption == .goPremium, !BraveStoreSDK.shared.isLeoProductsLoaded {
         appStoreConnectionErrorPresented = true
@@ -252,60 +301,80 @@ struct AIChatMenuView_Preview: PreviewProvider {
       premiumStatus: .inactive,
       currentModel:
         .init(
+          options: .init(
+            leoModelOptions: .init(
+              name: "Mixtral-8x7b",
+              displayMaker: "Powerful, fast and adaptive",
+              engineType: .llamaRemote,
+              category: .chat,
+              access: .basicAndPremium,
+              maxAssociatedContentLength: 9000,
+              longConversationWarningCharacterLimit: 20000
+            )
+          ),
           key: "mixtral_8x7b",
-          name: "Mixtral-8x7b",
-          displayName: "Mixtral 8x7b",
-          displayMaker: "Powerful, fast and adaptive",
-          engineType: .llamaRemote,
-          category: .chat,
-          access: .basicAndPremium,
-          maxPageContentLength: 9000,
-          longConversationWarningCharacterLimit: 20000
+          displayName: "Mixtral 8x7b"
         ),
       modelOptions: [
         .init(
+          options: .init(
+            leoModelOptions: .init(
+              name: "Mixtral-8x7b",
+              displayMaker: "Powerful, fast and adaptive",
+              engineType: .llamaRemote,
+              category: .chat,
+              access: .basicAndPremium,
+              maxAssociatedContentLength: 9000,
+              longConversationWarningCharacterLimit: 20000
+            )
+          ),
           key: "mixtral_8x7b",
-          name: "Mixtral-8x7b",
-          displayName: "Mixtral 8x7b",
-          displayMaker: "Powerful, fast and adaptive",
-          engineType: .llamaRemote,
-          category: .chat,
-          access: .basicAndPremium,
-          maxPageContentLength: 9000,
-          longConversationWarningCharacterLimit: 20000
+          displayName: "Mixtral 8x7b"
         ),
         .init(
+          options: .init(
+            leoModelOptions: .init(
+              name: "Claude-Instant",
+              displayMaker: "Strength in creative tasks",
+              engineType: .claudeRemote,
+              category: .chat,
+              access: .basicAndPremium,
+              maxAssociatedContentLength: 9000,
+              longConversationWarningCharacterLimit: 20000
+            )
+          ),
           key: "claude_instant",
-          name: "Claude-Instant",
-          displayName: "Claude Instant",
-          displayMaker: "Strength in creative tasks",
-          engineType: .llamaRemote,
-          category: .chat,
-          access: .basicAndPremium,
-          maxPageContentLength: 9000,
-          longConversationWarningCharacterLimit: 20000
+          displayName: "Claude-Instant"
         ),
         .init(
-          key: "llaba_2x13b",
-          name: "Llama-2x13b",
-          displayName: "Llama2 13b",
-          displayMaker: "General purpose chat",
-          engineType: .llamaRemote,
-          category: .chat,
-          access: .basic,
-          maxPageContentLength: 9000,
-          longConversationWarningCharacterLimit: 20000
+          options: .init(
+            leoModelOptions: .init(
+              name: "Llama-2x13b",
+              displayMaker: "General purpose chat",
+              engineType: .llamaRemote,
+              category: .chat,
+              access: .basicAndPremium,
+              maxAssociatedContentLength: 9000,
+              longConversationWarningCharacterLimit: 20000
+            )
+          ),
+          key: "llama_2x13b",
+          displayName: "Llama-2 13b"
         ),
         .init(
-          key: "llaba_2x70b",
-          name: "Llama-2x70b",
-          displayName: "Llama2 70b",
-          displayMaker: "Advanced and accurate chat",
-          engineType: .llamaRemote,
-          category: .chat,
-          access: .premium,
-          maxPageContentLength: 9000,
-          longConversationWarningCharacterLimit: 20000
+          options: .init(
+            leoModelOptions: .init(
+              name: "Llama-2x70b",
+              displayMaker: "Advanced and accurate chat",
+              engineType: .llamaRemote,
+              category: .chat,
+              access: .premium,
+              maxAssociatedContentLength: 9000,
+              longConversationWarningCharacterLimit: 20000
+            )
+          ),
+          key: "llama_2x70b",
+          displayName: "Llama-2 70b"
         ),
       ],
       onModelChanged: {

@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { storiesOf } from '@storybook/react'
+import { Meta } from '@storybook/react'
 
 // Components
 import TorrentViewer from '../extension/components/torrentViewer'
@@ -15,11 +16,11 @@ const fullPageStoryStyles: object = {
 }
 
 // Storybook helpers
-const FullPageStory = (storyFn: any) => (
-  <div style={fullPageStoryStyles}>{storyFn()}</div>
+const FullPageStory = (props: React.PropsWithChildren) => (
+  <div style={fullPageStoryStyles}>{props.children}</div>
 )
 
-function consoleLog () {
+function consoleLog() {
   console.log('Clicked something')
 }
 
@@ -28,10 +29,12 @@ const sampleTorrent = {
   files: [
     {
       name: 'file1.jpg',
+      path: 'path/to/file1.jpg',
       length: 400
     },
     {
       name: 'file2.jpg',
+      path: 'path/to/file2.jpg',
       length: 500
     }
   ],
@@ -53,25 +56,32 @@ const torrentState: TorrentState = {
   torrentId: 'id'
 }
 
-// Storybook UI
-storiesOf('WebTorrent', module)
-  .addDecorator(FullPageStory)
-  .add('Page', () => {
-    return (
-      <TorrentViewer
-        actions={consoleLog}
-        name={'Fake Torrent with really long title'}
-        torrentState={torrentState}
-      />
-    )
-  })
-  .add('Page with torrent', () => {
-    return (
-      <TorrentViewer
-        actions={consoleLog}
-        torrent={sampleTorrent}
-        name={'Sample Torrent Name'}
-        torrentState={torrentState}
-      />
-    )
-  })
+export default {
+  title: 'WebTorrent',
+  decorators: (Story) => (
+    <FullPageStory>
+      <Story />
+    </FullPageStory>
+  )
+} as Meta<typeof TorrentViewer>
+
+export const Page = {
+  render: () => (
+    <TorrentViewer
+      actions={consoleLog}
+      name={'Fake Torrent with really long title'}
+      torrentState={torrentState}
+    />
+  )
+}
+
+export const PageWithTorrent = {
+  render: () => (
+    <TorrentViewer
+      actions={consoleLog}
+      torrent={sampleTorrent}
+      name={'Sample Torrent Name'}
+      torrentState={torrentState}
+    />
+  )
+}

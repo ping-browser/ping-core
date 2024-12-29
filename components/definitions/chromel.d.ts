@@ -151,8 +151,6 @@ declare namespace chrome.braveRewards {
 
   const openRewardsPanel: () => void
 
-  const showRewardsSetup: () => void
-
   const onCompleteReset: {
     addListener: (callback: (properties: { success: boolean }) => void) => void
   }
@@ -242,9 +240,9 @@ declare namespace chrome.windows {
   const getAllAsync: any
 }
 
-declare namespace chrome.braveShields {
-  const addSiteCosmeticFilter: (origin: string, cssSelector: string) => void
-  const openFilterManagementPage: () => void
+declare namespace cf_worker {
+  const addSiteCosmeticFilter: (selector: string) => void
+  const manageCustomFilters: () => void
 }
 
 declare namespace chrome.test {

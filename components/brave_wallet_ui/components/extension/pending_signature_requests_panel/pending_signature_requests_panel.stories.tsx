@@ -11,8 +11,7 @@ import { BraveWallet } from '../../../constants/types'
 // mocks
 import {
   mockSolDappSignAllTransactionsRequest,
-  mockSolDappSignAndSendTransactionRequest,
-  mockSolDappSignTransactionRequest
+  mockSolDappSignAndSendTransactionRequest
 } from '../../../common/constants/mocks'
 
 // utils
@@ -30,11 +29,7 @@ import PendingSignatureRequestsPanel from './pending_signature_requests_panel'
 
 const storyContextProps: WalletPanelStoryProps = {
   walletApiDataOverrides: {
-    signTransactionRequests: [
-      mockSolDappSignTransactionRequest,
-      mockSolDappSignTransactionRequest
-    ],
-    signAllTransactionsRequests: [
+    signSolTransactionsRequests: [
       mockSolDappSignAllTransactionsRequest,
       mockSolDappSignAllTransactionsRequest
     ],
@@ -51,32 +46,19 @@ const storyContextProps: WalletPanelStoryProps = {
   }
 }
 
-export const _PendingSolanaSignAllRequestsPanel = () => {
-  return (
-    <WalletPanelStory {...storyContextProps}>
-      <PendingSignatureRequestsPanel signMode='signAllTxs' />
-    </WalletPanelStory>
-  )
-}
-
-_PendingSolanaSignAllRequestsPanel.story = {
-  name: 'Pending Solana Sign-All Signature Requests Panel'
-}
-
-export const _PendingSolanaTxSignaturesPanel = () => {
-  return (
-    <WalletPanelStory {...storyContextProps}>
-      <PendingSignatureRequestsPanel signMode='signTx' />
-    </WalletPanelStory>
-  )
-}
-
-_PendingSolanaTxSignaturesPanel.story = {
-  name: 'Pending Solana Transaction Signatures Panel'
+export const _PendingSolanaSignAllSignatureRequestsPanel = {
+  render: () => {
+    return (
+      <WalletPanelStory {...storyContextProps}>
+        <PendingSignatureRequestsPanel />
+      </WalletPanelStory>
+    )
+  }
 }
 
 export default {
   parameters: {
     layout: 'centered'
-  }
+  },
+  component: PendingSignatureRequestsPanel
 }

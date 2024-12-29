@@ -3,22 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { assert } from 'chrome://resources/js/assert.js'
 import {
   publicToAddress,
   toChecksumAddress,
   bufferToHex
 } from 'ethereumjs-util'
-import {
-  BraveWallet,
-  SerializableTransactionInfo
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import {
   TrezorCommand,
   UnlockResponsePayload,
   GetAccountsResponsePayload,
-  TrezorAccount,
   SignTransactionCommandPayload,
   TrezorFrameCommand,
   SignTransactionResponsePayload,
@@ -31,32 +26,26 @@ import {
   SignTypedMessageResponsePayload
 } from './trezor-messages'
 import { sendTrezorCommand, closeTrezorBridge } from './trezor-bridge-transport'
-import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
-  GetAccountsHardwareOperationResult,
+  AccountFromDevice,
+  HardwareImportScheme,
+  HardwareOperationResultAccounts,
   HardwareOperationResult,
-  SignHardwareOperationResult,
-  TrezorDerivationPaths
+  HardwareOperationError,
+  HardwareOperationResultEthereumSignatureBytes,
+  HardwareOperationResultEthereumSignatureVRS,
+  fromUntrustedEthereumSignatureBytes,
+  fromUntrustedEthereumSignatureVRS
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import { Unsuccessful } from './trezor-connect-types'
 import { TrezorKeyring } from '../interfaces'
-import { HardwareVendor } from '../../api/hardware_keyrings'
-import { getPathForTrezorIndex } from '../../../utils/derivation_path_utils'
 
 export default class TrezorBridgeKeyring implements TrezorKeyring {
   private unlocked: boolean = false
-  protected deviceId: string
 
-  type = (): HardwareVendor => {
-    return BraveWallet.TREZOR_HARDWARE_VENDOR
-  }
-
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.ETH
-  }
-
-  keyringId = (): BraveWallet.KeyringId => {
-    return BraveWallet.KeyringId.kDefault
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.EthTrezor
   }
 
   isUnlocked = (): boolean => {
@@ -87,48 +76,44 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       const code = response.payload?.code ?? ''
       return { success: false, error: error, code: code }
     }
-    return { success: this.unlocked }
+    return { success: true }
   }
 
   getAccounts = async (
     from: number,
-    to: number,
-    scheme: TrezorDerivationPaths
-  ): Promise<GetAccountsHardwareOperationResult> => {
+    count: number,
+    scheme: HardwareImportScheme
+  ): Promise<HardwareOperationResultAccounts> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
         return unlocked
       }
     }
-    from = from >= 0 ? from : 0
     const paths = []
-    const addZeroPath = from > 0 || to < 0
-    if (addZeroPath) {
-      // Add zero address to calculate device id.
-      paths.push(this.getPathForIndex(0, TrezorDerivationPaths.Default))
+    for (let i = 0; i < count; i++) {
+      paths.push(scheme.pathTemplate(from + i))
     }
-    for (let i = from; i <= to; i++) {
-      paths.push(this.getPathForIndex(i, scheme))
-    }
-    return this.getAccountsFromDevice(paths, addZeroPath)
+    return this.getAccountsFromDevice(paths)
   }
 
   signTransaction = async (
     path: string,
-    txInfo: SerializableTransactionInfo,
+    txid: string,
+    ethTxData1559: BraveWallet.TxData1559,
     chainId: string
-  ): Promise<SignHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultEthereumSignatureVRS> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
         return unlocked
       }
     }
+    // TODO(apaymyshev): why we are sending tx meta id to trezor frame?
     const data = await this.sendTrezorCommand<SignTransactionResponsePayload>({
       command: TrezorCommand.SignTransaction,
-      id: txInfo.id,
-      payload: this.prepareTransactionPayload(path, txInfo, chainId),
+      id: txid,
+      payload: this.prepareTransactionPayload(path, ethTxData1559, chainId),
       origin: window.origin
     })
     if (
@@ -145,13 +130,26 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
         code: response.payload.code
       }
     }
-    return { success: true, payload: response.payload }
+    const ethereumSignatureVRS = fromUntrustedEthereumSignatureVRS(
+      response.payload
+    )
+    if (!ethereumSignatureVRS) {
+      return {
+        success: false,
+        error: 'Invalid signature',
+        code: undefined
+      }
+    }
+    return {
+      success: true,
+      signature: ethereumSignatureVRS
+    }
   }
 
   signPersonalMessage = async (
     path: string,
     message: string
-  ): Promise<SignHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultEthereumSignatureBytes> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
@@ -175,14 +173,27 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       const unsuccess = response.payload
       return { success: false, error: unsuccess.error, code: unsuccess.code }
     }
-    return { success: true, payload: '0x' + response.payload.signature }
+    const ethereumSignatureBytes = fromUntrustedEthereumSignatureBytes(
+      response.payload
+    )
+    if (!ethereumSignatureBytes) {
+      return {
+        success: false,
+        error: 'Invalid signature',
+        code: undefined
+      }
+    }
+    return {
+      success: true,
+      signature: ethereumSignatureBytes
+    }
   }
 
   signEip712Message = async (
     path: string,
     domainSeparatorHex: string,
     hashStructMessageHex: string
-  ): Promise<SignHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultEthereumSignatureBytes> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
@@ -219,12 +230,27 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       if (unsuccess.code && unsuccess.code === 'Method_InvalidParameter') {
         return {
           success: false,
-          error: getLocale('braveWalletTrezorSignTypedDataError')
+          error: getLocale('braveWalletTrezorSignTypedDataError'),
+          code: undefined
         }
       }
       return { success: false, error: unsuccess.error, code: unsuccess.code }
     }
-    return { success: true, payload: response.payload.signature }
+
+    const ethereumSignatureBytes = fromUntrustedEthereumSignatureBytes(
+      response.payload
+    )
+    if (!ethereumSignatureBytes) {
+      return {
+        success: false,
+        error: 'Invalid signature',
+        code: undefined
+      }
+    }
+    return {
+      success: true,
+      signature: ethereumSignatureBytes
+    }
   }
 
   private async sendTrezorCommand<T>(
@@ -233,80 +259,59 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return sendTrezorCommand<T>(command)
   }
 
-  private readonly getHashFromAddress = async (address: string) => {
-    return hardwareDeviceIdFromAddress(address)
-  }
-
-  private readonly getDeviceIdFromAccountsList = async (
-    accountsList: TrezorAccount[]
-  ) => {
-    const zeroPath = this.getPathForIndex(0, TrezorDerivationPaths.Default)
-    for (const value of accountsList) {
-      if (value.serializedPath !== zeroPath) {
-        continue
-      }
-      const address = this.publicKeyToAddress(value.publicKey)
-      return this.getHashFromAddress(address)
-    }
-    return ''
-  }
-
   private prepareTransactionPayload = (
     path: string,
-    txInfo: SerializableTransactionInfo,
+    ethTxData1559: BraveWallet.TxData1559,
     chainId: string
   ): SignTransactionCommandPayload => {
     const isEIP1559Transaction =
-      txInfo.txDataUnion.ethTxData1559?.maxPriorityFeePerGas !== '' &&
-      txInfo.txDataUnion.ethTxData1559?.maxFeePerGas !== ''
+      ethTxData1559?.maxPriorityFeePerGas !== '' &&
+      ethTxData1559?.maxFeePerGas !== ''
     if (isEIP1559Transaction) {
-      return this.createEIP1559TransactionPayload(path, txInfo, chainId)
+      return this.createEIP1559TransactionPayload(path, ethTxData1559, chainId)
     }
-    return this.createLegacyTransactionPayload(path, txInfo, chainId)
+    return this.createLegacyTransactionPayload(path, ethTxData1559, chainId)
   }
 
   private createEIP1559TransactionPayload = (
     path: string,
-    txInfo: SerializableTransactionInfo,
+    ethTxData1559: BraveWallet.TxData1559,
     chainId: string
   ): SignTransactionCommandPayload => {
-    assert(txInfo.txDataUnion.ethTxData1559, '')
     return {
       path: path,
       transaction: {
-        to: txInfo.txDataUnion.ethTxData1559?.baseData.to ?? '',
-        value: txInfo.txDataUnion.ethTxData1559?.baseData.value ?? '',
+        to: ethTxData1559.baseData.to ?? '',
+        value: ethTxData1559.baseData.value ?? '',
         data: bufferToHex(
-          Buffer.from(txInfo.txDataUnion.ethTxData1559?.baseData.data ?? [])
+          Buffer.from(ethTxData1559.baseData.data ?? [])
         ).toString(),
         chainId: parseInt(chainId, 16),
-        nonce: txInfo.txDataUnion.ethTxData1559?.baseData.nonce ?? '',
-        gasLimit: txInfo.txDataUnion.ethTxData1559?.baseData.gasLimit ?? '',
-        maxFeePerGas: txInfo.txDataUnion.ethTxData1559?.maxFeePerGas ?? '',
-        maxPriorityFeePerGas:
-          txInfo.txDataUnion.ethTxData1559?.maxPriorityFeePerGas ?? ''
+        nonce: ethTxData1559.baseData.nonce ?? '',
+        gasLimit: ethTxData1559.baseData.gasLimit ?? '',
+        maxFeePerGas: ethTxData1559.maxFeePerGas ?? '',
+        maxPriorityFeePerGas: ethTxData1559.maxPriorityFeePerGas ?? ''
       }
     }
   }
 
   private createLegacyTransactionPayload = (
     path: string,
-    txInfo: SerializableTransactionInfo,
+    ethTxData1559: BraveWallet.TxData1559,
     chainId: string
   ): SignTransactionCommandPayload => {
-    assert(txInfo.txDataUnion.ethTxData1559, '')
     return {
       path: path,
       transaction: {
-        to: txInfo.txDataUnion.ethTxData1559?.baseData.to ?? '',
-        value: txInfo.txDataUnion.ethTxData1559?.baseData.value ?? '',
+        to: ethTxData1559.baseData.to ?? '',
+        value: ethTxData1559.baseData.value ?? '',
         data: bufferToHex(
-          Buffer.from(txInfo.txDataUnion.ethTxData1559?.baseData.data ?? [])
+          Buffer.from(ethTxData1559.baseData.data ?? [])
         ).toString(),
         chainId: parseInt(chainId, 16),
-        nonce: txInfo.txDataUnion.ethTxData1559?.baseData.nonce ?? '',
-        gasLimit: txInfo.txDataUnion.ethTxData1559?.baseData.gasLimit ?? '',
-        gasPrice: txInfo.txDataUnion.ethTxData1559?.baseData.gasPrice ?? ''
+        nonce: ethTxData1559.baseData.nonce ?? '',
+        gasLimit: ethTxData1559.baseData.gasLimit ?? '',
+        gasPrice: ethTxData1559.baseData.gasPrice ?? ''
       }
     }
   }
@@ -325,9 +330,8 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   private readonly getAccountsFromDevice = async (
-    paths: string[],
-    skipZeroPath: boolean
-  ): Promise<GetAccountsHardwareOperationResult> => {
+    paths: string[]
+  ): Promise<HardwareOperationResultAccounts> => {
     const requestedPaths = []
     for (const path of paths) {
       requestedPaths.push({ path: path })
@@ -351,33 +355,19 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       return { success: false, error: unsuccess.error, code: unsuccess.code }
     }
 
-    let accounts = []
-    const accountsList = response.payload as TrezorAccount[]
-    this.deviceId = await this.getDeviceIdFromAccountsList(accountsList)
-    const zeroPath = this.getPathForIndex(0, TrezorDerivationPaths.Default)
-    for (const value of accountsList) {
-      // If requested addresses do not have zero indexed adress we add it
-      // intentionally to calculate device id and should not add it to
-      // returned accounts
-      if (skipZeroPath && value.serializedPath === zeroPath) {
-        continue
-      }
+    let accounts: AccountFromDevice[] = []
+    for (const value of response.payload) {
       accounts.push({
         address: this.publicKeyToAddress(value.publicKey),
-        derivationPath: value.serializedPath,
-        name: this.type(),
-        hardwareVendor: this.type(),
-        deviceId: this.deviceId,
-        coin: this.coin(),
-        keyringId: this.keyringId()
+        derivationPath: value.serializedPath
       })
     }
-    return { success: true, payload: [...accounts] }
+    return { success: true, accounts: [...accounts] }
   }
 
   private readonly createErrorFromCode = (
     code: TrezorErrorsCodes
-  ): HardwareOperationResult => {
+  ): HardwareOperationError => {
     const deviceName = getLocale('braveWalletConnectHardwareTrezor')
 
     switch (code) {
@@ -401,6 +391,4 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
         }
     }
   }
-
-  private readonly getPathForIndex = getPathForTrezorIndex
 }

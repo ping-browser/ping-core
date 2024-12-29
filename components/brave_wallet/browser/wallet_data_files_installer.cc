@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/compiler_specific.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/values.h"
@@ -44,8 +45,8 @@ const uint8_t kWalletDataFilesSha2Hash[] = {
     0x38, 0x7c, 0x64, 0xc3, 0xa5, 0xb2, 0x7e, 0x8c, 0x55, 0x07
 };
 
-const char kWalletDataFilesDisplayName[] = "Brave Wallet data files";
-const char kComponentId[] = "knpelcmpghdmgodfegongjplocbiijmh";
+constexpr char kWalletDataFilesDisplayName[] = "Brave Wallet data files";
+constexpr char kComponentId[] = "knpelcmpghdmgodfegongjplocbiijmh";
 
 static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");
@@ -126,8 +127,9 @@ base::FilePath WalletDataFilesInstallerPolicy::GetRelativeInstallDir() const {
 }
 
 void WalletDataFilesInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
-  hash->assign(kWalletDataFilesSha2Hash,
-               kWalletDataFilesSha2Hash + std::size(kWalletDataFilesSha2Hash));
+  UNSAFE_TODO(hash->assign(
+      kWalletDataFilesSha2Hash,
+      kWalletDataFilesSha2Hash + std::size(kWalletDataFilesSha2Hash)));
 }
 
 std::string WalletDataFilesInstallerPolicy::GetName() const {
@@ -179,7 +181,7 @@ void WalletDataFilesInstaller::RegisterWalletDataFilesComponentInternal(
   installer->Register(
       cus, base::BindOnce([]() {
         brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->OnDemandUpdate(kComponentId);
+            ->EnsureInstalled(kComponentId);
       }));
 }
 

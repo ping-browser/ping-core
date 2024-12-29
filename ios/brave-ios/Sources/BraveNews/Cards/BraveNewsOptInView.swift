@@ -26,7 +26,7 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
     $0.spacing = 16
   }
 
-  public let graphicAnimationView = AnimationView(
+  public let graphicAnimationView = LottieAnimationView(
     name: "brave-today-welcome-graphic",
     bundle: .module
   ).then {
@@ -62,6 +62,12 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
     $0.setTitle(Strings.BraveNews.learnMoreTitle, for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
     $0.setTitleColor(.white, for: .normal)
+    if #available(iOS 17.0, *) {
+      $0.hoverStyle = .init(
+        effect: .highlight,
+        shape: .capsule.inset(by: .init(top: 0, left: -8, bottom: 0, right: -8))
+      )
+    }
   }
 
   public required init() {

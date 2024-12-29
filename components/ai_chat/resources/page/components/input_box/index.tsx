@@ -11,29 +11,52 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
-import DataContext from '../../state/context'
-import getPageHandlerInstance from '../../api/page_handler'
+import { AIChatContext } from '../../state/ai_chat_context'
+import { ConversationContext } from '../../state/conversation_context'
 import ActionTypeLabel from '../action_type_label'
 
-function InputBox() {
-  const context = React.useContext(DataContext)
+type Props = Pick<
+  ConversationContext,
+  | 'inputText'
+  | 'setInputText'
+  | 'submitInputTextToAPI'
+  | 'selectedActionType'
+  | 'resetSelectedActionType'
+  | 'isCharLimitApproaching'
+  | 'isCharLimitExceeded'
+  | 'inputTextCharCountDisplay'
+  | 'isToolsMenuOpen'
+  | 'setIsToolsMenuOpen'
+  | 'shouldDisableUserInput'
+  | 'handleVoiceRecognition'
+> &
+  Pick<
+    AIChatContext,
+    'isMobile' | 'hasAcceptedAgreement'
+  >
 
+interface InputBoxProps {
+  context: Props
+  onFocusInputMobile?: () => unknown
+}
+
+function InputBox(props: InputBoxProps) {
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    context.setInputText(e.target.value)
+    props.context.setInputText(e.target.value)
   }
 
-  const handleSubmit = (e: PointerEvent) => {
-    context.submitInputTextToAPI()
+  const handleSubmit = () => {
+    props.context.submitInputTextToAPI()
   }
 
-  const handleMic = (e: PointerEvent) => {
-    getPageHandlerInstance().pageHandler.handleVoiceRecognition()
+  const handleMic = () => {
+    props.context.handleVoiceRecognition?.()
   }
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
-        context.submitInputTextToAPI()
+        props.context.submitInputTextToAPI()
       }
 
       e.preventDefault()
@@ -41,53 +64,64 @@ function InputBox() {
 
     if (
       e.key === 'Backspace' &&
-      context.inputText === '' &&
-      context.selectedActionType
+      props.context.inputText === '' &&
+      props.context.selectedActionType
     ) {
-      context.resetSelectedActionType()
+      props.context.resetSelectedActionType()
+    }
+  }
+
+  // We don't want to handle that event on desktop
+  let handleFocusMobile
+  if (props.context.isMobile) {
+    handleFocusMobile = (event: React.FormEvent<HTMLTextAreaElement>) => {
+      if (props.onFocusInputMobile) {
+        props.onFocusInputMobile()
+      }
     }
   }
 
   const maybeAutofocus = (node: HTMLTextAreaElement | null) => {
-    if (node && context.selectedActionType) {
+    if (node && props.context.selectedActionType) {
       node.focus()
     }
   }
 
   return (
     <form className={styles.form}>
-      {context.selectedActionType && (
+      {props.context.selectedActionType && (
         <div className={styles.actionsLabelContainer}>
           <ActionTypeLabel
             removable={true}
-            actionType={context.selectedActionType}
-            onCloseClick={context.resetSelectedActionType}
+            actionType={props.context.selectedActionType}
+            onCloseClick={props.context.resetSelectedActionType}
           />
         </div>
       )}
       <div
         className={styles.growWrap}
-        data-replicated-value={context.inputText}
+        data-replicated-value={props.context.inputText}
       >
         <textarea
           ref={maybeAutofocus}
           placeholder={getLocale('placeholderLabel')}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
-          value={context.inputText}
+          onFocus={handleFocusMobile}
+          value={props.context.inputText}
           autoFocus
           rows={1}
         />
       </div>
-      {context.isCharLimitApproaching && (
+      {props.context.isCharLimitApproaching && (
         <div
           className={classnames({
             [styles.counterText]: true,
-            [styles.counterTextVisible]: context.isCharLimitApproaching,
-            [styles.counterTextError]: context.isCharLimitExceeded
+            [styles.counterTextVisible]: props.context.isCharLimitApproaching,
+            [styles.counterTextError]: props.context.isCharLimitExceeded
           })}
         >
-          {context.inputTextCharCountDisplay}
+          {props.context.inputTextCharCountDisplay}
         </div>
       )}
       <div className={styles.toolsContainer}>
@@ -95,21 +129,25 @@ function InputBox() {
           <Button
             fab
             kind='plain-faint'
-            onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}
+            onClick={() =>
+              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+            }
+            title={getLocale('toolsMenuButtonLabel')}
           >
             <Icon
               className={classnames({
-                [styles.slashIconActive]: context.isToolsMenuOpen
+                [styles.slashIconActive]: props.context.isToolsMenuOpen
               })}
               name='slash'
             />
           </Button>
-          {context.isMobile && (
+          {props.context.isMobile && (
             <Button
               fab
               kind='plain-faint'
               onClick={handleMic}
-              disabled={context.shouldDisableUserInput}
+              disabled={props.context.shouldDisableUserInput}
+              title={getLocale('useMicButtonLabel')}
             >
               <Icon name='microphone' />
             </Button>
@@ -120,7 +158,7 @@ function InputBox() {
             fab
             kind='plain-faint'
             onClick={handleSubmit}
-            disabled={context.shouldDisableUserInput}
+            disabled={props.context.shouldDisableUserInput}
             title={getLocale('sendChatButtonLabel')}
           >
             <Icon name='send' />

@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_shields/core/common/brave_shields.mojom.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/browser/render_frame_host_receiver_set.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -52,8 +53,11 @@ class BraveShieldsWebContentsObserver
       const std::string& block_type,
       const std::string& subresource,
       content::WebContents* web_contents);
+  static void DispatchWebcompatFeatureInvokedForWebContents(
+      ContentSettingsType webcompat_content_settings,
+      content::WebContents* web_contents);
   static void DispatchBlockedEvent(const GURL& request_url,
-                                   int frame_tree_node_id,
+                                   content::FrameTreeNodeId frame_tree_node_id,
                                    const std::string& block_type);
   static GURL GetTabURLFromRenderFrameInfo(int render_frame_tree_node_id);
   void AllowScriptsOnce(const std::vector<std::string>& origins);
@@ -63,40 +67,33 @@ class BraveShieldsWebContentsObserver
 
  protected:
   // content::WebContentsObserver overrides.
-  void RenderFrameCreated(content::RenderFrameHost* host) override;
-  void RenderFrameDeleted(content::RenderFrameHost* render_frame_host) override;
-  void RenderFrameHostChanged(content::RenderFrameHost* old_host,
-                              content::RenderFrameHost* new_host) override;
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
 
   // brave_shields::mojom::BraveShieldsHost.
   void OnJavaScriptBlocked(const std::u16string& details) override;
   void OnJavaScriptAllowedOnce(const std::u16string& details) override;
+  void OnWebcompatFeatureInvoked(
+      ContentSettingsType webcompat_settings_type) override;
 
  private:
   friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
   friend class BraveShieldsWebContentsObserverBrowserTest;
 
-  using BraveShieldsRemotesMap = base::flat_map<
-      content::RenderFrameHost*,
-      mojo::AssociatedRemote<brave_shields::mojom::BraveShields>>;
-
   // Allows indicating a implementor of brave_shields::mojom::BraveShieldsHost
   // other than this own class, for testing purposes only.
   static void SetReceiverImplForTesting(BraveShieldsWebContentsObserver* impl);
 
-  // Only used from the BindBraveShieldsHost() static method, useful to bind the
-  // mojo receiver of brave_shields::mojom::BraveShieldsHost to a different
-  // implementor when needed, for testing purposes.
+  // Only used from the BindBraveShieldsHost() static method, useful to bind
+  // the mojo receiver of brave_shields::mojom::BraveShieldsHost to a
+  // different implementor when needed, for testing purposes.
   void BindReceiver(mojo::PendingAssociatedReceiver<
                         brave_shields::mojom::BraveShieldsHost> receiver,
                     content::RenderFrameHost* rfh);
 
-  // Return an already bound remote for the brave_shields::mojom::BraveShields
-  // mojo interface. It is an error to call this method with an invalid |rfh|.
-  mojo::AssociatedRemote<brave_shields::mojom::BraveShields>&
-  GetBraveShieldsRemote(content::RenderFrameHost* rfh);
+  // Sends the current shields settings to the renderer process bound to the
+  // given |navigation_handle|.
+  void SendShieldsSettings(content::NavigationHandle* navigation_handle);
 
   std::vector<std::string> allowed_scripts_;
   // We keep a set of the current page's blocked URLs in case the page
@@ -105,10 +102,6 @@ class BraveShieldsWebContentsObserver
 
   content::RenderFrameHostReceiverSet<brave_shields::mojom::BraveShieldsHost>
       receivers_;
-
-  // Map of remote endpoints for the brave_shields::mojom::BraveShields mojo
-  // interface, to prevent binding a new remote each time it's used.
-  BraveShieldsRemotesMap brave_shields_remotes_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

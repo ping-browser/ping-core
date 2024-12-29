@@ -11,8 +11,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
 
-namespace brave_rewards::internal {
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 SKU::SKU(RewardsEngine& engine) : engine_(engine), common_(engine) {}
 
@@ -78,7 +77,6 @@ void SKU::CreateTransaction(const std::string& wallet_type,
       return engine_->Get<EnvironmentConfig>().gemini_sku_destination();
     }
 
-    NOTREACHED();
     return "";
   }();
 
@@ -131,5 +129,4 @@ void SKU::OnOrder(const std::string& wallet_type,
   }
 }
 
-}  // namespace sku
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::sku

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 
 #include "base/notreached.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -51,8 +51,8 @@ base::Value::Dict BuildExternalWalletConnectedReminder() {
 
 }  // namespace
 
-base::Value::Dict BuildReminder(const mojom::ReminderType type) {
-  switch (type) {
+base::Value::Dict BuildReminder(const mojom::ReminderType mojom_reminder_type) {
+  switch (mojom_reminder_type) {
     case mojom::ReminderType::kClickedSameAdMultipleTimes: {
       return BuildClickedSameAdMultipleTimesReminder();
     }
@@ -62,7 +62,8 @@ base::Value::Dict BuildReminder(const mojom::ReminderType type) {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::ReminderType: " << type;
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::ReminderType: "
+                        << mojom_reminder_type;
 }
 
 bool IsReminder(const std::string& placement_id) {

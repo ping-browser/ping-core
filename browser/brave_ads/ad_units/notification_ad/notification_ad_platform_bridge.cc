@@ -10,10 +10,11 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 #include "brave/browser/ui/brave_ads/notification_ad_popup_handler.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "chrome/browser/platform_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_window.h"  // IWYU pragma: keep
+#include "chrome/browser/ui/browser_window.h"
 #include "ui/gfx/native_widget_types.h"
 
 namespace brave_ads {

@@ -10,15 +10,14 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
-#include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
-#include "build/build_config.h"
 
 namespace brave_ads {
 
@@ -35,12 +34,6 @@ ClientInfo& ClientInfo::operator=(ClientInfo&& other) noexcept = default;
 ClientInfo::~ClientInfo() = default;
 
 base::Value::Dict ClientInfo::ToValue() const {
-  base::Value::Dict dict;
-
-  dict.Set("adPreferences", ad_preferences.ToValue());
-
-  dict.Set("adsShownHistory", HistoryItemsToValue(history_items));
-
   const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
 
   base::Value::Dict purchase_intent_signal_history_dict;
@@ -55,19 +48,17 @@ base::Value::Dict ClientInfo::ToValue() const {
 
     purchase_intent_signal_history_dict.Set(segment, std::move(list));
   }
-  dict.Set("purchaseIntentSignalHistory",
-           std::move(purchase_intent_signal_history_dict));
 
   base::Value::List probabilities_history_list;
   for (const auto& item : text_classification_probabilities) {
     base::Value::List probabilities_list;
 
-    for (const auto& [segmemt, page_score] : item) {
-      CHECK(!segmemt.empty());
+    for (const auto& [segment, page_score] : item) {
+      CHECK(!segment.empty());
 
       probabilities_list.Append(
           base::Value::Dict()
-              .Set("segment", segmemt)
+              .Set("segment", segment)
               .Set("pageScore", base::NumberToString(page_score)));
     }
 
@@ -75,28 +66,17 @@ base::Value::Dict ClientInfo::ToValue() const {
         "textClassificationProbabilities", std::move(probabilities_list)));
   }
 
-  dict.Set("textClassificationProbabilitiesHistory",
+  return base::Value::Dict()
+      .Set("purchaseIntentSignalHistory",
+           std::move(purchase_intent_signal_history_dict))
+      .Set("textClassificationProbabilitiesHistory",
            std::move(probabilities_history_list));
-
-  return dict;
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/26003): Reduce cognitive
-// complexity.
 bool ClientInfo::FromValue(const base::Value::Dict& dict) {
-  if (const auto* const value = dict.FindDict("adPreferences")) {
-    ad_preferences.FromValue(*value);
-  }
-
-#if !BUILDFLAG(IS_IOS)
-  if (const auto* const value = dict.FindList("adsShownHistory")) {
-    history_items = HistoryItemsFromValue(*value);
-  }
-#endif
-
   if (const auto* const value = dict.FindDict("purchaseIntentSignalHistory")) {
     for (const auto [segment, history] : *value) {
-      const auto* items = history.GetIfList();
+      const auto* const items = history.GetIfList();
       if (!items) {
         continue;
       }
@@ -177,6 +157,8 @@ bool ClientInfo::FromJson(const std::string& json) {
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                               "Malformed client JSON state");
     base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Malformed client JSON state");
 
     return false;
   }

@@ -7,10 +7,10 @@
 
 #include <optional>
 
-#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -27,10 +27,10 @@ constexpr char kExpectedUrlRequestContent[] =
 }  // namespace
 
 class BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest
-    : public UnitTestBase {
+    : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     test::DisableBraveRewards();
   }
@@ -39,23 +39,25 @@ class BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest
 TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   CreateNonRewardConfirmationUrlRequestBuilder url_request_builder(
       *confirmation);
 
   // Act
-  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr mojom_url_request =
+      url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {"accept: application/json"};
-  expected_url_request->content = kExpectedUrlRequestContent;
-  expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-  EXPECT_EQ(expected_url_request, url_request);
+  const mojom::UrlRequestInfoPtr expected_mojom_url_request =
+      mojom::UrlRequestInfo::New();
+  expected_mojom_url_request->url = GURL(kExpectedUrl);
+  expected_mojom_url_request->headers = {"accept: application/json"};
+  expected_mojom_url_request->content = kExpectedUrlRequestContent;
+  expected_mojom_url_request->content_type = "application/json";
+  expected_mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
+  EXPECT_EQ(expected_mojom_url_request, mojom_url_request);
 }
 
 }  // namespace brave_ads

@@ -49,7 +49,7 @@
 /* The button to open a new tab with the Downloads home panel */
 "DownloadsButtonTitle" = "Скачанные файлы";
 
-/* Question shown to user when tapping a link that opens the App Store app */
+/* Question shown to user when tapbrave a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "Открыть эту ссылку в App Store?";
 
 /* The button to open a new tab with the copied link */
@@ -118,7 +118,7 @@
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorTitle" = "Не удалось добавить iTunes Pass";
 
-/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+/* The message displayed to a user when they try to open a URL that cannot be handled by Ping, or any external app. */
 "UnableToOpenURLError" = "Не удалось открыть страницу, так как указан недействительный адрес.";
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */

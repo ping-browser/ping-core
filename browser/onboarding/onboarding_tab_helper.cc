@@ -6,15 +6,17 @@
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/onboarding/domain_map.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/onboarding/pref_names.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -48,18 +50,34 @@ std::optional<base::Time> OnboardingTabHelper::s_sentinel_time_for_testing_;
 
 // static
 void OnboardingTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents) {
+    content::WebContents* web_contents,
+    base::OnceClosure creation_callback_for_test) {
+  if (!g_browser_process->local_state()) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  if (creation_callback_for_test) {
+    CHECK_IS_TEST();
+  }
+
   base::Time last_shields_icon_highlight_time =
       g_browser_process->local_state()->GetTime(
           onboarding::prefs::kLastShieldsIconHighlightTime);
 
   // Shields highlight is aleady shown. We use it only once.
   if (!last_shields_icon_highlight_time.is_null()) {
+    if (creation_callback_for_test) {
+      std::move(creation_callback_for_test).Run();
+    }
     return;
   }
 
   if (first_run::IsChromeFirstRun()) {
     OnboardingTabHelper::CreateForWebContents(web_contents);
+    if (creation_callback_for_test) {
+      std::move(creation_callback_for_test).Run();
+    }
     return;
   }
 
@@ -69,12 +87,17 @@ void OnboardingTabHelper::MaybeCreateForWebContents(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&OnboardingTabHelper::IsSevenDaysPassedSinceFirstRun),
       base::BindOnce(
-          [](base::WeakPtr<content::WebContents> contents, bool passed) {
+          [](base::WeakPtr<content::WebContents> contents,
+             base::OnceCallback<void()> creation_callback_for_test,
+             bool passed) {
             if (!passed && contents) {
               OnboardingTabHelper::CreateForWebContents(contents.get());
             }
+            if (creation_callback_for_test) {
+              std::move(creation_callback_for_test).Run();
+            }
           },
-          web_contents->GetWeakPtr()));
+          web_contents->GetWeakPtr(), std::move(creation_callback_for_test)));
 }
 
 OnboardingTabHelper::OnboardingTabHelper(content::WebContents* web_contents)
@@ -119,8 +142,7 @@ void OnboardingTabHelper::DidStopLoading() {
 
 void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
   auto* shields_data_controller =
-      brave_shields::BraveShieldsDataController::FromWebContents(
-          web_contents());
+      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents());
   DCHECK(shields_data_controller);
 
   if (shields_data_controller->GetBraveShieldsEnabled() &&
@@ -171,29 +193,16 @@ void OnboardingTabHelper::ShowBraveHelpBubbleView() {
 
 std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
   auto* shields_data_controller =
-      brave_shields::BraveShieldsDataController::FromWebContents(
-          web_contents());
+      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents());
 
   if (!shields_data_controller) {
     return std::string();
   }
 
-  auto [company_names, total_companies_blocked] =
-      onboarding::GetCompanyNamesAndCountFromAdsList(
-          shields_data_controller->GetBlockedAdsList());
-
-  const int others_blocked =
-      shields_data_controller->GetTotalBlockedCount() - total_companies_blocked;
-
   std::vector<std::string> replacements;
   std::string label_text = l10n_util::GetPluralStringFUTF8(
-      company_names.empty()
-          ? IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES
-          : IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES,
-      others_blocked);
-  if (!company_names.empty()) {
-    replacements.push_back(company_names);
-  }
+      IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES,
+      shields_data_controller->GetTotalBlockedCount());
   replacements.push_back(shields_data_controller->GetCurrentSiteURL().host());
 
   return base::ReplaceStringPlaceholders(label_text, replacements, nullptr);

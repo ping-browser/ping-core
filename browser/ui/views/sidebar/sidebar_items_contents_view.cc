@@ -103,12 +103,13 @@ SidebarItemsContentsView::SidebarItemsContentsView(
 
 SidebarItemsContentsView::~SidebarItemsContentsView() = default;
 
-gfx::Size SidebarItemsContentsView::CalculatePreferredSize() const {
+gfx::Size SidebarItemsContentsView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   if (children().empty()) {
     return {0, 0};
   }
 
-  return views::View::CalculatePreferredSize();
+  return views::View::CalculatePreferredSize(available_size);
 }
 
 void SidebarItemsContentsView::OnThemeChanged() {
@@ -230,7 +231,7 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
     return;
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
@@ -248,7 +249,7 @@ bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
     return GetSidebarService(browser_)->IsEditableItemAt(*index);
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return false;
 }
 
@@ -442,7 +443,7 @@ SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
     }
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return std::nullopt;
 }
 
@@ -526,7 +527,7 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
       ai_chat::AIChatMetrics* metrics =
           g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
       CHECK(metrics);
-      metrics->HandleOpenViaSidebar();
+      metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kSidebar);
     }
 #endif
     controller->ActivatePanelItem(item_model.built_in_item_type);

@@ -17,15 +17,9 @@
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #define kChromeUIBlobInternalsHost kChromeUIBlobInternalsHost, kIPFSWebUIHost
 #endif
+      kTorInternalsHost, kSkusInternalsHost
 
 #include "src/chrome/common/webui_url_constants.cc"
 
-#undef kChromeUIBlobInternalsHost
-#undef kPerformanceSubPage
 #undef kChromeUIAttributionInternalsHost
 
-namespace chrome {
-
-const char kPerformanceSubPage[] = "system";
-
-}  // namespace chrome

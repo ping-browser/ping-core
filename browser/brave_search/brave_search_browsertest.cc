@@ -12,6 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
 #include "brave/components/brave_search/common/features.h"
@@ -42,23 +43,23 @@ using RequestExpectationsCallback =
 
 namespace {
 
-const char kEmbeddedTestServerDirectory[] = "brave-search";
-const char kAllowedDomain[] = "search.brave.com";
-const char kAllowedDomainDev[] = "search.brave.software";
-const char kNotAllowedDomain[] = "brave.com";
-const char kBraveSearchPath[] = "/bravesearch.html";
-const char kPageWithCookie[] = "/simple_page_with_cookie.html";
-const char kPageWithoutCookie[] = "/simple_page_without_cookie.html";
-const char kAdsStatusHeaderName[] = "X-Brave-Ads-Enabled";
-const char kAdsStatusHeaderValue[] = "1";
-const char kBackupSearchContent[] = "<html><body>results</body></html>";
-const char kScriptDefaultAPIExists[] =
+constexpr char kEmbeddedTestServerDirectory[] = "brave-search";
+constexpr char kAllowedDomain[] = "search.brave.com";
+constexpr char kAllowedDomainDev[] = "search.brave.software";
+constexpr char kNotAllowedDomain[] = "brave.com";
+constexpr char kBraveSearchPath[] = "/bravesearch.html";
+constexpr char kPageWithCookie[] = "/simple_page_with_cookie.html";
+constexpr char kPageWithoutCookie[] = "/simple_page_without_cookie.html";
+constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
+constexpr char kSearchAdsDisabledValue[] = "?0";
+constexpr char kBackupSearchContent[] = "<html><body>results</body></html>";
+constexpr char kScriptDefaultAPIExists[] =
     "!!(window.brave && window.brave.getCanSetDefaultSearchProvider)";
 // Use setTimeout to allow opensearch xml to be fetched
 // and template url created.
 // If this is flakey, consider making TemplateURL manually,
 // or observing the TemplateURLService for changes.
-const char kScriptDefaultAPIGetValue[] = R"(
+constexpr char kScriptDefaultAPIGetValue[] = R"(
   new Promise(resolve => {
     setTimeout(function () {
     brave.getCanSetDefaultSearchProvider()
@@ -105,7 +106,6 @@ class BraveSearchTest : public InProcessBrowserTest {
     https_server_->RegisterRequestHandler(base::BindRepeating(
         &BraveSearchTest::HandleRequest, base::Unretained(this)));
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
@@ -324,15 +324,15 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestDisabled, DefaultAPIInvisibleKnownHost) {
   EXPECT_EQ(false, content::EvalJs(contents, kScriptDefaultAPIExists));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeader) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeader) {
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
         const GURL url = request.GetURL();
-        EXPECT_TRUE(base::Contains(request.headers, kAdsStatusHeaderName));
-        EXPECT_EQ(kAdsStatusHeaderValue,
-                  request.headers.at(kAdsStatusHeaderName));
+        EXPECT_TRUE(base::Contains(request.headers, kSearchAdsHeader));
+        EXPECT_EQ(kSearchAdsDisabledValue,
+                  request.headers.at(kSearchAdsHeader));
         if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
@@ -341,6 +341,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeader) {
 
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
 
   const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -348,13 +349,13 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeader) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderAdsDisabled) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderRewardsDisabled) {
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
         const GURL url = request.GetURL();
-        EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
+        EXPECT_FALSE(base::Contains(request.headers, kSearchAdsHeader));
         if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
@@ -370,13 +371,13 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderAdsDisabled) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderNotAllowedDomain) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsSearchResultAdsEnabled) {
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
         const GURL url = request.GetURL();
-        EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
+        EXPECT_FALSE(base::Contains(request.headers, kSearchAdsHeader));
         if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
@@ -385,6 +386,30 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderNotAllowedDomain) {
 
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, true);
+
+  const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderNotAllowedDomain) {
+  base::RunLoop run_loop;
+  SetRequestExpectationsCallback(base::BindRepeating(
+      [](base::OnceClosure loop_closure,
+         const net::test_server::HttpRequest& request) {
+        const GURL url = request.GetURL();
+        EXPECT_FALSE(base::Contains(request.headers, kSearchAdsHeader));
+        if (request.GetURL().path_piece() == kBraveSearchPath) {
+          std::move(loop_closure).Run();
+        }
+      },
+      run_loop.QuitClosure()));
+
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
 
   const GURL url = https_server()->GetURL(kNotAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -392,9 +417,10 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderNotAllowedDomain) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderForFetchRequest) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderForFetchRequest) {
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
 
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -403,9 +429,9 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderForFetchRequest) {
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
-        EXPECT_TRUE(base::Contains(request.headers, kAdsStatusHeaderName));
-        EXPECT_EQ(kAdsStatusHeaderValue,
-                  request.headers.at(kAdsStatusHeaderName));
+        EXPECT_TRUE(base::Contains(request.headers, kSearchAdsHeader));
+        EXPECT_EQ(kSearchAdsDisabledValue,
+                  request.headers.at(kSearchAdsHeader));
         if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
@@ -425,6 +451,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderForFetchRequest) {
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, FetchRequestForNonBraveSearchTab) {
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
 
   GURL url = https_server()->GetURL(kNotAllowedDomain, "/");
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -433,7 +460,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, FetchRequestForNonBraveSearchTab) {
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
-        EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
+        EXPECT_FALSE(base::Contains(request.headers, kSearchAdsHeader));
         if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
@@ -451,12 +478,12 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, FetchRequestForNonBraveSearchTab) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderIncognitoBrowser) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderIncognitoBrowser) {
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
-        EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
+        EXPECT_FALSE(base::Contains(request.headers, kSearchAdsHeader));
         if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }

@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import Data
 import Foundation
@@ -91,7 +92,6 @@ import os.log
   public enum BlocklistType: Hashable, CustomDebugStringConvertible {
     fileprivate static let genericPrifix = "stored-type"
     fileprivate static let filterListPrefix = "filter-list"
-    fileprivate static let filterListURLPrefix = "filter-list-url"
 
     /// These are all types that are non-configurable by the user
     /// and don't need additional stored or fetched catalogues to get a complete list.
@@ -100,32 +100,40 @@ import os.log
     }
 
     case generic(GenericBlocklistType)
-    case filterList(componentId: String, isAlwaysAggressive: Bool)
-    case customFilterList(uuid: String)
+    case engineSource(GroupedAdBlockEngine.Source, engineType: GroupedAdBlockEngine.EngineType)
+    case engineGroup(id: String, engineType: GroupedAdBlockEngine.EngineType)
 
     private var identifier: String {
       switch self {
       case .generic(let type):
         return [Self.genericPrifix, type.bundledFileName].joined(separator: "-")
-      case .filterList(let componentId, _):
-        return [Self.filterListPrefix, componentId].joined(separator: "-")
-      case .customFilterList(let uuid):
-        return [Self.filterListURLPrefix, uuid].joined(separator: "-")
+      case .engineSource(let source, _):
+        switch source {
+        case .filterList(let componentId):
+          return [Self.filterListPrefix, componentId].joined(separator: "-")
+        case .filterListURL(let uuid):
+          return [Self.filterListPrefix, "url", uuid].joined(separator: "-")
+        case .filterListText:
+          return [Self.filterListPrefix, "text"].joined(separator: "-")
+        case .slimList:
+          return [Self.filterListPrefix, "slim-list"].joined(separator: "-")
+        }
+      case .engineGroup(let id, _):
+        return [Self.filterListPrefix, "group", id].joined(separator: "-")
       }
     }
 
     func mode(isAggressiveMode: Bool) -> BlockingMode {
       switch self {
-      case .customFilterList:
-        return .general
-      case .filterList(_, let isAlwaysAggressive):
-        if isAlwaysAggressive || isAggressiveMode {
-          return .aggressive
-        } else {
-          return .standard
-        }
       case .generic(let genericType):
         return genericType.mode(isAggressiveMode: isAggressiveMode)
+      case .engineSource(_, let engineType), .engineGroup(_, let engineType):
+        switch engineType {
+        case .standard:
+          return isAggressiveMode ? .aggressive : .standard
+        case .aggressive:
+          return .aggressive
+        }
       }
     }
 
@@ -152,7 +160,6 @@ import os.log
     }
   }
 
-  public static var shared = ContentBlockerManager()
   /// The store in which these rule lists should be compiled
   let ruleStore: WKContentRuleListStore
   /// We cached the rule lists so that we can return them quicker if we need to
@@ -190,10 +197,7 @@ import os.log
 
       self.versions.value.removeValue(forKey: identifier)
       // Only allow certain prefixed identifiers to be removed so as not to remove something apple adds
-      let prefixes = [
-        BlocklistType.genericPrifix, BlocklistType.filterListPrefix,
-        BlocklistType.filterListURLPrefix,
-      ]
+      let prefixes = [BlocklistType.genericPrifix, BlocklistType.filterListPrefix]
       guard prefixes.contains(where: { identifier.hasPrefix($0) }) else { return }
 
       do {
@@ -206,13 +210,82 @@ import os.log
     Self.signpost.endInterval("cleaupInvalidRuleLists", state)
   }
 
+  /// Test the rules and find the broken rules, their line numbers and associated errors
+  public func testRules(
+    forFilterSet filterSet: String
+  ) async -> (rule: String, line: Int, error: Error)? {
+    let rules = filterSet.components(separatedBy: .newlines)
+    return await testRulesBinarySearch(rules: rules, range: 0..<rules.count)
+  }
+
+  /// Test the rules within a range and find the broken rules, their line numbers and associated errors
+  private func testRulesBinarySearch(
+    rules: [String],
+    range: Range<Int>
+  ) async -> (rule: String, line: Int, error: Error)? {
+    let rangedRules = rules[range]
+    guard rangedRules.count > 0 else { return nil }
+
+    do {
+      // 1. Test engine (we don't care about the results)
+      _ = try AdblockEngine(rules: rangedRules.joined(separator: "\n"))
+
+      // 2. Test content blockers
+      let results = try AdblockEngine.contentBlockerRules(
+        fromFilterSet: rangedRules.joined(separator: "\n")
+      )
+
+      let decodedRuleList = try decode(encodedContentRuleList: results.rulesJSON)
+
+      if decodedRuleList.count > 0 {
+        try await ruleStore.compileContentRuleList(
+          forIdentifier: "test-identifier",
+          encodedContentRuleList: results.rulesJSON
+        )
+
+        try await ruleStore.removeContentRuleList(forIdentifier: "test-identifier")
+      }
+
+      return nil
+    } catch {
+      if rangedRules.count == 1 {
+        // Found the culprit line
+        return (rules[range.lowerBound], range.lowerBound, error)
+      }
+
+      let middle = range.count / 2 + range.lowerBound
+
+      // Test left
+      if middle > range.lowerBound,
+        let failure = await testRulesBinarySearch(
+          rules: rules,
+          range: range.lowerBound..<middle
+        )
+      {
+        return failure
+      }
+
+      // Test right
+      if middle < range.upperBound,
+        let failure = await testRulesBinarySearch(
+          rules: rules,
+          range: middle..<range.upperBound
+        )
+      {
+        return failure
+      }
+
+      return nil
+    }
+  }
+
   /// Compile the rule list found in the given local URL using the specified modes
   func compileRuleList(
     at localFileURL: URL,
     for blocklistType: BlocklistType,
     version: String,
     modes: [BlockingMode]
-  ) async {
+  ) async throws {
     guard !modes.isEmpty else { return }
 
     let result: ContentBlockingRulesResult
@@ -225,8 +298,10 @@ import os.log
 
     do {
       do {
-        let filterSet = try String(contentsOf: localFileURL)
-        result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+        result = try await Task.detached {
+          let filterSet = try String(contentsOf: localFileURL)
+          return try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+        }.value
         Self.signpost.endInterval("convertRules", state)
       } catch {
         Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
@@ -240,10 +315,16 @@ import os.log
         modes: modes
       )
     } catch {
-      ContentBlockerManager.log.error(
-        "Failed to compile rule list for `\(blocklistType.debugDescription)`"
-      )
+      Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
+      throw error
     }
+
+    try await compile(
+      encodedContentRuleList: result.rulesJSON,
+      for: blocklistType,
+      version: version,
+      modes: modes
+    )
   }
 
   /// Compile the given resource and store it in cache for the given blocklist type and specified modes
@@ -254,7 +335,6 @@ import os.log
     modes: [BlockingMode]
   ) async throws {
     guard !modes.isEmpty else { return }
-    var foundError: Error?
     let ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
 
     guard !ruleList.isEmpty else {
@@ -268,7 +348,7 @@ import os.log
       return
     }
 
-    for mode in modes {
+    try await modes.asyncConcurrentForEach { mode in
       let identifier = type.makeIdentifier(for: mode)
 
       do {
@@ -276,7 +356,7 @@ import os.log
           ruleList: ruleList,
           for: mode
         )
-        let ruleList = try await compile(
+        let ruleList = try await self.compile(
           encodedContentRuleList: moddedRuleList ?? encodedContentRuleList,
           for: type,
           version: version,
@@ -290,14 +370,10 @@ import os.log
         Self.log.debug(
           "Failed to compile rule list for `\(identifier)` v\(version): \(String(describing: error))"
         )
-        foundError = error
+        throw error
       }
 
       self.versions.value[identifier] = version
-    }
-
-    if let error = foundError {
-      throw error
     }
   }
 
@@ -351,16 +427,25 @@ import os.log
     )
 
     do {
-      let ruleList = try await ruleStore.compileContentRuleList(
-        forIdentifier: identifier,
-        encodedContentRuleList: encodedContentRuleList
-      )
+      let ruleList = try await Task.detached {
+        return try await self.ruleStore.compileContentRuleList(
+          forIdentifier: identifier,
+          encodedContentRuleList: encodedContentRuleList
+        )
+      }.value
       guard let ruleList = ruleList else { throw CompileError.noRuleListReturned }
       Self.signpost.endInterval("compileRuleList", state)
       return ruleList
     } catch {
       Self.signpost.endInterval("compileRuleList", state, "\(error.localizedDescription)")
       throw error
+    }
+  }
+
+  /// Eagerly load the rule lists for this type
+  func loadRuleLists(for type: BlocklistType) async throws {
+    for mode in type.allowedModes {
+      _ = try await ruleList(for: type, mode: mode)
     }
   }
 
@@ -375,15 +460,20 @@ import os.log
         if let existingVersion = versions.value[identifier], existingVersion < version {
           return true
         } else {
-          ContentBlockerManager.log.debug(
-            "Rule list already compiled for `\(type.makeIdentifier(for: mode))` v\(version)"
-          )
-
           return false
         }
       } else {
         return true
       }
+    }
+  }
+
+  /// Tells us if the rule list is compiled and ready
+  func isReady(for type: BlocklistType, mode: BlockingMode) -> Bool {
+    do {
+      return try cachedRuleLists[type.makeIdentifier(for: mode)]?.get() != nil
+    } catch {
+      return false
     }
   }
 
@@ -399,8 +489,17 @@ import os.log
   /// Remove the rule list for the blocklist type
   public func removeRuleLists(for type: BlocklistType, force: Bool = false) async throws {
     for mode in type.allowedModes {
-      try await removeRuleList(forIdentifier: type.makeIdentifier(for: mode), force: force)
+      try await removeRuleLists(for: type, mode: mode, force: force)
     }
+  }
+
+  /// Remove the rule list for the blocklist type
+  public func removeRuleLists(
+    for type: BlocklistType,
+    mode: BlockingMode,
+    force: Bool = false
+  ) async throws {
+    try await removeRuleList(forIdentifier: type.makeIdentifier(for: mode), force: force)
   }
 
   /// Load a rule list from the rule store and return it. Will use cached results if they exist
@@ -452,14 +551,15 @@ import os.log
       return
     }
 
-    let encodedContentRuleList = try String(contentsOf: fileURL)
-    let type = BlocklistType.generic(genericType)
-    try await compile(
-      encodedContentRuleList: encodedContentRuleList,
-      for: type,
-      version: genericType.version,
-      modes: modes
-    )
+    if let encodedContentRuleList = await AsyncFileManager.default.utf8Contents(at: fileURL) {
+      let type = BlocklistType.generic(genericType)
+      try await compile(
+        encodedContentRuleList: encodedContentRuleList,
+        for: type,
+        version: genericType.version,
+        modes: modes
+      )
+    }
   }
 
   /// Return the valid generic types for the given domain
@@ -468,7 +568,7 @@ import os.log
     var results = Set<GenericBlocklistType>()
 
     // Get domain specific rule types
-    if domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) {
+    if domain.globalBlockAdsAndTrackingLevel.isEnabled {
       results = results.union([.blockAds, .blockTrackers])
     }
 
@@ -481,63 +581,6 @@ import os.log
     results.insert(.upgradeMixedContent)
 
     return results
-  }
-
-  /// Return the enabled blocklist types for the given domain
-  private func validBlocklistTypes(for domain: Domain) -> Set<(BlocklistType)> {
-    guard !domain.areAllShieldsOff else { return [] }
-
-    // Get the generic types
-    let genericTypes = validGenericTypes(for: domain)
-
-    let genericRuleLists = genericTypes.map { genericType -> BlocklistType in
-      return .generic(genericType)
-    }
-
-    guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else {
-      return Set(genericRuleLists)
-    }
-
-    // Get rule lists for filter lists
-    let filterLists = FilterListStorage.shared.filterLists
-    let additionalRuleLists = filterLists.compactMap { filterList -> BlocklistType? in
-      guard filterList.isEnabled else { return nil }
-      return .filterList(
-        componentId: filterList.entry.componentId,
-        isAlwaysAggressive: filterList.engineType.isAlwaysAggressive
-      )
-    }
-
-    // Get rule lists for custom filter lists
-    let customFilterLists = CustomFilterListStorage.shared.filterListsURLs
-    let customRuleLists = customFilterLists.compactMap { customURL -> BlocklistType? in
-      guard customURL.setting.isEnabled else { return nil }
-      return .customFilterList(uuid: customURL.setting.uuid)
-    }
-
-    return Set(genericRuleLists).union(additionalRuleLists).union(customRuleLists)
-  }
-
-  /// Return the enabled rule types for this domain and the enabled settings.
-  /// It will attempt to return cached results if they exist otherwise it will attempt to load results from the rule store
-  public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
-    let validBlocklistTypes = self.validBlocklistTypes(for: domain)
-    let level = domain.blockAdsAndTrackingLevel
-
-    return await Set(
-      validBlocklistTypes.asyncConcurrentCompactMap({ blocklistType -> WKContentRuleList? in
-        let mode = blocklistType.mode(isAggressiveMode: level.isAggressive)
-
-        do {
-          return try await self.ruleList(for: blocklistType, mode: mode)
-        } catch {
-          // We can't log the error because some rules have empty rules. This is normal
-          // But on relaunches we try to reload the filter list and this will give us an error.
-          // Need to find a more graceful way of handling this so error here can be logged properly
-          return nil
-        }
-      })
-    )
   }
 
   /// Remove the rule list for the given identifier. This will remove them from this local cache and from the rule store.

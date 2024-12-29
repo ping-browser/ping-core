@@ -15,23 +15,26 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
-namespace brave_search_conversion {
-namespace p3a {
+namespace brave_search_conversion::p3a {
 
 namespace {
 
-const char kButtonShownKey[] = "button.shown";
-const char kButtonTriggeredKey[] = "button.triggered";
-const char kNTPShownKey[] = "ntp.shown";
-const char kNTPTriggeredKey[] = "ntp.triggered";
-const char kBannerBShownKey[] = "banner_b.shown";
-const char kBannerBTriggeredKey[] = "banner_b.triggered";
-const char kBannerCShownKey[] = "banner_c.shown";
-const char kBannerCTriggeredKey[] = "banner_c.triggered";
-const char kBannerDShownKey[] = "banner_d.shown";
-const char kBannerDTriggeredKey[] = "banner_d.triggered";
+constexpr char kButtonShownKey[] = "button.shown";
+constexpr char kButtonTriggeredKey[] = "button.triggered";
+constexpr char kNTPShownKey[] = "ntp.shown";
+constexpr char kNTPTriggeredKey[] = "ntp.triggered";
+constexpr char kBannerBShownKey[] = "banner_b.shown";
+constexpr char kBannerBTriggeredKey[] = "banner_b.triggered";
+constexpr char kBannerCShownKey[] = "banner_c.shown";
+constexpr char kBannerCTriggeredKey[] = "banner_c.triggered";
+constexpr char kBannerDShownKey[] = "banner_d.shown";
+constexpr char kBannerDTriggeredKey[] = "banner_d.triggered";
+constexpr char kDDGBannerCShownKey[] = "ddg_banner_c.shown";
+constexpr char kDDGBannerCTriggeredKey[] = "ddg_banner_c.triggered";
+constexpr char kDDGBannerDShownKey[] = "ddg_banner_d.shown";
+constexpr char kDDGBannerDTriggeredKey[] = "ddg_banner_d.triggered";
 
-const char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
+constexpr char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
 
 const int kMaxStoredQueryCount = 41;
 const int kQueriesBeforeChurnBuckets[] = {0, 1, 2, 5, 10, 20, 40};
@@ -46,6 +49,10 @@ const char* GetPromoShownKeyName(ConversionType type) {
       return kBannerCShownKey;
     case ConversionType::kBannerTypeD:
       return kBannerDShownKey;
+    case ConversionType::kDDGBannerTypeC:
+      return kDDGBannerCShownKey;
+    case ConversionType::kDDGBannerTypeD:
+      return kDDGBannerDShownKey;
     case ConversionType::kButton:
       return kButtonShownKey;
     case ConversionType::kNTP:
@@ -66,6 +73,10 @@ const char* GetPromoTriggeredKeyName(ConversionType type) {
       return kBannerCTriggeredKey;
     case ConversionType::kBannerTypeD:
       return kBannerDTriggeredKey;
+    case ConversionType::kDDGBannerTypeC:
+      return kDDGBannerCTriggeredKey;
+    case ConversionType::kDDGBannerTypeD:
+      return kDDGBannerDTriggeredKey;
     case ConversionType::kButton:
       // Deprecated but leave as it's used by migration code.
       return kButtonTriggeredKey;
@@ -87,6 +98,10 @@ const char* GetPromoTypeHistogramName(ConversionType type) {
       return kSearchPromoBannerCHistogramName;
     case ConversionType::kBannerTypeD:
       return kSearchPromoBannerDHistogramName;
+    case ConversionType::kDDGBannerTypeC:
+      return kSearchPromoDDGBannerCHistogramName;
+    case ConversionType::kDDGBannerTypeD:
+      return kSearchPromoDDGBannerDHistogramName;
     case ConversionType::kButton:
       // Deprecated but leave as it's used by migration code.
       return kSearchPromoButtonHistogramName;
@@ -104,8 +119,9 @@ void UpdateHistograms(PrefService* prefs) {
   UMA_HISTOGRAM_EXACT_LINEAR(kSwitchSearchEngineMetric, INT_MAX - 1, 8);
 
   const ConversionType types[] = {
-      ConversionType::kBannerTypeB, ConversionType::kBannerTypeC,
-      ConversionType::kBannerTypeD, ConversionType::kNTP};
+      ConversionType::kBannerTypeB,    ConversionType::kBannerTypeC,
+      ConversionType::kBannerTypeD,    ConversionType::kDDGBannerTypeC,
+      ConversionType::kDDGBannerTypeD, ConversionType::kNTP};
 
   VLOG(1) << "SearchConversionP3A: updating histograms";
 
@@ -254,5 +270,4 @@ void RecordDefaultEngineChurn(PrefService* prefs) {
   prefs->ClearPref(prefs::kP3AQueryCountBeforeChurn);
 }
 
-}  // namespace p3a
-}  // namespace brave_search_conversion
+}  // namespace brave_search_conversion::p3a

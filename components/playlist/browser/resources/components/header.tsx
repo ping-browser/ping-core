@@ -81,8 +81,16 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid ${color.divider.subtle};
   background-color: ${color.container.background};
   height: 100%;
-  padding: 0 ${spacing.xl};
+  width: 100vw;
+  box-sizing: border-box;
   gap: ${spacing.l};
+
+  & > :first-child {
+    margin-left: ${spacing.xl};
+  }
+  & > :last-child {
+    margin-right: ${spacing.xl};
+  }
 `
 
 const StyledPlaylistInfo = styled(PlaylistInfo)`
@@ -93,20 +101,42 @@ const StyledButton = styled(LeoButton)`
   flex: 0 0 auto;
 `
 
+const MediumSizedButton = styled(StyledButton)`
+  width: var(--leo-icon-m);
+  height: var(--leo-icon-m);
+`
+
 const StyledSeparator = styled.div`
   width: ${elevation.xxs};
   background-color: ${color.divider.subtle};
   height: ${icon.m};
 `
 
-const StyledInput = styled.input`
+const NameEditFieldContainer = styled.div`
+  position: relative;
   flex-grow: 1;
+  min-width: 0px;
+`
+
+const StyledInput = styled.input`
   color: ${color.text.primary};
   font: ${font.heading.h4};
   border: none;
   border-radius: ${radius[8]};
   background: ${color.container.highlight};
-  padding: 10px 8px;
+  padding: 8px 50px 8px 10px;
+  width: 100%;
+  box-sizing: border-box;
+`
+
+const StyledLengthLabel = styled.span`
+  color: ${color.text.secondary};
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: text;
+  user-select: none;
 `
 
 const SaveButton = styled(StyledButton)`
@@ -123,8 +153,9 @@ function BackButton ({
 }) {
   return playlistEditMode === PlaylistEditMode.BULK_EDIT ? (
     <StyledButton
-      size='large'
+      size='small'
       kind='plain'
+      fab
       onClick={() => getPlaylistActions().setPlaylistEditMode(undefined)}
     >
       <ColoredIcon
@@ -139,6 +170,52 @@ function BackButton ({
         color={color.icon.default}
       />
     </StyledLink>
+  )
+}
+
+const maxNameLength = 30
+
+function NameEditField ({
+  defaultName,
+  onSave,
+  onChange
+}: {
+  defaultName: string
+  onSave: () => void
+  onChange: (newName: string) => void
+}) {
+  const inputRef = React.useRef<HTMLInputElement>(null)
+  const [currentLength, setCurrentLength] = React.useState(defaultName.length);
+  
+  return (
+    <NameEditFieldContainer>
+      <StyledInput
+        ref={inputRef}
+        type='text'
+        maxLength={maxNameLength}
+        defaultValue={defaultName}
+        autoFocus
+        onChange={(e) => { 
+          onChange(e.target.value) 
+          setCurrentLength(e.target.value.length)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') {
+            getPlaylistActions().setPlaylistEditMode(undefined)
+            e.preventDefault()
+            return
+          }
+
+          if (e.key === 'Enter') {
+            onSave()
+            e.preventDefault()
+          }
+        }}
+      />
+      <StyledLengthLabel onClick={() => {inputRef.current?.focus()}}>
+        {currentLength}/{maxNameLength}
+      </StyledLengthLabel>
+    </NameEditFieldContainer>
   )
 }
 
@@ -243,23 +320,10 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
       <BackButton playlistEditMode={playlistEditMode} />
       {playlistEditMode === PlaylistEditMode.RENAME ? (
         <>
-          <StyledInput
-            type='text'
-            defaultValue={playlist.name}
-            autoFocus
-            onChange={(e) => setNewName(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Escape') {
-                getPlaylistActions().setPlaylistEditMode(undefined)
-                e.preventDefault()
-                return
-              }
-
-              if (e.key === 'Enter') {
-                onSave()
-                e.preventDefault()
-              }
-            }}
+          <NameEditField
+            defaultName={playlist?.name}
+            onChange={setNewName}
+            onSave={onSave}
           />
           <SaveButton
             kind='filled'
@@ -293,51 +357,54 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
 
 function NewPlaylistButton () {
   return (
-    <StyledButton
-      size='large'
+    <MediumSizedButton
+      size='small'
       kind='plain'
-      title={getLocalizedString('bravePlaylistA11YCreatePlaylistFolder')}
+      fab
+      title={getLocalizedString('bravePlaylistTooltipCreatePlaylistFolder')}
       onClick={() => {
         getPlaylistAPI().showCreatePlaylistUI()
       }}
     >
       <ColoredIcon
-        name='plus-add'
+        name='folder-new'
         color={color.icon.default}
       />
-    </StyledButton>
+    </MediumSizedButton>
   )
 }
 
 function SettingButton () {
   return (
-    <StyledButton
-      size='large'
+    <MediumSizedButton
+      size='small'
       kind='plain'
-      title={getLocalizedString('bravePlaylistA11YOpenPlaylistSettings')}
+      fab
+      title={getLocalizedString('bravePlaylistTooltipOpenPlaylistSettings')}
       onClick={() => getPlaylistAPI().openSettingsPage()}
     >
       <ColoredIcon
         name='settings'
         color={color.icon.default}
       />
-    </StyledButton>
+    </MediumSizedButton>
   )
 }
 
 function CloseButton () {
   return (
-    <StyledButton
-      size='large'
+    <MediumSizedButton
+      size='small'
       kind='plain'
-      title={getLocalizedString('bravePlaylistA11YClosePanel')}
+      fab
+      title={getLocalizedString('bravePlaylistTooltipClosePanel')}
       onClick={() => getPlaylistAPI().closePanel()}
     >
       <ColoredIcon
         name='close'
         color={color.icon.default}
       />
-    </StyledButton>
+    </MediumSizedButton>
   )
 }
 
@@ -346,7 +413,7 @@ function PlaylistsCatalogHeader () {
     <>
       <GradientIcon name='product-playlist-bold-add-color' />
       <ProductNameContainer>
-        <ColoredSpan color={color.text.primary}>playlist</ColoredSpan>
+        <ColoredSpan color={color.text.primary}>Playlist</ColoredSpan>
       </ProductNameContainer>
       <NewPlaylistButton />
       <SettingButton />

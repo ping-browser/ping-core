@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_CLIENT_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_CLIENT_H_
 
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -38,6 +40,7 @@ class ConversationAPIClient {
     UserText,
     PageText,
     PageExcerpt,
+    VideoTranscript,
     VideoTranscriptXML,
     VideoTranscriptVTT,
     BraveSearchResults,
@@ -71,6 +74,7 @@ class ConversationAPIClient {
 
   virtual void PerformRequest(
       const std::vector<ConversationEvent>& conversation,
+      const std::string& selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback);
 
@@ -79,6 +83,7 @@ class ConversationAPIClient {
  protected:
   std::string CreateJSONRequestBody(
       const std::vector<ConversationEvent>& conversation,
+      const std::string& selected_language,
       const bool is_sse_enabled);
 
   void SetAPIRequestHelperForTesting(
@@ -92,6 +97,7 @@ class ConversationAPIClient {
  private:
   void PerformRequestWithCredentials(
       const std::vector<ConversationEvent>& conversation,
+      const std::string selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback,
       std::optional<CredentialCacheEntry> credential);

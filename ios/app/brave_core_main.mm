@@ -18,8 +18,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
@@ -46,19 +44,18 @@
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
-#include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "components/component_updater/component_updater_paths.h"
-#include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_store/password_store.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
+#include "components/sync/base/features.h"
 #include "ios/chrome/app/startup/provider_registration.h"
+#include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
-#include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
@@ -67,9 +64,9 @@
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list_factory.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/public/commands/command_dispatcher.h"
 #include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
@@ -107,9 +104,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<web::WebMain> _webMain;
   std::unique_ptr<Browser> _browser;
   std::unique_ptr<Browser> _otr_browser;
-  BrowserList* _browserList;
-  BrowserList* _otr_browserList;
-  ChromeBrowserState* _mainBrowserState;
+  raw_ptr<BrowserList> _browserList;
+  raw_ptr<BrowserList> _otr_browserList;
+  raw_ptr<ChromeBrowserState> _mainBrowserState;
   scoped_refptr<p3a::P3AService> _p3a_service;
   scoped_refptr<p3a::HistogramsBraveizer> _histogram_braveizer;
 }
@@ -212,10 +209,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
     // Initialize and set the main browser state.
-    ios::ChromeBrowserStateManager* browserStateManager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* chromeBrowserState =
-        browserStateManager->GetLastUsedBrowserState();
+        GetApplicationContext()
+            ->GetProfileManager()
+            ->GetLastUsedProfileDeprecatedDoNotUse();
     _mainBrowserState = chromeBrowserState;
 
     // Disable Safe-Browsing via Prefs
@@ -233,7 +230,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _otr_browserList =
         BrowserListFactory::GetForBrowserState(otrChromeBrowserState);
     _otr_browser = Browser::Create(otrChromeBrowserState, {});
-    _otr_browserList->AddIncognitoBrowser(_otr_browser.get());
+    _otr_browserList->AddBrowser(_otr_browser.get());
 
     // Initialize the provider UI global state.
     ios::provider::InitializeUI();
@@ -242,13 +239,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     web::WebUIIOSControllerFactory::RegisterFactory(
         BraveWebUIControllerFactory::GetInstance());
 
-    // Setup Component Updater
+    // TODO(darkdh): move _adblockService and _backgroundImageService to
+    // BraveWebMainParts::PreMainMessageLoopRun
+    // https://github.com/brave/brave-browser/issues/40567
     component_updater::ComponentUpdateService* cus =
         GetApplicationContext()->GetComponentUpdateService();
-    DCHECK(cus);
-    brave_component_updater::BraveOnDemandUpdater::GetInstance()
-        ->RegisterOnDemandUpdater(&cus->GetOnDemandUpdater());
-    [self registerComponentsForUpdate:cus];
 
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
 
@@ -267,6 +262,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)dealloc {
+  _backgroundImagesService = nil;
+  _adblockService = nil;
   _bookmarksAPI = nil;
   _historyAPI = nil;
   _openTabsAPI = nil;
@@ -338,14 +335,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 #endif
 }
 
-- (void)registerComponentsForUpdate:
-    (component_updater::ComponentUpdateService*)cus {
-  RegisterSafetyTipsComponent(cus);
-  brave_wallet::WalletDataFilesInstaller::GetInstance()
-      .MaybeRegisterWalletDataFilesComponent(
-          cus, GetApplicationContext()->GetLocalState());
-}
-
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {
   _logHandler = logHandler;
   logging::SetLogMessageHandler(&CustomLogHandler);
@@ -359,8 +348,8 @@ static bool CustomLogHandler(int severity,
   if (!_logHandler) {
     return false;
   }
-  const int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
-  if (severity <= vlog_level || severity == logging::LOGGING_FATAL) {
+  if (severity > logging::LOGGING_VERBOSE ||
+      severity <= logging::GetVlogLevelHelper(file, strlen(file))) {
     return _logHandler(severity, base::SysUTF8ToNSString(file), line,
                        message_start, base::SysUTF8ToNSString(str));
   }
@@ -371,16 +360,14 @@ static bool CustomLogHandler(int severity,
 
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {
-    bookmarks::BookmarkModel* bookmark_model_ =
-        ios::LocalOrSyncableBookmarkModelFactory::
-            GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
-                _mainBrowserState);
-    BookmarkUndoService* bookmark_undo_service_ =
+    bookmarks::BookmarkModel* bookmark_model =
+        ios::BookmarkModelFactory::GetForBrowserState(_mainBrowserState);
+    BookmarkUndoService* bookmark_undo_service =
         ios::BookmarkUndoServiceFactory::GetForBrowserState(_mainBrowserState);
 
-    _bookmarksAPI = [[BraveBookmarksAPI alloc]
-        initWithBookmarkModel:bookmark_model_
-          bookmarkUndoService:bookmark_undo_service_];
+    _bookmarksAPI =
+        [[BraveBookmarksAPI alloc] initWithBookmarkModel:bookmark_model
+                                     bookmarkUndoService:bookmark_undo_service];
   }
   return _bookmarksAPI;
 }

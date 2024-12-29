@@ -8,11 +8,11 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
-import org.chromium.brave_wallet.mojom.SignTransactionRequest;
+import org.chromium.brave_wallet.mojom.SignSolTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SolanaSystemInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTokenInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
@@ -26,13 +26,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class TransactionUtils {
-    public static @CoinType.EnumType int getCoinFromTxDataUnion(TxDataUnion txDataUnion) {
-        if (txDataUnion.which() == TxDataUnion.Tag.FilTxData)
+    @CoinType.EnumType
+    public static int getCoinFromTxDataUnion(@NonNull final TxDataUnion txDataUnion) {
+        if (txDataUnion.which() == TxDataUnion.Tag.BtcTxData) {
+            return CoinType.BTC;
+        } else if (txDataUnion.which() == TxDataUnion.Tag.ZecTxData) {
+            return CoinType.ZEC;
+        } else if (txDataUnion.which() == TxDataUnion.Tag.FilTxData) {
             return CoinType.FIL;
-        else if (txDataUnion.which() == TxDataUnion.Tag.SolanaTxData)
+        } else if (txDataUnion.which() == TxDataUnion.Tag.SolanaTxData) {
             return CoinType.SOL;
-        else
+        } else {
             return CoinType.ETH;
+        }
     }
 
     public static @StringRes int getTxType(TransactionInfo info) {
@@ -65,7 +71,7 @@ public class TransactionUtils {
         if (transactionInfo == null || transactionInfo.txDataUnion == null) return false;
         return WalletConstants.SOLANA_TRANSACTION_TYPES.contains(transactionInfo.txType)
                 || transactionInfo.txType == TransactionType.OTHER
-                && safeSolData(transactionInfo.txDataUnion) != null;
+                        && safeSolData(transactionInfo.txDataUnion) != null;
     }
 
     public static String getSolanaProgramIdName(String programId, Context context) {
@@ -118,15 +124,10 @@ public class TransactionUtils {
         }
     }
 
-    public static SolanaTxData safeSolData(SignTransactionRequest request) {
-        return safeSolData(request.txData);
-    }
-
-    public static List<SolanaTxData> safeSolData(SignAllTransactionsRequest request) {
+    public static List<SolanaTxData> safeSolData(SignSolTransactionsRequest request) {
         if (request == null || request.txDatas == null) return Collections.emptyList();
         List<SolanaTxData> txDatas = new ArrayList<>();
-        for (TxDataUnion txDataUnion : request.txDatas) {
-            SolanaTxData txData = safeSolData(txDataUnion);
+        for (SolanaTxData txData : request.txDatas) {
             if (txData != null) {
                 txDatas.add(txData);
             }

@@ -40,10 +40,11 @@ class PrefService;
 
 namespace brave_wallet {
 
-class KeyringService;
-class JsonRpcService;
-class TxService;
 class EthAllowanceManager;
+class JsonRpcService;
+class KeyringService;
+class NetworkManager;
+class TxService;
 class AccountDiscoveryManager;
 struct PendingDecryptRequest;
 struct PendingGetEncryptPublicKeyRequest;
@@ -56,42 +57,36 @@ class BraveWalletService : public KeyedService,
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using SignMessageRequestCallback =
       base::OnceCallback<void(bool,
-                              mojom::ByteArrayStringUnionPtr,
+                              mojom::EthereumSignatureBytesPtr,
                               const std::optional<std::string>&)>;
-  using SignTransactionRequestCallback =
+  using SignSolTransactionsRequestCallback =
       base::OnceCallback<void(bool,
-                              mojom::ByteArrayStringUnionPtr,
+                              std::vector<mojom::SolanaSignaturePtr>,
                               const std::optional<std::string>&)>;
-  using SignAllTransactionsRequestCallback = base::OnceCallback<void(
-      bool,
-      std::optional<std::vector<mojom::ByteArrayStringUnionPtr>>,
-      const std::optional<std::string>&)>;
   using AddSuggestTokenCallback =
       base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
 
   BraveWalletService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::unique_ptr<BraveWalletServiceDelegate> delegate,
-      KeyringService* keyring_service,
-      JsonRpcService* json_rpc_service,
-      TxService* tx_service,
-      BitcoinWalletService* bitcoin_wallet_service,
-      ZCashWalletService* zcash_wallet_service,
       PrefService* profile_prefs,
-      PrefService* local_state,
-      bool is_private_window_);
+      PrefService* local_state);
 
   ~BraveWalletService() override;
 
   BraveWalletService(const BraveWalletService&) = delete;
   BraveWalletService& operator=(const BraveWalletService&) = delete;
 
-  mojo::PendingRemote<mojom::BraveWalletService> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
+  template <class T>
+  void Bind(mojo::PendingReceiver<T> receiver);
 
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
+  static void MigrateGoerliNetwork(PrefService* prefs);
   static void MigrateAssetsPrefToList(PrefService* prefs);
+  static void MigrateEip1559ForCustomNetworks(PrefService* prefs);
+  void MaybeMigrateCompressedNfts();
+  void MaybeMigrateSPLTokenProgram();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
@@ -106,11 +101,6 @@ class BraveWalletService : public KeyedService,
   void GetAllUserAssets(GetUserAssetsCallback callback) override;
   void AddUserAsset(mojom::BlockchainTokenPtr token,
                     AddUserAssetCallback callback) override;
-  void OnGetEthNftStandard(mojom::BlockchainTokenPtr token,
-                           AddUserAssetCallback callback,
-                           const std::optional<std::string>& standard,
-                           mojom::ProviderError error,
-                           const std::string& error_message);
   void RemoveUserAsset(mojom::BlockchainTokenPtr token,
                        RemoveUserAssetCallback callback) override;
   void SetUserAssetVisible(mojom::BlockchainTokenPtr token,
@@ -171,24 +161,17 @@ class BraveWalletService : public KeyedService,
       GetPendingSignMessageRequestsCallback callback) override;
   void GetPendingSignMessageErrors(
       GetPendingSignMessageErrorsCallback callback) override;
-  void GetPendingSignTransactionRequests(
-      GetPendingSignTransactionRequestsCallback callback) override;
-  void GetPendingSignAllTransactionsRequests(
-      GetPendingSignAllTransactionsRequestsCallback callback) override;
-  void NotifySignTransactionRequestProcessed(
+  void GetPendingSignSolTransactionsRequests(
+      GetPendingSignSolTransactionsRequestsCallback callback) override;
+  void NotifySignSolTransactionsRequestProcessed(
       bool approved,
       int id,
-      mojom::ByteArrayStringUnionPtr signature,
-      const std::optional<std::string>& error) override;
-  void NotifySignAllTransactionsRequestProcessed(
-      bool approved,
-      int id,
-      std::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+      std::vector<mojom::SolanaSignaturePtr> hw_signatures,
       const std::optional<std::string>& error) override;
   void NotifySignMessageRequestProcessed(
       bool approved,
       int id,
-      mojom::ByteArrayStringUnionPtr signature,
+      mojom::EthereumSignatureBytesPtr hw_signature,
       const std::optional<std::string>& error) override;
   void NotifySignMessageErrorProcessed(const std::string& error_id) override;
   void GetPendingAddSuggestTokenRequests(
@@ -247,6 +230,7 @@ class BraveWalletService : public KeyedService,
 
   void GetTransactionSimulationOptInStatus(
       GetTransactionSimulationOptInStatusCallback callback) override;
+  mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatusSync();
 
   void SetTransactionSimulationOptInStatus(
       mojom::BlowfishOptInStatus status) override;
@@ -283,28 +267,35 @@ class BraveWalletService : public KeyedService,
                          std::string unsafe_message,
                          mojom::EthereumProvider::RequestCallback callback,
                          base::Value id);
-  void AddSignTransactionRequest(mojom::SignTransactionRequestPtr request,
-                                 SignTransactionRequestCallback callback);
-  void AddSignAllTransactionsRequest(
-      mojom::SignAllTransactionsRequestPtr request,
-      SignAllTransactionsRequestCallback callback);
+  void AddSignSolTransactionsRequest(
+      mojom::SignSolTransactionsRequestPtr request,
+      SignSolTransactionsRequestCallback callback);
+  mojom::SignSolTransactionsRequestPtr GetPendingSignSolTransactionsRequest(
+      int32_t id);
 
   void RemovePrefListenersForTests();
 
   BraveWalletP3A* GetBraveWalletP3A();
 
-  void SetSignTransactionRequestAddedCallbackForTesting(
+  void SetSignSolTransactionsRequestAddedCallbackForTesting(
       base::OnceClosure callback) {
-    sign_tx_request_added_cb_for_testing_ = std::move(callback);
-  }
-  void SetSignAllTransactionsRequestAddedCallbackForTesting(
-      base::OnceClosure callback) {
-    sign_all_txs_request_added_cb_for_testing_ = std::move(callback);
+    sign_sol_txs_request_added_cb_for_testing_ = std::move(callback);
   }
 
   BraveWalletServiceDelegate* GetDelegateForTesting() {
     return delegate_.get();
   }
+
+  NetworkManager* network_manager() { return network_manager_.get(); }
+  JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
+  KeyringService* keyring_service() { return keyring_service_.get(); }
+  TxService* tx_service() { return tx_service_.get(); }
+  // Might return nullptr.
+  BitcoinWalletService* GetBitcoinWalletService();
+  // Might return nullptr.
+  ZCashWalletService* GetZcashWalletService();
+
+  void GetCountryCode(GetCountryCodeCallback callback) override;
 
  protected:
   // For tests
@@ -348,7 +339,14 @@ class BraveWalletService : public KeyedService,
       bool result,
       ImportInfo info,
       ImportError error);
+  void OnGetEthNftStandard(mojom::BlockchainTokenPtr token,
+                           AddUserAssetCallback callback,
+                           const std::optional<std::string>& standard,
+                           mojom::ProviderError error,
+                           const std::string& error_message);
 
+  void OnGetNfts(AddUserAssetCallback callback,
+                 std::vector<mojom::BlockchainTokenPtr> nfts);
   bool AddUserAssetInternal(mojom::BlockchainTokenPtr token);
   bool RemoveUserAsset(mojom::BlockchainTokenPtr token);
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
@@ -356,29 +354,24 @@ class BraveWalletService : public KeyedService,
   void OnNetworkChanged();
   void CancelAllSuggestedTokenCallbacks();
   void CancelAllSignMessageCallbacks();
-  void CancelAllSignTransactionCallbacks();
-  void CancelAllSignAllTransactionsCallbacks();
+  void CancelAllSignSolTransactionsCallbacks();
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
+  void OnGetNftsForCompressedMigration(
+      std::vector<mojom::BlockchainTokenPtr> nfts);
 
   base::OnceClosure sign_tx_request_added_cb_for_testing_;
-  base::OnceClosure sign_all_txs_request_added_cb_for_testing_;
+  base::OnceClosure sign_sol_txs_request_added_cb_for_testing_;
 
   int sign_message_id_ = 0;
-  int sign_transaction_id_ = 0;
-  int sign_all_transactions_id_ = 0;
-  bool is_private_window_;
+  int sign_sol_transactions_id_ = 0;
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;
-  base::circular_deque<mojom::SignTransactionRequestPtr>
-      sign_transaction_requests_;
-  base::circular_deque<SignTransactionRequestCallback>
-      sign_transaction_callbacks_;
-  base::circular_deque<mojom::SignAllTransactionsRequestPtr>
-      sign_all_transactions_requests_;
-  base::circular_deque<SignAllTransactionsRequestCallback>
-      sign_all_transactions_callbacks_;
+  base::circular_deque<mojom::SignSolTransactionsRequestPtr>
+      sign_sol_transactions_requests_;
+  base::circular_deque<SignSolTransactionsRequestCallback>
+      sign_sol_transactions_callbacks_;
   base::flat_map<std::string, mojom::EthereumProvider::RequestCallback>
       add_suggest_token_callbacks_;
   base::flat_map<std::string, base::Value> add_suggest_token_ids_;
@@ -390,13 +383,14 @@ class BraveWalletService : public KeyedService,
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   mojo::RemoteSet<mojom::BraveWalletServiceTokenObserver> token_observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<TxService> tx_service_ = nullptr;
-  raw_ptr<BitcoinWalletService> bitcoin_wallet_service_ = nullptr;
-  raw_ptr<ZCashWalletService> zcash_wallet_service_ = nullptr;
+  std::unique_ptr<NetworkManager> network_manager_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
+  std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
+  std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
+  std::unique_ptr<TxService> tx_service_;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
-  BraveWalletP3A brave_wallet_p3a_;
+  std::unique_ptr<BraveWalletP3A> brave_wallet_p3a_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
   std::unique_ptr<EthAllowanceManager> eth_allowance_manager_;

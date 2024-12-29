@@ -11,13 +11,15 @@ source_set("brave_adaptive_captcha") {
     "get_adaptive_captcha_challenge.cc",
     "get_adaptive_captcha_challenge.h",
     "pref_names.h",
+    "prefs_util.cc",
+    "prefs_util.h",
     "server_util.cc",
     "server_util.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/api_request_helper:api_request_helper",
+    "//brave/components/api_request_helper",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core:buildflags",

@@ -7,37 +7,34 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsRewardCredentialJsonWriterTest : public UnitTestBase {
- protected:
-  TokenGeneratorMock token_generator_mock_;
-};
+class BraveAdsRewardCredentialJsonWriterTest : public test::TestBase {};
 
 TEST_F(BraveAdsRewardCredentialJsonWriterTest, WriteRewardCredential) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_use_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
+
+  const RewardInfo reward = test::BuildReward(*confirmation);
 
   // Act
   const std::optional<std::string> reward_credential =
       json::writer::WriteRewardCredential(
-          test::BuildReward(*confirmation),
+          reward,
           /*payload=*/"definition: the weight of a payload");
   ASSERT_TRUE(reward_credential);
 

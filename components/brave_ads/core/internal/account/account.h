@@ -10,7 +10,6 @@
 #include <optional>
 #include <string>
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/values.h"
@@ -19,22 +18,20 @@
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 
 class Confirmations;
-class TokenGeneratorInterface;
 struct TransactionInfo;
 
 class Account final : public AdsClientNotifierObserver,
                       public ConfirmationDelegate,
                       public UserRewardsDelegate {
  public:
-  explicit Account(TokenGeneratorInterface* token_generator);
+  Account();
 
   Account(const Account&) = delete;
   Account& operator=(const Account&) = delete;
@@ -47,26 +44,28 @@ class Account final : public AdsClientNotifierObserver,
   void AddObserver(AccountObserver* observer);
   void RemoveObserver(AccountObserver* observer);
 
-  void SetWallet(const std::string& payment_id,
-                 const std::string& recovery_seed);
+  bool IsUserRewardsSupported() const { return !!user_rewards_; }
 
-  static void GetStatement(GetStatementOfAccountsCallback callback);
+  void SetWallet(const std::string& payment_id,
+                 const std::string& recovery_seed_base64);
+
+  void GetStatement(GetStatementOfAccountsCallback callback);
 
   void Deposit(const std::string& creative_instance_id,
                const std::string& segment,
-               AdType ad_type,
-               ConfirmationType confirmation_type) const;
+               mojom::AdType mojom_ad_type,
+               mojom::ConfirmationType mojom_confirmation_type) const;
   void DepositWithUserData(const std::string& creative_instance_id,
                            const std::string& segment,
-                           AdType ad_type,
-                           ConfirmationType confirmation_type,
+                           mojom::AdType mojom_ad_type,
+                           mojom::ConfirmationType mojom_confirmation_type,
                            base::Value::Dict user_data) const;
 
  private:
   void DepositCallback(const std::string& creative_instance_id,
                        const std::string& segment,
-                       AdType ad_type,
-                       ConfirmationType confirmation_type,
+                       mojom::AdType mojom_ad_type,
+                       mojom::ConfirmationType mojom_confirmation_type,
                        base::Value::Dict user_data,
                        bool success,
                        double value) const;
@@ -74,21 +73,22 @@ class Account final : public AdsClientNotifierObserver,
   void ProcessDeposit(const std::string& creative_instance_id,
                       const std::string& segment,
                       double value,
-                      AdType ad_type,
-                      ConfirmationType confirmation_type,
+                      mojom::AdType mojom_ad_type,
+                      mojom::ConfirmationType mojom_confirmation_type,
                       base::Value::Dict user_data) const;
   void ProcessDepositCallback(const std::string& creative_instance_id,
-                              AdType ad_type,
-                              ConfirmationType confirmation_type,
+                              mojom::AdType mojom_ad_type,
+                              mojom::ConfirmationType mojom_confirmation_type,
                               base::Value::Dict user_data,
                               bool success,
                               const TransactionInfo& transaction) const;
 
   void SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
                                     base::Value::Dict user_data) const;
-  void FailedToProcessDeposit(const std::string& creative_instance_id,
-                              AdType ad_type,
-                              ConfirmationType confirmation_type) const;
+  void FailedToProcessDeposit(
+      const std::string& creative_instance_id,
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type) const;
 
   void Initialize();
 
@@ -102,16 +102,17 @@ class Account final : public AdsClientNotifierObserver,
   void NotifyFailedToInitializeWallet() const;
 
   void NotifyDidProcessDeposit(const TransactionInfo& transaction) const;
-  void NotifyFailedToProcessDeposit(const std::string& creative_instance_id,
-                                    AdType ad_type,
-                                    ConfirmationType confirmation_type) const;
+  void NotifyFailedToProcessDeposit(
+      const std::string& creative_instance_id,
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type) const;
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyRewardsWalletDidUpdate(
       const std::string& payment_id,
-      const std::string& recovery_seed) override;
+      const std::string& recovery_seed_base64) override;
 
   // ConfirmationDelegate:
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;
@@ -121,9 +122,6 @@ class Account final : public AdsClientNotifierObserver,
   void OnDidMigrateVerifiedRewardsUser() override;
 
   base::ObserverList<AccountObserver> observers_;
-
-  const raw_ptr<TokenGeneratorInterface> token_generator_ =
-      nullptr;  // NOT OWNED
 
   std::unique_ptr<Confirmations> confirmations_;
 

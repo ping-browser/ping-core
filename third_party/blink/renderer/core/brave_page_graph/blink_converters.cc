@@ -71,19 +71,9 @@ base::Value ToPageGraphValue(ScriptState* script_state,
 template <>
 base::Value ToPageGraphValue(ScriptState* script_state,
                              const ScriptPromiseUntyped& script_promise) {
-  return ToPageGraphValue(script_state, script_promise.AsScriptValue());
-}
-
-template <>
-base::Value ToPageGraphValue(ScriptState* script_state,
-                             const FlexibleArrayBufferView& array) {
-  if (array.IsNull()) {
-    return ToPageGraphValue(script_state, base::span<uint8_t>());
-  }
-  const base::span<const uint8_t> data_view(
-      static_cast<const uint8_t*>(array.BaseAddressMaybeOnStack()),
-      array.ByteLength());
-  return ToPageGraphValue(script_state, data_view);
+  return ToPageGraphValue(
+      script_state,
+      ScriptValue(script_state->GetIsolate(), script_promise.V8Promise()));
 }
 
 template <>

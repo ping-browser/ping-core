@@ -15,9 +15,11 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "",
     name: "Ethereum",
     logo: "",
+    isCompressed: false,
     isErc20: false,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "ETH",
@@ -33,9 +35,11 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
     name: "Dai Stablecoin",
     logo: "",
+    isCompressed: false,
     isErc20: true,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "DAI",
@@ -51,9 +55,11 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "0x07865c6e87b9f70255377e024ace6630c1eaa37f",
     name: "USDC",
     logo: "",
+    isCompressed: false,
     isErc20: true,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "USDC",
@@ -69,9 +75,11 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "",
     name: "Solana",
     logo: "",
+    isCompressed: false,
     isErc20: false,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "SOL",
@@ -87,9 +95,11 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "0x1111111111222222222233333333334444444444",
     name: "Solpad",
     logo: "",
+    isCompressed: false,
     isErc20: false,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unknown,
     isNft: false,
     isSpam: false,
     symbol: "SPD",
@@ -105,9 +115,11 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "0xaaaaaaaaaa222222222233333333334444444444",
     name: "XENFT",
     logo: "",
+    isCompressed: false,
     isErc20: false,
     isErc721: true,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: true,
     isSpam: false,
     symbol: "XENFT",
@@ -123,9 +135,11 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "aaaaaaaaaa222222222233333333334444444444",
     name: "SOLNFT",
     logo: "",
+    isCompressed: false,
     isErc20: false,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unknown,
     isNft: true,
     isSpam: false,
     symbol: "SOLNFT",
@@ -141,9 +155,11 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "",
     name: "Filcoin",
     logo: "",
+    isCompressed: false,
     isErc20: false,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "FIL",
@@ -159,9 +175,11 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "",
     name: "Bitcoin",
     logo: "",
+    isCompressed: false,
     isErc20: false,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "BTC",
@@ -182,7 +200,7 @@ extension BraveWallet.AccountInfo {
         keyringId: BraveWallet.KeyringId.default,
         kind: .derived,
         address: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
-        bitcoinAccountIndex: 0,
+        accountIndex: 0,
         uniqueKey: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF"
       ),
       address: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
@@ -227,7 +245,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca",
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   static var previewConfirmedSwap: BraveWallet.TransactionInfo {
@@ -267,7 +286,19 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: .init(
+        from: .eth,
+        fromChainId: BraveWallet.MainnetChainId,
+        fromAsset: BraveWallet.ethSwapAddress,
+        fromAmount: "0x1b6951ef585a000",
+        to: .eth,
+        toChainId: BraveWallet.MainnetChainId,
+        toAsset: "0xad6d458402f60fd3bd25163575031acdce07538d",
+        toAmount: "0x5c6f2d76e910358b",
+        receiver: "0x099140a37d5e1da04ce05294594d27a90a4cbc06",
+        provider: "zeroex"
+      )
     )
   }
   /// Approved Unlimited DAI
@@ -310,7 +341,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   /// Sent `mockERC721NFTToken` NFT
@@ -354,7 +386,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca",
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   /// Solana System Transfer
@@ -371,7 +404,7 @@ extension BraveWallet.TransactionInfo {
           lastValidBlockHeight: 0,
           feePayer: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
           toWalletAddress: "FoVyVfWMwoK7QgS4fcULpPSdLEp2PB5aj5ATs8VhPEv2",
-          splTokenMintAddress: "",
+          tokenAddress: "",
           lamports: UInt64(100_000_000),
           amount: UInt64(0),
           txType: .solanaSystemTransfer,
@@ -381,7 +414,8 @@ extension BraveWallet.TransactionInfo {
           staticAccountKeys: [],
           addressTableLookups: [],
           send: nil,
-          signTransactionParam: nil
+          signTransactionParam: nil,
+          feeEstimation: nil
         )
       ),
       txStatus: .confirmed,
@@ -394,7 +428,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil,  // Currently only available for ETH and FIL
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   /// Solana Token Transfer
@@ -410,7 +445,7 @@ extension BraveWallet.TransactionInfo {
           lastValidBlockHeight: 0,
           feePayer: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
           toWalletAddress: "FoVyVfWMwoK7QgS4fcULpPSdLEp2PB5aj5ATs8VhPEv2",
-          splTokenMintAddress: "0x1111111111222222222233333333334444444444",
+          tokenAddress: "0x1111111111222222222233333333334444444444",
           lamports: UInt64(0),
           amount: UInt64(100_000_000),
           txType: .solanaSplTokenTransfer,
@@ -420,7 +455,8 @@ extension BraveWallet.TransactionInfo {
           staticAccountKeys: [],
           addressTableLookups: [],
           send: nil,
-          signTransactionParam: nil
+          signTransactionParam: nil,
+          feeEstimation: nil
         )
       ),
       txStatus: .confirmed,
@@ -433,7 +469,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil,  // Currently only available for ETH and FIL
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   /// Filecoin Unapproved Send
@@ -465,7 +502,39 @@ extension BraveWallet.TransactionInfo {
     originInfo: nil,
     chainId: BraveWallet.FilecoinMainnet,
     effectiveRecipient: nil,
-    isRetriable: false
+    isRetriable: false,
+    swapInfo: nil
+  )
+  /// Bitcoin Unapproved Send
+  static let mockBTCUnapprovedSend = BraveWallet.TransactionInfo(
+    id: "9",
+    fromAddress: BraveWallet.AccountInfo.mockBtcAccount.address,
+    from: BraveWallet.AccountInfo.mockBtcAccount.accountId,
+    txHash: "",
+    txDataUnion:
+      .init(
+        btcTxData:
+          .init(
+            to: "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",
+            amount: 5000,
+            sendingMaxAmount: false,
+            fee: 2544,
+            inputs: [],
+            outputs: []
+          )
+      ),
+    txStatus: .unapproved,
+    txType: .other,
+    txParams: [],
+    txArgs: [],
+    createdTime: Date(timeIntervalSince1970: 1_715_280_785),  // Thursday, May 9, 2024 6:53:05 PM
+    submittedTime: Date(timeIntervalSince1970: 1_715_280_790),  // Thursday, May 9, 2024 6:53:10 PM
+    confirmedTime: Date(timeIntervalSince1970: 1_715_281_790),  // Thursday, May 9, 2024 7:09:50 PM
+    originInfo: nil,
+    chainId: BraveWallet.BitcoinMainnet,
+    effectiveRecipient: nil,
+    isRetriable: false,
+    swapInfo: nil
   )
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {
     guard let data = Data(base64Encoded: base64String) else { return [] }
@@ -494,27 +563,6 @@ extension BraveWallet.SignMessageRequest {
   }
 }
 
-extension TransactionSummary {
-
-  static var previewConfirmedSend = previewSummary(from: .previewConfirmedSend)
-  static var previewConfirmedSwap = previewSummary(from: .previewConfirmedSwap)
-  static var previewConfirmedERC20Approve = previewSummary(from: .previewConfirmedERC20Approve)
-
-  static func previewSummary(from txInfo: BraveWallet.TransactionInfo) -> Self {
-    TransactionParser.transactionSummary(
-      from: txInfo,
-      network: .mockMainnet,
-      accountInfos: [.previewAccount],
-      userAssets: [.previewToken, .previewDaiToken],
-      allTokens: [],
-      assetRatios: [BraveWallet.BlockchainToken.previewToken.assetRatioId.lowercased(): 1],
-      nftMetadata: [:],
-      solEstimatedTxFee: nil,
-      currencyFormatter: .usdCurrencyFormatter
-    )
-  }
-}
-
 extension ParsedTransaction {
 
   static var previewConfirmedSend = previewParsedTransaction(from: .previewConfirmedSend)
@@ -526,7 +574,7 @@ extension ParsedTransaction {
   static func previewParsedTransaction(from txInfo: BraveWallet.TransactionInfo) -> Self? {
     TransactionParser.parseTransaction(
       transaction: txInfo,
-      network: .mockMainnet,
+      allNetworks: [.mockMainnet],
       accountInfos: [.previewAccount],
       userAssets: [.previewToken, .previewDaiToken],
       allTokens: [],
@@ -630,6 +678,7 @@ extension BraveWallet.LiFiQuote {
     routes: [
       .init(
         id: "route.1",
+        uniqueId: "allbridge",
         from: .previewToken,
         fromAmount: "1000000000000000000",
         fromAddress: BraveWallet.AccountInfo.mockEthAccount.address,
@@ -640,7 +689,7 @@ extension BraveWallet.LiFiQuote {
         steps: [
           .init(
             id: "step.1",
-            type: .native,
+            type: .liFi,
             tool: "1inch",
             toolDetails: .init(key: "", name: "", logo: ""),
             action: .init(),
@@ -666,7 +715,6 @@ extension BraveWallet.LiFiQuote {
             includedSteps: nil
           )
         ],
-        insurance: .init(state: "", feeAmountUsd: "0"),
         tags: []
       )
     ]

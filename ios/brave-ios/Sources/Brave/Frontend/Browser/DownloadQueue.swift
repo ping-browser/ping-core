@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import WebKit
 
@@ -37,9 +38,9 @@ class Download: NSObject {
   func pause() {}
   func resume() {}
 
-  fileprivate func uniqueDownloadPathForFilename(_ filename: String) throws -> URL {
-    let downloadsPath = try FileManager.default.downloadsPath()
-    let basePath = downloadsPath.appendingPathComponent(filename)
+  func uniqueDownloadPathForFilename(_ filename: String) async throws -> URL {
+    let downloadsPath = try await AsyncFileManager.default.downloadsPath()
+    let basePath = downloadsPath.appending(path: filename)
     let fileExtension = basePath.pathExtension
     let filenameWithoutExtension =
       !fileExtension.isEmpty ? String(filename.dropLast(fileExtension.count + 1)) : filename
@@ -47,12 +48,12 @@ class Download: NSObject {
     var proposedPath = basePath
     var count = 0
 
-    while FileManager.default.fileExists(atPath: proposedPath.path) {
+    while await AsyncFileManager.default.fileExists(atPath: proposedPath.path) {
       count += 1
 
       let proposedFilenameWithoutExtension = "\(filenameWithoutExtension) (\(count))"
-      proposedPath = downloadsPath.appendingPathComponent(proposedFilenameWithoutExtension)
-        .appendingPathExtension(fileExtension)
+      proposedPath = downloadsPath.appending(path: proposedFilenameWithoutExtension)
+        .appending(path: fileExtension)
     }
 
     return proposedPath
@@ -166,13 +167,21 @@ extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
     downloadTask: URLSessionDownloadTask,
     didFinishDownloadingTo location: URL
   ) {
-    do {
-      let destination = try uniqueDownloadPathForFilename(filename)
-      try FileManager.default.moveItem(at: location, to: destination)
-      isComplete = true
-      delegate?.download(self, didFinishDownloadingTo: destination)
-    } catch {
-      delegate?.download(self, didCompleteWithError: error)
+    // This method will delete the downloaded file immediately after this delegate method returns
+    // so we must synchonously move the file to a temporary directory first before processing it
+    // on a different thread since the Task will execute after this method returns
+    let temporaryLocation = FileManager.default.temporaryDirectory
+      .appending(component: "\(filename)-\(location.lastPathComponent)")
+    try? FileManager.default.moveItem(at: location, to: temporaryLocation)
+    Task {
+      do {
+        let destination = try await uniqueDownloadPathForFilename(filename)
+        try await AsyncFileManager.default.moveItem(at: temporaryLocation, to: destination)
+        isComplete = true
+        delegate?.download(self, didFinishDownloadingTo: destination)
+      } catch {
+        delegate?.download(self, didCompleteWithError: error)
+      }
     }
   }
 }
@@ -284,6 +293,86 @@ extension DownloadQueue: DownloadDelegate {
 
     if downloads.isEmpty {
       delegate?.downloadQueue(self, didCompleteWithError: lastDownloadError)
+    }
+  }
+}
+
+class WebKitDownload: Download {
+  let fileURL: URL
+  let response: URLResponse
+  let suggestedFileName: String
+  weak var download: WKDownload?
+
+  private weak var webView: WKWebView?
+  private var downloadResumeData: Data?
+  private weak var downloadQueue: DownloadQueue?
+  private var completedUnitCountObserver: NSKeyValueObservation?
+
+  init(
+    fileURL: URL,
+    response: URLResponse,
+    suggestedFileName: String,
+    download: WKDownload,
+    downloadQueue: DownloadQueue
+  ) {
+    self.fileURL = fileURL
+    self.response = response
+    self.suggestedFileName = suggestedFileName
+    self.download = download
+    self.webView = download.webView
+    self.downloadQueue = downloadQueue
+    super.init()
+
+    self.filename = suggestedFileName
+    self.bytesDownloaded = download.progress.completedUnitCount
+    self.totalBytesExpected = download.progress.totalUnitCount
+
+    completedUnitCountObserver = download.progress.observe(
+      \.completedUnitCount,
+      changeHandler: { [weak self] progress, value in
+        guard let self = self else { return }
+
+        self.bytesDownloaded = progress.completedUnitCount
+        self.totalBytesExpected = progress.totalUnitCount
+
+        guard let downloadQueue = self.downloadQueue else { return }
+
+        downloadQueue.delegate?.downloadQueue(
+          downloadQueue,
+          didDownloadCombinedBytes: self.bytesDownloaded,
+          combinedTotalBytesExpected: self.totalBytesExpected
+        )
+      }
+    )
+  }
+
+  override func cancel() {
+    download?.cancel({ [weak self] data in
+      guard let self = self else { return }
+      if let data = data {
+        self.downloadResumeData = data
+      }
+
+      self.delegate?.download(self, didCompleteWithError: nil)
+    })
+  }
+
+  override func pause() {
+
+  }
+
+  override func resume() {
+    if let downloadResumeData = downloadResumeData {
+      webView?.resumeDownload(
+        fromResumeData: downloadResumeData,
+        completionHandler: { [weak self] download in
+          guard let self = self else { return }
+          self.download = download
+          self.bytesDownloaded = download.progress.completedUnitCount
+          self.totalBytesExpected = download.progress.totalUnitCount
+          self.downloadQueue?.enqueue(self)
+        }
+      )
     }
   }
 }

@@ -34,8 +34,10 @@ bool IsGoogleMaps(const blink::KURL& url) {
     }                                                                     \
   }
 
-#define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT         \
-  if (!brave::AllowFingerprinting(GetTopExecutionContext())) \
+#define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT      \
+  if (!brave::AllowFingerprinting(                        \
+          GetTopExecutionContext(),                       \
+          ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE)) \
     return MakeGarbageCollected<TextMetrics>();
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
@@ -50,7 +52,8 @@ namespace {
 
 bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
   return brave::AllowFingerprinting(
-      blink::ExecutionContext::From(script_state));
+      blink::ExecutionContext::From(script_state),
+      ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS);
 }
 
 }  // namespace
@@ -63,7 +66,7 @@ ImageData* BaseRenderingContext2D::getImageData(
     int sw,
     int sh,
     ExceptionState& exception_state) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return nullptr;
 }
 
@@ -74,7 +77,7 @@ ImageData* BaseRenderingContext2D::getImageData(
     int sh,
     ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return nullptr;
 }
 
@@ -85,7 +88,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
     int sh,
     ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return nullptr;
 }
 
@@ -96,7 +99,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal_Unused(
     int sh,
     ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return nullptr;
 }
 

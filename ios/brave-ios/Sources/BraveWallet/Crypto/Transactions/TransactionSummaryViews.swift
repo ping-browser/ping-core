@@ -15,7 +15,8 @@ struct TransactionSummaryViewContainer: View {
     case .ethSend(let details),
       .erc20Transfer(let details),
       .solSystemTransfer(let details),
-      .solSplTokenTransfer(let details):
+      .solSplTokenTransfer(let details),
+      .btcSend(let details):
       SendTransactionSummaryView(
         sentFromAccountName: parsedTransaction.namedFromAddress,
         token: details.fromToken,
@@ -103,7 +104,7 @@ struct SendTransactionSummaryView: View {
 
   let sentFromAccountName: String
   let token: BraveWallet.BlockchainToken?
-  let nftMetadata: NFTMetadata?
+  let nftMetadata: BraveWallet.NftMetadata?
   let network: BraveWallet.NetworkInfo
   let valueSent: String?
   let fiatValueSent: String?
@@ -113,7 +114,7 @@ struct SendTransactionSummaryView: View {
   init(
     sentFromAccountName: String,
     token: BraveWallet.BlockchainToken?,
-    nftMetadata: NFTMetadata? = nil,
+    nftMetadata: BraveWallet.NftMetadata? = nil,
     network: BraveWallet.NetworkInfo,
     valueSent: String?,
     fiatValueSent: String?,

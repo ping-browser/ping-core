@@ -32,7 +32,7 @@
 <translation id="9038728316393235637"><ph name="CUSTODIAN"/>にログイン</translation>
 <translation id="7063168612616047608">お気に入りのクリエイターをサポートしていただきありがとうございます</translation>
 <translation id="3796032246917966749">Braveリワードの<ph name="CUSTODIAN"/>からログアウトしています。続行するには再度ログインしてください。</translation>
-<translation id="5202112619925434373">このクリエイターはまだBrave Creatorsで認証されていません。認証完了後、寄付を送れるようになります。<ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">このクリエイターはまだPing Creatorsで認証されていません。認証完了後、寄付を送れるようになります。<ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">支援を送る</translation>
 <translation id="1899434873745933492">支援を送信できません</translation>
 <translation id="1794046983410841192">Braveリワードを使用</translation>
@@ -42,8 +42,8 @@
 <translation id="1177863135347784049">カスタム</translation>
 <translation id="4827581232860040208">支援の送信中に問題が発生しました</translation>
 <translation id="3259723213051400722">もう一度お試しください。</translation>
-<translation id="5298965408768377685">このクリエイターはBraveに登録しており、Brave Rewardsユーザーから寄付を受け取れます。<ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">通知が無効な状態では、Brave Rewardsが機能しない場合があります。</translation>
+<translation id="5298965408768377685">このクリエイターはBraveに登録しており、Ping Rewardsユーザーから寄付を受け取れます。<ph name="LEARN_MORE"/></translation>
+<translation id="7466579932043491502">通知が無効な状態では、Ping Rewardsが機能しない場合があります。</translation>
 <translation id="6112331814131703370">「アプリに切り替える」通知をブロック</translation>
 <translation id="4744921452903670666">ご意見をお聞かせください！</translation>
 <translation id="2524310205387880526">Braveを評価する</translation>
@@ -74,7 +74,7 @@
 <translation id="4930155581888391118">Braveからの通知を有効にしてBraveリワードを獲得しましょう。</translation>
 <translation id="325187916104529570">設定を開いて「Brave広告」のデバイス通知をオンにします。</translation>
 <translation id="5744802588121897886">Brave通知を有効にする</translation>
-<translation id="7307834434086582547">Brave Shieldsを有効/無効にします</translation>
+<translation id="7307834434086582547">Ping Shieldsを有効/無効にします</translation>
 <translation id="6945863270524203017">トラッカーおよび広告のブロックに関するプライバシー最新情報を毎週受信できます。</translation>
 <translation id="4324735664183300693">通知を有効にする</translation>
 <translation id="6395059271589866759">Braveは送信された金額の5%を処理手数料として徴収します。</translation>
@@ -91,24 +91,30 @@
 <translation id="1005372663692637999">youtube.comで自動再生とエンドカードをブロック</translation>
 <translation id="5152595963250646670">YouTubeの表示要素をブロック</translation>
 <translation id="2998960761270772157">youtube.comのサインイン、メニュー、コメント、動画情報などの要素をブロックします。</translation>
+<translation id="8531835121131500698">YouTubeショートをブロック</translation>
+<translation id="2167271714269158912">ホームページ、人気のページ、youtube.comの検索結果からショート動画をブロックします。</translation>
 <translation id="6052725679982758334">ソーシャルメディアのブロック</translation>
 <translation id="7498695072878479744">第三者サイトのGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
-<translation id="6302422639282249274">Brave Rewardsの管理</translation>
+<translation id="6302422639282249274">Ping Rewardsの管理</translation>
 <translation id="2709516037105925701">自動入力</translation>
 <translation id="8617525558807213034">プライベートタブに自動入力</translation>
 <translation id="8685431198160039193">情報を保存してプライベートタブに自動入力することができます</translation>
 <translation id="6583902294974160967">サポート</translation>
 <translation id="1799030480311994998">機能</translation>
-<translation id="2005732746077850308">Brave Shields &amp; プライバシー</translation>
+<translation id="2005732746077850308">Ping Shields &amp; プライバシー</translation>
 <translation id="4692623383562244444">検索エンジン</translation>
 <translation id="1468415711258933398">通常タブ</translation>
 <translation id="3377025655491224618">プライベートタブ</translation>
+<translation id="7304425663107214334">ブラウザのサジェスチョンを表示</translation>
+<translation id="8982438328166986164">ブックマークおよび閲覧履歴に基づきおすすめのウェブサイトを表示します。</translation>
+<translation id="924029461438529367">検索候補を表示</translation>
+<translation id="1571106259128580884">トップサイトのサジェスチョンを表示</translation>
+<translation id="6285118765755298263">他の検索エンジンインデックス</translation>
+<translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="9148058034647219655">終了</translation>
-<translation id="4022987104439075738">IPFSゲートウェイ</translation>
-<translation id="2688519859165248360">IPFSゲートウェイを使用したIPFSリソースへのナビゲーションを許可</translation>
 <translation id="8047754398610073499">Cookieの同意通知をブロック</translation>
 <translation id="2621893359845808115">サイト上でCookieの承認 / 拒否を求めるポップアップをブロックします</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
@@ -139,10 +145,10 @@
 <translation id="8410806609595910352">ENSオフチェーン検索</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="4176463684765177261">無効</translation>
-<translation id="59174027418879706">有効化済み</translation>
-<translation id="6252490671914511928">Brave Newsは、読みたい記事が上がってくるプライベート・ニュースリーダー。</translation>
+<translation id="59174027418879706">有効にする</translation>
+<translation id="6920492760024499150">Ping Newsは、読みたい記事が上がってくるプライベート・ニュースリーダー。</translation>
 <translation id="8300751939969131609">Braveニュースをオンにして、最新情報を見逃さないようにしましょう</translation>
-<translation id="7266075701303521777">Braveニュースは広告に支えられていますが、その広告はあなたのデバイス上でマッチングされており、あなたが完全に匿名化された状態でプライバシーを重視して配信されます。</translation>
+<translation id="7627131190984957214">Braveニュースは、あなたのデバイスにマッチする匿名化されたプライベート広告でサポートされています。</translation>
 <translation id="7699565323725789472">お気に入りのソースを1つのフィードでフォロー。Braveのタブを開いて、下にスクロールすればすぐに設定できます！\nBraveニュースは、匿名化されたプライベート広告を使用する広告サポート型のツールです。</translation>
 <translation id="1765217911817124376">Braveニュースを有効にする</translation>
 <translation id="8981973962043893066">サイト、トピック、RSSフィードを検索</translation>
@@ -161,7 +167,7 @@
 <translation id="7461899062138731833">ソース</translation>
 <translation id="6150420917380577651"><ph name="SEARCH_URL"/>でフィードが見つかりませんでした</translation>
 <translation id="4541978218358617681">広告</translation>
-<translation id="7823038307453615214">Brave Newsを表示</translation>
+<translation id="7823038307453615214">Ping Newsを表示</translation>
 <translation id="6527303717912515753">共有</translation>
 <translation id="1654539412343893324">データの詳細について</translation>
 <translation id="2989805286512600854">新しいタブで開く</translation>
@@ -203,7 +209,7 @@
 <translation id="4172219483893066798">サイトがLocalhostのリソースへのアクセスを要求可能</translation>
 <translation id="7181706637590665047">Localhostのリソースへのアクセスを許可しない</translation>
 <translation id="1485435696620658073">Localhostのリソースへのアクセスを許可</translation>
-<translation id="181905442828471321">Brave Shields グローバルデフォルト</translation>
+<translation id="181905442828471321">Ping Shields グローバルデフォルト</translation>
 <translation id="2675679258824361492">その他のプライバシー設定</translation>
 <translation id="8026334261755873520">閲覧履歴データの削除</translation>
 <translation id="1690924763769415936">バックグラウンド再生</translation>
@@ -231,7 +237,7 @@
 <translation id="7281027579943912834">Braveをデフォルトで使用すると、タップしたすべてのリンクにBraveの広告ブロックが適用されます。すべてのページ、ビデオ、ストリームにです。</translation>
 <translation id="5148943178722443958">Braveの品質向上にご協力ください。</translation>
 <translation id="6718362830686703942">クラッシュやフリーズが発生した場合、診断レポートを送信します。</translation>
-<translation id="1929905278861178845">Braveユーザーにより使用されている機能に関する製品インサイトが、完全にプライバシーが保護され匿名で共有されます。</translation>
+<translation id="8616157231067364693">Braveのユーザーがどのような機能を使用しているかについて、非公開かつ匿名で製品インサイトを共有できます。</translation>
 <translation id="2877653791257935258">ウェブサイト名またはURLを入力</translation>
 <translation id="5329830149661250028">Braveの違いを実感してください: 広告なし。トラッカーなし。スピーディーなページの読み込み。</translation>
 <translation id="3941792073703079607">Braveの違いをご覧ください。広告をブロック。データを節約。より速くストリーミング。</translation>
@@ -246,19 +252,21 @@
 <translation id="986879628471635371">トラブルシューティングのチュートリアル</translation>
 <translation id="5808759341041733958">既定の検索エンジンを選択してください</translation>
 <translation id="1331593888918588693">アプリの設定で、後からいつでも設定を変更することができます。</translation>
-<translation id="5806601733251372221">Brave Shields</translation>
+<translation id="5806601733251372221">Ping Shields</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/>を獲得</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="3333887201479867589">Ping Rewards</translation>
 <translation id="5870330605209713397">プライバシーを侵害しない広告を閲覧して、お気に入りのサイトやクリエイターをデフォルト設定でサポートしましょう。</translation>
-<translation id="5302488867897327287">「Brave Rewardsの使用を開始」をタップすると、あなたは以下の内容に同意したことになります</translation>
+<translation id="5302488867897327287">「Ping Rewardsの使用を開始」をタップすると、あなたは以下の内容に同意したことになります</translation>
 <translation id="4281844954008187215">利用規約</translation>
 <translation id="6871397658902960384">ブラウジングを開始します</translation>
 <translation id="454386012157232640">広告が表示されませんでした</translation>
 <translation id="1448877943847791441">これから最初の広告を表示します</translation>
-<translation id="4410793187232041318">これでBrave Adsを表示させBATポイントを獲得できるようになりました。</translation>
+<translation id="4410793187232041318">これでPing Adsを表示させBATポイントを獲得できるようになりました。</translation>
 <translation id="6511854390690723657">これは初めてのBrave広告です。タップして詳細をご覧ください。</translation>
-<translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
+<translation id="2070991379950719711">Ping Rewardsの使用を開始</translation>
 <translation id="48520986898237073">引き続きウォレットに進む</translation>
+<translation id="6213254277250932867">12語のリカバリーフレーズをお持ちの方</translation>
+<translation id="4225265925807365011">24語のリカバリーフレーズをお持ちの方</translation>
 <translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
 <translation id="6800338374677644736">デフォルトのブラウザとして設定</translation>
 <translation id="19715420010996093">Braveブラウザーを選択して[常に]をタップします</translation>
@@ -274,8 +282,8 @@
 <translation id="1938402585819943124">次の画面でBraveを選択します。</translation>
 <translation id="8926389886865778422">再表示させない</translation>
 <translation id="745974920645827035">プライバシーに配慮した独立型検索</translation>
-<translation id="4717018805430015801">Brave検索はあなたの個人情報、クエリ、クリックした内容を追跡しません。</translation>
-<translation id="5240031343741051161">Brave Searchを試してみる</translation>
+<translation id="2773167297815493692">Brave検索は個人情報のプロファイリングを行いません。</translation>
+<translation id="5240031343741051161">Ping Searchを試してみる</translation>
 <translation id="5234764350956374838">表示しない</translation>
 <translation id="6639570430554986719">1月</translation>
 <translation id="1807352595146144483">2月</translation>
@@ -289,21 +297,16 @@
 <translation id="8220228041552340594">10月</translation>
 <translation id="8280223431922155812">11月</translation>
 <translation id="4254029385847607686">12月</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="1772301834467143364">Brave News</translation>
+<translation id="3960619311638643872">Ping VPN</translation>
+<translation id="1772301834467143364">Ping News</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> 米ドル</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="6020176662032623904">認証済</translation>
 <translation id="2369994359029526515">未認証</translation>
 <translation id="6112368337882254910">自動支援</translation>
-<translation id="7861645265922445992">リワードを受け取る</translation>
 <translation id="1848737374354350807">残高:</translation>
 <translation id="4781696154289395607">あなたは<ph name="BAT_VALUE"/> BATを寄付しました。</translation>
 <translation id="2429828319207652823">支援の実行中に問題が発生しました。</translation>
-<translation id="2221902203895354376">トークンの付与が可能です！</translation>
-<translation id="2377929997600454162"><ph name="MONTH_VALUE"/>の広告閲覧報酬が届きました！</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/>のリワード: <ph name="TOKEN"/>BAT</translation>
-<translation id="1649629664206601032">獲得まであと<ph name="TOKEN"/>日</translation>
 <translation id="683765328936486920">YouTubeで</translation>
 <translation id="8969049974285901797">Twitchで</translation>
 <translation id="8038539967102225446">Brave広告はここにあります！</translation>
@@ -317,16 +320,14 @@
 <translation id="859506441384380749">このコードは非推奨バージョンのBraveで生成されました。まず他のデバイスをアップグレードしてください</translation>
 <translation id="3132642509209154999">このコードは期限切れです。他のデバイスで新しいコードを生成してもう一度お試しください。</translation>
 <translation id="2859229680945501779">このコードは無効です。お使いの端末の時刻とタイムゾーンが正しく設定されていることをご確認ください。</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
-<translation id="3680755684186855422">Brave Syncを使うと、さまざまなデバイスの Brave ブラウザ間でブックマークのデータをブライベートに同期することができます。</translation>
-<translation id="3735228155296883311">別の端末で開始した同期チェーンに、コードをスキャンして簡単に追加することができます。あるいはこの端末で新しい同期チェーンを開始することもできます。</translation>
-<translation id="2614069607859982576">既存の同期されたデバイスを使用してBrave Settingsを開き、設定と &gt; 同期に移動してください。「新しいデバイスを追加」を選択し、画面に表示されたQRコードをスキャンしてください。</translation>
+<translation id="3149880132460839085">Ping Sync</translation>
+<translation id="348794064910142198">Ping Syncを使えば、さまざまなデバイス上のBraveブラウザ間でブックマークデータを非公開で同期できます。他のデバイスで作成した同期チェーンのコードをスキャンするだけだから簡単です。または、新しい同期チェーンを開始します。</translation>
+<translation id="2614069607859982576">既存の同期されたデバイスを使用してPing Settingsを開き、設定と &gt; 同期に移動してください。「新しいデバイスを追加」を選択し、画面に表示されたQRコードをスキャンしてください。</translation>
 <translation id="5241263629636958324">クリップボードへコピーしました</translation>
 <translation id="5817918615728894473">ペア設定</translation>
-<translation id="3429575397891106447">オプションを同期</translation>
+<translation id="3429575397891106447">同期項目を選択</translation>
 <translation id="1680065323266179640">同期アカウントを削除</translation>
-<translation id="3792563952903751704">アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。ただし、それらのデバイスでローカルに格納されたデータは削除されません。
-  これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。</translation>
+<translation id="8397325856045820212">アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されているすべてのデバイスの同期が無効になります。ただし、これらのデバイスにローカルに保存されているデータは削除されません。\n\nこの削除は永続的であり、データを復元する方法はありません。再度Syncを使用する場合は、新しいアカウントを作成し、各デバイスを1つずつ追加し直す必要があります。</translation>
 <translation id="9064376100690171155">アカウントを完全に削除する</translation>
 <translation id="2740516568641790390">同期アカウントを削除しました</translation>
 <translation id="7006136453627651236">同期アカウントを削除できませんでした</translation>
@@ -336,12 +337,10 @@
 <translation id="1602067095281698985">新しい同期チェーンを始める</translation>
 <translation id="1475223680121592371">モバイルデバイスを追加します</translation>
 <translation id="2965377893636908578">コンピューターを追加します</translation>
-<translation id="6604289897677913048">2台目のスマートフォンとやタブレットでBraveの設定画面を開き、Syncの設定メニューからスキャンして追加を選択してください。</translation>
-<translation id="8508856434435157945">モバイルデバイスでBraveの設定画面を開き、Sycnのメニューから「同期コードをスキャン」をクリックしてください。その後、カメラで以下のQRコードをスキャンしてください。</translation>
-<translation id="2590683710114839102">お使いのコンピューター上で、Braveの設定画面を開き、「同期チェーンコードを入力」を選択してください。</translation>
+<translation id="4701589725270449523">2台目のスマートフォンまたはタブレットを使用して、Brave設定 &gt; 同期 &gt; スキャンを開きます。\n\nモバイルデバイスで設定パネルのPing Syncに移動し、「同期コードをスキャン」ボタンをクリックします。カメラで下のQRコードをスキャンしてください。</translation>
+<translation id="67114562351518315">お使いのコンピューターで、Brave設定 &gt; 同期を開き、「同期チェーンコードを入力」を選択します。\n\n同期したいコンピューターで設定のPing Syncに移動し、「同期コードを持っています」ボタンをクリックします。\n以下に示すシンクチェーンコードの単語を入力します。</translation>
 <translation id="65315202420929965">この同期コードをスキャンします</translation>
 <translation id="6764016175302339802">このコードはパスワードのように大切に取り扱ってください。誰か盗まれてしまった場合、同期しているデータを盗み見たり改竄されてしまう可能性があります。</translation>
-<translation id="6707003343517029414">同期したいコンピューターで、Braveの設定画面を開き、「同期チェーンコードを持っています」をクリックしてください。そして以下の同期チェーンコードを入力してください。</translation>
 <translation id="2731921493694251495">同期チェーンコードを入力します</translation>
 <translation id="2175927920773552910">QR コード</translation>
 <translation id="8653433343015102968">同期チェーンコード</translation>
@@ -351,19 +350,24 @@
 <translation id="6776430845975754238">設定を変更した場合、他のデバイスと共有しているデータにのみ影響します。</translation>
 <translation id="1061533051865606843">新たなデバイスを追加</translation>
 <translation id="7539985410310934287">コードを入力します</translation>
-<translation id="2886391679017857869">既存の同期されたデバイスを使用してBrave Settingsを開き、設定と &gt; 同期に移動します。 「新しいデバイスの追加」、「代わりにコードワードを表示」の順に選択してください。</translation>
+<translation id="2886391679017857869">既存の同期されたデバイスを使用してPing Settingsを開き、設定と &gt; 同期に移動します。 「新しいデバイスの追加」、「代わりにコードワードを表示」の順に選択してください。</translation>
 <translation id="8131740175452115882">確認</translation>
 <translation id="4973653569293835178">カメラを使用...</translation>
 <translation id="326454632686131209">デバイスを同期</translation>
+<translation id="3122158728238634723">新規コードを生成</translation>
+<translation id="4358805443781965194">コードの有効期限が切れています。下のボタンをクリックして新しいコードを作成してください。</translation>
+<translation id="318164877797885563">この一時コードは次の時間のみ有効です: <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">設定終了</translation>
-<translation id="8050847734948770789">Brave Rewardsを有効にする</translation>
+<translation id="8050847734948770789">Ping Rewardsを有効にする</translation>
 <translation id="9187185473011056079">参加します！</translation>
-<translation id="8185825081026121627">プライバシーを重視するBrave Rewardsの広告を表示してBATポイントを獲得しましょう！</translation>
+<translation id="8185825081026121627">プライバシーを重視するPing Rewardsの広告を表示してBATポイントを獲得しましょう！</translation>
 <translation id="5321518976657560663">リセットエラー</translation>
-<translation id="4114170343590425996">Brave Rewards のリセット中にエラーが発生しました。Braveを再起動してもう一度お試しください。</translation>
+<translation id="4114170343590425996">Ping Rewards のリセット中にエラーが発生しました。Braveを再起動してもう一度お試しください。</translation>
 <translation id="6417420737057016607">Brave広告</translation>
 <translation id="5611966874859284786">Braveが使用されていないときに通知広告を表示します</translation>
-<translation id="6606319453795180219">これにより、Brave Rewardsが削除され、「Brave Rewards」データがすべてリセットされます</translation>
+<translation id="6606319453795180219">これにより、Ping Rewardsが削除され、「Ping Rewards」データがすべてリセットされます</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Braveリワードのデータをリセット…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave広告のデータをクリア…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">ブックマークに追加</translation>
 <translation id="340492034650766959">ブックマークを削除</translation>
 <translation id="2149973817440762519">ブックマークを編集</translation>
@@ -419,12 +423,8 @@
 <translation id="8643377320501056697">トップサイトを表示</translation>
 <translation id="7275773481201277457">Braveのデータを表示</translation>
 <translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">「Brave Rewardsの使用を開始」をタップすると、あなたは<ph name="TERMS_OF_SERVICE"/>に同意したことになります。</translation>
-<translation id="3794079107601824147">この背景画像を表示すると報酬が支払われます。</translation>
-<translation id="7136586167396205364">スポンサー付き画像を非表示にする</translation>
-<translation id="2927095357213611519">ポイントを使用してコンテンツクリエイターを応援できます。\nポイントはプライバシーを重視する広告を表示することで貯めることができます。</translation>
 <translation id="2898634658146274982">Braveで外部リンクを開く</translation>
-<translation id="5616508928556767259">他のアプリからのリンクをBraveのWebビューで開きます。注: Braveを既定のブラウザに設定する必要があります。</translation>
+<translation id="5616508928556767259">他のアプリからのリンクをBraveのWebビューで開きます。注: Pingを既定のブラウザに設定する必要があります。</translation>
 <translation id="2394961582378297792">ログアウト済み</translation>
 <translation id="5308380583665731573">接続</translation>
 <translation id="3368922792935385530">接続済み</translation>
@@ -443,22 +443,18 @@
 <translation id="7961015016161918242">使用しない</translation>
 <translation id="1275213816424141989">あとで</translation>
 <translation id="4406937629441301400">この画像を表示するとトークンを受け取ることができ、クリエイターへの支払いに使うことができます。<ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">この画像を表示するためのトークンを獲得します。「Brave Rewardsの使用を開始」をタップして、あなたのシェアを要求します。</translation>
 <translation id="6632345639591919543">この画像を表示することでトークンを受け取ることができます。\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">この画像を表示するためのトークンを獲得しています。</translation>
-<translation id="7877201489035217175">スポンサー画像の詳細について</translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/>リワードへの支払い処理が<ph name="PAYOUT_DATE"/>までに開始されます。</translation>
 <translation id="33967210973550414"><ph name="CURRENT_MONTH"/>リワードへの支払いを処理中です。<ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314"><ph name="CURRENT_MONTH"/>リワードへの支払いが完了しました。<ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">ステータスを確認</translation>
-<translation id="828092975561478703">スポンサーの画像を見ると、毎回売上の70％をトークンで受け取ることができます。Brave Adsにより、閲覧する広告を常にコントロールできます。</translation>
 <translation id="3624048886326677117">トラッカーと広告をブロック（アグレッシブ）</translation>
 <translation id="7151914815476509258">トラッカーと広告をブロック（標準）</translation>
 <translation id="7384778069178817075">すべてのトラッカー &amp; 広告を許可</translation>
 <translation id="3763681089644577874">クッキーをブロック</translation>
 <translation id="614747795780742163">以前の訪問に関する情報を、ウェブサイトが保存しないようにします</translation>
 <translation id="6883611015375728278">すべてのクッキーをブロック</translation>
-<translation id="4941539331405513605">クロスサイトクッキーをブロック</translation>
+<translation id="6196640612572343990">3rdパーティクッキーをブロック</translation>
 <translation id="5657156137487675418">すべてのクッキーを許可する</translation>
 <translation id="1553643198679271031">OTRモードをリクエスト</translation>
 <translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
@@ -475,11 +471,15 @@
 <translation id="5582686930349810484">フィンガープリントをブロック済み（標準）</translation>
 <translation id="769702552748212954">すべてのフィンガープリントを許可する</translation>
 <translation id="876424292214881779">ブロック済の広告およびその他の不審な通信</translation>
-<translation id="6930134873084561197">多くの場合、ウェブサイトにはあなた(のデバイス)を識別するためにクッキーとスクリプトが含まれます。あなたが誰であるかを判別・追跡しあなたが他のサイトで何をしているかを知ろうとします。\n\nBraveはこれらをブロックし、あなたが追跡されることなくブラウザできるようにします。</translation>
-<translation id="8553998445606452168">Brave Shieldsについて</translation>
+<translation id="6849027612978668678">多くの場合、ウェブサイトにはあなた (のデバイス) を識別するためにCookieとスクリプトが含まれます。あなたが誰であるかを判別・追跡しあなたが他のサイトで何をしているかを知ろうとします。\n\nBraveはこれらをブロックし、あなたが追跡されることなくブラウザできるようにします。</translation>
+<translation id="8553998445606452168">Ping Shieldsについて</translation>
 <translation id="8912304686498704084">オン</translation>
 <translation id="4963218453264888510">オフ</translation>
 <translation id="7474113515179313724">現在、Braveのプライバシー保護機能なしでこのサイトを閲覧しています。Shieldsを有効にするとサイトに問題がありましたか？</translation>
+<translation id="4226543734057230801">Ethereumネットワーク</translation>
+<translation id="3504157706952484145">Filecoinネットワーク</translation>
+<translation id="1561541094377237745">Solanaネットワーク</translation>
+<translation id="7141438739990875547">Bitcoinネットワーク</translation>
 <translation id="9055546041146396417">ウェブサイトが正常に動作していないように見える場合は、Shieldをオフにしてみてください。</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
@@ -487,7 +487,6 @@
 <translation id="5299848999918506028">ありがとうございます！</translation>
 <translation id="76550953340008122">このサイトの問題をBraveの開発者にお知らせいただき、ありがとうございます。最善を尽くしてその修正を行います！</translation>
 <translation id="650318023204990401">詳細設定</translation>
-<translation id="1275664486910646411">トップサイトをオートコンプリートで表示</translation>
 <translation id="5370478469168390143">データをオンラインで保存する</translation>
 <translation id="1118508688433541158">Braveなら読み込みが高速で、広告をブロックできます</translation>
 <translation id="7427391215172269363">BraveでWebを閲覧して毎日データ通信量を節約しています。</translation>
@@ -517,7 +516,7 @@
 <translation id="3694122362646626770">ウェブサイト</translation>
 <translation id="2225863440766607138">トラッカー</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">この3時間で、 Braveブラウザで<ph name="COUNT"/>件のトラッカーと &amp; 広告をブロックしました。</translation>
+<translation id="6737820963776538947">この3時間で、 Pingブラウザで<ph name="COUNT"/>件のトラッカーと &amp; 広告をブロックしました。</translation>
 <translation id="5005713153542196658">Braveでは、トラッカーや広告をブロックすることで、主要なニュースサイトを最大6倍速く閲覧できます。</translation>
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
@@ -546,7 +545,7 @@
 <translation id="8804164990146287819">プライバシーポリシー</translation>
 <translation id="8363792084628930008">リワードを有効にすることで、<ph name="TERMS_OF_SERVICE"/>および<ph name="PRIVACY_POLICY"/>に同意したものとみなされます。</translation>
 <translation id="185034574799484512">クイックツアーを見てみましょう</translation>
-<translation id="7930505144430343145">Brave Rewardsへようこそ！</translation>
+<translation id="7930505144430343145">Ping Rewardsへようこそ！</translation>
 <translation id="3477340970981564961">Braveプライベート広告は、従来の広告とは異なり、コンテンツクリエイターをサポートするためのトークンで報酬がもらえ、すべては個人情報を非公開にして行われます。</translation>
 <translation id="6973095375773523904">広告はどこに表示されますか？</translation>
 <translation id="4328028439561659455">Braveプライベート広告が画面に通知として表示されています。これらの広告を表示する頻度を設定してください。</translation>
@@ -561,12 +560,14 @@
 <translation id="2353222426385080466">プライベート広告が増えるとリワードが追加されます</translation>
 <translation id="1201128255476890443">広告<ph name="ADS_PER_HOUR"/>件 / 時</translation>
 <translation id="827315274423079662">やったー、準備完了です！</translation>
-<translation id="3895246934788932488">Brave Rewardsを使用することで、あなたは自分のプライバシーを保護し、ウェブを誰にとってもより良い場所にするお手伝いをしています。そして、それは素晴らしいことです！</translation>
+<translation id="3895246934788932488">Ping Rewardsを使用することで、あなたは自分のプライバシーを保護し、ウェブを誰にとってもより良い場所にするお手伝いをしています。そして、それは素晴らしいことです！</translation>
 <translation id="5705882733397021510">戻る</translation>
 <translation id="3985567919248057638">簡単な説明動画を見る</translation>
 <translation id="7889432931837317731">可能な場合は自動的に開きます</translation>
 <translation id="1029304566263314007">ダウンロード進捗通知を表示</translation>
 <translation id="2910433761530295035">ファイルの保存先を確認 (SDカードを検出した場合)</translation>
+<translation id="2977501775944575564">パラレルダウンロード</translation>
+<translation id="6224180438946945617">パラレルダウンロードを有効にしてダウンロード速度をアップ</translation>
 <translation id="8967385052772844086">完全なプライバシーレポートを表示します</translation>
 <translation id="6864343534748973390">最も人気のある</translation>
 <translation id="4608192160278975831">プライベートでトラッキングなし</translation>
@@ -578,8 +579,6 @@
 <translation id="2422627462367776805">韓国のWebポータルを検索</translation>
 <translation id="177282784098234156">プライベート、独立型、ユーザーファースト</translation>
 <translation id="1410130669636877548">一部の検索エンジンは、ウェブを検索する際に、他の検索エンジンよりもうまくユーザーのプライバシーを保護します。</translation>
-<translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
-<translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsの達人として歴史に名を残すための仕組みをマスターしてください！</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="7138272885617540195">Brave外のアプリでアプリのリンクを開くことを許可</translation>
 <translation id="4954512758656527938">デフォルトのイーサリアムウォレット</translation>
@@ -598,47 +597,47 @@
 <translation id="7909462264772842773">暗号通貨とNFTの管理がこの上なく快適に。Braveウォレットはイーサリアム、EVMチェーン、Solana、Filecoinなどをサポートしています。</translation>
 <translation id="165255193061631296">新しいウォレットが必要ですか？</translation>
 <translation id="3485737865439729577">Braveウォレットはすぐにお使いいただけます</translation>
-<translation id="2759836790106646094">ウォレットを今すぐバックアップしましょう！</translation>
-<translation id="1078873179929044999">次のステップでは、あなたの暗号資産アカウントを回復するために使用できる 12 語のリカバリフレーズが表示されます。安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを復旧する唯一の方法が、このリカバリフレーズになります。</translation>
+<translation id="2540568096903252632">パスワードを入力して続行</translation>
+<translation id="3356580495013324916">Braveウォレットのパスワードを入力すると、ウォレットのバックアップが開始されます。</translation>
 <translation id="2359808026110333948">続ける</translation>
 <translation id="5488357322146334497">Message</translation>
-<translation id="1904000155026201268">リカバリーフレーズを紛失した場合、自分の暗号資産ウォレットにアクセスできなくなることを理解しました。</translation>
 <translation id="5333225216561354793">以下の事項をご確認ください</translation>
+<translation id="6937275455070754004">ウォレットで使用するブロックチェーンを選択してください。</translation>
 <translation id="1645800479814134195">私は、このウォレットが自己管理のウォレットであり、関連する資金、資産、またはアカウントに対して私一人が責任を負い、私のウォレットを安全に保護し、バックアップするために適切な行動を取ることを理解しています。私は、Braveが私に代わって私のウォレットにアクセスしたり、取引を取り消すことはできないこと、およびパスワードの紛失、デバイスの盗難、または同様の状況の場合にアクセスを回復する唯一の方法は、私のリカバリフレーズであることを理解しています。</translation>
-<translation id="4565891212173086999"><ph name="CLICK_START"/>利用規約<ph name="CLICK_END"/>を読み、これに同意します。</translation>
-<translation id="3933122286596948824">リカバリーフレーズ</translation>
-<translation id="5077747669435508720">これらの単語を以下に示す正確な順序で書き留めるかコピーして、安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを回復する唯一の方法が、このリカバリフレーズになります。</translation>
-<translation id="2708402071160162126">警告: リカバリフレーズは絶対に他の人に教えないでください。このフレーズを知っている人はだれでも、あなたの資産を完全に取得することができます。</translation>
-<translation id="111912712268284159">フレーズを安全にバックアップしました。</translation>
-<translation id="6896758677409633944">コピー</translation>
-<translation id="1783600039044302171">暗号資産をパスワードで保護</translation>
+<translation id="4565891212173086999">私は、<ph name="CLICK_START"/>利用規約<ph name="CLICK_END"/>を読み、これに同意します。</translation>
+<translation id="3259102562570606417">リカバリーフレーズを保存</translation>
+<translation id="4339981001593889376">リカバリーフレーズは、パスワードを忘れたり、デバイスを紛失した場合にウォレットにアクセスするために重要です。</translation>
+<translation id="426648489149930289">他の人がアクセスできない安全な場所に保管し、共有は控えてください。</translation>
 <translation id="3726490322412361740">パスワードを入力してください</translation>
-<translation id="3038243139480464605">パスワードを確認</translation>
-<translation id="3043677904160378840">パスワードは8文字以上で入力してください</translation>
-<translation id="7396672979287122068">確認済みのパスワードが一致しませんでした</translation>
-<translation id="7084181009966710506">ウォレットを作成中です...</translation>
+<translation id="1566412704591731844">ウォレットを作成しています...</translation>
+<translation id="7779823116893018906">少々お待ちください...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> アカウント <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">アカウントを追加</translation>
 <translation id="3448492834076427715">アカウントを更新</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">#<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">リカバリーフレーズを確認</translation>
+<translation id="5303015959766064022">後でバックアップ</translation>
+<translation id="7345730059518887993">ご確認ください</translation>
+<translation id="7640406249038879146">リカバリーフレーズのポジション<ph name="WORD_POSITION"/>にある単語を入力してください。</translation>
+<translation id="2598171223363459366">この手順はスキップできますが、アカウントの安全を保つためにリカバリーフレーズを必ずバックアップしてください。</translation>
 <translation id="8100001366858145406">指紋によるロック解除を有効にしますか？</translation>
 <translation id="5493402808936397665">生体認証を有効にすると、パスワードを入力しなくてもウォレットのロックをすばやく解除できます。</translation>
 <translation id="8030647312184163932">指紋によるロック解除</translation>
 <translation id="4090490645603511157">生体認証を使用すると、パスワードを入力しなくてもウォレットのロックをすばやく解除できます。</translation>
 <translation id="1544192797660353713">ウォレット</translation>
-<translation id="6901810042765869341">リカバリーフレーズを入力してBraveウォレットの暗号資産アカウントを復元します。</translation>
-<translation id="9120654436199628567">暗号資産アカウントを復元</translation>
+<translation id="2321396552035646646">リカバリーフレーズ全体をどのフィールドにも貼り付けできます。</translation>
+<translation id="3961126209136843111">既存のウォレットをインポート</translation>
 <translation id="4811736040444856406">リカバリーフレーズを表示</translation>
-<translation id="283071225285270357">リカバリーフレーズを入力</translation>
-<translation id="3943857333388298514">貼り付け</translation>
-<translation id="3331452756822160641">新しいパスワード</translation>
-<translation id="4359319875297001084">従来の Brave 暗号資産ウォレットからインポートしますか？</translation>
-<translation id="2339124864228588937">リカバリーフレーズを確認</translation>
-<translation id="3747079125031086337">あなたのリカバリフレーズに含まれている単語を正しい順序で選択します。</translation>
-<translation id="6518133107902771759">確認</translation>
+<translation id="4359319875297001084">従来の Ping 暗号資産ウォレットからインポートしますか？</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="5844138175312846408">ウォレットを既にお持ちですか？</translation>
 <translation id="2502258949541727762">はじめに</translation>
+<translation id="4303748097351941030">対応しているネットワーク</translation>
+<translation id="4204268048253692928">設定からいつでもネットワークを追加できます。</translation>
+<translation id="2523174693142405417">ネットワークを検索</translation>
+<translation id="1164748583090434571">テストネットを表示</translation>
+<translation id="935220650946301698"><ph name="NUMBER"/>ネットワークで続行</translation>
+<translation id="4052668782430384783">単語 #<ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">パスワードを作成</translation>
 <translation id="2789310860394340571">このパスワードを使用してウォレットにアクセスします。</translation>
 <translation id="2136372518715274136">新しいパスワードを入力する</translation>
@@ -652,10 +651,12 @@
 <translation id="5981303441790732480">既存のウォレットをインポート</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">パスワード</translation>
+<translation id="7553242001898162573">パスワードを入力</translation>
 <translation id="5619264711680220002">生体認証によるロック解除</translation>
+<translation id="9195657745688986798">ウォレットのロックを解除</translation>
 <translation id="5168349973342709369">パスワードを入力してウォレットのロックを解除します</translation>
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
-<translation id="5760476995887363522">フレーズが一致しません。もう一度お試しください。</translation>
+<translation id="9085712756417277119">リカバリーフレーズが一致しません</translation>
 <translation id="2360588547830602174">アカウントの復元に失敗しました。もう一度お試しください。</translation>
 <translation id="1987317783729300807">アカウント</translation>
 <translation id="6284218950354553099">毎日の使用状況のpingをBraveに自動送信する</translation>
@@ -668,7 +669,7 @@
 <translation id="3784455785234192852">ロック</translation>
 <translation id="4412698727486357573">ヘルプセンター</translation>
 <translation id="8239147115686034860">Braveウォレット を自動的にロック</translation>
-<translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
+<translation id="414639769490080648">Ping Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="2326850911705720398">ウォレットのデータをリセット＆クリア</translation>
 <translation id="6567712397896147805">Braveウォレットをリセットしてよろしいですか？ウォレットがバックアップされていない場合、リセットするとすべてのアカウントデータ (関連する資金を含む) が失われます。確認のために「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
 <translation id="4862812525895306758">トランザクション &amp; ノンス情報をクリア</translation>
@@ -681,8 +682,8 @@
 <translation id="1721710839767183848">ページに広告はありません</translation>
 <translation id="4647035642622555398">中断されません</translation>
 <translation id="4122515759479497554">動画を検索</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
-<translation id="719977489961414786">VPN にアップグレードして、接続を保護し、あらゆる場所で侵襲的なトラッカーをブロックします。</translation>
+<translation id="4449475351935531438">Ping Firewall + VPN</translation>
+<translation id="719977489961414786">VPN にアップグレードして通信を保護し、攻撃的なトラッカーをいつでもどこでもブロックしましょう。</translation>
 <translation id="8814357473522731680">提供元</translation>
 <translation id="5892534145504632332">すべてのアプリとデバイス全体を保護</translation>
 <translation id="7195416926059527505">ご自宅や公共Wi-Fiでの安全確保に</translation>
@@ -690,28 +691,35 @@
 <translation id="3510283489391432976">地域/国の場所を選択してください</translation>
 <translation id="7695158478627528928">Braveはブラウザ上のアクティビティを記録しません</translation>
 <translation id="4575683170451975058">1つのサブスクリプションで5台のデバイスを保護</translation>
+<translation id="755045397420611731">高度なプライバシーとオンラインセキュリティ</translation>
+<translation id="4520128772974831415">IPの非表示・位置情報の変更</translation>
+<translation id="2044418816479192294">世界中に数百台のサーバーを配置</translation>
+<translation id="7410504850864021600">超高速の接続スピード</translation>
+<translation id="2422309687188612485">1つのプランで最大10台のデバイスを保護</translation>
 <translation id="4882693590083943563">すべてのプランに共通: <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">7日間無料でお試しいただけます！</translation>
 <translation id="1532536259167115948">月間サブスクリプション <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">年間サブスクリプション <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">毎月更新</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / 月</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> / 月</translation>
 <translation id="1163809943099641131">1 年</translation>
-<translation id="6277055349883621705">年間更新で 16% オフ</translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
-<translation id="2655185358771731232">7 日間無料でお試しいただけます。7 日後、プラン料金が請求されます。すべてのサブスクリプションは自動更新されますが、更新前にキャンセルできます。</translation>
+<translation id="727385358513272220">年額支払い (<ph name="DISCOUNT_TEXT_START"/>、<ph name="PERCENTAGE_AMOUNT"/>%%お得<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> / 年</translation>
+<translation id="2786538705804257030">サブスクリプションはGoogleアカウントを通じて課金されます。無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\n\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\n\nサブスクリプションは「設定」で管理できます。\n\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。</translation>
+<translation id="5035172357624830412">brave.comで購入済みですか？</translation>
+<translation id="713136183174551885">認証情報を更新</translation>
 <translation id="6053992191006521518">無料で試す</translation>
 <translation id="5903391101107992067">7日間無料でお試し</translation>
 <translation id="721747358270435486">VPN をインストール</translation>
 <translation id="836074276610740314">VPN プロファイルをインストール</translation>
-<translation id="8021842065465097929">Brave は VPN プロファイルをインストールします。</translation>
-<translation id="229286271464650057">このプロファイルにより、VPN は、すべてのアプリで、デバイス全体のトラフィックを常に自動的に接続して保護できます。この VPN 接続は暗号化され、Guardian のインテリジェントファイアウォールを介してルーティングされ、広告とトラッカーをブロックします。</translation>
+<translation id="8021842065465097929">Ping は VPN プロファイルをインストールしています。</translation>
+<translation id="229286271464650057">このプロファイルにより、VPNは自動的にデバイスのすべてのアプリで通信をセキュアな接続で行います。VPNによる通信は暗号化され、Guardianのインテリジェント・ファイアウォールを介してルーティングされ、広告やトラッカーをブロックします。</translation>
 <translation id="9073255657908892407">テクニカルサポートに連絡する</translation>
 <translation id="1139934321138152517">VPN が有効になりました</translation>
 <translation id="7678718921266217759">コンテキスト...</translation>
-<translation id="7267573208549764106">以前の VPN 接続が切断されました。VPN に再接続するには、接続要求を受け入れる必要があります。
+<translation id="7267573208549764106">以前のVPN接続が切断されました。VPNに再接続するには、接続のリクエストを許可する必要があります。
 
-このリクエストを受け入れない場合、VPN は再接続せず、インターネット接続は保護されません。</translation>
+リクエストを許可しない場合VPN は再接続されず、通信の保護が無効になります。</translation>
 <translation id="2429299231491852747">接続要求を受け入れる</translation>
 <translation id="3428909627460825679">VPN プロファイルの作成に失敗しました。もう一度お試しください。</translation>
 <translation id="1264320790738638119">サブスクリプションの期限が終了しました。いつでも再登録できます。</translation>
@@ -734,14 +742,26 @@
 <translation id="755448900483975096">セルラーキャリア</translation>
 <translation id="1279441577056010362">メールに進む</translation>
 <translation id="7125582363614011660">Guardian チームの支援を得てサポートが提供されます。\n\n私たちと共有しても構わない情報を選択してください。\n\n最初に私たちと共有する情報が多いほど、サポートスタッフが問題の解決を支援しやすくなります。</translation>
-<translation id="7999094850625689785">システム設定のタイムゾーンに基づいて、最も近いサーバーリージョンが自動的に選択されます。高速のインターネット速度を確保するためにこの設定が推奨されます。</translation>
+<translation id="8813171284214934811">タイムゾーンに基づき、最も近いVPNサーバー地域を自動選択します。このオプションは、インターネット速度を最大化するために推奨されます。</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> 都市 - }
+          other {<ph name="CITY_COUNT_MANY"/> 都市 - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {サーバー<ph name="SERVER_COUNT_ONE"/> 台}
+          other {サーバー<ph name="SERVER_COUNT_MANY"/> 台}
+        }</translation>
+<translation id="3199127022143353223">サーバー</translation>
+<translation id="5431902940483264007">最適</translation>
+<translation id="6527596624419285047">利用できる最適なサーバーを使用</translation>
+<translation id="6789157560111825412">利用可能なサーバー</translation>
 <translation id="4397083831618200686">問題を選択</translation>
 <translation id="6687228121145903051">VPN に接続できません (その他のエラー)</translation>
 <translation id="9184988385244077767">接続時にインターネットがない</translation>
 <translation id="21570240866965662">低速回線</translation>
 <translation id="1219475260382643267">ウェブサイトが機能しない</translation>
 <translation id="7138678301420049075">その他</translation>
-<translation id="4827315939627587219">VPN 構成をリセット</translation>
+<translation id="4827315939627587219">VPN構成をリセット</translation>
 <translation id="1705662265912724430">VPN構成をリセットしますか？</translation>
 <translation id="604124094241169006">自動設定</translation>
 <translation id="7475580600756356589">サーバーに接続しています。少々お待ちください...</translation>
@@ -789,20 +809,19 @@
 <translation id="1165039591588034296">エラー</translation>
 <translation id="2561824823738097741">今お使いのブラウザは最速ですか？</translation>
 <translation id="2065971949051836200">スマートフォンから、インターネットを3倍のスピードでお楽しみいただけます。すべてのWebブラウジングにBraveをお使いください。</translation>
-<translation id="2888278614497184977">Brave = Webブラウジングが3倍高速に</translation>
+<translation id="2888278614497184977">Ping = Webブラウジングが3倍高速に</translation>
 <translation id="6887232551109532144">バッテリーの持ちを良くして充電の手間を減らせます。</translation>
 <translation id="5388885352353494741">バッテリーの節約にも効果的。すべてのWebブラウジングにBraveをお使いください。</translation>
-<translation id="3164151360474408351">Brave = 充電の回数を減らせます。</translation>
+<translation id="3164151360474408351">Ping = 充電の回数を減らせます。</translation>
 <translation id="3211051910418903298">追加のデータ購入の回数を減らせます。</translation>
 <translation id="1092355580602106002">広告表示が少ないと、読み込む各ページのデータ量も少なくなります。すべてのWebブラウジングにBraveをお使いください。</translation>
-<translation id="623962032102267945">Brave = あらゆるwebページのデータ通信量を節約</translation>
+<translation id="623962032102267945">Ping = あらゆるwebページのデータ通信量を節約</translation>
 <translation id="4355217341028673744">• より良いプライバシー</translation>
 <translation id="3679020972083025535">• 煩わしい広告は表示されません</translation>
 <translation id="8047527352810290817">Gasを編集</translation>
 <translation id="7358989216567322955">最大優先料金</translation>
 <translation id="9091334651803050473">保証されているわけではありませんが、あなたがより高い手数料を支払う場合、マイナーはあなたのトランザクションを優先する可能性があります。</translation>
 <translation id="2941112035454246133">低</translation>
-<translation id="5431902940483264007">最適</translation>
 <translation id="7304030187361489308">高</translation>
 <translation id="4853037749278079787">最大料金: ~$ <ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">現在の基本料金: <ph name="ASSET_VALUE"/> Gwei</translation>
@@ -820,8 +839,6 @@
 <translation id="3074127054582480056">アテンション</translation>
 <translation id="2280319752798785157">毎月の支援</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">アドレス入力時にオートコンプリートを表示</translation>
-<translation id="8982438328166986164">ブックマークおよび閲覧履歴に基づきおすすめのウェブサイトを表示します。</translation>
 <translation id="1241283133946520352">ネットワーク</translation>
 <translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
 <translation id="2512821599885971349">ネットワークを追加</translation>
@@ -871,8 +888,9 @@
 <translation id="4255623233927788178">ブロックエクスプローラーで表示</translation>
 <translation id="8274201358637112807">このページは、Braveウォレットとの通信をリクエストしています</translation>
 <translation id="3355936511340229503">接続エラー</translation>
+<translation id="1531836666020185856">注目</translation>
 <translation id="4891604214809245310">ネットワークを<ph name="NETWORK_NAME"/>に設定できません</translation>
-<translation id="685345388423515592">この端末で他のVPNが「常にオン」に設定されているようです。Brave Firewall + VPNを有効にするには、まず他のVPNのこの「常にオン」の設定を無効にしてから再度接続してください。それでも問題が解決しない場合は、他のVPNのアンインストールをお試しください。</translation>
+<translation id="685345388423515592">この端末で他のVPNが「常に有効」に設定されているようです。Ping Firewall + VPNを有効にするには、まず他のVPNのこの「常に有効」の設定を無効にしてから再度接続してください。それでも問題が解決しない場合は、他のVPNのアンインストールをお試しください。</translation>
 <translation id="85136472535634474">VPN設定を開く</translation>
 <translation id="8352805003811526272">構成をリセットしています...</translation>
 <translation id="6809312301323611382">同じサーバーを既に選択済みです。</translation>
@@ -892,7 +910,7 @@
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">通貨記号</translation>
 <translation id="7982789257301363584">ネットワーク</translation>
-<translation id="6936860995365507185">このネットワークがBrave Walletで使用されます。<ph name="CLICK_START"/> 詳細<ph name="CLICK_END"/></translation>
+<translation id="6936860995365507185">このネットワークがPing Walletで使用されます。<ph name="CLICK_START"/> 詳細<ph name="CLICK_END"/></translation>
 <translation id="4717431746210146708">このサイトにネットワークの追加を許可しますか？</translation>
 <translation id="4857321293515555666">このDAppは、このメッセージを読みリクエストを完了しようとしています。</translation>
 <translation id="714506544401754321">メッセージを復号化</translation>
@@ -901,16 +919,16 @@
 <translation id="2322227405137827074">このトークンをインポートしますか?</translation>
 <translation id="1324417023773393937">Braveブラウザ</translation>
 <translation id="6044189892950611565">Braveブラウザへの通知チャンネル</translation>
-<translation id="1173919438868967364">アカウントを選択</translation>
+<translation id="4556601961751528347">接続済みアカウントを変更</translation>
 <translation id="8922793255489232731">以下に一致するタイムゾーンを取得できません : <ph name="VALUE"/></translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>に接続済み</translation>
 <translation id="1968852757206592413">トライアル</translation>
-<translation id="6458565248779152483">Brave VPNを無効化</translation>
+<translation id="6458565248779152483">Ping VPNを無効化</translation>
 <translation id="9080536793704001825">15分停止する</translation>
 <translation id="803706420145725977">1時間停止する</translation>
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="7733890291091968191">Web3の通知を表示</translation>
-<translation id="1371627247679035769">\n\n\n\n#### Braveはお客様を追跡したり、お客様がどのようにアプリを使用したかを把握していないため、現在のVPN設定についてお答えすることはできません。できるだけ早く解決できるよう、最善を尽くします。 ####\n\n</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Pingはユーザーを追跡したり、ユーザーがどのようにアプリを使用したかを把握していないため、現在のVPN設定についてお答えすることはできません。お困りの点ついて詳細をお知らせください。できるだけ早く解決できるよう、最善を尽くします。 ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPNホスト名\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nサブスクリプションタイプ\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nPlaystoreトークン\n <ph name="VALUE"/></translation>
@@ -933,12 +951,19 @@
 <translation id="7002577172732106572">スプリットトンネリング</translation>
 <translation id="8181161042860463420">関連するトークン・アカウントはまだ存在しません。作成と資金調達のために少量のSOLが費やされます。 <ph name="CLICK_START"/>詳細<ph name="CLICK_END"/>をご覧ください。</translation>
 <translation id="168154537623654021">VPNプロファイルを更新する ...</translation>
-<translation id="7457027586454688423">Brave Walletのパスワードを入力</translation>
 <translation id="4784306439879850873">Braveは、署名した場合に何が起こるかを確認できないことに注意してください。署名は、あなたのアカウントまたはあなたに代わって、リクエストを行うサイトにアカウントと暗号資産の完全な制御を与えることを含む  (ただしこれに限定されない) ほぼすべての操作を許可することができます。このアクションを実行することを望み、要求元のサイトを信頼する場合にのみ署名してください。</translation>
 <translation id="3474375934783434676">ご自身の責任で署名してください</translation>
 <translation id="7134370164002095282"><ph name="SIZE"/>の<ph name="CURRENT"/></translation>
 <translation id="756701799684433105">トランザクションを承認</translation>
 <translation id="6450792191436242818">システムプログラム</translation>
+<translation id="5318067544026930166">生体認証でBraveウォレットをアンロック</translation>
+<translation id="2629767022373384291">Braveウォレットのロック解除に生体認証を使用しますか？</translation>
+<translation id="4782919977106118997">指紋によるロック解除を使用</translation>
+<translation id="2054995875643283428">今はスキップ</translation>
+<translation id="2610561535971892504">クリックしてコピー</translation>
+<translation id="2522605225061484799">ポートフォリオを見る</translation>
+<translation id="1148624853678088576">準備完了です！</translation>
+<translation id="4131445988101719379">Braveウォレットの使用準備ができました</translation>
 <translation id="6252742184395380448">構成プログラム</translation>
 <translation id="5358970666412490132">ステーキングプログラム</translation>
 <translation id="346636227344244984">投票プログラム</translation>
@@ -981,7 +1006,7 @@
 <translation id="77243237706803459">ミントを初期化 (2)</translation>
 <translation id="583281660410589416">不明</translation>
 <translation id="5666264859501108700">Braveリワードの地域を<ph name="COUNTRY_NAME"/>に設定しました。</translation>
-<translation id="909076461795862330">Brave Rewardsの設定時にエラーが発生しました。もう一度お試しください。</translation>
+<translation id="909076461795862330">Ping Rewardsの設定時にエラーが発生しました。もう一度お試しください。</translation>
 <translation id="7352651011704765696">エラーが発生しました</translation>
 <translation id="7144878232160441200">再試行</translation>
 <translation id="6040143037577758943">閉じる</translation>
@@ -1011,21 +1036,21 @@
 <translation id="7902225556763260253">有効期限</translation>
 <translation id="1908159733454294871">セキュリティリスクを検知しました</translation>
 <translation id="5658257029899993935">Braveアカウントに購入情報をリンク</translation>
-<translation id="1187061015547219282">Play Storeで購入した商品をBraveアカウントに紐付け、他のデバイスでBrave VPNを利用することができます。</translation>
+<translation id="1187061015547219282">Play Storeで購入した商品をBraveアカウントに紐付け、他のデバイスでPing VPNを利用することができます。</translation>
 <translation id="6662142137695589205">VPNサブスクリプションにリンク</translation>
-<translation id="2674077112509133024">Brave Firewall + VPNの保護を拡張</translation>
-<translation id="6365389672683343144">Brave VPNサブスクリプションは、Android、iOS、デスクトップで最大5台のデバイスを保護できます。Google PlayのサブスクリプションをBrave アカウントにリンクするだけで設定可能です。</translation>
+<translation id="2674077112509133024">Ping Firewall + VPNの保護を拡張</translation>
+<translation id="6365389672683343144">Ping VPNサブスクリプションは、Android、iOS、デスクトップで最大5台のデバイスを保護できます。Google PlayのサブスクリプションをPing アカウントにリンクするだけで設定可能です。</translation>
 <translation id="6610899852831463073">セーフ ブラウジングを有効化できません</translation>
 <translation id="7954263306665462056">このデバイスではセーフ ブラウジングが無効になっています。有効化するには、Google Playのサービスをインストール済みで、それらが最新版であることをご確認いただく必要があります。</translation>
 <translation id="6605147707233193230">有効にしてコンテンツクリエイターを支援</translation>
-<translation id="1609556006143307897">あなたはコンテンツクリエイターを支援中です</translation>
-<translation id="6067959437127691361">Brave Rewardsを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
+<translation id="5899814466108868020">あなたはBraveとBATコミュニティを支援中です</translation>
+<translation id="6067959437127691361">Ping Rewardsを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
 <translation id="3264975266761862670">報酬を受け取る準備はできましたか？</translation>
 <translation id="265337947574975838">いずれかのパートナーに接続するか、アカウントを作成してください。</translation>
 <translation id="654447476965480878">BAT獲得の詳細について</translation>
 <translation id="6278643716658443228">Rewards設定</translation>
 <translation id="6516984207843289176">アカウントの接続</translation>
-<translation id="4272136334824111854">今月は、Brave Rewardsで支援されている<ph name="CREATOR_COUNT"/>人のクリエイターを訪問しました</translation>
+<translation id="4272136334824111854">今月は、Ping Rewardsで支援されている<ph name="CREATOR_COUNT"/>人のクリエイターを訪問しました</translation>
 <translation id="6845311459433734326">BATの獲得やリワードの引き出しを行うために、カストディアルアカウントを接続してください</translation>
 <translation id="928980476243133540">後で行う</translation>
 <translation id="579702532610384533">再接続</translation>
@@ -1036,9 +1061,8 @@
 <translation id="5382684862562314222">お住まいの地域では、UpholdでBATがサポートされていません。</translation>
 <translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
 <translation id="1677961202754619328">Upholdによると、現在お客様のUpholdアカウントに何らかの制限があるようです。Upholdアカウントにログインし、お知らせまたは満たすべきアカウント要件  (Upholdに送信すべき追加の情報など) がないかをご確認ください。</translation>
-<translation id="5425006356459378415">Brave Rewardsをご利用いただけません</translation>
-<translation id="833643743158564518">現在お住まいの地域では、Brave Rewardsの新規登録が無効化されています。後ほどもう一度お試しください。<ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">すべてのネットワーク</translation>
+<translation id="5425006356459378415">Ping Rewardsをご利用いただけません</translation>
+<translation id="833643743158564518">現在お住まいの地域では、Ping Rewardsの新規登録が無効化されています。後ほどもう一度お試しください。<ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">プライマリネットワーク</translation>
 <translation id="2781668117338732220">セカンダリネットワーク</translation>
 <translation id="282560918037172384">テストネットワーク</translation>
@@ -1058,7 +1082,6 @@
 <translation id="4932733599132424254">日付</translation>
 <translation id="346505172740911461">市場価格</translation>
 <translation id="5494920125229734069">すべて選択する</translation>
-<translation id="5972844218283131174">すべて選択解除</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Braveウォレットにサインイン</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/>にサインインしています。Braveウォレットはあなたのウォレットのアドレスを<ph name="ORIGIN"/>に共有します。</translation>
@@ -1070,7 +1093,7 @@
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
 <translation id="1250335737108905610">Leoデータのリセットとクリア</translation>
 <translation id="6165101586663336913">Leoアシスタントのリセットは、将来的にLeoを使用するためのオプトインが必要になり、チャット履歴も消去されます。チャット履歴の消去は以前のLeoとの会話をすべて削除します。この操作は取り消せません。</translation>
-<translation id="3692772534525889713">Playストアでの購入をBraveアカウントにリンクすると、他のデバイスでBrave Leoを使用できます。</translation>
+<translation id="3692772534525889713">Playストアでの購入をBraveアカウントにリンクすると、他のデバイスでPing Leoを使用できます。</translation>
 <translation id="73236265316873967">Leoプレミアム</translation>
 <translation id="1166682575529520472">毎月</translation>
 <translation id="451189393813405346">Leoに聞く</translation>
@@ -1080,7 +1103,7 @@
 <translation id="6344103698928069918">プレイリストで最後に一時停止したところから再生を開始します</translation>
 <translation id="8141583471142904652">連続再生</translation>
 <translation id="851432578283946230">プレイリスト内の次のアイテムを自動再生します</translation>
-<translation id="295620834661738195">Brave Playlist</translation>
+<translation id="295620834661738195">Ping Playlist</translation>
 <translation id="4850886885716139402">表示</translation>
 <translation id="7392941176393379100">「<ph name="PLAYLIST_NAME"/>」に追加</translation>
 <translation id="349846214503465941">プレイリストを有効にする</translation>
@@ -1119,6 +1142,7 @@
 <translation id="1173894706177603556">名前を変更</translation>
 <translation id="3596306474342941843">プレイリストを削除する</translation>
 <translation id="7765158879357617694">移動</translation>
+<translation id="6896758677409633944">コピー</translation>
 <translation id="3803384303807438047">アイテムのオフラインデータを削除する</translation>
 <translation id="4195643157523330669">新しいタブで開く</translation>
 <translation id="4243710787042215766">プライベートタブで開きます</translation>
@@ -1178,4 +1202,20 @@
 <translation id="3251885322612056119">利用規約を更新しました</translation>
 <translation id="4049035689681585146">Braveリワードの利用規約を更新しました。この更新は、規約をより明確に定義し、新機能を確実にカバーするためのものです。Braveリワードの利用を継続することにより、お客様は更新された利用規約に同意したものとみなされます。同意されない場合は、Braveリワードを<ph name="RESET_START"/>リセット<ph name="RESET_END"/>し、機能を無効にすることができます。</translation>
 <translation id="2165953574528546737"><ph name="TOS_START"/>Braveリワードの利用規約<ph name="TOS_END"/>を見る</translation>
+<translation id="1381108437654541567">複数ウィンドウを有効にする</translation>
+<translation id="6167344249617630304">一度に最大5つのウィンドウを開き、1つのウィンドウから別のウィンドウへタブを移動できます</translation>
+<translation id="1063948063403254568">複数のウィンドウを検知しました</translation>
+<translation id="4661882208707630158">複数ウィンドウ機能を無効にする前に、タブを他のBraveウィンドウにマージするか、他のBraveウィンドウを閉じてください。</translation>
+<translation id="6891382640886173702">ウィンドウをマージ</translation>
+<translation id="2912247081180973411">ウィンドウを閉じる</translation>
+<translation id="4010699428656610296">他のタブを別のBraveウィンドウにマージしてください。</translation>
+<translation id="208634871997892083">VPNを常時オン</translation>
+<translation id="1599073346542156922">起動方法:</translation>
+<translation id="7001163334415463127">1. アプリのドロワーまたは下のボタンをタップして、デバイスの設定を開きます。</translation>
+<translation id="887443138775437899">2. Ping VPNの右側にある設定アイコンをタップします。</translation>
+<translation id="3776051499611941773">3. <ph name="ALWAYS_ON_TUTORIAL_START"/>VPNを常時オン<ph name="ALWAYS_ON_TUTORIAL_END"/>を選択して有効にします。</translation>
+<translation id="4776146737004271126">Android の設定を開く</translation>
+<translation id="2728518864712716830">アップデートをダウンロードしました。</translation>
+<translation id="8403338849301491865">フィルターリストを更新しました</translation>
+<translation id="4650851936784160359">フィルターリストを更新できませんでした。もう一度お試しください</translation>
 </translationbundle>

@@ -278,7 +278,7 @@ void AdBlockEngine::UpdateAdBlockClient(
 
 void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::for_each(tags_.begin(), tags_.end(), [&](const std::string tag) {
+  std::for_each(tags_.begin(), tags_.end(), [&](const std::string& tag) {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     ad_block_client_->enable_tag(tag);
   });
@@ -377,6 +377,10 @@ void AdBlockEngine::AddObserverForTest(AdBlockEngine::TestObserver* observer) {
 
 void AdBlockEngine::RemoveObserverForTest() {
   test_observer_ = nullptr;
+}
+
+base::WeakPtr<AdBlockEngine> AdBlockEngine::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
 }
 
 }  // namespace brave_shields

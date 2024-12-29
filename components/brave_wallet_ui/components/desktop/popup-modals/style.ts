@@ -27,7 +27,6 @@ export const StyledWrapper = styled.div`
 
 export const Modal = styled.div<{
   width?: string
-  borderRadius?: number
   height?: string
 }>`
   display: flex;
@@ -39,7 +38,7 @@ export const Modal = styled.div<{
   max-height: 90vh;
   height: ${(p) => p.height ?? 'unset'};
   background-color: ${leo.color.container.background};
-  border-radius: ${(p) => (p.borderRadius ? p.borderRadius : 8)}px;
+  border-radius: ${leo.radius.xl};
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   overflow: hidden;
@@ -47,23 +46,24 @@ export const Modal = styled.div<{
     width: unset;
     min-width: unset;
     max-width: unset;
-    max-height: unset;
-    height: unset;
     position: absolute;
     border-radius: 16px 16px 0px 0px;
-    top: 32px;
     bottom: 0px;
     left: 0px;
     right: 0px;
   }
 `
 
+export const ModalContent = styled(Column)`
+  overflow-y: auto;
+`
+
 export const Header = styled.div<{
-  headerPaddingVertical?: number
-  headerPaddingHorizontal?: number
+  headerPaddingVertical?: string
+  headerPaddingHorizontal?: string
 }>`
-  --vertical-padding: ${(p) => p.headerPaddingVertical ?? 20}px;
-  --horizontal-padding: ${(p) => p.headerPaddingHorizontal ?? 20}px;
+  --vertical-padding: ${(p) => p.headerPaddingVertical ?? '20px'};
+  --horizontal-padding: ${(p) => p.headerPaddingHorizontal ?? '20px'};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -73,13 +73,11 @@ export const Header = styled.div<{
 `
 
 export const Title = styled.span`
-  font-family: Poppins;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 26px;
-  color: ${(p) => p.theme.color.text01};
-  margin-right: 16px;
+  color: ${leo.color.text.primary};
+  font: ${leo.font.heading.h2};
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    font: ${leo.font.heading.h4};
+  }
 `
 
 export const HeaderButton = styled(WalletButton)`

@@ -5,7 +5,7 @@
 "AboutBraveShields" = "Mengenai Pelindung Ping";
 
 /* The body of the screen explaining Ping Shields */
-"AboutBraveShieldsBody" = "Laman sering termasuk kuki dan skrip yang cuba mengenal pasti anda dan peranti anda. Laman ingin mengetahui anda dan mengikuti anda sepanjang web — menjejaki perkara yang anda lakukan pada setiap laman.\n\nBrave menyekat semua hal ini supaya anda boleh melayari laman tanpa diikuti.";
+"AboutBraveShieldsBody" = "Laman sering termasuk kuki dan skrip yang cuba mengenal pasti anda dan peranti anda. Laman ingin mengetahui anda dan mengikuti anda sepanjang web — menjejaki perkara yang anda lakukan pada setiap laman.\n\nPing menyekat semua hal ini supaya anda boleh melayari laman tanpa diikuti.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Ini membolehkan anda menyimpan imej ke Gulungan Kamera anda.";
@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Ping ingin mengakses Foto anda";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Tambah Penanda Halaman";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Tambah Penanda Halaman";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Tambah Senarai Penapis Tersuai";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Tambah senarai tambahan yang dicipta dan disenggara oleh komuniti yang anda percayai.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Langgan senarai dari entiti yang anda percayai sahaja.** Pelayar anda secara berkala akan menyemak kemaskinian senarai daripada URL yang anda masukkan.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Tambahkan pada Kegemaran";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Pemantau Penyekatan";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Sekat Notis 'Tukar kepada Aplikasi'";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Sekat Halaman Timbul";
 
@@ -173,7 +158,7 @@
 "BraveRewardsTitle" = "Ping Rewards";
 
 /* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Carian Ping tidak menjejaki anda, pertanyaan anda atau klikan anda.";
+"braveSearchPromotion.bannerDescription" = "Carian Ping tidak mengumpulkan profil anda.";
 
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Mungkin kemudian";
@@ -214,13 +199,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Jika laman ini kelihatan rosak, cubalah Pelindung di bawah";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Menahan Pelindung";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Bawah";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Atas";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -287,7 +272,7 @@
 "callout.p3aCalloutTitle" = "Bantu usaha menambah baik Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Kongsi Cerapan Produk Peribadi dan Awanama Menyeluruh";
+"callout.p3aCalloutToggleTitle" = "Kongsi Cerapan Produk Peribadi dan Tanpa Nama.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Dapatkan ciri privasi Ping pada komputer atau tablet anda, dan segerakkan penanda halaman & sambungan antara peranti.";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Tutup";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Adakah anda pasti mahu menutup semua tab lain yang terbuka?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Tutup Semua Tab Lain";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Betulkah anda mahu menutup semua tab yang terbuka?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Sahkan";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Penapisan Kandungan";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Dayakan penapis tersuai yang menyekat penjejak khusus rantau dan Gangguan.";
 
 /* Cookie settings option title */
 "CookieControl" = "Kawalan Kuki";
@@ -514,6 +499,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Salin Pautan";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Salin maklumat Tab kepada klipbod.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Salin kepada Papan Klip";
 
@@ -525,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Enjin carian yang digunakan sekarang";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Senarai Penapis Tersuai";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Senarai Penapis Tersuai";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL Senarai Penapis Tersuai";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Tambah";
@@ -617,19 +596,16 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields menyekat penjejak & iklan, menjimatkan data, dan menjimatkan masa anda pada setiap laman yang anda lawati     ";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Buka Tetapan, ketik Aplikasi Penyemak Imbas Lalai, dan pilih Brave.  ";
+"defaultBrowserCallout.introTertiaryText" = "Buka Tetapan, ketik Aplikasi Penyemak Imbas Lalai, dan pilih Ping.  ";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Tetapkan Ping sebagai penyemak imbas lalai anda";
 
 /* Notification title to promote setting Ping app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Dapatkan perlindungan Brave, pada setiap pautan";
+"defaultBrowserCallout.notificationTitle" = "Dapatkan perlindungan Ping, pada setiap pautan";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Tutup timbul penyemak imbas lalai";
-
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Senarai Penapis Lalai";
 
 /* Name for default Ping theme. */
 "defaultThemeName" = "Ping gagal";
@@ -663,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Peranti %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Singkirkan Perubahan";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Adakah anda pasti mahu menyingkirkan perubahan ini? Apa-apa pengubahsuaian akan hilang.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Singkirkan Perubahan?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Sijil Keselamatan";
@@ -798,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Ciri";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "URL yang dimasukkan tidak sah";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Hanya URL selamat (https) dibenarkan untuk senarai penapis tersuai";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Tambah";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Senarai komuniti terkenal tambahan. Ambil perhatian bahawa tindakan mendayakan terlalu banyak penapis akan mengurangkan kelajuan penyemakan imbas.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Muat turun gagal";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Muat turun belum selesai";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Edit";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Masukkan URL senarai penapis";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Kemaskinian terakhir %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Masukkan URL senarai penapis di sini";
 
 /* Share action title */
 "FindInPage" = "Cari dalam Halaman";
@@ -1105,7 +1060,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Tuntut Token";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "Anda mendapat %@ dengan menyemak lalu dengan Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1247,7 +1202,7 @@
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ dan %2$lld iklan lain & penjejak disekat";
 
 /* The footnote indicating what Ping shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Lihat semua perkara kurang baik yang disekat oleh Brave, pada setiap halaman, dengan Shields.";
+"onboarding.blockedAdsOnboardingFootnoteText" = "Lihat semua perkara kurang baik yang disekat oleh Ping, pada setiap halaman, dengan Shields.";
 
 /* The text describing user where they should press in order to open Shield panel */
 "onboarding.blockedAdsOnboardingInstructionsText" = "Ketik untuk melihat Ping Shields";
@@ -1274,7 +1229,7 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Dengan menyekat penjejak & iklan, laman web menggunakan kurang data dan memuat dengan lebih pantas.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Lihat perbezaan Brave:\nTiada iklan. Tiada penjejak. Muatan halaman yang lebih cepat.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Lihat perbezaan Ping:\nTiada iklan. Tiada penjejak. Muatan halaman yang lebih cepat.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Taip nama laman web atau URL";
@@ -1453,10 +1408,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Teruskan";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
+/* A subtitle shown on the setting that toggles analytics on Ping. */
 "p3a.settingSubtitle" = "Respons peribadi ini membantu Ping menganggar keseluruhan penggunaan ciri tertentu dan menjadikan ciri ini lebih baik untuk anda.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Benarkan Analitis Produk Pengekalan Privasi (P3A)";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1422,15 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Sambungan anda ke laman ini tidak selamat.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Sambungan laman tidak disahkan.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Sambungan anda ke laman ini tidak dapat disahkan sepenuhnya. Anda boleh teruskan atau cuba memuatkan semula halaman untuk mengukuhkan sambungan selamat.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Log masuk ke laman web";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Lihat Sijil";
@@ -1775,7 +1739,7 @@
 "playList.undoRemoveButtonTitle" = "Buat Asal";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Menambah butang senarai main (nampak seperti 4 baris dengan simbol +) di sebelah bar alamat di penyemak imbas Brave. Butang ini memberi anda akses pantas untuk membuka Senarai Main, atau menambah atau mengalih keluar media.";
+"playlist.urlBarButtonOptionFooter" = "Menambah butang senarai main (nampak seperti 4 baris dengan simbol +) di sebelah bar alamat di penyemak imbas Ping. Butang ini memberi anda akses pantas untuk membuka Senarai Main, atau menambah atau mengalih keluar media.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Dayakan butang akses pantas";
@@ -1891,7 +1855,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Segerakkan Sekarang";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tutup Menu Shields";
 
 /* Settings privacy section title */
@@ -1975,10 +1939,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Hidupkan pemberitahuan";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "Ringkasan tentang cara Ping melindungi anda dalam talian pada minggu ini.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Laporan Privasi Mingguan";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1954,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Data Hab Privasi disimpan secara setempat dan tidak akan dihantar ke mana-mana.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Hab Privasi";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2066,7 +2030,7 @@
 "PrivateBrowsingOnlyWarning" = "Mod Penyemakan Imbas Peribadi Sahaja akan menutup semua tab semasa anda dan mengelog anda keluar daripada semua tapak.";
 
 /* Private tab details */
-"PrivateTabBody" = "Tab Peribadi tidak disimpan di dalam Brave, tetapi ia tidak menjadikan anda tanpa nama dalam talian. Tapak yang anda lawati dalam tab peribadi tidak akan muncul dalam sejarah anda dan kukinya sentiasa hilang apabila anda menutupnya — tidak akan ada sebarang jejak yang tinggal di dalam Brave. Walau bagaimanapun, muat turun akan disimpan.\nPembawa mudah alih anda (atau pemilik rangkaian Wi-Fi atau VPN yang anda disambungkan) boleh melihat tapak mana yang anda lawati dan tapak tersebut akan mengetahui alamat IP awam anda, walaupun di dalam Tab Peribadi.";
+"PrivateTabBody" = "Tab Peribadi tidak disimpan di dalam Ping, tetapi ia tidak menjadikan anda tanpa nama dalam talian. Tapak yang anda lawati dalam tab peribadi tidak akan muncul dalam sejarah anda dan kukinya sentiasa hilang apabila anda menutupnya — tidak akan ada sebarang jejak yang tinggal di dalam Ping. Walau bagaimanapun, muat turun akan disimpan.\nPembawa mudah alih anda (atau pemilik rangkaian Wi-Fi atau VPN yang anda disambungkan) boleh melihat tapak mana yang anda lawati dan tapak tersebut akan mengetahui alamat IP awam anda, walaupun di dalam Tab Peribadi.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Menggunakan Tab Peribadi hanya mengubah tindakan Ping pada peranti anda, ia tidak mengubah tingkah laku orang lain.\n\nTapak sentiasa mengetahui alamat IP anda apabila anda melawatnya. Dari sini, ia sering dapat meneka secara kasar di mana anda berada — biasanya bandar anda. Kadangkala tekaan lokasi boleh jauh lebih spesifik. Tapak juga mengetahui semua yang anda sampaikan secara khusus, seperti istilah carian. Sekiranya anda log masuk ke sesuatu tapak, ia akan mengetahui bahawa anda pemilik akaun tersebut. Anda akan masih akan dilog keluar apabila anda menutup Tab Peribadi kerana Ping akan membuang kuki yang membuatkan anda kekal dilog masuk.\n\nSesiapa yang menyambungkan anda ke Internet (ISP anda) boleh melihat semua aktiviti rangkaian anda. Selalunya, ini adalah pembawa mudah alih anda. Sekiranya anda disambungkan ke rangkaian Wi-Fi, ini adalah pemilik rangkaian tersebut, dan jika anda menggunakan VPN, maka ia siapa saja yang menjalankan VPN tersebut. ISP anda dapat melihat tapak mana yang anda lawati semasa anda mengunjunginya. Sekiranya tapak tersebut menggunakan HTTPS, ia tidak boleh membuat lebih daripada sekadar tekaan bijak mengenai apa yang anda lakukan di tapak tersebut. Tetapi jika tapak hanya menggunakan HTTP, ISP anda dapat melihat semuanya: istilah carian anda, halaman mana yang anda baca, dan pautan mana yang anda ikuti.\n\nSekiranya majikan menguruskan peranti anda, mereka mungkin juga memantau apa yang anda lakukan dengannya. Menggunakan Tab Peribadi mungkin tidak akan menghalang mereka untuk mengetahui tapak mana yang telah anda lawati. Orang lain yang mempunyai akses ke peranti anda juga boleh memasang perisian yang memantau aktiviti anda, dan Tab Peribadi tidak akan melindungi anda daripada ini juga.";
@@ -2083,7 +2047,7 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Enjin Carian Pantas";
 
-/* Open the App Store to rate Brave. */
+/* Open the App Store to rate Ping. */
 "RateBrave" = "Berikan penarafan kepada Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
@@ -2240,7 +2204,7 @@
 "ReportBrokenSiteBody1" = "Beritahu pembangun Ping bahawa tapak ini tidak berfungsi dengan betul dengan Shields:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Perhatian: Laporan yang dihantar kepada pelayan Ping akan menyertakan alamat laman, nombor versi Brave, tetapan Shields, status VPN dan tetapan bahasa.";
+"ReportBrokenSiteBody2" = "Perhatian: Laporan yang dihantar kepada pelayan Ping akan menyertakan alamat laman, nombor versi Ping, tetapan Shields, status VPN dan tetapan bahasa.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Serah";
@@ -2464,7 +2428,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Kongsi";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Kongsi Dalaman Ganjaran";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2446,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Disokong";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Dalaman Ganjaran";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2478,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Simpan";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Simpan perubahan";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Log Masuk Disimpan";
@@ -2668,11 +2635,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Tetapan Kualiti";
 
-/* Description to explain the daily usage ping toggle */
+/* Description to explain the daily usage brave toggle */
 "settings.sendUsagePingDescription" = "Ping peribadi ini membolehkan Ping menganggarkan pengguna aktif.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Hantar ping penggunaan harian secara automatik ke Ping";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Hantar brave penggunaan harian secara automatik ke Ping";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Tidak dapat memuat halaman.";
@@ -2753,7 +2723,7 @@
 "ShieldsDefaultsFooter" = "Ini adalah tetapan Shields lalai untuk tapak baharu. Mengubah ini tidak akan menjejaskan tetapan setiap tapak sedia ada anda.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Anda melayari laman web ini tanpa perlindungan privasi Brave. Adakah ia tidak berfungsi dengan betul dengan Pelindung atas?";
+"ShieldsDownDisclaimer" = "Anda melayari laman web ini tanpa perlindungan privasi Ping. Adakah ia tidak berfungsi dengan betul dengan Pelindung atas?";
 
 /* shields overview message */
 "ShieldsOverview" = "Perisai Tapak membenarkan anda mengawal bila iklan dan penjejak disekat untuk setiap tapak yang anda lawati. Jika anda suka melihat iklan di sesuatu tapak khusus, anda boleh mendayakannya di sini.";
@@ -2858,7 +2828,7 @@
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Buka Laman Web";
 
 /* Description for opening Ping Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Pilihan ini akan membuka Tetapan Brave. Untuk mengubah pelbagai pilihan Siri, pilih item menu 'Siri & Cari' dan sesuaikan pilihan anda.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Pilihan ini akan membuka Tetapan Ping. Untuk mengubah pelbagai pilihan Siri, pilih item menu 'Siri & Cari' dan sesuaikan pilihan anda.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Buka Tetapan";
@@ -3013,6 +2983,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Padam Penyegerakan Akaun";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Pemadaman akaun anda akan mengalih keluar data tersulit anda daripada pelayan Ping dan menyahdayakan Segerak pada semua peranti anda yang bersambung.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Tindakan ini tidak akan memadamkan data yang disimpan secara setempat pada peranti tersebut.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Pemadaman ini kekal dan tiada cara lain untuk memulihkan data. Jika anda memutuskan untuk mula menggunakan Segerak sekali lagi, anda akan perlu mencipta akaun baharu dan menambahkan semula setiap peranti satu persatu.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Kesilapan telah berlaku semasa mendapatkan peranti dalam rantaian penyegerakan.";
 
@@ -3056,7 +3035,7 @@
 "SyncAddDeviceWords" = "Masukkan kod segerak";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Pada peranti anda, navigasi ke Segerak dalam panel Tetapan dan ketik butang \"%@\". Masukkan perkataan kod rantaian penyegerakan yang ditunjukkan di bawah.\n\n Anggapkan kod ini sebagai kata laluan. Jika orang lain mendapat kod ini, mereka boleh membaca dan mengubah suai data anda yang disegerakkan.";
+"SyncAddDeviceWordsDescription" = "Pada peranti anda, navigasi ke Segerak dalam panel Tetapan dan ketik butang \"%@\". Masukkan perkataan kod rantaian penyegerakan yang ditunjukkan di bawah.\n\nAnggapkan kod ini sebagai kata laluan. Jika orang lain mendapat kod ini, mereka boleh membaca dan mengubah suai data anda yang disegerakkan.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Masukkan Perkataan Kod";
@@ -3070,11 +3049,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Pilih jenis peranti azng anda ingin menyegerakkan.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Kod telah tamat tempoh. Jana kod baharu dengan mengklik butang di bawah.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Kod sementara ini sah selama %@ seterusnya";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Komputer";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Padam Penyegerakan Akaun";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Nampaknya kod ini telah dicipta pada peranti yang menjalankan versi Ping lebih lama. Sila kemas kini kepada versi terkini Ping pada peranti anda yang lain dan cipta kod segerak baharu.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Peranti & Tetapan";
@@ -3337,7 +3325,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "Berita";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Ikuti topik yang menaik minat anda";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3379,7 +3367,7 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Alamak…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Urus sumber untuk suapan anda";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,7 +3389,7 @@
 "today.insecureSourcesHeader" = "Sumber Tidak Selamat - Tambah atas risiko anda sendiri";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Ikuti sumber kegemaran anda dalam suapan tunggal. Hanya buka tab dalam Brave, tatal ke bawah dan... lihatlah!\nBrave News disokong iklan dengan iklan peribadi dan tanpa nama.";
+"today.introCardBody" = "Ikuti sumber kegemaran anda dalam suapan tunggal. Hanya buka tab dalam Ping, tatal ke bawah dan... lihatlah!\nPing News disokong iklan dengan iklan peribadi dan tanpa nama.";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "Hidupkan Berita Ping dan sentiasa ikuti kisah terkini";
@@ -3412,7 +3400,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Ketahui lebih lanjut mengenai data anda";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "Lebih Banyak Tawaran Ping";
 
 /* No comment provided by engineer. */
@@ -3436,6 +3424,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Dipromosi";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Berikan Penilaian dalam App Store";
+
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Sembunyikan";
 
@@ -3446,7 +3437,7 @@
 "today.rateBraveCardSubtitle" = "Berikan maklum balas anda!";
 
 /* Title shown on the Rate Ping Card */
-"today.rateBraveCardTitle" = "Sukai Brave?";
+"today.rateBraveCardTitle" = "Sukai Ping?";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Segar semula";
@@ -3538,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Ping tidak menyimpan atau mengongsikan carian suara anda.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "aktifkan";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Mahu kekal terlindung? Hanya perbaharui sebelum langganan anda tamat. Sebagai penghargaan atas pembaharuan, kami akan berikan potongan 20% bagi 3 bulan yang seterusnya.";
 
@@ -3559,140 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Alamak! Langganan VPN Ping anda hampir tamat tempoh.";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "Beli";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Tembok Api Berani + VPN";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "Lindungi 5 peranti pada 1 langganan";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "Pilih lokasi geo/negara anda";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "Ping tidak pernah mengelogkan aktiviti anda";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "Lindungi setiap aplikasi & seluruh peranti anda";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "Lebih selamat untuk WI-Fi rumah atau awam";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "Sepantas kilat, sehingga 100 Mbps";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Versi Aplikasi";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Pembawa Selular";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Ping tidak menjejaki anda atau mengetahui cara anda menggunakan apl, oleh itu kami tidak tahu cara anda menyediakan VPN. Sila kongsikan maklumat tentang isu yang anda alami dan kami akan mencuba sedaya upaya kami untuk menyelesaikan isu secepat mungkin.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Tidak dapat menghantar e-mel. Sila semak konfigurasi e-mel anda.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Sila pilih maklumat yang anda selesa berkongsi dengan kami.\n\nSemakin banyak maklumat anda kongsi pada awalnya, semakin mudah kakitangan sokongan kami membantu menyelesaikan masalah anda.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Sokongan diberikan dengan bantuan pasukan Guardian.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "Nama Hos VPN";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Isu";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Masalah keutuhan sambungan";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "Tidak ada internet apabila disambungkan";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Lain";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Tidak dapat menyambung ke VPN (Kesalahan lain)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Sambungan perlahan";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Laman web tidak berfungsi";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Log Ralat";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Jenis Rangkaian";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Platform";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Teruskan ke E-mel";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Jenis Langganan";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "Zon Masa iOS";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Ping Firewall + Isu VPN";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "Dayakan";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Tidak dapat menyambung ke App Store, sila cuba lagi dalam beberapa minit.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Ralat App Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Semua pelan termasuk %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "percuma 7 hari percubaan";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "cuba 7 hari secara percuma";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Semua langganan diperbaharui secara automatik tetapi boleh dibatalkan sebelum pembaharuan.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Profil ini membolehkan VPN menyambung secara automatik dan memastikan rafik selamat merentas peranti anda sepanjang masa. Sambungan VPN ini akan disulitkan dan dihalakan melalui dinding api pintar Ping untuk menyekat sambungan yang berpotensi berbahaya dan invasif.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Pasang Profil VPN";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Ping kini akan memasang profil VPN.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "VPN kini didayakan";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Pasang VPN";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "Cuba secara PERCUMA";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Diperbaharui setiap bulan";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Langganan Setiap bulan";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Tamat Tempoh";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Blok sambungan rangkaian yang tidak diingini";
@@ -3715,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Dikuasakan oleh";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Sila pilih protokol pemindahan pilihan anda. Sebaik sahaja ditukar, kelayakan VPN sedia ada anda akan dikosongkan dan anda akan disambungkan semula jika sambungan VPN disediakan pada masa ini. ";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Gagal untuk menukar protokol terowong, sila cuba lagi kemudian.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Ralat Pelayan";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Protokol Pemindahan";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "Protokol Terowong VPN berubah.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Wilayah pelayan yang paling dekat dengan anda akan dipilih secara automatik, berdasarkan zon waktu sistem anda. Ini disyorkan untuk memastikan kelajuan internet yang pantas.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Automatik";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Gagal menukar pelayan, sila cuba lagi kemudian.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Ralat Pelayan";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Wilayah Pelayan";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Wilayah VPN berubah.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Tidak dapat menetapkan semula konfigurasi VPN. Sila cuba lagi. Jika isu ini berterusan, hubungi sokongan untuk mendapatkan bantuan.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Cuba Lagi";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Penetapan Semula Gagal";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Konfigurasi VPN telah berjaya ditetapkan semula.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Penetapan Semula Berjaya";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Pulihkan";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "Sila log masuk ke Akaun Ping anda untuk menyegarkan semula sesi VPN anda.";
@@ -3777,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Sesi luput";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Naik taraf kepada VPN untuk melindungi sambungan anda dan menyekat penjejak invasif yang berada di mana-mana. ";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Hubungi Sokongan Teknikal";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Gagal mendapatkan semula senarai pelayan, sila cuba lagi kemudian.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "Sokongan VPN";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Pautkan pembelian ke akaun Ping anda";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Pautkan pembelian App Store anda ke akaun Ping anda untuk menggunakan VPN Ping pada peranti lain.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Urus Langganan";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Tebus Kod Tawaran";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Set semula Konfigurasi";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Hos";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Lokasi";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Pelayan";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Tamat tempoh";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Langganan";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Status";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Protokol Pemindahan";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Dinyahaktif";
@@ -3851,10 +3617,10 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Bersedia untuk melindungi setiap apl pada telefon anda? Gunakan VPN Ping kembali dan dapatkan potongan 20% untuk 3 bulan yang seterusnya.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping sentiasa menyekat penjejak pada setiap apl, walau pun di luar penyemak imbas Brave. Kini anda boleh melihat orang yang cuba menjejak anda dengan Hab Privasi Ping.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping sentiasa menyekat penjejak pada setiap apl, walau pun di luar penyemak imbas Ping. Kini anda boleh melihat orang yang cuba menjejak anda dengan Hab Privasi Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Adakah anda tahu bahawa VPN Ping melindungi anda di luar Penyemak Imbas Brave?";
+"vpn.subscribeVPNProtectionPopOverTitle" = "Adakah anda tahu bahawa VPN Ping melindungi anda di luar Penyemak Imbas Ping?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Kemas kini";
@@ -3874,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Kemas Kinikan Pembayaran";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Kemas Kinikan Kaedah Pembayaran";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Walaupun di latar belakang, Ping akan terus melindungi anda.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN adalah DIHIDUPKAN";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "Terdapat masalah semasa memulakan VPN. Sila cuba lagi atau cuba tetapkan semula konfigurasi di halaman tetapan VPN.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Ralat";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Ping Firewall + VPN memerlukan profil VPN untuk dipasang pada peranti anda untuk berfungsi.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Kebenaran ditolak";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Tidak dapat menebus kod tawaran. Sila cuba lagi atau semak butiran kod tawaran anda dan cuba lagi.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Tidak dapat menghabiskan pembelian. Sila cuba lagi, atau periksa maklumat pembayaran anda di Apple dan cuba lagi.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Ralat";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Langganan akan dikenakan bayaran melalui akaun iTunes anda.\n\nSebarang bahagian percubaan percuma yang tidak digunakan, jika ditawarkan, akan dibatalkan semasa anda membeli langganan.\n\nLangganan anda akan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh semasa.\n\nAnda boleh menguruskan langganan anda dalam Tetapan.\n\nDengan menggunakan Brave, anda bersetuju dengan Terma Penggunaan dan Dasar Privasi.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Tebus Kod";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Wilayah Pelayan";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Tetapan Terkini: %@";
@@ -3916,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "Rantau VPN";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Ini akan menetapkan semula konfigurasi Ping Firewall + VPN anda dan memperbaiki sebarang kesalahan. Proses ini mungkin mengambil masa sebentar.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Set semula konfigurasi";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Tetapkan semula";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Langganan setiap bulan";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Langganan setiap tahun";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Sila kemas kinikan kaedah pembayaran anda";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Memperbaharui setiap tahun jimat %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Nilai terbaik";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Satu tahun";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Tarikh Penciptaan Dompet";
@@ -3970,13 +3679,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "Tiada Data Laman Web yang Disimpan";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Alih Keluar Semua";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Alih Keluar";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Alih keluar %ld item";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3709,9 @@
 /* History tableview section header */
 "Yesterday" = "Semalam";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Dayakan Video YouTube Berkualiti Tinggi";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Apabila ciri percubaan ini didayakan, video akan dimainkan semula pada kualiti maksimum yang tersedia dan data tambahan akan digunakan.";
 
@@ -4008,6 +3720,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Dihidupkan";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Kualiti Main Semula YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Benarkan melalui Wi-Fi";

@@ -20,7 +20,8 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
+import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
@@ -67,11 +68,12 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             WindowAndroid windowAndroid,
             LayoutManager layoutManager,
             ResourceManager resourceManager,
-            BrowserControlsSizer controlsSizer,
+            BottomControlsStacker controlsStacker,
+            BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ScrollingBottomViewResourceFrameLayout root,
-            BottomControlsContentDelegate contentDelegate,
+            OneshotSupplier<BottomControlsContentDelegate> contentDelegateSupplier,
             TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
             ObservableSupplier<Integer> constraintsSupplier,
@@ -81,11 +83,12 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
                 windowAndroid,
                 layoutManager,
                 resourceManager,
-                controlsSizer,
+                controlsStacker,
+                browserControlsVisibilityDelegate,
                 fullscreenManager,
                 edgeToEdgeControllerSupplier,
                 root,
-                contentDelegate,
+                contentDelegateSupplier,
                 tabObscuringHandler,
                 overlayPanelVisibilitySupplier,
                 constraintsSupplier,

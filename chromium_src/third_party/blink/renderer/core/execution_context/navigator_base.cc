@@ -8,7 +8,6 @@
 #include "base/compiler_specific.h"
 #include "base/system/sys_info.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
-#include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -29,7 +28,9 @@ void ApplyBraveHardwareConcurrencyOverride(blink::ExecutionContext* context,
     return;
   }
   unsigned farbled_value = true_value;
-  switch (brave::GetBraveFarblingLevelFor(context, BraveFarblingLevel::OFF)) {
+  switch (brave::GetBraveFarblingLevelFor(
+      context, ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY,
+      BraveFarblingLevel::OFF)) {
     case BraveFarblingLevel::OFF: {
       break;
     }
@@ -47,7 +48,7 @@ void ApplyBraveHardwareConcurrencyOverride(blink::ExecutionContext* context,
       break;
     }
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
   *hardware_concurrency = farbled_value;
 }
@@ -69,7 +70,8 @@ namespace blink {
 
 String NavigatorBase::userAgent() const {
   if (ExecutionContext* context = GetExecutionContext()) {
-    if (!brave::AllowFingerprinting(context)) {
+    if (!brave::AllowFingerprinting(
+            context, ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT)) {
       return brave::BraveSessionCache::From(*context).FarbledUserAgent(
           context->UserAgent());
     }

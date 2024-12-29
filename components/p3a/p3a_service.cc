@@ -82,6 +82,10 @@ P3AService::P3AService(PrefService& local_state,
   LoadDynamicMetrics();
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, week_of_install);
+  pref_change_registrar_.Init(&local_state);
+  pref_change_registrar_.Add(
+      kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,
+                                       base::Unretained(this)));
 }
 
 P3AService::~P3AService() = default;
@@ -96,7 +100,7 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
 }
 
-void P3AService::InitCallback(const std::string_view histogram_name) {
+void P3AService::InitCallback(std::string_view histogram_name) {
   histogram_sample_callbacks_.push_back(
       std::make_unique<base::StatisticsRecorder::ScopedHistogramSampleObserver>(
           std::string(histogram_name),
@@ -119,6 +123,10 @@ void P3AService::InitCallbacks() {
   for (const auto& [histogram_name, log_type] : dynamic_metric_log_types_) {
     RegisterDynamicMetric(histogram_name, log_type, false);
   }
+}
+
+void P3AService::StartTeardown() {
+  pref_change_registrar_.RemoveAll();
 }
 
 void P3AService::RegisterDynamicMetric(const std::string& histogram_name,
@@ -180,7 +188,10 @@ bool P3AService::IsP3AEnabled() const {
 
 void P3AService::Init(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  message_manager_->Init(url_loader_factory);
+  url_loader_factory_ = url_loader_factory;
+  if (local_state_->GetBoolean(kP3AEnabled)) {
+    message_manager_->Start(url_loader_factory);
+  }
 
   // Init basic prefs.
   initialized_ = true;
@@ -223,6 +234,14 @@ void P3AService::LoadDynamicMetrics() {
   }
 }
 
+void P3AService::OnP3AEnabledChanged() {
+  if (local_state_->GetBoolean(kP3AEnabled)) {
+    message_manager_->Start(url_loader_factory_);
+  } else {
+    message_manager_->Stop();
+  }
+}
+
 void P3AService::OnHistogramChanged(const char* histogram_name,
                                     uint64_t name_hash,
                                     base::HistogramBase::Sample sample) {
@@ -251,7 +270,7 @@ void P3AService::OnHistogramChanged(const char* histogram_name,
   const bool ok = samples->Iterator()->GetBucketIndex(&bucket);
   if (!ok) {
     LOG(ERROR) << "Only linear histograms are supported at the moment!";
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 

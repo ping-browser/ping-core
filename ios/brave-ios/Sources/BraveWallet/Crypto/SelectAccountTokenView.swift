@@ -64,30 +64,24 @@ struct SelectAccountTokenView: View {
       ToolbarItemGroup(placement: .bottomBar) {
         networkFilterButton
         Spacer()
-        if shouldShowZeroBalanceButton {
-          Button {
-            store.isHidingZeroBalances.toggle()
-          } label: {
-            Text(
-              store.isHidingZeroBalances
-                ? Strings.Wallet.showZeroBalances : Strings.Wallet.hideZeroBalances
-            )
-            .font(.footnote.weight(.medium))
-            .foregroundColor(Color(.braveBlurpleTint))
-          }
+        Button {
+          store.isHidingZeroBalances.toggle()
+        } label: {
+          Text(
+            store.isHidingZeroBalances
+              ? Strings.Wallet.showZeroBalances : Strings.Wallet.hideZeroBalances
+          )
+          .font(.footnote.weight(.medium))
+          .foregroundColor(Color(.braveBlurpleTint))
+        }
+        .transaction {
+          $0.disablesAnimations = true
         }
       }
     }
     .onDisappear {
       store.resetFilters()
     }
-  }
-
-  private var shouldShowZeroBalanceButton: Bool {
-    if !store.isHidingZeroBalances {
-      return true
-    }
-    return store.accountSections.isEmpty
   }
 
   private var networkFilterButton: some View {
@@ -144,30 +138,11 @@ struct SelectAccountTokenView: View {
         },
         header: {
           WalletListHeaderView {
-            HStack {
-              Text(
-                "\(accountSection.account.name) (\(accountSection.account.address.truncatedAddress))"
-              )
-              Spacer()
-              Menu(
-                content: {
-                  Text(accountSection.account.address.zwspOutput)
-                  Button {
-                    UIPasteboard.general.string = accountSection.account.address
-                  } label: {
-                    Label(
-                      Strings.Wallet.copyAddressButtonTitle,
-                      braveSystemImage: "leo.copy.plain-text"
-                    )
-                  }
-                },
-                label: {
-                  Image(braveSystemName: "leo.more.horizontal")
-                    .padding(6)
-                    .clipShape(Rectangle())
-                }
-              )
-            }
+            CopyAddressHeader(
+              displayText: accountSection.account.accountNameDisplay,
+              account: accountSection.account,
+              btcAccountInfo: accountSection.bitcoinAccountInfo
+            )
           }
         }
       )
@@ -215,7 +190,7 @@ struct SelectAccountTokenView: View {
             title: tokenBalance.token.name,
             symbol: tokenBalance.token.symbol,
             networkName: tokenBalance.network.chainName,
-            quantity: String(format: "%.04f", tokenBalance.balance ?? 0).trimmingTrailingZeros,
+            quantity: String(format: "%.06f", tokenBalance.balance ?? 0).trimmingTrailingZeros,
             isLoadingBalance: store.isLoadingBalances && tokenBalance.balance == nil,
             price: tokenBalance.price ?? "0",
             isLoadingPrice: (store.isLoadingPrices || store.isLoadingBalances)

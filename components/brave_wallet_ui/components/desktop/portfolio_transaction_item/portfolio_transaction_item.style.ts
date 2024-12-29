@@ -83,12 +83,12 @@ export const SellIconPlaceholder = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 100%;
-  background-color: ${leo.color.gray[40]};
+  background-color: ${leo.color.neutral[40]};
   color: ${leo.color.container.background};
 `
 
 export const BuyIconPlaceholder = styled(SellIconPlaceholder)`
-  background-color: ${leo.color.gray[20]};
+  background-color: ${leo.color.neutral[20]};
   color: ${leo.color.icon.default};
 `
 
@@ -126,7 +126,6 @@ export const ArrowIconWrapper = styled.div`
   border-radius: 100%;
   width: 12px;
   height: 12px;
-  margin: 0px 8px;
 `
 
 export const ArrowIcon = styled(Icon).attrs({
@@ -195,7 +194,7 @@ export const StatusBubble = styled.div<{
     p.status === BraveWallet.TransactionStatus.Dropped
       ? leo.color.systemfeedback.errorIcon
       : p.status === BraveWallet.TransactionStatus.Unapproved
-      ? leo.color.gray[20]
+      ? leo.color.neutral[20]
       : leo.color.systemfeedback.infoIcon};
 `
 

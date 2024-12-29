@@ -9,45 +9,40 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {
+class BraveAdsConfirmationPayloadJsonWriterTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    MockConfirmationUserData();
+    test::MockConfirmationUserData();
 
-    AdvanceClockTo(TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
+    AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
   }
-
-  TokenGeneratorMock token_generator_mock_;
 };
 
 TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
        WriteRewardConfirmationPayload) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_use_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act
@@ -55,34 +50,32 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
       json::writer::WriteConfirmationPayload(*confirmation);
 
   // Assert
-  const base::Value::Dict expected_dict = base::test::ParseJsonDict(
-      R"(
-          {
-            "blindedPaymentTokens": [
-              "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="
-            ],
-            "buildChannel": "release",
-            "catalog": [
-              {
-                "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
-              }
-            ],
-            "countryCode": "US",
-            "createdAtTimestamp": "1996-07-08T09:00:00.000Z",
-            "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-            "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
-            "platform": "windows",
-            "publicKey": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=",
-            "rotating_hash": "jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=",
-            "segment": "untargeted",
-            "studies": [],
-            "systemTimestamp": "1996-07-08T09:00:00.000Z",
-            "topSegment": [],
-            "transactionId": "8b742869-6e4a-490c-ac31-31b49130098a",
-            "type": "view",
-            "versionNumber": "1.2.3.4"
-          })");
-  EXPECT_EQ(expected_dict, base::test::ParseJsonDict(confirmation_payload));
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "blindedPaymentTokens": [
+                        "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="
+                      ],
+                      "buildChannel": "release",
+                      "catalog": [
+                        {
+                          "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                        }
+                      ],
+                      "createdAtTimestamp": "1996-07-08T09:00:00.000Z",
+                      "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+                      "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+                      "platform": "windows",
+                      "publicKey": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=",
+                      "rotatingHash": "jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=",
+                      "segment": "untargeted",
+                      "studies": [],
+                      "systemTimestamp": "1996-07-08T09:00:00.000Z",
+                      "transactionId": "8b742869-6e4a-490c-ac31-31b49130098a",
+                      "type": "view",
+                      "versionNumber": "1.2.3.4"
+                    })"),
+            base::test::ParseJsonDict(confirmation_payload));
 }
 
 TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
@@ -91,7 +84,7 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
   test::DisableBraveRewards();
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act

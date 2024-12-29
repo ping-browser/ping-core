@@ -162,19 +162,6 @@
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
-      <!-- Error pages -->
-      <message name="IDS_ERRORPAGES_IPFS_INCOGNITO_HEADING" desc="Heading of the IPFS not available in incognito error page.">
-        IPFS page cannot be loaded.
-      </message>
-      <message name="IDS_ERRORPAGES_IPFS_INCOGNITO_SUMMARY" desc="Summary in the error page when IPFS failed in incognito mode.">
-        IPFS pages are not allowed in private windows.
-      </message>
-      <message name="IDS_ERRORPAGES_IPFS_DISABLED_HEADING" desc="Heading of the IPFS disabled error page.">
-        IPFS page cannot be loaded.
-      </message>
-      <message name="IDS_ERRORPAGES_IPFS_DISABLED_SUMMARY" desc="Summary in the error page when IPFS failed because it is disabled.">
-        IPFS is disabled. Select IPFS resolve method in settings to open this site.
-      </message>
       <!-- WebUI newtab resources -->
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Trackers &amp; ads blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
@@ -199,13 +186,10 @@
 
       <message name="IDS_BRAVE_NEW_TAB_PHOTO_BY" desc="Prefix for photographer name">Photo by</message>
       <message name="IDS_BRAVE_NEW_TAB_HIDE" desc="Shown as an option for a widget to hide itself">Hide</message>
-      <message name="IDS_BRAVE_NEW_TAB_PREFERENCES_PAGE_TITLE" desc="Title for preferences page">Edit Preferences</message>
-      <message name="IDS_BRAVE_NEW_TAB_BOOKMARKS_PAGE_TITLE" desc="Title for bookmarks page">View and Manage Bookmarks</message>
-      <message name="IDS_BRAVE_NEW_TAB_HISTORY_PAGE_TITLE" desc="Title for history page">View your browsing history</message>
       <message name="IDS_BRAVE_NEW_TAB_DASHBOARD_SETTINGS_TITLE" desc="Title for dashboard settings">Customize Dashboard</message>
       <message name="IDS_BRAVE_NEW_TAB_CUSTOMIZE" desc="Title for dashboard settings">Customize</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show Background Images</message>
-      <message name="IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND_IMAGE_OPTION_TITLE" desc="Text for ping background option">Ping backgrounds</message>
+      <message name="IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND_IMAGE_OPTION_TITLE" desc="Text for brave background option">Ping backgrounds</message>
       <message name="IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_TITLE" desc="Text for custom background option">Use your own</message>
       <message name="IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_UPLOAD_LABEL" desc="Text for custom background option upload">Upload from device</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS" desc="Text for settings show stats option">Show Ping Stats</message>
@@ -234,19 +218,53 @@
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_MENU_LABEL" desc="Label for showing frecency menu item of topsites tiles">Show frequently visited</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL" desc="Label for showing favorites menu item of topsites tiles">Show favorites</message>
 
-      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1" desc="The text for ping search promotion from NTP">
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_LIST" desc="Label for the customize list">
+        Customize list
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_BRAVE_PLACEHOLDER" desc="Placeholder text for when Ping is the selected search engine">
+        Search the web privately
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_NON_BRAVE_PLACEHOLDER" desc="Placeholder text for when Ping is not the selected search engine">
+        Search the web
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_SHOW_SETTING" desc="Setting for enabling the searchbox on the NTP">
+        Show search widget on the new tab page
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_ENGINES_TITLE" desc="Title above the list of search engines">
+        Enable search engines on the New Tab Page
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_SEARCH_ENGINES">
+        Customize available engines
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_HIDE_SEARCH" desc="Message for the menu entry to hide the search box on the NTP">
+        Hide Search
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_TITLE" desc="Title for the Enable search suggestions prompt">
+        Enable search suggestions?
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_EXPLANATION" desc="Explanation for the Enable search suggestions prompt">
+        When you search, what you type will be sent to your search engine for better suggestions.
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_ENABLE" desc="Button for enabling search suggestions">
+        Enable
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_DISMISS" desc="Button to dismiss the prompt for enabling search suggestions">
+        No thanks
+      </message>
+
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1" desc="The text for brave search promotion from NTP">
         Want even better privacy?
       </message>
-      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2" desc="The text for ping search promotion from NTP">
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2" desc="The text for brave search promotion from NTP">
         It's time to ditch Google.
       </message>
-      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC" desc="The text for ping search promotion from NTP">
-        Ping Search doesn't bias or censor results, and it doesn't track you, your queries, or your clicks.
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC" desc="The text for brave search promotion from NTP">
+        Ping Search doesn't bias or censor results, and it doesn't profile you.
       </message>
-      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM" desc="The text for ping search promotion from NTP">
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM" desc="The text for brave search promotion from NTP">
         Try Ping Search now
       </message>
-      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER" desc="The place holder text of search box at ping search promotion from NTP">
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER" desc="The place holder text of search box at brave search promotion from NTP">
         Search the web privately
       </message>
 
@@ -258,7 +276,7 @@
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_NOT_EARNING_TITLE" desc="Title of message about not yet earning from sponsored images">You can earn for seeing Sponsored Images.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_REWARDS_ON_DESCRPTION" desc="Description about turning on Sponsored Images when Rewards is on">As a Ping Rewards user, you can earn BAT for seeing Sponsored Images.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION" desc="Description about turning off Sponsored Images">As a Ping Rewards user, you earn BAT for Sponsored Images you see. Disabling Sponsored Images will reduce how much you earn.</message>
-      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_REWARDS_ON_NO_CUSTODIAN_DESCRIPTION" desc="Description about not having a connected Rewards custodian">You can earn BAT for seeing Sponsored Images when you connect a custodial account to Ping Rewards. In the meantime, you're helping to support creators with Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_REWARDS_ON_NO_CUSTODIAN_DESCRIPTION" desc="Description about not having a connected Rewards custodian">You can earn BAT for seeing Sponsored Images when you connect a custodial account to Ping Rewards. In the meantime, you're helbrave to support creators with Sponsored Images.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_REWARDS_OFF_DESCRIPTION" desc="Description about sponsored images when Rewards is off">You can earn BAT for seeing Sponsored Images with Ping Rewards. Not a Rewards user? Turning on Sponsored Images still supports Ping's mission.</message>
       <message name="IDS_BRAVE_NEW_TAB_TOP_SITES" desc="Top Sites title">top sites</message>
       <message name="IDS_BRAVE_NEW_TAB_STATS" desc="Ping Stats title">Ping Stats</message>
@@ -274,10 +292,6 @@
       <message name="IDS_BRAVE_NEW_TAB_GRADIENT_COLOR" desc="Gradient background colors title">Gradients</message>
       <message name="IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB" desc="Label for random toggle button">Refresh on every new tab</message>
       <message name="IDS_BRAVE_NEW_TAB_REWARDS_OPEN_PANEL" desc="Label for menu item to open the Rewards panel">Open Rewards panel</message>
-
-      <message name="IDS_BRAVE_TALK_PROMPT_TITLE" desc="Title for prompt about Ping Talk">
-        You can start a private call in Ping.
-      </message>
 
       <message name="IDS_BRAVE_NEWS_TITLE" translateable="false" desc="Title for Ping News news feed section">
         Ping News
@@ -453,8 +467,8 @@
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Ping's developers know that this site doesn't work properly with Shields:</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_NON_HTTP_EXPLANATION" desc="Notifies the user that non-HTTP/HTTPS browser pages cannot be reported">This page cannot be reported because it was not served over HTTP/HTTPS.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_LOCAL_EXPLANATION" desc="Notifies the user that local pages (i.e. via localhost) cannot be reported">This page is a local web page and is not eligible for reporting.</message>
-        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_ERROR_PAGE_EXPLANATION" desc="Notifies the user that the error page cannot be reported">This page is an error page and is not eligible for reporting.</message>
-        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER2" desc="Thanks the user for sending the report, and informs them that relevant website information will be reported to Ping servers.">Thank you for helping make Ping better for all. This report will only send information necessary for us to fix this site.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_ERROR_PAGE_EXPLANATION" desc="Notifies the user that the error page cannot be reported">This is an error page. It cannot be reported as a broken site.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER2" desc="Thanks the user for sending the report, and informs them that relevant website information will be reported to Ping servers.">Thank you for helbrave make Ping better for all. This report will only contain information necessary for us to fix this site.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_INFO_LINK" desc="Text for link to webcompat report wiki page.">Learn more.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the optional details field in the broken website report">Additional details (optional)</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">Contact me at: (optional)</message>
@@ -481,6 +495,15 @@
       </message>
       <message name="IDS_BRAVE_REWARDS_NOTIFICATION_AD_COUNT_LABEL" desc="">
         Notification ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_SEARCH_AD_COUNT_LABEL" desc="">
+        Search ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_SEARCH_AD_INFO" desc="">
+        Ping Search Ads appear on <ph name="BEGIN_LINK">$1</ph>Ping Search<ph name="END_LINK">$2</ph>.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_SEARCH_AD_CONNECTED_INFO" desc="">
+        You cannot earn BAT from Ping Search Ads yet, but you help support Ping by having them on.
       </message>
       <message name="IDS_BRAVE_REWARDS_NEWS_AD_COUNT_LABEL" desc="">
         Ping News ads
@@ -544,50 +567,8 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_VIEW" desc="">Viewed</message>
 
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE" desc="">Close</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_DEVICE_LIMIT_REACHED_TEXT" desc="">Your Ping Rewards cannot be verified because you've reached the maximum verified device limit.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_DEVICE_LIMIT_REACHED_TITLE" desc="">Error: Device limit reached</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_1" desc="">Unfortunately, your Ping Rewards profile was flagged because our automated checks found some unexpected Ping Ads activity.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_2" desc="">While your profile is flagged, you may continue to see ads, but won't be eligible to receive payouts. You also won't be able to connect a custodial account to Ping Rewards.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_3" desc="">It's possible your profile was flagged in error, and no immediate action is required on your part. The flag on your profile may be removed in the future.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_4" desc=""><ph name="BEGIN_LINK">$2</ph>Learn more about Ping's process for flagging Rewards profiles.<ph name="END_LINK">$3</ph></message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TITLE" desc="">Error: Ping Rewards profile is flagged</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT" desc="">Please try again after you have completed ID verification on <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TITLE" desc="">Error: You need a verified account to log in</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_COUNTRIES_TEXT" desc="">Hmm, it looks like your Ping Rewards country does not match the country of the <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account you're trying to connect.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_COUNTRIES_TITLE" desc="">Error: Country mismatch</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">Hmm, it looks like your Ping Rewards has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">Error: Different account</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_1" desc="">It looks like connecting <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to Ping Rewards is temporarily unavailable. Please try again later.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TEXT_2" desc="">You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$3</ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_PROVIDER_UNAVAILABLE_TITLE" desc="">Error: Connecting to selected custodian temporarily unavailable</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_1" desc="">Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Ping Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Ping Rewards.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_2" desc="">See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$3</ph> about connecting a custodial account to Ping Rewards.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE" desc="">Error: Region currently not supported</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TEXT" desc="">BAT is not yet supported in your region on Uphold.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">Error: BAT unavailable</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT" desc="">According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again. For example, you may need to submit more information to Uphold.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE" desc="">Error: Limited Uphold account functionality</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_WALLET_OWNERSHIP_VERIFICATION_FAILURE_TEXT" desc="">There was a problem validating your browser's request to connect Ping Rewards to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$3</ph> for more help.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_WALLET_OWNERSHIP_VERIFICATION_FAILURE_TITLE" desc="">Error: Request could not be validated</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_SOMETHING_WENT_WRONG" desc="">Something went wrong</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UNABLE_TO_COMPLETE_REQUEST" desc="">We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$2</ph>contact support<ph name="LINK_END">$3</ph> if the problem persists.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on <ph name="TITLE">$1<ex>Ping Private Ads</ex></ph>, you agree to the <ph name="BEGIN_LINK1">$2</ph>Terms of Service<ph name="END_LINK1">$3</ph> and <ph name="BEGIN_LINK2">$4</ph>Privacy Policy<ph name="END_LINK2">$5</ph>.</message>
 
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CUSTODIAL_HEADER" desc="">Custodial accounts (requires ID verification)</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CUSTODIAL_TOOLTIP" desc="">Custodial accounts are accounts with trusted third-party services that hold your BAT for you.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_HEADER" desc="">Self-custody</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_TOOLTIP" desc="">Self-custody gives you exclusive control over your BAT, along with complete responsibility for its security.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_NOTE" desc="">By choosing a self-custody wallet, Rewards will be paid out as SPL-BAT on the Solana network.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_HEADER" desc="">Choose where you'd like to receive BAT</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LEARN_MORE" desc="">Learn more about regions and support.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_PROVIDER_NOT_AVAILABLE" desc="">Currently not available in your region</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_TEXT" desc="">To begin earning Basic Attention Token (BAT) rewards, connect an account. BAT you earn will be automatically transferred to your account every month.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SOLANA_LABEL" desc="">Ping Wallet</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SOLANA_MESSAGE" desc="">Or other wallet that supports Solana</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_TERMS" desc=""><ph name="TOS_LINK_BEGIN">$1</ph>Terms of Use<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_SELF_CUSTODY_ERROR" desc="">Something went wrong. Please try again</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LOGIN_TEXT" desc="">Log in or sign up</message>
-      <message name="IDS_BRAVE_REWARDS_NEW_BADGE_TEXT" desc="">NEW</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on <ph name="TITLE">$1<ex>Ping Private Ads</ex></ph>, you agree to the <ph name="BEGIN_LINK1">$2</ph>Terms of Service<ph name="END_LINK1">$3</ph> and <ph name="BEGIN_LINK2">$4</ph>Privacy Policy<ph name="END_LINK2">$5</ph>.</message>
 
       <message name="IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL" desc="A label on Pending Contributions modal showing the date until which the contribution will be pending">
         Pending until <ph name="DATE">$1</ph>
@@ -595,7 +576,6 @@
 
       <message name="IDS_REWARDS_BROWSER_CANNOT_RECEIVE_ADS" desc="">Oops! Your browser cannot receive Ping Private Ads.</message>
       <message name="IDS_REWARDS_BROWSER_NEEDS_UPDATE_TO_SEE_ADS" desc="">Your browser needs to be updated to continue seeing ads.</message>
-      <message name="IDS_REWARDS_APP_ERROR_TITLE" desc="">Something went wrong</message>
 
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_ID" desc="Ad diagnostic id">Diagnostic Id</message>
@@ -668,7 +648,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_CREATION_ENVIRONMENT" desc="">Creation environment:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CURRENT_ENVIRONMENT" desc="">Current environment:</message>
 
-      <!-- WebUI ping ui resources -->
+      <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ACTIVITY_COPY" desc=""> Ping Software. Ping is a registered trademark of Ping Software. Site names may be trademarks or registered trademarks of the site owner.</message>
       <message name="IDS_BRAVE_UI_ACTIVITY_NOTE" desc="">To protect your privacy, this Ping Rewards statement is not saved, recorded or logged anywhere other than on your device (this computer). It cannot be retrieved from Ping in the event of data loss on your device.</message>
       <message name="IDS_BRAVE_UI_ADS" desc="">Ads</message>
@@ -726,7 +706,6 @@
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_FOUR" desc="">You can remove any site receiving monthly contributions from inside of the Contribution panel.</message>
       <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
       <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
-      <message name="IDS_BRAVE_UI_PROCESSING_REQUEST" desc="">Your request is still being processed, please wait.</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_BRAVE_TOKENS" desc="">Rewards BAT</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_BITFLYER" desc="">bitFlyer</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_GEMINI" desc="">Gemini</message>
@@ -738,14 +717,10 @@
       <message name="IDS_BRAVE_UI_RELAUNCH" desc="">Relaunch</message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_REMOVE_AD_FROM_SAVED" desc="">Remove From Saved</message>
-      <message name="IDS_BRAVE_UI_RESET" desc="">Reset</message>
-      <message name="IDS_BRAVE_UI_RESET_WALLET" desc="">Reset Ping Rewards</message>
       <message name="IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST" desc="">Clear exclude list</message>
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT" desc="">By resetting, your current Ping Rewards profile will be deleted, and Ping Rewards will no longer be enabled. If you enable Ping Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph> for more details.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESET_CONSENT" desc="">I understand that my current Ping Rewards profile and Ping Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph>.</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
       <message name="IDS_BRAVE_UI_SAVE" desc="">Save</message>
       <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all [[numItems]] items</message>
@@ -793,7 +768,7 @@
       <!-- Rewards New Tab Widget resources -->
       <message name="IDS_EDIT_CARDS_TITLE" desc="">Edit Cards</message>
       <message name="IDS_REWARDS_WIDGET_START_USING" desc="">Start using Ping Rewards</message>
-      <message name="IDS_BRAVE_TALK_WIDGET_TITLE" desc="">Ping Talk</message>
+      <message name="IDS_BRAVE_TALK_WIDGET_TITLE" desc="">Talk</message>
       <message name="IDS_BRAVE_TALK_WIDGET_WELCOME_TITLE" desc="">Start a private video call with your friends and colleagues.</message>
       <message name="IDS_BRAVE_TALK_WIDGET_START_BUTTON" desc="">Start call</message>
       <message name="IDS_BRAVE_TALK_WIDGET_ABOUT_DATA" desc="">About your data</message>
@@ -823,7 +798,6 @@
       </if>
       <part file="domain_block_strings.grdp" />
       <part file="request_otr_strings.grdp" />
-      <part file="ipfs_strings.grdp" />
       <part file="permissions_strings.grdp" />
       <part file="google_sign_in_permission_strings.grdp" />
       <part file="localhost_access_permission_strings.grdp" />

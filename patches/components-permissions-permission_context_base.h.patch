@@ -1,9 +1,9 @@
 diff --git a/components/permissions/permission_context_base.h b/components/permissions/permission_context_base.h
-index 48eab4c32f150295fd2cb2e5364e7419de0dc6d6..025c5198eda8c9ae41efdc1410d5c403a9a7bb9f 100644
+index 8ed92598b764eb1d9f320a950c7909d049508fcd..b78cb9631f780c76ecc24cdc9dbd978030a1fd6b 100644
 --- a/components/permissions/permission_context_base.h
 +++ b/components/permissions/permission_context_base.h
-@@ -140,6 +140,7 @@ class PermissionContextBase : public content_settings::Observer {
-     return content_settings_type_;
+@@ -150,6 +150,7 @@ class PermissionContextBase : public content_settings::Observer {
+     has_device_permission_for_test_ = has_permission;
    }
  
 +  BRAVE_PERMISSION_CONTEXT_BASE_H_

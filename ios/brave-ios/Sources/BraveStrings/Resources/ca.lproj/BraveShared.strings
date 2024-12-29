@@ -5,7 +5,7 @@
 "AboutBraveShields" = "Sobre Escuts de Ping";
 
 /* The body of the screen explaining Ping Shields */
-"AboutBraveShieldsBody" = "Els llocs sovint inclouen galetes i scripts que intenten identificar-te a tu i al teu dispositiu. Volen esbrinar qui ets i seguir-te al web, fent un rastrejament de què fas a cada lloc.\n\nBrave bloqueja aquestes coses perquè puguis navegar sense ser perseguit.";
+"AboutBraveShieldsBody" = "Els llocs sovint inclouen galetes i scripts que intenten identificar-te a tu i al teu dispositiu. Volen esbrinar qui ets i seguir-te al web, fent un rastrejament de què fas a cada lloc.\n\nPing bloqueja aquestes coses perquè puguis navegar sense ser perseguit.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Això et permet desar la imatge al carret de la càmera.";
@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Ping voldria accedir a les teves fotos";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Afegeix adreça d'interès";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Afegeix adreça d'interès";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Afegeix una llista personalitzada de filtres";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Afegeix llistes addicionals creades i mantingudes per la teva comunitat de confiança.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Subscriu-te només a llistes d'entitats de confiança**. El teu navegador comprovarà periòdicament si hi ha actualitzacions de la llista de l'URL que introdueixis.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Afegeix a preferits";
@@ -115,9 +103,6 @@
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Control de bloqueig";
 
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Bloqueja els avisos «Canviar a l'app»";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Bloqueja les finestres emergents";
 
@@ -173,7 +158,7 @@
 "BraveRewardsTitle" = "Recompenses de Ping";
 
 /* Ping Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "El cercador de Ping no fa un seguiment de tu, de les teves consultes ni dels teus clics.";
+"braveSearchPromotion.bannerDescription" = "El cercador de Ping no crea un perfil vostre.";
 
 /* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Potser més tard";
@@ -214,13 +199,13 @@
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Si aquest enllaç apareix trencat, prova de desactivar Escuts";
 
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+/* Context: 'Ping Shields Up' or 'Ping Shields Down' */
 "BraveShieldsStatusTitle" = "Escuts de Ping";
 
-/* Context: The 'Down' in 'Brave Shields Down' */
+/* Context: The 'Down' in 'Ping Shields Down' */
 "BraveShieldsStatusValueDown" = "Avall";
 
-/* Context: The 'Up' in 'Brave Shields Up' */
+/* Context: The 'Up' in 'Ping Shields Up' */
 "BraveShieldsStatusValueUp" = "Amunt";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
@@ -285,9 +270,6 @@
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutTitle" = "Ajuda a millorar Ping.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Comparteix informacions de producte completament privada i anònima.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Aconsegueix la privacitat de Ping al teu ordinador o tauleta i sincronitza les adreces d'interès i les extensions entre dispositius.";
@@ -460,6 +442,12 @@
 /* Button title to close a menu. */
 "Close" = "Tanca";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Estàs segur que vols tancar totes les altres pestanyes obertes?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Tanca totes les altres pestanyes";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Estàs segur que vols tancar totes les pestanyes obertes?";
 
@@ -480,12 +468,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Confirma";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Filtració del contingut";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Habilita filtres personalitzats que bloquegin elements molestos i rastrejadors regionals i específics de la llengua";
 
 /* Cookie settings option title */
 "CookieControl" = "Control de galetes";
@@ -514,6 +496,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Copia l'enllaç";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Copieu la informació de les pestanyes al porta-retalls.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Copia al porta-retalls";
 
@@ -525,15 +510,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motors de cerca utilitzats actualment";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Llista de filtres personalitzats";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Llistes de filtres personalitzats";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL de la llista de filtres personalitzats";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Afegeix";
@@ -628,9 +604,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Tanca les crides del navegador predeterminat";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Llistes de filtres per defecte";
-
 /* Name for default Ping theme. */
 "defaultThemeName" = "Ping predeterminat";
 
@@ -663,6 +636,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispositiu %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Descarta els canvis";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Estàs segur que vols descartar aquests canvis? Qualsevol modificació es perdrà.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Vols ignorar els canvis?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Certificat de seguretat";
@@ -798,36 +780,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funcions";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "L'URL introduït no és vàlid";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Només es permeten els URL segurs (https) per a les llistes de filtres personalitzades";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Afegeix";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Llistes comunitàries populars addicionals. Tingues en compte que habilitar massa filtres reduirà la velocitat de navegació.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Error de descàrrega";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Descàrrega pendent";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Edita";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Introdueix l'URL de la llista de filtres";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Última actualització %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Introdueix l'URL de la llista de filtres aquí";
 
 /* Share action title */
 "FindInPage" = "Troba a la pàgina";
@@ -1105,7 +1057,7 @@
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Reclama tokens";
 
-/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+/* Placeholder example: 'You earned 42 BAT by browsing with Ping.' */
 "ntp.earningsReport" = "Has guanyat %@ navegant amb Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -1247,7 +1199,7 @@
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ i %2$lld altres anuncis i rastrejadors bloquejats";
 
 /* The footnote indicating what Ping shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Consulta tots els elements indesitjables que ha bloquejat Brave, a cada pàgina, amb Escuts.";
+"onboarding.blockedAdsOnboardingFootnoteText" = "Consulta tots els elements indesitjables que ha bloquejat Ping, a cada pàgina, amb Escuts.";
 
 /* The text describing user where they should press in order to open Shield panel */
 "onboarding.blockedAdsOnboardingInstructionsText" = "Clica per veure Escuts de Ping";
@@ -1274,7 +1226,7 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "En bloquejar els rastrejadors i els anuncis, els llocs web utilitzen menys dades i es carreguen molt més ràpidament.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Mira la diferència de Brave:\nSense anuncis. Sense rastrejadors. Càrrega de la pàgina molt més ràpida.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Mira la diferència de Ping:\nSense anuncis. Sense rastrejadors. Càrrega de la pàgina molt més ràpida.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Introdueix el nom o l'URL d'un lloc web";
@@ -1453,10 +1405,10 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Continua";
 
-/* A subtitle shown on the setting that toggles analytics on Brave. */
+/* A subtitle shown on the setting that toggles analytics on Ping. */
 "p3a.settingSubtitle" = "Aquestes respostes privades ajuden Ping a fer una estimació de l'ús total de determinades funcions i a millorar-les.";
 
-/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping. */
 "p3a.settingTitle" = "Permet l'anàlisi de productes per preservar la privacitat (P3A)";
 
 /* No comment provided by engineer. */
@@ -1467,6 +1419,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "La teva connexió en aquest lloc no és segura.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "No s'ha verificat la connexió al lloc.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "No s'ha pogut verificar completament la vostra connexió a aquest lloc. Podeu continuar, o proveu de tornar a carregar la pàgina per establir una connexió segura.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Consulta el certificat";
@@ -1775,7 +1733,7 @@
 "playList.undoRemoveButtonTitle" = "Desfés";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Afegeix un botó de llista de reproducció (semblen 4 línies amb un símbol +) al costat de la barra d'adreces del navegador de Brave. Aquest botó et permet accedir ràpidament per obrir la llista de reproducció o afegir o eliminar contingut multimèdia. ";
+"playlist.urlBarButtonOptionFooter" = "Afegeix un botó de llista de reproducció (semblen 4 línies amb un símbol +) al costat de la barra d'adreces del navegador de Ping. Aquest botó et permet accedir ràpidament per obrir la llista de reproducció o afegir o eliminar contingut multimèdia. ";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Activa el botó d'accés ràpid";
@@ -1891,7 +1849,7 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Sincronitza ara";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
+/* Description for closing the `Ping Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tanca el menú Escuts";
 
 /* Settings privacy section title */
@@ -1975,10 +1933,10 @@
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Activa les notificacions";
 
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Message of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationMessage" = "Un resum de com Ping et va protegir en línia aquesta setmana.";
 
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+/* Title of a notification we show to the user, on tapbrave it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Informe setmanal de privacitat";
 
 /* Text of a button that opens up a Privacy Reports screen. */
@@ -1990,7 +1948,7 @@
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Les dades del centre de privacitat s'emmagatzemen localment i mai s'envien enlloc.";
 
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+/* Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers. */
 "privacyHub.privacyReportsTitle" = "Centre de privacitat";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
@@ -2066,7 +2024,7 @@
 "PrivateBrowsingOnlyWarning" = "El mode Només navegació d'incògnit tancarà totes les pestanyes actuals i tancarà la sessió de tots els llocs.";
 
 /* Private tab details */
-"PrivateTabBody" = "Les pestanyes d'incògnit no es guarden a Brave, però no et fan anònim en línia. Els llocs que visites en una pestanya d'incògnit no apareixeran a l'historial i les teves galetes sempre s'esvaeixen quan les tanques; no en quedarà cap rastre a Brave. Tanmateix, les descàrregues es desaran.\nEl teu operador de telefonia mòbil (o el propietari de la xarxa Wi-Fi o VPN a la qual estàs connectat) pot veure quins llocs visites i aquests llocs aprendran la teva adreça IP pública, fins i tot a les pestanyes d'incògnit.";
+"PrivateTabBody" = "Les pestanyes d'incògnit no es guarden a Ping, però no et fan anònim en línia. Els llocs que visites en una pestanya d'incògnit no apareixeran a l'historial i les teves galetes sempre s'esvaeixen quan les tanques; no en quedarà cap rastre a Ping. Tanmateix, les descàrregues es desaran.\nEl teu operador de telefonia mòbil (o el propietari de la xarxa Wi-Fi o VPN a la qual estàs connectat) pot veure quins llocs visites i aquests llocs aprendran la teva adreça IP pública, fins i tot a les pestanyes d'incògnit.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "L'ús de les pestanyes d'incògnit només canvia el que fa Ping al teu dispositiu, no canvia el comportament de ningú més.\n\nEls llocs sempre aprenen la teva adreça IP quan els visites. A partir d'això, sovint poden endevinar aproximadament on ets, normalment la teva ciutat. De vegades, aquesta estimació de la ubicació pot ser molt més específica. Els llocs també saben tot el que els dius específicament, com ara els termes de cerca. Si inicies sessió en un lloc, sabran que sou el propietari d'aquell compte. Encara estaràs fora de sessió quan tanquis les pestanyes d'incògnit perquè Ping llençarà la galeta que et manté connectat.\n\nQui et connecti a Internet (el teu ISP) pot veure tota l'activitat de la teva xarxa. Sovint, aquest és el teu operador de telefonia mòbil. Si estàs connectat a una xarxa Wi-Fi, aquest és el propietari d'aquesta xarxa i, si fas servir una VPN, és qui la dirigeix. El teu ISP pot veure quins llocs visites mentre els visites. Si aquests llocs utilitzen HTTPS, no poden fer molt més que una conjectura educada sobre el que fas en aquests llocs. Però si un lloc només utilitza HTTP, el teu ISP pot veure-ho tot: els termes de cerca, quines pàgines llegeixes i quins enllaços segueixes.\n\nSi un ocupador gestiona el teu dispositiu, també pots fer un rastrejament d'allò que fas amb ell. Probablement, l'ús de pestanyes d'incògnit no els impedirà saber quins llocs has visitat. Una altra persona amb accés al teu dispositiu també podria tenir instal·lat programari que supervisa la teva activitat, i les pestanyes d'incògnit tampoc et protegiran d'això.";
@@ -2083,7 +2041,7 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Motors de cerca ràpida";
 
-/* Open the App Store to rate Brave. */
+/* Open the App Store to rate Ping. */
 "RateBrave" = "Valora Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
@@ -2240,7 +2198,7 @@
 "ReportBrokenSiteBody1" = "Fes saber als desenvolupadors de Ping que aquesta web no funciona de forma adequada amb Escuts:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Nota: L'informe enviat als servidors de Ping inclourà l'adreça del lloc, el número de la versió de Brave, la configuració d'Escuts, l'estat de la VPN i la configuració de la llengua.";
+"ReportBrokenSiteBody2" = "Nota: L'informe enviat als servidors de Ping inclourà l'adreça del lloc, el número de la versió de Ping, la configuració d'Escuts, l'estat de la VPN i la configuració de la llengua.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Envia";
@@ -2279,7 +2237,7 @@
 "RestoreTabOnCrashAlertTitle" = "Ping s'ha tancat inesperadament.";
 
 /* Body for Ping Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Amb Recompenses de Brave, pots veure anuncis que preserven la privacitat des de la xarxa d'Anuncis de Brave. Sense rastrejadors. Sense alentiments. I les teves dades es mantenen totalment segures.";
+"rewards.braveTalkRewardsOptInBody" = "Amb Recompenses de Ping, pots veure anuncis que preserven la privacitat des de la xarxa d'Anuncis de Ping. Sense rastrejadors. Sense alentiments. I les teves dades es mantenen totalment segures.";
 
 /* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Activa les recompenses";
@@ -2309,7 +2267,7 @@
 "rewards.optInDisclaimer" = "En clicar, acceptes les %1$@ i %2$@. Desactiva-ho en qualsevol moment a Configuració.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Dones suport automàticament als editors i creadors de contingut activant els Anuncis Privats de Brave, que són anuncis que respecten la privacitat donada pels creadors de contingut.";
+"rewards.settingsToggleMessage" = "Dones suport automàticament als editors i creadors de contingut activant els Anuncis Privats de Ping, que són anuncis que respecten la privacitat donada pels creadors de contingut.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Activa Recompenses de Ping";
@@ -2464,7 +2422,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Comparteix";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Comparteix recompenses internes";
 
 /* No comment provided by engineer. */
@@ -2482,7 +2440,7 @@
 /* No comment provided by engineer. */
 "RewardsInternalsSupported" = "Compatible";
 
-/* 'Rewards' as in 'Brave Rewards' */
+/* 'Rewards' as in 'Ping Rewards' */
 "RewardsInternalsTitle" = "Recompenses internes";
 
 /* No comment provided by engineer. */
@@ -2514,6 +2472,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Desa";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Desa els canvis";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Registres desats";
@@ -2668,11 +2629,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Configuració de qualitat";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Aquest ping privat permet que Ping faci una estimació dels usuaris actius.";
+/* Description to explain the daily usage brave toggle */
+"settings.sendUsagePingDescription" = "Aquest brave privat permet que Ping faci una estimació dels usuaris actius.";
 
-/* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Envia automàticament el ping d'ús diari a Ping";
+/* Title to explain the daily usage brave toggle */
+"settings.sendUsagePingTitle" = "Envia automàticament el brave d'ús diari a Ping";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "No es pot carregar la pàgina.";
@@ -2753,7 +2717,7 @@
 "ShieldsDefaultsFooter" = "Aquestes són les proteccions predeterminades d'Escuts pels nous llocs web. Si les canvies, no afectarà la configuració existent per a cada lloc web.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Estàs navegant per aquest lloc sense les proteccions de privacitat de Brave. No funciona correctament amb Escuts?";
+"ShieldsDownDisclaimer" = "Estàs navegant per aquest lloc sense les proteccions de privacitat de Ping. No funciona correctament amb Escuts?";
 
 /* shields overview message */
 "ShieldsOverview" = "El lloc web d'Escuts permet controlar quan es bloquegen els anuncis i els rastrejadors per a cada lloc que visites. Si prefereixes veure anuncis en un lloc específic, pots activar-los aquí.";
@@ -2858,7 +2822,7 @@
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Obre lloc web";
 
 /* Description for opening Ping Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Aquesta opció obrirà la configuració de Brave. Per canviar diverses opcions de Siri, selecciona l'element de menú \"Siri i cerca\" i personalitza les teves opcions.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Aquesta opció obrirà la configuració de Ping. Per canviar diverses opcions de Siri, selecciona l'element de menú \"Siri i cerca\" i personalitza les teves opcions.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Obre Configuració";
@@ -3013,6 +2977,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Suprimeix el compte de sincronització";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Si suprimeixes el compte, se suprimiran les teves dades xifrades dels servidors Ping i es desactivarà la sincronització en tots els dispositius connectats.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "No obstant això, no s'eliminaran les dades que s'emmagatzemen localment en aquests dispositius.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decideixes començar a utilitzar de nou la sincronització, hauràs de crear un compte nou i tornar a afegir cada dispositiu un per un.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "S'ha produït un error en recuperar dispositius en cadena de sincronització.";
 
@@ -3050,13 +3023,13 @@
 "SyncAddDeviceScan" = "Codi QR de la cadena de sincronització";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Al segon dispositiu mòbil, ves a Sincronització al Tauler de configuració i prem el botó \"Escaneja el codi de sincronització\". A continuació, utilitza la teva càmera per escanejar el codi QR.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
+"SyncAddDeviceScanDescription" = "Al segon dispositiu mòbil, aneu a Sincronització al tauler de configuració i toqueu el botó \"Escaneja el codi de sincronització\". Utilitzeu la vostra càmera per escanejar el codi QR a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Introdueix el codi de sincronització";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Al dispositiu, ves a Sincronització al Tauler de configuració i prem el botó \"%@\". Introdueix les paraules del codi de la cadena de sincronització que es mostren a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
+"SyncAddDeviceWordsDescription" = "Al dispositiu, aneu a Sincronització al tauler de configuració i toqueu el botó \"%@\". Introduïu les paraules del codi de la cadena de sincronització que es mostren a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Introdueix paraules de codi";
@@ -3070,11 +3043,20 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Tria el tipus de dispositiu amb què et vols sincronitzar.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "El codi ha caducat. Genera'n un de nou clicant al botó següent.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Aquest codi temporal és vàlid per al proper %\nAquest codi temporal és vàlid durant les properes %@";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Ordinador";
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Suprimeix el compte de sincronització";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Sembla que s'ha creat aquest codi en un aparell amb una versió més antiga de Ping. Actualitzeu l'altre aparell amb la versió més recent de Ping i, a continuació, creeu un codi de sincronització nou.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositius i configuració";
@@ -3113,7 +3095,7 @@
 "SyncRemoveDeviceDefaultName" = "Dispositiu";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Les actuals dades sincronitzades es conservaran, però se suprimiran totes les dades de la memòria cau de la sincronització de Brave. Hauràs d'iniciar una nova cadena de sincronització per tornar a sincronitzar les dades del dispositiu.";
+"SyncRemoveLastDeviceMessage" = "Les actuals dades sincronitzades es conservaran, però se suprimiran totes les dades de la memòria cau de la sincronització de Ping. Hauràs d'iniciar una nova cadena de sincronització per tornar a sincronitzar les dades del dispositiu.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Suprimeix cadena de sincronització";
@@ -3337,7 +3319,7 @@
 /* The name of the feature in settings */
 "today.braveToday.title" = "Notícies";
 
-/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+/* Shown below 'Channels' explaining what will be shown when tapbrave on it. */
 "today.channelsButtonSubtitle" = "Segueix els temes que t'interessen";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
@@ -3379,7 +3361,7 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Vaja…";
 
-/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapbrave on it */
 "today.followingButtonSubtitle" = "Gestiona les fonts del teu canal de continguts";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
@@ -3401,10 +3383,10 @@
 "today.insecureSourcesHeader" = "Afegeix les fonts insegures sota el teu propi risc";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Segueix les teves fonts preferides, en un sol canal. Només cal que obris una pestanya a Brave, desplaça't cap avall i... voilà!\nNotícies de Ping és compatible amb anuncis privats i anònims.";
+"today.introCardBody" = "Segueix les teves fonts preferides, en un sol canal. Només cal que obris una pestanya a Ping, desplaça't cap avall i... voilà!\nNotícies de Ping és compatible amb anuncis privats i anònims.";
 
 /* Shown above a button that turns on the \"Ping News\" product in the app. */
-"today.introCardTitle" = "Activa Notícies de Brave, i no et perdis mai una història";
+"today.introCardTitle" = "Activa Notícies de Ping, i no et perdis mai una història";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Mostra Notícies de Ping";
@@ -3412,7 +3394,7 @@
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Més informació sobre les teves dades";
 
-/* 'Brave Offers' is a product name */
+/* 'Ping Offers' is a product name */
 "today.moreBraveOffers" = "Més ofertes de Ping";
 
 /* No comment provided by engineer. */
@@ -3436,6 +3418,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promocionat";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Valora Ping a l'App Store";
+
 /* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Amaga";
 
@@ -3446,7 +3431,7 @@
 "today.rateBraveCardSubtitle" = "Dona'ns la teva opinió!";
 
 /* Title shown on the Rate Ping Card */
-"today.rateBraveCardTitle" = "T'agrada Brave?";
+"today.rateBraveCardTitle" = "T'agrada Ping?";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Actualitza";
@@ -3538,9 +3523,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Ping no emmagatzema ni comparteix les teves cerques per veu.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "activa";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Vols mantenir-te protegit? Només has de renovar abans que finalitzi la teva subscripció. Com a agraïment per la renovació, fins i tot tindràs un 20% de descompte durant els pròxims 3 mesos.";
 
@@ -3559,140 +3541,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Oh no! La teva subscripció VPN de Ping està a punt de caducar.";
 
-/* Button text to buy Ping VPN */
-"vpn.buyButton" = "Compra";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Tallafoc + VPN de Ping";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxDevicesProtect" = "Protegeix 5 dispositius en 1 subscripció";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxGeoLocation" = "Tria la teva ubicació geogràfica/nacional";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxNoIPLog" = "Ping mai registra la teva activitat";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxProtectYourDevices" = "Protegeix totes les aplicacions i tot el teu dispositiu";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSaferWifi" = "Més segur per a la Wi-Fi pública o domèstica";
-
-/* Text for a checkbox to present the user benefits for using Ping VPN */
-"vpn.checkboxSpeedFast" = "Extremadament ràpid, fins a 100 Mbps";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Versió de l'aplicació";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Operador de telefonia mòbil";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Ping no et fa un seguiment ni sap com fas servir la nostra aplicació, de manera que no sabem com has configurat la VPN. Si us plau, comparteix informació sobre el problema que estàs experimentant i farem tot el possible per resoldre'l tan aviat com puguem.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "No es pot enviar el correu electrònic. Comprova la configuració del correu electrònic.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Selecciona la informació que et sentis còmode compartint amb nosaltres.\n\nCom més informació comparteixis amb nosaltres a l'inici, més fàcil serà per al nostre personal d'assistència ajudar-te a resoldre el problema. ";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Suport proporcionat amb l'ajuda de l'equip de Guardian.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "Nom del host VPN";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Assumpte";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Problema de fiabilitat de la connexió";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "No hi ha internet quan està connectat";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Altres";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "No s'ha pogut connectar a la VPN (altres errors)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Connexió lenta";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "El lloc web no funciona";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Registres d'errors";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Tipus de xarxa";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Plataforma";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Continua cap al correu electrònic";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Tipus de subscripció";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "Fus horari d'iOS";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Assumpte del Tallafoc + VPN de Ping";
-
-/* Button text to enable Ping VPN */
-"vpn.enableButton" = "Activa";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "No s'ha pogut connectar a l'App Store, torna-ho a provar d'aquí a uns minuts.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Error de l'App Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Tots els plans inclouen un %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "prova gratuïta de 7 dies";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "prova 7 dies gratuïts";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Totes les subscripcions es renoven automàticament, però es poden cancel·lar abans de la renovació.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Aquest perfil permet a la VPN connectar-se automàticament i assegurar el trànsit durant tot el temps al teu dispositiu. Aquesta connexió VPN s'encriptarà i s'enviarà a través del tallafoc intel·ligent de Ping per bloquejar connexions potencialment perjudicials i invasives.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Instal·la el perfil de VPN";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Ara, Ping instal·larà un perfil de VPN.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "Ara la VPN està activada";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Instal·la la VPN";
-
-/* Button text to try free Ping VPN */
-"vpn.learnMore" = "Prova'l de forma GRATUÏTA";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Es renova mensualment";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Subscripció mensual";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Caducat";
 
 /* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Bloqueja les connexions de xarxa no desitjades";
@@ -3715,56 +3571,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Impulsat per";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Selecciona el teu protocol de transport preferit. Un cop canviïs, les teves credencials VPN existents s'esborraran i et tornaràs a connectar si s'ha establert una connexió actualitzada de VPN.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "No s'ha pogut canviar el protocol del túnel. Torna-ho a provar més tard.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Error de servidor";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "protocol de transport";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "El protocol del túnel VPN ha canviat.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Se seleccionarà automàticament la regió del servidor més propera a tu, en funció de la zona horària del teu sistema. Això es recomana per garantir velocitats ràpides d'internet.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Automàtic";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "No s'ha pogut canviar de servidor. Torna-ho a provar més tard.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Error de servidor";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Regió del servidor";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "La regió VPN ha canviat.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "No es pot restablir la configuració de la VPN. Si us plau torna-ho a provar. Si el problema continua, posa't en contacte amb el servei d'assistència per obtenir ajuda.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Torna-ho a provar";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "No s'ha pogut restablir";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "La configuració de VPN s'ha restablert correctament.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Restabliment correcte";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Restaura";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "Si us plau, inicia la sessió al teu compte de Ping per actualitzar la sessió de VPN.";
@@ -3777,54 +3585,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Sessió caducada";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Actualitza a una VPN per protegir la teva connexió i bloquejar arreu els rastrejadors invasius.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Posa't en contacte amb l'equip de suport tècnic";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "No s'ha pogut recuperar la llista de servidors. Torna-ho a provar més tard.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "Suport de VPN";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Enllaça la compra al teu compte de Ping";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Enllaça la compra de l'App Store al teu compte de Ping per utilitzar la VPN de Ping en altres dispositius.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Gestiona la subscripció";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Bescanvia el codi d'oferta";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Restableix la configuració";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Host";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Ubicació";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Servidor";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Caduca";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Subscripció";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Estatus";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Protocol de transport";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Desactivat";
@@ -3851,10 +3611,10 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Estàs preparat per protegir totes les aplicacions del teu telèfon? Torna a la VPN de Ping i aconsegueix un 20% de descompte durant els pròxims 3 mesos.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "La VPN de Ping sempre ha bloquejat els rastrejadors a totes les aplicacions, fins i tot fora del navegador de Brave. Ara pots veure qui t'ha intentat rastrejar amb el Centre de Privacitat de Ping.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "La VPN de Ping sempre ha bloquejat els rastrejadors a totes les aplicacions, fins i tot fora del navegador de Ping. Ara pots veure qui t'ha intentat rastrejar amb el Centre de Privacitat de Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Sabies que la VPN de Ping et protegeix fora del navegador de Brave?";
+"vpn.subscribeVPNProtectionPopOverTitle" = "Sabies que la VPN de Ping et protegeix fora del navegador de Ping?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Actualitza";
@@ -3874,41 +3634,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Actualitza el pagament";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Actualitza el mètode de pagament";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Fins i tot, en segon pla, Ping continuarà protegint-te.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "El Tallafoc + VPN de Ping està activat";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "S'ha produït un problema en inicialitzar la VPN. Torna-ho a provar o prova de restablir la configuració a la pàgina de configuració de VPN.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Error";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Per funcionar, el Tallafoc + VPN de Ping requereix que s'instal·li un perfil.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Permís denegat";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "No es pot bescanviar el codi d'oferta. Torna-ho a provar o comprova els detalls del teu codi d'oferta i torna-ho a provar.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "No es pot completar la compra. Torna-ho a provar o comprova les teves dades de pagament a Apple i torna-ho a provar.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Error";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Les subscripcions es carregaran mitjançant el teu compte d'iTunes.\n\nQualsevol part no utilitzada de la prova gratuïta, si s'ofereix, es perd en comprar una subscripció.\n\nLa teva subscripció es renovarà automàticament tret que es cancel·li almenys 24 hores abans del final del període actual.\n\nPots gestionar les teves subscripcions a Configuració.\n\nEn utilitzar Brave, acceptes les Condicions d'ús i la Política de privacitat.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Codi de bescanvi";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Regió del servidor";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Configuració actual: %@";
@@ -3916,32 +3643,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "Regió VPN";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Això restablirà la configuració del Tallafoc + VPN de Ping i solucionarà qualsevol error. Aquest procés pot trigar un minut.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Restableix la configuració";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Restableix";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Subscripció mensual";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Subscripció anual";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Actualitza la teva forma de pagament";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Renovar estalvia anualment %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Millor valor";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Un any";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Data de creació de la cartera";
@@ -3970,13 +3673,13 @@
 /* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
 "websiteData.noSavedWebsiteData" = "No hi ha dades del lloc web desades";
 
-/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeAllDataRecords" = "Suprimeix-ho tot";
 
-/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapbrave it will delete that records and remove it from the list */
 "websiteData.removeDataRecord" = "Suprimeix";
 
-/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapbrave it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Suprimeix %ld elements";
 
 /* Title for favorites widget on 'add widget' screen. */
@@ -4000,6 +3703,9 @@
 /* History tableview section header */
 "Yesterday" = "Ahir";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Habilita vídeos d'alta qualitat de YouTube";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Si actives aquesta funció experimental, es reproduirà el vídeo amb la màxima qualitat disponible i s'utilitzaran dades addicionals.";
 
@@ -4008,6 +3714,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Activat";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Qualitat de reproducció de YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Permet mitjançant Wi-Fi";

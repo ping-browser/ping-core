@@ -17,7 +17,6 @@ import { cancelHardwareOperation } from '../../common/async/hardware'
 
 import { Store } from '../../common/async/types'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
-import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
 import { storeCurrentAndPreviousPanel } from '../../utils/local-storage-utils'
 
 const handler = new AsyncActionHandler()
@@ -31,11 +30,7 @@ async function refreshWalletInfo(store: Store) {
   const { walletInfo } = await proxy.walletHandler.getWalletInfo()
   const { allAccounts } = await proxy.keyringService.getAllAccounts()
   store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
-  store.dispatch(
-    WalletActions.refreshAll({
-      skipBalancesRefresh: true
-    })
-  )
+  store.dispatch(WalletActions.refreshAll())
 }
 
 handler.on(PanelActions.navigateToMain.type, async (store: Store) => {
@@ -68,7 +63,7 @@ handler.on(
       // eslint-disable-next-line max-len
       // eslint-disable @typescript-eslint/no-unnecessary-type-assertion
       await cancelHardwareOperation(
-        payload.hardware.vendor as HardwareVendor,
+        payload.hardware.vendor,
         payload.accountId.coin
       )
     }

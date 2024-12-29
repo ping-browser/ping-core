@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use core::fmt;
 use core::fmt::Display;
 
@@ -47,9 +52,11 @@ impl Display for InternalError {
                     StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR);
                 write!(
                     f,
-                    "Server internal error: {} {}",
+                    "Server internal error: {} {} - {} {}",
                     code.as_str(),
-                    code.canonical_reason().unwrap_or("unknown")
+                    code.canonical_reason().unwrap_or("unknown"),
+                    app_err.error_code,
+                    app_err.message,
                 )
             }
             InternalError::BadRequest(app_err) => {
@@ -57,11 +64,12 @@ impl Display for InternalError {
                     StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::BAD_REQUEST);
                 write!(
                     f,
-                    "Bad client request: {} {} - {} {}",
+                    "Bad client request: {} {} - {} {} {}",
                     code.as_str(),
                     code.canonical_reason().unwrap_or("unknown"),
                     app_err.error_code,
-                    app_err.data.get("validationErrors").unwrap_or(&Value::Null)
+                    app_err.message,
+                    app_err.data.get("validationErrors").unwrap_or(&Value::Null),
                 )
             }
             InternalError::UnhandledStatus(app_err) => {
@@ -69,9 +77,11 @@ impl Display for InternalError {
                     StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR);
                 write!(
                     f,
-                    "Unhandled request status: {} {}",
+                    "Unhandled request status: {} {} - {} {}",
                     code.as_str(),
-                    code.canonical_reason().unwrap_or("unknown")
+                    code.canonical_reason().unwrap_or("unknown"),
+                    app_err.error_code,
+                    app_err.message,
                 )
             }
             InternalError::RetryLater(after) => write!(

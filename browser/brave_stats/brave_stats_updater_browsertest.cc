@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_stats/brave_stats_updater.h"
+
 #include <memory>
 
 #include "base/command_line.h"
@@ -12,7 +14,6 @@
 #include "base/run_loop.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/switches.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -23,17 +24,15 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "net/base/url_util.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #endif
 
 namespace {
@@ -46,7 +45,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequestForStats(
     const net::test_server::HttpRequest& request) {
   std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
       new net::test_server::BasicHttpResponse());
-  if (request.relative_url == "/promo/initialize/nonua") {
+  if (request.relative_url == "//promo/initialize/nonua") {
     // We need a download id to make promo initialization happy
     http_response->set_code(net::HTTP_OK);
     http_response->set_content("{\"download_id\":\"keur123\"}");
@@ -99,8 +98,7 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
   void SetBaseUpdateURLForTest() {
     std::unique_ptr<base::Environment> env(base::Environment::Create());
     env->SetVar("BRAVE_REFERRALS_SERVER",
-                embedded_test_server()->host_port_pair().ToString());
-    env->SetVar("BRAVE_REFERRALS_LOCAL", "1");  // use http for local testing
+                embedded_test_server()->base_url().spec());
   }
 
   GURL GetUpdateURL() const { return update_url_; }
@@ -163,7 +161,8 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   WaitForStandardStatsUpdatedCallback();
 
   // We get //1/usage/brave-core here, so ignore the first slash.
-  EXPECT_STREQ(GetUpdateURL().path().c_str() + 1, "/1/usage/brave-core");
+  EXPECT_STREQ(UNSAFE_TODO(GetUpdateURL().path().c_str() + 1),
+               "/1/usage/brave-core");
 
   // First check preference should now be true
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
@@ -248,11 +247,10 @@ class BraveStatsUpdaterReferralCodeBrowserTest
     BraveStatsUpdaterBrowserTest::SetUp();
   }
 
-  int WritePromoCodeFile(const base::FilePath& promo_code_file,
-                         const std::string& referral_code) {
+  void WritePromoCodeFile(const base::FilePath& promo_code_file,
+                          const std::string& referral_code) {
     base::ScopedAllowBlockingForTesting allow_blocking;
-    return base::WriteFile(promo_code_file, referral_code.c_str(),
-                           referral_code.size());
+    base::WriteFile(promo_code_file, referral_code);
   }
 
   const std::string referral_code() { return "FOO123"; }

@@ -24,10 +24,14 @@ class BraveDownloadItemView : public DownloadItemView {
   ~BraveDownloadItemView() override;
 
   // views::View:
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
 
   // download::DownloadItem::Observer:
   void OnDownloadUpdated() override;
+
+  // overrides from DownloadItemView:
+  std::u16string CalculateAccessibleName() const override;
 
  protected:
   // views::View:
@@ -53,7 +57,6 @@ class BraveDownloadItemView : public DownloadItemView {
   gfx::ImageSkia GetLockIcon(int height);
 
   // Overrides the accessible name construction to reflect the origin URL.
-  void SetMode(download::DownloadItemMode mode) override;
   void UpdateLabels() override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnMouseExited(const ui::MouseEvent& event) override;

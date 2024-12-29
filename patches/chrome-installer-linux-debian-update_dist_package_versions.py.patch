@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/debian/update_dist_package_versions.py b/chrome/installer/linux/debian/update_dist_package_versions.py
-index 76aa431abe4a3d26981a4e074491b43a6becadb8..d193baaf44c2dc9fa4d65f7d5190c881de6f9b82 100755
+index b51416e131cb4164bfd1936fa01545e90fdfd967..83c257a1d4a59b8a1e0fc2ce6d13f74984caf9a8 100755
 --- a/chrome/installer/linux/debian/update_dist_package_versions.py
 +++ b/chrome/installer/linux/debian/update_dist_package_versions.py
-@@ -39,6 +39,7 @@ PACKAGE_FILTER = {
+@@ -38,6 +38,7 @@ PACKAGE_FILTER = {
      "libatspi2.0-0",
      "libc6",
      "libcairo2",

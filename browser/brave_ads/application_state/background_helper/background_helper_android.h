@@ -10,13 +10,11 @@
 
 #include "base/android/application_status_listener.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
+#include "brave/components/brave_ads/browser/application_state/background_helper.h"
 
 namespace brave_ads {
 
-class BackgroundHelperAndroid
-    : public BackgroundHelper,
-      public base::SupportsWeakPtr<BackgroundHelperAndroid> {
+class BackgroundHelperAndroid final : public BackgroundHelper {
  public:
   BackgroundHelperAndroid(const BackgroundHelperAndroid&) = delete;
   BackgroundHelperAndroid& operator=(const BackgroundHelperAndroid&) = delete;
@@ -35,13 +33,15 @@ class BackgroundHelperAndroid
  private:
   void OnApplicationStateChange(base::android::ApplicationState state);
 
-  // BackgroundHelper impl
+  // BackgroundHelper:
   bool IsForeground() const override;
 
   std::unique_ptr<base::android::ApplicationStatusListener>
       app_status_listener_;
 
   base::android::ApplicationState last_state_;
+
+  base::WeakPtrFactory<BackgroundHelperAndroid> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads

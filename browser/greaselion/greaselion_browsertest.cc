@@ -26,6 +26,7 @@
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -42,10 +43,10 @@ using greaselion::GreaselionDownloadService;
 using greaselion::GreaselionService;
 using greaselion::GreaselionServiceFactory;
 
-const char kTestDataDirectory[] = "greaselion-data";
-const char kEmbeddedTestServerDirectory[] = "greaselion";
+constexpr char kTestDataDirectory[] = "greaselion-data";
+constexpr char kEmbeddedTestServerDirectory[] = "greaselion";
 
-const char kWaitForTitleChangeScript[] = R"(
+constexpr char kWaitForTitleChangeScript[] = R"(
   new Promise((resolve) => {
     if (document.title !== 'OK') {
       resolve(document.title)
@@ -129,6 +130,7 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
     BaseLocalDataFilesBrowserTest::SetUpOnMainThread();
     base::ScopedAllowBlockingForTesting allow_blocking;
     response_->LoadMocks();
+    profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
   }
 
   // BaseLocalDataFilesBrowserTest overrides
@@ -515,7 +517,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, FoldersAreRemovedOnUpdate) {
   auto io_runner = base::ThreadPool::CreateSequencedTaskRunner(
       {base::MayBlock(), base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 
-  auto count_folders_on_io_runner = [&io_runner]() {
+  auto count_folders_on_io_runner = [&io_runner] {
     base::RunLoop run_loop;
     size_t folder_count;
 

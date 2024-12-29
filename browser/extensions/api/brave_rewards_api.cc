@@ -5,7 +5,6 @@
 
 #include "brave/browser/extensions/api/brave_rewards_api.h"
 
-#include <optional>
 #include <string>
 #include <utility>
 
@@ -16,15 +15,11 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -37,7 +32,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/event_router.h"
-#include "extensions/common/constants.h"
 
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;
@@ -159,16 +153,6 @@ BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
 ExtensionFunction::ResponseAction BraveRewardsOpenRewardsPanelFunction::Run() {
   if (auto* coordinator = GetPanelCoordinator(this)) {
     coordinator->OpenRewardsPanel();
-  }
-  return RespondNow(NoArguments());
-}
-
-BraveRewardsShowRewardsSetupFunction::~BraveRewardsShowRewardsSetupFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsShowRewardsSetupFunction::Run() {
-  if (auto* coordinator = GetPanelCoordinator(this)) {
-    coordinator->ShowRewardsSetup();
   }
   return RespondNow(NoArguments());
 }
@@ -409,7 +393,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
 
   // Sanity check: don't allow tips in private / tor contexts,
   // although the command should not have been enabled in the first place.
-  if (!brave::IsRegularProfile(browser_context())) {
+  if (!Profile::FromBrowserContext(browser_context())->IsRegularProfile()) {
     return RespondNow(Error("Cannot tip to site in a private context"));
   }
 
@@ -988,8 +972,8 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
     dict.Set("minEarningsThisMonth", statement->min_earnings_this_month);
     dict.Set("maxEarningsThisMonth", statement->max_earnings_this_month);
-    dict.Set("minEarningsLastMonth", statement->min_earnings_last_month);
-    dict.Set("maxEarningsLastMonth", statement->max_earnings_last_month);
+    dict.Set("minEarningsLastMonth", statement->min_earnings_previous_month);
+    dict.Set("maxEarningsLastMonth", statement->max_earnings_previous_month);
 
     Respond(WithArguments(true, std::move(dict)));
   }

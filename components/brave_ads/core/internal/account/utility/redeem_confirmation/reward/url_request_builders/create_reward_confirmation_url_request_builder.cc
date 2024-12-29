@@ -34,14 +34,14 @@ CreateRewardConfirmationUrlRequestBuilder::
 }
 
 mojom::UrlRequestInfoPtr CreateRewardConfirmationUrlRequestBuilder::Build() {
-  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
-  url_request->url = BuildUrl();
-  url_request->headers = BuildHeaders();
-  url_request->content = BuildBody();
-  url_request->content_type = "application/json";
-  url_request->method = mojom::UrlRequestMethodType::kPost;
+  mojom::UrlRequestInfoPtr mojom_url_request = mojom::UrlRequestInfo::New();
+  mojom_url_request->url = BuildUrl();
+  mojom_url_request->headers = BuildHeaders();
+  mojom_url_request->content = BuildBody();
+  mojom_url_request->content_type = "application/json";
+  mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
 
-  return url_request;
+  return mojom_url_request;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -49,9 +49,10 @@ mojom::UrlRequestInfoPtr CreateRewardConfirmationUrlRequestBuilder::Build() {
 GURL CreateRewardConfirmationUrlRequestBuilder::BuildUrl() const {
   CHECK(confirmation_.reward);
 
-  const std::string url_host = confirmation_.ad_type == AdType::kSearchResultAd
-                                   ? GetAnonymousSearchUrlHost()
-                                   : GetAnonymousUrlHost();
+  const std::string url_host =
+      confirmation_.ad_type == mojom::AdType::kSearchResultAd
+          ? GetAnonymousSearchUrlHost()
+          : GetAnonymousUrlHost();
 
   const std::string spec =
       base::StrCat({url_host, BuildCreateRewardConfirmationUrlPath(

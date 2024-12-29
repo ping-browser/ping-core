@@ -4,6 +4,8 @@
   "version": "1.0",
   "description": "Ai copilot - by Ping.",
   "permissions": [
+    "storage",
+    "tabs",
     "activeTab",
     "scripting",
     "declarativeNetRequest",
@@ -11,12 +13,12 @@
     "declarativeNetRequestWithHostAccess"
   ],
   "host_permissions": [
-    "https://openai-text-summarizer.azurewebsites.net/*"
+    "https://ping-backend.azurewebsites.net/*"
   ],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["extension/out/ping_ai_copilot_content.bundle.js"],
+      "js": ["extension/out/ping_ai_copilot_aiSummarizer.bundle.js", "extension/out/ping_ai_copilot_rephraser.bundle.js"],
       "css": ["extension/content/ui/style.css"]
     }
   ],

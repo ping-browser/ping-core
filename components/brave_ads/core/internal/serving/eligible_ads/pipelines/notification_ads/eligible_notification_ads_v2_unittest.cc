@@ -8,9 +8,9 @@
 #include <memory>
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -20,10 +20,10 @@
 
 namespace brave_ads {
 
-class BraveAdsEligibleNotificationAdsV2Test : public UnitTestBase {
+class BraveAdsEligibleNotificationAdsV2Test : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
@@ -41,13 +41,13 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
-  creative_ad_1.segment = "foo-bar1";
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+  creative_ad_1.segment = "parent-child-1";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
-  creative_ad_2.segment = "foo-bar3";
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+  creative_ad_2.segment = "parent-child-3";
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNotificationAds(creative_ads);
@@ -56,31 +56,32 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
   base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::SizeIs(1)));
   eligible_ads_->GetForUserModel(
-      UserModelInfo{IntentUserModelInfo{SegmentList{"foo-bar1", "foo-bar2"}},
-                    LatentInterestUserModelInfo{},
-                    InterestUserModelInfo{SegmentList{"foo-bar3"}}},
+      UserModelInfo{
+          IntentUserModelInfo{SegmentList{"parent-child-1", "parent-child-2"}},
+          LatentInterestUserModelInfo{},
+          InterestUserModelInfo{SegmentList{"parent-child-3"}}},
       callback.Get());
 }
 
-TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
+TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoMatchingSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
-  creative_ad_1.segment = "foo";
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+  creative_ad_1.segment = "parent";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
-  creative_ad_2.segment = "foo-bar";
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+  creative_ad_2.segment = "parent-child";
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNotificationAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::SizeIs(1)));
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(/*user_model=*/{}, callback.Get());
 }
 
@@ -90,9 +91,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
-          IntentUserModelInfo{SegmentList{"intent-foo", "intent-bar"}},
+          IntentUserModelInfo{SegmentList{"parent-child", "parent"}},
           LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"}}},
+          InterestUserModelInfo{SegmentList{"parent-child", "parent"}}},
       callback.Get());
 }
 

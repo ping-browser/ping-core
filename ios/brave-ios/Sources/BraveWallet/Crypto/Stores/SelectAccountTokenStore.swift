@@ -15,14 +15,14 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       let network: BraveWallet.NetworkInfo
       let balance: Double?
       let price: String?
-      let nftMetadata: NFTMetadata?
+      let nftMetadata: BraveWallet.NftMetadata?
 
       init(
         token: BraveWallet.BlockchainToken,
         network: BraveWallet.NetworkInfo,
         balance: Double? = nil,
         price: String? = nil,
-        nftMetadata: NFTMetadata? = nil
+        nftMetadata: BraveWallet.NftMetadata? = nil
       ) {
         self.token = token
         self.network = network
@@ -33,6 +33,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     }
     var id: String { account.id }
     let account: BraveWallet.AccountInfo
+    let bitcoinAccountInfo: BraveWallet.BitcoinAccountInfo?
     let tokenBalances: [TokenBalance]
   }
 
@@ -56,6 +57,8 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   }
   /// Each account and it's tokens
   @Published var accountSections: [AccountSection] = []
+  /// The BTC balances for each Bitcoin account.  Key is `account.id`.
+  @Published private(set) var accountsBTCBalances: [String: [BTCBalanceType: Double]] = [:]
   /// Filter displayed tokens by this query
   @Published var query: String {
     didSet {
@@ -80,13 +83,14 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   /// Cache of prices of assets. The key(s) are the `BraveWallet.BlockchainToken.assetRatioId` lowercased.
   private var pricesForTokensCache: [String: String] = [:]
   /// Cache of metadata for NFTs. The key(s) is the token's `id`.
-  private var metadataCache: [String: NFTMetadata] = [:]
+  private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
 
   let didSelect: (BraveWallet.AccountInfo, BraveWallet.BlockchainToken) -> Void
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var walletServiceObserver: WalletServiceObserver?
@@ -101,6 +105,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType,
     query: String? = nil
@@ -110,6 +115,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     self.rpcService = rpcService
     self.walletService = walletService
     self.assetRatioService = assetRatioService
+    self.bitcoinWalletService = bitcoinWalletService
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
     self.query = query ?? ""
@@ -123,6 +129,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.walletServiceObserver = WalletServiceObserver(
       walletService: walletService,
       _onDefaultBaseCurrencyChanged: { [weak self] currency in
@@ -154,6 +161,8 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
   // All user accounts.
   private var allAccounts: [BraveWallet.AccountInfo] = []
+  /// All` BitcoinAccountInfo` models for every Bitcoin account. Key is `accountId.uniqueKey` of the Account.
+  private var bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo] = [:]
   // All user visible assets, key is `Identifiable.id` of `BlockchainToken`.
   private var userVisibleAssets: [String: BraveWallet.BlockchainToken] = [:]
   // All user accounts.
@@ -168,7 +177,13 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       self.networkFilters = allNetworks.map {
         .init(isSelected: true, model: $0)
       }
-      let allNetworkAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+      let btcAccountInfos = allAccounts.filter({ $0.coin == .btc })
+      if !btcAccountInfos.isEmpty {
+        self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(
+          accounts: btcAccountInfos
+        )
+      }
+      let allNetworkAssets = await assetManager.getUserAssets(
         networks: allNetworks,
         visible: true
       )
@@ -183,8 +198,10 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       self.accountSections = await buildAccountSections(
         selectedNetworks: networkFilters.filter(\.isSelected).map(\.model),
         allAccounts: allAccounts,
+        bitcoinAccounts: bitcoinAccounts,
         userVisibleAssets: Array(userVisibleAssets.values),
         balancesCache: balancesForAccountsCache,
+        btcBalancesCache: accountsBTCBalances,
         balancesFetched: balancesFetched,
         pricesCache: pricesForTokensCache,
         metadataCache: metadataCache,
@@ -208,8 +225,10 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       self.accountSections = await buildAccountSections(
         selectedNetworks: networkFilters.filter(\.isSelected).map(\.model),
         allAccounts: allAccounts,
+        bitcoinAccounts: bitcoinAccounts,
         userVisibleAssets: Array(userVisibleAssets.values),
         balancesCache: balancesForAccountsCache,
+        btcBalancesCache: accountsBTCBalances,
         balancesFetched: balancesFetched,
         pricesCache: pricesForTokensCache,
         metadataCache: metadataCache,
@@ -229,14 +248,27 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       let balancesForAccounts = await withTaskGroup(
         of: TokenBalanceCache.self,
         body: { group in
-          for account in allAccounts {
-            group.addTask {  // get balance for all tokens this account supports
-              let balancesForTokens: [String: Double] = await self.rpcService
-                .fetchBalancesForTokens(
-                  account: account,
-                  networkAssets: networkAssets
-                )
-              return [account.id: balancesForTokens]
+          for account in allAccounts where account.coin != .btc {
+            if let allTokenBalance = assetManager.getAssetBalances(for: nil, account: account.id) {
+              var result: [String: Double] = [:]
+              for balancePerToken in allTokenBalance {
+                let tokenId =
+                  balancePerToken.contractAddress + balancePerToken.chainId
+                  + balancePerToken.symbol + balancePerToken.tokenId
+                result.merge(with: [
+                  tokenId: Double(balancePerToken.balance) ?? 0
+                ])
+              }
+              balancesForAccountsCache.merge(with: [account.id: result])
+            } else {
+              group.addTask {  // get balance for all tokens this account supports
+                let balancesForTokens: [String: Double] = await self.rpcService
+                  .fetchBalancesForTokens(
+                    account: account,
+                    networkAssets: networkAssets
+                  )
+                return [account.id: balancesForTokens]
+              }
             }
           }
           return await group.reduce(
@@ -258,6 +290,25 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
           }
         }
       }
+      if allAccounts.contains(where: { $0.coin == .btc }) {
+        self.accountsBTCBalances = await withTaskGroup(of: [String: [BTCBalanceType: Double]].self)
+        {
+          [bitcoinWalletService] group in
+          for account in allAccounts where account.coin == .btc {
+            group.addTask {
+              let btcBalances = await bitcoinWalletService.fetchBTCBalances(
+                accountId: account.accountId
+              )
+              return [account.id: btcBalances]
+            }
+          }
+          var accountsBTCBalances: [String: [BTCBalanceType: Double]] = [:]
+          for await accountBTCBalances in group {
+            accountsBTCBalances.merge(with: accountBTCBalances)
+          }
+          return accountsBTCBalances
+        }
+      }
       self.balancesFetched = true
       self.updateAccountSections()
       // fetch prices for tokens with balance
@@ -265,6 +316,10 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       for accountBalance in balancesForAccountsCache.values {
         let tokenIdsWithAccountBalance = accountBalance.filter { $1 > 0 }.map(\.key)
         tokenIdsWithAccountBalance.forEach { tokensIdsWithBalance.insert($0) }
+      }
+      if accountsBTCBalances.compactMap({ $0.value[.available] }).contains(where: { $0 > 0 }) {
+        let btcAssets = networkAssets.filter({ $0.network.coin == .btc }).flatMap(\.tokens)
+        btcAssets.forEach { tokensIdsWithBalance.insert($0.id) }
       }
       let assetRatioIdsForTokensWithBalance =
         tokensIdsWithBalance
@@ -294,7 +349,10 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   func fetchNFTMetadata(for userVisibleNFTs: [BraveWallet.BlockchainToken]) {
     guard !userVisibleNFTs.isEmpty else { return }
     Task { @MainActor in
-      let allMetadata = await rpcService.fetchNFTMetadata(tokens: userVisibleNFTs, ipfsApi: ipfsApi)
+      let allMetadata = await rpcService.fetchNFTMetadata(
+        tokens: userVisibleNFTs,
+        ipfsApi: ipfsApi
+      )
       self.metadataCache.merge(with: allMetadata)
       self.updateAccountSections()
     }
@@ -304,11 +362,13 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   private func buildAccountSections(
     selectedNetworks: [BraveWallet.NetworkInfo],
     allAccounts: [BraveWallet.AccountInfo],
+    bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo],
     userVisibleAssets: [BraveWallet.BlockchainToken],
     balancesCache: TokenBalanceCache,
+    btcBalancesCache: [String: [BTCBalanceType: Double]],
     balancesFetched: Bool,
     pricesCache: [String: String],
-    metadataCache: [String: NFTMetadata],
+    metadataCache: [String: BraveWallet.NftMetadata],
     hideZeroBalances: Bool,
     query: String,
     currencyFormatter: NumberFormatter
@@ -332,7 +392,13 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
             // network must support account keyring
             tokenNetwork.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
           {
-            let balance = balancesCache[account.id]?[token.id] ?? 0
+            let balance: Double
+            if token.coin == .btc {
+              // btc has 2 tokens, but tokens are account specific (mainnet/testnet)
+              balance = accountsBTCBalances[account.id]?[.available] ?? 0
+            } else {
+              balance = balancesCache[account.id]?[token.id] ?? 0
+            }
             if hideZeroBalances, balance <= 0 {
               // token has no balance, user is hiding zero balance tokens.
               return nil
@@ -363,6 +429,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
       return AccountSection(
         account: account,
+        bitcoinAccountInfo: bitcoinAccounts[account.id],
         tokenBalances:
           accountTokenBalances
           .sorted { lhs, rhs in
@@ -379,5 +446,21 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     }
 
     return accountSections
+  }
+}
+
+extension SelectAccountTokenStore: WalletUserAssetDataObserver {
+  func cachedBalanceRefreshed() {
+    Task { @MainActor in
+      let allNetworks = await rpcService.allNetworksForSupportedCoins()
+      let allNetworkAssets = await assetManager.getUserAssets(
+        networks: allNetworks,
+        visible: true
+      )
+      fetchAccountBalances(networkAssets: allNetworkAssets)
+    }
+  }
+
+  func userAssetUpdated() {
   }
 }

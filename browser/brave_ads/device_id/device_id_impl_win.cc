@@ -42,7 +42,7 @@ namespace brave_ads {
 namespace {
 
 using IsValidMacAddressCallback =
-    base::RepeatingCallback<bool(const void* bytes, size_t size)>;
+    base::RepeatingCallback<bool(base::span<const uint8_t> bytes)>;
 
 class MacAddressProcessor {
  public:
@@ -82,10 +82,13 @@ class MacAddressProcessor {
     if (index >= found_index_ || size == 0)
       return;
 
-    if (!is_valid_mac_address_callback_.Run(bytes, size))
+    auto mac_address_bytes =
+        UNSAFE_TODO(base::span(static_cast<const uint8_t*>(bytes), size));
+    if (!is_valid_mac_address_callback_.Run(mac_address_bytes)) {
       return;
+    }
 
-    mac_address_ = base::ToLowerASCII(base::HexEncode(bytes, size));
+    mac_address_ = base::ToLowerASCII(base::HexEncode(mac_address_bytes));
 
     found_index_ = index;
   }
@@ -162,7 +165,7 @@ std::string GetMacAddressFromGetIfTable2(
 
   MacAddressProcessor processor(std::move(is_valid_mac_address_callback));
   for (size_t i = 0; i < if_table->NumEntries; i++) {
-    processor.ProcessInterfaceRow(&(if_table->Table[i]));
+    processor.ProcessInterfaceRow(&UNSAFE_TODO((if_table->Table[i])));
   }
 
   if (if_table != NULL) {

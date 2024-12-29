@@ -15,37 +15,11 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 
 namespace {
-
-bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
-                            const std::string& key,
-                            bool nullable,
-                            uint64_t* ret) {
-  if (!ret) {
-    return false;
-  }
-
-  const base::Value* value = dict_value.Find(key);
-  if (!value) {
-    return false;
-  }
-
-  if (nullable && value->is_none()) {
-    *ret = 0;
-    return true;
-  }
-
-  auto* string_value = value->GetIfString();
-  if (!string_value || string_value->empty()) {
-    return false;
-  }
-
-  return base::StringToUint64(*string_value, ret);
-}
 
 mojom::SPLTokenAmountPtr ParseAmountDict(const base::Value::Dict& value) {
   auto* amount = value.FindString("amount");
@@ -409,6 +383,63 @@ std::optional<bool> ParseIsBlockhashValid(const base::Value& json_value) {
   }
 
   return *is_valid;
+}
+
+std::optional<uint64_t> ParseSimulateTransaction(
+    const base::Value& json_value) {
+  auto result = ParseResultDict(json_value);
+  if (!result) {
+    return std::nullopt;
+  }
+
+  const auto* value = result->FindDict("value");
+  if (!value) {
+    return std::nullopt;
+  }
+
+  auto* err = value->FindString("err");
+  if (err) {
+    return std::nullopt;
+  }
+
+  uint64_t units_consumed;
+  if (!GetUint64FromDictValue(*value, "unitsConsumed", false,
+                              &units_consumed)) {
+    return std::nullopt;
+  }
+
+  return units_consumed;
+}
+
+std::optional<std::vector<std::pair<uint64_t, uint64_t>>>
+ParseGetSolanaPrioritizationFees(const base::Value& json_value) {
+  std::vector<std::pair<uint64_t, uint64_t>> fees;
+  auto result = ParseResultList(json_value);
+  if (!result) {
+    return std::nullopt;
+  }
+
+  for (const auto& item : *result) {
+    const auto* fee_value = item.GetIfDict();
+    if (!fee_value) {
+      return std::nullopt;
+    }
+
+    uint64_t slot;
+    if (!GetUint64FromDictValue(*fee_value, "slot", false, &slot)) {
+      return std::nullopt;
+    }
+
+    uint64_t prioritizationFee;
+    if (!GetUint64FromDictValue(*fee_value, "prioritizationFee", false,
+                                &prioritizationFee)) {
+      return std::nullopt;
+    }
+
+    fees.push_back(std::make_pair(slot, prioritizationFee));
+  }
+
+  return fees;
 }
 
 base::OnceCallback<std::optional<std::string>(const std::string& raw_response)>

@@ -9,77 +9,60 @@
 #include <vector>
 
 #include "base/metrics/field_trial_params.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
+#include "brave/components/brave_ads/core/internal/targeting/targeting_test_helper.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsUserModelBuilderTest : public UnitTestBase {
+class BraveAdsUserModelBuilderTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    SetUpFeatures();
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{kPurchaseIntentFeature,
+                              kTextClassificationFeature},
+        /*disabled_features=*/{});
 
-    targeting_ = std::make_unique<test::TargetingHelper>();
+    targeting_helper_ =
+        std::make_unique<test::TargetingHelper>(task_environment_);
 
-    LoadResources();
+    NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
+                                     test::kCountryComponentId);
 
-    NotifyDidInitializeAds();
-  }
-
-  void LoadResources() {
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
-    task_environment_.RunUntilIdle();
-    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                     kLanguageComponentId);
-    task_environment_.RunUntilIdle();
-  }
-
-  void SetUpFeatures() {
-    std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-    enabled_features.emplace_back(kPurchaseIntentFeature,
-                                  base::FieldTrialParams({}));
-
-    enabled_features.emplace_back(kTextClassificationFeature,
-                                  base::FieldTrialParams({}));
-
-    const std::vector<base::test::FeatureRef> disabled_features;
-
-    scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features,
-                                                       disabled_features);
+    NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
+                                     test::kLanguageComponentId);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
 
-  std::unique_ptr<test::TargetingHelper> targeting_;
+  std::unique_ptr<test::TargetingHelper> targeting_helper_;
 };
 
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
   // Arrange
-  targeting_->Mock();
-  task_environment_.RunUntilIdle();
+  targeting_helper_->Mock();
 
   // Act & Assert
-  EXPECT_EQ(test::TargetingHelper::Expectation(), BuildUserModel());
+  base::MockCallback<BuildUserModelCallback> callback;
+  EXPECT_CALL(callback, Run(test::TargetingHelper::Expectation()));
+  BuildUserModel(callback.Get());
 }
 
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModelIfNoTargeting) {
-  // Arrange
-  const UserModelInfo expected_user_model;
-
   // Act & Assert
-  EXPECT_EQ(expected_user_model, BuildUserModel());
+  base::MockCallback<BuildUserModelCallback> callback;
+  EXPECT_CALL(callback, Run(UserModelInfo{}));
+  BuildUserModel(callback.Get());
 }
 
 }  // namespace brave_ads

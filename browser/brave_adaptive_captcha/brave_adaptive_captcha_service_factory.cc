@@ -11,19 +11,19 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/no_destructor.h"
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#endif
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/profiles/profile_util.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#endif
 
 namespace {
 
@@ -73,7 +73,7 @@ BraveAdaptiveCaptchaServiceFactory::GetInstance() {
 // static
 BraveAdaptiveCaptchaService* BraveAdaptiveCaptchaServiceFactory::GetForProfile(
     Profile* profile) {
-  if (!brave::IsRegularProfile(profile)) {
+  if (!profile->IsRegularProfile()) {
     return nullptr;
   }
 
@@ -91,11 +91,12 @@ BraveAdaptiveCaptchaServiceFactory::BraveAdaptiveCaptchaServiceFactory()
 BraveAdaptiveCaptchaServiceFactory::~BraveAdaptiveCaptchaServiceFactory() =
     default;
 
-KeyedService* BraveAdaptiveCaptchaServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveAdaptiveCaptchaServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
-  return new BraveAdaptiveCaptchaService(
+  return std::make_unique<BraveAdaptiveCaptchaService>(
       user_prefs::UserPrefs::Get(context), std::move(url_loader_factory),
       brave_rewards::RewardsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(context)),

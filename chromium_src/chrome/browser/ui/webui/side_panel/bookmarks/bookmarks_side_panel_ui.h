@@ -7,15 +7,27 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_BOOKMARKS_BOOKMARKS_SIDE_PANEL_UI_H_
 
 #define BookmarksSidePanelUI BookmarksSidePanelUI_ChromiumImpl
+#define BookmarksSidePanelUIConfig BookmarksSidePanelUIConfig_Unused
 
 #include "src/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.h"  // IWYU pragma: export
 
+#undef BookmarksSidePanelUIConfig
 #undef BookmarksSidePanelUI
 
 class BookmarksSidePanelUI : public BookmarksSidePanelUI_ChromiumImpl {
  public:
   explicit BookmarksSidePanelUI(content::WebUI* web_ui);
   ~BookmarksSidePanelUI() override;
+};
+
+class BookmarksSidePanelUIConfig
+    : public DefaultTopChromeWebUIConfig<BookmarksSidePanelUI> {
+ public:
+  BookmarksSidePanelUIConfig();
+
+  // DefaultTopChromeWebUIConfig:
+  bool IsPreloadable() override;
+  std::optional<int> GetCommandIdForTesting() override;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_BOOKMARKS_BOOKMARKS_SIDE_PANEL_UI_H_

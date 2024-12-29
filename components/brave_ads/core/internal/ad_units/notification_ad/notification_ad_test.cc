@@ -6,28 +6,29 @@
 #include "base/test/mock_callback.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsNotificationAdIntegrationTest : public UnitTestBase {
+class BraveAdsNotificationAdIntegrationTest : public test::TestBase {
  protected:
-  void SetUp() override { UnitTestBase::SetUp(/*is_integration_test=*/true); }
+  void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
 
   void SetUpMocks() override {
-    const URLResponseMap url_responses = {
+    const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
            /*response_body=*/"/catalog_with_notification_ad.json"}}}};
-    MockUrlResponses(ads_client_mock_, url_responses);
+    test::MockUrlResponses(ads_client_mock_, url_responses);
   }
 
   void ServeAd() {
@@ -48,7 +49,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, ServeAd) {
   ServeAd();
 }
 
-TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
+TEST_F(BraveAdsNotificationAdIntegrationTest,
+       DoNotServeIfPermissionRulesAreDenied) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
@@ -68,7 +70,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
   test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -91,7 +93,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
   test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -116,7 +118,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
   test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -139,7 +141,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
   test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 

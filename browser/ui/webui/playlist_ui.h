@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
@@ -25,14 +26,16 @@ class GURL;
 
 namespace playlist {
 
+class PlaylistActiveTabTracker;
+
 class PlaylistUI : public ui::UntrustedWebUIController,
                    public playlist::mojom::PageHandlerFactory,
-                   public playlist::mojom::PlaylistNativeUI {
+                   public playlist::mojom::PlaylistPageHandler {
  public:
   static bool ShouldBlockPlaylistWebUI(content::BrowserContext* browser_context,
                                        const GURL& url);
 
-  PlaylistUI(content::WebUI* web_ui, const std::string& host);
+  explicit PlaylistUI(content::WebUI* web_ui);
   ~PlaylistUI() override;
   PlaylistUI(const PlaylistUI&) = delete;
   PlaylistUI& operator=(const PlaylistUI&) = delete;
@@ -49,10 +52,11 @@ class PlaylistUI : public ui::UntrustedWebUIController,
 
   // playlist::mojom::PageHandlerFactory:
   void CreatePageHandler(
+      mojo::PendingRemote<playlist::mojom::PlaylistPage> page,
       mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
           service_observer,
       mojo::PendingReceiver<playlist::mojom::PlaylistService> service,
-      mojo::PendingReceiver<playlist::mojom::PlaylistNativeUI> native_ui)
+      mojo::PendingReceiver<playlist::mojom::PlaylistPageHandler> page_handler)
       override;
 
   // playlist::mojom::NativeUI:
@@ -61,42 +65,58 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void ShowMoveItemsUI(const std::string& playlist_id,
                        const std::vector<std::string>& items) override;
   void OpenSettingsPage() override;
+  void ShowAddMediaToPlaylistUI() override;
   void ClosePanel() override;
+  void ShouldShowAddMediaFromPageUI(
+      ShouldShowAddMediaFromPageUICallback callback) override;
 
   static constexpr std::string GetWebUIName() { return "PlaylistPanel"; }
 
  private:
+  void OnActiveTabStateChanged(bool should_show_add_media_from_page_ui);
+
+  std::unique_ptr<PlaylistActiveTabTracker> active_tab_tracker_;
+
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
 
+  mojo::Remote<mojom::PlaylistPage> page_;
+
   mojo::ReceiverSet<playlist::mojom::PlaylistService> service_receivers_;
-  mojo::ReceiverSet<playlist::mojom::PlaylistNativeUI> native_ui_receivers_;
+  mojo::ReceiverSet<playlist::mojom::PlaylistPageHandler>
+      page_handler_receivers_;
 
   mojo::Receiver<playlist::mojom::PageHandlerFactory>
       page_handler_factory_receiver_{this};
 
+  base::WeakPtrFactory<PlaylistUI> weak_ptr_factory_{this};
+
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-class UntrustedPlaylistUIConfig : public content::WebUIConfig {
+class UntrustedPlayerUI : public ui::UntrustedWebUIController {
+ public:
+  explicit UntrustedPlayerUI(content::WebUI* web_ui);
+  ~UntrustedPlayerUI() override = default;
+  UntrustedPlayerUI(const UntrustedPlayerUI&) = delete;
+  UntrustedPlayerUI& operator=(const UntrustedPlayerUI&) = delete;
+
+  static constexpr std::string GetWebUIName() { return "UntrustedPlayerPanel"; }
+};
+
+class UntrustedPlaylistUIConfig
+    : public DefaultTopChromeWebUIConfig<PlaylistUI> {
  public:
   UntrustedPlaylistUIConfig();
   ~UntrustedPlaylistUIConfig() override = default;
 
-  std::unique_ptr<content::WebUIController> CreateWebUIController(
-      content::WebUI* web_ui,
-      const GURL& url) override;
-
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
 
-class UntrustedPlaylistPlayerUIConfig : public content::WebUIConfig {
+class UntrustedPlaylistPlayerUIConfig
+    : public DefaultTopChromeWebUIConfig<UntrustedPlayerUI> {
  public:
   UntrustedPlaylistPlayerUIConfig();
   ~UntrustedPlaylistPlayerUIConfig() override = default;
-
-  std::unique_ptr<content::WebUIController> CreateWebUIController(
-      content::WebUI* web_ui,
-      const GURL& url) override;
 };
 
 }  // namespace playlist

@@ -11,8 +11,8 @@
 namespace security_interstitials {
 
 namespace {
-const char kBraveLearnMoreLink[] =
-    "https://support.brave.com/hc/en-us/articles/";
+constexpr char kBraveLearnMoreLink[] =
+    "https://ping-browser.com/hc/en-us/articles/15513090104717";
 }  // namespace
 
 }  // namespace security_interstitials

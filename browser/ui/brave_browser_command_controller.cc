@@ -5,15 +5,11 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
-#include <memory>
 #include <optional>
-#include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
-#include "base/notreached.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -22,14 +18,13 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
-#include "brave/components/constants/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -47,6 +42,12 @@
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_contents.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -59,11 +60,16 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
 namespace {
@@ -92,7 +98,7 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->profile())) {
-    Observe(vpn_service);
+    brave_vpn::BraveVPNServiceObserver::Observe(vpn_service);
   }
 #endif
 }
@@ -141,13 +147,16 @@ void BraveBrowserCommandController::OnTabGroupChanged(
   UpdateCommandsForTabs();
 }
 
-void BraveBrowserCommandController::OnTileTabs(
-    const SplitViewBrowserData::Tile& tile) {
+void BraveBrowserCommandController::OnTileTabs(const TabTile& tile) {
   UpdateCommandForSplitView();
 }
-void BraveBrowserCommandController::OnWillBreakTile(
-    const SplitViewBrowserData::Tile& tile) {
+
+void BraveBrowserCommandController::OnWillBreakTile(const TabTile& tile) {
   UpdateCommandForSplitView();
+}
+
+void BraveBrowserCommandController::OnWillDeleteBrowserData() {
+  split_view_browser_data_observation_.Reset();
 }
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
@@ -224,10 +233,22 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForBraveVPN();
   UpdateCommandForPlaylist();
   UpdateCommandForWaybackMachine();
+#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_VPN)
+  pref_change_registrar_.Init(browser_->profile()->GetPrefs());
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  UpdateCommandForAIChat();
+  if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
+    pref_change_registrar_.Add(
+        ai_chat::prefs::kEnabledByPolicy,
+        base::BindRepeating(
+            &BraveBrowserCommandController::UpdateCommandForAIChat,
+            base::Unretained(this)));
+  }
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(browser_->profile())) {
-    brave_vpn_pref_change_registrar_.Init(browser_->profile()->GetPrefs());
-    brave_vpn_pref_change_registrar_.Add(
+    pref_change_registrar_.Add(
         brave_vpn::prefs::kManagedBraveVPNDisabled,
         base::BindRepeating(
             &BraveBrowserCommandController::UpdateCommandForBraveVPN,
@@ -253,9 +274,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
   }
-#endif
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -294,6 +312,13 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   UpdateCommandEnabled(IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY, true);
 
+  if (browser_->is_type_normal()) {
+    // Delete these when upstream enables by default.
+    UpdateCommandEnabled(IDC_READING_LIST_MENU, true);
+    UpdateCommandEnabled(IDC_READING_LIST_MENU_ADD_TAB, true);
+    UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
+  }
+
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
       browser_->is_type_normal()) {
     UpdateCommandForSplitView();
@@ -313,8 +338,9 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
   // Enable new tor connection only for tor profile.
   UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE,
                        browser_->profile()->IsTor());
-  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-                       !brave::IsTorDisabledForProfile(browser_->profile()));
+  UpdateCommandEnabled(
+      IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+      !TorProfileServiceFactory::IsTorDisabled(browser_->profile()));
 }
 #endif
 
@@ -325,6 +351,15 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
     UpdateCommandEnabled(IDC_TOGGLE_SIDEBAR, true);
   }
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveBrowserCommandController::UpdateCommandForAIChat() {
+  // AI Chat command implementation needs sidebar
+  bool command_enabled = (sidebar::CanUseSidebar(&*browser_) &&
+                          ai_chat::IsAllowedForContext(browser_->profile()));
+  UpdateCommandEnabled(IDC_TOGGLE_AI_CHAT, command_enabled);
+}
+#endif
 
 void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -365,7 +400,9 @@ void BraveBrowserCommandController::UpdateCommandForPlaylist() {
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     UpdateCommandEnabled(
         IDC_SHOW_PLAYLIST_BUBBLE,
-        browser_->is_type_normal() && !browser_->profile()->IsOffTheRecord());
+        browser_->is_type_normal() &&
+            playlist::PlaylistServiceFactory::GetForBrowserContext(
+                browser_->profile()));
   }
 #endif
 }
@@ -419,7 +456,7 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
 
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
   auto* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(std::to_address(browser_));
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   if (!split_view_browser_data) {
     // Can happen on start up.
     return;
@@ -430,11 +467,15 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
   }
 
   UpdateCommandEnabled(IDC_NEW_SPLIT_VIEW, brave::CanOpenNewSplitViewForTab(
-                                               std::to_address(browser_)));
+                                               base::to_address(browser_)));
   UpdateCommandEnabled(IDC_TILE_TABS,
-                       brave::CanTileTabs(std::to_address(browser_)));
-  UpdateCommandEnabled(IDC_BREAK_TILE,
-                       brave::IsTabsTiled(std::to_address(browser_)));
+                       brave::CanTileTabs(base::to_address(browser_)));
+
+  const auto is_tab_tiled = brave::IsTabsTiled(base::to_address(browser_));
+  for (auto command_enabled_when_tab_is_tiled :
+       {IDC_BREAK_TILE, IDC_SWAP_SPLIT_VIEW}) {
+    UpdateCommandEnabled(command_enabled_when_tab_is_tiled, is_tab_tiled);
+  }
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
@@ -496,6 +537,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_WALLET:
       brave::ShowBraveWallet(&*browser_);
       break;
+    case IDC_TOGGLE_AI_CHAT:
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      brave::ToggleAIChat(&*browser_);
+#endif
+      break;
     case IDC_SPEEDREADER_ICON_ONCLICK:
       brave::MaybeDistillAndShowSpeedreaderBubble(&*browser_);
       break;
@@ -530,9 +576,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
           &*browser_,
           browser_->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
       break;
-    case IDC_APP_MENU_IPFS_OPEN_FILES:
-      brave::OpenIpfsFilesWebUI(&*browser_);
-      break;
     case IDC_TOGGLE_TAB_MUTE:
       brave::ToggleActiveTabAudioMute(&*browser_);
       break;
@@ -564,7 +607,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
       brave::ShowPlaylistBubble(&*browser_);
 #else
-      NOTREACHED() << " This command shouldn't be enabled";
+      NOTREACHED_IN_MIGRATION() << " This command shouldn't be enabled";
 #endif
       break;
     case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
@@ -609,7 +652,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       chrome::SendTabToSelf(&*browser_);
       break;
     case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
-      brave::ToggleAllBookmarksButtonVisibility(std::to_address(browser_));
+      brave::ToggleAllBookmarksButtonVisibility(base::to_address(browser_));
       break;
     case IDC_COMMANDER:
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -657,6 +700,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_BREAK_TILE:
       brave::BreakTiles(&*browser_);
+      break;
+    case IDC_SWAP_SPLIT_VIEW:
+      brave::SwapTabsInTile(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

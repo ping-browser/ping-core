@@ -6,19 +6,23 @@
 #include "brave/components/brave_shields/content/browser/domain_block_navigation_throttle.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"
 #include "brave/components/brave_shields/content/browser/domain_block_page.h"
 #include "brave/components/brave_shields/content/browser/domain_block_tab_storage.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
+#include "brave/content/public/browser/devtools/adblock_devtools_instumentation.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -31,13 +35,28 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "net/base/net_errors.h"
 
-namespace {
+namespace brave_shields {
 
-std::pair<bool, std::string> ShouldBlockDomainOnTaskRunner(
-    brave_shields::AdBlockService* ad_block_service,
-    const GURL& url,
-    bool aggressive_setting) {
+struct DomainBlockNavigationThrottle::BlockResult {
+  BlockResult() = default;
+  BlockResult(const BlockResult&) = default;
+  BlockResult(BlockResult&&) = default;
+  ~BlockResult() = default;
+
+  bool should_block = false;
+  std::string new_url;
+  std::optional<content::devtools_instrumentation::AdblockInfo> info;
+};
+
+}  // namespace brave_shields
+
+namespace {
+brave_shields::DomainBlockNavigationThrottle::BlockResult
+ShouldBlockDomainOnTaskRunner(brave_shields::AdBlockService* ad_block_service,
+                              const GURL& url,
+                              bool aggressive_setting) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.DomainBlock.ShouldBlock");
+  brave_shields::DomainBlockNavigationThrottle::BlockResult block_result;
   // force aggressive blocking to `true` for domain blocking - these requests
   // are all "first-party", but the throttle is already only called when
   // necessary.
@@ -46,13 +65,32 @@ std::pair<bool, std::string> ShouldBlockDomainOnTaskRunner(
       url, blink::mojom::ResourceType::kMainFrame, url.host(),
       aggressive_for_engine, false, false, false);
 
-  const bool should_block =
+  block_result.should_block =
       result.important || (result.matched && !result.has_exception);
 
-  std::string new_url = aggressive_setting && result.rewritten_url.has_value
-                            ? std::string(result.rewritten_url.value)
-                            : std::string();
-  return std::pair(should_block, new_url);
+  block_result.new_url = aggressive_setting && result.rewritten_url.has_value
+                             ? std::string(result.rewritten_url.value)
+                             : std::string();
+
+  if (block_result.should_block || result.has_exception) {
+    content::devtools_instrumentation::AdblockInfo info;
+    info.request_url = url;
+    info.checked_url = url;
+    info.source_host = url.host();
+    info.resource_type = blink::mojom::ResourceType::kMainFrame;
+    info.aggressive = aggressive_for_engine;
+    info.blocked = block_result.should_block;
+    info.did_match_important_rule = result.important;
+    info.did_match_rule = result.matched;
+    info.did_match_exception = result.has_exception;
+    info.has_mock_data = false;
+    if (!block_result.new_url.empty()) {
+      info.rewritten_url = block_result.new_url;
+    }
+    block_result.info = std::move(info);
+  }
+
+  return block_result;
 }
 
 }  // namespace
@@ -112,11 +150,11 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   DCHECK(handle->IsInMainFrame());
   GURL request_url = handle->GetURL();
 
-  domain_blocking_type_ =
+  DomainBlockingType domain_blocking_type =
       brave_shields::GetDomainBlockingType(content_settings_, request_url);
   content::WebContents* web_contents = handle->GetWebContents();
   // Maybe don't block based on Brave Shields settings
-  if (domain_blocking_type_ == DomainBlockingType::kNone) {
+  if (domain_blocking_type == DomainBlockingType::kNone) {
     DomainBlockTabStorage* tab_storage =
         DomainBlockTabStorage::FromWebContents(web_contents);
     if (tab_storage) {
@@ -144,11 +182,12 @@ DomainBlockNavigationThrottle::WillStartRequest() {
       base::BindOnce(&ShouldBlockDomainOnTaskRunner, ad_block_service_,
                      request_url, aggressive_mode),
       base::BindOnce(&DomainBlockNavigationThrottle::OnShouldBlockDomain,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr(), domain_blocking_type));
 
   // Since the call to the ad block service is asynchronous, we defer the final
   // decision of whether to allow or block this navigation. The callback from
   // the task runner will call a method to give our final answer.
+  is_deferred_ = true;
   return content::NavigationThrottle::DEFER;
 }
 
@@ -170,39 +209,49 @@ DomainBlockNavigationThrottle::WillProcessResponse() {
 }
 
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(
-    std::pair<bool, std::string> block_result) {
-  const bool should_block = block_result.first;
-  const GURL new_url(block_result.second);
+    DomainBlockingType domain_blocking_type,
+    const BlockResult& block_result) {
+  const bool should_block = block_result.should_block;
+  const GURL new_url(block_result.new_url);
+  const bool proceed_with_resume_cancel = is_deferred_;
+  is_deferred_ = false;
+
+  if (should_block && block_result.info) {
+    content::devtools_instrumentation::SendAdblockInfo(
+        this->navigation_handle(), block_result.info.value());
+  }
+
   if (!should_block && !new_url.is_valid()) {
     DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
         navigation_handle()->GetWebContents());
     if (tab_storage) {
       tab_storage->DropBlockedDomain1PESLifetime();
     }
-    // Navigation was deferred while we called the ad block service on a task
-    // runner, but now we know that we want to allow navigation to continue.
-    Resume();
-    return;
-  } else if (new_url.is_valid()) {
-    RestartNavigation(new_url);
-    return;
-  }
-
-  switch (domain_blocking_type_) {
-    case DomainBlockingType::kNone:
-      NOTREACHED();
+    if (proceed_with_resume_cancel) {
+      // Navigation was deferred while we called the ad block service on a task
+      // runner, but now we know that we want to allow navigation to continue.
       Resume();
-      break;
-    case DomainBlockingType::k1PES:
-      Enable1PESAndResume();
-      break;
-    case DomainBlockingType::kAggressive:
-      ShowInterstitial();
-      break;
+      // DO NOT ADD CODE AFTER THIS, as the NavigationThrottle might have been
+      // deleted by the previous call.
+    }
+  } else if (new_url.is_valid()) {
+    RestartNavigation(new_url, proceed_with_resume_cancel);
+  } else {
+    switch (domain_blocking_type) {
+      case DomainBlockingType::k1PES:
+        Enable1PESAndResume(proceed_with_resume_cancel);
+        break;
+      case DomainBlockingType::kAggressive:
+        ShowInterstitial(proceed_with_resume_cancel);
+        break;
+      case DomainBlockingType::kNone:
+        NOTREACHED_NORETURN();
+    }
   }
 }
 
-void DomainBlockNavigationThrottle::ShowInterstitial() {
+void DomainBlockNavigationThrottle::ShowInterstitial(
+    bool proceed_with_resume_cancel) {
   content::NavigationHandle* handle = navigation_handle();
   content::WebContents* web_contents = handle->GetWebContents();
   const GURL& request_url = handle->GetURL();
@@ -231,38 +280,48 @@ void DomainBlockNavigationThrottle::ShowInterstitial() {
   security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
       handle, std::move(blocked_page));
 
-  // Navigation was deferred rather than canceled outright because the
-  // call to the ad blocking service happens on a task runner, but now we
-  // know that we definitely want to cancel the navigation.
-  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
-      content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
-      blocked_page_content));
+  if (proceed_with_resume_cancel) {
+    // Navigation was deferred rather than canceled outright because the
+    // call to the ad blocking service happens on a task runner, but now we
+    // know that we definitely want to cancel the navigation.
+    CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+        content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
+        blocked_page_content));
+  }
 }
 
-void DomainBlockNavigationThrottle::Enable1PESAndResume() {
+void DomainBlockNavigationThrottle::Enable1PESAndResume(
+    bool proceed_with_resume_cancel) {
   DCHECK(ephemeral_storage_service_);
   DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
       navigation_handle()->GetWebContents());
   if (ephemeral_storage_service_->Is1PESEnabledForUrl(
           navigation_handle()->GetURL())) {
-    Resume();
+    if (proceed_with_resume_cancel) {
+      Resume();
+    }
   } else if (tab_storage) {
     tab_storage->Enable1PESForUrlIfPossible(
         ephemeral_storage_service_, navigation_handle()->GetURL(),
         base::BindOnce(&DomainBlockNavigationThrottle::On1PESState,
-                       weak_ptr_factory_.GetWeakPtr()));
+                       weak_ptr_factory_.GetWeakPtr(),
+                       proceed_with_resume_cancel));
   }
 }
 
-void DomainBlockNavigationThrottle::On1PESState(bool is_1pes_enabled) {
+void DomainBlockNavigationThrottle::On1PESState(bool proceed_with_resume_cancel,
+                                                bool is_1pes_enabled) {
   if (is_1pes_enabled) {
-    RestartNavigation(navigation_handle()->GetURL());
-  } else {
+    RestartNavigation(navigation_handle()->GetURL(),
+                      proceed_with_resume_cancel);
+  } else if (proceed_with_resume_cancel) {
     Resume();
   }
 }
 
-void DomainBlockNavigationThrottle::RestartNavigation(const GURL& url) {
+void DomainBlockNavigationThrottle::RestartNavigation(
+    const GURL& url,
+    bool proceed_with_resume_cancel) {
   content::NavigationHandle* handle = navigation_handle();
 
   content::OpenURLParams params =
@@ -277,10 +336,12 @@ void DomainBlockNavigationThrottle::RestartNavigation(const GURL& url) {
   // technically this is a new navigation
   params.redirect_chain.clear();
 
-  // Cancel without an error status to surface any real errors during page
-  // load.
-  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
-      content::NavigationThrottle::CANCEL));
+  if (proceed_with_resume_cancel) {
+    // Cancel without an error status to surface any real errors during page
+    // load.
+    CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+        content::NavigationThrottle::CANCEL));
+  }
 
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(

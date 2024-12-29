@@ -6,7 +6,7 @@
 #include <optional>
 
 #include "base/json/json_reader.h"
-#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -33,8 +33,8 @@ class CosmeticResourceMergeTest : public testing::Test {
         base::JSONReader::Read(expected);
     ASSERT_TRUE(expected_val);
 
-    MergeResourcesInto(std::move(b_val->GetDict()), *a_val->GetIfDict(),
-                       force_hide);
+    AdBlockService::MergeResourcesInto(std::move(b_val->GetDict()),
+                                       *a_val->GetIfDict(), force_hide);
 
     ASSERT_EQ(*a_val, *expected_val);
   }
@@ -48,7 +48,7 @@ class CosmeticResourceMergeTest : public testing::Test {
 const char EMPTY_RESOURCES[] =
     "{"
     "\"hide_selectors\": [], "
-    "\"style_selectors\": {}, "
+    "\"procedural_actions\": [], "
     "\"exceptions\": [], "
     "\"injected_script\": \"\", "
     "\"generichide\": false"
@@ -57,10 +57,7 @@ const char EMPTY_RESOURCES[] =
 const char NONEMPTY_RESOURCES[] =
     "{"
     "\"hide_selectors\": [\"a\", \"b\"], "
-    "\"style_selectors\": {"
-    "\"c\": [\"color: #fff\"], "
-    "\"d\": [\"color: #000\"]"
-    "}, "
+    "\"procedural_actions\": [\"c\", \"d\"], "
     "\"exceptions\": [\"e\", \"f\"], "
     "\"injected_script\": \"console.log('g')\", "
     "\"generichide\": false"
@@ -75,7 +72,7 @@ TEST_F(CosmeticResourceMergeTest, MergeTwoEmptyResources) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
-      "\"style_selectors\": {}, "
+      "\"procedural_actions\": [], "
       "\"exceptions\": [], "
       "\"injected_script\": \"\n\", "
       "\"generichide\": false"
@@ -93,10 +90,7 @@ TEST_F(CosmeticResourceMergeTest, MergeEmptyIntoNonEmpty) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\"], "
-      "\"style_selectors\": {"
-      "\"c\": [\"color: #fff\"], "
-      "\"d\": [\"color: #000\"]"
-      "}, "
+      "\"procedural_actions\": [\"c\", \"d\"], "
       "\"exceptions\": [\"e\", \"f\"], "
       "\"injected_script\": \"console.log('g')\n\", "
       "\"generichide\": false"
@@ -114,10 +108,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoEmpty) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\"],"
-      "\"style_selectors\": {"
-      "\"c\": [\"color: #fff\"], "
-      "\"d\": [\"color: #000\"]"
-      "}, "
+      "\"procedural_actions\": [\"c\", \"d\"], "
       "\"exceptions\": [\"e\", \"f\"], "
       "\"injected_script\": \"\nconsole.log('g')\", "
       "\"generichide\": false"
@@ -131,10 +122,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoNonEmpty) {
   const std::string b =
       "{"
       "\"hide_selectors\": [\"h\", \"i\"], "
-      "\"style_selectors\": {"
-      "\"j\": [\"color: #eee\"], "
-      "\"k\": [\"color: #111\"]"
-      "}, "
+      "\"procedural_actions\": [\"j\", \"k\"], "
       "\"exceptions\": [\"l\", \"m\"], "
       "\"injected_script\": \"console.log('n')\", "
       "\"generichide\": false"
@@ -143,12 +131,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoNonEmpty) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\", \"h\", \"i\"], "
-      "\"style_selectors\": {"
-      "\"c\": [\"color: #fff\"], "
-      "\"d\": [\"color: #000\"], "
-      "\"j\": [\"color: #eee\"], "
-      "\"k\": [\"color: #111\"]"
-      "}, "
+      "\"procedural_actions\": [\"c\", \"d\", \"j\", \"k\"], "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
       "\"injected_script\": \"console.log('g')\nconsole.log('n')\", "
       "\"generichide\": false"
@@ -166,7 +149,7 @@ TEST_F(CosmeticResourceMergeTest, MergeEmptyForceHide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
-      "\"style_selectors\": {}, "
+      "\"procedural_actions\": [], "
       "\"exceptions\": [], "
       "\"injected_script\": \"\n\","
       "\"generichide\": false, "
@@ -181,10 +164,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyForceHide) {
   const std::string b =
       "{"
       "\"hide_selectors\": [\"h\", \"i\"], "
-      "\"style_selectors\": {"
-      "\"j\": [\"color: #eee\"], "
-      "\"k\": [\"color: #111\"]"
-      "}, "
+      "\"procedural_actions\": [\"j\", \"k\"], "
       "\"exceptions\": [\"l\", \"m\"], "
       "\"injected_script\": \"console.log('n')\", "
       "\"generichide\": false"
@@ -193,12 +173,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyForceHide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\"], "
-      "\"style_selectors\": {"
-      "\"c\": [\"color: #fff\"], "
-      "\"d\": [\"color: #000\"], "
-      "\"j\": [\"color: #eee\"], "
-      "\"k\": [\"color: #111\"]"
-      "}, "
+      "\"procedural_actions\": [\"c\", \"d\", \"j\", \"k\"], "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
       "\"injected_script\": \"console.log('g')\nconsole.log('n')\","
       "\"generichide\": false, "
@@ -212,7 +187,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonGenerichideIntoGenerichide) {
   const std::string a =
       "{"
       "\"hide_selectors\": [], "
-      "\"style_selectors\": {}, "
+      "\"procedural_actions\": [], "
       "\"exceptions\": [], "
       "\"injected_script\": \"\n\", "
       "\"generichide\": true"
@@ -222,7 +197,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonGenerichideIntoGenerichide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
-      "\"style_selectors\": {}, "
+      "\"procedural_actions\": [], "
       "\"exceptions\": [], "
       "\"injected_script\": \"\n\n\", "
       "\"generichide\": true"
@@ -236,10 +211,7 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoNonGenerichide) {
   const std::string b =
       "{"
       "\"hide_selectors\": [\"h\", \"i\"], "
-      "\"style_selectors\": {"
-      "\"j\": [\"color: #eee\"], "
-      "\"k\": [\"color: #111\"]"
-      "}, "
+      "\"procedural_actions\": [\"j\", \"k\"], "
       "\"exceptions\": [\"l\", \"m\"], "
       "\"injected_script\": \"console.log('n')\", "
       "\"generichide\": true"
@@ -248,12 +220,7 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoNonGenerichide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\", \"h\", \"i\"], "
-      "\"style_selectors\": {"
-      "\"c\": [\"color: #fff\"], "
-      "\"d\": [\"color: #000\"], "
-      "\"j\": [\"color: #eee\"], "
-      "\"k\": [\"color: #111\"]"
-      "}, "
+      "\"procedural_actions\": [\"c\", \"d\", \"j\", \"k\"], "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
       "\"injected_script\": \"console.log('g')\nconsole.log('n')\", "
       "\"generichide\": true"
@@ -266,7 +233,7 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoGenerichide) {
   const std::string a =
       "{"
       "\"hide_selectors\": [], "
-      "\"style_selectors\": {}, "
+      "\"procedural_actions\": [], "
       "\"exceptions\": [], "
       "\"injected_script\": \"\", "
       "\"generichide\": true"
@@ -275,56 +242,13 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoGenerichide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
-      "\"style_selectors\": {}, "
+      "\"procedural_actions\": [], "
       "\"exceptions\": [], "
       "\"injected_script\": \"\n\", "
       "\"generichide\": true"
       "}";
 
   CompareMergeFromStrings(a, a, false, expected);
-}
-
-TEST_F(CosmeticResourceMergeTest, MergeStyles) {
-  const std::string a =
-      "{"
-      "\"hide_selectors\": [], "
-      "\"style_selectors\": {"
-      "\".a\": [\"color: #eee\"], "
-      "\".b\": [\"color: #111\"], "
-      "\".d\": [\"padding: 0\"]"
-      "}, "
-      "\"exceptions\": [], "
-      "\"injected_script\": \"\", "
-      "\"generichide\": false"
-      "}";
-  const std::string b =
-      "{"
-      "\"hide_selectors\": [], "
-      "\"style_selectors\": {"
-      "\".c\": [\"margin: 0\"], "
-      "\".b\": [\"background: #000\"], "
-      "\".a\": [\"background: #fff\"]"
-      "}, "
-      "\"exceptions\": [], "
-      "\"injected_script\": \"\", "
-      "\"generichide\": false"
-      "}";
-
-  const std::string expected =
-      "{"
-      "\"hide_selectors\": [], "
-      "\"style_selectors\": {"
-      "\".a\": [\"color: #eee\", \"background: #fff\"], "
-      "\".b\": [\"color: #111\", \"background: #000\"], "
-      "\".c\": [\"margin: 0\"], "
-      "\".d\": [\"padding: 0\"] "
-      "}, "
-      "\"exceptions\": [], "
-      "\"injected_script\": \"\n\", "
-      "\"generichide\": false"
-      "}";
-
-  CompareMergeFromStrings(a, b, false, expected);
 }
 
 }  // namespace brave_shields

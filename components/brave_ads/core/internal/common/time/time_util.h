@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_UTIL_H_
 
-#include <cstdint>
 #include <string>
 
 namespace base {
@@ -15,32 +14,17 @@ class Time;
 
 namespace brave_ads {
 
-int64_t ToChromeTimestampFromTime(base::Time time);
-base::Time ToTimeFromChromeTimestamp(int64_t timestamp);
+int LocalTimeInMinutesSinceMidnight(base::Time time);
 
-int GetLocalTimeInMinutes(base::Time time);
+base::Time LocalTimeAtBeginningOfPreviousMonth();
+base::Time LocalTimeAtEndOfPreviousMonth();
+base::Time LocalTimeAtBeginningOfThisMonth();
+base::Time LocalTimeAtEndOfThisMonth();
 
-base::Time AdjustLocalTimeToBeginningOfPreviousMonth(base::Time time);
-base::Time AdjustLocalTimeToEndOfPreviousMonth(base::Time time);
-base::Time AdjustLocalTimeToBeginningOfMonth(base::Time time);
-base::Time AdjustLocalTimeToEndOfMonth(base::Time time);
-
-base::Time GetTimeInDistantPast();
-
-base::Time GetLocalTimeAtBeginningOfLastMonth();
-base::Time GetLocalTimeAtEndOfLastMonth();
-base::Time GetLocalTimeAtBeginningOfThisMonth();
-base::Time GetLocalTimeAtEndOfThisMonth();
-
+// Formats a time compliant with ISO 8601 in UTC, e.g.,
+// "2020-12-31T23:00:00.000Z", with fixed values for minutes, seconds,
+// milliseconds, and time zone.
 std::string TimeToPrivacyPreservingIso8601(base::Time time);
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time GetLocalMidnight(base::Time time);
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-void SetFromLocalExplodedFailedForTesting(bool set_failed);
 
 }  // namespace brave_ads
 

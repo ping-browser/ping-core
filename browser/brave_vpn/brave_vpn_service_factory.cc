@@ -11,7 +11,6 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -89,6 +88,16 @@ BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
   static base::NoDestructor<BraveVpnServiceFactory> instance;
   return instance.get();
 }
+
+#if BUILDFLAG(IS_ANDROID)
+// static
+mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>
+BraveVpnServiceFactory::GetForContext(content::BrowserContext* context) {
+  return static_cast<BraveVpnService*>(
+             GetInstance()->GetServiceForBrowserContext(context, true))
+      ->MakeRemote();
+}
+#endif  // BUILDFLAG(IS_ANDROID)
 
 // static
 BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {

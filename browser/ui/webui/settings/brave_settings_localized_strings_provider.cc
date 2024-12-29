@@ -4,20 +4,20 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
+
 #include <string>
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
+#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -48,31 +48,29 @@ namespace settings {
 
 namespace {
 
-const char16_t kWebRTCLearnMoreURL[] =
+constexpr char16_t kWebRTCLearnMoreURL[] =
     u"https://ping-browser.com/faqs-and-help"
     u"360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
-const char16_t kBraveBuildInstructionsUrl[] =
+constexpr char16_t kBraveBuildInstructionsUrl[] =
     u"https://github.com/ping-browser/ping-core";
-const char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
-const char16_t kBraveReleaseTagPrefix[] =
+constexpr char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
+constexpr char16_t kBraveReleaseTagPrefix[] =
     u"https://github.com/ping-browser/ping-core/releases/";
-const char16_t kGoogleLoginLearnMoreURL[] =
+constexpr char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/ping-browser/ping-core"
     u"Allow-Google-login---Third-Parties-and-Extensions";
-const char16_t kDNSLinkLearnMoreURL[] =
-    u"https://docs.ipfs.io/concepts/dnslink/";
-const char16_t kUnstoppableDomainsLearnMoreURL[] =
+constexpr char16_t kUnstoppableDomainsLearnMoreURL[] =
     u"https://github.com/ping-browser/ping-core"
     u"Resolve-Methods-for-Unstoppable-Domains";
-const char16_t kEnsOffchainLookupLearnMoreURL[] =
+constexpr char16_t kEnsOffchainLookupLearnMoreURL[] =
     u"https://github.com/ping-browser/ping-core";
-const char16_t kBraveSyncGuideUrl[] =
+constexpr char16_t kBraveSyncGuideUrl[] =
     u"https://ping-browser.com/faqs-and-help";
-const char16_t kDeAmpLearnMoreUrl[] =
+constexpr char16_t kDeAmpLearnMoreUrl[] =
     u"https://ping-browser.com/faqs-and-help";
-const char16_t kDebounceLearnMoreUrl[] =
+constexpr char16_t kDebounceLearnMoreUrl[] =
     u"https://ping-browser.com/faqs-and-help";
-const char16_t kEnableNftDiscoveryLearnMoreUrl[] =
+constexpr char16_t kEnableNftDiscoveryLearnMoreUrl[] =
     u"https://github.com/ping-browser/ping-core"
     u"NFT-Discovery";
 
@@ -134,6 +132,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
       {"appearanceSettingsShowBraveNewsButtonLabel",
        IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL},
+      {"appearanceSettingsShowLeoButtonLabel",
+       IDS_SETTINGS_SHOW_LEO_BUTTON_LABEL},
       {"appearanceSettingsBookmarBar", IDS_SETTINGS_SHOW_BOOKMARK_BAR},
       {"appearanceSettingsBookmarBarAlways",
        IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS},
@@ -178,6 +178,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE},
       {"appearanceSettingsTabsVerticalTabPosition",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_POSITION},
+      {"appearanceSettingsTabsVerticalTabExpandedStatePerWindow",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_EXPANDED_STATE_PER_WINDOW},
       {"appearanceSettingsTabsVerticalTabShowScrollbar",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR},
       {"appearanceSettingsTabsVerticalTabOnRight",
@@ -190,6 +192,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_CARD_WITH_PREVIEW},
       {"appearanceSettingsTabHoverModeTooltip",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_TOOLTIP},
+      {"appearanceSettingsSharedPinnedTab",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB},
       {"sideBar", IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE},
       {"appearanceSettingsShowOptionTitle",
        IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE},
@@ -237,8 +241,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
       {"braveShieldsDefaultsSectionDescription1",
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1},
-      {"braveShieldsDefaultsSectionDescription2RewardsDisabled",
-       IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED},
+      {"braveShieldsDefaultsSectionDescription2",
+       IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2},
       {"socialBlocking", IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE},
       {"defaultView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL},
       {"simpleView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_SIMPLE_VIEW_LABEL},
@@ -264,6 +268,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_SHIELDS_TWITTER_EMBEDDED_TWEETS_LABEL},
       {"linkedInEmbedControlLabel",
        IDS_SETTINGS_BRAVE_SHIELDS_LINKEDIN_EMBEDDED_POSTS_LABEL},
+      {"searchSuggestLabel",
+       IDS_SETTINGS_BRAVE_SEARCH_ENGINES_SEARCH_SUGGEST_LABEL},
+      {"searchSuggestDesc",
+       IDS_SETTINGS_BRAVE_SEARCH_ENGINES_SEARCH_SUGGEST_DESC},
       {"otherSearchEnginesControlLabel",
        IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL},
       {"otherSearchEnginesControlDesc",
@@ -385,7 +393,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveSyncLeaveAndRejoinTheChainButton",
        IDS_BRAVE_SYNC_LEAVE_AND_REJOIN_THE_CHAIN_BUTTON},
       {"braveDataCollection", IDS_BRAVE_DATA_COLLECTION_SETTINGS_SECTION},
-      {"braveIPFS", IDS_BRAVE_IPFS_SETTINGS_SECTION},
       {"braveWeb3", IDS_BRAVE_WEB3_SETTINGS_SECTION},
       {"braveWeb3Domains", IDS_BRAVE_WEB3_DOMAINS_SETTINGS_SECTION},
       {"braveTor", IDS_BRAVE_TOR_SETTINGS_SECTION},
@@ -397,6 +404,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveClosingLastTab", IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL},
       {"braveDisableClickableMuteIndicators",
        IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS},
+      {"braveShowFullscreenReminder",
+       IDS_SETTINGS_SHOW_FULLSCREEN_REMINDER_OPTION_LABEL},
 
       // Leo Assistant Page
       {"leoAssistant", IDS_SETTINGS_LEO_ASSISTANT},
@@ -416,9 +425,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_LABEL},
       {"leoClearHistoryDataSubLabel",
        IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_SUBLABEL},
+      {"braveLeoPremiumLabelNonPremium",
+       IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM},
       {"braveLeoAssistantModelSelectionLabel",
        IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL},
-      {"braveLeoModelCategory-chat", IDS_CHAT_UI_MODEL_CATEGORY_CHAT},
       {"braveLeoModelSubtitle-chat-basic", IDS_CHAT_UI_CHAT_BASIC_SUBTITLE},
       {"braveLeoModelSubtitle-chat-leo-expanded",
        IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE},
@@ -430,6 +440,60 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"braveLeoAssistantManageUrlLabel",
        IDS_SETTINGS_LEO_ASSISTANT_MANAGE_URL},
+      {"braveLeoAssistantByomLabel", IDS_SETTINGS_LEO_ASSISTANT_BYOM_LABEL},
+      {"braveLeoAssistantDeleteModelConfirmation",
+       IDS_SETTINGS_LEO_ASSISTANT_DELETE_MODEL_CONFIRMATION},
+      {"braveLeoAssistantAddModelLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_ADD_MODEL_LABEL},
+      {"braveLeoAssistantEditModelLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_EDIT_MODEL_LABEL},
+      {"braveLeoAssistantInputModelLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL},
+      {"braveLeoAssistantInputModelRequestName",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_REQUEST_NAME},
+      {"braveLeoAssistantInputModelServerEndpoint",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_SERVER_ENDPOINT},
+      {"braveLeoAssistantInputModelApiKey",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_API_KEY},
+      {"braveLeoAssistantInputModelLabelTooltipInfo",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL_TOOLTIP_INFO},
+      {"braveLeoAssistantInputContextSizeLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE},
+      {"braveLeoAssistantInputContextSizeTooltipInfo",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE_TOOLTIP_INFO},
+      {"braveLeoAssistantInputModelRequestNameTooltipInfo",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_REQUEST_NAME_TOOLTIP_INFO},
+      {"braveLeoAssistantInputModelServerEndpointTooltipInfo",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_SERVER_ENDPOINT_TOOLTIP_INFO},
+      {"braveLeoAssistantInputModelApiKeyTooltipInfo",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_API_KEY_TOOLTIP_INFO},
+      {"braveLeoAssistantCloseButtonLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_CLOSE_BUTTON_LABEL},
+      {"braveLeoAssistantProxyNote", IDS_SETTINGS_LEO_ASSISTANT_PROXY_NOTE},
+      {"braveLeoAssistantEndpointError",
+       IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_ERROR},
+      {"braveLeoAssistantAddNewModelButtonLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_ADD_NEW_BUTTON_LABEL},
+      {"braveLeoAssistantModelListEmptyLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_MODEL_LIST_EMPTY_LABEL},
+      {"braveLeoAssistantYourModelsTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_TITLE},
+      {"braveLeoAssistantYourModelsDesc1",
+       IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_1},
+      {"braveLeoAssistantYourModelsDesc2",
+       IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2},
+      {"braveLeoModelSectionTitle", IDS_CHAT_UI_MENU_TITLE_MODELS},
+      {"braveLeoAssistantEndpointInvalidError",
+       IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_INVALID_ERROR},
+      {"braveLeoAssistantAddModelButtonLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_ADD_MODEL_BUTTON_LABEL},
+      {"braveLeoAssistantSaveModelButtonLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_SAVE_MODEL_BUTTON_LABEL},
+      {"braveLeoAssistantModelSystemPromptTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_TITLE},
+      {"braveLeoAssistantModelSystemPromptDesc",
+       IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_DESC},
+      {"braveLeoAssistantTokensCount", IDS_SETTINGS_LEO_ASSISTANT_TOKENS_COUNT},
 
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},
@@ -454,6 +518,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveRewardsPageLabel", IDS_SETTINGS_BRAVE_REWARDS_PAGE_LABEL},
       {"braveRewardsShowBraveRewardsButtonLabel",
        IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
+
+      // Delete browsing data settings
+      {"clearBraveAdsData", IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA},
+      {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
+
       // Misc (TODO: Organize this)
       {"showSearchTabsBtn", IDS_SETTINGS_TABS_SEARCH_SHOW},
       {"onExitPageTitle", IDS_SETTINGS_BRAVE_ON_EXIT},
@@ -478,37 +547,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"autoLockMinutesDesc", IDS_SETTINGS_AUTO_LOCK_MINUTES_DESC},
       {"googleLoginForExtensionsDesc",
        IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS},
-      {"hangoutsEnabledDesc", IDS_SETTINGS_HANGOUTS_ENABLED_DESC},
       {"mediaRouterEnabledDesc", IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC},
       {"resolveUnstoppableDomainsDesc",
        IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_DESC},
       {"resolveENSDesc", IDS_SETTINGS_RESOLVE_ENS_DESC},
       {"ensOffchainLookupTitle", IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_TITLE},
       {"resolveSnsDesc", IDS_SETTINGS_RESOLVE_SNS_DESC},
-      {"resolveIPFSURLDesc", IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC},
-      {"ipfsPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC},
-      {"ipfsNftPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_NFT_GATEWAY_DESC},
-      {"ipfsChangeGatewayButtonLabel",
-       IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL},
-      {"changeIpfsGatewayDialogTitle",
-       IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_TITLE},
-      {"changeIpfsGatewayDialogLabel",
-       IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_LABEL},
-      {"changeIpfsStorageMaxLabel", IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_LABEL},
-      {"changeIpfsStorageMaxDesc", IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_DESC},
-      {"ipfsErrorInvalidAddress", IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS},
-      {"ipfsErrorInvalidAddressOrigin",
-       IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS_ORIGIN_ISOLATION},
-      {"ipfsAutoFallbackToGatewayLabel",
-       IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_LABEL},
-      {"ipfsAutoFallbackToGatewayDesc",
-       IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC},
-      {"ipfsAlwaysStartModeLabel", IDS_SETTINGS_IPFS_ALWAYS_START_MODE_LABEL},
-      {"ipfsAutoRedirectToGatewayWhenPossibleLabel",
-       IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_LABEL},
-      {"ipfsAutoRedirectToGatewayWhenPossibleDesc",
-       IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_DESC},
-      {"ipfsCompanionEnabledDesc", IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC},
       {"torEnabledLabel", IDS_SETTINGS_ENABLE_TOR_TITLE},
       {"torEnabledDesc", IDS_SETTINGS_ENABLE_TOR_DESC},
       {"torConnectionSettingsTitle",
@@ -562,55 +606,17 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"p3aEnableTitle", IDS_BRAVE_P3A_ENABLE_SETTING},
       {"p3aEnabledDesc", IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM},
       {"siteSettings", IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS},
-      {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
       {"showFullUrls", IDS_SETTINGS_ALWAYS_SHOW_FULL_URLS},
-      {"ipfsIpnsKeysLinkTitle", IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK},
-      {"ipfsIpnsKeysLinkTitleDesc", IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK_DESC},
-      {"ipfsKeysListTitle", IDS_SETTINGS_IPNS_KEYS_LIST_TITLE},
-      {"ipfsAddKeyDialogTitle", IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_TITLE},
-      {"ipfsAddKeyDialogError", IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_ERROR},
-      {"ipfsDeleteKeyConfirmation", IDS_SETTINGS_IPNS_DELETE_KEY_CONFIRMATION},
-      {"ipfsNodeNotLaunched", IDS_SETTINGS_IPFS_NODE_NOT_LAUNCHED},
-      {"ipfsStartNode", IDS_SETTINGS_IPFS_START_NODE},
-      {"ipfsNodeLaunchError", IDS_SETTINGS_IPFS_START_NODE_ERROR},
-      {"ipfsKeyImport", IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE},
-      {"ipfsKeyGenerate", IDS_SETTINGS_IPNS_KEYS_GENERATE_BUTTON_TITLE},
-      {"ipfsImporKeysError", IDS_SETTINGS_IPNS_KEYS_IMPORT_ERROR},
-      {"ipfsPeersLinkTitle", IDS_SETTINGS_IPFS_PEERS_LINK_TITLE},
-      {"ipfsPeersLinkTitleDesc", IDS_SETTINGS_IPFS_PEERS_LINK_TITLE_DESC},
-      {"ipfsDeletePeerConfirmation",
-       IDS_SETTINGS_IPFS_DELETE_PEER_CONFIRMATION},
-      {"ipfsAddPeerDialogTitle", IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_TITLE},
-      {"ipfsAddPeerDialogError", IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_ERROR},
-      {"ipfsAddPeerDialogPlacehodler",
-       IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER},
-      {"ipfsPeersNodeRestartText", IDS_SETTINGS_IPFS_PEER_NODE_RESTART},
-      {"ipfsPeersNodeRestartButton",
-       IDS_SETTINGS_IPFS_PEER_NODE_RESTART_BUTTON},
-      {"ipfsRotateButtonName", IDS_SETTINGS_IPFS_ROTATE_BUTTON},
-      {"ipfsRotateKeyDialogTitle", IDS_SETTINGS_IPFS_ROTATE_KEY_DIALOG_TITLE},
-      {"ipfsRotationLaunchError", IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR},
-      {"ipfsRotationStopError", IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR},
-      {"ipfsKeyExport", IDS_SETTINGS_IPNS_KEY_EXPORT_ITEM},
-      {"ipfsKeyRemove", IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM},
-      {"ipfsKeyExportError", IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR},
-      {"ipfsLocalNodeWarning", IDS_IPFS_LOCAL_NODE_WARNING},
-      {"clearPinnedNft", IDS_SETTINGS_CLEAR_PINNED_NFT},
-      {"clearPinnedNftDesc", IDS_SETTINGS_CLEAR_PINNED_NFT_DESC},
       {"resetWallet", IDS_SETTINGS_WALLET_RESET},
       {"resetTransactionInfo", IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO},
       {"resetTransactionInfoDesc",
        IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC},
-      {"enableNftPinning", IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING},
-      {"enableNftPinningDesc", IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING_DESC},
       {"walletResetConfirmation", IDS_SETTINGS_WALLET_RESET_CONFIRMATION},
       {"walletResetTransactionInfoConfirmation",
        IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION},
       {"walletResetConfirmed", IDS_SETTINGS_WALLET_RESET_CONFIRMED},
       {"walletResetTransactionInfoConfirmed",
        IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED},
-      {"walletClearPinnedNftConfirmed",
-       IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_INFO_CONFIRMED},
       {"walletNetworksLinkTitle", IDS_SETTINGS_WALLET_NETWORKS_ITEM},
       {"walletAddNetworkDialogTitle", IDS_SETTINGS_WALLET_ADD_NETWORK_TITLE},
       {"walletAddNetworkInvalidURLInput",
@@ -725,11 +731,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"adblockSubscribeUrlUpdateFailed",
        IDS_BRAVE_ADBLOCK_SUBSCRIBE_URL_UPDATE_FAILED},
       {"adblockCustomListsLabel", IDS_BRAVE_ADBLOCK_CUSTOM_LISTS_LABEL},
-      {"siteCookiesLinkLabel", IDS_SETTINGS_SITE_COOKIES_LINK_TITLE},
-      {"siteCookiesLinkDesc", IDS_SETTINGS_SITE_COOKIES_LINK_DESC},
-      {"siteSettingsCookieSubpage", IDS_SETTINGS_SITE_SETTINGS_COOKIE_SUBPAGE},
-      {"siteSettingsCookieRemoveAll",
-       IDS_SETTINGS_SITE_SETTINGS_COOKIES_REMOVE_ALL},
 
       {"braveShortcutsPage", IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE},
       {"shortcutsPageSearchPlaceholder", IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER},
@@ -752,11 +753,16 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
-  html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
   html_source->AddString("enableNftDiscoveryLearnMoreURL",
                          kEnableNftDiscoveryLearnMoreUrl);
+  html_source->AddString(
+      "braveLeoAssistantModelSystemPromptPlaceholder",
+      base::ReplaceStringPlaceholders(
+          l10n_util::GetStringUTF8(
+              IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
+          {"%datetime%"}, nullptr));
   auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);
@@ -768,10 +774,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       confirmation_phrase);
   html_source->AddString("walletResetTransactionInfoConfirmation",
                          reset_tx_confirmation_text);
-  auto clear_pinned_nft_confirmation = l10n_util::GetStringFUTF16(
-      IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_CONFIRMATION, confirmation_phrase);
-  html_source->AddString("walletClearPinnedNftConfirmation",
-                         clear_pinned_nft_confirmation);
+
+  html_source->AddString(
+      "braveLeoAssistantInputDefaultContextSize",
+      base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
 #endif
@@ -786,13 +793,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("autoLockMinutesValue",
                          std::to_string(profile->GetPrefs()->GetInteger(
                              kBraveWalletAutoLockMinutes)));
-  html_source->AddString(
-      "ipfsStorageMaxValue",
-      std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));
-
-  html_source->AddString("ipfsMethodDesc", l10n_util::GetStringFUTF16(
-                                               IDS_SETTINGS_IPFS_METHOD_DESC,
-                                               ipfs::kIPFSLearnMorePrivacyURL));
 
   html_source->AddString(
       "transactionSimulationDesc",
@@ -808,11 +808,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
                                  kEnsOffchainLookupLearnMoreURL));
-
-  html_source->AddString("braveShieldsDefaultsSectionDescription2",
-                         l10n_util::GetStringFUTF16(
-                             IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2,
-                             kBraveUIRewardsURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,
@@ -824,8 +819,7 @@ void BraveAddAboutStrings(content::WebUIDataSource* html_source,
                           Profile* profile) {
   std::u16string license = l10n_util::GetStringFUTF16(
       IDS_BRAVE_VERSION_UI_LICENSE, kBraveLicenseUrl,
-      base::ASCIIToUTF16(chrome::kChromeUICreditsURL),
-      kBraveBuildInstructionsUrl,
+      chrome::kChromeUICreditsURL16, kBraveBuildInstructionsUrl,
       kBraveReleaseTagPrefix +
           base::UTF8ToUTF16(
               version_info::GetBraveVersionWithoutChromiumMajorVersion()));

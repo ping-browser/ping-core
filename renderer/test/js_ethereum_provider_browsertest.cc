@@ -9,10 +9,8 @@
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/profiles/brave_renderer_updater.h"
-#include "brave/browser/profiles/brave_renderer_updater_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -83,13 +81,7 @@ std::string NonWriteableScriptMethod(const std::string& provider,
 class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
  public:
   JSEthereumProviderBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    histogram_tester_ = std::make_unique<base::HistogramTester>();
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   ~JSEthereumProviderBrowserTest() override = default;
 
@@ -114,6 +106,10 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     InProcessBrowserTest::SetUpOnMainThread();
 
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     // Map all hosts to localhost.
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -136,8 +132,14 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
   brave_wallet::JsonRpcService* GetJsonRpcService() {
-    return brave_wallet::JsonRpcServiceFactory::GetInstance()
-        ->GetServiceForContext(browser()->profile());
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+               browser()->profile())
+        ->json_rpc_service();
+  }
+  brave_wallet::KeyringService* GetKeyringService() {
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+               browser()->profile())
+        ->keyring_service();
   }
 
  protected:
@@ -243,10 +245,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachIfNoWalletCreated) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->Reset(false);
+  GetKeyringService()->Reset(false);
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -272,10 +271,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -301,10 +297,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachIfDefaultWalletNone) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -331,10 +324,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -351,10 +341,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        EIP6369_MetaMaskAttached) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   scoped_refptr<const extensions::Extension> extension(
       extensions::ExtensionBuilder("MetaMask")
@@ -385,10 +372,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachIfMetaMaskInstalled) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   scoped_refptr<const extensions::Extension> extension(
       extensions::ExtensionBuilder("MetaMask")
@@ -539,12 +523,12 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
   ASSERT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
             "0x1");
 
-  GetJsonRpcService()->SetNetwork("0x5", brave_wallet::mojom::CoinType::ETH,
-                                  std::nullopt);
+  GetJsonRpcService()->SetNetwork(
+      "0xaa36a7", brave_wallet::mojom::CoinType::ETH, std::nullopt);
   // Needed so ChainChangedEvent observers run
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
-            "0x5");
+            "0xaa36a7");
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_IMPL_H_
 
-#include <functional>
 #include <list>
 #include <map>
 #include <memory>
@@ -15,11 +14,9 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "base/one_shot_event.h"
 #include "base/sequence_checker.h"
 #include "base/threading/sequence_bound.h"
@@ -31,13 +28,13 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "build/build_config.h"
-#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "content/public/browser/browser_thread.h"
+#include "content/public/browser/storage_partition.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -56,18 +53,15 @@ class OneShotTimer;
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace leveldb {
-class DB;
-}  // namespace leveldb
-
+namespace favicon {
+class FaviconService;
+}  // namespace favicon
 namespace network {
 class SimpleURLLoader;
 }  // namespace network
 
-class Profile;
-
 namespace brave_wallet {
-class JsonRpcService;
+class BraveWalletService;
 }
 
 namespace brave_rewards {
@@ -92,23 +86,33 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
     base::flat_map<std::string, std::string>* headers)>;
 
 using StopEngineCallback = base::OnceCallback<void(mojom::Result)>;
-
-class RewardsServiceImpl : public RewardsService,
-                           public mojom::RewardsEngineClient,
+using RequestImageCallback = base::RepeatingCallback<int(
+    const GURL& url,
+    base::OnceCallback<void(const SkBitmap& bitmap)>,
+    const net::NetworkTrafficAnnotationTag& traffic_annotation)>;
+using CancelImageRequestCallback = base::RepeatingCallback<void(int)>;
+class RewardsServiceImpl final : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
-                           public greaselion::GreaselionService::Observer,
+                                 public greaselion::GreaselionService::Observer,
 #endif
-                           public base::SupportsWeakPtr<RewardsServiceImpl> {
+                                 public mojom::RewardsEngineClient {
  public:
-  RewardsServiceImpl(Profile* profile,
+  RewardsServiceImpl(PrefService* prefs,
+                     const base::FilePath& profile_path,
+                     favicon::FaviconService* favicon_service,
+                     RequestImageCallback request_image_callback,
+                     CancelImageRequestCallback cancel_image_request_callback,
+                     content::StoragePartition* storage_partition,
 #if BUILDFLAG(ENABLE_GREASELION)
                      greaselion::GreaselionService* greaselion_service,
 #endif
-                     brave_wallet::JsonRpcService* wallet_rpc_service);
+                     brave_wallet::BraveWalletService* brave_wallet_service);
 
   RewardsServiceImpl(const RewardsServiceImpl&) = delete;
   RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
   ~RewardsServiceImpl() override;
+
+  static std::string UrlMethodToRequestType(mojom::UrlMethod method);
 
   // KeyedService:
   void Shutdown() override;
@@ -271,6 +275,11 @@ class RewardsServiceImpl : public RewardsService,
                              const std::string& query,
                              ConnectExternalWalletCallback) override;
 
+  void ConnectExternalWallet(
+      const std::string& provider,
+      const base::flat_map<std::string, std::string>& args,
+      ConnectExternalWalletCallback callback) override;
+
   void SetAutoContributeEnabled(bool enabled) override;
 
   void GetAllContributions(GetAllContributionsCallback callback) override;
@@ -286,6 +295,8 @@ class RewardsServiceImpl : public RewardsService,
                      DecryptStringCallback callback) override;
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
+
+  base::WeakPtr<RewardsServiceImpl> AsWeakPtr();
 
   // Testing methods
   void SetEngineEnvForTesting();
@@ -503,6 +514,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnP3ADailyTimer();
 
   void OnRecordBackendP3AExternalWallet(bool delay_report,
+                                        bool search_result_optin_changed,
                                         mojom::ExternalWalletPtr wallet);
   void GetAllContributionsForP3A();
   void OnRecordBackendP3AStatsContributions(
@@ -537,14 +549,17 @@ class RewardsServiceImpl : public RewardsService,
   mojom::Environment GetDefaultServerEnvironmentForAndroid();
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
-
-  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  raw_ptr<PrefService> prefs_;                            // NOT OWNED
+  raw_ptr<favicon::FaviconService> favicon_service_;      // NOT OWNED
+  const RequestImageCallback request_image_callback_;
+  const CancelImageRequestCallback cancel_image_request_callback_;
+  raw_ptr<content::StoragePartition> storage_partition_;  // NOT OWNED
 #if BUILDFLAG(ENABLE_GREASELION)
   raw_ptr<greaselion::GreaselionService> greaselion_service_ =
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
-  raw_ptr<brave_wallet::JsonRpcService> wallet_rpc_service_ = nullptr;
+  raw_ptr<brave_wallet::BraveWalletService> brave_wallet_service_ = nullptr;
   mojo::AssociatedReceiver<mojom::RewardsEngineClient> receiver_;
   mojo::AssociatedRemote<mojom::RewardsEngine> engine_;
   mojo::Remote<mojom::RewardsEngineFactory> engine_factory_;
@@ -563,8 +578,7 @@ class RewardsServiceImpl : public RewardsService,
 
   std::unique_ptr<base::OneShotEvent> ready_;
   SimpleURLLoaderList url_loaders_;
-  std::map<std::string, BitmapFetcherService::RequestId>
-      current_media_fetchers_;
+  std::map<std::string, int> current_media_fetchers_;
   PrefChangeRegistrar profile_pref_change_registrar_;
 
   bool engine_for_testing_ = false;
@@ -579,6 +593,7 @@ class RewardsServiceImpl : public RewardsService,
   p3a::ConversionMonitor conversion_monitor_;
 
   SEQUENCE_CHECKER(sequence_checker_);
+  base::WeakPtrFactory<RewardsServiceImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_rewards

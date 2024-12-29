@@ -5,6 +5,16 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+
+// Assets
+import TopLayerLight from './assets/top_layer_light.svg'
+import BottomLayerLight from './assets/bottom_layer_light.svg'
+import TopLayerDark from './assets/top_layer_dark.svg'
+import BottomLayerDark from './assets/bottom_layer_dark.svg'
+import LinesLight from './assets/portfolio_lines_background_light.svg'
+import LinesDark from './assets/portfolio_lines_background_dark.svg'
+
+// Shared Styles
 import { Row } from '../../shared/style'
 
 const minCardHeight = 497
@@ -14,8 +24,7 @@ export const layoutSmallWidth = 1100
 export const layoutPanelWidth = 660
 export const layoutTopPosition = 68
 // navSpace and navWidth need to be defined here to prevent circular imports.
-export const navSpace = 24
-export const navWidth = 240
+export const navWidth = 250
 
 export const Wrapper = styled.div<{
   noPadding?: boolean
@@ -57,11 +66,11 @@ export const LayoutCardWrapper = styled.div<{
   */
   --left-padding-without-nav: calc((100vw / 2) - (${maxCardWidth}px / 2));
   /*
-    + (${navWidth}px / 2) + (${navSpace}px / 2) is to then adjust the card body
+    + (${navWidth}px / 2) is to then adjust the card body
     to the right to be centered with the nav.
   */
   --left-padding-with-nav: calc(
-    var(--left-padding-without-nav) + (${navWidth}px / 2) + (${navSpace}px / 2)
+    var(--left-padding-without-nav) + (${navWidth}px / 2)
   );
   display: flex;
   flex-direction: column;
@@ -98,12 +107,16 @@ export const ContainerCard = styled.div<{
   noBorderRadius?: boolean
   useDarkBackground?: boolean
   useFullHeight?: boolean
+  noBackground?: boolean
+  usePanelCard?: boolean
 }>`
   display: flex;
   flex: none;
   flex-direction: column;
   background-color: ${(p) =>
-    p.useDarkBackground
+    p.noBackground
+      ? 'unset'
+      : p.useDarkBackground
       ? leo.color.page.background
       : leo.color.container.background};
   border-radius: ${(p) => (p.hideCardHeader ? '24px' : '0px 0px 24px 24px')};
@@ -128,10 +141,11 @@ export const ContainerCard = styled.div<{
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     min-height: calc(100vh - var(--bottom-position) - var(--top-position));
+    padding: ${(p) => (p.noPadding ? 0 : 16)}px;
     border-radius: ${(p) =>
       p.noBorderRadius
         ? '0px'
-        : p.hideCardHeader
+        : p.hideCardHeader || p.usePanelCard
         ? '24px 24px 0px 0px'
         : '0px'};
   }
@@ -205,18 +219,7 @@ export const CardHeaderShadow = styled(CardHeader)<{
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
 `
 
-export const CardHeaderContentWrapper = styled(Row)<{
-  dividerOpacity?: number
-  hideDivider?: boolean
-}>`
-  --divider-opacity: ${(p) =>
-    p.dividerOpacity !== undefined ? p.dividerOpacity : 1};
-  --divider-color: rgba(232, 233, 238, var(--divider-opacity));
-  @media (prefers-color-scheme: dark) {
-    --divider-color: rgba(43, 46, 59, var(--divider-opacity));
-  }
-  border-bottom: ${(p) =>
-    p.hideDivider ? 'none' : '1px solid var(--divider-color)'};
+export const CardHeaderContentWrapper = styled(Row)`
   height: 100%;
 `
 
@@ -235,76 +238,35 @@ export const BackgroundGradientWrapper = styled.div`
   bottom: 0px;
   left: 0px;
   right: 0px;
-  opacity: 0.5;
-  background-color: ${leo.color.page.background};
+  opacity: 0.3;
+  background-color: ${leo.color.primary[10]};
 `
 
 export const BackgroundGradientTopLayer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${TopLayerLight});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   position: absolute;
-  left: -42%;
-  right: 35%;
-  top: 15%;
-  bottom: 25%;
-  background: #dfdefc;
-  border-radius: 100%;
-  filter: blur(36.2567px);
-  transform: matrix(1, -0.06, -0.32, -0.95, 0, 0);
-  z-index: 5;
-  @media (prefers-color-scheme: dark) {
-    /* #013F4B does not exist in design system */
-    background: #013f4b;
-    filter: blur(47px);
-    left: 35%;
-    right: -100%;
-    top: 2%;
-    bottom: 25%;
-    transform: matrix(-0.98, 0.19, -0.73, -0.68, 0, 0);
-  }
-`
-
-export const BackgroundGradientMiddleLayer = styled.div`
-  position: absolute;
-  left: 25%;
-  right: 10%;
-  top: 10%;
-  bottom: 25%;
-  background: #d6e7ff;
-  border-radius: 100%;
-  filter: blur(47.5869px);
-  transform: matrix(-1, 0.06, -0.32, -0.95, 0, 0);
   z-index: 4;
   @media (prefers-color-scheme: dark) {
-    /* #030A49 does not exist in design system */
-    background: #030a49;
-    filter: blur(70px);
-    left: -40%;
-    right: 17%;
-    top: 50%;
-    bottom: -80%;
-    transform: matrix(-0.98, 0.19, -0.73, -0.68, 0, 0);
+    background-image: url(${TopLayerDark});
   }
 `
 
 export const BackgroundGradientBottomLayer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${BottomLayerLight});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   position: absolute;
-  left: -30%;
-  right: 20%;
-  top: 45%;
-  bottom: -25%;
-  background: #c8edfd;
-  border-radius: 100%;
-  filter: blur(47.5869px);
-  transform: matrix(-1, 0.06, -0.32, -0.95, 0, 0);
-  z-index: 3;
+  z-index: 5;
   @media (prefers-color-scheme: dark) {
-    /* #014B3A does not exist in design system */
-    background: #014b3a;
-    filter: blur(70px);
-    left: 25%;
-    right: -80%;
-    top: 15%;
-    bottom: -40%;
-    transform: matrix(-0.79, 0.61, -0.98, -0.22, 0, 0);
+    background-image: url(${BottomLayerDark});
   }
 `
 
@@ -321,5 +283,20 @@ export const FeatureRequestButtonWrapper = styled.div`
   display: flex;
   @media screen and (max-width: 1445px) {
     display: none;
+  }
+`
+
+export const PortfolioBackgroundWatermark = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${LinesLight});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${LinesDark});
   }
 `

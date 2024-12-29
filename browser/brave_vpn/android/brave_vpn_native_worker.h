@@ -25,11 +25,6 @@ class BraveVpnNativeWorker {
   void Destroy(JNIEnv* env,
                const base::android::JavaParamRef<jobject>& jcaller);
 
-  void GetAllServerRegions(JNIEnv* env);
-
-  void OnGetAllServerRegions(const std::string& server_regions_json,
-                             bool success);
-
   void GetTimezonesForRegions(JNIEnv* env);
 
   void OnGetTimezonesForRegions(const std::string& timezones_json,
@@ -37,7 +32,8 @@ class BraveVpnNativeWorker {
 
   void GetHostnamesForRegion(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& region);
+      const base::android::JavaParamRef<jstring>& region,
+      const base::android::JavaParamRef<jstring>& region_precision);
 
   void OnGetHostnamesForRegion(const std::string& hostname_json, bool success);
 
@@ -90,7 +86,10 @@ class BraveVpnNativeWorker {
       const base::android::JavaParamRef<jstring>& product_type,
       const base::android::JavaParamRef<jstring>& bundle_id);
 
-  void OnVerifyPurchaseToken(const std::string& json_response, bool success);
+  void OnVerifyPurchaseToken(const std::string& purchase_token,
+                             const std::string& product_id,
+                             const std::string& json_response,
+                             bool success);
 
   void ReloadPurchasedState(JNIEnv* env);
 

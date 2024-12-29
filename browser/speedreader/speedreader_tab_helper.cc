@@ -10,8 +10,10 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -52,26 +54,24 @@ namespace speedreader {
 
 std::u16string GetSpeedreaderData(
     std::initializer_list<std::pair<std::string_view, int>> resources) {
-  std::u16string result = u"speedreaderData = {";
-
-  if (kSpeedreaderTTS.Get()) {
-    result += u"ttsEnabled: true,";
-  }
-
+  base::Value::Dict sr_data;
+  sr_data.Set("ttsEnabled", kSpeedreaderTTS.Get());
   for (const auto& r : resources) {
-    auto text = brave_l10n::GetLocalizedResourceUTF16String(r.second);
-    // Make sure that the text doesn't contain js injection
-    base::ReplaceChars(text, u"\"", u"\\\"", &text);
-    result += base::StrCat({base::UTF8ToUTF16(r.first), u": \"", text, u"\","});
+    sr_data.Set(r.first, brave_l10n::GetLocalizedResourceUTF16String(r.second));
   }
 
-  return result + u"}\n\n";
+  return base::StrCat(
+      {u"speedreaderData = ",
+       base::UTF8ToUTF16(base::WriteJson(sr_data).value_or("{}"))});
 }
 
-SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
+SpeedreaderTabHelper::SpeedreaderTabHelper(
+    content::WebContents* web_contents,
+    SpeedreaderRewriterService* rewriter_service)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents),
-      PageDistiller(web_contents) {
+      PageDistiller(web_contents),
+      rewriter_service_(rewriter_service) {
   dom_distiller::AddObserver(web_contents, this);
   speedreader_service_observation_.Observe(GetSpeedreaderService());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
@@ -85,9 +85,18 @@ SpeedreaderTabHelper::~SpeedreaderTabHelper() {
 // static
 void SpeedreaderTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
-  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
-    SpeedreaderTabHelper::CreateForWebContents(contents);
+  if (!base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    return;
   }
+
+  auto* rewriter_service =
+      g_brave_browser_process->speedreader_rewriter_service();
+  if (!rewriter_service) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  SpeedreaderTabHelper::CreateForWebContents(contents, rewriter_service);
 }
 
 // static
@@ -283,14 +292,10 @@ void SpeedreaderTabHelper::ProcessNavigation(
     return;
   }
 
-  auto* rewriter_service =
-      g_brave_browser_process->speedreader_rewriter_service();
   auto* nav_entry = navigation_handle->GetNavigationEntry();
-
   const bool url_looks_readable =
-      rewriter_service && nav_entry &&
-      nav_entry->GetVirtualURL().SchemeIsHTTPOrHTTPS() &&
-      rewriter_service->URLLooksReadable(navigation_handle->GetURL());
+      nav_entry && nav_entry->GetVirtualURL().SchemeIsHTTPOrHTTPS() &&
+      rewriter_service_->URLLooksReadable(navigation_handle->GetURL());
 
   const bool enabled_for_site =
       GetSpeedreaderService()->IsEnabledForSite(navigation_handle->GetURL());
@@ -380,14 +385,11 @@ void SpeedreaderTabHelper::DOMContentLoaded(
   }
   UpdateUI();
 
-  static base::NoDestructor<std::u16string> kSpeedreaderData(
-      GetSpeedreaderData({
-        {"showOriginalLinkText", IDS_READER_MODE_SHOW_ORIGINAL_PAGE_LINK},
-            {"minutesText", IDS_READER_MODE_MINUTES_TEXT},
+  static base::NoDestructor<std::u16string> kSpeedreaderData(GetSpeedreaderData(
+      {{"showOriginalLinkText", IDS_READER_MODE_SHOW_ORIGINAL_PAGE_LINK},
+       {"minutesText", IDS_READER_MODE_MINUTES_TEXT},
 #if defined(IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE)
-        {
-          "playButtonTitle", IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE
-        }
+       {"playButtonTitle", IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE}
 #endif
       }));
 

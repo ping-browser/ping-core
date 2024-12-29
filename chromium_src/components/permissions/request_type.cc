@@ -19,17 +19,9 @@
 namespace {
 constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
 }  // namespace
-#else
-namespace vector_icons {
-constexpr auto& kMicIconValue = vector_icons::kMicIcon;
-}  // namespace vector_icons
 #endif
 
 // Add Brave cases into GetIconIdAndroid.
-// kWidevine is not expected to happen here as Widevine is not enabled in
-// Android, we add this case here just to avoid build error due to unhandled
-// cases in the switch.
-//
 // TODO(jocelyn): Might need to update icon when we have ethereum.enable UI
 // support in Android.
 #define IDR_ANDROID_STORAGE_ACCESS                   \
@@ -42,8 +34,8 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
     return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
 
 // Add Brave cases into GetIconIdDesktop.
-#define kMicIcon                                     \
-  kMicIconValue;                                     \
+#define kStorageAccessIcon                           \
+  kStorageAccessIcon;                                \
   case RequestType::kWidevine:                       \
   case RequestType::kBraveEthereum:                  \
   case RequestType::kBraveSolana:                    \
@@ -77,7 +69,7 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 #undef RequestTypeToContentSettingsType
 #undef ContentSettingsTypeToRequestType
 #undef BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
-#undef kMicIcon
+#undef kStorageAccessIcon
 #undef IDR_ANDROID_STORAGE_ACCESS
 
 namespace permissions {
@@ -93,6 +85,11 @@ RequestType ContentSettingsTypeToRequestType(
       return RequestType::kBraveGoogleSignInPermission;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return RequestType::kBraveLocalhostAccessPermission;
+    case ContentSettingsType::DEFAULT:
+      // Currently we have only one DEFAULT type that is
+      // not mapped, which is Widevine, it's used for
+      // UMA purpose only
+      return RequestType::kWidevine;
     default:
       return ContentSettingsTypeToRequestType_ChromiumImpl(
           content_settings_type);

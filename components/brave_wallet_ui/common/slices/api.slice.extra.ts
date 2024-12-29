@@ -17,7 +17,9 @@ import {
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
-  useGenerateReceiveAddressMutation
+  useGenerateReceiveAddressMutation,
+  useGetTopDappsQuery,
+  useGetNetworksRegistryQuery
 } from './api.slice'
 
 // entities
@@ -36,6 +38,7 @@ import {
 } from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { selectPendingTransactions } from './entities/transaction.entity'
+import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 
 export const useAccountsQuery = () => {
   return useGetAccountInfosRegistryQuery(undefined, {
@@ -245,6 +248,8 @@ export const useReceiveAddressQuery = (
   React.useEffect(() => {
     // skip fetching/polling if not needed
     if (accountId?.address) {
+      setReceiveAddress(accountId.address)
+      setIsFetchingAddress(false)
       return
     }
 
@@ -296,7 +301,7 @@ export const useGetIsRegistryTokenQuery = (
       }
 
       const assetId = res.data?.idsByChainId[arg.chainId].find((id) =>
-        id.toString().includes(arg?.address)
+        id.toString().includes(arg?.address.toLowerCase())
       )
       const asset = assetId ? res.data?.entities[assetId] : undefined
 
@@ -306,4 +311,35 @@ export const useGetIsRegistryTokenQuery = (
       }
     }
   })
+}
+
+export const useGetDappRadarNetworks = () => {
+  const { data: networksRegistry, isLoading: isLoadingNetworks } =
+    useGetNetworksRegistryQuery()
+  const { data: dapps, isLoading: isLoadingDapps } = useGetTopDappsQuery(
+    networksRegistry?.visibleIds ? undefined : skipToken
+  )
+
+  // memos
+  const dappNetworks = React.useMemo(() => {
+    if (!networksRegistry || !dapps) {
+      return []
+    }
+
+    const dappNetworkIds = Array.from(
+      new Set(dapps.map((dapp) => dapp.chains).flat())
+    )
+
+    const dappNetworks = getEntitiesListFromEntityState(
+      networksRegistry,
+      dappNetworkIds
+    )
+
+    return dappNetworks
+  }, [networksRegistry, dapps])
+
+  return {
+    isLoading: isLoadingNetworks || isLoadingDapps,
+    dappNetworks
+  }
 }

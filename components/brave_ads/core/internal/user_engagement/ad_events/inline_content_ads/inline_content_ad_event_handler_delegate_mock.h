@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 
@@ -46,7 +46,7 @@ class InlineContentAdEventHandlerDelegateMock
               OnFailedToFireInlineContentAdEvent,
               (const std::string& placement_id,
                const std::string& creative_instance_id,
-               const mojom::InlineContentAdEventType event_type));
+               const mojom::InlineContentAdEventType mojom_ad_event_type));
 };
 
 }  // namespace brave_ads

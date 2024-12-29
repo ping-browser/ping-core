@@ -113,7 +113,7 @@ void BodySnifferURLLoader::OnReceiveEarlyHints(
     network::mojom::EarlyHintsPtr early_hints) {
   // OnReceiveEarlyHints() shouldn't be called. See the comment in
   // OnReceiveResponse().
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void BodySnifferURLLoader::OnReceiveResponse(
@@ -123,7 +123,7 @@ void BodySnifferURLLoader::OnReceiveResponse(
   // OnReceiveResponse() shouldn't be called because BodySnifferURLLoader is
   // created by WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void BodySnifferURLLoader::OnReceiveRedirect(
@@ -132,7 +132,7 @@ void BodySnifferURLLoader::OnReceiveRedirect(
   // OnReceiveRedirect() shouldn't be called because BodySnifferURLLoader is
   // created by WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void BodySnifferURLLoader::OnUploadProgress(
@@ -171,10 +171,10 @@ void BodySnifferURLLoader::OnComplete(
       destination_url_loader_client_->OnComplete(status);
       return;
     case State::kAborted:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void BodySnifferURLLoader::FollowRedirect(
@@ -184,7 +184,7 @@ void BodySnifferURLLoader::FollowRedirect(
     const std::optional<GURL>& new_url) {
   // BodySnifferURLLoader starts handling the request after
   // OnReceivedResponse(). A redirect response is not expected.
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void BodySnifferURLLoader::SetPriority(net::RequestPriority priority,
@@ -219,11 +219,13 @@ void BodySnifferURLLoader::OnBodyReadable(MojoResult) {
   DCHECK_EQ(State::kSniffing, state_);
 
   size_t start_size = buffered_body_.size();
-  uint32_t read_bytes = kReadBufferSize;
+  size_t read_bytes = kReadBufferSize;
   buffered_body_.resize(start_size + read_bytes);
-  MojoResult result =
-      body_consumer_handle_->ReadData(buffered_body_.data() + start_size,
-                                      &read_bytes, MOJO_READ_DATA_FLAG_NONE);
+  MojoResult result = body_consumer_handle_->ReadData(
+      MOJO_READ_DATA_FLAG_NONE,
+      base::as_writable_byte_span(buffered_body_)
+          .subspan(start_size, read_bytes),
+      read_bytes);
   switch (result) {
     case MOJO_RESULT_OK:
       buffered_body_.resize(start_size + read_bytes);
@@ -236,7 +238,7 @@ void BodySnifferURLLoader::OnBodyReadable(MojoResult) {
       body_consumer_watcher_.ArmOrNotify();
       return;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 
@@ -252,7 +254,7 @@ void BodySnifferURLLoader::OnBodyReadable(MojoResult) {
         handler->OnBodyUpdated(buffered_body_, is_body_complete);
     switch (action) {
       case BodyHandler::Action::kNone:
-        NOTREACHED() << "Action shouldn't return kNone";
+        NOTREACHED_IN_MIGRATION() << "Action shouldn't return kNone";
         break;
       case BodyHandler::Action::kContinue:
         if (is_body_complete) {
@@ -385,11 +387,11 @@ void BodySnifferURLLoader::SendReceivedBodyToClient() {
   DCHECK_EQ(State::kSending, state_);
   // Send the buffered data first.
   DCHECK_GT(bytes_remaining_in_buffer_, 0u);
-  size_t start_position = buffered_body_.size() - bytes_remaining_in_buffer_;
-  uint32_t bytes_sent = bytes_remaining_in_buffer_;
-  MojoResult result =
-      body_producer_handle_->WriteData(buffered_body_.data() + start_position,
-                                       &bytes_sent, MOJO_WRITE_DATA_FLAG_NONE);
+  base::span<const uint8_t> bytes =
+      base::as_byte_span(buffered_body_).last(bytes_remaining_in_buffer_);
+  size_t actually_sent_bytes = 0;
+  MojoResult result = body_producer_handle_->WriteData(
+      bytes, MOJO_WRITE_DATA_FLAG_NONE, actually_sent_bytes);
   switch (result) {
     case MOJO_RESULT_OK:
       break;
@@ -402,23 +404,21 @@ void BodySnifferURLLoader::SendReceivedBodyToClient() {
       body_producer_watcher_.ArmOrNotify();
       return;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
-  bytes_remaining_in_buffer_ -= bytes_sent;
+  bytes_remaining_in_buffer_ -= actually_sent_bytes;
   body_producer_watcher_.ArmOrNotify();
 }
 
 void BodySnifferURLLoader::ForwardBodyToClient() {
   DCHECK_EQ(0u, bytes_remaining_in_buffer_);
   // Send the body from the consumer to the producer.
-  const void* buffer;
-  uint32_t buffer_size = 0;
-  MojoResult result =
-      body_consumer_handle_
-          ? body_consumer_handle_->BeginReadData(&buffer, &buffer_size,
-                                                 MOJO_BEGIN_READ_DATA_FLAG_NONE)
-          : MOJO_RESULT_FAILED_PRECONDITION;
+  base::span<const uint8_t> buffer;
+  MojoResult result = body_consumer_handle_
+                          ? body_consumer_handle_->BeginReadData(
+                                MOJO_BEGIN_READ_DATA_FLAG_NONE, buffer)
+                          : MOJO_RESULT_FAILED_PRECONDITION;
 
   switch (result) {
     case MOJO_RESULT_OK:
@@ -431,12 +431,13 @@ void BodySnifferURLLoader::ForwardBodyToClient() {
       CompleteSending();
       return;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 
-  result = body_producer_handle_->WriteData(buffer, &buffer_size,
-                                            MOJO_WRITE_DATA_FLAG_NONE);
+  size_t actually_written_bytes = 0;
+  result = body_producer_handle_->WriteData(buffer, MOJO_WRITE_DATA_FLAG_NONE,
+                                            actually_written_bytes);
   switch (result) {
     case MOJO_RESULT_OK:
       break;
@@ -450,11 +451,11 @@ void BodySnifferURLLoader::ForwardBodyToClient() {
       body_producer_watcher_.ArmOrNotify();
       return;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 
-  body_consumer_handle_->EndReadData(buffer_size);
+  body_consumer_handle_->EndReadData(actually_written_bytes);
   body_consumer_watcher_.ArmOrNotify();
 }
 

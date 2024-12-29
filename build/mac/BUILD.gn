@@ -332,6 +332,10 @@ copy("copies") {
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
 }
 
+if (install_omaha4_with_pkg) {
+  generated_pkg_scripts = "$target_gen_dir/pkg-scripts"
+}
+
 action("create_pkg") {
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/create_pkg.sh"
@@ -339,7 +343,15 @@ action("create_pkg") {
   args = [
     rebase_path(shell_script, root_build_dir),
     rebase_path(app_path, root_build_dir),
-    rebase_path("//brave/build/mac/pkg-scripts"),
+  ]
+
+  if (install_omaha4_with_pkg) {
+    args += [ rebase_path(generated_pkg_scripts) ]
+  } else {
+    args += [ rebase_path("//brave/build/mac/pkg-scripts") ]
+  }
+
+  args += [
     rebase_path("$root_out_dir/Brave Browser Component.plist"),
     "$mac_unsigned_output_prefix/$brave_pkg",
   ]
@@ -353,6 +365,34 @@ action("create_pkg") {
   outputs = [ unsigned_pkg_path ]
 
   deps = [ ":finalize_app" ]
+
+  if (install_omaha4_with_pkg) {
+    deps += [ ":postinstall" ]
+  }
+}
+
+if (install_omaha4_with_pkg) {
+  action("postinstall") {
+    visibility = [ ":create_pkg" ]
+
+    script = "create_postinstall.py"
+
+    output = "$generated_pkg_scripts/postinstall"
+
+    args = [
+      rebase_path("//chrome/installer/mac/pkg_postinstall.in"),
+      brave_exe,
+      "Contents/Frameworks/$chrome_product_full_name Framework.framework",
+      rebase_path(output),
+    ]
+
+    inputs = [
+      script,
+      "//chrome/installer/mac/pkg_postinstall.in",
+    ]
+
+    outputs = [ output ]
+  }
 }
 
 action("sign_pkg") {
@@ -379,17 +419,24 @@ action("sign_pkg") {
 }
 
 action("create_dmg") {
-  script = "//build/gn_run_binary.py"
-  shell_script = "//chrome/installer/mac/pkg-dmg"
+  if (host_os == "mac") {
+    script = "//build/gn_run_binary.py"
+    shell_script = "//chrome/installer/mac/pkg-dmg"
+    args = [ rebase_path(shell_script, root_build_dir) ]
+    inputs = [ shell_script ]
+  } else {
+    script = "cross-compile/pkg-dmg-linux.py"
+    args = []
+    inputs = []
+  }
 
-  args = [
-    rebase_path(shell_script, root_build_dir),
+  args += [
     "--source",
     "/var/empty",
     "--target",
     "$mac_unsigned_output_prefix/$brave_dmg",
     "--format",
-    "UDBZ",
+    "ULMO",
     "--verbosity",
     "2",
     "--volname",
@@ -408,27 +455,23 @@ action("create_dmg") {
     "$dmg_icon",
     "--symlink",
     "/Applications",
+    "--copy",
+    rebase_path(
+        "$root_out_dir/$browser_product_name Packaging/updater/.install",
+        root_build_dir),
   ]
 
-  inputs = [
+  inputs += [
     script,
-    shell_script,
     app_path,
   ]
 
   outputs = [ unsigned_dmg_path ]
 
-  deps = [ ":finalize_app" ]
-
-  if (brave_enable_updater) {
-    args += [
-      "--copy",
-      rebase_path(
-          "$root_out_dir/$browser_product_name Packaging/updater/.install",
-          root_build_dir),
-    ]
-    deps += [ "//chrome/updater/mac:browser_install_script" ]
-  }
+  deps = [
+    ":finalize_app",
+    "//chrome/updater/mac:browser_install_script",
+  ]
 }
 
 action("sign_dmg") {
@@ -586,16 +629,52 @@ copy("copy_dmg_pkg") {
   outputs = [ "$root_out_dir/{{source_file_part}}" ]
 }
 
-if (brave_enable_updater) {
-  crx3("crx") {
-    inputs = [ target_dmg_path ]
-    output = "$root_out_dir/$chrome_product_full_name.crx3"
-    base_dir = get_path_info(target_dmg_path, "dir")
+crx3("crx") {
+  inputs = [ target_dmg_path ]
+  output = "$root_out_dir/$chrome_product_full_name.crx3"
+  base_dir = get_path_info(target_dmg_path, "dir")
 
-    # The private key file is not in Git for obvious reasons. It needs to be
-    # copied into this directory manually. Changing the private key requires
-    # also changing kBravePublisherKeyHash in crx_verifier.cc.
-    key = "//brave/updater/crx-private-key.der"
-    deps = [ ":copy_dmg_pkg" ]
+  # The private key file is not in Git for obvious reasons. It needs to be
+  # copied into this directory manually. Changing the private key requires
+  # also changing kBravePublisherKeyHash in crx_verifier.cc.
+  key = "//brave/updater/crx-private-key.der"
+  deps = [ ":copy_dmg_pkg" ]
+}
+
+action("sign_updater") {
+  deps = [
+    "//chrome/updater/mac:updater_bundle",
+    "//chrome/updater/mac:updater_install_script",
+    "//chrome/updater/mac/installer:metainstaller",
+    "//chrome/updater/mac/signing",
+    "//chrome/updater/tools:BraveUpdaterUtil",
+  ]
+  script = "sign_updater.py"
+  output_dir = "$root_out_dir/$mac_signed_output_prefix"
+  output_file = "$updater_product_full_name-$chrome_version_full.zip"
+  args = [
+    rebase_path("$root_out_dir/Updater Packaging/sign_updater.py",
+                root_build_dir),
+    rebase_path(output_dir),
+    output_file,
+    "--input",
+    rebase_path(root_out_dir),
+    "--identity",
+    mac_signing_identifier,
+    "--installer-identity",
+    mac_installer_signing_identifier,
+  ]
+  if (notarize) {
+    args += [
+      "--notarize",
+      "--notary-arg=--apple-id",
+      "--notary-arg=$notary_user",
+      "--notary-arg=--password",
+      "--notary-arg=$notary_password",
+      "--notary-arg=--team-id",
+      "--notary-arg=$chrome_mac_team_id",
+    ]
   }
+  outputs = [ "$output_dir/$output_file" ]
+  inputs = [ script ]
 }

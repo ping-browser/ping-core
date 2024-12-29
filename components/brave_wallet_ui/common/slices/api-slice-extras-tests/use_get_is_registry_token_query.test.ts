@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, waitFor } from '@testing-library/react'
 
 // utils
 import {
@@ -37,7 +37,12 @@ describe('useGetIsRegistryTokenQuery', () => {
     expect(hook.result.current.isVerified).not.toBeDefined()
 
     // loading
-    await hook.waitFor(() => hook.result.all.length > 2)
+    await waitFor(() =>
+      expect(
+        !hook.result.current.isLoading &&
+          hook.result.current.isVerified !== undefined
+      ).toBe(true)
+    )
 
     // loaded
     expect(hook.result.current.isLoading).toBe(false)
@@ -63,7 +68,12 @@ describe('useGetIsRegistryTokenQuery', () => {
     expect(hook.result.current.isVerified).not.toBeDefined()
 
     // loading
-    await hook.waitFor(() => hook.result.all.length > 2)
+    await waitFor(() =>
+      expect(
+        !hook.result.current.isLoading &&
+          hook.result.current.isVerified !== undefined
+      ).toBe(true)
+    )
 
     // loaded
     expect(hook.result.current.isLoading).toBe(false)

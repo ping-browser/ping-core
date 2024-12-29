@@ -16,15 +16,16 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_remote_completion_client.h"
-#include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/browser/engine/test_utils.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
 using ::testing::_;
 using ::testing::Sequence;
 
@@ -42,12 +43,15 @@ class EngineConsumerLlamaUnitTest : public testing::Test {
   ~EngineConsumerLlamaUnitTest() override = default;
 
   void SetUp() override {
-    auto* model = GetModel("chat-leo-expanded");
+    auto* model = ModelService::GetModelForTesting("chat-leo-expanded");
     ASSERT_TRUE(model);
+
+    mojom::LeoModelOptionsPtr options =
+        model->options->get_leo_model_options().Clone();
     engine_ =
-        std::make_unique<EngineConsumerLlamaRemote>(*model, nullptr, nullptr);
+        std::make_unique<EngineConsumerLlamaRemote>(*options, nullptr, nullptr);
     engine_->SetAPIForTesting(
-        std::make_unique<MockRemoteCompletionClient>(model->name));
+        std::make_unique<MockRemoteCompletionClient>(options->name));
   }
 
   MockRemoteCompletionClient* GetMockRemoteCompletionClient() {
@@ -67,12 +71,12 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
-      "Which show is this catchphrase from?", "This is the way.",
-      std::nullopt));
+      "Which show is this catchphrase from?", "This is the way.", std::nullopt,
+      base::Time::Now(), std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-      std::nullopt, std::nullopt));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
   auto* mock_remote_completion_client =
       static_cast<MockRemoteCompletionClient*>(engine_->GetAPIForTesting());
   std::string prompt_before_time_and_date =
@@ -102,7 +106,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
       "content:\n<excerpt>\nI'm groot.\n</excerpt>\n\nWhat's his name? [/INST] "
       "Assistant: ";
 
-  base::RunLoop run_loop;
+  auto run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,
                     const std::vector<std::string>& history,
@@ -120,10 +124,11 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "This is a page.", history, "What's his name?", base::DoNothing(),
+      false, "This is a page.", history, "What's his name?", "",
+      base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
+  run_loop->Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 
   prompt_after_time_and_date =
@@ -150,7 +155,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
       "page content:\n<excerpt>\nI'm groot.\n</excerpt>\n\nWhat's his name? "
       "[/INST] Assistant: ";
 
-  base::RunLoop run_loop2;
+  run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,
                     const std::vector<std::string>& history,
@@ -169,16 +174,15 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history2.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "This is a page.", history2, "What's his name?", base::DoNothing(),
+      false, "This is a page.", history2, "What's his name?", "",
+      base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop2](EngineConsumer::GenerationResult) {
-            run_loop2.Quit();
-          }));
-  run_loop2.Run();
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
+  run_loop->Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 
-  base::RunLoop run_loop3;
-  engine_->SetMaxPageContentLengthForTesting(7);
+  run_loop = std::make_unique<base::RunLoop>();
+  engine_->SetMaxAssociatedContentLengthForTesting(7);
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([](const std::string& prompt,
                    const std::vector<std::string>& history,
@@ -206,19 +210,99 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "12345", history, "user question", base::DoNothing(),
+      false, "12345", history, "user question", "", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop3](EngineConsumer::GenerationResult) {
-            run_loop3.Quit();
-          }));
-  run_loop3.Run();
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
+  run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
+
+  // Test with modified agent reply.
+  run_loop = std::make_unique<base::RunLoop>();
+  EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
+      .WillOnce([](const std::string& prompt,
+                   const std::vector<std::string>& stop_words,
+                   EngineConsumer::GenerationCompletedCallback callback,
+                   EngineConsumer::GenerationDataCallback data_callback) {
+        // Make sure the prompt uses the modified agent reply.
+        EXPECT_NE(prompt.find("Which show is 'This is the way' from?"),
+                  std::string::npos);
+        EXPECT_NE(prompt.find("The Mandalorian."), std::string::npos);
+        std::move(callback).Run("");
+      });
+
+  engine_->GenerateAssistantResponse(
+      false, "12345", GetHistoryWithModifiedReply(), "user question", "",
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
+  run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
+
+  // Test with page content refine event.
+  {
+    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
+        std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
+        std::nullopt, false);
+    entry->events->push_back(
+        mojom::ConversationEntryEvent::NewPageContentRefineEvent(
+            mojom::PageContentRefineEvent::New()));
+    history.push_back(std::move(entry));
+  }
+  run_loop = std::make_unique<base::RunLoop>();
+  EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
+      .WillOnce([](const std::string& prompt,
+                   const std::vector<std::string>& stop_words,
+                   EngineConsumer::GenerationCompletedCallback callback,
+                   EngineConsumer::GenerationDataCallback data_callback) {
+        std::move(callback).Run("");
+      });
+
+  engine_->GenerateAssistantResponse(
+      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?", "",
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
+  run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
+}
+
+TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
+  std::vector<mojom::ConversationTurnPtr> history;
+  auto* mock_remote_completion_client = GetMockRemoteCompletionClient();
+  EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _)).Times(0);
+  auto run_loop = std::make_unique<base::RunLoop>();
+  engine_->GenerateAssistantResponse(
+      false, "This is my page.", history, "Who?", "", base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
+  run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
+
+  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
+      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
+      std::nullopt, false);
+  entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("Me")));
+  history.push_back(std::move(entry));
+
+  EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _)).Times(0);
+  run_loop = std::make_unique<base::RunLoop>();
+  engine_->GenerateAssistantResponse(
+      false, "This is my page.", history, "Who?", "", base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
+  run_loop->Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 }
 
 TEST_F(EngineConsumerLlamaUnitTest, TestGenerateRewriteSuggestion) {
   base::RunLoop run_loop;
   testing::StrictMock<MockCallback> mock_callback;
-  engine_->SetMaxPageContentLengthForTesting(5);
+  engine_->SetMaxAssociatedContentLengthForTesting(5);
   auto* mock_client = GetMockRemoteCompletionClient();
   EXPECT_CALL(*mock_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,
@@ -266,6 +350,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateRewriteSuggestion) {
 
   engine_->GenerateRewriteSuggestion(
       "<excerpt>Hello World</excerpt>", "Rewrite the excerpt in a funny tone.",
+      "",
       base::BindRepeating(&MockCallback::OnDataReceived,
                           base::Unretained(&mock_callback)),
       base::BindOnce(&MockCallback::OnCompleted,

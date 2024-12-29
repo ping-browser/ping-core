@@ -22,6 +22,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
 #include "ui/base/webui/web_ui_util.h"
 
 namespace {
@@ -48,7 +49,8 @@ CookieListOptInUI::CookieListOptInUI(content::WebUI* web_ui)
 
   webui::SetupWebUIDataSource(
       source,
-      base::make_span(kCookieListOptInGenerated, kCookieListOptInGeneratedSize),
+      UNSAFE_TODO(base::make_span(kCookieListOptInGenerated,
+                                  kCookieListOptInGeneratedSize)),
       IDR_COOKIE_LIST_OPT_IN_HTML);
 
   content::URLDataSource::Add(
@@ -71,4 +73,18 @@ void CookieListOptInUI::CreatePageHandler(
         receiver) {
   page_handler_ = std::make_unique<CookieListOptInPageHandler>(
       std::move(receiver), embedder(), Profile::FromWebUI(web_ui()));
+}
+
+CookieListOptInUIConfig::CookieListOptInUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,
+                                  kCookieListOptInHost) {}
+
+bool CookieListOptInUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return base::FeatureList::IsEnabled(
+      brave_shields::features::kBraveAdblockCookieListOptIn);
+}
+
+bool CookieListOptInUIConfig::ShouldAutoResizeHost() {
+  return true;
 }

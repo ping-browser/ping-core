@@ -14,8 +14,7 @@ struct NFTDetailView: View {
   @ObservedObject var nftDetailStore: NFTDetailStore
   @Binding var walletActionDestination: WalletActionDestination?
 
-  var onNFTMetadataRefreshed: ((NFTMetadata) -> Void)?
-  var onNFTStatusUpdated: (() -> Void)?
+  var onNFTMetadataRefreshed: ((BraveWallet.NftMetadata) -> Void)?
 
   @Environment(\.openURL) private var openWalletURL
   @Environment(\.presentationMode) @Binding private var presentationMode
@@ -44,7 +43,7 @@ struct NFTDetailView: View {
 
   @ViewBuilder private var nftImage: some View {
     NFTImageView(
-      urlString: nftDetailStore.nftMetadata?.imageURLString ?? "",
+      urlString: nftDetailStore.nftMetadata?.image ?? "",
       isLoading: nftDetailStore.isLoading
     ) {
       noImageView
@@ -54,10 +53,9 @@ struct NFTDetailView: View {
   }
 
   private var isSVGImage: Bool {
-    guard let nftMetadata = nftDetailStore.nftMetadata,
-      let imageUrlString = nftMetadata.imageURLString
+    guard let nftMetadata = nftDetailStore.nftMetadata
     else { return false }
-    return imageUrlString.hasPrefix("data:image/svg") || imageUrlString.hasSuffix(".svg")
+    return nftMetadata.image.hasPrefix("data:image/svg") || nftMetadata.image.hasSuffix(".svg")
   }
 
   var body: some View {
@@ -178,11 +176,11 @@ struct NFTDetailView: View {
       } header: {
         Text(Strings.Wallet.nftDetailOverview)
       }
-      if let nftMetadata = nftDetailStore.nftMetadata, let description = nftMetadata.description,
-        !description.isEmpty
+      if let nftMetadata = nftDetailStore.nftMetadata,
+        !nftMetadata.desc.isEmpty
       {
         Section {
-          Text(description)
+          Text(nftMetadata.desc)
             .font(.subheadline)
             .foregroundColor(Color(.braveLabel))
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -198,7 +196,7 @@ struct NFTDetailView: View {
         Section {
           List {
             ForEach(attributes) { attribute in
-              NFTDetailRow(title: attribute.type) {
+              NFTDetailRow(title: attribute.traitType) {
                 Text(attribute.value)
                   .font(.subheadline)
                   .foregroundColor(Color(.braveLabel))
@@ -247,23 +245,21 @@ struct NFTDetailView: View {
           }
           Button {
             if nftDetailStore.nft.visible {  // a collected visible NFT, mark as hidden
-              nftDetailStore.updateNFTStatus(
-                visible: false,
-                isSpam: false,
-                isDeletedByUser: false,
-                completion: {
-                  onNFTStatusUpdated?()
-                }
-              )
+              Task { @MainActor in
+                await nftDetailStore.updateNFTStatus(
+                  visible: false,
+                  isSpam: false,
+                  isDeletedByUser: false
+                )
+              }
             } else {  // either a hidden NFT or a junk NFT, mark as visible
-              nftDetailStore.updateNFTStatus(
-                visible: true,
-                isSpam: false,
-                isDeletedByUser: false,
-                completion: {
-                  onNFTStatusUpdated?()
-                }
-              )
+              Task { @MainActor in
+                await nftDetailStore.updateNFTStatus(
+                  visible: true,
+                  isSpam: false,
+                  isDeletedByUser: false
+                )
+              }
             }
           } label: {
             if nftDetailStore.nft.visible {  // a collected visible NFT
@@ -295,16 +291,15 @@ struct NFTDetailView: View {
         primaryButton: .init(
           title: Strings.Wallet.manageSiteConnectionsConfirmAlertRemove,
           action: { _ in
-            nftDetailStore.updateNFTStatus(
-              visible: false,
-              isSpam: nftDetailStore.nft.isSpam,
-              isDeletedByUser: true,
-              completion: {
-                onNFTStatusUpdated?()
-                presentationMode.dismiss()
-              }
-            )
-            isPresentingRemoveAlert = false
+            Task { @MainActor in
+              isPresentingRemoveAlert = false
+              await nftDetailStore.updateNFTStatus(
+                visible: false,
+                isSpam: nftDetailStore.nft.isSpam,
+                isDeletedByUser: true
+              )
+              presentationMode.dismiss()
+            }
           }
         ),
         secondaryButton: .init(

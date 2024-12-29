@@ -5,6 +5,8 @@
 
 const path = require('path')
 const { spawn, spawnSync } = require('child_process')
+const readline = require('readline')
+const os = require('os')
 const config = require('./config')
 const fs = require('fs-extra')
 const crypto = require('crypto')
@@ -12,7 +14,11 @@ const l10nUtil = require('./l10nUtil')
 const Log = require('./logging')
 const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
+const updateUnsafeBuffersPaths = require('./updateUnsafeBuffersPaths.js')
 const ActionGuard = require('./actionGuard')
+
+// Do not limit the number of listeners to avoid warnings from EventEmitter.
+process.setMaxListeners(0);
 
 const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
@@ -31,7 +37,7 @@ const replaceFile = (soureFile, destFile) => {
   });
 }
 
-async function applyPatches() {
+async function applyPatches(printPatchFailuresInJson) {
   const GitPatcher = require('./gitPatcher')
   Log.progressStart('apply patches')
   // Always detect if we need to apply patches, since user may have modified
@@ -42,24 +48,28 @@ async function applyPatches() {
   const catapultPatchesPath = path.join(patchesPath, 'third_party', 'catapult')
   const devtoolsFrontendPatchesPath = path.join(patchesPath, 'third_party', 'devtools-frontend', 'src')
   const ffmpegPatchesPath = path.join(patchesPath, 'third_party', 'ffmpeg')
+  const tflitePatchesPath = path.join(patchesPath, 'third_party', 'tflite', 'src')
 
   const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
   const catapultRepoPath = path.join(chromiumRepoPath, 'third_party', 'catapult')
   const devtoolsFrontendRepoPath = path.join(chromiumRepoPath, 'third_party', 'devtools-frontend', 'src')
   const ffmpegRepoPath = path.join(chromiumRepoPath, 'third_party', 'ffmpeg')
+  const tfliteRepoPath = path.join(chromiumRepoPath, 'third_party', 'tflite', 'src')
 
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
   const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
   const catapultPatcher = new GitPatcher(catapultPatchesPath, catapultRepoPath)
   const devtoolsFrontendPatcher = new GitPatcher(devtoolsFrontendPatchesPath, devtoolsFrontendRepoPath)
   const ffmpegPatcher = new GitPatcher(ffmpegPatchesPath, ffmpegRepoPath)
+  const tflitePatcher = new GitPatcher(tflitePatchesPath, tfliteRepoPath)
 
   const chromiumPatchStatus = await chromiumPatcher.applyPatches()
   const v8PatchStatus = await v8Patcher.applyPatches()
   const catapultPatchStatus = await catapultPatcher.applyPatches()
   const devtoolsFrontendPatchStatus = await devtoolsFrontendPatcher.applyPatches()
   const ffmpegPatchStatus = await ffmpegPatcher.applyPatches()
+  const tflitePatchStatus = await tflitePatcher.applyPatches()
 
   // Log status for all patches
   // Differentiate entries for logging
@@ -68,8 +78,12 @@ async function applyPatches() {
     s => s.path = path.join('third_party', 'catapult', s.path))
   devtoolsFrontendPatchStatus.forEach(
     s => s.path = path.join('third_party', 'devtools-frontend', 'src', s.path))
-  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus, ...ffmpegPatchStatus]
-  Log.allPatchStatus(allPatchStatus, 'Chromium')
+  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus, ...ffmpegPatchStatus, ...tflitePatchStatus]
+  if (printPatchFailuresInJson) {
+    Log.printFailedPatchesInJsonFormat(allPatchStatus, config.braveCoreDir)
+  } else {
+    Log.allPatchStatus(allPatchStatus, 'Chromium')
+  }
 
   const hasPatchError = allPatchStatus.some(p => p.error)
   // Exit on error in any patch
@@ -77,6 +91,8 @@ async function applyPatches() {
     Log.error('Exiting as not all patches were successful!')
     process.exit(1)
   }
+
+  await updateUnsafeBuffersPaths()
 
   // Adding CCA India Root Certificates
   const sourceFilePathCerts = path.join(__dirname, './certs/root_store.certs');
@@ -163,24 +179,54 @@ const util = {
   },
 
   runAsync: (cmd, args = [], options = {}) => {
-    let { continueOnFail, verbose, ...cmdOptions } = options
-    if (verbose) {
+    let { continueOnFail, verbose, onStdErrLine, onStdOutLine, ...cmdOptions } = options
+    if (verbose !== false) {
       Log.command(cmdOptions.cwd, cmd, args)
     }
     return new Promise((resolve, reject) => {
       const prog = spawn(cmd, args, cmdOptions)
+      const signalsToForward = ['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGHUP']
+      const signalHandler = (s) => {
+        prog.kill(s)
+      }
+      signalsToForward.forEach((signal) => {
+        process.addListener(signal, signalHandler)
+      })
       let stderr = ''
       let stdout = ''
-      prog.stderr.on('data', data => {
-        stderr += data
-      })
-      prog.stdout.on('data', data => {
-        stdout += data
-      })
-      prog.on('close', statusCode => {
-        const hasFailed = statusCode !== 0
+      if (prog.stderr) {
+        if (onStdErrLine) {
+          readline.createInterface({
+            input: prog.stderr,
+            terminal: false
+          }).on('line', onStdErrLine)
+        } else {
+          prog.stderr.on('data', (data) => {
+            stderr += data
+          })
+        }
+      }
+      if (prog.stdout) {
+        if (onStdOutLine) {
+          readline.createInterface({
+            input: prog.stdout,
+            terminal: false
+          }).on('line', onStdOutLine)
+        } else {
+          prog.stdout.on('data', (data) => {
+            stdout += data
+          })
+        }
+      }
+      prog.on('close', (statusCode, signal) => {
+        signalsToForward.forEach((signal) => {
+          process.removeListener(signal, signalHandler)
+        })
+        const hasFailed = !signal && statusCode !== 0
         if (verbose && (!hasFailed || continueOnFail)) {
-          console.log(stdout)
+          if (stdout) {
+            console.log(stdout)
+          }
           if (stderr) {
             console.error(stderr)
           }
@@ -191,12 +237,15 @@ const util = {
           err.stdout = stdout
           reject(err)
           if (!continueOnFail) {
-            console.log(err.message)
-            console.log(stdout)
+            console.error(err.message)
+            console.error(stdout)
             console.error(stderr)
-            process.exit(1)
+            process.exit(statusCode)
           }
           return
+        } else if (signal) {
+          // If the process was killed by a signal, exit with the signal number.
+          process.exit(128 + os.constants.signals[signal])
         }
         resolve(stdout)
       })
@@ -317,6 +366,12 @@ const util = {
           config.getBraveLogoIconName()),
       path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
           'chrome_logo_dark.svg')])
+    // Replace webui bookmark svg icon.
+    fileMap.add([
+      path.join(config.braveCoreDir, 'node_modules', '@brave', 'leo', 'icons',
+          'browser-bookmark-normal.svg'),
+      path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
+          'icon_bookmark.svg')])
 
     let explicitSourceFiles = new Set()
     if (config.getTargetOS() === 'mac') {
@@ -437,6 +492,8 @@ const util = {
       const androidBrowserUiOmniboxResDest = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'omnibox', 'java', 'res')
       const androidBrowserPrivateResSource = path.join(config.braveCoreDir, 'browser', 'incognito', 'android', 'java', 'res')
       const androidBrowserPrivateResDest = path.join(config.srcDir, 'chrome', 'browser', 'incognito', 'android', 'java', 'res')
+      const androidBrowserHubInternalResSource = path.join(config.braveCoreDir, 'browser', 'hub', 'internal', 'android', 'res')
+      const androidBrowserHubInternalResDest = path.join(config.srcDir, 'chrome', 'browser', 'hub', 'internal', 'android', 'res')
 
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
@@ -455,7 +512,8 @@ const util = {
         [androidFeaturesTabUiResSource]: [androidFeaturesTabUiDest],
         [androidComponentsOmniboxResSource]: [androidComponentsOmniboxResDest],
         [androidBrowserUiOmniboxResSource]: [androidBrowserUiOmniboxResDest],
-        [androidBrowserPrivateResSource]: [androidBrowserPrivateResDest]
+        [androidBrowserPrivateResSource]: [androidBrowserPrivateResDest],
+        [androidBrowserHubInternalResSource]: [androidBrowserHubInternalResDest]
       }
 
       console.log('copy Android app icons and app resources')
@@ -482,13 +540,13 @@ const util = {
     Log.progressFinish('update branding')
   },
 
-  touchOverriddenChromiumSrcFiles: () => {
+  touchOverriddenFiles: () => {
     Log.progressStart('touch original files overridden by chromium_src')
 
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
       // Only include overridable files.
-      const supportedExts = ['.cc', '.h', '.json', '.mm', '.mojom', '.py', '.pdl'];
+      const supportedExts = ['.cc', '.h', '.icon', '.json', '.mm', '.mojom', '.pdl', '.py', '.ts'];
       return supportedExts.includes(path.extname(file))
     }
 
@@ -531,39 +589,6 @@ const util = {
     Log.progressFinish('touch original files overridden by chromium_src')
   },
 
-  touchOverriddenVectorIconFiles: () => {
-    Log.progressStart('touch original vector icon files overridden by brave/vector_icons')
-
-    // Return true when original file of |file| should be touched.
-    const applyFileFilter = (file) => {
-      // Only includes icon files.
-      const ext = path.extname(file)
-      if (ext !== '.icon') { return false }
-      return true
-    }
-
-    const braveVectorIconsDir = path.join(config.srcDir, 'brave', 'vector_icons')
-    var braveVectorIconFiles = util.walkSync(braveVectorIconsDir, applyFileFilter)
-
-    // Touch original files by updating mtime.
-    const braveVectorIconsDirLen = braveVectorIconsDir.length
-    braveVectorIconFiles.forEach(braveVectorIconFile => {
-      var overriddenFile = path.join(config.srcDir, braveVectorIconFile.slice(braveVectorIconsDirLen))
-      if (fs.existsSync(overriddenFile)) {
-        // If overriddenFile is older than file in vector_icons, touch it to trigger rebuild.
-        updateFileUTimesIfOverrideIsNewer(overriddenFile, braveVectorIconFile)
-      }
-    })
-    Log.progressFinish('touch original vector icon files overridden by brave/vector_icons')
-  },
-
-  touchOverriddenFiles: () => {
-    Log.progressScope('touch overridden files', () => {
-      util.touchOverriddenChromiumSrcFiles()
-      util.touchOverriddenVectorIconFiles()
-    })
-  },
-
   touchGsutilChangeLogFile: () => {
     // Chromium team confirmed that ChangeLog file was likely removed by accident
     // https://chromium-review.googlesource.com/c/catapult/+/4567074?tab=comments
@@ -582,42 +607,7 @@ const util = {
     }
   },
 
-  // Chromium compares pre-installed midl files and generated midl files from IDL during the build to check integrity.
-  // Generated files during the build time and upstream pre-installed files are different because we use different IDL file.
-  // So, we should copy our pre-installed files to overwrite upstream pre-installed files.
-  // After checking, pre-installed files are copied to gen dir and they are used to compile.
-  // So, this copying in every build doesn't affect compile performance.
-  updateMidlFiles: () => {
-    Log.progressScope('update midl files', () => {
-      const files = fs.readdirSync(path.join(
-          config.braveCoreDir,
-          'win_build_output', 'midl'))
-      for (const file of files) {
-        const srcFile = path.join(config.braveCoreDir,
-            'win_build_output',
-            'midl', file)
-        const dstFile = path.join(config.srcDir,
-            'third_party',
-            'win_build_output', 'midl', file)
-        try {
-          const stat = fs.lstatSync(srcFile);
-          // only copy the directories here
-          // they each have a structure with x86/x64/arm64 versions of the files
-          if (stat.isDirectory()) {
-            fs.copySync(srcFile, dstFile)
-          }
-        } catch (e) {
-          throw new Error('error copying file \"' +
-              srcFile + "\"  to \"" +
-              dstFile + "\"", {
-                cause: e
-              })
-        }
-      }
-    })
-  },
-
-  buildNativeRedirectCC: () => {
+  buildNativeRedirectCC: async () => {
     // Expected path to redirect_cc.
     const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
 
@@ -633,12 +623,12 @@ const util = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
       use_remoteexec: config.useRemoteExec,
       rbe_exec_root: config.rbeExecRoot,
-      rbe_bin_dir: config.realRewrapperDir,
+      reclient_bin_dir: config.realRewrapperDir,
       real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
 
     util.runGnGen(config.nativeRedirectCCDir, buildArgs)
-    util.buildTargets(['brave/tools/redirect_cc'], mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
+    await util.buildTargets(['brave/tools/redirect_cc'], mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
     Log.progressFinish('build redirect_cc')
   },
 
@@ -652,20 +642,23 @@ const util = {
     // Guard to check if gn gen was successful last time.
     const gnGenGuard = new ActionGuard(path.join(outputDir, 'gn_gen.guard'))
 
-    const doesBuildNinjaExist = fs.existsSync(path.join(outputDir, 'build.ninja'))
-    const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
+    gnGenGuard.run((wasInterrupted) => {
+      const doesBuildNinjaExist = fs.existsSync(path.join(outputDir, 'build.ninja'))
+      const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
+      const shouldCheck = config.isCI
+      const internalOpts = shouldCheck ? ['--check'] : []
 
-    const shouldRunGnGen =
-      config.force_gn_gen ||
-      !doesBuildNinjaExist ||
-      hasBuildArgsUpdated ||
-      gnGenGuard.isDirty()
+      const shouldRunGnGen =
+        config.force_gn_gen ||
+        !doesBuildNinjaExist ||
+        hasBuildArgsUpdated ||
+        shouldCheck ||
+        wasInterrupted
 
-    if (shouldRunGnGen) {
-      gnGenGuard.run(() => {
-        util.run('gn', ['gen', outputDir, ...extraGnGenOpts], options)
-      })
-    }
+      if (shouldRunGnGen) {
+        util.run('gn', ['gen', outputDir, ...extraGnGenOpts, ...internalOpts], options)
+      }
+    })
   },
 
   writeGnBuildArgs: (outputDir, buildArgs) => {
@@ -724,22 +717,20 @@ const util = {
     return hasGeneratedArgsUpdated || !isArgsGnValid
   },
 
-  generateNinjaFiles: (options = config.defaultOptions) => {
-    Log.progressScope('generate ninja files', () => {
-      util.buildNativeRedirectCC()
+  generateNinjaFiles: async (options = config.defaultOptions) => {
+    await Log.progressScopeAsync('generate ninja files', async () => {
+      await util.buildNativeRedirectCC()
 
-      if (config.getTargetOS() === 'win') {
-        util.updateMidlFiles()
-      }
       const extraGnGenOpts = config.extraGnGenOpts ? [config.extraGnGenOpts] : []
       util.runGnGen(config.outputDir, config.buildArgs(), extraGnGenOpts, options)
     })
   },
 
-  buildTargets: (targets = config.buildTargets, options = config.defaultOptions) => {
+  buildTargets: async (targets = config.buildTargets, options = config.defaultOptions) => {
     assert(Array.isArray(targets))
     const buildId = crypto.randomUUID()
-    const progressMessage = `build ${targets} (${config.buildConfig}, id=${buildId})`
+    const outputDir = options.outputDir || config.outputDir
+    const progressMessage = `build ${targets} (${path.basename(outputDir)}, id=${buildId})`
     Log.progressStart(progressMessage)
 
     let num_compile_failure = 1
@@ -747,7 +738,7 @@ const util = {
       num_compile_failure = 0
 
     let ninjaOpts = [
-      '-C', options.outputDir || config.outputDir, targets.join(' '),
+      '-C', outputDir, targets.join(' '),
       '-k', num_compile_failure,
       ...config.extraNinjaOpts
     ]
@@ -755,9 +746,48 @@ const util = {
     // Setting `AUTONINJA_BUILD_ID` allows tracing remote execution which helps
     // with debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
-    util.run('autoninja', ninjaOpts, options)
+
+    // Collect build statistics into this variable to display in a separate TC
+    // block.
+    let buildStats = ''
+
+    if (config.isTeamcity) {
+      // Parse output to display the build status and exact failure location.
+      let hasError = false
+      let lastStatusTime = Date.now()
+      options.onStdOutLine = (line) => {
+        if (!hasError && line.startsWith('FAILED: ')) {
+          hasError = true
+        }
+        if (hasError) {
+          Log.error(line)
+        } else if (buildStats || /^(RBE Stats:|metric\s+count)\s+/.test(line)) {
+          buildStats += line + '\n'
+        } else {
+          console.log(line)
+          if (Date.now() - lastStatusTime > 5000) {
+            // Extract the status message from the ninja output.
+            const match = line.match(/^\[\d+ processes, (.+?) : .+?\s\]/);
+            if (match) {
+              lastStatusTime = Date.now()
+              Log.status(`build ${targets} ${match[1]}`)
+            }
+          }
+        }
+      }
+      options.onStdErrLine = options.onStdOutLine
+      options.stdio = 'pipe'
+    }
+
+    await util.runAsync('autoninja', ninjaOpts, options)
 
     Log.progressFinish(progressMessage)
+
+    if (config.isTeamcity && buildStats) {
+      Log.progressScope('report build stats', () => {
+        console.log(buildStats)
+      })
+    }
   },
 
   generateXcodeWorkspace: () => {
@@ -840,8 +870,8 @@ const util = {
     util.run('gclient', args, options)
   },
 
-  applyPatches: () => {
-    return applyPatches()
+  applyPatches: (printPatchFailuresInJson) => {
+    return applyPatches(printPatchFailuresInJson)
   },
 
   walkSync: (dir, filter = null, filelist = []) => {
@@ -865,7 +895,11 @@ const util = {
     if (!fs.existsSync(file)) {
       return default_value
     }
-    return fs.readJSONSync(file)
+    try {
+      return fs.readJSONSync(file)
+    } catch {
+      return default_value
+    }
   },
 
   writeJSON: (file, value) => {

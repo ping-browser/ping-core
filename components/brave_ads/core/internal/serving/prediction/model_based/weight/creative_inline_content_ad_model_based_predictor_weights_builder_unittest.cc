@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_inline_content_ad_model_based_predictor_weights_builder.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -13,7 +13,7 @@
 namespace brave_ads {
 
 class BraveAdsCreativeInlineContentAdModelBasedPredictorWeightsBuilderTest
-    : public UnitTestBase {};
+    : public test::TestBase {};
 
 TEST_F(BraveAdsCreativeInlineContentAdModelBasedPredictorWeightsBuilderTest,
        BuildCreativeInlineContentAdModelBasedPredictorWeights) {
@@ -30,7 +30,7 @@ TEST_F(BraveAdsCreativeInlineContentAdModelBasedPredictorWeightsBuilderTest,
   expected_weights.interest_segment.child = 0.0;
   expected_weights.interest_segment.parent = 0.0;
   expected_weights.untargeted_segment = 0.0001;
-  expected_weights.last_seen_ad = 1.0;
+  expected_weights.last_seen_ad = 0.0;
   EXPECT_EQ(expected_weights, weights);
 }
 

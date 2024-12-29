@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <string>
+#include <vector>
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/misc_metrics/pref_names.h"
@@ -19,36 +20,96 @@
 
 namespace misc_metrics {
 
-namespace {
-
-const int kAutoSecureRequestsBuckets[] = {5, 50, 90};
-
-const char kDohModeAutomatic[] = "automatic";
-const char kDohModeSecure[] = "secure";
-const base::TimeDelta kAutoSecureInitDelay = base::Seconds(6);
-const base::TimeDelta kAutoSecureReportInterval = base::Seconds(20);
-
-constexpr char kQuad9Suffix[] = ".Quad9";
-constexpr char kWikimediaSuffix[] = ".Wikimedia";
-constexpr char kCloudflareSuffix[] = ".Cloudflare";
-
-}  // namespace
-
 using net::DohFallbackEndpointType;
 using net::features::kBraveFallbackDoHProvider;
 using net::features::kBraveFallbackDoHProviderEndpoint;
 
-DohMetrics::DohMetrics(PrefService* local_state)
-    : total_request_storage_(local_state, kMiscMetricsTotalDnsRequestStorage),
-      upgraded_request_storage_(local_state,
-                                kMiscMetricsUpgradedDnsRequestStorage),
-      local_state_(local_state) {
+namespace {
+
+const int kAutoSecureRequestsBuckets[] = {0, 5, 50, 90};
+
+constexpr char kDohModeAutomatic[] = "automatic";
+constexpr char kDohModeSecure[] = "secure";
+constexpr base::TimeDelta kAutoSecureInitDelay = base::Seconds(6);
+constexpr base::TimeDelta kAutoSecureReportInterval = base::Seconds(20);
+
+const char* GetAutoSecureRequestsHistogramName() {
+  std::string histogram_name = kAutoSecureRequestsHistogramName;
+
+  if (base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
+    auto endpoint_type = kBraveFallbackDoHProviderEndpoint.Get();
+
+    switch (endpoint_type) {
+      case DohFallbackEndpointType::kQuad9:
+        return kQuad9AutoSecureRequestsHistogramName;
+      case DohFallbackEndpointType::kWikimedia:
+        return kWikimediaAutoSecureRequestsHistogramName;
+      case DohFallbackEndpointType::kCloudflare:
+        return kCloudflareAutoSecureRequestsHistogramName;
+      default:
+        break;
+    }
+  }
+  return kAutoSecureRequestsHistogramName;
+}
+
+std::vector<const char*> GetDisabledAutoSecureRequestsHistogramNames() {
+  std::vector<const char*> disabled_names;
+  const char* active_name = GetAutoSecureRequestsHistogramName();
+
+  if (active_name != kAutoSecureRequestsHistogramName) {
+    disabled_names.push_back(kAutoSecureRequestsHistogramName);
+  }
+  if (active_name != kQuad9AutoSecureRequestsHistogramName) {
+    disabled_names.push_back(kQuad9AutoSecureRequestsHistogramName);
+  }
+  if (active_name != kWikimediaAutoSecureRequestsHistogramName) {
+    disabled_names.push_back(kWikimediaAutoSecureRequestsHistogramName);
+  }
+  if (active_name != kCloudflareAutoSecureRequestsHistogramName) {
+    disabled_names.push_back(kCloudflareAutoSecureRequestsHistogramName);
+  }
+
+  return disabled_names;
+}
+
+}  // namespace
+
+DohMetrics::DohMetrics(PrefService* local_state) : local_state_(local_state) {
+  int current_fallback_int = static_cast<int>(DohFallbackEndpointType::kNone);
+  if (base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
+    current_fallback_int =
+        static_cast<int>(kBraveFallbackDoHProviderEndpoint.Get());
+  }
+  int last_fallback_int = local_state->GetInteger(kMiscMetricsLastDohFallback);
+  if (current_fallback_int != last_fallback_int) {
+    local_state->SetInteger(kMiscMetricsLastDohFallback, current_fallback_int);
+    if (last_fallback_int != -1) {
+      // New users, and users that upgraded to a client version
+      // that introduced this pref should not clear the collected stats.
+      // Only users that we're suddenly included in a DoH fallback study should
+      // clear existing stats, so we can collect fresh stats.
+      local_state->ClearPref(kMiscMetricsTotalDnsRequestStorage);
+      local_state->ClearPref(kMiscMetricsUpgradedDnsRequestStorage);
+    }
+  }
+
+  total_request_storage_ = std::make_unique<WeeklyStorage>(
+      local_state, kMiscMetricsTotalDnsRequestStorage);
+  upgraded_request_storage_ = std::make_unique<WeeklyStorage>(
+      local_state, kMiscMetricsUpgradedDnsRequestStorage);
+
   pref_change_registrar_.Init(local_state_);
   pref_change_registrar_.Add(
       prefs::kDnsOverHttpsMode,
       base::BindRepeating(&DohMetrics::HandleDnsOverHttpsMode,
                           base::Unretained(this)));
   HandleDnsOverHttpsMode();
+
+  for (const char* disabled_histogram_name :
+       GetDisabledAutoSecureRequestsHistogramNames()) {
+    base::UmaHistogramExactLinear(disabled_histogram_name, INT_MAX - 1, 5);
+  }
 }
 
 DohMetrics::~DohMetrics() {
@@ -58,6 +119,7 @@ DohMetrics::~DohMetrics() {
 void DohMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsTotalDnsRequestStorage);
   registry->RegisterListPref(kMiscMetricsUpgradedDnsRequestStorage);
+  registry->RegisterIntegerPref(kMiscMetricsLastDohFallback, -1);
 }
 
 void DohMetrics::HandleDnsOverHttpsMode() {
@@ -77,44 +139,29 @@ void DohMetrics::HandleDnsOverHttpsMode() {
 
 void DohMetrics::OnDnsRequestCounts(
     network::mojom::DnsRequestCountsPtr counts) {
-  if (counts->upgraded_count > 0) {
-    upgraded_request_storage_.AddDelta(counts->upgraded_count);
-  }
-  if (counts->total_count > 0) {
-    total_request_storage_.AddDelta(counts->total_count);
-  }
-  double percentage =
-      static_cast<double>(upgraded_request_storage_.GetWeeklySum()) /
-      std::max(total_request_storage_.GetWeeklySum(), uint64_t(1u)) * 100.0;
-  if (percentage == 0.0) {
-    UMA_HISTOGRAM_EXACT_LINEAR(kAutoSecureRequestsHistogramName, INT_MAX - 1,
-                               4);
+  std::string mode = local_state_->GetString(prefs::kDnsOverHttpsMode);
+  if (!mode.empty() && mode != kDohModeAutomatic) {
     return;
   }
-
-  std::string histogram_name = kAutoSecureRequestsHistogramName;
-
-  if (base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
-    auto endpoint_type = kBraveFallbackDoHProviderEndpoint.Get();
-
-    switch (endpoint_type) {
-      case DohFallbackEndpointType::kQuad9:
-        histogram_name += kQuad9Suffix;
-        break;
-      case DohFallbackEndpointType::kWikimedia:
-        histogram_name += kWikimediaSuffix;
-        break;
-      case DohFallbackEndpointType::kCloudflare:
-        histogram_name += kCloudflareSuffix;
-        break;
-      default:
-        break;
-    }
+  if (counts->upgraded_count > 0) {
+    upgraded_request_storage_->AddDelta(counts->upgraded_count);
+  }
+  if (counts->total_count > 0) {
+    total_request_storage_->AddDelta(counts->total_count);
   }
 
-  p3a_utils::RecordToHistogramBucket(histogram_name.c_str(),
-                                     kAutoSecureRequestsBuckets,
-                                     static_cast<int>(percentage));
+  std::string histogram_name = GetAutoSecureRequestsHistogramName();
+
+  double percentage =
+      static_cast<double>(upgraded_request_storage_->GetWeeklySum()) /
+      std::max(total_request_storage_->GetWeeklySum(), uint64_t(1u)) * 100.0;
+  int percentage_int = 0;
+  if (percentage > 0.0) {
+    percentage_int = static_cast<int>(percentage);
+  }
+
+  p3a_utils::RecordToHistogramBucket(
+      histogram_name.c_str(), kAutoSecureRequestsBuckets, percentage_int);
 }
 
 void DohMetrics::StartAutoUpgradeInitTimer() {
@@ -140,7 +187,8 @@ void DohMetrics::OnAutoUpgradeReportTimer() {
 void DohMetrics::StopListeningToDnsRequests() {
   init_timer_.Stop();
   report_interval_timer_.Stop();
-  UMA_HISTOGRAM_EXACT_LINEAR(kAutoSecureRequestsHistogramName, INT_MAX - 1, 4);
+  base::UmaHistogramExactLinear(GetAutoSecureRequestsHistogramName(),
+                                INT_MAX - 1, 5);
 }
 
 }  // namespace misc_metrics

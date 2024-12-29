@@ -6,11 +6,13 @@
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 
 #include <cmath>
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
@@ -26,6 +28,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -41,6 +44,9 @@ using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
 
 constexpr char kRemotePath[] = "v1/conversation";
+#if !defined(OFFICIAL_BUILD)
+constexpr char kAIChatServerUrl[] = "ai-chat-server-url";
+#endif
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
@@ -96,6 +102,14 @@ mojom::ConversationEntryEventPtr ParseResponseEvent(
     }
     return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
         std::move(event));
+  } else if (*type == "selectedLanguage") {
+    const std::string* selected_language =
+        response_event.FindString("language");
+    if (!selected_language) {
+      return nullptr;
+    }
+    return mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
+        mojom::SelectedLanguageEvent::New(*selected_language));
   }
   // Server will provide different types of events. From time to time, new
   // types of events will be introduced and we should ignore unknown ones.
@@ -114,6 +128,7 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::UserText, "userText"},
            {ConversationEventType::PageText, "pageText"},
            {ConversationEventType::PageExcerpt, "pageExcerpt"},
+           {ConversationEventType::VideoTranscript, "videoTranscript"},
            {ConversationEventType::VideoTranscriptXML, "videoTranscriptXML"},
            {ConversationEventType::VideoTranscriptVTT, "videoTranscriptVTT"},
            {ConversationEventType::ChatMessage, "chatMessage"},
@@ -152,6 +167,18 @@ base::Value::List ConversationEventsToList(
 GURL GetEndpointUrl(bool premium, const std::string& path) {
   CHECK(!path.starts_with("/"));
 
+#if !defined(OFFICIAL_BUILD)
+  // If a runtime AI Chat URL is provided, use it.
+  std::string ai_chat_url =
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          kAIChatServerUrl);
+  if (!ai_chat_url.empty()) {
+    GURL url = GURL(base::StrCat({ai_chat_url, "/", path}));
+    CHECK(url.is_valid()) << "Invalid API Url: " << url.spec();
+    return url;
+  }
+#endif
+
   auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
   auto hostname = brave_domains::GetServicesDomain(
       prefix, brave_domains::ServicesEnvironment::DEV);
@@ -184,23 +211,32 @@ void ConversationAPIClient::ClearAllQueries() {
 
 void ConversationAPIClient::PerformRequest(
     const std::vector<ConversationEvent>& conversation,
+    const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   // Get credentials and then perform request
-  auto callback = base::BindOnce(
-      &ConversationAPIClient::PerformRequestWithCredentials,
-      weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
-      std::move(data_received_callback), std::move(completed_callback));
+  auto callback =
+      base::BindOnce(&ConversationAPIClient::PerformRequestWithCredentials,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
+                     selected_language, std::move(data_received_callback),
+                     std::move(completed_callback));
   credential_manager_->FetchPremiumCredential(std::move(callback));
 }
 
 std::string ConversationAPIClient::CreateJSONRequestBody(
     const std::vector<ConversationEvent>& conversation,
+    const std::string& selected_language,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
 
   dict.Set("events", ConversationEventsToList(conversation));
   dict.Set("model", model_name_);
+  dict.Set("selected_language", selected_language);
+  dict.Set("system_language",
+           base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
+                         brave_l10n::GetDefaultISOCountryCodeString()}));
+  base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
+                brave_l10n::GetDefaultISOCountryCodeString()});
   dict.Set("stream", is_sse_enabled);
 
   std::string json;
@@ -210,6 +246,7 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
 
 void ConversationAPIClient::PerformRequestWithCredentials(
     const std::vector<ConversationEvent>& conversation,
+    const std::string selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     std::optional<CredentialCacheEntry> credential) {
@@ -228,8 +265,8 @@ void ConversationAPIClient::PerformRequestWithCredentials(
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
-  const std::string request_body =
-      CreateJSONRequestBody(std::move(conversation), is_sse_enabled);
+  const std::string request_body = CreateJSONRequestBody(
+      std::move(conversation), selected_language, is_sse_enabled);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);

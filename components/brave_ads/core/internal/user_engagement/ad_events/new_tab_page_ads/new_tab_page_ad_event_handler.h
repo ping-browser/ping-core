@@ -15,14 +15,14 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
-using FireNewTabPageAdEventHandlerCallback =
-    base::OnceCallback<void(bool success,
-                            const std::string& placement_id,
-                            const mojom::NewTabPageAdEventType event_type)>;
+using FireNewTabPageAdEventHandlerCallback = base::OnceCallback<void(
+    const bool success,
+    const std::string& placement_id,
+    const mojom::NewTabPageAdEventType mojom_ad_event_type)>;
 
 struct CreativeNewTabPageAdInfo;
 struct NewTabPageAdInfo;
@@ -47,47 +47,50 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 mojom::NewTabPageAdEventType event_type,
+                 mojom::NewTabPageAdEventType mojom_ad_event_type,
                  FireNewTabPageAdEventHandlerCallback callback);
 
  private:
-  void GetForCreativeInstanceIdCallback(
-      const std::string& placement_id,
-      mojom::NewTabPageAdEventType event_type,
-      FireNewTabPageAdEventHandlerCallback callback,
-      bool success,
-      const std::string& creative_instance_id,
-      const CreativeNewTabPageAdInfo& creative_ad);
-  void GetForTypeCallback(const NewTabPageAdInfo& ad,
-                          mojom::NewTabPageAdEventType event_type,
-                          FireNewTabPageAdEventHandlerCallback callback,
-                          bool success,
-                          const AdEventList& ad_events);
+  void GetCreativeAdCallback(const std::string& placement_id,
+                             mojom::NewTabPageAdEventType mojom_ad_event_type,
+                             FireNewTabPageAdEventHandlerCallback callback,
+                             bool success,
+                             const std::string& creative_instance_id,
+                             const CreativeNewTabPageAdInfo& creative_ad);
+  void GetAdEventsCallback(const NewTabPageAdInfo& ad,
+                           mojom::NewTabPageAdEventType mojom_ad_event_type,
+                           FireNewTabPageAdEventHandlerCallback callback,
+                           bool success,
+                           const AdEventList& ad_events);
+
+  void FireEvent(const NewTabPageAdInfo& ad,
+                 mojom::NewTabPageAdEventType mojom_ad_event_type,
+                 FireNewTabPageAdEventHandlerCallback callback) const;
   void FireEventCallback(const NewTabPageAdInfo& ad,
-                         mojom::NewTabPageAdEventType event_type,
+                         mojom::NewTabPageAdEventType mojom_ad_event_type,
                          FireNewTabPageAdEventHandlerCallback callback,
                          bool success) const;
 
   void SuccessfullyFiredEvent(
       const NewTabPageAdInfo& ad,
-      mojom::NewTabPageAdEventType event_type,
+      mojom::NewTabPageAdEventType mojom_ad_event_type,
       FireNewTabPageAdEventHandlerCallback callback) const;
   void FailedToFireEvent(const std::string& placement_id,
                          const std::string& creative_instance_id,
-                         mojom::NewTabPageAdEventType event_type,
+                         mojom::NewTabPageAdEventType mojom_ad_event_type,
                          FireNewTabPageAdEventHandlerCallback callback) const;
 
   void NotifyDidFireNewTabPageAdEvent(
       const NewTabPageAdInfo& ad,
-      mojom::NewTabPageAdEventType event_type) const;
+      mojom::NewTabPageAdEventType mojom_ad_event_type) const;
   void NotifyFailedToFireNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::NewTabPageAdEventType event_type) const;
+      mojom::NewTabPageAdEventType mojom_ad_event_type) const;
 
   raw_ptr<NewTabPageAdEventHandlerDelegate> delegate_ = nullptr;
 
-  const database::table::CreativeNewTabPageAds database_table_;
+  const database::table::CreativeNewTabPageAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
 

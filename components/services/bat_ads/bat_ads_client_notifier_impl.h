@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -21,7 +21,8 @@ namespace bat_ads {
 class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
  public:
   explicit BatAdsClientNotifierImpl(
-      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
+      mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+          bat_ads_client_notifier_pending_receiver);
 
   BatAdsClientNotifierImpl(const BatAdsClientNotifierImpl& other) = delete;
   BatAdsClientNotifierImpl& operator=(const BatAdsClientNotifierImpl& other) =
@@ -36,8 +37,7 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   void AddObserver(brave_ads::AdsClientNotifierObserver* observer);
   void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer);
 
-  // Binds the receiver by consuming the pending receiver swhich was created.
-  void BindReceiver();
+  void NotifyPendingObservers();
 
   // Invoked when ads did initialize.
   void NotifyDidInitializeAds() override;
@@ -50,15 +50,16 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
 
   // Invoked when a resource component with `id` has been updated to
   // `manifest_version`.
-  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+  void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id) override;
 
   // Invoked when a resource component with `id` has been unregistered.
   void NotifyDidUnregisterResourceComponent(const std::string& id) override;
 
   // Invoked when the Brave Reward wallet did change.
-  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
-                                    const std::string& recovery_seed) override;
+  void NotifyRewardsWalletDidUpdate(
+      const std::string& payment_id,
+      const std::string& recovery_seed_base64) override;
 
   // Invoked when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that
@@ -89,13 +90,19 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   // Invoked when a browser tab is updated with the specified `redirect_chain`
   // containing a list of redirect URLs that occurred on the way to the current
   // page. The current page is the last one in the list (so even when there's no
-  // redirect, there should be one entry in the list). `is_visible` should be
-  // set to `true` if `tab_id` refers to the currently visible tab otherwise
-  // should be set to `false`.
+  // redirect, there should be one entry in the list). `is_restoring` should be
+  // set to `true` if the page is restoring otherwise should be set to `false`.
+  // `is_visible` should be set to `true` if `tab_id` refers to the currently
+  // visible tab otherwise should be set to `false`.
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
-                          bool is_error_page,
+                          bool is_new_navigation,
+                          bool is_restoring,
                           bool is_visible) override;
+
+  // Invoked when a browser tab has loaded. `http_status_code` should be set to
+  // the HTTP response code.
+  void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
 
   // Invoked when a browser tab with the specified `tab_id` is closed.
   void NotifyDidCloseTab(int32_t tab_id) override;
@@ -133,10 +140,12 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   void NotifyDidSolveAdaptiveCaptcha() override;
 
  private:
-  brave_ads::AdsClientNotifier notifier_;
+  brave_ads::AdsClientNotifier ads_client_notifier_;
 
-  mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier> pending_receiver_;
-  mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier> receiver_{this};
+  mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_pending_receiver_;
+  mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_receiver_{this};
 };
 
 }  // namespace bat_ads

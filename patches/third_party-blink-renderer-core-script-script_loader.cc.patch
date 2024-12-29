@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
-index efb964d0e1a5390bbea8a75906127ec15dade0dc..e7b6d47bcebfa26b019f7e38f75e3d721b3f3712 100644
+index af40bd6fa6245d22af424072b43f5ce05f224eb4..a9ae22e25324a305b8521ce86edfe2b4982310d7 100644
 --- a/third_party/blink/renderer/core/script/script_loader.cc
 +++ b/third_party/blink/renderer/core/script/script_loader.cc
-@@ -768,6 +768,7 @@ PendingScript* ScriptLoader::PrepareScript(
+@@ -756,6 +756,7 @@ PendingScript* ScriptLoader::PrepareScript(
                               parser_state, credentials_mode, referrer_policy,
                               fetch_priority_hint, render_blocking_behavior,
                               RejectCoepUnsafeNone(false));
 +  BRAVE_SCRIPT_LOADER_PREPARE_SCRIPT
  
-   // <spec step="28">Let settings object be el's node document's relevant
+   // <spec step="30">Let settings object be el's node document's relevant
    // settings object.</spec>

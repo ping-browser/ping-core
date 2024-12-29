@@ -1,3 +1,8 @@
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/ABC): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include <iostream>
 #include <string>
 #include <sstream>

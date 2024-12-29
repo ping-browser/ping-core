@@ -19,6 +19,8 @@ inline constexpr char kVerticalTabsEnabled[] =
     "brave.tabs.vertical_tabs_enabled";
 inline constexpr char kVerticalTabsCollapsed[] =
     "brave.tabs.vertical_tabs_collapsed";
+inline constexpr char kVerticalTabsExpandedStatePerWindow[] =
+    "brave.tabs.vertical_tabs_expanded_state_per_window";
 inline constexpr char kVerticalTabsShowTitleOnWindow[] =
     "brave.tabs.vertical_tabs_show_title_on_window";
 inline constexpr char kVerticalTabsFloatingEnabled[] =
@@ -29,6 +31,8 @@ inline constexpr char kVerticalTabsOnRight[] =
     "brave.tabs.vertical_tabs_on_right";
 inline constexpr char kVerticalTabsShowScrollbar[] =
     "brave.tabs.vertical_tabs_show_scrollbar";
+
+inline constexpr char kSharedPinnedTab[] = "brave.tabs.shared_pinned_tab";
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 void MigrateBraveProfilePrefs(PrefService* prefs);

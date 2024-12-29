@@ -10,11 +10,13 @@
 #include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -52,8 +54,9 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &test_url_loader_factory_);
     json_rpc_service_ =
-        brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-            browser_context());
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+            browser_context())
+            ->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
   }
@@ -146,16 +149,43 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
     const char* url;
     bool is_valid;
   } test_cases[] = {
-      {"https://brave.crypto", true},   {"https://brave.x", true},
-      {"https://brave.coin", false},    {"https://brave.nft", true},
-      {"https://brave.dao", true},      {"https://brave.wallet", true},
-      {"https://brave.888", false},     {"https://brave.blockchain", true},
-      {"https://brave.bitcoin", true},  {"https://brave.zil", true},
-      {"https://brave.altimist", true}, {"https://brave.anime", true},
-      {"https://brave.klever", true},   {"https://brave.manga", true},
-      {"https://brave.polygon", true},  {"https://brave.unstoppable", true},
-      {"https://brave.pudgy", true},    {"https://brave", false},
-      {"https://brave.com", false},     {"", false},
+      {"https://brave.crypto", true},
+      {"https://brave.x", true},
+      {"https://brave.coin", false},
+      {"https://brave.nft", true},
+      {"https://brave.dao", true},
+      {"https://brave.wallet", true},
+      {"https://brave.888", false},
+      {"https://brave.blockchain", true},
+      {"https://brave.bitcoin", true},
+      {"https://brave.zil", true},
+      {"https://brave.altimist", true},
+      {"https://brave.anime", true},
+      {"https://brave.klever", true},
+      {"https://brave.manga", true},
+      {"https://brave.polygon", true},
+      {"https://brave.unstoppable", true},
+      {"https://brave.pudgy", true},
+      {"https://brave.tball", true},
+      {"https://brave.stepn", true},
+      {"https://brave.secret", true},
+      {"https://brave.raiin", true},
+      {"https://brave.pog", true},
+      {"https://brave.clay", true},
+      {"https://brave.metropolis", true},
+      {"https://brave.witg", true},
+      {"https://brave.ubu", true},
+      {"https://brave.kryptic", true},
+      {"https://brave.farms", true},
+      {"https://brave.dfz", true},
+      {"https://brave.kresus", true},
+      {"https://brave.binanceus", true},
+      {"https://brave.austin", true},
+      {"https://brave.bitget", true},
+      {"https://brave.wrkx", true},
+      {"https://brave", false},
+      {"https://brave.com", false},
+      {"", false},
   };
 
   for (const auto& test_case : test_cases) {
@@ -177,10 +207,10 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = profile();
 
-  auto polygon_spec = brave_wallet::GetUnstoppableDomainsRpcUrl(
+  auto polygon_spec = brave_wallet::NetworkManager::GetUnstoppableDomainsRpcUrl(
                           brave_wallet::mojom::kPolygonMainnetChainId)
                           .spec();
-  auto eth_spec = brave_wallet::GetUnstoppableDomainsRpcUrl(
+  auto eth_spec = brave_wallet::NetworkManager::GetUnstoppableDomainsRpcUrl(
                       brave_wallet::mojom::kMainnetChainId)
                       .spec();
 
@@ -213,7 +243,8 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   test_url_loader_factory().SimulateResponseForPendingRequest(
       eth_spec,
       brave_wallet::MakeJsonRpcStringArrayResponse(
-          {"hash", "", "", "", "", ""}),
+          {"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR", "", "", "", "",
+           ""}),
       net::HTTP_OK);
   task_environment_.RunUntilIdle();
   EXPECT_EQ(brave_request_info->new_url_spec, "https://brave.com/");
@@ -229,10 +260,13 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   test_url_loader_factory().SimulateResponseForPendingRequest(
       eth_spec,
       brave_wallet::MakeJsonRpcStringArrayResponse(
-          {"hash", "", "", "", "", ""}),
+          {"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR", "", "", "", "",
+           ""}),
       net::HTTP_OK);
   task_environment_.RunUntilIdle();
-  EXPECT_EQ(brave_request_info->new_url_spec, "ipfs://hash");
+  EXPECT_EQ(
+      brave_request_info->new_url_spec,
+      "https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
 }
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
@@ -277,7 +311,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
       base::DoNothing(), brave_request_info, content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ(brave_request_info->new_url_spec,
-            "ipfs://"
+            "https://ipfs.io/ipfs/"
             "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
 
   EXPECT_FALSE(brave_request_info->pending_error.has_value());

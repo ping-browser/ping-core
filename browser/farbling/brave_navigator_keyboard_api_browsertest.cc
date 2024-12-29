@@ -31,16 +31,7 @@ constexpr char kGetLayoutMapScript[] =
 class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorKeyboardAPIBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    EXPECT_TRUE(https_server_.Start());
-    top_level_page_url_ = https_server_.GetURL("a.test", "/");
-    test_url_ = https_server_.GetURL("a.test", "/simple.html");
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   BraveNavigatorKeyboardAPIBrowserTest(
       const BraveNavigatorKeyboardAPIBrowserTest&) = delete;
@@ -51,6 +42,13 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    EXPECT_TRUE(https_server_.Start());
+    top_level_page_url_ = https_server_.GetURL("a.test", "/");
+    test_url_ = https_server_.GetURL("a.test", "/simple.html");
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
@@ -82,6 +80,13 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  void EnableWebcompatException() {
+    brave_shields::SetWebcompatEnabled(
+        content_settings(),
+        ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY, true,
+        top_level_page_url_, nullptr);
+  }
+
  private:
   GURL top_level_page_url_;
   GURL test_url_;
@@ -111,4 +116,11 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorKeyboardAPIBrowserTest,
   EXPECT_TRUE(base::Contains(
       result_blocked.error,
       "Cannot read properties of null (reading 'getLayoutMap')"));
+
+  // Fingerprinting level: default, but with webcompat exception enabled
+  // get real navigator.keyboard.getLayoutMap key
+  AllowFingerprinting();
+  EnableWebcompatException();
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url()));
+  EXPECT_EQ(true, EvalJs(contents(), kGetLayoutMapScript));
 }

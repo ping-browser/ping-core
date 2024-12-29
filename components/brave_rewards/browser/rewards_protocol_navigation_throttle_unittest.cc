@@ -8,8 +8,8 @@
 #include <tuple>
 #include <vector>
 
-#include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 // clang-format off
 // npm run test -- brave_unit_tests --filter="*RewardsProtocolNavigationThrottleTest*"
@@ -90,12 +90,6 @@ INSTANTIATE_TEST_SUITE_P(
       "no_redirect_to_each_others_redirect_url",
       "https://bitflyer.com",
       "rewards://uphold/authorization",
-      false
-    },
-    RewardsProtocolNavigationThrottleTestParamType{
-      "no_redirect_to_settings",
-      "https://uphold.com",
-      "rewards://uphold/../settings/",
       false
     },
     RewardsProtocolNavigationThrottleTestParamType{

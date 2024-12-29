@@ -23,7 +23,6 @@ import org.chromium.chrome.browser.vpn.adapters.AlwaysOnPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class VpnAlwaysOnActivity extends AsyncInitializationActivity {
-
     private void initializeViews() {
         setContentView(R.layout.activity_vpn_always_on);
 
@@ -32,7 +31,7 @@ public class VpnAlwaysOnActivity extends AsyncInitializationActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getResources().getString(R.string.always_on_vpn_kill_switch));
+        actionBar.setTitle(getResources().getString(R.string.always_on_vpn));
 
         ViewPager killSwitchTutorialViewPager = findViewById(R.id.kill_switch_tutorial_view_pager);
 

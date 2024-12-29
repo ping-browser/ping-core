@@ -10,9 +10,6 @@
     If the command is only available on a platform we don't support (i.e.
     ChromeOS) prefer to not add the command.
   -->
-  <message name="IDS_IDC_COMMANDER">
-    Quick commands
-  </message>
   <message name="IDS_IDC_BACK">
     Back
   </message>
@@ -269,7 +266,7 @@
     Customize touch bar
   </message>
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT_APPLE_EVENTS">
-    Toggle javascript apple events
+    Toggle JavaScript Apple Events
   </message>
   <message name="IDS_IDC_INSTALL_PWA">
     Install PWA
@@ -346,6 +343,9 @@
   <message name="IDS_IDC_LIVE_CAPTION">
     Toggle live captions
   </message>
+  <message name="IDS_IDC_TOGGLE_AI_CHAT">
+    Toggle Leo AI
+  </message>
   <message name="IDS_IDC_SHOW_BRAVE_WALLET_PANEL">
     Show Ping Wallet panel
   </message>
@@ -413,7 +413,7 @@
     Toggle shields
   </message>
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT">
-    Toggle javascript
+    Toggle JavaScript
   </message>
   <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
     Show playlist bubble
@@ -497,6 +497,9 @@
   </message>
 
   <if expr="use_titlecase">
+    <message name="IDS_IDC_COMMANDER">
+      Quick Commands
+    </message>
     <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
       New Split View
     </message>
@@ -506,8 +509,14 @@
     <message name="IDS_IDC_BREAK_TILE" desc="The label of the 'Unsplit tabs' tab context menu item. This item exits split view and restore bounded tabs to separate state.">
       Unsplit Tabs
     </message>
+    <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
+      Swap Tab Positions
+    </message>
   </if>
   <if expr="not use_titlecase">
+    <message name="IDS_IDC_COMMANDER">
+      Quick commands
+    </message>
     <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
       New split view
     </message>
@@ -516,6 +525,9 @@
     </message>
     <message name="IDS_IDC_BREAK_TILE" desc="The label of the 'Unsplit tabs' tab context menu item. This item exits split view and restore bounded tabs to separate state.">
       Unsplit tabs
+    </message>
+    <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
+      Swap tab positions
     </message>
   </if>
 </grit-part>

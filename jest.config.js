@@ -18,6 +18,22 @@ function getBuildOutputPathList(buildOutputRelativePath) {
   ])
 }
 
+function getReporters() {
+  if (process.env.TEAMCITY_VERSION !== undefined) {
+    return [
+      [
+        '<rootDir>/tools/jest_teamcity_reporter/jest_teamcity_reporter.js',
+        { 'suiteName': 'test-unit' }
+      ]
+    ]
+  } else {
+    return ['default']
+  }
+}
+
+/**
+ * @type {import('@jest/types').Config.InitialOptions}
+ */
 module.exports = {
   preset: 'ts-jest/presets/default',
   testEnvironment: '<rootDir>/components/test/testEnvironment.js',
@@ -29,13 +45,13 @@ module.exports = {
     }
   },
   transform: {
-    '.(jsx|js|ts|tsx)': 'ts-jest'
+    '\\.(jsx|js|ts|tsx)$': 'ts-jest'
   },
+  reporters: getReporters(),
   clearMocks: true,
   resetMocks: true,
   resetModules: true,
   coverageProvider: 'v8',
-  collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/build/commands/lib/*',
     '<rootDir>/components/**/**/*.ts',
@@ -53,13 +69,23 @@ module.exports = {
     '<rootDir>/**/*.test.{js,ts,tsx}',
     '<rootDir>/components/test/**/*_test.{ts,tsx}'
   ],
-  testPathIgnorePatterns: ['lib/test.js'],
+  testPathIgnorePatterns: [
+    '<rootDir>/build/commands/lib/test.js',
+    '<rootDir>/build/rustup',
+    '<rootDir>/third_party'
+  ],
   testTimeout: 30000,
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!(@brave/brave-ui|@brave/leo)/)'
+    '<rootDir>/node_modules/(?!(@brave/brave-ui|@brave/leo)/)',
+    // prevent jest from transforming itself
+    // https://github.com/jestjs/jest/issues/9503#issuecomment-709041807
+    '<rootDir>/node_modules/@babel',
+    '<rootDir>/node_modules/@jest',
+    '<rootDir>/node_modules/lodash',
+    'signal-exit',
+    'is-typedarray'
   ],
   setupFilesAfterEnv: ['<rootDir>/components/test/testSetup.ts'],
-  setupFiles: ['<rootDir>/components/test/testPolyfills.ts'],
   moduleNameMapper: {
     '\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$':
       '<rootDir>/components/test/fileMock.ts',
@@ -89,6 +115,9 @@ module.exports = {
     ),
     'chrome://interstitials\\/(.*)': getBuildOutputPathList(
       'gen/components/security_interstitials/core/$1'
-    )
+    ),
+    // workaround for https://github.com/LedgerHQ/ledger-live/issues/763
+    '@ledgerhq/devices/hid-framing':
+      '<rootDir>/node_modules/@ledgerhq/devices/lib/hid-framing'
   }
 }

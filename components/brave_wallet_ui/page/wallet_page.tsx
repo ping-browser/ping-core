@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { BrowserRouter } from 'react-router-dom'
@@ -14,18 +14,17 @@ import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
 
 // utils
 import { loadTimeData } from '../../common/loadTimeData'
-import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
+import {
+  runLocalStorageMigrations //
+} from '../common/constants/local-storage-keys'
 
-// actions
+// redux
 import * as WalletActions from '../common/actions/wallet_actions'
-
-// contexts
-import { ApiProxyContext } from '../common/context/api-proxy.context'
+import { store } from './store'
 
 // components
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import Container from './container'
-import { store, walletPageApiProxy } from './store'
 
 // style
 import walletDarkTheme from '../theme/wallet-dark'
@@ -48,7 +47,7 @@ function App() {
   }, [])
 
   React.useEffect(() => {
-    removeDeprecatedLocalStorageKeys()
+    runLocalStorageMigrations()
   }, [])
 
   return (
@@ -58,9 +57,7 @@ function App() {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <ApiProxyContext.Provider value={walletPageApiProxy}>
-            <Container />
-          </ApiProxyContext.Provider>
+          <Container />
         </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>
@@ -69,8 +66,9 @@ function App() {
 
 function initialize() {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize({}))
-  render(<App />, document.getElementById('root'))
+  const root = createRoot(document.getElementById('root')!)
+  root.render(<App />)
+  store.dispatch(WalletActions.initialize())
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

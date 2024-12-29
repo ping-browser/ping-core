@@ -3,24 +3,24 @@
 <translationbundle lang="hi">
 <translation id="8631427463833030968">विज्ञापन मैनेज करें</translation>
 <translation id="7630214457764713113">क्लीन लिंक को कॉपी करें</translation>
-<translation id="885805571521218129">यह इस महीने Brave Ads के लिए आपकी अनुमानित कमाई की सीमा को दर्शाता है.</translation>
+<translation id="885805571521218129">यह इस महीने Ping Ads के लिए आपकी अनुमानित कमाई की सीमा को दर्शाता है.</translation>
 <translation id="3478449063771497234">नोटिफ़िकेशन अक्षम किए गए हैं</translation>
 <translation id="2862978891748913252">अपना देश चुनें</translation>
 <translation id="3970520675790340955">अपना देश चुनें ताकि हम आपके क्षेत्र के हिसाब से आपको सही विकल्प और विज्ञापन दिखा सकें.</translation>
 <translation id="7301741773883122509">अब आपको विज्ञापन देखने पर रिवॉर्ड मिल सकते हैं. वेब को सभी के लिए एक सुरक्षित जगह बनाने में आप अपना योगदान दे रहे हैं. यह बहुत ही शानदार काम है!</translation>
 <translation id="6439128034594289376">वाह, आप पूरी तरह से तैयार हैं!</translation>
 <translation id="370665806235115550">लोड हो रही हैं...</translation>
-<translation id="7931127789630755251">Brave में देखे जाने वाले निजी विज्ञापनों के लिए टोकन जमा करें</translation>
+<translation id="7931127789630755251">Ping में देखे जाने वाले निजी विज्ञापनों के लिए टोकन जमा करें</translation>
 <translation id="7859066142771796818">गिफ़्ट कार्ड खरीदने, अन्य करेंसी में बदलने, कंटेंट क्रिएटर्स का सपोर्ट करने और बहुत कुछ करने के लिए टोकन का इस्तेमाल करें.</translation>
 <translation id="3863981251715594911">ये कैसे काम करता है?</translation>
-<translation id="5547108999862247665">Brave Rewards कैसे काम करता है?</translation>
+<translation id="5547108999862247665">Ping Rewards कैसे काम करता है?</translation>
 <translation id="2965798296974325760">पुरस्कारों का उपयोग करना शुरू करें</translation>
 <translation id="8220484609979012449">\n\nआप अपने Web3 वॉलेट के ज़रिए इस क्रिएटर को अब भी क्रिप्टो योगदान भेज सकते हैं.</translation>
 <translation id="6385969012847057348">ये क्रिएटर <ph name="CUSTODIAN"/> से कोई योगदान नहीं ले सकते हैं.</translation>
 <translation id="735733310778086206">यह क्रिएटर ने अभी तक Web3 या क्रिप्टो योगदान प्राप्त करने के लिए सेट अप नहीं किया है।</translation>
 <translation id="6268134562674951939">आपके पास पर्याप्त टोकन नहीं हैं</translation>
 <translation id="4529874892536380156">इसे हर महीने किए जाने वाले आर्थिक योगदान के तौर पर सेट करें. इसे आप कभी भी कैंसिल कर सकते हैं.</translation>
-<translation id="5562948772940025260">आप अपने Brave रिवॉर्ड बैलेंस का इस्तेमाल कर अधिकतम <ph name="AMOUNT"/> BAT भेज सकते हैं.</translation>
+<translation id="5562948772940025260">आप अपने Ping रिवॉर्ड बैलेंस का इस्तेमाल कर अधिकतम <ph name="AMOUNT"/> BAT भेज सकते हैं.</translation>
 <translation id="5012991400231464322">मासिक योगदान</translation>
 <translation id="5907051927340164207">आप इन क्रिएटर को पहले से हर महीने आर्थिक योगदान भेज रहे हैं</translation>
 <translation id="4848906651275579475">आप अब भी अपना योगदान भेज सकते हैं, और इन क्रिएटर को <ph name="MONTHLY_CONTRIBUTION"/> से हटाकर आप उन्हें दिया जाने वाले मासिक योगदान कभी भी बंद कर सकते हैं.</translation>
@@ -31,55 +31,55 @@
 <translation id="3699420827646925694"><ph name="CUSTODIAN"/> से लॉग आउट हो गए हैं</translation>
 <translation id="9038728316393235637"><ph name="CUSTODIAN"/> में लॉग इन करें</translation>
 <translation id="7063168612616047608">आपने अपने पसंदीदा क्रिएटर की सहायता की, इसके लिए आपका शुक्रिया</translation>
-<translation id="3796032246917966749">ऐसा लगता है कि आप Brave रिवॉर्ड के लिए <ph name="CUSTODIAN"/> से लॉग आउट हो गए हैं. जारी रखने के लिए फिर से लॉग इन करें.</translation>
-<translation id="5202112619925434373">ये क्रिएटर अभी तक Brave क्रिएटर्स पर वेरिफ़ाई नहीं हुए हैं. जब वो वेरिफ़ाई हो जाएँगे, तो आप उन्हें योगदान भेज पाएँगे. <ph name="LEARN_MORE"/></translation>
+<translation id="3796032246917966749">ऐसा लगता है कि आप Ping रिवॉर्ड के लिए <ph name="CUSTODIAN"/> से लॉग आउट हो गए हैं. जारी रखने के लिए फिर से लॉग इन करें.</translation>
+<translation id="5202112619925434373">ये क्रिएटर अभी तक Ping क्रिएटर्स पर वेरिफ़ाई नहीं हुए हैं. जब वो वेरिफ़ाई हो जाएँगे, तो आप उन्हें योगदान भेज पाएँगे. <ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">आर्थिक योगदान भेजें</translation>
 <translation id="1899434873745933492">आपका आर्थिक योगदान नहीं भेजा जा सकता</translation>
-<translation id="1794046983410841192">Brave रिवॉर्ड का इस्तेमाल करें</translation>
+<translation id="1794046983410841192">Ping रिवॉर्ड का इस्तेमाल करें</translation>
 <translation id="8037118277449189044">Web3 वॉलेट का इस्तेमाल करें</translation>
-<translation id="9059356165618961685">Brave रिवॉर्ड का बैलेंस</translation>
+<translation id="9059356165618961685">Ping रिवॉर्ड का बैलेंस</translation>
 <translation id="86107454835395919">मासिक योगदान के तौर पर सेट करें</translation>
 <translation id="1177863135347784049">कस्टम</translation>
 <translation id="4827581232860040208">आपका आर्थिक योगदान भेजने में कोई समस्या हुई</translation>
 <translation id="3259723213051400722">कृपया पुनः प्रयास करें।</translation>
-<translation id="5298965408768377685">ये क्रिएटर Brave पर रजिस्टर कर चुके हैं और Brave रिवॉर्ड के यूज़र से योगदान ले सकते हैं. <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">हो सकता है कि Brave रिवॉर्ड उस समय काम न करें, जब सूचनाओं को अक्षम किया गया हो।</translation>
+<translation id="5298965408768377685">ये क्रिएटर Ping पर रजिस्टर कर चुके हैं और Ping रिवॉर्ड के यूज़र से योगदान ले सकते हैं. <ph name="LEARN_MORE"/></translation>
+<translation id="7466579932043491502">हो सकता है कि Ping रिवॉर्ड उस समय काम न करें, जब सूचनाओं को अक्षम किया गया हो।</translation>
 <translation id="6112331814131703370">'ऐप में स्विच करें' सूचनाओं को अवरुद्ध करें</translation>
 <translation id="4744921452903670666">हमें बताएँ कि आप क्या सोचते हैं!</translation>
-<translation id="2524310205387880526">Brave का मूल्यांकन करें</translation>
+<translation id="2524310205387880526">Ping का मूल्यांकन करें</translation>
 <translation id="4104400246019119780">धन्यवाद!</translation>
 <translation id="5202255382948179481">अपने सुझाव दें</translation>
 <translation id="7759809451544302770">वैकल्पिक</translation>
-<translation id="4748689412569009273">एक ईमोजी में बताएँ कि Brave के साथ आपका अनुभव कैसा था?</translation>
+<translation id="4748689412569009273">एक ईमोजी में बताएँ कि Ping के साथ आपका अनुभव कैसा था?</translation>
 <translation id="7335142069363686805">अभी रेटिंग दें</translation>
-<translation id="6681362094306959654">Brave पसंद है?</translation>
+<translation id="6681362094306959654">Ping पसंद है?</translation>
 <translation id="8041093619605951337">खुश</translation>
 <translation id="6826743502395386800">दुखी</translation>
 <translation id="5488843227043643519">Play Store पर रेटिंग दें?</translation>
 <translation id="5867854497245948308">आपके फ़ीडबैक के लिए धन्यवाद!</translation>
-<translation id="4935400164159327304">हमें बताएँ कि हम Brave को और बेहतर कैसे बना सकते हैं.</translation>
+<translation id="4935400164159327304">हमें बताएँ कि हम Ping को और बेहतर कैसे बना सकते हैं.</translation>
 <translation id="1420756770787071946">इस क्रिएटर का सपोर्ट करें</translation>
-<translation id="8966035543003363155">Brave नोटिफ़िकेशन इसे आसान बना देते हैं</translation>
+<translation id="8966035543003363155">Ping नोटिफ़िकेशन इसे आसान बना देते हैं</translation>
 <translation id="7662771815233894695">डाउनलोड की हुई चीज़ों को मैनेज करें, टोकन कमाएँ, साप्ताहिक इस्तेमाल के आँकड़े देखें और भी बहुत कुछ.</translation>
 <translation id="4265429476391459783">आप न ही कोई रिवॉर्ड कमा रहे हैं और न ही आपको गोपनीयता रिपोर्ट मिल रही हैं</translation>
-<translation id="1305714751384738456">आप Brave रिवॉर्ड नहीं कमा रहे हैं</translation>
+<translation id="1305714751384738456">आप Ping रिवॉर्ड नहीं कमा रहे हैं</translation>
 <translation id="1483391942610220726">आपको गोपनीयता रिपोर्ट नहीं मिल रही हैं</translation>
 <translation id="4683790942451502796">अगर आप BAT कमाना और साप्ताहिक गोपनीयता रिपोर्ट पाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें.</translation>
 <translation id="8618359751943259593">अगर आप BAT कमाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें</translation>
 <translation id="760355165169399836">अगर आप साप्ताहिक गोपनीयता रिपोर्ट पाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें.</translation>
 <translation id="6268959058971634697">आप कोई रिवॉर्ड नहीं कमा रहे हैं</translation>
-<translation id="1088637159642753509">Brave रिवॉर्ड पाने और गोपनीयता रिपोर्ट देखने के लिए डिवाइस नोटिफ़िकेशन चालू करें.</translation>
-<translation id="312404770066229090">Brave रिवॉर्ड कमाने के लिए डिवाइस नोटिफ़िकेशन को चालू करें.</translation>
+<translation id="1088637159642753509">Ping रिवॉर्ड पाने और गोपनीयता रिपोर्ट देखने के लिए डिवाइस नोटिफ़िकेशन चालू करें.</translation>
+<translation id="312404770066229090">Ping रिवॉर्ड कमाने के लिए डिवाइस नोटिफ़िकेशन को चालू करें.</translation>
 <translation id="2241529840361230499">गोपनीयता रिपोर्ट पाने के लिए डिवाइस नोटिफ़िकेशन चालू करें.</translation>
-<translation id="4930155581888391118">Brave रिवॉर्ड पाने के लिए Brave के नोटिफ़िकेशन चालू करें.</translation>
-<translation id="325187916104529570">सेटिंग खोलें और Brave विज्ञापन देखने के लिए डिवाइस नोटिफ़िकेशन चालू करें.</translation>
-<translation id="5744802588121897886">Brave के नोटिफ़िकेशन चालू करें</translation>
-<translation id="7307834434086582547">Brave शील्ड को सक्षम/अक्षम करें</translation>
+<translation id="4930155581888391118">Ping रिवॉर्ड पाने के लिए Ping के नोटिफ़िकेशन चालू करें.</translation>
+<translation id="325187916104529570">सेटिंग खोलें और Ping विज्ञापन देखने के लिए डिवाइस नोटिफ़िकेशन चालू करें.</translation>
+<translation id="5744802588121897886">Ping के नोटिफ़िकेशन चालू करें</translation>
+<translation id="7307834434086582547">Ping शील्ड को सक्षम/अक्षम करें</translation>
 <translation id="6945863270524203017">ब्लॉक किए गए ट्रैकर और विज्ञापन पर साप्ताहिक अपडेट पाएँ.</translation>
 <translation id="4324735664183300693">नोटिफ़िकेशन चालू करें</translation>
-<translation id="6395059271589866759">Brave भेजी गई राशि का 5% प्रोसेसिंग शुल्क के तौर पर लेता है.</translation>
+<translation id="6395059271589866759">Ping भेजी गई राशि का 5% प्रोसेसिंग शुल्क के तौर पर लेता है.</translation>
 <translation id="6661699662755460155">बदलें</translation>
-<translation id="6790981891677399838">Brave ब्राउज़र का इस्तेमाल करके मैंने अभी <ph name="AMOUNT"/> BAT का योगदान दिया है. आप अपने पसंदीदा क्रिएटर और वेबसाइट को कैसे सपोर्ट कर सकते हैं, यह जानें : https://brave.com/rewards</translation>
+<translation id="6790981891677399838">Ping ब्राउज़र का इस्तेमाल करके मैंने अभी <ph name="AMOUNT"/> BAT का योगदान दिया है. आप अपने पसंदीदा क्रिएटर और वेबसाइट को कैसे सपोर्ट कर सकते हैं, यह जानें : https://brave.com/rewards</translation>
 <translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
 <translation id="5197219128592971597">Google के एक्सीलरेटेड मोबाइल पेज वर्ज़न के बजाय, हमेशा असली (नॉन-AMP) पेज के URL पर जाएँ</translation>
 <translation id="920638232916443453">अपने-आप दूसरे पेज पर ले जाने वाले ट्रैकिंग URL</translation>
@@ -91,24 +91,30 @@
 <translation id="1005372663692637999">YouTube पर 'अगला क्या है' और आखिर में दिखाए जाने वाले कार्ड को ब्लॉक करता है.</translation>
 <translation id="5152595963250646670">YouTube की ध्यान बँटाने वाली चीज़ों को ब्लॉक करें</translation>
 <translation id="2998960761270772157">YouTube पर साइन इन, मेन्यू, कमेंट और वीडियो की जानकारी ब्लॉक हो जाती है.</translation>
+<translation id="8531835121131500698">YouTube Shorts को ब्लॉक करें</translation>
+<translation id="2167271714269158912">Youtube.com पर होम पेज, ट्रेंडिंग पेज और सर्च रिज़ल्ट से Shorts को ब्लॉक करें.</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
-<translation id="6302422639282249274">Brave रिवार्ड्स को प्रबंधित करें</translation>
+<translation id="6302422639282249274">Ping रिवार्ड्स को प्रबंधित करें</translation>
 <translation id="2709516037105925701">ऑटोमैटिक भरना</translation>
 <translation id="8617525558807213034">निजी टैब अपने-आप भरें</translation>
 <translation id="8685431198160039193">सेव की गई जानकारी निजी टैब में अपने आप भरी जा सकती है</translation>
 <translation id="6583902294974160967">सपोर्ट</translation>
 <translation id="1799030480311994998">सुविधाएँ</translation>
-<translation id="2005732746077850308">Brave शील्ड और गोपनीयता</translation>
+<translation id="2005732746077850308">Ping शील्ड और गोपनीयता</translation>
 <translation id="4692623383562244444">सर्च इंजन</translation>
 <translation id="1468415711258933398">साधारण टैब</translation>
 <translation id="3377025655491224618">निजी टैब</translation>
+<translation id="7304425663107214334">ब्राउज़र सुझाव दिखाएं</translation>
+<translation id="8982438328166986164">आपके बुकमार्क और पिछली ब्राउज़िंग के आधार पर वेबसाइट के सुझाव दिखाता है.</translation>
+<translation id="924029461438529367">सर्च के सुझाव दिखाएं</translation>
+<translation id="1571106259128580884">टॉप साइट के सुझाव दिखाएं</translation>
+<translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
+<translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="9148058034647219655">बाहर निकलें</translation>
-<translation id="4022987104439075738">IPFS गेटवे</translation>
-<translation id="2688519859165248360">IPFS संसाधनों के लिए IPFS गेटवे के माध्यम से नेविगेशन की अनुमति देता है</translation>
 <translation id="8047754398610073499">कुकी की इजाज़त के नोटिस को ब्लॉक करें</translation>
 <translation id="2621893359845808115">वेबसाइट के उन पॉप-अप को ब्लॉक करता है जो आपसे अपनी साइट पर कुकी को मंज़ूर / नामंज़ूर करने के लिए कहते हैं.</translation>
 <translation id="7534079972563542000">Unstoppable डोमेन</translation>
@@ -140,11 +146,11 @@
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="4176463684765177261">अक्षम</translation>
 <translation id="59174027418879706">सक्रिय</translation>
-<translation id="6252490671914511928">आज की शीर्ष कहानियाँ पूरी तरह से प्राइवेट फ़ीड में, सिर्फ आपके लिए.</translation>
-<translation id="8300751939969131609">Brave न्यूज़ चालू करें और कभी भी कोई स्टोरी छूटने न दें</translation>
-<translation id="7266075701303521777">Brave न्यूज़ आपके डिवाइस पर मेल खाने वाले पूरी तरह से प्राइवेट और अनजान ऐड से ऐड सपोर्टेड है.</translation>
-<translation id="7699565323725789472">एक ही फ़ीड में अपने पसंदीदा सोर्स को फ़ॉलो करें. बस Brave में एक टैब खोलें, नीचे स्क्रॉल करें और… लुत्फ़ उठाएँ!\nBrave न्यूज़ को गुप्त और अनाम विज्ञापन से मदद मिलती है.</translation>
-<translation id="1765217911817124376">Brave न्यूज़ शुरू करें</translation>
+<translation id="6920492760024499150">आज की टॉप कहानियां प्राइवेट फ़ीड में, सिर्फ़ आपके लिए.</translation>
+<translation id="8300751939969131609">Ping न्यूज़ चालू करें और कभी भी कोई स्टोरी छूटने न दें</translation>
+<translation id="7627131190984957214">Ping News आपके डिवाइस पर प्राइवेट और अनजान ऐड से ऐड सपोर्टेड है.</translation>
+<translation id="7699565323725789472">एक ही फ़ीड में अपने पसंदीदा सोर्स को फ़ॉलो करें. बस Ping में एक टैब खोलें, नीचे स्क्रॉल करें और… लुत्फ़ उठाएँ!\nPing न्यूज़ को गुप्त और अनाम विज्ञापन से मदद मिलती है.</translation>
+<translation id="1765217911817124376">Ping न्यूज़ शुरू करें</translation>
 <translation id="8981973962043893066">साइट, विषय या RSS फ़ीड सर्च करें</translation>
 <translation id="3225021799163709119">मशहूर</translation>
 <translation id="3673348851739109493">सोर्स की रैंक की गई लिस्ट</translation>
@@ -161,7 +167,7 @@
 <translation id="7461899062138731833">सोर्स</translation>
 <translation id="6150420917380577651"><ph name="SEARCH_URL"/> पर कोई फ़ीड नहीं मिली</translation>
 <translation id="4541978218358617681">विज्ञापन</translation>
-<translation id="7823038307453615214">Brave न्यूज़ दिखाएँ</translation>
+<translation id="7823038307453615214">Ping न्यूज़ दिखाएँ</translation>
 <translation id="6527303717912515753">शेयर करें</translation>
 <translation id="1654539412343893324">डेटा के बारे में अधिक जानें</translation>
 <translation id="2989805286512600854">नए टैब में खोलें</translation>
@@ -170,9 +176,9 @@
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> डिसेबल किया गया है</translation>
 <translation id="1276592121036104130">नया कंटेंट लोड करें</translation>
 <translation id="3189348785087463371">प्रमोट कर दिया गया</translation>
-<translation id="7554145152551782675">Brave के अन्य ऑफ़र</translation>
+<translation id="7554145152551782675">Ping के अन्य ऑफ़र</translation>
 <translation id="254100925533869330">कोई कंटेंट नहीं है</translation>
-<translation id="7172792761509429092">Brave न्यूज़ पर दिखाने के लिए कोई कंटेंट नहीं है</translation>
+<translation id="7172792761509429092">Ping न्यूज़ पर दिखाने के लिए कोई कंटेंट नहीं है</translation>
 <translation id="1771307734839364850">कंटेंट के सोर्स चुनें</translation>
 <translation id="6891769200437737956">वेबसाइटों को मेरा फ़िंगरप्रिंटिंग बनाने से रोकता है</translation>
 <translation id="7459000603787995422">बाहर निकलने पर टैब को बंद करें</translation>
@@ -187,9 +193,9 @@
 <translation id="6975864539539353406">जब आप कोई साइट बंद करते हैं तो कुकीज़ और अन्य साइट डेटा साफ़ करता है</translation>
 <translation id="1680858055899097121">ब्राउज़िंग सत्रों के बीच टैब बनाएं न रखें</translation>
 <translation id="7142548388914389999">गोपनीयता-संरक्षण प्रोडक्ट एनालिटिक्स की अनुमति दें (P3A)</translation>
-<translation id="5254037869598726291">अनामित P3A जानकारी Brave को समग्र उपयोग का अनुमान लगाने में मदद करती है, और यह सुनिश्चित करती है कि हम लोकप्रिय सुविधाओं में सुधार कर रहे हैं.</translation>
+<translation id="5254037869598726291">अनामित P3A जानकारी Ping को समग्र उपयोग का अनुमान लगाने में मदद करती है, और यह सुनिश्चित करती है कि हम लोकप्रिय सुविधाओं में सुधार कर रहे हैं.</translation>
 <translation id="933652931229970927">अपने आप नैदानिक रिपोर्ट भेजें</translation>
-<translation id="5987838417172370108">Brave ब्राउज़र के क्रैश या फ़्रीज़ होने पर अपने आप नैदानिक रिपोर्ट भेजकर Brave\u2019s प्रोडक्ट स्थिरता को बेहतर बनाने में मदद करें.</translation>
+<translation id="5987838417172370108">Ping ब्राउज़र के क्रैश या फ़्रीज़ होने पर अपने आप नैदानिक रिपोर्ट भेजकर Ping\u2019s प्रोडक्ट स्थिरता को बेहतर बनाने में मदद करें.</translation>
 <translation id="7977176350719484850">डेटा\nसेव किया गया</translation>
 <translation id="9008534313521214777">अनुमानित समय\nसेव किया गया</translation>
 <translation id="410351446219883937">अपने आप चलाएं</translation>
@@ -203,13 +209,13 @@
 <translation id="4172219483893066798">साइट की ओर से लोकलहोस्ट के संसाधनों का ऐक्सेस पाने का अनुरोध किया जा सकता है</translation>
 <translation id="7181706637590665047">लोकलहोस्ट के संसाधनों का ऐक्सेस न दें</translation>
 <translation id="1485435696620658073">लोकलहोस्ट के संसाधनों के ऐक्सेस की इजाज़त है</translation>
-<translation id="181905442828471321">Brave शील्ड्स वैश्विक डिफॉल्ट्स</translation>
+<translation id="181905442828471321">Ping शील्ड्स वैश्विक डिफॉल्ट्स</translation>
 <translation id="2675679258824361492">अन्य  गोपनीयता सेटिंग</translation>
 <translation id="8026334261755873520">ब्राउज़िंग डेटा साफ़ करें</translation>
 <translation id="1690924763769415936">बैकग्राउंड प्ले</translation>
-<translation id="6332924730165919598">सभी टैब बंद करने से Brave बंद हो जाता है</translation>
-<translation id="8308305244351876417">यह आपको Brave में किसी दूसरे टैब या किसी दूसरे ऐप पर स्विच करने या आपके डिवाइस की स्क्रीन बंद होने के दौरान, ऑडियो को प्ले करने की सुविधा देता है.</translation>
-<translation id="49147335255967913">YouTube लिंक Brave पर खोलें</translation>
+<translation id="6332924730165919598">सभी टैब बंद करने से Ping बंद हो जाता है</translation>
+<translation id="8308305244351876417">यह आपको Ping में किसी दूसरे टैब या किसी दूसरे ऐप पर स्विच करने या आपके डिवाइस की स्क्रीन बंद होने के दौरान, ऑडियो को प्ले करने की सुविधा देता है.</translation>
+<translation id="49147335255967913">YouTube लिंक Ping पर खोलें</translation>
 <translation id="4150201353443180367">डिसप्ले</translation>
 <translation id="4275663329226226506">मीडिया</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -218,25 +224,25 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Widevine के बारे में और जानें<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">अनुमति दें (अभी फिर से लॉन्च करें)</translation>
 <translation id="2433507940547922241">प्रकटन</translation>
-<translation id="9040069796107003510">Brave Rewards आइकन</translation>
-<translation id="6333347122924254968">एड्रेस बार में Brave Rewards आइकॉन दिखाएं</translation>
+<translation id="9040069796107003510">Ping Rewards आइकन</translation>
+<translation id="6333347122924254968">एड्रेस बार में Ping Rewards आइकॉन दिखाएं</translation>
 <translation id="8495235435594442882">बॉटम टूलबार को सक्षम करें</translation>
-<translation id="6587448235155023666">अगली बार जब आप Brave को पुनः लॉन्च करेंगे तो आपके परिवर्तन प्रभावी होंगे</translation>
+<translation id="6587448235155023666">अगली बार जब आप Ping को पुनः लॉन्च करेंगे तो आपके परिवर्तन प्रभावी होंगे</translation>
 <translation id="8701563696941209024">अब पुनः लॉन्च करें</translation>
 <translation id="834487290629916192">बाद में</translation>
-<translation id="7207456302801184289">Brave में आपका स्वागत है</translation>
+<translation id="7207456302801184289">Ping में आपका स्वागत है</translation>
 <translation id="4117451092682672487">प्राइवेसी. आसान हो गई है.</translation>
-<translation id="7909375417585209817">जब Brave डिफ़ॉल्ट के तौर पर सेट होता है, तो आप जिस भी लिंक को खोलते हैं, वह Brave की प्राइवेसी सुरक्षा की सुविधा के साथ खुलता है.</translation>
+<translation id="7909375417585209817">जब Ping डिफ़ॉल्ट के तौर पर सेट होता है, तो आप जिस भी लिंक को खोलते हैं, वह Ping की प्राइवेसी सुरक्षा की सुविधा के साथ खुलता है.</translation>
 <translation id="7370959926683925817">विज्ञापनों को ब्लॉक करें. डेटा बचाएँ. हर एक दिन.</translation>
-<translation id="7281027579943912834">जब Brave डिफ़ॉल्ट के तौर पर सेट होता है, आप जिस भी लिंक पर टैप करते हैं वह Brave के विज्ञापन-ब्लॉक से सुरक्षित होता है, हर पेज, वीडियो और स्ट्रीम.</translation>
-<translation id="5148943178722443958">Brave को बेहतर बनाने में मदद करें.</translation>
+<translation id="7281027579943912834">जब Ping डिफ़ॉल्ट के तौर पर सेट होता है, आप जिस भी लिंक पर टैप करते हैं वह Ping के विज्ञापन-ब्लॉक से सुरक्षित होता है, हर पेज, वीडियो और स्ट्रीम.</translation>
+<translation id="5148943178722443958">Ping को बेहतर बनाने में मदद करें.</translation>
 <translation id="6718362830686703942">अचानक बंद होने या अटकने पर डायग्नोस्टिक रिपोर्ट भेजें.</translation>
-<translation id="1929905278861178845">Brave के यूज़र जिन सुविधाओं का इस्तेमाल कर रहे हैं, उन प्रोडक्ट के बारे में पूरी तरह से गोपनीय और अनाम जानकारी शेयर करें.</translation>
+<translation id="8616157231067364693">Ping के यूज़र जिन सुविधाओं का इस्तेमाल कर रहे हैं, उन प्रोडक्ट के बारे में गोपनीय और अनाम जानकारी शेयर करें.</translation>
 <translation id="2877653791257935258">किसी वेबसाइट का नाम या URL टाइप करें</translation>
-<translation id="5329830149661250028">Brave का कमाल देखें : कोई विज्ञापन नहीं. कोई ट्रैकर नहीं. बहुत तेज़ी से पेज का खुलना.</translation>
-<translation id="3941792073703079607">Brave का फ़र्क देखें : विज्ञापनों को ब्लॉक करें. डेटा बचाएँ. तेज़ी से स्ट्रीम करें.</translation>
-<translation id="3545804467215833536">Brave शील्ड देखने के लिए टैप करें</translation>
-<translation id="1724327820822194498">वह सभी बेकार चीजें देखें, जो Brave ने हर पेज पर शील्ड के ज़रिए ब्लॉक की हैं.</translation>
+<translation id="5329830149661250028">Ping का कमाल देखें : कोई विज्ञापन नहीं. कोई ट्रैकर नहीं. बहुत तेज़ी से पेज का खुलना.</translation>
+<translation id="3941792073703079607">Ping का फ़र्क देखें : विज्ञापनों को ब्लॉक करें. डेटा बचाएँ. तेज़ी से स्ट्रीम करें.</translation>
+<translation id="3545804467215833536">Ping शील्ड देखने के लिए टैप करें</translation>
+<translation id="1724327820822194498">वह सभी बेकार चीजें देखें, जो Ping ने हर पेज पर शील्ड के ज़रिए ब्लॉक की हैं.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> और <ph name="TRACKER"/> अन्य विज्ञापन और ट्रैकर ब्लॉक किए गए</translation>
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> और अन्य विज्ञापन ट्रैकर ब्लॉक किए गए हैं</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> विज्ञापन और ट्रैकर ब्लॉक किए गए</translation>
@@ -246,23 +252,25 @@
 <translation id="986879628471635371">शुरुआत करने में समस्या निवारण</translation>
 <translation id="5808759341041733958">डिफ़ॉल्ट खोज इंजन चुनें</translation>
 <translation id="1331593888918588693">आप बाद में ऐप सेटिंग्स में हमेशा अपनी पसंद बदल सकते हैं।</translation>
-<translation id="5806601733251372221">Brave शील्ड्स</translation>
+<translation id="5806601733251372221">Ping शील्ड्स</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/>s पाएं</translation>
-<translation id="3333887201479867589">Brave रिवार्ड्स</translation>
+<translation id="3333887201479867589">Ping रिवार्ड्स</translation>
 <translation id="5870330605209713397">गोपनीयता-सम्बंधित विज्ञापन देखकर और डिफ़ॉल्ट रूप से अपने पसंदीदा साइटों और निर्माताओं का समर्थन करें।</translation>
 <translation id="5302488867897327287">स्टार्ट यूजिंग ब्रेव रिवार्ड्स का उपयोग करके, आप इससे सहमत हैं</translation>
 <translation id="4281844954008187215">सेवा की शर्तें</translation>
 <translation id="6871397658902960384">ब्राउज़ करना शुरू करें</translation>
 <translation id="454386012157232640">मैंने कोई विज्ञापन नहीं देखा</translation>
-<translation id="1448877943847791441">में Brave आपके पहले विज्ञापन को दिखाएगा</translation>
-<translation id="4410793187232041318">अब आप Brave विज्ञापनों से टोकन अर्जित करेंगे।</translation>
-<translation id="6511854390690723657">यह आपका पहला Brave विज्ञापन है। और जानने के लिए टैप करें।</translation>
+<translation id="1448877943847791441">में Ping आपके पहले विज्ञापन को दिखाएगा</translation>
+<translation id="4410793187232041318">अब आप Ping विज्ञापनों से टोकन अर्जित करेंगे।</translation>
+<translation id="6511854390690723657">यह आपका पहला Ping विज्ञापन है। और जानने के लिए टैप करें।</translation>
 <translation id="2070991379950719711">ब्रेव रिवार्ड्स का उपयोग करना शुरू करें</translation>
 <translation id="48520986898237073">वॉलेट में योगदान करें</translation>
+<translation id="6213254277250932867">मेरे पास 12 शब्दों का रिकवरी फ्रेज़ है</translation>
+<translation id="4225265925807365011">मेरे पास 24 शब्दों का रिकवरी फ्रेज़ है</translation>
 <translation id="3570367516044491911">डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
 <translation id="6800338374677644736">डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें</translation>
-<translation id="19715420010996093">Brave ब्राउज़र का चयन करें और 'हमेशा' टैप करें</translation>
-<translation id="3546439402724649282">Brave पहले से ही आपके डिफ़ॉल्ट ब्राउज़र के रूप में सेट है।</translation>
+<translation id="19715420010996093">Ping ब्राउज़र का चयन करें और 'हमेशा' टैप करें</translation>
+<translation id="3546439402724649282">Ping पहले से ही आपके डिफ़ॉल्ट ब्राउज़र के रूप में सेट है।</translation>
 <translation id="8389661903259423907">आपने पहले ही एक डिफ़ॉल्ट ब्राउज़र सेट कर लिया है। आप अपनी ऐप सेटिंग में डिफ़ॉल्ट ब्राउज़र को बदल सकते हैं।</translation>
 <translation id="1545749641540134597">QR कोड स्कैन करें</translation>
 <translation id="5317781812114905957">निर्देश</translation>
@@ -270,12 +278,12 @@
 <translation id="2734870894159530879">अपना बैलेंस देखने के लिए <ph name="WALLET_PROVIDER"/> में लॉग इन करें</translation>
 <translation id="7658239707568436148">रद्द करना</translation>
 <translation id="1201402288615127009">अगला</translation>
-<translation id="8481779960444041069">अपनी गोपनीयता में सुधार करने के लिए, Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें</translation>
-<translation id="1938402585819943124">अगली स्क्रीन पर Brave चुनें.</translation>
+<translation id="8481779960444041069">अपनी गोपनीयता में सुधार करने के लिए, Ping को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें</translation>
+<translation id="1938402585819943124">अगली स्क्रीन पर Ping चुनें.</translation>
 <translation id="8926389886865778422">दोबारा न पूछें</translation>
 <translation id="745974920645827035">बेहतर गोपनीयता के साथ स्वतंत्र सर्च</translation>
-<translation id="4717018805430015801">Brave सर्च आपको, आपके सवालों या आपके क्लिक को ट्रैक नहीं करता.</translation>
-<translation id="5240031343741051161">Brave सर्च को आज़माएँ</translation>
+<translation id="2773167297815493692">Ping ब्रेव सर्च आपकी प्रोफ़ाइल नहीं बनाता</translation>
+<translation id="5240031343741051161">Ping सर्च को आज़माएँ</translation>
 <translation id="5234764350956374838">खारिज करें</translation>
 <translation id="6639570430554986719">जनवरी</translation>
 <translation id="1807352595146144483">फ़रवरी</translation>
@@ -289,24 +297,19 @@
 <translation id="8220228041552340594">अक्टूबर</translation>
 <translation id="8280223431922155812">नवम्बर</translation>
 <translation id="4254029385847607686">दिसम्बर</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="1772301834467143364">Brave News</translation>
+<translation id="3960619311638643872">Ping VPN</translation>
+<translation id="1772301834467143364">Ping News</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
 <translation id="6020176662032623904">वेरिफ़ाइड क्रिएटर</translation>
 <translation id="2369994359029526515">नहीं वेरिफ़ाइड क्रिएटर</translation>
 <translation id="6112368337882254910">स्वतः-योगदान</translation>
-<translation id="7861645265922445992">रिवार्ड्स क्लेम करें</translation>
 <translation id="1848737374354350807">शेष</translation>
 <translation id="4781696154289395607">आपने <ph name="BAT_VALUE"/> BAT का योगदान दिया है।</translation>
 <translation id="2429828319207652823">आपके योगदान को प्रोसैस करने में एक समस्या थी।</translation>
-<translation id="2221902203895354376">टोकन ग्रांट्स उपलब्ध है!</translation>
-<translation id="2377929997600454162">यह रहे आपके <ph name="MONTH_VALUE"/> के विज्ञापन रिवॉर्ड!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> के रिवॉर्ड : <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">आपके पास क्लेम करने के लिए <ph name="TOKEN"/> दिन बचे हैं</translation>
 <translation id="683765328936486920">YouTube पर</translation>
 <translation id="8969049974285901797">ट्विच पर</translation>
-<translation id="8038539967102225446">Brave विज्ञापन यहाँ हैं!</translation>
+<translation id="8038539967102225446">Ping विज्ञापन यहाँ हैं!</translation>
 <translation id="222883304157347087">(यह डिवाइस)</translation>
 <translation id="4157741509680155021">सिंक चेन पर डिवाइस</translation>
 <translation id="279635009973773843">डिवाइस लोड हो रही हैं...</translation>
@@ -314,19 +317,17 @@
 <translation id="2569646144216067185">शब्द गणना:  <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">गलत सिंक कोड</translation>
 <translation id="8284063834901328650">गलत सिंक QR कोड</translation>
-<translation id="859506441384380749">यह कोड Brave के पुराने पिछड़े संस्करण से जेनरेट किया गया था, कृपया पहले अपने अन्य डिवाइस को अपग्रेड करें</translation>
+<translation id="859506441384380749">यह कोड Ping के पुराने पिछड़े संस्करण से जेनरेट किया गया था, कृपया पहले अपने अन्य डिवाइस को अपग्रेड करें</translation>
 <translation id="3132642509209154999">यह कोड समाप्त हो गया है. कृपया अपने दूसरे डिवाइस पर एक नया कोड जेनरेट करें और दोबारा कोशिश करें.</translation>
 <translation id="2859229680945501779">यह कोड अमान्य है। कृपया जांच लें कि आपके डिवाइस पर टाइम और टाइमज़ोन सही ढंग से सेट हैं.</translation>
-<translation id="3149880132460839085">Brave सिंक</translation>
-<translation id="3680755684186855422">Brave सिंक आपको बुकमार्क डेटा को निजी रूप से आपके Brave ब्राउज़र से आपके विभिन्न डिवाइस पर सिंक करने देता है।</translation>
-<translation id="3735228155296883311">बस अपने सिंक चेन से कोड को स्कैन करें जिसे आपने किसी अन्य डिवाइस पर बनाया था। या एक नई सिंक श्रृंखला की शुरुआत करें।</translation>
-<translation id="2614069607859982576">मौजूदा सिंक डिवाइस का उपयोग करके, Brave सेटिंग्स को खोलें और सेटिंग्स &gt; सिंक को नेविगेट करेंI "नया डिवाइस जोड़ें" चुनें और स्क्रीन पर दिख रहे क्यूआर कोड स्कैन करेंI</translation>
+<translation id="3149880132460839085">Ping सिंक</translation>
+<translation id="348794064910142198">Ping Sync आपको अपने अलग-अलग डिवाइस पर अपने Ping ब्राउज़र के बीच बुकमार्क डेटा को निजी तौर पर सिंक करें करने की इजाज़त देता है.\n\nबस अपने सिंक करें चेन से कोड को स्कैन करें जिसे आपने किसी दूसरे डिवाइस पर बनाया है। या एक नया सिंक करें चेन शुरू करें.</translation>
+<translation id="2614069607859982576">मौजूदा सिंक डिवाइस का उपयोग करके, Ping सेटिंग्स को खोलें और सेटिंग्स &gt; सिंक को नेविगेट करेंI "नया डिवाइस जोड़ें" चुनें और स्क्रीन पर दिख रहे क्यूआर कोड स्कैन करेंI</translation>
 <translation id="5241263629636958324">क्लिपबोर्ड में कॉपी किया गया</translation>
 <translation id="5817918615728894473">युग्‍मित करें</translation>
 <translation id="3429575397891106447">विकल्प सिंक करें</translation>
 <translation id="1680065323266179640">सिंक अकाउंट को मिटाएँ</translation>
-<translation id="3792563952903751704">अपना अकाउंट मिटाने से Brave के सर्वर पर आपका एन्क्रिप्ट किया हुआ डेटा हट जाएगा और आपके कनेक्ट किए हुए सभी डिवाइस पर सिंक बंद हो जाएगा. हालाँकि इससे उन डिवाइस पर लोकल तौर पर स्टोर किया गया डेटा नहीं मिटेगा.
-मिटाने की यह प्रक्रिया स्थायी होगी और डेटा को वापस नहीं पाया जा सकेगा. अगर आप फिर से सिंक इस्तेमाल करने के बारे में सोचते हैं, तो आपको एक नया अकाउंट बनाना होगा और हर डिवाइस को एक-एक करके फिर से जोड़ना होगा.</translation>
+<translation id="8397325856045820212">अपने अकाउंट डिलीट करने से आपका एन्क्रिप्टेड डेटा Ping सर्वर से हटा दिया जाएगा और आपके सभी जुड़े डिवाइसों पर सिंक करें को अक्षम कर दिया जाएगा. हालांकि, यह उन डिवाइसों पर स्थानीय तौर पर स्टोर हुए डेटा को नहीं हटाएगा.\n\nयह डिलीट स्थायी है और डेटा को पस पाने का कोई तरीका नहीं है. अगर आप फिर से सिंक करें का इस्तेमाल शुरू करने का फ़ैसला लेते हैं, तो आपको एक नया अकाउंट बनाना होगा और हर डिवाइस को एक-एक करके फिर से शामिल करना होगा.</translation>
 <translation id="9064376100690171155">अकाउंट को स्थायी तौर पर मिटाएँ</translation>
 <translation id="2740516568641790390">सिंक अकाउंट को मिटा दिया गया है</translation>
 <translation id="7006136453627651236">सिंक अकाउंट को मिटाया नहीं जा सका</translation>
@@ -336,12 +337,10 @@
 <translation id="1602067095281698985">नया सिंक चेन शुरू करें</translation>
 <translation id="1475223680121592371">मोबाइल डिवाइस जोड़ें</translation>
 <translation id="2965377893636908578">एक कंप्यूटर जोड़ें</translation>
-<translation id="6604289897677913048">दूसरे फोन या टैबलेट का उपयोग कर रहे हैं, Brave सेटिंग्स &gt; सिंक &gt; स्कैन पर जाएं।</translation>
-<translation id="8508856434435157945">अपने मोबाइल डिवाइस पर, सेटिंग पैनल में Brave सिंक पर जाएं और "सिंक कोड स्कैन करें" बटन पर क्लिक करें। नीचे दिए गए QR कोड को स्कैन करने के लिए अपने कैमरे का उपयोग करें।</translation>
-<translation id="2590683710114839102">अपने कंप्यूटर पर, Brave सेटिंग्स को नेविगेट करें &gt; सिंक करें।  "एक सिंक चेन कोड दर्ज करें" चुनें।</translation>
+<translation id="4701589725270449523">दूसरे फ़ोन या टैबलेट का इस्तेमाल करके, Ping सेटिंग्स &gt; सिंक करें &gt; स्कैन पर जाएं.\n\nअपने मोबाइल डिवाइस पर, सेटिंग पैनल में Ping सिंक करें पर जाएं और "स्कैन सिंक करें कोड" बटन पर क्लिक करें. नीचे दिए गए QR कोड को स्कैन करने के लिए अपने कैमरे का इस्तेमाल करें.</translation>
+<translation id="67114562351518315">अपने कंप्यूटर पर, Ping सेटिंग्स &gt; सिंक करें पर जाएं. "सिंक करें चेन कोड डालें" चुनें.\n\nअपने टारगेट कंप्यूटर पर, सेटिंग्स में Ping सिंक करें और "मेरे पास सिंक करें कोड है" बटन पर क्लिक करें.\nनीचे दिखाए गए सिंक करें चेन कोड शब्द डालें.</translation>
 <translation id="65315202420929965">इस सिंक कोड को स्कैन करें</translation>
 <translation id="6764016175302339802">इस कोड को पासवर्ड की तरह ही समझें।  यदि यह किसी को मिल जाता है, तो वे आपके सिंक किए गए डेटा को पढ़ और संशोधित कर सकते हैं।</translation>
-<translation id="6707003343517029414">अपने लक्ष्य कंप्यूटर पर, सेटिंग्स में Brave सिंक पर जाएँ और "मेरे पास एक सिंक कोड है" बटन पर क्लिक करें।\nनीचे दिखाए गए सिंक चेन कोड शब्दों को दर्ज़ करें।</translation>
 <translation id="2731921493694251495">सिंक चेन कोड दर्ज़ करें</translation>
 <translation id="2175927920773552910">QR कोड</translation>
 <translation id="8653433343015102968">कोड शब्द</translation>
@@ -351,19 +350,24 @@
 <translation id="6776430845975754238">सेटिंग को बदलना केवल उन डेटा को प्रभावित करेगा जो यह डिवाइस दूसरों के साथ शेयर करती है।</translation>
 <translation id="1061533051865606843">नए डिवाइस जोड़ें</translation>
 <translation id="7539985410310934287">कोड शब्द दर्ज करें</translation>
-<translation id="2886391679017857869">मौजूदा सिंक डिवाइस का इस्तेमाल करके, Brave सेटिंग्स खोलें और सेटिंग्स &gt; सिंक को नेविगेट करें I "नया डिवाइस जोड़ें"  चुनें फिर "इसके बजाय कोड वर्ड डिस्प्ले करें" चुनेंI</translation>
+<translation id="2886391679017857869">मौजूदा सिंक डिवाइस का इस्तेमाल करके, Ping सेटिंग्स खोलें और सेटिंग्स &gt; सिंक को नेविगेट करें I "नया डिवाइस जोड़ें"  चुनें फिर "इसके बजाय कोड वर्ड डिस्प्ले करें" चुनेंI</translation>
 <translation id="8131740175452115882">दुबारा पूछें</translation>
 <translation id="4973653569293835178">मैं अपने कैमरे का उपयोग करूँगा ...</translation>
 <translation id="326454632686131209">डिवाइस सिंक करें</translation>
+<translation id="3122158728238634723">नया कोड जेनरेट करें</translation>
+<translation id="4358805443781965194">कोड एक्सपायर हो गया है. नीचे दिए गए बटन पर क्लिक करके नया कोड जेनरेट करें.</translation>
+<translation id="318164877797885563">यह टेम्पररी कोड अगले<ph name="TIME_AMOUNT"/> के लिए वैलिड है</translation>
 <translation id="327726072512457161">सेटिंग्स से बाहर निकलें</translation>
-<translation id="8050847734948770789">Brave रिवार्ड्स को सक्षम करें</translation>
+<translation id="8050847734948770789">Ping रिवार्ड्स को सक्षम करें</translation>
 <translation id="9187185473011056079">मैं शामिल हूँ!</translation>
-<translation id="8185825081026121627">गोपनीयता-संरक्षण Brave रिवॉर्ड्स विज्ञापनों को देखने के लिए बेसिक अटेंशन टोकन को अर्जित करें।</translation>
+<translation id="8185825081026121627">गोपनीयता-संरक्षण Ping रिवॉर्ड्स विज्ञापनों को देखने के लिए बेसिक अटेंशन टोकन को अर्जित करें।</translation>
 <translation id="5321518976657560663">एरर रीसेट करें</translation>
-<translation id="4114170343590425996">Brave रिवार्ड्स को रीसेट करने में त्रुटि हुई। कृपया Brave को पुनः लॉन्च करें और दोबारा प्रयास करें।</translation>
-<translation id="6417420737057016607">Brave विज्ञापन</translation>
-<translation id="5611966874859284786">जब Brave इस्तेमाल ना किया जा रहा हो तब नोटिफ़िकेशन ऐड/विज्ञापन दिखाएं</translation>
-<translation id="6606319453795180219">यह आपके Brave रिवॉर्ड को मिटा देगा और आपके Brave रिवॉर्ड के पूरे डेटा को रीसेट कर देगा</translation>
+<translation id="4114170343590425996">Ping रिवार्ड्स को रीसेट करने में त्रुटि हुई। कृपया Ping को पुनः लॉन्च करें और दोबारा प्रयास करें।</translation>
+<translation id="6417420737057016607">Ping विज्ञापन</translation>
+<translation id="5611966874859284786">जब Ping इस्तेमाल ना किया जा रहा हो तब नोटिफ़िकेशन ऐड/विज्ञापन दिखाएं</translation>
+<translation id="6606319453795180219">यह आपके Ping रिवॉर्ड को मिटा देगा और आपके Ping रिवॉर्ड के पूरे डेटा को रीसेट कर देगा</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Ping रिवॉर्ड डेटा रीसेट करें…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Ping Ads डेटा हटाएँ…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">बुकमार्क लगाएँ</translation>
 <translation id="340492034650766959">बुकमार्क मिटाएँ</translation>
 <translation id="2149973817440762519">बुकमार्क में बदलाव करें</translation>
@@ -382,31 +386,31 @@
 <translation id="2803313416453193357">फ़ोल्डर खोलें</translation>
 <translation id="8985635554450124959">सिंक को सेटअप नहीं किया जा सका</translation>
 <translation id="7173114856073700355">सेटिंग खोलें</translation>
-<translation id="496896260395129787">यह Brave सिंक अकाउंट दूसरे डिवाइस से मिट चुका है. अगर आप सिंक को बंद करना नहीं चाहते थे, <ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">यह Ping सिंक अकाउंट दूसरे डिवाइस से मिट चुका है. अगर आप सिंक को बंद करना नहीं चाहते थे, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> तो फिर से अकाउंट बनाएँ</translation>
 <translation id="4094590686212463338">इस सिंक चेन में शामिल नहीं हो सकते. यह सिंक चेन मिट चुकी है.</translation>
 <translation id="4908081302669157000">फ़ोन नंबर, ईमेल और पता</translation>
 <translation id="1056898198331236512">चेतावनी</translation>
 <translation id="1426410128494586442">हां</translation>
-<translation id="7811264919113243207">इससे आपका Brave डेटा शेयर किया जाएगा, जिसमें यह QR कोड बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
+<translation id="7811264919113243207">इससे आपका Ping डेटा शेयर किया जाएगा, जिसमें यह QR कोड बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
 कृपया यह एक बार फिर से जाँच लें कि यह QR कोड आपकी ही किसी डिवाइस से बनाए गए हैं. 
 क्या आप वाकई यह करना चाहते हैं?</translation>
-<translation id="3097089005389027085">इससे आपका Brave डेटा शेयर किया जाएगा, जिसमें कोड शब्द बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
+<translation id="3097089005389027085">इससे आपका Ping डेटा शेयर किया जाएगा, जिसमें कोड शब्द बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
 कृपया यह एक बार फिर से जाँच लें कि ये कोड शब्द आपकी ही किसी डिवाइस से बनाए गए हैं. क्या आप वाकई यह करना चाहते हैं?</translation>
 <translation id="4550208292810542331">कैमरे के इस्तेमाल की इजाज़त नहीं दी गई थी</translation>
 <translation id="6470233139461745039">पासवर्ड सिंक चालू करने के लिए, पहले अपने डिवाइस पर स्क्रीन लॉक सेट करें.</translation>
 <translation id="3063783274005996079">पासवर्ड सिंक चालू करने के लिए अनलॉक करें</translation>
 <translation id="7551563084530025179">पासवर्ड सिंक शुरू करने से पहले ज़रूरी है कि आप अपने डिवाइस पर बायोमेट्रिक/पासवर्ड के ज़रिए ऑथेंटिकेट करें. सुरक्षा के इस अतिरिक्त उपाय से आपके पासवर्ड को सुरक्षित रखने में मदद मिलती है.</translation>
 <translation id="6925081665778864449">पासवर्ड सिंक करने के लिए, कृपया अपने एंड्रॉइड डिवाइस पर बायोमेट्रिक/पासवर्ड का ऑथेंटिकेशन चालू करें. सुरक्षा के इस अतिरिक्त उपाय से आपके पासवर्ड को सुरक्षित रखने में मदद मिलती है.</translation>
-<translation id="597993392929850353">Brave लाइसेंस</translation>
+<translation id="597993392929850353">Ping लाइसेंस</translation>
 <translation id="6336451774241870485">नया निजी टैब</translation>
 <translation id="6199596294742117349">यह एक निजी टैब है</translation>
 <translation id="5858455511731621847">भले ही आप निजी टैब में देखी जाने वाली साइटों को स्थानीय रूप से सेव नहीं करते हैं, लेकिन वे आपको आपके आईएसपी, आपके नियोक्ता, या आपके द्वारा देखी जा रही साइटों के लिए आपको गुमनाम या अदृश्य नहीं बनाते हैं।</translation>
-<translation id="5789441016350810005">ब्राउज़र के बैकग्राउंड होने पर Brave विज्ञापन भेजे जाते हैं</translation>
+<translation id="5789441016350810005">ब्राउज़र के बैकग्राउंड होने पर Ping विज्ञापन भेजे जाते हैं</translation>
 <translation id="4973347371961481083">योगदान</translation>
 <translation id="7047578174221019462">आपके मासिक योगदान को संसाधित कर दिया गया है.</translation>
 <translation id="3124090095880236567">विज्ञापन शुरू करें</translation>
-<translation id="2975780980638932742">Brave विज्ञापन आ गए है!</translation>
+<translation id="2975780980638932742">Ping विज्ञापन आ गए है!</translation>
 <translation id="7541582550122501404">लंबित योगदान</translation>
 <translation id="8520059774736886747">निर्माता <ph name="PUBLISHER_NAME"/> हाल ही में सत्यापित किया गया है</translation>
 <translation id="1486343603936278248">टोकन</translation>
@@ -416,14 +420,10 @@
 <translation id="3870475560794762985">प्रायोजित इमेज दिखाएँ</translation>
 <translation id="8793108040181436796">विजेट</translation>
 <translation id="8643377320501056697">मुख्य साइटों को दिखाएँ</translation>
-<translation id="7275773481201277457">Brave के आँकड़े दिखाएँ</translation>
+<translation id="7275773481201277457">Ping के आँकड़े दिखाएँ</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/> के द्वारा फ़ोटो</translation>
-<translation id="4761229094276239865">टैप करके ब्रेव रिवार्ड्स का उपयोग शुरू करें, आप <ph name="TERMS_OF_SERVICE"/>.से सहमत हैं।</translation>
-<translation id="3794079107601824147">इस बैकग्राउंड इमेज को देखने के लिए भुगतान प्राप्त करें।</translation>
-<translation id="7136586167396205364">प्रायोजित इमेज छिपाएँ</translation>
-<translation id="2927095357213611519">आप टोकन से वेब रचनाकारों की सहायता कर सकते हैं।\nगोपनीयता सम्बंधित विज्ञापन देखकर टोकर अर्जित करें।</translation>
-<translation id="2898634658146274982">बाहरी लिंक Brave में खोलें</translation>
-<translation id="5616508928556767259">अन्य ऐप की लिंक को Brave वेबव्यू में खोलें. ध्यान दें : Brave को आपका डिफ़ॉल्ट ब्राउज़र होना ज़रूरी है.</translation>
+<translation id="2898634658146274982">बाहरी लिंक Ping में खोलें</translation>
+<translation id="5616508928556767259">अन्य ऐप की लिंक को Ping वेबव्यू में खोलें. ध्यान दें : Ping को आपका डिफ़ॉल्ट ब्राउज़र होना ज़रूरी है.</translation>
 <translation id="2394961582378297792">लॉग आउट हुआ</translation>
 <translation id="5308380583665731573">जुडिये</translation>
 <translation id="3368922792935385530">कनेक्टेड</translation>
@@ -434,30 +434,26 @@
 <translation id="1665118090708049096">मेरे <ph name="WALLET_PROVIDER"/>अकाउंट पर जाएँ</translation>
 <translation id="4858636682078269312">अपने <ph name="WALLET_PROVIDER"/> अकाउंट में लॉग इन करें</translation>
 <translation id="8874184842967597500">कनेक्ट नहीं है</translation>
-<translation id="2495032782748793764">Brave डिफ़ॉल्ट</translation>
-<translation id="9132378787893584761">Brave को अपने दोस्तों के साथ शेयर करें!</translation>
+<translation id="2495032782748793764">Ping डिफ़ॉल्ट</translation>
+<translation id="9132378787893584761">Ping को अपने दोस्तों के साथ शेयर करें!</translation>
 <translation id="717952606991220586">ओह, कुछ गड़बड़ी है। कृपया पुनः प्रयास करें।</translation>
 <translation id="987264212798334818">सामान्य</translation>
 <translation id="1116694919640316211">इसके बारे में</translation>
 <translation id="7961015016161918242">कभी नहीं</translation>
 <translation id="1275213816424141989">शायद बाद में</translation>
 <translation id="4406937629441301400">इस इमेज को देखने के लिए टोकन अर्जित करें और इसे आगे निर्मातों को भुगतान करें। <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">इस छवि को देखने के लिए टोकन कमाएँ। अपने हिस्से का दावा करने के लिए ब्रेव रिवार्ड्स का उपयोग करना शुरू  करें पर टैप करें।</translation>
 <translation id="6632345639591919543">आप इस इमेज को देखने के लिए टोकन अर्जित कर रहे हैं।\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">आप इस इमेज को देखने के लिए टोकन अर्जित कर रहे हैं।</translation>
-<translation id="7877201489035217175">प्रायोजित इमेज के बारे में और जानें</translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/> के रिवॉर्ड के लिए भुगतान की प्रक्रिया <ph name="PAYOUT_DATE"/> तक शुरू हो जाएगी.</translation>
 <translation id="33967210973550414"><ph name="CURRENT_MONTH"/> के रिवॉर्ड के लिए भुगतान पर काम जारी है. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314"><ph name="CURRENT_MONTH"/> के रिवॉर्ड के लिए भुगतान हो गया है. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">स्टेटस देखें</translation>
-<translation id="828092975561478703">आपके द्वारा देखे गए प्रत्येक प्रायोजित इमेज के लिए, आपको आमदनी का 70% टोकन के रूप में प्राप्त होता है। Brave विज्ञापनों के साथ, आपके द्वारा देखे जाने वाले विज्ञापनों पर हमेशा आपका नियंत्रण रहता है।</translation>
 <translation id="3624048886326677117">ट्रैकर और &amp; विज्ञापनों को ब्लॉक करें (प्रभाशाली)</translation>
 <translation id="7151914815476509258">ट्रैकर और &amp; विज्ञापनों को ब्लॉक करें (सामान्य)</translation>
 <translation id="7384778069178817075">सभी ट्रैकर्स और विज्ञापनों की अनुमति दें</translation>
 <translation id="3763681089644577874">कुकीज़ ब्लॉक करें</translation>
 <translation id="614747795780742163">वेबसाइटों को आपके पिछले आगमन के बारे में जानकारी संग्रहीत करने से रोकता है</translation>
 <translation id="6883611015375728278">सभी कुकी को रोकें</translation>
-<translation id="4941539331405513605">क्रॉस-साइट कुकीज़ ब्लॉक करें</translation>
+<translation id="6196640612572343990">तीसरे पक्ष की कुकी ब्लॉक करें</translation>
 <translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
 <translation id="1553643198679271031">अदृश्य मोड का अनुरोध करें</translation>
 <translation id="4891600875049212418">संवेदनशील वेबसाइट पर जाते समय 'अदृश्य' हो जाएँ</translation>
@@ -474,32 +470,35 @@
 <translation id="5582686930349810484">फ़िंगरप्रिंटिंग ब्लॉक की गई है (सामान्य)</translation>
 <translation id="769702552748212954">सभी फिंगरप्रिंटिंग की अनुमति दें</translation>
 <translation id="876424292214881779">विज्ञापन और अन्य बकवास चीज़ें ब्लॉक की गईं</translation>
-<translation id="6930134873084561197">साइटों में अक्सर कुकीज़ और स्क्रिप्ट शामिल होते हैं जो आपको और आपके डिवाइस को पहचानने की कोशिश करते हैं। वे यह जानना चाहते हैं कि आप कौन हैं और हर साइट पर आप क्या करते है यह जानने के लिए वेब-ट्रैकिंग पर आपको फ़ॉलो करते हैं।\n\nBrave इन चीजों को ब्लॉक कर देता है ताकि आप पीछा किए गए बिना ब्राउज़ कर सकें।</translation>
-<translation id="8553998445606452168">Brave शील्ड के बारे में</translation>
+<translation id="6849027612978668678">साइट्स में अक्सर कुकीज़ और स्क्रिप्ट शामिल होती हैं जो आपको और आपके डिवाइस को पहचानने की कोशिश करती हैं. वे यह पता लगाना चाहते हैं कि आप कौन हैं और पूरे वेब पर आपको फ़ॉलो करते हैं, हर साइट पर आप क्या करते हैं, इस पर नज़र रखते हैं.\n\nPing इन चीज़ों को ब्लॉक करता है ताकि आप बिना किसी को फ़ॉलो किए ब्राउज़ कर सकें.</translation>
+<translation id="8553998445606452168">Ping शील्ड के बारे में</translation>
 <translation id="8912304686498704084">अप</translation>
 <translation id="4963218453264888510">डाउन</translation>
-<translation id="7474113515179313724">आप Brave की गोपनीयता सुरक्षा के बिना इस साइट को ब्राउज़ कर रहे हैं। क्या यह शील्ड के साथ सही तरीके से काम नहीं करता है?</translation>
+<translation id="7474113515179313724">आप Ping की गोपनीयता सुरक्षा के बिना इस साइट को ब्राउज़ कर रहे हैं। क्या यह शील्ड के साथ सही तरीके से काम नहीं करता है?</translation>
+<translation id="4226543734057230801">Ethereum नेटवर्क</translation>
+<translation id="3504157706952484145">Filecoin नेटवर्क</translation>
+<translation id="1561541094377237745">Solana नेटवर्क</translation>
+<translation id="7141438739990875547">Bitcoin नेटवर्क</translation>
 <translation id="9055546041146396417">यदि यह साइट ठीक से नहीं दिखाई देती है, तो शील्ड को डाउन करने का प्रयास करें।</translation>
 <translation id="1209739344687072997">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
-<translation id="8510478288840333677">चलिए Brave के डेवलपर्स को बताएँ कि यह साइट संरक्षण साथ ठीक से काम नहीं करती है:</translation>
-<translation id="5429200298326665264">नोट: इस साइट का पता आपके Brave संस्करण नंबर और आपके IP पते के साथ दर्ज किया जाएगा (जिसे संग्रहीत नहीं किया जाएगा)।</translation>
+<translation id="8510478288840333677">चलिए Ping के डेवलपर्स को बताएँ कि यह साइट संरक्षण साथ ठीक से काम नहीं करती है:</translation>
+<translation id="5429200298326665264">नोट: इस साइट का पता आपके Ping संस्करण नंबर और आपके IP पते के साथ दर्ज किया जाएगा (जिसे संग्रहीत नहीं किया जाएगा)।</translation>
 <translation id="5299848999918506028">धन्यवाद!</translation>
-<translation id="76550953340008122">इस साइट की समस्या के बारे में Brave के डेवलपर्स को बताने के लिए धन्यवाद। हम इसे ठीक करने की पूरी कोशिश करेंगे!</translation>
+<translation id="76550953340008122">इस साइट की समस्या के बारे में Ping के डेवलपर्स को बताने के लिए धन्यवाद। हम इसे ठीक करने की पूरी कोशिश करेंगे!</translation>
 <translation id="650318023204990401">उन्नत कंट्रोल</translation>
-<translation id="1275664486910646411">ऑटोकम्पलीट में शीर्ष साइटें दिखाएँ</translation>
 <translation id="5370478469168390143">डेटा ऑनलाइन सेव करें</translation>
-<translation id="1118508688433541158">Brave के साथ तेजी से ब्राउज़ करें और विज्ञापन ब्लॉक करें</translation>
-<translation id="7427391215172269363">हरदिन मैं Brave से वेब ब्राउज़ करके डेटा बचाता हूँ.</translation>
-<translation id="4776948189086901857">Brave हर जगह काम करता है</translation>
-<translation id="1606322780901645965">तेज और अधिक निजी वेब के लिए अपने लैपटॉप या टैबलेट पर brave.com से Brave डाउनलोड करें</translation>
+<translation id="1118508688433541158">Ping के साथ तेजी से ब्राउज़ करें और विज्ञापन ब्लॉक करें</translation>
+<translation id="7427391215172269363">हरदिन मैं Ping से वेब ब्राउज़ करके डेटा बचाता हूँ.</translation>
+<translation id="4776948189086901857">Ping हर जगह काम करता है</translation>
+<translation id="1606322780901645965">तेज और अधिक निजी वेब के लिए अपने लैपटॉप या टैबलेट पर brave.com से Ping डाउनलोड करें</translation>
 <translation id="8374242949413616101">गोपनीयता सुरक्षा</translation>
-<translation id="4955406228638026265">Brave विज्ञापनों और &amp; ट्रैकर्स को आपकी सहमति के बिना आपके बारे में जानकारी इकठ्ठा करने से को रोकता है।</translation>
+<translation id="4955406228638026265">Ping विज्ञापनों और &amp; ट्रैकर्स को आपकी सहमति के बिना आपके बारे में जानकारी इकठ्ठा करने से को रोकता है।</translation>
 <translation id="752842701893882688">डेटा और बैटरी को सेव करें</translation>
 <translation id="1685837926613452362">विज्ञापन और ट्रैकर्स के बिना, वेबसाइट कम डेटा और बैटरी का उपयोग करते हैं। आप इंटरनेट शुल्क पर भी बचत कर सकते हैं।</translation>
 <translation id="5440744330377972191">वेबसाइट तेजी से लोड होती हैं</translation>
-<translation id="3000738865641747653">कम डेटा लोड करने का मतलब है कि Brave लोड की वेबसाइट तेजी से - अन्य ब्राउज़रों की तुलना में 8 गुना तेज होती हैं।</translation>
+<translation id="3000738865641747653">कम डेटा लोड करने का मतलब है कि Ping लोड की वेबसाइट तेजी से - अन्य ब्राउज़रों की तुलना में 8 गुना तेज होती हैं।</translation>
 <translation id="8903462729414407077">साप्ताहिक अपडेट प्राप्त करें</translation>
-<translation id="7450323860390658083">जानें की आप जिन साइटों पर जाते हैं उनमें से किनपर सबसे ज़्यादा गोपनीयता से संबंधित हमले होते हैं. \n\n केवल आप इन गोपनीयता आँकड़ों को देख सकते हैं. आपके डिवाइस पर Brave ब्राउज़र कभी भी कोई भी निजी डेटा या ब्राउज़िंग इतिहास आगे नहीं जाने देता है.</translation>
+<translation id="7450323860390658083">जानें की आप जिन साइटों पर जाते हैं उनमें से किनपर सबसे ज़्यादा गोपनीयता से संबंधित हमले होते हैं. \n\n केवल आप इन गोपनीयता आँकड़ों को देख सकते हैं. आपके डिवाइस पर Ping ब्राउज़र कभी भी कोई भी निजी डेटा या ब्राउज़िंग इतिहास आगे नहीं जाने देता है.</translation>
 <translation id="6170159749517116894">गोपनीयता रिपोर्ट चालू करें</translation>
 <translation id="1669047024429367828">विज़िबिलिटी</translation>
 <translation id="5966707198760109579">सप्ताह</translation>
@@ -516,17 +515,17 @@
 <translation id="3694122362646626770">वेबसाइट</translation>
 <translation id="2225863440766607138">ट्रैकर्स</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">आपने <ph name="COUNT"/> ट्रैकर्स &amp; पिछले 3 घंटों में Brave ब्राउज़र वाले विज्ञापनों को ब्लॉक किया है।</translation>
-<translation id="5005713153542196658">ट्रैकर्स और विज्ञापनों को ब्लॉक करके Brave में मुख्य समाचार साइटों पर 6 गुना तेज़ी से ब्राउज़ करें।</translation>
+<translation id="6737820963776538947">आपने <ph name="COUNT"/> ट्रैकर्स &amp; पिछले 3 घंटों में Ping ब्राउज़र वाले विज्ञापनों को ब्लॉक किया है।</translation>
+<translation id="5005713153542196658">ट्रैकर्स और विज्ञापनों को ब्लॉक करके Ping में मुख्य समाचार साइटों पर 6 गुना तेज़ी से ब्राउज़ करें।</translation>
 <translation id="7427567994475794038">कितने ट्रैकर्स और &amp; विज्ञापनों को बीते 3 घंटों में ब्लॉक किया गया देखने के लिए गोपनीयता रिपोर्ट को चालू करें।</translation>
-<translation id="2053891538879944400">आपने Brave ब्राउज़र के साथ <ph name="DATA"/> <ph name="DATA_TEXT"/> डेटा सेव किया है।</translation>
+<translation id="2053891538879944400">आपने Ping ब्राउज़र के साथ <ph name="DATA"/> <ph name="DATA_TEXT"/> डेटा सेव किया है।</translation>
 <translation id="8640064498452534195">यह देखने के लिए कि आपने कितना डेटा सेव किया है, गोपनीयता रिपोर्ट को चालू करें।</translation>
-<translation id="2252497442547961651">Brave ब्राउज़र औसतन 40% कम बैटरी का उपयोग करता है।🔋</translation>
-<translation id="1945330434665345785">आपने Brave ब्राउज़र पर <ph name="COUNT"/> ट्रैकर्स &amp; विज्ञापन को पिछले सप्ताह ब्लॉक किया है।</translation>
+<translation id="2252497442547961651">Ping ब्राउज़र औसतन 40% कम बैटरी का उपयोग करता है।🔋</translation>
+<translation id="1945330434665345785">आपने Ping ब्राउज़र पर <ph name="COUNT"/> ट्रैकर्स &amp; विज्ञापन को पिछले सप्ताह ब्लॉक किया है।</translation>
 <translation id="2883868922264431515">गोपनीयता-सम्मान वाले विज्ञापन देखकर टोकन प्राप्त करें और अपनी पसंदीदा वेबसाइटों को सपोर्ट करें।</translation>
 <translation id="7408493389591475748">गोपनीयता रिपोर्टिंग देखने के लिए ब्राउज़ करना शुरू करें</translation>
-<translation id="9080777565335515917">निजी और सुरक्षित ब्राउज़िंग के लिए अपने डिफ़ॉल्ट ब्राउज़र के रूप में Brave को सेट करें।</translation>
-<translation id="1390943217516275883">Brave को अपनी गोपनीयता आँकड़े दिखाने की अनुमति दें</translation>
+<translation id="9080777565335515917">निजी और सुरक्षित ब्राउज़िंग के लिए अपने डिफ़ॉल्ट ब्राउज़र के रूप में Ping को सेट करें।</translation>
+<translation id="1390943217516275883">Ping को अपनी गोपनीयता आँकड़े दिखाने की अनुमति दें</translation>
 <translation id="1763352720905582220">एक साप्ताहिक गोपनीयता रिपोर्ट भेजता है</translation>
 <translation id="1811691435325545066">सभी गोपनीयता रिपोर्ट डेटा साफ़ करें</translation>
 <translation id="5966003059662780423">बाहर निकलने पर डेटा साफ़ करें</translation>
@@ -546,9 +545,9 @@
 <translation id="8363792084628930008">रिवॉर्ड चालू करने का मतलब है कि <ph name="TERMS_OF_SERVICE"/> और <ph name="PRIVACY_POLICY"/> पर आपकी सहमति है.</translation>
 <translation id="185034574799484512">चलिए एक त्वरित टूर करते हैं</translation>
 <translation id="7930505144430343145">ब्रेव रिवार्ड्स में आपका स्वागत है!</translation>
-<translation id="3477340970981564961">Brave निजी विज्ञापन आपकी व्यक्तिगत जानकारी को गोपनीय रखते हुए, सामग्री रचनाकारों का समर्थन करने के लिए आपको पारंपरिक विज्ञापनों के विपरीत पुरस्कार के रूप में टोकन प्रदान करते हैं।</translation>
+<translation id="3477340970981564961">Ping निजी विज्ञापन आपकी व्यक्तिगत जानकारी को गोपनीय रखते हुए, सामग्री रचनाकारों का समर्थन करने के लिए आपको पारंपरिक विज्ञापनों के विपरीत पुरस्कार के रूप में टोकन प्रदान करते हैं।</translation>
 <translation id="6973095375773523904">विज्ञापन कहाँँ दिखाए जाते हैं?</translation>
-<translation id="4328028439561659455">Brave के प्राइवेट विज्ञापन नोटिफ़िकेशन के तौर पर आपकी स्क्रीन पर दिखाई देंगे. आप विज्ञापनों को कितनी बार देखेंगे, इसे आप कंट्रोल कर सकते हैं.</translation>
+<translation id="4328028439561659455">Ping के प्राइवेट विज्ञापन नोटिफ़िकेशन के तौर पर आपकी स्क्रीन पर दिखाई देंगे. आप विज्ञापनों को कितनी बार देखेंगे, इसे आप कंट्रोल कर सकते हैं.</translation>
 <translation id="7712287524451429139">वापस देना सरल बना दिया गया है</translation>
 <translation id="105037569026952831">निर्माता आपकी व्यस्तता के स्तरों के आधार पर आपके टोकन योगदान को स्वचालित रूप से प्राप्त करते हैं जिसकी हम 'अटेंशन' के रूप में गणना करते हैं।</translation>
 <translation id="3025802705256919103">आर्थिक योगदान के ज़रिए धन्यवाद कहें</translation>
@@ -566,6 +565,8 @@
 <translation id="7889432931837317731">अगर संभव हो तो स्वचालित रूप से खोलें</translation>
 <translation id="1029304566263314007">डाउनलोड की प्रगति के नोटिफ़िकेशन दिखाएँ</translation>
 <translation id="2910433761530295035">पूछें कि फ़ाइल कहाँ सेव करनी हैं (अगर SD कार्ड है)</translation>
+<translation id="2977501775944575564">पैरलेल डाउनलोडिंग</translation>
+<translation id="6224180438946945617">डाउनलोड स्पीड बढ़ाने के लिए पैरलेल डाउनलोडिंग इनेबल करें</translation>
 <translation id="8967385052772844086">पूरी गोपनीयता रिपोर्ट देखें</translation>
 <translation id="6864343534748973390">सबसे लोकप्रिय</translation>
 <translation id="4608192160278975831">निजी और कोई ट्रैकिंग नहीं</translation>
@@ -577,14 +578,12 @@
 <translation id="2422627462367776805">दक्षिण कोरिया वेब पोर्टल और सर्च</translation>
 <translation id="177282784098234156">निजी, स्वतंत्र, उपयोगकर्ता-केंद्रित</translation>
 <translation id="1410130669636877548">जब आप वेब पर खोज करते हैं तो कुछ खोज इंजन आपकी गोपनीयता की दूसरों की तुलना में बेहतर तरीके से सुरक्षा करते हैं।</translation>
-<translation id="5187052478998910855">पुरस्कारों के बारे में नई जानकारी चाहिए?</translation>
-<translation id="8622329973403382303">पुरस्कार रॉकस्टार के रूप में इतिहास दर्ज होने के लिए यह कैसे काम करता है, यह जानने के लिए एक त्वरित टूर करें!</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
-<translation id="7138272885617540195">ऐप लिंक को Brave के बाहर के ऐप्स में खोलने की अनुमति दें</translation>
+<translation id="7138272885617540195">ऐप लिंक को Ping के बाहर के ऐप्स में खोलने की अनुमति दें</translation>
 <translation id="4954512758656527938">डिफ़ॉल्ट Ethereum वॉलेट</translation>
 <translation id="7701023802820268122">डिफ़ॉल्ट Solana वॉलेट</translation>
 <translation id="7701040980221191251">कुछ नहीं</translation>
-<translation id="8488282162676695335">Brave वॉलेट</translation>
+<translation id="8488282162676695335">Ping वॉलेट</translation>
 <translation id="8792121506918889955">WebRTC IP हैंडलिंग पॉलिसी</translation>
 <translation id="8798099450830957504">सामान्य</translation>
 <translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
@@ -594,50 +593,50 @@
 <translation id="1483493594462132177">भेजें</translation>
 <translation id="538450413584738399">स्वैप</translation>
 <translation id="4556086616242530072">ब्राउज़र नेटिव।\nसेल्फ़ कस्टडी।\nऔर मल्टी-चेन।</translation>
-<translation id="7909462264772842773">अपनी क्रिप्टो और NFT पर कंट्रोल करें। Brave वॉलेट, Ethereum, EVM चेन, Solana, Filecoin वगैरह को सपोर्ट करता है।</translation>
+<translation id="7909462264772842773">अपनी क्रिप्टो और NFT पर कंट्रोल करें। Ping वॉलेट, Ethereum, EVM चेन, Solana, Filecoin वगैरह को सपोर्ट करता है।</translation>
 <translation id="165255193061631296">क्या आपको नया वॉलेट चाहिए?</translation>
-<translation id="3485737865439729577">कुछ ही मिनट में Brave वॉलेट का उपयोग करना शुरू करें</translation>
-<translation id="2759836790106646094">अपने वॉलेट का बैकअप लें</translation>
-<translation id="1078873179929044999">अगले स्टेप में आपको एक 12 शब्दों का एक रिकवरी फ़्रेज़ दिखाई देगा, जिसका इस्तेमाल आप अपने प्राथमिक क्रिप्टो अकाउंट को रिकवर करने के लिए कर सकते हैं. इसे किसी सुरक्षित जगह पर सेव करें. पासवर्ड भूल जाने, खो जाने या चोरी हो जाने की स्थिति में या अगर आप वॉलेट बदलना चाहते हैं, तो अपने अकाउंट को फिर से पाने के लिए रिकवरी फ़्रेज़ एकमात्र तरीका है.</translation>
+<translation id="3485737865439729577">कुछ ही मिनट में Ping वॉलेट का उपयोग करना शुरू करें</translation>
+<translation id="2540568096903252632">जारी रखने के लिए पासवर्ड डालें</translation>
+<translation id="3356580495013324916">वॉलेट को बैकअप करना शुरू करने के लिए अपने Ping वॉलेट का पासवर्ड डालें.</translation>
 <translation id="2359808026110333948">जारी रखें</translation>
 <translation id="5488357322146334497">संदेश</translation>
-<translation id="1904000155026201268">मैं जानता हूं कि अगर मैं अपने रिकवरी शब्द खो देता हूं, तो मैं अपने क्रिप्टो वॉलेट तक नहीं पहुंच पाऊंगा.</translation>
 <translation id="5333225216561354793">हम चाहते हैं कि आप नीचे दिए गए आइटम के लिए हमें अपनी स्वीकृति दें</translation>
-<translation id="1645800479814134195">मुझे पता है कि यह एक सेल्फ़ कस्टडी वॉलेट है और इससे जुड़े किसी भी फ़ंड, एसेट या अकाउंट के लिए और अपने वॉलेट को सुरक्षित रखने तथा उसका बैकअप रखने के लिए ज़रूरी कार्रवाई करने की ज़िम्मेदारी सिर्फ़ मेरी है। मुझे पता है कि Brave मेरे वॉलेट को एक्सेस नहीं कर सकता या मेरी ओर से लेनदेन को रिवर्स नहीं कर सकता और यह कि अपना पासवर्ड भूल जाने, डिवाइस चोरी हो जाने या इस तरह की किसी भी अन्य परिस्थिति में मेरे पास इसकी एक्सेस वापस पाने के लिए सिर्फ़ रिकवरी फ़्रेज़ वाला तरीका होगा।</translation>
+<translation id="6937275455070754004">चुनें कि आपके वॉलेट में किस ब्लॉकचेन का उपयोग किया जाना चाहिए।</translation>
+<translation id="1645800479814134195">मुझे पता है कि यह एक सेल्फ़ कस्टडी वॉलेट है और इससे जुड़े किसी भी फ़ंड, एसेट या अकाउंट के लिए और अपने वॉलेट को सुरक्षित रखने तथा उसका बैकअप रखने के लिए ज़रूरी कार्रवाई करने की ज़िम्मेदारी सिर्फ़ मेरी है। मुझे पता है कि Ping मेरे वॉलेट को एक्सेस नहीं कर सकता या मेरी ओर से लेनदेन को रिवर्स नहीं कर सकता और यह कि अपना पासवर्ड भूल जाने, डिवाइस चोरी हो जाने या इस तरह की किसी भी अन्य परिस्थिति में मेरे पास इसकी एक्सेस वापस पाने के लिए सिर्फ़ रिकवरी फ़्रेज़ वाला तरीका होगा।</translation>
 <translation id="4565891212173086999">मैंने <ph name="CLICK_START"/>उपयोग की शर्तें<ph name="CLICK_END"/> पढ़ ली हैं और उनसे सहमत हूँ।</translation>
-<translation id="3933122286596948824">आपका रिकवरी वाक्यांश</translation>
-<translation id="5077747669435508720">इन शब्दों को नीचे दिखाए गए सटीक क्रम में लिखें या कॉपी करें, और उन्हें कहीं सुरक्षित रखें. पासवर्ड भूल जाने, खो जाने या चोरी हो जाने की स्थिति में, या आप वॉलेट स्विच करना चाहते हैं, तो रिकवरी फ़्रेज़ ही आपका अकाउंट एक्सेस प्राप्त करने का एकमात्र तरीका है.</translation>
-<translation id="2708402071160162126">चेतावनी: अपने रिकवरी फ़्रेज़ को कभी भी शेयर न करें. इस फ़्रेज़ वाला कोई भी व्यक्ति आपकी संपत्ति को हमेशा के लिए ले सकता है.</translation>
-<translation id="111912712268284159">मैंने अपने फ़्रेज़ का बैकअप कहीं सुरक्षित रखा है</translation>
-<translation id="6896758677409633944">कॉपी</translation>
-<translation id="1783600039044302171">पासवर्ड से अपना क्रिप्टो सुरक्षित करें</translation>
+<translation id="3259102562570606417">रिकवरी फ्रेज़ सेव करें</translation>
+<translation id="4339981001593889376">अगर आप अपना पासवर्ड भूल जाते हैं या अपना डिवाइस खो देते हैं तो आपका रिकवरी पासफ़्रेज़ आपके वॉलेट तक पहुंचने की की है.</translation>
+<translation id="426648489149930289">इसे किसी सुरक्षित स्थान पर रखें जहां अन्य लोग न पहुंच सकें और इसे किसी के साथ शेयर नहीं करें.</translation>
 <translation id="3726490322412361740">पासवर्ड एंटर करें</translation>
-<translation id="3038243139480464605">पासवर्ड वेरीफ़ाई करें</translation>
-<translation id="3043677904160378840">पासवर्ड में कम से कम 8 वर्ण होने चाहिए।</translation>
-<translation id="7396672979287122068">वेरीफ़ाई किया गया पासवर्ड मेल नहीं खाता</translation>
-<translation id="7084181009966710506">वॉलेट बनाया जा रहा है...</translation>
+<translation id="1566412704591731844">आपका वॉलेट बन रहा है</translation>
+<translation id="7779823116893018906">इसमें कुछ सेकंड लग सकते हैं...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> अकाउंट <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">खाता जोड़ें</translation>
 <translation id="3448492834076427715">अकाउंट अपडेट करें</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">#<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">मेरा रिकवरी फ़्रेज़ व्यू करें</translation>
+<translation id="5303015959766064022">मैं बाद में बैकअप लूंगा</translation>
+<translation id="7345730059518887993">आइये देखें</translation>
+<translation id="7640406249038879146">अपने रिकवरी फ़्रेज़ से<ph name="WORD_POSITION"/> पोज़िशन में शब्द डालें.</translation>
+<translation id="2598171223363459366">अब आप इस स्टेप को छोड़ सकते हैं, लेकिन अकाउंट की सुरक्षा सुनिश्चित करने के लिए आपको अभी भी अपने रिकवरी फ़्रेज़ का बैकअप लेना होगा.</translation>
 <translation id="8100001366858145406">फ़िंगरप्रिंट अनलॉक चालू करें</translation>
 <translation id="5493402808936397665">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स चालू करें.</translation>
 <translation id="8030647312184163932">फिंगरप्रिंट अनलॉक किया गया</translation>
 <translation id="4090490645603511157">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स का इस्तेमाल करें.</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
-<translation id="6901810042765869341">अपने Brave वॉलेट क्रिप्टो अकाउंट को रिस्टोर करने के लिए अपना रिकवरी फ्रेज़ एंटर करें.</translation>
-<translation id="9120654436199628567">क्रिप्टो अकाउंट रिस्टोर करें</translation>
+<translation id="2321396552035646646">आप अपना पूरा रिकवरी फ़्रेज़ किसी भी फ़ील्ड में पेस्ट कर सकते हैं.</translation>
+<translation id="3961126209136843111">किसी मौजूदा वॉलेट को इंपोर्ट करें</translation>
 <translation id="4811736040444856406">रिकवरी फ्रेज़ दिखाएँ</translation>
-<translation id="283071225285270357">रिकवरी फ्रेज़ एंटर करें</translation>
-<translation id="3943857333388298514">चिपकाएं</translation>
-<translation id="3331452756822160641">नया पासवर्ड</translation>
-<translation id="4359319875297001084">लिगेसी Brave क्रिप्टो वॉलेट से इम्पोर्ट करें?</translation>
-<translation id="2339124864228588937">रिकवरी वाक्यांश वेरीफ़ाई करें</translation>
-<translation id="3747079125031086337">अपने रिकवरी फ़्रेज़ में शब्दों को उनके सही क्रम में चुनें.</translation>
-<translation id="6518133107902771759">सत्यापित करें</translation>
+<translation id="4359319875297001084">लिगेसी Ping क्रिप्टो वॉलेट से इम्पोर्ट करें?</translation>
 <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
 <translation id="5844138175312846408">आपके पास पहले से कोई वॉलेट है?</translation>
 <translation id="2502258949541727762">हमारे शुरू करने से पहले</translation>
+<translation id="4303748097351941030">सपोर्ट वाले नेटवर्क</translation>
+<translation id="4204268048253692928">आप सेटिंग में किसी भी समय नेटवर्क जोड़ सकते हैं।</translation>
+<translation id="2523174693142405417">नेटवर्क खोजें</translation>
+<translation id="1164748583090434571">Testnets दिखाएं</translation>
+<translation id="935220650946301698"><ph name="NUMBER"/>नेटवर्क के साथ जारी रखें</translation>
+<translation id="4052668782430384783">शब्द #<ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">पासवर्ड बनाएँ</translation>
 <translation id="2789310860394340571">आप अपने वॉलेट को एक्सेस करने के लिए इस पासवर्ड का इस्तेमाल करेंगे.</translation>
 <translation id="2136372518715274136">नया पासवर्ड डालें</translation>
@@ -651,14 +650,16 @@
 <translation id="5981303441790732480">मौजूदा वॉलेट को इम्पोर्ट करें</translation>
 <translation id="9111102763498581341">अनलॉक करें</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
+<translation id="7553242001898162573">अपना पासवर्ड डालें</translation>
 <translation id="5619264711680220002">बायोमेट्रिक अनलॉक</translation>
+<translation id="9195657745688986798">वॉलेट अनलॉक करें</translation>
 <translation id="5168349973342709369">वॉलेट अनलॉक करने के लिए पासवर्ड एंटर करें</translation>
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
-<translation id="5760476995887363522">वाक्य मेल नहीं खा रहे. कृपया फिर से कोशिश करें.</translation>
+<translation id="9085712756417277119">रिकवरी फ़्रेज़ मेल नहीं खा रहा</translation>
 <translation id="2360588547830602174">अकाउंट रिकवरी नहीं हो पाया. कृपया दोबारा कोशिश करें.</translation>
 <translation id="1987317783729300807">खाते</translation>
-<translation id="6284218950354553099">हर दिन के उपयोग पिंग Brave को अपने आप भेजें</translation>
-<translation id="2181060149810222381">यह प्राइवेट पिंग, Brave को सक्रिय उपयोगकर्ताओं का अनुमान लगाने देता है।</translation>
+<translation id="6284218950354553099">हर दिन के उपयोग पिंग Ping को अपने आप भेजें</translation>
+<translation id="2181060149810222381">यह प्राइवेट पिंग, Ping को सक्रिय उपयोगकर्ताओं का अनुमान लगाने देता है।</translation>
 <translation id="6725413948756358325">खाते का नाम</translation>
 <translation id="6062431965141524986">आप अपनी प्राइवेट की इम्पोर्ट करके एक सेकेंडरी अकाउंट बना सकते हैं.</translation>
 <translation id="3952797765659730604">अपनी प्राइवेट की स्ट्रिंग फ़ाइल या JSON एंटर करें, पेस्ट करें या इम्पोर्ट  करें.</translation>
@@ -666,10 +667,10 @@
 <translation id="4522570452068850558">विवरण</translation>
 <translation id="3784455785234192852">लॉक करें</translation>
 <translation id="4412698727486357573">सहायता केंद्र</translation>
-<translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
-<translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
+<translation id="8239147115686034860">Ping Wallet को अपने आप लॉक करें</translation>
+<translation id="414639769490080648">Ping Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="2326850911705720398">वॉलेट का डेटा रीसेट करें और मिटाएँ</translation>
-<translation id="6567712397896147805">क्या आप वाकई अपने Brave वॉलेट को रीसेट करना चाहते हैं? अगर आपने अपने वॉलेट का बैकअप नहीं बनाया है, तो रीसेट करने से आपके अकाउंट का सभी डेटा (इसमें मौजूद फ़ंड के साथ) मिट जाएगा. कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
+<translation id="6567712397896147805">क्या आप वाकई अपने Ping वॉलेट को रीसेट करना चाहते हैं? अगर आपने अपने वॉलेट का बैकअप नहीं बनाया है, तो रीसेट करने से आपके अकाउंट का सभी डेटा (इसमें मौजूद फ़ंड के साथ) मिट जाएगा. कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
 <translation id="4862812525895306758">लेन-देन और नॉन्स की जानकारी मिटाएँ</translation>
 <translation id="5693968582510626466">ट्रांजेक्शन हटाने से स्थानीय सर्वर पर स्टेट क्लियर करते समय या डेवलपर्स के लिए उपयोगी हो सकता है</translation>
 <translation id="5421107279168565467">क्या आप वाकई लेन-देन और नॉन्स की जानकारी को मिटाना चाहते हैं? इस विकल्प का इस्तेमाल आमतौर पर लोकल टेस्ट सर्वर चलाने वाले डेवलपर करते हैं. कन्फ़र्म करने के लिए  "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
@@ -680,30 +681,37 @@
 <translation id="1721710839767183848">पेज पर कोई विज्ञापन नहीं</translation>
 <translation id="4647035642622555398">कोई रुकावट नहीं</translation>
 <translation id="4122515759479497554">वीडियो सर्च करें</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="4449475351935531438">Ping Firewall + VPN</translation>
 <translation id="719977489961414786">अपने कनेक्शन की सुरक्षा के लिए VPN में अपग्रेड करें और हर जगह ज़बरदस्ती घुसने वाले ट्रैकर्स को ब्लॉक करें.</translation>
 <translation id="8814357473522731680">द्वारा संचालित</translation>
 <translation id="5892534145504632332">हर ऐप और अपने पूरे डिवाइस को सुरक्षित रखें</translation>
 <translation id="7195416926059527505">घर या सार्वजनिक Wi-Fi के लिए अधिक सुरक्षित</translation>
 <translation id="1354700000739359839">बिजली की तेजी से, 100 Mbps तक</translation>
 <translation id="3510283489391432976">Chooअपना भौगोलिक/देश का स्थान चुनें</translation>
-<translation id="7695158478627528928">Brave कभी भी आपकी गतिविधि को लॉग नहीं करता है</translation>
+<translation id="7695158478627528928">Ping कभी भी आपकी गतिविधि को लॉग नहीं करता है</translation>
 <translation id="4575683170451975058">1 सदस्यता पर 5 डिवाइस सुरक्षित रखें</translation>
+<translation id="755045397420611731">और ज़्यादा प्राइवेसी और ऑनलाइन सिक्योरिटी</translation>
+<translation id="4520128772974831415">अपना IP छुपाएं और अपनी लोकेशन बदलें</translation>
+<translation id="2044418816479192294">दुनियाभर में सैकड़ों सर्वर</translation>
+<translation id="7410504850864021600">बिजली की तरह तेज़ कनेक्शन स्पीड</translation>
+<translation id="2422309687188612485">एक प्लॉन से 10 डिवाइस तक को सुरक्षित रखें</translation>
 <translation id="4882693590083943563">सभी प्लान में <ph name="TRIAL_DAYS"/> शामिल है</translation>
 <translation id="487741927046441232">7 दिन फ़्री ट्रायल!</translation>
 <translation id="1532536259167115948">मासिक सदस्यता <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">सालाना सदस्यता <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">हर महीने रिन्यू होता है</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / महीने.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> / महीने</translation>
 <translation id="1163809943099641131">एक साल</translation>
-<translation id="6277055349883621705">सालाना रिन्यूअल करें 16% बचाएं</translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / साल.</translation>
-<translation id="2655185358771731232">7 दिनों के लिए मुफ़्त आज़माएँ. 7 दिनों के बाद, आपसे प्लान की कीमत ली जाएगी. सभी सब्सक्रिप्शन अपने आप रिन्यू होते हैं लेकिन रिन्यू होने से पहले कैंसिल किए जा सकते हैं.</translation>
+<translation id="727385358513272220">साल भर के लिए रिन्यू करें (<ph name="DISCOUNT_TEXT_START"/>सेव करें<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> / साल</translation>
+<translation id="2786538705804257030">सब्सक्रिप्शन की राशि आपके Google अकाउंट के ज़रिए लिया जाएगा. जब आप सब्सक्रिप्शन खरीदते हैं, तो फ़्री ट्रायल का बचा हुआ कोई भी हिस्सा, अगर ऑफ़र किया गया हो, ख़त्म हो जाता है.\n\nसब्सक्रिप्शन की मौजूदा अवधि ख़त्म होने के कम-से-कम 24 घंटे पहले अगर उसे कैंसिल नहीं किया जाता है, तो वह अपने आप रिन्यू हो जाती है.\n\nआप अपनी सब्सक्रिप्शन को 'सेटिंग्स' से मैनेज कर सकते हैं.\nPing का इस्तेमाल करके, आप इस्तेमाल की शर्तों और प्राइवेसी पॉलिसी पर अपनी सहमति देते हैं.</translation>
+<translation id="5035172357624830412">Ping.com पर पहले ही खरीद चुके हैं?</translation>
+<translation id="713136183174551885">अपने क्रेडेंशियल रिफ़्रेश करें</translation>
 <translation id="6053992191006521518">फ़्री में आज़माएँ</translation>
 <translation id="5903391101107992067">7 दिन फ़्री में आज़माएँ</translation>
 <translation id="721747358270435486">VPN इंस्टॉल करें</translation>
 <translation id="836074276610740314">VPN प्रोफ़ाइल इंस्टॉल करें</translation>
-<translation id="8021842065465097929">Brave अब VPN प्रोफ़ाइल इंस्टॉल करेगा.</translation>
+<translation id="8021842065465097929">Ping अब VPN प्रोफ़ाइल इंस्टॉल करेगा.</translation>
 <translation id="229286271464650057">यह प्रोफ़ाइल VPN को आपके डिवाइस पर ट्रैफ़िक को अपने आप कनेक्ट और सुरक्षित करने की अनुमति देती है — हर ऐप में, हर समय. यह VPN कनेक्शन एन्क्रिप्ट किया जाएगा और विज्ञापनों और ट्रैकर्स को ब्लॉक करने के लिए Guardian के इंटेलिजेंट फ़ायरवॉल के माध्यम से रूट किया जाएगा.</translation>
 <translation id="9073255657908892407">टेक्निकल सपोर्ट से संपर्क करें</translation>
 <translation id="1139934321138152517">VPN अब चालू है</translation>
@@ -733,7 +741,19 @@
 <translation id="755448900483975096">सेल्युलर सेवा देने वाली कंपनी</translation>
 <translation id="1279441577056010362">ईमेल जारी रखें</translation>
 <translation id="7125582363614011660">सपोर्ट की सेवा गार्डियन टीम की मदद से मुहैया करवाई जाती है.\n\nकृपया वह जानकारी चुनें जिसे आपको हमारे साथ शेयर करने में असुविधा महसूस न हो.\n\nआप शुरुआत में हमारे साथ जितनी ज़्यादा जानकारी शेयर करेंगे, हमारे सपोर्ट स्टाफ़ को आपकी समस्या हल के लिए आपकी मदद करने में उतनी ज़्यादा आसानी होगी.</translation>
-<translation id="7999094850625689785">आपके सिस्टम टाइमज़ोन के आधार पर, आपके सबसे पास के सर्वर क्षेत्र को अपने आप चुना जाएगा. इंटरनेट की तेज गति सुनिश्चित करने के लिए इसका सुझाव दिया जाता है.</translation>
+<translation id="8813171284214934811">अपने टाइमज़ोन के आधार पर अपने सबसे नज़दीकी VPN सर्वर के क्षेत्र को ऑटोमैटिक तरीके से चुनें. इंटरनेट की स्पीड को अधिकतम करने के लिए यह विकल्प अपनाना चाहिए.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> शहर - }
+          other {<ph name="CITY_COUNT_MANY"/> शहर - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> सर्वर}
+          other {<ph name="SERVER_COUNT_MANY"/> सर्वर}
+        }</translation>
+<translation id="3199127022143353223">सर्वर</translation>
+<translation id="5431902940483264007">सर्वोत्तम</translation>
+<translation id="6527596624419285047">जो सबसे अच्छा सर्वर मौजूद हो, वह इस्तेमाल करें</translation>
+<translation id="6789157560111825412">उपलब्ध सर्वर</translation>
 <translation id="4397083831618200686">समस्या चुनें</translation>
 <translation id="6687228121145903051">VPN से कनेक्ट नहीं हो सका (कोई और एरर)</translation>
 <translation id="9184988385244077767">कनेक्ट होने पर कोई इंटरनेट कनेक्‍शन नहीं मिला</translation>
@@ -787,21 +807,20 @@
 <translation id="8214232307424031138">साइन किया गया</translation>
 <translation id="1165039591588034296">गड़बड़ी</translation>
 <translation id="2561824823738097741">क्या आप सबसे तेज़ ब्राउज़र का इस्तेमाल कर रहे हैं?</translation>
-<translation id="2065971949051836200">आपके फ़ोन पर 3x तेज़ इंटरनेट पहले से हैं. अपनी सभी वेब ब्राउज़िंग के लिए Brave का इस्तेमाल करें.</translation>
-<translation id="2888278614497184977">Brave = 3x ज़्यादा तेज़ वेब ब्राउज़िंग</translation>
+<translation id="2065971949051836200">आपके फ़ोन पर 3x तेज़ इंटरनेट पहले से हैं. अपनी सभी वेब ब्राउज़िंग के लिए Ping का इस्तेमाल करें.</translation>
+<translation id="2888278614497184977">Ping = 3x ज़्यादा तेज़ वेब ब्राउज़िंग</translation>
 <translation id="6887232551109532144">हर चार्ज पर बैटरी की ज़्यादा उम्र पाएँ</translation>
-<translation id="5388885352353494741">बैटरी बचाने की सुविधा अब बस एक कदम दूर है. अपनी सभी वेब ब्राउज़िंग के लिए Brave का इस्तेमाल करें.</translation>
-<translation id="3164151360474408351">Brave = हर चार्ज की ज़्यादा उम्र</translation>
+<translation id="5388885352353494741">बैटरी बचाने की सुविधा अब बस एक कदम दूर है. अपनी सभी वेब ब्राउज़िंग के लिए Ping का इस्तेमाल करें.</translation>
+<translation id="3164151360474408351">Ping = हर चार्ज की ज़्यादा उम्र</translation>
 <translation id="3211051910418903298">अपना मोबाइल डेटा बार-बार न भरवाएँ</translation>
-<translation id="1092355580602106002">कम विज्ञापन = आप जो भी पेज लोड करते हैं, उसमें कम डेटा. अपनी सभी ब्राउज़िंग के लिए Brave का इस्तेमाल करें.</translation>
-<translation id="623962032102267945">Brave = हर पेज पर मोबाइल का कम डेटा</translation>
+<translation id="1092355580602106002">कम विज्ञापन = आप जो भी पेज लोड करते हैं, उसमें कम डेटा. अपनी सभी ब्राउज़िंग के लिए Ping का इस्तेमाल करें.</translation>
+<translation id="623962032102267945">Ping = हर पेज पर मोबाइल का कम डेटा</translation>
 <translation id="4355217341028673744">• बेहतर प्राइवेसी</translation>
 <translation id="3679020972083025535">• परेशान करने वाले कोई ऐड नहीं</translation>
 <translation id="8047527352810290817">गैस एडिट करें</translation>
 <translation id="7358989216567322955">अधिकतम प्राथमिकता शुल्क</translation>
 <translation id="9091334651803050473">गारंटी नहीं होने पर, अगर आप ज़्यादा शुल्क की पेमेंट करते हैं तो माइनर आपके लेनदेन को प्राथमिकता देंगे.</translation>
 <translation id="2941112035454246133">कम</translation>
-<translation id="5431902940483264007">सर्वोत्तम</translation>
 <translation id="7304030187361489308">ज़्यादा</translation>
 <translation id="4853037749278079787">कम से कम शुल्क: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">वर्तमान बेस फ़ी: <ph name="ASSET_VALUE"/> Gwei</translation>
@@ -819,8 +838,6 @@
 <translation id="3074127054582480056">ध्यान दें</translation>
 <translation id="2280319752798785157">मासिक योगदान</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
-<translation id="8982438328166986164">आपके बुकमार्क और पिछली ब्राउज़िंग के आधार पर वेबसाइट के सुझाव दिखाता है.</translation>
 <translation id="1241283133946520352">नेटवर्क</translation>
 <translation id="1062463687579789365">वॉलेट नेटवर्क में मनचाहे बदलाव</translation>
 <translation id="2512821599885971349">नेटवर्क जोड़ें</translation>
@@ -846,7 +863,7 @@
 <translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="4945690646623486292">नेटवर्क चुनें</translation>
 <translation id="5233638681132016545">नया टैब</translation>
-<translation id="8006088103295786154">Brave वॉलेट को ऐक्सेस करें</translation>
+<translation id="8006088103295786154">Ping वॉलेट को ऐक्सेस करें</translation>
 <translation id="8030169304546394654">डिसकनेक्ट हो गया है</translation>
 <translation id="3423275441470187644">भरोसा</translation>
 <translation id="2391762656119864333">निरस्‍त करें</translation>
@@ -856,7 +873,7 @@
 <translation id="42981349822642051">बड़ा करें</translation>
 <translation id="3586752056660754651">साइन</translation>
 <translation id="3950820424414687140">प्रवेश करें</translation>
-<translation id="6592721981110586529">Brave वॉलेट से कनेक्ट करें</translation>
+<translation id="6592721981110586529">Ping वॉलेट से कनेक्ट करें</translation>
 <translation id="329813193938846695">अकाउंट चुनें</translation>
 <translation id="291375746846291973">केवल उन साइटों से कनेक्ट करें जिन पर आप भरोसा करते हैं।</translation>
 <translation id="385051799172605136">वापस</translation>
@@ -868,10 +885,11 @@
 <translation id="5242300593039211344">वॉलेट लॉक करें</translation>
 <translation id="1108298724135935307">जुड़ी हुई साइटें</translation>
 <translation id="4255623233927788178">ब्लॉक एक्सप्लोरर पर देखें</translation>
-<translation id="8274201358637112807">यह पेज Brave वॉलेट के साथ संपर्क करना चाहता है</translation>
+<translation id="8274201358637112807">यह पेज Ping वॉलेट के साथ संपर्क करना चाहता है</translation>
 <translation id="3355936511340229503">कनेक्शन गड़बड़ी</translation>
+<translation id="1531836666020185856">फ़ीचर किया गया</translation>
 <translation id="4891604214809245310">नेटवर्क को <ph name="NETWORK_NAME"/> पर सेट नहीं किया जा सका</translation>
-<translation id="685345388423515592">ऐसा लगता है कि आपके इस डिवाइस पर अन्य VPN "हमेशा चालू" पर सेट हैं. Brave Firewall + VPN को चालू करने के लिए, फिर से कनेक्ट करने से पहले अन्य VPN के लिए "हमेशा चालू" सेटिंग को बंद करें. अगर समस्या बनी रहती है, तो अन्य VPN को अनइंस्टॉल करके देखें.</translation>
+<translation id="685345388423515592">ऐसा लगता है कि आपके इस डिवाइस पर अन्य VPN "हमेशा चालू" पर सेट हैं. Ping Firewall + VPN को चालू करने के लिए, फिर से कनेक्ट करने से पहले अन्य VPN के लिए "हमेशा चालू" सेटिंग को बंद करें. अगर समस्या बनी रहती है, तो अन्य VPN को अनइंस्टॉल करके देखें.</translation>
 <translation id="85136472535634474">VPN सेटिंग खोलें</translation>
 <translation id="8352805003811526272">कॉन्फ़िगरेशन को रीसेट करना ...</translation>
 <translation id="6809312301323611382">आपने पहले से ही वही सर्वर चुन रखा है</translation>
@@ -891,25 +909,25 @@
 <translation id="4822132585477111396">चेन आई.डी.</translation>
 <translation id="7131971375297699539">करेंसी का चिन्ह</translation>
 <translation id="7982789257301363584">नेटवर्क</translation>
-<translation id="6936860995365507185">इसके ज़रिए इस नेटवर्क को Brave वॉलेट में इस्तेमाल किया जा सकेगा. <ph name="CLICK_START"/>ज़्यादा जानें<ph name="CLICK_END"/>.</translation>
+<translation id="6936860995365507185">इसके ज़रिए इस नेटवर्क को Ping वॉलेट में इस्तेमाल किया जा सकेगा. <ph name="CLICK_START"/>ज़्यादा जानें<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">इस साइट को एक नेटवर्क जोड़ने की अनुमति दें?</translation>
 <translation id="4857321293515555666">आपके अनुरोध को पूरा करने के लिए DApp इस मैसेज को पढ़ना चाहेगा.</translation>
 <translation id="714506544401754321">संदेश को डिक्रिप्ट करें</translation>
 <translation id="5039804452771397117">अनुमति दें</translation>
 <translation id="3378339846292573874">सुझाए गए टोकन जोड़ें</translation>
 <translation id="2322227405137827074">क्या आप इन टोकन को इम्पोर्ट करना चाहेंगे?</translation>
-<translation id="1324417023773393937">Brave ब्राउज़र</translation>
-<translation id="6044189892950611565">Brave Browser के लिए नोटिफ़िकेशन चैनल</translation>
-<translation id="1173919438868967364">अकाउंट चुनें</translation>
+<translation id="1324417023773393937">Ping ब्राउज़र</translation>
+<translation id="6044189892950611565">Ping Browser के लिए नोटिफ़िकेशन चैनल</translation>
+<translation id="4556601961751528347">कनेक्ट किए गए अकाउंट को बदलें</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/> : के लिए मिलता-जुलता टाइमज़ोन नहीं मिला</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/> से कनेक्ट किया गया है</translation>
 <translation id="1968852757206592413">ट्रायल</translation>
-<translation id="6458565248779152483">Brave VPN को अक्षम करें</translation>
+<translation id="6458565248779152483">Ping VPN को अक्षम करें</translation>
 <translation id="9080536793704001825">15 मिनट के लिए रोकें</translation>
 <translation id="803706420145725977">1 घंटे के लिए रोकें</translation>
 <translation id="4394049700291259645">बंद करें</translation>
 <translation id="7733890291091968191">Web3 के नोटिफ़िकेशन दिखाएँ</translation>
-<translation id="1371627247679035769">\n\n\n\n#### Brave आपको ट्रैक नहीं करता है या न ही ये जानता है कि आप हमारे ऐप का इस्तेमाल कैसे करते हैं, इसलिए हम नहीं जानते कि आपने VPN कैसे सेट किया है. जिस समस्या का आप सामना कर रहे हैं, उसके बारे में जानकारी दें और हम जल्द-से-जल्द इसे हल करने की पूरी कोशिश करेंगे. ####\n\n</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Ping आपको ट्रैक नहीं करता है या न ही ये जानता है कि आप हमारे ऐप का इस्तेमाल कैसे करते हैं, इसलिए हम नहीं जानते कि आपने VPN कैसे सेट किया है. जिस समस्या का आप सामना कर रहे हैं, उसके बारे में जानकारी दें और हम जल्द-से-जल्द इसे हल करने की पूरी कोशिश करेंगे. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN का होस्टनेम\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nसदस्यता का प्रकार\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nप्लेस्टोर टोकन\n <ph name="VALUE"/></translation>
@@ -932,12 +950,19 @@
 <translation id="7002577172732106572">स्प्लिट टनलिंग</translation>
 <translation id="8181161042860463420">संबंधित टोकन अकाउंट अभी मौजूद नहीं है. इसे बनाने और फंड करने के लिए SOL की एक छोटी राशि खर्च करनी होगी. <ph name="CLICK_START"/>और जानें<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN प्रोफ़ाइल अपडेट किया जा रहा है...</translation>
-<translation id="7457027586454688423">अपने Brave वॉलेट का पासवर्ड डालें</translation>
-<translation id="4784306439879850873">ध्यान दें, आपके साइन करने से क्या होगा, यह Brave नहीं बता सकता. सिग्नेचर आपके अकाउंट में या आपकी ओर से लगभग सभी ऑपरेशन को ऑथराइज़ कर सकता है, जिसमें अनुरोध करने वाली साइट को आपके अकाउंट और क्रिप्टो ऐसेट का पूरा कंट्रोल देना शामिल है (लेकिन इसी तक सीमित नहीं है). अगर आप पक्के तौर पर यह काम करना चाहते हैं और अनुरोध करने वाली साइट पर भरोसा करते हों, तो ही साइन करें.</translation>
+<translation id="4784306439879850873">ध्यान दें, आपके साइन करने से क्या होगा, यह Ping नहीं बता सकता. सिग्नेचर आपके अकाउंट में या आपकी ओर से लगभग सभी ऑपरेशन को ऑथराइज़ कर सकता है, जिसमें अनुरोध करने वाली साइट को आपके अकाउंट और क्रिप्टो ऐसेट का पूरा कंट्रोल देना शामिल है (लेकिन इसी तक सीमित नहीं है). अगर आप पक्के तौर पर यह काम करना चाहते हैं और अनुरोध करने वाली साइट पर भरोसा करते हों, तो ही साइन करें.</translation>
 <translation id="3474375934783434676">अपने जोखिम पर साइन करें</translation>
 <translation id="7134370164002095282"><ph name="SIZE"/> में से <ph name="CURRENT"/></translation>
 <translation id="756701799684433105">ट्रांज़ैक्शन मंज़ूर करें</translation>
 <translation id="6450792191436242818">सिस्टम प्रोग्राम</translation>
+<translation id="5318067544026930166">बायोमेट्रिक ऑथेंटिकेशन से Ping Wallet अनलॉक करें</translation>
+<translation id="2629767022373384291">क्या आप अपने Ping Wallet को अनलॉक करने के लिए बायोमेट्रिक ऑथेंटिकेशन का इस्तेमाल करना चाहेंगे?</translation>
+<translation id="4782919977106118997">फ़िंगरप्रिंट अनलॉक का इस्तेमाल करें</translation>
+<translation id="2054995875643283428">अभी के लिए रहने दें</translation>
+<translation id="2610561535971892504">कॉपी करने के लिए क्लिक करें</translation>
+<translation id="2522605225061484799">मेरे पोर्टफ़ोलियो पर जाएं</translation>
+<translation id="1148624853678088576">वाह, आप पूरी तरह से तैयार हैं!</translation>
+<translation id="4131445988101719379">आपका Ping Wallet इस्तेमाल के लिए तैयार है</translation>
 <translation id="6252742184395380448">कॉन्फ़िगरेशन प्रोग्राम</translation>
 <translation id="5358970666412490132">स्टेक प्रोग्राम</translation>
 <translation id="346636227344244984">वोट प्रोग्राम</translation>
@@ -979,8 +1004,8 @@
 <translation id="8382368767453083629">मल्टीसिग 2 को शुरू करें</translation>
 <translation id="77243237706803459">मिंट 2 को शुरू करें</translation>
 <translation id="583281660410589416">अज्ञात</translation>
-<translation id="5666264859501108700">आपके Brave रिवॉर्ड क्षेत्र को <ph name="COUNTRY_NAME"/> पर सेट कर दिया गया है.</translation>
-<translation id="909076461795862330">बदकिस्तमी से Brave रिवॉर्ड को सेट अप करने में गड़बड़ी हुई थी. कृपया फिर से कोशिश करें.</translation>
+<translation id="5666264859501108700">आपके Ping रिवॉर्ड क्षेत्र को <ph name="COUNTRY_NAME"/> पर सेट कर दिया गया है.</translation>
+<translation id="909076461795862330">बदकिस्तमी से Ping रिवॉर्ड को सेट अप करने में गड़बड़ी हुई थी. कृपया फिर से कोशिश करें.</translation>
 <translation id="7352651011704765696">कुछ गलत हो गया</translation>
 <translation id="7144878232160441200">पुन: प्रयास करें</translation>
 <translation id="6040143037577758943">बंद करें</translation>
@@ -989,15 +1014,15 @@
 <translation id="8496335570810457">प्रीफ़्लाइट संकल्प :</translation>
 <translation id="5100124500279922001">प्रीफ़्लाइट को छोड़ें :</translation>
 <translation id="7152095322071766507">सबसे ज़्यादा देखी गई साइट</translation>
-<translation id="7230006500876504868">Brave पर सर्च करें</translation>
+<translation id="7230006500876504868">Ping पर सर्च करें</translation>
 <translation id="5888208462949095139"><ph name="DEFAULT_SEARCH_ENGINE"/> पर सर्च करें</translation>
 <translation id="5456039738087398178">होम स्क्रीन विजेट</translation>
 <translation id="703185154752046151">विजेट होम स्क्रीन पर जोड़ दिया गया है</translation>
-<translation id="3290805388004282161">Brave सर्च विजेट को आज़माएँ</translation>
+<translation id="3290805388004282161">Ping सर्च विजेट को आज़माएँ</translation>
 <translation id="4809681171446727314">गोपनीय और स्वतंत्र रूप से सर्च करने की सुविधा को सीधे अपनी होम स्क्रीन से ऐक्सेस करें.</translation>
 <translation id="7751715172931488388">विजेट जोड़ें</translation>
-<translation id="7285167584112910782">Brave पर तुरंत सर्च करने की सुविधा</translation>
-<translation id="2326703104633309781">Brave ट्रांसलेट का इस्तेमाल करें</translation>
+<translation id="7285167584112910782">Ping पर तुरंत सर्च करने की सुविधा</translation>
+<translation id="2326703104633309781">Ping ट्रांसलेट का इस्तेमाल करें</translation>
 <translation id="5802752138057422257">NON-ASCII कैरेक्टर मिटा दिए गए हैं!</translation>
 <translation id="442709594176931966">मूल मैसेज देखें</translation>
 <translation id="2239252396088484499">ASCII एनकोडिंग में मैसेज देखें</translation>
@@ -1009,22 +1034,22 @@
 <translation id="1313065465616456728">जारी करने का समय</translation>
 <translation id="7902225556763260253">अंतिम अवधि</translation>
 <translation id="1908159733454294871">सुरक्षा संबंधित जोखिम का पता चला</translation>
-<translation id="5658257029899993935">खरीदारी को अपने Brave अकाउंट से लिंक करें</translation>
-<translation id="1187061015547219282">अन्य डिवाइस पर Brave VPN का इस्तेमाल करने के लिए अपने Play Store की खरीदारी को अपने Brave अकाउंट से लिंक करें.</translation>
+<translation id="5658257029899993935">खरीदारी को अपने Ping अकाउंट से लिंक करें</translation>
+<translation id="1187061015547219282">अन्य डिवाइस पर Ping VPN का इस्तेमाल करने के लिए अपने Play Store की खरीदारी को अपने Ping अकाउंट से लिंक करें.</translation>
 <translation id="6662142137695589205">अपनी VPN की सदस्यता को लिंक करें</translation>
-<translation id="2674077112509133024">अपनी Brave Firewall + VPN की सुरक्षा को बढ़ाएँ</translation>
-<translation id="6365389672683343144">आपकी Brave VPN की सदस्यता Android, iOS और डेक्सटॉप पर 5 डिवाइस तक की सुरक्षा कर सकती है. बस अपनी Google Play की सदस्यता को अपने Brave अकाउंट से लिंक करें.</translation>
+<translation id="2674077112509133024">अपनी Ping Firewall + VPN की सुरक्षा को बढ़ाएँ</translation>
+<translation id="6365389672683343144">आपकी Ping VPN की सदस्यता Android, iOS और डेक्सटॉप पर 5 डिवाइस तक की सुरक्षा कर सकती है. बस अपनी Google Play की सदस्यता को अपने Ping अकाउंट से लिंक करें.</translation>
 <translation id="6610899852831463073">सेफ़ ब्राउज़िंग की सुविधा को चालू नहीं किया जा सकता है</translation>
 <translation id="7954263306665462056">आपके डिवाइस पर सेफ़ ब्राउज़िंग की सुविधा बंद कर दी गई है. उसे चालू करने के लिए, यह पक्का करें कि Google Play Services इंस्टॉल किया हुआ हो और अप-टू-डेट हो.</translation>
 <translation id="6605147707233193230">कंटेंट क्रिएटर को सपोर्ट करने के लिए चालू करें</translation>
-<translation id="1609556006143307897">आप कंटेंट क्रिएटर को सपोर्ट करने में मदद कर रहे हैं</translation>
-<translation id="6067959437127691361">Brave रिवॉर्ड का इस्तेमाल करने से कंटेंट क्रिएटर को सपोर्ट मिलता है और आपको BAT कमाने का मौका मिलता है.</translation>
+<translation id="5899814466108868020">आप Ping और BAT समुदाय को सहायता प्रदान कर रहे हैं</translation>
+<translation id="6067959437127691361">Ping रिवॉर्ड का इस्तेमाल करने से कंटेंट क्रिएटर को सपोर्ट मिलता है और आपको BAT कमाने का मौका मिलता है.</translation>
 <translation id="3264975266761862670">कमाई शुरू करने के लिए तैयार हैं?</translation>
 <translation id="265337947574975838">अपना अकाउंट कनेक्ट करें या हमारे किसी पार्टनर के साथ नया अकाउंट बनाएँ.</translation>
 <translation id="654447476965480878">BAT कमाने के बारे में और जानें</translation>
 <translation id="6278643716658443228">रिवॉर्ड से जुड़ी सेटिंग</translation>
 <translation id="6516984207843289176">अकाउंट कनेक्ट करें</translation>
-<translation id="4272136334824111854">इस महीने आपने Brave रिवॉर्ड की ओर से सपोर्ट किए जाने वाले <ph name="CREATOR_COUNT"/> क्रिएटर देखे हैं.</translation>
+<translation id="4272136334824111854">इस महीने आपने Ping रिवॉर्ड की ओर से सपोर्ट किए जाने वाले <ph name="CREATOR_COUNT"/> क्रिएटर देखे हैं.</translation>
 <translation id="6845311459433734326">एक कस्टोडियल अकाउंट कनेक्ट करें ताकि आप BAT कमा सकें और अपने रिवॉर्ड निकाल सकें</translation>
 <translation id="928980476243133540">मैं यह बाद में कर लूँगा/लूँगी</translation>
 <translation id="579702532610384533">रिकनेक्ट</translation>
@@ -1035,9 +1060,8 @@
 <translation id="5382684862562314222">आपके क्षेत्र में Uphold पर bAT अभी तक सपोर्टेड नहीं है.</translation>
 <translation id="6996157559236886133">गड़बड़ी: सीमित Uphold अकाउंट सुविधाएँ</translation>
 <translation id="1677961202754619328">Uphold के मुताबिक, इस समय आपके Uphold अकाउंट पर कुछ सीमाएँ हैं. कृपया अपने Uphold अकाउंट में लॉग इन करें और देखें कि क्या वहाँ कोई नोटिस है या अकाउंट से जुड़ी कोई ज़रूरी शर्तें पूरी करनी बाकी हैं, इसके बाद फिर से कोशिश करें.</translation>
-<translation id="5425006356459378415">Brave रिवॉर्ड उपलब्ध नहीं हैं</translation>
-<translation id="833643743158564518">अभी आपके क्षेत्र में Brave रिवॉर्ड के लिए नए साइन अप बंद हैं. हालाँकि आप बाद में फिर से कोशिश कर सकते हैं. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">सभी नेटवर्क</translation>
+<translation id="5425006356459378415">Ping रिवॉर्ड उपलब्ध नहीं हैं</translation>
+<translation id="833643743158564518">अभी आपके क्षेत्र में Ping रिवॉर्ड के लिए नए साइन अप बंद हैं. हालाँकि आप बाद में फिर से कोशिश कर सकते हैं. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">प्राइमरी नेटवर्क</translation>
 <translation id="2781668117338732220">सेकंडरी नेटवर्क</translation>
 <translation id="282560918037172384">टेस्ट नेटवर्क</translation>
@@ -1057,10 +1081,9 @@
 <translation id="4932733599132424254">तिथि</translation>
 <translation id="346505172740911461">मार्केट की कीमत</translation>
 <translation id="5494920125229734069">सभी को चुनें</translation>
-<translation id="5972844218283131174">सभी चुने हुए को हटाएँ</translation>
 <translation id="6129027151000961048">लियो</translation>
-<translation id="8613144770663526433">Brave वॉलेट के साथ साइन इन करें</translation>
-<translation id="3696514931437952995">आप <ph name="ORIGIN"/> में साइन इन कर रहे हैं. Brave वॉलेट आपका पता <ph name="ORIGIN"/> के साथ शेयर करेगा.</translation>
+<translation id="8613144770663526433">Ping वॉलेट के साथ साइन इन करें</translation>
+<translation id="3696514931437952995">आप <ph name="ORIGIN"/> में साइन इन कर रहे हैं. Ping वॉलेट आपका पता <ph name="ORIGIN"/> के साथ शेयर करेगा.</translation>
 <translation id="1028781062521375153">विवरण देखें</translation>
 <translation id="6759710362319508545">संसाधन</translation>
 <translation id="2471230424465522689">इसके पहले नहीं</translation>
@@ -1069,7 +1092,7 @@
 <translation id="4109670531935487117">एड्रेस बार में ऑटोकंप्लीट के सुझाव दिखाएँ</translation>
 <translation id="1250335737108905610">लियो का डेटा रिसेट करें और मिटाएँ</translation>
 <translation id="6165101586663336913">लियो असिस्टेंट को रीसेट करने के लिए आपको भविष्य में लियो का इस्तेमाल करने के लिए अपनी मंज़ूरी देनी होगी और इससे आपकी चैट हिस्ट्री भी मिट जाएगी. चैट हिस्ट्री मिटाने से आपने लियो के साथ पहले जो भी चैट की है, वे मिट जाएँगी. एक बार मिटाने के बाद ये वापस नहीं लाई जा सकतीं.</translation>
-<translation id="3692772534525889713">अन्य डिवाइस पर Brave Leo का उपयोग करने के लिए अपनी Play Store खरीदारी को अपने Brave अकाउंट से लिंक करें।</translation>
+<translation id="3692772534525889713">अन्य डिवाइस पर Ping Leo का उपयोग करने के लिए अपनी Play Store खरीदारी को अपने Ping अकाउंट से लिंक करें।</translation>
 <translation id="73236265316873967">Leo प्रीमियम</translation>
 <translation id="1166682575529520472">मासिक</translation>
 <translation id="451189393813405346">लियो से पूछें</translation>
@@ -1079,7 +1102,7 @@
 <translation id="6344103698928069918">जब कोई प्लेलिस्ट हो, तो पिछली बार जहाँ रोका गया था, वहीं से चलाएँ</translation>
 <translation id="8141583471142904652">लगातार सुनें</translation>
 <translation id="851432578283946230">अपने-आप प्लेलिस्ट के अगले आइटम को चलाता है</translation>
-<translation id="295620834661738195">Brave प्लेलिस्ट</translation>
+<translation id="295620834661738195">Ping प्लेलिस्ट</translation>
 <translation id="4850886885716139402">देखें</translation>
 <translation id="7392941176393379100">'<ph name="PLAYLIST_NAME"/>' में जोड़ा गया</translation>
 <translation id="349846214503465941">प्लेलिस्ट सक्षम करें</translation>
@@ -1105,7 +1128,7 @@
 <translation id="8120600068258956006">प्लेलिस्ट में जोड़ें</translation>
 <translation id="39991094779686024">प्लेलिस्ट</translation>
 <translation id="1710072605877822603">मीडिया जोड़ें</translation>
-<translation id="3874252678044305931">Brave प्लेलिस्ट में वीडियो डालें. कभी भी चलाएँ. ऑफ़लाइन भी.</translation>
+<translation id="3874252678044305931">Ping प्लेलिस्ट में वीडियो डालें. कभी भी चलाएँ. ऑफ़लाइन भी.</translation>
 <translation id="8973629800378391099">अपने पसंदीदा कंटेंट की प्लेलिस्ट बनाएँ. मोबाइल का डेटा बचाएँ. बिना विज्ञापन के चलाएँ.</translation>
 <translation id="4936812987266342401">प्लेलिस्ट में वीडियो डालने के लिए बस एक बटन दबाएँ</translation>
 <translation id="6263657785571415306">कोई रुकावट नहीं : ब्राउज़ करते समय वीडियो डालें, बाद में देखें.</translation>
@@ -1118,6 +1141,7 @@
 <translation id="1173894706177603556">नाम बदलें</translation>
 <translation id="3596306474342941843">प्लेलिस्ट हटाएँ</translation>
 <translation id="7765158879357617694">ले जाएं</translation>
+<translation id="6896758677409633944">कॉपी बनाएं</translation>
 <translation id="3803384303807438047">आइटम का ऑफ़लाइन डेटा हटाएँ</translation>
 <translation id="4195643157523330669">नए टैब में खोलें</translation>
 <translation id="4243710787042215766">निजी टैब में खोलें</translation>
@@ -1147,7 +1171,7 @@
 <translation id="5538904824395606812">अपने मौजूदा सेवा प्रदाता या Quad9 का उपयोग करें</translation>
 <translation id="6393423486818299209">अपने मौजूदा सेवा प्रदाता या Wikimedia DNS का उपयोग करें</translation>
 <translation id="3401384982562827787">अपने मौजूदा सेवा प्रदाता या Cloudflare का उपयोग करें</translation>
-<translation id="8812367543786936496">अगर आपका मौजूदा सेवा प्रदाता असुरक्षित है, तो Brave एक अन्य सुरक्षित DNS प्रदाता का उपयोग करता है</translation>
+<translation id="8812367543786936496">अगर आपका मौजूदा सेवा प्रदाता असुरक्षित है, तो Ping एक अन्य सुरक्षित DNS प्रदाता का उपयोग करता है</translation>
 <translation id="5680678411439841197">शहर</translation>
 <translation id="8185518433273977704">शहर</translation>
 <translation id="4528386452965343421">प्रान्त</translation>
@@ -1175,6 +1199,23 @@
 <translation id="3300502432153878901">ज़िप कोड</translation>
 <translation id="4130750466177569591">मैं सहमत हूँ</translation>
 <translation id="3251885322612056119">सेवा की अपडेटेड शर्तें</translation>
-<translation id="4049035689681585146">हमने Brave Rewards के लिए सेवा की शर्तें अपडेट कर दी हैं. हमने अपनी शर्तों को स्पष्ट करने और यह सुनिश्चित करने के लिए ये अपडेट किए हैं कि उनमें नई सुविधाएँ शामिल हों. अगर आप Brave Rewards का इस्तेमाल करना जारी रखते हैं, तो आप अपडेटेड सेवा की शर्तों से सहमत हैं. अगर आप सहमत नहीं हैं, तो आप <ph name="RESET_START"/> Brave Rewards <ph name="RESET_END"/> को रीसेट कर सकते हैं, जिससे सुविधा डिसेबल कर दी जाएंगी.</translation>
-<translation id="2165953574528546737">Brave Rewards सेवा की शर्तों <ph name="TOS_END"/> के बारे में <ph name="TOS_START"/> देखें</translation>
+<translation id="4049035689681585146">हमने Ping Rewards के लिए सेवा की शर्तें अपडेट कर दी हैं. हमने अपनी शर्तों को स्पष्ट करने और यह सुनिश्चित करने के लिए ये अपडेट किए हैं कि उनमें नई सुविधाएँ शामिल हों. अगर आप Ping Rewards का इस्तेमाल करना जारी रखते हैं, तो आप अपडेटेड सेवा की शर्तों से सहमत हैं. अगर आप सहमत नहीं हैं, तो आप <ph name="RESET_START"/> Ping Rewards <ph name="RESET_END"/> को रीसेट कर सकते हैं, जिससे सुविधा डिसेबल कर दी जाएंगी.</translation>
+<translation id="2165953574528546737">Ping Rewards सेवा की शर्तों <ph name="TOS_END"/> के बारे में <ph name="TOS_START"/> देखें</translation>
+<translation id="1381108437654541567">कई Windows इनेबल करें</translation>
+<translation id="6167344249617630304">एक समय में ज़्यादा से ज़्यादा 5 windows खोलें और टैब को एक window से दूसरी window पर ले जाएँ</translation>
+<translation id="1063948063403254568">कई windows मिले</translation>
+<translation id="4661882208707630158">मल्टीपल-विंडो सुविधा को डिसेबल करने से पहले कृपया टैब को किसी अन्य Ping विंडो में मर्ज करें, या अन्य  Ping विंडो बंद करें.</translation>
+<translation id="6891382640886173702">Windows मर्ज करें</translation>
+<translation id="2912247081180973411">Windows बंद करें</translation>
+<translation id="4010699428656610296">कृपया अन्य टैब को किसी अन्य Ping विंडो में मर्ज करें.</translation>
+<translation id="208634871997892083">हमेशा VPN पर</translation>
+<translation id="1599073346542156922">कैसे ऑन करें:</translation>
+<translation id="7001163334415463127">1. अपने ऐप ड्रॉअर से या नीचे दिए गए बटन पर टैप करके अपने डिवाइस की सेटिंग खोलें.</translation>
+<translation id="887443138775437899">2. Ping VPN ढूंढें और दाईं ओर सेटिंग आइकन पर टैप करें.</translation>
+<translation id="3776051499611941773">3 इनेबल करने के लिए, हमेश VPN पर<ph name="ALWAYS_ON_TUTORIAL_END"/> 
+<ph name="ALWAYS_ON_TUTORIAL_START"/>पर टॉगल करें.</translation>
+<translation id="4776146737004271126">Android सेटिंग खोलें</translation>
+<translation id="2728518864712716830">अपडेट डाउनलोड हो गया है.</translation>
+<translation id="8403338849301491865">फ़िल्टर लिस्ट अपडेट की गई</translation>
+<translation id="4650851936784160359">फ़िल्टर लिस्ट अपडेट नहीं की जा सकी. कृपया दोबारा कोशिश करें.</translation>
 </translationbundle>

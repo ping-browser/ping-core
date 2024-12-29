@@ -15,9 +15,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_wallet {
-
-namespace solana {
+namespace brave_wallet::solana {
 
 namespace system_program {
 
@@ -41,42 +39,47 @@ TEST(SolanaInstructionBuilderUnitTest, TransferSOL) {
 namespace spl_token_program {
 
 TEST(SolanaInstructionBuilderUnitTest, TransferSPLToken) {
-  auto ins = Transfer("program", "source", "destination", "authority",
-                      std::vector<std::string>(), 10000000);
+  auto ins =
+      TransferChecked("program", "source", "mint_address", "destination",
+                      "authority", std::vector<std::string>(), 10000000, 2u);
   EXPECT_TRUE(ins);
   EXPECT_EQ(ins.value(),
             SolanaInstruction(
                 "program",
                 {SolanaAccountMeta("source", std::nullopt, false, true),
+                 SolanaAccountMeta("mint_address", std::nullopt, false, false),
                  SolanaAccountMeta("destination", std::nullopt, false, true),
                  SolanaAccountMeta("authority", std::nullopt, true, false)},
-                std::vector<uint8_t>({3, 128, 150, 152, 0, 0, 0, 0, 0})));
+                std::vector<uint8_t>({12, 128, 150, 152, 0, 0, 0, 0, 0, 2})));
 
-  ins = Transfer("program", "source", "destination", "authority",
-                 std::vector<std::string>({"signer1", "signer2"}), 10000000);
+  ins = TransferChecked(
+      "program", "source", "mint_address", "destination", "authority",
+      std::vector<std::string>({"signer1", "signer2"}), 10000000, 2u);
   EXPECT_TRUE(ins);
   EXPECT_EQ(ins.value(),
             SolanaInstruction(
                 "program",
                 {SolanaAccountMeta("source", std::nullopt, false, true),
+                 SolanaAccountMeta("mint_address", std::nullopt, false, false),
                  SolanaAccountMeta("destination", std::nullopt, false, true),
                  SolanaAccountMeta("authority", std::nullopt, false, false),
                  SolanaAccountMeta("signer1", std::nullopt, true, false),
                  SolanaAccountMeta("signer2", std::nullopt, true, false)},
-                std::vector<uint8_t>({3, 128, 150, 152, 0, 0, 0, 0, 0})));
+                std::vector<uint8_t>({12, 128, 150, 152, 0, 0, 0, 0, 0, 2})));
 
-  ins = Transfer("program", "source", "destination", "authority",
-                 std::vector<std::string>(), 1);
+  ins = TransferChecked("program", "source", "mint_address", "destination",
+                        "authority", std::vector<std::string>(), 1, 2);
   EXPECT_TRUE(ins);
   EXPECT_EQ(ins.value(),
             SolanaInstruction(
                 "program",
                 {SolanaAccountMeta("source", std::nullopt, false, true),
+                 SolanaAccountMeta("mint_address", std::nullopt, false, false),
                  SolanaAccountMeta("destination", std::nullopt, false, true),
                  SolanaAccountMeta("authority", std::nullopt, true, false)},
-                std::vector<uint8_t>({3, 1, 0, 0, 0, 0, 0, 0, 0})));
+                std::vector<uint8_t>({12, 1, 0, 0, 0, 0, 0, 0, 0, 2})));
 
-  ins = Transfer("", "", "", "", std::vector<std::string>(), 1);
+  ins = TransferChecked("", "", "", "", "", std::vector<std::string>(), 1, 2);
   EXPECT_FALSE(ins);
 }
 
@@ -85,9 +88,9 @@ TEST(SolanaInstructionBuilderUnitTest, TransferSPLToken) {
 namespace spl_associated_token_account_program {
 
 TEST(SolanaInstructionBuilderUnitTest, CreateAssociatedTokenAccount) {
-  auto ins = CreateAssociatedTokenAccount("funding_address", "wallet_address",
-                                          "associated_token_account_address",
-                                          "spl_token_mint_address");
+  auto ins = CreateAssociatedTokenAccount(
+      "program", "funding_address", "wallet_address",
+      "associated_token_account_address", "spl_token_mint_address");
   ASSERT_TRUE(ins);
   EXPECT_EQ(
       ins.value(),
@@ -101,25 +104,59 @@ TEST(SolanaInstructionBuilderUnitTest, CreateAssociatedTokenAccount) {
                              false),
            SolanaAccountMeta(mojom::kSolanaSystemProgramId, std::nullopt, false,
                              false),
-           SolanaAccountMeta(mojom::kSolanaTokenProgramId, std::nullopt, false,
-                             false)},
+           SolanaAccountMeta("program", std::nullopt, false, false)},
           std::vector<uint8_t>()));
 
-  EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",
+  EXPECT_FALSE(CreateAssociatedTokenAccount("", "funding_address",
                                             "associated_token_account_address",
                                             "wallet_address", ""));
-  EXPECT_FALSE(CreateAssociatedTokenAccount(
-      "funding_address", "", "wallet_address", "spl_token_mint_address"));
-  EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",
+
+  EXPECT_FALSE(CreateAssociatedTokenAccount("program", "funding_address",
+                                            "associated_token_account_address",
+                                            "wallet_address", ""));
+  EXPECT_FALSE(CreateAssociatedTokenAccount("program", "funding_address", "",
+                                            "wallet_address",
+                                            "spl_token_mint_address"));
+  EXPECT_FALSE(CreateAssociatedTokenAccount("program", "funding_address",
                                             "associated_token_account_address",
                                             "", "spl_token_mint_address"));
-  EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",
+  EXPECT_FALSE(CreateAssociatedTokenAccount("program", "funding_address",
                                             "associated_token_account_address",
                                             "wallet_address", ""));
 }
 
 }  // namespace spl_associated_token_account_program
 
-}  // namespace solana
+namespace compute_budget_program {
 
-}  // namespace brave_wallet
+TEST(SolanaInstructionBuilderUnitTest, SetComputeUnitLimit) {
+  auto instruction = SetComputeUnitLimit(1);
+  std::vector<uint8_t> expected_data1 = {2, 1, 0, 0, 0};
+  EXPECT_EQ(instruction,
+            SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
+                              base::span<const uint8_t>(expected_data1)));
+
+  instruction = SetComputeUnitLimit(99);
+  std::vector<uint8_t> expected_data2 = {2, 99, 0, 0, 0};
+  EXPECT_EQ(instruction,
+            SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
+                              base::span<const uint8_t>(expected_data2)));
+}
+
+TEST(SolanaInstructionBuilderUnitTest, SetComputeUnitPrice) {
+  auto instruction = SetComputeUnitPrice(1);
+  std::vector<uint8_t> expected_data1 = {3, 1, 0, 0, 0, 0, 0, 0, 0};
+  EXPECT_EQ(instruction,
+            SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
+                              base::span<const uint8_t>(expected_data1)));
+
+  instruction = SetComputeUnitPrice(99);
+  std::vector<uint8_t> expected_data2 = {3, 99, 0, 0, 0, 0, 0, 0, 0};
+  EXPECT_EQ(instruction,
+            SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
+                              base::span<const uint8_t>(expected_data2)));
+}
+
+}  // namespace compute_budget_program
+
+}  // namespace brave_wallet::solana

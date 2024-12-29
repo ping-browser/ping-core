@@ -7,37 +7,54 @@
 
 #include <optional>
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
 namespace {
 
+bool DoesRequireResourceForNewTabPageAds() {
+  // Require resource only if:
+  // - The user has opted into new tab page ads and has either joined Brave
+  //   Rewards or new tab page ad events should always be triggered.
+  return UserHasOptedInToNewTabPageAds() &&
+         (UserHasJoinedBraveRewards() ||
+          ShouldAlwaysTriggerNewTabPageAdEvents());
+}
+
 bool DoesRequireResource() {
-  return UserHasOptedInToBraveNewsAds() || UserHasJoinedBraveRewards();
+  // Require resource only if:
+  // - The user has opted into Brave News ads.
+  // - The user has opted into new tab page ads and has either joined Brave
+  //   Rewards or new tab page ad events should always be triggered.
+  // - The user has joined Brave Rewards and opted into notification ads.
+  return UserHasOptedInToBraveNewsAds() ||
+         DoesRequireResourceForNewTabPageAds() ||
+         UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
 
 Subdivision::Subdivision() {
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 }
 
 Subdivision::~Subdivision() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
 }
 
-void Subdivision::AddObserver(SubdivisionObserver* observer) {
+void Subdivision::AddObserver(SubdivisionObserver* const observer) {
   observers_.AddObserver(observer);
 }
 
-void Subdivision::RemoveObserver(SubdivisionObserver* observer) {
+void Subdivision::RemoveObserver(SubdivisionObserver* const observer) {
   observers_.RemoveObserver(observer);
 }
 
@@ -86,15 +103,19 @@ void Subdivision::OnNotifyDidInitializeAds() {
 }
 
 void Subdivision::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == brave_rewards::prefs::kEnabled ||
-      path == brave_news::prefs::kBraveNewsOptedIn ||
-      path == brave_news::prefs::kNewTabPageShowToday) {
+  if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
+      DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||
+      DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
+      DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
+    // This condition should include all the preferences that are present in the
+    // `DoesRequireResource` function.
     Initialize();
   }
 }
 
 void Subdivision::OnDidFetchSubdivision(const std::string& subdivision) {
   CHECK(!subdivision.empty());
+
   const std::optional<std::string> country_code =
       GetSubdivisionCountryCode(subdivision);
   const std::optional<std::string> subdivision_code =

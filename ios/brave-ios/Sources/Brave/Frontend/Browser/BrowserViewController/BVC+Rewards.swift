@@ -58,10 +58,8 @@ extension BrowserViewController {
 
     guard let tab = tabManager.selectedTab else { return }
 
-    if #available(iOS 16.0, *) {
-      // System components sit on top so we want to dismiss it
-      tab.webView?.findInteraction?.dismissFindNavigator()
-    }
+    // System components sit on top so we want to dismiss it
+    tab.webView?.findInteraction?.dismissFindNavigator()
 
     let braveRewardsPanel = BraveRewardsViewController(
       tab: tab,
@@ -154,47 +152,53 @@ extension BrowserViewController {
 }
 
 extension Tab {
-  func reportPageLoad(to rewards: BraveRewards, redirectChain urls: [URL]) {
-    guard let webView = webView, let url = webView.url else { return }
-    if url.isLocal || self.isPrivate { return }
-
-    var htmlBlob: String?
-    var classifierText: String?
-
-    let group = DispatchGroup()
-    group.enter()
-
-    webView.evaluateSafeJavaScript(
-      functionName: "new XMLSerializer().serializeToString",
-      args: ["document"],
-      contentWorld: WKContentWorld.defaultClient,
-      escapeArgs: false
-    ) { html, _ in
-      htmlBlob = html as? String
-      group.leave()
+  func reportPageLoad(to rewards: BraveRewards, redirectChain: [URL]) {
+    guard let url = redirectChain.last, let webView = webView, !url.isLocal, !isPrivate
+    else {
+      return
     }
 
-    if shouldNotifyAdsServiceTabDidChange {
+    if self.displayFavicon == nil {
+      adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
+    }
+
+    if rewardsReportingState.wasRestored {
+      return
+    }
+
+    let group = DispatchGroup()
+
+    var htmlContent: String?
+    var textContent: String?
+
+    if rewards.isEnabled {
+      group.enter()
+      webView.evaluateSafeJavaScript(
+        functionName: "new XMLSerializer().serializeToString",
+        args: ["document"],
+        contentWorld: WKContentWorld.defaultClient,
+        escapeArgs: false
+      ) { html, _ in
+        htmlContent = html as? String
+        group.leave()
+      }
+
       group.enter()
       webView.evaluateSafeJavaScript(
         functionName: "document?.body?.innerText",
         contentWorld: .defaultClient,
         asFunction: false
       ) { text, _ in
-        classifierText = text as? String
+        textContent = text as? String
         group.leave()
       }
     }
 
     group.notify(queue: .main) {
-      if self.displayFavicon == nil {
-        adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
-      }
       rewards.reportLoadedPage(
-        redirectChain: urls.isEmpty ? [url] : urls,
-        tabId: Int(self.rewardsId),
-        html: htmlBlob ?? "",
-        adsInnerText: classifierText
+        tab: self,
+        htmlContent: htmlContent,
+        textContent: textContent
       )
     }
   }

@@ -37,6 +37,10 @@ void ShowWalletBackup() {
   NOTREACHED();
 }
 
+void UnlockWallet() {
+  NOTREACHED();
+}
+
 void ShowWalletOnboarding(content::WebContents* web_contents) {
   Browser* browser =
       web_contents ? chrome::FindBrowserWithTab(web_contents) : nullptr;

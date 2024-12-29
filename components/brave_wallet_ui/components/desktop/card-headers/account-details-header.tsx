@@ -26,9 +26,11 @@ import { UISelectors } from '../../../common/selectors'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getBalance } from '../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../utils/pricing-utils'
 import { getAccountTypeDescription } from '../../../utils/account-utils'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
@@ -68,11 +70,12 @@ import {
 } from './account-details-header.style'
 import {
   MenuButton,
-  ButtonIcon,
+  MenuButtonIcon,
   MenuWrapper,
   HorizontalDivider
 } from './shared-card-headers.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
+import { Button, ButtonIcon } from './shared-panel-headers.style'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -192,6 +195,17 @@ export const AccountDetailsHeader = (props: Props) => {
         (option: AccountButtonOptionsObjectType) => option.id !== 'privateKey'
       )
     }
+    // We are currently not able to support viewing a
+    // BTC or ZEC account on a block explorer.
+    // Link to issue https://github.com/brave/brave-browser/issues/39699
+    if (
+      account.accountId.coin === BraveWallet.CoinType.BTC ||
+      account.accountId.coin === BraveWallet.CoinType.ZEC
+    ) {
+      options = options.filter(
+        (option: AccountButtonOptionsObjectType) => option.id !== 'explorer'
+      )
+    }
     return options
   }, [account])
 
@@ -205,15 +219,26 @@ export const AccountDetailsHeader = (props: Props) => {
       justifyContent='space-between'
     >
       <Row width='unset'>
-        <MenuButton
-          marginRight={16}
-          onClick={goBack}
-        >
-          <ButtonIcon
-            size={16}
-            name='arrow-left'
-          />
-        </MenuButton>
+        {isPanel ? (
+          <Row
+            width='unset'
+            margin='0px 12px 0px 0px'
+          >
+            <Button onClick={goBack}>
+              <ButtonIcon name='carat-left' />
+            </Button>
+          </Row>
+        ) : (
+          <MenuButton
+            marginRight={16}
+            onClick={goBack}
+          >
+            <MenuButtonIcon
+              size={16}
+              name='arrow-left'
+            />
+          </MenuButton>
+        )}
         <CreateAccountIcon
           account={account}
           size='huge'
@@ -268,11 +293,17 @@ export const AccountDetailsHeader = (props: Props) => {
           </>
         )}
         <MenuWrapper ref={accountDetailsMenuRef}>
-          <MenuButton
-            onClick={() => setShowAccountDetailsMenu((prev) => !prev)}
-          >
-            <ButtonIcon name='more-vertical' />
-          </MenuButton>
+          {isPanel ? (
+            <Button onClick={() => setShowAccountDetailsMenu((prev) => !prev)}>
+              <ButtonIcon name='more-vertical' />
+            </Button>
+          ) : (
+            <MenuButton
+              onClick={() => setShowAccountDetailsMenu((prev) => !prev)}
+            >
+              <MenuButtonIcon name='more-vertical' />
+            </MenuButton>
+          )}
           {showAccountDetailsMenu && (
             <AccountDetailsMenu
               options={menuOptions}

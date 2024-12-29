@@ -54,10 +54,10 @@ namespace {
 // Most of below code is copied from os_crypt_win.cc
 #if BUILDFLAG(IS_WIN)
 // Contains base64 random key encrypted with DPAPI.
-const char kOsCryptEncryptedKeyPrefName[] = "os_crypt.encrypted_key";
+constexpr char kOsCryptEncryptedKeyPrefName[] = "os_crypt.encrypted_key";
 
 // Key prefix for a key encrypted with DPAPI.
-const char kDPAPIKeyPrefix[] = "DPAPI";
+constexpr char kDPAPIKeyPrefix[] = "DPAPI";
 
 bool DecryptStringWithDPAPI(const std::string& ciphertext,
                             std::string* plaintext) {
@@ -463,7 +463,9 @@ void ChromeImporter::ImportPasswords(
   password_manager::LoginDatabase database(
       copy_password_file.copied_file_path(),
       password_manager::IsAccountStore(false));
-  if (!database.Init()) {
+  if (!database.Init(
+          /*on_undecryptable_passwords_removed=*/base::NullCallback(),
+          /*encryptor=*/nullptr)) {
     LOG(ERROR) << "LoginDatabase Init() failed";
     return;
   }

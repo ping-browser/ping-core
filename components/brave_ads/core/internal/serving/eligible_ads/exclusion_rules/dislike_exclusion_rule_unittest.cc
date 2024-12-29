@@ -5,38 +5,48 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsDislikeExclusionRuleTest : public UnitTestBase {
+class BraveAdsDislikeExclusionRuleTest : public test::TestBase {
  protected:
   const DislikeExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldInclude) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldIncludeForNeutralReaction) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.advertiser_id = kAdvertiserId;
+  creative_ad.advertiser_id = test::kAdvertiserId;
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExclude) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldIncludeForLikedReaction) {
   // Arrange
-  CreativeAdInfo creative_ad;
-  creative_ad.advertiser_id = kAdvertiserId;
+  GetReactions().AdsForTesting() = {
+      {test::kAdvertiserId, mojom::ReactionType::kLiked}};
 
-  AdContentInfo ad_content;
-  ad_content.advertiser_id = kAdvertiserId;
-  ad_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeAd(ad_content);
+  CreativeAdInfo creative_ad;
+  creative_ad.advertiser_id = test::kAdvertiserId;
+
+  // Act & Assert
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+}
+
+TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExcludeForDislikedReaction) {
+  // Arrange
+  GetReactions().AdsForTesting() = {
+      {test::kAdvertiserId, mojom::ReactionType::kDisliked}};
+
+  CreativeAdInfo creative_ad;
+  creative_ad.advertiser_id = test::kAdvertiserId;
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());

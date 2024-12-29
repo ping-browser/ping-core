@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/scoped_observation.h"
@@ -18,7 +19,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
-#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_resources.h"
@@ -319,9 +319,9 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
 
 }  // namespace
 
-BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui, const std::string& name)
+BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui)
     : WebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(web_ui, name, kBraveAdblockGenerated,
+  CreateAndAddWebUIDataSource(web_ui, kAdblockHost, kBraveAdblockGenerated,
                               kBraveAdblockGeneratedSize,
                               IDR_BRAVE_ADBLOCK_HTML);
   web_ui->AddMessageHandler(std::make_unique<AdblockDOMHandler>());

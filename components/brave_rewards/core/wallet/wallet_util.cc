@@ -43,8 +43,7 @@ std::string WalletTypeToState(const std::string& wallet_type) {
   } else if (wallet_type == "test") {
     return "wallets." + wallet_type;
   } else {
-    NOTREACHED() << "Unexpected wallet type " << wallet_type << '!';
-    return "";
+    NOTREACHED();
   }
 }
 
@@ -99,6 +98,9 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngine& engine,
 
   auto status = dict.FindInt("status");
   if (status) {
+    // It is assumed that a preference migration will convert any invalid
+    // wallet status values to a valid enum value. However, we should make this
+    // more robust and handle validation errors on read.
     wallet->status = static_cast<mojom::WalletStatus>(*status);
   }
 

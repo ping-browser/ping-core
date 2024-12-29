@@ -5,16 +5,16 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 
 // Options
 import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
-import { gasFeeOptions } from '../../../../options/gas-fee-options'
 
 // Hooks
 import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
 import { useLifi } from './useLifi'
+import { useSquid } from './useSquid'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
   useScopedBalanceUpdater //
@@ -26,25 +26,22 @@ import {
 
 // Types and constants
 import {
-  GasEstimate,
   SwapValidationErrorType,
   SwapParamsOverrides,
   SwapParams
 } from '../constants/types'
-import {
-  BraveWallet,
-  GasFeeOption,
-  WalletRoutes
-} from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../utils/amount'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 // FIXME(onyb): move makeNetworkAsset to utils/assets-utils
 import { isNativeAsset } from '../../../../utils/asset-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
-import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
+import {
+  getPriceIdForToken,
+  getTokenPriceAmountFromRegistry
+} from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
@@ -56,9 +53,14 @@ import {
   getJupiterToAmount,
   getLiFiQuoteOptions,
   getLiFiFromAmount,
-  getLiFiToAmount
+  getLiFiToAmount,
+  getSquidFromAmount,
+  getSquidToAmount,
+  getSquidQuoteOptions
 } from '../swap.utils'
-import { makeSwapRoute } from '../../../../utils/routes-utils'
+import {
+  makeSwapOrBridgeRoute //
+} from '../../../../utils/routes-utils'
 
 // Queries
 import {
@@ -69,6 +71,7 @@ import {
 } from '../../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
 import { AccountInfoEntity } from '../../../../common/slices/entities/account-info.entity'
+import { TokenBalancesRegistry } from '../../../../common/slices/entities/token-balance.entity'
 import {
   useAccountFromAddressQuery,
   useGetCombinedTokensListQuery
@@ -111,10 +114,26 @@ const getTokenFromParam = (
   )
 }
 
+const getAssetBalance = (
+  token: BraveWallet.BlockchainToken,
+  fromAccount?: BraveWallet.AccountInfo,
+  tokenBalancesRegistry?: TokenBalancesRegistry
+): Amount => {
+  if (!fromAccount) {
+    return Amount.zero()
+  }
+
+  return new Amount(
+    getBalance(fromAccount.accountId, token, tokenBalancesRegistry)
+  )
+}
+
 export const useSwap = () => {
   // routing
   const query = useQuery()
   const history = useHistory()
+  const { pathname } = useLocation()
+  const isBridge = pathname.includes(WalletRoutes.Bridge)
 
   // Queries
   // FIXME(onyb): what happens when defaultFiatCurrency is empty
@@ -124,8 +143,11 @@ export const useSwap = () => {
   const { account: fromAccount } = useAccountFromAddressQuery(
     query.get('fromAccountId') ?? undefined
   )
+  const { account: toAccount } = useAccountFromAddressQuery(
+    query.get('toAddress') ?? undefined
+  )
   // TODO: deprecate toAccountId in favour of toAddress + toCoin
-  const toAccountId = fromAccount?.accountId
+  const toAccountId = toAccount?.accountId
   const toCoinFromParams = query.get('toCoin') ?? undefined
   const toCoin = toCoinFromParams ? Number(toCoinFromParams) : undefined
   const toAddress = query.get('toAddress') ?? undefined
@@ -147,14 +169,13 @@ export const useSwap = () => {
     useState<boolean>(false)
   const [useDirectRoute, setUseDirectRoute] = useState<boolean>(false)
   const [slippageTolerance, setSlippageTolerance] = useState<string>('0.5')
-  const [selectedGasFeeOption, setSelectedGasFeeOption] =
-    useState<GasFeeOption>(gasFeeOptions[1])
   const [quoteUnion, setQuoteUnion] = useState<
     BraveWallet.SwapQuoteUnion | undefined
   >(undefined)
   const [quoteErrorUnion, setQuoteErrorUnion] = useState<
     BraveWallet.SwapErrorUnion | undefined
   >(undefined)
+  const [backendError, setBackendError] = useState<string | undefined>('')
   const [abortController, setAbortController] = useState<
     AbortController | undefined
   >(undefined)
@@ -165,6 +186,15 @@ export const useSwap = () => {
   const [selectedSwapSendAccount, setSelectedSwapSendAccount] = useState<
     AccountInfoEntity | undefined
   >(undefined)
+  const [timeUntilNextQuote, setTimeUntilNextQuote] = useState<
+    number | undefined
+  >(undefined)
+  const [selectedProvider, setSelectedProvider] =
+    useState<BraveWallet.SwapProvider>(BraveWallet.SwapProvider.kAuto)
+  const [selectedQuoteOptionId, setSelectedQuoteOptionId] = useState<
+    string | undefined
+  >(undefined)
+  const [isSubmittingSwap, setIsSubmittingSwap] = useState<boolean>(false)
 
   // Mutations
   const [generateSwapQuote] = useGenerateSwapQuoteMutation()
@@ -289,6 +319,15 @@ export const useSwap = () => {
       })
     }
 
+    if (quoteUnion.squidQuote) {
+      return getSquidQuoteOptions({
+        quote: quoteUnion.squidQuote,
+        fromNetwork,
+        spotPrices: spotPriceRegistry,
+        defaultFiatCurrency
+      })
+    }
+
     return []
   }, [
     fromNetwork,
@@ -325,38 +364,54 @@ export const useSwap = () => {
   const jupiter = useJupiter(swapProviderHookParams)
   const zeroEx = useZeroEx(swapProviderHookParams)
   const lifi = useLifi(swapProviderHookParams)
+  const squid = useSquid(swapProviderHookParams)
   const { approveSpendAllowance, checkAllowance, hasAllowance } =
     useTokenAllowance()
 
   const reset = useCallback(() => {
     setQuoteUnion(undefined)
     setQuoteErrorUnion(undefined)
+    setBackendError(undefined)
     setIsFetchingQuote(false)
     setSwapFees(undefined)
+    setTimeUntilNextQuote(undefined)
+    setSelectedQuoteOptionId(undefined)
     if (abortController) {
       abortController.abort()
     }
   }, [abortController])
 
   const onSelectQuoteOption = useCallback(
-    (index: number) => {
-      const option = quoteOptions[index]
+    (id?: string) => {
+      const option = id
+        ? quoteOptions.find((option) => option.id === id)
+        : quoteOptions[0]
       if (!option) {
         return
       }
 
-      if (!toToken) {
-        return
-      }
-
+      setSelectedQuoteOptionId(id)
       setToAmount(option.toAmount.format(6))
     },
-    [quoteOptions, toToken]
+    [quoteOptions]
+  )
+
+  const fromAssetBalance = useMemo(
+    () =>
+      fromToken &&
+      getAssetBalance(fromToken, fromAccount, tokenBalancesRegistry),
+    [fromToken, fromAccount, tokenBalancesRegistry]
+  )
+  const nativeAssetBalance = useMemo(
+    () =>
+      nativeAsset &&
+      getAssetBalance(nativeAsset, fromAccount, tokenBalancesRegistry),
+    [nativeAsset, fromAccount, tokenBalancesRegistry]
   )
 
   const handleQuoteRefreshInternal = useCallback(
     async (overrides: SwapParamsOverrides) => {
-      if (!fromAccount || !toAccountId || !fromNetwork) {
+      if (!fromAccount || !toAccountId || !fromNetwork || !fromAssetBalance) {
         return
       }
 
@@ -369,7 +424,12 @@ export const useSwap = () => {
           overrides.toAmount === undefined ? toAmount : overrides.toAmount,
         fromToken: overrides.fromToken || fromToken,
         toToken: overrides.toToken || toToken,
-        editingFromOrToAmount
+        editingFromOrToAmount,
+        provider:
+          overrides.provider === undefined
+            ? selectedProvider
+            : overrides.provider,
+        slippage: overrides.slippage ?? slippageTolerance
       }
 
       if (params.fromAmount && !params.toAmount) {
@@ -401,6 +461,8 @@ export const useSwap = () => {
       const controller = new AbortController()
       setAbortController(controller)
       setIsFetchingQuote(true)
+      setQuoteErrorUnion(undefined)
+      setBackendError(undefined)
 
       let quoteResponse
       try {
@@ -423,11 +485,9 @@ export const useSwap = () => {
                   .format()
               : '',
           toToken: params.toToken.contractAddress,
-          slippagePercentage: slippageTolerance,
-          routePriority:
-            params.fromToken.chainId === params.toToken.chainId
-              ? BraveWallet.RoutePriority.kCheapest
-              : BraveWallet.RoutePriority.kRecommended
+          slippagePercentage: params.slippage,
+          routePriority: BraveWallet.RoutePriority.kCheapest,
+          provider: params.provider
         }).unwrap()
       } catch (e) {
         setIsFetchingQuote(false)
@@ -444,14 +504,26 @@ export const useSwap = () => {
         setQuoteErrorUnion(quoteResponse.error)
       }
 
+      if (quoteResponse?.errorString) {
+        setBackendError(quoteResponse.errorString)
+      }
+
       if (quoteResponse?.response) {
         setQuoteUnion(quoteResponse.response)
 
         if (quoteResponse.response.lifiQuote) {
           const { routes } = quoteResponse.response.lifiQuote
 
-          // TODO(douglas): refactor to allow selecting routes
-          const route = routes[0] || undefined
+          // If overrides.selectedQuoteOptionId is undefined, we will use the
+          // first route as the default option.
+          //
+          // If overrides.selectedQuoteOptionId is set, we will try to find the
+          // route that matches the selectedQuoteOptionId.
+          const route = overrides.selectedQuoteOptionId
+            ? routes.find(
+                (route) => route.uniqueId === overrides.selectedQuoteOptionId
+              ) || routes[0]
+            : routes[0]
 
           if (!route) {
             return
@@ -468,7 +540,7 @@ export const useSwap = () => {
           if (step) {
             await checkAllowance({
               account: fromAccount,
-              spendAmount: step.estimate.fromAmount,
+              spendAmount: fromAssetBalance.format(),
               spenderAddress: step.estimate.approvalAddress,
               token: params.fromToken
             })
@@ -512,12 +584,39 @@ export const useSwap = () => {
 
           await checkAllowance({
             account: fromAccount,
-            spendAmount: quoteResponse.response.zeroExQuote.sellAmount,
+            spendAmount: fromAssetBalance.format(),
             spenderAddress: quoteResponse.response.zeroExQuote.allowanceTarget,
             token: params.fromToken
           })
         }
+
+        if (quoteResponse.response.squidQuote) {
+          if (params.editingFromOrToAmount === 'from') {
+            setToAmount(
+              getSquidToAmount({
+                quote: quoteResponse.response.squidQuote,
+                toToken: params.toToken
+              }).format(6)
+            )
+          } else {
+            setFromAmount(
+              getSquidFromAmount({
+                quote: quoteResponse.response.squidQuote,
+                fromToken: params.fromToken
+              }).format(6)
+            )
+          }
+
+          await checkAllowance({
+            account: fromAccount,
+            spendAmount: fromAssetBalance.format(),
+            spenderAddress: quoteResponse.response.squidQuote.allowanceTarget,
+            token: params.fromToken
+          })
+        }
       }
+
+      setSelectedQuoteOptionId(overrides.selectedQuoteOptionId)
 
       if (quoteResponse?.fees) {
         setSwapFees(quoteResponse?.fees)
@@ -525,6 +624,7 @@ export const useSwap = () => {
 
       setIsFetchingQuote(false)
       setAbortController(undefined)
+      setTimeUntilNextQuote(30000)
     },
     [
       fromAccount,
@@ -534,11 +634,13 @@ export const useSwap = () => {
       toAmount,
       fromToken,
       toToken,
+      fromAssetBalance,
       editingFromOrToAmount,
       reset,
       generateSwapQuote,
       slippageTolerance,
-      checkAllowance
+      checkAllowance,
+      selectedProvider
     ]
   )
 
@@ -589,51 +691,37 @@ export const useSwap = () => {
     [handleQuoteRefresh]
   )
 
-  const getAssetBalance = useCallback(
-    (token: BraveWallet.BlockchainToken): Amount => {
-      if (!fromAccount) {
-        return Amount.zero()
-      }
-
-      return new Amount(
-        getBalance(fromAccount.accountId, token, tokenBalancesRegistry)
-      )
-    },
-    [tokenBalancesRegistry, fromAccount]
-  )
-
-  const fromAssetBalance = fromToken && getAssetBalance(fromToken)
-  const nativeAssetBalance = nativeAsset && getAssetBalance(nativeAsset)
-
   const onClickFlipSwapTokens = useCallback(async () => {
-    if (!fromAccount || !fromToken || !toToken) {
+    if (!fromAccount || !toAccount || !fromToken || !toToken) {
       return
     }
     if (
-      fromAccount.accountId.coin !== toToken.coin ||
-      toCoin !== fromToken.coin
+      !isBridge &&
+      (fromAccount.accountId.coin !== toToken.coin || toCoin !== fromToken.coin)
     ) {
       history.replace(WalletRoutes.Swap)
     } else {
       history.replace(
-        makeSwapRoute({
+        makeSwapOrBridgeRoute({
           fromToken: toToken,
-          fromAccount,
+          fromAccount: toAccount,
           toToken: fromToken,
-          toAddress,
-          toCoin
+          toAddress: fromAccount.accountId.address,
+          toCoin: fromToken.coin,
+          routeType: isBridge ? 'bridge' : 'swap'
         })
       )
     }
     await handleOnSetFromAmount('')
   }, [
     fromAccount,
+    toAccount,
     fromToken,
     toToken,
     toCoin,
     handleOnSetFromAmount,
     history,
-    toAddress
+    isBridge
   ])
 
   // Changing the To asset does the following:
@@ -644,18 +732,22 @@ export const useSwap = () => {
   //     debouncing.
   //  5. Fetch spot price.
   const onSelectToToken = useCallback(
-    async (token: BraveWallet.BlockchainToken) => {
+    async (
+      token: BraveWallet.BlockchainToken,
+      account?: BraveWallet.AccountInfo
+    ) => {
       if (!fromToken || !fromAccount) {
         return
       }
       setEditingFromOrToAmount('from')
       history.replace(
-        makeSwapRoute({
+        makeSwapOrBridgeRoute({
           fromToken,
           fromAccount,
           toToken: token,
-          toAddress,
-          toCoin: token.coin
+          toAddress: account?.accountId.address,
+          toCoin: token.coin,
+          routeType: isBridge ? 'bridge' : 'swap'
         })
       )
       setSelectingFromOrTo(undefined)
@@ -671,7 +763,7 @@ export const useSwap = () => {
       fromToken,
       fromAccount,
       history,
-      toAddress,
+      isBridge,
       reset,
       handleQuoteRefreshInternal
     ]
@@ -691,23 +783,46 @@ export const useSwap = () => {
         return
       }
       setEditingFromOrToAmount('from')
-      // ToDo: Until cross-chain swaps is supported,
-      // we have this check to make sure that the toToken
-      // and the incoming fromToken are on the same network.
-      // If not we clear the toToken from params.
-      if (toToken && toToken.chainId === token.chainId) {
+
+      if (isBridge) {
         history.replace(
-          makeSwapRoute({
+          makeSwapOrBridgeRoute({
             fromToken: token,
             fromAccount: account,
             toToken,
             toAddress,
-            toCoin
+            toCoin,
+            routeType: 'bridge'
+          })
+        )
+        setSelectingFromOrTo(undefined)
+        setFromAmount('')
+        setToAmount('')
+        reset()
+        return
+      }
+
+      // For regular Swaps we check that the toToken
+      // and the incoming fromToken are on the same network.
+      // If not we clear the toToken from params.
+      if (toToken && toToken.chainId === token.chainId) {
+        history.replace(
+          makeSwapOrBridgeRoute({
+            fromToken: token,
+            fromAccount: account,
+            toToken,
+            toAddress,
+            toCoin,
+            routeType: 'swap'
           })
         )
       } else {
         history.replace(
-          makeSwapRoute({ fromToken: token, fromAccount: account })
+          makeSwapOrBridgeRoute({
+            fromToken: token,
+            fromAccount: account,
+            routeType: 'swap'
+          })
         )
       }
       setSelectingFromOrTo(undefined)
@@ -715,7 +830,7 @@ export const useSwap = () => {
       setToAmount('')
       reset()
     },
-    [toToken, reset, history, toAddress, toCoin]
+    [toToken, reset, history, toAddress, toCoin, isBridge]
   )
 
   const onSetSelectedSwapAndSendOption = useCallback((value: string) => {
@@ -736,6 +851,25 @@ export const useSwap = () => {
     []
   )
 
+  const onChangeRecipient = useCallback(
+    async (address: string) => {
+      if (!fromToken || !fromAccount || !toToken) {
+        return
+      }
+      history.replace(
+        makeSwapOrBridgeRoute({
+          fromToken,
+          fromAccount,
+          toToken: toToken,
+          toAddress: address,
+          toCoin: toToken.coin,
+          routeType: isBridge ? 'bridge' : 'swap'
+        })
+      )
+    },
+    [fromToken, toToken, fromAccount, history, isBridge]
+  )
+
   // Memos
   const fiatValue = useMemo(() => {
     if (
@@ -751,16 +885,6 @@ export const useSwap = () => {
     return new Amount(fromAmount).times(price).formatAsFiat(defaultFiatCurrency)
   }, [fromAmount, fromToken, spotPriceRegistry, defaultFiatCurrency])
 
-  const gasEstimates: GasEstimate = useMemo(() => {
-    // TODO(onyb): Setup getGasEstimate Methods
-    return {
-      gasFee: '0.0034',
-      gasFeeGwei: '36',
-      gasFeeFiat: '17.59',
-      time: '1 min'
-    }
-  }, [])
-
   const feesWrapped = useMemo(() => {
     if (quoteOptions.length) {
       return quoteOptions[0].networkFee
@@ -769,8 +893,56 @@ export const useSwap = () => {
     return Amount.zero()
   }, [quoteOptions])
 
+  const availableProvidersForSwap = useMemo(() => {
+    // If no tokens are selected, we cannot reliably determine the available
+    // providers.
+    if (!fromToken && !toToken) {
+      return [BraveWallet.SwapProvider.kAuto]
+    }
+
+    const hasSolInFillPath =
+      fromToken?.coin === BraveWallet.CoinType.SOL ||
+      toToken?.coin === BraveWallet.CoinType.SOL
+
+    const hasEthInFillPath =
+      fromToken?.coin === BraveWallet.CoinType.ETH ||
+      toToken?.coin === BraveWallet.CoinType.ETH
+
+    if (!isBridge && hasSolInFillPath) {
+      return [BraveWallet.SwapProvider.kAuto, BraveWallet.SwapProvider.kJupiter]
+    }
+
+    if (!isBridge && hasEthInFillPath) {
+      return [
+        BraveWallet.SwapProvider.kAuto,
+        BraveWallet.SwapProvider.kLiFi,
+        BraveWallet.SwapProvider.kZeroEx,
+        BraveWallet.SwapProvider.kSquid
+      ]
+    }
+
+    if (isBridge && hasSolInFillPath) {
+      return [BraveWallet.SwapProvider.kAuto, BraveWallet.SwapProvider.kLiFi]
+    }
+
+    if (isBridge && hasEthInFillPath) {
+      return [
+        BraveWallet.SwapProvider.kAuto,
+        BraveWallet.SwapProvider.kLiFi,
+        BraveWallet.SwapProvider.kSquid
+      ]
+    }
+
+    return [BraveWallet.SwapProvider.kAuto]
+  }, [isBridge, fromToken, toToken])
+
   const swapValidationError: SwapValidationErrorType | undefined =
     useMemo(() => {
+      // Display error if provider is not supported for a swap.
+      if (!availableProvidersForSwap.includes(selectedProvider)) {
+        return 'providerNotSupported'
+      }
+
       // No validation to perform when From and To amounts
       // are empty, since quote is not fetched.
       if (!fromAmount && !toAmount) {
@@ -817,9 +989,16 @@ export const useSwap = () => {
         return 'insufficientFundsForGas'
       }
 
+      // No quote-based validations to perform when backend error is set.
+      if (backendError) {
+        return 'unknownError'
+      }
+
       // EVM specific validations
       if (
-        (quoteUnion?.zeroExQuote || quoteUnion?.lifiQuote) &&
+        (quoteUnion?.zeroExQuote ||
+          quoteUnion?.lifiQuote ||
+          quoteUnion?.squidQuote) &&
         fromToken.coin === BraveWallet.CoinType.ETH &&
         fromToken.contractAddress &&
         !hasAllowance
@@ -830,6 +1009,10 @@ export const useSwap = () => {
       if (quoteErrorUnion?.zeroExError) {
         if (quoteErrorUnion.zeroExError.isInsufficientLiquidity) {
           return 'insufficientLiquidity'
+        }
+
+        if (quoteErrorUnion.zeroExError.isInsufficientAllowance) {
+          return 'insufficientAllowance'
         }
 
         return 'unknownError'
@@ -871,21 +1054,32 @@ export const useSwap = () => {
       quoteUnion?.zeroExQuote,
       quoteUnion?.lifiQuote,
       quoteUnion?.jupiterQuote?.routePlan.length,
+      quoteUnion?.squidQuote,
       hasAllowance,
-      quoteErrorUnion
+      quoteErrorUnion,
+      backendError,
+      selectedProvider,
+      availableProvidersForSwap
     ])
 
   const onSubmit = useCallback(async () => {
-    if (!quoteUnion || !fromAccount || !fromNetwork || !fromToken) {
+    if (
+      !quoteUnion ||
+      !fromAccount ||
+      !fromNetwork ||
+      !fromToken ||
+      !fromAssetBalance
+    ) {
       return
     }
 
-    setIsFetchingQuote(true)
+    setIsSubmittingSwap(true)
 
     if (quoteUnion.zeroExQuote) {
       if (hasAllowance) {
         const error = await zeroEx.exchange()
         if (error) {
+          console.log('zeroEx.exchange error', error.zeroExError)
           setQuoteErrorUnion(error)
         } else {
           setFromAmount('')
@@ -898,15 +1092,19 @@ export const useSwap = () => {
           network: fromNetwork,
           spenderAddress: quoteUnion.zeroExQuote.allowanceTarget,
           token: fromToken,
-          spendAmount: quoteUnion.zeroExQuote.sellAmount
+          spendAmount: fromAssetBalance.format()
         })
       }
     }
 
     if (quoteUnion.lifiQuote) {
-      const route = quoteUnion.lifiQuote.routes[0] || undefined
-      const step = route?.steps[0]
+      const route = selectedQuoteOptionId
+        ? quoteUnion.lifiQuote.routes.find(
+            (route) => route.uniqueId === selectedQuoteOptionId
+          ) || quoteUnion.lifiQuote.routes[0]
+        : quoteUnion.lifiQuote.routes[0]
 
+      const step = route?.steps[0]
       if (!step) {
         return
       }
@@ -916,6 +1114,7 @@ export const useSwap = () => {
         // confirmations)
         const error = await lifi.exchange(step)
         if (error) {
+          console.log('lifi.exchange error', error.lifiError)
           setQuoteErrorUnion(error)
         } else {
           setFromAmount('')
@@ -925,7 +1124,7 @@ export const useSwap = () => {
       } else {
         await approveSpendAllowance({
           spenderAddress: step.estimate.approvalAddress,
-          spendAmount: step.estimate.fromAmount,
+          spendAmount: fromAssetBalance.format(),
           account: fromAccount,
           network: fromNetwork,
           token: fromToken
@@ -936,6 +1135,7 @@ export const useSwap = () => {
     if (quoteUnion.jupiterQuote) {
       const error = await jupiter.exchange(quoteUnion.jupiterQuote)
       if (error) {
+        console.log('jupiter.exchange error', error.jupiterError)
         setQuoteErrorUnion(error)
       } else {
         setFromAmount('')
@@ -944,23 +1144,77 @@ export const useSwap = () => {
       }
     }
 
-    setIsFetchingQuote(false)
+    if (quoteUnion.squidQuote) {
+      if (hasAllowance) {
+        const error = await squid.exchange()
+        if (error) {
+          console.log('squid.exchange error', error.squidError)
+          setQuoteErrorUnion(error)
+        } else {
+          setFromAmount('')
+          setToAmount('')
+          reset()
+        }
+      } else {
+        await approveSpendAllowance({
+          account: fromAccount,
+          network: fromNetwork,
+          spenderAddress: quoteUnion.squidQuote.allowanceTarget,
+          token: fromToken,
+          spendAmount: fromAssetBalance.format()
+        })
+      }
+    }
+
+    setIsSubmittingSwap(false)
   }, [
+    selectedQuoteOptionId,
     quoteUnion,
     fromAccount,
     fromNetwork,
     fromToken,
+    fromAssetBalance,
     hasAllowance,
     zeroEx,
     reset,
     approveSpendAllowance,
     lifi,
-    jupiter
+    jupiter,
+    squid
   ])
 
+  const onChangeSwapProvider = useCallback(
+    async (provider: BraveWallet.SwapProvider) => {
+      setSelectedProvider(provider)
+      setSelectedQuoteOptionId(undefined)
+      await handleQuoteRefreshInternal({
+        provider
+      })
+    },
+    [handleQuoteRefreshInternal]
+  )
+
+  const onChangeSlippageTolerance = useCallback(
+    async (slippage: string) => {
+      setSlippageTolerance(slippage)
+      await handleQuoteRefreshInternal({
+        slippage
+      })
+    },
+    [handleQuoteRefreshInternal]
+  )
+
   const submitButtonText = useMemo(() => {
+    if (isFetchingQuote) {
+      return getLocale('braveWalletFetchingQuote')
+    }
+
+    const defaultText = isBridge
+      ? getLocale('braveWalletReviewBridge')
+      : getLocale('braveWalletReviewSwap')
+
     if (!fromToken || !fromNetwork) {
-      return getLocale('braveSwapReviewOrder')
+      return defaultText
     }
 
     if (swapValidationError === 'insufficientBalance') {
@@ -992,8 +1246,8 @@ export const useSwap = () => {
       return getLocale('braveWalletSwapUnknownError')
     }
 
-    return getLocale('braveSwapReviewOrder')
-  }, [fromToken, fromNetwork, swapValidationError])
+    return defaultText
+  }, [isBridge, fromToken, fromNetwork, swapValidationError, isFetchingQuote])
 
   const isSubmitButtonDisabled = useMemo(() => {
     return (
@@ -1004,6 +1258,7 @@ export const useSwap = () => {
       // Prevent creating a swap transaction with stale parameters if fetching
       // of a new quote is in progress.
       isFetchingQuote ||
+      isSubmittingSwap ||
       // If quote is not set, there's nothing to create the swap with, so Swap
       // button must be disabled.
       quoteUnion === undefined ||
@@ -1042,17 +1297,35 @@ export const useSwap = () => {
     fromAmount,
     nativeAssetBalance,
     fromAssetBalance,
-    swapValidationError
+    swapValidationError,
+    isSubmittingSwap
   ])
+
+  const handleQuoteRefreshWithSelectedQuoteOptionId = useCallback(async () => {
+    await handleQuoteRefresh({
+      selectedQuoteOptionId
+    })
+  }, [handleQuoteRefresh, selectedQuoteOptionId])
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      await handleQuoteRefresh({})
-    }, 10000)
+      if (timeUntilNextQuote && timeUntilNextQuote !== 0) {
+        setTimeUntilNextQuote(timeUntilNextQuote - 1000)
+        return
+      }
+      if (!isFetchingQuote) {
+        await handleQuoteRefreshWithSelectedQuoteOptionId()
+      }
+    }, 1000)
     return () => {
       clearInterval(interval)
     }
-  }, [handleQuoteRefresh])
+  }, [
+    handleQuoteRefreshWithSelectedQuoteOptionId,
+    timeUntilNextQuote,
+    isFetchingQuote,
+    selectedQuoteOptionId
+  ])
 
   return {
     fromAccount,
@@ -1066,17 +1339,15 @@ export const useSwap = () => {
     fiatValue,
     isFetchingQuote,
     quoteOptions,
-    selectedQuoteOptionIndex: 0,
+    selectedQuoteOptionId,
     selectingFromOrTo,
     swapAndSendSelected,
     selectedSwapAndSendOption,
     selectedSwapSendAccount,
     toAnotherAddress,
     userConfirmedAddress,
-    selectedGasFeeOption,
     slippageTolerance,
     useDirectRoute,
-    gasEstimates,
     swapFees,
     onSelectFromToken,
     onSelectToToken,
@@ -1084,22 +1355,30 @@ export const useSwap = () => {
     setSelectingFromOrTo,
     handleOnSetFromAmount,
     handleOnSetToAmount,
+    handleQuoteRefresh: handleQuoteRefreshWithSelectedQuoteOptionId,
     onClickFlipSwapTokens,
     setSwapAndSendSelected,
     handleOnSetToAnotherAddress,
     onCheckUserConfirmedAddress,
     onSetSelectedSwapAndSendOption,
     setSelectedSwapSendAccount,
-    setSelectedGasFeeOption,
-    setSlippageTolerance,
+    onChangeSlippageTolerance,
     setUseDirectRoute,
     onSubmit,
+    onChangeRecipient,
+    onChangeSwapProvider,
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
     spotPrices: spotPriceRegistry,
     tokenBalancesRegistry,
-    isLoadingBalances
+    isLoadingBalances,
+    isBridge,
+    toAccount,
+    timeUntilNextQuote,
+    selectedProvider,
+    availableProvidersForSwap,
+    isSubmittingSwap
   }
 }
 export default useSwap

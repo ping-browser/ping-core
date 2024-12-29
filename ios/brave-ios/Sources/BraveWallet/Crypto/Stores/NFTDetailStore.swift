@@ -5,77 +5,6 @@
 
 import BraveCore
 
-struct NFTMetadata: Codable, Equatable {
-  var imageURLString: String?
-  var name: String?
-  var description: String?
-  var attributes: [NFTAttribute]?
-
-  enum CodingKeys: String, CodingKey {
-    case imageURLString = "image"
-    case name
-    case description
-    case attributes
-  }
-
-  init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.imageURLString = try container.decodeIfPresent(String.self, forKey: .imageURLString)
-    self.name = try container.decodeIfPresent(String.self, forKey: .name)
-    self.description = try container.decodeIfPresent(String.self, forKey: .description)
-    let test = try container.decodeIfPresent([NFTAttribute].self, forKey: .attributes)
-    self.attributes = test
-  }
-
-  init(
-    imageURLString: String?,
-    name: String?,
-    description: String?,
-    attributes: [NFTAttribute]?
-  ) {
-    self.imageURLString = imageURLString
-    self.name = name
-    self.description = description
-    self.attributes = attributes
-  }
-
-  func httpfyIpfsUrl(ipfsApi: IpfsAPI) -> NFTMetadata {
-    guard let imageURLString,
-      imageURLString.hasPrefix("ipfs://"),
-      let url = URL(string: imageURLString)
-    else {
-      return NFTMetadata(
-        imageURLString: self.imageURLString,
-        name: self.name,
-        description: self.description,
-        attributes: self.attributes
-      )
-    }
-    return NFTMetadata(
-      imageURLString: ipfsApi.resolveGatewayUrl(for: url)?.absoluteString,
-      name: self.name,
-      description: self.description,
-      attributes: self.attributes
-    )
-  }
-
-  var imageURL: URL? {
-    guard let urlString = imageURLString else { return nil }
-    return URL(string: urlString)
-  }
-}
-
-struct NFTAttribute: Codable, Equatable, Identifiable {
-  var type: String
-  var value: String
-  var id: String { type }
-
-  enum CodingKeys: String, CodingKey {
-    case type = "trait_type"
-    case value
-  }
-}
-
 class NFTDetailStore: ObservableObject, WalletObserverStore {
   private let assetManager: WalletUserAssetManagerType
   private let keyringService: BraveWalletKeyringService
@@ -86,7 +15,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
   @Published var owner: BraveWallet.AccountInfo?
   @Published var nft: BraveWallet.BlockchainToken
   @Published var isLoading: Bool = false
-  @Published var nftMetadata: NFTMetadata?
+  @Published var nftMetadata: BraveWallet.NftMetadata?
   @Published var networkInfo: BraveWallet.NetworkInfo?
 
   var isObserving: Bool {
@@ -100,7 +29,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
     txService: BraveWalletTxService,
     ipfsApi: IpfsAPI,
     nft: BraveWallet.BlockchainToken,
-    nftMetadata: NFTMetadata?,
+    nftMetadata: BraveWallet.NftMetadata?,
     owner: BraveWallet.AccountInfo?
   ) {
     self.assetManager = assetManager
@@ -109,7 +38,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
     self.txService = txService
     self.ipfsApi = ipfsApi
     self.nft = nft
-    self.nftMetadata = nftMetadata?.httpfyIpfsUrl(ipfsApi: ipfsApi)
+    self.nftMetadata = nftMetadata
     self.owner = owner
 
     self.setupObservers()
@@ -118,6 +47,8 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
   }
 
   func setupObservers() {
+    guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
       _onTransactionStatusChanged: { [weak self] txInfo in
@@ -135,42 +66,39 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
 
   func update() {
     Task { @MainActor in
-      let allNetworks = await rpcService.allNetworks(coin: nft.coin)
+      let allNetworks = await rpcService.allNetworks()
       if let network = allNetworks.first(where: {
-        $0.chainId.caseInsensitiveCompare(nft.chainId) == .orderedSame
+        $0.coin == nft.coin && $0.chainId.caseInsensitiveCompare(nft.chainId) == .orderedSame
       }) {
         networkInfo = network
       }
 
-      if owner == nil {
-        updateOwner()
-      }
+      updateOwner()
 
       if nftMetadata == nil {
         isLoading = true
-        nftMetadata = await rpcService.fetchNFTMetadata(for: nft, ipfsApi: self.ipfsApi)
+        nftMetadata = await rpcService.fetchNFTMetadata(
+          for: nft,
+          ipfsApi: ipfsApi
+        )
         isLoading = false
       }
     }
   }
 
-  func updateNFTStatus(
+  @MainActor func updateNFTStatus(
     visible: Bool,
     isSpam: Bool,
-    isDeletedByUser: Bool,
-    completion: @escaping () -> Void
-  ) {
-    assetManager.updateUserAsset(
+    isDeletedByUser: Bool
+  ) async {
+    await assetManager.updateUserAsset(
       for: nft,
       visible: visible,
       isSpam: isSpam,
       isDeletedByUser: isDeletedByUser
-    ) { [weak self] in
-      guard let self else { return }
-      if let newNFT = self.assetManager.getUserAsset(self.nft)?.blockchainToken {
-        self.nft = newNFT
-      }
-      completion()
+    )
+    if let newNFT = assetManager.getUserAsset(nft)?.blockchainToken {
+      nft = newNFT
     }
   }
 
@@ -182,15 +110,22 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
       let accounts = await keyringService.allAccounts().accounts
       let nftBalances: [String: Int] = await withTaskGroup(
         of: [String: Int].self,
-        body: { @MainActor [rpcService, nft] group in
+        body: { @MainActor [assetManager, rpcService, nft] group in
           for account in accounts where account.coin == nft.coin {
             group.addTask { @MainActor in
-              let balanceForToken = await rpcService.balance(
+              if let assetBalance = assetManager.getAssetBalances(
                 for: nft,
-                in: account,
-                network: network
-              )
-              return [account.id: Int(balanceForToken ?? 0)]
+                account: account.id
+              )?.first {
+                return [account.id: (assetBalance.balance as NSString).integerValue]
+              } else {
+                let balanceForToken = await rpcService.balance(
+                  for: nft,
+                  in: account,
+                  network: network
+                )
+                return [account.id: Int(balanceForToken ?? 0)]
+              }
             }
           }
           return await group.reduce(
@@ -215,5 +150,14 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
         owner = nil
       }
     }
+  }
+}
+
+extension NFTDetailStore: WalletUserAssetDataObserver {
+  func cachedBalanceRefreshed() {
+    update()
+  }
+
+  func userAssetUpdated() {
   }
 }

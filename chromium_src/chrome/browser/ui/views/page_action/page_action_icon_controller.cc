@@ -6,23 +6,16 @@
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/views/location_bar/brave_star_view.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
-#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
+#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 constexpr bool kSupportsPlaylistActionIconView = true;
 #else
 constexpr bool kSupportsPlaylistActionIconView = false;
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-#include "brave/browser/ui/views/brave_player/brave_player_action_icon_view.h"
-constexpr bool kSupportsBravePlayerActionIconView = true;
-#else
-constexpr bool kSupportsBravePlayerActionIconView = false;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -42,7 +35,8 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
     if constexpr (kSupportsPlaylistActionIconView) {                           \
       playlist_action_icon_view_ = add_page_action_icon(                       \
           type, std::make_unique<PlaylistActionIconView>(                      \
-                    params.command_updater, params.icon_label_bubble_delegate, \
+                    params.command_updater, params.browser,                    \
+                    params.icon_label_bubble_delegate,                         \
                     params.page_action_icon_delegate));                        \
     }                                                                          \
     break;                                                                     \
@@ -51,14 +45,6 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
                                    params.command_updater, params.browser,     \
                                    params.icon_label_bubble_delegate,          \
                                    params.page_action_icon_delegate));         \
-    break;                                                                     \
-  case brave::kBravePlayerPageActionIconType:                                  \
-    if constexpr (kSupportsBravePlayerActionIconView) {                        \
-      add_page_action_icon(type, std::make_unique<BravePlayerActionIconView>(  \
-                                     params.command_updater, *params.browser,  \
-                                     params.icon_label_bubble_delegate,        \
-                                     params.page_action_icon_delegate));       \
-    }                                                                          \
     break;                                                                     \
   case brave::kSpeedreaderPageActionIconType:                                  \
     if constexpr (kSupportsSpeedreaderActionIconView) {                        \
@@ -70,9 +56,22 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
     break;                                                                     \
   case brave::kUndefinedPageActionIconType
 
+// We define additional PageActionIconType values (in
+// brave_page_action_icon_type.h), but make them negative to avoid clashing
+// with the upstream enum. These values cannot be passed to
+// base::UmaHistogramEnumeration in
+// PageActionIconController::RecordIndividualMetrics, because they would
+// trigger:
+// DCHECK_LE(static_cast<uintmax_t>(sample),
+//           static_cast<uintmax_t>(T::kMaxValue));
+#define kShown kShown);           \
+  if (static_cast<int>(type) < 0) \
+    return; (false
+
 #define StarView BraveStarView
 #include "src/chrome/browser/ui/views/page_action/page_action_icon_controller.cc"
 #undef StarView
+#undef kShown
 #undef kCookieControls
 
 PageActionIconView* PageActionIconController::GetPlaylistActionIconView() {

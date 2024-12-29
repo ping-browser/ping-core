@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_util.h"
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_util_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -20,19 +20,20 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
      SealVerifiableConversionEnvelope) {
   // Arrange
   const VerifiableConversionInfo verifiable_conversion{
-      kVerifiableConversionId, kVerifiableConversionAdvertiserPublicKey};
+      test::kVerifiableConversionId,
+      test::kVerifiableConversionAdvertiserPublicKeyBase64};
 
   // Act
   const std::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope =
+      sealed_verifiable_conversion_envelope =
           SealVerifiableConversionEnvelope(verifiable_conversion);
-  ASSERT_TRUE(verifiable_conversion_envelope);
+  ASSERT_TRUE(sealed_verifiable_conversion_envelope);
 
   // Assert
   EXPECT_EQ(verifiable_conversion.id,
             test::OpenVerifiableConversionEnvelope(
-                *verifiable_conversion_envelope,
-                kVerifiableConversionAdvertiserSecretKey));
+                *sealed_verifiable_conversion_envelope,
+                test::kVerifiableConversionAdvertiserSecretKeyBase64));
 }
 
 TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
@@ -42,7 +43,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
   verifiable_conversion.id =
       std::string(kMinVerifiableConversionEnvelopeMessageLength - 1, '-');
   verifiable_conversion.advertiser_public_key_base64 =
-      kVerifiableConversionAdvertiserPublicKey;
+      test::kVerifiableConversionAdvertiserPublicKeyBase64;
 
   // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(verifiable_conversion));
@@ -55,7 +56,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
   verifiable_conversion.id =
       std::string(kMaxVerifiableConversionEnvelopeMessageLength + 1, '-');
   verifiable_conversion.advertiser_public_key_base64 =
-      kVerifiableConversionAdvertiserPublicKey;
+      test::kVerifiableConversionAdvertiserPublicKeyBase64;
 
   // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(verifiable_conversion));
@@ -64,17 +65,17 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
 TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
      DoNotSealEnvelopeWithInvalidMessage) {
   // Act & Assert
-  EXPECT_FALSE(SealVerifiableConversionEnvelope(
-      VerifiableConversionInfo{kInvalidVerifiableConversionId,
-                               kVerifiableConversionAdvertiserPublicKey}));
+  EXPECT_FALSE(SealVerifiableConversionEnvelope(VerifiableConversionInfo{
+      test::kInvalidVerifiableConversionId,
+      test::kVerifiableConversionAdvertiserPublicKeyBase64}));
 }
 
 TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
      DoNotSealEnvelopeWithInvalidPublicKey) {
   // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(VerifiableConversionInfo{
-      kVerifiableConversionId,
-      kInvalidVerifiableConversionAdvertiserPublicKey}));
+      test::kVerifiableConversionId,
+      test::kInvalidVerifiableConversionAdvertiserPublicKeyBase64}));
 }
 
 }  // namespace brave_ads

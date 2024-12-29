@@ -85,9 +85,12 @@ extension PlaylistListViewController {
         UIAlertAction(
           title: Strings.PlayList.removeActionButtonTitle,
           style: .destructive,
-          handler: { [unowned self] _ in
-            _ = PlaylistManager.shared.deleteCache(item: item)
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+          handler: { [weak self] _ in
+            Task {
+              guard let self else { return }
+              await PlaylistManager.shared.deleteCache(item: item)
+              self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
           }
         )
       )
@@ -128,7 +131,7 @@ extension PlaylistListViewController {
   }
 
   fileprivate func openInNewTab(_ item: PlaylistInfo, isPrivate: Bool) {
-    if let browser = PlaylistCarplayManager.shared.browserController,
+    if let browser = PlaylistCoordinator.shared.browserController,
       let pageURL = URL(string: item.pageSrc)
     {
 
@@ -479,8 +482,8 @@ extension PlaylistListViewController: UITableViewDelegate {
         return
       }
 
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
-      PlaylistCarplayManager.shared.currentPlaylistItem = item
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = indexPath.row
+      PlaylistCoordinator.shared.currentPlaylistItem = item
 
       PlaylistManager.shared.playbackTask = Task { @MainActor in
         do {
@@ -489,11 +492,11 @@ extension PlaylistListViewController: UITableViewDelegate {
             return
           }
 
-          PlaylistCarplayManager.shared.currentPlaylistItem = item
+          PlaylistCoordinator.shared.currentPlaylistItem = item
           self.activityIndicator.stopAnimating()
 
-          PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
-          PlaylistCarplayManager.shared.currentPlaylistItem = item
+          PlaylistCoordinator.shared.currentlyPlayingItemIndex = indexPath.row
+          PlaylistCoordinator.shared.currentPlaylistItem = item
           self.commitPlayerItemTransaction(at: indexPath, isExpired: false)
 
           self.seekLastPlayedItem(
@@ -502,8 +505,8 @@ extension PlaylistListViewController: UITableViewDelegate {
             lastPlayedTime: item.lastPlayedOffset
           )
         } catch {
-          PlaylistCarplayManager.shared.currentPlaylistItem = nil
-          PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+          PlaylistCoordinator.shared.currentPlaylistItem = nil
+          PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
           self.commitPlayerItemTransaction(at: indexPath, isExpired: false)
           self.delegate?.displayLoadingResourceError()
           Logger.module.error("Playlist Playback Error: \(error)")

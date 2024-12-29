@@ -28,7 +28,8 @@ const Container = styled.div`
 
   & > div {
     display: flex;
-    gap: ${spacing.m};
+    align-items: center;
+    gap: ${spacing.s};
   }
 `
 
@@ -37,6 +38,8 @@ const StyledButton = styled(Button)`
   --leo-button-padding: ${spacing.s};
   align-items: center;
   display: flex;
+  width: var(--leo-icon-xl);
+  height: var(--leo-icon-xl);
 `
 
 const NormalPlayerButton = styled(StyledButton)`
@@ -47,9 +50,8 @@ const MiniPlayerButton = styled(StyledButton)`
   ${hiddenOnNormalPlayer}
 `
 
-function Control({
+function Control ({
   iconName,
-  size,
   visibility,
   title,
   kind,
@@ -57,7 +59,6 @@ function Control({
 }: {
   iconName: string
   title: string
-  size: 'jumbo' | 'large'
   visibility: 'mini' | 'normal' | 'both'
   kind: 'plain' | 'plain-faint'
   onClick: () => void
@@ -71,17 +72,19 @@ function Control({
   return (
     <Button
       kind={kind}
-      size={size}
+      size='jumbo'
       onClick={onClick}
       title={title}
+      fab
     >
       <Icon name={iconName}></Icon>
     </Button>
   )
 }
 
-export default function PlayerControls({ videoElement, className }: Props) {
+export default function PlayerControls ({ videoElement, className }: Props) {
   const [isPlaying, setPlaying] = React.useState(false)
+  const [isMuted, setIsMuted] = React.useState(false)
 
   const shuffleEnabled = useSelector<ApplicationState, boolean | undefined>(
     (applicationState) => applicationState.playerState?.shuffleEnabled
@@ -96,16 +99,19 @@ export default function PlayerControls({ videoElement, className }: Props) {
       }
       const notifyPlaying = () => setPlaying(true)
       const notifyPaused = () => setPlaying(false)
+      const updateMuted = () => setIsMuted(videoElement.muted)
 
       videoElement.addEventListener('click', togglePlayingState)
       videoElement.addEventListener('playing', notifyPlaying)
       videoElement.addEventListener('pause', notifyPaused)
       videoElement.addEventListener('ended', notifyPaused)
+      videoElement.addEventListener('volumechange', updateMuted)
       return () => {
         videoElement.removeEventListener('click', togglePlayingState)
         videoElement.removeEventListener('playing', notifyPlaying)
         videoElement.removeEventListener('pause', notifyPaused)
         videoElement.removeEventListener('ended', notifyPaused)
+        videoElement.removeEventListener('volumechange', updateMuted)
       }
     }
 
@@ -117,9 +123,8 @@ export default function PlayerControls({ videoElement, className }: Props) {
       <div>
         <Control
           iconName='previous-outline'
-          size='jumbo'
           visibility='normal'
-          title={getLocalizedString('bravePlaylistA11YPrevious')}
+          title={getLocalizedString('bravePlaylistTooltipPrevious')}
           kind='plain-faint'
           onClick={() => {
             if (!videoElement) return
@@ -133,62 +138,64 @@ export default function PlayerControls({ videoElement, className }: Props) {
         />
         <Control
           iconName='rewind-15'
-          size='jumbo'
           visibility='normal'
-          title={getLocalizedString('bravePlaylistA11YRewind')}
+          title={getLocalizedString('bravePlaylistTooltipRewind')}
           kind='plain-faint'
           onClick={() => videoElement && (videoElement.currentTime -= 15)}
         />
         {isPlaying ? (
           <Control
             iconName='pause-filled'
-            size='jumbo'
             visibility='both'
-            title={getLocalizedString('bravePlaylistA11YPause')}
+            title={getLocalizedString('bravePlaylistTooltipPause')}
             kind='plain-faint'
             onClick={() => videoElement?.pause()}
           />
         ) : (
           <Control
             iconName='play-filled'
-            size='jumbo'
             visibility='both'
-            title={getLocalizedString('bravePlaylistA11YPlay')}
+            title={getLocalizedString('bravePlaylistTooltipPlay')}
             kind='plain-faint'
             onClick={() => videoElement?.play()}
           />
         )}
         <Control
           iconName='forward-15'
-          size='jumbo'
           visibility='normal'
-          title={getLocalizedString('bravePlaylistA11YForward')}
+          title={getLocalizedString('bravePlaylistTooltipForward')}
           kind='plain-faint'
           onClick={() => videoElement && (videoElement.currentTime += 15)}
         />
         <Control
           iconName='next-outline'
-          size='jumbo'
           visibility='normal'
-          title={getLocalizedString('bravePlaylistA11YNext')}
+          title={getLocalizedString('bravePlaylistTooltipNext')}
           kind='plain-faint'
           onClick={() => getPlayerActions().playNextItem()}
         />
         <Control
           iconName='close'
-          size='jumbo'
           visibility='mini'
-          title={getLocalizedString('bravePlaylistA11YClose')}
+          title={getLocalizedString('bravePlaylistTooltipClose')}
           kind='plain-faint'
           onClick={() => getPlayerActions().unloadPlaylist()}
         />
       </div>
       <div>
         <Control
-          iconName={shuffleEnabled ? 'shuffle-toggle-on' : 'shuffle-off'}
-          size='large'
+          iconName={isMuted ? 'volume-off' : 'volume-on'}
           visibility='normal'
-          title={getLocalizedString('bravePlaylistA11YShuffle')}
+          title={getLocalizedString('bravePlaylistTooltipToggleMuted')}
+          kind={'plain-faint'}
+          onClick={() => {
+            if (videoElement) videoElement.muted = !isMuted
+          }}
+        />
+        <Control
+          iconName={shuffleEnabled ? 'shuffle-toggle-on' : 'shuffle-off'}
+          visibility='normal'
+          title={getLocalizedString('bravePlaylistTooltipShuffle')}
           kind={shuffleEnabled ? 'plain' : 'plain-faint'}
           onClick={() => getPlayerActions().toggleShuffle()}
         />
@@ -200,14 +207,13 @@ export default function PlayerControls({ videoElement, className }: Props) {
               ? 'loop-1-toggle-on'
               : 'loop-all-toggle-on'
           }
-          size='large'
           visibility='normal'
           title={getLocalizedString(
             !loopMode
-              ? 'bravePlaylistA11YLoopOff'
+              ? 'bravePlaylistTooltipLoopOff'
               : loopMode === 'single-item'
-              ? 'bravePlaylistA11YLoopOne'
-              : 'bravePlaylistA11YLoopAll'
+              ? 'bravePlaylistTooltipLoopOne'
+              : 'bravePlaylistTooltipLoopAll'
           )}
           kind={loopMode ? 'plain' : 'plain-faint'}
           onClick={() => getPlayerActions().advanceLoopMode()}

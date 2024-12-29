@@ -23,7 +23,7 @@
 <translation id="4150201353443180367">ഡിസ്‌പ്ലേ</translation>
 <translation id="4275663329226226506">മീഡിയ</translation>
 <translation id="2433507940547922241">കാഴ്ച്ച</translation>
-<translation id="7207456302801184289">Brave-ലേക്ക് സ്വാഗതം</translation>
+<translation id="7207456302801184289">Ping-ലേക്ക് സ്വാഗതം</translation>
 <translation id="8281886186245836920">ഉപേക്ഷിക്കുക</translation>
 <translation id="6165508094623778733">കൂടുതലറിയുക</translation>
 <translation id="7658239707568436148">റദ്ദാക്കൂ</translation>
@@ -31,7 +31,7 @@
 <translation id="8926389886865778422">എന്നോട് വീണ്ടും ചോദിക്കരുത്</translation>
 <translation id="5234764350956374838">ബഹിഷ്‌ക്കരിക്കുക</translation>
 <translation id="8428213095426709021">ക്രമീകരണങ്ങള്‍</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="3149880132460839085">Ping Sync</translation>
 <translation id="5817918615728894473">ജോടിയാക്കുക</translation>
 <translation id="2175927920773552910">QR കോഡ്</translation>
 <translation id="8730621377337864115">പൂർത്തിയാക്കി</translation>
@@ -48,6 +48,7 @@
 <translation id="987264212798334818">പൊതുവായ</translation>
 <translation id="1116694919640316211">വിവരം</translation>
 <translation id="7961015016161918242">ഒരിക്കലും</translation>
+<translation id="6196640612572343990">മൂന്നാം കക്ഷി കുക്കികള്‍ ബ്ലോക്കുചെയ്യുക</translation>
 <translation id="5657156137487675418">എല്ലാ കുക്കികളും അനുവദിക്കൂ</translation>
 <translation id="8987927404178983737">മാസം</translation>
 <translation id="1383876407941801731">തിരയുക</translation>
@@ -56,11 +57,8 @@
 <translation id="8798099450830957504">സ്ഥിരസ്ഥിതി</translation>
 <translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
 <translation id="2359808026110333948">തുടരുക</translation>
-<translation id="6896758677409633944">പകര്‍ത്തുക</translation>
 <translation id="7665369617277396874">അക്കൗണ്ട് ചേർക്കുക</translation>
 <translation id="3448492834076427715">അക്കൗണ്ട് അപ്‌ഡേറ്റ് ചെയ്യുക</translation>
-<translation id="3943857333388298514">ഒട്ടിക്കുക</translation>
-<translation id="6518133107902771759">സ്ഥിരീകരിക്കുക</translation>
 <translation id="3157931365184549694">പുനഃസ്ഥാപിക്കുക</translation>
 <translation id="4917385247580444890">ശക്തം</translation>
 <translation id="8297006494302853456">ദുര്‍ബലം</translation>
@@ -72,6 +70,7 @@
 <translation id="7805768142964895445">നില</translation>
 <translation id="5747552184818312860">കാലഹരണപ്പെടുന്നു</translation>
 <translation id="5646376287012673985">ലൊക്കേഷൻ</translation>
+<translation id="3199127022143353223">സെര്‍‌വറുകള്‍‌</translation>
 <translation id="7138678301420049075">മറ്റുള്ളവ</translation>
 <translation id="604124094241169006">സ്വപ്രേരിതം</translation>
 <translation id="6452181791372256707">നിരസിക്കുക</translation>
@@ -111,8 +110,10 @@
 <translation id="7544853251252956727">ഷഫിൾ ചെയ്യുക</translation>
 <translation id="1173894706177603556">പേരുമാറ്റുക</translation>
 <translation id="7765158879357617694">നീക്കുക</translation>
+<translation id="6896758677409633944">പകര്‍ത്തുക</translation>
 <translation id="4195643157523330669">പുതിയ ടാബില്‍ തുറക്കുക</translation>
 <translation id="4243710787042215766">അദൃശ്യ ടാബിൽ തുറക്കുക</translation>
 <translation id="8261506727792406068">ഇല്ലാതാക്കുക</translation>
 <translation id="901834265349196618">ഇമെയില്‍</translation>
+<translation id="4776146737004271126">Android ക്രമീകരണം തുറക്കുക</translation>
 </translationbundle>

@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -75,8 +76,9 @@ class FilTxManagerUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
-    json_rpc_service_ =
-        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
+    network_manager_ = std::make_unique<NetworkManager>(&prefs_);
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
@@ -86,11 +88,8 @@ class FilTxManagerUnitTest : public testing::Test {
         base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, "brave",
-                                   base::DoNothing());
-    task_environment_.RunUntilIdle();
-    keyring_service_->AddAccountSync(
-        mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId, "Account 1");
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+    GetAccountUtils().EnsureFilTestAccount(0);
   }
 
   AccountUtils GetAccountUtils() {
@@ -110,11 +109,11 @@ class FilTxManagerUnitTest : public testing::Test {
         [&, expected_url, expected_method,
          content](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
-          std::string header_value;
-          EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
-          EXPECT_TRUE(responses_.count(header_value));
+          auto header_value = request.headers.GetHeader("X-Eth-Method");
+          EXPECT_TRUE(header_value);
+          EXPECT_TRUE(responses_.count(*header_value));
           url_loader_factory_.ClearResponses();
-          auto response = responses_[header_value];
+          auto response = responses_[*header_value];
           url_loader_factory_.AddResponse(request.url.spec(), response);
         }));
   }
@@ -129,22 +128,20 @@ class FilTxManagerUnitTest : public testing::Test {
     url_loader_factory_.ClearResponses();
   }
 
-  void GetTransactionMessageToSign(
+  void GetFilTransactionMessageToSign(
       const std::string& tx_meta_id,
       std::optional<std::string> expected_message) {
     base::RunLoop run_loop;
-    fil_tx_manager()->GetTransactionMessageToSign(
-        tx_meta_id,
-        base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
-          EXPECT_EQ(!!message, expected_message.has_value());
-          if (expected_message.has_value()) {
-            ASSERT_TRUE(message->is_message_str());
-            std::optional<std::string> message_str = message->get_message_str();
-            EqualJSONs(*message_str, *expected_message);
-            EXPECT_EQ(message_str.has_value(), expected_message.has_value());
-          }
-          run_loop.Quit();
-        }));
+    fil_tx_manager()->GetFilTransactionMessageToSign(
+        tx_meta_id, base::BindLambdaForTesting(
+                        [&](const std::optional<std::string>& json_message) {
+                          EXPECT_EQ(!!json_message,
+                                    expected_message.has_value());
+                          if (expected_message.has_value()) {
+                            EqualJSONs(*json_message, *expected_message);
+                          }
+                          run_loop.Quit();
+                        }));
     run_loop.Run();
   }
 
@@ -196,7 +193,7 @@ class FilTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
-    return brave_wallet::GetNetworkURL(prefs(), chain_id, coin);
+    return network_manager_->GetNetworkURL(chain_id, coin);
   }
   void SetGasEstimateInterceptor(const mojom::AccountIdPtr& from_account,
                                  const std::string& to_account) {
@@ -233,6 +230,7 @@ class FilTxManagerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<TxService> tx_service_;
@@ -455,7 +453,7 @@ TEST_F(FilTxManagerUnitTest, SomeSiteOrigin) {
   EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
 }
 
-TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
+TEST_F(FilTxManagerUnitTest, GetFilTransactionMessageToSign) {
   const auto from_account = FilTestAcc(0);
   EXPECT_EQ(from_account->address, "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly");
   const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
@@ -472,7 +470,7 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
     EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
     EXPECT_EQ(tx_meta->from(), from_account);
     EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
-    GetTransactionMessageToSign(meta_id, R"(
+    GetFilTransactionMessageToSign(meta_id, R"(
     {
         "From": "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
         "GasFeeCap": "3",
@@ -504,7 +502,7 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
     EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
     EXPECT_EQ(tx_meta->from(), from_account);
     EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
-    GetTransactionMessageToSign(meta_id, R"(
+    GetFilTransactionMessageToSign(meta_id, R"(
     {
         "From": "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
         "GasFeeCap": "3",
@@ -520,8 +518,8 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
   )");
   }
 
-  GetTransactionMessageToSign("unknown id", std::nullopt);
-  GetTransactionMessageToSign("", std::nullopt);
+  GetFilTransactionMessageToSign("unknown id", std::nullopt);
+  GetFilTransactionMessageToSign("", std::nullopt);
 }
 
 TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
@@ -575,7 +573,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
 
   base::RunLoop run_loop;
   fil_tx_manager()->ProcessFilHardwareSignature(
-      meta_id, signed_message,
+      meta_id, mojom::FilecoinSignature::New(signed_message),
       base::BindLambdaForTesting([&](bool success,
                                      mojom::ProviderErrorUnionPtr error_union,
                                      const std::string& err_message) {
@@ -612,7 +610,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
                        "data");
   base::RunLoop run_loop;
   fil_tx_manager()->ProcessFilHardwareSignature(
-      "fake", signed_message,
+      "fake", mojom::FilecoinSignature::New(signed_message),
       base::BindLambdaForTesting([&](bool success,
                                      mojom::ProviderErrorUnionPtr error_union,
                                      const std::string& err_message) {

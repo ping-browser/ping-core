@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include <string_view>
 
 #include "base/base64url.h"
@@ -18,7 +24,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -43,7 +48,6 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    brave::RegisterPathProvider();
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
     https_server_.ServeFilesFromDirectory(test_data_dir_);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
@@ -138,7 +142,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return navigation_url.ReplaceComponents(replacement);
   }
 
-  GURL landing_url(const std::string_view query, const GURL& landing_url) {
+  GURL landing_url(std::string_view query, const GURL& landing_url) {
     GURL::Replacements replacement;
     if (!query.empty()) {
       replacement.SetQueryStr(query);
@@ -212,13 +216,9 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   void NavigateToURLAndWaitForRedirects(Browser* browser,
                                         const GURL& original_url,
                                         const GURL& landing_url) {
-    ui_test_utils::UrlLoadObserver load_complete(
-        landing_url, content::NotificationService::AllSources());
+    ui_test_utils::UrlLoadObserver load_complete(landing_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, original_url));
-    EXPECT_EQ(contents(browser)->GetPrimaryMainFrame()->GetLastCommittedURL(),
-              original_url);
     load_complete.Wait();
-
     EXPECT_EQ(contents(browser)->GetLastCommittedURL(), landing_url);
   }
 

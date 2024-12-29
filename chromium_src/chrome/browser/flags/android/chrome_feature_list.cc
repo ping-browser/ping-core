@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_override.h"
-#include "brave/browser/android/preferences/features.h"
+#include "brave/browser/android/background_video/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
@@ -18,6 +18,7 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
@@ -36,11 +37,13 @@
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
     &brave_wallet::features::kNativeBraveWalletFeature,                 \
     &playlist::features::kPlaylist,                                     \
+    &download::features::kParallelDownloading,                          \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
     &speedreader::kSpeedreaderFeature,                                  \
     &debounce::features::kBraveDebounce,                                \
+    &webcompat::features::kBraveWebcompatExceptionsService,             \
     &net::features::kBraveHttpsByDefault,                               \
     &net::features::kBraveFallbackDoHProvider,                          \
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
@@ -58,11 +61,10 @@ namespace chrome {
 namespace android {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kAddToHomescreenIPH, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIncognitoReauthenticationForAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
-    {kShowScrollableMVTOnNTPAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
-    {kStartSurfaceAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSurfacePolish, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kMagicStackAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kAdaptiveButtonInTopToolbarCustomizationV2,
+     base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace android

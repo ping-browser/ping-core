@@ -77,8 +77,7 @@ extension NetworkStore {
         symbolName: "MOCK",
         decimals: 18,
         coin: .eth,
-        supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
-        isEip1559: false
+        supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
       )
     ) { _, _, _ in }
 
@@ -105,6 +104,7 @@ extension KeyringStore {
   static var previewStoreWithWalletCreated: KeyringStore {
     let store = KeyringStore.previewStore
     store.createWallet(password: "password")
+    store.allAccounts = [.previewAccount, .mockSolAccount]
     return store
   }
 }
@@ -134,6 +134,7 @@ extension SendTokenStore {
       assetRatioService: MockAssetRatioService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: TestableWalletUserAssetManager()
@@ -226,6 +227,7 @@ extension TransactionConfirmationStore {
         return service
       }(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: TestableWalletUserAssetManager()
     )
@@ -282,7 +284,7 @@ extension DepositTokenStore {
   static var previewStore: DepositTokenStore {
     .init(
       keyringService: BraveWallet.TestKeyringService(),
-      rpcService: BraveWallet.TestJsonRpcService(),
+      rpcService: MockJsonRpcService(),
       walletService: BraveWallet.TestBraveWalletService(),
       blockchainRegistry: BraveWallet.TestBlockchainRegistry.previewBlockchainRegistry,
       prefilledToken: nil,
@@ -299,11 +301,16 @@ extension BraveWallet.TestSolanaTxManagerProxy {
     solTxManagerProxy._makeSystemProgramTransferTxData = { _, _, _, completion in
       completion(.init(), .success, "")
     }
-    solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, _, _, completion in
+    solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, _, _, _, completion in
       completion(.init(), .success, "")
     }
-    solTxManagerProxy._estimatedTxFee = { _, _, completion in
-      completion(UInt64(0), .success, "")
+    solTxManagerProxy._solanaTxFeeEstimation = { _, _, completion in
+      let feeEstimation = BraveWallet.SolanaFeeEstimation(
+        baseFee: UInt64(0),
+        computeUnits: UInt32(0),
+        feePerComputeUnit: UInt64(0)
+      )
+      completion(feeEstimation, .success, "")
     }
 
     return solTxManagerProxy

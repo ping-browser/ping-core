@@ -277,10 +277,12 @@ private struct AccountCardView: View {
             Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
           }
         }
-        Button {
-          action(.depositToAccount)
-        } label: {
-          Label(Strings.Wallet.deposit, braveSystemImage: "leo.qr.code")
+        if !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+          Button {
+            action(.depositToAccount)
+          } label: {
+            Label(Strings.Wallet.deposit, braveSystemImage: "leo.qr.code")
+          }
         }
       } label: {
         RoundedRectangle(cornerRadius: 8)
@@ -351,7 +353,7 @@ private struct AccountCardView: View {
   }
 
   private var cardBackground: some View {
-    BlockieMaterial(address: account.blockieSeed)
+    BlockieBackground(seed: account.blockieSeed)
       .blur(radius: 25, opaque: true)
       .opacity(0.3)
       .clipShape(RoundedRectangle(cornerRadius: 8))

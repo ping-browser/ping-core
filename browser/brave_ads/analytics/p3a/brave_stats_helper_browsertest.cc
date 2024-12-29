@@ -10,20 +10,15 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
-#include "chrome/test/base/in_process_browser_test.h"
-#endif
 
 namespace brave_ads {
 

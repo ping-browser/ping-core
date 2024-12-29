@@ -23,9 +23,11 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
@@ -52,7 +54,7 @@
 namespace brave_vpn {
 
 namespace {
-const char kTestVpnOrders[] = R"(
+constexpr char kTestVpnOrders[] = R"(
 {
     "credentials":
     {
@@ -125,8 +127,9 @@ std::string GenerateTestingCreds(const std::string& domain,
   auto now = base::Time::Now();
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
+  // Give sufficient additional years to prevent it expire.
   std::string year =
-      base::NumberToString(active_subscription ? exploded.year + 1 : 0);
+      base::NumberToString(active_subscription ? exploded.year + 10 : 0);
   base::ReplaceSubstringsAfterOffset(&json, 0, "{year}", year);
   base::ReplaceSubstringsAfterOffset(&json, 0, "{domain}", domain);
   return json;
@@ -296,29 +299,37 @@ class BraveVPNServiceTest : public testing::Test {
 #if !BUILDFLAG(IS_ANDROID)
   bool& wait_region_data_ready() { return service_->wait_region_data_ready_; }
 
-  mojom::Region device_region() const {
-    if (auto region_ptr =
-            GetRegionPtrWithNameFromRegionList(GetBraveVPNConnectionManager()
-                                                   ->GetRegionDataManager()
-                                                   .GetDeviceRegion(),
-                                               regions())) {
-      return *region_ptr;
-    }
-    return mojom::Region();
+  skus::mojom::SkusResultPtr MakeSkusResult(const std::string& result) {
+    return skus::mojom::SkusResult::New(skus::mojom::SkusResultCode::Ok,
+                                        result);
   }
 
   void OnCredentialSummary(const std::string& domain,
                            const std::string& summary) {
-    service_->OnCredentialSummary(domain, summary);
+    service_->OnCredentialSummary(domain, MakeSkusResult(summary));
   }
 
-  const std::vector<mojom::Region>& regions() const {
+  const std::vector<mojom::RegionPtr>& regions() const {
     return GetBraveVPNConnectionManager()->GetRegionDataManager().GetRegions();
   }
 
   void SetSelectedRegion(const std::string& region) {
     GetBraveVPNConnectionManager()->SetSelectedRegion(region);
   }
+
+  std::string GetSelectedRegion() {
+    return GetBraveVPNConnectionManager()
+        ->GetRegionDataManager()
+        .GetSelectedRegion();
+  }
+
+  std::string GetDeviceRegion() {
+    return GetBraveVPNConnectionManager()
+        ->GetRegionDataManager()
+        .GetDeviceRegion();
+  }
+
+  void ClearSelectedRegion() { service_->ClearSelectedRegion(); }
 
   void OnFetchRegionList(const std::string& region_list, bool success) {
     GetBraveVPNConnectionManager()->GetRegionDataManager().OnFetchRegionList(
@@ -343,7 +354,8 @@ class BraveVPNServiceTest : public testing::Test {
   void OnPrepareCredentialsPresentation(
       const std::string& domain,
       const std::string& credential_as_cookie) {
-    service_->OnPrepareCredentialsPresentation(domain, credential_as_cookie);
+    service_->OnPrepareCredentialsPresentation(
+        domain, MakeSkusResult(credential_as_cookie));
   }
 
   void SetDeviceRegion(const std::string& name) {
@@ -431,13 +443,23 @@ class BraveVPNServiceTest : public testing::Test {
         },
         {
           "continent": "north-america",
-          "name": "us-west",
-          "name-pretty": "USA West"
+          "name": "us-central",
+          "name-pretty": "USA - Central"
         },
         {
           "continent": "oceania",
           "name": "au-au",
           "name-pretty": "Australia"
+        }
+      ])";
+  }
+
+  std::string GetRegionsDataV2() {
+    return R"([
+        {
+          "continent": "north-america",
+          "name": "na-usa",
+          "name-pretty": "USA - Central"
         }
       ])";
   }
@@ -525,6 +547,12 @@ class BraveVPNServiceTest : public testing::Test {
     EXPECT_TRUE(observer->GetPurchasedState().has_value());
     EXPECT_EQ(observer->GetPurchasedState().value(), state);
   }
+
+  void GetAllRegions(BraveVpnService::ResponseCallback callback) {
+    service_->api_request_->GetServerRegions(
+        std::move(callback), brave_vpn::mojom::kRegionPrecisionCityByCountry);
+  }
+
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<BraveVPNConnectionManager> connection_manager_;
 #endif
@@ -546,7 +574,7 @@ TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
   // string) result is returned.
   SetInterceptorResponse("{'invalid json':");
   base::RunLoop loop;
-  service_->GetAllServerRegions(base::BindOnce(
+  GetAllRegions(base::BindOnce(
       [](base::OnceClosure callback, const std::string& region_list,
          bool success) {
         EXPECT_TRUE(region_list.empty());
@@ -778,6 +806,36 @@ TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateTest) {
   loop.Run();
 }
 
+TEST_F(BraveVPNServiceTest, ClearSelectedRegionTest) {
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+
+  OnFetchRegionList(GetRegionsData(), true);
+  SetTestTimezone("Asia/Seoul");
+  OnFetchTimezones(GetTimeZonesData(), true);
+  {
+    base::RunLoop loop;
+    observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+
+  SetSelectedRegion("sa-br");
+  {
+    base::RunLoop loop;
+    observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+  EXPECT_NE(GetSelectedRegion(), GetDeviceRegion());
+
+  ClearSelectedRegion();
+  {
+    base::RunLoop loop;
+    observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+  EXPECT_EQ(GetSelectedRegion(), GetDeviceRegion());
+}
+
 // Check SetSelectedRegion is called when default device region is set.
 // We use default device region as an initial selected region.
 TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateWithDeviceRegionTest) {
@@ -790,6 +848,29 @@ TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateWithDeviceRegionTest) {
   base::RunLoop loop;
   observer.WaitSelectedRegionStateChange(loop.QuitClosure());
   loop.Run();
+}
+
+TEST_F(BraveVPNServiceTest, GetProperRegionFromTimeZoneTest) {
+  // For initial region list, "us-central" is used for "America/Havana"
+  // timezone.
+  SetTestTimezone("America/Havana");
+
+  OnFetchRegionList(GetRegionsData(), true);
+  OnFetchTimezones(GetTimeZonesData(), true);
+
+  EXPECT_EQ("us-central", GetDeviceRegion());
+  EXPECT_EQ("us-central", GetSelectedRegion());
+
+  // For region list v2, "na-usa" is used for "America/Havana"
+  // timezone.
+  // Clear selected region to set with device region when timezone
+  // data is fetched.
+  local_pref_service_.ClearPref(prefs::kBraveVPNSelectedRegionV2);
+  local_pref_service_.SetInteger(prefs::kBraveVPNRegionListVersion, 2);
+  OnFetchRegionList(GetRegionsDataV2(), true);
+  OnFetchTimezones(GetTimeZonesData(), true);
+  EXPECT_EQ("na-usa", GetDeviceRegion());
+  EXPECT_EQ("na-usa", GetSelectedRegion());
 }
 
 TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {

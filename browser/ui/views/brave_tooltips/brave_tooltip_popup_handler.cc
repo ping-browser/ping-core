@@ -25,15 +25,14 @@ BraveTooltipPopupHandler::BraveTooltipPopupHandler() = default;
 BraveTooltipPopupHandler::~BraveTooltipPopupHandler() = default;
 
 // static
-void BraveTooltipPopupHandler::Show(Profile* profile,
-                                    std::unique_ptr<BraveTooltip> tooltip) {
-  DCHECK(profile);
+void BraveTooltipPopupHandler::Show(std::unique_ptr<BraveTooltip> tooltip) {
   DCHECK(tooltip);
 
   const std::string tooltip_id = tooltip->id();
-  DCHECK(!tooltip_popups_[tooltip_id]);
-  tooltip_popups_[tooltip_id] =
-      new brave_tooltips::BraveTooltipPopup(profile, std::move(tooltip));
+  if (!tooltip_popups_[tooltip_id]) {
+    tooltip_popups_[tooltip_id] = new BraveTooltipPopup(std::move(tooltip));
+    tooltip_popups_[tooltip_id]->Show();
+  }
 }
 
 // static
@@ -44,7 +43,7 @@ void BraveTooltipPopupHandler::Close(const std::string& tooltip_id) {
     return;
   }
 
-  tooltip_popups_[tooltip_id]->Close(false);
+  tooltip_popups_[tooltip_id]->Close();
 }
 
 // static

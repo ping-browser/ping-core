@@ -65,7 +65,7 @@ struct OtherPrivacySettingsSectionView: View {
         }
       )
       ToggleView(
-        title: Strings.blockMobileAnnoyances,
+        title: Strings.Shields.blockMobileAnnoyances,
         subtitle: nil,
         toggle: $settings.blockMobileAnnoyances
       )
@@ -82,24 +82,27 @@ struct OtherPrivacySettingsSectionView: View {
         ),
         option: Preferences.Shields.googleSafeBrowsing
       )
-      OptionToggleView(
-        title: Strings.screenTimeSetting,
-        subtitle: String.localizedStringWithFormat(
-          Strings.screenTimeSettingDescription,
-          URL.brave.screenTimeHelp.absoluteString
-        ),
-        option: Preferences.Privacy.screenTimeEnabled
-      )
-      // ToggleView(
-      //   title: Strings.P3A.settingTitle,
-      //   subtitle: Strings.P3A.settingSubtitle,
-      //   toggle: $settings.isP3AEnabled
-      // )
-      // OptionToggleView(
-      //   title: Strings.Settings.sendUsagePingTitle,
-      //   subtitle: Strings.Settings.sendUsagePingDescription,
-      //   option: Preferences.DAU.sendUsagePing
-      // )
+      if !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+        // Vision OS does not support ScreenTime for web pages
+        OptionToggleView(
+          title: Strings.screenTimeSetting,
+          subtitle: String.localizedStringWithFormat(
+            Strings.screenTimeSettingDescription,
+            URL.brave.screenTimeHelp.absoluteString
+          ),
+          option: Preferences.Privacy.screenTimeEnabled
+        )
+      }
+//       ToggleView(
+//         title: Strings.P3A.settingTitle,
+//         subtitle: Strings.P3A.settingSubtitle,
+//         toggle: $settings.isP3AEnabled
+//       )
+//       OptionToggleView(
+//         title: Strings.Settings.sendUsagePingTitle,
+//         subtitle: Strings.Settings.sendUsagePingDescription,
+//         option: Preferences.DAU.sendUsagePing
+//       )
     } header: {
       Text(Strings.otherPrivacySettingsSection)
     }
