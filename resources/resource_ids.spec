@@ -233,13 +233,10 @@
     "includes": [64550],
   },
   "brave/components/ping_ai_copilot/resources.grd": {
-    "includes": [63100],
+    "includes": [64600],
   },
-  # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_custom_notes/brave_custom_notes.grd": {
     "META": {"sizes": {"includes": [10]}},
-    "includes": [63200],
-  },
-    "includes": [64600],
+    "includes": [64620]
   }
 }
