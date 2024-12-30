@@ -362,6 +362,31 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                // Private Tab - Private Window - Tor Box
                {"boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2},
                {"boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON},
+
+               // Custom Notes - Header
+               {"headerTitle", IDS_BRAVE_CUSTOM_NOTES_HEADER_TITLE},
+               {"headerText", IDS_BRAVE_CUSTOM_NOTES_HEADER_DESCRIPTION},
+
+               // Custom Notes - Actions
+               {"createNoteButton", IDS_BRAVE_CUSTOM_NOTES_CREATE_NOTE_BUTTON},
+               {"editNoteButton", IDS_BRAVE_CUSTOM_NOTES_EDIT_NOTE_BUTTON},
+               {"deleteNoteButton", IDS_BRAVE_CUSTOM_NOTES_DELETE_NOTE_BUTTON},
+
+               // Custom Notes - Placeholders
+               {"notePlaceholderTitle",
+                IDS_BRAVE_CUSTOM_NOTES_PLACEHOLDER_TITLE},
+               {"notePlaceholderContent",
+                IDS_BRAVE_CUSTOM_NOTES_PLACEHOLDER_CONTENT},
+
+               // Custom Notes - Messages
+               {"noteSavedMessage", IDS_BRAVE_CUSTOM_NOTES_NOTE_SAVED_MESSAGE},
+               {"noteDeletedMessage",
+                IDS_BRAVE_CUSTOM_NOTES_NOTE_DELETED_MESSAGE},
+               {"notesListTitle", IDS_BRAVE_CUSTOM_NOTES_LIST_TITLE},
+               {"noNotesMessage", IDS_BRAVE_CUSTOM_NOTES_NO_NOTES_MESSAGE},
+               {"notesSearchPlaceholder",
+                IDS_BRAVE_CUSTOM_NOTES_SEARCH_PLACEHOLDER},
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
                // Rewards widget

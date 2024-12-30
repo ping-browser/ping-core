@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 
+#include <vector>
+
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -13,7 +15,10 @@
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/prefs/pref_member.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/views/controls/textfield/textfield.h"
+#include "ui/views/controls/textfield/textfield_controller.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 class AIChatButton;
@@ -31,6 +36,15 @@ class BraveToolbarView : public ToolbarView,
                          public ProfileAttributesStorage::Observer {
   METADATA_HEADER(BraveToolbarView, ToolbarView)
  public:
+  void OnAddNote(const std::u16string& new_note);
+
+  // Method to handle deleting all notes
+  void OnDeleteAllNotes();
+  void DeleteNote(size_t index);
+  void RefreshNotesView();
+  void ShowCustomPopup();
+  void LoadNotesFromLocalStorage();
+
   explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
   ~BraveToolbarView() override;
 
@@ -60,6 +74,8 @@ class BraveToolbarView : public ToolbarView,
   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
+  // void ContentsChanged(views::Textfield* sender, const std::u16string&
+  // new_contents) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarDividerNotShownTest);
@@ -67,7 +83,18 @@ class BraveToolbarView : public ToolbarView,
   void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetButtonBounds();
+  void SaveNotesToLocalStorage();
   void UpdateBookmarkVisibility();
+  void OnNoteAdded(const std::u16string& new_note);
+  void ContentsChanged();
+  views::View* BuildNotesView();
+  std::string note_input_;
+  std::vector<std::string> notes_;
+  raw_ptr<views::Textfield> text_field_ = nullptr;
+  raw_ptr<PrefService> pref_service_ = nullptr;
+  raw_ptr<views::Button> custom_button_ = nullptr;
+  static constexpr int kNotesViewID = 1001;  // Choose a unique ID
+  raw_ptr<views::DialogDelegateView> custom_dialog_ = nullptr;
 
   // ToolbarButtonProvider:
   views::View* GetAnchorView(std::optional<PageActionIconType> type) override;
@@ -76,6 +103,8 @@ class BraveToolbarView : public ToolbarView,
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
+  void ContentsChanged(views::Textfield* sender,
+                       const std::u16string& new_contents);
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void UpdateAIChatButtonVisibility();

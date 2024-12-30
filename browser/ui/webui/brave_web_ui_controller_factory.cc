@@ -13,6 +13,9 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
+#include "brave/browser/ui/webui/brave_adblock_ui.h"
+#include "brave/browser/ui/webui/brave_custom_notes/brave_custom_notes_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
@@ -27,6 +30,7 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave_web_ui_controller_factory.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
@@ -92,6 +96,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
       web_ui->GetWebContents()->GetBrowserContext());
   if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
+  } else if (host == kBraveCustomNotesHost) {
+      return new BraveCustomNotesUI(web_ui, url.host());
+  } else if (host == kSkusInternalsHost) {
+      return new SkusInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWalletPageHost &&
              brave_wallet::IsAllowedForContext(profile)) {
@@ -201,12 +209,52 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        ai_rewriter::features::IsAIRewriterEnabled()) ||
 #endif
       url.host_piece() == kRewardsPageHost ||
-      url.host_piece() == kRewardsInternalsHost) {
+      url.host_piece() == kRewardsInternalsHost ||
+      url.host_piece() == kBraveCustomNotesHost) {
     return &NewWebUI;
   }
 
   return nullptr;
 }
+
+// bool ChromeWebUIControllerFactory::IsWebUIAllowedToMakeNetworkRequests(
+//     const url::Origin& url) {
+//   std::string host = url.host_piece();
+//   if (host == kBraveCustomNotesHost) {
+//     return true;
+//   }
+//   return ChromeWebUIControllerFactory::IsWebUIAllowedToMakeNetworkRequests(url);
+// }
+
+
+// bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
+//                              const GURL& url) {
+//   if (url.host_piece() != kRewardsPageHost &&
+// #if !BUILDFLAG(IS_ANDROID)
+//       url.host_piece() != kBraveRewardsPanelHost &&
+//       url.host_piece() != kBraveTipPanelHost &&
+// #endif  // !BUILDFLAG(IS_ANDROID)
+//       url.host_piece() != kRewardsInternalsHost) {
+//     return false;
+//   }
+
+//   Profile* profile = Profile::FromBrowserContext(browser_context);
+//   if (profile) {
+//     if (!brave_rewards::IsSupportedForProfile(
+//             profile, url.host_piece() == kRewardsPageHost
+//                          ? brave_rewards::IsSupportedOptions::kSkipRegionCheck
+//                          : brave_rewards::IsSupportedOptions::kNone)) {
+//       return true;
+//     }
+// #if BUILDFLAG(IS_ANDROID)
+//     auto* prefs = profile->GetPrefs();
+//     if (prefs && prefs->GetBoolean(kSafetynetCheckFailed)) {
+//       return true;
+//     }
+// #endif  // BUILDFLAG(IS_ANDROID)
+//   }
+//   return false;
+// }
 
 #if BUILDFLAG(IS_ANDROID)
 bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,

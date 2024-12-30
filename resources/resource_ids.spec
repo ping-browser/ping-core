@@ -234,5 +234,9 @@
   },
   "brave/components/ping_ai_copilot/resources.grd": {
     "includes": [64600],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_custom_notes/brave_custom_notes.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [64620]
   }
 }

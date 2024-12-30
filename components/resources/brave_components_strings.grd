@@ -425,6 +425,23 @@
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PLACEHOLDER" desc="A placeholder label to display on neutral state of the input box in private new tab page">Search the web privately</message>
       </if>
 
+      <!-- WebUI Custom Notes resources -->
+      <if expr="not is_android">
+        <message name="IDS_BRAVE_CUSTOM_NOTES_HEADER_TITLE" desc="">Custom Notes</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_HEADER_DESCRIPTION" desc="">Manage your notes easily.</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_CREATE_NOTE_BUTTON" desc="">Add a new note</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_EDIT_NOTE_BUTTON" desc="">Edit note</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_DELETE_NOTE_BUTTON" desc="">Delete note</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_PLACEHOLDER_TITLE" desc="">Title of your note</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_PLACEHOLDER_CONTENT" desc="">Content of your note</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_NOTE_SAVED_MESSAGE" desc="">Note saved successfully!</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_NOTE_DELETED_MESSAGE" desc="">Note deleted successfully!</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_LIST_TITLE" desc="">Your Notes</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_NO_NOTES_MESSAGE" desc="">No notes available. Start by adding a new note!</message>
+        <message name="IDS_BRAVE_CUSTOM_NOTES_SEARCH_PLACEHOLDER" desc="A placeholder label to display when no search term has been entered">Search notes...</message>
+      </if>
+
+
       <!-- WebUI adblock resources -->
       <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_TITLE" desc="Title for additional filters section">Additional Filters</message>
       <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_WARNING" desc="Warning for additional filters section">Warning: Turning on too many filters will degrade performance</message>
