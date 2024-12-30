@@ -30,6 +30,7 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave_web_ui_controller_factory.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
@@ -93,15 +94,12 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   Profile* profile = Profile::FromBrowserContext(
       web_ui->GetWebContents()->GetBrowserContext());
-  if (host == kAdblockHost) {
-    return new BraveAdblockUI(web_ui, url.host());
-  } else if (host == kAdblockInternalsHost) {
-    return new BraveAdblockInternalsUI(web_ui, url.host());
-  } else if (host == kBraveCustomNotesHost) {
-    return new BraveCustomNotesUI(web_ui, url.host());
-  } else if (host == kSkusInternalsHost) {
   if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
+  } else if (host == kBraveCustomNotesHost) {
+      return new BraveCustomNotesUI(web_ui, url.host());
+  } else if (host == kSkusInternalsHost) {
+      return new SkusInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWalletPageHost &&
              brave_wallet::IsAllowedForContext(profile)) {
@@ -219,44 +217,44 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   return nullptr;
 }
 
-bool ChromeWebUIControllerFactory::IsWebUIAllowedToMakeNetworkRequests(
-    const GURL& url) {
-  std::string host = url.host_piece();
-  if (host == kBraveCustomNotesHost) {
-    return true;
-  }
-  return ChromeWebUIControllerFactory::IsWebUIAllowedToMakeNetworkRequests(url);
-}
+// bool ChromeWebUIControllerFactory::IsWebUIAllowedToMakeNetworkRequests(
+//     const url::Origin& url) {
+//   std::string host = url.host_piece();
+//   if (host == kBraveCustomNotesHost) {
+//     return true;
+//   }
+//   return ChromeWebUIControllerFactory::IsWebUIAllowedToMakeNetworkRequests(url);
+// }
 
 
-bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
-                             const GURL& url) {
-  if (url.host_piece() != kRewardsPageHost &&
-#if !BUILDFLAG(IS_ANDROID)
-      url.host_piece() != kBraveRewardsPanelHost &&
-      url.host_piece() != kBraveTipPanelHost &&
-#endif  // !BUILDFLAG(IS_ANDROID)
-      url.host_piece() != kRewardsInternalsHost) {
-    return false;
-  }
+// bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
+//                              const GURL& url) {
+//   if (url.host_piece() != kRewardsPageHost &&
+// #if !BUILDFLAG(IS_ANDROID)
+//       url.host_piece() != kBraveRewardsPanelHost &&
+//       url.host_piece() != kBraveTipPanelHost &&
+// #endif  // !BUILDFLAG(IS_ANDROID)
+//       url.host_piece() != kRewardsInternalsHost) {
+//     return false;
+//   }
 
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (profile) {
-    if (!brave_rewards::IsSupportedForProfile(
-            profile, url.host_piece() == kRewardsPageHost
-                         ? brave_rewards::IsSupportedOptions::kSkipRegionCheck
-                         : brave_rewards::IsSupportedOptions::kNone)) {
-      return true;
-    }
-#if BUILDFLAG(IS_ANDROID)
-    auto* prefs = profile->GetPrefs();
-    if (prefs && prefs->GetBoolean(kSafetynetCheckFailed)) {
-      return true;
-    }
-#endif  // BUILDFLAG(IS_ANDROID)
-  }
-  return false;
-}
+//   Profile* profile = Profile::FromBrowserContext(browser_context);
+//   if (profile) {
+//     if (!brave_rewards::IsSupportedForProfile(
+//             profile, url.host_piece() == kRewardsPageHost
+//                          ? brave_rewards::IsSupportedOptions::kSkipRegionCheck
+//                          : brave_rewards::IsSupportedOptions::kNone)) {
+//       return true;
+//     }
+// #if BUILDFLAG(IS_ANDROID)
+//     auto* prefs = profile->GetPrefs();
+//     if (prefs && prefs->GetBoolean(kSafetynetCheckFailed)) {
+//       return true;
+//     }
+// #endif  // BUILDFLAG(IS_ANDROID)
+//   }
+//   return false;
+// }
 
 #if BUILDFLAG(IS_ANDROID)
 bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,

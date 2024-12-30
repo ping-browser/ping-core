@@ -125,7 +125,7 @@ void BraveCustomNotesPageHandler::EditNote(int32_t note_id,
 std::optional<std::string> BraveCustomNotesPageHandler::ExtractContentFromJson(
     const std::string& json_response) {
   // Parse the JSON response
-  absl::optional<base::Value> parsed_json = base::JSONReader::Read(json_response);
+  std::optional<base::Value> parsed_json = base::JSONReader::Read(json_response);
   if (!parsed_json || !parsed_json->is_dict()) {
     LOG(ERROR) << "Failed to parse JSON or response is not a dictionary.";
     return std::nullopt;
