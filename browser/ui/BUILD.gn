@@ -326,6 +326,7 @@ source_set("ui") {
       "whats_new/pref_names.h",
       "whats_new/whats_new_util.cc",
       "whats_new/whats_new_util.h",
+
     ]
 
     deps += [
@@ -534,6 +535,8 @@ source_set("ui") {
       "views/omnibox/brave_rounded_omnibox_results_frame.h",
       "views/omnibox/brave_search_conversion_promotion_view.cc",
       "views/omnibox/brave_search_conversion_promotion_view.h",
+      "views/login/login_screen_view.cc",
+      "views/login/login_screen_view.h",
       "views/overlay/brave_back_to_tab_label_button.cc",
       "views/overlay/brave_back_to_tab_label_button.h",
       "views/overlay/brave_video_overlay_window_views.cc",

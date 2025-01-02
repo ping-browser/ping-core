@@ -13,6 +13,8 @@ class PrefRegistrySyncable;
 namespace brave {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+bool IsLoggedIn(PrefService* prefs);
+void SetLoggedIn(PrefService* prefs, bool logged_in);
 
 }  // namespace brave
 

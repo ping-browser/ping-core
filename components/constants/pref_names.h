@@ -135,6 +135,7 @@ inline constexpr char kNewTabPageShowTopSites[] =
     "brave.new_tab_page.show_top_sites";
 inline constexpr char kOtherBookmarksMigrated[] =
     "brave.other_bookmarks_migrated";
+inline constexpr char kLoginState[] = "brave.login_state";
 
 // Obsolete widget removal prefs
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)

@@ -35,6 +35,7 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
 #include "media/base/media_switches.h"
+#include "browser/ui/views/login_screen_view.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
@@ -84,6 +85,16 @@ int ChromeBrowserMainParts::PreMainMessageLoopRun() {
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
       ->RegisterOnDemandUpdater(
           &g_browser_process->component_updater()->GetOnDemandUpdater());
+
+  views::Widget* login_widget = new views::Widget();
+  views::Widget::InitParams params(views::Widget::InitParams::TYPE_WINDOW);
+  params.bounds = gfx::Rect(100, 100, 400, 300);
+  login_widget->Init(std::move(params));
+
+  LoginScreenView* login_screen = new LoginScreenView();
+  login_widget->SetContentsView(login_screen);
+
+  login_widget->Show();
 
   return ChromeBrowserMainParts_ChromiumImpl::PreMainMessageLoopRun();
 }
