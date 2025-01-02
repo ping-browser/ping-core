@@ -1,29 +1,26 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+#ifndef BRAVE_BROWSER_UI_VIEWS_LOGIN_SCREEN_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_LOGIN_SCREEN_VIEW_H_
 
-#ifndef BROWSER_UI_VIEWS_LOGIN_SCREEN_VIEW_H_
-#define BROWSER_UI_VIEWS_LOGIN_SCREEN_VIEW_H_
-
+#include "base/memory/raw_ptr.h"
 #include "ui/views/view.h"
-#include "ui/views/controls/button/button.h"
+#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/textfield/textfield.h"
 
-class LoginScreenView : public views::View, public views::ButtonListener {
+class LoginScreenView : public views::View {
  public:
   LoginScreenView();
   ~LoginScreenView() override;
 
-  void ButtonPressed(views::Button* sender, const ui::Event& event) override;
-
  private:
   void CreateUI();
-  views::Textfield* username_field_;
-  views::Textfield* password_field_;
-  views::Button* login_button_;
+  void OnLoginButtonPressed();
 
-  DISALLOW_COPY_AND_ASSIGN(LoginScreenView);
+  raw_ptr<views::Textfield> username_field_;
+  raw_ptr<views::Textfield> password_field_;
+  raw_ptr<views::MdTextButton> login_button_;
+
+  LoginScreenView(const LoginScreenView&) = delete;
+  LoginScreenView& operator=(const LoginScreenView&) = delete;
 };
 
-#endif  // BROWSER_UI_VIEWS_LOGIN_SCREEN_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_LOGIN_SCREEN_VIEW_H_

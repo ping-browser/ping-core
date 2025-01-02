@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "browser/ui/views/login_screen_view.h"
-#include "ui/views/controls/label.h"
+#include "brave/browser/ui/views/login/login_screen_view.h"
 #include "ui/views/layout/box_layout.h"
+#include "ui/views/controls/label.h"
 #include "base/logging.h"
 
 LoginScreenView::LoginScreenView() {
@@ -15,7 +15,7 @@ LoginScreenView::LoginScreenView() {
 LoginScreenView::~LoginScreenView() = default;
 
 void LoginScreenView::CreateUI() {
-  auto* layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
+  SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(10), 10));
 
   auto* username_label = new views::Label(u"Username:");
@@ -31,21 +31,20 @@ void LoginScreenView::CreateUI() {
   password_field_->SetTextInputType(ui::TextInputType::TEXT_INPUT_TYPE_PASSWORD);
   AddChildView(password_field_);
 
-  login_button_ = new views::MdTextButton(this, u"Login");
+  login_button_ = new views::MdTextButton(
+      base::BindRepeating(&LoginScreenView::OnLoginButtonPressed, base::Unretained(this)),
+      u"Login");
   AddChildView(login_button_);
 }
 
-void LoginScreenView::ButtonPressed(views::Button* sender,
-                                    const ui::Event& event) {
-  if (sender == login_button_) {
-    std::u16string username = username_field_->GetText();
-    std::u16string password = password_field_->GetText();
-    // Dummy check for username and password
-    if (username == u"admin" && password == u"password") {
-      LOG(INFO) << "Login successful!";
-      // TODO: Removing the login screen and unblock the browser
-    } else {
-      LOG(INFO) << "Login failed!";
-    }
+void LoginScreenView::OnLoginButtonPressed() {
+  std::u16string username = username_field_->GetText();
+  std::u16string password = password_field_->GetText();
+  // Dummy check for username and password
+  if (username == u"admin" && password == u"password") {
+    LOG(INFO) << "Login successful!";
+    // TODO: Removing the login screen and unblock the browser
+  } else {
+    LOG(INFO) << "Login failed!";
   }
 }

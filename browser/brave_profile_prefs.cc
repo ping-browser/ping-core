@@ -52,6 +52,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefetch/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/preloading/preloading_prefs.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"

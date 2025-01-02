@@ -35,7 +35,7 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
 #include "media/base/media_switches.h"
-#include "browser/ui/views/login_screen_view.h"
+#include "ui/views/login/login_screen_view.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
