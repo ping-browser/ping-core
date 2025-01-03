@@ -4,17 +4,18 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/login/login_screen_view.h"
+#include "chrome/browser/profiles/profile.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/controls/label.h"
 #include "base/logging.h"
 
-LoginScreenView::LoginScreenView() {
-  CreateUI();
+LoginScreenView::LoginScreenView(Profile* profile) {
+  CreateUI(profile);
 }
 
 LoginScreenView::~LoginScreenView() = default;
 
-void LoginScreenView::CreateUI() {
+void LoginScreenView::CreateUI(Profile* profile) {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(10), 10));
 
@@ -37,13 +38,18 @@ void LoginScreenView::CreateUI() {
   AddChildView(login_button_);
 }
 
+bool LoginScreenView::Accept() {
+  // TODO: Implement a login logic, that will return a callback to the startup browser creator
+  return true;
+}
+
 void LoginScreenView::OnLoginButtonPressed() {
   std::u16string username = username_field_->GetText();
   std::u16string password = password_field_->GetText();
-  // Dummy check for username and password
+  // TODO: Implement a login logic to check the username and password
   if (username == u"admin" && password == u"password") {
     LOG(INFO) << "Login successful!";
-    // TODO: Removing the login screen and unblock the browser
+    // TODO: Removing the login screen and unblocking the browser
   } else {
     LOG(INFO) << "Login failed!";
   }

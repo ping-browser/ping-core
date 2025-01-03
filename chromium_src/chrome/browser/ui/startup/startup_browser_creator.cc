@@ -7,6 +7,8 @@
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
+#include "brave/browser/ui/views/login/login_screen_view.h"
+#include "ui/views/widget/widget.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -61,22 +63,25 @@ void BraveStartupBrowserCreatorImpl::Launch(
     bool restore_tabbed_browser) {
 #if BUILDFLAG(ENABLE_TOR)
   if (StartupBrowserCreatorImpl::command_line_->HasSwitch(switches::kTor)) {
+    // Call StartupBrowserCreatorImpl::Launch() with the Tor profile so that if
+    // one runs brave-browser --tor "? search query" the search query is not
+    // passed to the default search engine of the regular profile.
     LOG(INFO) << "Switching to Tor profile and starting Tor service.";
     profile = TorProfileManager::GetInstance().GetTorProfile(profile);
   }
 #endif
 
-  // Check if the user is logged in
-  bool is_logged_in = false;  // Dummy check
+  // TODO: This should be replaced with the value coming from the login class
+  bool is_logged_in = false;
 
   if (!is_logged_in) {
-    // Open the login page
-    LOG(INFO) << "LauncHing URL FOR LOGIN PAGE.";
-    GURL login_url("chrome://sign-pdf/");
-    StartupTabs tabs;
-    tabs.emplace_back(login_url);
+    // Show the login view on startup
+    views::Widget* widget = views::DialogDelegate::CreateDialogWidget(
+        new LoginScreenView(profile), nullptr, nullptr);
+    widget->Show();
   } else {
-    // Proceed with the normal startup
+    // Proceed with the normal startup if the user is already logged in
+    // currently no way to exit the login screen
     StartupBrowserCreatorImpl::Launch(profile, process_startup, restore_tabbed_browser);
   }
 }
