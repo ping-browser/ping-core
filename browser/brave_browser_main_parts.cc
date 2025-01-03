@@ -101,15 +101,15 @@ void ChromeBrowserMainParts::PreBrowserStart() {
       ->RegisterOnDemandUpdater(
           &g_browser_process->component_updater()->GetOnDemandUpdater());
 
-  views::Widget* login_widget = new views::Widget();
-  views::Widget::InitParams params(views::Widget::InitParams::TYPE_WINDOW);
-  params.bounds = gfx::Rect(100, 100, 400, 300);
-  login_widget->Init(std::move(params));
+  // views::Widget* login_widget = new views::Widget();
+  // views::Widget::InitParams params(views::Widget::InitParams::TYPE_WINDOW);
+  // params.bounds = gfx::Rect(100, 100, 400, 300);
+  // login_widget->Init(std::move(params));
 
-  LoginScreenView* login_screen = new LoginScreenView();
-  login_widget->SetContentsView(login_screen);
+  // LoginScreenView* login_screen = new LoginScreenView();
+  // login_widget->SetContentsView(login_screen);
 
-  login_widget->Show();
+  // login_widget->Show();
 
   ChromeBrowserMainParts_ChromiumImpl::PreBrowserStart();
 }
