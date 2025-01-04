@@ -57,6 +57,7 @@ BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
 //
 // Note that if the --tor switch is used together with --silent-launch, Tor
 // won't be launched.
+
 void BraveStartupBrowserCreatorImpl::Launch(
     Profile* profile,
     chrome::startup::IsProcessStartup process_startup,
@@ -72,12 +73,23 @@ void BraveStartupBrowserCreatorImpl::Launch(
 #endif
 
   // TODO: This should be replaced with the value coming from the login class
-  bool is_logged_in = false;
+  static bool is_logged_in = false;
 
   if (!is_logged_in) {
-    // Show the login view on startup
     views::Widget* widget = views::DialogDelegate::CreateDialogWidget(
-        new LoginScreenView(profile), nullptr, nullptr);
+        new LoginScreenView(
+            profile,
+            base::BindOnce(
+                [](BraveStartupBrowserCreatorImpl* self, Profile* profile,
+                   bool& is_logged_in,
+                   chrome::startup::IsProcessStartup process_startup,
+                   bool restore_tabbed_browser) {
+                  is_logged_in = true;
+                  self->Launch(profile, process_startup, restore_tabbed_browser);
+                },
+                this, profile, std::ref(is_logged_in), process_startup,
+                restore_tabbed_browser)),
+        nullptr, nullptr);
     widget->Show();
   } else {
     // Proceed with the normal startup if the user is already logged in

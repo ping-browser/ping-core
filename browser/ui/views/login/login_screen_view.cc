@@ -9,10 +9,10 @@
 #include "ui/views/controls/label.h"
 #include "base/logging.h"
 
-LoginScreenView::LoginScreenView(Profile* profile) {
+LoginScreenView::LoginScreenView(Profile* profile, base::OnceCallback<void()> on_login_success)
+    : on_login_success_(std::move(on_login_success)) {
   CreateUI(profile);
 }
-
 LoginScreenView::~LoginScreenView() = default;
 
 void LoginScreenView::CreateUI(Profile* profile) {
@@ -22,20 +22,20 @@ void LoginScreenView::CreateUI(Profile* profile) {
   auto* username_label = new views::Label(u"Username:");
   AddChildView(username_label);
 
-  username_field_ = new views::Textfield();
-  AddChildView(username_field_);
+  usernamefield = new views::Textfield();
+  AddChildView(usernamefield);
 
   auto* password_label = new views::Label(u"Password:");
   AddChildView(password_label);
 
-  password_field_ = new views::Textfield();
-  password_field_->SetTextInputType(ui::TextInputType::TEXT_INPUT_TYPE_PASSWORD);
-  AddChildView(password_field_);
+  passwordfield = new views::Textfield();
+  passwordfield->SetTextInputType(ui::TextInputType::TEXT_INPUT_TYPE_PASSWORD);
+  AddChildView(passwordfield);
 
-  login_button_ = new views::MdTextButton(
-      base::BindRepeating(&LoginScreenView::OnLoginButtonPressed, base::Unretained(this)),
-      u"Login");
-  AddChildView(login_button_);
+  loginbutton = new views::MdTextButton(
+    base::BindRepeating(&LoginScreenView::OnLoginButtonPressed, base::Unretained(this)),
+    u"Login");
+  AddChildView(loginbutton);
 }
 
 bool LoginScreenView::Accept() {
@@ -44,12 +44,16 @@ bool LoginScreenView::Accept() {
 }
 
 void LoginScreenView::OnLoginButtonPressed() {
-  std::u16string username = username_field_->GetText();
-  std::u16string password = password_field_->GetText();
-  // TODO: Implement a login logic to check the username and password
+  std::u16string username = usernamefield->GetText();
+  std::u16string password = passwordfield->GetText();
+
   if (username == u"admin" && password == u"password") {
     LOG(INFO) << "Login successful!";
-    // TODO: Removing the login screen and unblocking the browser
+    // Closing the login widget
+    GetWidget()->CloseNow();
+    if (on_login_success_)
+     // Notifying the success callback
+      std::move(on_login_success_).Run();
   } else {
     LOG(INFO) << "Login failed!";
   }
