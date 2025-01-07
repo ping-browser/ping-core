@@ -9,6 +9,7 @@
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 #include "brave/browser/ui/views/login/login_screen_view.h"
 #include "ui/views/widget/widget.h"
+#include "base/memory/raw_ptr.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -34,6 +35,27 @@ class BraveStartupBrowserCreatorImpl final : public StartupBrowserCreatorImpl {
   void Launch(Profile* profile,
               chrome::startup::IsProcessStartup process_startup,
               bool restore_tabbed_browser);
+
+  private:
+    // It holds the parameters needed to launch the browser after the user
+    struct LaunchParams {
+        raw_ptr<Profile> profile;
+        chrome::startup::IsProcessStartup process_startup;
+        bool restore_tabbed_browser;
+
+        LaunchParams(Profile* p,
+                    chrome::startup::IsProcessStartup ps,
+                    bool rtb)
+            : profile(p),
+              process_startup(ps),
+              restore_tabbed_browser(rtb) {}
+    };
+
+    void LaunchWithAuth(const LaunchParams& params);
+    void OnLoginSuccess(const LaunchParams& params);
+
+    // Thread safe flag to check if the user is logged in
+    static std::atomic<bool> is_logged_in_;
 };
 
 BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
@@ -58,6 +80,8 @@ BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
 // Note that if the --tor switch is used together with --silent-launch, Tor
 // won't be launched.
 
+std::atomic<bool> BraveStartupBrowserCreatorImpl::is_logged_in_(false);
+
 void BraveStartupBrowserCreatorImpl::Launch(
     Profile* profile,
     chrome::startup::IsProcessStartup process_startup,
@@ -73,29 +97,35 @@ void BraveStartupBrowserCreatorImpl::Launch(
 #endif
 
   // TODO: This should be replaced with the value coming from the login class
-  static bool is_logged_in = false;
+  LaunchParams params{profile, process_startup, restore_tabbed_browser};
+  LaunchWithAuth(params);
+}
 
-  if (!is_logged_in) {
-    views::Widget* widget = views::DialogDelegate::CreateDialogWidget(
-        new LoginScreenView(
-            profile,
-            base::BindOnce(
-                [](BraveStartupBrowserCreatorImpl* self, Profile* profile,
-                   bool& is_logged_in,
-                   chrome::startup::IsProcessStartup process_startup,
-                   bool restore_tabbed_browser) {
-                  is_logged_in = true;
-                  self->Launch(profile, process_startup, restore_tabbed_browser);
-                },
-                this, profile, std::ref(is_logged_in), process_startup,
-                restore_tabbed_browser)),
-        nullptr, nullptr);
-    widget->Show();
-  } else {
-    // Proceed with the normal startup if the user is already logged in
-    // currently no way to exit the login screen
-    StartupBrowserCreatorImpl::Launch(profile, process_startup, restore_tabbed_browser);
-  }
+void BraveStartupBrowserCreatorImpl::LaunchWithAuth(const LaunchParams& params) {
+    if (!is_logged_in_) {
+        auto callback = base::BindOnce(
+            &BraveStartupBrowserCreatorImpl::OnLoginSuccess,
+            base::Unretained(this),
+            params);
+
+        views::Widget* widget = views::DialogDelegate::CreateDialogWidget(
+            new LoginScreenView(params.profile, std::move(callback)),
+            nullptr, nullptr);
+        widget->Show();
+    } else {
+        StartupBrowserCreatorImpl::Launch(
+            params.profile,
+            params.process_startup,
+            params.restore_tabbed_browser);
+    }
+}
+
+void BraveStartupBrowserCreatorImpl::OnLoginSuccess(const LaunchParams& params) {
+    is_logged_in_ = true;
+    StartupBrowserCreatorImpl::Launch(
+        params.profile,
+        params.process_startup,
+        params.restore_tabbed_browser);
 }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl
