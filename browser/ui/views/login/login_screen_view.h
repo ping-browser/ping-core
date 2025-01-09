@@ -11,34 +11,38 @@
 #include "ui/views/window/dialog_delegate.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/textfield/textfield.h"
+#include "ui/views/controls/label.h"
 #include "chrome/browser/profiles/profile.h"
 #include "base/functional/callback.h"
+#include "ui/views/window/dialog_delegate.h"
 
 class LoginScreenView : public views::DialogDelegateView {
  public:
-  explicit LoginScreenView(raw_ptr<Profile> profile,
+  explicit LoginScreenView(Profile* profile,
                          base::OnceCallback<void()> on_login_success);
   ~LoginScreenView() override;
+
+  // Prevents copying and assignment of the dialog view
+  LoginScreenView(const LoginScreenView&) = delete;
+  LoginScreenView& operator=(const LoginScreenView&) = delete;
 
   bool Accept() override;
 
  private:
   void CreateUI();
+  
   void OnLoginButtonPressed();
+  
   void CloseAndRunCallback();
-  
-  raw_ptr<Profile> profile_;
-  
+
+  base::WeakPtr<Profile> profile_;
   raw_ptr<views::Textfield> username_field_;
   raw_ptr<views::Textfield> password_field_;
   raw_ptr<views::MdTextButton> login_button_;
-  
   base::OnceCallback<void()> on_login_success_;
   
+  // For safe callback handling on the UI thread after the dialog is closed 
   base::WeakPtrFactory<LoginScreenView> weak_ptr_factory_{this};
-  
-  LoginScreenView(const LoginScreenView&) = delete;
-  LoginScreenView& operator=(const LoginScreenView&) = delete;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOGIN_SCREEN_VIEW_H_
