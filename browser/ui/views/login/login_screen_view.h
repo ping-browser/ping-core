@@ -28,6 +28,8 @@ class LoginScreenView : public views::DialogDelegateView {
 
   bool Accept() override;
 
+  bool Cancel() override;
+
  private:
   void CreateUI();
   

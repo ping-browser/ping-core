@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/login/login_screen_view.h"
 
+#include "login_screen_view.h"
 #include "ui/views/layout/box_layout.h"
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
@@ -42,7 +43,6 @@ void LoginScreenView::CreateUI() {
   AddChildView(username_label);
   
   username_field_ = new views::Textfield();
-  username_field_->SetBackgroundColor(SK_ColorWHITE);
   AddChildView(username_field_);
   
   // Password section
@@ -51,7 +51,6 @@ void LoginScreenView::CreateUI() {
   
   password_field_ = new views::Textfield();
   password_field_->SetTextInputType(ui::TextInputType::TEXT_INPUT_TYPE_PASSWORD);
-  password_field_->SetBackgroundColor(SK_ColorWHITE);
   AddChildView(password_field_);
   
   // Login button
@@ -63,8 +62,15 @@ void LoginScreenView::CreateUI() {
   AddChildView(login_button_);
 }
 
+bool LoginScreenView::Cancel() {
+    // Closing the login dialog
+    CloseAndRunCallback();
+    return true;
+}
+
 bool LoginScreenView::Accept() {
-  return true;
+  // Returning false to prevent the default functionality of OK button
+  return false;
 }
 
 void LoginScreenView::CloseAndRunCallback() {
