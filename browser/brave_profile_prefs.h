@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_PROFILE_PREFS_H_
 #define BRAVE_BROWSER_BRAVE_PROFILE_PREFS_H_
 
+#include "components/prefs/pref_service.h"
+
 namespace user_prefs {
 class PrefRegistrySyncable;
 }
@@ -13,6 +15,8 @@ class PrefRegistrySyncable;
 namespace brave {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+bool IsLoggedIn(PrefService* prefs);
+void SetLoggedIn(PrefService* prefs, bool logged_in);
 
 }  // namespace brave
 

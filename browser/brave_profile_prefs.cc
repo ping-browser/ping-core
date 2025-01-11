@@ -52,6 +52,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefetch/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/preloading/preloading_prefs.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
@@ -151,6 +152,8 @@ void RegisterProfilePrefsForMigration(
   brave_wallet::RegisterProfilePrefsForMigration(registry);
 
   // Restore "Other Bookmarks" migration
+  registry->RegisterBooleanPref(kLoginState, false);
+  
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 
   // Added 05/2021
@@ -497,6 +500,14 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
                                 base::Value(false));
+}
+
+bool IsLoggedIn(PrefService* prefs) {
+  return prefs->GetBoolean(kLoginState);
+}
+
+void SetLoggedIn(PrefService* prefs, bool logged_in) {
+  prefs->SetBoolean(kLoginState, logged_in);
 }
 
 }  // namespace brave
