@@ -143,7 +143,7 @@ if (is_win) {
     brave_product_dir_name_suffix = "-Development"
   }
   brave_product_dir_name =
-      "BraveSoftware/Brave-Browser$brave_product_dir_name_suffix"
+      "PingSoftware/Brave-Browser$brave_product_dir_name_suffix"
 
   if (base_sparkle_update_url == "") {
     base_sparkle_update_url =
