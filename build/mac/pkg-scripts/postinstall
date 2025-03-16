@@ -33,7 +33,7 @@ fi
 
 appNameNoDash=$(echo $appName | sed "s/-/ /g")
 installationAppPath="$installationPath/${appNameNoDash}.app"
-userDataDir="$HOME/Library/Application Support/BraveSoftware"
+userDataDir="$HOME/Library/Application Support/PingSoftware"
 appDataDir="$userDataDir/${appName}"
 promoCodePath="$appDataDir/promoCode"
 

@@ -196,7 +196,7 @@ class BraveBrowserTypeImpl(BrowserType):
     if self.channel is not None:
       app_name += '-' + self.channel
     return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
-                        'BraveSoftware', app_name, 'Application')
+                        'PingSoftware', app_name, 'Application')
 
   def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
                             out_dir: str, common_options: CommonOptions) -> str:

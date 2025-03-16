@@ -13,7 +13,7 @@
 
 namespace install_static {
 
-const wchar_t kCompanyPathName[] = L"BraveSoftware";
+const wchar_t kCompanyPathName[] = L"PingSoftware";
 
 #if defined(OFFICIAL_BUILD)
 const wchar_t kProductPathName[] = L"Brave-Browser";
